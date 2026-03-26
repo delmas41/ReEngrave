@@ -174,9 +174,29 @@ async def download_score(url: str, dest_dir: str) -> str:
     ) as client:
         async with client.stream("GET", url) as resp:
             resp.raise_for_status()
+
+            # Check Content-Type before writing
+            ct = resp.headers.get("content-type", "")
+            if "text/html" in ct:
+                raise ValueError(
+                    "IMSLP returned an HTML page instead of a PDF — likely a bot-check. "
+                    "Please download the PDF manually from IMSLP and use the Upload button."
+                )
+
+            first_chunk = b""
             with open(local_path, "wb") as fh:
                 async for chunk in resp.aiter_bytes(chunk_size=65536):
+                    if not first_chunk:
+                        first_chunk = chunk[:8]
                     fh.write(chunk)
+
+    # Validate the saved file is actually a PDF
+    if first_chunk and not first_chunk.startswith(b"%PDF"):
+        os.remove(local_path)
+        raise ValueError(
+            "IMSLP download blocked by bot detection (received HTML instead of PDF). "
+            "Please download the PDF manually from IMSLP and use the Upload button."
+        )
 
     return local_path
 

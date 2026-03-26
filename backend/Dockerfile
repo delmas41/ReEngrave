@@ -24,8 +24,10 @@ RUN ( \
     && ./gradlew assemble --no-daemon \
     && DIST=$(find /tmp/audiveris -name "*.zip" -path "*/distributions/*" | head -1) \
     && [ -n "$DIST" ] \
-    && unzip -q "$DIST" -d /opt/ \
-    && mv /opt/app-* /opt/Audiveris 2>/dev/null || mv /opt/Audiveris-* /opt/Audiveris 2>/dev/null || true \
+    && unzip -q "$DIST" -d /tmp/audiveris_dist/ \
+    && EXTRACTED=$(find /tmp/audiveris_dist -maxdepth 1 -mindepth 1 -type d | head -1) \
+    && [ -n "$EXTRACTED" ] \
+    && mv "$EXTRACTED" /opt/Audiveris \
     && chmod +x /opt/Audiveris/bin/Audiveris \
     && rm -rf /tmp/audiveris ~/.gradle \
     && echo "✓ Audiveris ${AUDIVERIS_TAG} installed" \
