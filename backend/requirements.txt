@@ -19,3 +19,4 @@ stripe==9.9.0
 slowapi==0.1.9
 email-validator==2.1.1
 aiofiles==23.2.1
+greenlet>=3.0.0
