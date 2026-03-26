@@ -33,9 +33,17 @@ VISION_FEATURE = "vision_comparison"
 
 
 async def user_has_vision_access(user: User, score_id: str, db: AsyncSession) -> bool:
-    """Return True if the user has paid for (or is admin for) this score."""
+    """Return True if the user has paid for (or is admin for) this score.
+
+    Admin emails always have access. Non-admins require Stripe to be
+    configured AND a completed payment. If Stripe is not set up, non-admins
+    are blocked to prevent unauthorized use of the Anthropic API key.
+    """
     if user.email in settings.admin_email_list:
         return True
+
+    if not settings.stripe_secret_key:
+        return False  # Stripe not configured — block non-admins to protect API key costs
 
     result = await db.execute(
         select(ScoreAccess).where(

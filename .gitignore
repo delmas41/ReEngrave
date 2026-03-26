@@ -1,0 +1,35 @@
+# Environment / secrets — never commit these
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.pytest_cache/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Uploads / exports (runtime data)
+uploads/
+exports/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude worktrees
+.claude/worktrees/
