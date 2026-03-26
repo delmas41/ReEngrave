@@ -39,6 +39,28 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
+// Verovio options tuned for compact, readable measure-level rendering.
+// pageWidth wide enough for typical measures; adjustPageHeight trims vertical whitespace.
+const VEROVIO_OPTIONS = {
+  // Rendering scale (percentage of default size). 55 gives readable notation
+  // without being too large for side-by-side diff comparison.
+  scale: 55,
+  // Trim page height to content so the SVG wraps the staves tightly.
+  adjustPageHeight: true,
+  // Use a fixed page width (in mm × 10) to keep layout stable across measures.
+  // 2400 ≈ 240mm, wide enough for 4–6 measures on one line.
+  adjustPageWidth: false,
+  pageWidth: 2400,
+  // Remove notation software header/footer — we show our own labels.
+  noHeader: true,
+  noFooter: true,
+  // Spacing: tight staff and system spacing for compact view.
+  spacingStaff: 4,
+  spacingSystem: 0,
+  // Use Bravura (SMuFL compliant) for standard notation glyphs.
+  font: 'Bravura',
+} as Record<string, unknown>;
+
 export default function VerovioRenderer({
   measureXml,
   measureNumber,
@@ -61,25 +83,13 @@ export default function VerovioRenderer({
       setError(null);
 
       try {
-        // Dynamic import to avoid blocking initial bundle load
-        // TODO: Tune Verovio options for measure-level rendering:
-        //   - adjustPageHeight, spacingSystem, scale, pageWidth, pageHeight
-        //   - svgViewBox, header, footer
         const verovio = await import('verovio');
         const { VerovioToolkit } = verovio;
 
         if (cancelled) return;
 
         const toolkit = new VerovioToolkit();
-
-        // TODO: Configure options for clean single-measure rendering
-        toolkit.setOptions({
-          scale: 40,
-          adjustPageHeight: true,
-          adjustPageWidth: true,
-          noHeader: true,
-          noFooter: true,
-        } as Record<string, unknown>);
+        toolkit.setOptions(VEROVIO_OPTIONS);
 
         const loaded = toolkit.loadData(measureXml);
         if (!loaded) {
@@ -92,6 +102,12 @@ export default function VerovioRenderer({
 
         if (svgRef.current) {
           svgRef.current.innerHTML = svg;
+          // Make the SVG responsive within the container
+          const svgEl = svgRef.current.querySelector('svg');
+          if (svgEl) {
+            svgEl.style.maxWidth = '100%';
+            svgEl.style.height = 'auto';
+          }
         }
         setLoading(false);
       } catch (err) {

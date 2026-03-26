@@ -71,11 +71,9 @@ export default function PDFjsRenderer({
       setError(null);
 
       try {
-        // Dynamic import to avoid loading PDF.js in the initial bundle
         const pdfjs = await import('pdfjs-dist');
 
-        // Set worker source – required by PDF.js
-        // TODO: Host the worker file locally for production builds
+        // Resolve the worker via Vite's asset pipeline — works in dev and production.
         pdfjs.GlobalWorkerOptions.workerSrc = new URL(
           'pdfjs-dist/build/pdf.worker.mjs',
           import.meta.url
@@ -96,27 +94,39 @@ export default function PDFjsRenderer({
         const context = canvas.getContext('2d');
         if (!context) throw new Error('Canvas 2D context not available');
 
-        // TODO: Implement cropRegion support:
-        //   1. Render full page to an offscreen canvas.
-        //   2. Use cropRegion {x, y, w, h} (in PDF units) to clip the viewport.
-        //   3. Copy the cropped region to the visible canvas.
-        //   This requires converting PDF coordinate space to canvas pixels.
+        if (cropRegion) {
+          // Render the full page to an offscreen canvas, then copy the crop
+          // region to the visible canvas.
+          //
+          // cropRegion {x, y, w, h} uses canvas-space coordinates:
+          //   - origin at the top-left of the rendered page
+          //   - units are PDF user-space units (1 unit = scale pixels on canvas)
+          //   - y increases downward
 
-        canvas.width = cropRegion ? cropRegion.w * scale : viewport.width;
-        canvas.height = cropRegion ? cropRegion.h * scale : viewport.height;
+          const offscreen = document.createElement('canvas');
+          offscreen.width = viewport.width;
+          offscreen.height = viewport.height;
+          const offCtx = offscreen.getContext('2d');
+          if (!offCtx) throw new Error('Offscreen canvas 2D context not available');
 
-        const renderContext = {
-          canvasContext: context,
-          viewport: cropRegion
-            ? page.getViewport({
-                scale,
-                offsetX: -(cropRegion.x * scale),
-                offsetY: -(cropRegion.y * scale),
-              })
-            : viewport,
-        };
+          await page.render({ canvasContext: offCtx, viewport }).promise;
 
-        await page.render(renderContext).promise;
+          if (cancelled) return;
+
+          // Convert PDF units → canvas pixels
+          const srcX = cropRegion.x * scale;
+          const srcY = cropRegion.y * scale;
+          const srcW = cropRegion.w * scale;
+          const srcH = cropRegion.h * scale;
+
+          canvas.width = srcW;
+          canvas.height = srcH;
+          context.drawImage(offscreen, srcX, srcY, srcW, srcH, 0, 0, srcW, srcH);
+        } else {
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          await page.render({ canvasContext: context, viewport }).promise;
+        }
 
         if (!cancelled) setLoading(false);
       } catch (err) {
