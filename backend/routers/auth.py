@@ -98,6 +98,8 @@ async def register(
 
     if len(body.password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+    if len(body.password.encode()) > 72:
+        raise HTTPException(status_code=400, detail="Password must be 72 characters or fewer (bcrypt limit)")
 
     is_admin = body.email.lower() in settings.admin_email_list
     user = User(
