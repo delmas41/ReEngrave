@@ -52,6 +52,25 @@ class IMSLPSearchResult:
 # ---------------------------------------------------------------------------
 
 
+def _normalize_imslp_query(query: str) -> list[str]:
+    """Return one or more search variants optimised for IMSLP's title format.
+
+    IMSLP titles look like "Symphony No.5, Op.67 (Beethoven, Ludwig van)".
+    Standalone numbers ("Symphony 5") don't match, but "No.5" does.
+    We generate several variants and try them in order until we get hits.
+    """
+    variants = [query]
+    # Convert bare ordinals: "Symphony 5" → "Symphony No.5"
+    no_variant = re.sub(r'\b(\d+)\b', r'No.\1', query)
+    if no_variant != query:
+        variants.append(no_variant)
+    # Also try composer-only (last word that looks like a surname)
+    words = query.split()
+    if len(words) > 1:
+        variants.append(words[0])   # usually composer surname
+    return variants
+
+
 async def search_imslp(
     query: str, max_results: int = 10
 ) -> list[IMSLPSearchResult]:
@@ -62,23 +81,28 @@ async def search_imslp(
 
     Returns up to *max_results* IMSLPSearchResult objects.
     """
-    params = {
-        "action": "query",
-        "list": "search",
-        "srsearch": query,
-        "srlimit": max_results,
-        "format": "json",
-        "srnamespace": "0",
-    }
-
+    search_hits: list[dict] = []
     async with httpx.AsyncClient(
         headers={"User-Agent": USER_AGENT}, follow_redirects=True, timeout=30.0
     ) as client:
-        resp = await client.get(IMSLP_API_BASE, params=params)
-        resp.raise_for_status()
-        data = resp.json()
-
-    search_hits = data.get("query", {}).get("search", [])
+        for variant in _normalize_imslp_query(query):
+            params = {
+                "action": "query",
+                "list": "search",
+                "srsearch": variant,
+                "srlimit": max_results,
+                "format": "json",
+                "srnamespace": "0",
+            }
+            resp = await client.get(IMSLP_API_BASE, params=params)
+            resp.raise_for_status()
+            data = resp.json()
+            search_hits = data.get("query", {}).get("search", [])
+            if search_hits:
+                logger.info("IMSLP search %r → %d hits (variant %r)", query, len(search_hits), variant)
+                break
+        else:
+            logger.warning("IMSLP search %r returned no hits for any variant", query)
     results: list[IMSLPSearchResult] = []
 
     # Pre-seed the disclaimer cookie so PDF links are accessible

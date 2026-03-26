@@ -82,19 +82,23 @@ async def run_audiveris(pdf_path: str, output_dir: str) -> AudiverisResult:
     confidence = parse_audiveris_confidence(stdout)
 
     # Locate the exported MusicXML file (Audiveris names it after the PDF stem)
+    # Audiveris v5.4 exports .mxl (compressed MusicXML); older versions export .xml
     pdf_stem = Path(pdf_path).stem
-    musicxml_path = os.path.join(output_dir, f"{pdf_stem}.xml")
     book_path = os.path.join(output_dir, f"{pdf_stem}.omr")
 
-    # TODO: Audiveris may export multiple MusicXML files for multi-movement works.
-    # Scan output_dir for all .xml files and concatenate or handle separately.
+    musicxml_path = ""
+    for ext in (".xml", ".mxl", ".musicxml"):
+        candidate = os.path.join(output_dir, f"{pdf_stem}{ext}")
+        if os.path.isfile(candidate):
+            musicxml_path = candidate
+            break
 
     measures_count = 0
-    if os.path.isfile(musicxml_path) and validate_musicxml(musicxml_path):
+    if musicxml_path and validate_musicxml(musicxml_path):
         measures_count = _count_measures(musicxml_path)
 
     return AudiverisResult(
-        musicxml_path=musicxml_path if os.path.isfile(musicxml_path) else "",
+        musicxml_path=musicxml_path,
         book_path=book_path if os.path.isfile(book_path) else "",
         confidence_score=confidence,
         measures_count=measures_count,
