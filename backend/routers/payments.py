@@ -4,8 +4,6 @@ Stripe Checkout for Vision AI comparison ($5/score).
 Admin emails bypass payment entirely.
 """
 
-from __future__ import annotations
-
 import logging
 from datetime import datetime, timezone
 

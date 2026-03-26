@@ -3,8 +3,6 @@ Authentication router.
 Handles register, login, token refresh, logout, /me, and password reset.
 """
 
-from __future__ import annotations
-
 import secrets
 from datetime import datetime, timedelta, timezone
 from typing import Optional
@@ -172,8 +170,8 @@ async def refresh_token(
     if payload.get("type") != "refresh":
         raise exc
 
-    user_id: str | None = payload.get("sub")
-    jti: str | None = payload.get("jti")
+    user_id: Optional[str] = payload.get("sub")
+    jti: Optional[str] = payload.get("jti")
     if not user_id or not jti:
         raise exc
 

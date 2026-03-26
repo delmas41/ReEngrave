@@ -3,7 +3,7 @@ FastAPI dependency: get_current_user
 Validates Bearer JWT, checks blacklist, returns User ORM instance.
 """
 
-from __future__ import annotations
+from typing import Optional
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -38,8 +38,8 @@ async def get_current_user(
     if payload.get("type") != "access":
         raise _401
 
-    user_id: str | None = payload.get("sub")
-    jti: str | None = payload.get("jti")
+    user_id: Optional[str] = payload.get("sub")
+    jti: Optional[str] = payload.get("jti")
     if not user_id or not jti:
         raise _401
 

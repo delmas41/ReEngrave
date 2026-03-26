@@ -4,8 +4,6 @@ All API routes for IMSLP search, file import, OMR processing,
 Claude Vision comparison, review, export, and analytics.
 """
 
-from __future__ import annotations
-
 import os
 import uuid
 from contextlib import asynccontextmanager

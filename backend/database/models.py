@@ -443,3 +443,17 @@ class PaymentResponse(BaseModel):
     status: str
     created_at: datetime
     completed_at: Optional[datetime]
+
+
+# Rebuild Pydantic schemas after all types are defined.
+# Required because this module uses `from __future__ import annotations`
+# (needed for SQLAlchemy forward references), which makes field annotations
+# lazy strings that Pydantic v2 must resolve explicitly.
+ScoreResponse.model_rebuild()
+FlaggedDiffResponse.model_rebuild()
+KnowledgePatternResponse.model_rebuild()
+AutoAcceptRuleResponse.model_rebuild()
+ClaudePromptVersionResponse.model_rebuild()
+FineTuningDatasetResponse.model_rebuild()
+UserResponse.model_rebuild()
+PaymentResponse.model_rebuild()
