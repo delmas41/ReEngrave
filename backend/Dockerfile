@@ -6,23 +6,36 @@ RUN apt-get update && apt-get install -y \
     python3.11 python3.11-dev python3-pip \
     lilypond \
     poppler-utils \
-    wget curl unzip \
+    wget curl unzip git \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Audiveris
-# The zip extracts to a versioned directory; rename it to a fixed path.
-ARG AUDIVERIS_VERSION=5.3.1
-RUN wget -q \
-    https://github.com/Audiveris/audiveris/releases/download/${AUDIVERIS_VERSION}/Audiveris_${AUDIVERIS_VERSION}.zip \
-    -O /tmp/audiveris.zip \
-    && unzip -q /tmp/audiveris.zip -d /opt/ \
+# ---------------------------------------------------------------------------
+# Install Audiveris (best-effort — app still runs without it)
+# PDF OMR will return an error if Audiveris is unavailable.
+# Tag v5.4 is the latest stable release.
+# ---------------------------------------------------------------------------
+ARG AUDIVERIS_TAG=v5.4
+RUN ( \
+    git clone --depth 1 --branch ${AUDIVERIS_TAG} \
+        https://github.com/Audiveris/audiveris.git /tmp/audiveris \
+    && cd /tmp/audiveris \
+    && chmod +x gradlew \
+    && ./gradlew assemble --no-daemon \
+    && DIST=$(find /tmp/audiveris/build/distributions -name "*.zip" | head -1) \
+    && [ -n "$DIST" ] \
+    && unzip -q "$DIST" -d /opt/ \
     && mv /opt/Audiveris* /opt/Audiveris 2>/dev/null || true \
-    && rm /tmp/audiveris.zip \
-    && chmod +x /opt/Audiveris/bin/Audiveris
+    && chmod +x /opt/Audiveris/bin/Audiveris \
+    && rm -rf /tmp/audiveris ~/.gradle \
+    && echo "✓ Audiveris ${AUDIVERIS_TAG} installed" \
+) || echo "⚠ Audiveris build skipped — PDF OMR unavailable (MusicXML upload still works)"
 
 ENV AUDIVERIS_HOME=/opt/Audiveris
 ENV PATH="$AUDIVERIS_HOME/bin:$PATH"
 
+# ---------------------------------------------------------------------------
+# Python application
+# ---------------------------------------------------------------------------
 WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
