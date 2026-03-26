@@ -13,8 +13,10 @@ import {
   runOMR,
   runComparison,
   getScoreStatus,
+  checkVisionAccess,
 } from '../api/client';
 import DiffCard from '../components/DiffCard';
+import VisionComparisonPaywall from '../components/VisionComparisonPaywall';
 import type { FlaggedDifference, HumanDecision } from '../types';
 
 type Filter = 'all' | 'pending' | 'accepted' | 'rejected' | 'edited';
@@ -119,6 +121,12 @@ export default function ReviewUI() {
   const [filter, setFilter] = useState<Filter>('all');
   const [pollingEnabled, setPollingEnabled] = useState(false);
 
+  const { data: visionAccess, refetch: refetchAccess } = useQuery({
+    queryKey: ['vision-access', scoreId],
+    queryFn: () => checkVisionAccess(scoreId!),
+    enabled: !!scoreId,
+  });
+
   const { data: score, error: scoreError } = useQuery({
     queryKey: ['score', scoreId],
     queryFn: () => getScore(scoreId!),
@@ -210,13 +218,13 @@ export default function ReviewUI() {
             {runOMRMutation.isPending ? 'Starting OMR…' : 'Run OMR'}
           </button>
         )}
-        {score?.musicxml_path && score.status !== 'processing' && (
+        {score?.musicxml_path && score.status !== 'processing' && visionAccess?.has_access && (
           <button
             style={styles.actionBtn('secondary')}
             onClick={() => runCompareMutation.mutate()}
             disabled={runCompareMutation.isPending}
           >
-            {runCompareMutation.isPending ? 'Starting…' : 'Run Comparison'}
+            {runCompareMutation.isPending ? 'Starting…' : 'Run Vision Comparison'}
           </button>
         )}
         {allReviewed && (
@@ -257,6 +265,18 @@ export default function ReviewUI() {
             </button>
           ))}
         </div>
+      )}
+
+      {/* Vision paywall — shown only when score has MusicXML but no access yet */}
+      {score?.musicxml_path && visionAccess && !visionAccess.has_access && (
+        <VisionComparisonPaywall
+          scoreId={scoreId!}
+          isAdmin={visionAccess.is_admin}
+          onAccessGranted={() => {
+            refetchAccess();
+            qc.invalidateQueries({ queryKey: ['score', scoreId] });
+          }}
+        />
       )}
 
       {/* Diff cards */}

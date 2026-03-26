@@ -1,5 +1,32 @@
 // TypeScript interfaces matching backend SQLAlchemy models and API responses
 
+// ---------------------------------------------------------------------------
+// Auth / User interfaces
+// ---------------------------------------------------------------------------
+
+export interface User {
+  id: string;
+  email: string;
+  name: string | null;
+  role: 'user' | 'admin';
+  email_verified: boolean;
+  created_at: string;
+}
+
+export interface PaymentStatus {
+  has_access: boolean;
+  score_id: string;
+  is_admin: boolean;
+  stripe_publishable_key: string | null;
+}
+
+export interface CheckoutResponse {
+  has_access?: boolean;
+  admin_bypass?: boolean;
+  checkout_url?: string;
+  session_id?: string;
+}
+
 export type ExportFormat = 'pdf' | 'musicxml' | 'lilypond';
 
 export type ProcessingStatus =

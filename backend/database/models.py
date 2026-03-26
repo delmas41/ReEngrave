@@ -18,6 +18,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    UniqueConstraint,
     func,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -215,6 +216,108 @@ class FineTuningDataset(Base):
 
 
 # ---------------------------------------------------------------------------
+# Auth / Payment ORM Models
+# ---------------------------------------------------------------------------
+
+
+class User(Base):
+    """Registered user account."""
+
+    __tablename__ = "users"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    email: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
+    password_hash: Mapped[str] = mapped_column(String, nullable=False)
+    name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    role: Mapped[str] = mapped_column(String, nullable=False, default="user")  # user/admin
+    email_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=func.now(), onupdate=func.now()
+    )
+
+    # Relationships
+    payments: Mapped[list[Payment]] = relationship(
+        "Payment", back_populates="user", cascade="all, delete-orphan"
+    )
+    score_accesses: Mapped[list[ScoreAccess]] = relationship(
+        "ScoreAccess", back_populates="user", cascade="all, delete-orphan"
+    )
+    reset_tokens: Mapped[list[PasswordResetToken]] = relationship(
+        "PasswordResetToken", back_populates="user", cascade="all, delete-orphan"
+    )
+
+
+class Payment(Base):
+    """Stripe payment record per score."""
+
+    __tablename__ = "payments"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"), nullable=False)
+    score_id: Mapped[str] = mapped_column(String, nullable=False)
+    stripe_session_id: Mapped[Optional[str]] = mapped_column(String, nullable=True, unique=True)
+    stripe_payment_intent_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    amount_cents: Mapped[int] = mapped_column(Integer, nullable=False, default=500)
+    currency: Mapped[str] = mapped_column(String, nullable=False, default="usd")
+    status: Mapped[str] = mapped_column(
+        String, nullable=False, default="pending"
+    )  # pending/completed/failed
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    metadata_json: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+    # Relationships
+    user: Mapped[User] = relationship("User", back_populates="payments")
+
+
+class ScoreAccess(Base):
+    """Tracks per-score feature access granted to a user."""
+
+    __tablename__ = "score_access"
+    __table_args__ = (
+        UniqueConstraint("user_id", "score_id", "feature", name="uq_score_access"),
+    )
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"), nullable=False)
+    score_id: Mapped[str] = mapped_column(String, nullable=False)
+    feature: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "vision_comparison"
+    access_type: Mapped[str] = mapped_column(String, nullable=False)  # "payment" / "admin"
+    granted_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
+
+    # Relationships
+    user: Mapped[User] = relationship("User", back_populates="score_accesses")
+
+
+class PasswordResetToken(Base):
+    """Time-limited password reset tokens."""
+
+    __tablename__ = "password_reset_tokens"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"), nullable=False)
+    token: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    used: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
+
+    # Relationships
+    user: Mapped[User] = relationship("User", back_populates="reset_tokens")
+
+
+class TokenBlacklist(Base):
+    """Blacklisted JWT IDs (for logout)."""
+
+    __tablename__ = "token_blacklist"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    jti: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
+
+
+# ---------------------------------------------------------------------------
 # Pydantic Response Schemas
 # ---------------------------------------------------------------------------
 
@@ -315,3 +418,28 @@ class FineTuningDatasetResponse(BaseModel):
     label: str
     split: str
     exported_at: Optional[datetime]
+
+
+class UserResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    email: str
+    name: Optional[str]
+    role: str
+    email_verified: bool
+    created_at: datetime
+
+
+class PaymentResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    user_id: str
+    score_id: str
+    stripe_session_id: Optional[str]
+    amount_cents: int
+    currency: str
+    status: str
+    created_at: datetime
+    completed_at: Optional[datetime]

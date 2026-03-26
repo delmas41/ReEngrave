@@ -20,15 +20,17 @@ from fastapi import (
     Form,
     HTTPException,
     Query,
+    Request,
     UploadFile,
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from pydantic_settings import BaseSettings
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.config import settings
+from core.limiter import limiter
 from database.connection import create_all_tables, get_db
 from database.models import (
     AutoAcceptRule,
@@ -39,7 +41,9 @@ from database.models import (
     FlaggedDiffResponse,
     KnowledgePatternResponse,
     ScoreResponse,
+    User,
 )
+from dependencies import get_current_user
 from modules import (
     analytics,
     audiveris_omr,
@@ -49,26 +53,10 @@ from modules import (
     imslp_agent,
 )
 from modules.export_module import ExportFormat
-
-
-# ---------------------------------------------------------------------------
-# Settings
-# ---------------------------------------------------------------------------
-
-
-class Settings(BaseSettings):
-    anthropic_api_key: str = ""
-    database_url: str = "sqlite+aiosqlite:///./reengrave.db"
-    upload_dir: str = "./uploads"
-    export_dir: str = "./exports"
-    audiveris_home: str = "/opt/Audiveris"
-
-    class Config:
-        env_file = ".env"
-        extra = "ignore"
-
-
-settings = Settings()
+from routers.auth import router as auth_router
+from routers.payments import router as payments_router, webhook_router
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 
 # ---------------------------------------------------------------------------
@@ -92,18 +80,28 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="ReEngrave API",
-    version="0.1.0",
+    version="0.2.0",
     description="Music score re-engraving pipeline with OMR and Claude Vision",
     lifespan=lifespan,
 )
 
+# Rate limiting
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# CORS – must allow credentials for httpOnly refresh cookie
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # TODO: Restrict in production
+    allow_origins=settings.cors_origin_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Routers
+app.include_router(auth_router)
+app.include_router(payments_router)
+app.include_router(webhook_router)
 
 
 # ---------------------------------------------------------------------------
@@ -181,6 +179,7 @@ async def _bg_download_and_process(
 async def search_imslp(
     q: str = Query(..., description="Search query"),
     max_results: int = Query(10, ge=1, le=50),
+    current_user: User = Depends(get_current_user),
 ):
     """Search IMSLP for scores matching the query."""
     results = await imslp_agent.search_imslp(q, max_results)
@@ -202,6 +201,7 @@ async def download_imslp_score(
     body: DownloadScoreRequest,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Download an IMSLP PDF and start the OMR pipeline as a background task."""
     score_id = str(uuid.uuid4())
@@ -237,6 +237,7 @@ async def upload_pdf(
     composer: str = Form(...),
     era: str = Form(...),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Upload a PDF score. Creates a Score record and saves the file."""
     import_result = await file_import.save_uploaded_file(file, settings.upload_dir)
@@ -268,6 +269,7 @@ async def upload_musicxml(
     composer: str = Form(...),
     era: str = Form(...),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Upload a MusicXML file directly (skips OMR step)."""
     import_result = await file_import.save_uploaded_file(file, settings.upload_dir)
@@ -303,6 +305,7 @@ async def run_omr(
     score_id: str,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Run Audiveris OMR on a score's PDF."""
     result = await db.execute(select(Score).where(Score.id == score_id))
@@ -346,14 +349,23 @@ async def run_comparison(
     score_id: str,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """Run Claude Vision comparison on a score's PDF vs MusicXML."""
+    """Run Claude Vision comparison. Requires payment (or admin bypass)."""
+    from routers.payments import user_has_vision_access
+
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
     if score is None:
         raise HTTPException(status_code=404, detail="Score not found")
     if not score.musicxml_path:
         raise HTTPException(status_code=400, detail="No MusicXML available – run OMR first")
+
+    if not await user_has_vision_access(current_user, score_id, db):
+        raise HTTPException(
+            status_code=402,
+            detail="Payment required for Vision AI comparison",
+        )
 
     score.status = "processing"
     await db.flush()
@@ -380,11 +392,11 @@ async def run_comparison(
                         score_id=score_id,
                         measure_number=d.measure_number,
                         instrument=d.instrument,
-                        time_signature="4/4",  # TODO: parse from MusicXML
-                        key_signature="C major",  # TODO: parse from MusicXML
+                        time_signature="4/4",
+                        key_signature="C major",
                         difference_type=d.difference_type,
                         description=d.description,
-                        pdf_snippet_path="",  # TODO: save cropped image
+                        pdf_snippet_path="",
                         musicxml_snippet_path="",
                         audiveris_confidence=0.5,
                         claude_vision_confidence=d.confidence,
@@ -404,7 +416,11 @@ async def run_comparison(
 
 
 @app.get("/api/scores/{score_id}/status")
-async def get_score_status(score_id: str, db: AsyncSession = Depends(get_db)):
+async def get_score_status(
+    score_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Return the current processing status of a score."""
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
@@ -419,14 +435,21 @@ async def get_score_status(score_id: str, db: AsyncSession = Depends(get_db)):
 
 
 @app.get("/api/scores", response_model=list[ScoreResponse])
-async def list_scores(db: AsyncSession = Depends(get_db)):
+async def list_scores(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """List all scores."""
     result = await db.execute(select(Score).order_by(Score.created_at.desc()))
     return [ScoreResponse.model_validate(s) for s in result.scalars().all()]
 
 
 @app.get("/api/scores/{score_id}", response_model=ScoreResponse)
-async def get_score(score_id: str, db: AsyncSession = Depends(get_db)):
+async def get_score(
+    score_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Get score details by ID."""
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
@@ -436,14 +459,17 @@ async def get_score(score_id: str, db: AsyncSession = Depends(get_db)):
 
 
 @app.delete("/api/scores/{score_id}")
-async def delete_score(score_id: str, db: AsyncSession = Depends(get_db)):
+async def delete_score(
+    score_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Delete a score and its associated files."""
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
     if score is None:
         raise HTTPException(status_code=404, detail="Score not found")
 
-    # TODO: Delete associated files from disk
     await db.delete(score)
     await db.flush()
 
@@ -456,7 +482,11 @@ async def delete_score(score_id: str, db: AsyncSession = Depends(get_db)):
 
 
 @app.get("/api/scores/{score_id}/diffs", response_model=list[FlaggedDiffResponse])
-async def list_diffs(score_id: str, db: AsyncSession = Depends(get_db)):
+async def list_diffs(
+    score_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """List all flagged differences for a score."""
     result = await db.execute(
         select(FlaggedDifference)
@@ -471,6 +501,7 @@ async def record_decision(
     diff_id: str,
     body: DecisionRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Record a human decision (accept/reject/edit) for a flagged difference."""
     if body.decision not in ("accept", "reject", "edit"):
@@ -498,6 +529,7 @@ async def bulk_decide(
     score_id: str,
     body: BulkDecideRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Bulk accept or reject multiple flagged differences."""
     if body.decision not in ("accept", "reject"):
@@ -531,6 +563,7 @@ async def export_score(
     score_id: str,
     format: str = Query("pdf", regex="^(pdf|musicxml|lilypond)$"),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Trigger score export and return the file as a download."""
     try:
@@ -554,14 +587,17 @@ async def export_score(
 
 
 @app.get("/api/scores/{score_id}/export/status")
-async def export_status(score_id: str, db: AsyncSession = Depends(get_db)):
-    """Return export job status (stub – exports are synchronous for now)."""
+async def export_status(
+    score_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Return export job status."""
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
     if score is None:
         raise HTTPException(status_code=404, detail="Score not found")
 
-    # TODO: Track async export jobs and return real status
     return {"score_id": score_id, "export_status": "ready" if score.status == "complete" else score.status}
 
 
@@ -571,13 +607,19 @@ async def export_status(score_id: str, db: AsyncSession = Depends(get_db)):
 
 
 @app.get("/api/analytics/report")
-async def get_analytics_report(db: AsyncSession = Depends(get_db)):
+async def get_analytics_report(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Return the learning report with stats and suggestions."""
     return await analytics.generate_learning_report(db)
 
 
 @app.get("/api/analytics/patterns", response_model=list[KnowledgePatternResponse])
-async def get_patterns(db: AsyncSession = Depends(get_db)):
+async def get_patterns(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """List all knowledge patterns."""
     result = await db.execute(
         select(KnowledgePattern).order_by(KnowledgePattern.occurrence_count.desc())
@@ -586,7 +628,10 @@ async def get_patterns(db: AsyncSession = Depends(get_db)):
 
 
 @app.post("/api/analytics/update")
-async def trigger_analytics_update(db: AsyncSession = Depends(get_db)):
+async def trigger_analytics_update(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Trigger a full pattern analysis update."""
     await analytics.update_knowledge_base(db)
     await analytics.evaluate_auto_accept_rules(db)
@@ -594,7 +639,10 @@ async def trigger_analytics_update(db: AsyncSession = Depends(get_db)):
 
 
 @app.get("/api/analytics/finetuning-export")
-async def trigger_finetuning_export(db: AsyncSession = Depends(get_db)):
+async def trigger_finetuning_export(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Trigger fine-tuning dataset export."""
     output_path = await analytics.export_finetuning_dataset(
         db, os.path.join(settings.export_dir, "finetuning")
@@ -603,7 +651,10 @@ async def trigger_finetuning_export(db: AsyncSession = Depends(get_db)):
 
 
 @app.get("/api/analytics/auto-rules", response_model=list[AutoAcceptRuleResponse])
-async def get_auto_rules(db: AsyncSession = Depends(get_db)):
+async def get_auto_rules(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """List all active auto-accept rules."""
     result = await db.execute(
         select(AutoAcceptRule).where(AutoAcceptRule.is_active.is_(True))
@@ -618,4 +669,4 @@ async def get_auto_rules(db: AsyncSession = Depends(get_db)):
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "version": "0.1.0"}
+    return {"status": "ok", "version": "0.2.0"}

@@ -1,18 +1,22 @@
 /**
  * Typed API client for the ReEngrave backend.
  * All functions return typed responses matching backend Pydantic schemas.
+ * Includes JWT injection and auto-refresh on 401.
  */
 
-import axios from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 import type {
   AutoAcceptRule,
+  CheckoutResponse,
   ExportFormat,
   FlaggedDifference,
   HumanDecision,
   IMSLPSearchResult,
   KnowledgePattern,
   LearningReport,
+  PaymentStatus,
   Score,
+  User,
 } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -25,16 +29,137 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // needed for httpOnly refresh cookie
 });
 
-// Response interceptor for global error handling
+// ---------------------------------------------------------------------------
+// Token management
+// ---------------------------------------------------------------------------
+
+let _accessToken: string | null = null;
+let _refreshPromise: Promise<string | null> | null = null;
+
+export function setAccessToken(token: string | null) {
+  _accessToken = token;
+}
+
+export function getAccessToken(): string | null {
+  return _accessToken;
+}
+
+// ---------------------------------------------------------------------------
+// Interceptors
+// ---------------------------------------------------------------------------
+
+// Inject Authorization header
+api.interceptors.request.use((config) => {
+  if (_accessToken) {
+    config.headers = config.headers ?? {};
+    config.headers['Authorization'] = `Bearer ${_accessToken}`;
+  }
+  return config;
+});
+
+// Auto-refresh on 401
 api.interceptors.response.use(
   (res) => res,
-  (err) => {
-    // TODO: Add global toast/notification on error
+  async (err) => {
+    const original = err.config as AxiosRequestConfig & { _retry?: boolean };
+    const status = err.response?.status;
+
+    // Only retry once, and not for auth endpoints (prevents infinite loop)
+    if (
+      status === 401 &&
+      !original._retry &&
+      !original.url?.includes('/api/auth/')
+    ) {
+      original._retry = true;
+
+      // Deduplicate concurrent refresh calls
+      if (!_refreshPromise) {
+        _refreshPromise = axios
+          .post(
+            `${import.meta.env.VITE_API_URL ?? ''}/api/auth/refresh`,
+            {},
+            { withCredentials: true }
+          )
+          .then((r) => {
+            const token: string = r.data.access_token;
+            setAccessToken(token);
+            return token;
+          })
+          .catch(() => {
+            setAccessToken(null);
+            return null;
+          })
+          .finally(() => {
+            _refreshPromise = null;
+          });
+      }
+
+      const newToken = await _refreshPromise;
+      if (newToken) {
+        original.headers = { ...(original.headers ?? {}), Authorization: `Bearer ${newToken}` };
+        return api(original);
+      }
+    }
+
     return Promise.reject(err);
   }
 );
+
+// ---------------------------------------------------------------------------
+// Auth
+// ---------------------------------------------------------------------------
+
+export async function authLogin(
+  email: string,
+  password: string
+): Promise<{ access_token: string; user: User }> {
+  const res = await api.post('/api/auth/login', { email, password });
+  return res.data;
+}
+
+export async function authRegister(
+  email: string,
+  password: string,
+  name?: string
+): Promise<{ access_token: string; user: User }> {
+  const res = await api.post('/api/auth/register', { email, password, name });
+  return res.data;
+}
+
+export async function authRefresh(): Promise<{ access_token: string; user: User }> {
+  const res = await api.post('/api/auth/refresh');
+  return res.data;
+}
+
+export async function authLogout(): Promise<void> {
+  await api.post('/api/auth/logout');
+}
+
+export async function getMe(): Promise<User> {
+  const res = await api.get<User>('/api/auth/me');
+  return res.data;
+}
+
+// ---------------------------------------------------------------------------
+// Payments
+// ---------------------------------------------------------------------------
+
+export async function checkVisionAccess(scoreId: string): Promise<PaymentStatus> {
+  const res = await api.get<PaymentStatus>('/api/payments/status', {
+    params: { score_id: scoreId },
+  });
+  return res.data;
+}
+
+export async function createCheckoutSession(scoreId: string): Promise<CheckoutResponse> {
+  const res = await api.post<CheckoutResponse>('/api/payments/checkout', {
+    score_id: scoreId,
+  });
+  return res.data;
+}
 
 // ---------------------------------------------------------------------------
 // IMSLP

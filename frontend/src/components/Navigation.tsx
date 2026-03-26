@@ -1,4 +1,5 @@
 import { useLocation, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const NAV_LINKS = [
   { to: '/', label: 'Dashboard' },
@@ -31,6 +32,7 @@ const styles: Record<string, React.CSSProperties> = {
     listStyle: 'none',
     margin: 0,
     padding: 0,
+    flex: 1,
   },
   link: (active: boolean): React.CSSProperties => ({
     color: active ? '#e2b96f' : '#c8d0dc',
@@ -42,10 +44,45 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: active ? 'rgba(226,185,111,0.12)' : 'transparent',
     transition: 'background-color 0.15s, color 0.15s',
   }),
+  userSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    marginLeft: 'auto',
+  },
+  userName: {
+    fontSize: 13,
+    color: '#c8d0dc',
+    maxWidth: 160,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  adminBadge: {
+    fontSize: 10,
+    fontWeight: 700,
+    letterSpacing: 0.5,
+    padding: '2px 7px',
+    borderRadius: 10,
+    backgroundColor: '#e2b96f33',
+    color: '#e2b96f',
+    border: '1px solid #e2b96f55',
+    textTransform: 'uppercase',
+  },
+  logoutBtn: {
+    background: 'none',
+    border: '1px solid #ffffff33',
+    borderRadius: 5,
+    color: '#c8d0dc',
+    fontSize: 12,
+    padding: '4px 12px',
+    cursor: 'pointer',
+  },
 };
 
 export default function Navigation() {
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   return (
     <nav style={styles.nav}>
@@ -67,6 +104,18 @@ export default function Navigation() {
           );
         })}
       </ul>
+
+      {user && (
+        <div style={styles.userSection}>
+          {user.role === 'admin' && (
+            <span style={styles.adminBadge}>Admin</span>
+          )}
+          <span style={styles.userName}>{user.name ?? user.email}</span>
+          <button style={styles.logoutBtn} onClick={() => logout()}>
+            Log out
+          </button>
+        </div>
+      )}
     </nav>
   );
 }
