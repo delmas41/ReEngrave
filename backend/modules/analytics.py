@@ -14,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from sqlalchemy import func, select, text
+from sqlalchemy import case, func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models import (
@@ -57,13 +57,13 @@ async def analyze_correction_patterns(db: AsyncSession) -> list[PatternAnalysis]
             FlaggedDifference.difference_type,
             func.count().label("total"),
             func.sum(
-                (FlaggedDifference.human_decision == "accept").cast(int)
+                case((FlaggedDifference.human_decision == "accept", 1), else_=0)
             ).label("accepts"),
             func.sum(
-                (FlaggedDifference.human_decision == "reject").cast(int)
+                case((FlaggedDifference.human_decision == "reject", 1), else_=0)
             ).label("rejects"),
             func.sum(
-                (FlaggedDifference.human_decision == "edit").cast(int)
+                case((FlaggedDifference.human_decision == "edit", 1), else_=0)
             ).label("edits"),
         )
         .where(FlaggedDifference.human_decision.isnot(None))
