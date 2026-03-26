@@ -14,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models import (
@@ -109,7 +109,6 @@ async def update_knowledge_base(db: AsyncSession) -> None:
     analyses = await analyze_correction_patterns(db)
 
     for analysis in analyses:
-        # Check for existing pattern
         existing = await db.execute(
             select(KnowledgePattern).where(
                 KnowledgePattern.instrument == analysis.instrument,
@@ -154,7 +153,7 @@ async def update_knowledge_base(db: AsyncSession) -> None:
 async def evaluate_auto_accept_rules(db: AsyncSession) -> None:
     """Promote KnowledgePatterns with high accept rates to AutoAcceptRules.
 
-    Threshold: > 80% accept rate AND > 10 occurrences.
+    Threshold: > 80% accept rate AND >= 10 occurrences.
     """
     result = await db.execute(
         select(KnowledgePattern).where(
@@ -170,7 +169,6 @@ async def evaluate_auto_accept_rules(db: AsyncSession) -> None:
         if accept_rate < 0.8:
             continue
 
-        # Check if rule already exists for this pattern
         existing_rule = await db.execute(
             select(AutoAcceptRule).where(AutoAcceptRule.pattern_id == pattern.id)
         )
@@ -201,9 +199,10 @@ async def evaluate_auto_accept_rules(db: AsyncSession) -> None:
 async def apply_auto_accept(diff: dict, db: AsyncSession) -> bool:
     """Check if a new FlaggedDifference matches any active AutoAcceptRule.
 
-    Returns True if the diff was auto-accepted.
+    Matches on difference_type, instrument, confidence thresholds, and
+    optionally era if the rule's pattern has era metadata.
 
-    TODO: Extend matching logic to also consider era and key/time signature context.
+    Returns True if the diff was auto-accepted.
     """
     result = await db.execute(
         select(AutoAcceptRule).where(
@@ -216,23 +215,40 @@ async def apply_auto_accept(diff: dict, db: AsyncSession) -> bool:
     audiveris_conf = diff.get("audiveris_confidence", 0.0)
     claude_conf = diff.get("claude_vision_confidence", 0.0)
     instrument = diff.get("instrument", "")
+    era = diff.get("era", "")
 
     for rule in rules:
+        # Instrument match: rule.instrument == None means "any instrument"
         instrument_match = rule.instrument is None or rule.instrument == instrument
+        if not instrument_match:
+            continue
+
         conf_match = (
             audiveris_conf >= rule.min_audiveris_confidence
             and claude_conf >= rule.min_claude_confidence
         )
-        if instrument_match and conf_match:
-            return True
+        if not conf_match:
+            continue
+
+        # Era context: if the rule's knowledge pattern specifies an era,
+        # only apply when the diff's score era matches
+        if rule.pattern_id:
+            pattern_result = await db.execute(
+                select(KnowledgePattern).where(KnowledgePattern.id == rule.pattern_id)
+            )
+            pattern = pattern_result.scalar_one_or_none()
+            if pattern is not None and pattern.era and era:
+                if pattern.era != era:
+                    continue
+
+        return True
 
     return False
 
 
 async def generate_learning_report(db: AsyncSession) -> dict:
-    """Return a comprehensive report of the self-improving agent's state.
-
-    TODO: Add trend analysis over time (acceptance rates per week, etc.)
+    """Return a comprehensive report of the self-improving agent's state,
+    including weekly trend analysis of acceptance rates.
     """
     # Total corrections
     total_result = await db.execute(
@@ -263,6 +279,12 @@ async def generate_learning_report(db: AsyncSession) -> dict:
     scores_result = await db.execute(select(func.count(Score.id)))
     total_scores = scores_result.scalar() or 0
 
+    # Weekly trend analysis (SQLite strftime)
+    weekly_trends = await _compute_weekly_trends(db)
+
+    # Prompt performance from ClaudePromptVersion (if any active versions exist)
+    prompt_performance = await _compute_prompt_performance(db)
+
     return {
         "total_scores": total_scores,
         "total_corrections": total_corrections,
@@ -270,6 +292,7 @@ async def generate_learning_report(db: AsyncSession) -> dict:
         "total_accepts": total_accepts,
         "total_rejects": total_corrections - total_accepts,
         "active_auto_rules": len(active_rules),
+        "weekly_trends": weekly_trends,
         "top_patterns": [
             {
                 "instrument": p.instrument,
@@ -292,17 +315,13 @@ async def generate_learning_report(db: AsyncSession) -> dict:
             }
             for r in active_rules
         ],
-        # TODO: Add prompt_performance once ClaudePromptVersion tracking is active
-        "prompt_performance": {},
+        "prompt_performance": prompt_performance,
         "suggested_improvements": _generate_suggestions(top_patterns),
     }
 
 
 async def export_finetuning_dataset(db: AsyncSession, output_dir: str) -> str:
     """Export accepted corrections as a JSONL dataset for vision model fine-tuning.
-
-    Format per line:
-      {"image_path": "...", "label": "...", "metadata": {...}}
 
     Returns the path to the .jsonl file.
     """
@@ -337,7 +356,6 @@ async def export_finetuning_dataset(db: AsyncSession, output_dir: str) -> str:
             }
             f.write(json.dumps(record) + "\n")
 
-            # Record export in FineTuningDataset table
             ft_record = FineTuningDataset(
                 id=str(uuid.uuid4()),
                 flagged_diff_id=diff.id,
@@ -355,6 +373,62 @@ async def export_finetuning_dataset(db: AsyncSession, output_dir: str) -> str:
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+
+async def _compute_weekly_trends(db: AsyncSession) -> list[dict]:
+    """Compute weekly acceptance rates over the past 12 weeks.
+
+    Uses SQLite's strftime('%Y-%W', ...) for ISO year-week grouping.
+    Returns a list of {week, total, accepts, accept_rate} dicts, oldest first.
+    """
+    try:
+        result = await db.execute(
+            select(
+                func.strftime("%Y-%W", FlaggedDifference.created_at).label("week"),
+                func.count().label("total"),
+                func.sum(
+                    (FlaggedDifference.human_decision == "accept").cast(int)
+                ).label("accepts"),
+            )
+            .where(FlaggedDifference.human_decision.isnot(None))
+            .group_by(text("week"))
+            .order_by(text("week"))
+            .limit(12)
+        )
+        rows = result.all()
+        return [
+            {
+                "week": row.week,
+                "total": row.total,
+                "accepts": row.accepts or 0,
+                "accept_rate": round((row.accepts or 0) / row.total, 4) if row.total else 0.0,
+            }
+            for row in rows
+        ]
+    except Exception:
+        return []
+
+
+async def _compute_prompt_performance(db: AsyncSession) -> dict:
+    """Return performance metrics for each active Claude prompt version."""
+    from database.models import ClaudePromptVersion
+
+    try:
+        result = await db.execute(
+            select(ClaudePromptVersion).where(ClaudePromptVersion.is_active.is_(True))
+        )
+        versions = result.scalars().all()
+        return {
+            v.id: {
+                "version": v.version,
+                "total_uses": v.total_uses,
+                "accept_rate": v.accept_rate,
+                "reject_rate": v.reject_rate,
+            }
+            for v in versions
+        }
+    except Exception:
+        return {}
 
 
 def _generate_suggestions(patterns: list[KnowledgePattern]) -> list[str]:

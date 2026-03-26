@@ -5,6 +5,7 @@ Handles exporting corrected scores as MusicXML, LilyPond source, or engraved PDF
 
 from __future__ import annotations
 
+import logging
 import os
 import shutil
 from enum import Enum
@@ -17,6 +18,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models import FlaggedDifference, Score
 from modules.lilypond_engrave import generate_full_pipeline, musicxml_to_lilypond
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -56,10 +59,7 @@ async def export_score(
 async def export_as_musicxml(
     score_id: str, output_dir: str, db: AsyncSession
 ) -> str:
-    """Fetch score, apply accepted corrections, write corrected MusicXML.
-
-    Returns the path to the output MusicXML file.
-    """
+    """Fetch score, apply accepted corrections, write corrected MusicXML."""
     score = await _get_score(score_id, db)
     accepted_diffs = await _get_accepted_diffs(score_id, db)
 
@@ -76,14 +76,8 @@ async def export_as_musicxml(
 async def export_as_lilypond(
     score_id: str, output_dir: str, db: AsyncSession
 ) -> str:
-    """Export corrected score as a LilyPond .ly source file.
-
-    Returns the path to the .ly file.
-    """
-    # First produce corrected MusicXML
+    """Export corrected score as a LilyPond .ly source file."""
     xml_path = await export_as_musicxml(score_id, output_dir, db)
-
-    # Convert to LilyPond
     ly_path = await musicxml_to_lilypond(xml_path, output_dir)
     return ly_path
 
@@ -108,46 +102,125 @@ async def apply_corrections_to_musicxml(
 ) -> None:
     """Apply human-accepted corrections to a MusicXML file.
 
-    Writes the corrected XML to *output_path*.
+    For diffs with human_decision == "accept": the OMR output is correct,
+    no changes needed.
 
-    TODO: Implement XML patching logic:
-    1. Parse original MusicXML with ElementTree.
-    2. For each accepted diff that has a human_edit_value, locate the
-       corresponding <measure> by measure_number and instrument (part id).
-    3. Replace the affected element(s) with the corrected fragment.
-    4. For accept-without-edit diffs, keep the original OMR output as-is
-       (the OMR is considered correct).
-    5. Serialize back to XML with proper indentation and encoding.
+    For diffs with human_decision == "edit" and human_edit_value set:
+    - If the value is a valid XML fragment, replace the matching measure's
+      content with it.
+    - Otherwise, annotate the measure with a comment containing the edit value.
+
+    Writes the corrected XML to output_path.
     """
-    # Stub: copy original file and note corrections as XML comments
     shutil.copy2(original_xml_path, output_path)
 
-    if not accepted_diffs:
+    # Only edits require patching; accepts keep the OMR output as-is
+    edit_diffs = [
+        d for d in accepted_diffs
+        if d.human_decision == "edit" and d.human_edit_value
+    ]
+    if not edit_diffs:
         return
 
-    tree = ET.parse(output_path)
+    try:
+        tree = ET.parse(output_path)
+    except ET.ParseError as exc:
+        logger.error("Failed to parse MusicXML for patching: %s", exc)
+        return
+
     root = tree.getroot()
+    ns = _detect_namespace(root)
 
-    # TODO: Replace this comment-injection stub with real measure patching
-    comment_lines = [
-        f"Measure {d.measure_number} [{d.instrument}]: {d.difference_type} – {d.description}"
-        for d in accepted_diffs
-        if d.human_decision in ("accept", "edit")
-    ]
-    if comment_lines:
-        header_comment = ET.Comment(
-            " ReEngrave corrections applied:\n  "
-            + "\n  ".join(comment_lines)
-            + "\n"
-        )
-        root.insert(0, header_comment)
+    for diff in edit_diffs:
+        measure_num = str(diff.measure_number)
 
+        part = _find_part_for_instrument(root, ns, diff.instrument)
+        if part is None:
+            all_parts = root.findall(f"{ns}part") or root.findall("part")
+            part = all_parts[0] if all_parts else None
+
+        if part is None:
+            logger.warning("No part found for instrument %s", diff.instrument)
+            continue
+
+        measure = _find_measure(part, ns, measure_num)
+        if measure is None:
+            logger.warning(
+                "Measure %s not found for instrument %s", measure_num, diff.instrument
+            )
+            continue
+
+        edit_val = diff.human_edit_value.strip()
+        _apply_edit_to_measure(measure, ns, measure_num, edit_val)
+
+    ET.indent(tree, space="  ")
     tree.write(output_path, encoding="unicode", xml_declaration=True)
 
 
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+
+def _detect_namespace(root: ET.Element) -> str:
+    tag = root.tag
+    if tag.startswith("{"):
+        return tag[: tag.index("}") + 1]
+    return ""
+
+
+def _find_part_for_instrument(
+    root: ET.Element, ns: str, instrument: str
+) -> ET.Element | None:
+    """Find the <part> element whose part-name matches instrument."""
+    part_list = root.find(f"{ns}part-list") or root.find("part-list")
+    if part_list is None:
+        return None
+
+    score_parts = part_list.findall(f"{ns}score-part") or part_list.findall("score-part")
+    for sp in score_parts:
+        name_el = sp.find(f"{ns}part-name") or sp.find("part-name")
+        if name_el is not None and name_el.text:
+            if instrument.lower() in name_el.text.lower():
+                part_id = sp.get("id", "")
+                for part in root.findall(f"{ns}part") or root.findall("part"):
+                    if part.get("id") == part_id:
+                        return part
+    return None
+
+
+def _find_measure(part: ET.Element, ns: str, measure_num: str) -> ET.Element | None:
+    """Find a <measure number="N"> inside a part."""
+    for m in part.findall(f"{ns}measure") or part.findall("measure"):
+        if m.get("number") == measure_num:
+            return m
+    return None
+
+
+def _apply_edit_to_measure(
+    measure: ET.Element, ns: str, measure_num: str, edit_val: str
+) -> None:
+    """Apply a human edit value to a measure element.
+
+    If edit_val is a valid XML fragment, replace the measure's children.
+    Otherwise, append it as a comment.
+    """
+    if edit_val.startswith("<") and edit_val.endswith(">"):
+        try:
+            fragment = ET.fromstring(f"<_root>{edit_val}</_root>")
+            # Preserve the measure's attributes, clear and replace children
+            attribs = dict(measure.attrib)
+            measure.clear()
+            for key, val in attribs.items():
+                measure.set(key, val)
+            for child in fragment:
+                measure.append(child)
+            return
+        except ET.ParseError:
+            pass
+
+    # Plain-text or unparseable XML: annotate with a comment
+    measure.append(ET.Comment(f" ReEngrave edit: {edit_val} "))
 
 
 async def _get_score(score_id: str, db: AsyncSession) -> Score:

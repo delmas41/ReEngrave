@@ -5,11 +5,12 @@ Handles saving uploaded files, type detection, and basic validation.
 
 from __future__ import annotations
 
+import io
 import os
 import uuid
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import BinaryIO
 from xml.etree import ElementTree as ET
 
 import aiofiles
@@ -38,7 +39,9 @@ class ImportResult:
 async def save_uploaded_file(file: UploadFile, upload_dir: str) -> ImportResult:
     """Save a FastAPI UploadFile to disk.
 
-    Detects file type by extension and magic bytes.
+    Detects file type by extension and magic bytes. Compressed MusicXML
+    (.mxl) files are transparently decompressed before saving.
+
     Returns an ImportResult with metadata about the saved file.
     """
     Path(upload_dir).mkdir(parents=True, exist_ok=True)
@@ -46,8 +49,12 @@ async def save_uploaded_file(file: UploadFile, upload_dir: str) -> ImportResult:
     file_id = str(uuid.uuid4())
     original_filename = file.filename or f"upload_{file_id}"
 
-    # Read file bytes to detect type
     content = await file.read()
+
+    # Decompress .mxl before type detection
+    if _is_mxl(content, original_filename):
+        content = _extract_mxl(content)
+
     file_type = detect_file_type(content, original_filename)
 
     ext_map = {"pdf": ".pdf", "musicxml": ".xml"}
@@ -89,7 +96,6 @@ def detect_file_type(file_bytes: bytes, filename: str) -> str:
     if lower.endswith((".xml", ".musicxml", ".mxl")):
         return "musicxml"
 
-    # TODO: Add support for compressed MusicXML (.mxl) – ZIP container
     raise ValueError(
         f"Cannot determine file type for '{filename}'. "
         "Expected PDF or MusicXML."
@@ -107,12 +113,8 @@ async def validate_pdf(path: str) -> bool:
 
 
 async def validate_musicxml(path: str) -> bool:
-    """Check that file is valid XML with a MusicXML root element.
-
-    Looks for <score-partwise> or <score-timewise> root tags.
-    """
+    """Check that file is valid XML with a MusicXML root element."""
     try:
-        # Use synchronous ET.parse in an executor to avoid blocking
         import asyncio
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(None, _check_musicxml_sync, path)
@@ -126,13 +128,58 @@ async def validate_musicxml(path: str) -> bool:
 # ---------------------------------------------------------------------------
 
 
+def _is_mxl(content: bytes, filename: str) -> bool:
+    """Return True if the content is a compressed MusicXML (.mxl) ZIP archive."""
+    # ZIP magic bytes: PK\x03\x04
+    if content[:4] == b"PK\x03\x04":
+        return True
+    if filename.lower().endswith(".mxl"):
+        return True
+    return False
+
+
+def _extract_mxl(content: bytes) -> bytes:
+    """Extract MusicXML from a compressed .mxl file (ZIP container).
+
+    The MXL format is a ZIP archive containing:
+    - META-INF/container.xml  — points to the root MusicXML file
+    - One or more .xml files  — the actual MusicXML content
+
+    Returns the raw bytes of the MusicXML document.
+    Raises ValueError if no MusicXML content can be found.
+    """
+    try:
+        with zipfile.ZipFile(io.BytesIO(content)) as zf:
+            # Preferred: use META-INF/container.xml to find the root file
+            try:
+                container_bytes = zf.read("META-INF/container.xml")
+                container_root = ET.fromstring(container_bytes)
+                for element in container_root.iter():
+                    local_tag = element.tag.split("}")[-1] if "}" in element.tag else element.tag
+                    if local_tag.lower() == "rootfile":
+                        full_path = element.get("full-path", "")
+                        if full_path:
+                            return zf.read(full_path)
+            except (KeyError, ET.ParseError):
+                pass
+
+            # Fallback: find any .xml file that isn't in META-INF
+            for name in sorted(zf.namelist()):
+                if name.lower().endswith(".xml") and not name.startswith("META-INF"):
+                    return zf.read(name)
+
+    except zipfile.BadZipFile as exc:
+        raise ValueError(f"File is not a valid ZIP/MXL archive: {exc}") from exc
+
+    raise ValueError("Could not find MusicXML content in .mxl archive")
+
+
 def _check_musicxml_sync(path: str) -> bool:
     """Synchronous MusicXML validation called in a thread pool."""
     try:
         tree = ET.parse(path)
         root = tree.getroot()
         tag = root.tag.lower()
-        # Strip namespace if present
         if "}" in tag:
             tag = tag.split("}")[1]
         return tag in ("score-partwise", "score-timewise", "score")

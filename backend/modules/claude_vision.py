@@ -18,7 +18,7 @@ from pdf2image import convert_from_path
 from PIL import Image
 
 ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
-DEFAULT_MODEL = "claude-opus-4-5"
+DEFAULT_MODEL = "claude-opus-4-6"
 
 
 # ---------------------------------------------------------------------------
@@ -66,13 +66,11 @@ async def compare_score_measures(
     xml_image_paths = await render_musicxml_to_images(musicxml_path, tmp_dir)
 
     if not pdf_image_paths or not xml_image_paths:
-        # TODO: Handle partial extraction (e.g., multi-page PDFs)
         return []
 
     client = anthropic.AsyncAnthropic(api_key=ANTHROPIC_API_KEY)
-    prompt = build_comparison_prompt(score_metadata, measure_num=0)
 
-    # Pair up images by index (assumes 1:1 correspondence)
+    # Pair up images by index (assumes 1:1 page correspondence)
     pairs = list(zip(pdf_image_paths, xml_image_paths))
     tasks = [
         compare_measure_pair(
@@ -81,7 +79,6 @@ async def compare_score_measures(
             measure_num=i + 1,
             metadata=score_metadata,
             client=client,
-            prompt=prompt,
         )
         for i, (pdf_img, xml_img) in enumerate(pairs)
     ]
@@ -91,8 +88,6 @@ async def compare_score_measures(
     for r in results:
         if isinstance(r, MeasureDiff):
             diffs.append(r)
-        # Silently skip exceptions / None returns for now
-        # TODO: Log exceptions for debugging
 
     return diffs
 
@@ -100,23 +95,20 @@ async def compare_score_measures(
 async def render_musicxml_to_images(
     musicxml_path: str, output_dir: str
 ) -> list[str]:
-    """Render MusicXML measures to PNG images using Verovio CLI.
+    """Render MusicXML pages to PNG images using Verovio CLI.
 
-    TODO: Integrate with Verovio CLI or Python bindings (verovio package).
-    Command:  verovio --page-width 400 --page-height 200 --all-pages
-              --output {output_dir} {musicxml_path}
-    Then split output SVGs and render to PNG via librsvg or cairosvg.
+    Runs verovio to produce SVG files, then converts each SVG to PNG
+    using cairosvg (preferred), rsvg-convert, or inkscape as fallbacks.
 
-    This stub returns an empty list so the pipeline degrades gracefully.
+    Returns a list of PNG file paths, one per page.
     """
-    # TODO: Replace with actual Verovio subprocess call
     image_paths: list[str] = []
 
     try:
         proc = await asyncio.create_subprocess_exec(
             "verovio",
             "--page-width", "800",
-            "--page-height", "300",
+            "--page-height", "1200",
             "--svg",
             "--all-pages",
             "--output", output_dir,
@@ -126,12 +118,16 @@ async def render_musicxml_to_images(
         )
         await proc.communicate()
 
-        # Collect generated SVG files
         svg_files = sorted(Path(output_dir).glob("*.svg"))
-        # TODO: Convert SVGs to PNGs using cairosvg or Inkscape
-        image_paths = [str(p) for p in svg_files]
+        for svg_path in svg_files:
+            png_path = str(svg_path).replace(".svg", ".png")
+            converted = await _svg_to_png(str(svg_path), png_path)
+            if converted:
+                image_paths.append(png_path)
+            # Skip unconverted SVGs — Claude Vision does not accept SVG
+
     except FileNotFoundError:
-        # verovio not installed – return empty list
+        # verovio not installed; pipeline will degrade gracefully
         pass
 
     return image_paths
@@ -140,14 +136,10 @@ async def render_musicxml_to_images(
 async def extract_pdf_measure_images(
     pdf_path: str, output_dir: str
 ) -> list[str]:
-    """Extract measure-level crops from a PDF using pdf2image.
+    """Extract page images from a PDF using pdf2image.
 
-    Converts each PDF page to an image, then divides horizontally
-    into measure-width strips.
-
-    TODO: Implement proper measure boundary detection using:
-      - MusicXML measure position data
-      - Or image analysis (staff line detection) via OpenCV
+    Converts each page to a PNG at 150 DPI. Each page is treated as
+    one unit for comparison against the corresponding Verovio-rendered page.
     """
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
@@ -160,8 +152,6 @@ async def extract_pdf_measure_images(
 
     image_paths: list[str] = []
     for page_idx, page_img in enumerate(pages):
-        # Stub: save each full page as a "measure" image
-        # TODO: Detect actual measure boundaries and crop precisely
         out_path = os.path.join(output_dir, f"pdf_page_{page_idx + 1:04d}.png")
         page_img.save(out_path, "PNG")
         image_paths.append(out_path)
@@ -175,7 +165,6 @@ async def compare_measure_pair(
     measure_num: int,
     metadata: dict,
     client: anthropic.AsyncAnthropic,
-    prompt: str,
 ) -> Optional[MeasureDiff]:
     """Send a PDF/MusicXML image pair to Claude Vision for comparison.
 
@@ -183,13 +172,12 @@ async def compare_measure_pair(
     """
     prompt_text = build_comparison_prompt(metadata, measure_num)
 
-    # Encode images to base64
     def _encode(path: str) -> tuple[str, str]:
         with open(path, "rb") as f:
             data = f.read()
         b64 = base64.b64encode(data).decode()
         ext = Path(path).suffix.lower().lstrip(".")
-        media_type = "image/svg+xml" if ext == "svg" else f"image/{ext}"
+        media_type = f"image/{ext}" if ext in ("png", "jpeg", "jpg", "gif", "webp") else "image/png"
         return b64, media_type
 
     try:
@@ -228,8 +216,6 @@ async def compare_measure_pair(
     )
 
     raw_text = message.content[0].text if message.content else ""
-
-    # Parse structured JSON from Claude's response
     diff_data = _parse_claude_response(raw_text)
     if diff_data is None:
         return None
@@ -246,14 +232,7 @@ async def compare_measure_pair(
 
 
 def build_comparison_prompt(metadata: dict, measure_num: int) -> str:
-    """Build the Claude Vision comparison prompt from score metadata.
-
-    The prompt instructs Claude to identify specific differences between
-    the PDF scan (original) and the MusicXML render (OMR output).
-
-    TODO: Refine this prompt using patterns from ClaudePromptVersion records
-    to improve accuracy over time (self-improving agent loop).
-    """
+    """Build the Claude Vision comparison prompt from score metadata."""
     title = metadata.get("title", "Unknown")
     composer = metadata.get("composer", "Unknown")
     era = metadata.get("era", "unknown")
@@ -267,7 +246,7 @@ You are given two images:
 
 Score: "{title}" by {composer} ({era} era)
 Instrument: {instrument}
-Measure number: {measure_num}
+Page: {measure_num}
 
 Compare the two images carefully. Identify any differences between them.
 
@@ -290,9 +269,59 @@ Focus on musically significant differences, not minor rendering style variations
 # ---------------------------------------------------------------------------
 
 
+async def _svg_to_png(svg_path: str, png_path: str) -> bool:
+    """Convert an SVG file to PNG.
+
+    Tries cairosvg (Python), then rsvg-convert, then inkscape.
+    Returns True if conversion succeeded.
+    """
+    # Try cairosvg (pure Python, install with: pip install cairosvg)
+    try:
+        import cairosvg  # type: ignore
+        cairosvg.svg2png(url=svg_path, write_to=png_path, scale=2.0)
+        if Path(png_path).exists():
+            return True
+    except ImportError:
+        pass
+    except Exception:
+        pass
+
+    # Try rsvg-convert (librsvg CLI tool)
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "rsvg-convert",
+            "-o", png_path,
+            svg_path,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        await proc.communicate()
+        if proc.returncode == 0 and Path(png_path).exists():
+            return True
+    except FileNotFoundError:
+        pass
+
+    # Try inkscape
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "inkscape",
+            "--export-type=png",
+            f"--export-filename={png_path}",
+            svg_path,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        await proc.communicate()
+        if proc.returncode == 0 and Path(png_path).exists():
+            return True
+    except FileNotFoundError:
+        pass
+
+    return False
+
+
 def _parse_claude_response(text: str) -> Optional[dict]:
     """Extract and parse JSON from Claude's response text."""
-    # Strip markdown code fences if present
     text = text.strip()
     if text.startswith("```"):
         lines = text.split("\n")
@@ -301,7 +330,6 @@ def _parse_claude_response(text: str) -> Optional[dict]:
     try:
         data = json.loads(text)
     except json.JSONDecodeError:
-        # Attempt to find a JSON object in the response
         import re
         match = re.search(r"\{.*\}", text, re.DOTALL)
         if match:

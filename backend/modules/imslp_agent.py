@@ -5,23 +5,31 @@ Uses the IMSLP MediaWiki API to find scores and download PDFs.
 
 from __future__ import annotations
 
+import logging
 import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
-from urllib.parse import quote, urljoin
+from urllib.parse import quote, urljoin, urlparse
 
 import httpx
 from bs4 import BeautifulSoup
+
+logger = logging.getLogger(__name__)
 
 IMSLP_API_BASE = "https://imslp.org/api.php"
 IMSLP_BASE_URL = "https://imslp.org"
 
 USER_AGENT = (
     "ReEngrave/0.1 (music score re-engraving tool; "
-    "https://github.com/your-org/reengrave) httpx/0.27"
+    "https://github.com/delmas41/ReEngrave) httpx/0.27"
 )
+
+# IMSLP requires accepting their ToS disclaimer before serving PDFs.
+# Following the disclaimer accept URL sets a session cookie that unlocks downloads.
+_DISCLAIMER_COOKIE = "imslpdisclaimeraccepted"
+_DISCLAIMER_COOKIE_VALUE = "yes"
 
 
 # ---------------------------------------------------------------------------
@@ -49,8 +57,8 @@ async def search_imslp(
 ) -> list[IMSLPSearchResult]:
     """Search IMSLP for scores matching *query*.
 
-    Uses the MediaWiki API (action=query, list=search) to find pages,
-    then fetches each page to extract PDF download links.
+    Uses the MediaWiki API to find pages, fetches each work page to extract
+    PDF download links and composer metadata.
 
     Returns up to *max_results* IMSLPSearchResult objects.
     """
@@ -73,27 +81,26 @@ async def search_imslp(
     search_hits = data.get("query", {}).get("search", [])
     results: list[IMSLPSearchResult] = []
 
+    # Pre-seed the disclaimer cookie so PDF links are accessible
+    cookies = {_DISCLAIMER_COOKIE: _DISCLAIMER_COOKIE_VALUE}
+
     async with httpx.AsyncClient(
-        headers={"User-Agent": USER_AGENT}, follow_redirects=True, timeout=30.0
+        headers={"User-Agent": USER_AGENT},
+        follow_redirects=True,
+        timeout=30.0,
+        cookies=cookies,
     ) as client:
         for hit in search_hits[:max_results]:
             page_title: str = hit.get("title", "")
             page_url = f"{IMSLP_BASE_URL}/wiki/{quote(page_title.replace(' ', '_'))}"
 
-            # TODO: Parse IMSLP page HTML to extract:
-            #   - Composer name from the work page infobox
-            #   - PDF download links (IMSLP uses a special file serve URL)
-            #   - Year / era information
-            # IMSLP pages have a complex structure with JavaScript-rendered
-            # file tables. Consider using the IMSLP Extras API endpoint for
-            # richer metadata: https://imslp.org/wiki/IMSLP:API
-
             try:
                 page_resp = await client.get(page_url)
                 page_resp.raise_for_status()
-                pdf_urls = _extract_pdf_links(page_resp.text, page_url)
+                pdf_urls = _extract_pdf_links(page_resp.text, page_url, client)
                 composer, description = _extract_page_metadata(page_resp.text)
-            except httpx.HTTPError:
+            except httpx.HTTPError as exc:
+                logger.warning("Failed to fetch IMSLP page %s: %s", page_url, exc)
                 pdf_urls = []
                 composer = ""
                 description = ""
@@ -117,21 +124,29 @@ async def search_imslp(
 async def download_score(url: str, dest_dir: str) -> str:
     """Download a PDF from *url* into *dest_dir*.
 
-    Sets a proper User-Agent header and follows redirects.
-    Returns the local file path.
+    If the URL is an IMSLP disclaimer accept link, resolves it to the real
+    PDF URL first. Returns the local file path.
     """
     Path(dest_dir).mkdir(parents=True, exist_ok=True)
 
-    # Derive a filename from the URL
+    # Resolve disclaimer links before downloading
+    if "IMSLPDisclaimerAccept" in url or "imslp.org/wiki/Special:" in url:
+        resolved = await _resolve_disclaimer_url(url)
+        if resolved:
+            url = resolved
+
     raw_name = url.split("/")[-1].split("?")[0] or "score.pdf"
     if not raw_name.lower().endswith(".pdf"):
         raw_name += ".pdf"
     local_path = os.path.join(dest_dir, raw_name)
 
+    cookies = {_DISCLAIMER_COOKIE: _DISCLAIMER_COOKIE_VALUE}
+
     async with httpx.AsyncClient(
         headers={"User-Agent": USER_AGENT},
         follow_redirects=True,
         timeout=120.0,
+        cookies=cookies,
     ) as client:
         async with client.stream("GET", url) as resp:
             resp.raise_for_status()
@@ -143,10 +158,7 @@ async def download_score(url: str, dest_dir: str) -> str:
 
 
 def detect_era(composer: str, year: Optional[int]) -> str:
-    """Heuristic era detection based on year or well-known composer names.
-
-    Thresholds: baroque < 1750, classical < 1820, romantic < 1910, modern >= 1910.
-    """
+    """Heuristic era detection based on year or well-known composer names."""
     if year is not None:
         if year < 1750:
             return "baroque"
@@ -157,12 +169,19 @@ def detect_era(composer: str, year: Optional[int]) -> str:
         else:
             return "modern"
 
-    # TODO: Expand this lookup with a more comprehensive composer database
-    baroque_composers = {"bach", "handel", "vivaldi", "telemann", "purcell", "monteverdi"}
-    classical_composers = {"mozart", "haydn", "beethoven", "clementi", "salieri"}
+    baroque_composers = {
+        "bach", "handel", "vivaldi", "telemann", "purcell", "monteverdi",
+        "corelli", "scarlatti", "rameau", "couperin", "lully",
+    }
+    classical_composers = {
+        "mozart", "haydn", "beethoven", "clementi", "salieri",
+        "boccherini", "hummel", "dittersdorf",
+    }
     romantic_composers = {
         "brahms", "chopin", "schumann", "liszt", "wagner", "verdi",
-        "tchaikovsky", "dvorak", "schubert", "mendelssohn",
+        "tchaikovsky", "dvorak", "schubert", "mendelssohn", "berlioz",
+        "saint-saens", "franck", "grieg", "sibelius", "elgar", "mahler",
+        "bruckner", "wolf", "strauss", "puccini",
     }
 
     composer_lower = composer.lower()
@@ -176,7 +195,7 @@ def detect_era(composer: str, year: Optional[int]) -> str:
         if name in composer_lower:
             return "romantic"
 
-    return "modern"  # default
+    return "modern"
 
 
 # ---------------------------------------------------------------------------
@@ -184,58 +203,139 @@ def detect_era(composer: str, year: Optional[int]) -> str:
 # ---------------------------------------------------------------------------
 
 
-def _extract_pdf_links(html: str, base_url: str) -> list[str]:
+def _extract_pdf_links(
+    html: str, base_url: str, client: httpx.AsyncClient | None = None
+) -> list[str]:
     """Extract PDF download links from an IMSLP work page.
 
-    TODO: IMSLP serves PDFs through a special redirect mechanism.
-    The actual download URLs are constructed server-side and may require
-    cookie-based session handling. This stub returns direct href matches.
+    Looks for:
+    1. Direct .pdf hrefs
+    2. Special:IMSLPDisclaimerAccept links (IMSLP's standard download gateway)
+    3. Links in the file table rows (class="we_have_file")
+    4. Links matching the IMSLP image server pattern
     """
     soup = BeautifulSoup(html, "lxml")
     pdf_links: list[str] = []
+    seen: set[str] = set()
 
-    for a_tag in soup.find_all("a", href=True):
-        href: str = a_tag["href"]
-        if href.lower().endswith(".pdf") or "Special:IMSLPDisclaimerAccept" in href:
-            full_url = urljoin(base_url, href)
-            pdf_links.append(full_url)
+    def _add(href: str) -> None:
+        full = urljoin(base_url, href)
+        if full not in seen:
+            seen.add(full)
+            pdf_links.append(full)
 
-    # TODO: Parse the IMSLP file table which uses dynamic JS loading.
-    # The canonical approach is to use the IMSLP Extras API or scrape
-    # the #tablewrap element after JS execution (requires playwright/selenium).
+    # Strategy 1: file table rows (most reliable for work pages)
+    for row in soup.select("tr.we_have_file"):
+        for a in row.find_all("a", href=True):
+            href: str = a["href"]
+            if "IMSLPDisclaimerAccept" in href or href.lower().endswith(".pdf"):
+                _add(href)
 
-    return pdf_links[:5]  # Limit to 5 PDFs per work
+    # Strategy 2: any IMSLPDisclaimerAccept link on the page
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if "IMSLPDisclaimerAccept" in href:
+            _add(href)
+
+    # Strategy 3: direct .pdf hrefs
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if href.lower().endswith(".pdf"):
+            _add(href)
+
+    # Strategy 4: IMSLP image server pattern
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if re.search(r"images/imslp\.org.*\.pdf", href, re.IGNORECASE):
+            _add(href)
+
+    return pdf_links[:5]
+
+
+async def _resolve_disclaimer_url(disclaimer_url: str) -> Optional[str]:
+    """Follow an IMSLP disclaimer accept URL to get the actual PDF URL.
+
+    IMSLP's disclaimer URLs redirect (after setting an acceptance cookie)
+    to the real file location. We follow the redirects and capture the
+    final URL.
+    """
+    cookies = {_DISCLAIMER_COOKIE: _DISCLAIMER_COOKIE_VALUE}
+    try:
+        async with httpx.AsyncClient(
+            headers={"User-Agent": USER_AGENT},
+            follow_redirects=True,
+            timeout=30.0,
+            cookies=cookies,
+        ) as client:
+            resp = await client.get(disclaimer_url)
+            final_url = str(resp.url)
+
+            # If the final URL looks like a PDF, return it directly
+            if final_url.lower().endswith(".pdf"):
+                return final_url
+
+            content_type = resp.headers.get("content-type", "")
+            if "pdf" in content_type:
+                return final_url
+
+            # Otherwise try to find a PDF link in the redirected page
+            soup = BeautifulSoup(resp.text, "lxml")
+            for a in soup.find_all("a", href=True):
+                href = a["href"]
+                if href.lower().endswith(".pdf") or re.search(
+                    r"images/imslp\.org.*\.pdf", href, re.IGNORECASE
+                ):
+                    return urljoin(final_url, href)
+    except Exception as exc:
+        logger.warning("Failed to resolve disclaimer URL %s: %s", disclaimer_url, exc)
+
+    return None
 
 
 def _extract_page_metadata(html: str) -> tuple[str, str]:
-    """Extract composer name and description from IMSLP page HTML.
-
-    TODO: Parse the IMSLP infobox/work header for structured metadata.
-    """
+    """Extract composer name and description from IMSLP page HTML."""
     soup = BeautifulSoup(html, "lxml")
 
-    # Try to find composer in page title or infobox
     composer = ""
-    title_tag = soup.find("h1", class_="firstHeading")
-    if title_tag:
-        text = title_tag.get_text()
-        # IMSLP titles often follow pattern "Work Title (Composer Name)"
-        match = re.search(r"\(([^)]+)\)$", text)
-        if match:
-            composer = match.group(1).strip()
 
-    # Fallback: look for a composer link
+    # IMSLP work pages have a structured infobox with a composer link
+    # Pattern 1: infobox row labeled "Composer"
+    for th in soup.find_all("th"):
+        if th.get_text(strip=True).lower() == "composer":
+            td = th.find_next_sibling("td")
+            if td:
+                composer = td.get_text(strip=True)
+                break
+
+    # Pattern 2: title tag — "Work Title (Composer Name)"
     if not composer:
-        comp_link = soup.find("a", href=re.compile(r"/wiki/Category:"))
-        if comp_link:
-            composer = comp_link.get_text().strip()
+        title_tag = soup.find("h1", class_="firstHeading")
+        if title_tag:
+            text = title_tag.get_text()
+            match = re.search(r"\(([^)]+)\)$", text)
+            if match:
+                composer = match.group(1).strip()
 
-    # Description: first paragraph of page content
+    # Pattern 3: first Category link that looks like a person name
+    if not composer:
+        for a in soup.find_all("a", href=re.compile(r"/wiki/Category:")):
+            text = a.get_text().strip()
+            # Skip generic categories (era names, instruments, etc.)
+            if text and not any(
+                word in text.lower()
+                for word in ("romantic", "baroque", "classical", "modern", "piano", "orchestra")
+            ):
+                composer = text
+                break
+
+    # Description: first substantive paragraph in the article body
     description = ""
     content_div = soup.find("div", class_="mw-parser-output")
     if content_div:
-        first_p = content_div.find("p")
-        if first_p:
-            description = first_p.get_text(strip=True)[:300]
+        for p in content_div.find_all("p"):
+            text = p.get_text(strip=True)
+            if len(text) > 40:  # skip stub/empty paragraphs
+                description = text[:300]
+                break
 
     return composer, description
