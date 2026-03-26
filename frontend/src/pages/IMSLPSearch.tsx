@@ -109,7 +109,7 @@ export default function IMSLPSearch() {
     setDownloadingId(key);
     try {
       const res = await downloadScore(firstPdf, result.title, result.composer, result.era);
-      navigate(`/scores/${res.score_id}/review`);
+      navigate(`/scores/${res.score_id}/process`);
     } catch (err) {
       alert('Download failed. See console for details.');
       console.error(err);
