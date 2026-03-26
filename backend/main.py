@@ -23,6 +23,7 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -95,6 +96,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve uploaded files (snippet images, PDFs) as static assets
+app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
 
 # Routers
 app.include_router(auth_router)
@@ -384,9 +388,29 @@ async def run_comparison(
                 diffs = await claude_vision.compare_score_measures(
                     s.original_pdf_path, s.musicxml_path, metadata
                 )
+                snippets_dir = os.path.join(settings.upload_dir, score_id, "snippets")
+                os.makedirs(snippets_dir, exist_ok=True)
+
                 for d in diffs:
+                    diff_id = str(uuid.uuid4())
+
+                    # Save snippet images to disk so the frontend can display them
+                    pdf_snippet_path = ""
+                    xml_snippet_path = ""
+                    if d.pdf_image_b64:
+                        pdf_file = os.path.join(snippets_dir, f"{diff_id}_pdf.png")
+                        import base64 as _b64
+                        with open(pdf_file, "wb") as fh:
+                            fh.write(_b64.b64decode(d.pdf_image_b64))
+                        pdf_snippet_path = os.path.relpath(pdf_file, settings.upload_dir)
+                    if d.xml_image_b64:
+                        xml_file = os.path.join(snippets_dir, f"{diff_id}_xml.png")
+                        with open(xml_file, "wb") as fh:
+                            fh.write(_b64.b64decode(d.xml_image_b64))
+                        xml_snippet_path = os.path.relpath(xml_file, settings.upload_dir)
+
                     fd = FlaggedDifference(
-                        id=str(uuid.uuid4()),
+                        id=diff_id,
                         score_id=score_id,
                         measure_number=d.measure_number,
                         instrument=d.instrument,
@@ -394,8 +418,8 @@ async def run_comparison(
                         key_signature="C major",
                         difference_type=d.difference_type,
                         description=d.description,
-                        pdf_snippet_path="",
-                        musicxml_snippet_path="",
+                        pdf_snippet_path=pdf_snippet_path,
+                        musicxml_snippet_path=xml_snippet_path,
                         audiveris_confidence=0.5,
                         claude_vision_confidence=d.confidence,
                         created_at=datetime.utcnow(),
