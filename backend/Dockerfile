@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     python3.11 python3.11-dev python3-pip \
     lilypond \
     poppler-utils \
+    libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 \
     wget curl unzip git \
     && rm -rf /var/lib/apt/lists/*
 
@@ -21,10 +22,12 @@ RUN ( \
     && cd /tmp/audiveris \
     && chmod +x gradlew \
     && ./gradlew assemble --no-daemon \
-    && DIST=$(find /tmp/audiveris/build/distributions -name "*.zip" | head -1) \
+    && DIST=$(find /tmp/audiveris -name "*.zip" -path "*/distributions/*" | head -1) \
     && [ -n "$DIST" ] \
-    && unzip -q "$DIST" -d /opt/ \
-    && mv /opt/Audiveris* /opt/Audiveris 2>/dev/null || true \
+    && unzip -q "$DIST" -d /tmp/audiveris_dist/ \
+    && EXTRACTED=$(find /tmp/audiveris_dist -maxdepth 1 -mindepth 1 -type d | head -1) \
+    && [ -n "$EXTRACTED" ] \
+    && mv "$EXTRACTED" /opt/Audiveris \
     && chmod +x /opt/Audiveris/bin/Audiveris \
     && rm -rf /tmp/audiveris ~/.gradle \
     && echo "✓ Audiveris ${AUDIVERIS_TAG} installed" \

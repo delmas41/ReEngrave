@@ -2,6 +2,8 @@
 .env
 .env.local
 .env.*.local
+.env.production
+backend/.env.production
 
 # Database
 *.db
@@ -30,6 +32,10 @@ exports/
 # OS
 .DS_Store
 Thumbs.db
+
+# OMR pipeline output (runtime data)
+output/
+test_scores/
 
 # Claude worktrees
 .claude/worktrees/

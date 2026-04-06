@@ -1,0 +1,96 @@
+# Production Docker Compose
+# Usage: docker compose -f docker-compose.prod.yml up -d
+#
+# Required env vars (set on the host or in a .env file):
+#   DOMAIN          your domain, e.g. reengrave.io
+#   ACME_EMAIL      email for Let's Encrypt notifications
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Traefik — reverse proxy + automatic Let's Encrypt SSL
+  # ---------------------------------------------------------------------------
+  traefik:
+    image: traefik:v3.1
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_certs:/certs
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --certificatesresolvers.le.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/certs/acme.json
+    networks:
+      - web
+
+  # ---------------------------------------------------------------------------
+  # Frontend — nginx serving the built React app + proxying to backend
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Empty = same-origin requests; nginx proxies /api/ and /uploads/
+        VITE_API_URL: ""
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.app.entrypoints=websecure
+      - traefik.http.routers.app.tls.certresolver=le
+      - traefik.http.services.app.loadbalancer.server.port=80
+    networks:
+      - web
+      - internal
+
+  # ---------------------------------------------------------------------------
+  # Backend — FastAPI + Audiveris OMR
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env.production
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////app/data/reengrave.db
+      UPLOAD_DIR: /app/uploads
+      EXPORT_DIR: /app/exports
+    volumes:
+      - uploads:/app/uploads
+      - exports:/app/exports
+      - db:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - internal
+
+networks:
+  web:
+    external: false
+  internal:
+    external: false
+
+volumes:
+  traefik_certs:
+  uploads:
+  exports:
+  db:

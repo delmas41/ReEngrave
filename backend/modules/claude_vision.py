@@ -8,10 +8,13 @@ from __future__ import annotations
 import asyncio
 import base64
 import json
+import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 import anthropic
 from pdf2image import convert_from_path
@@ -88,6 +91,8 @@ async def compare_score_measures(
     for r in results:
         if isinstance(r, MeasureDiff):
             diffs.append(r)
+        elif isinstance(r, Exception):
+            logger.warning("compare_measure_pair error: %s", r)
 
     return diffs
 
@@ -95,40 +100,40 @@ async def compare_score_measures(
 async def render_musicxml_to_images(
     musicxml_path: str, output_dir: str
 ) -> list[str]:
-    """Render MusicXML pages to PNG images using Verovio CLI.
-
-    Runs verovio to produce SVG files, then converts each SVG to PNG
-    using cairosvg (preferred), rsvg-convert, or inkscape as fallbacks.
+    """Render MusicXML (or .mxl) pages to PNG images using the verovio Python API.
 
     Returns a list of PNG file paths, one per page.
     """
     image_paths: list[str] = []
 
     try:
-        proc = await asyncio.create_subprocess_exec(
-            "verovio",
-            "--page-width", "800",
-            "--page-height", "1200",
-            "--svg",
-            "--all-pages",
-            "--output", output_dir,
-            musicxml_path,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-        await proc.communicate()
+        import verovio  # type: ignore
+        tk = verovio.toolkit()
+        tk.setOptions({
+            "pageWidth": 800,
+            "pageHeight": 1200,
+            "adjustPageHeight": True,
+        })
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        if not tk.loadFile(musicxml_path):
+            logger.warning("verovio failed to load %s", musicxml_path)
+            return image_paths
 
-        svg_files = sorted(Path(output_dir).glob("*.svg"))
-        for svg_path in svg_files:
-            png_path = str(svg_path).replace(".svg", ".png")
-            converted = await _svg_to_png(str(svg_path), png_path)
+        page_count = tk.getPageCount()
+        for page_num in range(1, page_count + 1):
+            svg_data = tk.renderToSVG(page_num)
+            svg_path = os.path.join(output_dir, f"page_{page_num:04d}.svg")
+            png_path = svg_path.replace(".svg", ".png")
+            with open(svg_path, "w", encoding="utf-8") as f:
+                f.write(svg_data)
+            converted = await _svg_to_png(svg_path, png_path)
             if converted:
                 image_paths.append(png_path)
-            # Skip unconverted SVGs — Claude Vision does not accept SVG
 
-    except FileNotFoundError:
-        # verovio not installed; pipeline will degrade gracefully
-        pass
+    except ImportError:
+        logger.warning("verovio not installed; XML rendering unavailable")
+    except Exception as exc:
+        logger.warning("verovio rendering failed: %s", exc)
 
     return image_paths
 

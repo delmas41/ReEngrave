@@ -1,6 +1,6 @@
 /**
- * ReviewUI page.
- * Main interface for reviewing flagged differences between PDF and MusicXML.
+ * ReviewUI page — Step 2: Vision comparison + diff review.
+ * Run comparison, then review each flagged difference before exporting.
  */
 
 import { useState, useEffect } from 'react';
@@ -10,20 +10,29 @@ import {
   getScore,
   getDiffs,
   recordDecision,
-  runOMR,
   runComparison,
-  getScoreStatus,
-  checkVisionAccess,
 } from '../api/client';
 import DiffCard from '../components/DiffCard';
-import VisionComparisonPaywall from '../components/VisionComparisonPaywall';
 import type { FlaggedDifference, HumanDecision } from '../types';
 
 type Filter = 'all' | 'pending' | 'accepted' | 'rejected' | 'edited';
 
 const styles: Record<string, React.CSSProperties> = {
+  backLink: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 6,
+    fontSize: 13,
+    color: '#666',
+    textDecoration: 'none',
+    marginBottom: 24,
+    cursor: 'pointer',
+    background: 'none',
+    border: 'none',
+    padding: 0,
+  },
   heading: { fontSize: 22, fontWeight: 700, color: '#1a1a2e', marginBottom: 2 },
-  meta: { fontSize: 13, color: '#666', marginBottom: 20 },
+  meta: { fontSize: 13, color: '#666', marginBottom: 24 },
   statusBadge: (status: string): React.CSSProperties => {
     const colors: Record<string, string> = {
       pending: '#f39c12',
@@ -46,6 +55,44 @@ const styles: Record<string, React.CSSProperties> = {
       textTransform: 'capitalize',
     };
   },
+  // Comparison CTA card (shown when no diffs yet)
+  compareCard: {
+    border: '1px solid #dee2e6',
+    borderRadius: 12,
+    backgroundColor: '#fff',
+    padding: '32px',
+    textAlign: 'center',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+    marginBottom: 24,
+  },
+  compareTitle: { fontSize: 18, fontWeight: 700, color: '#1a1a2e', marginBottom: 8 },
+  compareDesc: { fontSize: 14, color: '#666', lineHeight: 1.6, marginBottom: 24, maxWidth: 400, margin: '0 auto 24px' },
+  primaryBtn: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    padding: '10px 24px',
+    borderRadius: 8,
+    border: 'none',
+    backgroundColor: '#1a1a2e',
+    color: '#fff',
+    fontWeight: 700,
+    fontSize: 14,
+    cursor: 'pointer',
+  },
+  secondaryBtn: (disabled?: boolean): React.CSSProperties => ({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    padding: '8px 18px',
+    borderRadius: 6,
+    border: '1px solid #dee2e6',
+    backgroundColor: '#fff',
+    color: disabled ? '#aaa' : '#444',
+    fontWeight: 600,
+    fontSize: 13,
+    cursor: disabled ? 'default' : 'pointer',
+  }),
   progressBar: {
     height: 8,
     borderRadius: 4,
@@ -61,6 +108,7 @@ const styles: Record<string, React.CSSProperties> = {
     transition: 'width 0.3s',
   }),
   progressLabel: { fontSize: 12, color: '#666', marginBottom: 6 },
+  actionRow: { display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' as const, alignItems: 'center' },
   filterRow: { display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' as const },
   filterBtn: (active: boolean): React.CSSProperties => ({
     padding: '5px 14px',
@@ -72,19 +120,29 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     fontWeight: active ? 600 : 400,
   }),
-  actionRow: { display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' as const },
-  actionBtn: (variant: 'primary' | 'secondary'): React.CSSProperties => ({
-    padding: '8px 18px',
+  exportBanner: {
+    border: '1px solid #a9dfbf',
+    borderRadius: 8,
+    backgroundColor: '#eafaf1',
+    padding: '14px 18px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap' as const,
+    gap: 12,
+    marginBottom: 20,
+  },
+  exportBannerText: { fontSize: 14, color: '#1e8449', fontWeight: 600 },
+  exportBtn: {
+    padding: '8px 20px',
     borderRadius: 6,
-    border: variant === 'primary' ? 'none' : '1px solid #dee2e6',
-    backgroundColor: variant === 'primary' ? '#1a1a2e' : '#fff',
-    color: variant === 'primary' ? '#fff' : '#444',
-    fontWeight: 600,
+    border: 'none',
+    backgroundColor: '#27ae60',
+    color: '#fff',
+    fontWeight: 700,
     fontSize: 13,
     cursor: 'pointer',
-  }),
-  empty: { color: '#888', fontSize: 14, textAlign: 'center' as const, padding: 32 },
-  error: { color: '#c0392b', fontSize: 14 },
+  },
   processingNote: {
     backgroundColor: '#ebf5fb',
     border: '1px solid #aed6f1',
@@ -94,6 +152,8 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#2980b9',
     marginBottom: 16,
   },
+  empty: { color: '#888', fontSize: 14, textAlign: 'center' as const, padding: 32 },
+  error: { color: '#c0392b', fontSize: 14 },
 };
 
 const FILTER_LABELS: { key: Filter; label: string }[] = [
@@ -118,14 +178,8 @@ export default function ReviewUI() {
   const { id: scoreId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [filter, setFilter] = useState<Filter>('all');
+  const [filter, setFilter] = useState<Filter>('pending');
   const [pollingEnabled, setPollingEnabled] = useState(false);
-
-  const { data: visionAccess, refetch: refetchAccess } = useQuery({
-    queryKey: ['vision-access', scoreId],
-    queryFn: () => checkVisionAccess(scoreId!),
-    enabled: !!scoreId,
-  });
 
   const { data: score, error: scoreError } = useQuery({
     queryKey: ['score', scoreId],
@@ -140,7 +194,6 @@ export default function ReviewUI() {
     refetchInterval: pollingEnabled ? 3000 : false,
   });
 
-  // Start polling when status is 'processing'
   useEffect(() => {
     setPollingEnabled(score?.status === 'processing');
   }, [score?.status]);
@@ -158,18 +211,11 @@ export default function ReviewUI() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['diffs', scoreId] }),
   });
 
-  const runOMRMutation = useMutation({
-    mutationFn: () => runOMR(scoreId!),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['score', scoreId] });
-      setPollingEnabled(true);
-    },
-  });
-
   const runCompareMutation = useMutation({
     mutationFn: () => runComparison(scoreId!),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['score', scoreId] });
+      qc.invalidateQueries({ queryKey: ['diffs', scoreId] });
       setPollingEnabled(true);
     },
   });
@@ -178,18 +224,21 @@ export default function ReviewUI() {
     return <p style={styles.error}>Failed to load score.</p>;
   }
 
-  const reviewed = diffs.filter(
-    (d) => d.human_decision !== null || d.auto_accepted
-  ).length;
+  const reviewed = diffs.filter((d) => d.human_decision !== null || d.auto_accepted).length;
   const total = diffs.length;
   const pct = total > 0 ? Math.round((reviewed / total) * 100) : 0;
   const allReviewed = total > 0 && reviewed === total;
+  const pendingCount = diffs.filter((d) => d.human_decision === null && !d.auto_accepted).length;
 
   const filteredDiffs = filterDiffs(diffs, filter);
 
   return (
     <div>
-      <div>
+      <button style={styles.backLink} onClick={() => navigate('/')}>
+        ← All Scores
+      </button>
+
+      <div style={{ marginBottom: 24 }}>
         <h1 style={styles.heading}>
           {score?.title ?? 'Loading…'}
           {score && <span style={styles.statusBadge(score.status)}>{score.status}</span>}
@@ -201,47 +250,70 @@ export default function ReviewUI() {
         )}
       </div>
 
+      {/* Processing banner */}
       {score?.status === 'processing' && (
         <div style={styles.processingNote}>
-          Processing in progress… this page will refresh automatically.
+          Comparison running… this page will refresh automatically.
         </div>
       )}
 
-      {/* Action buttons */}
-      <div style={styles.actionRow}>
-        {score?.status === 'pending' && (
+      {/* No diffs yet — show comparison CTA */}
+      {total === 0 && score?.status !== 'processing' && (
+        <div style={styles.compareCard}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
+          <div style={styles.compareTitle}>Run Vision Comparison</div>
+          <p style={styles.compareDesc}>
+            Claude Vision will compare each measure of your original PDF against the
+            re-engraved MusicXML to flag any differences for your review.
+          </p>
           <button
-            style={styles.actionBtn('primary')}
-            onClick={() => runOMRMutation.mutate()}
-            disabled={runOMRMutation.isPending}
-          >
-            {runOMRMutation.isPending ? 'Starting OMR…' : 'Run OMR'}
-          </button>
-        )}
-        {score?.musicxml_path && score.status !== 'processing' && visionAccess?.has_access && (
-          <button
-            style={styles.actionBtn('secondary')}
+            style={styles.primaryBtn}
             onClick={() => runCompareMutation.mutate()}
-            disabled={runCompareMutation.isPending}
+            disabled={runCompareMutation.isPending || !score?.musicxml_path}
           >
-            {runCompareMutation.isPending ? 'Starting…' : 'Run Vision Comparison'}
+            {runCompareMutation.isPending ? 'Starting…' : '✦ Run Vision Comparison'}
           </button>
-        )}
-        {allReviewed && (
+        </div>
+      )}
+
+      {/* All reviewed — export banner */}
+      {allReviewed && (
+        <div style={styles.exportBanner}>
+          <span style={styles.exportBannerText}>
+            ✓ All {total} differences reviewed — ready to export!
+          </span>
           <button
-            style={styles.actionBtn('primary')}
+            style={styles.exportBtn}
             onClick={() => navigate(`/scores/${scoreId}/export`)}
           >
-            Proceed to Export →
+            Export Score →
           </button>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Action row (re-run comparison + progress context) */}
+      {total > 0 && (
+        <div style={styles.actionRow}>
+          <button
+            style={styles.secondaryBtn(runCompareMutation.isPending)}
+            onClick={() => runCompareMutation.mutate()}
+            disabled={runCompareMutation.isPending || score?.status === 'processing'}
+          >
+            {runCompareMutation.isPending ? 'Starting…' : '↻ Re-run Comparison'}
+          </button>
+          {!allReviewed && (
+            <span style={{ fontSize: 13, color: '#888' }}>
+              {pendingCount} difference{pendingCount !== 1 ? 's' : ''} pending review
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Progress bar */}
       {total > 0 && (
         <div>
           <div style={styles.progressLabel}>
-            {reviewed} of {total} differences reviewed ({pct}%)
+            {reviewed} of {total} reviewed ({pct}%)
           </div>
           <div style={styles.progressBar}>
             <div style={styles.progressFill(pct)} />
@@ -259,33 +331,16 @@ export default function ReviewUI() {
               onClick={() => setFilter(key)}
             >
               {label}
-              {key === 'pending' && (
-                <span> ({diffs.filter((d) => d.human_decision === null && !d.auto_accepted).length})</span>
+              {key === 'pending' && pendingCount > 0 && (
+                <span> ({pendingCount})</span>
               )}
             </button>
           ))}
         </div>
       )}
 
-      {/* Vision paywall — shown only when score has MusicXML but no access yet */}
-      {score?.musicxml_path && visionAccess && !visionAccess.has_access && (
-        <VisionComparisonPaywall
-          scoreId={scoreId!}
-          isAdmin={visionAccess.is_admin}
-          onAccessGranted={() => {
-            refetchAccess();
-            qc.invalidateQueries({ queryKey: ['score', scoreId] });
-          }}
-        />
-      )}
-
       {/* Diff cards */}
-      {filteredDiffs.length === 0 && total === 0 && (
-        <div style={styles.empty}>
-          No flagged differences yet.
-          {score?.status === 'review' && ' Run a comparison to detect differences.'}
-        </div>
-      )}
+      {filteredDiffs.length === 0 && total === 0 && score?.status !== 'processing' && null}
       {filteredDiffs.length === 0 && total > 0 && (
         <div style={styles.empty}>No differences match the selected filter.</div>
       )}

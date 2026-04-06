@@ -184,12 +184,12 @@ export default function FileUpload() {
 
   async function handlePdfUpload(form: UploadFormState) {
     const score = await uploadPDF(form.file!, form.title, form.composer, form.era);
-    setTimeout(() => navigate(`/scores/${score.id}/review`), 800);
+    setTimeout(() => navigate(`/scores/${score.id}/process`), 800);
   }
 
   async function handleXmlUpload(form: UploadFormState) {
     const score = await uploadMusicXML(form.file!, form.title, form.composer, form.era);
-    setTimeout(() => navigate(`/scores/${score.id}/review`), 800);
+    setTimeout(() => navigate(`/scores/${score.id}/process`), 800);
   }
 
   return (

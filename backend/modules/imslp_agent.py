@@ -52,6 +52,25 @@ class IMSLPSearchResult:
 # ---------------------------------------------------------------------------
 
 
+def _normalize_imslp_query(query: str) -> list[str]:
+    """Return one or more search variants optimised for IMSLP's title format.
+
+    IMSLP titles look like "Symphony No.5, Op.67 (Beethoven, Ludwig van)".
+    Standalone numbers ("Symphony 5") don't match, but "No.5" does.
+    We generate several variants and try them in order until we get hits.
+    """
+    variants = [query]
+    # Convert bare ordinals: "Symphony 5" → "Symphony No.5"
+    no_variant = re.sub(r'\b(\d+)\b', r'No.\1', query)
+    if no_variant != query:
+        variants.append(no_variant)
+    # Also try composer-only (last word that looks like a surname)
+    words = query.split()
+    if len(words) > 1:
+        variants.append(words[0])   # usually composer surname
+    return variants
+
+
 async def search_imslp(
     query: str, max_results: int = 10
 ) -> list[IMSLPSearchResult]:
@@ -62,23 +81,28 @@ async def search_imslp(
 
     Returns up to *max_results* IMSLPSearchResult objects.
     """
-    params = {
-        "action": "query",
-        "list": "search",
-        "srsearch": query,
-        "srlimit": max_results,
-        "format": "json",
-        "srnamespace": "0",
-    }
-
+    search_hits: list[dict] = []
     async with httpx.AsyncClient(
         headers={"User-Agent": USER_AGENT}, follow_redirects=True, timeout=30.0
     ) as client:
-        resp = await client.get(IMSLP_API_BASE, params=params)
-        resp.raise_for_status()
-        data = resp.json()
-
-    search_hits = data.get("query", {}).get("search", [])
+        for variant in _normalize_imslp_query(query):
+            params = {
+                "action": "query",
+                "list": "search",
+                "srsearch": variant,
+                "srlimit": max_results,
+                "format": "json",
+                "srnamespace": "0",
+            }
+            resp = await client.get(IMSLP_API_BASE, params=params)
+            resp.raise_for_status()
+            data = resp.json()
+            search_hits = data.get("query", {}).get("search", [])
+            if search_hits:
+                logger.info("IMSLP search %r → %d hits (variant %r)", query, len(search_hits), variant)
+                break
+        else:
+            logger.warning("IMSLP search %r returned no hits for any variant", query)
     results: list[IMSLPSearchResult] = []
 
     # Pre-seed the disclaimer cookie so PDF links are accessible
@@ -150,9 +174,29 @@ async def download_score(url: str, dest_dir: str) -> str:
     ) as client:
         async with client.stream("GET", url) as resp:
             resp.raise_for_status()
+
+            # Check Content-Type before writing
+            ct = resp.headers.get("content-type", "")
+            if "text/html" in ct:
+                raise ValueError(
+                    "IMSLP returned an HTML page instead of a PDF — likely a bot-check. "
+                    "Please download the PDF manually from IMSLP and use the Upload button."
+                )
+
+            first_chunk = b""
             with open(local_path, "wb") as fh:
                 async for chunk in resp.aiter_bytes(chunk_size=65536):
+                    if not first_chunk:
+                        first_chunk = chunk[:8]
                     fh.write(chunk)
+
+    # Validate the saved file is actually a PDF
+    if first_chunk and not first_chunk.startswith(b"%PDF"):
+        os.remove(local_path)
+        raise ValueError(
+            "IMSLP download blocked by bot detection (received HTML instead of PDF). "
+            "Please download the PDF manually from IMSLP and use the Upload button."
+        )
 
     return local_path
 
