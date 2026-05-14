@@ -1,0 +1,4 @@
+cell_id,source_tag,n_total,n_pending,n_tp,n_fp,n_fn,precision,recall,f1,notehead_pitch_correct,notehead_pitch_wrong,notehead_pitch_accuracy
+wtc-p5-sys0-s0-m0,wtc-p5,17,2,9,6,0,0.6000,1.0000,0.7500,9,0,1.0000
+wtc-p5-sys0-s0-m1,wtc-p5,15,0,14,1,0,0.9333,1.0000,0.9655,13,0,1.0000
+wtc-p5-sys0-s0-m2,wtc-p5,20,0,18,2,0,0.9000,1.0000,0.9474,18,0,1.0000

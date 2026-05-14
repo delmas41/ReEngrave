@@ -1,0 +1,95 @@
+{
+  "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+  "n_pages_in_doc": 88,
+  "dpi": 600,
+  "pages_processed": [
+    {
+      "page": 5,
+      "render_size": [
+        2897,
+        3813
+      ],
+      "skew_corrected_deg": 0.0,
+      "staves": 16,
+      "systems": 2,
+      "barlines": 28,
+      "cells": 215,
+      "measures_per_system": {
+        "0": 13,
+        "1": 14
+      },
+      "runtime_s": 3.19,
+      "sample_cell": {
+        "width": 2048,
+        "height": 860,
+        "upscale_factor": 4.481,
+        "staff_line_ys_canonical": [
+          287,
+          359,
+          426,
+          502,
+          574
+        ]
+      }
+    },
+    {
+      "page": 10,
+      "render_size": [
+        2897,
+        3813
+      ],
+      "skew_corrected_deg": 0.0,
+      "staves": 18,
+      "systems": 2,
+      "barlines": 13,
+      "cells": 130,
+      "measures_per_system": {
+        "0": 6,
+        "1": 8
+      },
+      "runtime_s": 2.6,
+      "sample_cell": {
+        "width": 536,
+        "height": 1119,
+        "upscale_factor": 0.702,
+        "staff_line_ys_canonical": [
+          319,
+          402,
+          521,
+          621,
+          719
+        ]
+      }
+    },
+    {
+      "page": 15,
+      "render_size": [
+        2897,
+        3813
+      ],
+      "skew_corrected_deg": 0.2499917447566986,
+      "staves": 18,
+      "systems": 2,
+      "barlines": 11,
+      "cells": 98,
+      "measures_per_system": {
+        "0": 6,
+        "1": 5
+      },
+      "runtime_s": 2.394,
+      "sample_cell": {
+        "width": 2048,
+        "height": 243,
+        "upscale_factor": 1.286,
+        "staff_line_ys_canonical": [
+          81,
+          100,
+          121,
+          142,
+          162
+        ]
+      }
+    }
+  ],
+  "total_runtime_s": 8.185
+}

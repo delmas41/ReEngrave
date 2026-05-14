@@ -1,0 +1,2173 @@
+{
+  "version": 1,
+  "font": "Bravura.otf",
+  "sizes_px": [
+    72,
+    96,
+    120
+  ],
+  "n_entries": 108,
+  "skipped": [],
+  "entries": [
+    {
+      "smufl_name": "noteheadBlack",
+      "category": "notehead",
+      "size_px": 72,
+      "image_path": "templates/noteheadBlack_72.npy",
+      "shape": [
+        18,
+        21
+      ],
+      "hu_moments": [
+        0.7723348919956823,
+        2.4904282549243,
+        6.200482581753343,
+        7.557653714693817,
+        14.550302398907242,
+        8.967943752749955,
+        -14.631767568861251
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadBlack",
+      "category": "notehead",
+      "size_px": 96,
+      "image_path": "templates/noteheadBlack_96.npy",
+      "shape": [
+        24,
+        29
+      ],
+      "hu_moments": [
+        0.768980808687772,
+        2.4361945742624957,
+        5.754083498130337,
+        7.214980932743866,
+        14.32312204803466,
+        10.115619790882016,
+        -13.71216418541472
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadBlack",
+      "category": "notehead",
+      "size_px": 120,
+      "image_path": "templates/noteheadBlack_120.npy",
+      "shape": [
+        30,
+        36
+      ],
+      "hu_moments": [
+        0.7685876065872101,
+        2.432532733480209,
+        5.391756649501013,
+        6.890542495936099,
+        13.515853041852411,
+        9.020340838828995,
+        -13.056404197683502
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadHalf",
+      "category": "notehead",
+      "size_px": 72,
+      "image_path": "templates/noteheadHalf_72.npy",
+      "shape": [
+        18,
+        21
+      ],
+      "hu_moments": [
+        0.4808600639702164,
+        2.264069667268791,
+        5.530525427094959,
+        5.316571926417301,
+        -10.822892659287582,
+        6.704034355342205,
+        10.989628880273926
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadHalf",
+      "category": "notehead",
+      "size_px": 96,
+      "image_path": "templates/noteheadHalf_96.npy",
+      "shape": [
+        24,
+        29
+      ],
+      "hu_moments": [
+        0.4681970598482731,
+        2.2449913966953505,
+        5.2370437814005415,
+        5.1759886155268795,
+        10.537591853204392,
+        6.309745964349351,
+        -10.528542053188321
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadHalf",
+      "category": "notehead",
+      "size_px": 120,
+      "image_path": "templates/noteheadHalf_120.npy",
+      "shape": [
+        30,
+        36
+      ],
+      "hu_moments": [
+        0.46430506497472684,
+        2.2151119142560947,
+        5.251204032057084,
+        5.00743588627978,
+        -10.249243356386328,
+        6.120230499800725,
+        -10.333402043172557
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadWhole",
+      "category": "notehead",
+      "size_px": 72,
+      "image_path": "templates/noteheadWhole_72.npy",
+      "shape": [
+        18,
+        31
+      ],
+      "hu_moments": [
+        0.4364839226130974,
+        1.422893836321453,
+        4.555737819383807,
+        5.372141068132515,
+        -10.461810598619167,
+        6.269603684397128,
+        10.514578252354296
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadWhole",
+      "category": "notehead",
+      "size_px": 96,
+      "image_path": "templates/noteheadWhole_96.npy",
+      "shape": [
+        24,
+        41
+      ],
+      "hu_moments": [
+        0.4308329181903234,
+        1.409100487497266,
+        4.815341503078047,
+        4.7771185525404185,
+        -10.129941453072021,
+        5.71798485438157,
+        9.590761230280107
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadWhole",
+      "category": "notehead",
+      "size_px": 120,
+      "image_path": "templates/noteheadWhole_120.npy",
+      "shape": [
+        30,
+        51
+      ],
+      "hu_moments": [
+        0.41946373757445427,
+        1.3706878269681628,
+        5.052476892522844,
+        5.315034525630202,
+        -10.49957551795124,
+        7.083015871205622,
+        11.720046750285865
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadDoubleWhole",
+      "category": "notehead",
+      "size_px": 72,
+      "image_path": "templates/noteheadDoubleWhole_72.npy",
+      "shape": [
+        22,
+        43
+      ],
+      "hu_moments": [
+        0.3894812401107542,
+        1.0695615733602,
+        4.932869167405133,
+        5.47052056390265,
+        -10.944864689141358,
+        -6.17688353188818,
+        10.745033839681444
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadDoubleWhole",
+      "category": "notehead",
+      "size_px": 96,
+      "image_path": "templates/noteheadDoubleWhole_96.npy",
+      "shape": [
+        30,
+        58
+      ],
+      "hu_moments": [
+        0.3606569046090879,
+        1.0142270671122124,
+        4.60833692568421,
+        4.783300269264273,
+        9.641684275223824,
+        5.588929009568909,
+        9.618217168307522
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "noteheadDoubleWhole",
+      "category": "notehead",
+      "size_px": 120,
+      "image_path": "templates/noteheadDoubleWhole_120.npy",
+      "shape": [
+        38,
+        72
+      ],
+      "hu_moments": [
+        0.34667322362220176,
+        0.9876075986327599,
+        4.979030910905671,
+        4.927613663358375,
+        10.027385832465626,
+        5.717579612225592,
+        10.035593619573037
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag8thUp",
+      "category": "flag",
+      "size_px": 72,
+      "image_path": "templates/flag8thUp_72.npy",
+      "shape": [
+        59,
+        19
+      ],
+      "hu_moments": [
+        0.012291326800849397,
+        0.06362113157248148,
+        0.9964509828368112,
+        1.0659730466626773,
+        2.097389728494251,
+        1.1394639371408122,
+        -3.610140546044754
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag8thUp",
+      "category": "flag",
+      "size_px": 96,
+      "image_path": "templates/flag8thUp_96.npy",
+      "shape": [
+        79,
+        26
+      ],
+      "hu_moments": [
+        -0.0003381858639129536,
+        0.038713531776921745,
+        0.896596990362741,
+        0.9554491652501461,
+        1.881607542628813,
+        1.0135423869550384,
+        -3.484268835402821
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag8thUp",
+      "category": "flag",
+      "size_px": 120,
+      "image_path": "templates/flag8thUp_120.npy",
+      "shape": [
+        98,
+        32
+      ],
+      "hu_moments": [
+        -0.005771932456960837,
+        0.02718348358713863,
+        0.9271819447358042,
+        0.9953187899246286,
+        1.956769032086287,
+        1.0516605162709443,
+        -3.4746671895701935
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "size_px": 72,
+      "image_path": "templates/flag8thDown_72.npy",
+      "shape": [
+        59,
+        22
+      ],
+      "hu_moments": [
+        0.02134141753604468,
+        0.08950158646321427,
+        0.9530564832729346,
+        1.048004770856415,
+        2.049108115963302,
+        1.145258717084024,
+        3.338228419415321
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "size_px": 96,
+      "image_path": "templates/flag8thDown_96.npy",
+      "shape": [
+        79,
+        30
+      ],
+      "hu_moments": [
+        0.02282704626161328,
+        0.09356260563348773,
+        0.8623961499243005,
+        0.9313256270459159,
+        1.8284758917120172,
+        1.020013320520275,
+        3.265976954974383
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "size_px": 120,
+      "image_path": "templates/flag8thDown_120.npy",
+      "shape": [
+        99,
+        37
+      ],
+      "hu_moments": [
+        0.011964851749216443,
+        0.07167528538198221,
+        0.8683092933545028,
+        0.9452163242987381,
+        1.8523403688184044,
+        1.0278818797464717,
+        3.241641555944133
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag16thUp",
+      "category": "flag",
+      "size_px": 72,
+      "image_path": "templates/flag16thUp_72.npy",
+      "shape": [
+        59,
+        20
+      ],
+      "hu_moments": [
+        0.24649634552707475,
+        0.6430142531974028,
+        1.4430964135259226,
+        1.5210018356760606,
+        3.003108520770264,
+        1.8556987212466927,
+        -4.791394644422677
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag16thUp",
+      "category": "flag",
+      "size_px": 96,
+      "image_path": "templates/flag16thUp_96.npy",
+      "shape": [
+        78,
+        27
+      ],
+      "hu_moments": [
+        0.23354439374983413,
+        0.6138022174761311,
+        1.4307684967009826,
+        1.5173241858694895,
+        2.991401836242234,
+        1.836463029122735,
+        -4.911928134104099
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag16thUp",
+      "category": "flag",
+      "size_px": 120,
+      "image_path": "templates/flag16thUp_120.npy",
+      "shape": [
+        98,
+        34
+      ],
+      "hu_moments": [
+        0.22955148324732408,
+        0.6031254627616094,
+        1.4207520698974343,
+        1.5015975900142808,
+        2.962795649301354,
+        1.813957545815953,
+        -4.948142839145545
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag16thDown",
+      "category": "flag",
+      "size_px": 72,
+      "image_path": "templates/flag16thDown_72.npy",
+      "shape": [
+        59,
+        21
+      ],
+      "hu_moments": [
+        0.24813502966437032,
+        0.6510513087823881,
+        1.4560281003539286,
+        1.5366820156491643,
+        3.0331127358019088,
+        1.8770389609864617,
+        4.762012719030167
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag16thDown",
+      "category": "flag",
+      "size_px": 96,
+      "image_path": "templates/flag16thDown_96.npy",
+      "shape": [
+        79,
+        28
+      ],
+      "hu_moments": [
+        0.23142829662236794,
+        0.6134766651202189,
+        1.4053604804404272,
+        1.4763269675697555,
+        2.9171784733853667,
+        1.794443783116755,
+        5.140011414324056
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "flag16thDown",
+      "category": "flag",
+      "size_px": 120,
+      "image_path": "templates/flag16thDown_120.npy",
+      "shape": [
+        99,
+        35
+      ],
+      "hu_moments": [
+        0.2328070478089656,
+        0.6169788116340374,
+        1.4077037946430542,
+        1.4781719069960493,
+        2.9211172983000906,
+        1.7979936755753656,
+        5.150791060379924
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "size_px": 72,
+      "image_path": "templates/restWhole_72.npy",
+      "shape": [
+        11,
+        21
+      ],
+      "hu_moments": [
+        0.701775881546186,
+        1.8962662501223737,
+        5.018749190523717,
+        6.337355107407432,
+        -12.305105691873944,
+        -7.292643217224325,
+        12.081789138905217
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "size_px": 96,
+      "image_path": "templates/restWhole_96.npy",
+      "shape": [
+        14,
+        27
+      ],
+      "hu_moments": [
+        0.6950400183958757,
+        1.8680442351096804,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "size_px": 120,
+      "image_path": "templates/restWhole_120.npy",
+      "shape": [
+        18,
+        34
+      ],
+      "hu_moments": [
+        0.7009625964622438,
+        1.9015053140903624,
+        5.212551883625023,
+        6.258764769917744,
+        -11.994423096689127,
+        -7.209517426962925,
+        25.12433482548777
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restHalf",
+      "category": "rest",
+      "size_px": 72,
+      "image_path": "templates/restHalf_72.npy",
+      "shape": [
+        11,
+        21
+      ],
+      "hu_moments": [
+        0.701775881546186,
+        1.8962662501223737,
+        5.018749190523717,
+        6.337355107407432,
+        -12.305105691873944,
+        -7.292643217224325,
+        12.081789138905217
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restHalf",
+      "category": "rest",
+      "size_px": 96,
+      "image_path": "templates/restHalf_96.npy",
+      "shape": [
+        14,
+        27
+      ],
+      "hu_moments": [
+        0.6950400183958757,
+        1.8680442351096804,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restHalf",
+      "category": "rest",
+      "size_px": 120,
+      "image_path": "templates/restHalf_120.npy",
+      "shape": [
+        18,
+        34
+      ],
+      "hu_moments": [
+        0.7009625964622438,
+        1.9015053140903622,
+        5.212551883624978,
+        6.258764769917702,
+        -11.994423096689042,
+        -7.209517426962884,
+        -25.121199153235906
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "size_px": 72,
+      "image_path": "templates/restQuarter_72.npy",
+      "shape": [
+        54,
+        20
+      ],
+      "hu_moments": [
+        0.375038163771808,
+        0.8895917770668482,
+        2.5937724972719147,
+        3.2700497986639605,
+        6.295139137115231,
+        4.003035816469338,
+        6.430606658451177
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "size_px": 96,
+      "image_path": "templates/restQuarter_96.npy",
+      "shape": [
+        72,
+        26
+      ],
+      "hu_moments": [
+        0.37080798604421467,
+        0.8808786698542356,
+        2.499008602567409,
+        3.1899936698093265,
+        6.148090466318756,
+        3.966919977164252,
+        6.229518504508578
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "size_px": 120,
+      "image_path": "templates/restQuarter_120.npy",
+      "shape": [
+        90,
+        33
+      ],
+      "hu_moments": [
+        0.36156022772912016,
+        0.8608442132956399,
+        2.462611879206674,
+        3.1317090886300285,
+        6.026194262963775,
+        3.865972857190226,
+        6.149983067524143
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "size_px": 72,
+      "image_path": "templates/rest8th_72.npy",
+      "shape": [
+        31,
+        18
+      ],
+      "hu_moments": [
+        0.39048920372432055,
+        1.1600477396726416,
+        1.396676698638853,
+        2.028197664615605,
+        3.7781208110018314,
+        2.6841745925501983,
+        -4.140551074843085
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "size_px": 96,
+      "image_path": "templates/rest8th_96.npy",
+      "shape": [
+        41,
+        24
+      ],
+      "hu_moments": [
+        0.38124468853435106,
+        1.1530248282237254,
+        1.3413554925961864,
+        1.9532229632726792,
+        3.6304716773142762,
+        2.5914559703793834,
+        -4.04542971179211
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "size_px": 120,
+      "image_path": "templates/rest8th_120.npy",
+      "shape": [
+        51,
+        30
+      ],
+      "hu_moments": [
+        0.37970667796643626,
+        1.1549395593775782,
+        1.3351222445849362,
+        1.9524752314674259,
+        3.6251456582406827,
+        2.58540286848879,
+        -4.048690953671034
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "rest16th",
+      "category": "rest",
+      "size_px": 72,
+      "image_path": "templates/rest16th_72.npy",
+      "shape": [
+        49,
+        23
+      ],
+      "hu_moments": [
+        0.3020247667838767,
+        0.8079948986299116,
+        1.7747254838015376,
+        2.22662718544446,
+        4.227408888283118,
+        2.639091253732995,
+        -5.884378547051259
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "rest16th",
+      "category": "rest",
+      "size_px": 96,
+      "image_path": "templates/rest16th_96.npy",
+      "shape": [
+        65,
+        31
+      ],
+      "hu_moments": [
+        0.286458102222421,
+        0.7754298512315433,
+        1.7363394843581157,
+        2.2086822064780645,
+        4.181264668168888,
+        2.6103017103506105,
+        5.922100159654704
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "rest16th",
+      "category": "rest",
+      "size_px": 120,
+      "image_path": "templates/rest16th_120.npy",
+      "shape": [
+        82,
+        39
+      ],
+      "hu_moments": [
+        0.2887398808216644,
+        0.7845026566384793,
+        1.7399280514558455,
+        2.2015853363977045,
+        4.172343607552477,
+        2.6033231385471534,
+        -6.741772737899063
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalSharp",
+      "category": "accidental",
+      "size_px": 72,
+      "image_path": "templates/accidentalSharp_72.npy",
+      "shape": [
+        50,
+        18
+      ],
+      "hu_moments": [
+        0.4270632614586318,
+        1.1389038094003354,
+        4.4790590833098,
+        4.6030178660240155,
+        9.144773975341362,
+        5.185181068642424,
+        10.384840516956102
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalSharp",
+      "category": "accidental",
+      "size_px": 96,
+      "image_path": "templates/accidentalSharp_96.npy",
+      "shape": [
+        67,
+        24
+      ],
+      "hu_moments": [
+        0.4083002598870796,
+        1.108401810706242,
+        4.927179682338268,
+        5.060608743260822,
+        10.057498134062921,
+        5.663554927029258,
+        10.986164662747662
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalSharp",
+      "category": "accidental",
+      "size_px": 120,
+      "image_path": "templates/accidentalSharp_120.npy",
+      "shape": [
+        84,
+        30
+      ],
+      "hu_moments": [
+        0.40682267557119123,
+        1.1010595343839067,
+        5.025202079118421,
+        5.0205175865847735,
+        10.043588246839585,
+        5.576946092949713,
+        11.549896452660835
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "size_px": 72,
+      "image_path": "templates/accidentalFlat_72.npy",
+      "shape": [
+        45,
+        17
+      ],
+      "hu_moments": [
+        0.2987547841643632,
+        0.8958247056487111,
+        1.2342053702087457,
+        1.7413825977566082,
+        3.230408912176759,
+        2.2262244254301176,
+        4.35280602572489
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "size_px": 96,
+      "image_path": "templates/accidentalFlat_96.npy",
+      "shape": [
+        60,
+        22
+      ],
+      "hu_moments": [
+        0.3030810714808603,
+        0.917809728780675,
+        1.228662179026665,
+        1.7317692954093549,
+        3.2124856991277415,
+        2.221290979670605,
+        4.530838208745676
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "size_px": 120,
+      "image_path": "templates/accidentalFlat_120.npy",
+      "shape": [
+        74,
+        27
+      ],
+      "hu_moments": [
+        0.2995977719631271,
+        0.912377207165845,
+        1.2232111516945912,
+        1.7261963950879629,
+        3.20167426580874,
+        2.2135517679805874,
+        4.425266475371637
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalNatural",
+      "category": "accidental",
+      "size_px": 72,
+      "image_path": "templates/accidentalNatural_72.npy",
+      "shape": [
+        49,
+        12
+      ],
+      "hu_moments": [
+        0.3528931560064586,
+        0.881535101211344,
+        3.5970231243905424,
+        3.711043838547596,
+        7.365094936533526,
+        4.154573867497802,
+        -9.410503264115414
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalNatural",
+      "category": "accidental",
+      "size_px": 96,
+      "image_path": "templates/accidentalNatural_96.npy",
+      "shape": [
+        65,
+        16
+      ],
+      "hu_moments": [
+        0.3533319769413262,
+        0.8846471598452825,
+        3.704592606051746,
+        3.8557953879007623,
+        7.636003629225902,
+        4.301635874441842,
+        9.727552363691267
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalNatural",
+      "category": "accidental",
+      "size_px": 120,
+      "image_path": "templates/accidentalNatural_120.npy",
+      "shape": [
+        81,
+        20
+      ],
+      "hu_moments": [
+        0.3552092388027843,
+        0.8908884000864302,
+        3.7890373680975156,
+        3.843457403155541,
+        7.659895475626055,
+        4.289179980055661,
+        -9.188016917595673
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalDoubleSharp",
+      "category": "accidental",
+      "size_px": 72,
+      "image_path": "templates/accidentalDoubleSharp_72.npy",
+      "shape": [
+        18,
+        18
+      ],
+      "hu_moments": [
+        0.5837624795602809,
+        5.955406372235697,
+        5.280869346040192,
+        5.5850094181077905,
+        -11.493489814972994,
+        9.03408929079016,
+        11.043723402437312
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalDoubleSharp",
+      "category": "accidental",
+      "size_px": 96,
+      "image_path": "templates/accidentalDoubleSharp_96.npy",
+      "shape": [
+        24,
+        24
+      ],
+      "hu_moments": [
+        0.5688625159374593,
+        5.187822658781472,
+        5.959435325006562,
+        6.668717969153028,
+        -13.262891797884404,
+        9.412201662981381,
+        13.052715376415549
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalDoubleSharp",
+      "category": "accidental",
+      "size_px": 120,
+      "image_path": "templates/accidentalDoubleSharp_120.npy",
+      "shape": [
+        30,
+        30
+      ],
+      "hu_moments": [
+        0.5551849164424402,
+        5.054079956244472,
+        6.500745007124395,
+        5.848308710056132,
+        -12.079059743343569,
+        8.39775441360871,
+        -12.34375703813467
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalDoubleFlat",
+      "category": "accidental",
+      "size_px": 72,
+      "image_path": "templates/accidentalDoubleFlat_72.npy",
+      "shape": [
+        45,
+        30
+      ],
+      "hu_moments": [
+        0.44877195922968205,
+        1.8779253975868575,
+        2.0295833517579447,
+        2.666253521713541,
+        5.015940307421603,
+        3.6169189667635755,
+        6.059648703546006
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalDoubleFlat",
+      "category": "accidental",
+      "size_px": 96,
+      "image_path": "templates/accidentalDoubleFlat_96.npy",
+      "shape": [
+        59,
+        40
+      ],
+      "hu_moments": [
+        0.43776845243758794,
+        1.8993944031849204,
+        2.0350946699319135,
+        2.644766036968036,
+        4.985609977891639,
+        3.5955956329423913,
+        -6.173155113696154
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "accidentalDoubleFlat",
+      "category": "accidental",
+      "size_px": 120,
+      "image_path": "templates/accidentalDoubleFlat_120.npy",
+      "shape": [
+        73,
+        50
+      ],
+      "hu_moments": [
+        0.4391543565716992,
+        1.9157103451705784,
+        2.026587794856131,
+        2.6296942049954968,
+        4.957864619707715,
+        3.5892799573997527,
+        -6.891944220415005
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "gClef",
+      "category": "clef",
+      "size_px": 72,
+      "image_path": "templates/gClef_72.npy",
+      "shape": [
+        127,
+        49
+      ],
+      "hu_moments": [
+        0.23564331040884232,
+        0.6789064581984646,
+        2.1516689342952686,
+        2.9296979038137323,
+        5.617129899949761,
+        3.510232881831663,
+        -5.624729224903034
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "gClef",
+      "category": "clef",
+      "size_px": 96,
+      "image_path": "templates/gClef_96.npy",
+      "shape": [
+        168,
+        65
+      ],
+      "hu_moments": [
+        0.2288528259199875,
+        0.6695864094862305,
+        2.110117649115856,
+        2.911629975048333,
+        5.58867933604227,
+        3.510619450898942,
+        -5.55841208757337
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "gClef",
+      "category": "clef",
+      "size_px": 120,
+      "image_path": "templates/gClef_120.npy",
+      "shape": [
+        211,
+        81
+      ],
+      "hu_moments": [
+        0.22361834243280332,
+        0.6592643055400761,
+        2.1105370646572124,
+        2.9174441103347064,
+        5.607430188621453,
+        3.5179554556607635,
+        -5.559147595416213
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "fClef",
+      "category": "clef",
+      "size_px": 72,
+      "image_path": "templates/fClef_72.npy",
+      "shape": [
+        65,
+        49
+      ],
+      "hu_moments": [
+        0.38133400203943024,
+        2.1463110361872975,
+        1.5721128256159715,
+        2.1682395808505186,
+        4.222287939707993,
+        3.3476227327786403,
+        -4.160022027044745
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "fClef",
+      "category": "clef",
+      "size_px": 96,
+      "image_path": "templates/fClef_96.npy",
+      "shape": [
+        86,
+        67
+      ],
+      "hu_moments": [
+        0.3748350276416012,
+        2.1980109480077723,
+        1.541747706199,
+        2.115561405565991,
+        4.135333290368426,
+        3.3128351690337148,
+        -4.060537790906765
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "fClef",
+      "category": "clef",
+      "size_px": 120,
+      "image_path": "templates/fClef_120.npy",
+      "shape": [
+        108,
+        83
+      ],
+      "hu_moments": [
+        0.3734010633627534,
+        2.171177944413968,
+        1.5413330180988005,
+        2.1122205501818807,
+        4.129216452649846,
+        3.3061030434514724,
+        -4.055957904020597
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "cClef",
+      "category": "clef",
+      "size_px": 72,
+      "image_path": "templates/cClef_72.npy",
+      "shape": [
+        74,
+        51
+      ],
+      "hu_moments": [
+        0.4657806138022711,
+        2.041999551608005,
+        5.354839549341185,
+        3.841932655805427,
+        -8.440450478538503,
+        -4.862944642289824,
+        10.048935648538363
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "cClef",
+      "category": "clef",
+      "size_px": 96,
+      "image_path": "templates/cClef_96.npy",
+      "shape": [
+        98,
+        67
+      ],
+      "hu_moments": [
+        0.4550010852327829,
+        1.9973564355914815,
+        6.728598296154584,
+        3.845914020914466,
+        -9.204030801437204,
+        -4.844610230506913,
+        9.410812538090756
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "cClef",
+      "category": "clef",
+      "size_px": 120,
+      "image_path": "templates/cClef_120.npy",
+      "shape": [
+        122,
+        84
+      ],
+      "hu_moments": [
+        0.4606401793557114,
+        2.0051053548139977,
+        6.57834337392586,
+        3.754187429926188,
+        8.92353222254267,
+        -4.756747561412556,
+        -9.846135469223203
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "cClef8vb",
+      "category": "clef",
+      "size_px": 72,
+      "image_path": "templates/cClef8vb_72.npy",
+      "shape": [
+        90,
+        51
+      ],
+      "hu_moments": [
+        0.44878198093917493,
+        1.719803261400948,
+        3.013183873763846,
+        3.8373566430218777,
+        -7.271547892320415,
+        -5.0655579884761766,
+        7.960242735822757
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "cClef8vb",
+      "category": "clef",
+      "size_px": 96,
+      "image_path": "templates/cClef8vb_96.npy",
+      "shape": [
+        120,
+        67
+      ],
+      "hu_moments": [
+        0.4395809450056428,
+        1.6977038181266826,
+        3.051897239872101,
+        3.869174100894397,
+        -7.329883549545749,
+        -4.989152935801367,
+        -8.878176080099568
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "cClef8vb",
+      "category": "clef",
+      "size_px": 120,
+      "image_path": "templates/cClef8vb_120.npy",
+      "shape": [
+        150,
+        84
+      ],
+      "hu_moments": [
+        0.4448916356036708,
+        1.7063322209126797,
+        3.056528184791658,
+        3.7819317311301903,
+        -7.2042978203945545,
+        -4.868079151067883,
+        -8.122907906632836
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig0",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig0_72.npy",
+      "shape": [
+        36,
+        32
+      ],
+      "hu_moments": [
+        0.576785374332486,
+        3.6707349193677263,
+        6.0064950171090326,
+        5.353411836932361,
+        -11.053618416114073,
+        7.200452257078532,
+        11.558543982631038
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig0",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig0_96.npy",
+      "shape": [
+        48,
+        41
+      ],
+      "hu_moments": [
+        0.5759562778816029,
+        3.5354375379350396,
+        5.698986283497939,
+        5.258649089435989,
+        -10.763658610893364,
+        7.027764756485329,
+        11.209725270710441
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig0",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig0_120.npy",
+      "shape": [
+        60,
+        52
+      ],
+      "hu_moments": [
+        0.5691720431868895,
+        3.5943403410222357,
+        5.614057945246235,
+        5.243810911462145,
+        -10.686202824076778,
+        7.075339876886446,
+        11.283334550011595
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig1",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig1_72.npy",
+      "shape": [
+        36,
+        22
+      ],
+      "hu_moments": [
+        0.5726674965132496,
+        1.4516846200179483,
+        3.337610000976522,
+        3.6735934133582733,
+        7.264677765781324,
+        4.402233131188331,
+        -7.422974294139487
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig1",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig1_96.npy",
+      "shape": [
+        48,
+        28
+      ],
+      "hu_moments": [
+        0.553239003979379,
+        1.3872480178736564,
+        3.3233895850658284,
+        3.647591404405842,
+        7.215610663556011,
+        4.345855162124313,
+        -7.38311542882399
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig1",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig1_120.npy",
+      "shape": [
+        60,
+        36
+      ],
+      "hu_moments": [
+        0.5429866165020256,
+        1.3573274137741334,
+        3.284014284906757,
+        3.59102634193975,
+        7.102436063438283,
+        4.27606432236504,
+        -7.298530824427066
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig2",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig2_72.npy",
+      "shape": [
+        37,
+        30
+      ],
+      "hu_moments": [
+        0.5514471968302133,
+        2.234802933662034,
+        3.6655294031909196,
+        4.330683938954164,
+        8.587177346365856,
+        -5.517117552418662,
+        8.407563114906676
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig2",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig2_96.npy",
+      "shape": [
+        50,
+        39
+      ],
+      "hu_moments": [
+        0.5425108802719424,
+        2.1620133857324975,
+        3.6851138577851845,
+        4.299247710277606,
+        8.485329614559236,
+        -5.475819797101985,
+        8.405799077191315
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig2",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig2_120.npy",
+      "shape": [
+        61,
+        49
+      ],
+      "hu_moments": [
+        0.5388190241976833,
+        2.195728750983039,
+        3.6334459123322955,
+        4.296896960620039,
+        8.295986760799929,
+        -5.579970942825727,
+        8.681966583459335
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig3",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig3_72.npy",
+      "shape": [
+        36,
+        28
+      ],
+      "hu_moments": [
+        0.5705139772365848,
+        2.1431863414935766,
+        3.417489419332199,
+        4.051391586665953,
+        -7.787891950345869,
+        -5.197978331334128,
+        8.798319439786964
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig3",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig3_96.npy",
+      "shape": [
+        49,
+        37
+      ],
+      "hu_moments": [
+        0.552030641963115,
+        2.110526790247118,
+        3.3282029403557036,
+        3.889803641919539,
+        -7.55814041436011,
+        -5.104840687135312,
+        7.809525822372803
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig3",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig3_120.npy",
+      "shape": [
+        60,
+        46
+      ],
+      "hu_moments": [
+        0.5526617508525197,
+        2.1200917162088784,
+        3.3826623118038044,
+        3.9319845987654674,
+        -7.623514995594521,
+        -5.129396931233869,
+        8.007507082224935
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig4",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig4_72.npy",
+      "shape": [
+        36,
+        32
+      ],
+      "hu_moments": [
+        0.5984946935831812,
+        1.8917406821143243,
+        2.73194666899608,
+        5.23666540284463,
+        -9.875566537346517,
+        -6.492444689198765,
+        -9.231897002994726
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig4",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig4_96.npy",
+      "shape": [
+        48,
+        41
+      ],
+      "hu_moments": [
+        0.6041676181873458,
+        1.9125837274350919,
+        2.771557235594168,
+        5.032044820684452,
+        8.93710217080199,
+        6.2040685631669055,
+        -9.847485462757682
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig4",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig4_120.npy",
+      "shape": [
+        60,
+        52
+      ],
+      "hu_moments": [
+        0.5977558794993112,
+        1.9177977597128217,
+        2.7442752024715444,
+        5.118837085722829,
+        9.14637220914083,
+        6.111632314534266,
+        9.273907071546098
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig5",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig5_72.npy",
+      "shape": [
+        36,
+        27
+      ],
+      "hu_moments": [
+        0.5605223552349088,
+        1.9559868306750197,
+        3.0943936377470056,
+        3.9302270148086285,
+        7.523662042612299,
+        4.959375421899001,
+        7.695638941508133
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig5",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig5_96.npy",
+      "shape": [
+        48,
+        35
+      ],
+      "hu_moments": [
+        0.5547776836085389,
+        1.9448507251986369,
+        3.078536717416105,
+        3.9397490334947154,
+        7.528075132857752,
+        4.967395101536291,
+        7.7063423216852875
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig5",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig5_120.npy",
+      "shape": [
+        59,
+        44
+      ],
+      "hu_moments": [
+        0.5502194565644648,
+        1.9413162684891814,
+        3.0218094130928392,
+        3.8329935791114695,
+        7.323516805707598,
+        4.848877428430141,
+        7.559479661629564
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig6",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig6_72.npy",
+      "shape": [
+        36,
+        29
+      ],
+      "hu_moments": [
+        0.609515396867348,
+        2.5975491341771364,
+        3.1711868553844895,
+        4.183483810708908,
+        -7.862223774713127,
+        -5.491434104902683,
+        -8.956117120538062
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig6",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig6_96.npy",
+      "shape": [
+        48,
+        38
+      ],
+      "hu_moments": [
+        0.5986649824455867,
+        2.5463454043294993,
+        3.163968575725106,
+        4.1378557319206735,
+        -7.819675367058946,
+        -5.454691538442248,
+        -8.227383707803956
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig6",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig6_120.npy",
+      "shape": [
+        60,
+        48
+      ],
+      "hu_moments": [
+        0.5970125539299529,
+        2.569672700103228,
+        3.1559634701438957,
+        4.129443417467117,
+        -7.810599987452084,
+        -5.458066057901631,
+        -8.167001104672863
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig7",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig7_72.npy",
+      "shape": [
+        36,
+        30
+      ],
+      "hu_moments": [
+        0.5004647413371924,
+        1.7816236033563544,
+        1.8944469812168807,
+        3.069450960349921,
+        -6.266560949721676,
+        4.692510675987952,
+        -5.55961519741068
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig7",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig7_96.npy",
+      "shape": [
+        48,
+        39
+      ],
+      "hu_moments": [
+        0.4968287813022343,
+        1.7265921369408392,
+        1.908410678953781,
+        3.0477623325559864,
+        -6.070984195399591,
+        4.882748210082481,
+        -5.5442460025858935
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig7",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig7_120.npy",
+      "shape": [
+        60,
+        49
+      ],
+      "hu_moments": [
+        0.4970068887142377,
+        1.7727723359305883,
+        1.8944020096195306,
+        3.008318204197081,
+        -6.543129316657604,
+        4.506996439799745,
+        -5.461161973613487
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig8",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig8_72.npy",
+      "shape": [
+        38,
+        29
+      ],
+      "hu_moments": [
+        0.5594118921148196,
+        2.415918105746158,
+        3.957146094752575,
+        4.5824086126861205,
+        10.2250072454262,
+        -5.7919258680749195,
+        -8.85257635946865
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig8",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig8_96.npy",
+      "shape": [
+        50,
+        38
+      ],
+      "hu_moments": [
+        0.5528772163451915,
+        2.4781205201397394,
+        4.069766179951366,
+        4.419071765026405,
+        9.274623885830367,
+        -5.677578452750814,
+        -8.676913491559393
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig8",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig8_120.npy",
+      "shape": [
+        62,
+        48
+      ],
+      "hu_moments": [
+        0.5504228824937129,
+        2.5210899146619963,
+        4.040911775015657,
+        4.397666518636248,
+        9.122157109375951,
+        -5.680309826681013,
+        -8.639264089034004
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig9",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSig9_72.npy",
+      "shape": [
+        36,
+        29
+      ],
+      "hu_moments": [
+        0.6082666009269504,
+        2.5732372694616092,
+        3.1762797262429032,
+        4.164877498053019,
+        -7.8645102925671795,
+        -5.492560704742534,
+        -8.28659407787088
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig9",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSig9_96.npy",
+      "shape": [
+        48,
+        38
+      ],
+      "hu_moments": [
+        0.6016726448384618,
+        2.551252066340401,
+        3.1672161358745585,
+        4.139740928943065,
+        -7.798988807614862,
+        -5.431839016676382,
+        -8.583911602923832
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSig9",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSig9_120.npy",
+      "shape": [
+        60,
+        48
+      ],
+      "hu_moments": [
+        0.5973931885425238,
+        2.575762349563642,
+        3.1611045761120002,
+        4.13262918800299,
+        -7.809057448881906,
+        -5.459100819558656,
+        -8.227123918770417
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineSingle",
+      "category": "barline",
+      "size_px": 72,
+      "image_path": "templates/barlineSingle_72.npy",
+      "shape": [
+        72,
+        3
+      ],
+      "hu_moments": [
+        -0.3016160316802935,
+        -0.6005507138607993,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineSingle",
+      "category": "barline",
+      "size_px": 96,
+      "image_path": "templates/barlineSingle_96.npy",
+      "shape": [
+        96,
+        4
+      ],
+      "hu_moments": [
+        -0.30168923061075636,
+        -0.6005507138607993,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineSingle",
+      "category": "barline",
+      "size_px": 120,
+      "image_path": "templates/barlineSingle_120.npy",
+      "shape": [
+        120,
+        5
+      ],
+      "hu_moments": [
+        -0.3017231070822189,
+        -0.6005507138607992,
+        28.88390503275405,
+        28.889045295498395,
+        30.0,
+        28.606674123551883,
+        -30.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineFinal",
+      "category": "barline",
+      "size_px": 72,
+      "image_path": "templates/barlineFinal_72.npy",
+      "shape": [
+        72,
+        17
+      ],
+      "hu_moments": [
+        0.31042206025578956,
+        0.7258298836636996,
+        5.245652647035089,
+        5.245652647035171,
+        10.491305294070301,
+        -5.608567588867021,
+        -24.02421161314529
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineFinal",
+      "category": "barline",
+      "size_px": 96,
+      "image_path": "templates/barlineFinal_96.npy",
+      "shape": [
+        96,
+        22
+      ],
+      "hu_moments": [
+        0.27581127402433986,
+        0.655808294688226,
+        5.081827160518791,
+        5.081827160518791,
+        10.163654321037582,
+        -5.409731307862904,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineFinal",
+      "category": "barline",
+      "size_px": 120,
+      "image_path": "templates/barlineFinal_120.npy",
+      "shape": [
+        120,
+        28
+      ],
+      "hu_moments": [
+        0.2968660117134868,
+        0.6984181997651547,
+        5.177963806362275,
+        5.177963806362267,
+        10.355927612724537,
+        -5.527172906244845,
+        29.99999999992043
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineHeavy",
+      "category": "barline",
+      "size_px": 72,
+      "image_path": "templates/barlineHeavy_72.npy",
+      "shape": [
+        72,
+        9
+      ],
+      "hu_moments": [
+        0.1695228819009407,
+        0.3658613671719736,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineHeavy",
+      "category": "barline",
+      "size_px": 96,
+      "image_path": "templates/barlineHeavy_96.npy",
+      "shape": [
+        96,
+        12
+      ],
+      "hu_moments": [
+        0.16945068427865662,
+        0.36586136717197343,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "barlineHeavy",
+      "category": "barline",
+      "size_px": 120,
+      "image_path": "templates/barlineHeavy_120.npy",
+      "shape": [
+        120,
+        15
+      ],
+      "hu_moments": [
+        0.16941727115636548,
+        0.36586136717197343,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "stem",
+      "category": "stem",
+      "size_px": 72,
+      "image_path": "templates/stem_72.npy",
+      "shape": [
+        79,
+        3
+      ],
+      "hu_moments": [
+        -0.3418114288115151,
+        -0.6813957052135584,
+        29.999012555893003,
+        29.999888497427516,
+        -30.0,
+        -29.999762380982173,
+        30.0
+      ],
+      "variant_id": "procedural_thin"
+    },
+    {
+      "smufl_name": "stem",
+      "category": "stem",
+      "size_px": 96,
+      "image_path": "templates/stem_96.npy",
+      "shape": [
+        106,
+        4
+      ],
+      "hu_moments": [
+        -0.34460541980702386,
+        -0.6868915085595702,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": "procedural_thin"
+    },
+    {
+      "smufl_name": "stem",
+      "category": "stem",
+      "size_px": 120,
+      "image_path": "templates/stem_120.npy",
+      "shape": [
+        132,
+        5
+      ],
+      "hu_moments": [
+        -0.3429955794791001,
+        -0.6835982130457403,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variant_id": "procedural_thin"
+    }
+  ]
+}

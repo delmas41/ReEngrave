@@ -1,0 +1,68 @@
+{
+  "overall": {
+    "cells": 3,
+    "n_total_detections": 48,
+    "n_pending": 2,
+    "n_tp": 41,
+    "n_fp": 5,
+    "n_fn": 0,
+    "precision": 0.8913043478260869,
+    "recall": 1.0,
+    "f1": 0.9425287356321839,
+    "notehead_pitch_correct": 40,
+    "notehead_pitch_wrong": 0,
+    "notehead_pitch_accuracy": 1.0,
+    "per_category": {
+      "rest": {
+        "tp": 1,
+        "fp": 4,
+        "pending": 1
+      },
+      "notehead": {
+        "tp": 40,
+        "fp": 0,
+        "pending": 1
+      },
+      "time_sig_digit": {
+        "tp": 0,
+        "fp": 1,
+        "pending": 0
+      }
+    }
+  },
+  "per_piece": {
+    "wtc-p5": {
+      "cells": 3,
+      "n_total_detections": 48,
+      "n_pending": 2,
+      "n_tp": 41,
+      "n_fp": 5,
+      "n_fn": 0,
+      "precision": 0.8913043478260869,
+      "recall": 1.0,
+      "f1": 0.9425287356321839,
+      "notehead_pitch_correct": 40,
+      "notehead_pitch_wrong": 0,
+      "notehead_pitch_accuracy": 1.0,
+      "per_category": {
+        "rest": {
+          "tp": 1,
+          "fp": 4,
+          "pending": 1
+        },
+        "notehead": {
+          "tp": 40,
+          "fp": 0,
+          "pending": 1
+        },
+        "time_sig_digit": {
+          "tp": 0,
+          "fp": 1,
+          "pending": 0
+        }
+      }
+    }
+  },
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 3
+}

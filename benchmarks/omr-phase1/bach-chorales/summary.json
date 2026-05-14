@@ -1,0 +1,22 @@
+{
+  "pdf": "/Users/seanjohnson/Downloads/pdfcoffee.com_js-bach-413-chorales-analyzed-by-christopher-czarnecki-0989087905-3-pdf-free.pdf",
+  "n_pages_in_doc": 5,
+  "dpi": 600,
+  "pages_processed": [
+    {
+      "page": 0,
+      "render_size": [
+        4961,
+        7016
+      ],
+      "skew_corrected_deg": 0.0,
+      "staves": 0,
+      "systems": 0,
+      "barlines": 0,
+      "cells": 0,
+      "measures_per_system": {},
+      "runtime_s": 1.642
+    }
+  ],
+  "total_runtime_s": 1.642
+}

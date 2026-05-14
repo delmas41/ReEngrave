@@ -1,0 +1,40 @@
+{
+  "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
+  "n_pages_in_doc": 115,
+  "dpi": 600,
+  "pages_processed": [
+    {
+      "page": 5,
+      "render_size": [
+        5100,
+        6600
+      ],
+      "skew_corrected_deg": 0.0,
+      "staves": 10,
+      "systems": 5,
+      "barlines": 20,
+      "cells": 32,
+      "measures_per_system": {
+        "0": 3,
+        "1": 3,
+        "2": 3,
+        "3": 3,
+        "4": 4
+      },
+      "runtime_s": 2.279,
+      "sample_cell": {
+        "width": 2048,
+        "height": 583,
+        "upscale_factor": 1.305,
+        "staff_line_ys_canonical": [
+          194,
+          243,
+          291,
+          339,
+          389
+        ]
+      }
+    }
+  ],
+  "total_runtime_s": 2.279
+}

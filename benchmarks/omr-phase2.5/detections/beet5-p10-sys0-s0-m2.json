@@ -1,0 +1,31 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "x": 0,
+      "y": 994,
+      "w": 156,
+      "h": 121,
+      "x_center": 78,
+      "y_center": 1054,
+      "confidence": 0.5982979536056519,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 84,
+      "y": 712,
+      "w": 127,
+      "h": 222,
+      "x_center": 147,
+      "y_center": 823,
+      "confidence": 0.6835144758224487,
+      "pitch": null
+    }
+  ]
+}

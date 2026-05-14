@@ -1,0 +1,18 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m3",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "stem",
+      "category": "stem",
+      "x": 110,
+      "y": 288,
+      "w": 56,
+      "h": 354,
+      "x_center": 138,
+      "y_center": 465,
+      "confidence": 1.0,
+      "pitch": null
+    }
+  ]
+}
