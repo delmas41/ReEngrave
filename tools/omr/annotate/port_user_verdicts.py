@@ -53,8 +53,9 @@ def _classify(verdict_text: str) -> str:
 
 
 def _build_old_index(old_dets: list[dict], old_verdicts: list[dict]) -> list[dict]:
-    """Return a list of {x, y, w, h, category, smufl_name, verdict, wrong_pitch}
-    rows for old detections that have a non-empty verdict."""
+    """Return a list of detection-row dicts for old detections that have a
+    non-empty verdict. Preserves wrong_pitch and actual_label so the FP
+    confusion table survives regenerations."""
     out = []
     vmap = {v["detection_id"]: v for v in old_verdicts}
     for d in old_dets:
@@ -70,6 +71,7 @@ def _build_old_index(old_dets: list[dict], old_verdicts: list[dict]) -> list[dic
             "smufl_name": d.get("smufl_name", ""),
             "verdict": v.get("verdict"),
             "wrong_pitch": v.get("wrong_pitch"),
+            "actual_label": v.get("actual_label"),
         })
     return out
 
@@ -108,6 +110,7 @@ def _bootstrap_from_md(md_text: str, old_dets: list[dict]) -> list[dict]:
             "smufl_name": d.get("smufl_name", ""),
             "verdict": v,
             "wrong_pitch": wp,
+            "actual_label": None,  # markdown format never had this field
         })
     return vmap_synth
 
@@ -200,6 +203,8 @@ def port_cell(
         v["verdict"] = row["verdict"]
         if row.get("wrong_pitch"):
             v["wrong_pitch"] = row["wrong_pitch"]
+        if row.get("actual_label"):
+            v["actual_label"] = row["actual_label"]
         n_ported += 1
 
     # Persist.
