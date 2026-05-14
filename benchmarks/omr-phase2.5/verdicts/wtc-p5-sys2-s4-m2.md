@@ -21,47 +21,41 @@ Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistak
 
 - [ ] D0  noteheadBlack (notehead) at (x=79, y=389) → E4  conf=0.86
        verdict: __________
-- [ ] D1  barlineHeavy (barline) at (x=79, y=440)  conf=1.00
+- [ ] D1  noteheadBlack (notehead) at (x=80, y=316) → A4  conf=0.79
        verdict: __________
-- [ ] D2  noteheadBlack (notehead) at (x=80, y=316) → A4  conf=0.79
+- [ ] D2  noteheadBlack (notehead) at (x=312, y=291) → B4  conf=0.88
        verdict: __________
-- [ ] D3  noteheadBlack (notehead) at (x=312, y=291) → B4  conf=0.88
+- [ ] D3  noteheadBlack (notehead) at (x=579, y=414) → D4  conf=0.82
        verdict: __________
-- [ ] D4  noteheadBlack (notehead) at (x=579, y=414) → D4  conf=0.82
+- [ ] D4  noteheadBlack (notehead) at (x=580, y=267) → C5  conf=0.80
        verdict: __________
-- [ ] D5  barlineHeavy (barline) at (x=579, y=461)  conf=1.00
+- [ ] D5  noteheadBlack (notehead) at (x=916, y=243) → D5  conf=0.87
        verdict: __________
-- [ ] D6  noteheadBlack (notehead) at (x=580, y=267) → C5  conf=0.80
+- [ ] D6  noteheadBlack (notehead) at (x=1000, y=269) → C5  conf=0.75
        verdict: __________
-- [ ] D7  noteheadBlack (notehead) at (x=916, y=243) → D5  conf=0.87
+- [ ] D7  noteheadBlack (notehead) at (x=1093, y=414) → D4  conf=0.82
        verdict: __________
-- [ ] D8  noteheadBlack (notehead) at (x=1000, y=269) → C5  conf=0.75
+- [ ] D8  noteheadBlack (notehead) at (x=1094, y=291) → B4  conf=0.87
        verdict: __________
-- [ ] D9  noteheadBlack (notehead) at (x=1093, y=414) → D4  conf=0.82
+- [ ] D9  noteheadBlack (notehead) at (x=1225, y=315) → A4  conf=0.79
        verdict: __________
-- [ ] D10  noteheadBlack (notehead) at (x=1094, y=291) → B4  conf=0.87
+- [ ] D10  noteheadBlack (notehead) at (x=1337, y=340) → G4  conf=0.87
        verdict: __________
-- [ ] D11  noteheadBlack (notehead) at (x=1225, y=315) → A4  conf=0.79
+- [ ] D11  noteheadBlack (notehead) at (x=1338, y=219) → E5  conf=0.79
        verdict: __________
-- [ ] D12  noteheadBlack (notehead) at (x=1337, y=340) → G4  conf=0.87
+- [ ] D12  noteheadBlack (notehead) at (x=1470, y=365) → F4  conf=0.79
        verdict: __________
-- [ ] D13  noteheadBlack (notehead) at (x=1338, y=219) → E5  conf=0.79
+- [ ] D13  noteheadBlack (notehead) at (x=1587, y=389) → E4  conf=0.86
        verdict: __________
-- [ ] D14  accidentalNatural (accidental) at (x=1404, y=365)  conf=0.60
+- [ ] D14  noteheadBlack (notehead) at (x=1588, y=316) → A4  conf=0.80
        verdict: __________
-- [ ] D15  noteheadBlack (notehead) at (x=1470, y=365) → F4  conf=0.79
+- [ ] D15  noteheadBlack (notehead) at (x=1714, y=340) → G4  conf=0.87
        verdict: __________
-- [ ] D16  noteheadBlack (notehead) at (x=1587, y=389) → E4  conf=0.86
+- [ ] D16  noteheadBlack (notehead) at (x=1832, y=243) → D5  conf=0.87
        verdict: __________
-- [ ] D17  noteheadBlack (notehead) at (x=1588, y=316) → A4  conf=0.80
+- [ ] D17  noteheadBlack (notehead) at (x=1835, y=364) → F4  conf=0.77
        verdict: __________
-- [ ] D18  noteheadBlack (notehead) at (x=1714, y=340) → G4  conf=0.87
-       verdict: __________
-- [ ] D19  noteheadBlack (notehead) at (x=1832, y=243) → D5  conf=0.87
-       verdict: __________
-- [ ] D20  noteheadBlack (notehead) at (x=1835, y=364) → F4  conf=0.77
-       verdict: __________
-- [ ] D21  noteheadBlack (notehead) at (x=1958, y=317) → A4  conf=0.79
+- [ ] D18  noteheadBlack (notehead) at (x=1958, y=317) → A4  conf=0.79
        verdict: __________
 
 ## Missed noteheads (FN)

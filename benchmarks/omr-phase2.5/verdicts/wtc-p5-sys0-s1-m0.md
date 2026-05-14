@@ -19,39 +19,27 @@ For each detection below, replace `verdict: __` with one of:
 
 Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistake`.
 
-- [ ] D0  barlineSingle (barline) at (x=48, y=195)  conf=1.00
+- [ ] D0  noteheadBlack (notehead) at (x=320, y=196) → F5  conf=0.88
        verdict: __________
-- [ ] D1  barlineHeavy (barline) at (x=319, y=424)  conf=1.00
+- [ ] D1  noteheadBlack (notehead) at (x=323, y=366) → F4  conf=0.80
        verdict: __________
-- [ ] D2  noteheadBlack (notehead) at (x=320, y=196) → F5  conf=0.88
+- [ ] D2  noteheadBlack (notehead) at (x=681, y=365) → F4  conf=0.66
        verdict: __________
-- [ ] D3  barlineHeavy (barline) at (x=320, y=144)  conf=1.00
+- [ ] D3  rest8th (rest) at (x=681, y=199)  conf=0.83
        verdict: __________
-- [ ] D4  noteheadBlack (notehead) at (x=323, y=366) → F4  conf=0.80
+- [ ] D4  noteheadBlack (notehead) at (x=876, y=221) → E5  conf=0.80
        verdict: __________
-- [ ] D5  noteheadBlack (notehead) at (x=681, y=365) → F4  conf=0.66
+- [ ] D5  flag8thUp (flag) at (x=894, y=159)  conf=0.87
        verdict: __________
-- [ ] D6  rest8th (rest) at (x=681, y=199)  conf=0.83
+- [ ] D6  noteheadBlack (notehead) at (x=1067, y=196) → F5  conf=0.88
        verdict: __________
-- [ ] D7  timeSig1 (time_sig_digit) at (x=807, y=220)  conf=0.84
+- [ ] D7  noteheadBlack (notehead) at (x=1259, y=171) → G5  conf=0.85
        verdict: __________
-- [ ] D8  noteheadBlack (notehead) at (x=876, y=221) → E5  conf=0.80
+- [ ] D8  noteheadBlack (notehead) at (x=1565, y=148) → A5  conf=0.86
        verdict: __________
-- [ ] D9  flag8thUp (flag) at (x=894, y=159)  conf=0.87
+- [ ] D9  noteheadBlack (notehead) at (x=1868, y=119) → B5  conf=0.75
        verdict: __________
-- [ ] D10  noteheadBlack (notehead) at (x=1067, y=196) → F5  conf=0.88
-       verdict: __________
-- [ ] D11  restHalf (rest) at (x=1070, y=374)  conf=0.60
-       verdict: __________
-- [ ] D12  noteheadBlack (notehead) at (x=1259, y=171) → G5  conf=0.85
-       verdict: __________
-- [ ] D13  noteheadBlack (notehead) at (x=1565, y=148) → A5  conf=0.86
-       verdict: __________
-- [ ] D14  barlineHeavy (barline) at (x=1565, y=87)  conf=1.00
-       verdict: __________
-- [ ] D15  noteheadBlack (notehead) at (x=1868, y=119) → B5  conf=0.75
-       verdict: __________
-- [ ] D16  noteheadBlack (notehead) at (x=1970, y=148) → A5  conf=0.86
+- [ ] D10  noteheadBlack (notehead) at (x=1970, y=148) → A5  conf=0.86
        verdict: __________
 
 ## Missed noteheads (FN)

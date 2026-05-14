@@ -29,19 +29,6 @@
     },
     {
       "id": "D2",
-      "smufl_name": "restHalf",
-      "category": "rest",
-      "x": 102,
-      "y": 953,
-      "w": 210,
-      "h": 247,
-      "x_center": 207,
-      "y_center": 1076,
-      "confidence": 0.9581616520881653,
-      "pitch": null
-    },
-    {
-      "id": "D3",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 179,
@@ -54,7 +41,7 @@
       "pitch": "C5"
     },
     {
-      "id": "D4",
+      "id": "D3",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 185,
@@ -67,7 +54,7 @@
       "pitch": "D4"
     },
     {
-      "id": "D5",
+      "id": "D4",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 193,
@@ -80,7 +67,7 @@
       "pitch": "A3"
     },
     {
-      "id": "D6",
+      "id": "D5",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 485,

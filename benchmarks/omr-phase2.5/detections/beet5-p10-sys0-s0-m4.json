@@ -1,18 +1,4 @@
 {
   "cell_id": "beet5-p10-sys0-s0-m4",
-  "detections": [
-    {
-      "id": "D0",
-      "smufl_name": "accidentalFlat",
-      "category": "accidental",
-      "x": 199,
-      "y": 959,
-      "w": 95,
-      "h": 156,
-      "x_center": 246,
-      "y_center": 1037,
-      "confidence": 0.6447056531906128,
-      "pitch": null
-    }
-  ]
+  "detections": []
 }

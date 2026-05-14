@@ -19,8 +19,7 @@ For each detection below, replace `verdict: __` with one of:
 
 Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistake`.
 
-- [ ] D0  accidentalFlat (accidental) at (x=246, y=1037)  conf=0.64
-       verdict: __________
+_(matcher returned zero detections — this is itself a data point; fill out the FN section below.)_
 
 ## Missed noteheads (FN)
 

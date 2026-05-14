@@ -85,6 +85,7 @@ class DetectionVerdict:
     confidence: float
     verdict: str          # raw verdict text (lowercased, stripped) or "" if pending
     reason: str           # any trailing word(s) after the verdict keyword
+    actual_label: str = ""  # what the user said it actually is (for FP cases)
 
     @property
     def is_pending(self) -> bool:
@@ -235,6 +236,9 @@ class CellScore:
     cell_id: str
     source_tag: str
 
+    # Raw verdicts (kept so the report can dig into FP confusions etc.)
+    detections: list = field(default_factory=list)
+
     # Detection counts (post-pending-filter)
     n_total_detections: int = 0
     n_pending: int = 0
@@ -275,7 +279,8 @@ class CellScore:
 
 
 def score_cell(parsed: ParsedVerdictFile, source_tag: str = "") -> CellScore:
-    cs = CellScore(cell_id=parsed.cell_id, source_tag=source_tag)
+    cs = CellScore(cell_id=parsed.cell_id, source_tag=source_tag,
+                   detections=list(parsed.detections))
     cs.n_total_detections = len(parsed.detections)
     cs.n_fn = len(parsed.missed_noteheads)
 
@@ -426,6 +431,34 @@ def render_report(
             f"{_fmt_pct(c.f1)} | "
             f"{_fmt_pct(c.notehead_pitch_accuracy)} |"
         )
+    # Confusion summary: for FP detections, show (matcher-said → user-said-it-actually-is)
+    confusion: dict[tuple[str, str], int] = {}
+    confusion_unlabeled = 0
+    for c in cells:
+        for d in c.detections:
+            if d.classification != "fp":
+                continue
+            actual = (d.actual_label or "").strip()
+            if not actual:
+                confusion_unlabeled += 1
+                continue
+            key = (d.smufl_name or "?", actual)
+            confusion[key] = confusion.get(key, 0) + 1
+    if confusion or confusion_unlabeled:
+        out.append("")
+        out.append("## Matcher confusions (FP detections, when labeled)")
+        out.append("")
+        out.append("What the matcher reported vs what the user said it actually is. "
+                   "Counts only FPs where the user filled in `actual_label`. "
+                   f"({confusion_unlabeled} FP detections were left unlabeled and "
+                   "are excluded from this section.)")
+        out.append("")
+        out.append("| Matcher said | Actual | Count |")
+        out.append("|---|---|---|")
+        for (m_said, actual), n in sorted(confusion.items(),
+                                           key=lambda kv: (-kv[1], kv[0])):
+            out.append(f"| {m_said} | {actual} | {n} |")
+
     out.append("")
     out.append("---")
     out.append("")
@@ -504,6 +537,7 @@ def parse_verdict_json(
             confidence=float(det.get("confidence", 0.0) or 0.0),
             verdict=verdict_str,
             reason="",
+            actual_label=(row.get("actual_label") or "").strip(),
         ))
         if wp:
             parsed.wrong_pitch_corrections[did] = wp

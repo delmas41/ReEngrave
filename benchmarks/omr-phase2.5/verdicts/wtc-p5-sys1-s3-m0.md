@@ -29,31 +29,25 @@ Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistak
        verdict: __________
 - [ ] D4  noteheadBlack (notehead) at (x=632, y=114) → G5  conf=0.82
        verdict: __________
-- [ ] D5  accidentalNatural (accidental) at (x=750, y=98)  conf=0.59
+- [ ] D5  noteheadBlack (notehead) at (x=801, y=97) → A5  conf=0.87
        verdict: __________
-- [ ] D6  noteheadBlack (notehead) at (x=801, y=97) → A5  conf=0.87
+- [ ] D6  noteheadBlack (notehead) at (x=803, y=180) → C5  conf=0.78
        verdict: __________
-- [ ] D7  noteheadBlack (notehead) at (x=803, y=180) → C5  conf=0.78
+- [ ] D7  noteheadBlack (notehead) at (x=966, y=196) → B4  conf=0.88
        verdict: __________
-- [ ] D8  noteheadBlack (notehead) at (x=966, y=196) → B4  conf=0.88
+- [ ] D8  noteheadBlack (notehead) at (x=971, y=78) → B5  conf=0.72
        verdict: __________
-- [ ] D9  accidentalFlat (accidental) at (x=966, y=50)  conf=0.61
+- [ ] D9  noteheadBlack (notehead) at (x=1344, y=65) → C6  conf=0.86
        verdict: __________
-- [ ] D10  barlineHeavy (barline) at (x=966, y=241)  conf=1.00
+- [ ] D10  noteheadBlack (notehead) at (x=1432, y=78) → B5  conf=0.72
        verdict: __________
-- [ ] D11  noteheadBlack (notehead) at (x=971, y=78) → B5  conf=0.72
+- [ ] D11  noteheadBlack (notehead) at (x=1527, y=97) → A5  conf=0.87
        verdict: __________
-- [ ] D12  noteheadBlack (notehead) at (x=1344, y=65) → C6  conf=0.86
+- [ ] D12  noteheadBlack (notehead) at (x=1528, y=180) → C5  conf=0.79
        verdict: __________
-- [ ] D13  noteheadBlack (notehead) at (x=1432, y=78) → B5  conf=0.72
+- [ ] D13  noteheadBlack (notehead) at (x=1821, y=163) → D5  conf=0.88
        verdict: __________
-- [ ] D14  noteheadBlack (notehead) at (x=1527, y=97) → A5  conf=0.87
-       verdict: __________
-- [ ] D15  noteheadBlack (notehead) at (x=1528, y=180) → C5  conf=0.79
-       verdict: __________
-- [ ] D16  noteheadBlack (notehead) at (x=1821, y=163) → D5  conf=0.88
-       verdict: __________
-- [ ] D17  noteheadBlack (notehead) at (x=1824, y=46) → D6  conf=0.75
+- [ ] D14  noteheadBlack (notehead) at (x=1824, y=46) → D6  conf=0.75
        verdict: __________
 
 ## Missed noteheads (FN)

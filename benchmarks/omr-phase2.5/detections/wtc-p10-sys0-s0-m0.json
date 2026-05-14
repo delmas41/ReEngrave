@@ -3,71 +3,6 @@
   "detections": [
     {
       "id": "D0",
-      "smufl_name": "barlineSingle",
-      "category": "barline",
-      "x": 0,
-      "y": 253,
-      "w": 104,
-      "h": 509,
-      "x_center": 52,
-      "y_center": 507,
-      "confidence": 1.0,
-      "pitch": null
-    },
-    {
-      "id": "D1",
-      "smufl_name": "noteheadBlack",
-      "category": "notehead",
-      "x": 68,
-      "y": 531,
-      "w": 65,
-      "h": 54,
-      "x_center": 100,
-      "y_center": 558,
-      "confidence": 0.7392216324806213,
-      "pitch": "C4"
-    },
-    {
-      "id": "D2",
-      "smufl_name": "noteheadBlack",
-      "category": "notehead",
-      "x": 102,
-      "y": 149,
-      "w": 63,
-      "h": 54,
-      "x_center": 133,
-      "y_center": 176,
-      "confidence": 0.6284269094467163,
-      "pitch": "A5"
-    },
-    {
-      "id": "D3",
-      "smufl_name": "flag16thUp",
-      "category": "flag",
-      "x": 57,
-      "y": 138,
-      "w": 167,
-      "h": 470,
-      "x_center": 140,
-      "y_center": 373,
-      "confidence": 0.6513758301734924,
-      "pitch": null
-    },
-    {
-      "id": "D4",
-      "smufl_name": "accidentalNatural",
-      "category": "accidental",
-      "x": 423,
-      "y": 126,
-      "w": 70,
-      "h": 191,
-      "x_center": 458,
-      "y_center": 221,
-      "confidence": 0.5786691904067993,
-      "pitch": null
-    },
-    {
-      "id": "D5",
       "smufl_name": "noteheadWhole",
       "category": "notehead",
       "x": 838,
@@ -80,7 +15,7 @@
       "pitch": "F4"
     },
     {
-      "id": "D6",
+      "id": "D1",
       "smufl_name": "flag16thDown",
       "category": "flag",
       "x": 845,
@@ -93,7 +28,7 @@
       "pitch": null
     },
     {
-      "id": "D7",
+      "id": "D2",
       "smufl_name": "noteheadWhole",
       "category": "notehead",
       "x": 856,
@@ -106,20 +41,7 @@
       "pitch": "A4"
     },
     {
-      "id": "D8",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 958,
-      "y": 114,
-      "w": 45,
-      "h": 67,
-      "x_center": 980,
-      "y_center": 147,
-      "confidence": 0.9602064490318298,
-      "pitch": null
-    },
-    {
-      "id": "D9",
+      "id": "D3",
       "smufl_name": "flag16thDown",
       "category": "flag",
       "x": 1006,
@@ -132,20 +54,7 @@
       "pitch": null
     },
     {
-      "id": "D10",
-      "smufl_name": "timeSig1",
-      "category": "time_sig_digit",
-      "x": 1053,
-      "y": 675,
-      "w": 105,
-      "h": 87,
-      "x_center": 1105,
-      "y_center": 718,
-      "confidence": 0.558872640132904,
-      "pitch": null
-    },
-    {
-      "id": "D11",
+      "id": "D4",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1070,
@@ -158,33 +67,7 @@
       "pitch": "E5"
     },
     {
-      "id": "D12",
-      "smufl_name": "timeSig1",
-      "category": "time_sig_digit",
-      "x": 1094,
-      "y": 112,
-      "w": 79,
-      "h": 70,
-      "x_center": 1133,
-      "y_center": 147,
-      "confidence": 0.6647801399230957,
-      "pitch": null
-    },
-    {
-      "id": "D13",
-      "smufl_name": "timeSig4",
-      "category": "time_sig_digit",
-      "x": 1180,
-      "y": 112,
-      "w": 69,
-      "h": 70,
-      "x_center": 1214,
-      "y_center": 147,
-      "confidence": 0.5506110787391663,
-      "pitch": null
-    },
-    {
-      "id": "D14",
+      "id": "D5",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1220,
@@ -197,20 +80,7 @@
       "pitch": "C5"
     },
     {
-      "id": "D15",
-      "smufl_name": "barlineHeavy",
-      "category": "barline",
-      "x": 1377,
-      "y": 78,
-      "w": 35,
-      "h": 120,
-      "x_center": 1394,
-      "y_center": 138,
-      "confidence": 1.0,
-      "pitch": null
-    },
-    {
-      "id": "D16",
+      "id": "D6",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1370,
@@ -223,20 +93,7 @@
       "pitch": "G4"
     },
     {
-      "id": "D17",
-      "smufl_name": "barlineHeavy",
-      "category": "barline",
-      "x": 1418,
-      "y": 0,
-      "w": 74,
-      "h": 181,
-      "x_center": 1455,
-      "y_center": 90,
-      "confidence": 1.0,
-      "pitch": null
-    },
-    {
-      "id": "D18",
+      "id": "D7",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1418,
@@ -249,7 +106,7 @@
       "pitch": "B5"
     },
     {
-      "id": "D19",
+      "id": "D8",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1552,
@@ -262,20 +119,7 @@
       "pitch": "C5"
     },
     {
-      "id": "D20",
-      "smufl_name": "timeSig4",
-      "category": "time_sig_digit",
-      "x": 1710,
-      "y": 81,
-      "w": 67,
-      "h": 101,
-      "x_center": 1743,
-      "y_center": 131,
-      "confidence": 0.6207425594329834,
-      "pitch": null
-    },
-    {
-      "id": "D21",
+      "id": "D9",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1734,
@@ -288,7 +132,7 @@
       "pitch": "E5"
     },
     {
-      "id": "D22",
+      "id": "D10",
       "smufl_name": "flag16thDown",
       "category": "flag",
       "x": 1789,
@@ -301,33 +145,20 @@
       "pitch": null
     },
     {
-      "id": "D23",
-      "smufl_name": "barlineHeavy",
-      "category": "barline",
+      "id": "D11",
+      "smufl_name": "flag8thUp",
+      "category": "flag",
       "x": 1868,
       "y": 78,
       "w": 36,
       "h": 120,
       "x_center": 1886,
       "y_center": 138,
-      "confidence": 1.0,
+      "confidence": 0.6300453543663025,
       "pitch": null
     },
     {
-      "id": "D24",
-      "smufl_name": "timeSig4",
-      "category": "time_sig_digit",
-      "x": 1887,
-      "y": 668,
-      "w": 64,
-      "h": 79,
-      "x_center": 1919,
-      "y_center": 707,
-      "confidence": 0.5926486253738403,
-      "pitch": null
-    },
-    {
-      "id": "D25",
+      "id": "D12",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1885,
@@ -338,19 +169,6 @@
       "y_center": 351,
       "confidence": 0.8062962293624878,
       "pitch": "C5"
-    },
-    {
-      "id": "D26",
-      "smufl_name": "barlineHeavy",
-      "category": "barline",
-      "x": 1959,
-      "y": 668,
-      "w": 67,
-      "h": 76,
-      "x_center": 1992,
-      "y_center": 706,
-      "confidence": 1.0,
-      "pitch": null
     }
   ]
 }

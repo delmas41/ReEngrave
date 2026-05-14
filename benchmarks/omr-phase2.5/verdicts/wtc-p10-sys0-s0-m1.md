@@ -21,17 +21,15 @@ Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistak
 
 - [ ] D0  noteheadBlack (notehead) at (x=194, y=398) → F5  conf=0.88
        verdict: __________
-- [ ] D1  timeSig4 (time_sig_digit) at (x=231, y=1114)  conf=0.59
+- [ ] D1  noteheadBlack (notehead) at (x=429, y=549) → C5  conf=0.77
        verdict: __________
-- [ ] D2  noteheadBlack (notehead) at (x=429, y=549) → C5  conf=0.77
+- [ ] D2  noteheadBlack (notehead) at (x=719, y=398) → F5  conf=0.87
        verdict: __________
-- [ ] D3  noteheadBlack (notehead) at (x=719, y=398) → F5  conf=0.87
+- [ ] D3  noteheadBlack (notehead) at (x=953, y=549) → C5  conf=0.77
        verdict: __________
-- [ ] D4  noteheadBlack (notehead) at (x=953, y=549) → C5  conf=0.77
+- [ ] D4  noteheadBlack (notehead) at (x=1239, y=398) → F5  conf=0.89
        verdict: __________
-- [ ] D5  noteheadBlack (notehead) at (x=1239, y=398) → F5  conf=0.89
-       verdict: __________
-- [ ] D6  noteheadBlack (notehead) at (x=1478, y=549) → C5  conf=0.75
+- [ ] D5  noteheadBlack (notehead) at (x=1478, y=549) → C5  conf=0.75
        verdict: __________
 
 ## Missed noteheads (FN)

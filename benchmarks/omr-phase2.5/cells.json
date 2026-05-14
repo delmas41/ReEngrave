@@ -78,7 +78,7 @@
       342,
       389
     ],
-    "clef": "treble",
+    "clef": "bass",
     "source_tag": "wtc-p5",
     "cell_canonical_w": 2048,
     "cell_canonical_h": 583
@@ -99,7 +99,7 @@
       367,
       418
     ],
-    "clef": "treble",
+    "clef": "bass",
     "source_tag": "wtc-p5",
     "cell_canonical_w": 2048,
     "cell_canonical_h": 626
@@ -120,7 +120,7 @@
       335,
       381
     ],
-    "clef": "treble",
+    "clef": "bass",
     "source_tag": "wtc-p5",
     "cell_canonical_w": 2048,
     "cell_canonical_h": 572
@@ -204,7 +204,7 @@
       229,
       260
     ],
-    "clef": "treble",
+    "clef": "bass",
     "source_tag": "wtc-p5",
     "cell_canonical_w": 2048,
     "cell_canonical_h": 389
@@ -225,7 +225,7 @@
       273,
       310
     ],
-    "clef": "treble",
+    "clef": "bass",
     "source_tag": "wtc-p5",
     "cell_canonical_w": 2047,
     "cell_canonical_h": 465
@@ -246,7 +246,7 @@
       705,
       800
     ],
-    "clef": "treble",
+    "clef": "bass",
     "source_tag": "wtc-p5",
     "cell_canonical_w": 918,
     "cell_canonical_h": 1200

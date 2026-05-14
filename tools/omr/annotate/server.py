@@ -270,6 +270,13 @@ def _validate_state(state: dict, expected_cell_id: str) -> tuple[dict, list[str]
                 )
             else:
                 row["wrong_pitch"] = wp
+        # actual_label: optional free-text/SMuFL name of what the detection
+        # ACTUALLY is. Only meaningful when verdict=FP (matcher's category
+        # is wrong) but we pass it through regardless so the field survives
+        # a verdict change.
+        actual = str(v.get("actual_label") or "").strip()
+        if actual:
+            row["actual_label"] = actual
         out_verdicts.append(row)
 
     out_fns = []
@@ -453,6 +460,27 @@ pre { background: #fff; border: 1px solid #ddd; padding: 12px;
 .queue-cta p { margin: 4px 0 0; font-size: 13px; color: #d1d5db; }
 .queue-cta a.btn { background: #16a34a; padding: 10px 16px;
                     font-size: 15px; }
+
+.clef-bar { margin-top: 8px; padding: 8px 12px; border-radius: 4px;
+             font-size: 13px; display: flex; align-items: center;
+             gap: 10px; flex-wrap: wrap; }
+.clef-bar.clef-treble { background: #e0f2fe; border: 1px solid #7dd3fc; }
+.clef-bar.clef-bass   { background: #fef3c7; border: 1px solid #fcd34d; }
+.clef-bar.clef-alto   { background: #f3e8ff; border: 1px solid #d8b4fe; }
+.clef-bar.clef-tenor  { background: #fce7f3; border: 1px solid #f9a8d4; }
+.clef-bar select { padding: 4px 8px; font-size: 14px;
+                    font-weight: 700; text-transform: uppercase; }
+
+.actual-label-row { padding: 8px 12px; background: #f9fafb;
+                     border: 1px dashed #cbd5e1; border-radius: 4px;
+                     display: flex; align-items: center; gap: 10px;
+                     font-size: 12px; color: #475569;
+                     flex-wrap: wrap; }
+.actual-label-row label { font-weight: 600; }
+.actual-label-row input { flex: 1; min-width: 220px; padding: 5px 8px;
+                          font-size: 13px; }
+.clef-bar .clef-hint { color: #6b7280; font-size: 12px; }
+#clef-save-status { font-style: italic; color: #6b7280; font-size: 12px; }
 """
 
 
@@ -1033,7 +1061,7 @@ _PITCH_OPTIONS = [
 
 def _render_queue_view(
     bench: Bench, cell_id: str, idx: int, det: dict, verdict: dict,
-    position: int, total: int,
+    position: int, total: int, cell_entry: dict | None = None,
 ) -> str:
     """Render the focused single-detection page."""
     items = _all_queue_positions(bench)
@@ -1044,6 +1072,8 @@ def _render_queue_view(
     current_pitch = det.get("pitch") or ""
     wrong_pitch = verdict.get("wrong_pitch", "")
     current_verdict = (verdict.get("verdict") or "").strip()
+    current_clef = (cell_entry or {}).get("clef", "treble")
+    actual_label = verdict.get("actual_label", "")
 
     # Selected radio state for the buttons
     sel_tp = current_verdict.lower() in {"tp", "true", "correct"}
@@ -1074,6 +1104,29 @@ def _render_queue_view(
             "</div>"
         )
 
+    # Common SMuFL labels for the actual-label datalist. Free-text input
+    # accepts anything; this is just for autocomplete.
+    common_labels = [
+        "noteheadBlack", "noteheadHalf", "noteheadWhole",
+        "restWhole", "restHalf", "restQuarter", "rest8th", "rest16th",
+        "accidentalSharp", "accidentalFlat", "accidentalNatural",
+        "accidentalDoubleSharp", "accidentalDoubleFlat",
+        "gClef", "fClef", "cClefAlto", "cClefTenor",
+        "flag8thUp", "flag8thDown", "flag16thUp", "flag16thDown",
+        "stem", "beam",
+        "barlineSingle", "barlineFinal",
+        "augmentationDot",
+        "fermataAbove", "fermataBelow",
+        "articStaccato", "articTenuto", "articAccent",
+        "dynamicForte", "dynamicPiano", "dynamicMezzoForte", "dynamicMezzoPiano",
+        "tie", "slur",
+        "tupletBracket",
+        "nothing (smudge / scan artifact)",
+    ]
+    actual_options_html = "".join(
+        f"<option value='{_html_escape(c)}'>" for c in common_labels
+    )
+
     pitch_info = (f"<span class='matcher-pitch'>→ pitch <strong>{_html_escape(current_pitch)}</strong></span>"
                   if current_pitch else "")
 
@@ -1085,6 +1138,12 @@ def _render_queue_view(
             + (f" (wrong pitch → {_html_escape(wrong_pitch)})" if wrong_pitch else "")
             + ".  Use the buttons below to change.</p>"
         )
+
+    clef_options = ["treble", "bass", "alto", "tenor"]
+    clef_select_opts = "".join(
+        f"<option value='{c}'{' selected' if c == current_clef else ''}>{c}</option>"
+        for c in clef_options
+    )
 
     body = f"""
 <section class='queue-view'>
@@ -1098,6 +1157,12 @@ def _render_queue_view(
       <strong>Cell:</strong> <a href='/cells/{cell_id}'>{cell_id}</a>
       &nbsp;·&nbsp;
       <strong>Detection:</strong> {det.get('id', '?')} ({_html_escape(det.get('smufl_name', '?'))})
+    </div>
+    <div class='clef-bar clef-{_html_escape(current_clef)}'>
+      <strong>Clef:</strong>
+      <select id='clef-select' aria-label='change clef for this cell'>{clef_select_opts}</select>
+      <span class='clef-hint'>changing the clef re-resolves every notehead pitch in this cell</span>
+      <span id='clef-save-status'></span>
     </div>
   </div>
 
@@ -1131,6 +1196,14 @@ def _render_queue_view(
     </button>
 
     {pitch_picker}
+
+    <div class='actual-label-row'>
+      <label for='actual_label'>What it actually is (optional, only matters for FP):</label>
+      <input id='actual_label' type='text' list='label-list'
+             value='{_html_escape(actual_label)}'
+             placeholder='e.g. restQuarter, accidentalSharp, nothing (smudge)…' />
+      <datalist id='label-list'>{actual_options_html}</datalist>
+    </div>
 
     <div class='nav-row'>
       <a class='btn ghost' href='{prev_link}'>← prev</a>
@@ -1175,6 +1248,12 @@ def _render_queue_view(
       det_idx: detIdx,
       action: action,
     }};
+    // actual_label is optional and only persists for FP, but pass it through
+    // on every action so the field survives a verdict change.
+    const labelEl = document.getElementById('actual_label');
+    if (labelEl && labelEl.value.trim()) {{
+      payload.actual_label = labelEl.value.trim();
+    }}
     if (action === 'WP') {{
       payload.wrong_pitch = (wrongPitchValue || '').trim();
       if (!payload.wrong_pitch) {{
@@ -1244,6 +1323,33 @@ def _render_queue_view(
       if (e.key === 'Enter') {{
         e.preventDefault();
         postVerdict('WP', wpEl.value);
+      }}
+    }});
+  }}
+
+  // Clef change → POST + reload so the new pitches show.
+  const clefEl = document.getElementById('clef-select');
+  const clefStatusEl = document.getElementById('clef-save-status');
+  if (clefEl) {{
+    clefEl.addEventListener('change', async () => {{
+      const newClef = clefEl.value;
+      clefStatusEl.textContent = ' saving…';
+      try {{
+        const resp = await fetch('/cells/' + cellId + '/clef', {{
+          method: 'POST',
+          headers: {{ 'Content-Type': 'application/json' }},
+          body: JSON.stringify({{ clef: newClef }}),
+        }});
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {{
+          clefStatusEl.textContent = ' (save failed)';
+          return;
+        }}
+        clefStatusEl.textContent = ' saved · reloading…';
+        // Reload the page so the matcher's "guess" pitch shows the new clef.
+        window.location.reload();
+      }} catch (err) {{
+        clefStatusEl.textContent = ' (network error)';
       }}
     }});
   }}
@@ -1352,8 +1458,68 @@ def create_app(bench_dir: str | Path) -> Flask:
         if pos is None:
             abort(404, f"unknown queue position: {cell_id} #{idx}")
         cell_id, idx, det, verdict, position, total = pos
-        body = _render_queue_view(bench, cell_id, idx, det, verdict, position, total)
+        manifest = bench.load_manifest()
+        cell_entry = next((e for e in manifest if e["cell_id"] == cell_id), None)
+        body = _render_queue_view(bench, cell_id, idx, det, verdict,
+                                  position, total, cell_entry=cell_entry)
         return _page(f"queue · {cell_id} #{idx}", body)
+
+    @app.route("/cells/<cell_id>/clef", methods=["POST"])
+    def update_cell_clef(cell_id: str):
+        """Update the clef assigned to a cell + re-resolve its notehead pitches."""
+        manifest = bench.load_manifest()
+        entry = next((e for e in manifest if e["cell_id"] == cell_id), None)
+        if entry is None:
+            return jsonify({"ok": False, "error": f"unknown cell {cell_id!r}"}), 404
+        try:
+            payload = request.get_json(force=True) or {}
+        except Exception as exc:  # noqa: BLE001
+            return jsonify({"ok": False, "error": f"bad JSON: {exc}"}), 400
+        new_clef = str(payload.get("clef", "")).strip().lower()
+        if new_clef not in {"treble", "bass", "alto", "tenor"}:
+            return jsonify({"ok": False, "error": f"invalid clef {new_clef!r}"}), 400
+
+        entry["clef"] = new_clef
+        bench.manifest_path.write_text(json.dumps(manifest, indent=2))
+
+        # Re-resolve every notehead pitch in this cell's detection JSON.
+        det_path = bench.detection_path(cell_id)
+        n_changed = 0
+        n_total = 0
+        if det_path.exists():
+            try:
+                from ..pitch_resolver import pitch_for_notehead
+            except Exception:
+                pitch_for_notehead = None  # type: ignore
+            if pitch_for_notehead is not None:
+                data = json.loads(det_path.read_text())
+                staff_lines = entry.get("staff_line_ys_canonical", [])
+                for d in data.get("detections", []):
+                    if d.get("category") != "notehead":
+                        continue
+                    n_total += 1
+
+                    class _V:
+                        pass
+                    view = _V()
+                    view.smufl_name = d.get("smufl_name", "")
+                    view.category = d.get("category", "")
+                    view.x_center = d.get("x_center", 0)
+                    view.y_center = d.get("y_center", 0)
+                    view.cell = _V()
+                    view.cell.staff_line_ys_canonical = staff_lines
+                    new_pitch = pitch_for_notehead(view, clef=new_clef)
+                    if new_pitch != d.get("pitch"):
+                        d["pitch"] = new_pitch
+                        n_changed += 1
+                det_path.write_text(json.dumps(data, indent=2))
+
+        return jsonify({
+            "ok": True,
+            "clef": new_clef,
+            "noteheads_total": n_total,
+            "noteheads_repitched": n_changed,
+        })
 
     @app.route("/queue/<cell_id>/<int:idx>", methods=["POST"])
     def queue_record(cell_id: str, idx: int):
@@ -1363,6 +1529,7 @@ def create_app(bench_dir: str | Path) -> Flask:
             return jsonify({"ok": False, "error": f"bad JSON: {exc}"}), 400
         action = str(payload.get("action", "")).upper()
         wrong_pitch = (payload.get("wrong_pitch") or "").strip() or None
+        actual_label = (payload.get("actual_label") or "").strip() or None
 
         detections = _load_detections(bench, cell_id)
         if idx < 0 or idx >= len(detections):
@@ -1393,6 +1560,13 @@ def create_app(bench_dir: str | Path) -> Flask:
             v["wrong_pitch"] = wrong_pitch
         else:
             return jsonify({"ok": False, "error": f"unknown action {action!r}"}), 400
+
+        # actual_label is only meaningful for FP (matcher's category is wrong).
+        # On TP/WP/UNSURE we drop it.
+        if action == "FP" and actual_label:
+            v["actual_label"] = actual_label
+        else:
+            v.pop("actual_label", None)
 
         # Re-validate + persist
         cleaned, errors = _validate_state(state, cell_id)

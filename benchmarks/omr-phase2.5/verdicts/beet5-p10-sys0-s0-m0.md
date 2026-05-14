@@ -19,13 +19,7 @@ For each detection below, replace `verdict: __` with one of:
 
 Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistake`.
 
-- [ ] D0  stem (stem) at (x=75, y=698)  conf=1.00
-       verdict: __________
-- [ ] D1  stem (stem) at (x=178, y=471)  conf=1.00
-       verdict: __________
-- [ ] D2  accidentalFlat (accidental) at (x=250, y=1055)  conf=0.66
-       verdict: __________
-- [ ] D3  stem (stem) at (x=291, y=470)  conf=1.00
+- [ ] D0  accidentalFlat (accidental) at (x=291, y=470)  conf=0.74
        verdict: __________
 
 ## Missed noteheads (FN)

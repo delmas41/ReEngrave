@@ -19,29 +19,19 @@ For each detection below, replace `verdict: __` with one of:
 
 Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistake`.
 
-- [ ] D0  noteheadBlack (notehead) at (x=76, y=274) → A4  conf=0.75
+- [ ] D0  noteheadBlack (notehead) at (x=114, y=230) → C5  conf=0.75
        verdict: __________
-- [ ] D1  noteheadBlack (notehead) at (x=86, y=52) → E6  conf=0.74
+- [ ] D1  noteheadBlack (notehead) at (x=142, y=194) → E5  conf=0.68
        verdict: __________
-- [ ] D2  noteheadBlack (notehead) at (x=88, y=398) → B3  conf=0.73
+- [ ] D2  noteheadBlack (notehead) at (x=440, y=127) → A5  conf=0.60
        verdict: __________
-- [ ] D3  noteheadBlack (notehead) at (x=114, y=230) → C5  conf=0.75
+- [ ] D3  noteheadBlack (notehead) at (x=451, y=101) → B5  conf=0.68
        verdict: __________
-- [ ] D4  noteheadBlack (notehead) at (x=142, y=194) → E5  conf=0.68
+- [ ] D4  noteheadBlack (notehead) at (x=1453, y=232) → C5  conf=0.61
        verdict: __________
-- [ ] D5  noteheadBlack (notehead) at (x=440, y=127) → A5  conf=0.60
+- [ ] D5  noteheadBlack (notehead) at (x=1701, y=130) → A5  conf=0.63
        verdict: __________
-- [ ] D6  noteheadBlack (notehead) at (x=451, y=101) → B5  conf=0.68
-       verdict: __________
-- [ ] D7  timeSig4 (time_sig_digit) at (x=541, y=79)  conf=0.55
-       verdict: __________
-- [ ] D8  restHalf (rest) at (x=633, y=81)  conf=0.63
-       verdict: __________
-- [ ] D9  noteheadBlack (notehead) at (x=1453, y=232) → C5  conf=0.61
-       verdict: __________
-- [ ] D10  noteheadBlack (notehead) at (x=1701, y=130) → A5  conf=0.63
-       verdict: __________
-- [ ] D11  noteheadBlack (notehead) at (x=1744, y=60) → D6  conf=0.76
+- [ ] D6  noteheadBlack (notehead) at (x=1744, y=60) → D6  conf=0.76
        verdict: __________
 
 ## Missed noteheads (FN)
