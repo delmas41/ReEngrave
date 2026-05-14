@@ -9,31 +9,18 @@
     {
       "detection_id": "D1",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "dynamicForte"
-    },
-    {
-      "detection_id": "D2",
-      "smufl_name": "noteheadBlack",
       "verdict": "TP"
     },
     {
-      "detection_id": "D3",
+      "detection_id": "D2",
       "smufl_name": "noteheadBlack",
       "verdict": "TP",
       "wrong_pitch": "C4"
     },
     {
-      "detection_id": "D4",
+      "detection_id": "D3",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "dynamicForte"
-    },
-    {
-      "detection_id": "D5",
-      "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "restQuarter"
+      "verdict": "FP"
     }
   ],
   "fn_noteheads": []

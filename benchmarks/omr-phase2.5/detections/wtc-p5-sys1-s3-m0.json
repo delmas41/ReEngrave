@@ -182,19 +182,6 @@
       "y_center": 163,
       "confidence": 0.8799450397491455,
       "pitch": "F3"
-    },
-    {
-      "id": "D14",
-      "smufl_name": "noteheadBlack",
-      "category": "notehead",
-      "x": 1805,
-      "y": 30,
-      "w": 39,
-      "h": 32,
-      "x_center": 1824,
-      "y_center": 46,
-      "confidence": 0.7505142688751221,
-      "pitch": "F4"
     }
   ]
 }

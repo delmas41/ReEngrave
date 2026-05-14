@@ -55,19 +55,6 @@
     },
     {
       "id": "D4",
-      "smufl_name": "flag16thDown",
-      "category": "flag",
-      "x": 1089,
-      "y": 992,
-      "w": 146,
-      "h": 190,
-      "x_center": 1162,
-      "y_center": 1087,
-      "confidence": 0.6223761439323425,
-      "pitch": null
-    },
-    {
-      "id": "D5",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1173,
@@ -80,7 +67,7 @@
       "pitch": "A5"
     },
     {
-      "id": "D6",
+      "id": "D5",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1409,

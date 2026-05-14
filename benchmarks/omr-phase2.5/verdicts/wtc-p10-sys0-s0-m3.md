@@ -27,11 +27,9 @@ Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistak
        verdict: __________
 - [ ] D3  noteheadBlack (notehead) at (x=956, y=549) → C5  conf=0.76
        verdict: __________
-- [ ] D4  flag16thDown (flag) at (x=1162, y=1087)  conf=0.62
+- [ ] D4  noteheadBlack (notehead) at (x=1242, y=298) → A5  conf=0.85
        verdict: __________
-- [ ] D5  noteheadBlack (notehead) at (x=1242, y=298) → A5  conf=0.85
-       verdict: __________
-- [ ] D6  noteheadBlack (notehead) at (x=1478, y=549) → C5  conf=0.76
+- [ ] D5  noteheadBlack (notehead) at (x=1478, y=549) → C5  conf=0.76
        verdict: __________
 
 ## Missed noteheads (FN)

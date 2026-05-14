@@ -2,7 +2,7 @@
 
 **Image:** ![overlay](../overlays/wtc-p5-sys1-s3-m2.png)
 
-**Clef assumed:** treble
+**Clef assumed:** bass
 
 **Staff lines (canonical y):** 400, 500, 600, 705, 800
 
@@ -19,9 +19,9 @@ For each detection below, replace `verdict: __` with one of:
 
 Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistake`.
 
-- [ ] D0  noteheadBlack (notehead) at (x=66, y=400) → F5  conf=0.79
+- [ ] D0  noteheadBlack (notehead) at (x=66, y=400) → A3  conf=0.79
        verdict: __________
-- [ ] D1  noteheadBlack (notehead) at (x=448, y=452) → E5  conf=0.78
+- [ ] D1  noteheadBlack (notehead) at (x=448, y=452) → G3  conf=0.78
        verdict: __________
 
 ## Missed noteheads (FN)

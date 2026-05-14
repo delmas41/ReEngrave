@@ -18,19 +18,6 @@
       "id": "D1",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
-      "x": 141,
-      "y": 1015,
-      "w": 99,
-      "h": 85,
-      "x_center": 190,
-      "y_center": 1057,
-      "confidence": 0.7462791204452515,
-      "pitch": "G3"
-    },
-    {
-      "id": "D2",
-      "smufl_name": "noteheadBlack",
-      "category": "notehead",
       "x": 179,
       "y": 497,
       "w": 103,
@@ -41,7 +28,7 @@
       "pitch": "C5"
     },
     {
-      "id": "D3",
+      "id": "D2",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 185,
@@ -54,20 +41,7 @@
       "pitch": "D4"
     },
     {
-      "id": "D4",
-      "smufl_name": "noteheadBlack",
-      "category": "notehead",
-      "x": 193,
-      "y": 955,
-      "w": 121,
-      "h": 100,
-      "x_center": 253,
-      "y_center": 1005,
-      "confidence": 0.6673477292060852,
-      "pitch": "A3"
-    },
-    {
-      "id": "D5",
+      "id": "D3",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 485,

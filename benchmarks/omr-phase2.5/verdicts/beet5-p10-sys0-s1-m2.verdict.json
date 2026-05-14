@@ -4,8 +4,7 @@
     {
       "detection_id": "D0",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "restWhole"
+      "verdict": "FP"
     },
     {
       "detection_id": "D1",
@@ -21,8 +20,7 @@
     {
       "detection_id": "D3",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "restQuarter"
+      "verdict": "FP"
     },
     {
       "detection_id": "D4",
@@ -37,8 +35,7 @@
     {
       "detection_id": "D6",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "restWhole"
+      "verdict": "FP"
     }
   ],
   "fn_noteheads": []

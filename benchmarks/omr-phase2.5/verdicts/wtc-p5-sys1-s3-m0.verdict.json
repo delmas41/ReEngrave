@@ -72,11 +72,6 @@
       "detection_id": "D13",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
-    },
-    {
-      "detection_id": "D14",
-      "smufl_name": "noteheadBlack",
-      "verdict": "TP"
     }
   ],
   "fn_noteheads": []

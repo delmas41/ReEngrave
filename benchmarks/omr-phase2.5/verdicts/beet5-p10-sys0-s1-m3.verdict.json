@@ -4,8 +4,7 @@
     {
       "detection_id": "D0",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "restWhole"
+      "verdict": "FP"
     }
   ],
   "fn_noteheads": []

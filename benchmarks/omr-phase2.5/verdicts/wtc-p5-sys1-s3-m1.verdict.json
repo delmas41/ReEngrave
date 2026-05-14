@@ -44,33 +44,33 @@
     {
       "detection_id": "D8",
       "smufl_name": "noteheadBlack",
-      "verdict": "TP"
-    },
-    {
-      "detection_id": "D9",
-      "smufl_name": "noteheadBlack",
       "verdict": "TP",
       "wrong_pitch": "Bb3"
     },
     {
-      "detection_id": "D10",
+      "detection_id": "D9",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     },
     {
-      "detection_id": "D11",
+      "detection_id": "D10",
       "smufl_name": "noteheadBlack",
       "verdict": "TP",
       "wrong_pitch": "C#4"
     },
     {
-      "detection_id": "D12",
+      "detection_id": "D11",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     },
     {
-      "detection_id": "D13",
+      "detection_id": "D12",
       "smufl_name": "flag8thUp",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D13",
+      "smufl_name": "noteheadBlack",
       "verdict": "TP"
     },
     {
@@ -80,11 +80,6 @@
     },
     {
       "detection_id": "D15",
-      "smufl_name": "noteheadBlack",
-      "verdict": "TP"
-    },
-    {
-      "detection_id": "D16",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     }

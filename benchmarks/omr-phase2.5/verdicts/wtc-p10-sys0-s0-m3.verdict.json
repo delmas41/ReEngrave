@@ -23,17 +23,11 @@
     },
     {
       "detection_id": "D4",
-      "smufl_name": "flag16thDown",
-      "verdict": "FP",
-      "actual_label": "d in dim."
-    },
-    {
-      "detection_id": "D5",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     },
     {
-      "detection_id": "D6",
+      "detection_id": "D5",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     }

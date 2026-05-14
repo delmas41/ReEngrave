@@ -1,0 +1,12 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m3",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlack",
+      "verdict": "FP",
+      "actual_label": "restWhole"
+    }
+  ],
+  "fn_noteheads": []
+}

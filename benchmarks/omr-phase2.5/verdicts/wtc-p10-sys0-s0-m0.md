@@ -21,29 +21,21 @@ Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistak
 
 - [ ] D0  noteheadWhole (notehead) at (x=892, y=477) → F4  conf=0.62
        verdict: __________
-- [ ] D1  flag16thDown (flag) at (x=901, y=130)  conf=0.59
+- [ ] D1  noteheadWhole (notehead) at (x=902, y=410) → A4  conf=0.66
        verdict: __________
-- [ ] D2  noteheadWhole (notehead) at (x=902, y=410) → A4  conf=0.66
+- [ ] D2  noteheadBlack (notehead) at (x=1114, y=286) → E5  conf=0.80
        verdict: __________
-- [ ] D3  flag16thDown (flag) at (x=1047, y=148)  conf=0.57
+- [ ] D3  noteheadBlack (notehead) at (x=1264, y=351) → C5  conf=0.80
        verdict: __________
-- [ ] D4  noteheadBlack (notehead) at (x=1114, y=286) → E5  conf=0.80
+- [ ] D4  noteheadBlack (notehead) at (x=1414, y=445) → G4  conf=0.88
        verdict: __________
-- [ ] D5  noteheadBlack (notehead) at (x=1264, y=351) → C5  conf=0.80
+- [ ] D5  noteheadBlack (notehead) at (x=1456, y=150) → B5  conf=0.92
        verdict: __________
-- [ ] D6  noteheadBlack (notehead) at (x=1414, y=445) → G4  conf=0.88
+- [ ] D6  noteheadBlack (notehead) at (x=1596, y=351) → C5  conf=0.80
        verdict: __________
-- [ ] D7  noteheadBlack (notehead) at (x=1456, y=150) → B5  conf=0.92
+- [ ] D7  noteheadBlack (notehead) at (x=1778, y=286) → E5  conf=0.80
        verdict: __________
-- [ ] D8  noteheadBlack (notehead) at (x=1596, y=351) → C5  conf=0.80
-       verdict: __________
-- [ ] D9  noteheadBlack (notehead) at (x=1778, y=286) → E5  conf=0.80
-       verdict: __________
-- [ ] D10  flag16thDown (flag) at (x=1822, y=131)  conf=0.62
-       verdict: __________
-- [ ] D11  flag8thUp (flag) at (x=1886, y=138)  conf=0.63
-       verdict: __________
-- [ ] D12  noteheadBlack (notehead) at (x=1929, y=351) → C5  conf=0.81
+- [ ] D8  noteheadBlack (notehead) at (x=1929, y=351) → C5  conf=0.81
        verdict: __________
 
 ## Missed noteheads (FN)

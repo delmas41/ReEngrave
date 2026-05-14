@@ -29,14 +29,7 @@
     {
       "detection_id": "D5",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "dynamicForte"
-    },
-    {
-      "detection_id": "D6",
-      "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "dynamicForte"
+      "verdict": "FP"
     }
   ],
   "fn_noteheads": []

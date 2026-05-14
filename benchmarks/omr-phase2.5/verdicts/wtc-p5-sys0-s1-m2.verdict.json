@@ -63,32 +63,27 @@
     },
     {
       "detection_id": "D12",
-      "smufl_name": "flag8thDown",
-      "verdict": "FP"
-    },
-    {
-      "detection_id": "D13",
       "smufl_name": "rest8th",
       "verdict": "TP"
     },
     {
-      "detection_id": "D14",
+      "detection_id": "D13",
       "smufl_name": "noteheadBlack",
       "verdict": "TP",
       "wrong_pitch": "Bb2"
     },
     {
-      "detection_id": "D15",
+      "detection_id": "D14",
       "smufl_name": "noteheadBlack",
       "verdict": "FP"
     },
     {
-      "detection_id": "D16",
+      "detection_id": "D15",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     },
     {
-      "detection_id": "D17",
+      "detection_id": "D16",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     }

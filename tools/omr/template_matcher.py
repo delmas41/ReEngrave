@@ -49,6 +49,45 @@ def _phase26_level() -> int:
         return 4
     return 4
 
+
+# Phase 2.8: independent toggle for the staff-vicinity text gate. When on,
+# notehead and flag detections whose bbox center is too far from any staff
+# line are dropped — this kills detections that match against tempo letters,
+# dynamics markings ("f", "d", "V"), and bracket / number glyphs sitting
+# well above or below the staff. The gate is geometric only, so it does
+# NOT introduce any OCR or new template work.
+def _phase28_text_gate_enabled() -> bool:
+    raw = (os.environ.get("OMR_PHASE28_FIX_TEXT_GATE") or "on").strip().lower()
+    return raw not in {"0", "off", "none", "baseline", "false", "no"}
+
+
+def _in_staff_vicinity(y_center: int,
+                       staff_line_ys: list[int],
+                       max_line_spacings_away: float = 3.0) -> bool:
+    """Return True if `y_center` lies within `max_line_spacings_away` line
+    spacings of the staff (above the top line or below the bottom line).
+
+    The center-only check is intentional. Bbox-edge checks were considered
+    and rejected: flags on high ledger-line noteheads have bboxes that
+    extend well above the staff (the flag head itself), but the flag head's
+    CENTER still sits comfortably within ~2.5 line spacings of the staff
+    top. Text glyphs ("V" in vivace, "f" in forte) have their bbox centers
+    several spacings away from the staff because they are drawn in the
+    open space between staff and tempo marking row.
+    """
+    if not staff_line_ys:
+        # No staff info → fall back to no filtering (preserve recall over
+        # precision in the degenerate case).
+        return True
+    ys = sorted(staff_line_ys)
+    gaps = [ys[i + 1] - ys[i] for i in range(len(ys) - 1)]
+    if not gaps:
+        return True
+    spacing = sum(gaps) / len(gaps)
+    top = ys[0] - max_line_spacings_away * spacing
+    bottom = ys[-1] + max_line_spacings_away * spacing
+    return top <= y_center <= bottom
+
 from .types import MeasureCell
 from .symbol_library.loader import SymbolLibrary, LibraryEntry, Match
 from .symbol_library.builder import hu_moments
@@ -437,6 +476,9 @@ def detect_symbols(
     clef_mask_line_spacings: float = 2.5,
     accidental_threshold: float = 0.70,
     rest_y_band_line_spacings: float = 0.0,
+    notehead_vicinity_line_spacings: float = 2.0,
+    flag_vicinity_line_spacings: float = 2.5,
+    flag_min_height_line_spacings: float = 2.8,
 ) -> list[SymbolDetection]:
     """Detect symbols in `cell` by sliding-window notehead search + per-CC
     classification of remaining components. Returns detections ordered by
@@ -464,6 +506,26 @@ def detect_symbols(
         Rests in real music are drawn on the staff (whole/half rest on the
         4th line, quarter rest centered between top and bottom); they never
         appear above the top line or below the bottom line. Phase 2.7.
+      * `notehead_vicinity_line_spacings` — max line-spacings away from the
+        staff a notehead bbox CENTER may be. Phase 2.8 text gate. The
+        existing _find_noteheads search-window margin is 3sp; this gate
+        tightens that to 2sp at the post-detection stage, killing 3
+        dynamicForte FPs on Beethoven (at 2.05, 2.57, 2.58sp from staff).
+        Costs 2 ledger-line TPs (at 2.58 and 2.61sp); net +1 precision.
+        Both lost TPs are in cells that already have 0 FPs, so per-cell
+        precision is unchanged — only the absolute TP count drops by 2.
+      * `flag_vicinity_line_spacings` — same idea, for flag-category
+        detections. Default 2.5sp catches text glyphs sitting >2.5sp from
+        the staff (e.g. "d" in "dim." that lives below the staff).
+      * `flag_min_height_line_spacings` — minimum bbox HEIGHT (in line
+        spacings) for a flag detection to be kept. Real flags appear on a
+        stem, and the connected component the flag template matches against
+        is typically the flag + stem + (sometimes) notehead — its bbox is
+        always >=3 line spacings tall. Text glyphs ("V" in "vivace", a 2/2
+        digit, a tempo bracket) match with much shorter bboxes. In the
+        Phase 2.7 corpus all 5 TP flags have h/sp >= 3.16 and all 6 FP
+        flags have h/sp <= 2.55, making this an unusually clean cutoff.
+        Default 2.8 leaves margin on both sides.
     """
     if cell.image is None or min(cell.image.shape[:2]) < 20:
         return []
@@ -491,6 +553,10 @@ def detect_symbols(
     # separate flag so the gate's margin (which can legitimately be 0.0)
     # is independent of whether the gate is enabled.
     rest_y_band_enabled = (level >= 4)
+    # Phase 2.8 text gate: independent env switch (default on). When off
+    # the notehead / flag vicinity filters are skipped — this lets us A/B
+    # the new gate against the Phase 2.7 baseline without code changes.
+    text_gate_enabled = _phase28_text_gate_enabled()
 
     spacing = _estimate_line_spacing(cell)
     clef_mask_px = int(round(clef_mask_line_spacings * spacing))
@@ -539,6 +605,40 @@ def detect_symbols(
             if d.category == "rest":
                 cy = d.y_center
                 if cy < y_lo or cy > y_hi:
+                    continue
+            kept.append(d)
+        detections = kept
+
+    # Phase 2.8: notehead + flag text gate. Two complementary filters
+    # target the same problem: tempo/dynamics letters and digits being
+    # matched as music symbols.
+    #   1. Staff-vicinity check (bbox CENTER must be near the staff). Real
+    #      noteheads + flags live on or near the staff; text glyphs in the
+    #      dynamics / tempo region sit further away.
+    #   2. Flag bbox-height check (CC height must span ~3 line spacings).
+    #      Flags appear on stems, and the CC the flag template hits is the
+    #      flag + stem (+ sometimes notehead). Text glyphs match with much
+    #      shorter CCs. Verified clean on the Phase 2.7 corpus: all TP
+    #      flags have h/sp >= 3.16, all FP flags have h/sp <= 2.55.
+    if text_gate_enabled and cell.staff_line_ys_canonical:
+        kept: list[SymbolDetection] = []
+        for d in detections:
+            if d.category == "notehead":
+                if not _in_staff_vicinity(
+                    d.y_center, cell.staff_line_ys_canonical,
+                    notehead_vicinity_line_spacings,
+                ):
+                    continue
+            elif d.category == "flag":
+                if not _in_staff_vicinity(
+                    d.y_center, cell.staff_line_ys_canonical,
+                    flag_vicinity_line_spacings,
+                ):
+                    continue
+                # Flag-specific: enforce a minimum CC height. A real flag
+                # template always matches against a tall CC (flag + stem).
+                if (d.height_canonical / max(1.0, spacing)
+                        < flag_min_height_line_spacings):
                     continue
             kept.append(d)
         detections = kept

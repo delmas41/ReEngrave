@@ -4,26 +4,22 @@
     {
       "detection_id": "D0",
       "smufl_name": "noteheadWhole",
-      "verdict": "FP",
-      "actual_label": "time signature 3/8"
+      "verdict": "FP"
     },
     {
       "detection_id": "D1",
-      "smufl_name": "flag16thDown",
-      "verdict": "FP",
-      "actual_label": "V in vivace"
+      "smufl_name": "noteheadWhole",
+      "verdict": "FP"
     },
     {
       "detection_id": "D2",
-      "smufl_name": "noteheadWhole",
-      "verdict": "FP",
-      "actual_label": "time signature 3/8"
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
     },
     {
       "detection_id": "D3",
-      "smufl_name": "flag16thDown",
-      "verdict": "FP",
-      "actual_label": "V in vivace"
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
     },
     {
       "detection_id": "D4",
@@ -33,7 +29,7 @@
     {
       "detection_id": "D5",
       "smufl_name": "noteheadBlack",
-      "verdict": "TP"
+      "verdict": "FP"
     },
     {
       "detection_id": "D6",
@@ -43,33 +39,10 @@
     {
       "detection_id": "D7",
       "smufl_name": "noteheadBlack",
-      "verdict": "FP",
-      "actual_label": "quarter note tempo marking"
+      "verdict": "TP"
     },
     {
       "detection_id": "D8",
-      "smufl_name": "noteheadBlack",
-      "verdict": "TP"
-    },
-    {
-      "detection_id": "D9",
-      "smufl_name": "noteheadBlack",
-      "verdict": "TP"
-    },
-    {
-      "detection_id": "D10",
-      "smufl_name": "flag16thDown",
-      "verdict": "FP",
-      "actual_label": "tempo bpm 2 in 92"
-    },
-    {
-      "detection_id": "D11",
-      "smufl_name": "flag8thUp",
-      "verdict": "FP",
-      "actual_label": "bracket for tempo marking"
-    },
-    {
-      "detection_id": "D12",
       "smufl_name": "noteheadBlack",
       "verdict": "TP"
     }

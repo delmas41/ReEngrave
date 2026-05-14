@@ -1,0 +1,125 @@
+{
+  "overall": {
+    "cells": 25,
+    "n_total_detections": 265,
+    "n_pending": 3,
+    "n_tp": 242,
+    "n_fp": 20,
+    "n_fn": 0,
+    "precision": 0.9236641221374046,
+    "recall": 1.0,
+    "f1": 0.9603174603174602,
+    "notehead_pitch_correct": 223,
+    "notehead_pitch_wrong": 8,
+    "notehead_pitch_accuracy": 0.9653679653679653,
+    "per_category": {
+      "accidental": {
+        "tp": 1,
+        "fp": 1,
+        "pending": 0
+      },
+      "notehead": {
+        "tp": 231,
+        "fp": 19,
+        "pending": 3
+      },
+      "rest": {
+        "tp": 5,
+        "fp": 0,
+        "pending": 0
+      },
+      "flag": {
+        "tp": 5,
+        "fp": 0,
+        "pending": 0
+      }
+    }
+  },
+  "per_piece": {
+    "beet5-p10": {
+      "cells": 5,
+      "n_total_detections": 19,
+      "n_pending": 2,
+      "n_tp": 5,
+      "n_fp": 12,
+      "n_fn": 0,
+      "precision": 0.29411764705882354,
+      "recall": 1.0,
+      "f1": 0.45454545454545453,
+      "notehead_pitch_correct": 3,
+      "notehead_pitch_wrong": 2,
+      "notehead_pitch_accuracy": 0.6,
+      "per_category": {
+        "accidental": {
+          "tp": 0,
+          "fp": 1,
+          "pending": 0
+        },
+        "notehead": {
+          "tp": 5,
+          "fp": 11,
+          "pending": 2
+        }
+      }
+    },
+    "wtc-p10": {
+      "cells": 5,
+      "n_total_detections": 33,
+      "n_pending": 0,
+      "n_tp": 30,
+      "n_fp": 3,
+      "n_fn": 0,
+      "precision": 0.9090909090909091,
+      "recall": 1.0,
+      "f1": 0.9523809523809523,
+      "notehead_pitch_correct": 30,
+      "notehead_pitch_wrong": 0,
+      "notehead_pitch_accuracy": 1.0,
+      "per_category": {
+        "notehead": {
+          "tp": 30,
+          "fp": 3,
+          "pending": 0
+        }
+      }
+    },
+    "wtc-p5": {
+      "cells": 15,
+      "n_total_detections": 213,
+      "n_pending": 1,
+      "n_tp": 207,
+      "n_fp": 5,
+      "n_fn": 0,
+      "precision": 0.9764150943396226,
+      "recall": 1.0,
+      "f1": 0.9880668257756563,
+      "notehead_pitch_correct": 190,
+      "notehead_pitch_wrong": 6,
+      "notehead_pitch_accuracy": 0.9693877551020408,
+      "per_category": {
+        "notehead": {
+          "tp": 196,
+          "fp": 5,
+          "pending": 1
+        },
+        "rest": {
+          "tp": 5,
+          "fp": 0,
+          "pending": 0
+        },
+        "flag": {
+          "tp": 5,
+          "fp": 0,
+          "pending": 0
+        },
+        "accidental": {
+          "tp": 1,
+          "fp": 0,
+          "pending": 0
+        }
+      }
+    }
+  },
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 25
+}

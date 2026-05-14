@@ -2,7 +2,7 @@
 
 **Image:** ![overlay](../overlays/wtc-p5-sys1-s3-m0.png)
 
-**Clef assumed:** treble
+**Clef assumed:** bass
 
 **Staff lines (canonical y):** 130, 162, 195, 229, 260
 
@@ -19,35 +19,33 @@ For each detection below, replace `verdict: __` with one of:
 
 Add an optional 1-word reason after the verdict, e.g. `TP` or `FP barline-mistake`.
 
-- [ ] D0  noteheadBlack (notehead) at (x=217, y=245) → F4  conf=0.79
+- [ ] D0  noteheadBlack (notehead) at (x=217, y=245) → A2  conf=0.79
        verdict: __________
-- [ ] D1  noteheadBlack (notehead) at (x=381, y=164) → D5  conf=0.82
+- [ ] D1  noteheadBlack (notehead) at (x=381, y=164) → F3  conf=0.82
        verdict: __________
-- [ ] D2  noteheadBlack (notehead) at (x=382, y=130) → F5  conf=0.81
+- [ ] D2  noteheadBlack (notehead) at (x=382, y=130) → A3  conf=0.81
        verdict: __________
-- [ ] D3  noteheadBlack (notehead) at (x=631, y=147) → E5  conf=0.78
+- [ ] D3  noteheadBlack (notehead) at (x=631, y=147) → G3  conf=0.78
        verdict: __________
-- [ ] D4  noteheadBlack (notehead) at (x=632, y=114) → G5  conf=0.82
+- [ ] D4  noteheadBlack (notehead) at (x=632, y=114) → B3  conf=0.82
        verdict: __________
-- [ ] D5  noteheadBlack (notehead) at (x=801, y=97) → A5  conf=0.87
+- [ ] D5  noteheadBlack (notehead) at (x=801, y=97) → C4  conf=0.87
        verdict: __________
-- [ ] D6  noteheadBlack (notehead) at (x=803, y=180) → C5  conf=0.78
+- [ ] D6  noteheadBlack (notehead) at (x=803, y=180) → E3  conf=0.78
        verdict: __________
-- [ ] D7  noteheadBlack (notehead) at (x=966, y=196) → B4  conf=0.88
+- [ ] D7  noteheadBlack (notehead) at (x=966, y=196) → D3  conf=0.88
        verdict: __________
-- [ ] D8  noteheadBlack (notehead) at (x=971, y=78) → B5  conf=0.72
+- [ ] D8  noteheadBlack (notehead) at (x=971, y=78) → D4  conf=0.72
        verdict: __________
-- [ ] D9  noteheadBlack (notehead) at (x=1344, y=65) → C6  conf=0.86
+- [ ] D9  noteheadBlack (notehead) at (x=1344, y=65) → E4  conf=0.86
        verdict: __________
-- [ ] D10  noteheadBlack (notehead) at (x=1432, y=78) → B5  conf=0.72
+- [ ] D10  noteheadBlack (notehead) at (x=1432, y=78) → D4  conf=0.72
        verdict: __________
-- [ ] D11  noteheadBlack (notehead) at (x=1527, y=97) → A5  conf=0.87
+- [ ] D11  noteheadBlack (notehead) at (x=1527, y=97) → C4  conf=0.87
        verdict: __________
-- [ ] D12  noteheadBlack (notehead) at (x=1528, y=180) → C5  conf=0.79
+- [ ] D12  noteheadBlack (notehead) at (x=1528, y=180) → E3  conf=0.79
        verdict: __________
-- [ ] D13  noteheadBlack (notehead) at (x=1821, y=163) → D5  conf=0.88
-       verdict: __________
-- [ ] D14  noteheadBlack (notehead) at (x=1824, y=46) → D6  conf=0.75
+- [ ] D13  noteheadBlack (notehead) at (x=1821, y=163) → F3  conf=0.88
        verdict: __________
 
 ## Missed noteheads (FN)

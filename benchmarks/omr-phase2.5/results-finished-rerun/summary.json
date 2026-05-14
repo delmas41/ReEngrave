@@ -1,0 +1,130 @@
+{
+  "overall": {
+    "cells": 25,
+    "n_total_detections": 276,
+    "n_pending": 3,
+    "n_tp": 244,
+    "n_fp": 29,
+    "n_fn": 0,
+    "precision": 0.8937728937728938,
+    "recall": 1.0,
+    "f1": 0.9439071566731142,
+    "notehead_pitch_correct": 225,
+    "notehead_pitch_wrong": 8,
+    "notehead_pitch_accuracy": 0.9656652360515021,
+    "per_category": {
+      "accidental": {
+        "tp": 1,
+        "fp": 1,
+        "pending": 0
+      },
+      "notehead": {
+        "tp": 233,
+        "fp": 22,
+        "pending": 3
+      },
+      "flag": {
+        "tp": 5,
+        "fp": 6,
+        "pending": 0
+      },
+      "rest": {
+        "tp": 5,
+        "fp": 0,
+        "pending": 0
+      }
+    }
+  },
+  "per_piece": {
+    "beet5-p10": {
+      "cells": 5,
+      "n_total_detections": 22,
+      "n_pending": 2,
+      "n_tp": 5,
+      "n_fp": 15,
+      "n_fn": 0,
+      "precision": 0.25,
+      "recall": 1.0,
+      "f1": 0.4,
+      "notehead_pitch_correct": 3,
+      "notehead_pitch_wrong": 2,
+      "notehead_pitch_accuracy": 0.6,
+      "per_category": {
+        "accidental": {
+          "tp": 0,
+          "fp": 1,
+          "pending": 0
+        },
+        "notehead": {
+          "tp": 5,
+          "fp": 14,
+          "pending": 2
+        }
+      }
+    },
+    "wtc-p10": {
+      "cells": 5,
+      "n_total_detections": 38,
+      "n_pending": 0,
+      "n_tp": 30,
+      "n_fp": 8,
+      "n_fn": 0,
+      "precision": 0.7894736842105263,
+      "recall": 1.0,
+      "f1": 0.8823529411764706,
+      "notehead_pitch_correct": 30,
+      "notehead_pitch_wrong": 0,
+      "notehead_pitch_accuracy": 1.0,
+      "per_category": {
+        "notehead": {
+          "tp": 30,
+          "fp": 3,
+          "pending": 0
+        },
+        "flag": {
+          "tp": 0,
+          "fp": 5,
+          "pending": 0
+        }
+      }
+    },
+    "wtc-p5": {
+      "cells": 15,
+      "n_total_detections": 216,
+      "n_pending": 1,
+      "n_tp": 209,
+      "n_fp": 6,
+      "n_fn": 0,
+      "precision": 0.9720930232558139,
+      "recall": 1.0,
+      "f1": 0.9858490566037736,
+      "notehead_pitch_correct": 192,
+      "notehead_pitch_wrong": 6,
+      "notehead_pitch_accuracy": 0.9696969696969697,
+      "per_category": {
+        "notehead": {
+          "tp": 198,
+          "fp": 5,
+          "pending": 1
+        },
+        "rest": {
+          "tp": 5,
+          "fp": 0,
+          "pending": 0
+        },
+        "flag": {
+          "tp": 5,
+          "fp": 1,
+          "pending": 0
+        },
+        "accidental": {
+          "tp": 1,
+          "fp": 0,
+          "pending": 0
+        }
+      }
+    }
+  },
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 25
+}

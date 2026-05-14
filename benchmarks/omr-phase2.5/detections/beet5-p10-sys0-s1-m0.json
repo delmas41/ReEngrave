@@ -78,19 +78,6 @@
       "y_center": 130,
       "confidence": 0.632311999797821,
       "pitch": "A5"
-    },
-    {
-      "id": "D6",
-      "smufl_name": "noteheadBlack",
-      "category": "notehead",
-      "x": 1723,
-      "y": 42,
-      "w": 43,
-      "h": 36,
-      "x_center": 1744,
-      "y_center": 60,
-      "confidence": 0.7620915770530701,
-      "pitch": "D6"
     }
   ]
 }

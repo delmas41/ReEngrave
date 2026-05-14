@@ -159,19 +159,6 @@
     },
     {
       "id": "D12",
-      "smufl_name": "flag8thDown",
-      "category": "flag",
-      "x": 1305,
-      "y": 247,
-      "w": 43,
-      "h": 121,
-      "x_center": 1326,
-      "y_center": 307,
-      "confidence": 0.6995087265968323,
-      "pitch": null
-    },
-    {
-      "id": "D13",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1364,
@@ -184,7 +171,7 @@
       "pitch": null
     },
     {
-      "id": "D14",
+      "id": "D13",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1364,
@@ -197,7 +184,7 @@
       "pitch": "B2"
     },
     {
-      "id": "D15",
+      "id": "D14",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1550,
@@ -210,7 +197,7 @@
       "pitch": "B3"
     },
     {
-      "id": "D16",
+      "id": "D15",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1557,
@@ -223,7 +210,7 @@
       "pitch": "A2"
     },
     {
-      "id": "D17",
+      "id": "D16",
       "smufl_name": "noteheadBlack",
       "category": "notehead",
       "x": 1737,
