@@ -1,0 +1,18 @@
+{
+  "cell_id": "wtc-p5-sys1-s3-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 32,
+      "y": 498,
+      "w": 349,
+      "h": 9,
+      "x_center": 206,
+      "y_center": 502,
+      "confidence": 0.38620829582214355,
+      "pitch": null
+    }
+  ]
+}
