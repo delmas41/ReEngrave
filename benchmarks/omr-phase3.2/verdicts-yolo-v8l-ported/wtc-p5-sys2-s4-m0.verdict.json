@@ -1,0 +1,230 @@
+{
+  "cell_id": "wtc-p5-sys2-s4-m0",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "flag8thDown",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "accidentalSharp",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP",
+      "wrong_pitch": "C#5"
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D7",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D8",
+      "smufl_name": "rest8th",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D9",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D10",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D11",
+      "smufl_name": "rest8th",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D12",
+      "smufl_name": "dynamicM",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D13",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D14",
+      "smufl_name": "augmentationDot",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D15",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D16",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D17",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D18",
+      "smufl_name": "flag8thDown",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D19",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D20",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D21",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D22",
+      "smufl_name": "accidentalSharp",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D23",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D24",
+      "smufl_name": "accidentalDoubleSharp",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D25",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D26",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D27",
+      "smufl_name": "noteheadWholeOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D28",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D29",
+      "smufl_name": "flag8thUp",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D30",
+      "smufl_name": "rest8th",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D31",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D32",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D33",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D34",
+      "smufl_name": "augmentationDot",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D35",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D36",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D37",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D38",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D39",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D40",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D41",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D42",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": [
+    {
+      "tm_id": "D11",
+      "category": "flag",
+      "tm_smufl_name": "flag8thUp",
+      "x_canonical": 1235,
+      "y_canonical": 185
+    }
+  ]
+}

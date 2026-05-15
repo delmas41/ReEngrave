@@ -45,13 +45,46 @@ from .types import MeasureCell
 # YOLO class name → SMuFL category mapping
 # ---------------------------------------------------------------------------
 #
-# This is a best-effort mapping for DeepScoresV2-style class names. If a
-# class name does not match anything here, the detector falls back to
-# category="unknown" and puts the raw class name in `smufl_name`. The
-# mapping is intentionally permissive — it tries multiple casings and
-# common suffix variants.
+# Data-driven expansion (2026-05-15): the original map covered only ~50 of
+# DeepScoresV2's ~147 classes, which left ~37% of detections (342/916 on
+# our 30 verdict cells) flagged as `unknown`. Counting class-label
+# frequencies across `benchmarks/omr-phase3/r2/detections/*.json` showed
+# that almost all the "unknown" mass came from a small set of recurring
+# names: `beam` (202), `staff` (38), `dynamicF` (38), `tie` (17),
+# `slur` (15), `augmentationDot` (10), `dynamicP` (5), `articStaccatoAbove`
+# (5), `coda` (4), `articAccentBelow` (2), `arpeggiato` (2), `dynamicZ`,
+# `segno`, `ornamentTurnInverted`, `ornamentMordent`. Cross-referenced
+# against `tools/omr/training/deepscores_classes.py` so that the prefix
+# rules (e.g. `dynamic` → dynamic, `ornament` → ornament, `artic` →
+# ornament) also catch the long tail of unseen-but-related variants.
+#
+# Three new top-level categories were added: `structural` (beam, staff,
+# tie, slur, augmentationDot, ledger lines, brackets, repeat/coda/segno
+# markers), `dynamic` (any dynamicX), and `ornament` (ornament*,
+# articulation marks, grace notes, fermata, tremolo, arpeggiato,
+# caesura). If a class name still does not match anything here, the
+# detector falls back to `category="unknown"` and puts the raw class name
+# in `smufl_name`.
+#
+# Ordering matters: the substring fallback in `_class_name_to_category`
+# iterates `_CATEGORY_MAP` in insertion order and returns the first match.
+# Long/specific keys go first so that e.g. `graceNote...StemUp` matches
+# `gracenote` (→ ornament) before it can match `stem`.
 
 _CATEGORY_MAP = {
+    # ---- specific compound names first (substring fallback order matters) ----
+    # ornaments / grace notes / articulations (must precede the short
+    # `stem` key, since gracenote names contain "stem")
+    "gracenote": "ornament",
+    "ornament": "ornament",
+    "arpeggiato": "ornament",
+    "fermata": "ornament",
+    "tremolo": "ornament",
+    "caesura": "ornament",
+    "artic": "ornament",
+    "augmentationdot": "structural",
+    # dynamics — `dynamic` substring catches dynamicP/M/F/S/Z/R, hairpins, etc.
+    "dynamic": "dynamic",
     # noteheads
     "noteheadblack": "notehead",
     "noteheadhalf": "notehead",
@@ -68,12 +101,15 @@ _CATEGORY_MAP = {
     "rest64th": "rest",
     "rest128th": "rest",
     "rest": "rest",
-    # accidentals
+    # accidentals (incl. key-signature variants via `keyflat`/`keysharp`/`keynatural`)
     "accidentalsharp": "accidental",
     "accidentalflat": "accidental",
     "accidentalnatural": "accidental",
     "accidentaldoublesharp": "accidental",
     "accidentaldoubleflat": "accidental",
+    "keyflat": "accidental",
+    "keysharp": "accidental",
+    "keynatural": "accidental",
     "sharp": "accidental",
     "flat": "accidental",
     "natural": "accidental",
@@ -101,13 +137,32 @@ _CATEGORY_MAP = {
     "timesig9": "time_sig_digit",
     "timesigcommon": "time_sig_digit",
     "timesigcuttime": "time_sig_digit",
+    "timesigcutcommon": "time_sig_digit",
+    "tuplet": "structural",  # tuplet0-9 (digits painted on tuplet brackets)
+    "fingering": "ornament",  # fingering0-5 (small annotation marks)
+    "strings": "ornament",  # stringsUpBow, stringsDownBow (bowing direction)
+    "keyboardpedal": "ornament",  # keyboardPedalPed, keyboardPedalUp
     # barlines
     "barline": "barline",
     "barlinesingle": "barline",
     "barlinedouble": "barline",
     "barlinefinal": "barline",
     "barlineheavy": "barline",
-    # stems
+    # structural / non-symbol marks (beams, staff lines, ties, slurs,
+    # navigation marks, brackets, ledger lines)
+    "beam": "structural",
+    "staff": "structural",
+    "tie": "structural",
+    "slur": "structural",
+    "ledgerline": "structural",
+    "brace": "structural",
+    "coda": "structural",
+    "segno": "structural",
+    "repeatdot": "structural",
+    "tupletbracket": "structural",
+    "ottavabracket": "structural",
+    # stems (kept as its own category for backward compatibility — see
+    # gracenote ordering note above)
     "stem": "stem",
 }
 
