@@ -206,6 +206,44 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--smoke", action="store_true",
                     help="Run a 1-epoch synthetic-data smoke test")
+
+    # ─── Music-aware augmentation overrides ─────────────────────────────────
+    # Music notation is direction-sensitive (a sharp ≠ a backwards sharp;
+    # accidentals don't read upside-down) and monochrome. Default ultralytics
+    # augmentation includes horizontal flip + HSV jitter, which actively
+    # corrupts the labels for music. Override here.
+    ap.add_argument("--fliplr", type=float, default=None,
+                    help="Horizontal flip prob (set 0 for music — symbols "
+                         "are direction-sensitive)")
+    ap.add_argument("--flipud", type=float, default=None,
+                    help="Vertical flip prob (set 0 for music)")
+    ap.add_argument("--hsv_h", type=float, default=None,
+                    help="HSV-Hue augmentation (set 0 for monochrome music)")
+    ap.add_argument("--hsv_s", type=float, default=None,
+                    help="HSV-Saturation augmentation (set 0 for monochrome music)")
+    ap.add_argument("--hsv_v", type=float, default=None,
+                    help="HSV-Value (brightness) augmentation — keep some "
+                         "(scan brightness varies)")
+    ap.add_argument("--mosaic", type=float, default=None,
+                    help="Mosaic augmentation prob (default 1.0 in ultralytics)")
+    ap.add_argument("--mixup", type=float, default=None,
+                    help="MixUp augmentation prob")
+    ap.add_argument("--degrees", type=float, default=None,
+                    help="Rotation range in degrees (small values like 2 OK "
+                         "for scan-skew robustness)")
+
+    # ─── Loss weighting ─────────────────────────────────────────────────────
+    ap.add_argument("--cls", type=float, default=None,
+                    help="Classification loss gain (boost for many-class datasets)")
+    ap.add_argument("--box", type=float, default=None,
+                    help="Box-regression loss gain")
+
+    # ─── Generic pass-through for anything else ─────────────────────────────
+    ap.add_argument("--extra-kwargs", default=None,
+                    help="JSON string of extra kwargs forwarded to "
+                         "ultralytics.YOLO.train(). Takes precedence over "
+                         "the explicit flags above. e.g. "
+                         '\'{"lr0": 0.005, "warmup_epochs": 5}\'')
     return ap
 
 
@@ -241,6 +279,24 @@ def main(argv: list[str] | None = None) -> int:
     if bad is not None:
         return bad
 
+    # Assemble extra ultralytics kwargs from the music-aware flags +
+    # generic JSON pass-through. Explicit None means "don't pass that flag,
+    # let ultralytics use its default."
+    extra: dict = {}
+    for name in ("fliplr", "flipud", "hsv_h", "hsv_s", "hsv_v",
+                 "mosaic", "mixup", "degrees", "cls", "box"):
+        v = getattr(args, name, None)
+        if v is not None:
+            extra[name] = v
+    if args.extra_kwargs:
+        try:
+            generic = json.loads(args.extra_kwargs)
+        except json.JSONDecodeError as exc:
+            return _fail(f"--extra-kwargs is not valid JSON: {exc}", code=2)
+        if not isinstance(generic, dict):
+            return _fail("--extra-kwargs must be a JSON object", code=2)
+        extra.update(generic)  # JSON wins over explicit flags
+
     report = train(
         data_yaml=data_yaml,
         weights=args.weights,
@@ -252,6 +308,7 @@ def main(argv: list[str] | None = None) -> int:
         project=Path(args.project),
         name=args.name,
         workers=args.workers,
+        extra_kwargs=extra or None,
     )
     print(json.dumps(report, indent=2))
     return 0
