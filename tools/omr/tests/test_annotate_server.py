@@ -1,7 +1,10 @@
-"""Tests for tools/omr/annotate/server.py and the JSON-aware scorer.
+"""Tests for tools/omr/annotate/server.py (FastAPI labeling app) and the
+schema-aware scoring helpers.
 
-These tests build a tiny synthetic bench dir under a tmp_path so they don't
-touch the real benchmarks/omr-phase2.5 tree.
+The server tests build a tiny synthetic bench under tmp_path so they
+never touch the real benchmarks/. The scorer tests exercise
+``tools/omr/annotate/score.py`` (unchanged in the server rewrite) and
+guard the v1 markdown / .verdict.json parsing path against regressions.
 """
 
 from __future__ import annotations
@@ -11,8 +14,10 @@ from pathlib import Path
 
 import pytest
 
-# Skip the whole module if Flask isn't installed.
-pytest.importorskip("flask")
+# Skip the whole module if FastAPI isn't installed.
+pytest.importorskip("fastapi")
+
+from fastapi.testclient import TestClient
 
 from tools.omr.annotate.server import create_app
 from tools.omr.annotate.score import run_scorer, parse_verdict_json
@@ -33,8 +38,6 @@ def _make_png(path: Path, width: int = 32, height: int = 16) -> None:
         cv2.imwrite(str(path), img)
     except ImportError:
         # Fallback: a hand-built 1x1 PNG.
-        # (Tests don't actually inspect the bytes, only that the endpoint
-        # returns 200 + image/png.)
         path.write_bytes(bytes.fromhex(
             "89504e470d0a1a0a0000000d49484452000000010000000108020000009077"
             "53de0000000c4944415478da636400000000050001a5f645b40000000049"
@@ -44,7 +47,7 @@ def _make_png(path: Path, width: int = 32, height: int = 16) -> None:
 
 @pytest.fixture
 def bench_dir(tmp_path: Path) -> Path:
-    """Build a minimal Phase 2.5-shaped bench under tmp_path."""
+    """Build a minimal bench under tmp_path: manifest, 2 cells, detection JSON."""
     root = tmp_path / "bench"
     (root / "cells").mkdir(parents=True)
     (root / "detections").mkdir()
@@ -88,7 +91,7 @@ def bench_dir(tmp_path: Path) -> Path:
     detections_c0 = {
         "cell_id": "synth-c0",
         "detections": [
-            {"id": "D0", "smufl_name": "noteheadBlack", "category": "notehead",
+            {"id": "D0", "smufl_name": "noteheadBlackOnLine", "category": "notehead",
              "x": 10, "y": 25, "w": 8, "h": 8, "x_center": 14, "y_center": 29,
              "confidence": 0.9, "pitch": "C4"},
             {"id": "D1", "smufl_name": "rest8th", "category": "rest",
@@ -99,7 +102,7 @@ def bench_dir(tmp_path: Path) -> Path:
     detections_c1 = {
         "cell_id": "synth-c1",
         "detections": [
-            {"id": "D0", "smufl_name": "noteheadBlack", "category": "notehead",
+            {"id": "D0", "smufl_name": "noteheadBlackOnLine", "category": "notehead",
              "x": 10, "y": 25, "w": 8, "h": 8, "x_center": 14, "y_center": 29,
              "confidence": 0.8, "pitch": "D4"},
         ],
@@ -109,6 +112,10 @@ def bench_dir(tmp_path: Path) -> Path:
     (root / "detections" / "synth-c1.json").write_text(
         json.dumps(detections_c1, indent=2))
 
+    # The new server serves the cell PNG (not the overlay) — but both
+    # fixtures exist for compatibility with old tests.
+    _make_png(root / "cells" / "synth-c0.png", width=100, height=60)
+    _make_png(root / "cells" / "synth-c1.png", width=100, height=60)
     _make_png(root / "overlays" / "synth-c0.png")
     _make_png(root / "overlays" / "synth-c1.png")
 
@@ -116,147 +123,272 @@ def bench_dir(tmp_path: Path) -> Path:
 
 
 @pytest.fixture
-def client(bench_dir: Path):
-    app = create_app(bench_dir)
-    app.config["TESTING"] = True
-    return app.test_client()
+def client(bench_dir: Path) -> TestClient:
+    app = create_app(bench_dir)  # accepts Path or Bench
+    return TestClient(app)
 
 
 # ---------------------------------------------------------------------------
-# Endpoint tests
+# Endpoint tests (FastAPI app)
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.omr_annotate
-def test_index_renders(client) -> None:
+def test_index_renders(client: TestClient) -> None:
     resp = client.get("/")
     assert resp.status_code == 200
-    body = resp.data.decode()
-    assert "synth-c0" in body
-    assert "synth-c1" in body
-    # Both cells start empty.
-    assert body.count("empty") >= 2
+    body = resp.text
+    # The index page is client-rendered — the cell list comes via /api/cells.
+    # We just check that the page skeleton + script tag are present.
+    assert "ReEngrave labeling" in body
+    assert "/static/index.js" in body
 
 
 @pytest.mark.omr_annotate
-def test_cell_detail_renders(client) -> None:
+def test_cell_page_renders(client: TestClient) -> None:
     resp = client.get("/cells/synth-c0")
     assert resp.status_code == 200
-    body = resp.data.decode()
-    assert "synth-c0" in body
-    # The two detections should show up.
-    assert "D0" in body
-    assert "D1" in body
-    # Radio buttons present.
-    assert 'value="TP"' in body
-    assert 'value="FP"' in body
-    assert 'value="unsure"' in body
+    body = resp.text
+    # The cell page is client-rendered — it ships only the skeleton plus
+    # the verdict-button labels.
+    assert "TP" in body and "FP" in body and "Fix class" in body
+    assert "/static/cell.js" in body
 
 
 @pytest.mark.omr_annotate
-def test_cell_detail_unknown_cell_is_404(client) -> None:
+def test_cell_page_unknown_cell_is_404(client: TestClient) -> None:
     resp = client.get("/cells/does-not-exist")
     assert resp.status_code == 404
 
 
 @pytest.mark.omr_annotate
-def test_overlay_png_served(client) -> None:
-    resp = client.get("/cells/synth-c0/overlay.png")
+def test_api_cells_lists_both(client: TestClient) -> None:
+    resp = client.get("/api/cells")
     assert resp.status_code == 200
-    assert resp.content_type.startswith("image/")
+    cells = resp.json()
+    ids = [c["cell_id"] for c in cells]
+    assert ids == ["synth-c0", "synth-c1"]
+    # Both start unlabeled.
+    for c in cells:
+        assert c["has_verdict"] is False
+        assert c["n_pending"] == c["n_detections"]
 
 
 @pytest.mark.omr_annotate
-def test_verdict_get_empty_initially(client) -> None:
-    resp = client.get("/cells/synth-c0/verdict.json")
+def test_api_bench_summary(client: TestClient) -> None:
+    resp = client.get("/api/bench")
     assert resp.status_code == 200
-    state = resp.get_json()
+    info = resp.json()
+    assert info["n_cells"] == 2
+    assert info["n_classes"] == 168
+    # All 9 picker categories should be available.
+    assert set(info["categories"]) >= {
+        "notehead", "rest", "clef", "accidental", "flag",
+        "dynamic", "ornament", "structural", "time_sig",
+    }
+
+
+@pytest.mark.omr_annotate
+def test_api_classes_includes_archetype_url(client: TestClient) -> None:
+    resp = client.get("/api/classes")
+    assert resp.status_code == 200
+    classes = resp.json()
+    by_name = {c["name"]: c for c in classes}
+    assert "noteheadBlackOnLine" in by_name
+    # Archetype URLs point at the static dir, regardless of whether the
+    # PNG happens to exist in this test env.
+    if by_name["noteheadBlackOnLine"]["has_archetype"]:
+        assert by_name["noteheadBlackOnLine"]["archetype_url"].endswith(
+            "/static/archetypes/noteheadBlackOnLine.png"
+        )
+
+
+@pytest.mark.omr_annotate
+def test_cell_image_served(client: TestClient) -> None:
+    resp = client.get("/api/cell/synth-c0/image")
+    assert resp.status_code == 200
+    assert resp.headers["content-type"].startswith("image/")
+
+
+@pytest.mark.omr_annotate
+def test_cell_crop_served(client: TestClient) -> None:
+    resp = client.get(
+        "/api/cell/synth-c0/crop",
+        params={"x": 5, "y": 5, "w": 20, "h": 10, "pad": 2},
+    )
+    assert resp.status_code == 200
+    assert resp.headers["content-type"].startswith("image/")
+    assert len(resp.content) > 60  # at least a valid PNG header
+
+
+@pytest.mark.omr_annotate
+def test_verdict_get_empty_initially_v2_shaped(client: TestClient) -> None:
+    resp = client.get("/api/cell/synth-c0/verdict")
+    assert resp.status_code == 200
+    payload = resp.json()
+    assert payload["source"] == "new"
+    state = payload["state"]
     assert state["cell_id"] == "synth-c0"
-    assert len(state["verdicts"]) == 2
-    assert all(v["verdict"] == "" for v in state["verdicts"])
-    assert state["fn_noteheads"] == []
+    assert state["schema_version"] == 2
+    assert len(state["detections"]) == 2
+    assert state["added_detections"] == []
+    for d in state["detections"]:
+        assert d["verdict"] is None
+        assert d["human_corrected_class"] is None
+        assert d["human_bbox"] is None
+        # Bbox + class come from the detections JSON.
+        assert d["model_bbox"]["w"] > 0
+        assert d["model_predicted_class"]
 
 
 @pytest.mark.omr_annotate
-def test_verdict_post_persists(client, bench_dir: Path) -> None:
+def test_verdict_post_persists_v2(client: TestClient, bench_dir: Path) -> None:
     payload = {
         "cell_id": "synth-c0",
-        "verdicts": [
-            {"detection_id": "D0", "smufl_name": "noteheadBlack",
-             "verdict": "TP"},
-            {"detection_id": "D1", "smufl_name": "rest8th",
-             "verdict": "FP"},
+        "schema_version": 2,
+        "detections": [
+            {
+                "id": "D0",
+                "verdict": "TP",
+                "model_predicted_class": "noteheadBlackOnLine",
+                "model_predicted_category": "notehead",
+                "human_corrected_class": None,
+                "human_corrected_category": None,
+                "model_bbox": {"x": 10, "y": 25, "w": 8, "h": 8},
+                "human_bbox": None,
+                "confidence": 0.9,
+                "notes": "",
+            },
+            {
+                "id": "D1",
+                "verdict": "WRONG_CATEGORY",
+                "model_predicted_class": "rest8th",
+                "model_predicted_category": "rest",
+                "human_corrected_class": "rest16th",
+                "human_corrected_category": "rest",
+                "model_bbox": {"x": 30, "y": 20, "w": 6, "h": 12},
+                "human_bbox": None,
+                "confidence": 0.7,
+                "notes": "looks like 16th",
+            },
         ],
-        "fn_noteheads": [
-            {"id": "FN1", "x_canonical": 50, "y_canonical": 30, "pitch": "G4"},
+        "added_detections": [
+            {
+                "id": "H0",
+                "human_class": "fermataAbove",
+                "human_category": "ornament",
+                "bbox": {"x": 50, "y": 8, "w": 12, "h": 6},
+                "notes": "",
+            }
         ],
     }
-    resp = client.post("/cells/synth-c0/verdict.json", json=payload)
+    resp = client.post("/api/cell/synth-c0/verdict", json=payload)
     assert resp.status_code == 200
-    out = resp.get_json()
-    assert out["ok"] is True
-    assert out["errors"] == []
+    assert resp.json()["ok"] is True
 
-    # Persisted to disk?
     saved = json.loads(
-        (bench_dir / "verdicts" / "synth-c0.verdict.json").read_text())
-    assert saved["cell_id"] == "synth-c0"
-    assert saved["verdicts"][0]["verdict"] == "TP"
-    assert saved["verdicts"][1]["verdict"] == "FP"
-    assert len(saved["fn_noteheads"]) == 1
-    assert saved["fn_noteheads"][0]["pitch"] == "G4"
+        (bench_dir / "verdicts" / "synth-c0.verdict.json").read_text()
+    )
+    assert saved["schema_version"] == 2
+    assert saved["labeled_at_utc"]  # populated by the server
+    assert saved["detections"][0]["verdict"] == "TP"
+    assert saved["detections"][1]["human_corrected_class"] == "rest16th"
+    assert saved["added_detections"][0]["human_class"] == "fermataAbove"
 
-    # GET reads it back.
-    resp2 = client.get("/cells/synth-c0/verdict.json")
-    assert resp2.status_code == 200
-    state = resp2.get_json()
-    assert state["verdicts"][0]["verdict"] == "TP"
-    assert state["fn_noteheads"][0]["x_canonical"] == 50
+    # GET reads it back as schema_v2 (source=v2).
+    resp2 = client.get("/api/cell/synth-c0/verdict")
+    state = resp2.json()
+    assert state["source"] == "v2"
+    assert state["state"]["detections"][0]["verdict"] == "TP"
+    assert state["state"]["added_detections"][0]["bbox"]["x"] == 50
 
 
 @pytest.mark.omr_annotate
-def test_verdict_post_validates_bad_verdict_string(client, bench_dir: Path) -> None:
+def test_verdict_post_validates_bad_verdict(client: TestClient) -> None:
     payload = {
         "cell_id": "synth-c0",
-        "verdicts": [
-            {"detection_id": "D0", "smufl_name": "noteheadBlack",
-             "verdict": "nonsense"},
+        "schema_version": 2,
+        "detections": [
+            {
+                "id": "D0",
+                "verdict": "nonsense",
+                "model_predicted_class": "noteheadBlackOnLine",
+                "model_predicted_category": "notehead",
+                "model_bbox": {"x": 10, "y": 25, "w": 8, "h": 8},
+                "confidence": 0.9,
+            }
         ],
-        "fn_noteheads": [],
+        "added_detections": [],
     }
-    resp = client.post("/cells/synth-c0/verdict.json", json=payload)
-    assert resp.status_code == 200
-    out = resp.get_json()
-    assert out["ok"] is True
-    assert any("bad verdict" in e for e in out["errors"])
-    # Bad verdict was coerced to empty.
-    assert out["state"]["verdicts"][0]["verdict"] == ""
+    resp = client.post("/api/cell/synth-c0/verdict", json=payload)
+    # Schema validation fails the request rather than silently coercing —
+    # cleaner than the old v1 behavior since the UI is the only writer.
+    assert resp.status_code == 400
 
 
 @pytest.mark.omr_annotate
-def test_verdict_post_cell_id_mismatch_reports_error(client) -> None:
+def test_verdict_post_cell_id_mismatch(client: TestClient) -> None:
     payload = {
         "cell_id": "wrong-id",
-        "verdicts": [],
-        "fn_noteheads": [],
+        "schema_version": 2,
+        "detections": [],
+        "added_detections": [],
     }
-    resp = client.post("/cells/synth-c0/verdict.json", json=payload)
-    assert resp.status_code == 200
-    out = resp.get_json()
-    assert any("cell_id mismatch" in e for e in out["errors"])
+    resp = client.post("/api/cell/synth-c0/verdict", json=payload)
+    assert resp.status_code == 400
+    assert "cell_id" in resp.json()["detail"]
 
 
 @pytest.mark.omr_annotate
-def test_verdict_post_unknown_cell_is_404(client) -> None:
+def test_verdict_post_unknown_cell_is_404(client: TestClient) -> None:
     resp = client.post(
-        "/cells/missing/verdict.json",
-        json={"cell_id": "missing", "verdicts": [], "fn_noteheads": []},
+        "/api/cell/missing/verdict",
+        json={"cell_id": "missing", "schema_version": 2,
+              "detections": [], "added_detections": []},
     )
     assert resp.status_code == 404
 
 
+@pytest.mark.omr_annotate
+def test_v1_verdict_file_migrates_to_v2_on_read(
+    client: TestClient, bench_dir: Path
+) -> None:
+    # Drop a schema_v1 verdict file (no schema_version key, has fn_noteheads).
+    v1 = {
+        "cell_id": "synth-c0",
+        "verdicts": [
+            {"detection_id": "D0", "smufl_name": "noteheadBlackOnLine",
+             "verdict": "TP"},
+            {"detection_id": "D1", "smufl_name": "rest8th",
+             "verdict": "FP", "actual_label": "rest16th"},
+        ],
+        "fn_noteheads": [
+            {"id": "FN1", "x_canonical": 50, "y_canonical": 30,
+             "pitch": "G4", "class_name": "noteheadBlackInSpace"},
+        ],
+    }
+    (bench_dir / "verdicts" / "synth-c0.verdict.json").write_text(
+        json.dumps(v1)
+    )
+
+    resp = client.get("/api/cell/synth-c0/verdict")
+    assert resp.status_code == 200
+    payload = resp.json()
+    assert payload["source"] == "v1"
+    state = payload["state"]
+    assert state["schema_version"] == 2
+    # FP with actual_label should turn into WRONG_CATEGORY in v2.
+    by_id = {d["id"]: d for d in state["detections"]}
+    assert by_id["D0"]["verdict"] == "TP"
+    assert by_id["D1"]["verdict"] == "WRONG_CATEGORY"
+    assert by_id["D1"]["human_corrected_class"] == "rest16th"
+    # fn_noteheads should appear under added_detections with synthesized bbox.
+    assert len(state["added_detections"]) == 1
+    assert state["added_detections"][0]["human_class"] == "noteheadBlackInSpace"
+
+
 # ---------------------------------------------------------------------------
-# Scorer-reads-JSON tests
+# Scorer-reads-JSON tests (legacy v1 schema, kept unchanged)
 # ---------------------------------------------------------------------------
 
 
@@ -310,12 +442,13 @@ def test_parse_verdict_json_wrong_pitch_routes_to_corrections() -> None:
 
 @pytest.mark.omr_annotate
 def test_scorer_reads_verdict_json(bench_dir: Path) -> None:
-    # Write a .verdict.json for c0 and an .md for c1; both should be picked up.
+    # Write a v1 .verdict.json for c0 and an .md for c1; both should be picked
+    # up by the existing scoring code (unchanged in the UI rewrite).
     verdicts_dir = bench_dir / "verdicts"
     (verdicts_dir / "synth-c0.verdict.json").write_text(json.dumps({
         "cell_id": "synth-c0",
         "verdicts": [
-            {"detection_id": "D0", "smufl_name": "noteheadBlack",
+            {"detection_id": "D0", "smufl_name": "noteheadBlackOnLine",
              "verdict": "TP"},
             {"detection_id": "D1", "smufl_name": "rest8th",
              "verdict": "FP"},
@@ -324,7 +457,7 @@ def test_scorer_reads_verdict_json(bench_dir: Path) -> None:
     }))
     (verdicts_dir / "synth-c1.md").write_text(
         "# Cell synth-c1 — verdicts\n"
-        "- [x] D0  noteheadBlack (notehead) at (x=14, y=29) → D4  conf=0.80\n"
+        "- [x] D0  noteheadBlackOnLine (notehead) at (x=14, y=29) → D4  conf=0.80\n"
         "       verdict: TP\n"
     )
 
@@ -335,30 +468,26 @@ def test_scorer_reads_verdict_json(bench_dir: Path) -> None:
         detections_dir=bench_dir / "detections",
         manifest_path=bench_dir / "cells.json",
     )
-    # 2 TP (one per cell), 1 FP from c0, 0 FN.
     assert overall["n_tp"] == 2
     assert overall["n_fp"] == 1
     assert overall["n_fn"] == 0
-    # Precision 2/(2+1) = 0.667
     assert abs(overall["precision"] - (2 / 3)) < 1e-6
 
 
 @pytest.mark.omr_annotate
 def test_scorer_prefers_json_over_md(bench_dir: Path) -> None:
     verdicts_dir = bench_dir / "verdicts"
-    # MD says everything is TP.
     (verdicts_dir / "synth-c0.md").write_text(
         "# Cell synth-c0 — verdicts\n"
-        "- [x] D0  noteheadBlack (notehead) at (x=14, y=29) → C4  conf=0.90\n"
+        "- [x] D0  noteheadBlackOnLine (notehead) at (x=14, y=29) → C4  conf=0.90\n"
         "       verdict: TP\n"
         "- [x] D1  rest8th (rest) at (x=33, y=26)  conf=0.70\n"
         "       verdict: TP\n"
     )
-    # JSON says one is TP, one is FP. JSON should win.
     (verdicts_dir / "synth-c0.verdict.json").write_text(json.dumps({
         "cell_id": "synth-c0",
         "verdicts": [
-            {"detection_id": "D0", "smufl_name": "noteheadBlack",
+            {"detection_id": "D0", "smufl_name": "noteheadBlackOnLine",
              "verdict": "TP"},
             {"detection_id": "D1", "smufl_name": "rest8th",
              "verdict": "FP"},
@@ -373,15 +502,6 @@ def test_scorer_prefers_json_over_md(bench_dir: Path) -> None:
         detections_dir=bench_dir / "detections",
         manifest_path=bench_dir / "cells.json",
     )
-    # If MD had won we'd see TP=2, FP=0. JSON winning gives TP=1, FP=1.
+    # JSON wins over markdown: TP=1, FP=1.
     assert overall["n_tp"] == 1
     assert overall["n_fp"] == 1
-
-
-@pytest.mark.omr_annotate
-def test_score_endpoint_runs(client) -> None:
-    resp = client.get("/score")
-    assert resp.status_code == 200
-    body = resp.data.decode()
-    # The page renders a report whether or not any verdicts exist.
-    assert "scoring report" in body.lower() or "scorer failed" not in body.lower()

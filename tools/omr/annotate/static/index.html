@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ReEngrave labeling — cell list</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="page-index">
+<header class="topbar">
+  <h1>ReEngrave labeling</h1>
+  <div id="bench-summary" class="bench-summary"></div>
+</header>
+<main>
+  <div class="filters">
+    <label>Filter:
+      <select id="filter-status">
+        <option value="all">All cells</option>
+        <option value="pending">Has pending detections</option>
+        <option value="untouched">No verdict yet</option>
+        <option value="done">All detections decided</option>
+        <option value="schema_v1">Schema v1 (migration candidates)</option>
+      </select>
+    </label>
+    <label class="search">Find:
+      <input type="text" id="filter-search" placeholder="cell id substring">
+    </label>
+    <span class="counts" id="counts"></span>
+  </div>
+  <div id="cell-table-wrap">
+    <table id="cell-table">
+      <thead>
+        <tr>
+          <th>Cell ID</th>
+          <th>Source</th>
+          <th>Page</th>
+          <th>Sys/Stf/Mes</th>
+          <th>Detections</th>
+          <th>Decided</th>
+          <th>Added</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="cell-tbody"></tbody>
+    </table>
+  </div>
+</main>
+<script src="/static/index.js"></script>
+</body>
+</html>

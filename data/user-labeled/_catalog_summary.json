@@ -1,0 +1,12 @@
+{
+  "generated_utc": "2026-05-17T06:07:21+00:00",
+  "root": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/cool-kare-05197c/data/user-labeled",
+  "val_fraction": 0.15,
+  "seed": "reengrave",
+  "n_versions": 0,
+  "n_train_images": 0,
+  "n_val_images": 0,
+  "n_classes": 208,
+  "weights_source": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt",
+  "versions": []
+}
