@@ -492,3 +492,62 @@ li.v-pending .vbadge { background: #aaa; }
   font-size: 11px;
   color: #333;
 }
+
+/* picker search box */
+.picker-search {
+  display: flex;
+  gap: 4px;
+  padding: 6px 10px;
+  background: #fafafa;
+  border-bottom: 1px solid #d9d9d9;
+}
+.picker-search input {
+  flex: 1;
+  padding: 4px 8px;
+  font: inherit;
+  font-size: 12px;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  background: #fff;
+}
+.picker-search input:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: -2px;
+  border-color: #1976d2;
+}
+.picker-search button {
+  padding: 0 8px;
+  background: #eee;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #555;
+}
+.picker-search button:hover { background: #ddd; }
+.picker-tabs button.dimmed {
+  opacity: 0.55;
+}
+.picker-tabs button.active.dimmed {
+  /* keep the active tab fully visible even when dimmed */
+  opacity: 0.85;
+}
+.archetype-tile .cat-tag {
+  font-size: 9px;
+  color: #666;
+  background: #f0f0f0;
+  border-radius: 2px;
+  padding: 0 4px;
+  margin-top: 2px;
+  font-family: ui-monospace, monospace;
+}
+.archetype-tile.selected .cat-tag {
+  background: #1976d2;
+  color: #fff;
+}
+.picker-empty {
+  padding: 16px;
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+}

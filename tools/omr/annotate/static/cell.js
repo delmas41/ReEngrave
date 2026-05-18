@@ -26,6 +26,7 @@ const state = {
   pickerOpen: false,
   pickerTab: null,
   pickerFor: null,       // {kind: "detection"|"added"|"new", id?: string}
+  pickerSearch: "",      // free-text filter applied across ALL categories
   mode: "normal",        // "normal" | "draw-bbox"
   drawIntent: null,      // {kind: "fix-bbox"|"add-missed", id?: string}
   drawStart: null,       // {x, y} in canonical coords
@@ -399,27 +400,57 @@ function openPicker(forKind, forId, hint) {
 function closePicker() {
   state.pickerOpen = false;
   state.pickerFor = null;
+  state.pickerSearch = "";  // reset filter so next open is clean
+  const inp = $("picker-search-input");
+  if (inp) inp.value = "";
   $("picker").hidden = true;
 }
 
 function renderPicker() {
   const tabsEl = $("picker-tabs");
   const gridEl = $("picker-grid");
+  const emptyEl = $("picker-empty");
+  const searchInput = $("picker-search-input");
+
+  // Reflect current search value in the input (in case it was set
+  // programmatically by openPicker or hotkey).
+  if (searchInput && searchInput.value !== state.pickerSearch) {
+    searchInput.value = state.pickerSearch;
+  }
+
+  // Tabs: render as before, but visually dim them when a search is
+  // active (since search overrides the tab filter).
   tabsEl.innerHTML = "";
   state.categories.order.forEach((cat, i) => {
     const b = document.createElement("button");
     b.textContent = `${i + 1}. ${cat}`;
     if (cat === state.pickerTab) b.classList.add("active");
+    if (state.pickerSearch) b.classList.add("dimmed");
     b.addEventListener("click", () => {
       state.pickerTab = cat;
+      // Clicking a tab clears search — the labeler likely wants to
+      // browse within the chosen tab again.
+      state.pickerSearch = "";
       renderPicker();
     });
     tabsEl.appendChild(b);
   });
-  gridEl.innerHTML = "";
-  const members = state.categories.members[state.pickerTab] || [];
-  // Show predicted class first so it's visually obvious if the labeler
-  // is keeping the same class.
+
+  // Decide what's displayed:
+  //   - If a search query is non-empty, show ALL classes (across every
+  //     category) whose name contains the query (case-insensitive).
+  //   - Else, show the members of the currently selected category tab.
+  let visible;
+  if (state.pickerSearch) {
+    const q = state.pickerSearch.toLowerCase();
+    visible = state.classes
+      .filter((c) => c.name.toLowerCase().includes(q))
+      .map((c) => c.name);
+  } else {
+    visible = state.categories.members[state.pickerTab] || [];
+  }
+
+  // What class is currently set on the detection? Highlight its tile.
   let currentClass = null;
   if (state.pickerFor?.kind === "detection") {
     const { obj } = findItem(state.pickerFor.id);
@@ -428,19 +459,31 @@ function renderPicker() {
     const { obj } = findItem(state.pickerFor.id);
     currentClass = obj?.human_class;
   }
-  for (const name of members) {
+
+  gridEl.innerHTML = "";
+  for (const name of visible) {
     const cls = state.classByName[name];
+    if (!cls) continue;
     const tile = document.createElement("div");
     tile.className = "archetype-tile";
     if (!cls.has_archetype) tile.classList.add("no-archetype");
     if (name === currentClass) tile.classList.add("selected");
+    // When searching, also show the source category as a small tag so
+    // the labeler knows where each match comes from.
+    const catTag = state.pickerSearch
+      ? `<div class="cat-tag">${cls.category || "?"}</div>`
+      : "";
     tile.innerHTML = `
       <img src="${cls.archetype_url || ""}" alt="${name}">
       <div class="name">${name}</div>
+      ${catTag}
     `;
     tile.addEventListener("click", () => applyClassCorrection(name));
     gridEl.appendChild(tile);
   }
+
+  // Empty-state message when search returns nothing.
+  if (emptyEl) emptyEl.hidden = visible.length > 0;
 }
 
 // ---------------------------------------------------------------- draw -----
@@ -613,9 +656,25 @@ document.addEventListener("keydown", (evt) => {
   }
 
   if (state.pickerOpen) {
+    // "/" → focus the search box. Works whether the picker is open via a
+    // detection-fix-class flow or a draw-new flow.
+    if (evt.key === "/") {
+      const inp = $("picker-search-input");
+      if (inp) {
+        inp.focus();
+        inp.select();
+        evt.preventDefault();
+      }
+      return;
+    }
     // Number keys jump tabs while the picker is open
     const n = parseInt(evt.key, 10);
     if (!isNaN(n) && n >= 1 && n <= state.categories.order.length) {
+      // If a search filter is active, clearing it is more intuitive than
+      // re-rendering both the tab + the filter (since search overrides tabs).
+      state.pickerSearch = "";
+      const inp = $("picker-search-input");
+      if (inp) inp.value = "";
       state.pickerTab = state.categories.order[n - 1];
       renderPicker();
       evt.preventDefault();
@@ -738,6 +797,37 @@ $("btn-add-fn").addEventListener("click", () => {
   enterDrawMode({ kind: "add-missed" });
 });
 $("picker-close").addEventListener("click", closePicker);
+
+// Picker search — type to filter archetypes across every category.
+(function wirePickerSearch() {
+  const input = $("picker-search-input");
+  const clear = $("picker-search-clear");
+  if (!input) return;
+  input.addEventListener("input", (evt) => {
+    state.pickerSearch = evt.target.value.trim();
+    renderPicker();
+  });
+  // Esc inside the search input: clear it (don't close the whole picker).
+  input.addEventListener("keydown", (evt) => {
+    if (evt.key === "Escape") {
+      if (state.pickerSearch) {
+        state.pickerSearch = "";
+        input.value = "";
+        renderPicker();
+        evt.preventDefault();
+        evt.stopPropagation();
+      } else {
+        input.blur();
+      }
+    }
+  });
+  clear.addEventListener("click", () => {
+    state.pickerSearch = "";
+    input.value = "";
+    input.focus();
+    renderPicker();
+  });
+})();
 
 // Page-context overlay: clicking the topbar button reveals the rendered
 // source PDF page in a right-side sidebar so the labeler can see the

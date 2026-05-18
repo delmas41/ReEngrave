@@ -90,8 +90,17 @@
           <strong>Pick the correct class:</strong>
           <button id="picker-close" title="Esc">close</button>
         </div>
+        <div class="picker-search">
+          <input id="picker-search-input" type="search"
+                 placeholder="Search across all categories (e.g. beam, stem)…"
+                 autocomplete="off" />
+          <button id="picker-search-clear" title="Clear search">✕</button>
+        </div>
         <div class="picker-tabs" id="picker-tabs"></div>
         <div class="picker-grid" id="picker-grid"></div>
+        <div class="picker-empty" id="picker-empty" hidden>
+          <em>No archetypes match your search.</em>
+        </div>
       </div>
     </div>
   </section>
@@ -105,6 +114,7 @@
   <kbd>[</kbd>/<kbd>]</kbd>=prev/next system &nbsp;
   <kbd>{</kbd>/<kbd>}</kbd>=prev/next staff &nbsp;
   <kbd>1</kbd>-<kbd>9</kbd>=picker tab &nbsp;
+  <kbd>/</kbd>=focus picker search &nbsp;
   <kbd>Esc</kbd>=close picker / cancel draw
 </footer>
 
