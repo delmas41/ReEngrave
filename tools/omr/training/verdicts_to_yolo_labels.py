@@ -80,10 +80,28 @@ _FN_DEFAULT_CLASS = "noteheadBlackOnLine"
 # ---------------------------------------------------------------------------
 
 
-def load_class_names(weights_path: Path | None, fallback_json: Path | None) -> list[str]:
-    """Resolve the canonical class-name list.
+# Custom classes added beyond DSv2's 208 — the human can label these via
+# the picker even though no trained model predicts them yet. When verdicts
+# get converted to YOLO labels, these get appended with sequential IDs
+# (208, 209, ...). When we eventually fine-tune, the model's `nc` increases
+# and the new head learns from the hand-labeled examples.
+#
+# IMPORTANT: must stay in sync with `_CUSTOM_CLASSES` in
+# tools/omr/annotate/server.py. The append order determines the YOLO class ID.
+_CUSTOM_CLASSES: list[str] = [
+    "barlineSingle",
+    "barlineDouble",
+    "barlineFinal",
+    "repeatRight",
+    "repeatLeft",
+]
 
-    Preference order:
+
+def load_class_names(weights_path: Path | None, fallback_json: Path | None) -> list[str]:
+    """Resolve the canonical class-name list, INCLUDING custom classes
+    (barlines etc.) that DSv2 didn't annotate but humans label by hand.
+
+    Preference order for the base list:
       1. weights_path     — read `model.names` from a .pt file. This is the
                             ground truth: it's what the trained model uses
                             and what fine-tuning will need to match.
@@ -92,7 +110,11 @@ def load_class_names(weights_path: Path | None, fallback_json: Path | None) -> l
       3. DEEPSCORES_V2_CLASSES — the in-repo snapshot. May be smaller than
                             the model's actual class list, so this is a
                             last resort.
+
+    The custom classes are appended after the base list so their IDs are
+    deterministic across runs.
     """
+    base: list[str] = []
     if weights_path is not None and weights_path.exists():
         try:
             import torch  # local import — heavy
@@ -103,12 +125,21 @@ def load_class_names(weights_path: Path | None, fallback_json: Path | None) -> l
             model = ckpt.get("model") if isinstance(ckpt, dict) else ckpt
             names = getattr(model, "names", None)
             if isinstance(names, dict):
-                return [names[i] for i in sorted(int(k) for k in names.keys())]
-            if isinstance(names, list):
-                return list(names)
-    if fallback_json is not None and fallback_json.exists():
-        return json.loads(fallback_json.read_text())
-    return list(DEEPSCORES_V2_CLASSES)
+                base = [names[i] for i in sorted(int(k) for k in names.keys())]
+            elif isinstance(names, list):
+                base = list(names)
+    if not base and fallback_json is not None and fallback_json.exists():
+        base = json.loads(fallback_json.read_text())
+    if not base:
+        base = list(DEEPSCORES_V2_CLASSES)
+    # Append custom classes, skipping any that already happen to exist
+    # (defensive — shouldn't happen with current DSv2).
+    seen = set(base)
+    for cc in _CUSTOM_CLASSES:
+        if cc not in seen:
+            base.append(cc)
+            seen.add(cc)
+    return base
 
 
 def name_to_first_index(class_names: list[str]) -> dict[str, int]:

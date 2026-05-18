@@ -110,7 +110,10 @@ _CATEGORY_RULES: list[tuple[str, str]] = [
     ("segno", "structural"),
     ("repeatdot", "structural"),
     ("ottavabracket", "structural"),
-    ("barline", "structural"),
+    # Barlines + repeats — their own category (added beyond DSv2's 208 classes)
+    ("barline", "barline"),
+    ("repeatright", "barline"),
+    ("repeatleft", "barline"),
     ("stem", "structural"),
 ]
 
@@ -124,7 +127,21 @@ _CATEGORY_ORDER = [
     "dynamic",
     "ornament",
     "time_sig",
+    "barline",
     "structural",
+]
+
+# Custom classes that don't exist in DSv2's 208 — added by hand for things
+# the dataset didn't annotate. These get included in the labeling picker
+# (with archetypes rendered from Bravura) so a human can label them now;
+# when verdicts get converted to YOLO training labels, they're appended
+# to the class vocabulary as new IDs (208, 209, ...).
+_CUSTOM_CLASSES: list[str] = [
+    "barlineSingle",
+    "barlineDouble",
+    "barlineFinal",
+    "repeatRight",
+    "repeatLeft",
 ]
 
 
@@ -148,7 +165,10 @@ def _load_class_catalog() -> tuple[list[dict], dict[str, list[str]]]:
             "tools/omr/training/data/deepscoresv2_208_classes.json"
         )
     raw = json.loads(_CLASSES_JSON.read_text())
-    unique = list(dict.fromkeys(raw))
+    # The 208 DSv2 classes + custom classes (barlines etc) that DSv2 didn't
+    # annotate but humans label by hand. Custom classes appear in the picker
+    # but won't have model predictions until we re-train with them included.
+    unique = list(dict.fromkeys(list(raw) + _CUSTOM_CLASSES))
     classes = []
     by_cat: dict[str, list[str]] = {c: [] for c in _CATEGORY_ORDER}
     for name in unique:
