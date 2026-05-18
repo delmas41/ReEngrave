@@ -785,29 +785,23 @@ def create_app(bench: Bench | Path) -> FastAPI:
         data = _crop_cell(png, x, y, w, h, pad=pad)
         return Response(content=data, media_type="image/png")
 
-    @app.get("/api/cell/{cell_id}/page")
-    def api_cell_page(cell_id: str) -> FileResponse:
-        """Render the source PDF page that contains this cell as a PNG and
-        return it (cached). Lets the labeler see the full musical context
-        surrounding the cropped measure-cell."""
+    def _render_or_cache_page(cell_id: str) -> tuple[Path, str]:
+        """Helper: ensure the source PDF page for this cell is rendered
+        to disk and return (path, pdf_stem). Raises HTTPException on error."""
         if cell_id not in manifest.by_id:
             raise HTTPException(404, detail=f"unknown cell {cell_id}")
         entry = manifest.by_id[cell_id]
         pdf_path = entry.get("pdf")
         page_num = entry.get("page")
-        if not pdf_path or not page_num:
+        if not pdf_path or page_num is None:
             raise HTTPException(
                 404,
                 detail=f"cell {cell_id} has no pdf+page in manifest"
             )
-        # IMPORTANT: cells.json `page` is 0-indexed (per
-        # tools/omr/annotate/select_cells_orchestral.py:51), but pdf2image's
-        # first_page / last_page params are 1-indexed. Add 1 to convert.
+        # cells.json `page` is 0-indexed, pdf2image is 1-indexed.
         pdf_page_1based = int(page_num) + 1
-        # Cache rendered pages under benchmarks/.../page-thumbnails/
         cache_dir = bench.root / "page-thumbnails"
         cache_dir.mkdir(parents=True, exist_ok=True)
-        # Cache filename uses the 1-based (humans see this) for clarity.
         pdf_stem = Path(pdf_path).stem
         cache_path = cache_dir / f"{pdf_stem}_p{pdf_page_1based}.png"
         if not cache_path.exists():
@@ -825,14 +819,169 @@ def create_app(bench: Bench | Path) -> FastAPI:
                 )
             pages = convert_from_path(
                 str(pdf_p),
-                dpi=150,  # readable but not huge — keep load fast
+                dpi=150,
                 first_page=pdf_page_1based,
                 last_page=pdf_page_1based,
             )
             if not pages:
                 raise HTTPException(500, detail="pdf2image returned no pages")
             pages[0].save(str(cache_path), "PNG")
-        return FileResponse(str(cache_path), media_type="image/png")
+        return cache_path, pdf_stem
+
+    # Source-page DPI used during cell extraction (matches
+    # tools/omr/annotate/select_cells_orchestral.py default).
+    _SOURCE_DPI = 600
+    _PAGE_RENDER_DPI = 150  # what _render_or_cache_page uses
+
+    def _find_cell_bbox_on_page(cell_id: str, page_png: Path) -> dict | None:
+        """Locate the cell's bbox on the rendered page by re-running the
+        same phase-1 staff/measure detection the cell extractor used,
+        finding the matching (system_index, staff_index, measure_index)
+        cell, and converting its bbox_page_px from 600 DPI to the
+        150 DPI page render space.
+
+        Returns {x, y, w, h, n_cells_on_page} or None if not found.
+        Cached per-cell as a JSON sidecar. The PAGE-level phase-1 result
+        is cached too so the 2nd cell on the same page is fast."""
+        if cell_id not in manifest.by_id:
+            return None
+        entry = manifest.by_id[cell_id]
+        cache_dir = bench.root / "page-thumbnails"
+        bbox_cache = cache_dir / f"{cell_id}.bbox.json"
+        if bbox_cache.exists():
+            try:
+                data = json.loads(bbox_cache.read_text())
+                # An older negative cache (no x) means we tried and failed.
+                # Don't retry: caller will fall back to bare page.
+                return data
+            except Exception:
+                pass
+
+        pdf_path = entry.get("pdf")
+        page_idx = entry.get("page")
+        sys_idx = entry.get("system_index")
+        staff_idx = entry.get("staff_index")
+        meas_idx = entry.get("measure_index")
+        if any(x is None for x in (pdf_path, page_idx, sys_idx, staff_idx, meas_idx)):
+            return None
+
+        # Run phase-1 on the page (cache results per page so multiple cells
+        # on the same page don't repeat the work).
+        page_cells = _phase1_cache_for_page(Path(pdf_path), int(page_idx))
+        if page_cells is None:
+            bbox_cache.write_text(json.dumps({"score": 0, "reason": "phase1-failed"}))
+            return None
+
+        match = None
+        for c in page_cells:
+            if (c["system_index"] == sys_idx
+                    and c["staff_index"] == staff_idx
+                    and c["measure_index"] == meas_idx):
+                match = c
+                break
+        if match is None:
+            bbox_cache.write_text(json.dumps({"score": 0, "reason": "no-cell-match"}))
+            return None
+
+        # Convert from 600 DPI page-px to 150 DPI page-render-px.
+        scale = _PAGE_RENDER_DPI / _SOURCE_DPI
+        x0, y0, x1, y1 = match["bbox_page_px"]
+        bbox = {
+            "x": int(round(x0 * scale)),
+            "y": int(round(y0 * scale)),
+            "w": int(round((x1 - x0) * scale)),
+            "h": int(round((y1 - y0) * scale)),
+            "score": 1.0,  # exact (derivation, not heuristic match)
+            "source": "phase1",
+        }
+        bbox_cache.write_text(json.dumps(bbox))
+        return bbox
+
+    # Per-page phase-1 cache. Each entry: list of dicts with system_index,
+    # staff_index, measure_index, bbox_page_px (at _SOURCE_DPI).
+    _phase1_cache: dict[tuple[str, int], list[dict] | None] = {}
+
+    def _phase1_cache_for_page(pdf_path: Path, page_idx: int) -> list[dict] | None:
+        key = (str(pdf_path.resolve()), int(page_idx))
+        if key in _phase1_cache:
+            return _phase1_cache[key]
+        cache_dir = bench.root / "page-thumbnails"
+        disk_cache = cache_dir / f"phase1_{pdf_path.stem}_p{page_idx}.json"
+        if disk_cache.exists():
+            try:
+                cached = json.loads(disk_cache.read_text())
+                _phase1_cache[key] = cached
+                return cached
+            except Exception:
+                pass
+        # Run phase-1 detection on the page at SOURCE_DPI.
+        try:
+            from ..preprocessing import render_page
+            from ..staff_detector import detect_staves
+            from .. import measure_extractor as _me
+        except ImportError:
+            _phase1_cache[key] = None
+            return None
+        try:
+            img = render_page(pdf_path, int(page_idx), dpi=_SOURCE_DPI)
+            pws = detect_staves(img)
+            pws = _me.detect_barlines(pws)
+            cells = _me.extract_measures(pws)
+        except Exception as exc:
+            print(f"[server] WARN: phase1 failed on {pdf_path.name} p{page_idx}: {exc!r}")
+            _phase1_cache[key] = None
+            disk_cache.write_text(json.dumps([]))
+            return None
+        out = []
+        for c in cells:
+            out.append({
+                "system_index": int(c.system_index),
+                "staff_index": int(c.staff_index),
+                "measure_index": int(c.measure_index),
+                "bbox_page_px": list(c.bbox_page_px),
+            })
+        disk_cache.parent.mkdir(parents=True, exist_ok=True)
+        disk_cache.write_text(json.dumps(out))
+        _phase1_cache[key] = out
+        return out
+
+    @app.get("/api/cell/{cell_id}/page")
+    def api_cell_page(cell_id: str, highlight: bool = True) -> Response:
+        """Render the source PDF page that contains this cell as a PNG.
+
+        If `highlight=true` (default) and the cell crop can be located on
+        the page via template matching, draws a yellow rectangle around it
+        so the labeler can see the cell's musical context AT a glance.
+        Pass `?highlight=false` to get the bare page.
+        """
+        cache_path, _ = _render_or_cache_page(cell_id)
+        if not highlight:
+            return FileResponse(str(cache_path), media_type="image/png")
+        bbox = _find_cell_bbox_on_page(cell_id, cache_path)
+        if not bbox or "x" not in bbox:
+            # No confident match — just serve the bare page.
+            return FileResponse(str(cache_path), media_type="image/png")
+        # Draw the highlight using PIL (lighter weight than re-encoding via cv2)
+        try:
+            from PIL import Image, ImageDraw  # type: ignore
+        except ImportError:
+            return FileResponse(str(cache_path), media_type="image/png")
+        img = Image.open(cache_path).convert("RGB")
+        draw = ImageDraw.Draw(img)
+        x, y, w, h = bbox["x"], bbox["y"], bbox["w"], bbox["h"]
+        # Pad the box slightly so the rectangle frame doesn't crop the cell.
+        pad = 4
+        x0, y0 = max(0, x - pad), max(0, y - pad)
+        x1, y1 = min(img.width - 1, x + w + pad), min(img.height - 1, y + h + pad)
+        # Yellow rectangle, 3 px thick, with a translucent inner fill for
+        # extra visibility against busy orchestral scores.
+        draw.rectangle((x0, y0, x1, y1), outline=(255, 215, 0), width=4)
+        # Subtle inner shadow with a thinner inset rectangle.
+        draw.rectangle((x0 + 2, y0 + 2, x1 - 2, y1 - 2), outline=(255, 235, 100), width=1)
+        import io
+        buf = io.BytesIO()
+        img.save(buf, "PNG")
+        return Response(content=buf.getvalue(), media_type="image/png")
 
     @app.get("/api/health")
     def api_health() -> dict:
