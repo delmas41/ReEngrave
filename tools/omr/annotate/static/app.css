@@ -470,3 +470,25 @@ li.v-pending .vbadge { background: #aaa; }
 .bc-system, .bc-staff { color: #b9f6ca; font-family: ui-monospace, monospace; }
 .bc-measure { color: #fff; font-weight: 600; }
 .bc-source-file { font-size: 10px; }
+
+/* Empty-cell hint shown in the detection list when the model found no boxes */
+.no-detections-hint {
+  list-style: none !important;
+  padding: 12px;
+  background: #fff7e6;
+  border: 1px dashed #ffa726;
+  border-radius: 4px;
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #5a3e10;
+}
+.no-detections-hint kbd {
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #333;
+}

@@ -135,6 +135,19 @@ function renderDetectionList() {
     li.addEventListener("click", () => selectDetection(d.id));
     ul.appendChild(li);
   }
+  // Helpful hint if the model found no detections in this cell.
+  const isEmpty = state.verdict.detections.length === 0
+    && state.verdict.added_detections.length === 0;
+  if (isEmpty) {
+    const li = document.createElement("li");
+    li.className = "no-detections-hint";
+    li.innerHTML = `<em>No detections in this cell.</em><br>
+      The model found nothing at conf≥0.25 here (common on first measures,
+      tempo-marking rows, or near-empty rests). Press <kbd>Tab</kbd> to
+      move on, or click <strong>+ add missed detection</strong> below to
+      label anything the model missed.`;
+    ul.appendChild(li);
+  }
   $("det-count").textContent =
     `(${state.verdict.detections.filter((d) => d.verdict).length}/${state.verdict.detections.length})`;
 
