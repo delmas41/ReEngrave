@@ -613,14 +613,101 @@ def create_app(bench: Bench | Path) -> FastAPI:
             else None
         )
         entry = manifest.by_id[cell_id]
+
+        # System-level neighbors: find the cell ID of the first/last cell
+        # in the prev/next (system_index, staff_index) on the same source/page.
+        # Also collect all cells on the same page for the topbar strip.
+        cur_src = entry.get("source_tag", "")
+        cur_page = entry.get("page")
+        cur_sys = entry.get("system_index")
+        cur_staff = entry.get("staff_index")
+        cur_meas = entry.get("measure_index")
+
+        same_page_cells = []
+        same_system_cells = []
+        same_staff_cells = []
+        all_systems_on_page = []  # list of (system_index, staff_index) tuples in order seen
+        for cid in manifest.ordered_ids:
+            e = manifest.by_id[cid]
+            if e.get("source_tag") != cur_src or e.get("page") != cur_page:
+                continue
+            same_page_cells.append({
+                "cell_id": cid,
+                "system_index": e.get("system_index"),
+                "staff_index": e.get("staff_index"),
+                "measure_index": e.get("measure_index"),
+                "is_current": cid == cell_id,
+            })
+            sys_staff = (e.get("system_index"), e.get("staff_index"))
+            if sys_staff not in all_systems_on_page:
+                all_systems_on_page.append(sys_staff)
+            if sys_staff == (cur_sys, cur_staff):
+                same_staff_cells.append(cid)
+            if e.get("system_index") == cur_sys:
+                same_system_cells.append(cid)
+
+        # Find prev/next (system, staff) groups within the same page
+        try:
+            cur_group_idx = all_systems_on_page.index((cur_sys, cur_staff))
+        except ValueError:
+            cur_group_idx = -1
+
+        def _first_cell_in_group(target_sys: int, target_staff: int) -> str | None:
+            for cid in manifest.ordered_ids:
+                e = manifest.by_id[cid]
+                if (e.get("source_tag") == cur_src and e.get("page") == cur_page
+                        and e.get("system_index") == target_sys
+                        and e.get("staff_index") == target_staff):
+                    return cid
+            return None
+
+        prev_staff_id = None
+        next_staff_id = None
+        if cur_group_idx > 0:
+            ps, pst = all_systems_on_page[cur_group_idx - 1]
+            prev_staff_id = _first_cell_in_group(ps, pst)
+        if cur_group_idx >= 0 and cur_group_idx + 1 < len(all_systems_on_page):
+            ns, nst = all_systems_on_page[cur_group_idx + 1]
+            next_staff_id = _first_cell_in_group(ns, nst)
+
+        # System-level (ignoring staff). Find the prev/next distinct
+        # system_index on the same page.
+        unique_systems = []
+        for s, _ in all_systems_on_page:
+            if s not in unique_systems:
+                unique_systems.append(s)
+        prev_system_id = None
+        next_system_id = None
+        try:
+            cs_idx = unique_systems.index(cur_sys)
+        except ValueError:
+            cs_idx = -1
+        if cs_idx > 0:
+            target = unique_systems[cs_idx - 1]
+            # First cell whose system_index == target
+            for cid in manifest.ordered_ids:
+                e = manifest.by_id[cid]
+                if (e.get("source_tag") == cur_src and e.get("page") == cur_page
+                        and e.get("system_index") == target):
+                    prev_system_id = cid
+                    break
+        if cs_idx >= 0 and cs_idx + 1 < len(unique_systems):
+            target = unique_systems[cs_idx + 1]
+            for cid in manifest.ordered_ids:
+                e = manifest.by_id[cid]
+                if (e.get("source_tag") == cur_src and e.get("page") == cur_page
+                        and e.get("system_index") == target):
+                    next_system_id = cid
+                    break
+
         return {
             "cell": {
                 "cell_id": cell_id,
-                "source_tag": entry.get("source_tag", ""),
-                "page": entry.get("page"),
-                "system_index": entry.get("system_index"),
-                "staff_index": entry.get("staff_index"),
-                "measure_index": entry.get("measure_index"),
+                "source_tag": cur_src,
+                "page": cur_page,
+                "system_index": cur_sys,
+                "staff_index": cur_staff,
+                "measure_index": cur_meas,
                 "canonical_w": entry.get("cell_canonical_w"),
                 "canonical_h": entry.get("cell_canonical_h"),
                 "staff_line_ys": entry.get("staff_line_ys_canonical", []),
@@ -628,6 +715,11 @@ def create_app(bench: Bench | Path) -> FastAPI:
             },
             "prev_id": prev_id,
             "next_id": next_id,
+            "prev_staff_id": prev_staff_id,    # prev (system,staff) group on same page
+            "next_staff_id": next_staff_id,    # next (system,staff) group on same page
+            "prev_system_id": prev_system_id,  # prev distinct system on same page
+            "next_system_id": next_system_id,  # next distinct system on same page
+            "page_cells": same_page_cells,     # for the topbar strip
             "index": idx,
             "total": len(manifest.ordered_ids),
         }

@@ -416,3 +416,52 @@ li.v-pending .vbadge { background: #aaa; }
   object-fit: contain;
   background: #f5f5f5;
 }
+
+/* Page-cell strip: appears under the topbar, lets labeler see + click
+   to other cells from the same source page. */
+.page-cell-strip {
+  padding: 6px 14px;
+  background: #2a2d33;
+  border-bottom: 1px solid #111;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #ccc;
+  overflow-x: auto;
+}
+.page-strip-sep {
+  color: #6e7681;
+  font-family: ui-monospace, monospace;
+  margin-left: 8px;
+  margin-right: 2px;
+  font-size: 10px;
+}
+.page-strip-sep:first-child { margin-left: 0; }
+.page-strip-chip {
+  display: inline-block;
+  padding: 2px 7px;
+  background: #3a3d44;
+  color: #ddd;
+  text-decoration: none;
+  border-radius: 3px;
+  font-family: ui-monospace, monospace;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.page-strip-chip:hover { background: #4a4d54; }
+.page-strip-chip.current {
+  background: #1976d2;
+  color: #fff;
+  border-color: #5aaaff;
+  box-shadow: 0 0 0 1px #1976d2;
+}
+
+/* Breadcrumb pieces in #cell-meta (more readable than the original string) */
+.bc-overall { color: #888; }
+.bc-source { color: #b4d4ff; font-family: ui-monospace, monospace; }
+.bc-page { color: #ffd180; }
+.bc-system, .bc-staff { color: #b9f6ca; font-family: ui-monospace, monospace; }
+.bc-measure { color: #fff; font-weight: 600; }
+.bc-source-file { font-size: 10px; }

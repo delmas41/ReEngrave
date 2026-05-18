@@ -20,6 +20,11 @@
   </span>
 </header>
 
+<!-- Page-cell strip: shows other cells from the same source page so the
+     labeler can see where they are and jump around without going back
+     to the global list. Auto-hidden when only one cell on the page. -->
+<div id="page-cell-strip" class="page-cell-strip" hidden></div>
+
 <!-- Source-page context overlay: hidden by default, toggled by btn-show-page -->
 <div id="page-context-overlay" class="page-context-overlay" hidden>
   <div class="page-context-header">
@@ -97,6 +102,8 @@
   <kbd>b</kbd>=fix bbox &nbsp; <kbd>u</kbd>=unsure &nbsp;
   <kbd>n</kbd>/<kbd>p</kbd>=next/prev detection &nbsp;
   <kbd>Tab</kbd>/<kbd>Shift+Tab</kbd>=next/prev cell &nbsp;
+  <kbd>[</kbd>/<kbd>]</kbd>=prev/next system &nbsp;
+  <kbd>{</kbd>/<kbd>}</kbd>=prev/next staff &nbsp;
   <kbd>1</kbd>-<kbd>9</kbd>=picker tab &nbsp;
   <kbd>Esc</kbd>=close picker / cancel draw
 </footer>

@@ -56,12 +56,22 @@ async function load() {
   state.categories = cats;
 
   $("cell-title").textContent = cell.cell.cell_id;
-  $("cell-meta").textContent =
-    `${cell.index + 1}/${cell.total} · ${cell.cell.source_tag}` +
-    ` p${cell.cell.page} sys${cell.cell.system_index}/stf${cell.cell.staff_index}` +
-    `/m${cell.cell.measure_index} · ${verdictRes.source}`;
+  // Position breadcrumb — tells the labeler where on the page they are
+  const samePage = cell.page_cells || [];
+  const meIdx = samePage.findIndex((c) => c.is_current);
+  $("cell-meta").innerHTML =
+    `<span class="bc-overall">${cell.index + 1}/${cell.total}</span>` +
+    ` · <span class="bc-source">${cell.cell.source_tag}</span>` +
+    ` · <span class="bc-page">p${cell.cell.page}</span>` +
+    ` · <span class="bc-system">sys${cell.cell.system_index}</span>` +
+    ` · <span class="bc-staff">staff${cell.cell.staff_index}</span>` +
+    ` · <span class="bc-measure">m${cell.cell.measure_index}` +
+    (meIdx >= 0 ? ` (cell ${meIdx + 1}/${samePage.length} on page)` : "") +
+    `</span>` +
+    ` · <span class="bc-source-file muted">${verdictRes.source}</span>`;
   $("btn-prev").disabled = !cell.prev_id;
   $("btn-next").disabled = !cell.next_id;
+  renderPageCellStrip(cell);
 
   await loadImage();
   renderDetectionList();
@@ -611,6 +621,24 @@ document.addEventListener("keydown", (evt) => {
     return;
   }
 
+  // System / staff navigation within the same page:
+  //   ] = next system on same page (different system_index)
+  //   [ = prev system on same page
+  //   } = next staff group on same page (different system_index or staff_index)
+  //   { = prev staff group on same page
+  if (evt.key === "]") {
+    if (state.cell.next_system_id) { goToCell(state.cell.next_system_id); evt.preventDefault(); return; }
+  }
+  if (evt.key === "[") {
+    if (state.cell.prev_system_id) { goToCell(state.cell.prev_system_id); evt.preventDefault(); return; }
+  }
+  if (evt.key === "}") {
+    if (state.cell.next_staff_id) { goToCell(state.cell.next_staff_id); evt.preventDefault(); return; }
+  }
+  if (evt.key === "{") {
+    if (state.cell.prev_staff_id) { goToCell(state.cell.prev_staff_id); evt.preventDefault(); return; }
+  }
+
   const key = evt.key.toLowerCase();
   if (key === "n") { selectAdjacent(1); evt.preventDefault(); return; }
   if (key === "p") { selectAdjacent(-1); evt.preventDefault(); return; }
@@ -652,6 +680,44 @@ function goToCell(id) {
 }
 
 // ---------------------------------------------------------------- wire ----
+
+// Render a horizontal strip of all cells on the current page so the
+// labeler can see where they are and jump between same-page cells with
+// a click. Strip is grouped visually by (system, staff).
+function renderPageCellStrip(cell) {
+  const strip = document.getElementById("page-cell-strip");
+  if (!strip) return;
+  const cells = cell.page_cells || [];
+  if (cells.length <= 1) {
+    strip.hidden = true;
+    return;
+  }
+  strip.hidden = false;
+  strip.innerHTML = "";
+  // Group by (system_index, staff_index) so visually consecutive cells
+  // from the same staff line cluster together.
+  let lastGroup = null;
+  for (const c of cells) {
+    const groupKey = `s${c.system_index}-${c.staff_index}`;
+    if (groupKey !== lastGroup) {
+      const sep = document.createElement("span");
+      sep.className = "page-strip-sep";
+      sep.textContent = `sys${c.system_index}.staff${c.staff_index}:`;
+      strip.appendChild(sep);
+      lastGroup = groupKey;
+    }
+    const chip = document.createElement("a");
+    chip.className = "page-strip-chip" + (c.is_current ? " current" : "");
+    chip.textContent = `m${c.measure_index}`;
+    chip.href = `/cells/${encodeURIComponent(c.cell_id)}`;
+    chip.title = c.cell_id;
+    chip.addEventListener("click", (evt) => {
+      evt.preventDefault();
+      goToCell(c.cell_id);
+    });
+    strip.appendChild(chip);
+  }
+}
 
 $("btn-prev").addEventListener("click", () => state.cell?.prev_id && goToCell(state.cell.prev_id));
 $("btn-next").addEventListener("click", () => state.cell?.next_id && goToCell(state.cell.next_id));
