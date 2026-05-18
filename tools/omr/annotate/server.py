@@ -114,6 +114,10 @@ _CATEGORY_RULES: list[tuple[str, str]] = [
     ("barline", "barline"),
     ("repeatright", "barline"),
     ("repeatleft", "barline"),
+    # Textual dynamic / expression markings (dim., cresc., rit., dolce, pizz.,
+    # arco, espress., legato, …) — DSv2 doesn't annotate them, this is a
+    # custom catch-all for any italic music word the labeler encounters.
+    ("textdynamic", "dynamic"),
     ("stem", "structural"),
 ]
 
@@ -142,6 +146,7 @@ _CUSTOM_CLASSES: list[str] = [
     "barlineFinal",
     "repeatRight",
     "repeatLeft",
+    "textDynamic",  # catch-all for italic text markings — dim. cresc. rit. dolce pizz. arco etc.
 ]
 
 

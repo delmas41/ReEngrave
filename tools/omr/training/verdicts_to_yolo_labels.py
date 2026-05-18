@@ -94,6 +94,7 @@ _CUSTOM_CLASSES: list[str] = [
     "barlineFinal",
     "repeatRight",
     "repeatLeft",
+    "textDynamic",  # catch-all for italic text markings — dim. cresc. rit. dolce pizz. arco etc.
 ]
 
 
