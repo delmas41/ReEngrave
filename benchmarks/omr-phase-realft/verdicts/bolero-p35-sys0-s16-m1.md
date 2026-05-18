@@ -1,0 +1,208 @@
+<!-- auto-ported from baseline verdicts; new detections are pending -->
+# Cell bolero-p35-sys0-s16-m1 — verdicts
+
+**Image:** ![overlay](../overlays/bolero-p35-sys0-s16-m1.png)
+
+**Clef assumed:** treble
+
+**Staff lines (canonical y):** 27, 38, 49, 59, 70
+
+**Source:** bolero-p35  ·  page 34  ·  sys 0  staff 16  measure 1
+
+
+## Detections
+
+- [x] D0  flag8thDown (flag) at (x=29, y=72)  conf=0.84
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D1  noteheadBlackOnLine (notehead) at (x=29, y=37)  conf=0.77
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D2  articAccentAbove (ornament) at (x=29, y=20)  conf=0.69
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D3  noteheadBlackOnLine (notehead) at (x=30, y=53)  conf=0.50
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D4  rest8th (rest) at (x=71, y=49)  conf=0.66
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D5  flag8thDown (flag) at (x=149, y=72)  conf=0.54
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D6  noteheadBlackOnLine (notehead) at (x=150, y=36)  conf=0.57
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D7  noteheadBlackInSpace (notehead) at (x=150, y=53)  conf=0.53
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D8  articAccentAbove (ornament) at (x=152, y=18)  conf=0.68
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D9  flag8thDown (flag) at (x=156, y=70)  conf=0.31
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D10  rest8th (rest) at (x=195, y=49)  conf=0.79
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D11  noteheadBlackInSpace (notehead) at (x=275, y=41)  conf=0.83
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D12  noteheadBlackInSpace (notehead) at (x=275, y=54)  conf=0.67
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D13  articAccentAbove (ornament) at (x=276, y=20)  conf=0.84
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D14  articAccentAbove (ornament) at (x=349, y=21)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D15  noteheadBlackInSpace (notehead) at (x=353, y=41)  conf=0.81
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D16  noteheadBlackInSpace (notehead) at (x=353, y=54)  conf=0.71
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D17  articAccentAbove (ornament) at (x=354, y=18)  conf=0.63
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D18  articAccentAbove (ornament) at (x=450, y=20)  conf=0.61
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D19  flag8thDown (flag) at (x=452, y=72)  conf=0.75
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D20  noteheadBlackOnLine (notehead) at (x=453, y=36)  conf=0.82
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D21  articAccentAbove (ornament) at (x=453, y=18)  conf=0.61
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D22  noteheadBlackInSpace (notehead) at (x=453, y=53)  conf=0.44
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D23  rest8th (rest) at (x=495, y=49)  conf=0.84
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D24  noteheadBlackInSpace (notehead) at (x=575, y=54)  conf=0.77
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D25  flag8thDown (flag) at (x=575, y=73)  conf=0.69
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D26  articAccentAbove (ornament) at (x=575, y=19)  conf=0.31
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D27  noteheadBlackOnLine (notehead) at (x=576, y=36)  conf=0.72
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D28  articAccentAbove (ornament) at (x=577, y=21)  conf=0.81
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D29  flag8thDown (flag) at (x=579, y=72)  conf=0.29
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D30  rest8th (rest) at (x=620, y=49)  conf=0.68
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D31  noteheadBlackInSpace (notehead) at (x=699, y=41)  conf=0.83
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D32  flag8thDown (flag) at (x=699, y=73)  conf=0.77
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D33  noteheadBlackInSpace (notehead) at (x=699, y=54)  conf=0.71
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D34  articAccentAbove (ornament) at (x=700, y=21)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D35  rest8th (rest) at (x=739, y=49)  conf=0.26
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D36  rest8th (rest) at (x=746, y=49)  conf=0.55
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D37  flag8thDown (flag) at (x=832, y=72)  conf=0.71
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D38  articAccentAbove (ornament) at (x=833, y=20)  conf=0.84
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D39  noteheadBlackOnLine (notehead) at (x=833, y=36)  conf=0.76
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D40  noteheadBlackInSpace (notehead) at (x=833, y=53)  conf=0.72
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D41  articAccentAbove (ornament) at (x=833, y=18)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D42  flag8thDown (flag) at (x=836, y=72)  conf=0.21
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D43  rest8th (rest) at (x=877, y=50)  conf=0.84
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D44  articAccentAbove (ornament) at (x=957, y=21)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D45  noteheadBlackOnLine (notehead) at (x=957, y=36)  conf=0.78
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D46  noteheadBlackInSpace (notehead) at (x=957, y=54)  conf=0.75
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D47  flag8thDown (flag) at (x=957, y=72)  conf=0.70
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D48  rest8th (rest) at (x=1018, y=49)  conf=0.70
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D49  staff (structural) at (x=1049, y=47)  conf=0.40
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D50  noteheadBlackInSpace (notehead) at (x=1097, y=41)  conf=0.71
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D51  noteheadBlackInSpace (notehead) at (x=1097, y=54)  conf=0.53
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D52  articAccentAbove (ornament) at (x=1100, y=20)  conf=0.84
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D53  noteheadBlackInSpace (notehead) at (x=1175, y=41)  conf=0.39
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D54  noteheadBlackInSpace (notehead) at (x=1175, y=54)  conf=0.18
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D55  articAccentAbove (ornament) at (x=1178, y=18)  conf=0.49
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D56  noteheadBlackInSpace (notehead) at (x=1180, y=54)  conf=0.49
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D57  noteheadBlackInSpace (notehead) at (x=1181, y=41)  conf=0.62
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D58  flag8thDown (flag) at (x=1275, y=72)  conf=0.58
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D59  noteheadBlackInSpace (notehead) at (x=1275, y=53)  conf=0.48
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D60  noteheadBlackOnLine (notehead) at (x=1276, y=36)  conf=0.70
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D61  articAccentAbove (ornament) at (x=1278, y=19)  conf=0.66
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D62  flag8thDown (flag) at (x=1281, y=71)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D63  rest8th (rest) at (x=1321, y=49)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D64  articAccentAbove (ornament) at (x=1401, y=20)  conf=0.86
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D65  noteheadBlackOnLine (notehead) at (x=1401, y=36)  conf=0.84
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D66  flag8thDown (flag) at (x=1402, y=71)  conf=0.86
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D67  noteheadBlackInSpace (notehead) at (x=1402, y=53)  conf=0.66
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D68  rest8th (rest) at (x=1444, y=49)  conf=0.80
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D69  staff (structural) at (x=1500, y=48)  conf=0.32
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D70  flag8thDown (flag) at (x=1520, y=72)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D71  articAccentAbove (ornament) at (x=1522, y=21)  conf=0.81
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D72  flag8thDown (flag) at (x=1524, y=72)  conf=0.70
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D73  noteheadBlackInSpace (notehead) at (x=1525, y=41)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D74  noteheadBlackInSpace (notehead) at (x=1525, y=54)  conf=0.66
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D75  articAccentAbove (ornament) at (x=1525, y=18)  conf=0.28
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D76  rest8th (rest) at (x=1567, y=50)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D77  flag8thDown (flag) at (x=1648, y=72)  conf=0.69
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D78  noteheadBlackInSpace (notehead) at (x=1649, y=32)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D79  noteheadBlackInSpace (notehead) at (x=1649, y=54)  conf=0.77
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D80  articAccentAbove (ornament) at (x=1650, y=16)  conf=0.72
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D81  flag8thDown (flag) at (x=1653, y=71)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D82  rest8th (rest) at (x=1694, y=49)  conf=0.68
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D83  flag8thDown (flag) at (x=1772, y=73)  conf=0.80
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D84  articAccentAbove (ornament) at (x=1772, y=16)  conf=0.74
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D85  noteheadBlackInSpace (notehead) at (x=1773, y=32)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D86  noteheadBlackInSpace (notehead) at (x=1773, y=54)  conf=0.80
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D87  rest8th (rest) at (x=1813, y=49)  conf=0.52
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D88  articAccentAbove (ornament) at (x=1897, y=18)  conf=0.57
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D89  noteheadBlackOnLine (notehead) at (x=1898, y=36)  conf=0.66
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D90  noteheadBlackInSpace (notehead) at (x=1898, y=54)  conf=0.62
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D91  articAccentAbove (ornament) at (x=1974, y=21)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D92  noteheadBlackOnLine (notehead) at (x=1975, y=36)  conf=0.62
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D93  noteheadBlackInSpace (notehead) at (x=1976, y=53)  conf=0.62
+       verdict: __________  <!-- new detection, no baseline match -->
+
+## Missed noteheads (FN)
+
+(carried over from baseline — none in pre-filled cells)
+
+## Wrong-pitch corrections

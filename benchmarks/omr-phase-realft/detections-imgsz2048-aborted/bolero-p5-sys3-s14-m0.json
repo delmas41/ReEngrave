@@ -1,0 +1,57 @@
+{
+  "cell_id": "bolero-p5-sys3-s14-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 49,
+      "y": 196,
+      "w": 33,
+      "h": 33,
+      "x_center": 65,
+      "y_center": 212,
+      "confidence": 0.13394314050674438,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "timeSigCommon",
+      "category": "time_sig_digit",
+      "x": 58,
+      "y": 336,
+      "w": 40,
+      "h": 50,
+      "x_center": 78,
+      "y_center": 361,
+      "confidence": 0.3807353973388672,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "fermataBelow",
+      "category": "ornament",
+      "x": 58,
+      "y": 364,
+      "w": 77,
+      "h": 30,
+      "x_center": 96,
+      "y_center": 379,
+      "confidence": 0.10165850818157196,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1202,
+      "y": 192,
+      "w": 73,
+      "h": 8,
+      "x_center": 1238,
+      "y_center": 196,
+      "confidence": 0.35503238439559937,
+      "pitch": null
+    }
+  ]
+}

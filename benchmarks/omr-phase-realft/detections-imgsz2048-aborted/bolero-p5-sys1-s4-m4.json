@@ -1,0 +1,122 @@
+{
+  "cell_id": "bolero-p5-sys1-s4-m4",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "brace",
+      "category": "structural",
+      "x": 0,
+      "y": 0,
+      "w": 9,
+      "h": 322,
+      "x_center": 4,
+      "y_center": 161,
+      "confidence": 0.22310194373130798,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 982,
+      "y": 233,
+      "w": 87,
+      "h": 7,
+      "x_center": 1025,
+      "y_center": 236,
+      "confidence": 0.23810213804244995,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 982,
+      "y": 231,
+      "w": 88,
+      "h": 10,
+      "x_center": 1026,
+      "y_center": 236,
+      "confidence": 0.2074308544397354,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1407,
+      "y": 184,
+      "w": 641,
+      "h": 34,
+      "x_center": 1727,
+      "y_center": 201,
+      "confidence": 0.10036252439022064,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1435,
+      "y": 244,
+      "w": 613,
+      "h": 27,
+      "x_center": 1741,
+      "y_center": 257,
+      "confidence": 0.2777957320213318,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1444,
+      "y": 269,
+      "w": 604,
+      "h": 64,
+      "x_center": 1746,
+      "y_center": 301,
+      "confidence": 0.15188632905483246,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1457,
+      "y": 179,
+      "w": 591,
+      "h": 43,
+      "x_center": 1752,
+      "y_center": 200,
+      "confidence": 0.1315738409757614,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1471,
+      "y": 204,
+      "w": 577,
+      "h": 73,
+      "x_center": 1759,
+      "y_center": 240,
+      "confidence": 0.24773970246315002,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1486,
+      "y": 239,
+      "w": 562,
+      "h": 35,
+      "x_center": 1767,
+      "y_center": 256,
+      "confidence": 0.1313166320323944,
+      "pitch": null
+    }
+  ]
+}

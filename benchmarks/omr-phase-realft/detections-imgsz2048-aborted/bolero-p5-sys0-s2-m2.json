@@ -1,0 +1,18 @@
+{
+  "cell_id": "bolero-p5-sys0-s2-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 986,
+      "y": 211,
+      "w": 78,
+      "h": 6,
+      "x_center": 1025,
+      "y_center": 214,
+      "confidence": 0.5447840094566345,
+      "pitch": null
+    }
+  ]
+}

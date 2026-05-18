@@ -1,0 +1,44 @@
+{
+  "cell_id": "beet5-p5-sys0-s0-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 0,
+      "y": 564,
+      "w": 27,
+      "h": 28,
+      "x_center": 13,
+      "y_center": 578,
+      "confidence": 0.12028718739748001,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 259,
+      "w": 249,
+      "h": 11,
+      "x_center": 124,
+      "y_center": 264,
+      "confidence": 0.19208243489265442,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 0,
+      "y": 664,
+      "w": 251,
+      "h": 31,
+      "x_center": 125,
+      "y_center": 679,
+      "confidence": 0.12812432646751404,
+      "pitch": null
+    }
+  ]
+}

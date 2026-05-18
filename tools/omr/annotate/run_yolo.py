@@ -25,9 +25,11 @@ from pathlib import Path
 
 import numpy as np
 
+import cv2
+
 from ..yolo_detector import YoloDetector
 from ..template_matcher import SymbolDetection
-from .build_template import _load_cell_from_manifest, _detections_to_dict
+from .build_template import _load_cell_from_manifest, _detections_to_dict, render_overlay
 from .port_verdicts import parse_baseline, find_match, render_verdict_md
 
 
@@ -41,9 +43,13 @@ def run(
     conf_threshold: float,
     device: str,
     time_n_runs: int,
+    overlays_out: Path | None = None,
+    imgsz: int = 640,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     detections_out.mkdir(parents=True, exist_ok=True)
+    if overlays_out is not None:
+        overlays_out.mkdir(parents=True, exist_ok=True)
 
     manifest = json.loads(manifest_path.read_text())
     root = Path.cwd()
@@ -70,10 +76,10 @@ def run(
             timing = detector.time_detect(
                 cell, conf_threshold=conf_threshold, n_runs=time_n_runs,
             )
-            detections = detector.detect(cell, conf_threshold=conf_threshold)
+            detections = detector.detect(cell, conf_threshold=conf_threshold, imgsz=imgsz)
         else:
             t0 = time.perf_counter()
-            detections = detector.detect(cell, conf_threshold=conf_threshold)
+            detections = detector.detect(cell, conf_threshold=conf_threshold, imgsz=imgsz)
             t1 = time.perf_counter()
             timing = {
                 "n_runs": 1,
@@ -86,6 +92,12 @@ def run(
         # Persist detections JSON.
         det_path = detections_out / f"{cid}.json"
         det_path.write_text(json.dumps(_detections_to_dict(cid, detections), indent=2))
+
+        # Persist annotated overlay PNG (required by the labeling UI).
+        if overlays_out is not None:
+            overlay_path = overlays_out / f"{cid}.png"
+            canvas = render_overlay(cell, detections, upscale=2)
+            cv2.imwrite(str(overlay_path), canvas)
 
         # Try to port baseline verdicts if a baseline_dir is given AND a
         # markdown for this cell exists. Because YOLO will produce
@@ -149,9 +161,14 @@ def main() -> None:
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--detections-out", required=True)
     ap.add_argument("--baseline-verdicts", default="benchmarks/omr-phase2.5/verdicts")
+    ap.add_argument("--overlays-out", default=None,
+                    help="If set, also write annotated overlay PNGs here (the labeling UI reads them).")
     ap.add_argument("--conf", type=float, default=0.10)
     ap.add_argument("--device", default="auto")
     ap.add_argument("--time-n-runs", type=int, default=5)
+    ap.add_argument("--imgsz", type=int, default=640,
+                    help="YOLO inference image size. Use 2048 for high-res orchestral cells "
+                         "to keep small symbols above the detection floor.")
     args = ap.parse_args()
     run(
         manifest_path=Path(args.manifest),
@@ -163,6 +180,8 @@ def main() -> None:
         conf_threshold=args.conf,
         device=args.device,
         time_n_runs=args.time_n_runs,
+        overlays_out=Path(args.overlays_out) if args.overlays_out else None,
+        imgsz=args.imgsz,
     )
 
 
