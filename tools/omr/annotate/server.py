@@ -800,12 +800,16 @@ def create_app(bench: Bench | Path) -> FastAPI:
                 404,
                 detail=f"cell {cell_id} has no pdf+page in manifest"
             )
+        # IMPORTANT: cells.json `page` is 0-indexed (per
+        # tools/omr/annotate/select_cells_orchestral.py:51), but pdf2image's
+        # first_page / last_page params are 1-indexed. Add 1 to convert.
+        pdf_page_1based = int(page_num) + 1
         # Cache rendered pages under benchmarks/.../page-thumbnails/
         cache_dir = bench.root / "page-thumbnails"
         cache_dir.mkdir(parents=True, exist_ok=True)
-        # PDF path → safe filename
+        # Cache filename uses the 1-based (humans see this) for clarity.
         pdf_stem = Path(pdf_path).stem
-        cache_path = cache_dir / f"{pdf_stem}_p{page_num}.png"
+        cache_path = cache_dir / f"{pdf_stem}_p{pdf_page_1based}.png"
         if not cache_path.exists():
             try:
                 from pdf2image import convert_from_path  # lazy
@@ -822,8 +826,8 @@ def create_app(bench: Bench | Path) -> FastAPI:
             pages = convert_from_path(
                 str(pdf_p),
                 dpi=150,  # readable but not huge — keep load fast
-                first_page=int(page_num),
-                last_page=int(page_num),
+                first_page=pdf_page_1based,
+                last_page=pdf_page_1based,
             )
             if not pages:
                 raise HTTPException(500, detail="pdf2image returned no pages")
