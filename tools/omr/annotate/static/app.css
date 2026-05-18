@@ -390,6 +390,11 @@ li.v-pending .vbadge { background: #aaa; }
   display: flex;
   flex-direction: column;
 }
+/* `hidden` HTML attribute → really hide it. The `display: flex` rule
+   above otherwise wins over the browser's default `[hidden] { display: none }`. */
+.page-context-overlay[hidden] {
+  display: none !important;
+}
 .page-context-header {
   padding: 8px 12px;
   background: #1976d2;

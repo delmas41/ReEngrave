@@ -730,13 +730,16 @@ $("picker-close").addEventListener("click", closePicker);
 // source PDF page in a right-side sidebar so the labeler can see the
 // musical context that the cropped cell may have stripped away.
 function showPageContext() {
-  if (!state.cell?.id) return;
+  // The cell ID lives at state.cell.cell.cell_id — state.cell IS the full
+  // /api/cell/{id} response, which wraps the cell entry under a `cell` key.
+  const cid = state.cell?.cell?.cell_id || cellId;
+  if (!cid) return;
   const overlay = $("page-context-overlay");
   const img = $("page-context-img");
   const title = $("page-context-title");
   const btn = $("btn-show-page");
-  img.src = `/api/cell/${encodeURIComponent(state.cell.id)}/page`;
-  title.textContent = `Source page (${state.cell.id})`;
+  img.src = `/api/cell/${encodeURIComponent(cid)}/page`;
+  title.textContent = `Source page · ${cid}`;
   overlay.hidden = false;
   btn.classList.add("active");
 }
