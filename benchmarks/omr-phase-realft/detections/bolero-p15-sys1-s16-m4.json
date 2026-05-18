@@ -239,19 +239,6 @@
       "id": "D18",
       "smufl_name": "beam",
       "category": "structural",
-      "x": 487,
-      "y": 378,
-      "w": 1535,
-      "h": 33,
-      "x_center": 1254,
-      "y_center": 394,
-      "confidence": 0.21012721955776215,
-      "pitch": null
-    },
-    {
-      "id": "D19",
-      "smufl_name": "beam",
-      "category": "structural",
       "x": 1124,
       "y": 270,
       "w": 277,
@@ -262,7 +249,7 @@
       "pitch": null
     },
     {
-      "id": "D20",
+      "id": "D19",
       "smufl_name": "slur",
       "category": "structural",
       "x": 1153,
@@ -275,7 +262,7 @@
       "pitch": null
     },
     {
-      "id": "D21",
+      "id": "D20",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1263,
@@ -288,7 +275,7 @@
       "pitch": null
     },
     {
-      "id": "D22",
+      "id": "D21",
       "smufl_name": "articStaccatoAbove",
       "category": "ornament",
       "x": 1290,
@@ -301,7 +288,7 @@
       "pitch": null
     },
     {
-      "id": "D23",
+      "id": "D22",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1402,
@@ -314,7 +301,7 @@
       "pitch": null
     },
     {
-      "id": "D24",
+      "id": "D23",
       "smufl_name": "articStaccatoAbove",
       "category": "ornament",
       "x": 1428,
@@ -327,7 +314,7 @@
       "pitch": null
     },
     {
-      "id": "D25",
+      "id": "D24",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1547,
@@ -340,7 +327,7 @@
       "pitch": null
     },
     {
-      "id": "D26",
+      "id": "D25",
       "smufl_name": "articStaccatoAbove",
       "category": "ornament",
       "x": 1573,
@@ -353,7 +340,7 @@
       "pitch": null
     },
     {
-      "id": "D27",
+      "id": "D26",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1549,
@@ -366,7 +353,7 @@
       "pitch": null
     },
     {
-      "id": "D28",
+      "id": "D27",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1796,
@@ -379,7 +366,7 @@
       "pitch": null
     },
     {
-      "id": "D29",
+      "id": "D28",
       "smufl_name": "articStaccatoAbove",
       "category": "ornament",
       "x": 1823,

@@ -26,19 +26,6 @@
       "y_center": 221,
       "confidence": 0.8632362484931946,
       "pitch": null
-    },
-    {
-      "id": "D2",
-      "smufl_name": "staff",
-      "category": "structural",
-      "x": 1,
-      "y": 515,
-      "w": 2047,
-      "h": 8,
-      "x_center": 1024,
-      "y_center": 519,
-      "confidence": 0.1296757012605667,
-      "pitch": null
     }
   ]
 }

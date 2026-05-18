@@ -130,19 +130,6 @@
       "y_center": 449,
       "confidence": 0.832356333732605,
       "pitch": null
-    },
-    {
-      "id": "D10",
-      "smufl_name": "ledgerLine",
-      "category": "structural",
-      "x": 1605,
-      "y": 444,
-      "w": 110,
-      "h": 17,
-      "x_center": 1660,
-      "y_center": 452,
-      "confidence": 0.13003423810005188,
-      "pitch": null
     }
   ]
 }

@@ -16,8 +16,6 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D1  restWhole (rest) at (x=1024, y=221)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  staff (structural) at (x=1024, y=519)  conf=0.13
-       verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)
 

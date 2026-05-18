@@ -174,19 +174,6 @@
       "id": "D13",
       "smufl_name": "ledgerLine",
       "category": "structural",
-      "x": 1609,
-      "y": 375,
-      "w": 94,
-      "h": 19,
-      "x_center": 1656,
-      "y_center": 384,
-      "confidence": 0.14933443069458008,
-      "pitch": null
-    },
-    {
-      "id": "D14",
-      "smufl_name": "ledgerLine",
-      "category": "structural",
       "x": 1610,
       "y": 368,
       "w": 95,
@@ -197,7 +184,7 @@
       "pitch": null
     },
     {
-      "id": "D15",
+      "id": "D14",
       "smufl_name": "ledgerLine",
       "category": "structural",
       "x": 1612,
@@ -210,7 +197,7 @@
       "pitch": null
     },
     {
-      "id": "D16",
+      "id": "D15",
       "smufl_name": "flag8thUp",
       "category": "flag",
       "x": 1688,
@@ -223,7 +210,7 @@
       "pitch": null
     },
     {
-      "id": "D17",
+      "id": "D16",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1835,

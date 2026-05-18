@@ -673,6 +673,51 @@ def create_app(bench: Bench | Path) -> FastAPI:
         data = _crop_cell(png, x, y, w, h, pad=pad)
         return Response(content=data, media_type="image/png")
 
+    @app.get("/api/cell/{cell_id}/page")
+    def api_cell_page(cell_id: str) -> FileResponse:
+        """Render the source PDF page that contains this cell as a PNG and
+        return it (cached). Lets the labeler see the full musical context
+        surrounding the cropped measure-cell."""
+        if cell_id not in manifest.by_id:
+            raise HTTPException(404, detail=f"unknown cell {cell_id}")
+        entry = manifest.by_id[cell_id]
+        pdf_path = entry.get("pdf")
+        page_num = entry.get("page")
+        if not pdf_path or not page_num:
+            raise HTTPException(
+                404,
+                detail=f"cell {cell_id} has no pdf+page in manifest"
+            )
+        # Cache rendered pages under benchmarks/.../page-thumbnails/
+        cache_dir = bench.root / "page-thumbnails"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        # PDF path → safe filename
+        pdf_stem = Path(pdf_path).stem
+        cache_path = cache_dir / f"{pdf_stem}_p{page_num}.png"
+        if not cache_path.exists():
+            try:
+                from pdf2image import convert_from_path  # lazy
+            except ImportError:
+                raise HTTPException(
+                    500,
+                    detail="pdf2image not installed — pip install pdf2image"
+                )
+            pdf_p = Path(pdf_path)
+            if not pdf_p.exists():
+                raise HTTPException(
+                    404, detail=f"source PDF not found at {pdf_path}"
+                )
+            pages = convert_from_path(
+                str(pdf_p),
+                dpi=150,  # readable but not huge — keep load fast
+                first_page=int(page_num),
+                last_page=int(page_num),
+            )
+            if not pages:
+                raise HTTPException(500, detail="pdf2image returned no pages")
+            pages[0].save(str(cache_path), "PNG")
+        return FileResponse(str(cache_path), media_type="image/png")
+
     @app.get("/api/health")
     def api_health() -> dict:
         return {

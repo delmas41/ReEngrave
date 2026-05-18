@@ -146,32 +146,6 @@
     },
     {
       "id": "D11",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 5,
-      "y": 314,
-      "w": 2043,
-      "h": 21,
-      "x_center": 1026,
-      "y_center": 324,
-      "confidence": 0.1507219523191452,
-      "pitch": null
-    },
-    {
-      "id": "D12",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 10,
-      "y": 315,
-      "w": 2038,
-      "h": 20,
-      "x_center": 1029,
-      "y_center": 325,
-      "confidence": 0.14713844656944275,
-      "pitch": null
-    },
-    {
-      "id": "D13",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1048,
@@ -184,7 +158,7 @@
       "pitch": null
     },
     {
-      "id": "D14",
+      "id": "D12",
       "smufl_name": "articStaccatoBelow",
       "category": "ornament",
       "x": 1072,
@@ -197,7 +171,7 @@
       "pitch": null
     },
     {
-      "id": "D15",
+      "id": "D13",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1258,
@@ -210,7 +184,7 @@
       "pitch": null
     },
     {
-      "id": "D16",
+      "id": "D14",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1112,
@@ -223,7 +197,7 @@
       "pitch": null
     },
     {
-      "id": "D17",
+      "id": "D15",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1381,
@@ -236,7 +210,7 @@
       "pitch": null
     },
     {
-      "id": "D18",
+      "id": "D16",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1323,
@@ -249,7 +223,7 @@
       "pitch": null
     },
     {
-      "id": "D19",
+      "id": "D17",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1502,
@@ -262,7 +236,7 @@
       "pitch": null
     },
     {
-      "id": "D20",
+      "id": "D18",
       "smufl_name": "articStaccatoBelow",
       "category": "ornament",
       "x": 1646,
@@ -275,7 +249,7 @@
       "pitch": null
     },
     {
-      "id": "D21",
+      "id": "D19",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1624,
@@ -288,7 +262,7 @@
       "pitch": null
     },
     {
-      "id": "D22",
+      "id": "D20",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1686,
@@ -301,20 +275,7 @@
       "pitch": null
     },
     {
-      "id": "D23",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 1687,
-      "y": 112,
-      "w": 209,
-      "h": 22,
-      "x_center": 1791,
-      "y_center": 123,
-      "confidence": 0.49855923652648926,
-      "pitch": null
-    },
-    {
-      "id": "D24",
+      "id": "D21",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1836,
@@ -327,7 +288,7 @@
       "pitch": null
     },
     {
-      "id": "D25",
+      "id": "D22",
       "smufl_name": "articStaccatoBelow",
       "category": "ornament",
       "x": 1858,

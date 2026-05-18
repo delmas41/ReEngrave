@@ -38,15 +38,13 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D12  noteheadBlackOnLine (notehead) at (x=1656, y=427)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D13  ledgerLine (structural) at (x=1656, y=384)  conf=0.15
+- [x] D13  ledgerLine (structural) at (x=1657, y=377)  conf=0.29
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D14  ledgerLine (structural) at (x=1657, y=377)  conf=0.29
+- [x] D14  ledgerLine (structural) at (x=1658, y=427)  conf=0.38
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D15  ledgerLine (structural) at (x=1658, y=427)  conf=0.38
+- [x] D15  flag8thUp (flag) at (x=1710, y=309)  conf=0.85
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D16  flag8thUp (flag) at (x=1710, y=309)  conf=0.85
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D17  rest8th (rest) at (x=1860, y=234)  conf=0.91
+- [x] D16  rest8th (rest) at (x=1860, y=234)  conf=0.91
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

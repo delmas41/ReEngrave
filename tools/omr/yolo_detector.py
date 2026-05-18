@@ -221,12 +221,25 @@ class YoloDetector:
         cell: MeasureCell,
         conf_threshold: float = 0.25,
         imgsz: int = 640,
+        iou_threshold: float = 0.7,
+        agnostic_nms: bool = False,
     ) -> list[SymbolDetection]:
         """Run YOLO on `cell.image` and return SymbolDetection objects in
         canonical-image coordinates.
 
         Uses `cell.image` (the original, with staff lines intact) — YOLO is
         trained on full notation, not on staff-removed images.
+
+        Args:
+            conf_threshold: minimum detection confidence (0-1).
+            imgsz: inference image size.
+            iou_threshold: NMS IoU threshold. Lower = more aggressive
+                suppression of overlapping boxes.
+            agnostic_nms: if True, NMS suppresses across classes (one box
+                per region regardless of class). Useful for music notation
+                where the same region can fire multiple semantically-similar
+                class predictions (e.g., `dynamicF` + `dynamicFF` on one
+                `ff` mark).
         """
         self._ensure_loaded()
         assert self._model is not None
@@ -245,6 +258,8 @@ class YoloDetector:
         results = self._model.predict(
             source=img_rgb,
             conf=conf_threshold,
+            iou=iou_threshold,
+            agnostic_nms=agnostic_nms,
             imgsz=imgsz,
             device=self.device if self.device != "auto" else None,
             verbose=False,

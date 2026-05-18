@@ -32,8 +32,6 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D9  noteheadBlackOnLine (notehead) at (x=1660, y=449)  conf=0.83
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  ledgerLine (structural) at (x=1660, y=452)  conf=0.13
-       verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)
 

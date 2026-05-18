@@ -1,0 +1,70 @@
+{
+  "cell_id": "bolero-p5-sys3-s18-m4",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 231,
+      "y": 366,
+      "w": 1535,
+      "h": 40,
+      "x_center": 998,
+      "y_center": 386,
+      "confidence": 0.13382624089717865,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 980,
+      "y": 210,
+      "w": 85,
+      "h": 33,
+      "x_center": 1022,
+      "y_center": 226,
+      "confidence": 0.8874971270561218,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1,
+      "y": 138,
+      "w": 2045,
+      "h": 199,
+      "x_center": 1023,
+      "y_center": 237,
+      "confidence": 0.6913661360740662,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 52,
+      "y": 311,
+      "w": 1996,
+      "h": 32,
+      "x_center": 1050,
+      "y_center": 327,
+      "confidence": 0.2219645380973816,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 487,
+      "y": 368,
+      "w": 1535,
+      "h": 35,
+      "x_center": 1254,
+      "y_center": 385,
+      "confidence": 0.20818227529525757,
+      "pitch": null
+    }
+  ]
+}

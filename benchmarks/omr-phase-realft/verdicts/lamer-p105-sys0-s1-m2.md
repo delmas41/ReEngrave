@@ -14,31 +14,17 @@
 
 - [x] D0  restQuarter (rest) at (x=8, y=243)  conf=0.46
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  keySharp (accidental) at (x=8, y=243)  conf=0.16
+- [x] D1  restWhole (rest) at (x=598, y=645)  conf=0.34
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  restWhole (rest) at (x=598, y=645)  conf=0.34
+- [x] D2  restHBar (rest) at (x=788, y=642)  conf=0.73
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  restHBar (rest) at (x=788, y=642)  conf=0.73
+- [x] D3  restHBar (rest) at (x=798, y=439)  conf=0.73
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  restHBar (rest) at (x=789, y=536)  conf=0.15
+- [x] D4  restHBar (rest) at (x=801, y=339)  conf=0.48
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  restHBar (rest) at (x=798, y=439)  conf=0.73
+- [x] D5  noteheadBlackInSpace (notehead) at (x=803, y=364)  conf=0.30
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  restHBar (rest) at (x=801, y=339)  conf=0.48
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  restHBar (rest) at (x=801, y=241)  conf=0.16
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  noteheadBlackInSpace (notehead) at (x=803, y=364)  conf=0.30
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  restWhole (rest) at (x=954, y=444)  conf=0.27
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  restWhole (rest) at (x=1302, y=445)  conf=0.19
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D11  restWhole (rest) at (x=1323, y=444)  conf=0.16
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D12  restWhole (rest) at (x=1435, y=643)  conf=0.16
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D13  restWhole (rest) at (x=1481, y=342)  conf=0.20
+- [x] D6  restWhole (rest) at (x=954, y=444)  conf=0.27
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

@@ -94,19 +94,6 @@
     },
     {
       "id": "D7",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 6,
-      "y": 289,
-      "w": 2039,
-      "h": 26,
-      "x_center": 1025,
-      "y_center": 302,
-      "confidence": 0.22686290740966797,
-      "pitch": null
-    },
-    {
-      "id": "D8",
       "smufl_name": "ledgerLine",
       "category": "structural",
       "x": 1019,
@@ -119,7 +106,7 @@
       "pitch": null
     },
     {
-      "id": "D9",
+      "id": "D8",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1035,
@@ -132,7 +119,7 @@
       "pitch": null
     },
     {
-      "id": "D10",
+      "id": "D9",
       "smufl_name": "beam",
       "category": "structural",
       "x": 902,
@@ -145,7 +132,7 @@
       "pitch": null
     },
     {
-      "id": "D11",
+      "id": "D10",
       "smufl_name": "beam",
       "category": "structural",
       "x": 900,
@@ -158,7 +145,7 @@
       "pitch": null
     },
     {
-      "id": "D12",
+      "id": "D11",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1179,
@@ -171,7 +158,7 @@
       "pitch": null
     },
     {
-      "id": "D13",
+      "id": "D12",
       "smufl_name": "ledgerLine",
       "category": "structural",
       "x": 1163,
@@ -184,7 +171,7 @@
       "pitch": null
     },
     {
-      "id": "D14",
+      "id": "D13",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1339,
@@ -197,7 +184,7 @@
       "pitch": null
     },
     {
-      "id": "D15",
+      "id": "D14",
       "smufl_name": "ledgerLine",
       "category": "structural",
       "x": 1326,
@@ -210,7 +197,7 @@
       "pitch": null
     },
     {
-      "id": "D16",
+      "id": "D15",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1499,
@@ -223,7 +210,7 @@
       "pitch": null
     },
     {
-      "id": "D17",
+      "id": "D16",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1637,
@@ -236,7 +223,7 @@
       "pitch": null
     },
     {
-      "id": "D18",
+      "id": "D17",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1504,
@@ -249,7 +236,7 @@
       "pitch": null
     },
     {
-      "id": "D19",
+      "id": "D18",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1508,
@@ -262,7 +249,7 @@
       "pitch": null
     },
     {
-      "id": "D20",
+      "id": "D19",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1775,
@@ -275,7 +262,7 @@
       "pitch": null
     },
     {
-      "id": "D21",
+      "id": "D20",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1912,

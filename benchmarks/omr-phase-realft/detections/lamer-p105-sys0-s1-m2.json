@@ -16,19 +16,6 @@
     },
     {
       "id": "D1",
-      "smufl_name": "keySharp",
-      "category": "accidental",
-      "x": 0,
-      "y": 169,
-      "w": 16,
-      "h": 149,
-      "x_center": 8,
-      "y_center": 243,
-      "confidence": 0.15982691943645477,
-      "pitch": null
-    },
-    {
-      "id": "D2",
       "smufl_name": "restWhole",
       "category": "rest",
       "x": 569,
@@ -41,7 +28,7 @@
       "pitch": null
     },
     {
-      "id": "D3",
+      "id": "D2",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
@@ -54,20 +41,7 @@
       "pitch": null
     },
     {
-      "id": "D4",
-      "smufl_name": "restHBar",
-      "category": "rest",
-      "x": 0,
-      "y": 501,
-      "w": 1578,
-      "h": 71,
-      "x_center": 789,
-      "y_center": 536,
-      "confidence": 0.14829526841640472,
-      "pitch": null
-    },
-    {
-      "id": "D5",
+      "id": "D3",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
@@ -80,7 +54,7 @@
       "pitch": null
     },
     {
-      "id": "D6",
+      "id": "D4",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
@@ -93,20 +67,7 @@
       "pitch": null
     },
     {
-      "id": "D7",
-      "smufl_name": "restHBar",
-      "category": "rest",
-      "x": 0,
-      "y": 208,
-      "w": 1603,
-      "h": 66,
-      "x_center": 801,
-      "y_center": 241,
-      "confidence": 0.16284897923469543,
-      "pitch": null
-    },
-    {
-      "id": "D8",
+      "id": "D5",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 732,
@@ -119,7 +80,7 @@
       "pitch": null
     },
     {
-      "id": "D9",
+      "id": "D6",
       "smufl_name": "restWhole",
       "category": "rest",
       "x": 911,
@@ -129,58 +90,6 @@
       "x_center": 954,
       "y_center": 444,
       "confidence": 0.2653948962688446,
-      "pitch": null
-    },
-    {
-      "id": "D10",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 1255,
-      "y": 424,
-      "w": 94,
-      "h": 42,
-      "x_center": 1302,
-      "y_center": 445,
-      "confidence": 0.19302181899547577,
-      "pitch": null
-    },
-    {
-      "id": "D11",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 1270,
-      "y": 424,
-      "w": 107,
-      "h": 41,
-      "x_center": 1323,
-      "y_center": 444,
-      "confidence": 0.16287310421466827,
-      "pitch": null
-    },
-    {
-      "id": "D12",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 1400,
-      "y": 621,
-      "w": 70,
-      "h": 44,
-      "x_center": 1435,
-      "y_center": 643,
-      "confidence": 0.16195163130760193,
-      "pitch": null
-    },
-    {
-      "id": "D13",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 1450,
-      "y": 323,
-      "w": 62,
-      "h": 39,
-      "x_center": 1481,
-      "y_center": 342,
-      "confidence": 0.201171875,
       "pitch": null
     }
   ]

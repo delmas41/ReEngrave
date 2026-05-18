@@ -42,19 +42,6 @@
     },
     {
       "id": "D3",
-      "smufl_name": "noteheadBlackOnLine",
-      "category": "notehead",
-      "x": 22,
-      "y": 46,
-      "w": 17,
-      "h": 15,
-      "x_center": 30,
-      "y_center": 53,
-      "confidence": 0.23737122118473053,
-      "pitch": null
-    },
-    {
-      "id": "D4",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 64,
@@ -67,7 +54,7 @@
       "pitch": null
     },
     {
-      "id": "D5",
+      "id": "D4",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 141,
@@ -80,7 +67,7 @@
       "pitch": null
     },
     {
-      "id": "D6",
+      "id": "D5",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 141,
@@ -93,7 +80,7 @@
       "pitch": null
     },
     {
-      "id": "D7",
+      "id": "D6",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 141,
@@ -106,7 +93,7 @@
       "pitch": null
     },
     {
-      "id": "D8",
+      "id": "D7",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 141,
@@ -119,20 +106,7 @@
       "pitch": null
     },
     {
-      "id": "D9",
-      "smufl_name": "flag8thDown",
-      "category": "flag",
-      "x": 145,
-      "y": 48,
-      "w": 21,
-      "h": 26,
-      "x_center": 155,
-      "y_center": 61,
-      "confidence": 0.15046574175357819,
-      "pitch": null
-    },
-    {
-      "id": "D10",
+      "id": "D8",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 190,
@@ -145,7 +119,7 @@
       "pitch": null
     },
     {
-      "id": "D11",
+      "id": "D9",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 268,
@@ -158,7 +132,7 @@
       "pitch": null
     },
     {
-      "id": "D12",
+      "id": "D10",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 265,
@@ -171,7 +145,7 @@
       "pitch": null
     },
     {
-      "id": "D13",
+      "id": "D11",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 268,
@@ -184,7 +158,7 @@
       "pitch": null
     },
     {
-      "id": "D14",
+      "id": "D12",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 346,
@@ -197,7 +171,7 @@
       "pitch": null
     },
     {
-      "id": "D15",
+      "id": "D13",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 346,
@@ -210,7 +184,7 @@
       "pitch": null
     },
     {
-      "id": "D16",
+      "id": "D14",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 343,
@@ -223,33 +197,7 @@
       "pitch": null
     },
     {
-      "id": "D17",
-      "smufl_name": "flag8thDown",
-      "category": "flag",
-      "x": 435,
-      "y": 55,
-      "w": 27,
-      "h": 34,
-      "x_center": 448,
-      "y_center": 72,
-      "confidence": 0.10713598877191544,
-      "pitch": null
-    },
-    {
-      "id": "D18",
-      "smufl_name": "articAccentAbove",
-      "category": "ornament",
-      "x": 435,
-      "y": 15,
-      "w": 29,
-      "h": 11,
-      "x_center": 449,
-      "y_center": 20,
-      "confidence": 0.4080274999141693,
-      "pitch": null
-    },
-    {
-      "id": "D19",
+      "id": "D15",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 444,
@@ -262,7 +210,7 @@
       "pitch": null
     },
     {
-      "id": "D20",
+      "id": "D16",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 441,
@@ -275,7 +223,7 @@
       "pitch": null
     },
     {
-      "id": "D21",
+      "id": "D17",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 446,
@@ -288,7 +236,7 @@
       "pitch": null
     },
     {
-      "id": "D22",
+      "id": "D18",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 446,
@@ -301,7 +249,7 @@
       "pitch": null
     },
     {
-      "id": "D23",
+      "id": "D19",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 490,
@@ -314,7 +262,7 @@
       "pitch": null
     },
     {
-      "id": "D24",
+      "id": "D20",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 568,
@@ -327,7 +275,7 @@
       "pitch": null
     },
     {
-      "id": "D25",
+      "id": "D21",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 569,
@@ -340,7 +288,7 @@
       "pitch": null
     },
     {
-      "id": "D26",
+      "id": "D22",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 564,
@@ -353,7 +301,7 @@
       "pitch": null
     },
     {
-      "id": "D27",
+      "id": "D23",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 568,
@@ -366,33 +314,7 @@
       "pitch": null
     },
     {
-      "id": "D28",
-      "smufl_name": "articAccentAbove",
-      "category": "ornament",
-      "x": 565,
-      "y": 10,
-      "w": 22,
-      "h": 18,
-      "x_center": 576,
-      "y_center": 19,
-      "confidence": 0.381846159696579,
-      "pitch": null
-    },
-    {
-      "id": "D29",
-      "smufl_name": "flag8thDown",
-      "category": "flag",
-      "x": 568,
-      "y": 56,
-      "w": 20,
-      "h": 31,
-      "x_center": 578,
-      "y_center": 71,
-      "confidence": 0.21597014367580414,
-      "pitch": null
-    },
-    {
-      "id": "D30",
+      "id": "D24",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 612,
@@ -405,7 +327,7 @@
       "pitch": null
     },
     {
-      "id": "D31",
+      "id": "D25",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 693,
@@ -418,7 +340,7 @@
       "pitch": null
     },
     {
-      "id": "D32",
+      "id": "D26",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 692,
@@ -431,7 +353,7 @@
       "pitch": null
     },
     {
-      "id": "D33",
+      "id": "D27",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 690,
@@ -444,7 +366,7 @@
       "pitch": null
     },
     {
-      "id": "D34",
+      "id": "D28",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 730,
@@ -457,7 +379,7 @@
       "pitch": null
     },
     {
-      "id": "D35",
+      "id": "D29",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 737,
@@ -470,7 +392,7 @@
       "pitch": null
     },
     {
-      "id": "D36",
+      "id": "D30",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 821,
@@ -483,7 +405,7 @@
       "pitch": null
     },
     {
-      "id": "D37",
+      "id": "D31",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 826,
@@ -496,7 +418,7 @@
       "pitch": null
     },
     {
-      "id": "D38",
+      "id": "D32",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 825,
@@ -509,7 +431,7 @@
       "pitch": null
     },
     {
-      "id": "D39",
+      "id": "D33",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 826,
@@ -522,33 +444,7 @@
       "pitch": null
     },
     {
-      "id": "D40",
-      "smufl_name": "articAccentAbove",
-      "category": "ornament",
-      "x": 822,
-      "y": 10,
-      "w": 22,
-      "h": 17,
-      "x_center": 833,
-      "y_center": 18,
-      "confidence": 0.22005484998226166,
-      "pitch": null
-    },
-    {
-      "id": "D41",
-      "smufl_name": "flag8thDown",
-      "category": "flag",
-      "x": 827,
-      "y": 53,
-      "w": 18,
-      "h": 36,
-      "x_center": 836,
-      "y_center": 71,
-      "confidence": 0.12954312562942505,
-      "pitch": null
-    },
-    {
-      "id": "D42",
+      "id": "D34",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 871,
@@ -561,7 +457,7 @@
       "pitch": null
     },
     {
-      "id": "D43",
+      "id": "D35",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 946,
@@ -574,7 +470,7 @@
       "pitch": null
     },
     {
-      "id": "D44",
+      "id": "D36",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 950,
@@ -587,7 +483,7 @@
       "pitch": null
     },
     {
-      "id": "D45",
+      "id": "D37",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 950,
@@ -600,7 +496,7 @@
       "pitch": null
     },
     {
-      "id": "D46",
+      "id": "D38",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 951,
@@ -613,7 +509,7 @@
       "pitch": null
     },
     {
-      "id": "D47",
+      "id": "D39",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1011,
@@ -626,7 +522,7 @@
       "pitch": null
     },
     {
-      "id": "D48",
+      "id": "D40",
       "smufl_name": "staff",
       "category": "structural",
       "x": 0,
@@ -639,20 +535,7 @@
       "pitch": null
     },
     {
-      "id": "D49",
-      "smufl_name": "staff",
-      "category": "structural",
-      "x": 60,
-      "y": 9,
-      "w": 1988,
-      "h": 67,
-      "x_center": 1054,
-      "y_center": 42,
-      "confidence": 0.2500816285610199,
-      "pitch": null
-    },
-    {
-      "id": "D50",
+      "id": "D41",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1088,
@@ -665,7 +548,7 @@
       "pitch": null
     },
     {
-      "id": "D51",
+      "id": "D42",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1088,
@@ -678,7 +561,7 @@
       "pitch": null
     },
     {
-      "id": "D52",
+      "id": "D43",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1089,
@@ -691,33 +574,7 @@
       "pitch": null
     },
     {
-      "id": "D53",
-      "smufl_name": "noteheadBlackInSpace",
-      "category": "notehead",
-      "x": 1165,
-      "y": 45,
-      "w": 21,
-      "h": 16,
-      "x_center": 1175,
-      "y_center": 53,
-      "confidence": 0.17932574450969696,
-      "pitch": null
-    },
-    {
-      "id": "D54",
-      "smufl_name": "noteheadBlackInSpace",
-      "category": "notehead",
-      "x": 1165,
-      "y": 35,
-      "w": 22,
-      "h": 13,
-      "x_center": 1176,
-      "y_center": 41,
-      "confidence": 0.335869699716568,
-      "pitch": null
-    },
-    {
-      "id": "D55",
+      "id": "D44",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1167,
@@ -730,7 +587,7 @@
       "pitch": null
     },
     {
-      "id": "D56",
+      "id": "D45",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1170,
@@ -743,7 +600,7 @@
       "pitch": null
     },
     {
-      "id": "D57",
+      "id": "D46",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1171,
@@ -756,7 +613,7 @@
       "pitch": null
     },
     {
-      "id": "D58",
+      "id": "D47",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 1267,
@@ -769,7 +626,7 @@
       "pitch": null
     },
     {
-      "id": "D59",
+      "id": "D48",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1267,
@@ -782,7 +639,7 @@
       "pitch": null
     },
     {
-      "id": "D60",
+      "id": "D49",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1267,
@@ -795,7 +652,7 @@
       "pitch": null
     },
     {
-      "id": "D61",
+      "id": "D50",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1267,
@@ -808,7 +665,7 @@
       "pitch": null
     },
     {
-      "id": "D62",
+      "id": "D51",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1315,
@@ -821,7 +678,7 @@
       "pitch": null
     },
     {
-      "id": "D63",
+      "id": "D52",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 1395,
@@ -834,7 +691,7 @@
       "pitch": null
     },
     {
-      "id": "D64",
+      "id": "D53",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1393,
@@ -847,7 +704,7 @@
       "pitch": null
     },
     {
-      "id": "D65",
+      "id": "D54",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1390,
@@ -860,7 +717,7 @@
       "pitch": null
     },
     {
-      "id": "D66",
+      "id": "D55",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1394,
@@ -873,7 +730,7 @@
       "pitch": null
     },
     {
-      "id": "D67",
+      "id": "D56",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1438,
@@ -886,20 +743,7 @@
       "pitch": null
     },
     {
-      "id": "D68",
-      "smufl_name": "flag8thDown",
-      "category": "flag",
-      "x": 1510,
-      "y": 54,
-      "w": 21,
-      "h": 34,
-      "x_center": 1520,
-      "y_center": 71,
-      "confidence": 0.1463719606399536,
-      "pitch": null
-    },
-    {
-      "id": "D69",
+      "id": "D57",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1510,
@@ -912,7 +756,7 @@
       "pitch": null
     },
     {
-      "id": "D70",
+      "id": "D58",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 1518,
@@ -925,7 +769,7 @@
       "pitch": null
     },
     {
-      "id": "D71",
+      "id": "D59",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1517,
@@ -938,20 +782,7 @@
       "pitch": null
     },
     {
-      "id": "D72",
-      "smufl_name": "articAccentAbove",
-      "category": "ornament",
-      "x": 1513,
-      "y": 10,
-      "w": 22,
-      "h": 17,
-      "x_center": 1524,
-      "y_center": 18,
-      "confidence": 0.48023369908332825,
-      "pitch": null
-    },
-    {
-      "id": "D73",
+      "id": "D60",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1517,
@@ -964,7 +795,7 @@
       "pitch": null
     },
     {
-      "id": "D74",
+      "id": "D61",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1561,
@@ -977,7 +808,7 @@
       "pitch": null
     },
     {
-      "id": "D75",
+      "id": "D62",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 1641,
@@ -990,7 +821,7 @@
       "pitch": null
     },
     {
-      "id": "D76",
+      "id": "D63",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1641,
@@ -1003,7 +834,7 @@
       "pitch": null
     },
     {
-      "id": "D77",
+      "id": "D64",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1642,
@@ -1016,7 +847,7 @@
       "pitch": null
     },
     {
-      "id": "D78",
+      "id": "D65",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1639,
@@ -1029,7 +860,7 @@
       "pitch": null
     },
     {
-      "id": "D79",
+      "id": "D66",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1685,
@@ -1042,7 +873,7 @@
       "pitch": null
     },
     {
-      "id": "D80",
+      "id": "D67",
       "smufl_name": "flag8thDown",
       "category": "flag",
       "x": 1766,
@@ -1055,7 +886,7 @@
       "pitch": null
     },
     {
-      "id": "D81",
+      "id": "D68",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1762,
@@ -1068,7 +899,7 @@
       "pitch": null
     },
     {
-      "id": "D82",
+      "id": "D69",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1766,
@@ -1081,7 +912,7 @@
       "pitch": null
     },
     {
-      "id": "D83",
+      "id": "D70",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1767,
@@ -1094,7 +925,7 @@
       "pitch": null
     },
     {
-      "id": "D84",
+      "id": "D71",
       "smufl_name": "rest8th",
       "category": "rest",
       "x": 1805,
@@ -1107,7 +938,7 @@
       "pitch": null
     },
     {
-      "id": "D85",
+      "id": "D72",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1887,
@@ -1120,7 +951,7 @@
       "pitch": null
     },
     {
-      "id": "D86",
+      "id": "D73",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1889,
@@ -1133,7 +964,7 @@
       "pitch": null
     },
     {
-      "id": "D87",
+      "id": "D74",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1889,
@@ -1146,7 +977,7 @@
       "pitch": null
     },
     {
-      "id": "D88",
+      "id": "D75",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1963,
@@ -1159,7 +990,7 @@
       "pitch": null
     },
     {
-      "id": "D89",
+      "id": "D76",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1967,
@@ -1172,7 +1003,7 @@
       "pitch": null
     },
     {
-      "id": "D90",
+      "id": "D77",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1967,

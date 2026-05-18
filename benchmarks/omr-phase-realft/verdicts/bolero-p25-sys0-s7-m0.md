@@ -24,17 +24,15 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D5  restQuarter (rest) at (x=914, y=200)  conf=0.92
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  beam (structural) at (x=1023, y=305)  conf=0.14
+- [x] D6  staff (structural) at (x=1024, y=208)  conf=0.85
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  staff (structural) at (x=1024, y=208)  conf=0.85
+- [x] D7  noteheadBlackOnLine (notehead) at (x=1527, y=299)  conf=0.88
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  noteheadBlackOnLine (notehead) at (x=1527, y=299)  conf=0.88
+- [x] D8  articAccentBelow (ornament) at (x=1529, y=357)  conf=0.89
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  articAccentBelow (ornament) at (x=1529, y=357)  conf=0.89
+- [x] D9  flag8thUp (flag) at (x=1576, y=211)  conf=0.83
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  flag8thUp (flag) at (x=1576, y=211)  conf=0.83
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D11  rest8th (rest) at (x=1797, y=212)  conf=0.90
+- [x] D10  rest8th (rest) at (x=1797, y=212)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

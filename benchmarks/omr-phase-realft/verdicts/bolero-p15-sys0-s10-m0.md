@@ -14,13 +14,11 @@
 
 - [x] D0  clefCTenor (clef) at (x=117, y=177)  conf=0.96
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  tie (structural) at (x=1023, y=328)  conf=0.11
+- [x] D1  staff (structural) at (x=1024, y=219)  conf=0.84
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  staff (structural) at (x=1024, y=219)  conf=0.84
+- [x] D2  beam (structural) at (x=1024, y=326)  conf=0.36
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  beam (structural) at (x=1024, y=326)  conf=0.36
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  restWhole (rest) at (x=1243, y=193)  conf=0.88
+- [x] D3  restWhole (rest) at (x=1243, y=193)  conf=0.88
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

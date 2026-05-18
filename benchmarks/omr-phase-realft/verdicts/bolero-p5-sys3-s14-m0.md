@@ -18,9 +18,7 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D2  tie (structural) at (x=1027, y=311)  conf=0.32
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  beam (structural) at (x=1050, y=310)  conf=0.27
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  restWhole (rest) at (x=1237, y=185)  conf=0.86
+- [x] D3  restWhole (rest) at (x=1237, y=185)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

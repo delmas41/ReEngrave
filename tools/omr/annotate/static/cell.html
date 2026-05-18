@@ -10,12 +10,24 @@
   <a class="back" href="/">← cells</a>
   <h1 id="cell-title">…</h1>
   <span class="meta" id="cell-meta"></span>
+  <button id="btn-show-page" class="page-context-btn" title="Show the full source page in a sidebar — useful when the cropped cell lacks context">
+    📄 Page context
+  </button>
   <span class="save-indicator" id="save-indicator">idle</span>
   <span class="nav-buttons">
     <button id="btn-prev" title="Shift+Tab">◀ prev</button>
     <button id="btn-next" title="Tab">next ▶</button>
   </span>
 </header>
+
+<!-- Source-page context overlay: hidden by default, toggled by btn-show-page -->
+<div id="page-context-overlay" class="page-context-overlay" hidden>
+  <div class="page-context-header">
+    <strong id="page-context-title">Source page</strong>
+    <button id="page-context-close" title="Esc to close">✕ close</button>
+  </div>
+  <img id="page-context-img" alt="source PDF page" />
+</div>
 
 <main class="cell-layout">
   <!-- Left: detection list -->

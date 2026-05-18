@@ -18,15 +18,7 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D2  tie (structural) at (x=1024, y=116)  conf=0.28
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  slur (structural) at (x=1024, y=33)  conf=0.18
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  tie (structural) at (x=1203, y=95)  conf=0.12
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  tie (structural) at (x=1212, y=95)  conf=0.14
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  tie (structural) at (x=1543, y=112)  conf=0.19
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  restWhole (rest) at (x=1888, y=67)  conf=0.44
+- [x] D3  restWhole (rest) at (x=1888, y=67)  conf=0.44
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

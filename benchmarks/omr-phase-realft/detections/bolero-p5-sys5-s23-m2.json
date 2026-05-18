@@ -26,45 +26,6 @@
       "y_center": 231,
       "confidence": 0.7748212814331055,
       "pitch": null
-    },
-    {
-      "id": "D2",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 52,
-      "y": 308,
-      "w": 1996,
-      "h": 28,
-      "x_center": 1050,
-      "y_center": 322,
-      "confidence": 0.18052051961421967,
-      "pitch": null
-    },
-    {
-      "id": "D3",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 164,
-      "y": 183,
-      "w": 1884,
-      "h": 32,
-      "x_center": 1106,
-      "y_center": 199,
-      "confidence": 0.12409771233797073,
-      "pitch": null
-    },
-    {
-      "id": "D4",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 487,
-      "y": 364,
-      "w": 1535,
-      "h": 36,
-      "x_center": 1254,
-      "y_center": 382,
-      "confidence": 0.14261992275714874,
-      "pitch": null
     }
   ]
 }

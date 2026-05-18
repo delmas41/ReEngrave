@@ -16,19 +16,6 @@
     },
     {
       "id": "D1",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 0,
-      "y": 314,
-      "w": 2046,
-      "h": 28,
-      "x_center": 1023,
-      "y_center": 328,
-      "confidence": 0.1127408966422081,
-      "pitch": null
-    },
-    {
-      "id": "D2",
       "smufl_name": "staff",
       "category": "structural",
       "x": 0,
@@ -41,7 +28,7 @@
       "pitch": null
     },
     {
-      "id": "D3",
+      "id": "D2",
       "smufl_name": "beam",
       "category": "structural",
       "x": 0,
@@ -54,7 +41,7 @@
       "pitch": null
     },
     {
-      "id": "D4",
+      "id": "D3",
       "smufl_name": "restWhole",
       "category": "rest",
       "x": 1206,

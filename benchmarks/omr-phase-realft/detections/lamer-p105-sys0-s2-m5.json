@@ -3,84 +3,6 @@
   "detections": [
     {
       "id": "D0",
-      "smufl_name": "restQuarter",
-      "category": "rest",
-      "x": 0,
-      "y": 504,
-      "w": 17,
-      "h": 102,
-      "x_center": 8,
-      "y_center": 555,
-      "confidence": 0.17405837774276733,
-      "pitch": null
-    },
-    {
-      "id": "D1",
-      "smufl_name": "keySharp",
-      "category": "accidental",
-      "x": 0,
-      "y": 390,
-      "w": 16,
-      "h": 127,
-      "x_center": 8,
-      "y_center": 453,
-      "confidence": 0.1191265657544136,
-      "pitch": null
-    },
-    {
-      "id": "D2",
-      "smufl_name": "restQuarter",
-      "category": "rest",
-      "x": 0,
-      "y": 208,
-      "w": 19,
-      "h": 213,
-      "x_center": 9,
-      "y_center": 314,
-      "confidence": 0.22719627618789673,
-      "pitch": null
-    },
-    {
-      "id": "D3",
-      "smufl_name": "restQuarter",
-      "category": "rest",
-      "x": 0,
-      "y": 607,
-      "w": 25,
-      "h": 109,
-      "x_center": 12,
-      "y_center": 661,
-      "confidence": 0.11957807838916779,
-      "pitch": null
-    },
-    {
-      "id": "D4",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 312,
-      "y": 224,
-      "w": 91,
-      "h": 38,
-      "x_center": 357,
-      "y_center": 243,
-      "confidence": 0.2350911796092987,
-      "pitch": null
-    },
-    {
-      "id": "D5",
-      "smufl_name": "noteheadBlackInSpace",
-      "category": "notehead",
-      "x": 332,
-      "y": 421,
-      "w": 51,
-      "h": 39,
-      "x_center": 357,
-      "y_center": 440,
-      "confidence": 0.12366422265768051,
-      "pitch": null
-    },
-    {
-      "id": "D6",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
@@ -93,7 +15,7 @@
       "pitch": null
     },
     {
-      "id": "D7",
+      "id": "D1",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 597,
@@ -106,7 +28,7 @@
       "pitch": null
     },
     {
-      "id": "D8",
+      "id": "D2",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
@@ -119,7 +41,7 @@
       "pitch": null
     },
     {
-      "id": "D9",
+      "id": "D3",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
@@ -132,7 +54,7 @@
       "pitch": null
     },
     {
-      "id": "D10",
+      "id": "D4",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
@@ -145,59 +67,7 @@
       "pitch": null
     },
     {
-      "id": "D11",
-      "smufl_name": "noteheadBlackInSpace",
-      "category": "notehead",
-      "x": 723,
-      "y": 222,
-      "w": 55,
-      "h": 37,
-      "x_center": 750,
-      "y_center": 240,
-      "confidence": 0.10778447985649109,
-      "pitch": null
-    },
-    {
-      "id": "D12",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 803,
-      "y": 521,
-      "w": 89,
-      "h": 44,
-      "x_center": 847,
-      "y_center": 543,
-      "confidence": 0.1085718423128128,
-      "pitch": null
-    },
-    {
-      "id": "D13",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 825,
-      "y": 221,
-      "w": 71,
-      "h": 47,
-      "x_center": 860,
-      "y_center": 244,
-      "confidence": 0.1413261443376541,
-      "pitch": null
-    },
-    {
-      "id": "D14",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 830,
-      "y": 316,
-      "w": 120,
-      "h": 49,
-      "x_center": 890,
-      "y_center": 340,
-      "confidence": 0.10494039952754974,
-      "pitch": null
-    },
-    {
-      "id": "D15",
+      "id": "D5",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1045,
@@ -207,19 +77,6 @@
       "x_center": 1062,
       "y_center": 545,
       "confidence": 0.2540140450000763,
-      "pitch": null
-    },
-    {
-      "id": "D16",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 1209,
-      "y": 0,
-      "w": 46,
-      "h": 32,
-      "x_center": 1232,
-      "y_center": 16,
-      "confidence": 0.12938416004180908,
       "pitch": null
     }
   ]

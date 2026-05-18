@@ -12,17 +12,7 @@
 
 ## Detections
 
-- [x] D0  noteheadBlackInSpace (notehead) at (x=29, y=374)  conf=0.22
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  noteheadBlackInSpace (notehead) at (x=41, y=375)  conf=0.12
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  noteheadBlackOnLine (notehead) at (x=170, y=377)  conf=0.12
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  noteheadBlackOnLine (notehead) at (x=221, y=668)  conf=0.14
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  noteheadBlackOnLine (notehead) at (x=243, y=377)  conf=0.12
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  noteheadBlackOnLine (notehead) at (x=256, y=378)  conf=0.26
+- [x] D0  noteheadBlackOnLine (notehead) at (x=256, y=378)  conf=0.26
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

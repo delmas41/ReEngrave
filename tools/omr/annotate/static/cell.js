@@ -581,6 +581,12 @@ document.addEventListener("keydown", (evt) => {
       closePicker();
       return;
     }
+    // Also close the page-context overlay on Esc
+    const pcOverlay = document.getElementById("page-context-overlay");
+    if (pcOverlay && !pcOverlay.hidden) {
+      hidePageContext();
+      return;
+    }
   }
 
   if (state.pickerOpen) {
@@ -653,6 +659,31 @@ $("btn-add-fn").addEventListener("click", () => {
   enterDrawMode({ kind: "add-missed" });
 });
 $("picker-close").addEventListener("click", closePicker);
+
+// Page-context overlay: clicking the topbar button reveals the rendered
+// source PDF page in a right-side sidebar so the labeler can see the
+// musical context that the cropped cell may have stripped away.
+function showPageContext() {
+  if (!state.cell?.id) return;
+  const overlay = $("page-context-overlay");
+  const img = $("page-context-img");
+  const title = $("page-context-title");
+  const btn = $("btn-show-page");
+  img.src = `/api/cell/${encodeURIComponent(state.cell.id)}/page`;
+  title.textContent = `Source page (${state.cell.id})`;
+  overlay.hidden = false;
+  btn.classList.add("active");
+}
+function hidePageContext() {
+  $("page-context-overlay").hidden = true;
+  $("btn-show-page").classList.remove("active");
+}
+$("btn-show-page").addEventListener("click", () => {
+  const overlay = $("page-context-overlay");
+  if (overlay.hidden) showPageContext();
+  else hidePageContext();
+});
+$("page-context-close").addEventListener("click", hidePageContext);
 
 document.querySelectorAll(".verdict-buttons button").forEach((b) => {
   b.addEventListener("click", () => {

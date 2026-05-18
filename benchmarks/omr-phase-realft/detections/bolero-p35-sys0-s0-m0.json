@@ -172,19 +172,6 @@
     },
     {
       "id": "D13",
-      "smufl_name": "ledgerLine",
-      "category": "structural",
-      "x": 1124,
-      "y": 66,
-      "w": 88,
-      "h": 20,
-      "x_center": 1168,
-      "y_center": 76,
-      "confidence": 0.2091224491596222,
-      "pitch": null
-    },
-    {
-      "id": "D14",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1127,
@@ -197,7 +184,7 @@
       "pitch": null
     },
     {
-      "id": "D15",
+      "id": "D14",
       "smufl_name": "articAccentAbove",
       "category": "ornament",
       "x": 1470,
@@ -210,7 +197,7 @@
       "pitch": null
     },
     {
-      "id": "D16",
+      "id": "D15",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1481,
@@ -223,7 +210,7 @@
       "pitch": null
     },
     {
-      "id": "D17",
+      "id": "D16",
       "smufl_name": "ledgerLine",
       "category": "structural",
       "x": 1467,
@@ -236,7 +223,7 @@
       "pitch": null
     },
     {
-      "id": "D18",
+      "id": "D17",
       "smufl_name": "ledgerLine",
       "category": "structural",
       "x": 1468,
@@ -249,7 +236,7 @@
       "pitch": null
     },
     {
-      "id": "D19",
+      "id": "D18",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1623,
@@ -262,33 +249,7 @@
       "pitch": null
     },
     {
-      "id": "D20",
-      "smufl_name": "ledgerLine",
-      "category": "structural",
-      "x": 1608,
-      "y": 67,
-      "w": 91,
-      "h": 19,
-      "x_center": 1653,
-      "y_center": 76,
-      "confidence": 0.15749330818653107,
-      "pitch": null
-    },
-    {
-      "id": "D21",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 1522,
-      "y": 403,
-      "w": 316,
-      "h": 27,
-      "x_center": 1680,
-      "y_center": 416,
-      "confidence": 0.39950698614120483,
-      "pitch": null
-    },
-    {
-      "id": "D22",
+      "id": "D19",
       "smufl_name": "tie",
       "category": "structural",
       "x": 1526,
@@ -301,7 +262,7 @@
       "pitch": null
     },
     {
-      "id": "D23",
+      "id": "D20",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1489,
@@ -314,7 +275,7 @@
       "pitch": null
     },
     {
-      "id": "D24",
+      "id": "D21",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1486,
@@ -327,7 +288,7 @@
       "pitch": null
     },
     {
-      "id": "D25",
+      "id": "D22",
       "smufl_name": "articStaccatoAbove",
       "category": "ornament",
       "x": 1789,
@@ -340,7 +301,7 @@
       "pitch": null
     },
     {
-      "id": "D26",
+      "id": "D23",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1767,
@@ -353,20 +314,7 @@
       "pitch": null
     },
     {
-      "id": "D27",
-      "smufl_name": "ledgerLine",
-      "category": "structural",
-      "x": 1752,
-      "y": 66,
-      "w": 92,
-      "h": 9,
-      "x_center": 1798,
-      "y_center": 70,
-      "confidence": 0.2377820461988449,
-      "pitch": null
-    },
-    {
-      "id": "D28",
+      "id": "D24",
       "smufl_name": "slur",
       "category": "structural",
       "x": 1895,
@@ -379,7 +327,7 @@
       "pitch": null
     },
     {
-      "id": "D29",
+      "id": "D25",
       "smufl_name": "articStaccatoAbove",
       "category": "ornament",
       "x": 1928,
@@ -392,7 +340,7 @@
       "pitch": null
     },
     {
-      "id": "D30",
+      "id": "D26",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1908,

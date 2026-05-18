@@ -50,23 +50,21 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D18  restWhole (rest) at (x=1127, y=517)  conf=0.56
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D19  noteheadBlackInSpace (notehead) at (x=1128, y=518)  conf=0.34
+- [x] D19  beam (structural) at (x=1155, y=190)  conf=0.87
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D20  beam (structural) at (x=1155, y=190)  conf=0.87
+- [x] D20  noteheadBlackOnLine (notehead) at (x=1257, y=326)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D21  noteheadBlackOnLine (notehead) at (x=1257, y=326)  conf=0.90
+- [x] D21  restWhole (rest) at (x=1258, y=517)  conf=0.66
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D22  restWhole (rest) at (x=1258, y=517)  conf=0.66
+- [x] D22  noteheadBlackOnLine (notehead) at (x=1395, y=326)  conf=0.88
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D23  noteheadBlackOnLine (notehead) at (x=1395, y=326)  conf=0.88
+- [x] D23  restWhole (rest) at (x=1397, y=518)  conf=0.82
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D24  restWhole (rest) at (x=1397, y=518)  conf=0.82
+- [x] D24  beam (structural) at (x=1603, y=151)  conf=0.85
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D25  beam (structural) at (x=1603, y=151)  conf=0.85
+- [x] D25  noteheadBlackOnLine (notehead) at (x=1744, y=326)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D26  noteheadBlackOnLine (notehead) at (x=1744, y=326)  conf=0.90
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D27  restWhole (rest) at (x=1745, y=518)  conf=0.66
+- [x] D26  restWhole (rest) at (x=1745, y=518)  conf=0.66
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

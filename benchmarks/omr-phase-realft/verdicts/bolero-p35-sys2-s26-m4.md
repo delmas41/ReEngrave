@@ -12,19 +12,13 @@
 
 ## Detections
 
-- [x] D0  restHalf (rest) at (x=20, y=46)  conf=0.13
+- [x] D0  beam (structural) at (x=296, y=347)  conf=0.37
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  restHalf (rest) at (x=21, y=147)  conf=0.25
+- [x] D1  beam (structural) at (x=297, y=549)  conf=0.43
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  beam (structural) at (x=273, y=448)  conf=0.18
+- [x] D2  beam (structural) at (x=299, y=247)  conf=0.42
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  beam (structural) at (x=296, y=347)  conf=0.37
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  beam (structural) at (x=297, y=549)  conf=0.43
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  beam (structural) at (x=299, y=247)  conf=0.42
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  beam (structural) at (x=301, y=651)  conf=0.70
+- [x] D3  beam (structural) at (x=301, y=651)  conf=0.70
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

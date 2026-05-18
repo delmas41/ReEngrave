@@ -42,19 +42,6 @@
     },
     {
       "id": "D3",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 52,
-      "y": 293,
-      "w": 1996,
-      "h": 34,
-      "x_center": 1050,
-      "y_center": 310,
-      "confidence": 0.2725157141685486,
-      "pitch": null
-    },
-    {
-      "id": "D4",
       "smufl_name": "restWhole",
       "category": "rest",
       "x": 1202,

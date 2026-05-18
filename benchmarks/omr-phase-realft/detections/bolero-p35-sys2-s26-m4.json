@@ -3,45 +3,6 @@
   "detections": [
     {
       "id": "D0",
-      "smufl_name": "restHalf",
-      "category": "rest",
-      "x": 0,
-      "y": 34,
-      "w": 41,
-      "h": 24,
-      "x_center": 20,
-      "y_center": 46,
-      "confidence": 0.1270344853401184,
-      "pitch": null
-    },
-    {
-      "id": "D1",
-      "smufl_name": "restHalf",
-      "category": "rest",
-      "x": 0,
-      "y": 136,
-      "w": 42,
-      "h": 23,
-      "x_center": 21,
-      "y_center": 147,
-      "confidence": 0.24783487617969513,
-      "pitch": null
-    },
-    {
-      "id": "D2",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 106,
-      "y": 441,
-      "w": 334,
-      "h": 15,
-      "x_center": 273,
-      "y_center": 448,
-      "confidence": 0.17730776965618134,
-      "pitch": null
-    },
-    {
-      "id": "D3",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1,
@@ -54,7 +15,7 @@
       "pitch": null
     },
     {
-      "id": "D4",
+      "id": "D1",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1,
@@ -67,7 +28,7 @@
       "pitch": null
     },
     {
-      "id": "D5",
+      "id": "D2",
       "smufl_name": "beam",
       "category": "structural",
       "x": 0,
@@ -80,7 +41,7 @@
       "pitch": null
     },
     {
-      "id": "D6",
+      "id": "D3",
       "smufl_name": "beam",
       "category": "structural",
       "x": 2,

@@ -26,13 +26,11 @@
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D6  staff (structural) at (x=1024, y=241)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  tie (structural) at (x=1024, y=344)  conf=0.18
+- [x] D7  noteheadBlackInSpace (notehead) at (x=1627, y=320)  conf=0.85
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  noteheadBlackInSpace (notehead) at (x=1627, y=320)  conf=0.85
+- [x] D8  noteheadBlackInSpace (notehead) at (x=1628, y=428)  conf=0.87
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  noteheadBlackInSpace (notehead) at (x=1628, y=428)  conf=0.87
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  ledgerLine (structural) at (x=1628, y=400)  conf=0.33
+- [x] D9  ledgerLine (structural) at (x=1628, y=400)  conf=0.33
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

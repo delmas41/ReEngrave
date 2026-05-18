@@ -16,19 +16,6 @@
     },
     {
       "id": "D1",
-      "smufl_name": "noteheadHalfOnLine",
-      "category": "notehead",
-      "x": 35,
-      "y": 89,
-      "w": 17,
-      "h": 24,
-      "x_center": 43,
-      "y_center": 101,
-      "confidence": 0.19873423874378204,
-      "pitch": null
-    },
-    {
-      "id": "D2",
       "smufl_name": "accidentalNatural",
       "category": "accidental",
       "x": 241,
@@ -41,20 +28,7 @@
       "pitch": null
     },
     {
-      "id": "D3",
-      "smufl_name": "accidentalSharp",
-      "category": "accidental",
-      "x": 241,
-      "y": 103,
-      "w": 13,
-      "h": 27,
-      "x_center": 247,
-      "y_center": 116,
-      "confidence": 0.16338860988616943,
-      "pitch": null
-    },
-    {
-      "id": "D4",
+      "id": "D2",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 263,
@@ -67,7 +41,7 @@
       "pitch": null
     },
     {
-      "id": "D5",
+      "id": "D3",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 311,
@@ -80,33 +54,7 @@
       "pitch": null
     },
     {
-      "id": "D6",
-      "smufl_name": "noteheadBlackInSpace",
-      "category": "notehead",
-      "x": 311,
-      "y": 108,
-      "w": 21,
-      "h": 22,
-      "x_center": 321,
-      "y_center": 119,
-      "confidence": 0.2685557007789612,
-      "pitch": null
-    },
-    {
-      "id": "D7",
-      "smufl_name": "accidentalNatural",
-      "category": "accidental",
-      "x": 346,
-      "y": 105,
-      "w": 15,
-      "h": 25,
-      "x_center": 353,
-      "y_center": 117,
-      "confidence": 0.1789461374282837,
-      "pitch": null
-    },
-    {
-      "id": "D8",
+      "id": "D4",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 346,
@@ -119,7 +67,7 @@
       "pitch": null
     },
     {
-      "id": "D9",
+      "id": "D5",
       "smufl_name": "tie",
       "category": "structural",
       "x": 280,
@@ -132,33 +80,7 @@
       "pitch": null
     },
     {
-      "id": "D10",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 279,
-      "y": 40,
-      "w": 152,
-      "h": 22,
-      "x_center": 355,
-      "y_center": 51,
-      "confidence": 0.28762659430503845,
-      "pitch": null
-    },
-    {
-      "id": "D11",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 282,
-      "y": 37,
-      "w": 148,
-      "h": 24,
-      "x_center": 356,
-      "y_center": 49,
-      "confidence": 0.12034642696380615,
-      "pitch": null
-    },
-    {
-      "id": "D12",
+      "id": "D6",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 369,
@@ -171,46 +93,7 @@
       "pitch": null
     },
     {
-      "id": "D13",
-      "smufl_name": "accidentalNatural",
-      "category": "accidental",
-      "x": 422,
-      "y": 93,
-      "w": 13,
-      "h": 37,
-      "x_center": 428,
-      "y_center": 111,
-      "confidence": 0.12740515172481537,
-      "pitch": null
-    },
-    {
-      "id": "D14",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 505,
-      "y": 73,
-      "w": 91,
-      "h": 11,
-      "x_center": 550,
-      "y_center": 78,
-      "confidence": 0.1418023258447647,
-      "pitch": null
-    },
-    {
-      "id": "D15",
-      "smufl_name": "accidentalSharp",
-      "category": "accidental",
-      "x": 704,
-      "y": 86,
-      "w": 23,
-      "h": 44,
-      "x_center": 715,
-      "y_center": 108,
-      "confidence": 0.19211384654045105,
-      "pitch": null
-    },
-    {
-      "id": "D16",
+      "id": "D7",
       "smufl_name": "accidentalSharp",
       "category": "accidental",
       "x": 709,
@@ -223,7 +106,7 @@
       "pitch": null
     },
     {
-      "id": "D17",
+      "id": "D8",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 733,
@@ -236,20 +119,7 @@
       "pitch": null
     },
     {
-      "id": "D18",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 728,
-      "y": 63,
-      "w": 64,
-      "h": 17,
-      "x_center": 760,
-      "y_center": 71,
-      "confidence": 0.10523927211761475,
-      "pitch": null
-    },
-    {
-      "id": "D19",
+      "id": "D9",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 789,
@@ -262,7 +132,7 @@
       "pitch": null
     },
     {
-      "id": "D20",
+      "id": "D10",
       "smufl_name": "slur",
       "category": "structural",
       "x": 742,
@@ -275,20 +145,7 @@
       "pitch": null
     },
     {
-      "id": "D21",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 745,
-      "y": 41,
-      "w": 163,
-      "h": 22,
-      "x_center": 826,
-      "y_center": 52,
-      "confidence": 0.22478145360946655,
-      "pitch": null
-    },
-    {
-      "id": "D22",
+      "id": "D11",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 832,
@@ -301,46 +158,7 @@
       "pitch": null
     },
     {
-      "id": "D23",
-      "smufl_name": "accidentalNatural",
-      "category": "accidental",
-      "x": 873,
-      "y": 110,
-      "w": 13,
-      "h": 20,
-      "x_center": 879,
-      "y_center": 120,
-      "confidence": 0.14571613073349,
-      "pitch": null
-    },
-    {
-      "id": "D24",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 128,
-      "y": 24,
-      "w": 1535,
-      "h": 64,
-      "x_center": 895,
-      "y_center": 56,
-      "confidence": 0.1023147776722908,
-      "pitch": null
-    },
-    {
-      "id": "D25",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 0,
-      "y": 82,
-      "w": 2048,
-      "h": 48,
-      "x_center": 1024,
-      "y_center": 106,
-      "confidence": 0.24422238767147064,
-      "pitch": null
-    },
-    {
-      "id": "D26",
+      "id": "D12",
       "smufl_name": "slur",
       "category": "structural",
       "x": 4,
@@ -353,20 +171,7 @@
       "pitch": null
     },
     {
-      "id": "D27",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 742,
-      "y": 54,
-      "w": 629,
-      "h": 21,
-      "x_center": 1056,
-      "y_center": 64,
-      "confidence": 0.127853125333786,
-      "pitch": null
-    },
-    {
-      "id": "D28",
+      "id": "D13",
       "smufl_name": "slur",
       "category": "structural",
       "x": 1098,
@@ -379,46 +184,7 @@
       "pitch": null
     },
     {
-      "id": "D29",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 487,
-      "y": 69,
-      "w": 1535,
-      "h": 38,
-      "x_center": 1254,
-      "y_center": 88,
-      "confidence": 0.13550500571727753,
-      "pitch": null
-    },
-    {
-      "id": "D30",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 488,
-      "y": 24,
-      "w": 1534,
-      "h": 24,
-      "x_center": 1255,
-      "y_center": 36,
-      "confidence": 0.11128995567560196,
-      "pitch": null
-    },
-    {
-      "id": "D31",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 1063,
-      "y": 54,
-      "w": 500,
-      "h": 25,
-      "x_center": 1313,
-      "y_center": 66,
-      "confidence": 0.14803895354270935,
-      "pitch": null
-    },
-    {
-      "id": "D32",
+      "id": "D14",
       "smufl_name": "restWhole",
       "category": "rest",
       "x": 1366,
@@ -431,7 +197,7 @@
       "pitch": null
     },
     {
-      "id": "D33",
+      "id": "D15",
       "smufl_name": "accidentalNatural",
       "category": "accidental",
       "x": 1496,
@@ -444,33 +210,7 @@
       "pitch": null
     },
     {
-      "id": "D34",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 1399,
-      "y": 54,
-      "w": 255,
-      "h": 15,
-      "x_center": 1526,
-      "y_center": 61,
-      "confidence": 0.11569937318563461,
-      "pitch": null
-    },
-    {
-      "id": "D35",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 1429,
-      "y": 85,
-      "w": 400,
-      "h": 21,
-      "x_center": 1629,
-      "y_center": 95,
-      "confidence": 0.14888004958629608,
-      "pitch": null
-    },
-    {
-      "id": "D36",
+      "id": "D16",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1640,
@@ -483,20 +223,7 @@
       "pitch": null
     },
     {
-      "id": "D37",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 1814,
-      "y": 85,
-      "w": 31,
-      "h": 8,
-      "x_center": 1829,
-      "y_center": 89,
-      "confidence": 0.10852480679750443,
-      "pitch": null
-    },
-    {
-      "id": "D38",
+      "id": "D17",
       "smufl_name": "tie",
       "category": "structural",
       "x": 1901,
@@ -506,19 +233,6 @@
       "x_center": 1969,
       "y_center": 89,
       "confidence": 0.3771016597747803,
-      "pitch": null
-    },
-    {
-      "id": "D39",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 1923,
-      "y": 54,
-      "w": 121,
-      "h": 10,
-      "x_center": 1983,
-      "y_center": 59,
-      "confidence": 0.18038873374462128,
       "pitch": null
     }
   ]

@@ -55,32 +55,6 @@
     },
     {
       "id": "D4",
-      "smufl_name": "keySharp",
-      "category": "accidental",
-      "x": 155,
-      "y": 4,
-      "w": 26,
-      "h": 72,
-      "x_center": 168,
-      "y_center": 40,
-      "confidence": 0.1258920431137085,
-      "pitch": null
-    },
-    {
-      "id": "D5",
-      "smufl_name": "keySharp",
-      "category": "accidental",
-      "x": 182,
-      "y": 40,
-      "w": 28,
-      "h": 71,
-      "x_center": 196,
-      "y_center": 75,
-      "confidence": 0.20518086850643158,
-      "pitch": null
-    },
-    {
-      "id": "D6",
       "smufl_name": "noteheadWholeInSpace",
       "category": "notehead",
       "x": 500,
@@ -93,7 +67,7 @@
       "pitch": null
     },
     {
-      "id": "D7",
+      "id": "D5",
       "smufl_name": "dynamicF",
       "category": "dynamic",
       "x": 856,
@@ -106,7 +80,7 @@
       "pitch": null
     },
     {
-      "id": "D8",
+      "id": "D6",
       "smufl_name": "accidentalNatural",
       "category": "accidental",
       "x": 881,
@@ -119,7 +93,7 @@
       "pitch": null
     },
     {
-      "id": "D9",
+      "id": "D7",
       "smufl_name": "dynamicF",
       "category": "dynamic",
       "x": 891,
@@ -132,7 +106,7 @@
       "pitch": null
     },
     {
-      "id": "D10",
+      "id": "D8",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 907,
@@ -145,7 +119,7 @@
       "pitch": null
     },
     {
-      "id": "D11",
+      "id": "D9",
       "smufl_name": "tie",
       "category": "structural",
       "x": 13,
@@ -158,46 +132,7 @@
       "pitch": null
     },
     {
-      "id": "D12",
-      "smufl_name": "slur",
-      "category": "structural",
-      "x": 14,
-      "y": 23,
-      "w": 2033,
-      "h": 133,
-      "x_center": 1030,
-      "y_center": 89,
-      "confidence": 0.17366240918636322,
-      "pitch": null
-    },
-    {
-      "id": "D13",
-      "smufl_name": "restHBar",
-      "category": "rest",
-      "x": 21,
-      "y": 73,
-      "w": 2027,
-      "h": 90,
-      "x_center": 1034,
-      "y_center": 118,
-      "confidence": 0.24920810759067535,
-      "pitch": null
-    },
-    {
-      "id": "D14",
-      "smufl_name": "restHBar",
-      "category": "rest",
-      "x": 32,
-      "y": 33,
-      "w": 2016,
-      "h": 107,
-      "x_center": 1040,
-      "y_center": 86,
-      "confidence": 0.1708575338125229,
-      "pitch": null
-    },
-    {
-      "id": "D15",
+      "id": "D10",
       "smufl_name": "accidentalNatural",
       "category": "accidental",
       "x": 1049,
@@ -210,7 +145,7 @@
       "pitch": null
     },
     {
-      "id": "D16",
+      "id": "D11",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1082,
@@ -223,7 +158,7 @@
       "pitch": null
     },
     {
-      "id": "D17",
+      "id": "D12",
       "smufl_name": "accidentalFlat",
       "category": "accidental",
       "x": 1228,
@@ -236,7 +171,7 @@
       "pitch": null
     },
     {
-      "id": "D18",
+      "id": "D13",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1260,
@@ -249,46 +184,7 @@
       "pitch": null
     },
     {
-      "id": "D19",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 1262,
-      "y": 80,
-      "w": 86,
-      "h": 22,
-      "x_center": 1305,
-      "y_center": 91,
-      "confidence": 0.16363941133022308,
-      "pitch": null
-    },
-    {
-      "id": "D20",
-      "smufl_name": "accidentalNatural",
-      "category": "accidental",
-      "x": 1318,
-      "y": 0,
-      "w": 23,
-      "h": 9,
-      "x_center": 1329,
-      "y_center": 4,
-      "confidence": 0.10194060951471329,
-      "pitch": null
-    },
-    {
-      "id": "D21",
-      "smufl_name": "accidentalSharp",
-      "category": "accidental",
-      "x": 1327,
-      "y": 0,
-      "w": 22,
-      "h": 46,
-      "x_center": 1338,
-      "y_center": 23,
-      "confidence": 0.10992231220006943,
-      "pitch": null
-    },
-    {
-      "id": "D22",
+      "id": "D14",
       "smufl_name": "accidentalNatural",
       "category": "accidental",
       "x": 1480,
@@ -301,20 +197,7 @@
       "pitch": null
     },
     {
-      "id": "D23",
-      "smufl_name": "tie",
-      "category": "structural",
-      "x": 1464,
-      "y": 109,
-      "w": 64,
-      "h": 10,
-      "x_center": 1496,
-      "y_center": 114,
-      "confidence": 0.14495447278022766,
-      "pitch": null
-    },
-    {
-      "id": "D24",
+      "id": "D15",
       "smufl_name": "accidentalNatural",
       "category": "accidental",
       "x": 1496,
@@ -327,7 +210,7 @@
       "pitch": null
     },
     {
-      "id": "D25",
+      "id": "D16",
       "smufl_name": "noteheadBlackOnLine",
       "category": "notehead",
       "x": 1509,
@@ -340,7 +223,7 @@
       "pitch": null
     },
     {
-      "id": "D26",
+      "id": "D17",
       "smufl_name": "accidentalNatural",
       "category": "accidental",
       "x": 1659,
@@ -353,20 +236,7 @@
       "pitch": null
     },
     {
-      "id": "D27",
-      "smufl_name": "accidentalNatural",
-      "category": "accidental",
-      "x": 1677,
-      "y": 36,
-      "w": 11,
-      "h": 68,
-      "x_center": 1682,
-      "y_center": 70,
-      "confidence": 0.10597686469554901,
-      "pitch": null
-    },
-    {
-      "id": "D28",
+      "id": "D18",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1683,
@@ -379,7 +249,7 @@
       "pitch": null
     },
     {
-      "id": "D29",
+      "id": "D19",
       "smufl_name": "accidentalFlat",
       "category": "accidental",
       "x": 1835,
@@ -392,7 +262,7 @@
       "pitch": null
     },
     {
-      "id": "D30",
+      "id": "D20",
       "smufl_name": "noteheadBlackInSpace",
       "category": "notehead",
       "x": 1863,
@@ -405,7 +275,7 @@
       "pitch": null
     },
     {
-      "id": "D31",
+      "id": "D21",
       "smufl_name": "beam",
       "category": "structural",
       "x": 1865,

@@ -12,10 +12,6 @@
 
 ## Detections
 
-- [x] D0  restHBar (rest) at (x=125, y=475)  conf=0.13
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  restHBar (rest) at (x=125, y=270)  conf=0.13
-       verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)
 
