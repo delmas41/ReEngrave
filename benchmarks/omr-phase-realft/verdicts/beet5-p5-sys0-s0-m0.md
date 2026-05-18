@@ -12,11 +12,9 @@
 
 ## Detections
 
-- [x] D0  noteheadBlackInSpace (notehead) at (x=13, y=578)  conf=0.12
+- [x] D0  restHBar (rest) at (x=125, y=475)  conf=0.13
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  beam (structural) at (x=124, y=264)  conf=0.19
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  restHBar (rest) at (x=125, y=679)  conf=0.13
+- [x] D1  restHBar (rest) at (x=125, y=270)  conf=0.13
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

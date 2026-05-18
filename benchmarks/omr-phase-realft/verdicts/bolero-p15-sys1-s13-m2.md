@@ -12,11 +12,11 @@
 
 ## Detections
 
-- [x] D0  staff (structural) at (x=1023, y=219)  conf=0.65
+- [x] D0  staff (structural) at (x=1024, y=218)  conf=0.83
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  restWhole (rest) at (x=1024, y=192)  conf=0.70
+- [x] D1  beam (structural) at (x=1024, y=338)  conf=0.39
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  restWhole (rest) at (x=1025, y=206)  conf=0.63
+- [x] D2  restWhole (rest) at (x=1025, y=198)  conf=0.88
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

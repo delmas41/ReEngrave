@@ -3,41 +3,28 @@
   "detections": [
     {
       "id": "D0",
-      "smufl_name": "noteheadBlackInSpace",
-      "category": "notehead",
+      "smufl_name": "restHBar",
+      "category": "rest",
       "x": 0,
-      "y": 564,
-      "w": 27,
-      "h": 28,
-      "x_center": 13,
-      "y_center": 578,
-      "confidence": 0.12028718739748001,
+      "y": 445,
+      "w": 251,
+      "h": 61,
+      "x_center": 125,
+      "y_center": 475,
+      "confidence": 0.12716539204120636,
       "pitch": null
     },
     {
       "id": "D1",
-      "smufl_name": "beam",
-      "category": "structural",
-      "x": 0,
-      "y": 259,
-      "w": 249,
-      "h": 11,
-      "x_center": 124,
-      "y_center": 264,
-      "confidence": 0.19208243489265442,
-      "pitch": null
-    },
-    {
-      "id": "D2",
       "smufl_name": "restHBar",
       "category": "rest",
       "x": 0,
-      "y": 664,
+      "y": 249,
       "w": 251,
-      "h": 31,
+      "h": 43,
       "x_center": 125,
-      "y_center": 679,
-      "confidence": 0.12812432646751404,
+      "y_center": 270,
+      "confidence": 0.12633822858333588,
       "pitch": null
     }
   ]

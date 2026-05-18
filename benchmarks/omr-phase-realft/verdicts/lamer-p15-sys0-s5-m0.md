@@ -12,35 +12,33 @@
 
 ## Detections
 
-- [x] D0  noteheadWholeInSpace (notehead) at (x=24, y=109)  conf=0.11
+- [x] D0  noteheadWholeInSpace (notehead) at (x=63, y=80)  conf=0.11
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  noteheadWholeInSpace (notehead) at (x=63, y=68)  conf=0.76
+- [x] D1  accidentalFlat (accidental) at (x=146, y=108)  conf=0.26
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  tie (structural) at (x=63, y=141)  conf=0.13
+- [x] D2  accidentalNatural (accidental) at (x=164, y=88)  conf=0.31
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  noteheadBlackOnLine (notehead) at (x=111, y=116)  conf=0.35
+- [x] D3  accidentalFlat (accidental) at (x=186, y=129)  conf=0.81
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  accidentalFlat (accidental) at (x=147, y=118)  conf=0.28
+- [x] D4  noteheadWholeInSpace (notehead) at (x=223, y=124)  conf=0.89
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  restQuarter (rest) at (x=164, y=84)  conf=0.15
+- [x] D5  tie (structural) at (x=288, y=119)  conf=0.13
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  accidentalFlat (accidental) at (x=166, y=86)  conf=0.10
+- [x] D6  tie (structural) at (x=909, y=121)  conf=0.32
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  accidentalFlat (accidental) at (x=187, y=128)  conf=0.78
+- [x] D7  tie (structural) at (x=1025, y=142)  conf=0.38
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  noteheadWholeInSpace (notehead) at (x=223, y=126)  conf=0.71
+- [x] D8  tie (structural) at (x=1025, y=56)  conf=0.18
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  tie (structural) at (x=855, y=120)  conf=0.18
+- [x] D9  tie (structural) at (x=1031, y=64)  conf=0.23
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  restWhole (rest) at (x=1141, y=81)  conf=0.36
+- [x] D10  restWhole (rest) at (x=1140, y=82)  conf=0.15
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D11  noteheadWholeOnLine (notehead) at (x=1141, y=81)  conf=0.28
+- [x] D11  noteheadWholeOnLine (notehead) at (x=1141, y=82)  conf=0.22
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D12  noteheadBlackOnLine (notehead) at (x=1530, y=119)  conf=0.18
+- [x] D12  tie (structural) at (x=1317, y=117)  conf=0.10
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D13  beam (structural) at (x=1992, y=77)  conf=0.20
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D14  tie (structural) at (x=2041, y=54)  conf=0.10
+- [x] D13  tie (structural) at (x=2019, y=120)  conf=0.28
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

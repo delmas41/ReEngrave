@@ -12,27 +12,29 @@
 
 ## Detections
 
-- [x] D0  clefF (clef) at (x=102, y=185)  conf=0.96
+- [x] D0  clefF (clef) at (x=101, y=184)  conf=0.96
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  articAccentBelow (ornament) at (x=412, y=323)  conf=0.91
+- [x] D1  articAccentBelow (ornament) at (x=412, y=323)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  noteheadBlackInSpace (notehead) at (x=414, y=230)  conf=0.89
+- [x] D2  noteheadBlackInSpace (notehead) at (x=413, y=230)  conf=0.92
        verdict: __________  <!-- new detection, no baseline match -->
 - [x] D3  flag8thUp (flag) at (x=461, y=141)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  rest8th (rest) at (x=591, y=213)  conf=0.89
+- [x] D4  rest8th (rest) at (x=590, y=212)  conf=0.93
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  restQuarter (rest) at (x=914, y=200)  conf=0.87
+- [x] D5  restQuarter (rest) at (x=914, y=200)  conf=0.92
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  staff (structural) at (x=1025, y=206)  conf=0.92
+- [x] D6  beam (structural) at (x=1023, y=305)  conf=0.14
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  noteheadBlackOnLine (notehead) at (x=1528, y=299)  conf=0.83
+- [x] D7  staff (structural) at (x=1024, y=208)  conf=0.85
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  articAccentBelow (ornament) at (x=1529, y=358)  conf=0.86
+- [x] D8  noteheadBlackOnLine (notehead) at (x=1527, y=299)  conf=0.88
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  flag8thUp (flag) at (x=1576, y=209)  conf=0.80
+- [x] D9  articAccentBelow (ornament) at (x=1529, y=357)  conf=0.89
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  rest8th (rest) at (x=1797, y=213)  conf=0.88
+- [x] D10  flag8thUp (flag) at (x=1576, y=211)  conf=0.83
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D11  rest8th (rest) at (x=1797, y=212)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

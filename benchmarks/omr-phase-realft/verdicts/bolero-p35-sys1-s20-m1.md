@@ -12,41 +12,47 @@
 
 ## Detections
 
-- [x] D0  noteheadBlackOnLine (notehead) at (x=141, y=339)  conf=0.84
+- [x] D0  noteheadBlackInSpace (notehead) at (x=141, y=260)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  noteheadBlackInSpace (notehead) at (x=142, y=260)  conf=0.85
+- [x] D1  ledgerLine (structural) at (x=141, y=446)  conf=0.19
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  noteheadBlackOnLine (notehead) at (x=142, y=440)  conf=0.83
+- [x] D2  noteheadBlackOnLine (notehead) at (x=142, y=339)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  noteheadBlackOnLine (notehead) at (x=209, y=232)  conf=0.87
+- [x] D3  noteheadBlackOnLine (notehead) at (x=142, y=440)  conf=0.87
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  noteheadBlackOnLine (notehead) at (x=732, y=77)  conf=0.84
+- [x] D4  ledgerLine (structural) at (x=142, y=394)  conf=0.65
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  noteheadBlackOnLine (notehead) at (x=733, y=339)  conf=0.87
+- [x] D5  noteheadBlackOnLine (notehead) at (x=208, y=234)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  noteheadBlackOnLine (notehead) at (x=734, y=233)  conf=0.89
+- [x] D6  noteheadBlackOnLine (notehead) at (x=733, y=76)  conf=0.91
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  noteheadBlackInSpace (notehead) at (x=734, y=155)  conf=0.86
+- [x] D7  noteheadBlackOnLine (notehead) at (x=733, y=233)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  staff (structural) at (x=1024, y=234)  conf=0.96
+- [x] D8  ledgerLine (structural) at (x=733, y=74)  conf=0.42
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  noteheadBlackInSpace (notehead) at (x=1329, y=101)  conf=0.87
+- [x] D9  noteheadBlackOnLine (notehead) at (x=734, y=338)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  noteheadBlackInSpace (notehead) at (x=1329, y=155)  conf=0.84
+- [x] D10  noteheadBlackInSpace (notehead) at (x=734, y=155)  conf=0.87
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D11  noteheadBlackOnLine (notehead) at (x=1330, y=232)  conf=0.87
+- [x] D11  staff (structural) at (x=1024, y=235)  conf=0.93
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D12  noteheadBlackOnLine (notehead) at (x=1331, y=339)  conf=0.84
+- [x] D12  noteheadBlackInSpace (notehead) at (x=1329, y=101)  conf=0.88
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D13  beam (structural) at (x=1486, y=10)  conf=0.71
+- [x] D13  noteheadBlackOnLine (notehead) at (x=1330, y=338)  conf=0.87
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D14  noteheadBlackOnLine (notehead) at (x=1703, y=233)  conf=0.88
+- [x] D14  noteheadBlackInSpace (notehead) at (x=1330, y=154)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D15  noteheadBlackInSpace (notehead) at (x=1703, y=101)  conf=0.86
+- [x] D15  noteheadBlackOnLine (notehead) at (x=1331, y=234)  conf=0.87
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D16  noteheadBlackOnLine (notehead) at (x=1703, y=339)  conf=0.85
+- [x] D16  beam (structural) at (x=1487, y=9)  conf=0.76
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D17  noteheadBlackInSpace (notehead) at (x=1703, y=155)  conf=0.82
+- [x] D17  noteheadBlackInSpace (notehead) at (x=1702, y=101)  conf=0.87
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D18  noteheadBlackOnLine (notehead) at (x=1703, y=233)  conf=0.86
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D19  noteheadBlackInSpace (notehead) at (x=1703, y=155)  conf=0.85
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D20  noteheadBlackOnLine (notehead) at (x=1704, y=338)  conf=0.85
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

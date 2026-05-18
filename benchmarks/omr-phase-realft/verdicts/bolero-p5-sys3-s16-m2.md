@@ -12,23 +12,25 @@
 
 ## Detections
 
-- [x] D0  noteheadBlackInSpace (notehead) at (x=147, y=336)  conf=0.81
+- [x] D0  noteheadBlackInSpace (notehead) at (x=146, y=334)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  noteheadBlackInSpace (notehead) at (x=148, y=447)  conf=0.83
+- [x] D1  noteheadBlackInSpace (notehead) at (x=148, y=446)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  noteheadBlackInSpace (notehead) at (x=809, y=336)  conf=0.84
+- [x] D2  ledgerLine (structural) at (x=149, y=418)  conf=0.69
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  noteheadBlackOnLine (notehead) at (x=880, y=141)  conf=0.87
+- [x] D3  noteheadBlackInSpace (notehead) at (x=812, y=335)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  noteheadBlackInSpace (notehead) at (x=880, y=334)  conf=0.83
+- [x] D4  noteheadBlackInSpace (notehead) at (x=879, y=334)  conf=0.89
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  staff (structural) at (x=1024, y=250)  conf=0.93
+- [x] D5  noteheadBlackOnLine (notehead) at (x=880, y=140)  conf=0.90
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  noteheadBlackInSpace (notehead) at (x=1622, y=334)  conf=0.84
+- [x] D6  staff (structural) at (x=1024, y=253)  conf=0.93
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  noteheadBlackInSpace (notehead) at (x=1624, y=446)  conf=0.82
+- [x] D7  noteheadBlackInSpace (notehead) at (x=1621, y=334)  conf=0.88
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  restHalf (rest) at (x=1625, y=418)  conf=0.11
+- [x] D8  noteheadBlackInSpace (notehead) at (x=1623, y=446)  conf=0.88
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D9  ledgerLine (structural) at (x=1623, y=417)  conf=0.63
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

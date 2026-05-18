@@ -12,13 +12,15 @@
 
 ## Detections
 
-- [x] D0  keyFlat (accidental) at (x=15, y=44)  conf=0.34
+- [x] D0  clefG (clef) at (x=109, y=215)  conf=0.97
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  clefG (clef) at (x=109, y=214)  conf=0.95
+- [x] D1  staff (structural) at (x=1025, y=215)  conf=0.76
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  staff (structural) at (x=1024, y=219)  conf=0.85
+- [x] D2  tie (structural) at (x=1027, y=311)  conf=0.32
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  restWhole (rest) at (x=1238, y=184)  conf=0.71
+- [x] D3  beam (structural) at (x=1050, y=310)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D4  restWhole (rest) at (x=1237, y=185)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

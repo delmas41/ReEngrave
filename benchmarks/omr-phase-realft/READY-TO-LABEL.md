@@ -1,9 +1,12 @@
 # Phase real-FT — Ready to label (`v1-2026-05-17-orchestral`)
 
-**Status:** ✅ **READY** — 186 orchestral cells prepped, pre-labels at
-**imgsz=640** with `deepscoresv2-yolov8l-8shards-100ep.pt` (the best
-weights currently on disk). Labels in this session will land in the new
-versioned catalog under
+**Status:** ✅ **READY** — 186 orchestral cells prepped. Pre-labels were
+regenerated 2026-05-18 with the newer
+`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` weights (Phase 3.3 model,
+F1 98.8% on the held-out verdict cells, +2.5 pts vs the 8-shard model).
+Original 8-shard pre-labels preserved at `detections-8shards-old/`,
+`verdicts-8shards-old/`, `overlays-8shards-old/` for reference. Labels
+in this session will land in the new versioned catalog under
 [data/user-labeled/v1-2026-05-17-orchestral/](../../data/user-labeled/).
 
 **Worktree:** `.claude/worktrees/cool-kare-05197c/`

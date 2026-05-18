@@ -12,45 +12,29 @@
 
 ## Detections
 
-- [x] D0  staff (structural) at (x=1024, y=66)  conf=0.33
+- [x] D0  tie (structural) at (x=38, y=107)  conf=0.12
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  staff (structural) at (x=1024, y=51)  conf=0.20
+- [x] D1  tie (structural) at (x=109, y=128)  conf=0.11
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  staff (structural) at (x=1027, y=124)  conf=0.14
+- [x] D2  tie (structural) at (x=529, y=128)  conf=0.13
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  restQuarter (rest) at (x=1111, y=83)  conf=0.82
+- [x] D3  tie (structural) at (x=1024, y=126)  conf=0.27
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  staff (structural) at (x=1151, y=11)  conf=0.11
+- [x] D4  tie (structural) at (x=1025, y=48)  conf=0.11
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  staff (structural) at (x=1254, y=172)  conf=0.15
+- [x] D5  restQuarter (rest) at (x=1110, y=82)  conf=0.85
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  tie (structural) at (x=1477, y=107)  conf=0.28
+- [x] D6  restQuarter (rest) at (x=1534, y=87)  conf=0.72
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  restQuarter (rest) at (x=1534, y=88)  conf=0.33
+- [x] D7  dynamicM (dynamic) at (x=1844, y=163)  conf=0.58
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  restQuarter (rest) at (x=1536, y=93)  conf=0.49
+- [x] D8  dynamicP (dynamic) at (x=1865, y=164)  conf=0.67
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  dynamicP (dynamic) at (x=1842, y=165)  conf=0.80
+- [x] D9  accidentalSharp (accidental) at (x=1869, y=95)  conf=0.80
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  accidentalSharp (accidental) at (x=1870, y=96)  conf=0.83
+- [x] D10  noteheadBlackOnLine (notehead) at (x=1906, y=93)  conf=0.84
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D11  dynamicP (dynamic) at (x=1872, y=165)  conf=0.77
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D12  tie (structural) at (x=1878, y=53)  conf=0.21
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D13  noteheadBlackOnLine (notehead) at (x=1906, y=93)  conf=0.83
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D14  flag8thDown (flag) at (x=1908, y=140)  conf=0.79
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D15  articStaccatoAbove (ornament) at (x=1909, y=67)  conf=0.13
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D16  tie (structural) at (x=1926, y=119)  conf=0.15
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D17  beam (structural) at (x=1974, y=14)  conf=0.38
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D18  tie (structural) at (x=1976, y=77)  conf=0.11
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D19  tie (structural) at (x=1978, y=56)  conf=0.14
+- [x] D11  flag8thDown (flag) at (x=1907, y=138)  conf=0.77
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

@@ -12,25 +12,19 @@
 
 ## Detections
 
-- [x] D0  flag8thUp (flag) at (x=5, y=790)  conf=0.13
+- [x] D0  restHalf (rest) at (x=20, y=46)  conf=0.13
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  restWhole (rest) at (x=20, y=46)  conf=0.34
+- [x] D1  restHalf (rest) at (x=21, y=147)  conf=0.25
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  noteheadBlackInSpace (notehead) at (x=20, y=45)  conf=0.24
+- [x] D2  beam (structural) at (x=273, y=448)  conf=0.18
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  noteheadBlackInSpace (notehead) at (x=20, y=147)  conf=0.24
+- [x] D3  beam (structural) at (x=296, y=347)  conf=0.37
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  restWhole (rest) at (x=20, y=147)  conf=0.18
+- [x] D4  beam (structural) at (x=297, y=549)  conf=0.43
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  restHalf (rest) at (x=20, y=147)  conf=0.17
+- [x] D5  beam (structural) at (x=299, y=247)  conf=0.42
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  restWhole (rest) at (x=20, y=752)  conf=0.10
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  restHBar (rest) at (x=297, y=652)  conf=0.26
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  restHBar (rest) at (x=297, y=347)  conf=0.16
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  restHBar (rest) at (x=298, y=449)  conf=0.24
+- [x] D6  beam (structural) at (x=301, y=651)  conf=0.70
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)

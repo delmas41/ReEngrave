@@ -1,0 +1,6465 @@
+{
+  "weights": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt",
+  "conf_threshold": 0.1,
+  "device": "auto",
+  "per_cell": {
+    "beet5-p5-sys0-s0-m0": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.12028718739748001,
+      "confidence_max": 0.19208243489265442,
+      "confidence_mean": 0.1468313162525495,
+      "confidence_median": 0.12812432646751404,
+      "category_breakdown": {
+        "notehead": 1,
+        "structural": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "beam",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          2.7629812499999997
+        ],
+        "median_s_excluding_warmup": 2.7629812499999997,
+        "mean_s_excluding_warmup": 2.7629812499999997
+      }
+    },
+    "beet5-p5-sys0-s0-m5": {
+      "n_detections": 110,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10061566531658173,
+      "confidence_max": 0.7025529146194458,
+      "confidence_mean": 0.25810252956368707,
+      "confidence_median": 0.2074659764766693,
+      "category_breakdown": {
+        "notehead": 95,
+        "structural": 14,
+        "stem": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "brace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 110,
+        "all_times_s": [
+          0.22642279200000015
+        ],
+        "median_s_excluding_warmup": 0.22642279200000015,
+        "mean_s_excluding_warmup": 0.22642279200000015
+      }
+    },
+    "beet5-p5-sys0-s1-m2": {
+      "n_detections": 148,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10080774128437042,
+      "confidence_max": 0.7400176525115967,
+      "confidence_mean": 0.2685642666812684,
+      "confidence_median": 0.21305420249700546,
+      "category_breakdown": {
+        "notehead": 111,
+        "structural": 30,
+        "rest": 5,
+        "flag": 1,
+        "stem": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 148,
+        "all_times_s": [
+          0.24554137500000017
+        ],
+        "median_s_excluding_warmup": 0.24554137500000017,
+        "mean_s_excluding_warmup": 0.24554137500000017
+      }
+    },
+    "beet5-p5-sys0-s1-m8": {
+      "n_detections": 96,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10099057108163834,
+      "confidence_max": 0.6121315956115723,
+      "confidence_mean": 0.20570694965620837,
+      "confidence_median": 0.1671248972415924,
+      "category_breakdown": {
+        "structural": 6,
+        "notehead": 84,
+        "rest": 6
+      },
+      "sample_class_labels": [
+        "brace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 96,
+        "all_times_s": [
+          0.20314275000000004
+        ],
+        "median_s_excluding_warmup": 0.20314275000000004,
+        "mean_s_excluding_warmup": 0.20314275000000004
+      }
+    },
+    "beet5-p5-sys1-s3-m1": {
+      "n_detections": 59,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10819875448942184,
+      "confidence_max": 0.8805674910545349,
+      "confidence_mean": 0.4376497413899939,
+      "confidence_median": 0.32614511251449585,
+      "category_breakdown": {
+        "ornament": 21,
+        "accidental": 5,
+        "rest": 4,
+        "notehead": 24,
+        "structural": 3,
+        "dynamic": 2
+      },
+      "sample_class_labels": [
+        "arpeggiato",
+        "accidentalDoubleSharp",
+        "accidentalNatural",
+        "rest8th",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "arpeggiato",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 59,
+        "all_times_s": [
+          0.056233083000000406
+        ],
+        "median_s_excluding_warmup": 0.056233083000000406,
+        "mean_s_excluding_warmup": 0.056233083000000406
+      }
+    },
+    "beet5-p5-sys1-s5-m1": {
+      "n_detections": 80,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10142068564891815,
+      "confidence_max": 0.8453128337860107,
+      "confidence_mean": 0.4043009698390961,
+      "confidence_median": 0.32295921444892883,
+      "category_breakdown": {
+        "notehead": 40,
+        "structural": 13,
+        "ornament": 16,
+        "rest": 6,
+        "accidental": 3,
+        "flag": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "tie",
+        "tie",
+        "arpeggiato",
+        "arpeggiato",
+        "restQuarter",
+        "arpeggiato",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 80,
+        "all_times_s": [
+          0.06640316700000026
+        ],
+        "median_s_excluding_warmup": 0.06640316700000026,
+        "mean_s_excluding_warmup": 0.06640316700000026
+      }
+    },
+    "beet5-p5-sys1-s7-m1": {
+      "n_detections": 86,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10358700901269913,
+      "confidence_max": 0.882349967956543,
+      "confidence_mean": 0.37605252038947373,
+      "confidence_median": 0.2920982539653778,
+      "category_breakdown": {
+        "notehead": 45,
+        "structural": 17,
+        "ornament": 13,
+        "accidental": 5,
+        "rest": 3,
+        "clef": 1,
+        "flag": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "tie",
+        "tie",
+        "arpeggiato",
+        "tie",
+        "accidentalSharp",
+        "restQuarter"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 86,
+        "all_times_s": [
+          0.0635193329999999
+        ],
+        "median_s_excluding_warmup": 0.0635193329999999,
+        "mean_s_excluding_warmup": 0.0635193329999999
+      }
+    },
+    "beet5-p5-sys1-s9-m0": {
+      "n_detections": 72,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10114407539367676,
+      "confidence_max": 0.846885621547699,
+      "confidence_mean": 0.3629823266011145,
+      "confidence_median": 0.3000003844499588,
+      "category_breakdown": {
+        "clef": 1,
+        "structural": 19,
+        "notehead": 31,
+        "rest": 7,
+        "ornament": 10,
+        "dynamic": 1,
+        "accidental": 3
+      },
+      "sample_class_labels": [
+        "clefG",
+        "tie",
+        "tie",
+        "tie",
+        "tie",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 72,
+        "all_times_s": [
+          0.06003304099999962
+        ],
+        "median_s_excluding_warmup": 0.06003304099999962,
+        "mean_s_excluding_warmup": 0.06003304099999962
+      }
+    },
+    "beet5-p5-sys1-s11-m0": {
+      "n_detections": 115,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10200195014476776,
+      "confidence_max": 0.9045317769050598,
+      "confidence_mean": 0.44077023688865746,
+      "confidence_median": 0.4253637492656708,
+      "category_breakdown": {
+        "clef": 1,
+        "accidental": 10,
+        "structural": 21,
+        "notehead": 56,
+        "ornament": 23,
+        "flag": 1,
+        "dynamic": 2,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "clefG",
+        "keyFlat",
+        "tie",
+        "keyFlat",
+        "accidentalFlat",
+        "accidentalSharp",
+        "tie",
+        "noteheadBlackOnLine",
+        "tie",
+        "slur"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 115,
+        "all_times_s": [
+          0.059759125000000246
+        ],
+        "median_s_excluding_warmup": 0.059759125000000246,
+        "mean_s_excluding_warmup": 0.059759125000000246
+      }
+    },
+    "beet5-p5-sys1-s13-m0": {
+      "n_detections": 68,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10084867477416992,
+      "confidence_max": 0.8949458003044128,
+      "confidence_mean": 0.44365662226782127,
+      "confidence_median": 0.4418698847293854,
+      "category_breakdown": {
+        "notehead": 30,
+        "structural": 11,
+        "rest": 8,
+        "accidental": 4,
+        "ornament": 12,
+        "dynamic": 3
+      },
+      "sample_class_labels": [
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "tie",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "restQuarter"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 68,
+        "all_times_s": [
+          0.06609995799999968
+        ],
+        "median_s_excluding_warmup": 0.06609995799999968,
+        "mean_s_excluding_warmup": 0.06609995799999968
+      }
+    },
+    "beet5-p15-sys0-s0-m0": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10052859783172607,
+      "confidence_max": 0.6097196936607361,
+      "confidence_mean": 0.20767604187130928,
+      "confidence_median": 0.17180077731609344,
+      "category_breakdown": {
+        "structural": 4,
+        "notehead": 13,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "brace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restHBar",
+        "staff",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          0.13259641700000024
+        ],
+        "median_s_excluding_warmup": 0.13259641700000024,
+        "mean_s_excluding_warmup": 0.13259641700000024
+      }
+    },
+    "beet5-p15-sys0-s1-m5": {
+      "n_detections": 118,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10241781175136566,
+      "confidence_max": 0.8128119111061096,
+      "confidence_mean": 0.3186588901079307,
+      "confidence_median": 0.28231081366539,
+      "category_breakdown": {
+        "notehead": 87,
+        "rest": 25,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 118,
+        "all_times_s": [
+          0.13139866599999994
+        ],
+        "median_s_excluding_warmup": 0.13139866599999994,
+        "mean_s_excluding_warmup": 0.13139866599999994
+      }
+    },
+    "beet5-p15-sys1-s3-m2": {
+      "n_detections": 233,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10078158974647522,
+      "confidence_max": 0.6648595929145813,
+      "confidence_mean": 0.25163330176101734,
+      "confidence_median": 0.2171713411808014,
+      "category_breakdown": {
+        "notehead": 195,
+        "flag": 1,
+        "structural": 33,
+        "rest": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 233,
+        "all_times_s": [
+          0.23945225000000026
+        ],
+        "median_s_excluding_warmup": 0.23945225000000026,
+        "mean_s_excluding_warmup": 0.23945225000000026
+      }
+    },
+    "beet5-p15-sys1-s5-m2": {
+      "n_detections": 147,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10037193447351456,
+      "confidence_max": 0.7144912481307983,
+      "confidence_mean": 0.27111875955142134,
+      "confidence_median": 0.20933914184570312,
+      "category_breakdown": {
+        "notehead": 128,
+        "structural": 14,
+        "rest": 3,
+        "ornament": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "brace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 147,
+        "all_times_s": [
+          0.22267208299999997
+        ],
+        "median_s_excluding_warmup": 0.22267208299999997,
+        "mean_s_excluding_warmup": 0.22267208299999997
+      }
+    },
+    "beet5-p15-sys1-s7-m1": {
+      "n_detections": 169,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10032756626605988,
+      "confidence_max": 0.9337760806083679,
+      "confidence_mean": 0.29595338394479637,
+      "confidence_median": 0.24169106781482697,
+      "category_breakdown": {
+        "notehead": 141,
+        "ornament": 1,
+        "rest": 1,
+        "structural": 26
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 169,
+        "all_times_s": [
+          0.24054687499999972
+        ],
+        "median_s_excluding_warmup": 0.24054687499999972,
+        "mean_s_excluding_warmup": 0.24054687499999972
+      }
+    },
+    "beet5-p15-sys2-s9-m1": {
+      "n_detections": 128,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10086175799369812,
+      "confidence_max": 0.8968309760093689,
+      "confidence_mean": 0.31389653420774266,
+      "confidence_median": 0.23583049327135086,
+      "category_breakdown": {
+        "notehead": 91,
+        "rest": 19,
+        "structural": 18
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 128,
+        "all_times_s": [
+          0.14678695799999986
+        ],
+        "median_s_excluding_warmup": 0.14678695799999986,
+        "mean_s_excluding_warmup": 0.14678695799999986
+      }
+    },
+    "beet5-p15-sys2-s11-m1": {
+      "n_detections": 96,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10263479501008987,
+      "confidence_max": 0.7116974592208862,
+      "confidence_mean": 0.28954655257984996,
+      "confidence_median": 0.25297023355960846,
+      "category_breakdown": {
+        "notehead": 78,
+        "rest": 10,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 96,
+        "all_times_s": [
+          0.1533117500000003
+        ],
+        "median_s_excluding_warmup": 0.1533117500000003,
+        "mean_s_excluding_warmup": 0.1533117500000003
+      }
+    },
+    "beet5-p15-sys2-s13-m0": {
+      "n_detections": 95,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10388477891683578,
+      "confidence_max": 0.8941730856895447,
+      "confidence_mean": 0.3107503404742793,
+      "confidence_median": 0.24699901044368744,
+      "category_breakdown": {
+        "notehead": 59,
+        "rest": 12,
+        "ornament": 1,
+        "structural": 22,
+        "time_sig_digit": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 95,
+        "all_times_s": [
+          0.1004229169999995
+        ],
+        "median_s_excluding_warmup": 0.1004229169999995,
+        "mean_s_excluding_warmup": 0.1004229169999995
+      }
+    },
+    "beet5-p15-sys2-s15-m0": {
+      "n_detections": 138,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1000230461359024,
+      "confidence_max": 0.7537469267845154,
+      "confidence_mean": 0.2906394599788431,
+      "confidence_median": 0.23462380468845367,
+      "category_breakdown": {
+        "notehead": 102,
+        "ornament": 4,
+        "rest": 10,
+        "structural": 22
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 138,
+        "all_times_s": [
+          0.10532516600000008
+        ],
+        "median_s_excluding_warmup": 0.10532516600000008,
+        "mean_s_excluding_warmup": 0.10532516600000008
+      }
+    },
+    "beet5-p15-sys2-s17-m0": {
+      "n_detections": 121,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10133591294288635,
+      "confidence_max": 0.7965764403343201,
+      "confidence_mean": 0.32716383495606666,
+      "confidence_median": 0.29565736651420593,
+      "category_breakdown": {
+        "notehead": 88,
+        "structural": 17,
+        "ornament": 2,
+        "rest": 13,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 121,
+        "all_times_s": [
+          0.11127854199999998
+        ],
+        "median_s_excluding_warmup": 0.11127854199999998,
+        "mean_s_excluding_warmup": 0.11127854199999998
+      }
+    },
+    "beet5-p25-sys0-s0-m0": {
+      "n_detections": 101,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10036881268024445,
+      "confidence_max": 0.7543166875839233,
+      "confidence_mean": 0.27990488110497447,
+      "confidence_median": 0.24213001132011414,
+      "category_breakdown": {
+        "notehead": 74,
+        "rest": 17,
+        "clef": 1,
+        "structural": 8,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 101,
+        "all_times_s": [
+          0.07957024999999973
+        ],
+        "median_s_excluding_warmup": 0.07957024999999973,
+        "mean_s_excluding_warmup": 0.07957024999999973
+      }
+    },
+    "beet5-p25-sys0-s2-m1": {
+      "n_detections": 146,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10251997411251068,
+      "confidence_max": 0.7454798817634583,
+      "confidence_mean": 0.33141508183046564,
+      "confidence_median": 0.3004414886236191,
+      "category_breakdown": {
+        "notehead": 100,
+        "ornament": 1,
+        "flag": 1,
+        "rest": 32,
+        "structural": 9,
+        "time_sig_digit": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 146,
+        "all_times_s": [
+          0.10445975000000018
+        ],
+        "median_s_excluding_warmup": 0.10445975000000018,
+        "mean_s_excluding_warmup": 0.10445975000000018
+      }
+    },
+    "beet5-p25-sys0-s4-m2": {
+      "n_detections": 47,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1021309420466423,
+      "confidence_max": 0.8701733946800232,
+      "confidence_mean": 0.42758398629883504,
+      "confidence_median": 0.38609176874160767,
+      "category_breakdown": {
+        "notehead": 25,
+        "structural": 10,
+        "rest": 5,
+        "ornament": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "tie",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 47,
+        "all_times_s": [
+          0.07890091700000035
+        ],
+        "median_s_excluding_warmup": 0.07890091700000035,
+        "mean_s_excluding_warmup": 0.07890091700000035
+      }
+    },
+    "beet5-p25-sys0-s6-m3": {
+      "n_detections": 44,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10721985995769501,
+      "confidence_max": 0.8841131329536438,
+      "confidence_mean": 0.40444345653734426,
+      "confidence_median": 0.4217115193605423,
+      "category_breakdown": {
+        "notehead": 6,
+        "rest": 25,
+        "structural": 13
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restHalf",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 44,
+        "all_times_s": [
+          0.1025068340000006
+        ],
+        "median_s_excluding_warmup": 0.1025068340000006,
+        "mean_s_excluding_warmup": 0.1025068340000006
+      }
+    },
+    "beet5-p25-sys0-s9-m0": {
+      "n_detections": 138,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10088878870010376,
+      "confidence_max": 0.9175612330436707,
+      "confidence_mean": 0.3504117704603983,
+      "confidence_median": 0.31678855419158936,
+      "category_breakdown": {
+        "notehead": 116,
+        "structural": 11,
+        "flag": 1,
+        "accidental": 4,
+        "rest": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 138,
+        "all_times_s": [
+          0.08811091699999984
+        ],
+        "median_s_excluding_warmup": 0.08811091699999984,
+        "mean_s_excluding_warmup": 0.08811091699999984
+      }
+    },
+    "beet5-p25-sys1-s11-m1": {
+      "n_detections": 50,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10671892762184143,
+      "confidence_max": 0.7523447871208191,
+      "confidence_mean": 0.3242178517580032,
+      "confidence_median": 0.28529854118824005,
+      "category_breakdown": {
+        "notehead": 23,
+        "rest": 16,
+        "ornament": 1,
+        "structural": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 50,
+        "all_times_s": [
+          0.13159662499999936
+        ],
+        "median_s_excluding_warmup": 0.13159662499999936,
+        "mean_s_excluding_warmup": 0.13159662499999936
+      }
+    },
+    "beet5-p25-sys1-s12-m1": {
+      "n_detections": 74,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10407648235559464,
+      "confidence_max": 0.7698243856430054,
+      "confidence_mean": 0.33208089714517464,
+      "confidence_median": 0.27269740402698517,
+      "category_breakdown": {
+        "notehead": 39,
+        "rest": 26,
+        "ornament": 1,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 74,
+        "all_times_s": [
+          0.12857358299999966
+        ],
+        "median_s_excluding_warmup": 0.12857358299999966,
+        "mean_s_excluding_warmup": 0.12857358299999966
+      }
+    },
+    "beet5-p25-sys2-s13-m1": {
+      "n_detections": 137,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10178378224372864,
+      "confidence_max": 0.9583821892738342,
+      "confidence_mean": 0.3434822911219875,
+      "confidence_median": 0.26811325550079346,
+      "category_breakdown": {
+        "notehead": 91,
+        "structural": 22,
+        "rest": 23,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 137,
+        "all_times_s": [
+          0.09084329099999966
+        ],
+        "median_s_excluding_warmup": 0.09084329099999966,
+        "mean_s_excluding_warmup": 0.09084329099999966
+      }
+    },
+    "beet5-p25-sys2-s13-m10": {
+      "n_detections": 171,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10162189602851868,
+      "confidence_max": 0.8497648239135742,
+      "confidence_mean": 0.2895647123107436,
+      "confidence_median": 0.24238960444927216,
+      "category_breakdown": {
+        "notehead": 159,
+        "rest": 4,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 171,
+        "all_times_s": [
+          0.24662324999999985
+        ],
+        "median_s_excluding_warmup": 0.24662324999999985,
+        "mean_s_excluding_warmup": 0.24662324999999985
+      }
+    },
+    "beet5-p25-sys3-s17-m0": {
+      "n_detections": 48,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10099443793296814,
+      "confidence_max": 0.871484100818634,
+      "confidence_mean": 0.39856776408851147,
+      "confidence_median": 0.3527977466583252,
+      "category_breakdown": {
+        "notehead": 15,
+        "rest": 17,
+        "structural": 12,
+        "flag": 1,
+        "ornament": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "restWhole",
+        "rest8th"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 48,
+        "all_times_s": [
+          0.05443429199999983
+        ],
+        "median_s_excluding_warmup": 0.05443429199999983,
+        "mean_s_excluding_warmup": 0.05443429199999983
+      }
+    },
+    "beet5-p35-sys0-s0-m0": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10420417785644531,
+      "confidence_max": 0.824520468711853,
+      "confidence_mean": 0.3487514497246593,
+      "confidence_median": 0.3010522127151489,
+      "category_breakdown": {
+        "notehead": 17,
+        "ornament": 3,
+        "rest": 5,
+        "structural": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "fermataAbove",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          0.09272791599999941
+        ],
+        "median_s_excluding_warmup": 0.09272791599999941,
+        "mean_s_excluding_warmup": 0.09272791599999941
+      }
+    },
+    "beet5-p35-sys0-s3-m0": {
+      "n_detections": 85,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10850206762552261,
+      "confidence_max": 0.7281757593154907,
+      "confidence_mean": 0.29742289036512376,
+      "confidence_median": 0.24988953769207,
+      "category_breakdown": {
+        "notehead": 62,
+        "ornament": 5,
+        "flag": 1,
+        "structural": 17
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 85,
+        "all_times_s": [
+          0.08245354200000143
+        ],
+        "median_s_excluding_warmup": 0.08245354200000143,
+        "mean_s_excluding_warmup": 0.08245354200000143
+      }
+    },
+    "beet5-p35-sys0-s6-m1": {
+      "n_detections": 60,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10331513732671738,
+      "confidence_max": 0.8934995532035828,
+      "confidence_mean": 0.5813941550751527,
+      "confidence_median": 0.7431323230266571,
+      "category_breakdown": {
+        "notehead": 29,
+        "rest": 11,
+        "dynamic": 1,
+        "structural": 14,
+        "ornament": 3,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "noteheadWholeInSpace",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "restQuarter",
+        "restQuarter"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 60,
+        "all_times_s": [
+          0.05401833400000022
+        ],
+        "median_s_excluding_warmup": 0.05401833400000022,
+        "mean_s_excluding_warmup": 0.05401833400000022
+      }
+    },
+    "beet5-p35-sys0-s9-m1": {
+      "n_detections": 69,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10376190394163132,
+      "confidence_max": 0.8866751790046692,
+      "confidence_mean": 0.5358468668832295,
+      "confidence_median": 0.5463816523551941,
+      "category_breakdown": {
+        "notehead": 22,
+        "accidental": 9,
+        "flag": 1,
+        "structural": 20,
+        "rest": 12,
+        "ornament": 4,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "accidentalNatural",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "slur",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "arpeggiato",
+        "accidentalNatural"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 69,
+        "all_times_s": [
+          0.04791574999999959
+        ],
+        "median_s_excluding_warmup": 0.04791574999999959,
+        "mean_s_excluding_warmup": 0.04791574999999959
+      }
+    },
+    "beet5-p35-sys1-s11-m4": {
+      "n_detections": 161,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10191149264574051,
+      "confidence_max": 0.8207667469978333,
+      "confidence_mean": 0.27092287670936643,
+      "confidence_median": 0.21677835285663605,
+      "category_breakdown": {
+        "notehead": 133,
+        "rest": 14,
+        "structural": 13,
+        "time_sig_digit": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 161,
+        "all_times_s": [
+          0.1557859170000011
+        ],
+        "median_s_excluding_warmup": 0.1557859170000011,
+        "mean_s_excluding_warmup": 0.1557859170000011
+      }
+    },
+    "beet5-p35-sys1-s12-m0": {
+      "n_detections": 106,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.101384237408638,
+      "confidence_max": 0.8997140526771545,
+      "confidence_mean": 0.25206282538063124,
+      "confidence_median": 0.20211652666330338,
+      "category_breakdown": {
+        "notehead": 82,
+        "rest": 16,
+        "flag": 1,
+        "structural": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restHalf"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 106,
+        "all_times_s": [
+          0.13942312500000043
+        ],
+        "median_s_excluding_warmup": 0.13942312500000043,
+        "mean_s_excluding_warmup": 0.13942312500000043
+      }
+    },
+    "beet5-p35-sys1-s12-m6": {
+      "n_detections": 131,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10021939873695374,
+      "confidence_max": 0.7229896783828735,
+      "confidence_mean": 0.32262317637223326,
+      "confidence_median": 0.3077548146247864,
+      "category_breakdown": {
+        "notehead": 112,
+        "structural": 15,
+        "rest": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 131,
+        "all_times_s": [
+          0.23787179199999997
+        ],
+        "median_s_excluding_warmup": 0.23787179199999997,
+        "mean_s_excluding_warmup": 0.23787179199999997
+      }
+    },
+    "beet5-p35-sys1-s13-m2": {
+      "n_detections": 99,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10025771707296371,
+      "confidence_max": 0.7121700048446655,
+      "confidence_mean": 0.29549352629016146,
+      "confidence_median": 0.2509017586708069,
+      "category_breakdown": {
+        "notehead": 85,
+        "ornament": 3,
+        "rest": 5,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 99,
+        "all_times_s": [
+          0.32487104199999983
+        ],
+        "median_s_excluding_warmup": 0.32487104199999983,
+        "mean_s_excluding_warmup": 0.32487104199999983
+      }
+    },
+    "beet5-p35-sys1-s13-m8": {
+      "n_detections": 141,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10206921398639679,
+      "confidence_max": 0.7056671977043152,
+      "confidence_mean": 0.24072380897635265,
+      "confidence_median": 0.20946542918682098,
+      "category_breakdown": {
+        "notehead": 123,
+        "structural": 13,
+        "rest": 3,
+        "flag": 1,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 141,
+        "all_times_s": [
+          0.2255642910000013
+        ],
+        "median_s_excluding_warmup": 0.2255642910000013,
+        "mean_s_excluding_warmup": 0.2255642910000013
+      }
+    },
+    "beet5-p35-sys1-s14-m4": {
+      "n_detections": 43,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10220111906528473,
+      "confidence_max": 0.6795296669006348,
+      "confidence_mean": 0.3004916753879813,
+      "confidence_median": 0.25136953592300415,
+      "category_breakdown": {
+        "notehead": 25,
+        "structural": 9,
+        "rest": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "brace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 43,
+        "all_times_s": [
+          0.26161283299999916
+        ],
+        "median_s_excluding_warmup": 0.26161283299999916,
+        "mean_s_excluding_warmup": 0.26161283299999916
+      }
+    },
+    "mahler5-p25-sys0-s0-m0": {
+      "n_detections": 70,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10314229130744934,
+      "confidence_max": 0.8475894331932068,
+      "confidence_mean": 0.40681657791137693,
+      "confidence_median": 0.331042543053627,
+      "category_breakdown": {
+        "clef": 3,
+        "structural": 25,
+        "accidental": 12,
+        "rest": 1,
+        "notehead": 24,
+        "stem": 2,
+        "ornament": 1,
+        "dynamic": 2
+      },
+      "sample_class_labels": [
+        "clefG",
+        "clefG",
+        "clefG",
+        "tie",
+        "tie",
+        "keyFlat",
+        "accidentalFlat",
+        "restHalf",
+        "accidentalFlat",
+        "keyFlat"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 70,
+        "all_times_s": [
+          0.07372804199999905
+        ],
+        "median_s_excluding_warmup": 0.07372804199999905,
+        "mean_s_excluding_warmup": 0.07372804199999905
+      }
+    },
+    "mahler5-p25-sys0-s1-m3": {
+      "n_detections": 300,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.13910923898220062,
+      "confidence_max": 0.8048469424247742,
+      "confidence_mean": 0.33086149419347444,
+      "confidence_median": 0.29238177835941315,
+      "category_breakdown": {
+        "notehead": 267,
+        "structural": 6,
+        "rest": 27
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 300,
+        "all_times_s": [
+          0.18665937499999963
+        ],
+        "median_s_excluding_warmup": 0.18665937499999963,
+        "mean_s_excluding_warmup": 0.18665937499999963
+      }
+    },
+    "mahler5-p25-sys0-s3-m1": {
+      "n_detections": 210,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10032765567302704,
+      "confidence_max": 0.793052077293396,
+      "confidence_mean": 0.2740802047153314,
+      "confidence_median": 0.2244458869099617,
+      "category_breakdown": {
+        "notehead": 132,
+        "rest": 68,
+        "ornament": 2,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 210,
+        "all_times_s": [
+          0.1581562089999995
+        ],
+        "median_s_excluding_warmup": 0.1581562089999995,
+        "mean_s_excluding_warmup": 0.1581562089999995
+      }
+    },
+    "mahler5-p25-sys0-s4-m4": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10264962911605835,
+      "confidence_max": 0.7312265634536743,
+      "confidence_mean": 0.32667510327883065,
+      "confidence_median": 0.2999664843082428,
+      "category_breakdown": {
+        "notehead": 15,
+        "structural": 17
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          0.09442762499999979
+        ],
+        "median_s_excluding_warmup": 0.09442762499999979,
+        "mean_s_excluding_warmup": 0.09442762499999979
+      }
+    },
+    "mahler5-p25-sys0-s6-m2": {
+      "n_detections": 105,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10016557574272156,
+      "confidence_max": 0.7849609851837158,
+      "confidence_mean": 0.25334956170547573,
+      "confidence_median": 0.20071709156036377,
+      "category_breakdown": {
+        "notehead": 37,
+        "rest": 63,
+        "structural": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 105,
+        "all_times_s": [
+          0.15846333400000034
+        ],
+        "median_s_excluding_warmup": 0.15846333400000034,
+        "mean_s_excluding_warmup": 0.15846333400000034
+      }
+    },
+    "mahler5-p25-sys0-s8-m1": {
+      "n_detections": 144,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.105768583714962,
+      "confidence_max": 0.696937084197998,
+      "confidence_mean": 0.275869810488075,
+      "confidence_median": 0.24950799345970154,
+      "category_breakdown": {
+        "notehead": 77,
+        "rest": 64,
+        "ornament": 1,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 144,
+        "all_times_s": [
+          0.17238174999999956
+        ],
+        "median_s_excluding_warmup": 0.17238174999999956,
+        "mean_s_excluding_warmup": 0.17238174999999956
+      }
+    },
+    "mahler5-p25-sys0-s9-m4": {
+      "n_detections": 26,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10640925168991089,
+      "confidence_max": 0.7471584677696228,
+      "confidence_mean": 0.31798505783081055,
+      "confidence_median": 0.27228735387325287,
+      "category_breakdown": {
+        "notehead": 9,
+        "rest": 3,
+        "structural": 14
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 26,
+        "all_times_s": [
+          0.11287345900000112
+        ],
+        "median_s_excluding_warmup": 0.11287345900000112,
+        "mean_s_excluding_warmup": 0.11287345900000112
+      }
+    },
+    "mahler5-p25-sys1-s11-m0": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10008740425109863,
+      "confidence_max": 0.7505655884742737,
+      "confidence_mean": 0.2940124887330779,
+      "confidence_median": 0.23707345128059387,
+      "category_breakdown": {
+        "structural": 15,
+        "rest": 5,
+        "notehead": 8,
+        "time_sig_digit": 1
+      },
+      "sample_class_labels": [
+        "beam",
+        "restWhole",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          0.09938329200000062
+        ],
+        "median_s_excluding_warmup": 0.09938329200000062,
+        "mean_s_excluding_warmup": 0.09938329200000062
+      }
+    },
+    "mahler5-p25-sys2-s12-m1": {
+      "n_detections": 153,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10242723673582077,
+      "confidence_max": 0.9432569742202759,
+      "confidence_mean": 0.2849142532430443,
+      "confidence_median": 0.23065893352031708,
+      "category_breakdown": {
+        "notehead": 102,
+        "rest": 14,
+        "ornament": 3,
+        "structural": 34
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 153,
+        "all_times_s": [
+          0.2200977910000006
+        ],
+        "median_s_excluding_warmup": 0.2200977910000006,
+        "mean_s_excluding_warmup": 0.2200977910000006
+      }
+    },
+    "mahler5-p25-sys3-s13-m1": {
+      "n_detections": 109,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10002254694700241,
+      "confidence_max": 0.6941165328025818,
+      "confidence_mean": 0.27333821431485883,
+      "confidence_median": 0.24284158647060394,
+      "category_breakdown": {
+        "notehead": 42,
+        "rest": 58,
+        "structural": 8,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "segno",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restHalf"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 109,
+        "all_times_s": [
+          0.1756146660000013
+        ],
+        "median_s_excluding_warmup": 0.1756146660000013,
+        "mean_s_excluding_warmup": 0.1756146660000013
+      }
+    },
+    "mahler5-p70-sys0-s0-m0": {
+      "n_detections": 255,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10072380304336548,
+      "confidence_max": 0.7617878317832947,
+      "confidence_mean": 0.27107057559723946,
+      "confidence_median": 0.2211633175611496,
+      "category_breakdown": {
+        "notehead": 177,
+        "rest": 67,
+        "structural": 10,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 255,
+        "all_times_s": [
+          0.204815709
+        ],
+        "median_s_excluding_warmup": 0.204815709,
+        "mean_s_excluding_warmup": 0.204815709
+      }
+    },
+    "mahler5-p70-sys1-s1-m4": {
+      "n_detections": 73,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10305860638618469,
+      "confidence_max": 0.8262934684753418,
+      "confidence_mean": 0.3429345098668582,
+      "confidence_median": 0.3080531060695648,
+      "category_breakdown": {
+        "structural": 16,
+        "rest": 5,
+        "dynamic": 7,
+        "notehead": 44,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "tie",
+        "restWhole",
+        "tie",
+        "restQuarter",
+        "restQuarter",
+        "dynamicM",
+        "dynamicM",
+        "dynamicF",
+        "dynamicF",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 73,
+        "all_times_s": [
+          0.08322820799999953
+        ],
+        "median_s_excluding_warmup": 0.08322820799999953,
+        "mean_s_excluding_warmup": 0.08322820799999953
+      }
+    },
+    "mahler5-p70-sys1-s4-m1": {
+      "n_detections": 189,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10071184486150742,
+      "confidence_max": 0.7510300278663635,
+      "confidence_mean": 0.27404560913484566,
+      "confidence_median": 0.23770569264888763,
+      "category_breakdown": {
+        "notehead": 131,
+        "rest": 46,
+        "structural": 12
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 189,
+        "all_times_s": [
+          0.15050074999999907
+        ],
+        "median_s_excluding_warmup": 0.15050074999999907,
+        "mean_s_excluding_warmup": 0.15050074999999907
+      }
+    },
+    "mahler5-p70-sys1-s6-m3": {
+      "n_detections": 210,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10067546367645264,
+      "confidence_max": 0.7857833504676819,
+      "confidence_mean": 0.27844038772441093,
+      "confidence_median": 0.23125823587179184,
+      "category_breakdown": {
+        "notehead": 147,
+        "rest": 48,
+        "structural": 12,
+        "ornament": 1,
+        "accidental": 1,
+        "clef": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 210,
+        "all_times_s": [
+          0.1516185839999995
+        ],
+        "median_s_excluding_warmup": 0.1516185839999995,
+        "mean_s_excluding_warmup": 0.1516185839999995
+      }
+    },
+    "mahler5-p70-sys2-s8-m5": {
+      "n_detections": 99,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10040520131587982,
+      "confidence_max": 0.7408958077430725,
+      "confidence_mean": 0.25880866482703374,
+      "confidence_median": 0.20816971361637115,
+      "category_breakdown": {
+        "notehead": 30,
+        "rest": 67,
+        "ornament": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 99,
+        "all_times_s": [
+          0.16106591700000017
+        ],
+        "median_s_excluding_warmup": 0.16106591700000017,
+        "mean_s_excluding_warmup": 0.16106591700000017
+      }
+    },
+    "mahler5-p70-sys2-s10-m3": {
+      "n_detections": 71,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10190846025943756,
+      "confidence_max": 0.7632766962051392,
+      "confidence_mean": 0.23991214945702485,
+      "confidence_median": 0.1937834918498993,
+      "category_breakdown": {
+        "notehead": 23,
+        "rest": 47,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 71,
+        "all_times_s": [
+          0.16404979200000014
+        ],
+        "median_s_excluding_warmup": 0.16404979200000014,
+        "mean_s_excluding_warmup": 0.16404979200000014
+      }
+    },
+    "mahler5-p70-sys3-s11-m8": {
+      "n_detections": 193,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10107659548521042,
+      "confidence_max": 0.8383806347846985,
+      "confidence_mean": 0.27022237701273955,
+      "confidence_median": 0.2128676027059555,
+      "category_breakdown": {
+        "notehead": 163,
+        "rest": 10,
+        "structural": 18,
+        "ornament": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "ledgerLine",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 193,
+        "all_times_s": [
+          0.1570373329999999
+        ],
+        "median_s_excluding_warmup": 0.1570373329999999,
+        "mean_s_excluding_warmup": 0.1570373329999999
+      }
+    },
+    "mahler5-p70-sys4-s13-m4": {
+      "n_detections": 120,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10183479636907578,
+      "confidence_max": 0.8023838400840759,
+      "confidence_mean": 0.28297221108029286,
+      "confidence_median": 0.22840804606676102,
+      "category_breakdown": {
+        "notehead": 49,
+        "rest": 66,
+        "structural": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 120,
+        "all_times_s": [
+          0.17544729199999942
+        ],
+        "median_s_excluding_warmup": 0.17544729199999942,
+        "mean_s_excluding_warmup": 0.17544729199999942
+      }
+    },
+    "mahler5-p70-sys6-s16-m0": {
+      "n_detections": 86,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10108038783073425,
+      "confidence_max": 0.8047353029251099,
+      "confidence_mean": 0.3584709667362446,
+      "confidence_median": 0.2893278896808624,
+      "category_breakdown": {
+        "structural": 19,
+        "accidental": 11,
+        "notehead": 44,
+        "ornament": 2,
+        "rest": 9,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "tie",
+        "accidentalFlat",
+        "keyFlat",
+        "keyFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "accidentalFlat"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 86,
+        "all_times_s": [
+          0.07951479100000114
+        ],
+        "median_s_excluding_warmup": 0.07951479100000114,
+        "mean_s_excluding_warmup": 0.07951479100000114
+      }
+    },
+    "mahler5-p70-sys7-s18-m2": {
+      "n_detections": 157,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10087336599826813,
+      "confidence_max": 0.7721828818321228,
+      "confidence_mean": 0.2742096036672592,
+      "confidence_median": 0.22866219282150269,
+      "category_breakdown": {
+        "notehead": 100,
+        "rest": 50,
+        "ornament": 1,
+        "structural": 5,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 157,
+        "all_times_s": [
+          0.15535379199999966
+        ],
+        "median_s_excluding_warmup": 0.15535379199999966,
+        "mean_s_excluding_warmup": 0.15535379199999966
+      }
+    },
+    "mahler5-p130-sys0-s0-m0": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10334324836730957,
+      "confidence_max": 0.7208978533744812,
+      "confidence_mean": 0.33541631801375027,
+      "confidence_median": 0.30603888630867004,
+      "category_breakdown": {
+        "notehead": 12,
+        "ornament": 1,
+        "accidental": 4,
+        "rest": 2,
+        "structural": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "fermataAbove",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine",
+        "accidentalSharp",
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          0.09151999999999916
+        ],
+        "median_s_excluding_warmup": 0.09151999999999916,
+        "mean_s_excluding_warmup": 0.09151999999999916
+      }
+    },
+    "mahler5-p130-sys0-s2-m0": {
+      "n_detections": 34,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11148522049188614,
+      "confidence_max": 0.8050152063369751,
+      "confidence_mean": 0.41448380863841844,
+      "confidence_median": 0.35823865234851837,
+      "category_breakdown": {
+        "notehead": 11,
+        "accidental": 4,
+        "dynamic": 1,
+        "ornament": 2,
+        "structural": 16
+      },
+      "sample_class_labels": [
+        "noteheadHalfOnLine",
+        "noteheadHalfOnLine",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "accidentalFlat",
+        "dynamicF",
+        "articStaccatoAbove",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 34,
+        "all_times_s": [
+          0.09118558299999968
+        ],
+        "median_s_excluding_warmup": 0.09118558299999968,
+        "mean_s_excluding_warmup": 0.09118558299999968
+      }
+    },
+    "mahler5-p130-sys0-s4-m0": {
+      "n_detections": 30,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10113315284252167,
+      "confidence_max": 0.5781810283660889,
+      "confidence_mean": 0.2448832760254542,
+      "confidence_median": 0.18872354179620743,
+      "category_breakdown": {
+        "notehead": 11,
+        "structural": 15,
+        "rest": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "beam",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "beam",
+        "staff",
+        "beam",
+        "staff",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 30,
+        "all_times_s": [
+          0.10243829100000035
+        ],
+        "median_s_excluding_warmup": 0.10243829100000035,
+        "mean_s_excluding_warmup": 0.10243829100000035
+      }
+    },
+    "mahler5-p130-sys1-s6-m0": {
+      "n_detections": 94,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1008647158741951,
+      "confidence_max": 0.7119582295417786,
+      "confidence_mean": 0.2954026642156408,
+      "confidence_median": 0.27061472833156586,
+      "category_breakdown": {
+        "notehead": 63,
+        "rest": 13,
+        "ornament": 4,
+        "structural": 14
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 94,
+        "all_times_s": [
+          0.1157705
+        ],
+        "median_s_excluding_warmup": 0.1157705,
+        "mean_s_excluding_warmup": 0.1157705
+      }
+    },
+    "mahler5-p130-sys1-s7-m7": {
+      "n_detections": 101,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10065358132123947,
+      "confidence_max": 0.7080853581428528,
+      "confidence_mean": 0.2870202813998307,
+      "confidence_median": 0.2620861530303955,
+      "category_breakdown": {
+        "notehead": 20,
+        "rest": 77,
+        "structural": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 101,
+        "all_times_s": [
+          0.16973120799999997
+        ],
+        "median_s_excluding_warmup": 0.16973120799999997,
+        "mean_s_excluding_warmup": 0.16973120799999997
+      }
+    },
+    "mahler5-p130-sys1-s9-m6": {
+      "n_detections": 218,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10067787766456604,
+      "confidence_max": 0.7638982534408569,
+      "confidence_mean": 0.2669162514081242,
+      "confidence_median": 0.22139661014080048,
+      "category_breakdown": {
+        "notehead": 119,
+        "structural": 13,
+        "rest": 86
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "restWhole",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 218,
+        "all_times_s": [
+          0.1493120000000001
+        ],
+        "median_s_excluding_warmup": 0.1493120000000001,
+        "mean_s_excluding_warmup": 0.1493120000000001
+      }
+    },
+    "mahler5-p130-sys1-s11-m4": {
+      "n_detections": 168,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10023776441812515,
+      "confidence_max": 0.8294295072555542,
+      "confidence_mean": 0.28299141706277925,
+      "confidence_median": 0.2339192032814026,
+      "category_breakdown": {
+        "notehead": 119,
+        "rest": 40,
+        "structural": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "restHalf",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 168,
+        "all_times_s": [
+          0.16126387500000128
+        ],
+        "median_s_excluding_warmup": 0.16126387500000128,
+        "mean_s_excluding_warmup": 0.16126387500000128
+      }
+    },
+    "mahler5-p130-sys2-s12-m11": {
+      "n_detections": 285,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10086280107498169,
+      "confidence_max": 0.7574277520179749,
+      "confidence_mean": 0.2691368893573159,
+      "confidence_median": 0.22501304745674133,
+      "category_breakdown": {
+        "notehead": 243,
+        "structural": 15,
+        "rest": 27
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 285,
+        "all_times_s": [
+          0.1730524580000008
+        ],
+        "median_s_excluding_warmup": 0.1730524580000008,
+        "mean_s_excluding_warmup": 0.1730524580000008
+      }
+    },
+    "mahler5-p130-sys2-s14-m3": {
+      "n_detections": 83,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10199162364006042,
+      "confidence_max": 0.7831712961196899,
+      "confidence_mean": 0.3285593824034714,
+      "confidence_median": 0.25496771931648254,
+      "category_breakdown": {
+        "notehead": 30,
+        "structural": 4,
+        "rest": 49
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "brace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 83,
+        "all_times_s": [
+          0.17513495799999923
+        ],
+        "median_s_excluding_warmup": 0.17513495799999923,
+        "mean_s_excluding_warmup": 0.17513495799999923
+      }
+    },
+    "mahler5-p130-sys3-s15-m7": {
+      "n_detections": 228,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10038028657436371,
+      "confidence_max": 0.7122578620910645,
+      "confidence_mean": 0.2593948612349075,
+      "confidence_median": 0.2147558033466339,
+      "category_breakdown": {
+        "notehead": 199,
+        "structural": 19,
+        "rest": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 228,
+        "all_times_s": [
+          0.21882079199999893
+        ],
+        "median_s_excluding_warmup": 0.21882079199999893,
+        "mean_s_excluding_warmup": 0.21882079199999893
+      }
+    },
+    "mahler5-p180-sys0-s0-m0": {
+      "n_detections": 77,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10458619147539139,
+      "confidence_max": 0.7751554846763611,
+      "confidence_mean": 0.3241617199662444,
+      "confidence_median": 0.2618572413921356,
+      "category_breakdown": {
+        "clef": 1,
+        "rest": 12,
+        "accidental": 5,
+        "structural": 23,
+        "notehead": 31,
+        "dynamic": 4,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "clefG",
+        "restHalf",
+        "keySharp",
+        "augmentationDot",
+        "restWhole",
+        "noteheadWholeOnLine",
+        "dynamicP",
+        "dynamicP",
+        "beam",
+        "dynamicF"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 77,
+        "all_times_s": [
+          0.08010283399999807
+        ],
+        "median_s_excluding_warmup": 0.08010283399999807,
+        "mean_s_excluding_warmup": 0.08010283399999807
+      }
+    },
+    "mahler5-p180-sys0-s2-m0": {
+      "n_detections": 60,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10044162720441818,
+      "confidence_max": 0.8046857714653015,
+      "confidence_mean": 0.41325805721183617,
+      "confidence_median": 0.41182689368724823,
+      "category_breakdown": {
+        "notehead": 21,
+        "accidental": 7,
+        "dynamic": 3,
+        "structural": 22,
+        "rest": 5,
+        "ornament": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "keyFlat",
+        "dynamicP",
+        "slur",
+        "noteheadHalfInSpace",
+        "beam",
+        "augmentationDot",
+        "restQuarter",
+        "dynamicF",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 60,
+        "all_times_s": [
+          0.08304091699999816
+        ],
+        "median_s_excluding_warmup": 0.08304091699999816,
+        "mean_s_excluding_warmup": 0.08304091699999816
+      }
+    },
+    "mahler5-p180-sys0-s4-m1": {
+      "n_detections": 126,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10022789239883423,
+      "confidence_max": 0.9469801783561707,
+      "confidence_mean": 0.3249046186369563,
+      "confidence_median": 0.2582686245441437,
+      "category_breakdown": {
+        "notehead": 89,
+        "structural": 23,
+        "flag": 1,
+        "rest": 11,
+        "dynamic": 1,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 126,
+        "all_times_s": [
+          0.12686466599999946
+        ],
+        "median_s_excluding_warmup": 0.12686466599999946,
+        "mean_s_excluding_warmup": 0.12686466599999946
+      }
+    },
+    "mahler5-p180-sys0-s6-m2": {
+      "n_detections": 65,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10178011655807495,
+      "confidence_max": 0.8524689078330994,
+      "confidence_mean": 0.348963720867267,
+      "confidence_median": 0.26916012167930603,
+      "category_breakdown": {
+        "structural": 33,
+        "accidental": 3,
+        "notehead": 23,
+        "ornament": 2,
+        "dynamic": 3,
+        "time_sig_digit": 1
+      },
+      "sample_class_labels": [
+        "tie",
+        "beam",
+        "accidentalFlat",
+        "noteheadHalfInSpace",
+        "beam",
+        "beam",
+        "noteheadHalfInSpace",
+        "beam",
+        "accidentalSharp",
+        "noteheadHalfInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 65,
+        "all_times_s": [
+          0.08409254200000049
+        ],
+        "median_s_excluding_warmup": 0.08409254200000049,
+        "mean_s_excluding_warmup": 0.08409254200000049
+      }
+    },
+    "mahler5-p180-sys0-s8-m2": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10299735516309738,
+      "confidence_max": 0.8611013293266296,
+      "confidence_mean": 0.44185151578858495,
+      "confidence_median": 0.3831610828638077,
+      "category_breakdown": {
+        "structural": 14,
+        "rest": 4,
+        "notehead": 13,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "augmentationDot",
+        "restWhole",
+        "restWhole",
+        "staff",
+        "staff",
+        "staff",
+        "beam",
+        "beam",
+        "beam",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          0.08256575000000055
+        ],
+        "median_s_excluding_warmup": 0.08256575000000055,
+        "mean_s_excluding_warmup": 0.08256575000000055
+      }
+    },
+    "mahler5-p180-sys0-s11-m0": {
+      "n_detections": 35,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10606364905834198,
+      "confidence_max": 0.8673481345176697,
+      "confidence_mean": 0.3899077038679804,
+      "confidence_median": 0.3532967269420624,
+      "category_breakdown": {
+        "clef": 2,
+        "accidental": 2,
+        "rest": 5,
+        "structural": 15,
+        "ornament": 1,
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "clefF",
+        "clefF",
+        "keySharp",
+        "keySharp",
+        "restQuarter",
+        "tie",
+        "slur",
+        "fermataBelow",
+        "noteheadWholeInSpace",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 35,
+        "all_times_s": [
+          0.08182791599999817
+        ],
+        "median_s_excluding_warmup": 0.08182791599999817,
+        "mean_s_excluding_warmup": 0.08182791599999817
+      }
+    },
+    "mahler5-p180-sys1-s13-m1": {
+      "n_detections": 81,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10140148550271988,
+      "confidence_max": 0.8624963760375977,
+      "confidence_mean": 0.4849396538403299,
+      "confidence_median": 0.5451966524124146,
+      "category_breakdown": {
+        "notehead": 26,
+        "structural": 45,
+        "accidental": 4,
+        "dynamic": 4,
+        "rest": 1,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "slur",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "tie",
+        "tie",
+        "tie",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 81,
+        "all_times_s": [
+          0.0543081249999986
+        ],
+        "median_s_excluding_warmup": 0.0543081249999986,
+        "mean_s_excluding_warmup": 0.0543081249999986
+      }
+    },
+    "mahler5-p180-sys1-s16-m1": {
+      "n_detections": 63,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10394785553216934,
+      "confidence_max": 0.8693078756332397,
+      "confidence_mean": 0.43330401619748465,
+      "confidence_median": 0.4016205370426178,
+      "category_breakdown": {
+        "structural": 29,
+        "notehead": 15,
+        "rest": 4,
+        "accidental": 5,
+        "dynamic": 9,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "tie",
+        "noteheadWholeOnLine",
+        "restWhole",
+        "restQuarter",
+        "tie",
+        "accidentalNatural",
+        "dynamicP",
+        "noteheadBlackOnLine",
+        "dynamicP",
+        "slur"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 63,
+        "all_times_s": [
+          0.0527349579999985
+        ],
+        "median_s_excluding_warmup": 0.0527349579999985,
+        "mean_s_excluding_warmup": 0.0527349579999985
+      }
+    },
+    "mahler5-p180-sys1-s20-m0": {
+      "n_detections": 171,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10035443305969238,
+      "confidence_max": 0.7796595096588135,
+      "confidence_mean": 0.2789030455880695,
+      "confidence_median": 0.24631965160369873,
+      "category_breakdown": {
+        "notehead": 129,
+        "rest": 32,
+        "structural": 9,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 171,
+        "all_times_s": [
+          0.1536145419999997
+        ],
+        "median_s_excluding_warmup": 0.1536145419999997,
+        "mean_s_excluding_warmup": 0.1536145419999997
+      }
+    },
+    "mahler5-p180-sys1-s23-m1": {
+      "n_detections": 41,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10809267312288284,
+      "confidence_max": 0.8480796217918396,
+      "confidence_mean": 0.4009071617591672,
+      "confidence_median": 0.3486614525318146,
+      "category_breakdown": {
+        "notehead": 13,
+        "rest": 4,
+        "accidental": 5,
+        "structural": 18,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace",
+        "restHalf",
+        "accidentalSharp",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "slur",
+        "slur"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 41,
+        "all_times_s": [
+          0.06873287499999847
+        ],
+        "median_s_excluding_warmup": 0.06873287499999847,
+        "mean_s_excluding_warmup": 0.06873287499999847
+      }
+    },
+    "mahler5-p220-sys0-s0-m0": {
+      "n_detections": 120,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10224000364542007,
+      "confidence_max": 0.778039276599884,
+      "confidence_mean": 0.27393970284610986,
+      "confidence_median": 0.22040987759828568,
+      "category_breakdown": {
+        "notehead": 76,
+        "rest": 38,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 120,
+        "all_times_s": [
+          0.13597045799999918
+        ],
+        "median_s_excluding_warmup": 0.13597045799999918,
+        "mean_s_excluding_warmup": 0.13597045799999918
+      }
+    },
+    "mahler5-p220-sys0-s0-m5": {
+      "n_detections": 119,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10005511343479156,
+      "confidence_max": 0.6608917117118835,
+      "confidence_mean": 0.2557105770131119,
+      "confidence_median": 0.2169802337884903,
+      "category_breakdown": {
+        "notehead": 46,
+        "rest": 68,
+        "structural": 4,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "restHalf",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "restWhole",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 119,
+        "all_times_s": [
+          0.15823954100000037
+        ],
+        "median_s_excluding_warmup": 0.15823954100000037,
+        "mean_s_excluding_warmup": 0.15823954100000037
+      }
+    },
+    "mahler5-p220-sys0-s1-m3": {
+      "n_detections": 193,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1014421358704567,
+      "confidence_max": 0.6807253360748291,
+      "confidence_mean": 0.274392149068531,
+      "confidence_median": 0.23662008345127106,
+      "category_breakdown": {
+        "notehead": 143,
+        "rest": 41,
+        "ornament": 3,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 193,
+        "all_times_s": [
+          0.1605805000000018
+        ],
+        "median_s_excluding_warmup": 0.1605805000000018,
+        "mean_s_excluding_warmup": 0.1605805000000018
+      }
+    },
+    "mahler5-p220-sys0-s2-m1": {
+      "n_detections": 176,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1003531664609909,
+      "confidence_max": 0.7783011794090271,
+      "confidence_mean": 0.2770162121054124,
+      "confidence_median": 0.22490639984607697,
+      "category_breakdown": {
+        "notehead": 122,
+        "flag": 1,
+        "rest": 45,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "flag8thDown",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 176,
+        "all_times_s": [
+          0.15975570799999872
+        ],
+        "median_s_excluding_warmup": 0.15975570799999872,
+        "mean_s_excluding_warmup": 0.15975570799999872
+      }
+    },
+    "mahler5-p220-sys0-s2-m6": {
+      "n_detections": 180,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10054586827754974,
+      "confidence_max": 0.8245365619659424,
+      "confidence_mean": 0.2640713718202379,
+      "confidence_median": 0.2173028215765953,
+      "category_breakdown": {
+        "notehead": 122,
+        "rest": 46,
+        "ornament": 3,
+        "structural": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadWholeOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 180,
+        "all_times_s": [
+          0.18511604200000065
+        ],
+        "median_s_excluding_warmup": 0.18511604200000065,
+        "mean_s_excluding_warmup": 0.18511604200000065
+      }
+    },
+    "mahler5-p220-sys1-s3-m4": {
+      "n_detections": 122,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10220856219530106,
+      "confidence_max": 0.8147249817848206,
+      "confidence_mean": 0.26736121972809074,
+      "confidence_median": 0.21637164056301117,
+      "category_breakdown": {
+        "notehead": 40,
+        "rest": 78,
+        "structural": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 122,
+        "all_times_s": [
+          0.16461962500000027
+        ],
+        "median_s_excluding_warmup": 0.16461962500000027,
+        "mean_s_excluding_warmup": 0.16461962500000027
+      }
+    },
+    "mahler5-p220-sys1-s4-m3": {
+      "n_detections": 100,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10071447491645813,
+      "confidence_max": 0.6622087359428406,
+      "confidence_mean": 0.24642423257231713,
+      "confidence_median": 0.21066129207611084,
+      "category_breakdown": {
+        "notehead": 49,
+        "rest": 47,
+        "structural": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 100,
+        "all_times_s": [
+          0.16259770899999992
+        ],
+        "median_s_excluding_warmup": 0.16259770899999992,
+        "mean_s_excluding_warmup": 0.16259770899999992
+      }
+    },
+    "mahler5-p220-sys1-s5-m1": {
+      "n_detections": 106,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10039857029914856,
+      "confidence_max": 0.7233418822288513,
+      "confidence_mean": 0.23942729458212852,
+      "confidence_median": 0.20650356262922287,
+      "category_breakdown": {
+        "notehead": 57,
+        "rest": 48,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 106,
+        "all_times_s": [
+          0.14733854099999988
+        ],
+        "median_s_excluding_warmup": 0.14733854099999988,
+        "mean_s_excluding_warmup": 0.14733854099999988
+      }
+    },
+    "mahler5-p220-sys1-s6-m0": {
+      "n_detections": 180,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10123310983181,
+      "confidence_max": 0.784602701663971,
+      "confidence_mean": 0.26648482750687336,
+      "confidence_median": 0.20898277312517166,
+      "category_breakdown": {
+        "notehead": 157,
+        "structural": 15,
+        "rest": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "tie",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 180,
+        "all_times_s": [
+          0.11341791699999959
+        ],
+        "median_s_excluding_warmup": 0.11341791699999959,
+        "mean_s_excluding_warmup": 0.11341791699999959
+      }
+    },
+    "mahler5-p220-sys1-s6-m6": {
+      "n_detections": 75,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1005442887544632,
+      "confidence_max": 0.8335586786270142,
+      "confidence_mean": 0.3486786220471064,
+      "confidence_median": 0.2929271161556244,
+      "category_breakdown": {
+        "notehead": 57,
+        "rest": 4,
+        "structural": 11,
+        "ornament": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 75,
+        "all_times_s": [
+          0.10665241699999939
+        ],
+        "median_s_excluding_warmup": 0.10665241699999939,
+        "mean_s_excluding_warmup": 0.10665241699999939
+      }
+    },
+    "lamer-p15-sys0-s0-m0": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10593123733997345,
+      "confidence_max": 0.8238177299499512,
+      "confidence_mean": 0.47283292342634764,
+      "confidence_median": 0.4295448064804077,
+      "category_breakdown": {
+        "accidental": 5,
+        "notehead": 5,
+        "structural": 5,
+        "rest": 1,
+        "clef": 1
+      },
+      "sample_class_labels": [
+        "keyFlat",
+        "keyFlat",
+        "keyFlat",
+        "keyFlat",
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "augmentationDot",
+        "noteheadHalfInSpace",
+        "noteheadWholeInSpace",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          0.06290012499999875
+        ],
+        "median_s_excluding_warmup": 0.06290012499999875,
+        "mean_s_excluding_warmup": 0.06290012499999875
+      }
+    },
+    "lamer-p15-sys0-s1-m1": {
+      "n_detections": 69,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10059292614459991,
+      "confidence_max": 0.8936755657196045,
+      "confidence_mean": 0.4112042189724203,
+      "confidence_median": 0.236122265458107,
+      "category_breakdown": {
+        "structural": 34,
+        "notehead": 24,
+        "accidental": 6,
+        "rest": 4,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "tie",
+        "tie",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine",
+        "accidentalFlat",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 69,
+        "all_times_s": [
+          0.06638949999999966
+        ],
+        "median_s_excluding_warmup": 0.06638949999999966,
+        "mean_s_excluding_warmup": 0.06638949999999966
+      }
+    },
+    "lamer-p15-sys0-s3-m0": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10971489548683167,
+      "confidence_max": 0.8287315368652344,
+      "confidence_mean": 0.37919899821281433,
+      "confidence_median": 0.31159667670726776,
+      "category_breakdown": {
+        "clef": 1,
+        "accidental": 1,
+        "notehead": 3,
+        "structural": 5
+      },
+      "sample_class_labels": [
+        "clefF",
+        "keyFlat",
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "beam",
+        "beam",
+        "staff",
+        "tie",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          0.05456558399999878
+        ],
+        "median_s_excluding_warmup": 0.05456558399999878,
+        "mean_s_excluding_warmup": 0.05456558399999878
+      }
+    },
+    "lamer-p15-sys0-s5-m0": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1009829044342041,
+      "confidence_max": 0.7838668823242188,
+      "confidence_mean": 0.31213189860184987,
+      "confidence_median": 0.2024991363286972,
+      "category_breakdown": {
+        "notehead": 6,
+        "structural": 4,
+        "accidental": 3,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "tie",
+        "noteheadBlackOnLine",
+        "accidentalFlat",
+        "restQuarter",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadWholeInSpace",
+        "tie"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          0.051984416999999894
+        ],
+        "median_s_excluding_warmup": 0.051984416999999894,
+        "mean_s_excluding_warmup": 0.051984416999999894
+      }
+    },
+    "lamer-p15-sys1-s6-m1": {
+      "n_detections": 119,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10058488696813583,
+      "confidence_max": 0.5742979645729065,
+      "confidence_mean": 0.22905432608197718,
+      "confidence_median": 0.1859147697687149,
+      "category_breakdown": {
+        "flag": 2,
+        "notehead": 82,
+        "structural": 33,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "flag8thUp",
+        "flag8thDown",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 119,
+        "all_times_s": [
+          0.18919566599999982
+        ],
+        "median_s_excluding_warmup": 0.18919566599999982,
+        "mean_s_excluding_warmup": 0.18919566599999982
+      }
+    },
+    "lamer-p15-sys1-s6-m5": {
+      "n_detections": 36,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10434607416391373,
+      "confidence_max": 0.6137887835502625,
+      "confidence_mean": 0.22500410965747303,
+      "confidence_median": 0.18363256007432938,
+      "category_breakdown": {
+        "notehead": 21,
+        "structural": 13,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "ledgerLine",
+        "restWhole",
+        "restHalf"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 36,
+        "all_times_s": [
+          0.13771108400000287
+        ],
+        "median_s_excluding_warmup": 0.13771108400000287,
+        "mean_s_excluding_warmup": 0.13771108400000287
+      }
+    },
+    "lamer-p15-sys1-s6-m8": {
+      "n_detections": 61,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10117556154727936,
+      "confidence_max": 0.5290876030921936,
+      "confidence_mean": 0.19881713194925277,
+      "confidence_median": 0.16643592715263367,
+      "category_breakdown": {
+        "notehead": 43,
+        "structural": 16,
+        "ornament": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "ledgerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 61,
+        "all_times_s": [
+          0.14397375000000068
+        ],
+        "median_s_excluding_warmup": 0.14397375000000068,
+        "mean_s_excluding_warmup": 0.14397375000000068
+      }
+    },
+    "lamer-p15-sys1-s6-m11": {
+      "n_detections": 51,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1002296581864357,
+      "confidence_max": 0.8024260997772217,
+      "confidence_mean": 0.25582480050769507,
+      "confidence_median": 0.21234068274497986,
+      "category_breakdown": {
+        "notehead": 42,
+        "rest": 2,
+        "structural": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 51,
+        "all_times_s": [
+          0.1505087500000002
+        ],
+        "median_s_excluding_warmup": 0.1505087500000002,
+        "mean_s_excluding_warmup": 0.1505087500000002
+      }
+    },
+    "lamer-p15-sys2-s7-m1": {
+      "n_detections": 152,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10066476464271545,
+      "confidence_max": 0.7759257555007935,
+      "confidence_mean": 0.2435257547584019,
+      "confidence_median": 0.20798297226428986,
+      "category_breakdown": {
+        "flag": 2,
+        "notehead": 133,
+        "structural": 16,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "flag8thUp",
+        "noteheadBlackOnLine",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 152,
+        "all_times_s": [
+          0.15871654200000052
+        ],
+        "median_s_excluding_warmup": 0.15871654200000052,
+        "mean_s_excluding_warmup": 0.15871654200000052
+      }
+    },
+    "lamer-p15-sys2-s7-m4": {
+      "n_detections": 70,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10438699275255203,
+      "confidence_max": 0.5447967648506165,
+      "confidence_mean": 0.23128213616354124,
+      "confidence_median": 0.21674348413944244,
+      "category_breakdown": {
+        "notehead": 37,
+        "structural": 24,
+        "rest": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 70,
+        "all_times_s": [
+          0.17920704199999804
+        ],
+        "median_s_excluding_warmup": 0.17920704199999804,
+        "mean_s_excluding_warmup": 0.17920704199999804
+      }
+    },
+    "lamer-p15-sys3-s8-m0": {
+      "n_detections": 117,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10000978410243988,
+      "confidence_max": 0.8703777194023132,
+      "confidence_mean": 0.37541166107114565,
+      "confidence_median": 0.25508275628089905,
+      "category_breakdown": {
+        "notehead": 55,
+        "rest": 2,
+        "structural": 53,
+        "ornament": 5,
+        "accidental": 1,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 117,
+        "all_times_s": [
+          0.07018516700000177
+        ],
+        "median_s_excluding_warmup": 0.07018516700000177,
+        "mean_s_excluding_warmup": 0.07018516700000177
+      }
+    },
+    "lamer-p15-sys3-s11-m0": {
+      "n_detections": 51,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10113435238599777,
+      "confidence_max": 0.8939154148101807,
+      "confidence_mean": 0.4028497845226643,
+      "confidence_median": 0.331936776638031,
+      "category_breakdown": {
+        "notehead": 10,
+        "structural": 24,
+        "clef": 1,
+        "time_sig_digit": 1,
+        "rest": 10,
+        "dynamic": 3,
+        "ornament": 1,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "tie",
+        "noteheadBlackInSpace",
+        "slur",
+        "beam",
+        "beam",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 51,
+        "all_times_s": [
+          0.06760133399999901
+        ],
+        "median_s_excluding_warmup": 0.06760133399999901,
+        "mean_s_excluding_warmup": 0.06760133399999901
+      }
+    },
+    "lamer-p45-sys0-s0-m0": {
+      "n_detections": 77,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10140391439199448,
+      "confidence_max": 0.868768572807312,
+      "confidence_mean": 0.5558610947488191,
+      "confidence_median": 0.5727652907371521,
+      "category_breakdown": {
+        "structural": 36,
+        "dynamic": 6,
+        "accidental": 13,
+        "notehead": 19,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "tie",
+        "tie",
+        "dynamicM",
+        "tie",
+        "dynamicP",
+        "dynamicF",
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "accidentalSharp",
+        "tuplet3"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 77,
+        "all_times_s": [
+          0.0500721249999998
+        ],
+        "median_s_excluding_warmup": 0.0500721249999998,
+        "mean_s_excluding_warmup": 0.0500721249999998
+      }
+    },
+    "lamer-p45-sys0-s2-m0": {
+      "n_detections": 57,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10070136934518814,
+      "confidence_max": 0.8836188316345215,
+      "confidence_mean": 0.4869274861718479,
+      "confidence_median": 0.5162283778190613,
+      "category_breakdown": {
+        "structural": 32,
+        "rest": 4,
+        "accidental": 7,
+        "dynamic": 3,
+        "notehead": 10,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "tie",
+        "beam",
+        "tie",
+        "tie",
+        "tie",
+        "restQuarter",
+        "tie",
+        "restQuarter",
+        "tie",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 57,
+        "all_times_s": [
+          0.056037833000001314
+        ],
+        "median_s_excluding_warmup": 0.056037833000001314,
+        "mean_s_excluding_warmup": 0.056037833000001314
+      }
+    },
+    "lamer-p45-sys0-s5-m0": {
+      "n_detections": 34,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1007012352347374,
+      "confidence_max": 0.8886715769767761,
+      "confidence_mean": 0.2837144086027847,
+      "confidence_median": 0.21788959950208664,
+      "category_breakdown": {
+        "structural": 30,
+        "rest": 3,
+        "notehead": 1
+      },
+      "sample_class_labels": [
+        "tie",
+        "tie",
+        "tie",
+        "tie",
+        "restQuarter",
+        "beam",
+        "beam",
+        "tie",
+        "tie",
+        "tie"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 34,
+        "all_times_s": [
+          0.05571025000000063
+        ],
+        "median_s_excluding_warmup": 0.05571025000000063,
+        "mean_s_excluding_warmup": 0.05571025000000063
+      }
+    },
+    "lamer-p45-sys0-s7-m0": {
+      "n_detections": 95,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10570433735847473,
+      "confidence_max": 0.8881509304046631,
+      "confidence_mean": 0.5693555320564069,
+      "confidence_median": 0.61940598487854,
+      "category_breakdown": {
+        "notehead": 36,
+        "structural": 45,
+        "rest": 2,
+        "dynamic": 3,
+        "flag": 4,
+        "accidental": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "noteheadBlackInSpace",
+        "slur",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "tie"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 95,
+        "all_times_s": [
+          0.053854499999999916
+        ],
+        "median_s_excluding_warmup": 0.053854499999999916,
+        "mean_s_excluding_warmup": 0.053854499999999916
+      }
+    },
+    "lamer-p45-sys0-s10-m0": {
+      "n_detections": 50,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10056344419717789,
+      "confidence_max": 0.881418764591217,
+      "confidence_mean": 0.3573319025337696,
+      "confidence_median": 0.29504698514938354,
+      "category_breakdown": {
+        "structural": 21,
+        "accidental": 2,
+        "notehead": 10,
+        "flag": 5,
+        "rest": 6,
+        "dynamic": 6
+      },
+      "sample_class_labels": [
+        "tie",
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "flag8thDown",
+        "rest8th",
+        "restQuarter",
+        "restQuarter",
+        "tie",
+        "tie",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 50,
+        "all_times_s": [
+          0.054348375000000004
+        ],
+        "median_s_excluding_warmup": 0.054348375000000004,
+        "mean_s_excluding_warmup": 0.054348375000000004
+      }
+    },
+    "lamer-p45-sys1-s12-m0": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10584519058465958,
+      "confidence_max": 0.5165424346923828,
+      "confidence_mean": 0.18507849744388036,
+      "confidence_median": 0.16146989911794662,
+      "category_breakdown": {
+        "rest": 3,
+        "structural": 11
+      },
+      "sample_class_labels": [
+        "restWhole",
+        "restWhole",
+        "tie",
+        "restWhole",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "augmentationDot"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          0.082109667000001
+        ],
+        "median_s_excluding_warmup": 0.082109667000001,
+        "mean_s_excluding_warmup": 0.082109667000001
+      }
+    },
+    "lamer-p45-sys1-s13-m1": {
+      "n_detections": 57,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10084569454193115,
+      "confidence_max": 0.8779718279838562,
+      "confidence_mean": 0.38162133045363844,
+      "confidence_median": 0.3136885464191437,
+      "category_breakdown": {
+        "time_sig_digit": 2,
+        "accidental": 4,
+        "notehead": 19,
+        "ornament": 5,
+        "rest": 9,
+        "structural": 18
+      },
+      "sample_class_labels": [
+        "timeSig4",
+        "timeSig4",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "fermataAbove",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "articStaccatoAbove"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 57,
+        "all_times_s": [
+          0.09640145899999908
+        ],
+        "median_s_excluding_warmup": 0.09640145899999908,
+        "mean_s_excluding_warmup": 0.09640145899999908
+      }
+    },
+    "lamer-p45-sys1-s15-m0": {
+      "n_detections": 46,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10013524442911148,
+      "confidence_max": 0.7074962258338928,
+      "confidence_mean": 0.2426539133100406,
+      "confidence_median": 0.19409923255443573,
+      "category_breakdown": {
+        "rest": 9,
+        "notehead": 14,
+        "structural": 23
+      },
+      "sample_class_labels": [
+        "restWhole",
+        "noteheadBlackOnLine",
+        "tie",
+        "beam",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restWhole",
+        "restWhole",
+        "noteheadWholeOnLine",
+        "noteheadWholeOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 46,
+        "all_times_s": [
+          0.08058070799999939
+        ],
+        "median_s_excluding_warmup": 0.08058070799999939,
+        "mean_s_excluding_warmup": 0.08058070799999939
+      }
+    },
+    "lamer-p45-sys2-s16-m0": {
+      "n_detections": 41,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10225796699523926,
+      "confidence_max": 0.6467543244361877,
+      "confidence_mean": 0.2461715762208148,
+      "confidence_median": 0.19770373404026031,
+      "category_breakdown": {
+        "notehead": 25,
+        "rest": 7,
+        "structural": 8,
+        "stem": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadWholeOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "restHBar",
+        "restHBar",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 41,
+        "all_times_s": [
+          0.1777819160000007
+        ],
+        "median_s_excluding_warmup": 0.1777819160000007,
+        "mean_s_excluding_warmup": 0.1777819160000007
+      }
+    },
+    "lamer-p45-sys3-s17-m0": {
+      "n_detections": 48,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.104476697742939,
+      "confidence_max": 0.8920374512672424,
+      "confidence_mean": 0.41188117815181613,
+      "confidence_median": 0.28783056139945984,
+      "category_breakdown": {
+        "clef": 1,
+        "notehead": 19,
+        "structural": 15,
+        "accidental": 9,
+        "ornament": 1,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "clefG",
+        "noteheadWholeInSpace",
+        "noteheadWholeInSpace",
+        "noteheadBlackOnLine",
+        "tie",
+        "accidentalSharp",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "accidentalSharp",
+        "accidentalSharp"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 48,
+        "all_times_s": [
+          0.06822133300000033
+        ],
+        "median_s_excluding_warmup": 0.06822133300000033,
+        "mean_s_excluding_warmup": 0.06822133300000033
+      }
+    },
+    "lamer-p45-sys3-s18-m0": {
+      "n_detections": 61,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11000023037195206,
+      "confidence_max": 0.891582190990448,
+      "confidence_mean": 0.36908819941712206,
+      "confidence_median": 0.24722927808761597,
+      "category_breakdown": {
+        "notehead": 20,
+        "structural": 29,
+        "rest": 3,
+        "dynamic": 2,
+        "accidental": 5,
+        "ornament": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "tie",
+        "restQuarter",
+        "tie",
+        "augmentationDot",
+        "augmentationDot",
+        "tie",
+        "dynamicP",
+        "dynamicP",
+        "accidentalSharp"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 61,
+        "all_times_s": [
+          0.06922783400000299
+        ],
+        "median_s_excluding_warmup": 0.06922783400000299,
+        "mean_s_excluding_warmup": 0.06922783400000299
+      }
+    },
+    "lamer-p45-sys3-s19-m1": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10519101470708847,
+      "confidence_max": 0.834560751914978,
+      "confidence_mean": 0.39990496449172497,
+      "confidence_median": 0.30427204072475433,
+      "category_breakdown": {
+        "structural": 11,
+        "rest": 3,
+        "dynamic": 2,
+        "accidental": 1,
+        "notehead": 1,
+        "flag": 1,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "staff",
+        "staff",
+        "staff",
+        "restQuarter",
+        "staff",
+        "staff",
+        "tie",
+        "restQuarter",
+        "restQuarter",
+        "dynamicP"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          0.05317900000000009
+        ],
+        "median_s_excluding_warmup": 0.05317900000000009,
+        "mean_s_excluding_warmup": 0.05317900000000009
+      }
+    },
+    "lamer-p75-sys0-s0-m0": {
+      "n_detections": 105,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10084909200668335,
+      "confidence_max": 0.9242388606071472,
+      "confidence_mean": 0.4216817137031328,
+      "confidence_median": 0.3432624638080597,
+      "category_breakdown": {
+        "clef": 1,
+        "accidental": 22,
+        "structural": 37,
+        "notehead": 38,
+        "rest": 5,
+        "dynamic": 2
+      },
+      "sample_class_labels": [
+        "clefG",
+        "accidentalSharp",
+        "accidentalSharp",
+        "accidentalSharp",
+        "accidentalSharp",
+        "accidentalNatural",
+        "tie",
+        "tie",
+        "accidentalNatural",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 105,
+        "all_times_s": [
+          0.055935375000000676
+        ],
+        "median_s_excluding_warmup": 0.055935375000000676,
+        "mean_s_excluding_warmup": 0.055935375000000676
+      }
+    },
+    "lamer-p75-sys0-s1-m0": {
+      "n_detections": 30,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10127578675746918,
+      "confidence_max": 0.9163946509361267,
+      "confidence_mean": 0.5745176417132218,
+      "confidence_median": 0.7686262726783752,
+      "category_breakdown": {
+        "clef": 1,
+        "accidental": 12,
+        "notehead": 8,
+        "rest": 2,
+        "structural": 5,
+        "dynamic": 2
+      },
+      "sample_class_labels": [
+        "clefG",
+        "accidentalSharp",
+        "accidentalSharp",
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "tie",
+        "dynamicF",
+        "accidentalSharp",
+        "accidentalNatural"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 30,
+        "all_times_s": [
+          0.05093220899999906
+        ],
+        "median_s_excluding_warmup": 0.05093220899999906,
+        "mean_s_excluding_warmup": 0.05093220899999906
+      }
+    },
+    "lamer-p75-sys0-s2-m1": {
+      "n_detections": 95,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10213417559862137,
+      "confidence_max": 0.8405753374099731,
+      "confidence_mean": 0.3256711336342912,
+      "confidence_median": 0.23372460901737213,
+      "category_breakdown": {
+        "notehead": 48,
+        "structural": 36,
+        "accidental": 8,
+        "rest": 1,
+        "flag": 1,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadWholeInSpace",
+        "tie",
+        "accidentalNatural",
+        "accidentalNatural",
+        "accidentalFlat",
+        "tie",
+        "tie",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 95,
+        "all_times_s": [
+          0.08271216700000039
+        ],
+        "median_s_excluding_warmup": 0.08271216700000039,
+        "mean_s_excluding_warmup": 0.08271216700000039
+      }
+    },
+    "lamer-p75-sys0-s3-m1": {
+      "n_detections": 93,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1005857065320015,
+      "confidence_max": 0.8804065585136414,
+      "confidence_mean": 0.28984226927321444,
+      "confidence_median": 0.20393195748329163,
+      "category_breakdown": {
+        "notehead": 48,
+        "structural": 37,
+        "accidental": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "tie",
+        "tie",
+        "tie",
+        "tie",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 93,
+        "all_times_s": [
+          0.08100675000000024
+        ],
+        "median_s_excluding_warmup": 0.08100675000000024,
+        "mean_s_excluding_warmup": 0.08100675000000024
+      }
+    },
+    "lamer-p75-sys0-s5-m0": {
+      "n_detections": 74,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10629916191101074,
+      "confidence_max": 0.8797924518585205,
+      "confidence_mean": 0.40309465797366323,
+      "confidence_median": 0.319278359413147,
+      "category_breakdown": {
+        "notehead": 16,
+        "structural": 42,
+        "accidental": 13,
+        "clef": 1,
+        "ornament": 1,
+        "stem": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "tie",
+        "accidentalNatural"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 74,
+        "all_times_s": [
+          0.05313970899999987
+        ],
+        "median_s_excluding_warmup": 0.05313970899999987,
+        "mean_s_excluding_warmup": 0.05313970899999987
+      }
+    },
+    "lamer-p75-sys0-s6-m0": {
+      "n_detections": 54,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10424163937568665,
+      "confidence_max": 0.9264401793479919,
+      "confidence_mean": 0.4172844395593361,
+      "confidence_median": 0.29027286171913147,
+      "category_breakdown": {
+        "notehead": 16,
+        "clef": 1,
+        "structural": 29,
+        "ornament": 1,
+        "rest": 3,
+        "accidental": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "clefG",
+        "tie",
+        "noteheadHalfInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 54,
+        "all_times_s": [
+          0.055125415999999205
+        ],
+        "median_s_excluding_warmup": 0.055125415999999205,
+        "mean_s_excluding_warmup": 0.055125415999999205
+      }
+    },
+    "lamer-p75-sys0-s7-m1": {
+      "n_detections": 31,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10372096300125122,
+      "confidence_max": 0.7028396129608154,
+      "confidence_mean": 0.30763004840381686,
+      "confidence_median": 0.2842148244380951,
+      "category_breakdown": {
+        "structural": 19,
+        "accidental": 1,
+        "notehead": 9,
+        "ornament": 1,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "beam",
+        "beam",
+        "beam",
+        "tie",
+        "accidentalNatural",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "tie",
+        "tie"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 31,
+        "all_times_s": [
+          0.09022212500000037
+        ],
+        "median_s_excluding_warmup": 0.09022212500000037,
+        "mean_s_excluding_warmup": 0.09022212500000037
+      }
+    },
+    "lamer-p75-sys0-s8-m1": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10007114708423615,
+      "confidence_max": 0.8573073744773865,
+      "confidence_mean": 0.35133898950048853,
+      "confidence_median": 0.30474527180194855,
+      "category_breakdown": {
+        "structural": 19,
+        "notehead": 7,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "beam",
+        "beam",
+        "tie",
+        "tie",
+        "tie",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "accidentalSharp",
+        "tie"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          0.08355112499999962
+        ],
+        "median_s_excluding_warmup": 0.08355112499999962,
+        "mean_s_excluding_warmup": 0.08355112499999962
+      }
+    },
+    "lamer-p75-sys0-s10-m0": {
+      "n_detections": 73,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10706721991300583,
+      "confidence_max": 0.9179762005805969,
+      "confidence_mean": 0.49257933817905925,
+      "confidence_median": 0.4145472049713135,
+      "category_breakdown": {
+        "structural": 33,
+        "clef": 1,
+        "accidental": 10,
+        "notehead": 20,
+        "ornament": 9
+      },
+      "sample_class_labels": [
+        "brace",
+        "clefG",
+        "keySharp",
+        "accidentalSharp",
+        "tie",
+        "keySharp",
+        "keySharp",
+        "tie",
+        "keySharp",
+        "tie"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 73,
+        "all_times_s": [
+          0.05362483300000065
+        ],
+        "median_s_excluding_warmup": 0.05362483300000065,
+        "mean_s_excluding_warmup": 0.05362483300000065
+      }
+    },
+    "lamer-p75-sys1-s11-m0": {
+      "n_detections": 187,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10079163312911987,
+      "confidence_max": 0.931119978427887,
+      "confidence_mean": 0.3353049920045118,
+      "confidence_median": 0.27339765429496765,
+      "category_breakdown": {
+        "notehead": 118,
+        "dynamic": 1,
+        "ornament": 7,
+        "rest": 11,
+        "structural": 35,
+        "accidental": 13,
+        "time_sig_digit": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "dynamicF",
+        "fermataBelow",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 187,
+        "all_times_s": [
+          0.09713883399999901
+        ],
+        "median_s_excluding_warmup": 0.09713883399999901,
+        "mean_s_excluding_warmup": 0.09713883399999901
+      }
+    },
+    "lamer-p75-sys1-s12-m1": {
+      "n_detections": 84,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1013932079076767,
+      "confidence_max": 0.9101365804672241,
+      "confidence_mean": 0.5179510841234809,
+      "confidence_median": 0.5411288738250732,
+      "category_breakdown": {
+        "structural": 35,
+        "accidental": 9,
+        "notehead": 25,
+        "ornament": 11,
+        "rest": 4
+      },
+      "sample_class_labels": [
+        "tie",
+        "tie",
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "ledgerLine",
+        "noteheadBlackInSpace",
+        "augmentationDot",
+        "articAccentAbove",
+        "tie",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 84,
+        "all_times_s": [
+          0.06910333399999757
+        ],
+        "median_s_excluding_warmup": 0.06910333399999757,
+        "mean_s_excluding_warmup": 0.06910333399999757
+      }
+    },
+    "lamer-p75-sys1-s13-m1": {
+      "n_detections": 43,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10280196368694305,
+      "confidence_max": 0.8890073895454407,
+      "confidence_mean": 0.4082657797045486,
+      "confidence_median": 0.2638782262802124,
+      "category_breakdown": {
+        "dynamic": 2,
+        "notehead": 9,
+        "structural": 30,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "dynamicF",
+        "noteheadWholeInSpace",
+        "tie",
+        "noteheadHalfOnLine",
+        "accidentalFlat",
+        "tie",
+        "dynamicF",
+        "accidentalNatural",
+        "noteheadHalfOnLine",
+        "noteheadHalfOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 43,
+        "all_times_s": [
+          0.07606854100000149
+        ],
+        "median_s_excluding_warmup": 0.07606854100000149,
+        "mean_s_excluding_warmup": 0.07606854100000149
+      }
+    },
+    "lamer-p105-sys0-s0-m0": {
+      "n_detections": 59,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10108470171689987,
+      "confidence_max": 0.7311044335365295,
+      "confidence_mean": 0.31109004985477967,
+      "confidence_median": 0.2472507506608963,
+      "category_breakdown": {
+        "notehead": 44,
+        "rest": 2,
+        "structural": 12,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 59,
+        "all_times_s": [
+          0.09855341600000145
+        ],
+        "median_s_excluding_warmup": 0.09855341600000145,
+        "mean_s_excluding_warmup": 0.09855341600000145
+      }
+    },
+    "lamer-p105-sys0-s0-m4": {
+      "n_detections": 78,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1005636602640152,
+      "confidence_max": 0.6560680866241455,
+      "confidence_mean": 0.21669504848810342,
+      "confidence_median": 0.18344740569591522,
+      "category_breakdown": {
+        "notehead": 66,
+        "rest": 7,
+        "structural": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "ledgerLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 78,
+        "all_times_s": [
+          0.17195283299999886
+        ],
+        "median_s_excluding_warmup": 0.17195283299999886,
+        "mean_s_excluding_warmup": 0.17195283299999886
+      }
+    },
+    "lamer-p105-sys0-s1-m2": {
+      "n_detections": 78,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10250143706798553,
+      "confidence_max": 0.5796927213668823,
+      "confidence_mean": 0.2490067545993206,
+      "confidence_median": 0.21229097247123718,
+      "category_breakdown": {
+        "rest": 15,
+        "notehead": 55,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 78,
+        "all_times_s": [
+          0.15964804199999705
+        ],
+        "median_s_excluding_warmup": 0.15964804199999705,
+        "mean_s_excluding_warmup": 0.15964804199999705
+      }
+    },
+    "lamer-p105-sys0-s2-m0": {
+      "n_detections": 149,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10047100484371185,
+      "confidence_max": 0.9944649338722229,
+      "confidence_mean": 0.34157364555453296,
+      "confidence_median": 0.29317623376846313,
+      "category_breakdown": {
+        "notehead": 100,
+        "rest": 2,
+        "structural": 28,
+        "accidental": 13,
+        "flag": 4,
+        "ornament": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "tie",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 149,
+        "all_times_s": [
+          0.09701720800000047
+        ],
+        "median_s_excluding_warmup": 0.09701720800000047,
+        "mean_s_excluding_warmup": 0.09701720800000047
+      }
+    },
+    "lamer-p105-sys0-s2-m5": {
+      "n_detections": 79,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10024678707122803,
+      "confidence_max": 0.6481031775474548,
+      "confidence_mean": 0.2473777980555462,
+      "confidence_median": 0.2156560868024826,
+      "category_breakdown": {
+        "notehead": 62,
+        "rest": 7,
+        "structural": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 79,
+        "all_times_s": [
+          0.1832512080000015
+        ],
+        "median_s_excluding_warmup": 0.1832512080000015,
+        "mean_s_excluding_warmup": 0.1832512080000015
+      }
+    },
+    "lamer-p105-sys0-s3-m3": {
+      "n_detections": 80,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10116339474916458,
+      "confidence_max": 0.5526782274246216,
+      "confidence_mean": 0.22857152884826065,
+      "confidence_median": 0.21011921763420105,
+      "category_breakdown": {
+        "notehead": 48,
+        "rest": 24,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 80,
+        "all_times_s": [
+          0.14109712499999816
+        ],
+        "median_s_excluding_warmup": 0.14109712499999816,
+        "mean_s_excluding_warmup": 0.14109712499999816
+      }
+    },
+    "lamer-p105-sys0-s4-m1": {
+      "n_detections": 223,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10000446438789368,
+      "confidence_max": 0.7766920328140259,
+      "confidence_mean": 0.24823736753565315,
+      "confidence_median": 0.20531441271305084,
+      "category_breakdown": {
+        "notehead": 192,
+        "structural": 17,
+        "rest": 8,
+        "ornament": 3,
+        "dynamic": 1,
+        "accidental": 1,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 223,
+        "all_times_s": [
+          0.1547002500000012
+        ],
+        "median_s_excluding_warmup": 0.1547002500000012,
+        "mean_s_excluding_warmup": 0.1547002500000012
+      }
+    },
+    "lamer-p105-sys0-s4-m5": {
+      "n_detections": 68,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10208796709775925,
+      "confidence_max": 0.7225549221038818,
+      "confidence_mean": 0.27339980575968237,
+      "confidence_median": 0.22083622962236404,
+      "category_breakdown": {
+        "notehead": 59,
+        "structural": 6,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 68,
+        "all_times_s": [
+          0.18453879099999781
+        ],
+        "median_s_excluding_warmup": 0.18453879099999781,
+        "mean_s_excluding_warmup": 0.18453879099999781
+      }
+    },
+    "lamer-p105-sys0-s5-m3": {
+      "n_detections": 53,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10183276981115341,
+      "confidence_max": 0.6210685968399048,
+      "confidence_mean": 0.2575454876389144,
+      "confidence_median": 0.2249736785888672,
+      "category_breakdown": {
+        "notehead": 30,
+        "structural": 5,
+        "rest": 17,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 53,
+        "all_times_s": [
+          0.14676979200000062
+        ],
+        "median_s_excluding_warmup": 0.14676979200000062,
+        "mean_s_excluding_warmup": 0.14676979200000062
+      }
+    },
+    "lamer-p105-sys0-s6-m1": {
+      "n_detections": 57,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10017816722393036,
+      "confidence_max": 0.8250260949134827,
+      "confidence_mean": 0.2645418442655028,
+      "confidence_median": 0.22091180086135864,
+      "category_breakdown": {
+        "notehead": 39,
+        "rest": 14,
+        "structural": 3,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 57,
+        "all_times_s": [
+          0.16337379200000157
+        ],
+        "median_s_excluding_warmup": 0.16337379200000157,
+        "mean_s_excluding_warmup": 0.16337379200000157
+      }
+    },
+    "lamer-p105-sys0-s6-m6": {
+      "n_detections": 65,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11399862170219421,
+      "confidence_max": 0.6925064921379089,
+      "confidence_mean": 0.28973135099961206,
+      "confidence_median": 0.27565819025039673,
+      "category_breakdown": {
+        "notehead": 42,
+        "accidental": 2,
+        "rest": 7,
+        "structural": 14
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "accidentalDoubleSharp",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 65,
+        "all_times_s": [
+          0.09054100000000176
+        ],
+        "median_s_excluding_warmup": 0.09054100000000176,
+        "mean_s_excluding_warmup": 0.09054100000000176
+      }
+    },
+    "lamer-p105-sys0-s7-m4": {
+      "n_detections": 277,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10039908438920975,
+      "confidence_max": 0.7880630493164062,
+      "confidence_mean": 0.27761968370486684,
+      "confidence_median": 0.23997391760349274,
+      "category_breakdown": {
+        "notehead": 248,
+        "structural": 22,
+        "rest": 5,
+        "accidental": 1,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 277,
+        "all_times_s": [
+          0.1681842919999994
+        ],
+        "median_s_excluding_warmup": 0.1681842919999994,
+        "mean_s_excluding_warmup": 0.1681842919999994
+      }
+    },
+    "bolero-p5-sys0-s0-m0": {
+      "n_detections": 23,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1179017424583435,
+      "confidence_max": 0.9178913235664368,
+      "confidence_mean": 0.7743359363597372,
+      "confidence_median": 0.851811945438385,
+      "category_breakdown": {
+        "dynamic": 1,
+        "clef": 1,
+        "notehead": 10,
+        "ornament": 4,
+        "flag": 1,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "dynamicF",
+        "clefG",
+        "noteheadBlackOnLine",
+        "articStaccatoBelow",
+        "flag8thUp",
+        "noteheadBlackOnLine",
+        "beam",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 23,
+        "all_times_s": [
+          0.08925454199999905
+        ],
+        "median_s_excluding_warmup": 0.08925454199999905,
+        "mean_s_excluding_warmup": 0.08925454199999905
+      }
+    },
+    "bolero-p5-sys0-s2-m2": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.6247684955596924,
+      "confidence_max": 0.8228508234024048,
+      "confidence_mean": 0.7246667345364889,
+      "confidence_median": 0.7263808846473694,
+      "category_breakdown": {
+        "structural": 1,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "staff",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          0.09414645900000096
+        ],
+        "median_s_excluding_warmup": 0.09414645900000096,
+        "mean_s_excluding_warmup": 0.09414645900000096
+      }
+    },
+    "bolero-p5-sys1-s4-m4": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1211216151714325,
+      "confidence_max": 0.7631922960281372,
+      "confidence_mean": 0.42459151744842527,
+      "confidence_median": 0.3838278353214264,
+      "category_breakdown": {
+        "rest": 3,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "restWhole",
+        "staff",
+        "staff",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          0.09374212499999857
+        ],
+        "median_s_excluding_warmup": 0.09374212499999857,
+        "mean_s_excluding_warmup": 0.09374212499999857
+      }
+    },
+    "bolero-p5-sys1-s7-m0": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11809217929840088,
+      "confidence_max": 0.9460898637771606,
+      "confidence_mean": 0.6671865040605719,
+      "confidence_median": 0.8397334218025208,
+      "category_breakdown": {
+        "clef": 1,
+        "time_sig_digit": 2,
+        "notehead": 6,
+        "rest": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "clefCAlto",
+        "timeSig1",
+        "timeSig2",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHalf",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          0.08670758399999912
+        ],
+        "median_s_excluding_warmup": 0.08670758399999912,
+        "mean_s_excluding_warmup": 0.08670758399999912
+      }
+    },
+    "bolero-p5-sys1-s9-m2": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.13288579881191254,
+      "confidence_max": 0.6769525408744812,
+      "confidence_mean": 0.5203538648784161,
+      "confidence_median": 0.6357885599136353,
+      "category_breakdown": {
+        "structural": 2,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "staff",
+        "restWhole",
+        "restWhole",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          0.08744191599999951
+        ],
+        "median_s_excluding_warmup": 0.08744191599999951,
+        "mean_s_excluding_warmup": 0.08744191599999951
+      }
+    },
+    "bolero-p5-sys2-s11-m4": {
+      "n_detections": 21,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11219974607229233,
+      "confidence_max": 0.8749467730522156,
+      "confidence_mean": 0.5199539799775396,
+      "confidence_median": 0.46956759691238403,
+      "category_breakdown": {
+        "accidental": 2,
+        "notehead": 5,
+        "structural": 13,
+        "clef": 1
+      },
+      "sample_class_labels": [
+        "accidentalNatural",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "augmentationDot",
+        "tie",
+        "slur",
+        "slur",
+        "tie",
+        "staff",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 21,
+        "all_times_s": [
+          0.09255704099999917
+        ],
+        "median_s_excluding_warmup": 0.09255704099999917,
+        "mean_s_excluding_warmup": 0.09255704099999917
+      }
+    },
+    "bolero-p5-sys3-s14-m0": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.33593711256980896,
+      "confidence_max": 0.9519366025924683,
+      "confidence_mean": 0.712696947157383,
+      "confidence_median": 0.7814570367336273,
+      "category_breakdown": {
+        "accidental": 1,
+        "clef": 1,
+        "structural": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "keyFlat",
+        "clefG",
+        "staff",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          0.09281958400000079
+        ],
+        "median_s_excluding_warmup": 0.09281958400000079,
+        "mean_s_excluding_warmup": 0.09281958400000079
+      }
+    },
+    "bolero-p5-sys3-s16-m2": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11451566964387894,
+      "confidence_max": 0.9337196350097656,
+      "confidence_mean": 0.7644063242607646,
+      "confidence_median": 0.8269132375717163,
+      "category_breakdown": {
+        "notehead": 7,
+        "structural": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHalf"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          0.09315254199999856
+        ],
+        "median_s_excluding_warmup": 0.09315254199999856,
+        "mean_s_excluding_warmup": 0.09315254199999856
+      }
+    },
+    "bolero-p5-sys3-s18-m4": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.13267475366592407,
+      "confidence_max": 0.7115347981452942,
+      "confidence_mean": 0.4585559248924255,
+      "confidence_median": 0.4856424033641815,
+      "category_breakdown": {
+        "structural": 3,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "staff",
+        "restWhole",
+        "restWhole",
+        "staff",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          0.08960283300000071
+        ],
+        "median_s_excluding_warmup": 0.08960283300000071,
+        "mean_s_excluding_warmup": 0.08960283300000071
+      }
+    },
+    "bolero-p5-sys5-s21-m0": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.7317734956741333,
+      "confidence_max": 0.9543124437332153,
+      "confidence_mean": 0.8356238186359406,
+      "confidence_median": 0.8339630365371704,
+      "category_breakdown": {
+        "clef": 1,
+        "rest": 1,
+        "structural": 1,
+        "notehead": 6,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "clefG",
+        "restQuarter",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          0.09101099999999818
+        ],
+        "median_s_excluding_warmup": 0.09101099999999818,
+        "mean_s_excluding_warmup": 0.09101099999999818
+      }
+    },
+    "bolero-p5-sys5-s23-m2": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.32473137974739075,
+      "confidence_max": 0.6518242359161377,
+      "confidence_mean": 0.49953601509332657,
+      "confidence_median": 0.5107942223548889,
+      "category_breakdown": {
+        "structural": 2,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "staff",
+        "restWhole",
+        "restWhole",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          0.09300833300000022
+        ],
+        "median_s_excluding_warmup": 0.09300833300000022,
+        "mean_s_excluding_warmup": 0.09300833300000022
+      }
+    },
+    "bolero-p5-sys5-s25-m4": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.101230688393116,
+      "confidence_max": 0.8582935929298401,
+      "confidence_mean": 0.596980403044394,
+      "confidence_median": 0.7620462477207184,
+      "category_breakdown": {
+        "notehead": 11,
+        "structural": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          0.09065341699999863
+        ],
+        "median_s_excluding_warmup": 0.09065341699999863,
+        "mean_s_excluding_warmup": 0.09065341699999863
+      }
+    },
+    "bolero-p15-sys0-s0-m0": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.13202928006649017,
+      "confidence_max": 0.9444565176963806,
+      "confidence_mean": 0.7089447039982368,
+      "confidence_median": 0.7625917792320251,
+      "category_breakdown": {
+        "clef": 1,
+        "rest": 1,
+        "dynamic": 5,
+        "notehead": 9,
+        "structural": 9,
+        "ornament": 4
+      },
+      "sample_class_labels": [
+        "clefG",
+        "rest8th",
+        "dynamicM",
+        "dynamicP",
+        "dynamicM",
+        "dynamicP",
+        "noteheadBlackOnLine",
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "tuplet3"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          0.08917587499999868
+        ],
+        "median_s_excluding_warmup": 0.08917587499999868,
+        "mean_s_excluding_warmup": 0.08917587499999868
+      }
+    },
+    "bolero-p15-sys0-s1-m4": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.3835354745388031,
+      "confidence_max": 0.7371545433998108,
+      "confidence_mean": 0.5408249050378799,
+      "confidence_median": 0.5213048011064529,
+      "category_breakdown": {
+        "structural": 2,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "staff",
+        "restWhole",
+        "restWhole",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          0.08976808299999917
+        ],
+        "median_s_excluding_warmup": 0.08976808299999917,
+        "mean_s_excluding_warmup": 0.08976808299999917
+      }
+    },
+    "bolero-p15-sys0-s3-m2": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10042975097894669,
+      "confidence_max": 0.8230236768722534,
+      "confidence_mean": 0.556075032055378,
+      "confidence_median": 0.6484901309013367,
+      "category_breakdown": {
+        "structural": 2,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "staff",
+        "staff",
+        "restWhole",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          0.09395699999999962
+        ],
+        "median_s_excluding_warmup": 0.09395699999999962,
+        "mean_s_excluding_warmup": 0.09395699999999962
+      }
+    },
+    "bolero-p15-sys0-s5-m0": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11408016085624695,
+      "confidence_max": 0.950187623500824,
+      "confidence_mean": 0.7774921857258853,
+      "confidence_median": 0.8724064826965332,
+      "category_breakdown": {
+        "clef": 1,
+        "accidental": 2,
+        "notehead": 3,
+        "ornament": 2,
+        "flag": 3,
+        "rest": 3,
+        "structural": 3
+      },
+      "sample_class_labels": [
+        "clefG",
+        "keySharp",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "articAccentBelow",
+        "flag8thUp",
+        "rest8th",
+        "staff",
+        "noteheadBlackInSpace",
+        "articAccentBelow"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          0.09014083299999953
+        ],
+        "median_s_excluding_warmup": 0.09014083299999953,
+        "mean_s_excluding_warmup": 0.09014083299999953
+      }
+    },
+    "bolero-p15-sys0-s6-m4": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.12108218669891357,
+      "confidence_max": 0.8462392687797546,
+      "confidence_mean": 0.5563658545998966,
+      "confidence_median": 0.6511213183403015,
+      "category_breakdown": {
+        "ornament": 2,
+        "structural": 3,
+        "notehead": 4,
+        "flag": 2,
+        "rest": 6
+      },
+      "sample_class_labels": [
+        "articAccentBelow",
+        "beam",
+        "noteheadBlackInSpace",
+        "flag8thUp",
+        "rest8th",
+        "restQuarter",
+        "noteheadWholeOnLine",
+        "restQuarter",
+        "restQuarter",
+        "restQuarter"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          0.0959213339999998
+        ],
+        "median_s_excluding_warmup": 0.0959213339999998,
+        "mean_s_excluding_warmup": 0.0959213339999998
+      }
+    },
+    "bolero-p15-sys0-s8-m2": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.6251336336135864,
+      "confidence_max": 0.8686374425888062,
+      "confidence_mean": 0.7416655818621317,
+      "confidence_median": 0.7312256693840027,
+      "category_breakdown": {
+        "structural": 1,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "staff",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          0.09062474999999992
+        ],
+        "median_s_excluding_warmup": 0.09062474999999992,
+        "mean_s_excluding_warmup": 0.09062474999999992
+      }
+    },
+    "bolero-p15-sys0-s10-m0": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.14875993132591248,
+      "confidence_max": 0.9226785898208618,
+      "confidence_mean": 0.5705989062786102,
+      "confidence_median": 0.7644050717353821,
+      "category_breakdown": {
+        "clef": 1,
+        "structural": 3,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "clefCTenor",
+        "staff",
+        "staff",
+        "restWhole",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          0.0944704999999999
+        ],
+        "median_s_excluding_warmup": 0.0944704999999999,
+        "mean_s_excluding_warmup": 0.0944704999999999
+      }
+    },
+    "bolero-p15-sys1-s11-m4": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.13601799309253693,
+      "confidence_max": 0.8076848387718201,
+      "confidence_mean": 0.5693000212311745,
+      "confidence_median": 0.676676869392395,
+      "category_breakdown": {
+        "rest": 4,
+        "notehead": 10,
+        "structural": 4,
+        "ornament": 1,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "restQuarter",
+        "restQuarter",
+        "restQuarter",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "ledgerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          0.0988966249999983
+        ],
+        "median_s_excluding_warmup": 0.0988966249999983,
+        "mean_s_excluding_warmup": 0.0988966249999983
+      }
+    },
+    "bolero-p15-sys1-s13-m2": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.6347141265869141,
+      "confidence_max": 0.6957917809486389,
+      "confidence_mean": 0.6590461532274882,
+      "confidence_median": 0.6466325521469116,
+      "category_breakdown": {
+        "structural": 1,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "staff",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          0.09623804199999952
+        ],
+        "median_s_excluding_warmup": 0.09623804199999952,
+        "mean_s_excluding_warmup": 0.09623804199999952
+      }
+    },
+    "bolero-p15-sys1-s15-m0": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11479389667510986,
+      "confidence_max": 0.9494794011116028,
+      "confidence_mean": 0.6965784562958611,
+      "confidence_median": 0.7905508875846863,
+      "category_breakdown": {
+        "clef": 1,
+        "notehead": 5,
+        "rest": 1,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "clefG",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          0.09605854100000144
+        ],
+        "median_s_excluding_warmup": 0.09605854100000144,
+        "mean_s_excluding_warmup": 0.09605854100000144
+      }
+    },
+    "bolero-p15-sys1-s16-m4": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.18898530304431915,
+      "confidence_max": 0.9340128898620605,
+      "confidence_mean": 0.7190866968755064,
+      "confidence_median": 0.8373208045959473,
+      "category_breakdown": {
+        "ornament": 10,
+        "notehead": 11,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "articStaccatoAbove",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "articStaccatoAbove",
+        "noteheadBlackOnLine",
+        "beam",
+        "slur",
+        "noteheadBlackOnLine",
+        "articStaccatoAbove"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          0.09977733299999869
+        ],
+        "median_s_excluding_warmup": 0.09977733299999869,
+        "mean_s_excluding_warmup": 0.09977733299999869
+      }
+    },
+    "bolero-p15-sys1-s18-m2": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11070030927658081,
+      "confidence_max": 0.9515988230705261,
+      "confidence_mean": 0.755617082118988,
+      "confidence_median": 0.8257114887237549,
+      "category_breakdown": {
+        "notehead": 7,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          0.09469195900000216
+        ],
+        "median_s_excluding_warmup": 0.09469195900000216,
+        "mean_s_excluding_warmup": 0.09469195900000216
+      }
+    },
+    "bolero-p25-sys0-s0-m0": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2352929264307022,
+      "confidence_max": 0.9488231539726257,
+      "confidence_mean": 0.7889707766473293,
+      "confidence_median": 0.8513730764389038,
+      "category_breakdown": {
+        "clef": 1,
+        "structural": 10,
+        "notehead": 9
+      },
+      "sample_class_labels": [
+        "clefG",
+        "tie",
+        "slur",
+        "noteheadBlackInSpace",
+        "slur",
+        "tie",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackOnLine",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          0.09127012499999765
+        ],
+        "median_s_excluding_warmup": 0.09127012499999765,
+        "mean_s_excluding_warmup": 0.09127012499999765
+      }
+    },
+    "bolero-p25-sys0-s2-m2": {
+      "n_detections": 19,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11037890613079071,
+      "confidence_max": 0.8591897487640381,
+      "confidence_mean": 0.4078776303090547,
+      "confidence_median": 0.29102256894111633,
+      "category_breakdown": {
+        "notehead": 10,
+        "structural": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "noteheadWholeOnLine",
+        "noteheadBlackOnLine",
+        "noteheadWholeOnLine",
+        "noteheadWholeInSpace",
+        "noteheadHalfOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 19,
+        "all_times_s": [
+          0.09302916700000097
+        ],
+        "median_s_excluding_warmup": 0.09302916700000097,
+        "mean_s_excluding_warmup": 0.09302916700000097
+      }
+    },
+    "bolero-p25-sys0-s4-m4": {
+      "n_detections": 35,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10093970596790314,
+      "confidence_max": 0.8724372386932373,
+      "confidence_mean": 0.5090318911841938,
+      "confidence_median": 0.5461986660957336,
+      "category_breakdown": {
+        "rest": 8,
+        "notehead": 15,
+        "structural": 12
+      },
+      "sample_class_labels": [
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHalf",
+        "slur",
+        "tie",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "augmentationDot"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 35,
+        "all_times_s": [
+          0.09589154200000038
+        ],
+        "median_s_excluding_warmup": 0.09589154200000038,
+        "mean_s_excluding_warmup": 0.09589154200000038
+      }
+    },
+    "bolero-p25-sys0-s7-m0": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.8035954833030701,
+      "confidence_max": 0.9588639736175537,
+      "confidence_mean": 0.8789211294867776,
+      "confidence_median": 0.875178337097168,
+      "category_breakdown": {
+        "clef": 1,
+        "ornament": 2,
+        "notehead": 2,
+        "flag": 2,
+        "rest": 3,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "clefF",
+        "articAccentBelow",
+        "noteheadBlackInSpace",
+        "flag8thUp",
+        "rest8th",
+        "restQuarter",
+        "staff",
+        "noteheadBlackOnLine",
+        "articAccentBelow",
+        "flag8thUp"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          0.09295000000000186
+        ],
+        "median_s_excluding_warmup": 0.09295000000000186,
+        "mean_s_excluding_warmup": 0.09295000000000186
+      }
+    },
+    "bolero-p25-sys0-s9-m2": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11910133063793182,
+      "confidence_max": 0.858693540096283,
+      "confidence_mean": 0.4548436813056469,
+      "confidence_median": 0.4525459259748459,
+      "category_breakdown": {
+        "notehead": 6,
+        "structural": 5,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadWholeOnLine",
+        "noteheadWholeInSpace",
+        "noteheadBlackInSpace",
+        "noteheadWholeOnLine",
+        "restHalf",
+        "staff",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          0.09785162500000055
+        ],
+        "median_s_excluding_warmup": 0.09785162500000055,
+        "mean_s_excluding_warmup": 0.09785162500000055
+      }
+    },
+    "bolero-p25-sys0-s11-m4": {
+      "n_detections": 35,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.14505472779273987,
+      "confidence_max": 0.8712037801742554,
+      "confidence_mean": 0.6478904962539673,
+      "confidence_median": 0.6859441995620728,
+      "category_breakdown": {
+        "notehead": 20,
+        "rest": 9,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 35,
+        "all_times_s": [
+          0.09708916700000003
+        ],
+        "median_s_excluding_warmup": 0.09708916700000003,
+        "mean_s_excluding_warmup": 0.09708916700000003
+      }
+    },
+    "bolero-p25-sys1-s13-m6": {
+      "n_detections": 26,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.16433745622634888,
+      "confidence_max": 0.7973451018333435,
+      "confidence_mean": 0.45333026808041793,
+      "confidence_median": 0.47763316333293915,
+      "category_breakdown": {
+        "notehead": 22,
+        "structural": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 26,
+        "all_times_s": [
+          0.11946800000000124
+        ],
+        "median_s_excluding_warmup": 0.11946800000000124,
+        "mean_s_excluding_warmup": 0.11946800000000124
+      }
+    },
+    "bolero-p25-sys1-s15-m2": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10417215526103973,
+      "confidence_max": 0.40022292733192444,
+      "confidence_mean": 0.22666027329184793,
+      "confidence_median": 0.2001410573720932,
+      "category_breakdown": {
+        "notehead": 4,
+        "structural": 4,
+        "rest": 2,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "staff",
+        "staff",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          0.1824742499999985
+        ],
+        "median_s_excluding_warmup": 0.1824742499999985,
+        "mean_s_excluding_warmup": 0.1824742499999985
+      }
+    },
+    "bolero-p25-sys1-s16-m7": {
+      "n_detections": 51,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10918156057596207,
+      "confidence_max": 0.9048941135406494,
+      "confidence_mean": 0.28005894390391367,
+      "confidence_median": 0.20878107845783234,
+      "category_breakdown": {
+        "notehead": 31,
+        "rest": 1,
+        "structural": 19
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 51,
+        "all_times_s": [
+          0.1527819579999985
+        ],
+        "median_s_excluding_warmup": 0.1527819579999985,
+        "mean_s_excluding_warmup": 0.1527819579999985
+      }
+    },
+    "bolero-p25-sys1-s18-m3": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1047588363289833,
+      "confidence_max": 0.7623090147972107,
+      "confidence_mean": 0.3764762669801712,
+      "confidence_median": 0.36875852942466736,
+      "category_breakdown": {
+        "notehead": 14,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          0.1348623329999974
+        ],
+        "median_s_excluding_warmup": 0.1348623329999974,
+        "mean_s_excluding_warmup": 0.1348623329999974
+      }
+    },
+    "bolero-p25-sys1-s19-m8": {
+      "n_detections": 40,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10606423765420914,
+      "confidence_max": 0.772771954536438,
+      "confidence_mean": 0.36578006111085415,
+      "confidence_median": 0.31953053176403046,
+      "category_breakdown": {
+        "notehead": 26,
+        "rest": 5,
+        "structural": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 40,
+        "all_times_s": [
+          0.10684412500000207
+        ],
+        "median_s_excluding_warmup": 0.10684412500000207,
+        "mean_s_excluding_warmup": 0.10684412500000207
+      }
+    },
+    "bolero-p25-sys1-s21-m4": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.6072573065757751,
+      "confidence_max": 0.9518151879310608,
+      "confidence_mean": 0.8140389827581552,
+      "confidence_median": 0.8467243313789368,
+      "category_breakdown": {
+        "notehead": 11,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          0.08321620799999963
+        ],
+        "median_s_excluding_warmup": 0.08321620799999963,
+        "mean_s_excluding_warmup": 0.08321620799999963
+      }
+    },
+    "bolero-p35-sys0-s0-m0": {
+      "n_detections": 27,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.13064593076705933,
+      "confidence_max": 0.9485227465629578,
+      "confidence_mean": 0.7370825343661838,
+      "confidence_median": 0.8386168479919434,
+      "category_breakdown": {
+        "clef": 1,
+        "structural": 12,
+        "notehead": 9,
+        "ornament": 5
+      },
+      "sample_class_labels": [
+        "clefG",
+        "tie",
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackOnLine",
+        "articAccentAbove",
+        "noteheadBlackOnLine",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 27,
+        "all_times_s": [
+          0.09497816700000072
+        ],
+        "median_s_excluding_warmup": 0.09497816700000072,
+        "mean_s_excluding_warmup": 0.09497816700000072
+      }
+    },
+    "bolero-p35-sys0-s5-m1": {
+      "n_detections": 90,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10341540724039078,
+      "confidence_max": 0.8740092515945435,
+      "confidence_mean": 0.6584706021679773,
+      "confidence_median": 0.7233238220214844,
+      "category_breakdown": {
+        "notehead": 67,
+        "structural": 23
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "slur",
+        "slur",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "slur"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 90,
+        "all_times_s": [
+          0.04085737500000164
+        ],
+        "median_s_excluding_warmup": 0.04085737500000164,
+        "mean_s_excluding_warmup": 0.04085737500000164
+      }
+    },
+    "bolero-p35-sys0-s11-m0": {
+      "n_detections": 31,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.14473406970500946,
+      "confidence_max": 0.9443463683128357,
+      "confidence_mean": 0.5647933372566777,
+      "confidence_median": 0.7227178812026978,
+      "category_breakdown": {
+        "clef": 1,
+        "notehead": 13,
+        "rest": 10,
+        "structural": 7
+      },
+      "sample_class_labels": [
+        "clefG",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "beam",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "beam",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 31,
+        "all_times_s": [
+          0.09319258300000044
+        ],
+        "median_s_excluding_warmup": 0.09319258300000044,
+        "mean_s_excluding_warmup": 0.09319258300000044
+      }
+    },
+    "bolero-p35-sys0-s16-m1": {
+      "n_detections": 94,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10685084760189056,
+      "confidence_max": 0.861470103263855,
+      "confidence_mean": 0.638785924524703,
+      "confidence_median": 0.6976311802864075,
+      "category_breakdown": {
+        "flag": 18,
+        "notehead": 38,
+        "ornament": 23,
+        "rest": 13,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "flag8thDown",
+        "noteheadBlackOnLine",
+        "articAccentAbove",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "flag8thDown",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "articAccentAbove",
+        "flag8thDown"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 94,
+        "all_times_s": [
+          0.039185624999998225
+        ],
+        "median_s_excluding_warmup": 0.039185624999998225,
+        "mean_s_excluding_warmup": 0.039185624999998225
+      }
+    },
+    "bolero-p35-sys1-s20-m1": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.7148499488830566,
+      "confidence_max": 0.9578654170036316,
+      "confidence_mean": 0.8533047272099389,
+      "confidence_median": 0.8546401858329773,
+      "category_breakdown": {
+        "notehead": 16,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          0.08881695900000253
+        ],
+        "median_s_excluding_warmup": 0.08881695900000253,
+        "mean_s_excluding_warmup": 0.08881695900000253
+      }
+    },
+    "bolero-p35-sys1-s22-m2": {
+      "n_detections": 57,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2928120493888855,
+      "confidence_max": 0.9545790553092957,
+      "confidence_mean": 0.8003982723804942,
+      "confidence_median": 0.8416546583175659,
+      "category_breakdown": {
+        "notehead": 32,
+        "structural": 17,
+        "ornament": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam",
+        "slur",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 57,
+        "all_times_s": [
+          0.06909795799999685
+        ],
+        "median_s_excluding_warmup": 0.06909795799999685,
+        "mean_s_excluding_warmup": 0.06909795799999685
+      }
+    },
+    "bolero-p35-sys1-s24-m3": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11690863221883774,
+      "confidence_max": 0.8823165893554688,
+      "confidence_mean": 0.5217722449451685,
+      "confidence_median": 0.49270936846733093,
+      "category_breakdown": {
+        "rest": 10,
+        "notehead": 17,
+        "structural": 5
+      },
+      "sample_class_labels": [
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "ledgerLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          0.09676883400000236
+        ],
+        "median_s_excluding_warmup": 0.09676883400000236,
+        "mean_s_excluding_warmup": 0.09676883400000236
+      }
+    },
+    "bolero-p35-sys2-s26-m4": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10196910798549652,
+      "confidence_max": 0.33938828110694885,
+      "confidence_mean": 0.2069847583770752,
+      "confidence_median": 0.206391379237175,
+      "category_breakdown": {
+        "flag": 1,
+        "rest": 7,
+        "notehead": 2
+      },
+      "sample_class_labels": [
+        "flag8thUp",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restHalf",
+        "restWhole",
+        "restHBar",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          0.18547062500000067
+        ],
+        "median_s_excluding_warmup": 0.18547062500000067,
+        "mean_s_excluding_warmup": 0.18547062500000067
+      }
+    },
+    "bolero-p35-sys2-s27-m0": {
+      "n_detections": 57,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10083559900522232,
+      "confidence_max": 0.927058219909668,
+      "confidence_mean": 0.6074401470914221,
+      "confidence_median": 0.743137001991272,
+      "category_breakdown": {
+        "clef": 1,
+        "notehead": 29,
+        "structural": 27
+      },
+      "sample_class_labels": [
+        "clefF",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackOnLine",
+        "augmentationDot",
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 57,
+        "all_times_s": [
+          0.09476170800000006
+        ],
+        "median_s_excluding_warmup": 0.09476170800000006,
+        "mean_s_excluding_warmup": 0.09476170800000006
+      }
+    },
+    "bolero-p35-sys2-s27-m11": {
+      "n_detections": 35,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10026980191469193,
+      "confidence_max": 0.8354969024658203,
+      "confidence_mean": 0.2892384769661086,
+      "confidence_median": 0.23059140145778656,
+      "category_breakdown": {
+        "structural": 23,
+        "notehead": 11,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "brace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 35,
+        "all_times_s": [
+          0.23831366599999626
+        ],
+        "median_s_excluding_warmup": 0.23831366599999626,
+        "mean_s_excluding_warmup": 0.23831366599999626
+      }
+    },
+    "bolero-p35-sys2-s28-m7": {
+      "n_detections": 41,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1039721742272377,
+      "confidence_max": 0.8349467515945435,
+      "confidence_mean": 0.5686490065077456,
+      "confidence_median": 0.7066331505775452,
+      "category_breakdown": {
+        "notehead": 28,
+        "structural": 10,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 41,
+        "all_times_s": [
+          0.10621062500000278
+        ],
+        "median_s_excluding_warmup": 0.10621062500000278,
+        "mean_s_excluding_warmup": 0.10621062500000278
+      }
+    },
+    "bolero-p35-sys2-s29-m3": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10038278996944427,
+      "confidence_max": 0.6011648774147034,
+      "confidence_mean": 0.23248202411028054,
+      "confidence_median": 0.17613117396831512,
+      "category_breakdown": {
+        "structural": 9,
+        "rest": 3,
+        "notehead": 1
+      },
+      "sample_class_labels": [
+        "brace",
+        "restHBar",
+        "staff",
+        "beam",
+        "restHBar",
+        "restHBar",
+        "noteheadBlackInSpace",
+        "staff",
+        "beam",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          0.22329045800000102
+        ],
+        "median_s_excluding_warmup": 0.22329045800000102,
+        "mean_s_excluding_warmup": 0.22329045800000102
+      }
+    }
+  }
+}

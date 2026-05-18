@@ -12,33 +12,25 @@
 
 ## Detections
 
-- [x] D0  noteheadBlackInSpace (notehead) at (x=146, y=369)  conf=0.79
+- [x] D0  noteheadBlackInSpace (notehead) at (x=148, y=490)  conf=0.89
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D1  noteheadBlackInSpace (notehead) at (x=148, y=492)  conf=0.79
+- [x] D1  noteheadBlackInSpace (notehead) at (x=148, y=367)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D2  noteheadBlackInSpace (notehead) at (x=742, y=369)  conf=0.79
+- [x] D2  ledgerLine (structural) at (x=149, y=459)  conf=0.59
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D3  noteheadWholeInSpace (notehead) at (x=747, y=359)  conf=0.15
+- [x] D3  noteheadBlackInSpace (notehead) at (x=745, y=367)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D4  noteheadBlackInSpace (notehead) at (x=747, y=360)  conf=0.10
+- [x] D4  noteheadBlackInSpace (notehead) at (x=819, y=367)  conf=0.86
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D5  noteheadBlackOnLine (notehead) at (x=821, y=153)  conf=0.84
+- [x] D5  noteheadBlackOnLine (notehead) at (x=820, y=153)  conf=0.91
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D6  noteheadBlackInSpace (notehead) at (x=821, y=370)  conf=0.81
+- [x] D6  staff (structural) at (x=1024, y=262)  conf=0.89
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D7  staff (structural) at (x=998, y=1)  conf=0.39
+- [x] D7  noteheadBlackInSpace (notehead) at (x=1598, y=367)  conf=0.80
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D8  staff (structural) at (x=1023, y=249)  conf=0.86
+- [x] D8  noteheadBlackInSpace (notehead) at (x=1599, y=491)  conf=0.87
        verdict: __________  <!-- new detection, no baseline match -->
-- [x] D9  noteheadBlackInSpace (notehead) at (x=1596, y=375)  conf=0.78
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D10  noteheadBlackInSpace (notehead) at (x=1597, y=363)  conf=0.68
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D11  noteheadBlackInSpace (notehead) at (x=1599, y=491)  conf=0.74
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D12  noteheadBlackOnLine (notehead) at (x=1600, y=492)  conf=0.45
-       verdict: __________  <!-- new detection, no baseline match -->
-- [x] D13  ledgerLine (structural) at (x=1601, y=460)  conf=0.17
+- [x] D9  ledgerLine (structural) at (x=1600, y=459)  conf=0.69
        verdict: __________  <!-- new detection, no baseline match -->
 
 ## Missed noteheads (FN)
