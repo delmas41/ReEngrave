@@ -170,8 +170,11 @@ current production weights — see "Known limitations" below.
   "n_staves_total":     12,
   "n_measures_total":   84,
   "n_detections_total": 1923,
-  "n_noteheads_total":         445,    // all category=="notehead" detections
-  "n_noteheads_pitched_total": 445,    // those for which pitch resolved (diatonic)
+  "n_noteheads_total":              445,    // all category=="notehead" detections
+  "n_noteheads_pitched_total":      445,    // those for which pitch resolved
+  "n_noteheads_with_duration_total": 445,   // those given a duration_beats
+  "n_rests_total":                  27,
+  "n_rests_with_duration_total":    26,
   "runtime": { "phase1_s": 8.2, "yolo_s": 4.1, "total_s": 12.3 },
   "pages": [
     {
@@ -195,14 +198,16 @@ current production weights — see "Known limitations" below.
                   "A": "#", "E": "#", "B": "#"
                 }
               },
-              "n_measures":   4,
+              "time_signature":  {"numerator": 4, "denominator": 4, "raw": "4/4"},
+              "n_measures":      4,
               "measures": [
                 {
-                  "measure_index":  0,
-                  "bbox_page_px":   [186, 268, 1755, 715],
-                  "clef":           "treble",   // active clef at this measure
-                  "key_signature":  { ... },    // active key sig at this measure
-                  "n_detections":   20,
+                  "measure_index":   0,
+                  "bbox_page_px":    [186, 268, 1755, 715],
+                  "clef":            "treble",   // active clef at this measure
+                  "key_signature":   { ... },    // active key sig at this measure
+                  "time_signature":  { ... },    // active time sig at this measure
+                  "n_detections":    20,
                   "detections": [
                     {
                       "class":      "clefG",
@@ -213,13 +218,16 @@ current production weights — see "Known limitations" below.
                       "pitch":      null              // null for non-noteheads
                     },
                     {
-                      "class":      "noteheadBlackInSpace",
-                      "category":   "notehead",
-                      "bbox":       [657, 386, 62, 51],
-                      "bbox_page":  [689, 564, 47, 39],
-                      "confidence": 0.921,
-                      "pitch":      "F#4"             // chromatic — key sig + inline
-                                                      // accidentals applied
+                      "class":           "noteheadBlackInSpace",
+                      "category":        "notehead",
+                      "bbox":            [657, 386, 62, 51],
+                      "bbox_page":       [689, 564, 47, 39],
+                      "confidence":      0.921,
+                      "pitch":           "F#4",          // chromatic — key sig + inline
+                                                          // accidentals applied
+                      "duration_beats":  0.25,            // in quarter-note units
+                      "duration_type":   "sixteenth",
+                      "dots":            0                // # augmentation dots
                     }
                   ]
                 }
@@ -357,15 +365,35 @@ methodology + per-class breakdown.
   parsing, no key-signature inference, no MusicXML output. That layer is
   the job of downstream tools that consume this JSON.
 
-- **Pitch is chromatic but not rhythm-aware.** As of Phase 4b, pitches
-  are correct including key signature and inline accidentals — a B♭ in
-  a B♭-major piece is labeled `"Bb"`, a sharp written ahead of a
-  notehead is paired and applied (and carried forward to subsequent
-  same-pitch noteheads in the same measure). Accidentals reset at
-  barlines. **What is NOT yet inferred:** durations (quarter / eighth /
-  sixteenth), ties across barlines, double-sharp / double-flat
-  modeling beyond direct detection, and chord vs. voice assignment.
-  That's Phase 4c.
+- **Rhythm parsing is approximate** (Phase 4c v1). Each notehead /
+  rest gets `duration_beats`, `duration_type`, and `dots`. Algorithm:
+  notehead class gives the intrinsic duration (whole / half / black);
+  for black noteheads, count distinct vertical beam levels that
+  horizontally cover the notehead (1 = 8th, 2 = 16th, 3 = 32nd, ...).
+  Falls back to a paired flag detection if no beam, then to "quarter"
+  if neither. Dots are paired to the nearest left-side notehead at the
+  same y position.
+
+  Known v1 quirks:
+  - **Stems are not detected by the Phase 3.3 model** (0 detections
+    even at conf=0.05), so the algorithm pairs noteheads to beams
+    directly. Edge noteheads at the very ends of a beam group can be
+    missed if the beam bbox is short — partly mitigated by adding
+    `notehead_width × 0.6` x-tolerance on each side.
+  - 32nd-note count is somewhat inflated because two adjacent thick
+    beam bboxes at slightly different y positions cluster as separate
+    levels.
+  - Per-measure beat sums should approximately match the time
+    signature, but won't be exact on busy keyboard music.
+  - **No voicing / chord grouping yet.** Multiple noteheads at the
+    same x-position aren't merged into a chord; they each carry
+    independent durations.
+
+- **Time signature uses the detector's per-digit classes**
+  (`timeSig0`–`timeSig9` plus `timeSigCommon` / `timeSigCutCommon`).
+  The DSv2 model often misclassifies time-sig digits, so this field
+  is **`null` for many pages**. When it does fire it's parsed via
+  geometry (top digits = numerator, bottom = denominator).
 
 - **Orchestral conductor's scores.** The current model was trained
   predominantly on DSv2 (synthetic) + 60 hand-labeled real cells.

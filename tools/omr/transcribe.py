@@ -56,12 +56,15 @@ Output schema (JSON):
                                             # mid-staff (rare)
                   "key_signature_final": {...},  # OPTIONAL — only if key changed
                   "n_measures": 4,
+                  "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
+                                            # null if no time-sig markers seen
                   "measures": [
                     {
                       "measure_index": 0,
                       "bbox_page_px": [x0, y0, x1, y1],
                       "clef": "treble",     # active clef AT this measure
                       "key_signature": {...},  # active key sig at this measure
+                      "time_signature": {...},  # active time sig at this measure
                       "n_detections": 12,
                       "detections": [
                         {
@@ -70,10 +73,11 @@ Output schema (JSON):
                           "bbox":       [x, y, w, h],  # in cell-local (canonical) coords
                           "bbox_page":  [x, y, w, h],  # in page-pixel coords
                           "confidence": 0.87,
-                          "pitch":      "F#4"           # chromatic — key sig + inline
-                                                        # accidentals applied. null
-                                                        # for non-noteheads and
-                                                        # unpitched clefs.
+                          "pitch":      "F#4",          # chromatic — key sig + inline
+                                                        # accidentals applied
+                          "duration_beats": 0.25,       # in quarter notes (1.0=quarter)
+                          "duration_type":  "sixteenth",
+                          "dots":           0           # number of augmentation dots
                         },
                         ...
                       ]
@@ -118,6 +122,7 @@ from .measure_extractor import detect_barlines, extract_measures
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
 from .pitch_resolver import pitch_for_notehead
+from .rhythm import parse_time_signature, resolve_rhythms_for_cell
 
 
 # Default weights — Phase 3.3, F1 98.8% on the 25 verdict cells.
@@ -360,7 +365,8 @@ def _detections_for_cell(
     agnostic_nms: bool,
     active_clef: str | None,
     active_key_sig: dict[str, str],
-) -> tuple[list[dict[str, Any]], str | None, dict[str, str]]:
+    active_time_sig: dict[str, Any] | None,
+) -> tuple[list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None]:
     """Run YOLO on a single cell, resolve chromatic pitches for each
     notehead, and emit cleaned-up detection dicts.
 
@@ -410,6 +416,15 @@ def _detections_for_cell(
     new_key_sig = _detect_key_sig_from_cell(dets)
     if new_key_sig is not None:
         active_key_sig = new_key_sig
+
+    # ── Time-signature pass: parse from timeSig0-9 / timeSigCommon detections.
+    new_time_sig = parse_time_signature(dets)
+    if new_time_sig is not None:
+        active_time_sig = new_time_sig
+
+    # ── Rhythm pass: resolve duration_beats / duration_type / dots per
+    #    notehead and rest. Uses beams + flags + augmentationDot geometry.
+    rhythm_map = resolve_rhythms_for_cell(dets, cell)
 
     # ── Pair inline accidentals to their target noteheads. ─────────────────
     inline_map = _pair_accidentals_to_noteheads(dets)
@@ -471,15 +486,23 @@ def _detections_for_cell(
 
         pitch: str | None = pitch_by_id.get(id(d))
 
-        out.append({
+        out_d: dict[str, Any] = {
             "class": d.smufl_name,
             "category": d.category,
             "bbox": [cx, cy, cw, ch],
             "bbox_page": [page_x, page_y, page_w, page_h],
             "confidence": round(float(d.confidence), 3),
             "pitch": pitch,
-        })
-    return out, active_clef, active_key_sig
+        }
+        # Attach rhythm info for noteheads + rests (other categories never
+        # appear in rhythm_map — keeps the JSON terser for them).
+        rinfo = rhythm_map.get(id(d))
+        if rinfo is not None:
+            out_d["duration_beats"] = rinfo["duration_beats"]
+            out_d["duration_type"] = rinfo["duration_type"]
+            out_d["dots"] = rinfo["dots"]
+        out.append(out_d)
+    return out, active_clef, active_key_sig, active_time_sig
 
 
 def transcribe(
@@ -522,18 +545,22 @@ def transcribe(
         "n_detections_total": 0,
         "n_noteheads_total": 0,
         "n_noteheads_pitched_total": 0,
+        "n_noteheads_with_duration_total": 0,
+        "n_rests_total": 0,
+        "n_rests_with_duration_total": 0,
         "runtime": {"phase1_s": 0.0, "yolo_s": 0.0, "total_s": 0.0},
         "pages": [],
     }
 
-    # Active clef + key signature per (page_idx, system_idx, staff_idx).
-    # Each survives across cells within a staff so a clef / key sig stays
-    # in effect through a whole line (until a change is detected). NOT
-    # carried across pages — the courtesy clef + key sig at the start of a
-    # new page should re-establish them; if the detector misses, defaults
-    # kick in (treble/bass for clef, C major for key sig).
+    # Active clef + key signature + time signature per (page_idx,
+    # system_idx, staff_idx). Each survives across cells within a staff so
+    # a clef / key sig / time sig stays in effect through a whole line
+    # (until a change is detected). NOT carried across pages — the
+    # courtesy clef + key sig + time sig at the start of a new page should
+    # re-establish them; if the detector misses, defaults kick in.
     active_clef_by_staff: dict[tuple[int, int, int], str | None] = {}
     active_key_sig_by_staff: dict[tuple[int, int, int], dict[str, str]] = {}
+    active_time_sig_by_staff: dict[tuple[int, int, int], dict[str, Any] | None] = {}
 
     t_total = time.perf_counter()
     for p in pages:
@@ -584,38 +611,51 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     {},  # default: C major / A minor — no alterations
                 )
+                active_time_sig = active_time_sig_by_staff.get(
+                    (p, sys_idx, staff_idx),
+                    None,  # default: unknown — only set when detected
+                )
                 staff_dict: dict[str, Any] = {
                     "staff_index": staff_idx,
-                    # clef + key_signature get filled in after the first
-                    # cell is processed so they reflect the EFFECTIVE state
-                    # of the staff (after any leading clef + key-sig
-                    # detections in that first measure are absorbed).
+                    # clef + key_signature + time_signature get filled in
+                    # after the first cell is processed so they reflect the
+                    # EFFECTIVE state of the staff (after any leading
+                    # detections in the first measure are absorbed).
                     "clef": None,
                     "key_signature": None,
+                    "time_signature": None,
                     "n_measures": len(staff_cells),
                     "measures": [],
                 }
                 first_cell_effective_clef: str | None = None
                 first_cell_effective_key_sig: dict[str, str] | None = None
+                first_cell_effective_time_sig: dict[str, Any] | None = None
                 for cell_idx, cell in enumerate(staff_cells):
-                    detections, active_clef, active_key_sig = _detections_for_cell(
-                        detector,
-                        cell,
-                        conf_threshold=conf_threshold,
-                        imgsz=imgsz,
-                        iou_threshold=iou_threshold,
-                        agnostic_nms=agnostic_nms,
-                        active_clef=active_clef,
-                        active_key_sig=active_key_sig,
+                    detections, active_clef, active_key_sig, active_time_sig = (
+                        _detections_for_cell(
+                            detector,
+                            cell,
+                            conf_threshold=conf_threshold,
+                            imgsz=imgsz,
+                            iou_threshold=iou_threshold,
+                            agnostic_nms=agnostic_nms,
+                            active_clef=active_clef,
+                            active_key_sig=active_key_sig,
+                            active_time_sig=active_time_sig,
+                        )
                     )
                     if cell_idx == 0:
                         first_cell_effective_clef = active_clef
                         first_cell_effective_key_sig = dict(active_key_sig)
+                        first_cell_effective_time_sig = (
+                            dict(active_time_sig) if active_time_sig else None
+                        )
                     staff_dict["measures"].append({
                         "measure_index": cell.measure_index,
                         "bbox_page_px": list(cell.bbox_page_px),
                         "clef": active_clef,
                         "key_signature": _key_sig_summary(active_key_sig),
+                        "time_signature": dict(active_time_sig) if active_time_sig else None,
                         "n_detections": len(detections),
                         "detections": detections,
                     })
@@ -628,14 +668,20 @@ def transcribe(
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}
                 )
+                staff_dict["time_signature"] = first_cell_effective_time_sig
                 # If clef or key sig changed by the end of the staff, surface
                 # the final state too so a clef-change / key-change is visible.
                 if active_clef != first_cell_effective_clef:
                     staff_dict["clef_final"] = active_clef
                 if active_key_sig != (first_cell_effective_key_sig or {}):
                     staff_dict["key_signature_final"] = _key_sig_summary(active_key_sig)
+                if active_time_sig != first_cell_effective_time_sig:
+                    staff_dict["time_signature_final"] = (
+                        dict(active_time_sig) if active_time_sig else None
+                    )
                 active_clef_by_staff[(p, sys_idx, staff_idx)] = active_clef
                 active_key_sig_by_staff[(p, sys_idx, staff_idx)] = active_key_sig
+                active_time_sig_by_staff[(p, sys_idx, staff_idx)] = active_time_sig
                 sys_dict["staves"].append(staff_dict)
                 out["n_staves_total"] += 1
             page_dict["systems"].append(sys_dict)
@@ -668,12 +714,21 @@ def transcribe(
                 for d in m["detections"]
                 if d["category"] == "notehead" and d["pitch"] is not None
             )
+            page_durations = sum(
+                1
+                for s in page_dict["systems"]
+                for st in s["staves"]
+                for m in st["measures"]
+                for d in m["detections"]
+                if d["category"] == "notehead" and d.get("duration_beats") is not None
+            )
             print(
                 f"  page {p}: {len(systems)} systems, "
                 f"{sum(len(staves) for staves in systems.values())} staves, "
                 f"{sum(len(c) for staves in systems.values() for c in staves.values())} measures, "
                 f"{n_dets} detections "
-                f"({page_pitched}/{page_noteheads} noteheads pitched)",
+                f"({page_pitched}/{page_noteheads} pitched, "
+                f"{page_durations}/{page_noteheads} durations)",
                 flush=True,
             )
 
@@ -683,10 +738,13 @@ def transcribe(
             overlays_dir.mkdir(parents=True, exist_ok=True)
             write_overlay(pws, overlays_dir / f"page{p:03d}-overlay.png", cells=cells)
 
-    # Final pass: count noteheads + pitch-resolved noteheads. Cheap (linear
-    # over the already-built output) and saves consumers from doing it.
+    # Final pass: count noteheads + pitch-resolved + rhythm-resolved. Cheap
+    # (linear over the already-built output) and saves consumers from doing it.
     n_noteheads = 0
     n_pitched = 0
+    n_with_duration = 0
+    n_rests = 0
+    n_rests_with_duration = 0
     for page_d in out["pages"]:
         for sys_d in page_d["systems"]:
             for st_d in sys_d["staves"]:
@@ -694,10 +752,19 @@ def transcribe(
                     for det in m_d["detections"]:
                         if det["category"] == "notehead":
                             n_noteheads += 1
-                            if det["pitch"] is not None:
+                            if det.get("pitch") is not None:
                                 n_pitched += 1
+                            if det.get("duration_beats") is not None:
+                                n_with_duration += 1
+                        elif det["category"] == "rest":
+                            n_rests += 1
+                            if det.get("duration_beats") is not None:
+                                n_rests_with_duration += 1
     out["n_noteheads_total"] = n_noteheads
     out["n_noteheads_pitched_total"] = n_pitched
+    out["n_noteheads_with_duration_total"] = n_with_duration
+    out["n_rests_total"] = n_rests
+    out["n_rests_with_duration_total"] = n_rests_with_duration
 
     out["runtime"]["total_s"] = round(time.perf_counter() - t_total, 2)
     out["runtime"]["phase1_s"] = round(out["runtime"]["phase1_s"], 2)
@@ -798,6 +865,9 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  noteheads={result['n_noteheads_total']}  "
                   f"pitched={result['n_noteheads_pitched_total']}  "
                   f"({100 * result['n_noteheads_pitched_total'] // max(1, result['n_noteheads_total'])}% pitch coverage)")
+            print(f"  with_duration={result['n_noteheads_with_duration_total']}  "
+                  f"({100 * result['n_noteheads_with_duration_total'] // max(1, result['n_noteheads_total'])}% rhythm coverage)  "
+                  f"rests={result['n_rests_with_duration_total']}/{result['n_rests_total']}")
             print(f"  runtime: phase1={result['runtime']['phase1_s']}s  "
                   f"yolo={result['runtime']['yolo_s']}s  "
                   f"total={result['runtime']['total_s']}s")
