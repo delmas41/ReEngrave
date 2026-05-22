@@ -1,0 +1,1069 @@
+{
+  "version_name": "v1-2026-05-18-orchestral",
+  "created_utc": "2026-05-22T19:29:56+00:00",
+  "labeler": "",
+  "description": "",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-phase-realft/verdicts",
+    "detections_dir": "benchmarks/omr-phase-realft/detections",
+    "manifest": "benchmarks/omr-phase-realft/cells.json",
+    "weights_for_class_names": "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 60,
+    "n_v1_cells": 0,
+    "n_v2_cells": 60,
+    "n_tp": 419,
+    "n_wrong_cat": 363,
+    "n_wrong_bbox": 2,
+    "n_fn_added": 1,
+    "n_fp_dropped": 578,
+    "n_unsure_dropped": 1,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "accidentalFlat",
+    "accidentalNatural",
+    "accidentalNaturalSmall",
+    "accidentalSharp",
+    "articAccentAbove",
+    "articStaccatoAbove",
+    "articStaccatoBelow",
+    "articulationAccent",
+    "augmentationDot",
+    "barlineSingle",
+    "beam",
+    "clefC",
+    "clefF",
+    "clefG",
+    "dynamicCrescendoHairpin",
+    "dynamicDiminuendoHairpin",
+    "dynamicF",
+    "dynamicLetterF",
+    "dynamicLetterP",
+    "dynamicLetterS",
+    "dynamicM",
+    "dynamicS",
+    "fermataAbove",
+    "flag16thUp",
+    "flag8thDown",
+    "flag8thUp",
+    "keyFlat",
+    "ledgerLine",
+    "legerLine",
+    "noteheadBlackInSpace",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadHalfOnLineSmall",
+    "noteheadWholeInSpace",
+    "noteheadWholeOnLine",
+    "rest8th",
+    "restHalf",
+    "restQuarter",
+    "restWhole",
+    "slur",
+    "staff",
+    "stem",
+    "textDynamic",
+    "tie",
+    "tremolo2"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "beet5-p15-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 1,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys0-s1-m5",
+      "schema_version": 2,
+      "n_tp": 6,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 4,
+      "classes_written": [
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys1-s3-m2",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 13,
+      "classes_written": [
+        "barlineSingle",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys1-s5-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 6,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 8,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "staff",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys1-s7-m1",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 2,
+      "classes_written": [
+        "restWhole",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys2-s11-m1",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 5,
+      "n_wrong_bbox": 1,
+      "n_fn_added": 0,
+      "n_fp_dropped": 10,
+      "classes_written": [
+        "accidentalNatural",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys2-s13-m0",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 8,
+      "classes_written": [
+        "barlineSingle",
+        "clefG",
+        "restWhole",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys2-s15-m0",
+      "schema_version": 2,
+      "n_tp": 9,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 5,
+      "classes_written": [
+        "accidentalFlat",
+        "beam",
+        "clefG",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys2-s17-m0",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 11,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 15,
+      "classes_written": [
+        "accidentalFlat",
+        "barlineSingle",
+        "clefC",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p15-sys2-s9-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 9,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 5,
+      "classes_written": [
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 8,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 12,
+      "classes_written": [
+        "accidentalFlat",
+        "barlineSingle",
+        "clefG",
+        "legerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys0-s2-m1",
+      "schema_version": 2,
+      "n_tp": 10,
+      "n_wrong_cat": 10,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 10,
+      "classes_written": [
+        "barlineSingle",
+        "legerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "tremolo2"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys0-s4-m2",
+      "schema_version": 2,
+      "n_tp": 8,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 10,
+      "classes_written": [
+        "augmentationDot",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "stem",
+        "tremolo2"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys0-s6-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 1,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 5,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys0-s9-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 11,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 40,
+      "classes_written": [
+        "accidentalFlat",
+        "augmentationDot",
+        "barlineSingle",
+        "clefC",
+        "noteheadBlackOnLine",
+        "staff",
+        "tremolo2"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys1-s11-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 8,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 6,
+      "classes_written": [
+        "augmentationDot",
+        "ledgerLine",
+        "legerLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys1-s12-m1",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 9,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 7,
+      "classes_written": [
+        "augmentationDot",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys2-s13-m1",
+      "schema_version": 2,
+      "n_tp": 7,
+      "n_wrong_cat": 8,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 18,
+      "classes_written": [
+        "accidentalFlat",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "staff",
+        "stem",
+        "tremolo2"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys2-s13-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 17,
+      "classes_written": [
+        "rest8th",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p25-sys3-s17-m0",
+      "schema_version": 2,
+      "n_tp": 11,
+      "n_wrong_cat": 3,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 1,
+      "classes_written": [
+        "fermataAbove",
+        "flag16thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restWhole",
+        "slur",
+        "tremolo2"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 13,
+      "n_wrong_cat": 1,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 3,
+      "classes_written": [
+        "accidentalFlat",
+        "augmentationDot",
+        "barlineSingle",
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "restQuarter",
+        "restWhole",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 10,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 9,
+      "classes_written": [
+        "augmentationDot",
+        "barlineSingle",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "restQuarter",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys0-s6-m1",
+      "schema_version": 2,
+      "n_tp": 37,
+      "n_wrong_cat": 5,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 3,
+      "classes_written": [
+        "accidentalNatural",
+        "accidentalNaturalSmall",
+        "articStaccatoAbove",
+        "augmentationDot",
+        "barlineSingle",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "restQuarter",
+        "stem",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys0-s9-m1",
+      "schema_version": 2,
+      "n_tp": 41,
+      "n_wrong_cat": 6,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 1,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "accidentalSharp",
+        "augmentationDot",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "slur",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys1-s11-m4",
+      "schema_version": 2,
+      "n_tp": 6,
+      "n_wrong_cat": 5,
+      "n_wrong_bbox": 1,
+      "n_fn_added": 1,
+      "n_fp_dropped": 7,
+      "classes_written": [
+        "accidentalFlat",
+        "articStaccatoAbove",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys1-s12-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 6,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 4,
+      "classes_written": [
+        "augmentationDot",
+        "clefF",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLineSmall",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys1-s12-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 6,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 10,
+      "classes_written": [
+        "augmentationDot",
+        "barlineSingle",
+        "noteheadHalfOnLine",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys1-s13-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 8,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 5,
+      "classes_written": [
+        "augmentationDot",
+        "barlineSingle",
+        "noteheadHalfInSpace",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys1-s13-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 9,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 6,
+      "classes_written": [
+        "barlineSingle",
+        "dynamicLetterF",
+        "dynamicS",
+        "restQuarter",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p35-sys1-s14-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 3,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 2,
+      "classes_written": [
+        "barlineSingle",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys0-s0-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 6,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 3,
+      "classes_written": [
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys0-s1-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine",
+        "restWhole",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys0-s1-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 8,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 4,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s11-m0",
+      "schema_version": 2,
+      "n_tp": 44,
+      "n_wrong_cat": 13,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 2,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "articStaccatoAbove",
+        "articStaccatoBelow",
+        "barlineSingle",
+        "beam",
+        "dynamicF",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine",
+        "slur",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s13-m0",
+      "schema_version": 2,
+      "n_tp": 20,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 6,
+      "classes_written": [
+        "accidentalFlat",
+        "beam",
+        "clefC",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "restQuarter",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s3-m1",
+      "schema_version": 2,
+      "n_tp": 19,
+      "n_wrong_cat": 12,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "barlineSingle",
+        "beam",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s5-m1",
+      "schema_version": 2,
+      "n_tp": 26,
+      "n_wrong_cat": 10,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "flag8thDown",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "staff",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s7-m1",
+      "schema_version": 2,
+      "n_tp": 24,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 3,
+      "classes_written": [
+        "barlineSingle",
+        "clefC",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "stem"
+      ]
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s9-m0",
+      "schema_version": 2,
+      "n_tp": 15,
+      "n_wrong_cat": 9,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "dynamicF",
+        "legerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "restQuarter",
+        "restWhole",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p130-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 5,
+      "n_wrong_cat": 1,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 4,
+      "classes_written": [
+        "accidentalFlat",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 21,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 3,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "beam",
+        "clefG",
+        "dynamicCrescendoHairpin",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadWholeInSpace",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s1-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 12,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 38,
+      "classes_written": [
+        "accidentalFlat",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "slur",
+        "staff",
+        "textDynamic"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s3-m1",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 33,
+      "classes_written": [
+        "barlineSingle",
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s4-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 3,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 5,
+      "classes_written": [
+        "articAccentAbove",
+        "noteheadWholeInSpace",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s6-m2",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 3,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 19,
+      "classes_written": [
+        "restWhole",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s8-m1",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 19,
+      "classes_written": [
+        "barlineSingle",
+        "dynamicLetterP",
+        "restHalf",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s9-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 2,
+      "classes_written": [
+        "articAccentAbove",
+        "barlineSingle",
+        "noteheadWholeInSpace",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys1-s11-m0",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 3,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 1,
+      "classes_written": [
+        "barlineSingle",
+        "restWhole",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys2-s12-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 5,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 18,
+      "classes_written": [
+        "accidentalNatural",
+        "restQuarter",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys3-s13-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 6,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 8,
+      "classes_written": [
+        "articAccentAbove",
+        "articulationAccent",
+        "noteheadHalfOnLine",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 12,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 29,
+      "classes_written": [
+        "accidentalNatural",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "dynamicLetterS",
+        "legerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys1-s1-m4",
+      "schema_version": 2,
+      "n_tp": 23,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 3,
+      "classes_written": [
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "dynamicM",
+        "dynamicS",
+        "ledgerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine",
+        "rest8th",
+        "restQuarter",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys1-s4-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 8,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 13,
+      "classes_written": [
+        "legerLine",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys1-s6-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 17,
+      "classes_written": [
+        "barlineSingle",
+        "legerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys2-s10-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 16,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys2-s8-m5",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 1,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 14,
+      "classes_written": [
+        "restWhole",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys3-s11-m8",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 3,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 7,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadHalfInSpace",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys4-s13-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 4,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 27,
+      "classes_written": [
+        "barlineSingle",
+        "legerLine",
+        "restHalf",
+        "staff"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys6-s16-m0",
+      "schema_version": 2,
+      "n_tp": 19,
+      "n_wrong_cat": 7,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 6,
+      "classes_written": [
+        "accidentalFlat",
+        "ledgerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restHalf",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p70-sys7-s18-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 3,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 0,
+      "n_fp_dropped": 32,
+      "classes_written": [
+        "clefF",
+        "noteheadHalfOnLine",
+        "restQuarter"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 path: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/cool-kare-05197c/data/user-labeled
 train: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/cool-kare-05197c/data/user-labeled/_catalog_train.txt
 val: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/cool-kare-05197c/data/user-labeled/_catalog_val.txt
-nc: 208
+nc: 214
 names:
 - brace
 - ledgerLine
@@ -211,3 +211,9 @@ names:
 - tuple
 - tupleBracket
 - staff
+- barlineSingle
+- barlineDouble
+- barlineFinal
+- repeatRight
+- repeatLeft
+- textDynamic

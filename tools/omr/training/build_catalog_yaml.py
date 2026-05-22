@@ -83,7 +83,13 @@ def _scan_version_dir(d: Path, val_fraction: float, seed: str) -> VersionSlice:
         lbl = labels_dir / f"{img.stem}.txt"
         if not lbl.exists():
             continue  # skip images with no label file
-        paired.append(img.resolve())
+        # IMPORTANT: do NOT .resolve() here — ultralytics looks for label
+        # files by replacing `/images/` with `/labels/` in the image path.
+        # If we resolve the symlink to its original location (which is in
+        # benchmarks/.../cells/ — no `/images/` substring), YOLO won't
+        # find our labels.  Keep the symlinked path under the version's
+        # `images/` directory so the label resolution works.
+        paired.append(img.absolute())
 
     for img in paired:
         # Deterministic per-image split: hash of "<version>:<stem>" with
@@ -124,7 +130,16 @@ def load_class_names(
     weights_path: Path | None,
     fallback_json: Path | None,
 ) -> list[str]:
-    """See verdicts_to_yolo_labels.load_class_names — same contract."""
+    """See verdicts_to_yolo_labels.load_class_names — same contract.
+
+    Appends `_CUSTOM_CLASSES` (barlines + textDynamic) to whichever base
+    list comes back so the produced catalog.yaml has the right `nc` and
+    name list for labels at IDs >= 208.
+    """
+    # Lazy import to avoid a hard dependency cycle.
+    from .verdicts_to_yolo_labels import _CUSTOM_CLASSES
+
+    base: list[str] = []
     if weights_path is not None and weights_path.exists():
         try:
             import torch
@@ -136,12 +151,20 @@ def load_class_names(
             model = ckpt.get("model") if isinstance(ckpt, dict) else ckpt
             names = getattr(model, "names", None)
             if isinstance(names, dict):
-                return [names[i] for i in sorted(int(k) for k in names.keys())]
-            if isinstance(names, list):
-                return list(names)
-    if fallback_json is not None and fallback_json.exists():
-        return json.loads(fallback_json.read_text())
-    return list(DEEPSCORES_V2_CLASSES)
+                base = [names[i] for i in sorted(int(k) for k in names.keys())]
+            elif isinstance(names, list):
+                base = list(names)
+    if not base and fallback_json is not None and fallback_json.exists():
+        base = json.loads(fallback_json.read_text())
+    if not base:
+        base = list(DEEPSCORES_V2_CLASSES)
+    # Append custom classes (IDs 208+) — must match verdicts_to_yolo_labels.
+    seen = set(base)
+    for cc in _CUSTOM_CLASSES:
+        if cc not in seen:
+            base.append(cc)
+            seen.add(cc)
+    return base
 
 
 # ---------------------------------------------------------------------------
