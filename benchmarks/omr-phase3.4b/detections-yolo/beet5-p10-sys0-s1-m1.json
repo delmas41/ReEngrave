@@ -1,0 +1,122 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 96,
+      "y": 856,
+      "w": 175,
+      "h": 95,
+      "x_center": 183,
+      "y_center": 903,
+      "confidence": 0.13322557508945465,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 146,
+      "y": 1008,
+      "w": 101,
+      "h": 91,
+      "x_center": 196,
+      "y_center": 1053,
+      "confidence": 0.1058812066912651,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 120,
+      "y": 871,
+      "w": 154,
+      "h": 89,
+      "x_center": 197,
+      "y_center": 915,
+      "confidence": 0.12607915699481964,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "accidentalNatural",
+      "category": "accidental",
+      "x": 214,
+      "y": 1135,
+      "w": 33,
+      "h": 65,
+      "x_center": 230,
+      "y_center": 1167,
+      "confidence": 0.44142836332321167,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 0,
+      "y": 791,
+      "w": 911,
+      "h": 55,
+      "x_center": 455,
+      "y_center": 818,
+      "confidence": 0.20157551765441895,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 0,
+      "y": 0,
+      "w": 914,
+      "h": 40,
+      "x_center": 457,
+      "y_center": 20,
+      "confidence": 0.18328052759170532,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1,
+      "y": 592,
+      "w": 912,
+      "h": 63,
+      "x_center": 457,
+      "y_center": 623,
+      "confidence": 0.11377143114805222,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 5,
+      "y": 487,
+      "w": 907,
+      "h": 79,
+      "x_center": 458,
+      "y_center": 526,
+      "confidence": 0.10406491905450821,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 475,
+      "y": 634,
+      "w": 106,
+      "h": 50,
+      "x_center": 528,
+      "y_center": 659,
+      "confidence": 0.1109674796462059,
+      "pitch": null
+    }
+  ]
+}

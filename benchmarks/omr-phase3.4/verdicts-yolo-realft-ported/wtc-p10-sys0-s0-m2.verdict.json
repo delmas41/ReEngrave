@@ -1,0 +1,39 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m2",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": [
+    {
+      "tm_id": "D4",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 1240,
+      "y_canonical": 350
+    }
+  ]
+}

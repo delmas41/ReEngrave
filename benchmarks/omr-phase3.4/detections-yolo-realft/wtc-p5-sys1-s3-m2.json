@@ -1,0 +1,31 @@
+{
+  "cell_id": "wtc-p5-sys1-s3-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1,
+      "y": 392,
+      "w": 114,
+      "h": 65,
+      "x_center": 58,
+      "y_center": 424,
+      "confidence": 0.6155499219894409,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 384,
+      "y": 398,
+      "w": 125,
+      "h": 65,
+      "x_center": 446,
+      "y_center": 430,
+      "confidence": 0.11114514619112015,
+      "pitch": null
+    }
+  ]
+}

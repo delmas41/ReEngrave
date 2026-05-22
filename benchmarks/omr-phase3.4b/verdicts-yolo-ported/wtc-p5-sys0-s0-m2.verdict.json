@@ -1,0 +1,211 @@
+{
+  "cell_id": "wtc-p5-sys0-s0-m2",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "augmentationDot",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "accidentalSharp",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D7",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D8",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D9",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D10",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D11",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D12",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D13",
+      "smufl_name": "accidentalSharp",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D14",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D15",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D16",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D17",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D18",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D19",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D20",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D21",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D22",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D23",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D24",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D25",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D26",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D27",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D28",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D29",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D30",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D31",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D32",
+      "smufl_name": "augmentationDot",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D33",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D34",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D35",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D36",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D37",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D38",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D39",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D40",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": []
+}

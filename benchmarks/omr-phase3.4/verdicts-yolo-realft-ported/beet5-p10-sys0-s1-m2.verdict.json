@@ -1,0 +1,37 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m2",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP",
+      "wrong_pitch": "c4"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "restWhole",
+      "verdict": ""
+    }
+  ],
+  "fn_noteheads": []
+}

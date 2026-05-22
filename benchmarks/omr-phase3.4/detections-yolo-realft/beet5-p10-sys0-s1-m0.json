@@ -1,0 +1,31 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 411,
+      "y": 53,
+      "w": 87,
+      "h": 88,
+      "x_center": 454,
+      "y_center": 97,
+      "confidence": 0.9954309463500977,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 1679,
+      "y": 14,
+      "w": 110,
+      "h": 130,
+      "x_center": 1734,
+      "y_center": 79,
+      "confidence": 0.9894464612007141,
+      "pitch": null
+    }
+  ]
+}
