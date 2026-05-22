@@ -172,11 +172,20 @@ python3 -m tools.omr.transcribe path/to/score.pdf --out out.json
 # Specific pages, with overlay PNGs for visual debug
 python3 -m tools.omr.transcribe score.pdf --pages 0-4 \
     --out out.json --overlays-dir overlays/
+
+# Convert JSON → LilyPond (.ly) or MusicXML (.musicxml):
+python3 -m tools.omr.export out.json --format lilypond --out out.ly
+python3 -m tools.omr.export out.json --format musicxml --out out.musicxml
+
+# .ly compiles to PDF: lilypond out.ly  → out.pdf
+# .musicxml opens in MuseScore, plays back in DAWs, etc.
 ```
 
-The output JSON groups detections by `page → system → staff → measure`,
-with each detection carrying both a cell-local `bbox` and a source-page
-`bbox_page`. Full schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
+The JSON groups detections by `page → system → staff → measure` with
+each notehead carrying `pitch`, `duration_beats`, `duration_type`, and
+`dots`. The exporter groups same-x noteheads into chords via
+`tools/omr/voicing.py` and serializes via `tools/omr/export.py`. Full
+schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 
 ### From Python
 
@@ -228,7 +237,10 @@ PDF → render_page (PyMuPDF, 600 DPI default)
     → detect_barlines + extract_measures
     → MeasureCell × N  (canonical scale-normalized cells)
     → YoloDetector.detect (yolov8l, imgsz=640, agnostic_nms=True)
+    → pitch_resolver  (clef + key sig + accidentals  → "F#4")
+    → rhythm          (beams + flags + dots          → duration_beats)
     → transcribe.py groups by (system, staff, measure) → JSON
+    → export.py (voicing → LilyPond or MusicXML)
 ```
 
 Phase 1 (staves/measures) is ~1–3 s/page CPU. Phase 3 (YOLO) is
@@ -344,7 +356,17 @@ docker compose -f docker-compose.prod.yml up -d
 
 - **IMSLP downloads are unreliable.** IMSLP's bot-check pages occasionally return HTML instead of a PDF. The file_import module detects this but there's no automatic retry with different headers.
 
-- **Local OMR pipeline emits raw detections only.** `tools/omr/transcribe.py` produces a structured `page → system → staff → measure → detections` JSON, but there is no rhythm parsing, voicing, key-signature inference, or MusicXML output. That layer is the job of downstream tools that consume the JSON. See `tools/omr/README.md` § "Known limitations" for the per-component status.
+- **Local OMR pipeline does pitch + rhythm + LilyPond/MusicXML export
+  (v1).** `tools/omr/transcribe.py` produces a structured `page →
+  system → staff → measure → detections` JSON with pitches (including
+  key signature + accidentals), durations (whole / half / quarter /
+  eighth / 16th / dotted variants), clefs, and time signatures.
+  `tools/omr/export.py` serializes to LilyPond or MusicXML. **Caveats**
+  for the v1 export: per-measure durations don't always sum exactly to
+  the time signature (rhythm parsing is approximate); each staff
+  renders as its own Part with no PianoStaff grouping; single voice
+  per staff (no stem-direction inference). See `tools/omr/README.md`
+  § "Known limitations" for the per-component status.
 
 - **Custom OMR classes (barlines, textDynamic) not yet learned.** The labeling UI captures `barlineSingle/Double/Final`, `repeatRight/Left`, and `textDynamic` at class IDs 208–213, but the current production weights don't see them. Phase 3.4 attempted nc-expansion and caused catastrophic forgetting; refer to `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
 

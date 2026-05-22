@@ -25,6 +25,29 @@ python3 -m tools.omr.transcribe score.pdf \
     --out out.json
 ```
 
+### Export to a notation file
+
+After producing the JSON, convert it to LilyPond or MusicXML:
+
+```bash
+# LilyPond (.ly) — compile with `lilypond out.ly` for a PDF:
+python3 -m tools.omr.export out.json --format lilypond --out out.ly
+
+# MusicXML (.musicxml) — opens in MuseScore, plays back in DAWs, round-
+# trips through the web app's existing LilyPond/PDF exporter:
+python3 -m tools.omr.export out.json --format musicxml --out out.musicxml
+```
+
+Both formats are produced from the same JSON via
+`tools.omr.export` (which internally uses `tools.omr.voicing` to group
+same-x noteheads into chords). The pipeline end-to-end:
+
+```
+PDF → transcribe.py → out.json → export.py → out.ly  or  out.musicxml
+                                              ↓
+                                          lilypond out.ly → out.pdf
+```
+
 The output JSON groups detections by `page → system → staff → measure`
 and is documented in detail in [`transcribe.py`](transcribe.py) (top
 docstring).
@@ -42,6 +65,9 @@ markings).
 ```
 tools/omr/
 ├── transcribe.py              ← Single-file entry point: PDF → JSON
+├── export.py                  ← JSON → LilyPond / MusicXML (Phase 4d)
+├── voicing.py                 ← Chord-grouping helper used by export
+├── rhythm.py                  ← Duration parsing (Phase 4c)
 ├── run_pipeline.py            ← Older Phase-1-only CLI (staves/measures only,
 │                                no symbol detection). Mostly for debugging
 │                                the staff/measure extractor in isolation.
@@ -401,9 +427,18 @@ methodology + per-class breakdown.
   more false negatives on small dynamics + grace notes. The labeling
   pipeline (`tools/omr/annotate`) is the path to fixing this.
 
-- **No MusicXML / MIDI output.** The transcribe JSON is the
-  intermediate representation. Producing notation requires downstream
-  voicing + rhythm logic.
+- **MusicXML + LilyPond export is a v1.** `tools/omr/export.py`
+  produces files that LilyPond renders without errors (with occasional
+  bar-check warnings) and that MuseScore / `musicxml2ly` accept. But:
+  - Per-measure durations don't always sum exactly to the time
+    signature (Phase 4c rhythm parsing is approximate).
+  - Each staff renders as a separate Part / Staff block — no piano
+    grand-staff grouping yet (no `\new PianoStaff` around treble +
+    bass).
+  - Single voice per staff. Two-voice piano writing is collapsed onto
+    one voice. Chord-grouping by x-position works but stem-direction
+    inference is not yet attempted (would need stems, which the Phase
+    3.3 detector doesn't emit).
 
 ---
 
