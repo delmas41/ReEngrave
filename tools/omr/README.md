@@ -170,6 +170,8 @@ current production weights — see "Known limitations" below.
   "n_staves_total":     12,
   "n_measures_total":   84,
   "n_detections_total": 1923,
+  "n_noteheads_total":         445,    // all category=="notehead" detections
+  "n_noteheads_pitched_total": 445,    // those for which pitch resolved (diatonic)
   "runtime": { "phase1_s": 8.2, "yolo_s": 4.1, "total_s": 12.3 },
   "pages": [
     {
@@ -184,11 +186,13 @@ current production weights — see "Known limitations" below.
           "staves": [
             {
               "staff_index": 0,
+              "clef":        "treble",  // staff's starting clef
               "n_measures":  4,
               "measures": [
                 {
                   "measure_index": 0,
                   "bbox_page_px":  [186, 268, 1755, 715],
+                  "clef":          "treble",  // active clef at this measure
                   "n_detections":  20,
                   "detections": [
                     {
@@ -197,7 +201,15 @@ current production weights — see "Known limitations" below.
                       "bbox":       [44, 108, 124, 356],   // cell-local
                       "bbox_page":  [220, 351, 95, 273],   // source page
                       "confidence": 0.974,
-                      "pitch":      null
+                      "pitch":      null              // non-noteheads have null pitch
+                    },
+                    {
+                      "class":      "noteheadBlackInSpace",
+                      "category":   "notehead",
+                      "bbox":       [657, 386, 62, 51],
+                      "bbox_page":  [689, 564, 47, 39],
+                      "confidence": 0.921,
+                      "pitch":      "C4"              // diatonic — no accidentals yet
                     }
                   ]
                 }
@@ -335,11 +347,13 @@ methodology + per-class breakdown.
   parsing, no key-signature inference, no MusicXML output. That layer is
   the job of downstream tools that consume this JSON.
 
-- **Pitch is best-effort.** `pitch_resolver.py` produces pitches for
-  noteheads via y-position relative to staff lines, but only when the
-  rendering pipeline runs it explicitly. `transcribe.py` does not call
-  it by default — the `pitch` field on detections is currently always
-  `None`. (Hooking it in is a small change.)
+- **Pitch is diatonic only (no key signature, no accidentals).**
+  `pitch_resolver.py` resolves each notehead's pitch from its y-position
+  relative to the staff lines + the active clef (detected per staff,
+  updated on clef-change detections). It does **not** apply key
+  signatures or inline accidentals — a B♭ in a B♭-major piece will be
+  labeled `"B"`, not `"Bb"`. Adding key-signature + accidental
+  arithmetic is the next step (Phase 4b).
 
 - **Orchestral conductor's scores.** The current model was trained
   predominantly on DSv2 (synthetic) + 60 hand-labeled real cells.
