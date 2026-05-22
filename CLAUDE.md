@@ -151,6 +151,92 @@ ReEngrave/
 
 ---
 
+## Local OMR pipeline (`tools/omr/`)
+
+In parallel with the web-app Audiveris flow above, there is a local
+Python OMR pipeline under `tools/omr/`. It uses a YOLOv8l detector
+fine-tuned on DeepScoresV2 (currently **F1 98.8%** on the Bach WTC
+verdict set) and produces structured JSON detections without going
+anywhere near a browser, Docker, or database.
+
+**Use this when you want to transcribe a PDF without spinning up the
+full web stack — e.g., from another Claude session, a CLI script, or
+inside a Python notebook.**
+
+### One-shot CLI
+
+```bash
+# From the repo root, transcribe one or more pages → JSON
+python3 -m tools.omr.transcribe path/to/score.pdf --out out.json
+
+# Specific pages, with overlay PNGs for visual debug
+python3 -m tools.omr.transcribe score.pdf --pages 0-4 \
+    --out out.json --overlays-dir overlays/
+```
+
+The output JSON groups detections by `page → system → staff → measure`,
+with each detection carrying both a cell-local `bbox` and a source-page
+`bbox_page`. Full schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
+
+### From Python
+
+```python
+from pathlib import Path
+from tools.omr.transcribe import transcribe, DEFAULT_WEIGHTS
+
+result = transcribe(
+    pdf_path=Path("score.pdf"),
+    pages=[0, 1, 2],
+    weights=DEFAULT_WEIGHTS,
+)
+for page in result["pages"]:
+    for sys_ in page["systems"]:
+        for staff in sys_["staves"]:
+            for measure in staff["measures"]:
+                for det in measure["detections"]:
+                    ...  # det["class"], det["bbox_page"], det["confidence"]
+```
+
+### When to use what
+
+| Task | Use |
+|---|---|
+| Quick PDF → structured detections | `python3 -m tools.omr.transcribe ...` |
+| One-off Phase-1-only run (staves + measures, no symbol detection) | `python3 -m tools.omr.run_pipeline ...` |
+| Hand-labeling cells to grow the training catalog | `tools/omr/annotate/` FastAPI app |
+| Retraining the detector | `tools/omr/training/` |
+| Full review-loop with human accept/reject | The web app (Audiveris + Claude Vision flow above) |
+
+### Production weights
+
+`tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`
+(84 MB, Phase 3.3, F1 98.8%). The `transcribe.py` `DEFAULT_WEIGHTS`
+constant points here. Other checkpoints (earlier phases, the
+realft-v1b attempt) live alongside in the same directory — see
+`tools/omr/README.md` for the chain.
+
+**Best for** clean engraved PDFs. **Degrades on** handwritten scores,
+extreme densities (dense conductor's scores), and any class the model
+hasn't been trained on yet (custom barline classes are captured in the
+labeling UI but not yet learned — see "Known limitations" below).
+
+### Pipeline at a glance
+
+```
+PDF → render_page (PyMuPDF, 600 DPI default)
+    → detect_staves (horizontal ink projection)
+    → detect_barlines + extract_measures
+    → MeasureCell × N  (canonical scale-normalized cells)
+    → YoloDetector.detect (yolov8l, imgsz=640, agnostic_nms=True)
+    → transcribe.py groups by (system, staff, measure) → JSON
+```
+
+Phase 1 (staves/measures) is ~1–3 s/page CPU. Phase 3 (YOLO) is
+~0.15–0.4 s/cell on CPU; faster on MPS/CUDA when available
+(`device="auto"` in `YoloDetector`).
+
+---
+
 ## Key technical details
 
 ### Authentication
@@ -257,6 +343,10 @@ docker compose -f docker-compose.prod.yml up -d
 - **Single-server architecture.** Background tasks (OMR, Vision) run in FastAPI `BackgroundTasks` — no task queue. Long jobs will fail if the server restarts. For production scale, replace with Celery + Redis.
 
 - **IMSLP downloads are unreliable.** IMSLP's bot-check pages occasionally return HTML instead of a PDF. The file_import module detects this but there's no automatic retry with different headers.
+
+- **Local OMR pipeline emits raw detections only.** `tools/omr/transcribe.py` produces a structured `page → system → staff → measure → detections` JSON, but there is no rhythm parsing, voicing, key-signature inference, or MusicXML output. That layer is the job of downstream tools that consume the JSON. See `tools/omr/README.md` § "Known limitations" for the per-component status.
+
+- **Custom OMR classes (barlines, textDynamic) not yet learned.** The labeling UI captures `barlineSingle/Double/Final`, `repeatRight/Left`, and `textDynamic` at class IDs 208–213, but the current production weights don't see them. Phase 3.4 attempted nc-expansion and caused catastrophic forgetting; refer to `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
 
 ---
 
