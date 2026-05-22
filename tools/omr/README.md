@@ -185,15 +185,24 @@ current production weights — see "Known limitations" below.
           "n_staves":     2,
           "staves": [
             {
-              "staff_index": 0,
-              "clef":        "treble",  // staff's starting clef
-              "n_measures":  4,
+              "staff_index":  0,
+              "clef":         "treble",       // effective clef for this staff
+              "key_signature": {
+                "sharps":      7,             // C-sharp major
+                "flats":       0,
+                "alterations": {
+                  "F": "#", "C": "#", "G": "#", "D": "#",
+                  "A": "#", "E": "#", "B": "#"
+                }
+              },
+              "n_measures":   4,
               "measures": [
                 {
-                  "measure_index": 0,
-                  "bbox_page_px":  [186, 268, 1755, 715],
-                  "clef":          "treble",  // active clef at this measure
-                  "n_detections":  20,
+                  "measure_index":  0,
+                  "bbox_page_px":   [186, 268, 1755, 715],
+                  "clef":           "treble",   // active clef at this measure
+                  "key_signature":  { ... },    // active key sig at this measure
+                  "n_detections":   20,
                   "detections": [
                     {
                       "class":      "clefG",
@@ -201,7 +210,7 @@ current production weights — see "Known limitations" below.
                       "bbox":       [44, 108, 124, 356],   // cell-local
                       "bbox_page":  [220, 351, 95, 273],   // source page
                       "confidence": 0.974,
-                      "pitch":      null              // non-noteheads have null pitch
+                      "pitch":      null              // null for non-noteheads
                     },
                     {
                       "class":      "noteheadBlackInSpace",
@@ -209,7 +218,8 @@ current production weights — see "Known limitations" below.
                       "bbox":       [657, 386, 62, 51],
                       "bbox_page":  [689, 564, 47, 39],
                       "confidence": 0.921,
-                      "pitch":      "C4"              // diatonic — no accidentals yet
+                      "pitch":      "F#4"             // chromatic — key sig + inline
+                                                      // accidentals applied
                     }
                   ]
                 }
@@ -347,13 +357,15 @@ methodology + per-class breakdown.
   parsing, no key-signature inference, no MusicXML output. That layer is
   the job of downstream tools that consume this JSON.
 
-- **Pitch is diatonic only (no key signature, no accidentals).**
-  `pitch_resolver.py` resolves each notehead's pitch from its y-position
-  relative to the staff lines + the active clef (detected per staff,
-  updated on clef-change detections). It does **not** apply key
-  signatures or inline accidentals — a B♭ in a B♭-major piece will be
-  labeled `"B"`, not `"Bb"`. Adding key-signature + accidental
-  arithmetic is the next step (Phase 4b).
+- **Pitch is chromatic but not rhythm-aware.** As of Phase 4b, pitches
+  are correct including key signature and inline accidentals — a B♭ in
+  a B♭-major piece is labeled `"Bb"`, a sharp written ahead of a
+  notehead is paired and applied (and carried forward to subsequent
+  same-pitch noteheads in the same measure). Accidentals reset at
+  barlines. **What is NOT yet inferred:** durations (quarter / eighth /
+  sixteenth), ties across barlines, double-sharp / double-flat
+  modeling beyond direct detection, and chord vs. voice assignment.
+  That's Phase 4c.
 
 - **Orchestral conductor's scores.** The current model was trained
   predominantly on DSv2 (synthetic) + 60 hand-labeled real cells.

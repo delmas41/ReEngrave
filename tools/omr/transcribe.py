@@ -44,17 +44,24 @@ Output schema (JSON):
               "staves": [
                 {
                   "staff_index": 0,
-                  "clef": "treble",         # starting clef for this staff (detected
-                                            # from the first clef detection, or
-                                            # heuristic default for piano top/bottom)
-                  "clef_final": "bass",     # OPTIONAL — only present if a clef change
-                                            # happened mid-staff (rare)
+                  "clef": "treble",         # effective clef for the staff (after
+                                            # absorbing any clef detection in the
+                                            # very first measure)
+                  "key_signature": {
+                      "sharps": 0,          # count of sharps in the key sig
+                      "flats":  0,          # count of flats (mutually exclusive)
+                      "alterations": {"F": "#", "C": "#"}  # letter -> '#'|'b'
+                  },
+                  "clef_final": "bass",     # OPTIONAL — only if clef changed
+                                            # mid-staff (rare)
+                  "key_signature_final": {...},  # OPTIONAL — only if key changed
                   "n_measures": 4,
                   "measures": [
                     {
                       "measure_index": 0,
                       "bbox_page_px": [x0, y0, x1, y1],
                       "clef": "treble",     # active clef AT this measure
+                      "key_signature": {...},  # active key sig at this measure
                       "n_detections": 12,
                       "detections": [
                         {
@@ -63,10 +70,10 @@ Output schema (JSON):
                           "bbox":       [x, y, w, h],  # in cell-local (canonical) coords
                           "bbox_page":  [x, y, w, h],  # in page-pixel coords
                           "confidence": 0.87,
-                          "pitch":      "C4"            # null for non-noteheads and
-                                                        # unpitched clefs (percussion);
-                                                        # diatonic only — no key
-                                                        # signature or accidentals yet
+                          "pitch":      "F#4"           # chromatic — key sig + inline
+                                                        # accidentals applied. null
+                                                        # for non-noteheads and
+                                                        # unpitched clefs.
                         },
                         ...
                       ]
@@ -169,6 +176,165 @@ def _default_clef_for_position(position_in_system: int, system_size: int) -> str
     return "treble"
 
 
+# ---------------------------------------------------------------------------
+# Key signature + accidental helpers (Phase 4b — chromatic pitch)
+# ---------------------------------------------------------------------------
+#
+# Layered alteration logic when resolving a notehead's final pitch:
+#
+#   1. Inline accidental immediately to the left of THIS notehead  → wins
+#   2. Earlier inline accidental on the same letter+octave in this measure
+#      (accidentals carry through the rest of the measure until a barline) → next
+#   3. Key signature alteration on this letter → fallback
+#   4. Otherwise → diatonic pitch unchanged
+#
+# Standard order of sharps / flats in key signatures:
+#   sharps: F# C# G# D# A# E# B#
+#   flats:  Bb Eb Ab Db Gb Cb Fb
+# Counting keySharp / keyFlat detections in the cell + this order gives us the
+# full key signature.
+
+_SHARP_ORDER = ["F", "C", "G", "D", "A", "E", "B"]
+_FLAT_ORDER = ["B", "E", "A", "D", "G", "C", "F"]
+
+
+def _key_sig_alterations(n_sharps: int, n_flats: int) -> dict[str, str]:
+    """Build the {letter: '#'|'b'} alteration map for a key signature.
+
+    Caller picks n_sharps XOR n_flats (the other should be 0). If both are
+    0 returns {} (C major / A minor — no alterations).
+    """
+    if n_sharps > 0:
+        return {letter: "#" for letter in _SHARP_ORDER[:n_sharps]}
+    if n_flats > 0:
+        return {letter: "b" for letter in _FLAT_ORDER[:n_flats]}
+    return {}
+
+
+def _detect_key_sig_from_cell(dets) -> dict[str, str] | None:
+    """Scan detections for keySharp / keyFlat markers (which the DSv2
+    detector emits distinctly from inline accidentals). Returns the new
+    alteration map, or None if no key-signature markers were seen (so the
+    caller should keep the previous active key sig).
+    """
+    n_sharps = sum(
+        1 for d in dets if d.smufl_name.lower().startswith("keysharp")
+    )
+    n_flats = sum(
+        1 for d in dets if d.smufl_name.lower().startswith("keyflat")
+    )
+    if n_sharps == 0 and n_flats == 0:
+        return None  # no update — keep whatever was active
+    # Music never has both sharps + flats in one key sig; if the detector
+    # somehow emits both, trust the larger count.
+    if n_sharps >= n_flats:
+        return _key_sig_alterations(n_sharps, 0)
+    return _key_sig_alterations(0, n_flats)
+
+
+def _parse_inline_accidental(smufl: str) -> str | None:
+    """Map an accidentalSharp / Flat / Natural / DoubleSharp / DoubleFlat
+    class name to a short alteration string ('#', 'b', '##', 'bb', 'natural').
+    Returns None if `smufl` isn't an inline accidental class.
+    """
+    if not smufl:
+        return None
+    s = smufl.lower()
+    if not s.startswith("accidental"):
+        return None
+    if "doublesharp" in s:
+        return "##"
+    if "doubleflat" in s:
+        return "bb"
+    if "sharp" in s:
+        return "#"
+    if "flat" in s:
+        return "b"
+    if "natural" in s:
+        return "natural"
+    return None
+
+
+def _pair_accidentals_to_noteheads(dets) -> dict[int, str]:
+    """Pair each inline accidental detection with the nearest notehead to
+    its right at roughly the same vertical position. Returns {id(notehead):
+    alteration_str}.
+
+    Geometry rule:
+      - notehead must be at or to the right of the accidental's right edge
+      - notehead's y-center must be within ~0.6 × accidental height of the
+        accidental's y-center (i.e. on the same staff line / space)
+      - among candidates, pick the one with the smallest weighted distance
+        (3× y-penalty + x-penalty) — prefer same-line, very-close
+    """
+    accidentals = []
+    noteheads = []
+    for d in dets:
+        if d.category == "accidental":
+            alt = _parse_inline_accidental(d.smufl_name)
+            if alt is not None:
+                accidentals.append((d, alt))
+        elif d.category == "notehead":
+            noteheads.append(d)
+
+    result: dict[int, str] = {}
+    for acc, alt in accidentals:
+        acc_right = acc.x_canonical + acc.width_canonical
+        acc_y_center = acc.y_canonical + acc.height_canonical // 2
+        acc_height = max(1, acc.height_canonical)
+
+        best: Any = None
+        best_score = float("inf")
+        for nh in noteheads:
+            # Notehead must reach to or past the accidental's right edge.
+            if nh.x_canonical + nh.width_canonical < acc_right:
+                continue
+            nh_y_center = nh.y_canonical + nh.height_canonical // 2
+            y_dist = abs(nh_y_center - acc_y_center)
+            if y_dist > acc_height * 0.6:
+                continue
+            x_dist = max(0, nh.x_canonical - acc_right)
+            score = x_dist + 3 * y_dist
+            if score < best_score:
+                best_score = score
+                best = nh
+        if best is not None:
+            result[id(best)] = alt
+    return result
+
+
+def _parse_diatonic_pitch(pitch: str) -> tuple[str, int] | None:
+    """Parse 'G4' / 'A2' into (letter, octave). pitch_for_notehead always
+    returns just letter+octave (no accidentals) so this is straightforward.
+    """
+    if not pitch or len(pitch) < 2 or pitch[0] not in "ABCDEFG":
+        return None
+    try:
+        return pitch[0], int(pitch[1:])
+    except ValueError:
+        return None
+
+
+def _build_pitch(letter: str, alteration: str | None, octave: int) -> str:
+    """('G', '#', 4) → 'G#4'.  ('A', None, 2) → 'A2'."""
+    return f"{letter}{alteration or ''}{octave}"
+
+
+def _key_sig_summary(alterations: dict[str, str]) -> dict[str, Any]:
+    """Friendly summary of an alteration map for the output JSON.
+
+    Returns {sharps, flats, alterations} where sharps/flats are counts and
+    alterations is the raw {letter: '#'|'b'} dict.
+    """
+    n_sharps = sum(1 for v in alterations.values() if v == "#")
+    n_flats = sum(1 for v in alterations.values() if v == "b")
+    return {
+        "sharps": n_sharps,
+        "flats": n_flats,
+        "alterations": dict(alterations),
+    }
+
+
 def parse_pages(spec: str, n_pages: int) -> list[int]:
     """Accept '0,4,9' or '0-4' or '' (default all)."""
     if not spec:
@@ -193,23 +359,28 @@ def _detections_for_cell(
     iou_threshold: float,
     agnostic_nms: bool,
     active_clef: str | None,
-) -> tuple[list[dict[str, Any]], str | None]:
-    """Run YOLO on a single cell, attach pitches to noteheads, and emit
-    cleaned-up detection dicts.
+    active_key_sig: dict[str, str],
+) -> tuple[list[dict[str, Any]], str | None, dict[str, str]]:
+    """Run YOLO on a single cell, resolve chromatic pitches for each
+    notehead, and emit cleaned-up detection dicts.
 
-    Two things happen here beyond a raw YOLO call:
+    Beyond a raw YOLO call this layers in three musical-notation passes:
 
-    1. **Clef tracking.** If this cell contains a clef detection, the active
-       clef is updated to whatever the highest-confidence clef class maps to.
-       The updated clef is returned so the caller can persist it for
-       subsequent measures on the same staff.
-    2. **Pitch resolution.** Each notehead detection's `pitch` field is
-       resolved via `pitch_for_notehead(d, clef=active_clef)`. Falls back to
-       `None` if there's no clef context yet, the clef is unpitched
-       (percussion / octave-marker), or the resolver can't compute (cell has
-       no staff lines).
+    1. **Clef tracking.** Highest-confidence clef detection in the cell
+       updates the active clef. Carried across to subsequent measures via
+       the return value.
+    2. **Key-signature tracking.** keySharp / keyFlat detections (distinct
+       from inline accidentals in the DSv2 class set) update the active
+       key signature. Also carried across measures via the return value.
+    3. **Per-notehead pitch resolution.** For each notehead, in x-order:
+         a) start with the diatonic pitch from `pitch_for_notehead`
+         b) apply inline accidental (paired via _pair_accidentals_to_noteheads)
+         c) otherwise apply any accidental carried over from earlier in
+            this measure on the same letter+octave
+         d) otherwise apply the active key-signature alteration on that letter
+         e) otherwise leave the pitch diatonic
 
-    Returns `(detection_dicts, new_active_clef)`.
+    Returns `(detection_dicts, new_active_clef, new_active_key_sig)`.
     """
     dets = detector.detect(
         cell,
@@ -235,8 +406,53 @@ def _detections_for_cell(
     if best_clef_name is not None:
         active_clef = best_clef_name
 
-    # ── Build output dicts. Convert cell-local bbox → page-pixel bbox using
-    #    the cell's offset + upscale. ───────────────────────────────────────
+    # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
+    new_key_sig = _detect_key_sig_from_cell(dets)
+    if new_key_sig is not None:
+        active_key_sig = new_key_sig
+
+    # ── Pair inline accidentals to their target noteheads. ─────────────────
+    inline_map = _pair_accidentals_to_noteheads(dets)
+
+    # ── Resolve final pitch per notehead, walking left-to-right and
+    #    tracking accidentals that carry through this measure. ─────────────
+    explicit_in_measure: dict[tuple[str, int], str | None] = {}
+    pitch_by_id: dict[int, str | None] = {}
+    if active_clef is not None:
+        noteheads_sorted = sorted(
+            (d for d in dets if d.category == "notehead"),
+            key=lambda d: d.x_canonical,
+        )
+        for nh in noteheads_sorted:
+            diatonic = pitch_for_notehead(nh, clef=active_clef)
+            if diatonic is None:
+                pitch_by_id[id(nh)] = None
+                continue
+            parsed = _parse_diatonic_pitch(diatonic)
+            if parsed is None:
+                pitch_by_id[id(nh)] = diatonic
+                continue
+            letter, octave = parsed
+
+            # Priority: inline > carried-in-measure > key-sig > none
+            if id(nh) in inline_map:
+                alt = inline_map[id(nh)]
+                if alt == "natural":
+                    explicit_in_measure[(letter, octave)] = None
+                    final_alt: str | None = None
+                else:
+                    explicit_in_measure[(letter, octave)] = alt
+                    final_alt = alt
+            elif (letter, octave) in explicit_in_measure:
+                final_alt = explicit_in_measure[(letter, octave)]
+            elif letter in active_key_sig:
+                final_alt = active_key_sig[letter]
+            else:
+                final_alt = None
+
+            pitch_by_id[id(nh)] = _build_pitch(letter, final_alt, octave)
+
+    # ── Build output dicts. Convert cell-local bbox → page-pixel bbox. ────
     out: list[dict[str, Any]] = []
     cell_x0, cell_y0, cell_x1, cell_y1 = cell.bbox_page_px
     cell_page_w = cell_x1 - cell_x0
@@ -244,25 +460,16 @@ def _detections_for_cell(
     canonical_w = max(1, cell.width)
     canonical_h = max(1, cell.height)
     for d in dets:
-        # Cell-local bbox (canonical coords). SymbolDetection uses the
-        # *_canonical names from template_matcher.SymbolDetection.
         cx = d.x_canonical
         cy = d.y_canonical
         cw = d.width_canonical
         ch = d.height_canonical
-        # Scale into page pixels — proportionally map (cx, cy) from canonical
-        # cell coords to (page_x0 + cx*page_w/canon_w) etc.
         page_x = cell_x0 + int(round(cx * cell_page_w / canonical_w))
         page_y = cell_y0 + int(round(cy * cell_page_h / canonical_h))
         page_w = max(1, int(round(cw * cell_page_w / canonical_w)))
         page_h = max(1, int(round(ch * cell_page_h / canonical_h)))
 
-        # Pitch resolution — only for noteheads, and only if we have a
-        # current pitched clef. The resolver also returns None when the
-        # cell lacks staff_line_ys_canonical (rare).
-        pitch: str | None = None
-        if d.category == "notehead" and active_clef is not None:
-            pitch = pitch_for_notehead(d, clef=active_clef)
+        pitch: str | None = pitch_by_id.get(id(d))
 
         out.append({
             "class": d.smufl_name,
@@ -272,7 +479,7 @@ def _detections_for_cell(
             "confidence": round(float(d.confidence), 3),
             "pitch": pitch,
         })
-    return out, active_clef
+    return out, active_clef, active_key_sig
 
 
 def transcribe(
@@ -319,12 +526,14 @@ def transcribe(
         "pages": [],
     }
 
-    # Active clef per (page_idx, system_idx, staff_idx). Survives across
-    # cells within a staff so a clef stays in effect through a whole line
-    # (until a clef-change detection updates it). NOT carried across pages —
-    # the courtesy clef at the start of a new page should re-establish it,
-    # and if the detector misses it the default heuristic kicks in.
+    # Active clef + key signature per (page_idx, system_idx, staff_idx).
+    # Each survives across cells within a staff so a clef / key sig stays
+    # in effect through a whole line (until a change is detected). NOT
+    # carried across pages — the courtesy clef + key sig at the start of a
+    # new page should re-establish them; if the detector misses, defaults
+    # kick in (treble/bass for clef, C major for key sig).
     active_clef_by_staff: dict[tuple[int, int, int], str | None] = {}
+    active_key_sig_by_staff: dict[tuple[int, int, int], dict[str, str]] = {}
 
     t_total = time.perf_counter()
     for p in pages:
@@ -371,15 +580,25 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     _default_clef_for_position(position_in_system, len(staff_keys)),
                 )
-                starting_clef = active_clef
+                active_key_sig = active_key_sig_by_staff.get(
+                    (p, sys_idx, staff_idx),
+                    {},  # default: C major / A minor — no alterations
+                )
                 staff_dict: dict[str, Any] = {
                     "staff_index": staff_idx,
-                    "clef": starting_clef,
+                    # clef + key_signature get filled in after the first
+                    # cell is processed so they reflect the EFFECTIVE state
+                    # of the staff (after any leading clef + key-sig
+                    # detections in that first measure are absorbed).
+                    "clef": None,
+                    "key_signature": None,
                     "n_measures": len(staff_cells),
                     "measures": [],
                 }
-                for cell in staff_cells:
-                    detections, active_clef = _detections_for_cell(
+                first_cell_effective_clef: str | None = None
+                first_cell_effective_key_sig: dict[str, str] | None = None
+                for cell_idx, cell in enumerate(staff_cells):
+                    detections, active_clef, active_key_sig = _detections_for_cell(
                         detector,
                         cell,
                         conf_threshold=conf_threshold,
@@ -387,22 +606,36 @@ def transcribe(
                         iou_threshold=iou_threshold,
                         agnostic_nms=agnostic_nms,
                         active_clef=active_clef,
+                        active_key_sig=active_key_sig,
                     )
+                    if cell_idx == 0:
+                        first_cell_effective_clef = active_clef
+                        first_cell_effective_key_sig = dict(active_key_sig)
                     staff_dict["measures"].append({
                         "measure_index": cell.measure_index,
                         "bbox_page_px": list(cell.bbox_page_px),
                         "clef": active_clef,
+                        "key_signature": _key_sig_summary(active_key_sig),
                         "n_detections": len(detections),
                         "detections": detections,
                     })
                     out["n_detections_total"] += len(detections)
                     out["n_measures_total"] += 1
-                # Record the staff's first-cell clef on the staff dict, but
-                # also record the *final* clef so a clef change mid-staff
-                # surfaces somewhere obvious.
-                if active_clef != starting_clef:
+
+                # Staff-level effective state = whatever was in effect during
+                # the first measure of the staff (post any leading detections).
+                staff_dict["clef"] = first_cell_effective_clef
+                staff_dict["key_signature"] = _key_sig_summary(
+                    first_cell_effective_key_sig or {}
+                )
+                # If clef or key sig changed by the end of the staff, surface
+                # the final state too so a clef-change / key-change is visible.
+                if active_clef != first_cell_effective_clef:
                     staff_dict["clef_final"] = active_clef
+                if active_key_sig != (first_cell_effective_key_sig or {}):
+                    staff_dict["key_signature_final"] = _key_sig_summary(active_key_sig)
                 active_clef_by_staff[(p, sys_idx, staff_idx)] = active_clef
+                active_key_sig_by_staff[(p, sys_idx, staff_idx)] = active_key_sig
                 sys_dict["staves"].append(staff_dict)
                 out["n_staves_total"] += 1
             page_dict["systems"].append(sys_dict)
