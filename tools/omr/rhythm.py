@@ -581,6 +581,21 @@ def resolve_rhythms_for_cell(
                 break
         if is_dup:
             continue
+        # Duplicate-of-earlier-rest filter: skip rests of the same class
+        # whose x-center is within ~1 notehead-width of one we've already
+        # kept. YOLO sometimes emits 2-3 rest detections clustered on
+        # the same physical glyph (whole-rest, half-rest, etc.).
+        rest_class = _normalize_class(getattr(r, "smufl_name", ""))
+        is_dup_rest = False
+        for existing in rests:
+            if _normalize_class(getattr(existing, "smufl_name", "")) != rest_class:
+                continue
+            ex_x_c = existing.x_canonical + existing.width_canonical // 2
+            if abs(ex_x_c - r_x_c) < rest_dup_x_tol:
+                is_dup_rest = True
+                break
+        if is_dup_rest:
+            continue
         rests.append(r)
 
     # Classical-CV stems are pure additive value — the YOLO detector
@@ -647,11 +662,12 @@ def resolve_rhythms_for_cell(
                                     line_spacing * 0.6),
                 )
             if n_beam_levels >= 1:
-                # Cap at 5 levels (128th note). Anything higher is
-                # almost certainly duplicate-detection noise rather
-                # than real notation — engraved music rarely goes past
-                # 64ths (4 levels).
-                capped = min(n_beam_levels, 5)
+                # Cap at 4 levels (64th note). 128th notes basically
+                # never appear in classical engraving, and 5+ beam
+                # levels almost always means duplicate-detection noise.
+                # Capping at 4 converts the noise to a still-rare-but-
+                # plausible 64th rather than an impossible 128th.
+                capped = min(n_beam_levels, 4)
                 refined = _BEAM_COUNT_DURATIONS.get(capped)
                 if refined is not None:
                     base_beats, base_type = refined
