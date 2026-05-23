@@ -233,7 +233,7 @@
     a''8 a''8 a''8 a''8 cis'''8 e'''8 cis'''8 dis'''8 b''8 |
     a''64 a''8 a''8 a''8 cis'''8 dis'''16 b''16 cis'''8 a''8 fis''8 |
     fis''16 fis''8 e''8 fis''32 fis''8 fis''8 fis''8 |
-    fis''32 a''32 cis'''16 a''16 b''16 gis''8 fis''8 fis''16 e''2 |
+    fis''32 a''32 cis'''16 a''16 b''16 gis''8 fis''8 fis''16 e''1 |
     e''8 fis''16 fis''8 fis''8 e''8 fis''8 gis''8 a''64 |
     a''4 b''2 b''16 a''8 gis''8 fis''8 |
   }
@@ -247,8 +247,8 @@
       c''16 c''16 c''16 c''32 e''32 g''64 e''64 fis''64 d''64 |
       c''8 c''8 c''8 c''32 e''32 fis''16 d''8 e''8 c''8 a'4 |
       a'16 a'8 g'8 a'32 a'16 a'16 a'16 |
-      a'8 a'8 g'2 |
-      g'64 a'32 a'32 a'32 g'64 c''2 |
+      a'8 a'8 g'1 |
+      g'64 a'32 a'32 a'32 g'64 c''1 |
       c''4 d''2 d''16 c''8 b'8 a'8 |
       }
       \new Voice {

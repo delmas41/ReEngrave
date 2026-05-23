@@ -17,9 +17,9 @@
   "n_rests_total": 27,
   "n_rests_with_duration_total": 2,
   "runtime": {
-    "phase1_s": 2.21,
-    "yolo_s": 5.52,
-    "total_s": 7.73
+    "phase1_s": 2.19,
+    "yolo_s": 5.79,
+    "total_s": 7.98
   },
   "pages": [
     {

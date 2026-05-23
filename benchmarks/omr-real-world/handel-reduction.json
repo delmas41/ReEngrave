@@ -17,9 +17,9 @@
   "n_rests_total": 50,
   "n_rests_with_duration_total": 4,
   "runtime": {
-    "phase1_s": 3.75,
-    "yolo_s": 24.85,
-    "total_s": 28.6
+    "phase1_s": 3.71,
+    "yolo_s": 23.85,
+    "total_s": 27.56
   },
   "pages": [
     {
@@ -9647,7 +9647,7 @@
                       "stem_direction": "up"
                     },
                     {
-                      "class": "noteheadWholeInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         126,
@@ -9663,8 +9663,8 @@
                       ],
                       "confidence": 0.304,
                       "pitch": "A4",
-                      "duration_beats": 4.0,
-                      "duration_type": "whole",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     },

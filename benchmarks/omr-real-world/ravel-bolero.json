@@ -17,9 +17,9 @@
   "n_rests_total": 168,
   "n_rests_with_duration_total": 161,
   "runtime": {
-    "phase1_s": 7.42,
-    "yolo_s": 23.52,
-    "total_s": 30.94
+    "phase1_s": 7.29,
+    "yolo_s": 22.06,
+    "total_s": 29.35
   },
   "pages": [
     {
@@ -30566,7 +30566,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadHalfInSpace",
+                      "class": "noteheadWholeInSpace",
                       "category": "notehead",
                       "bbox": [
                         2034,
@@ -30582,8 +30582,8 @@
                       ],
                       "confidence": 0.426,
                       "pitch": "E5",
-                      "duration_beats": 2.0,
-                      "duration_type": "half",
+                      "duration_beats": 4.0,
+                      "duration_type": "whole",
                       "dots": 0
                     }
                   ]
@@ -33044,7 +33044,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadHalfOnLine",
+                      "class": "noteheadWholeOnLine",
                       "category": "notehead",
                       "bbox": [
                         2034,
@@ -33060,8 +33060,8 @@
                       ],
                       "confidence": 0.409,
                       "pitch": "G4",
-                      "duration_beats": 2.0,
-                      "duration_type": "half",
+                      "duration_beats": 4.0,
+                      "duration_type": "whole",
                       "dots": 0
                     },
                     {
@@ -33330,7 +33330,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadHalfInSpace",
+                      "class": "noteheadWholeInSpace",
                       "category": "notehead",
                       "bbox": [
                         2034,
@@ -33346,8 +33346,8 @@
                       ],
                       "confidence": 0.785,
                       "pitch": "C5",
-                      "duration_beats": 2.0,
-                      "duration_type": "half",
+                      "duration_beats": 4.0,
+                      "duration_type": "whole",
                       "dots": 0
                     },
                     {
@@ -43906,7 +43906,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadHalfOnLine",
+                      "class": "noteheadWholeOnLine",
                       "category": "notehead",
                       "bbox": [
                         2034,
@@ -43922,8 +43922,8 @@
                       ],
                       "confidence": 0.417,
                       "pitch": "G4",
-                      "duration_beats": 2.0,
-                      "duration_type": "half",
+                      "duration_beats": 4.0,
+                      "duration_type": "whole",
                       "dots": 0
                     },
                     {
