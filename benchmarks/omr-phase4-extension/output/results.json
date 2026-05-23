@@ -1,0 +1,117 @@
+{
+  "weights": "/app/tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+  "pdfs": {
+    "bach-wtc": {
+      "page": 4,
+      "n_systems": 5,
+      "n_staves": 10,
+      "n_measures": 26,
+      "n_noteheads": 359,
+      "n_pitched": 359,
+      "n_with_duration": 359,
+      "runtime_s": 73.0,
+      "pdf_built": true,
+      "pdf_size_bytes": 124589,
+      "bar_check_warnings": 86,
+      "features": {
+        "ties_found": 0,
+        "octave_clef_staves": 0,
+        "clef_8_uses": 0,
+        "clef_15_uses": 0,
+        "octave_clef_examples": [],
+        "tied_pitch_examples": [],
+        "voice_split_measures_mxl": 18
+      }
+    },
+    "handel-leadsheet": {
+      "page": 9,
+      "n_systems": 3,
+      "n_staves": 15,
+      "n_measures": 55,
+      "n_noteheads": 280,
+      "n_pitched": 280,
+      "n_with_duration": 280,
+      "runtime_s": 191.4,
+      "pdf_built": true,
+      "pdf_size_bytes": 172444,
+      "bar_check_warnings": 158,
+      "features": {
+        "ties_found": 0,
+        "octave_clef_staves": 1,
+        "clef_8_uses": 1,
+        "clef_15_uses": 0,
+        "octave_clef_examples": [
+          "treble_8vb"
+        ],
+        "tied_pitch_examples": [],
+        "voice_split_measures_mxl": 20
+      }
+    },
+    "handel-reduction": {
+      "page": 19,
+      "n_systems": 2,
+      "n_staves": 12,
+      "n_measures": 78,
+      "n_noteheads": 159,
+      "n_pitched": 159,
+      "n_with_duration": 159,
+      "runtime_s": 529.1,
+      "pdf_built": true,
+      "pdf_size_bytes": 88306,
+      "bar_check_warnings": 102,
+      "features": {
+        "ties_found": 0,
+        "octave_clef_staves": 0,
+        "clef_8_uses": 0,
+        "clef_15_uses": 0,
+        "octave_clef_examples": [],
+        "tied_pitch_examples": [],
+        "voice_split_measures_mxl": 6
+      }
+    },
+    "ravel-bolero": {
+      "page": 9,
+      "n_systems": 4,
+      "n_staves": 29,
+      "n_measures": 161,
+      "n_noteheads": 832,
+      "n_pitched": 832,
+      "n_with_duration": 832,
+      "runtime_s": 478.6,
+      "pdf_built": true,
+      "pdf_size_bytes": 300792,
+      "bar_check_warnings": 308,
+      "features": {
+        "ties_found": 0,
+        "octave_clef_staves": 0,
+        "clef_8_uses": 0,
+        "clef_15_uses": 0,
+        "octave_clef_examples": [],
+        "tied_pitch_examples": [],
+        "voice_split_measures_mxl": 23
+      }
+    },
+    "beethoven-5": {
+      "page": 14,
+      "n_systems": 3,
+      "n_staves": 17,
+      "n_measures": 187,
+      "n_noteheads": 2392,
+      "n_pitched": 2392,
+      "n_with_duration": 2392,
+      "runtime_s": 1171.5,
+      "pdf_built": true,
+      "pdf_size_bytes": 531368,
+      "bar_check_warnings": 322,
+      "features": {
+        "ties_found": 0,
+        "octave_clef_staves": 0,
+        "clef_8_uses": 0,
+        "clef_15_uses": 0,
+        "octave_clef_examples": [],
+        "tied_pitch_examples": [],
+        "voice_split_measures_mxl": 0
+      }
+    }
+  }
+}

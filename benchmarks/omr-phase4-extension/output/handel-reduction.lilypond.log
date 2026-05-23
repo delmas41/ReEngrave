@@ -1,0 +1,317 @@
+Processing `/tmp/bench_out/handel-reduction.ly'
+Parsing...
+Interpreting music...
+/tmp/bench_out/handel-reduction.ly:163:51: warning: barcheck failed at: 5/64
+    <f' f' f'>64 <g' a' a'>32 <g' g'>64 <f' f'>64 
+                                                  |
+/tmp/bench_out/handel-reduction.ly:199:58: warning: barcheck failed at: 5/64
+    <f' f' f'>64 <g' a' a' a'>32 <g' g'>64 <f' f'' f'>64 
+                                                         |
+/tmp/bench_out/handel-reduction.ly:18:11: warning: barcheck failed at: 1/8
+      a'8 
+          |
+/tmp/bench_out/handel-reduction.ly:40:14: warning: barcheck failed at: 1/8
+    <a' a'>8 
+             |
+/tmp/bench_out/handel-reduction.ly:79:10: warning: barcheck failed at: 1/8
+      f8 
+         |
+/tmp/bench_out/handel-reduction.ly:88:10: warning: barcheck failed at: 1/8
+      f8 
+         |
+/tmp/bench_out/handel-reduction.ly:113:18: warning: barcheck failed at: 1/4
+      <e'' f''>4 
+                 |
+/tmp/bench_out/handel-reduction.ly:19:22: warning: barcheck failed at: 3/8
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:27:23: warning: barcheck failed at: 1/2
+      <e'' f''>4 c''4 
+                      |
+/tmp/bench_out/handel-reduction.ly:54:17: warning: barcheck failed at: 1/2
+      c''4 c''4 
+                |
+/tmp/bench_out/handel-reduction.ly:63:17: warning: barcheck failed at: 1/2
+      c''4 c''4 
+                |
+/tmp/bench_out/handel-reduction.ly:104:31: warning: barcheck failed at: 1/2
+      <c'' c'' c''>4 <a' a'>4 
+                              |
+/tmp/bench_out/handel-reduction.ly:114:22: warning: barcheck failed at: 1/2
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:20:18: warning: barcheck failed at: 5/8
+      a'8 <a a>8 
+                 |
+/tmp/bench_out/handel-reduction.ly:115:11: warning: barcheck failed at: 5/8
+      a'8 
+          |
+/tmp/bench_out/handel-reduction.ly:28:22: warning: barcheck failed at: 3/4
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:105:22: warning: barcheck failed at: 3/4
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:106:11: warning: barcheck failed at: 7/8
+      a'8 
+          |
+/tmp/bench_out/handel-reduction.ly:187:44: warning: barcheck failed at: 7/8
+    d''4 <b' b'>4 d''8 <c'' d''>8 <b' b'>8 
+                                           |
+/tmp/bench_out/handel-reduction.ly:211:46: warning: barcheck failed at: 7/8
+    <d'' g'''>4 <b' b'>4 d''8 <c'' d''>8 b'8 
+                                             |
+/tmp/bench_out/handel-reduction.ly:212:10: warning: barcheck failed at: 15/16
+    a'16 
+         |
+/tmp/bench_out/handel-reduction.ly:116:29: warning: barcheck failed at: 1/8
+      a''8 a'4 <b' e'' e'>8 
+                            |
+/tmp/bench_out/handel-reduction.ly:188:9: warning: barcheck failed at: 1/8
+    a'4 
+        |
+/tmp/bench_out/handel-reduction.ly:201:9: warning: barcheck failed at: 13/64
+    d'8 
+        |
+/tmp/bench_out/handel-reduction.ly:117:27: warning: barcheck failed at: 3/8
+      <c' c' d' c'>8 c''8 
+                          |
+/tmp/bench_out/handel-reduction.ly:129:46: warning: barcheck failed at: 1/2
+      d''8 g'''1 <e'' f'' a'' f''>8 <f' f'>4 
+                                             |
+/tmp/bench_out/handel-reduction.ly:138:46: warning: barcheck failed at: 1/2
+      d''8 g'''1 <e'' f'' a'' f''>8 <f' f'>4 
+                                             |
+/tmp/bench_out/handel-reduction.ly:118:22: warning: barcheck failed at: 5/8
+      <a' c''>8 f''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:107:73: warning: barcheck failed at: 7/32
+      <e' a>8 <c' a'>8 <g' b>8.. <b' f'>8 <e'' e'>4 <d'' a'>4 f''8 d''8 
+                                                                        |
+/tmp/bench_out/handel-reduction.ly:202:14: warning: barcheck failed at: 17/64
+    r1 d''16 
+             |
+/tmp/bench_out/handel-reduction.ly:108:27: warning: barcheck failed at: 15/32
+      <c' c' d' c'>8 c''8 
+                          |
+/tmp/bench_out/handel-reduction.ly:21:49: warning: barcheck failed at: 23/32
+      <a'' a''>2 r1 e''4 d''4 f''32 e''32 d''32 
+                                                |
+/tmp/bench_out/handel-reduction.ly:109:22: warning: barcheck failed at: 23/32
+      <a' c''>8 f''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:22:12: warning: barcheck failed at: 27/32
+      c''8 
+           |
+/tmp/bench_out/handel-reduction.ly:30:49: warning: barcheck failed at: 3/32
+      <a'' a''>2 r1 e''4 d''4 f''32 e''32 d''32 
+                                                |
+/tmp/bench_out/handel-reduction.ly:31:12: warning: barcheck failed at: 7/32
+      c''8 
+           |
+/tmp/bench_out/handel-reduction.ly:178:10: warning: barcheck failed at: 1/4
+    c''4 
+         |
+/tmp/bench_out/handel-reduction.ly:91:27: warning: barcheck failed at: 11/16
+      r4 e4.. d8 f4 f4 g4 
+                          |
+/tmp/bench_out/handel-reduction.ly:92:12: warning: barcheck failed at: 13/16
+      b,,8 
+           |
+/tmp/bench_out/handel-reduction.ly:216:10: warning: barcheck failed at: 3/16
+    c''4 
+         |
+/tmp/bench_out/handel-reduction.ly:43:37: warning: barcheck failed at: 1/4
+    r4 g,4 c4 b,4 a,8 g,4 c4 c4 g,4 
+                                    |
+/tmp/bench_out/handel-reduction.ly:83:12: warning: barcheck failed at: 1/4
+      b,,8 
+           |
+/tmp/bench_out/handel-reduction.ly:44:9: warning: barcheck failed at: 3/8
+    c,8 
+        |
+/tmp/bench_out/handel-reduction.ly:192:16: warning: barcheck failed at: 1/2
+    g'''8 c''4 
+               |
+/tmp/bench_out/handel-reduction.ly:66:44: warning: barcheck failed at: 9/16
+      r4 c''4 b'4.. b'8 c''4 d''4 d''4 b'4 
+                                           |
+/tmp/bench_out/handel-reduction.ly:45:8: warning: barcheck failed at: 5/8
+    c4 
+       |
+/tmp/bench_out/handel-reduction.ly:67:11: warning: barcheck failed at: 5/8
+      g16 
+          |
+/tmp/bench_out/handel-reduction.ly:132:35: warning: barcheck failed at: 3/4
+      r4 <a' f'''>4 f'4 g'''4 a'4 
+                                  |
+/tmp/bench_out/handel-reduction.ly:141:41: warning: barcheck failed at: 7/8
+      r4 <f''' c''>4 b'8 d''4 d''4 e''4 
+                                        |
+/tmp/bench_out/handel-reduction.ly:58:11: warning: barcheck failed at: 1/16
+      g16 
+          |
+/tmp/bench_out/handel-reduction.ly:142:13: warning: barcheck failed at: 1/8
+      g'''4 
+            |
+Preprocessing graphical objects...
+Interpreting music...
+/tmp/bench_out/handel-reduction.ly:163:51: warning: barcheck failed at: 5/64
+    <f' f' f'>64 <g' a' a'>32 <g' g'>64 <f' f'>64 
+                                                  |
+/tmp/bench_out/handel-reduction.ly:199:58: warning: barcheck failed at: 5/64
+    <f' f' f'>64 <g' a' a' a'>32 <g' g'>64 <f' f'' f'>64 
+                                                         |
+/tmp/bench_out/handel-reduction.ly:18:11: warning: barcheck failed at: 1/8
+      a'8 
+          |
+/tmp/bench_out/handel-reduction.ly:40:14: warning: barcheck failed at: 1/8
+    <a' a'>8 
+             |
+/tmp/bench_out/handel-reduction.ly:79:10: warning: barcheck failed at: 1/8
+      f8 
+         |
+/tmp/bench_out/handel-reduction.ly:88:10: warning: barcheck failed at: 1/8
+      f8 
+         |
+/tmp/bench_out/handel-reduction.ly:113:18: warning: barcheck failed at: 1/4
+      <e'' f''>4 
+                 |
+/tmp/bench_out/handel-reduction.ly:19:22: warning: barcheck failed at: 3/8
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:27:23: warning: barcheck failed at: 1/2
+      <e'' f''>4 c''4 
+                      |
+/tmp/bench_out/handel-reduction.ly:54:17: warning: barcheck failed at: 1/2
+      c''4 c''4 
+                |
+/tmp/bench_out/handel-reduction.ly:63:17: warning: barcheck failed at: 1/2
+      c''4 c''4 
+                |
+/tmp/bench_out/handel-reduction.ly:104:31: warning: barcheck failed at: 1/2
+      <c'' c'' c''>4 <a' a'>4 
+                              |
+/tmp/bench_out/handel-reduction.ly:114:22: warning: barcheck failed at: 1/2
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:20:18: warning: barcheck failed at: 5/8
+      a'8 <a a>8 
+                 |
+/tmp/bench_out/handel-reduction.ly:115:11: warning: barcheck failed at: 5/8
+      a'8 
+          |
+/tmp/bench_out/handel-reduction.ly:28:22: warning: barcheck failed at: 3/4
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:105:22: warning: barcheck failed at: 3/4
+      <a' c''>8 e''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:106:11: warning: barcheck failed at: 7/8
+      a'8 
+          |
+/tmp/bench_out/handel-reduction.ly:187:44: warning: barcheck failed at: 7/8
+    d''4 <b' b'>4 d''8 <c'' d''>8 <b' b'>8 
+                                           |
+/tmp/bench_out/handel-reduction.ly:211:46: warning: barcheck failed at: 7/8
+    <d'' g'''>4 <b' b'>4 d''8 <c'' d''>8 b'8 
+                                             |
+/tmp/bench_out/handel-reduction.ly:212:10: warning: barcheck failed at: 15/16
+    a'16 
+         |
+/tmp/bench_out/handel-reduction.ly:116:29: warning: barcheck failed at: 1/8
+      a''8 a'4 <b' e'' e'>8 
+                            |
+/tmp/bench_out/handel-reduction.ly:188:9: warning: barcheck failed at: 1/8
+    a'4 
+        |
+/tmp/bench_out/handel-reduction.ly:201:9: warning: barcheck failed at: 13/64
+    d'8 
+        |
+/tmp/bench_out/handel-reduction.ly:117:27: warning: barcheck failed at: 3/8
+      <c' c' d' c'>8 c''8 
+                          |
+/tmp/bench_out/handel-reduction.ly:129:46: warning: barcheck failed at: 1/2
+      d''8 g'''1 <e'' f'' a'' f''>8 <f' f'>4 
+                                             |
+/tmp/bench_out/handel-reduction.ly:138:46: warning: barcheck failed at: 1/2
+      d''8 g'''1 <e'' f'' a'' f''>8 <f' f'>4 
+                                             |
+/tmp/bench_out/handel-reduction.ly:118:22: warning: barcheck failed at: 5/8
+      <a' c''>8 f''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:107:73: warning: barcheck failed at: 7/32
+      <e' a>8 <c' a'>8 <g' b>8.. <b' f'>8 <e'' e'>4 <d'' a'>4 f''8 d''8 
+                                                                        |
+/tmp/bench_out/handel-reduction.ly:202:14: warning: barcheck failed at: 17/64
+    r1 d''16 
+             |
+/tmp/bench_out/handel-reduction.ly:108:27: warning: barcheck failed at: 15/32
+      <c' c' d' c'>8 c''8 
+                          |
+/tmp/bench_out/handel-reduction.ly:21:49: warning: barcheck failed at: 23/32
+      <a'' a''>2 r1 e''4 d''4 f''32 e''32 d''32 
+                                                |
+/tmp/bench_out/handel-reduction.ly:109:22: warning: barcheck failed at: 23/32
+      <a' c''>8 f''8 
+                     |
+/tmp/bench_out/handel-reduction.ly:22:12: warning: barcheck failed at: 27/32
+      c''8 
+           |
+/tmp/bench_out/handel-reduction.ly:30:49: warning: barcheck failed at: 3/32
+      <a'' a''>2 r1 e''4 d''4 f''32 e''32 d''32 
+                                                |
+/tmp/bench_out/handel-reduction.ly:31:12: warning: barcheck failed at: 7/32
+      c''8 
+           |
+/tmp/bench_out/handel-reduction.ly:178:10: warning: barcheck failed at: 1/4
+    c''4 
+         |
+/tmp/bench_out/handel-reduction.ly:91:27: warning: barcheck failed at: 11/16
+      r4 e4.. d8 f4 f4 g4 
+                          |
+/tmp/bench_out/handel-reduction.ly:92:12: warning: barcheck failed at: 13/16
+      b,,8 
+           |
+/tmp/bench_out/handel-reduction.ly:216:10: warning: barcheck failed at: 3/16
+    c''4 
+         |
+/tmp/bench_out/handel-reduction.ly:43:37: warning: barcheck failed at: 1/4
+    r4 g,4 c4 b,4 a,8 g,4 c4 c4 g,4 
+                                    |
+/tmp/bench_out/handel-reduction.ly:83:12: warning: barcheck failed at: 1/4
+      b,,8 
+           |
+/tmp/bench_out/handel-reduction.ly:44:9: warning: barcheck failed at: 3/8
+    c,8 
+        |
+/tmp/bench_out/handel-reduction.ly:192:16: warning: barcheck failed at: 1/2
+    g'''8 c''4 
+               |
+/tmp/bench_out/handel-reduction.ly:66:44: warning: barcheck failed at: 9/16
+      r4 c''4 b'4.. b'8 c''4 d''4 d''4 b'4 
+                                           |
+/tmp/bench_out/handel-reduction.ly:45:8: warning: barcheck failed at: 5/8
+    c4 
+       |
+/tmp/bench_out/handel-reduction.ly:67:11: warning: barcheck failed at: 5/8
+      g16 
+          |
+/tmp/bench_out/handel-reduction.ly:132:35: warning: barcheck failed at: 3/4
+      r4 <a' f'''>4 f'4 g'''4 a'4 
+                                  |
+/tmp/bench_out/handel-reduction.ly:141:41: warning: barcheck failed at: 7/8
+      r4 <f''' c''>4 b'8 d''4 d''4 e''4 
+                                        |
+/tmp/bench_out/handel-reduction.ly:58:11: warning: barcheck failed at: 1/16
+      g16 
+          |
+/tmp/bench_out/handel-reduction.ly:142:13: warning: barcheck failed at: 1/8
+      g'''4 
+            |
+MIDI output to `/tmp/bench_out/handel-reduction.midi'...
+Finding the ideal number of pages...
+Fitting music on 1 page...
+Drawing systems...
+Converting to `/tmp/bench_out/handel-reduction.pdf'...
+Success: compilation successfully completed
