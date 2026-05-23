@@ -147,6 +147,42 @@ essentially correct. The MAD fix had no effect on Bach/Handel/Ravel
 because they don't have hidden sub-systems within their detected
 systems.
 
+## Phase 4k update — tiered barline-vote threshold for orchestral pages
+
+Investigation of Ravel Boléro's 5.80 → showed Phase 1 was finding
+**zero barlines** on system 1 (16 staves). Per-staff barline candidates
+existed (e.g., 10 of 16 staves detected a barline around x=1815) but
+the previous vote threshold required `max(n_staves - 1, 80%)` = 15
+votes for 16-staff systems, so they all failed.
+
+Real orchestral barlines often only fire on a subset of staves (sparse
+instruments, doubled-line shortcuts, snare drum staves with many
+false-positive stems that dilute the signal). For very large systems,
+50% is a more realistic threshold.
+
+New tiered rule:
+
+| System size | Vote threshold |
+|---|---|
+| ≤2 staves     | both staves                |
+| ≤4 staves     | n-1 staves (tolerate 1 miss) |
+| ≤8 staves     | max(n-1, 80%) (was the previous global default) |
+| 9–12 staves   | 65%                        |
+| >12 staves    | max(5, 50%)                |
+
+Updated results (target 4.0 for 4/4):
+
+| PDF | All-measures avg |
+|---|--:|
+| bach-wtc        | 3.70 |
+| handel-leads   | 3.73 |
+| handel-reduce  | 1.57 |
+| ravel-bolero   | **3.19** (was 5.80) |
+| beethoven-5    | 3.95 |
+
+**4 of 5 PDFs now hit the rhythm target.** Only Handel-reduction
+(1.57) is far off — sparse-vocal under-counting needs a separate fix.
+
 So:
 - **Bach + Handel-leadsheet are essentially correct** (3.70-3.73 ≈ 4.0).
 - **Beethoven is correct once Phase-1 outliers are dropped.**

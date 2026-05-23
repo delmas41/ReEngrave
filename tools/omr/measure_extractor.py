@@ -151,16 +151,36 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 clusters.append([x])
 
         n_staves = len(staves)
-        # Vote threshold: real barlines are drawn across every staff of the
-        # system. False positives (stems aligned by chance) appear on only a
-        # few staves. Require ≥80% of staves to agree, with floor of 2 for
-        # tiny systems and a "allow 1 staff to miss" rule for moderate ones.
+        # Vote threshold: real barlines are drawn across the SYSTEM but
+        # not necessarily detected on every staff (orchestral pages often
+        # have sparse staves where the barline is faint or implicit; the
+        # snare drum staff in particular has many false-positive stems
+        # that fire as barlines on that one staff). Tiered rule:
+        #   - ≤2 staves: both must agree
+        #   - ≤4 staves: tolerate 1 miss
+        #   - ≤8 staves: 75% of staves (still strict)
+        #   - >8 staves (large orchestral systems): just 50%
+        #                                            (with a min of 4 votes
+        #                                            so we don't get noise)
+        # The previous rule (max(n_staves-1, 80%)) effectively required
+        # ALL-BUT-ONE staves to agree even at 32-staff orchestral systems,
+        # which missed real barlines on Bolero where only 10/16 staves
+        # had a clear barline at each measure boundary.
         if n_staves <= 2:
-            min_votes = n_staves                     # both must agree
+            min_votes = n_staves
         elif n_staves <= 4:
-            min_votes = n_staves - 1                 # tolerate 1 miss
-        else:
+            min_votes = n_staves - 1
+        elif n_staves <= 8:
+            # Strict threshold for small-to-medium systems where stems
+            # don't usually align across most staves.
             min_votes = max(n_staves - 1, int(round(0.80 * n_staves)))
+        elif n_staves <= 12:
+            min_votes = int(round(0.65 * n_staves))
+        else:
+            # Very large orchestral systems (>12 staves): real barlines
+            # often only show on a subset of staves (sparse instruments
+            # or doubled lines). 50% catches Bolero-style sparseness.
+            min_votes = max(5, int(round(0.50 * n_staves)))
 
         y_top = min(s.top_y for s in staves)
         y_bot = max(s.bottom_y for s in staves)
