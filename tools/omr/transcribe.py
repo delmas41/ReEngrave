@@ -691,6 +691,20 @@ def _detections_for_cell(
 
             pitch_by_id[id(nh)] = _build_pitch(letter, final_alt, octave)
 
+    # ── Tie pairing. For each `tie` glyph in this cell, find the two
+    #    noteheads it connects (left edge + right edge of the tie bbox,
+    #    at roughly the same y as the tie's vertical center). Marks
+    #    `tied_to_next` on the left notehead and `tied_from_prev` on the
+    #    right one. Cross-cell ties (final note of measure N tied to
+    #    first of measure N+1) are not handled in this pass — the YOLO
+    #    detector emits the tie glyph in whichever cell contains most
+    #    of it, and we can only see one cell's noteheads here. Within-
+    #    measure syncopation ties (the common case for keyboard /
+    #    string passage work) are covered.
+    ties_to_next: set[int] = set()
+    ties_from_prev: set[int] = set()
+    _pair_ties_in_cell(dets, ties_to_next, ties_from_prev)
+
     # ── Build output dicts. Convert cell-local bbox → page-pixel bbox. ────
     out: list[dict[str, Any]] = []
     cell_x0, cell_y0, cell_x1, cell_y1 = cell.bbox_page_px
@@ -728,8 +742,72 @@ def _detections_for_cell(
         # Stem direction for noteheads (Phase 4h voice splitting).
         if id(d) in stem_direction_by_id:
             out_d["stem_direction"] = stem_direction_by_id[id(d)]
+        # Tie flags (only emitted when present, to keep the JSON terser).
+        if id(d) in ties_to_next:
+            out_d["tied_to_next"] = True
+        if id(d) in ties_from_prev:
+            out_d["tied_from_prev"] = True
         out.append(out_d)
     return out, active_clef, active_key_sig, active_time_sig
+
+
+def _pair_ties_in_cell(dets, ties_to_next: set, ties_from_prev: set) -> None:
+    """Pair tie detections with their two flanking noteheads in the same
+    cell. Mutates `ties_to_next` / `ties_from_prev` in place (adds id()s
+    of the noteheads on the start / stop side respectively).
+
+    Pairing heuristic:
+      - A tie's left edge sits near the right edge of the start notehead;
+        its right edge sits near the left edge of the stop notehead.
+      - Vertical alignment: the tie's y-center is within ~3 notehead
+        heights of the notehead y-centers.
+      - Pitch match: not required (the OMR sometimes resolves the same
+        physical note slightly differently; trusting geometry alone is
+        more robust here).
+    """
+    noteheads = [
+        d for d in dets
+        if (d.category or "") == "notehead" and d.pitch is not None
+    ]
+    ties = [d for d in dets if (d.smufl_name or "").lower() == "tie"]
+    if not ties or len(noteheads) < 2:
+        return
+
+    avg_nh_h = (
+        sum(n.height_canonical for n in noteheads) / len(noteheads)
+        if noteheads else 20
+    )
+    y_tolerance = max(avg_nh_h * 3, 30)
+
+    for tie in ties:
+        tie_left = tie.x_canonical
+        tie_right = tie.x_canonical + tie.width_canonical
+        tie_yc = tie.y_canonical + tie.height_canonical / 2.0
+
+        best_left = None
+        best_left_dx = float("inf")
+        best_right = None
+        best_right_dx = float("inf")
+
+        for nh in noteheads:
+            nh_xc = nh.x_canonical + nh.width_canonical / 2.0
+            nh_yc = nh.y_canonical + nh.height_canonical / 2.0
+            if abs(nh_yc - tie_yc) > y_tolerance:
+                continue
+            # Start notehead: x-center is at or before tie's left edge
+            dx_left = tie_left - nh_xc
+            if 0 <= dx_left < nh.width_canonical * 2 and dx_left < best_left_dx:
+                best_left = nh
+                best_left_dx = dx_left
+            # Stop notehead: x-center is at or after tie's right edge
+            dx_right = nh_xc - tie_right
+            if 0 <= dx_right < nh.width_canonical * 2 and dx_right < best_right_dx:
+                best_right = nh
+                best_right_dx = dx_right
+
+        if best_left is not None and best_right is not None and best_left is not best_right:
+            ties_to_next.add(id(best_left))
+            ties_from_prev.add(id(best_right))
 
 
 def transcribe(

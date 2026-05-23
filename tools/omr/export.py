@@ -181,11 +181,16 @@ def _clef_to_lily(clef: str) -> str:
 
 
 def _lily_event(event: dict[str, Any]) -> str:
-    """Render one chord/rest event in LilyPond syntax."""
+    """Render one chord/rest event in LilyPond syntax.
+
+    Appends `~` to a chord whose `tied_to_next` flag is set — LilyPond
+    parses `c4~ c4` as a single sustained half-note worth of c.
+    """
     lily_suffix, _, dots = _duration_to_lily_xml(
         event["duration_type"], event.get("dots", 0)
     )
     dot_str = "." * dots
+    tie_suffix = "~" if event.get("tied_to_next") else ""
 
     if event["kind"] == "rest":
         return f"r{lily_suffix}{dot_str}"
@@ -199,8 +204,8 @@ def _lily_event(event: dict[str, Any]) -> str:
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
     if len(pitches) == 1:
-        return f"{pitches[0]}{lily_suffix}{dot_str}"
-    return f"<{' '.join(pitches)}>{lily_suffix}{dot_str}"
+        return f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}"
+    return f"<{' '.join(pitches)}>{lily_suffix}{dot_str}{tie_suffix}"
 
 
 def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
@@ -465,8 +470,19 @@ def _mxl_attributes_block(
 
 def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               dots: int, beats: float, divisions: int, is_chord: bool,
-              is_rest: bool, indent: str, voice: int = 1) -> str:
-    """Render one <note> for MusicXML — used for both chord members and rests."""
+              is_rest: bool, indent: str, voice: int = 1,
+              tied_to_next: bool = False,
+              tied_from_prev: bool = False) -> str:
+    """Render one <note> for MusicXML — used for both chord members and rests.
+
+    Tie semantics (per MusicXML 3.x):
+      - `<tie type="start"/>` + `<notations><tied type="start"/></notations>`
+        marks a note as starting a tie
+      - `<tie type="stop"/>` + `<notations><tied type="stop"/></notations>`
+        marks the second note (the one being tied INTO)
+      - A note that's both tied-from-prev AND tied-to-next (a middle note
+        in a chain of three) gets both
+    """
     duration_units = max(1, int(round(beats * divisions)))
     lines = [f"{indent}<note>"]
     if is_chord:
@@ -480,10 +496,23 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
         else:
             lines.append(pblock)
     lines.append(f"{indent}  <duration>{duration_units}</duration>")
+    # <tie> elements (sound-related; must come before <voice>)
+    if tied_from_prev:
+        lines.append(f'{indent}  <tie type="stop"/>')
+    if tied_to_next:
+        lines.append(f'{indent}  <tie type="start"/>')
     lines.append(f"{indent}  <voice>{voice}</voice>")
     lines.append(f"{indent}  <type>{xml_type}</type>")
     for _ in range(dots):
         lines.append(f"{indent}  <dot/>")
+    # <notations><tied/></notations> (notation/visual layer)
+    if tied_from_prev or tied_to_next:
+        lines.append(f"{indent}  <notations>")
+        if tied_from_prev:
+            lines.append(f'{indent}    <tied type="stop"/>')
+        if tied_to_next:
+            lines.append(f'{indent}    <tied type="start"/>')
+        lines.append(f"{indent}  </notations>")
     lines.append(f"{indent}</note>")
     return "\n".join(lines)
 
@@ -498,6 +527,10 @@ def _mxl_voice_events(
     the given voice number. Returns (lines, total_duration_units) where
     total_duration_units is the sum of CHORD-LEADING + REST durations
     (chord members past the first don't advance the cursor).
+
+    For chord events with tie flags set, only the FIRST notehead carries
+    the <tie>/<tied> markers — MusicXML treats a chord's first note as
+    its representative for tie/articulation marks.
     """
     lines: list[str] = []
     total_dur = 0
@@ -507,6 +540,8 @@ def _mxl_voice_events(
         )
         beats = event["duration_beats"]
         dur_units = max(1, int(round(beats * divisions)))
+        tied_to_next = bool(event.get("tied_to_next"))
+        tied_from_prev = bool(event.get("tied_from_prev"))
         if event["kind"] == "rest":
             lines.append(_mxl_note(
                 None, "", xml_type, dots, beats, divisions,
@@ -519,6 +554,8 @@ def _mxl_voice_events(
                     nh.get("pitch"), "", xml_type, dots, beats, divisions,
                     is_chord=(ni > 0), is_rest=False,
                     indent=indent, voice=voice,
+                    tied_to_next=(tied_to_next and ni == 0),
+                    tied_from_prev=(tied_from_prev and ni == 0),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.

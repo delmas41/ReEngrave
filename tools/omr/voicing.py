@@ -125,6 +125,12 @@ def group_chords_in_measure(
             n.get("stem_direction") for n in group if n.get("stem_direction")
         )
         stem_dir = directions.most_common(1)[0][0] if directions else None
+        # Tie flags: an event ties INTO the next event if ANY of its
+        # noteheads has `tied_to_next` set, and similarly for `tied_from_prev`.
+        # In practice most ties bind one notehead, but for chord-to-chord
+        # ties the convention is "if any voice is tied, the chord is tied."
+        tied_to_next = any(n.get("tied_to_next") for n in group)
+        tied_from_prev = any(n.get("tied_from_prev") for n in group)
         events.append({
             "kind": "chord",
             "x_position": x_pos,
@@ -134,6 +140,8 @@ def group_chords_in_measure(
             "stem_direction": stem_dir,
             "noteheads": list(group),
             "rest": None,
+            "tied_to_next": tied_to_next,
+            "tied_from_prev": tied_from_prev,
         })
 
     # ── Add rest events ───────────────────────────────────────────────────
