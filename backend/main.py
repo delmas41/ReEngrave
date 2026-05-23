@@ -45,11 +45,11 @@ from database.models import (
 from dependencies import get_current_user
 from modules import (
     analytics,
-    audiveris_omr,
     claude_vision,
     export_module,
     file_import,
     imslp_agent,
+    local_omr,
 )
 from modules.export_module import ExportFormat
 from routers.auth import router as auth_router
@@ -155,15 +155,26 @@ async def _bg_download_and_process(
             score.original_pdf_path = local_path
             await db.commit()
 
-            omr_result = await audiveris_omr.run_audiveris(
+            omr_result = await local_omr.run_local_omr(
                 local_path, os.path.join(settings.upload_dir, score_id)
             )
             if omr_result.musicxml_path:
                 score.musicxml_path = omr_result.musicxml_path
                 score.status = "review"
+                score.metadata_json = {
+                    **(score.metadata_json or {}),
+                    "omr_json_path": omr_result.omr_json_path,
+                    "omr_confidence": omr_result.confidence_score,
+                    "omr_measures": omr_result.measures_count,
+                    "omr_pages": omr_result.pages_processed,
+                    "omr_runtime_s": omr_result.runtime_seconds,
+                }
             else:
                 score.status = "error"
-                score.metadata_json = {"error": omr_result.error_message}
+                score.metadata_json = {
+                    **(score.metadata_json or {}),
+                    "error": omr_result.error_message,
+                }
 
             await db.commit()
         except Exception as exc:
@@ -309,7 +320,7 @@ async def run_omr(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Run Audiveris OMR on a score's PDF."""
+    """Run the local YOLOv8 + classical-CV OMR pipeline on a score's PDF."""
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
     if score is None:
@@ -328,17 +339,28 @@ async def run_omr(
             if s is None:
                 return
             try:
-                omr = await audiveris_omr.run_audiveris(
+                omr = await local_omr.run_local_omr(
                     s.original_pdf_path,
                     os.path.join(settings.upload_dir, score_id),
                 )
                 s.musicxml_path = omr.musicxml_path or s.musicxml_path
                 s.status = "review" if omr.musicxml_path else "error"
+                meta = dict(s.metadata_json or {})
+                meta.update({
+                    "omr_json_path": omr.omr_json_path,
+                    "omr_confidence": omr.confidence_score,
+                    "omr_measures": omr.measures_count,
+                    "omr_pages": omr.pages_processed,
+                    "omr_runtime_s": omr.runtime_seconds,
+                })
                 if omr.error_message:
-                    s.metadata_json = {"omr_error": omr.error_message}
+                    meta["omr_error"] = omr.error_message
+                s.metadata_json = meta
             except Exception as exc:
                 s.status = "error"
-                s.metadata_json = {"error": str(exc)}
+                meta = dict(s.metadata_json or {})
+                meta["error"] = str(exc)
+                s.metadata_json = meta
             s.updated_at = datetime.utcnow()
             await session.commit()
 

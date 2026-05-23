@@ -1,49 +1,48 @@
-# eclipse-temurin is multi-arch (amd64 + arm64) — works on Apple Silicon and x86
-FROM eclipse-temurin:21-jdk-jammy
+# Slim Python base. The OMR pipeline (ultralytics + torch CPU) is the
+# main heavyweight dependency now — Audiveris (which needed a full JDK)
+# was retired in favour of the in-house tools/omr pipeline.
+FROM python:3.11-slim-bookworm
 
-# Install Python 3.11, LilyPond, and utilities
-RUN apt-get update && apt-get install -y \
-    python3.11 python3.11-dev python3-pip \
+# ---------------------------------------------------------------------------
+# System dependencies
+#
+#   lilypond, poppler-utils       — score engraving + PDF rasterization
+#   cairo / pango / gdk-pixbuf    — cairosvg runtime (Verovio SVG → PNG)
+#   libgl1, libglib2.0-0          — opencv-python-headless runtime libs
+#   libsm6, libxext6, libxrender1 — opencv runtime libs
+#   curl                          — healthcheck + ad-hoc debugging
+#   git                           — kept so musicxml2ly / pip install -e work
+# ---------------------------------------------------------------------------
+RUN apt-get update && apt-get install -y --no-install-recommends \
     lilypond \
     poppler-utils \
     libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 \
-    wget curl unzip git \
+    libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 \
+    curl git \
     && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------------------------
-# Install Audiveris (best-effort — app still runs without it)
-# PDF OMR will return an error if Audiveris is unavailable.
-# Tag v5.4 is the latest stable release.
-# ---------------------------------------------------------------------------
-ARG AUDIVERIS_TAG=v5.4
-RUN ( \
-    git clone --depth 1 --branch ${AUDIVERIS_TAG} \
-        https://github.com/Audiveris/audiveris.git /tmp/audiveris \
-    && cd /tmp/audiveris \
-    && chmod +x gradlew \
-    && ./gradlew assemble --no-daemon \
-    && DIST=$(find /tmp/audiveris -name "*.zip" -path "*/distributions/*" | head -1) \
-    && [ -n "$DIST" ] \
-    && unzip -q "$DIST" -d /tmp/audiveris_dist/ \
-    && EXTRACTED=$(find /tmp/audiveris_dist -maxdepth 1 -mindepth 1 -type d | head -1) \
-    && [ -n "$EXTRACTED" ] \
-    && mv "$EXTRACTED" /opt/Audiveris \
-    && chmod +x /opt/Audiveris/bin/Audiveris \
-    && rm -rf /tmp/audiveris ~/.gradle \
-    && echo "✓ Audiveris ${AUDIVERIS_TAG} installed" \
-) || echo "⚠ Audiveris build skipped — PDF OMR unavailable (MusicXML upload still works)"
-
-ENV AUDIVERIS_HOME=/opt/Audiveris
-ENV PATH="$AUDIVERIS_HOME/bin:$PATH"
-
-# ---------------------------------------------------------------------------
 # Python application
+#
+# The build context is the repo root (see docker-compose.yml) so both
+# backend/ and tools/ can be copied into the image. The OMR weights file
+# is intentionally NOT baked in — it's mounted as a volume at
+# /app/tools/omr/training/data/weights/ by docker-compose.
 # ---------------------------------------------------------------------------
 WORKDIR /app
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Install Python deps first so changes elsewhere don't bust the layer cache.
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Backend source goes at /app/ (preserves the existing import layout —
+# `from core.config import settings`, `from modules import ...`).
+COPY backend/ .
+
+# OMR pipeline source goes at /app/tools/ so `from tools.omr.transcribe
+# import transcribe` works.
+COPY tools/ ./tools/
 
 EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

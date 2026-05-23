@@ -23,3 +23,15 @@ aiofiles==23.2.1
 greenlet>=3.0.0
 verovio>=4.0.0
 cairosvg>=2.7.0
+
+# ---------------------------------------------------------------------------
+# Local OMR pipeline (tools/omr) — replaces Audiveris in the OMR step.
+# ultralytics pulls in torch (CPU build by default), opencv-python (-headless
+# friendlier in Docker), numpy. Pinned to the 8.4.x line the OMR wrapper
+# was written against.
+# ---------------------------------------------------------------------------
+ultralytics>=8.4.50,<8.5.0
+opencv-python-headless>=4.8.0
+PyMuPDF>=1.24.0
+scikit-image>=0.22.0
+scipy>=1.11.0

@@ -44,6 +44,9 @@ yolov8m.pt
 runs/
 # DeepScoresV2 dataset (downloaded; many GB)
 tools/omr/training/data/
+# Shared OMR weights directory mounted into the backend container
+# (lives at repo root so all worktrees can share one weights file)
+omr-weights/
 
 # Rendered PNG outputs from benchmark runs — reproducible from PDFs
 # Keep verdicts, detection JSONs, reports, CSVs — exclude the heavy renders.

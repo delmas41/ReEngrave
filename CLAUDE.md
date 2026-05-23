@@ -6,7 +6,9 @@ ReEngrave is a web application for music score quality control. It takes a scann
 
 Over time the system learns from human decisions, building auto-accept rules for patterns it has seen before.
 
-**Stack:** FastAPI + SQLite + Audiveris (Java OMR) + Claude Vision API + Verovio + LilyPond · React + Vite + React Query · Docker Compose
+**Stack:** FastAPI + SQLite + in-house OMR (YOLOv8l + classical CV; `tools/omr/`) + Claude Vision API + Verovio + LilyPond · React + Vite + React Query · Docker Compose
+
+> **Note (May 2026):** the OMR engine was changed from Audiveris to a local Python pipeline (`tools/omr/transcribe.py`). The pipeline was developed across 9 sub-phases — see `benchmarks/omr-phase4-session/retrospective.md` for the full story. The Docker image no longer needs a JDK or Audiveris build, but the YOLO weights file (~88 MB) is **not** in git — see "OMR weights" below.
 
 ---
 
@@ -30,6 +32,18 @@ docker compose up -d backend   # or frontend
 Site runs at **http://localhost**. Backend API at **http://localhost:8000**.
 
 **Important:** `docker compose restart` does NOT pick up `.env` changes. Use `docker compose up -d` (which recreates the container) instead.
+
+### OMR weights (required before first run)
+
+The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`, ~88 MB). It's gitignored.
+
+```bash
+# docker-compose mounts /Users/seanjohnson/Desktop/ReEngrave/omr-weights/ → /app/tools/omr/training/data/weights/
+ls /Users/seanjohnson/Desktop/ReEngrave/omr-weights/
+# Should contain: deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+```
+
+If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads.
 
 ### Hot-patching without a full rebuild
 
@@ -62,7 +76,7 @@ ReEngrave/
 │   ├── main.py                  # FastAPI app, all routes
 │   ├── dependencies.py          # get_current_user() Depends
 │   ├── requirements.txt
-│   ├── Dockerfile               # eclipse-temurin JDK + Python + Audiveris
+│   ├── Dockerfile               # python:3.11-slim + LilyPond + opencv runtime
 │   ├── .env                     # local secrets (never commit)
 │   ├── .env.production.example  # template for prod deployment
 │   ├── core/
@@ -73,16 +87,27 @@ ReEngrave/
 │   │   ├── models.py            # SQLAlchemy ORM models + Pydantic response schemas
 │   │   └── connection.py        # async engine, get_db() dependency
 │   ├── modules/
-│   │   ├── audiveris_omr.py     # PDF → MusicXML via Audiveris subprocess
+│   │   ├── local_omr.py         # PDF → JSON + MusicXML via tools.omr (replaces Audiveris)
 │   │   ├── claude_vision.py     # MusicXML + PDF → flagged diffs via Claude Vision
 │   │   ├── export_module.py     # MusicXML / LilyPond / PDF export dispatcher
-│   │   ├── lilypond_engrave.py  # MusicXML → LilyPond → engraved PDF
+│   │   ├── lilypond_engrave.py  # MusicXML → LilyPond → engraved PDF (fallback path)
 │   │   ├── file_import.py       # save uploads, detect file type
 │   │   ├── imslp_agent.py       # IMSLP search + PDF download
-│   │   └── analytics.py        # self-improving pattern learning
+│   │   └── analytics.py         # self-improving pattern learning
 │   └── routers/
 │       ├── auth.py              # register, login, refresh, logout, /me
 │       └── payments.py          # Stripe checkout + webhook
+├── tools/
+│   └── omr/                     # In-house OMR pipeline (Phase 4)
+│       ├── transcribe.py        # PDF → structured JSON (entry point)
+│       ├── export.py            # JSON → LilyPond / MusicXML serializers
+│       ├── yolo_detector.py     # ultralytics YOLOv8l wrapper
+│       ├── line_detection.py    # classical-CV stems + beams (Phase 4f)
+│       ├── rhythm.py / voicing.py / pitch_resolver.py
+│       ├── staff_detector.py / measure_extractor.py / preprocessing.py
+│       └── training/data/weights/  # gitignored; mounted from host omr-weights/
+├── omr-weights/                 # gitignored, mounted into the container
+│   └── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB
 ├── frontend/
 │   ├── src/
 │   │   ├── App.tsx              # routes + AuthProvider wrapper
@@ -125,8 +150,13 @@ ReEngrave/
     ↓
 [ScoreProcess page] → "ReEngrave" button
     → POST /api/scores/{id}/process/omr
-    → audiveris_omr.py: Audiveris subprocess → produces .mxl (ZIP-compressed XML)
-    → Score.status = "review", Score.musicxml_path set
+    → local_omr.run_local_omr() (in a thread, via asyncio.to_thread):
+        1. tools.omr.transcribe.transcribe()  → structured JSON (rendered
+           at 300 DPI, YOLOv8l at imgsz=1280 by default — env-overridable)
+        2. tools.omr.export.to_musicxml(json) → MusicXML string
+        3. Both written to uploads/{score_id}/{pdf_stem}.{omr.json,musicxml}
+    → Score.musicxml_path = ...musicxml; Score.status = "review"
+    → Score.metadata_json["omr_json_path"] = ...omr.json
     ↓
 [ReviewUI page] → "Run Vision Comparison" button
     → POST /api/scores/{id}/process/compare
@@ -143,11 +173,25 @@ ReEngrave/
 [Export page] → Choose format
     → GET /api/scores/{id}/export?format=lilypond|pdf|musicxml
     → export_module.py:
-        1. Decompress .mxl → plain XML (_ensure_plain_xml)
-        2. Apply accepted corrections (currently: XML comment stubs; TODO: real patching)
-        3. LilyPond: musicxml2ly → .ly file
-        4. PDF: musicxml2ly → lilypond CLI → .pdf
+        - musicxml: copy + comment-stub corrections (TODO: real patching)
+        - lilypond: if Score.metadata_json["omr_json_path"] exists →
+                    tools.omr.export.to_lilypond() directly (skip musicxml2ly)
+                    else MusicXML → musicxml2ly → .ly
+        - pdf:      lilypond .ly → lilypond CLI → .pdf
 ```
+
+### OMR knobs
+
+The defaults aim for "first-page preview is fast, full transcription
+still tractable on CPU." Override via env vars on the backend container:
+
+| Env var               | Default | What it tunes |
+|-----------------------|--------:|---|
+| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override the weights file path |
+| `OMR_MAX_PAGES`       | `5`     | Hard cap on how many pages of a PDF the OMR step processes |
+| `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
+| `OMR_IMGSZ`           | `1280`  | YOLO inference image size (larger = slower but finds small noteheads) |
+| `OMR_DPI`             | `300`   | PDF rasterization DPI (600 in the standalone CLI, 300 here to keep latency reasonable) |
 
 ---
 
@@ -214,7 +258,7 @@ for page in result["pages"]:
 | One-off Phase-1-only run (staves + measures, no symbol detection) | `python3 -m tools.omr.run_pipeline ...` |
 | Hand-labeling cells to grow the training catalog | `tools/omr/annotate/` FastAPI app |
 | Retraining the detector | `tools/omr/training/` |
-| Full review-loop with human accept/reject | The web app (Audiveris + Claude Vision flow above) |
+| Full review-loop with human accept/reject | The web app (the same pipeline above, run from `backend/modules/local_omr.py`) |
 
 ### Production weights
 
@@ -275,12 +319,13 @@ Phase 1 (staves/measures) is ~1–3 s/page CPU. Phase 3 (YOLO) is
 - Snippet images saved at: `uploads/{score_id}/snippets/{diff_id}_pdf.png` and `_xml.png`
 - Both directories backed by Docker named volumes so they survive container recreation
 
-### Audiveris quirks
-- Audiveris v5.4 exports `.mxl` (ZIP-compressed MusicXML), not `.xml`
-- `audiveris_omr.py` detects both `.mxl`, `.xml`, `.musicxml`
-- `export_module._ensure_plain_xml()` decompresses `.mxl` before passing to `musicxml2ly`
-- Audiveris needs the full JDK (not just JRE) and 2–4 GB RAM for the JVM
-- The Docker image builds Audiveris from source — this takes ~10 min on first `docker compose build`
+### Local OMR (replaces Audiveris)
+- `backend/modules/local_omr.py` wraps `tools.omr.transcribe.transcribe()` + `tools.omr.export.to_musicxml()`
+- Runs in `asyncio.to_thread` so it doesn't block the event loop
+- Writes both `{score_id}/{stem}.omr.json` (structured) and `{score_id}/{stem}.musicxml` (for Claude Vision + the existing export path)
+- The MusicXML the in-house exporter produces is single-voice-per-part; the `export_module` LilyPond/PDF path prefers the OMR JSON directly to skip a lossy musicxml2ly hop
+- Legacy `.mxl` (ZIP-compressed MusicXML) handling in `export_module._ensure_plain_xml()` is now only used for directly-uploaded MusicXML files
+- Weights file (~88 MB) is mounted from `omr-weights/` on the host — not in the image
 
 ### Verovio rendering
 - Python bindings (`import verovio`) — NOT a CLI tool. `verovio` pip package is bindings only.
@@ -318,6 +363,9 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | JWT expiry (480 = 8 hours) |
 | `UPLOAD_DIR` | File upload path (set by docker-compose) |
 | `EXPORT_DIR` | Export output path (set by docker-compose) |
+| `OMR_WEIGHTS_PATH` | Override the YOLO weights file path (default: `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`) |
+| `OMR_MAX_PAGES` | Max PDF pages per OMR job (default: 5; raise on a beefy host) |
+| `OMR_CONF_THRESHOLD` / `OMR_IMGSZ` / `OMR_DPI` | YOLO + rasterization knobs (see "OMR knobs" above) |
 
 ---
 
@@ -353,7 +401,7 @@ docker compose -f docker-compose.prod.yml up -d
 
 - **MusicXML correction patching is a stub.** `export_module.apply_corrections_to_musicxml()` copies the original file and injects accepted diffs as XML comments rather than actually patching the XML. Real measure-level patching (replacing `<measure>` elements with `human_edit_value` content) is not yet implemented.
 
-- **Audiveris confidence parsing is heuristic.** The confidence score is parsed from Audiveris stdout via regex. It may not always be present.
+- **OMR confidence is a synthesized average.** `local_omr._confidence_from_result()` averages notehead pitch-resolution coverage and notehead rhythm-resolution coverage. Stored as `Score.metadata_json["omr_confidence"]`. The `FlaggedDifference.audiveris_confidence` column is now a misnomer — it's hardcoded to 0.5 in the Vision flow. Renaming the column needs a DB reset.
 
 - **PDF.js crop region in DiffCard is incomplete.** `PDFjsRenderer.tsx` has a TODO for full crop viewport implementation.
 
