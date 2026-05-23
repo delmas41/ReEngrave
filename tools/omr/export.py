@@ -465,7 +465,7 @@ def _mxl_attributes_block(
 
 def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               dots: int, beats: float, divisions: int, is_chord: bool,
-              is_rest: bool, indent: str) -> str:
+              is_rest: bool, indent: str, voice: int = 1) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests."""
     duration_units = max(1, int(round(beats * divisions)))
     lines = [f"{indent}<note>"]
@@ -480,12 +480,50 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
         else:
             lines.append(pblock)
     lines.append(f"{indent}  <duration>{duration_units}</duration>")
-    lines.append(f"{indent}  <voice>1</voice>")
+    lines.append(f"{indent}  <voice>{voice}</voice>")
     lines.append(f"{indent}  <type>{xml_type}</type>")
     for _ in range(dots):
         lines.append(f"{indent}  <dot/>")
     lines.append(f"{indent}</note>")
     return "\n".join(lines)
+
+
+def _mxl_voice_events(
+    events: list[dict[str, Any]],
+    voice: int,
+    divisions: int,
+    indent: str,
+) -> tuple[list[str], int]:
+    """Render an ordered list of events as MusicXML <note> elements with
+    the given voice number. Returns (lines, total_duration_units) where
+    total_duration_units is the sum of CHORD-LEADING + REST durations
+    (chord members past the first don't advance the cursor).
+    """
+    lines: list[str] = []
+    total_dur = 0
+    for event in events:
+        _, xml_type, dots = _duration_to_lily_xml(
+            event["duration_type"], event.get("dots", 0)
+        )
+        beats = event["duration_beats"]
+        dur_units = max(1, int(round(beats * divisions)))
+        if event["kind"] == "rest":
+            lines.append(_mxl_note(
+                None, "", xml_type, dots, beats, divisions,
+                is_chord=False, is_rest=True, indent=indent, voice=voice,
+            ))
+            total_dur += dur_units
+        else:
+            for ni, nh in enumerate(event["noteheads"]):
+                lines.append(_mxl_note(
+                    nh.get("pitch"), "", xml_type, dots, beats, divisions,
+                    is_chord=(ni > 0), is_rest=False,
+                    indent=indent, voice=voice,
+                ))
+            # Only the chord's first note advances the time cursor; chord
+            # members past the first share its onset.
+            total_dur += dur_units
+    return lines, total_dur
 
 
 def to_musicxml(result: dict[str, Any]) -> str:
@@ -494,8 +532,13 @@ def to_musicxml(result: dict[str, Any]) -> str:
 
     Systems with exactly 2 staves are wrapped in a `<part-group>` with
     `<group-symbol>brace</group-symbol>` so they render as a piano
-    grand-staff. (Single voice per part — MusicXML voice splitting via
-    <backup> is not implemented in v1.)
+    grand-staff.
+
+    Voice handling: when a measure has both stem-up and stem-down chord
+    events (per `voicing.split_events_into_voices`), voice 1 emits first,
+    then a `<backup>` element rewinds the time cursor by voice 1's total
+    duration, then voice 2 emits. This matches what the LilyPond exporter
+    does with `\\voiceOne` / `\\voiceTwo`.
     """
     divisions = _compute_divisions(result)
 
@@ -566,32 +609,38 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     events = group_chords_in_measure(
                         measure.get("detections", [])
                     )
-                    for event in events:
-                        _, xml_type, dots = _duration_to_lily_xml(
-                            event["duration_type"], event.get("dots", 0)
-                        )
-                        beats = event["duration_beats"]
-                        if event["kind"] == "rest":
-                            inner.append(_mxl_note(
-                                None, "", xml_type, dots, beats,
-                                divisions, is_chord=False, is_rest=True,
-                                indent="      ",
-                            ))
-                        else:
-                            for ni, nh in enumerate(event["noteheads"]):
-                                inner.append(_mxl_note(
-                                    nh.get("pitch"), "", xml_type, dots,
-                                    beats, divisions,
-                                    is_chord=(ni > 0),
-                                    is_rest=False,
-                                    indent="      ",
-                                ))
+                    voices = split_events_into_voices(events)
+
                     if not events:
                         # Empty measure — emit a whole rest as a placeholder.
                         inner.append(_mxl_note(
                             None, "", "whole", 0, 4.0, divisions,
-                            is_chord=False, is_rest=True, indent="      ",
+                            is_chord=False, is_rest=True,
+                            indent="      ", voice=1,
                         ))
+                    elif len(voices) == 1:
+                        v1_lines, _ = _mxl_voice_events(
+                            voices[0], voice=1, divisions=divisions,
+                            indent="      ",
+                        )
+                        inner.extend(v1_lines)
+                    else:
+                        v1_lines, v1_dur = _mxl_voice_events(
+                            voices[0], voice=1, divisions=divisions,
+                            indent="      ",
+                        )
+                        inner.extend(v1_lines)
+                        if v1_dur > 0:
+                            inner.append(
+                                "      <backup>\n"
+                                f"        <duration>{v1_dur}</duration>\n"
+                                "      </backup>"
+                            )
+                        v2_lines, _ = _mxl_voice_events(
+                            voices[1], voice=2, divisions=divisions,
+                            indent="      ",
+                        )
+                        inner.extend(v2_lines)
 
                     measures_xml.append(
                         f"    <measure number=\"{m_idx + 1}\">\n"
