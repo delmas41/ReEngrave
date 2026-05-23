@@ -1,0 +1,91 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m1",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "clefF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D7",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D8",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D9",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D10",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D11",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D12",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D13",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D14",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D15",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D16",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": []
+}

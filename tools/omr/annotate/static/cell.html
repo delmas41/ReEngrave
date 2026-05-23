@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cell labeling</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="page-cell">
+<header class="topbar">
+  <a class="back" href="/">← cells</a>
+  <h1 id="cell-title">…</h1>
+  <span class="meta" id="cell-meta"></span>
+  <button id="btn-show-page" class="page-context-btn" title="Show the full source page in a sidebar — useful when the cropped cell lacks context">
+    📄 Page context
+  </button>
+  <span class="save-indicator" id="save-indicator">idle</span>
+  <span class="nav-buttons">
+    <button id="btn-prev" title="Shift+Tab">◀ prev</button>
+    <button id="btn-next" title="Tab">next ▶</button>
+  </span>
+</header>
+
+<!-- Page-cell strip: shows other cells from the same source page so the
+     labeler can see where they are and jump around without going back
+     to the global list. Auto-hidden when only one cell on the page. -->
+<div id="page-cell-strip" class="page-cell-strip" hidden></div>
+
+<!-- Source-page context overlay: hidden by default, toggled by btn-show-page -->
+<div id="page-context-overlay" class="page-context-overlay" hidden>
+  <div class="page-context-header">
+    <strong id="page-context-title">Source page</strong>
+    <button id="page-context-close" title="Esc to close">✕ close</button>
+  </div>
+  <img id="page-context-img" alt="source PDF page" />
+</div>
+
+<main class="cell-layout">
+  <!-- Left: detection list -->
+  <aside class="col col-left" id="detection-list">
+    <h2>Detections <span class="muted" id="det-count"></span></h2>
+    <ul id="detection-ul"></ul>
+    <h2>Human-added <span class="muted" id="added-count"></span></h2>
+    <ul id="added-ul"></ul>
+    <button id="btn-add-fn" title="Add a missed detection (draw on the image)">
+      + add missed detection
+    </button>
+  </aside>
+
+  <!-- Center: overlay -->
+  <section class="col col-overlay">
+    <div class="overlay-wrap" id="overlay-wrap">
+      <canvas id="overlay" tabindex="0"></canvas>
+      <div class="overlay-hint" id="overlay-hint" hidden></div>
+    </div>
+  </section>
+
+  <!-- Right: detail/picker -->
+  <section class="col col-detail" id="detail-panel">
+    <div id="empty-detail" class="empty-detail">
+      <p>Pick a detection from the left (or click a box on the image).</p>
+      <p class="muted">Hotkeys: <kbd>t</kbd>=TP · <kbd>f</kbd>=FP ·
+        <kbd>c</kbd>=fix class · <kbd>b</kbd>=fix bbox · <kbd>u</kbd>=unsure ·
+        <kbd>n</kbd>/<kbd>p</kbd>=next/prev detection ·
+        <kbd>Tab</kbd>/<kbd>Shift+Tab</kbd>=next/prev cell ·
+        <kbd>1</kbd>-<kbd>9</kbd>=picker tab.
+      </p>
+    </div>
+    <div id="detail" hidden>
+      <h2 id="detail-id">D?</h2>
+      <div class="crop-wrap"><img id="crop" alt="bbox crop" /></div>
+      <dl class="kv">
+        <dt>Model predicted</dt><dd id="d-model-class"></dd>
+        <dt>Category</dt><dd id="d-model-cat"></dd>
+        <dt>Confidence</dt><dd id="d-conf"></dd>
+        <dt>Current verdict</dt><dd id="d-verdict"></dd>
+        <dt>Corrected class</dt><dd id="d-corrected"></dd>
+      </dl>
+      <div class="verdict-buttons">
+        <button data-verdict="TP" class="v-tp" title="t — true positive">✓ TP</button>
+        <button data-verdict="FP" class="v-fp" title="f — false positive (drop)">✗ FP</button>
+        <button data-verdict="WRONG_CATEGORY" class="v-wc" title="c — wrong class, fix it">🔄 Fix class</button>
+        <button data-verdict="WRONG_BBOX" class="v-wb" title="b — wrong bbox, redraw">✂ Fix bbox</button>
+        <button data-verdict="unsure" class="v-un" title="u — unsure, skip">⏸ Unsure</button>
+      </div>
+      <label class="notes-row">Notes:
+        <textarea id="d-notes" rows="2" placeholder="optional free-text"></textarea>
+      </label>
+      <div id="picker" class="picker" hidden>
+        <div class="picker-header">
+          <strong>Pick the correct class:</strong>
+          <button id="picker-close" title="Esc">close</button>
+        </div>
+        <div class="picker-search">
+          <input id="picker-search-input" type="search"
+                 placeholder="Search across all categories (e.g. beam, stem)…"
+                 autocomplete="off" />
+          <button id="picker-search-clear" title="Clear search">✕</button>
+        </div>
+        <div class="picker-tabs" id="picker-tabs"></div>
+        <div class="picker-grid" id="picker-grid"></div>
+        <div class="picker-empty" id="picker-empty" hidden>
+          <em>No archetypes match your search.</em>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="cheatsheet">
+  <kbd>t</kbd>=TP &nbsp; <kbd>f</kbd>=FP &nbsp; <kbd>c</kbd>=fix class &nbsp;
+  <kbd>b</kbd>=fix bbox &nbsp; <kbd>u</kbd>=unsure &nbsp;
+  <kbd>n</kbd>/<kbd>p</kbd>=next/prev detection &nbsp;
+  <kbd>Tab</kbd>/<kbd>Shift+Tab</kbd>=next/prev cell &nbsp;
+  <kbd>[</kbd>/<kbd>]</kbd>=prev/next system &nbsp;
+  <kbd>{</kbd>/<kbd>}</kbd>=prev/next staff &nbsp;
+  <kbd>1</kbd>-<kbd>9</kbd>=picker tab &nbsp;
+  <kbd>/</kbd>=focus picker search &nbsp;
+  <kbd>Esc</kbd>=close picker / cancel draw
+</footer>
+
+<script src="/static/cell.js"></script>
+</body>
+</html>

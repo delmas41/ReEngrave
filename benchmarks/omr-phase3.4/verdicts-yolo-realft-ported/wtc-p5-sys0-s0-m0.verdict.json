@@ -1,0 +1,70 @@
+{
+  "cell_id": "wtc-p5-sys0-s0-m0",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "rest8th",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": [
+    {
+      "tm_id": "D0",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 321,
+      "y_canonical": 317
+    },
+    {
+      "tm_id": "D3",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 689,
+      "y_canonical": 415
+    },
+    {
+      "tm_id": "D5",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 1070,
+      "y_canonical": 364
+    },
+    {
+      "tm_id": "D9",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 1770,
+      "y_canonical": 317
+    }
+  ]
+}

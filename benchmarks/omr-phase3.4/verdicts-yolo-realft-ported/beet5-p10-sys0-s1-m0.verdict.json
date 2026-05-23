@@ -1,0 +1,16 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m0",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    }
+  ],
+  "fn_noteheads": []
+}

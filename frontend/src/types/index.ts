@@ -38,7 +38,7 @@ export type ProcessingStatus =
 
 export type HumanDecision = 'accept' | 'reject' | 'edit';
 
-export type OMREngine = 'audiveris' | 'claude_vision';
+export type OMREngine = 'local' | 'claude_vision';
 
 export interface OMRProgress {
   total_pages: number;

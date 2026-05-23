@@ -1,0 +1,88 @@
+{
+  "cell_id": "wtc-p5-sys1-s3-m1",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D7",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D8",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP",
+      "wrong_pitch": "Bb3"
+    },
+    {
+      "detection_id": "D9",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D10",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP",
+      "wrong_pitch": "C#4"
+    },
+    {
+      "detection_id": "D11",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D12",
+      "smufl_name": "flag8thUp",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D13",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D14",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D15",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": []
+}

@@ -225,7 +225,7 @@ export async function deleteScore(id: string): Promise<{ deleted: string }> {
 
 export async function runOMR(
   scoreId: string,
-  engine: 'audiveris' | 'claude_vision' = 'claude_vision'
+  engine: 'local' | 'claude_vision' = 'local'
 ): Promise<{ score_id: string; status: string }> {
   const res = await api.post(`/api/scores/${scoreId}/process/omr`, null, {
     params: { omr_engine: engine },

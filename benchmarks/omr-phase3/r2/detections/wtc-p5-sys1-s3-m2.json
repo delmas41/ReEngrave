@@ -1,0 +1,44 @@
+{
+  "cell_id": "wtc-p5-sys1-s3-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 17,
+      "y": 498,
+      "w": 363,
+      "h": 9,
+      "x_center": 198,
+      "y_center": 502,
+      "confidence": 0.5661996603012085,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "coda",
+      "category": "unknown",
+      "x": 382,
+      "y": 398,
+      "w": 131,
+      "h": 105,
+      "x_center": 447,
+      "y_center": 450,
+      "confidence": 0.3102097511291504,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 395,
+      "y": 700,
+      "w": 499,
+      "h": 10,
+      "x_center": 644,
+      "y_center": 705,
+      "confidence": 0.4758991003036499,
+      "pitch": null
+    }
+  ]
+}

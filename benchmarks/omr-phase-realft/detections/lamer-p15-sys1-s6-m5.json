@@ -1,0 +1,31 @@
+{
+  "cell_id": "lamer-p15-sys1-s6-m5",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 4,
+      "y": 348,
+      "w": 70,
+      "h": 20,
+      "x_center": 39,
+      "y_center": 358,
+      "confidence": 0.31629326939582825,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 0,
+      "y": 682,
+      "w": 392,
+      "h": 109,
+      "x_center": 196,
+      "y_center": 736,
+      "confidence": 0.45994386076927185,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "cell_id": "lamer-p15-sys2-s7-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 0,
+      "y": 478,
+      "w": 37,
+      "h": 36,
+      "x_center": 18,
+      "y_center": 496,
+      "confidence": 0.36452245712280273,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1,
+      "y": 284,
+      "w": 55,
+      "h": 43,
+      "x_center": 28,
+      "y_center": 305,
+      "confidence": 0.3140721917152405,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 0,
+      "y": 193,
+      "w": 521,
+      "h": 96,
+      "x_center": 260,
+      "y_center": 241,
+      "confidence": 0.3347417116165161,
+      "pitch": null
+    }
+  ]
+}

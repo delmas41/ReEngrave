@@ -4,8 +4,11 @@ Claude Vision OMR — optical music recognition powered by Claude's vision API.
 Reads each page of a PDF score visually, extracts musical content as structured
 JSON, and assembles valid MusicXML via the musicxml_builder module.
 
-Drop-in replacement for audiveris_omr: same return type (AudiverisResult),
-same interface.
+Returns a ``ClaudeVisionResult`` that is shape-compatible with
+``local_omr.LocalOmrResult`` on the fields callers actually read
+(``musicxml_path``, ``confidence_score``, ``measures_count``,
+``error_message``). The two engines are interchangeable from the
+backend's view in main.py.
 """
 
 from __future__ import annotations
@@ -16,6 +19,7 @@ import json
 import logging
 import os
 import re
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Coroutine, Optional
 
@@ -23,7 +27,6 @@ import anthropic
 from pdf2image import convert_from_path
 from PIL import Image
 
-from modules.audiveris_omr import AudiverisResult
 from modules.musicxml_builder import (
     PageAnalysis,
     ScoreHeader,
@@ -39,6 +42,21 @@ ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
 DEFAULT_MODEL = "claude-opus-4-6"
 MAX_TOKENS_HEADER = 4096
 MAX_TOKENS_PAGE = 32768  # dense orchestral pages need lots of room
+
+
+@dataclass
+class ClaudeVisionResult:
+    """Shape-compatible with ``local_omr.LocalOmrResult`` for the fields
+    callers in main.py read. Originally inherited from
+    ``audiveris_omr.AudiverisResult`` (now deleted)."""
+    musicxml_path: str
+    confidence_score: float
+    measures_count: int
+    error_message: Optional[str] = None
+
+
+# Back-compat alias — older code in this module still refers to AudiverisResult.
+AudiverisResult = ClaudeVisionResult
 
 # Type alias for the progress callback
 ProgressCallback = Callable[[int, int, list[int]], Coroutine[Any, Any, None]]

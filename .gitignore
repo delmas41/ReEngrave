@@ -49,3 +49,39 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# OMR pipeline artifacts
+# YOLO weights — large binaries, downloaded by ultralytics on demand
+*.pt
+*.pth
+*.onnx
+*.safetensors
+yolov8m.pt
+# Trained model directories from ultralytics
+runs/
+# DeepScoresV2 dataset (downloaded; many GB)
+tools/omr/training/data/
+# Shared OMR weights directory mounted into the backend container
+# (lives at repo root so all worktrees can share one weights file)
+omr-weights/
+
+# Rendered PNG outputs from benchmark runs — reproducible from PDFs
+# Keep verdicts, detection JSONs, reports, CSVs — exclude the heavy renders.
+benchmarks/*/cells/
+benchmarks/*/overlays/
+benchmarks/omr-phase1/*.png
+benchmarks/omr-phase1/*-cells/
+benchmarks/omr-phase1/*-nostaff/
+benchmarks/omr-phase1/*/page*.png
+benchmarks/omr-phase1/*-overlay.png
+benchmarks/omr-phase2/wtc-p5/
+benchmarks/omr-phase2/wtc-p5-*/
+benchmarks/omr-phase3/verdicts-yolo/
+
+# Stale / superseded benchmark outputs — old experiments preserved only
+# in commit history. Keep canonical `detections/`, `verdicts/`, `overlays/`
+# (when small) plus reports. Anything with these suffixes is throwaway.
+benchmarks/**/*-aborted/
+benchmarks/**/*-backup/
+benchmarks/**/*-old/
+benchmarks/**/overlays-*/

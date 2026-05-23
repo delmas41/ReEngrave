@@ -1,0 +1,83 @@
+{
+  "cell_id": "wtc-p5-sys1-s3-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 191,
+      "y": 104,
+      "w": 33,
+      "h": 59,
+      "x_center": 207,
+      "y_center": 133,
+      "confidence": 0.5763931274414062,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 359,
+      "y": 113,
+      "w": 42,
+      "h": 33,
+      "x_center": 380,
+      "y_center": 129,
+      "confidence": 0.14951807260513306,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 777,
+      "y": 79,
+      "w": 44,
+      "h": 34,
+      "x_center": 799,
+      "y_center": 96,
+      "confidence": 0.31456151604652405,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 945,
+      "y": 177,
+      "w": 42,
+      "h": 35,
+      "x_center": 966,
+      "y_center": 194,
+      "confidence": 0.4876713156700134,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "accidentalNatural",
+      "category": "accidental",
+      "x": 1470,
+      "y": 47,
+      "w": 24,
+      "h": 99,
+      "x_center": 1482,
+      "y_center": 96,
+      "confidence": 0.19260238111019135,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "accidentalNatural",
+      "category": "accidental",
+      "x": 1763,
+      "y": 112,
+      "w": 22,
+      "h": 101,
+      "x_center": 1774,
+      "y_center": 162,
+      "confidence": 0.5041310787200928,
+      "pitch": null
+    }
+  ]
+}

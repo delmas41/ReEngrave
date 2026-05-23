@@ -1,0 +1,109 @@
+{
+  "cell_id": "mahler5-p130-sys0-s4-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 47,
+      "y": 28,
+      "w": 132,
+      "h": 346,
+      "x_center": 113,
+      "y_center": 201,
+      "confidence": 0.8295629024505615,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 828,
+      "y": 162,
+      "w": 69,
+      "h": 28,
+      "x_center": 862,
+      "y_center": 176,
+      "confidence": 0.6386156678199768,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 1,
+      "y": 137,
+      "w": 2047,
+      "h": 89,
+      "x_center": 1024,
+      "y_center": 181,
+      "confidence": 0.32280433177948,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1615,
+      "y": 175,
+      "w": 66,
+      "h": 20,
+      "x_center": 1648,
+      "y_center": 185,
+      "confidence": 0.6474481821060181,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 1996,
+      "y": 250,
+      "w": 45,
+      "h": 17,
+      "x_center": 2018,
+      "y_center": 258,
+      "confidence": 0.3800026774406433,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 2035,
+      "y": 212,
+      "w": 13,
+      "h": 29,
+      "x_center": 2041,
+      "y_center": 226,
+      "confidence": 0.3807602524757385,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 2035,
+      "y": 185,
+      "w": 13,
+      "h": 29,
+      "x_center": 2041,
+      "y_center": 199,
+      "confidence": 0.31650760769844055,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 2035,
+      "y": 259,
+      "w": 13,
+      "h": 39,
+      "x_center": 2041,
+      "y_center": 278,
+      "confidence": 0.2720245122909546,
+      "pitch": null
+    }
+  ]
+}

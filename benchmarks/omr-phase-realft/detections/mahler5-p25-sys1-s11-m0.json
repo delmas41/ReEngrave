@@ -1,0 +1,109 @@
+{
+  "cell_id": "mahler5-p25-sys1-s11-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 430,
+      "w": 62,
+      "h": 13,
+      "x_center": 31,
+      "y_center": 436,
+      "confidence": 0.31197530031204224,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 148,
+      "y": 299,
+      "w": 18,
+      "h": 17,
+      "x_center": 157,
+      "y_center": 307,
+      "confidence": 0.283311665058136,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 0,
+      "y": 213,
+      "w": 2038,
+      "h": 39,
+      "x_center": 1019,
+      "y_center": 232,
+      "confidence": 0.4512755274772644,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 0,
+      "y": 407,
+      "w": 2042,
+      "h": 41,
+      "x_center": 1021,
+      "y_center": 427,
+      "confidence": 0.44730454683303833,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 0,
+      "y": 339,
+      "w": 2042,
+      "h": 38,
+      "x_center": 1021,
+      "y_center": 358,
+      "confidence": 0.25352033972740173,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 385,
+      "y": 147,
+      "w": 1534,
+      "h": 59,
+      "x_center": 1152,
+      "y_center": 176,
+      "confidence": 0.3263823390007019,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1419,
+      "y": 239,
+      "w": 80,
+      "h": 27,
+      "x_center": 1459,
+      "y_center": 252,
+      "confidence": 0.6345854997634888,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 2035,
+      "y": 46,
+      "w": 13,
+      "h": 152,
+      "x_center": 2041,
+      "y_center": 122,
+      "confidence": 0.2558790147304535,
+      "pitch": null
+    }
+  ]
+}

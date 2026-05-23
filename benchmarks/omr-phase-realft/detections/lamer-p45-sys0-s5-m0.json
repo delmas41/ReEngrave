@@ -1,0 +1,57 @@
+{
+  "cell_id": "lamer-p45-sys0-s5-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 106,
+      "y": 56,
+      "w": 17,
+      "h": 43,
+      "x_center": 114,
+      "y_center": 77,
+      "confidence": 0.784872829914093,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 121,
+      "y": 0,
+      "w": 214,
+      "h": 37,
+      "x_center": 228,
+      "y_center": 18,
+      "confidence": 0.35849347710609436,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 1,
+      "y": 94,
+      "w": 2047,
+      "h": 45,
+      "x_center": 1024,
+      "y_center": 116,
+      "confidence": 0.28288188576698303,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1876,
+      "y": 62,
+      "w": 25,
+      "h": 11,
+      "x_center": 1888,
+      "y_center": 67,
+      "confidence": 0.4402044415473938,
+      "pitch": null
+    }
+  ]
+}

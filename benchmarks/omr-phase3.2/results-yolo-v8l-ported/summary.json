@@ -1,0 +1,215 @@
+{
+  "overall": {
+    "cells": 24,
+    "n_total_detections": 997,
+    "n_pending": 757,
+    "n_tp": 232,
+    "n_fp": 8,
+    "n_fn": 10,
+    "precision": 0.9666666666666667,
+    "recall": 0.9586776859504132,
+    "f1": 0.9626556016597511,
+    "notehead_pitch_correct": 216,
+    "notehead_pitch_wrong": 8,
+    "notehead_pitch_accuracy": 0.9642857142857143,
+    "per_category": {
+      "clef": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 8
+      },
+      "notehead": {
+        "tp": 224,
+        "fp": 8,
+        "pending": 373
+      },
+      "dynamic": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 3
+      },
+      "rest": {
+        "tp": 5,
+        "fp": 0,
+        "pending": 118
+      },
+      "structural": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 216
+      },
+      "ornament": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 7
+      },
+      "stem": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 1
+      },
+      "accidental": {
+        "tp": 1,
+        "fp": 0,
+        "pending": 25
+      },
+      "flag": {
+        "tp": 2,
+        "fp": 0,
+        "pending": 6
+      }
+    }
+  },
+  "per_piece": {
+    "beet5-p10": {
+      "cells": 4,
+      "n_total_detections": 414,
+      "n_pending": 403,
+      "n_tp": 4,
+      "n_fp": 7,
+      "n_fn": 1,
+      "precision": 0.36363636363636365,
+      "recall": 0.8,
+      "f1": 0.5000000000000001,
+      "notehead_pitch_correct": 2,
+      "notehead_pitch_wrong": 2,
+      "notehead_pitch_accuracy": 0.5,
+      "per_category": {
+        "clef": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 1
+        },
+        "notehead": {
+          "tp": 4,
+          "fp": 7,
+          "pending": 295
+        },
+        "dynamic": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 2
+        },
+        "rest": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 88
+        },
+        "structural": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 15
+        },
+        "ornament": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 1
+        },
+        "stem": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 1
+        }
+      }
+    },
+    "wtc-p10": {
+      "cells": 5,
+      "n_total_detections": 139,
+      "n_pending": 111,
+      "n_tp": 27,
+      "n_fp": 1,
+      "n_fn": 3,
+      "precision": 0.9642857142857143,
+      "recall": 0.9,
+      "f1": 0.9310344827586207,
+      "notehead_pitch_correct": 27,
+      "notehead_pitch_wrong": 0,
+      "notehead_pitch_accuracy": 1.0,
+      "per_category": {
+        "clef": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 1
+        },
+        "notehead": {
+          "tp": 27,
+          "fp": 1,
+          "pending": 65
+        },
+        "structural": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 32
+        },
+        "rest": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 9
+        },
+        "ornament": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 4
+        }
+      }
+    },
+    "wtc-p5": {
+      "cells": 15,
+      "n_total_detections": 444,
+      "n_pending": 243,
+      "n_tp": 201,
+      "n_fp": 0,
+      "n_fn": 6,
+      "precision": 1.0,
+      "recall": 0.9710144927536232,
+      "f1": 0.9852941176470589,
+      "notehead_pitch_correct": 187,
+      "notehead_pitch_wrong": 6,
+      "notehead_pitch_accuracy": 0.9689119170984456,
+      "per_category": {
+        "clef": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 6
+        },
+        "rest": {
+          "tp": 5,
+          "fp": 0,
+          "pending": 21
+        },
+        "notehead": {
+          "tp": 193,
+          "fp": 0,
+          "pending": 13
+        },
+        "structural": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 169
+        },
+        "accidental": {
+          "tp": 1,
+          "fp": 0,
+          "pending": 25
+        },
+        "ornament": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 2
+        },
+        "flag": {
+          "tp": 2,
+          "fp": 0,
+          "pending": 6
+        },
+        "dynamic": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 1
+        }
+      }
+    }
+  },
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 24
+}

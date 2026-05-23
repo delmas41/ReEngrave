@@ -1,0 +1,965 @@
+Processing `/tmp/bench_out/ravel-bolero.ly'
+Parsing...
+Interpreting music...
+/tmp/bench_out/ravel-bolero.ly:78:38: warning: barcheck failed at: 3/16
+    <d'' d'>16 e''16 <d'' c'>32 d'32 
+                                     |
+/tmp/bench_out/ravel-bolero.ly:173:10: warning: barcheck failed at: 1/4
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:125:44: warning: barcheck failed at: 5/16
+    <f' b>8 <b'' f'' f'>16 <b'' f' b f''>8 
+                                           |
+/tmp/bench_out/ravel-bolero.ly:382:41: warning: barcheck failed at: 3/8
+    <b f'>8 f'16 <f'' f'>16 <f'' f' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:396:30: warning: barcheck failed at: 7/16
+      <g, c, e>16 r4 <g, g>8 
+                             |
+/tmp/bench_out/ravel-bolero.ly:405:30: warning: barcheck failed at: 7/16
+      <g, c, e>16 r4 <g, g>8 
+                             |
+/tmp/bench_out/ravel-bolero.ly:92:34: warning: barcheck failed at: 1/2
+      r4 <e' c'>8 <bes' b des'>8 
+                                 |
+/tmp/bench_out/ravel-bolero.ly:101:34: warning: barcheck failed at: 1/2
+      r4 <e' c'>8 <bes' b des'>8 
+                                 |
+/tmp/bench_out/ravel-bolero.ly:164:14: warning: barcheck failed at: 1/2
+      c4 g,4 
+             |
+/tmp/bench_out/ravel-bolero.ly:174:10: warning: barcheck failed at: 1/2
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:139:30: warning: barcheck failed at: 9/16
+      <g, e c,>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:148:30: warning: barcheck failed at: 9/16
+      <g, e c,>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:79:41: warning: barcheck failed at: 5/8
+    r4 <d'' d'>16 e''16 <d'' c'>32 d'32 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:242:25: warning: barcheck failed at: 5/8
+      r4 <c' e'>8 r8 r8 
+                        |
+/tmp/bench_out/ravel-bolero.ly:250:26: warning: barcheck failed at: 5/8
+      r4 r8 c'16 d'16 r8 
+                         |
+/tmp/bench_out/ravel-bolero.ly:360:25: warning: barcheck failed at: 5/8
+    r4 <c' e'>8 c'8 d'8 
+                        |
+/tmp/bench_out/ravel-bolero.ly:371:15: warning: barcheck failed at: 5/8
+    r4 d'4 b8 
+              |
+/tmp/bench_out/ravel-bolero.ly:421:17: warning: barcheck failed at: 5/8
+      c4 r4 g,8 
+                |
+/tmp/bench_out/ravel-bolero.ly:430:17: warning: barcheck failed at: 5/8
+      c4 r4 g,8 
+                |
+/tmp/bench_out/ravel-bolero.ly:48:42: warning: barcheck failed at: 21/32
+    a'32 b'32 a'32 g'32 g'4 fes'4 fes'32 
+                                         |
+/tmp/bench_out/ravel-bolero.ly:126:43: warning: barcheck failed at: 11/16
+    <b f'>8 <b'' f'' f'>8 <b'' b f' f''>8 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:406:10: warning: barcheck failed at: 11/16
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:38:24: warning: barcheck failed at: 3/4
+    r4 d''8 r8 d''8 r8 
+                       |
+/tmp/bench_out/ravel-bolero.ly:175:10: warning: barcheck failed at: 3/4
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:219:23: warning: barcheck failed at: 3/4
+      d'8 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:227:23: warning: barcheck failed at: 3/4
+      d'8 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:262:15: warning: barcheck failed at: 3/4
+    d'4 r4 r4 
+              |
+/tmp/bench_out/ravel-bolero.ly:327:12: warning: barcheck failed at: 3/4
+    r4 g'2 
+           |
+/tmp/bench_out/ravel-bolero.ly:383:41: warning: barcheck failed at: 3/4
+    <b f'>8 f'16 <f'' f'>16 <f' f'' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:149:10: warning: barcheck failed at: 13/16
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:397:31: warning: barcheck failed at: 13/16
+      <c, g, e>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:80:46: warning: barcheck failed at: 27/32
+    c''16 <d'' d'>16 e''16 <a' c' d'' d''>32 
+                                             |
+/tmp/bench_out/ravel-bolero.ly:295:18: warning: barcheck failed at: 7/8
+    g'4 r8 r4 r4 
+                 |
+/tmp/bench_out/ravel-bolero.ly:431:10: warning: barcheck failed at: 7/8
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:127:45: warning: barcheck failed at: 29/32
+    <b f'>8 <f'' f' b''>16 <f' b f'' b''>32 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:140:31: warning: barcheck failed at: 15/16
+      <c, g, e>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:150:31: warning: barcheck failed at: 1/64
+      <g, c, e>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:361:27: warning: barcheck failed at: 1/8
+    r4 <c' e'>8 c'16 d'16 
+                          |
+/tmp/bench_out/ravel-bolero.ly:384:41: warning: barcheck failed at: 1/8
+    <b f'>8 f'16 <f'' f'>16 <f'' f' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:422:14: warning: barcheck failed at: 1/8
+      c4 g,4 
+             |
+/tmp/bench_out/ravel-bolero.ly:141:31: warning: barcheck failed at: 9/64
+      <g, c, e>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:128:45: warning: barcheck failed at: 5/32
+    <b f'>8 <b'' f' f''>16 <f' b'' b f''>16 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:94:38: warning: barcheck failed at: 3/16
+      <c' e'>8 <d' aes c'' c'' d'>16 
+                                     |
+/tmp/bench_out/ravel-bolero.ly:103:12: warning: barcheck failed at: 1/4
+      c''4 
+           |
+/tmp/bench_out/ravel-bolero.ly:177:10: warning: barcheck failed at: 1/4
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:228:18: warning: barcheck failed at: 1/4
+      r8 c''4 r8 
+                 |
+/tmp/bench_out/ravel-bolero.ly:251:23: warning: barcheck failed at: 1/4
+      r4 r4 c'16 d'16 
+                      |
+/tmp/bench_out/ravel-bolero.ly:372:19: warning: barcheck failed at: 1/4
+    r4 d'4 <b b>8 
+                  |
+/tmp/bench_out/ravel-bolero.ly:407:30: warning: barcheck failed at: 1/4
+      <c, e g,>16 r4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:151:10: warning: barcheck failed at: 17/64
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:81:39: warning: barcheck failed at: 11/32
+    c''4 <c' d'' aes'>8 <g' c'' bes>8 
+                                      |
+/tmp/bench_out/ravel-bolero.ly:129:49: warning: barcheck failed at: 3/8
+    <b f'>8 <a'' b'' f' f''>16 <f'' b'' f' b>32 
+                                                |
+/tmp/bench_out/ravel-bolero.ly:220:20: warning: barcheck failed at: 3/8
+      d'4 r8 a8 r8 
+                   |
+/tmp/bench_out/ravel-bolero.ly:398:30: warning: barcheck failed at: 3/8
+      <c, e g,>16 r4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:152:31: warning: barcheck failed at: 15/32
+      <g, c, g>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:178:10: warning: barcheck failed at: 1/2
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:243:25: warning: barcheck failed at: 1/2
+      r4 <c' e'>8 r4 e4 
+                        |
+/tmp/bench_out/ravel-bolero.ly:385:41: warning: barcheck failed at: 1/2
+    <b f'>8 f'16 <f'' f'>16 <f'' b f'>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:142:31: warning: barcheck failed at: 33/64
+      <c, d g,>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:68:45: warning: barcheck failed at: 5/8
+    g'8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'4 g'4 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:95:36: warning: barcheck failed at: 5/8
+      r4 <aes c'' d'>16 <bes' c'>8 
+                                   |
+/tmp/bench_out/ravel-bolero.ly:206:44: warning: barcheck failed at: 5/8
+    r8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'4 g'4 
+                                           |
+/tmp/bench_out/ravel-bolero.ly:362:27: warning: barcheck failed at: 5/8
+    r4 <c' e'>8 c'16 d'16 
+                          |
+/tmp/bench_out/ravel-bolero.ly:432:17: warning: barcheck failed at: 5/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:104:36: warning: barcheck failed at: 11/16
+      r4 <aes c'' d'>16 <bes' c'>8 
+                                   |
+/tmp/bench_out/ravel-bolero.ly:130:44: warning: barcheck failed at: 11/16
+    <f' b>8 <b'' f'' f'>16 <b'' f' b f''>8 
+                                           |
+/tmp/bench_out/ravel-bolero.ly:275:58: warning: barcheck failed at: 11/16
+      r8 d'16 d'16 d'16 d'16 r1 d'16 d'16 d'16 d'16 d'16 
+                                                         |
+/tmp/bench_out/ravel-bolero.ly:283:58: warning: barcheck failed at: 11/16
+      r8 d'16 d'16 d'16 d'16 r1 d'16 d'16 d'16 d'16 d'16 
+                                                         |
+/tmp/bench_out/ravel-bolero.ly:143:31: warning: barcheck failed at: 23/32
+      <g, c, g>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:153:10: warning: barcheck failed at: 23/32
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:338:15: warning: barcheck failed at: 3/4
+    b'1 r4 g2 
+              |
+/tmp/bench_out/ravel-bolero.ly:82:41: warning: barcheck failed at: 25/32
+    c''4 <g' c'' c'' bes>8 <c'' a g'>16 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:373:15: warning: barcheck failed at: 7/8
+    r4 d'4 b8 
+              |
+/tmp/bench_out/ravel-bolero.ly:386:46: warning: barcheck failed at: 7/8
+    <b f'>8 <f' f'>16 <f'' f'>16 <f'' f' b>8 
+                                             |
+/tmp/bench_out/ravel-bolero.ly:408:34: warning: barcheck failed at: 7/8
+      <g, e c,>16 r4 <g, g>4 g16 
+                                 |
+/tmp/bench_out/ravel-bolero.ly:423:17: warning: barcheck failed at: 7/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:144:32: warning: barcheck failed at: 29/32
+      <g, g c,>16 <g g,>16 g16 
+                               |
+/tmp/bench_out/ravel-bolero.ly:49:90: warning: barcheck failed at: 3/64
+    f'8 g'8 f'8 g'8 a'32 b'32 a'32 g'32 a'32 g'64 f'64 ees'64 f'16 ees'16 d'16 d'8 r8 r4 
+                                                                                         |
+/tmp/bench_out/ravel-bolero.ly:96:43: warning: barcheck failed at: 1/8
+      c''4 <g''' b' c' c'>8 <c' f''' a'>8 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:229:23: warning: barcheck failed at: 1/8
+      d'4 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:252:26: warning: barcheck failed at: 1/8
+      r4 r4 c'16 d'16 r4 
+                         |
+/tmp/bench_out/ravel-bolero.ly:363:27: warning: barcheck failed at: 1/8
+    r4 <e' c'>8 c'16 d'16 
+                          |
+/tmp/bench_out/ravel-bolero.ly:83:36: warning: barcheck failed at: 5/32
+    r4 <g' aes c''>16 <c'' g c'>16 
+                                   |
+/tmp/bench_out/ravel-bolero.ly:105:43: warning: barcheck failed at: 3/16
+      c''4 <g''' b' c' c'>8 <c' f''' a'>8 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:39:45: warning: barcheck failed at: 1/4
+    r4 d''8 r8 d''8 r8 r4 d''8 r8 ees''8 r8 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:221:23: warning: barcheck failed at: 1/4
+      d'4 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:387:41: warning: barcheck failed at: 1/4
+    <f' b>8 f'16 <f'' f'>16 <f'' f' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:97:43: warning: barcheck failed at: 5/16
+      <fes''' aes' c'>8 <g' g e''' c''>16 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:244:26: warning: barcheck failed at: 5/16
+      r4 <c' e'>16 r4 r4 
+                         |
+/tmp/bench_out/ravel-bolero.ly:106:43: warning: barcheck failed at: 3/8
+      <fes''' aes' c'>8 <g' g e''' c''>16 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:433:17: warning: barcheck failed at: 3/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:409:30: warning: barcheck failed at: 7/16
+      <c, g, e>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:198:51: warning: barcheck failed at: 31/64
+    g''16 g''64 f''64 g''64 a''16 g''16 f''8 e''8 
+                                                  |
+/tmp/bench_out/ravel-bolero.ly:329:12: warning: barcheck failed at: 1/2
+    r4 g'2 
+           |
+/tmp/bench_out/ravel-bolero.ly:339:11: warning: barcheck failed at: 1/2
+    r4 g2 
+          |
+/tmp/bench_out/ravel-bolero.ly:364:22: warning: barcheck failed at: 1/2
+    <c' e'>8 c'8 d'8 
+                     |
+/tmp/bench_out/ravel-bolero.ly:374:15: warning: barcheck failed at: 1/2
+    r4 d'4 b8 
+              |
+/tmp/bench_out/ravel-bolero.ly:434:10: warning: barcheck failed at: 1/2
+      e8 
+         |
+/tmp/bench_out/ravel-bolero.ly:400:30: warning: barcheck failed at: 9/16
+      <c, g, e>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:424:17: warning: barcheck failed at: 5/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:410:10: warning: barcheck failed at: 11/16
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:19:69: warning: barcheck failed at: 3/4
+      r4 d''8 e''8 r8 c''16 d''16 r8 r4 d''8 e''8 r8 c''16 d''16 r8 
+                                                                    |
+/tmp/bench_out/ravel-bolero.ly:27:69: warning: barcheck failed at: 3/4
+      r4 d''8 e''8 r8 c''16 d''16 r8 r4 d''8 e''8 r8 c''16 d''16 r8 
+                                                                    |
+/tmp/bench_out/ravel-bolero.ly:59:22: warning: barcheck failed at: 3/4
+    r1 r4 r8 g'8 g'4 
+                     |
+/tmp/bench_out/ravel-bolero.ly:365:24: warning: barcheck failed at: 3/4
+    <e' c'>8 c'16 d'16 
+                       |
+/tmp/bench_out/ravel-bolero.ly:40:28: warning: barcheck failed at: 7/8
+    c''8 ees''8 r8 d''8 r8 
+                           |
+/tmp/bench_out/ravel-bolero.ly:375:12: warning: barcheck failed at: 7/8
+    d'4 b8 
+           |
+/tmp/bench_out/ravel-bolero.ly:425:14: warning: barcheck failed at: 7/8
+      c8 g,8 
+             |
+/tmp/bench_out/ravel-bolero.ly:188:56: warning: barcheck failed at: 57/64
+    e'''8 e'''8 d'''8 e'''8 fis'''64 e'''8 d'''8 c'''8 
+                                                       |
+/tmp/bench_out/ravel-bolero.ly:307:51: warning: barcheck failed at: 57/64
+    c'''8 c'''8 b''8 c'''8 d'''64 c'''8 b''8 a''8 
+                                                  |
+/tmp/bench_out/ravel-bolero.ly:276:71: warning: barcheck failed at: 15/16
+      d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'8 d'8 d'8 d'8 d'8 d'8 
+                                                                      |
+/tmp/bench_out/ravel-bolero.ly:284:71: warning: barcheck failed at: 15/16
+      d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'8 d'8 d'8 d'8 d'8 d'8 
+                                                                      |
+/tmp/bench_out/ravel-bolero.ly:401:31: warning: barcheck failed at: 15/16
+      <g, e c,>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:340:11: warning: barcheck failed at: 1/4
+    r4 g2 
+          |
+/tmp/bench_out/ravel-bolero.ly:376:12: warning: barcheck failed at: 1/4
+    d'4 b8 
+           |
+/tmp/bench_out/ravel-bolero.ly:435:17: warning: barcheck failed at: 1/4
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:285:54: warning: barcheck failed at: 3/8
+      d'16 d'16 d'16 <d' f''>16 d'16 d'16 <d' f''>16 
+                                                     |
+/tmp/bench_out/ravel-bolero.ly:20:32: warning: barcheck failed at: 1/2
+      c''8 d''8 r8 b'8 c''8 r8 
+                               |
+/tmp/bench_out/ravel-bolero.ly:28:32: warning: barcheck failed at: 1/2
+      c''8 d''8 r8 b'8 c''8 r8 
+                               |
+/tmp/bench_out/ravel-bolero.ly:41:26: warning: barcheck failed at: 1/2
+    c''8 d''8 r8 d''8 r8 
+                         |
+/tmp/bench_out/ravel-bolero.ly:207:61: warning: barcheck failed at: 1/2
+    g'4 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+/tmp/bench_out/ravel-bolero.ly:60:30: warning: barcheck failed at: 9/16
+    g'4 g'8 a'8 g'8 f'16 f'8 
+                             |
+/tmp/bench_out/ravel-bolero.ly:277:55: warning: barcheck failed at: 19/32
+      <g'' d'>4 <g'' d'>16 g''16 <a'' d'>8 g''8 e''32 
+                                                      |
+/tmp/bench_out/ravel-bolero.ly:230:39: warning: barcheck failed at: 5/8
+      d'8 r8 r4 a8 r8 d'8 r8 r4 a8 r8 
+                                      |
+/tmp/bench_out/ravel-bolero.ly:253:63: warning: barcheck failed at: 5/8
+      r4 <e' c'>8 r8 c'16 d'16 r8 r4 <e' c'>8 r8 c'16 d'16 r8 
+                                                              |
+/tmp/bench_out/ravel-bolero.ly:426:17: warning: barcheck failed at: 5/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:308:46: warning: barcheck failed at: 45/64
+    c'''8 c'''8 a''8 c'''8 c'''8 b''8 c'''16 
+                                             |
+/tmp/bench_out/ravel-bolero.ly:222:39: warning: barcheck failed at: 3/4
+      d'8 r8 r4 a8 r8 d'8 r8 r4 a8 r8 
+                                      |
+/tmp/bench_out/ravel-bolero.ly:245:63: warning: barcheck failed at: 13/16
+      r4 <e' c'>8 r8 c'16 d'16 r8 r4 <e' c'>8 r8 c'16 d'16 r8 
+                                                              |
+/tmp/bench_out/ravel-bolero.ly:318:54: warning: barcheck failed at: 13/16
+    <c'' g'''>4 c''16 b'16 c''16 d''16 c''16 b'8 a'8 
+                                                     |
+/tmp/bench_out/ravel-bolero.ly:199:71: warning: barcheck failed at: 57/64
+    g''16 g''16 e''16 g''16 g''8 f''8 g''8 e''32 d''16 b'16 c''8 d''2 
+                                                                      |
+/tmp/bench_out/ravel-bolero.ly:61:37: warning: barcheck failed at: 1/16
+    fis'8 g'16 fis'16 g'16 e'16 e'8 
+                                    |
+/tmp/bench_out/ravel-bolero.ly:254:33: warning: barcheck failed at: 1/16
+      <e' c'>16 r8 c'16 d'16 r8 
+                                |
+/tmp/bench_out/ravel-bolero.ly:319:45: warning: barcheck failed at: 5/64
+    c''64 c''64 a'32 c''64 c''16 b'16 c''16 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:231:18: warning: barcheck failed at: 1/8
+      r8 c''4 r8 
+                 |
+/tmp/bench_out/ravel-bolero.ly:42:25: warning: barcheck failed at: 3/16
+    r4 d''16 r8 d''8 r8 
+                        |
+/tmp/bench_out/ravel-bolero.ly:223:21: warning: barcheck failed at: 3/16
+      d'16 r8 a8 r8 
+                    |
+/tmp/bench_out/ravel-bolero.ly:246:33: warning: barcheck failed at: 1/4
+      <e' c'>16 r8 c'16 d'16 r8 
+                                |
+/tmp/bench_out/ravel-bolero.ly:332:12: warning: barcheck failed at: 1/4
+    r4 g'2 
+           |
+/tmp/bench_out/ravel-bolero.ly:278:81: warning: barcheck failed at: 25/64
+      <g'' d'>8 <g'' d'>8 e''16 <g'' d'>8 <g'' d'>8 g''8 <e'' d'>16 d''32 c''64 
+                                                                                |
+/tmp/bench_out/ravel-bolero.ly:342:8: warning: barcheck failed at: 1/2
+    g2 
+       |
+/tmp/bench_out/ravel-bolero.ly:286:121: warning: barcheck failed at: 9/16
+      d'16 d'16 d'16 d'16 d'16 d'16 d'16 <d' fis''>16 d'16 d'16 <d' b'>16 d'16 d'16 <d' d''>16 d'16 d'16 d'16 d'16 d'16 
+                                                                                                                        |
+/tmp/bench_out/ravel-bolero.ly:189:75: warning: barcheck failed at: 19/32
+    e'''8 e'''8 c'''8 e'''8 e'''8 d'''8 e'''8 c'''16 b''64 g''8 a''8 b''2 
+                                                                          |
+/tmp/bench_out/ravel-bolero.ly:30:28: warning: barcheck failed at: 5/8
+      r4 <c'' aes'>8 r8 r8 
+                           |
+/tmp/bench_out/ravel-bolero.ly:22:26: warning: barcheck failed at: 3/4
+      r4 r8 <g' c''>4 r8 
+                         |
+/tmp/bench_out/ravel-bolero.ly:279:40: warning: barcheck failed at: 49/64
+      c''16 a'16 c''16 e''16 <d'' d'>8 
+                                       |
+/tmp/bench_out/ravel-bolero.ly:320:38: warning: barcheck failed at: 61/64
+    a'8 g'8 e'16 <f' f''>16 <f' g'>2 
+                                     |
+/tmp/bench_out/ravel-bolero.ly:200:49: warning: barcheck failed at: 1/64
+    d''16 c''8 b'8 a'8 b'8 c''8 d''8 e''16 d''4 
+                                                |
+/tmp/bench_out/ravel-bolero.ly:208:45: warning: barcheck failed at: 1/8
+    g'8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'4 g'4 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:287:94: warning: barcheck failed at: 3/8
+      <d' d''>16 <d' b'>16 d'16 d'16 <d' b'>16 <d' d''>16 d'16 d'16 d'16 d'16 d'16 d'16 d'16 
+                                                                                             |
+/tmp/bench_out/ravel-bolero.ly:190:54: warning: barcheck failed at: 5/8
+    b''32 a''8 g''8 fis''8 g''8 a''8 b''8 c'''8 b''8 
+                                                     |
+/tmp/bench_out/ravel-bolero.ly:70:61: warning: barcheck failed at: 1/2
+    g'4 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+/tmp/bench_out/ravel-bolero.ly:210:61: warning: barcheck failed at: 7/8
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+/tmp/bench_out/ravel-bolero.ly:72:61: warning: barcheck failed at: 7/8
+    g'8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+Preprocessing graphical objects...
+Interpreting music...
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+warning: MIDI channel wrapped around
+warning: remapping modulo 16
+/tmp/bench_out/ravel-bolero.ly:78:38: warning: barcheck failed at: 3/16
+    <d'' d'>16 e''16 <d'' c'>32 d'32 
+                                     |
+/tmp/bench_out/ravel-bolero.ly:173:10: warning: barcheck failed at: 1/4
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:125:44: warning: barcheck failed at: 5/16
+    <f' b>8 <b'' f'' f'>16 <b'' f' b f''>8 
+                                           |
+/tmp/bench_out/ravel-bolero.ly:382:41: warning: barcheck failed at: 3/8
+    <b f'>8 f'16 <f'' f'>16 <f'' f' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:396:30: warning: barcheck failed at: 7/16
+      <g, c, e>16 r4 <g, g>8 
+                             |
+/tmp/bench_out/ravel-bolero.ly:405:30: warning: barcheck failed at: 7/16
+      <g, c, e>16 r4 <g, g>8 
+                             |
+/tmp/bench_out/ravel-bolero.ly:92:34: warning: barcheck failed at: 1/2
+      r4 <e' c'>8 <bes' b des'>8 
+                                 |
+/tmp/bench_out/ravel-bolero.ly:101:34: warning: barcheck failed at: 1/2
+      r4 <e' c'>8 <bes' b des'>8 
+                                 |
+/tmp/bench_out/ravel-bolero.ly:164:14: warning: barcheck failed at: 1/2
+      c4 g,4 
+             |
+/tmp/bench_out/ravel-bolero.ly:174:10: warning: barcheck failed at: 1/2
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:139:30: warning: barcheck failed at: 9/16
+      <g, e c,>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:148:30: warning: barcheck failed at: 9/16
+      <g, e c,>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:79:41: warning: barcheck failed at: 5/8
+    r4 <d'' d'>16 e''16 <d'' c'>32 d'32 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:242:25: warning: barcheck failed at: 5/8
+      r4 <c' e'>8 r8 r8 
+                        |
+/tmp/bench_out/ravel-bolero.ly:250:26: warning: barcheck failed at: 5/8
+      r4 r8 c'16 d'16 r8 
+                         |
+/tmp/bench_out/ravel-bolero.ly:360:25: warning: barcheck failed at: 5/8
+    r4 <c' e'>8 c'8 d'8 
+                        |
+/tmp/bench_out/ravel-bolero.ly:371:15: warning: barcheck failed at: 5/8
+    r4 d'4 b8 
+              |
+/tmp/bench_out/ravel-bolero.ly:421:17: warning: barcheck failed at: 5/8
+      c4 r4 g,8 
+                |
+/tmp/bench_out/ravel-bolero.ly:430:17: warning: barcheck failed at: 5/8
+      c4 r4 g,8 
+                |
+/tmp/bench_out/ravel-bolero.ly:48:42: warning: barcheck failed at: 21/32
+    a'32 b'32 a'32 g'32 g'4 fes'4 fes'32 
+                                         |
+/tmp/bench_out/ravel-bolero.ly:126:43: warning: barcheck failed at: 11/16
+    <b f'>8 <b'' f'' f'>8 <b'' b f' f''>8 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:406:10: warning: barcheck failed at: 11/16
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:38:24: warning: barcheck failed at: 3/4
+    r4 d''8 r8 d''8 r8 
+                       |
+/tmp/bench_out/ravel-bolero.ly:175:10: warning: barcheck failed at: 3/4
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:219:23: warning: barcheck failed at: 3/4
+      d'8 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:227:23: warning: barcheck failed at: 3/4
+      d'8 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:262:15: warning: barcheck failed at: 3/4
+    d'4 r4 r4 
+              |
+/tmp/bench_out/ravel-bolero.ly:327:12: warning: barcheck failed at: 3/4
+    r4 g'2 
+           |
+/tmp/bench_out/ravel-bolero.ly:383:41: warning: barcheck failed at: 3/4
+    <b f'>8 f'16 <f'' f'>16 <f' f'' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:149:10: warning: barcheck failed at: 13/16
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:397:31: warning: barcheck failed at: 13/16
+      <c, g, e>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:80:46: warning: barcheck failed at: 27/32
+    c''16 <d'' d'>16 e''16 <a' c' d'' d''>32 
+                                             |
+/tmp/bench_out/ravel-bolero.ly:295:18: warning: barcheck failed at: 7/8
+    g'4 r8 r4 r4 
+                 |
+/tmp/bench_out/ravel-bolero.ly:431:10: warning: barcheck failed at: 7/8
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:127:45: warning: barcheck failed at: 29/32
+    <b f'>8 <f'' f' b''>16 <f' b f'' b''>32 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:140:31: warning: barcheck failed at: 15/16
+      <c, g, e>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:150:31: warning: barcheck failed at: 1/64
+      <g, c, e>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:361:27: warning: barcheck failed at: 1/8
+    r4 <c' e'>8 c'16 d'16 
+                          |
+/tmp/bench_out/ravel-bolero.ly:384:41: warning: barcheck failed at: 1/8
+    <b f'>8 f'16 <f'' f'>16 <f'' f' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:422:14: warning: barcheck failed at: 1/8
+      c4 g,4 
+             |
+/tmp/bench_out/ravel-bolero.ly:141:31: warning: barcheck failed at: 9/64
+      <g, c, e>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:128:45: warning: barcheck failed at: 5/32
+    <b f'>8 <b'' f' f''>16 <f' b'' b f''>16 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:94:38: warning: barcheck failed at: 3/16
+      <c' e'>8 <d' aes c'' c'' d'>16 
+                                     |
+/tmp/bench_out/ravel-bolero.ly:103:12: warning: barcheck failed at: 1/4
+      c''4 
+           |
+/tmp/bench_out/ravel-bolero.ly:177:10: warning: barcheck failed at: 1/4
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:228:18: warning: barcheck failed at: 1/4
+      r8 c''4 r8 
+                 |
+/tmp/bench_out/ravel-bolero.ly:251:23: warning: barcheck failed at: 1/4
+      r4 r4 c'16 d'16 
+                      |
+/tmp/bench_out/ravel-bolero.ly:372:19: warning: barcheck failed at: 1/4
+    r4 d'4 <b b>8 
+                  |
+/tmp/bench_out/ravel-bolero.ly:407:30: warning: barcheck failed at: 1/4
+      <c, e g,>16 r4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:151:10: warning: barcheck failed at: 17/64
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:81:39: warning: barcheck failed at: 11/32
+    c''4 <c' d'' aes'>8 <g' c'' bes>8 
+                                      |
+/tmp/bench_out/ravel-bolero.ly:129:49: warning: barcheck failed at: 3/8
+    <b f'>8 <a'' b'' f' f''>16 <f'' b'' f' b>32 
+                                                |
+/tmp/bench_out/ravel-bolero.ly:220:20: warning: barcheck failed at: 3/8
+      d'4 r8 a8 r8 
+                   |
+/tmp/bench_out/ravel-bolero.ly:398:30: warning: barcheck failed at: 3/8
+      <c, e g,>16 r4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:152:31: warning: barcheck failed at: 15/32
+      <g, c, g>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:178:10: warning: barcheck failed at: 1/2
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:243:25: warning: barcheck failed at: 1/2
+      r4 <c' e'>8 r4 e4 
+                        |
+/tmp/bench_out/ravel-bolero.ly:385:41: warning: barcheck failed at: 1/2
+    <b f'>8 f'16 <f'' f'>16 <f'' b f'>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:142:31: warning: barcheck failed at: 33/64
+      <c, d g,>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:68:45: warning: barcheck failed at: 5/8
+    g'8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'4 g'4 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:95:36: warning: barcheck failed at: 5/8
+      r4 <aes c'' d'>16 <bes' c'>8 
+                                   |
+/tmp/bench_out/ravel-bolero.ly:206:44: warning: barcheck failed at: 5/8
+    r8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'4 g'4 
+                                           |
+/tmp/bench_out/ravel-bolero.ly:362:27: warning: barcheck failed at: 5/8
+    r4 <c' e'>8 c'16 d'16 
+                          |
+/tmp/bench_out/ravel-bolero.ly:432:17: warning: barcheck failed at: 5/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:104:36: warning: barcheck failed at: 11/16
+      r4 <aes c'' d'>16 <bes' c'>8 
+                                   |
+/tmp/bench_out/ravel-bolero.ly:130:44: warning: barcheck failed at: 11/16
+    <f' b>8 <b'' f'' f'>16 <b'' f' b f''>8 
+                                           |
+/tmp/bench_out/ravel-bolero.ly:275:58: warning: barcheck failed at: 11/16
+      r8 d'16 d'16 d'16 d'16 r1 d'16 d'16 d'16 d'16 d'16 
+                                                         |
+/tmp/bench_out/ravel-bolero.ly:283:58: warning: barcheck failed at: 11/16
+      r8 d'16 d'16 d'16 d'16 r1 d'16 d'16 d'16 d'16 d'16 
+                                                         |
+/tmp/bench_out/ravel-bolero.ly:143:31: warning: barcheck failed at: 23/32
+      <g, c, g>64 e8 <g g,>16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:153:10: warning: barcheck failed at: 23/32
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:338:15: warning: barcheck failed at: 3/4
+    b'1 r4 g2 
+              |
+/tmp/bench_out/ravel-bolero.ly:82:41: warning: barcheck failed at: 25/32
+    c''4 <g' c'' c'' bes>8 <c'' a g'>16 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:373:15: warning: barcheck failed at: 7/8
+    r4 d'4 b8 
+              |
+/tmp/bench_out/ravel-bolero.ly:386:46: warning: barcheck failed at: 7/8
+    <b f'>8 <f' f'>16 <f'' f'>16 <f'' f' b>8 
+                                             |
+/tmp/bench_out/ravel-bolero.ly:408:34: warning: barcheck failed at: 7/8
+      <g, e c,>16 r4 <g, g>4 g16 
+                                 |
+/tmp/bench_out/ravel-bolero.ly:423:17: warning: barcheck failed at: 7/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:144:32: warning: barcheck failed at: 29/32
+      <g, g c,>16 <g g,>16 g16 
+                               |
+/tmp/bench_out/ravel-bolero.ly:49:90: warning: barcheck failed at: 3/64
+    f'8 g'8 f'8 g'8 a'32 b'32 a'32 g'32 a'32 g'64 f'64 ees'64 f'16 ees'16 d'16 d'8 r8 r4 
+                                                                                         |
+/tmp/bench_out/ravel-bolero.ly:96:43: warning: barcheck failed at: 1/8
+      c''4 <g''' b' c' c'>8 <c' f''' a'>8 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:229:23: warning: barcheck failed at: 1/8
+      d'4 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:252:26: warning: barcheck failed at: 1/8
+      r4 r4 c'16 d'16 r4 
+                         |
+/tmp/bench_out/ravel-bolero.ly:363:27: warning: barcheck failed at: 1/8
+    r4 <e' c'>8 c'16 d'16 
+                          |
+/tmp/bench_out/ravel-bolero.ly:83:36: warning: barcheck failed at: 5/32
+    r4 <g' aes c''>16 <c'' g c'>16 
+                                   |
+/tmp/bench_out/ravel-bolero.ly:105:43: warning: barcheck failed at: 3/16
+      c''4 <g''' b' c' c'>8 <c' f''' a'>8 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:39:45: warning: barcheck failed at: 1/4
+    r4 d''8 r8 d''8 r8 r4 d''8 r8 ees''8 r8 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:221:23: warning: barcheck failed at: 1/4
+      d'4 r8 r4 a8 r8 
+                      |
+/tmp/bench_out/ravel-bolero.ly:387:41: warning: barcheck failed at: 1/4
+    <f' b>8 f'16 <f'' f'>16 <f'' f' b>8 
+                                        |
+/tmp/bench_out/ravel-bolero.ly:97:43: warning: barcheck failed at: 5/16
+      <fes''' aes' c'>8 <g' g e''' c''>16 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:244:26: warning: barcheck failed at: 5/16
+      r4 <c' e'>16 r4 r4 
+                         |
+/tmp/bench_out/ravel-bolero.ly:106:43: warning: barcheck failed at: 3/8
+      <fes''' aes' c'>8 <g' g e''' c''>16 
+                                          |
+/tmp/bench_out/ravel-bolero.ly:433:17: warning: barcheck failed at: 3/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:409:30: warning: barcheck failed at: 7/16
+      <c, g, e>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:198:51: warning: barcheck failed at: 31/64
+    g''16 g''64 f''64 g''64 a''16 g''16 f''8 e''8 
+                                                  |
+/tmp/bench_out/ravel-bolero.ly:329:12: warning: barcheck failed at: 1/2
+    r4 g'2 
+           |
+/tmp/bench_out/ravel-bolero.ly:339:11: warning: barcheck failed at: 1/2
+    r4 g2 
+          |
+/tmp/bench_out/ravel-bolero.ly:364:22: warning: barcheck failed at: 1/2
+    <c' e'>8 c'8 d'8 
+                     |
+/tmp/bench_out/ravel-bolero.ly:374:15: warning: barcheck failed at: 1/2
+    r4 d'4 b8 
+              |
+/tmp/bench_out/ravel-bolero.ly:434:10: warning: barcheck failed at: 1/2
+      e8 
+         |
+/tmp/bench_out/ravel-bolero.ly:400:30: warning: barcheck failed at: 9/16
+      <c, g, e>16 e4 <g g,>4 
+                             |
+/tmp/bench_out/ravel-bolero.ly:424:17: warning: barcheck failed at: 5/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:410:10: warning: barcheck failed at: 11/16
+      e4 
+         |
+/tmp/bench_out/ravel-bolero.ly:19:69: warning: barcheck failed at: 3/4
+      r4 d''8 e''8 r8 c''16 d''16 r8 r4 d''8 e''8 r8 c''16 d''16 r8 
+                                                                    |
+/tmp/bench_out/ravel-bolero.ly:27:69: warning: barcheck failed at: 3/4
+      r4 d''8 e''8 r8 c''16 d''16 r8 r4 d''8 e''8 r8 c''16 d''16 r8 
+                                                                    |
+/tmp/bench_out/ravel-bolero.ly:59:22: warning: barcheck failed at: 3/4
+    r1 r4 r8 g'8 g'4 
+                     |
+/tmp/bench_out/ravel-bolero.ly:365:24: warning: barcheck failed at: 3/4
+    <e' c'>8 c'16 d'16 
+                       |
+/tmp/bench_out/ravel-bolero.ly:40:28: warning: barcheck failed at: 7/8
+    c''8 ees''8 r8 d''8 r8 
+                           |
+/tmp/bench_out/ravel-bolero.ly:375:12: warning: barcheck failed at: 7/8
+    d'4 b8 
+           |
+/tmp/bench_out/ravel-bolero.ly:425:14: warning: barcheck failed at: 7/8
+      c8 g,8 
+             |
+/tmp/bench_out/ravel-bolero.ly:188:56: warning: barcheck failed at: 57/64
+    e'''8 e'''8 d'''8 e'''8 fis'''64 e'''8 d'''8 c'''8 
+                                                       |
+/tmp/bench_out/ravel-bolero.ly:307:51: warning: barcheck failed at: 57/64
+    c'''8 c'''8 b''8 c'''8 d'''64 c'''8 b''8 a''8 
+                                                  |
+/tmp/bench_out/ravel-bolero.ly:276:71: warning: barcheck failed at: 15/16
+      d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'8 d'8 d'8 d'8 d'8 d'8 
+                                                                      |
+/tmp/bench_out/ravel-bolero.ly:284:71: warning: barcheck failed at: 15/16
+      d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'16 d'8 d'8 d'8 d'8 d'8 d'8 
+                                                                      |
+/tmp/bench_out/ravel-bolero.ly:401:31: warning: barcheck failed at: 15/16
+      <g, e c,>16 <g, g>4 g16 
+                              |
+/tmp/bench_out/ravel-bolero.ly:340:11: warning: barcheck failed at: 1/4
+    r4 g2 
+          |
+/tmp/bench_out/ravel-bolero.ly:376:12: warning: barcheck failed at: 1/4
+    d'4 b8 
+           |
+/tmp/bench_out/ravel-bolero.ly:435:17: warning: barcheck failed at: 1/4
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:285:54: warning: barcheck failed at: 3/8
+      d'16 d'16 d'16 <d' f''>16 d'16 d'16 <d' f''>16 
+                                                     |
+/tmp/bench_out/ravel-bolero.ly:20:32: warning: barcheck failed at: 1/2
+      c''8 d''8 r8 b'8 c''8 r8 
+                               |
+/tmp/bench_out/ravel-bolero.ly:28:32: warning: barcheck failed at: 1/2
+      c''8 d''8 r8 b'8 c''8 r8 
+                               |
+/tmp/bench_out/ravel-bolero.ly:41:26: warning: barcheck failed at: 1/2
+    c''8 d''8 r8 d''8 r8 
+                         |
+/tmp/bench_out/ravel-bolero.ly:207:61: warning: barcheck failed at: 1/2
+    g'4 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+/tmp/bench_out/ravel-bolero.ly:60:30: warning: barcheck failed at: 9/16
+    g'4 g'8 a'8 g'8 f'16 f'8 
+                             |
+/tmp/bench_out/ravel-bolero.ly:277:55: warning: barcheck failed at: 19/32
+      <g'' d'>4 <g'' d'>16 g''16 <a'' d'>8 g''8 e''32 
+                                                      |
+/tmp/bench_out/ravel-bolero.ly:230:39: warning: barcheck failed at: 5/8
+      d'8 r8 r4 a8 r8 d'8 r8 r4 a8 r8 
+                                      |
+/tmp/bench_out/ravel-bolero.ly:253:63: warning: barcheck failed at: 5/8
+      r4 <e' c'>8 r8 c'16 d'16 r8 r4 <e' c'>8 r8 c'16 d'16 r8 
+                                                              |
+/tmp/bench_out/ravel-bolero.ly:426:17: warning: barcheck failed at: 5/8
+      c4 r4 g,4 
+                |
+/tmp/bench_out/ravel-bolero.ly:308:46: warning: barcheck failed at: 45/64
+    c'''8 c'''8 a''8 c'''8 c'''8 b''8 c'''16 
+                                             |
+/tmp/bench_out/ravel-bolero.ly:222:39: warning: barcheck failed at: 3/4
+      d'8 r8 r4 a8 r8 d'8 r8 r4 a8 r8 
+                                      |
+/tmp/bench_out/ravel-bolero.ly:245:63: warning: barcheck failed at: 13/16
+      r4 <e' c'>8 r8 c'16 d'16 r8 r4 <e' c'>8 r8 c'16 d'16 r8 
+                                                              |
+/tmp/bench_out/ravel-bolero.ly:318:54: warning: barcheck failed at: 13/16
+    <c'' g'''>4 c''16 b'16 c''16 d''16 c''16 b'8 a'8 
+                                                     |
+/tmp/bench_out/ravel-bolero.ly:199:71: warning: barcheck failed at: 57/64
+    g''16 g''16 e''16 g''16 g''8 f''8 g''8 e''32 d''16 b'16 c''8 d''2 
+                                                                      |
+/tmp/bench_out/ravel-bolero.ly:61:37: warning: barcheck failed at: 1/16
+    fis'8 g'16 fis'16 g'16 e'16 e'8 
+                                    |
+/tmp/bench_out/ravel-bolero.ly:254:33: warning: barcheck failed at: 1/16
+      <e' c'>16 r8 c'16 d'16 r8 
+                                |
+/tmp/bench_out/ravel-bolero.ly:319:45: warning: barcheck failed at: 5/64
+    c''64 c''64 a'32 c''64 c''16 b'16 c''16 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:231:18: warning: barcheck failed at: 1/8
+      r8 c''4 r8 
+                 |
+/tmp/bench_out/ravel-bolero.ly:42:25: warning: barcheck failed at: 3/16
+    r4 d''16 r8 d''8 r8 
+                        |
+/tmp/bench_out/ravel-bolero.ly:223:21: warning: barcheck failed at: 3/16
+      d'16 r8 a8 r8 
+                    |
+/tmp/bench_out/ravel-bolero.ly:246:33: warning: barcheck failed at: 1/4
+      <e' c'>16 r8 c'16 d'16 r8 
+                                |
+/tmp/bench_out/ravel-bolero.ly:332:12: warning: barcheck failed at: 1/4
+    r4 g'2 
+           |
+/tmp/bench_out/ravel-bolero.ly:278:81: warning: barcheck failed at: 25/64
+      <g'' d'>8 <g'' d'>8 e''16 <g'' d'>8 <g'' d'>8 g''8 <e'' d'>16 d''32 c''64 
+                                                                                |
+/tmp/bench_out/ravel-bolero.ly:342:8: warning: barcheck failed at: 1/2
+    g2 
+       |
+/tmp/bench_out/ravel-bolero.ly:286:121: warning: barcheck failed at: 9/16
+      d'16 d'16 d'16 d'16 d'16 d'16 d'16 <d' fis''>16 d'16 d'16 <d' b'>16 d'16 d'16 <d' d''>16 d'16 d'16 d'16 d'16 d'16 
+                                                                                                                        |
+/tmp/bench_out/ravel-bolero.ly:189:75: warning: barcheck failed at: 19/32
+    e'''8 e'''8 c'''8 e'''8 e'''8 d'''8 e'''8 c'''16 b''64 g''8 a''8 b''2 
+                                                                          |
+/tmp/bench_out/ravel-bolero.ly:30:28: warning: barcheck failed at: 5/8
+      r4 <c'' aes'>8 r8 r8 
+                           |
+/tmp/bench_out/ravel-bolero.ly:22:26: warning: barcheck failed at: 3/4
+      r4 r8 <g' c''>4 r8 
+                         |
+/tmp/bench_out/ravel-bolero.ly:279:40: warning: barcheck failed at: 49/64
+      c''16 a'16 c''16 e''16 <d'' d'>8 
+                                       |
+/tmp/bench_out/ravel-bolero.ly:320:38: warning: barcheck failed at: 61/64
+    a'8 g'8 e'16 <f' f''>16 <f' g'>2 
+                                     |
+/tmp/bench_out/ravel-bolero.ly:200:49: warning: barcheck failed at: 1/64
+    d''16 c''8 b'8 a'8 b'8 c''8 d''8 e''16 d''4 
+                                                |
+/tmp/bench_out/ravel-bolero.ly:208:45: warning: barcheck failed at: 1/8
+    g'8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'4 g'4 
+                                            |
+/tmp/bench_out/ravel-bolero.ly:287:94: warning: barcheck failed at: 3/8
+      <d' d''>16 <d' b'>16 d'16 d'16 <d' b'>16 <d' d''>16 d'16 d'16 d'16 d'16 d'16 d'16 d'16 
+                                                                                             |
+/tmp/bench_out/ravel-bolero.ly:190:54: warning: barcheck failed at: 5/8
+    b''32 a''8 g''8 fis''8 g''8 a''8 b''8 c'''8 b''8 
+                                                     |
+/tmp/bench_out/ravel-bolero.ly:70:61: warning: barcheck failed at: 1/2
+    g'4 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+/tmp/bench_out/ravel-bolero.ly:210:61: warning: barcheck failed at: 7/8
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+/tmp/bench_out/ravel-bolero.ly:72:61: warning: barcheck failed at: 7/8
+    g'8 g'8 g'8 g'8 g'4 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 
+                                                            |
+MIDI output to `/tmp/bench_out/ravel-bolero.midi'...
+Finding the ideal number of pages...
+Fitting music on 1 or 2 pages...
+Drawing systems...
+warning: compressing over-full page by 120.9 staff-spaces
+warning: page 1 has been compressed
+Converting to `/tmp/bench_out/ravel-bolero.pdf'...
+Success: compilation successfully completed

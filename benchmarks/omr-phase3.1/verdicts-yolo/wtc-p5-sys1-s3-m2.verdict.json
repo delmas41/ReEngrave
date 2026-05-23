@@ -1,0 +1,36 @@
+{
+  "cell_id": "wtc-p5-sys1-s3-m2",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "coda",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "beam",
+      "verdict": ""
+    }
+  ],
+  "fn_noteheads": [
+    {
+      "tm_id": "D0",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 66,
+      "y_canonical": 400
+    },
+    {
+      "tm_id": "D1",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 448,
+      "y_canonical": 452
+    }
+  ]
+}

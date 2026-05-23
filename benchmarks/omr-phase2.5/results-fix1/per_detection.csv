@@ -1,0 +1,53 @@
+cell_id,source_tag,det_id,smufl_name,category,x,y,pitch,confidence,verdict,reason
+wtc-p5-sys0-s0-m0,wtc-p5,D0,flag8thUp,flag,57,389,,0.64,fp,clef-body  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D1,noteheadBlack,notehead,76,427,C4,0.72,fp,clef-tail  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D2,noteheadBlack,notehead,102,136,A5,0.64,fp,clef-curl  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D3,flag16thUp,flag,106,286,,0.66,fp,clef-inner  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D4,rest8th,rest,311,444,,0.86,pending,rest-or-flag  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D5,restHalf,rest,320,242,,0.6,fp,stem-of-quarter  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D6,noteheadBlack,notehead,321,317,A4,0.8,tp,<!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D7,noteheadBlack,notehead,497,439,C4,0.85,tp,<!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D8,noteheadBlack,notehead,681,170,G5,0.65,pending,small-glyph  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D9,noteheadBlack,notehead,689,415,D4,0.83,tp,<!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D10,noteheadBlack,notehead,874,390,E4,0.87,tp,<!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D11,noteheadBlack,notehead,1070,364,F4,0.79,tp,<!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D12,restHalf,rest,1070,178,,0.93,fp,above-staff-artifact  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D13,noteheadBlack,notehead,1351,342,G4,0.87,tp,<!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D14,noteheadBlack,notehead,1463,364,F4,0.78,tp,<!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D15,noteheadBlack,notehead,1564,390,E4,0.87,tp,<!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D16,noteheadBlack,notehead,1770,317,A4,0.81,tp,<!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D0,noteheadBlack,notehead,82,445,D4,0.83,tp,<!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D1,restHalf,rest,87,192,,0.87,fp,above-staff-artifact  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D2,noteheadBlack,notehead,292,367,G4,0.87,tp,<!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D3,noteheadBlack,notehead,494,367,G4,0.87,tp,<!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D4,noteheadBlack,notehead,654,340,A4,0.82,tp,<!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D5,noteheadBlack,notehead,815,367,G4,0.87,tp,<!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D6,noteheadBlack,notehead,975,394,F4,0.79,tp,<!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D7,rest8th,rest,1128,213,,0.81,tp,<!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D8,noteheadBlack,notehead,1136,419,E4,0.87,tp,<!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D9,noteheadBlack,notehead,1332,419,E4,0.81,tp,<!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D10,noteheadBlack,notehead,1335,365,G4,0.8,tp,<!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D11,noteheadBlack,notehead,1664,338,A4,0.77,tp,<!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D12,noteheadBlack,notehead,1665,393,F4,0.78,tp,<!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D13,noteheadBlack,notehead,1873,368,G4,0.8,tp,<!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D14,noteheadBlack,notehead,1875,314,B4,0.8,tp,<!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D0,noteheadBlack,notehead,77,335,G4,0.87,tp,<!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D1,noteheadBlack,notehead,78,262,C5,0.81,tp,<!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D2,restQuarter,rest,201,358,,0.56,fp,sharp-accidental-misclassified  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D3,noteheadBlack,notehead,278,358,F4,0.8,tp,<!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D4,noteheadBlack,notehead,369,238,D5,0.87,tp,<!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D5,noteheadBlack,notehead,472,262,C5,0.8,tp,<!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D6,noteheadBlack,notehead,622,335,G4,0.82,tp,<!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D7,noteheadBlack,notehead,624,286,B4,0.8,tp,<!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D8,noteheadBlack,notehead,915,312,A4,0.78,tp,<!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D9,noteheadBlack,notehead,917,261,C5,0.79,tp,<!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D10,noteheadBlack,notehead,1208,312,A4,0.79,tp,<!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D11,noteheadBlack,notehead,1210,238,D5,0.87,tp,<!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D12,noteheadBlack,notehead,1396,335,G4,0.87,tp,<!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D13,noteheadBlack,notehead,1399,213,E5,0.78,tp,<!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D14,noteheadBlack,notehead,1582,312,A4,0.79,tp,<!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D15,noteheadBlack,notehead,1583,191,F5,0.88,tp,<!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D16,timeSig1,time_sig_digit,1705,287,,0.83,fp,accidental-misclassified  <!-- ported from baseline D17 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D17,noteheadBlack,notehead,1770,287,B4,0.87,tp,<!-- ported from baseline D18 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D18,noteheadBlack,notehead,1864,166,G5,0.85,tp,<!-- ported from baseline D19 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D19,noteheadBlack,notehead,1967,191,F5,0.87,tp,<!-- ported from baseline D20 -->

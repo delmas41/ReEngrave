@@ -1,0 +1,26 @@
+{
+  "cell_id": "wtc-p5-sys1-s2-m2",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": []
+}

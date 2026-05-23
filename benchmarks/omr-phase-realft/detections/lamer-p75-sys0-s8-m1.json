@@ -1,0 +1,122 @@
+{
+  "cell_id": "lamer-p75-sys0-s8-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 0,
+      "y": 247,
+      "w": 63,
+      "h": 29,
+      "x_center": 31,
+      "y_center": 261,
+      "confidence": 0.5901145339012146,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadHalfOnLine",
+      "category": "notehead",
+      "x": 102,
+      "y": 202,
+      "w": 52,
+      "h": 46,
+      "x_center": 128,
+      "y_center": 225,
+      "confidence": 0.8762722611427307,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "arpeggiato",
+      "category": "ornament",
+      "x": 140,
+      "y": 90,
+      "w": 20,
+      "h": 126,
+      "x_center": 150,
+      "y_center": 153,
+      "confidence": 0.2970612049102783,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 684,
+      "y": 241,
+      "w": 427,
+      "h": 75,
+      "x_center": 897,
+      "y_center": 278,
+      "confidence": 0.5481163263320923,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "accidentalSharp",
+      "category": "accidental",
+      "x": 980,
+      "y": 135,
+      "w": 25,
+      "h": 100,
+      "x_center": 992,
+      "y_center": 185,
+      "confidence": 0.48369577527046204,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 117,
+      "w": 2039,
+      "h": 126,
+      "x_center": 1019,
+      "y_center": 180,
+      "confidence": 0.27698951959609985,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 64,
+      "w": 2040,
+      "h": 86,
+      "x_center": 1020,
+      "y_center": 107,
+      "confidence": 0.3496706783771515,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "noteheadHalfOnLine",
+      "category": "notehead",
+      "x": 1108,
+      "y": 167,
+      "w": 51,
+      "h": 46,
+      "x_center": 1133,
+      "y_center": 190,
+      "confidence": 0.8307215571403503,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "accidentalSharp",
+      "category": "accidental",
+      "x": 1148,
+      "y": 64,
+      "w": 24,
+      "h": 114,
+      "x_center": 1160,
+      "y_center": 121,
+      "confidence": 0.32638660073280334,
+      "pitch": null
+    }
+  ]
+}

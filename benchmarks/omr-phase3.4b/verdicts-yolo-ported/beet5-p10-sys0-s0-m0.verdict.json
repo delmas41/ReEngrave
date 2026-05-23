@@ -1,0 +1,536 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m0",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "clefF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D7",
+      "smufl_name": "clefG",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D8",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D9",
+      "smufl_name": "keyFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D10",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D11",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D12",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D13",
+      "smufl_name": "keyFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D14",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D15",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D16",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D17",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D18",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D19",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D20",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D21",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D22",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D23",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D24",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D25",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D26",
+      "smufl_name": "dynamicP",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D27",
+      "smufl_name": "dynamicP",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D28",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D29",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D30",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D31",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D32",
+      "smufl_name": "noteheadHalfOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D33",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D34",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D35",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D36",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D37",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D38",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D39",
+      "smufl_name": "augmentationDot",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D40",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D41",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D42",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D43",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D44",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D45",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D46",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D47",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D48",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D49",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D50",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D51",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D52",
+      "smufl_name": "flag8thUp",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D53",
+      "smufl_name": "augmentationDot",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D54",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D55",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D56",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D57",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D58",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D59",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D60",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D61",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D62",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D63",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D64",
+      "smufl_name": "augmentationDot",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D65",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D66",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D67",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D68",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D69",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D70",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D71",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D72",
+      "smufl_name": "tie",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D73",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D74",
+      "smufl_name": "slur",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D75",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D76",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D77",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D78",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D79",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D80",
+      "smufl_name": "noteheadHalfOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D81",
+      "smufl_name": "noteheadHalfInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D82",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D83",
+      "smufl_name": "accidentalFlat",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D84",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D85",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D86",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D87",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D88",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D89",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D90",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D91",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D92",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D93",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D94",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D95",
+      "smufl_name": "dynamicF",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D96",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D97",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D98",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D99",
+      "smufl_name": "restWhole",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D100",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D101",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D102",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D103",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D104",
+      "smufl_name": "restQuarter",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D105",
+      "smufl_name": "noteheadBlackInSpace",
+      "verdict": ""
+    }
+  ],
+  "fn_noteheads": []
+}

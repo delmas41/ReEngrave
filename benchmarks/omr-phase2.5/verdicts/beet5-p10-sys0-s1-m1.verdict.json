@@ -1,0 +1,27 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m1",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP",
+      "wrong_pitch": "C4"
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlack",
+      "verdict": "FP"
+    }
+  ],
+  "fn_noteheads": []
+}

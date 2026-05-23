@@ -1,0 +1,109 @@
+{
+  "cell_id": "lamer-p15-sys1-s6-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 96,
+      "y": 118,
+      "w": 44,
+      "h": 28,
+      "x_center": 118,
+      "y_center": 132,
+      "confidence": 0.2679111957550049,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "accidentalDoubleSharp",
+      "category": "accidental",
+      "x": 139,
+      "y": 537,
+      "w": 35,
+      "h": 31,
+      "x_center": 156,
+      "y_center": 552,
+      "confidence": 0.4265514612197876,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 194,
+      "y": 332,
+      "w": 40,
+      "h": 129,
+      "x_center": 214,
+      "y_center": 396,
+      "confidence": 0.29703062772750854,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 265,
+      "y": 853,
+      "w": 31,
+      "h": 30,
+      "x_center": 280,
+      "y_center": 868,
+      "confidence": 0.3639587461948395,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 0,
+      "y": 332,
+      "w": 634,
+      "h": 45,
+      "x_center": 317,
+      "y_center": 354,
+      "confidence": 0.28612732887268066,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "accidentalDoubleSharp",
+      "category": "accidental",
+      "x": 350,
+      "y": 545,
+      "w": 45,
+      "h": 23,
+      "x_center": 372,
+      "y_center": 556,
+      "confidence": 0.31214436888694763,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 360,
+      "y": 447,
+      "w": 45,
+      "h": 21,
+      "x_center": 382,
+      "y_center": 457,
+      "confidence": 0.547849714756012,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 205,
+      "y": 810,
+      "w": 429,
+      "h": 51,
+      "x_center": 419,
+      "y_center": 835,
+      "confidence": 0.2597469389438629,
+      "pitch": null
+    }
+  ]
+}

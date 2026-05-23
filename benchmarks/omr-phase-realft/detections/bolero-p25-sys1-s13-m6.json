@@ -1,0 +1,109 @@
+{
+  "cell_id": "bolero-p25-sys1-s13-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 0,
+      "y": 129,
+      "w": 107,
+      "h": 96,
+      "x_center": 53,
+      "y_center": 177,
+      "confidence": 0.7585499286651611,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 2,
+      "y": 286,
+      "w": 104,
+      "h": 76,
+      "x_center": 54,
+      "y_center": 324,
+      "confidence": 0.6894020438194275,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 4,
+      "y": 261,
+      "w": 105,
+      "h": 75,
+      "x_center": 56,
+      "y_center": 298,
+      "confidence": 0.8091629147529602,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 875,
+      "y": 309,
+      "w": 109,
+      "h": 92,
+      "x_center": 929,
+      "y_center": 355,
+      "confidence": 0.7353418469429016,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 876,
+      "y": 357,
+      "w": 107,
+      "h": 49,
+      "x_center": 929,
+      "y_center": 381,
+      "confidence": 0.37717944383621216,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 987,
+      "y": 128,
+      "w": 114,
+      "h": 97,
+      "x_center": 1044,
+      "y_center": 176,
+      "confidence": 0.908528208732605,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 989,
+      "y": 355,
+      "w": 111,
+      "h": 96,
+      "x_center": 1044,
+      "y_center": 403,
+      "confidence": 0.8103466629981995,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 994,
+      "y": 261,
+      "w": 106,
+      "h": 96,
+      "x_center": 1047,
+      "y_center": 309,
+      "confidence": 0.8535052537918091,
+      "pitch": null
+    }
+  ]
+}

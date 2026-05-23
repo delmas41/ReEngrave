@@ -1,0 +1,51 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m0",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadWhole",
+      "verdict": "FP"
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadWhole",
+      "verdict": "FP"
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "noteheadBlack",
+      "verdict": "FP"
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D7",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D8",
+      "smufl_name": "noteheadBlack",
+      "verdict": "TP"
+    }
+  ],
+  "fn_noteheads": []
+}

@@ -1,0 +1,31 @@
+{
+  "cell_id": "wtc-p5-sys1-s3-m2",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "beam",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "restHBar",
+      "verdict": ""
+    }
+  ],
+  "fn_noteheads": []
+}

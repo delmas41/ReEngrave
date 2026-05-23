@@ -1,0 +1,180 @@
+{
+  "overall": {
+    "cells": 22,
+    "n_total_detections": 500,
+    "n_pending": 294,
+    "n_tp": 205,
+    "n_fp": 1,
+    "n_fn": 37,
+    "precision": 0.9951456310679612,
+    "recall": 0.8471074380165289,
+    "f1": 0.9151785714285714,
+    "notehead_pitch_correct": 190,
+    "notehead_pitch_wrong": 7,
+    "notehead_pitch_accuracy": 0.9644670050761421,
+    "per_category": {
+      "notehead": {
+        "tp": 197,
+        "fp": 1,
+        "pending": 45
+      },
+      "rest": {
+        "tp": 5,
+        "fp": 0,
+        "pending": 18
+      },
+      "structural": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 193
+      },
+      "clef": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 10
+      },
+      "dynamic": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 1
+      },
+      "accidental": {
+        "tp": 1,
+        "fp": 0,
+        "pending": 18
+      },
+      "flag": {
+        "tp": 2,
+        "fp": 0,
+        "pending": 5
+      },
+      "ornament": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 4
+      }
+    }
+  },
+  "per_piece": {
+    "beet5-p10": {
+      "cells": 2,
+      "n_total_detections": 37,
+      "n_pending": 36,
+      "n_tp": 1,
+      "n_fp": 0,
+      "n_fn": 4,
+      "precision": 1.0,
+      "recall": 0.2,
+      "f1": 0.33333333333333337,
+      "notehead_pitch_correct": 0,
+      "notehead_pitch_wrong": 1,
+      "notehead_pitch_accuracy": 0.0,
+      "per_category": {
+        "notehead": {
+          "tp": 1,
+          "fp": 0,
+          "pending": 26
+        },
+        "rest": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 2
+        },
+        "structural": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 8
+        }
+      }
+    },
+    "wtc-p10": {
+      "cells": 5,
+      "n_total_detections": 57,
+      "n_pending": 50,
+      "n_tp": 6,
+      "n_fp": 1,
+      "n_fn": 24,
+      "precision": 0.8571428571428571,
+      "recall": 0.2,
+      "f1": 0.32432432432432434,
+      "notehead_pitch_correct": 6,
+      "notehead_pitch_wrong": 0,
+      "notehead_pitch_accuracy": 1.0,
+      "per_category": {
+        "clef": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 5
+        },
+        "structural": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 33
+        },
+        "dynamic": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 1
+        },
+        "notehead": {
+          "tp": 6,
+          "fp": 1,
+          "pending": 11
+        }
+      }
+    },
+    "wtc-p5": {
+      "cells": 15,
+      "n_total_detections": 406,
+      "n_pending": 208,
+      "n_tp": 198,
+      "n_fp": 0,
+      "n_fn": 9,
+      "precision": 1.0,
+      "recall": 0.9565217391304348,
+      "f1": 0.9777777777777777,
+      "notehead_pitch_correct": 184,
+      "notehead_pitch_wrong": 6,
+      "notehead_pitch_accuracy": 0.968421052631579,
+      "per_category": {
+        "clef": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 5
+        },
+        "rest": {
+          "tp": 5,
+          "fp": 0,
+          "pending": 16
+        },
+        "notehead": {
+          "tp": 190,
+          "fp": 0,
+          "pending": 8
+        },
+        "structural": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 152
+        },
+        "accidental": {
+          "tp": 1,
+          "fp": 0,
+          "pending": 18
+        },
+        "flag": {
+          "tp": 2,
+          "fp": 0,
+          "pending": 5
+        },
+        "ornament": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 4
+        }
+      }
+    }
+  },
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 22
+}

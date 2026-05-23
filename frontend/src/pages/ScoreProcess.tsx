@@ -296,19 +296,19 @@ export default function ScoreProcess() {
                 style={{
                   padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600,
                   cursor: 'pointer', transition: 'all 0.15s',
-                  border: selectedEngine === 'audiveris' ? '2px solid #1a1a2e' : '2px solid #ccc',
-                  background: selectedEngine === 'audiveris' ? '#1a1a2e' : '#fff',
-                  color: selectedEngine === 'audiveris' ? '#fff' : '#555',
+                  border: selectedEngine === 'local' ? '2px solid #1a1a2e' : '2px solid #ccc',
+                  background: selectedEngine === 'local' ? '#1a1a2e' : '#fff',
+                  color: selectedEngine === 'local' ? '#fff' : '#555',
                 }}
-                onClick={() => setSelectedEngine('audiveris')}
+                onClick={() => setSelectedEngine('local')}
               >
-                Audiveris (Java)
+                Local YOLO OMR
               </button>
             </div>
             <p style={{ color: '#888', fontSize: 12, marginBottom: 16, textAlign: 'center' as const }}>
               {selectedEngine === 'claude_vision'
-                ? 'Claude Vision reads the score visually and generates MusicXML. Best quality, uses API credits.'
-                : 'Audiveris runs locally via Java. Fast but often inaccurate on complex scores.'}
+                ? 'Claude Vision reads the score visually and generates MusicXML. Slower; uses API credits.'
+                : 'In-house YOLOv8 + classical-CV pipeline (tools/omr). Default. Fast, runs locally, no API cost.'}
             </p>
             <button
               style={styles.primaryBtn}
@@ -327,7 +327,7 @@ export default function ScoreProcess() {
             <div style={styles.ctaTitle}>
               {omrEngine === 'claude_vision'
                 ? 'Claude Vision is reading your score…'
-                : 'Audiveris is scanning your score…'}
+                : 'Local YOLO OMR is scanning your score…'}
             </div>
             {omrProgress && omrProgress.total_pages > 0 ? (
               <>

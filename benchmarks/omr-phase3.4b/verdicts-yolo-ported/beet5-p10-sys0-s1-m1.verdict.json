@@ -1,0 +1,66 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m1",
+  "verdicts": [
+    {
+      "detection_id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": "TP"
+    },
+    {
+      "detection_id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D3",
+      "smufl_name": "accidentalNatural",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D4",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D5",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D6",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D7",
+      "smufl_name": "staff",
+      "verdict": ""
+    },
+    {
+      "detection_id": "D8",
+      "smufl_name": "restWhole",
+      "verdict": ""
+    }
+  ],
+  "fn_noteheads": [
+    {
+      "tm_id": "D1",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 230,
+      "y_canonical": 539
+    },
+    {
+      "tm_id": "D2",
+      "category": "notehead",
+      "tm_smufl_name": "noteheadBlack",
+      "x_canonical": 234,
+      "y_canonical": 835
+    }
+  ]
+}

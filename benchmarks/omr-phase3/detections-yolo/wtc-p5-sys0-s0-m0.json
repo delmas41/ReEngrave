@@ -1,0 +1,70 @@
+{
+  "cell_id": "wtc-p5-sys0-s0-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "bird",
+      "category": "unknown",
+      "x": 286,
+      "y": 290,
+      "w": 67,
+      "h": 51,
+      "x_center": 319,
+      "y_center": 315,
+      "confidence": 0.12392891943454742,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "bird",
+      "category": "unknown",
+      "x": 447,
+      "y": 409,
+      "w": 91,
+      "h": 56,
+      "x_center": 492,
+      "y_center": 437,
+      "confidence": 0.09214464575052261,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "apple",
+      "category": "unknown",
+      "x": 448,
+      "y": 410,
+      "w": 88,
+      "h": 54,
+      "x_center": 492,
+      "y_center": 437,
+      "confidence": 0.052593860775232315,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "bird",
+      "category": "unknown",
+      "x": 651,
+      "y": 201,
+      "w": 53,
+      "h": 55,
+      "x_center": 677,
+      "y_center": 228,
+      "confidence": 0.09908697009086609,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "bird",
+      "category": "unknown",
+      "x": 655,
+      "y": 115,
+      "w": 51,
+      "h": 117,
+      "x_center": 680,
+      "y_center": 173,
+      "confidence": 0.5158818960189819,
+      "pitch": null
+    }
+  ]
+}

@@ -381,11 +381,11 @@ export default function Dashboard() {
 
       {/* New score actions */}
       <div style={styles.newScoreRow}>
-        <button style={styles.newBtn('primary')} onClick={() => navigate('/search')}>
-          + Search IMSLP
-        </button>
-        <button style={styles.newBtn('secondary')} onClick={() => navigate('/upload')}>
+        <button style={styles.newBtn('primary')} onClick={() => navigate('/upload')}>
           + Upload File
+        </button>
+        <button style={styles.newBtn('secondary')} onClick={() => navigate('/gradus')}>
+          + Gradus Library
         </button>
       </div>
 
@@ -397,7 +397,7 @@ export default function Dashboard() {
         <div style={styles.emptyState}>
           <div style={styles.emptyIcon}>🎼</div>
           <div style={{ fontWeight: 600, color: '#666', marginBottom: 8 }}>No scores yet</div>
-          <div>Search IMSLP or upload a PDF to get started.</div>
+          <div>Upload a PDF or visit the Gradus Library to get started.</div>
         </div>
       )}
       {scores.length > 0 && (

@@ -1,12 +1,21 @@
 """
 Export module for ReEngrave.
 Handles exporting corrected scores as MusicXML, LilyPond source, or engraved PDF.
+
+When a score was produced by the local OMR pipeline (tools/omr), a
+transcribe.py JSON is stashed at Score.metadata_json['omr_json_path'].
+We prefer that path for LilyPond/PDF export because it skips a lossy
+MusicXML → musicxml2ly hop. Falls back to the MusicXML→musicxml2ly
+route when the JSON isn't available (e.g. for direct MusicXML uploads).
 """
 
 from __future__ import annotations
 
+import json
+import logging
 import os
 import shutil
+import sys
 import zipfile
 from enum import Enum
 from pathlib import Path
@@ -17,7 +26,31 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models import FlaggedDifference, Score
-from modules.lilypond_engrave import generate_full_pipeline, musicxml_to_lilypond
+from modules.lilypond_engrave import (
+    engrave_score,
+    generate_full_pipeline,
+    musicxml_to_lilypond,
+)
+
+
+logger = logging.getLogger(__name__)
+
+
+# Make the `tools` package importable for tools.omr.export.to_lilypond.
+# Two layouts to support:
+#   * Docker:  /app/modules/export_module.py  → tools/ at /app/tools (parents[1])
+#   * Dev:     <repo>/backend/modules/export_module.py  → tools/ at <repo>/tools (parents[2])
+def _find_omr_root() -> Path:
+    here = Path(__file__).resolve()
+    for candidate in (here.parents[1], here.parents[2]):
+        if (candidate / "tools" / "omr").is_dir():
+            return candidate
+    return here.parents[2]
+
+
+_REPO_ROOT = _find_omr_root()
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 
 # ---------------------------------------------------------------------------
@@ -82,12 +115,29 @@ async def export_as_lilypond(
 ) -> str:
     """Export corrected score as a LilyPond .ly source file.
 
+    Prefers a direct OMR-JSON → LilyPond conversion (via
+    `tools.omr.export.to_lilypond`) when available, which skips the
+    lossy musicxml2ly hop. Falls back to MusicXML → musicxml2ly when
+    the OMR JSON isn't on disk (e.g. direct MusicXML uploads).
+
     Returns the path to the .ly file.
     """
-    # First produce corrected MusicXML
-    xml_path = await export_as_musicxml(score_id, output_dir, db)
+    score = await _get_score(score_id, db)
+    omr_json_path = _omr_json_path_for(score)
 
-    # Convert to LilyPond
+    if omr_json_path and os.path.isfile(omr_json_path):
+        ly_path = os.path.join(output_dir, f"{score_id}_corrected.ly")
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        from tools.omr.export import to_lilypond  # lazy import
+        with open(omr_json_path, "r", encoding="utf-8") as fh:
+            omr_result = json.load(fh)
+        ly_str = to_lilypond(omr_result)
+        with open(ly_path, "w", encoding="utf-8") as fh:
+            fh.write(ly_str)
+        return ly_path
+
+    # Fallback path — MusicXML → musicxml2ly → .ly
+    xml_path = await export_as_musicxml(score_id, output_dir, db)
     ly_path = await musicxml_to_lilypond(xml_path, output_dir)
     return ly_path
 
@@ -95,14 +145,36 @@ async def export_as_lilypond(
 async def export_as_pdf(
     score_id: str, output_dir: str, db: AsyncSession
 ) -> str:
-    """Run full LilyPond engrave pipeline and return PDF path."""
-    xml_path = await export_as_musicxml(score_id, output_dir, db)
+    """Run full LilyPond engrave pipeline and return PDF path.
 
+    Same preference order as `export_as_lilypond`: tools.omr.export →
+    LilyPond → PDF when an OMR JSON is on disk, otherwise the
+    MusicXML route.
+    """
+    score = await _get_score(score_id, db)
+    omr_json_path = _omr_json_path_for(score)
+
+    if omr_json_path and os.path.isfile(omr_json_path):
+        ly_path = await export_as_lilypond(score_id, output_dir, db)
+        engrave_result = await engrave_score(ly_path, output_dir)
+        if engrave_result.error_message:
+            raise RuntimeError(f"Engraving failed: {engrave_result.error_message}")
+        return engrave_result.full_score_pdf_path
+
+    # Fallback path — MusicXML → musicxml2ly → LilyPond → PDF
+    xml_path = await export_as_musicxml(score_id, output_dir, db)
     result = await generate_full_pipeline(xml_path, output_dir)
     if result.error_message:
         raise RuntimeError(f"Engraving failed: {result.error_message}")
-
     return result.full_score_pdf_path
+
+
+def _omr_json_path_for(score: Score) -> str:
+    """Return the path to the transcribe.py JSON for this score, or ""
+    if not present. Stored on Score.metadata_json by the OMR step.
+    """
+    meta = score.metadata_json or {}
+    return str(meta.get("omr_json_path") or "")
 
 
 async def apply_corrections_to_musicxml(

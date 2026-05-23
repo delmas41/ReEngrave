@@ -13,7 +13,6 @@ class Settings(BaseSettings):
     database_url: str = "sqlite+aiosqlite:///./reengrave.db"
     upload_dir: str = "./uploads"
     export_dir: str = "./exports"
-    audiveris_home: str = "/opt/Audiveris"
 
     # --- Auth ---
     secret_key: str = "changeme-please-use-a-long-random-string-in-production"

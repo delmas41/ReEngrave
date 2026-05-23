@@ -1,0 +1,18 @@
+{
+  "cell_id": "wtc-p5-sys0-s0-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "bird",
+      "category": "unknown",
+      "x": 881,
+      "y": 237,
+      "w": 66,
+      "h": 98,
+      "x_center": 914,
+      "y_center": 286,
+      "confidence": 0.06919021904468536,
+      "pitch": null
+    }
+  ]
+}

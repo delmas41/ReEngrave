@@ -1,0 +1,109 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m4",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 1,
+      "y": 393,
+      "w": 126,
+      "h": 11,
+      "x_center": 64,
+      "y_center": 398,
+      "confidence": 0.42286917567253113,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 18,
+      "y": 591,
+      "w": 345,
+      "h": 14,
+      "x_center": 190,
+      "y_center": 598,
+      "confidence": 0.39211228489875793,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 11,
+      "y": 494,
+      "w": 523,
+      "h": 9,
+      "x_center": 272,
+      "y_center": 498,
+      "confidence": 0.3500802218914032,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 180,
+      "y": 394,
+      "w": 508,
+      "h": 10,
+      "x_center": 434,
+      "y_center": 399,
+      "confidence": 0.5006684064865112,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 146,
+      "y": 494,
+      "w": 1138,
+      "h": 12,
+      "x_center": 715,
+      "y_center": 500,
+      "confidence": 0.28497079014778137,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 678,
+      "y": 393,
+      "w": 514,
+      "h": 10,
+      "x_center": 935,
+      "y_center": 398,
+      "confidence": 0.43326354026794434,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 1245,
+      "y": 393,
+      "w": 407,
+      "h": 10,
+      "x_center": 1448,
+      "y_center": 398,
+      "confidence": 0.57248854637146,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "beam",
+      "category": "unknown",
+      "x": 1418,
+      "y": 798,
+      "w": 237,
+      "h": 9,
+      "x_center": 1536,
+      "y_center": 802,
+      "confidence": 0.40782397985458374,
+      "pitch": null
+    }
+  ]
+}

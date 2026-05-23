@@ -1,0 +1,44 @@
+{
+  "cell_id": "beet5-p10-sys0-s1-m3",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 12,
+      "y": 449,
+      "w": 340,
+      "h": 29,
+      "x_center": 182,
+      "y_center": 463,
+      "confidence": 0.5618561506271362,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 27,
+      "y": 540,
+      "w": 321,
+      "h": 33,
+      "x_center": 187,
+      "y_center": 556,
+      "confidence": 0.2830736041069031,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1010,
+      "y": 1049,
+      "w": 40,
+      "h": 37,
+      "x_center": 1030,
+      "y_center": 1067,
+      "confidence": 0.30177363753318787,
+      "pitch": null
+    }
+  ]
+}

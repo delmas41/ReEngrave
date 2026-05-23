@@ -1,0 +1,31 @@
+{
+  "cell_id": "bolero-p15-sys0-s1-m4",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 980,
+      "y": 212,
+      "w": 87,
+      "h": 34,
+      "x_center": 1023,
+      "y_center": 229,
+      "confidence": 0.8777713775634766,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 2,
+      "y": 138,
+      "w": 2044,
+      "h": 200,
+      "x_center": 1024,
+      "y_center": 238,
+      "confidence": 0.7646998763084412,
+      "pitch": null
+    }
+  ]
+}

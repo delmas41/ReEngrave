@@ -1,0 +1,98 @@
+{
+  "overall": {
+    "cells": 3,
+    "n_total_detections": 54,
+    "n_pending": 2,
+    "n_tp": 41,
+    "n_fp": 11,
+    "n_fn": 0,
+    "precision": 0.7884615384615384,
+    "recall": 1.0,
+    "f1": 0.8817204301075269,
+    "notehead_pitch_correct": 40,
+    "notehead_pitch_wrong": 0,
+    "notehead_pitch_accuracy": 1.0,
+    "per_category": {
+      "flag": {
+        "tp": 0,
+        "fp": 2,
+        "pending": 0
+      },
+      "notehead": {
+        "tp": 40,
+        "fp": 2,
+        "pending": 1
+      },
+      "rest": {
+        "tp": 1,
+        "fp": 3,
+        "pending": 1
+      },
+      "barline": {
+        "tp": 0,
+        "fp": 1,
+        "pending": 0
+      },
+      "stem": {
+        "tp": 0,
+        "fp": 2,
+        "pending": 0
+      },
+      "time_sig_digit": {
+        "tp": 0,
+        "fp": 1,
+        "pending": 0
+      }
+    }
+  },
+  "per_piece": {
+    "wtc-p5": {
+      "cells": 3,
+      "n_total_detections": 54,
+      "n_pending": 2,
+      "n_tp": 41,
+      "n_fp": 11,
+      "n_fn": 0,
+      "precision": 0.7884615384615384,
+      "recall": 1.0,
+      "f1": 0.8817204301075269,
+      "notehead_pitch_correct": 40,
+      "notehead_pitch_wrong": 0,
+      "notehead_pitch_accuracy": 1.0,
+      "per_category": {
+        "flag": {
+          "tp": 0,
+          "fp": 2,
+          "pending": 0
+        },
+        "notehead": {
+          "tp": 40,
+          "fp": 2,
+          "pending": 1
+        },
+        "rest": {
+          "tp": 1,
+          "fp": 3,
+          "pending": 1
+        },
+        "barline": {
+          "tp": 0,
+          "fp": 1,
+          "pending": 0
+        },
+        "stem": {
+          "tp": 0,
+          "fp": 2,
+          "pending": 0
+        },
+        "time_sig_digit": {
+          "tp": 0,
+          "fp": 1,
+          "pending": 0
+        }
+      }
+    }
+  },
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 3
+}

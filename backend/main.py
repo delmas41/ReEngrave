@@ -49,11 +49,11 @@ from database.models import (
 from dependencies import get_current_user
 from modules import (
     analytics,
-    audiveris_omr,
     claude_vision,
     claude_vision_omr,
     export_module,
     file_import,
+    local_omr,
 )
 from modules.export_module import ExportFormat
 from routers.auth import router as auth_router
@@ -206,9 +206,16 @@ async def run_omr(
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
-    omr_engine: str = Query("claude_vision", regex="^(audiveris|claude_vision)$"),
+    omr_engine: str = Query("local", regex="^(local|claude_vision)$"),
 ):
-    """Run OMR on a score's PDF using the selected engine."""
+    """Run OMR on a score's PDF.
+
+    Engines:
+      - ``local`` (default): in-house YOLOv8 + classical-CV pipeline in
+        ``tools/omr`` (see ``backend/modules/local_omr.py``).
+      - ``claude_vision``: Claude Vision API reads each page directly
+        (slower, costs API tokens, but supports per-page progress).
+    """
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
     if score is None:
@@ -255,20 +262,39 @@ async def run_omr(
                         s.original_pdf_path, output_dir,
                         progress_callback=_progress_callback,
                     )
+                    s.musicxml_path = omr.musicxml_path or s.musicxml_path
+                    s.status = "review" if omr.musicxml_path else "error"
+                    meta = {"omr_engine": omr_engine}
+                    if omr.error_message:
+                        meta["omr_error"] = omr.error_message
+                    if omr.measures_count:
+                        meta["measures_count"] = omr.measures_count
+                    if omr.confidence_score:
+                        meta["confidence_score"] = omr.confidence_score
+                    s.metadata_json = meta
                 else:
-                    omr = await audiveris_omr.run_audiveris(
+                    # local (YOLO) — primary engine. No per-page progress
+                    # callback (runs inside asyncio.to_thread); we still
+                    # emit a single transition for the UI.
+                    omr = await local_omr.run_local_omr(
                         s.original_pdf_path, output_dir,
                     )
-                s.musicxml_path = omr.musicxml_path or s.musicxml_path
-                s.status = "review" if omr.musicxml_path else "error"
-                meta = {"omr_engine": omr_engine}
-                if omr.error_message:
-                    meta["omr_error"] = omr.error_message
-                if omr.measures_count:
-                    meta["measures_count"] = omr.measures_count
-                if omr.confidence_score:
-                    meta["confidence_score"] = omr.confidence_score
-                s.metadata_json = meta
+                    s.musicxml_path = omr.musicxml_path or s.musicxml_path
+                    s.status = "review" if omr.musicxml_path else "error"
+                    meta = {"omr_engine": omr_engine}
+                    if omr.omr_json_path:
+                        meta["omr_json_path"] = omr.omr_json_path
+                    if omr.confidence_score:
+                        meta["confidence_score"] = omr.confidence_score
+                    if omr.measures_count:
+                        meta["measures_count"] = omr.measures_count
+                    if omr.pages_processed:
+                        meta["omr_pages"] = omr.pages_processed
+                    if omr.runtime_seconds:
+                        meta["omr_runtime_s"] = omr.runtime_seconds
+                    if omr.error_message:
+                        meta["omr_error"] = omr.error_message
+                    s.metadata_json = meta
             except Exception as exc:
                 s.status = "error"
                 s.metadata_json = {"omr_engine": omr_engine, "error": str(exc)}

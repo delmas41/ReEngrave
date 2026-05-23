@@ -1,0 +1,44 @@
+{
+  "cell_id": "lamer-p15-sys1-s6-m8",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 3,
+      "y": 308,
+      "w": 316,
+      "h": 71,
+      "x_center": 161,
+      "y_center": 343,
+      "confidence": 0.3296371400356293,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1,
+      "y": 586,
+      "w": 433,
+      "h": 92,
+      "x_center": 217,
+      "y_center": 632,
+      "confidence": 0.346958190202713,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 0,
+      "y": 411,
+      "w": 438,
+      "h": 174,
+      "x_center": 219,
+      "y_center": 498,
+      "confidence": 0.3590172529220581,
+      "pitch": null
+    }
+  ]
+}

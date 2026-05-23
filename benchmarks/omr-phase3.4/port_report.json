@@ -1,0 +1,2850 @@
+{
+  "aggregate": {
+    "n_cells": 25,
+    "n_tm_filled_total": 262,
+    "n_ported_tp": 159,
+    "n_ported_fp": 0,
+    "n_orphan_tp_fn_for_yolo": 83,
+    "n_orphan_fp_dropped": 20,
+    "per_category": {
+      "accidental": {
+        "ported_tp": 0,
+        "ported_fp": 0,
+        "orphan_tp": 1,
+        "orphan_fp": 1
+      },
+      "notehead": {
+        "ported_tp": 154,
+        "ported_fp": 0,
+        "orphan_tp": 77,
+        "orphan_fp": 19
+      },
+      "rest": {
+        "ported_tp": 5,
+        "ported_fp": 0,
+        "orphan_tp": 0,
+        "orphan_fp": 0
+      },
+      "flag": {
+        "ported_tp": 0,
+        "ported_fp": 0,
+        "orphan_tp": 5,
+        "orphan_fp": 0
+      }
+    }
+  },
+  "per_cell": [
+    {
+      "cell_id": "beet5-p10-sys0-s0-m0",
+      "status": "ported",
+      "n_tm_filled": 1,
+      "n_yolo_detections": 11,
+      "n_ported_tp": 0,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 11,
+      "per_category": {
+        "accidental": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 1
+        }
+      },
+      "matched_pairs": [],
+      "orphan_tps": [],
+      "orphan_fps": [
+        {
+          "tm_id": "D0",
+          "category": "accidental",
+          "tm_smufl_name": "accidentalFlat",
+          "x_canonical": 291,
+          "y_canonical": 470
+        }
+      ]
+    },
+    {
+      "cell_id": "beet5-p10-sys0-s1-m0",
+      "status": "ported",
+      "n_tm_filled": 6,
+      "n_yolo_detections": 2,
+      "n_ported_tp": 0,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 6,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 6
+        }
+      },
+      "matched_pairs": [],
+      "orphan_tps": [],
+      "orphan_fps": [
+        {
+          "tm_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 114,
+          "y_canonical": 230
+        },
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 142,
+          "y_canonical": 194
+        },
+        {
+          "tm_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 440,
+          "y_canonical": 127
+        },
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 451,
+          "y_canonical": 101
+        },
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1453,
+          "y_canonical": 232
+        },
+        {
+          "tm_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1701,
+          "y_canonical": 130
+        }
+      ]
+    },
+    {
+      "cell_id": "beet5-p10-sys0-s1-m1",
+      "status": "ported",
+      "n_tm_filled": 4,
+      "n_yolo_detections": 15,
+      "n_ported_tp": 1,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 2,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 14,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 1,
+          "ported_fp": 0,
+          "orphan_tp": 2,
+          "orphan_fp": 1
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 9.06
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 230,
+          "y_canonical": 539
+        },
+        {
+          "tm_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 234,
+          "y_canonical": 835
+        }
+      ],
+      "orphan_fps": [
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 536,
+          "y_canonical": 540
+        }
+      ]
+    },
+    {
+      "cell_id": "beet5-p10-sys0-s1-m2",
+      "status": "ported",
+      "n_tm_filled": 5,
+      "n_yolo_detections": 6,
+      "n_ported_tp": 2,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 3,
+      "n_yolo_pending_unverdicted": 4,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 2,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 3
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 10.82
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 21.95
+        }
+      ],
+      "orphan_tps": [],
+      "orphan_fps": [
+        {
+          "tm_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 305,
+          "y_canonical": 403
+        },
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1069,
+          "y_canonical": 478
+        },
+        {
+          "tm_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1682,
+          "y_canonical": 398
+        }
+      ]
+    },
+    {
+      "cell_id": "beet5-p10-sys0-s1-m3",
+      "status": "ported",
+      "n_tm_filled": 1,
+      "n_yolo_detections": 0,
+      "n_ported_tp": 0,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 0,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 1
+        }
+      },
+      "matched_pairs": [],
+      "orphan_tps": [],
+      "orphan_fps": [
+        {
+          "tm_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1526,
+          "y_canonical": 468
+        }
+      ]
+    },
+    {
+      "cell_id": "wtc-p10-sys0-s0-m0",
+      "status": "ported",
+      "n_tm_filled": 9,
+      "n_yolo_detections": 8,
+      "n_ported_tp": 6,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 3,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 6,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 3
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D2",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D6",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.66
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.0
+        }
+      ],
+      "orphan_tps": [],
+      "orphan_fps": [
+        {
+          "tm_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadWhole",
+          "x_canonical": 892,
+          "y_canonical": 477
+        },
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadWhole",
+          "x_canonical": 902,
+          "y_canonical": 410
+        },
+        {
+          "tm_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1456,
+          "y_canonical": 150
+        }
+      ]
+    },
+    {
+      "cell_id": "wtc-p10-sys0-s0-m1",
+      "status": "ported",
+      "n_tm_filled": 6,
+      "n_yolo_detections": 10,
+      "n_ported_tp": 6,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 4,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 6,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.0
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.94
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 6.0
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 9.85
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.0
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.6
+        }
+      ],
+      "orphan_tps": [],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p10-sys0-s0-m2",
+      "status": "ported",
+      "n_tm_filled": 6,
+      "n_yolo_detections": 5,
+      "n_ported_tp": 5,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 1,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 0,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 5,
+          "ported_fp": 0,
+          "orphan_tp": 1,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 6.4
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.94
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 10.77
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.94
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.06
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1240,
+          "y_canonical": 350
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p10-sys0-s0-m3",
+      "status": "ported",
+      "n_tm_filled": 6,
+      "n_yolo_detections": 14,
+      "n_ported_tp": 6,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 8,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 6,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.24
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.54
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 7.62
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 6.32
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 9.85
+        }
+      ],
+      "orphan_tps": [],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p10-sys0-s0-m4",
+      "status": "ported",
+      "n_tm_filled": 6,
+      "n_yolo_detections": 5,
+      "n_ported_tp": 5,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 1,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 0,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 5,
+          "ported_fp": 0,
+          "orphan_tp": 1,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 9.43
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 11.4
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 9.85
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.06
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 7.21
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1242,
+          "y_canonical": 350
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys0-s0-m0",
+      "status": "ported",
+      "n_tm_filled": 10,
+      "n_yolo_detections": 7,
+      "n_ported_tp": 5,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 4,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 5,
+          "ported_fp": 0,
+          "orphan_tp": 4,
+          "orphan_fp": 1
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D6",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 6.08
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.0
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 321,
+          "y_canonical": 317
+        },
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 689,
+          "y_canonical": 415
+        },
+        {
+          "tm_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1070,
+          "y_canonical": 364
+        },
+        {
+          "tm_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1770,
+          "y_canonical": 317
+        }
+      ],
+      "orphan_fps": [
+        {
+          "tm_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 681,
+          "y_canonical": 170
+        }
+      ]
+    },
+    {
+      "cell_id": "wtc-p5-sys0-s0-m1",
+      "status": "ported",
+      "n_tm_filled": 14,
+      "n_yolo_detections": 14,
+      "n_ported_tp": 11,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 3,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 3,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 10,
+          "ported_fp": 0,
+          "orphan_tp": 3,
+          "orphan_fp": 0
+        },
+        "rest": {
+          "ported_tp": 1,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D1",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.24
+        },
+        {
+          "tm_id": "D6",
+          "yolo_id": "D5",
+          "category": "rest",
+          "tm_smufl_name": "rest8th",
+          "yolo_smufl_name": "rest8th",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.83
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D9",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D11",
+          "yolo_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.0
+        },
+        {
+          "tm_id": "D13",
+          "yolo_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 82,
+          "y_canonical": 445
+        },
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 654,
+          "y_canonical": 340
+        },
+        {
+          "tm_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1664,
+          "y_canonical": 338
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys0-s0-m2",
+      "status": "ported",
+      "n_tm_filled": 18,
+      "n_yolo_detections": 17,
+      "n_ported_tp": 14,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 4,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 3,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 14,
+          "ported_fp": 0,
+          "orphan_tp": 4,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.1
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.1
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D6",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D9",
+          "yolo_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D11",
+          "yolo_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.83
+        },
+        {
+          "tm_id": "D14",
+          "yolo_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D15",
+          "yolo_id": "D15",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 1.0
+        },
+        {
+          "tm_id": "D17",
+          "yolo_id": "D16",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 78,
+          "y_canonical": 262
+        },
+        {
+          "tm_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1399,
+          "y_canonical": 213
+        },
+        {
+          "tm_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1582,
+          "y_canonical": 312
+        },
+        {
+          "tm_id": "D16",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1864,
+          "y_canonical": 166
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys0-s1-m0",
+      "status": "ported",
+      "n_tm_filled": 11,
+      "n_yolo_detections": 8,
+      "n_ported_tp": 7,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 3,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 1,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 6,
+          "ported_fp": 0,
+          "orphan_tp": 2,
+          "orphan_fp": 1
+        },
+        "rest": {
+          "ported_tp": 1,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        },
+        "flag": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 1,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.24
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 6.32
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D3",
+          "category": "rest",
+          "tm_smufl_name": "rest8th",
+          "yolo_smufl_name": "rest8th",
+          "verdict": "TP",
+          "distance_px": 2.0
+        },
+        {
+          "tm_id": "D6",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D9",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 6.08
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.24
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 876,
+          "y_canonical": 221
+        },
+        {
+          "tm_id": "D5",
+          "category": "flag",
+          "tm_smufl_name": "flag8thUp",
+          "x_canonical": 894,
+          "y_canonical": 159
+        },
+        {
+          "tm_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1259,
+          "y_canonical": 171
+        }
+      ],
+      "orphan_fps": [
+        {
+          "tm_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 681,
+          "y_canonical": 365
+        }
+      ]
+    },
+    {
+      "cell_id": "wtc-p5-sys0-s1-m1",
+      "status": "ported",
+      "n_tm_filled": 14,
+      "n_yolo_detections": 14,
+      "n_ported_tp": 12,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 2,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 12,
+          "ported_fp": 0,
+          "orphan_tp": 2,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D1",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.1
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D6",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.25
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.25
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D11",
+          "yolo_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 6.32
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D13",
+          "yolo_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.25
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1334,
+          "y_canonical": 236
+        },
+        {
+          "tm_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1877,
+          "y_canonical": 289
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys0-s1-m2",
+      "status": "ported",
+      "n_tm_filled": 17,
+      "n_yolo_detections": 14,
+      "n_ported_tp": 12,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 4,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 11,
+          "ported_fp": 0,
+          "orphan_tp": 3,
+          "orphan_fp": 1
+        },
+        "flag": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 1,
+          "orphan_fp": 0
+        },
+        "rest": {
+          "ported_tp": 1,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 2.83
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.39
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.83
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.83
+        },
+        {
+          "tm_id": "D9",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 8.25
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D10",
+          "category": "rest",
+          "tm_smufl_name": "rest8th",
+          "yolo_smufl_name": "rest8th",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D13",
+          "yolo_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.83
+        },
+        {
+          "tm_id": "D16",
+          "yolo_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 1.41
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 769,
+          "y_canonical": 264
+        },
+        {
+          "tm_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1061,
+          "y_canonical": 313
+        },
+        {
+          "tm_id": "D11",
+          "category": "flag",
+          "tm_smufl_name": "flag16thUp",
+          "x_canonical": 1220,
+          "y_canonical": 75
+        },
+        {
+          "tm_id": "D15",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1585,
+          "y_canonical": 360
+        }
+      ],
+      "orphan_fps": [
+        {
+          "tm_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1574,
+          "y_canonical": 168
+        }
+      ]
+    },
+    {
+      "cell_id": "wtc-p5-sys1-s2-m0",
+      "status": "ported",
+      "n_tm_filled": 21,
+      "n_yolo_detections": 10,
+      "n_ported_tp": 8,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 13,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 8,
+          "ported_fp": 0,
+          "orphan_tp": 13,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 1.41
+        },
+        {
+          "tm_id": "D11",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.0
+        },
+        {
+          "tm_id": "D18",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D19",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 217,
+          "y_canonical": 179
+        },
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 550,
+          "y_canonical": 179
+        },
+        {
+          "tm_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 632,
+          "y_canonical": 162
+        },
+        {
+          "tm_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 800,
+          "y_canonical": 146
+        },
+        {
+          "tm_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 801,
+          "y_canonical": 113
+        },
+        {
+          "tm_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 966,
+          "y_canonical": 212
+        },
+        {
+          "tm_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 967,
+          "y_canonical": 113
+        },
+        {
+          "tm_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1219,
+          "y_canonical": 113
+        },
+        {
+          "tm_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1344,
+          "y_canonical": 130
+        },
+        {
+          "tm_id": "D15",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1527,
+          "y_canonical": 145
+        },
+        {
+          "tm_id": "D16",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1569,
+          "y_canonical": 162
+        },
+        {
+          "tm_id": "D17",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1697,
+          "y_canonical": 146
+        },
+        {
+          "tm_id": "D20",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1948,
+          "y_canonical": 179
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys1-s2-m1",
+      "status": "ported",
+      "n_tm_filled": 19,
+      "n_yolo_detections": 10,
+      "n_ported_tp": 9,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 10,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 1,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 9,
+          "ported_fp": 0,
+          "orphan_tp": 9,
+          "orphan_fp": 0
+        },
+        "accidental": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 1,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.83
+        },
+        {
+          "tm_id": "D4",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 6.32
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D9",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D16",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D17",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D2",
+          "category": "accidental",
+          "tm_smufl_name": "accidentalFlat",
+          "x_canonical": 222,
+          "y_canonical": 74
+        },
+        {
+          "tm_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 579,
+          "y_canonical": 115
+        },
+        {
+          "tm_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 582,
+          "y_canonical": 213
+        },
+        {
+          "tm_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 880,
+          "y_canonical": 135
+        },
+        {
+          "tm_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1181,
+          "y_canonical": 134
+        },
+        {
+          "tm_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1181,
+          "y_canonical": 174
+        },
+        {
+          "tm_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1480,
+          "y_canonical": 134
+        },
+        {
+          "tm_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1482,
+          "y_canonical": 213
+        },
+        {
+          "tm_id": "D15",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1620,
+          "y_canonical": 175
+        },
+        {
+          "tm_id": "D18",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1921,
+          "y_canonical": 135
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys1-s2-m2",
+      "status": "ported",
+      "n_tm_filled": 4,
+      "n_yolo_detections": 4,
+      "n_ported_tp": 2,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 2,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 2,
+          "ported_fp": 0,
+          "orphan_tp": 2,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 7.07
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 20.25
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 68,
+          "y_canonical": 344
+        },
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 708,
+          "y_canonical": 350
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys1-s3-m0",
+      "status": "ported",
+      "n_tm_filled": 14,
+      "n_yolo_detections": 6,
+      "n_ported_tp": 3,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 11,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 3,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 3,
+          "ported_fp": 0,
+          "orphan_tp": 11,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D2",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.0
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 217,
+          "y_canonical": 245
+        },
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 381,
+          "y_canonical": 164
+        },
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 631,
+          "y_canonical": 147
+        },
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 632,
+          "y_canonical": 114
+        },
+        {
+          "tm_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 803,
+          "y_canonical": 180
+        },
+        {
+          "tm_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 971,
+          "y_canonical": 78
+        },
+        {
+          "tm_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1344,
+          "y_canonical": 65
+        },
+        {
+          "tm_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1432,
+          "y_canonical": 78
+        },
+        {
+          "tm_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1527,
+          "y_canonical": 97
+        },
+        {
+          "tm_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1528,
+          "y_canonical": 180
+        },
+        {
+          "tm_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1821,
+          "y_canonical": 163
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys1-s3-m1",
+      "status": "ported",
+      "n_tm_filled": 16,
+      "n_yolo_detections": 13,
+      "n_ported_tp": 9,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 7,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 4,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 9,
+          "ported_fp": 0,
+          "orphan_tp": 6,
+          "orphan_fp": 0
+        },
+        "flag": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 1,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D2",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D6",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.83
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D13",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D14",
+          "yolo_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.0
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 76,
+          "y_canonical": 175
+        },
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 481,
+          "y_canonical": 175
+        },
+        {
+          "tm_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 882,
+          "y_canonical": 137
+        },
+        {
+          "tm_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1033,
+          "y_canonical": 94
+        },
+        {
+          "tm_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1182,
+          "y_canonical": 214
+        },
+        {
+          "tm_id": "D12",
+          "category": "flag",
+          "tm_smufl_name": "flag8thUp",
+          "x_canonical": 1192,
+          "y_canonical": 69
+        },
+        {
+          "tm_id": "D15",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1921,
+          "y_canonical": 136
+        }
+      ],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys1-s3-m2",
+      "status": "ported",
+      "n_tm_filled": 2,
+      "n_yolo_detections": 2,
+      "n_ported_tp": 2,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 0,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 0,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 2,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 25.3
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 22.09
+        }
+      ],
+      "orphan_tps": [],
+      "orphan_fps": []
+    },
+    {
+      "cell_id": "wtc-p5-sys2-s4-m0",
+      "status": "ported",
+      "n_tm_filled": 18,
+      "n_yolo_detections": 17,
+      "n_ported_tp": 12,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 5,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 5,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 11,
+          "ported_fp": 0,
+          "orphan_tp": 3,
+          "orphan_fp": 1
+        },
+        "flag": {
+          "ported_tp": 0,
+          "ported_fp": 0,
+          "orphan_tp": 2,
+          "orphan_fp": 0
+        },
+        "rest": {
+          "ported_tp": 1,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 6.32
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.0
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.0
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D9",
+          "yolo_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D13",
+          "category": "rest",
+          "tm_smufl_name": "rest8th",
+          "yolo_smufl_name": "rest8th",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D13",
+          "yolo_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D16",
+          "yolo_id": "D16",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 724,
+          "y_canonical": 175
+        },
+        {
+          "tm_id": "D6",
+          "category": "flag",
+          "tm_smufl_name": "flag8thDown",
+          "x_canonical": 1002,
+          "y_canonical": 462
+        },
+        {
+          "tm_id": "D11",
+          "category": "flag",
+          "tm_smufl_name": "flag8thUp",
+          "x_canonical": 1235,
+          "y_canonical": 185
+        },
+        {
+          "tm_id": "D15",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1666,
+          "y_canonical": 326
+        },
+        {
+          "tm_id": "D17",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1991,
+          "y_canonical": 325
+        }
+      ],
+      "orphan_fps": [
+        {
+          "tm_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1659,
+          "y_canonical": 125
+        }
+      ]
+    },
+    {
+      "cell_id": "wtc-p5-sys2-s4-m1",
+      "status": "ported",
+      "n_tm_filled": 15,
+      "n_yolo_detections": 14,
+      "n_ported_tp": 11,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 3,
+      "n_orphan_fp_dropped": 1,
+      "n_yolo_pending_unverdicted": 3,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 10,
+          "ported_fp": 0,
+          "orphan_tp": 3,
+          "orphan_fp": 1
+        },
+        "rest": {
+          "ported_tp": 1,
+          "ported_fp": 0,
+          "orphan_tp": 0,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D1",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.24
+        },
+        {
+          "tm_id": "D3",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 1.41
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D7",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D9",
+          "yolo_id": "D9",
+          "category": "rest",
+          "tm_smufl_name": "rest8th",
+          "yolo_smufl_name": "rest8th",
+          "verdict": "TP",
+          "distance_px": 2.24
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D11",
+          "yolo_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.24
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D13",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D13",
+          "yolo_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.39
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1236,
+          "y_canonical": 276
+        },
+        {
+          "tm_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1479,
+          "y_canonical": 327
+        },
+        {
+          "tm_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1956,
+          "y_canonical": 429
+        }
+      ],
+      "orphan_fps": [
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1108,
+          "y_canonical": 126
+        }
+      ]
+    },
+    {
+      "cell_id": "wtc-p5-sys2-s4-m2",
+      "status": "ported",
+      "n_tm_filled": 19,
+      "n_yolo_detections": 13,
+      "n_ported_tp": 11,
+      "n_ported_fp": 0,
+      "n_orphan_tp_fn_for_yolo": 8,
+      "n_orphan_fp_dropped": 0,
+      "n_yolo_pending_unverdicted": 2,
+      "per_category": {
+        "notehead": {
+          "ported_tp": 11,
+          "ported_fp": 0,
+          "orphan_tp": 8,
+          "orphan_fp": 0
+        }
+      },
+      "matched_pairs": [
+        {
+          "tm_id": "D0",
+          "yolo_id": "D0",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D2",
+          "yolo_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.16
+        },
+        {
+          "tm_id": "D5",
+          "yolo_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D7",
+          "yolo_id": "D5",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 5.1
+        },
+        {
+          "tm_id": "D8",
+          "yolo_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.24
+        },
+        {
+          "tm_id": "D10",
+          "yolo_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D12",
+          "yolo_id": "D8",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 4.47
+        },
+        {
+          "tm_id": "D13",
+          "yolo_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 4.12
+        },
+        {
+          "tm_id": "D15",
+          "yolo_id": "D10",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 5.1
+        },
+        {
+          "tm_id": "D16",
+          "yolo_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackOnLine",
+          "verdict": "TP",
+          "distance_px": 3.61
+        },
+        {
+          "tm_id": "D17",
+          "yolo_id": "D12",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "yolo_smufl_name": "noteheadBlackInSpace",
+          "verdict": "TP",
+          "distance_px": 6.32
+        }
+      ],
+      "orphan_tps": [
+        {
+          "tm_id": "D1",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 80,
+          "y_canonical": 316
+        },
+        {
+          "tm_id": "D3",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 579,
+          "y_canonical": 414
+        },
+        {
+          "tm_id": "D4",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 580,
+          "y_canonical": 267
+        },
+        {
+          "tm_id": "D6",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1000,
+          "y_canonical": 269
+        },
+        {
+          "tm_id": "D9",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1225,
+          "y_canonical": 315
+        },
+        {
+          "tm_id": "D11",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1338,
+          "y_canonical": 219
+        },
+        {
+          "tm_id": "D14",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1588,
+          "y_canonical": 316
+        },
+        {
+          "tm_id": "D18",
+          "category": "notehead",
+          "tm_smufl_name": "noteheadBlack",
+          "x_canonical": 1958,
+          "y_canonical": 317
+        }
+      ],
+      "orphan_fps": []
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "cell_id": "lamer-p15-sys1-s6-m11",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 30,
+      "y": 0,
+      "w": 85,
+      "h": 33,
+      "x_center": 72,
+      "y_center": 16,
+      "confidence": 0.2635481655597687,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 53,
+      "y": 13,
+      "w": 61,
+      "h": 31,
+      "x_center": 83,
+      "y_center": 28,
+      "confidence": 0.25034239888191223,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 497,
+      "w": 476,
+      "h": 101,
+      "x_center": 238,
+      "y_center": 547,
+      "confidence": 0.40830403566360474,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 0,
+      "y": 220,
+      "w": 476,
+      "h": 59,
+      "x_center": 238,
+      "y_center": 249,
+      "confidence": 0.357494056224823,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 249,
+      "y": 567,
+      "w": 24,
+      "h": 22,
+      "x_center": 261,
+      "y_center": 578,
+      "confidence": 0.25780510902404785,
+      "pitch": null
+    }
+  ]
+}
