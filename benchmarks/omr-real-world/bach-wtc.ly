@@ -77,13 +77,13 @@
         \voiceOne
         <a fis>8 <g b>16 <cis' e>8 <d' d>8.. e'16 d'8 <c' e>8 |
         e'16 <e' f>16 f'16 <e' bes>16 d'8 <cis' e>8 |
-        <g a>64 <g g>8 |
+        <g a>32 <g g>8 |
         }
         \new Voice {
         \voiceTwo
         a,8 <f' f>16 |
-        <g b>8.. a16 g16 a32 a32 bes32 |
-        <g a>64 <g g>8 |
+        <g b>8.. a8 g8 a32 a8 bes8 |
+        <g a>32 <g g>8 |
         }
       >>
     }

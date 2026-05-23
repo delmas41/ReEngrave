@@ -120,6 +120,33 @@ Updated numbers (target 4.0 for 4/4):
 | ravel-bolero       | 5.80 | 5.80 (0 flagged) |
 | beethoven-5        | 6.28 | **3.77** (18/98 flagged) |
 
+## Phase 4j update — MAD-based system splitting
+
+Further investigation of Beethoven 5 showed Phase 1 was also lumping
+multiple bracketed sub-systems into one "system": staves 0-6 (winds)
++ staff 7 (brass) were grouped together, even though there's a clear
+239 px gap (15 line spacings) between staves 6 and 7. The 80% vote
+threshold for barlines then fails because real barlines only span
+the sub-system, not the whole "system".
+
+Added a **MAD-based secondary system-break check** in
+`staff_detector._assign_systems`: any gap greater than 2× the median
+inter-staff gap also counts as a system break (in addition to the
+existing bipartition + max-factor rules). Tested:
+
+| PDF | All-measures avg (4/4 target) | After MAD fix |
+|---|--:|--:|
+| bach-wtc        | 3.70 | 3.70 (5 systems, unchanged) |
+| handel-leads   | 3.73 | 3.73 (3 systems, unchanged) |
+| handel-reduce  | 1.57 | 1.57 (2 systems, unchanged) |
+| ravel-bolero   | 5.80 | 5.80 (3 systems, unchanged) |
+| beethoven-5    | 6.28 | **3.95** (4 systems, was 2) |
+
+Beethoven 5 now hits **3.95 across all 150 measures** (target 4.0) —
+essentially correct. The MAD fix had no effect on Bach/Handel/Ravel
+because they don't have hidden sub-systems within their detected
+systems.
+
 So:
 - **Bach + Handel-leadsheet are essentially correct** (3.70-3.73 ≈ 4.0).
 - **Beethoven is correct once Phase-1 outliers are dropped.**

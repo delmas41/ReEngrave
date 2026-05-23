@@ -44,7 +44,7 @@
     <<
       \new Voice {
       \voiceOne
-      gis'16 fis'16 e'16 |
+      gis'8 fis'8 e'4 |
       b'1 |
       a,4 |
       <d e>8 b,8 cis8 |
@@ -55,7 +55,7 @@
       }
       \new Voice {
       \voiceTwo
-      b'16 |
+      b'4 |
       b'1 |
       a,4 |
       <d e>8 b,8 cis8 |
@@ -202,9 +202,9 @@
     \time 4/4
     r4 cis''4 fis''4 |
     <e'' e''>4 cis''4 <e'' fis'' fis''>4 |
-    e''8 <cis'' d''>8 cis''16 <e'' fis''>8 |
+    e''8 <cis'' d''>8 cis''8 <e'' fis''>4 |
     <e'' e''>4 <cis'' cis''>4 <e'' fis''>4 |
-    e''16 <cis'' d''>16 cis''32 <cis'' cis''>32 |
+    e''8 <cis'' d''>8 cis''8 <cis'' cis''>8 |
     e''8 |
     r1 |
     <e'' fis''>4 |
@@ -235,9 +235,9 @@
       \voiceOne
       a''1 <cis'' e''>4 |
       <e'' cis'' cis''>8 <cis'' e'' fis'' e d'' d''>8 |
-      <cis'' e'' cis''>8 <cis'' e'' d'' fis'' d'' d''>8 |
+      <cis'' e'' cis''>8 <cis'' e'' d'' fis'' d'' d''>4 |
       <cis'' fis'' d'' e d''>4 |
-      <d'' a'' e'' a'' e'' a''>16 <cis'' d''>16 <e'' cis'' a' cis''>8 <cis'' cis''>16 |
+      <d'' a'' e'' a'' e'' a''>8 <cis'' d''>4 <e'' cis'' a' cis''>4 <cis'' cis''>4 |
       <gis' a' b' d'' e'' b'>16 |
       e''64 |
       <a' cis'' gis' e'' cis'' fis'' d'' d'' d'' e'' b'>8 |
@@ -250,7 +250,7 @@
       <e'' a'' e''>8 |
       <e'' a'' e''>8 <cis'' d''>8 |
       <b'' e'' e''>8 <e'' cis'' e''>4 |
-      <d'' a'' e'' a'' e'' a''>16 <cis'' d''>16 <e'' cis'' a' cis''>8 <cis'' cis''>16 |
+      <d'' a'' e'' a'' e'' a''>8 <cis'' d''>4 <e'' cis'' a' cis''>4 <cis'' cis''>4 |
       <gis' a' b' d'' e'' b'>16 |
       e''64 |
       <a' cis'' gis' e'' cis'' fis'' d'' d'' d'' e'' b'>8 |

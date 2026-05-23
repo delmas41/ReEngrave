@@ -188,6 +188,20 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
     if threshold is None:
         threshold = mean_spacing * MAX_SYSTEM_GAP_FACTOR
 
+    # Secondary MAD-based threshold: catches mid-magnitude system breaks
+    # that bipartition merges with the small-gap cluster. Common on
+    # orchestral scores where there's a clearly-bigger-than-normal gap
+    # between bracketed sub-systems (e.g., winds vs brass vs strings)
+    # but it's still much smaller than the page-spanning system break.
+    # Rule: a gap > 2.0 × median + max(0, gap > min(fallback, ...)) is
+    # also a break. This is additive — a gap counts as break if EITHER
+    # threshold fires.
+    if gaps:
+        median_gap = float(np.median(gaps))
+        mad_threshold = median_gap * 2.0
+    else:
+        mad_threshold = float("inf")
+
     current_system = 0
     staves_sorted[0].system_index = 0
     for i in range(1, len(staves_sorted)):
@@ -197,7 +211,12 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
         overlap = min(prev.x_end, cur.x_end) - max(prev.x_start, cur.x_start)
         min_extent = min(prev.x_end - prev.x_start, cur.x_end - cur.x_start)
         x_overlap_frac = overlap / max(1, min_extent)
-        if gap >= threshold or x_overlap_frac <= 0.5:
+        is_break = (
+            gap >= threshold
+            or gap >= mad_threshold
+            or x_overlap_frac <= 0.5
+        )
+        if is_break:
             current_system += 1
         cur.system_index = current_system
     return staves_sorted

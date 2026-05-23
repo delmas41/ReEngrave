@@ -13,7 +13,7 @@
     \key e \major
     \time 4/4
     r8 cis''8 fis''4 r2 |
-    b'8 cis''8 dis''8 fis''8 fis''8 |
+    b'4 cis''4 dis''8 fis''8 fis''4 |
     r1 |
     r8 cis''8 dis''8 cis''8 dis''8 cis''8 dis''8 cis''8 |
   }
@@ -56,14 +56,14 @@
       \voiceOne
       cis''16 b'16 ais'8 ais'8 cis''8 dis''8 e''16 dis''16 cis''16 b'16 dis''16 e''8 dis''8 cis''8 e''8 |
       r2 r4 r8 fis'8 |
-      fis'32 |
+      fis'8 |
       fis'2 |
       }
       \new Voice {
       \voiceTwo
       cis''16 b'16 ais'8 ais'8 cis''8 dis''8 e''16 dis''16 cis''16 b'16 dis''16 e''8 dis''8 cis''8 e''8 |
-      r2 fis''16 b'16 r4 r8 b'8 dis''8 |
-      fis''4 e''32 dis''32 e''32 dis''32 cis''32 b'8 |
+      r2 fis''4 b'8 r4 r8 b'8 dis''8 |
+      fis''4 e''8 dis''8 e''8 dis''8 cis''8 b'8 |
       fis'2 |
       }
     >>
@@ -114,7 +114,7 @@
     fis'8 fis'8 r4 r2 |
     r2 r4 r8 b8 |
     e'16 dis'16 r8 b'8 b'8 b'8 b'8 b'8 |
-    b'32 b'32 r8 b'8 gis'8 gis'8 gis'8 gis'8 |
+    b'8 b'8 r8 b'8 gis'8 gis'8 gis'8 gis'8 |
   }
   \new Staff {
     \clef treble
@@ -183,14 +183,14 @@
     <<
       \new Voice {
       \voiceOne
-      cis'4 r4 e'16 e'16 e'16 e'16 |
+      cis'4 r4 e'8 e'8 e'8 e'8 |
       e'4 r4 e'8 e'8 e'8 e'8 |
       b4 r8 |
       b4.. r8 fis8 |
       }
       \new Voice {
       \voiceTwo
-      cis'4 r4 e'16 e'16 e'16 e'16 |
+      cis'4 r4 e'8 e'8 e'8 e'8 |
       e'4 r4 e'8 e'8 e'8 e'8 |
       e'64 e'64 e'64 cis'32 r8 cis'8 |
       fis'8 fis'4 r8 |
@@ -204,14 +204,14 @@
     <<
       \new Voice {
       \voiceOne
-      e''16 dis''16 e''16 dis''16 e''2 |
+      e''8 dis''8 e''8 dis''8 e''2 |
       e''8 dis''8 e''8 dis''8 e''2 |
       r8 ais'8 |
       r8 ais'8 |
       }
       \new Voice {
       \voiceTwo
-      e''16 dis''16 e''16 dis''16 e''2 |
+      e''8 dis''8 e''8 dis''8 e''2 |
       e''8 dis''8 e''8 dis''8 e''2 |
       e''4 r8 cis''8 dis''64 gis''64 fis''64 |
       b'4 r8 cis''8 dis''8 gis''8 fis''8 |
@@ -225,15 +225,15 @@
     <<
       \new Voice {
       \voiceOne
-      fis4 r4 fis16 gis16 ais16 gis16 |
-      fis4 r4 fis32 gis32 ais32 gis32 |
+      fis4 r4 fis8 gis8 ais8 gis8 |
+      fis4 r4 fis8 gis8 ais8 gis8 |
       ais8 |
       <b, b'>8 e8 dis8 fis8 b,8 e8 dis8 fis8 |
       }
       \new Voice {
       \voiceTwo
-      fis4 r4 fis16 gis16 ais16 gis16 |
-      fis4 r4 fis32 gis32 ais32 gis32 |
+      fis4 r4 fis8 gis8 ais8 gis8 |
+      fis4 r4 fis8 gis8 ais8 gis8 |
       fis8 gis8 ais,8 b,8 e8 dis8 fis8 |
       <b, b'>8 e8 dis8 fis8 b,8 e8 dis8 fis8 |
       }

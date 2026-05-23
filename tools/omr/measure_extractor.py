@@ -42,6 +42,18 @@ PAD_BELOW_STAFF_LINES = 4
 # This filters out note stems (too short), beams (wrong orientation), and
 # accidentals/chord clusters (too wide).
 BARLINE_MIN_HEIGHT_FRAC = 0.80
+# Investigated bumping this 0.80 → 0.85 → 0.95 to fix Beethoven 5
+# orchestral over-counting:
+#   0.80 (this default): Bach 3.70, Beethoven 98 measures + 18 wide outliers
+#   0.85: Bach 3.70 (no change), Beethoven 162 measures (over-segmented)
+#   0.95: Bach 3.99 (slight improvement), Beethoven 218 measures (worse over-seg)
+# Higher thresholds fragment Beethoven into too many measures because the
+# real barlines on the orchestral score don't always span the full staff
+# (they sometimes show as section breaks between bracketed groups). A
+# proper fix needs cross-staff-system connectivity analysis, not a single
+# threshold. Sticking with 0.80 for now and using the `phase1_warning`
+# flag on outlier-wide cells (Phase 4i) to identify the problematic
+# measures downstream.
 BARLINE_MAX_WIDTH_LINESPACINGS = 0.7  # stems are typically ~0.3 line-spacing wide
 BARLINE_MIN_DISTANCE_PX = 60      # neighbouring barlines must be ≥60px apart
 

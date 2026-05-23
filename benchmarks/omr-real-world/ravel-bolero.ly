@@ -12,12 +12,12 @@
     \clef treble
     \key b \major
     \time 4/4
-    b''8 b''16 cis'''16 dis'''16 cis'''16 b''64 ais''64 gis''64 fis''32 |
-    gis''16 fis''8 e''8 e''16 e''16 fis''16 gis''32 ais''32 |
+    b''8 b''8 cis'''8 dis'''8 cis'''8 b''64 ais''64 gis''64 fis''32 |
+    gis''16 fis''8 e''8 e''8 e''8 fis''8 gis''8 ais''8 |
     fis''4 b''2 |
     b''2 b''8 r8 |
-    <fis''' e>16 <fis''' e>16.. e'''8 dis'''8 cis'''8 dis'''8 e'''8 |
-    fis'''16 e'''16 dis'''16 dis'''16 e'''16 dis'''16 cis'''16 e'''16 dis'''16 cis'''8 ais''8 |
+    <fis''' e>8 <fis''' e>16.. e'''8 dis'''8 cis'''8 dis'''8 e'''8 |
+    fis'''8 e'''8 dis'''8 dis'''8 e'''8 dis'''8 cis'''8 e'''16 dis'''16 cis'''8 ais''8 |
   }
   \new Staff {
     \clef treble
@@ -30,8 +30,8 @@
       b'8 a'16 g'8 g'8 g'16 a'8 |
       a'8 |
       d''2 d''8 r8 |
-      a''64 a''32.. g''16 fis''16 e''16 fis''32 g''32 |
-      a''16 g''8 fis''8 fis''16 g''16 fis''8 e''8 g''16 fis''8 e''8 c''8 |
+      a''16 a''16.. g''8 fis''8 e''8 fis''16 g''16 |
+      a''16 g''8 fis''8 fis''8 g''8 fis''8 e''8 g''16 fis''8 e''8 c''8 |
       }
       \new Voice {
       \voiceTwo
@@ -39,8 +39,8 @@
       b'16 c''16 |
       <d'' d''>2 |
       d''2 d''8 r8 |
-      a''64 a''32.. g''16 fis''16 e''16 fis''32 g''32 |
-      a''16 g''8 fis''8 fis''16 g''16 fis''8 e''8 g''16 fis''8 e''8 c''8 |
+      a''16 a''16.. g''8 fis''8 e''8 fis''16 g''16 |
+      a''16 g''8 fis''8 fis''8 g''8 fis''8 e''8 g''16 fis''8 e''8 c''8 |
       }
     >>
   }
@@ -48,12 +48,12 @@
     \clef treble
     \key c \major
     \time 4/4
-    g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 |
-    g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'16 g'16 |
-    g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 |
-    g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 |
-    g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 |
-    g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 |
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 |
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'16 g'16 g'16 g'16 g'16 |
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 |
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'16 g'16 g'16 g'16 g'16 g'16 |
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 |
+    g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 g'8 |
   }
   \new Staff {
     \clef treble
@@ -106,7 +106,7 @@
     \clef treble
     \key c \major
     \time 4/4
-    g''8 g''8 a''8 b''32 a''8 f''8 e''8 e''8 e''16 e''8 c''8 c''8 c''8 d''8 f''16 f''8 e''4 g''2 a''2 a''8 r8 d'''16 d'''32 d'''8 b''32 a''16 b''32 c'''16 d'''64 d'''16 b''32 b''32 c'''8 b''8 b''8 d'''16 b''64 b''8 g''8 |
+    g''8 g''4 a''8 b''8 a''8 f''8 e''8 e''8 e''16 e''8 c''8 c''8 c''8 d''8 f''4 f''4 e''4 g''2 a''2 a''8 r8 d'''16 d'''16 d'''8 b''8 a''8 b''8 c'''8 d'''32 d'''8 b''16 b''8 c'''8 b''8 b''8 d'''16 b''64 b''8 g''8 |
   }
   \new Staff {
     \clef treble
@@ -115,7 +115,7 @@
     <<
       \new Voice {
       \voiceOne
-      g'8 g'8 a'8 c''8 a'8 g'8 f'8 e'8 d'8 e'8 e'8 c'8 c'8 <c' c'>16 e'16 <e' e'>4 f'8 e'4 g'2 g'2 g'8 r8 c''8 c''16 a'16 f'32 |
+      g'8 g'8 a'8 c''8 a'8 g'8 f'8 e'8 d'8 e'8 e'8 c'8 c'8 <c' c'>8 e'4 <e' e'>4 f'4 e'4 g'2 g'2 g'8 r8 c''8 c''16 a'16 f'32 |
       }
       \new Voice {
       \voiceTwo
@@ -157,7 +157,7 @@
     \clef treble
     \key c \major
     \time 4/4
-    <g' b>8 <g' f''>16 <f'' f' b>16 <g' b>8 g'16 <f'' f'>16 <g' f'' b>16 <g' b>8 g'16 <f'' g'>16 <f'' g' b>16 <b g'>8 f'16 <f'' g'>16 <f'' b f'>16 <g' b>8 <f' f''>16 g'16 <f'' g' b>16 <b g'>8 g'16 f''16 <f'' b f'>16 |
+    <g' b>8 <g' f''>8 <f'' f' b>8 <g' b>8 g'8 <f'' f'>8 <g' f'' b>8 <g' b>8 g'8 <f'' g'>8 <f'' g' b>8 <b g'>8 f'8 <f'' g'>8 <f'' b f'>8 <g' b>8 <f' f''>8 g'8 <f'' g' b>8 <b g'>8 g'8 f''8 <f'' b f'>8 |
   }
   \new Staff {
     \clef bass
@@ -175,7 +175,7 @@
     \clef treble
     \key a \major
     \time 4/4
-    b''8 a''16 b''16 b''8 cis'''8 e'''16 cis'''16 d'''16 b''16 b''8 b''16 a''16 b''8 cis'''8 d'''16 b''32 cis'''32 b''32 fis''8 fis''16 e''16 fis''8 fis''8 fis''16 fis''16 fis''16 a''16 cis'''16 b''32 b''32 gis''32 fis''8 fis''16 e''16 fis''8 <fis'' fis''>8 fis''16 e''16 fis''4 gis''16 b''16 b''2 b''32 b''8 gis''8 fis''8 |
+    b''8 a''8 b''8 b''8 cis'''8 e'''8 cis'''8 d'''8 b''8 b''8 b''8 a''8 b''8 cis'''8 d'''8 b''8 cis'''8 b''8 fis''4 fis''4 e''8 fis''8 fis''4 fis''4 fis''4 fis''16 a''16 cis'''8 b''8 b''8 gis''4 fis''4 fis''4 e''8 fis''8 <fis'' fis''>4 fis''4 e''4 fis''4 gis''4 b''8 b''2 b''32 b''8 gis''8 fis''8 |
   }
   \new Staff {
     \clef treble
@@ -196,7 +196,7 @@
     \clef treble
     \key c \major
     \time 4/4
-    g'8 g'16 g'16 g'8 g'16 g'16 g'8 g'8 g'8 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'8 g'8 g'8 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'8 g'8 g'8 g'16 g'16 g'16 g'8 g'16 g'16 g'16 g'16 g'16 g'16 g'16 g'16 |
+    g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 g'4 |
   }
   \new Staff {
     \clef treble
@@ -217,7 +217,7 @@
     <<
       \new Voice {
       \voiceOne
-      c''8 <c'' e'>8 e''16 e''32 <c'' e'>8 c''8 <c'' e'>8 e''16 c''32 <c'' e'>8 e'8 a'8 <c'' e'>16 <c'' d'>8 <e'' e'>16 c''16 <e'' e'>16 c''32 <b' e'>8 e'8 <c'' e'>8 <c'' d'>8 e'8 <c'' d'>16 c''16 <e'' d'>2 c''8 |
+      c''8 <c'' e'>8 e''16 e''32 <c'' e'>8 c''8 <c'' e'>8 e''16 c''32 <c'' e'>8 e'8 a'8 <c'' e'>8 <c'' d'>8 <e'' e'>16 c''16 <e'' e'>16 c''32 <b' e'>8 e'8 <c'' e'>8 <c'' d'>8 e'8 <c'' d'>16 c''16 <e'' d'>2 c''8 |
       }
       \new Voice {
       \voiceTwo
@@ -229,22 +229,22 @@
     \clef treble
     \key c \major
     \time 4/4
-    f''16 f''16 f''16 f''32 a''32 c'''16 a''16 b''8 g''8 |
-    f''16 f''16 f''16 f''32 a''32 b''16 g''8 a''8 f''8 |
-    d''8 d''8 c''8 d''16 d''16 d''16 d''16 |
+    f''8 f''8 f''8 f''32 a''32 c'''16 a''8 b''8 g''8 |
+    f''8 f''8 f''8 f''32 a''32 b''16 g''8 a''8 f''8 |
+    d''8 d''8 c''8 d''16 d''8 d''8 d''8 |
     d''8 f''8 a''16 f''16 g''16 e''8 d''8 d''16 c''8 |
-    d''16 d''8 d''8 c''8 d''32 e''32 f''64 |
+    d''16 d''8 d''8 c''8 d''8 e''8 f''8 |
     g''2 g''16 f''8 e''8 d''8 |
   }
   \new Staff {
     \clef treble
     \key c \major
     \time 4/4
-    f'8 f'16 f'16 f'16 a'16 c''16 a'16 b'32 g'64 |
-    f'8 f'16 f'16 f'32 a'32 b'64 g'64 a'64 f'64 |
-    d'8 d'8 c'16 d'16 d'16 d'16 d'16 |
-    d'32 f'32 a'8 f'8 g'8 e'16 d'8 d'16 c'16 |
-    d'8 d'16 d'16 c'32 d'16 e'16 f'16 |
+    f'8 f'8 f'8 f'16 a'16 c''16 a'16 b'32 g'64 |
+    f'8 f'8 f'8 f'32 a'32 b'64 g'64 a'64 f'64 |
+    d'8 d'8 c'16 d'8 d'8 d'8 d'8 |
+    d'32 f'32 a'8 f'8 g'8 e'16 d'8 d'8 c'8 |
+    d'32 d'16 d'16 c'16 d'16 e'16 f'16 |
     g'2 g'8 f'8 e'16 d'16 |
   }
   \new Staff {
