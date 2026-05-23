@@ -17,9 +17,9 @@
   "n_rests_total": 314,
   "n_rests_with_duration_total": 130,
   "runtime": {
-    "phase1_s": 2.63,
-    "yolo_s": 25.8,
-    "total_s": 28.43
+    "phase1_s": 2.76,
+    "yolo_s": 25.75,
+    "total_s": 28.52
   },
   "pages": [
     {
@@ -223,7 +223,7 @@
                       "dots": 0
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         502,
@@ -239,8 +239,8 @@
                       ],
                       "confidence": 0.675,
                       "pitch": "F6",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {
@@ -3563,7 +3563,7 @@
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         511,
@@ -3579,8 +3579,8 @@
                       ],
                       "confidence": 0.25,
                       "pitch": "Cb5",
-                      "duration_beats": 0.125,
-                      "duration_type": "thirty_second",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     }
@@ -7131,7 +7131,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         243,
@@ -7147,8 +7147,8 @@
                       ],
                       "confidence": 0.255,
                       "pitch": "D3",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     }
                   ]
@@ -12528,7 +12528,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         421,
@@ -12544,8 +12544,8 @@
                       ],
                       "confidence": 0.27,
                       "pitch": "A3",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {
@@ -13326,7 +13326,7 @@
                       "dots": 0
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         1034,
@@ -13342,8 +13342,8 @@
                       ],
                       "confidence": 0.363,
                       "pitch": "Cb5",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {
@@ -14206,7 +14206,7 @@
                       "dots": 0
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         0,
@@ -14222,8 +14222,8 @@
                       ],
                       "confidence": 0.342,
                       "pitch": "G4",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {
@@ -19045,7 +19045,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         390,
@@ -19061,8 +19061,8 @@
                       ],
                       "confidence": 0.324,
                       "pitch": "F6",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {
@@ -21412,7 +21412,7 @@
                       "dots": 0
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         285,
@@ -21428,8 +21428,8 @@
                       ],
                       "confidence": 0.305,
                       "pitch": "D3",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {
@@ -27951,7 +27951,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         1720,
@@ -27967,8 +27967,8 @@
                       ],
                       "confidence": 0.443,
                       "pitch": "E6",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {
@@ -33798,7 +33798,7 @@
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         1454,
@@ -33814,8 +33814,8 @@
                       ],
                       "confidence": 0.334,
                       "pitch": "F5",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -36305,7 +36305,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackOnLine",
+                      "class": "noteheadHalfOnLine",
                       "category": "notehead",
                       "bbox": [
                         1425,
@@ -36321,8 +36321,8 @@
                       ],
                       "confidence": 0.599,
                       "pitch": "E6",
-                      "duration_beats": 0.125,
-                      "duration_type": "thirty_second",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0
                     },
                     {

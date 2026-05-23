@@ -17,9 +17,9 @@
   "n_rests_total": 50,
   "n_rests_with_duration_total": 4,
   "runtime": {
-    "phase1_s": 3.88,
-    "yolo_s": 24.71,
-    "total_s": 28.59
+    "phase1_s": 3.75,
+    "yolo_s": 24.85,
+    "total_s": 28.6
   },
   "pages": [
     {
@@ -551,7 +551,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         161,
@@ -567,8 +567,8 @@
                       ],
                       "confidence": 0.308,
                       "pitch": "E5",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -618,7 +618,7 @@
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         142,
@@ -634,13 +634,13 @@
                       ],
                       "confidence": 0.51,
                       "pitch": "E5",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         155,
@@ -656,8 +656,8 @@
                       ],
                       "confidence": 0.284,
                       "pitch": "E5",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -1605,7 +1605,7 @@
                   "n_detections": 1,
                   "detections": [
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         145,
@@ -1621,8 +1621,8 @@
                       ],
                       "confidence": 0.524,
                       "pitch": "A2",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     }
@@ -1924,7 +1924,7 @@
                   "n_detections": 2,
                   "detections": [
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         126,
@@ -1940,8 +1940,8 @@
                       ],
                       "confidence": 0.298,
                       "pitch": "C#3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     },
@@ -2620,7 +2620,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         139,
@@ -2636,8 +2636,8 @@
                       ],
                       "confidence": 0.276,
                       "pitch": "E5",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -3783,7 +3783,7 @@
                       "dots": 0
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         138,
@@ -3799,8 +3799,8 @@
                       ],
                       "confidence": 0.289,
                       "pitch": "C#5",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -4064,7 +4064,7 @@
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         156,
@@ -4080,8 +4080,8 @@
                       ],
                       "confidence": 0.262,
                       "pitch": "A3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -4149,7 +4149,7 @@
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         138,
@@ -4165,8 +4165,8 @@
                       ],
                       "confidence": 0.29,
                       "pitch": "E3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -4513,7 +4513,7 @@
                   "n_detections": 1,
                   "detections": [
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         156,
@@ -4529,8 +4529,8 @@
                       ],
                       "confidence": 0.398,
                       "pitch": "A3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -5537,7 +5537,7 @@
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         143,
@@ -5553,8 +5553,8 @@
                       ],
                       "confidence": 0.483,
                       "pitch": "E5",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     },
@@ -5986,7 +5986,7 @@
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         140,
@@ -6002,8 +6002,8 @@
                       ],
                       "confidence": 0.469,
                       "pitch": "E5",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     },
@@ -6206,7 +6206,7 @@
                       "stem_direction": "up"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         155,
@@ -6222,8 +6222,8 @@
                       ],
                       "confidence": 0.49,
                       "pitch": "D4",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -7508,7 +7508,7 @@
                       "dots": 0
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         129,
@@ -7524,13 +7524,13 @@
                       ],
                       "confidence": 0.326,
                       "pitch": "E3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         175,
@@ -7546,8 +7546,8 @@
                       ],
                       "confidence": 0.271,
                       "pitch": "E3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -7906,7 +7906,7 @@
                   "n_detections": 1,
                   "detections": [
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         136,
@@ -7922,8 +7922,8 @@
                       ],
                       "confidence": 0.39,
                       "pitch": "G#3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -8932,7 +8932,7 @@
                       "pitch": null
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         232,
@@ -8948,8 +8948,8 @@
                       ],
                       "confidence": 0.26,
                       "pitch": "E5",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "down"
                     }
@@ -9625,7 +9625,7 @@
                       "dots": 0
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         119,
@@ -9641,13 +9641,13 @@
                       ],
                       "confidence": 0.342,
                       "pitch": "A4",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadWholeInSpace",
                       "category": "notehead",
                       "bbox": [
                         126,
@@ -9663,8 +9663,8 @@
                       ],
                       "confidence": 0.304,
                       "pitch": "A4",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 4.0,
+                      "duration_type": "whole",
                       "dots": 0,
                       "stem_direction": "up"
                     },
@@ -13434,7 +13434,7 @@
                       "stem_direction": "up"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         141,
@@ -13450,8 +13450,8 @@
                       ],
                       "confidence": 0.658,
                       "pitch": "A5",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     },
@@ -13919,7 +13919,7 @@
                       "stem_direction": "up"
                     },
                     {
-                      "class": "noteheadBlackInSpace",
+                      "class": "noteheadHalfInSpace",
                       "category": "notehead",
                       "bbox": [
                         122,
@@ -13935,8 +13935,8 @@
                       ],
                       "confidence": 0.508,
                       "pitch": "A5",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
+                      "duration_beats": 2.0,
+                      "duration_type": "half",
                       "dots": 0,
                       "stem_direction": "up"
                     },

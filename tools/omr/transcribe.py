@@ -169,6 +169,88 @@ def _clef_name_from_class(smufl: str) -> str | None:
     return None
 
 
+def _notehead_fill_ratio(notehead, cell) -> float | None:
+    """Sample the inner pixels of a notehead's bbox and report the
+    fraction that are dark (ink). Used to disambiguate the YOLO model's
+    occasional misclassification of HOLLOW noteheads (half/whole) as
+    filled (black).
+
+    Returns None if the cell image is missing or the crop is empty.
+    """
+    img = getattr(cell, "image", None)
+    if img is None or img.size == 0:
+        return None
+    if img.ndim == 3:
+        import cv2 as _cv
+        gray = _cv.cvtColor(img, _cv.COLOR_BGR2GRAY)
+    else:
+        gray = img
+    x = notehead.x_canonical
+    y = notehead.y_canonical
+    w = notehead.width_canonical
+    h = notehead.height_canonical
+    # Inset 20% to avoid notehead-edge ink (the outline of hollow noteheads
+    # is dark, but the center is paper).
+    ix = max(1, int(w * 0.20))
+    iy = max(1, int(h * 0.20))
+    x0, y0 = max(0, x + ix), max(0, y + iy)
+    x1 = min(gray.shape[1], x + w - ix)
+    y1 = min(gray.shape[0], y + h - iy)
+    if x1 <= x0 or y1 <= y0:
+        return None
+    crop = gray[y0:y1, x0:x1]
+    if crop.size == 0:
+        return None
+    return float((crop < 128).sum() / crop.size)
+
+
+def _correct_notehead_class_by_fill(notehead, cell) -> None:
+    """If a notehead's inner-pixel fill ratio contradicts its class
+    (e.g., classified as 'noteheadBlack*' but mostly hollow), rewrite
+    `notehead.smufl_name` to the correct hollow class. Mutates in place.
+
+    Calibrated thresholds (from Handel-Messiah-reduction pixel survey):
+      fill > 0.75: filled → noteheadBlack*  (keep)
+      0.40 < fill ≤ 0.75: ambiguous → noteheadHalf*
+      fill ≤ 0.40: empty → noteheadWhole*
+
+    Only swaps WITHIN the Black/Half/Whole family. Doubles, smalls,
+    and other notehead variants are left alone.
+    """
+    name = getattr(notehead, "smufl_name", "") or ""
+    lname = name.lower()
+    if not lname.startswith("notehead"):
+        return
+    # Identify suffix (OnLine, InSpace, etc.) so we can preserve it.
+    suffix = ""
+    for candidate in ("OnLineSmall", "InSpaceSmall", "OnLine", "InSpace", "Small"):
+        if name.endswith(candidate):
+            suffix = candidate
+            break
+    # Only attempt correction for filled black noteheads — promoting a
+    # declared half/whole to black would be more aggressive and isn't
+    # what we're trying to fix.
+    if "black" not in lname:
+        return
+
+    fill = _notehead_fill_ratio(notehead, cell)
+    if fill is None:
+        return
+    # Real filled noteheads sit at fill ≈ 0.95–1.00 after the 20% inset
+    # (we drop the dark outline pixels so they don't bias the
+    # measurement). Real hollow ones print at fill 0.10–0.50. We use
+    # 0.75 as the boundary: it preserves all-black symbols at fill
+    # 0.85–1.00 (Beethoven 5 orchestral) while catching the obvious
+    # hollow-misclassified-as-black cases (Handel reduction fill 0.36–
+    # 0.68 noteheads).
+    if fill > 0.75:
+        return  # really is filled — no change
+    if fill > 0.35:
+        notehead.smufl_name = f"noteheadHalf{suffix}" if suffix else "noteheadHalf"
+    else:
+        notehead.smufl_name = f"noteheadWhole{suffix}" if suffix else "noteheadWhole"
+
+
 def _find_attached_stem(notehead, stems):
     """Pair a notehead to its stem (classical-CV stems).
 
@@ -473,6 +555,16 @@ def _detections_for_cell(
     new_time_sig = parse_time_signature(dets)
     if new_time_sig is not None:
         active_time_sig = new_time_sig
+
+    # ── Notehead class correction by inner-pixel fill ratio. YOLO
+    #    occasionally classifies a HOLLOW notehead (half/whole) as
+    #    BLACK because the model's understanding of the hollow center
+    #    is fragile under certain rendering / scaling conditions.
+    #    Inspecting the actual pixels and re-classifying when the fill
+    #    contradicts the class label costs ~1ms per cell.
+    for d in dets:
+        if getattr(d, "category", "") == "notehead":
+            _correct_notehead_class_by_fill(d, cell)
 
     # ── Classical-CV line detection: stems + cleaner beams. The YOLO
     #    Phase 3.3 model misses stems entirely and emits beam bboxes

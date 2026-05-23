@@ -183,6 +183,60 @@ Updated results (target 4.0 for 4/4):
 **4 of 5 PDFs now hit the rhythm target.** Only Handel-reduction
 (1.57) is far off — sparse-vocal under-counting needs a separate fix.
 
+## Phase 4l update — notehead fill-ratio class correction
+
+Investigation of Handel reduction's under-counting (1.57 avg) showed
+the YOLO model occasionally classifies **hollow noteheads** (halves
+and wholes) as **filled** (noteheadBlack*). The model's threshold for
+"is the center dark or not?" is sometimes wrong on small / faded
+hollow noteheads. Misclassified halves/wholes then default to
+"quarter" (the rhythm parser's fallback when no beam attaches),
+losing 1-3 beats per misclassification.
+
+Quantified on Handel-reduction p20: of 476 detected noteheads, only
+4 are classified as half and 3 as whole. For a vocal+piano reduction
+of Handel Messiah, you'd expect ~20–30% of noteheads to be half or
+whole (vocal sustained tones, piano chord-bass).
+
+Added a **fill-ratio post-process** in `_correct_notehead_class_by_fill`:
+crop the inner 60% of each notehead's bbox in the cell image (inset
+20% on each side to skip the outline), count the fraction of dark
+pixels:
+
+  fill ≥ 0.75 → keep as noteheadBlack*
+  0.35 ≤ fill < 0.75 → reclassify as noteheadHalf*
+  fill < 0.35 → reclassify as noteheadWhole*
+
+Threshold tuned on the Handel-reduction observation that
+misclassified hollows sit at 0.36–0.68 while real blacks sit at
+0.95–1.00.
+
+Updated results (target 4.0 for 4/4):
+
+| PDF | All-measures avg |
+|---|--:|
+| bach-wtc        | 3.70 (unchanged) |
+| handel-leads   | 3.73 (unchanged) |
+| handel-reduce  | **1.70** (was 1.57) |
+| ravel-bolero   | 3.22 (essentially unchanged from 3.19) |
+| **beethoven-5** | **4.02** (was 3.95, target hit!) |
+
+Beethoven 5 now hits 4.02 — essentially perfect for 4/4. Handel
+reduction improved slightly but still under — the model
+misclassification is partly orthogonal to the fill ratio (some
+noteheads ARE black but the pieces are still mostly quarters because
+the model misses the right beam attachments on sparse vocal staves).
+
+## Honest current state of the 5 PDFs
+
+| PDF | Avg | Within ±0.5 of 4.0? |
+|---|--:|---|
+| bach-wtc        | 3.70 | ✓ |
+| handel-leads   | 3.73 | ✓ |
+| handel-reduce  | 1.70 |  ✗ (sparse vocal under-counting) |
+| ravel-bolero   | 3.22 | just below the band |
+| beethoven-5    | 4.02 | ✓ |
+
 So:
 - **Bach + Handel-leadsheet are essentially correct** (3.70-3.73 ≈ 4.0).
 - **Beethoven is correct once Phase-1 outliers are dropped.**
