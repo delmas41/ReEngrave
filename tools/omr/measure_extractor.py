@@ -113,6 +113,60 @@ def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
     return deduped
 
 
+def _intersystem_connectivity(
+    bin_img: np.ndarray, staves: list[Staff], x_col: int, x_tolerance: int = 5
+) -> float:
+    """Fraction of inter-staff gaps in this system that have continuous
+    vertical ink at column `x_col` (within ±`x_tolerance` px).
+
+    A real barline is drawn THROUGH the whitespace between staves — it
+    connects the top staff to the bottom staff visually. A false-positive
+    stem only exists within a single staff and has no ink in the gaps
+    between staves. This is a strong discriminator on orchestral pages.
+
+    Diagnostic data from `tools.omr._phase1_diagnostic` on Bach,
+    Beethoven 5 p14, and Ravel Boléro p9:
+      - On Bach (2-staff piano): perfect separation — accepted barlines
+        have connectivity 1.0, rejected have 0.0.
+      - On Beethoven multi-staff systems: 2 currently-accepted columns
+        with 8-9/11 votes had connectivity 0.1-0.3 (stem-aligned chord
+        columns — NOT real barlines). 6 currently-rejected columns had
+        votes 3-6 of 5-11 staves but connectivity 0.8-1.0 (real
+        barlines that the strict vote rule was missing).
+      - On Ravel: 1 rescue (6/8 votes, 0.71 conn); current rule was
+        already clean.
+
+    For single-staff systems (no inter-staff gaps) returns 1.0 so the
+    connectivity gate never rejects them.
+    """
+    if len(staves) < 2:
+        return 1.0
+    ordered = sorted(staves, key=lambda s: s.top_y)
+    n_gaps = len(ordered) - 1
+    n_connected = 0
+    h, w = bin_img.shape
+    for i in range(n_gaps):
+        gap_top = ordered[i].bottom_y + 1
+        gap_bot = ordered[i + 1].top_y
+        if gap_bot <= gap_top:
+            n_connected += 1  # adjacent staves, no actual gap
+            continue
+        x0 = max(0, x_col - x_tolerance)
+        x1 = min(w, x_col + x_tolerance + 1)
+        gap_top_c = max(0, gap_top)
+        gap_bot_c = min(h, gap_bot)
+        if gap_top_c >= gap_bot_c or x0 >= x1:
+            continue
+        gap_strip = bin_img[gap_top_c:gap_bot_c, x0:x1]
+        if gap_strip.size == 0:
+            continue
+        # Binarized convention: 0 = ink, 255 = paper.
+        col_ink_fraction = (gap_strip < 128).mean(axis=0)
+        if col_ink_fraction.max() > 0.5:
+            n_connected += 1
+    return n_connected / max(n_gaps, 1)
+
+
 def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     """Detect barlines via per-staff scanning + system-level voting.
 
@@ -184,11 +238,37 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
 
         y_top = min(s.top_y for s in staves)
         y_bot = max(s.bottom_y for s in staves)
-        # First pass: collect accepted x's (those meeting the vote threshold).
+        # Acceptance rule. On 1-2 staff systems (piano, duet, lead sheet)
+        # the vote rule is enough — the diagnostic showed perfect
+        # separation, no false positives or missed barlines.
+        # On 3+ staff systems (orchestral) two failure modes appear:
+        #   (a) Chord stems align across staves at a non-barline column,
+        #       passing the vote threshold despite no ink in the
+        #       inter-staff gaps. Filter via `connectivity >= 0.4`.
+        #   (b) A real barline is faint or partly obscured and only
+        #       fires on 3-6 of 11 staves, below the strict vote
+        #       threshold. Rescue when `connectivity >= 0.7` (the line
+        #       is clearly drawn through the gaps even though few
+        #       staves voted).
+        # Thresholds were chosen from the cluster-distribution data
+        # captured by `_phase1_diagnostic` on Bach + Beethoven + Ravel.
         accepted: list[int] = []
         for cluster in clusters:
-            if len(cluster) >= min_votes:
-                accepted.append(int(round(sum(cluster) / len(cluster))))
+            x_mean = int(round(sum(cluster) / len(cluster)))
+            n_votes = len(cluster)
+            if n_staves < 3:
+                # Vote-only rule; connectivity isn't meaningful here.
+                if n_votes >= min_votes:
+                    accepted.append(x_mean)
+                continue
+            connectivity = _intersystem_connectivity(bin_img, staves, x_mean)
+            # Prong A: vote-pass + connectivity sanity check.
+            if n_votes >= min_votes and connectivity >= 0.4:
+                accepted.append(x_mean)
+                continue
+            # Prong B: rescue sparse real barlines via strong connectivity.
+            if connectivity >= 0.7 and n_votes >= max(3, int(0.3 * n_staves)):
+                accepted.append(x_mean)
         accepted.sort()
         # Second pass: outlier-small-gap rejection. Real measure widths
         # cluster tightly; false-positive columns produce abnormally small
