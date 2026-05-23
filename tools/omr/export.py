@@ -40,7 +40,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .voicing import group_chords_in_measure
+from .voicing import group_chords_in_measure, split_events_into_voices
 
 
 # ---------------------------------------------------------------------------
@@ -183,13 +183,93 @@ def _lily_event(event: dict[str, Any]) -> str:
     return f"<{' '.join(pitches)}>{lily_suffix}{dot_str}"
 
 
+def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
+    """Render one OMR staff as a LilyPond `\\new Staff { ... }` block.
+
+    If the staff has events with mixed stem directions (both up and
+    down on the same measure), emits a `<<` simultaneous-music block
+    with `\\new Voice { \\voiceOne ... }` + `\\voiceTwo`.
+    """
+    clef = staff.get("clef") or "treble"
+    key_sig = staff.get("key_signature") or {}
+    time_sig = staff.get("time_signature")
+
+    lines: list[str] = [f"{indent}\\new Staff {{"]
+    lines.append(f"{indent}  \\clef {clef}")
+    lily_key = _lily_key_for_sig(
+        key_sig.get("sharps", 0), key_sig.get("flats", 0)
+    )
+    if lily_key is not None:
+        lines.append(f"{indent}  \\key {lily_key} \\major")
+    else:
+        lines.append(f"{indent}  \\key c \\major")
+    if time_sig is not None:
+        n = time_sig.get("numerator", 4)
+        d = time_sig.get("denominator", 4)
+        lines.append(f"{indent}  \\time {n}/{d}")
+    else:
+        lines.append(f"{indent}  \\time 4/4")
+
+    # Decide once for the whole staff whether to render as one-voice
+    # or two-voice. Two-voice only if any measure has BOTH stem-up and
+    # stem-down chords — otherwise it's overkill.
+    needs_two_voices = False
+    per_measure_events: list[list[dict[str, Any]]] = []
+    for measure in staff.get("measures", []):
+        events = group_chords_in_measure(measure.get("detections", []))
+        per_measure_events.append(events)
+        voices = split_events_into_voices(events)
+        if len(voices) > 1:
+            needs_two_voices = True
+
+    if needs_two_voices:
+        # Two-voice block.
+        v1_lines: list[str] = [f"{indent}    \\voiceOne"]
+        v2_lines: list[str] = [f"{indent}    \\voiceTwo"]
+        for events in per_measure_events:
+            voices = split_events_into_voices(events)
+            v1_events = voices[0] if voices else []
+            v2_events = voices[1] if len(voices) >= 2 else voices[0] if voices else []
+            v1_lines.append(
+                f"{indent}    " + " ".join(_lily_event(ev) for ev in v1_events)
+                + " |" if v1_events else f"{indent}    r1 |"
+            )
+            v2_lines.append(
+                f"{indent}    " + " ".join(_lily_event(ev) for ev in v2_events)
+                + " |" if v2_events else f"{indent}    r1 |"
+            )
+        lines.append(f"{indent}  <<")
+        lines.append(f"{indent}    \\new Voice {{")
+        lines.extend(v1_lines)
+        lines.append(f"{indent}    }}")
+        lines.append(f"{indent}    \\new Voice {{")
+        lines.extend(v2_lines)
+        lines.append(f"{indent}    }}")
+        lines.append(f"{indent}  >>")
+    else:
+        # Single voice (the normal case).
+        for events in per_measure_events:
+            if not events:
+                lines.append(f"{indent}  r1 |")
+                continue
+            rendered = " ".join(_lily_event(ev) for ev in events)
+            lines.append(f"{indent}  {rendered} |")
+
+    lines.append(f"{indent}}}")
+    return "\n".join(lines)
+
+
 def to_lilypond(result: dict[str, Any]) -> str:
     """Serialize a transcribe.py result to a LilyPond .ly source string.
 
-    Layout: one Staff per (page, system, position-within-system). Bass
-    clef and treble clef staves on the same system come out as separate
-    Staff blocks (NOT grouped into a PianoStaff yet — that's a small
-    follow-up).
+    Layout:
+      * Each system's staves are wrapped in `\\new PianoStaff << ... >>`
+        when the system has exactly 2 staves (treble + bass, the piano
+        grand-staff case).
+      * Otherwise each staff is its own `\\new Staff` block.
+      * Within a staff, if any measure has both stem-up AND stem-down
+        chords, the staff renders as a two-voice block (`\\voiceOne` +
+        `\\voiceTwo`). Otherwise single voice.
     """
     lines: list[str] = []
     lines.append('\\version "2.20.0"')
@@ -199,56 +279,28 @@ def to_lilypond(result: dict[str, Any]) -> str:
     src = result.get("source_pdf")
     if src:
         lines.append(f'  subtitle = "From: {Path(src).name}"')
-    lines.append("  tagline = ##f")  # suppress LilyPond credit
+    lines.append("  tagline = ##f")
     lines.append("}")
     lines.append("")
 
-    # For each (page, system, staff_position) we emit one \new Staff. We
-    # track "voices" by walking measures sequentially.
-    staff_blocks: list[str] = []
-
+    system_blocks: list[str] = []
     for page in result.get("pages", []):
         for sys_ in page.get("systems", []):
-            for staff in sys_.get("staves", []):
-                clef = staff.get("clef") or "treble"
-                key_sig = staff.get("key_signature") or {}
-                time_sig = staff.get("time_signature")
-
-                staff_lines: list[str] = []
-                staff_lines.append("  \\new Staff {")
-                staff_lines.append(f"    \\clef {clef}")
-                lily_key = _lily_key_for_sig(
-                    key_sig.get("sharps", 0), key_sig.get("flats", 0)
-                )
-                if lily_key is not None:
-                    staff_lines.append(f"    \\key {lily_key} \\major")
-                else:
-                    staff_lines.append("    \\key c \\major")
-                if time_sig is not None:
-                    n = time_sig.get("numerator", 4)
-                    d = time_sig.get("denominator", 4)
-                    staff_lines.append(f"    \\time {n}/{d}")
-                else:
-                    staff_lines.append("    \\time 4/4")
-
-                # Notes per measure.
-                for measure in staff.get("measures", []):
-                    events = group_chords_in_measure(
-                        measure.get("detections", [])
-                    )
-                    if not events:
-                        # Empty measure (or all detections unparsable) — emit
-                        # a whole rest so LilyPond doesn't choke.
-                        staff_lines.append("    r1 |")
-                        continue
-                    rendered = " ".join(_lily_event(ev) for ev in events)
-                    staff_lines.append(f"    {rendered} |")
-                staff_lines.append("  }")
-                staff_blocks.append("\n".join(staff_lines))
+            staves = sys_.get("staves", [])
+            if len(staves) == 2:
+                # PianoStaff grouping
+                block_lines = ["  \\new PianoStaff <<"]
+                for staff in staves:
+                    block_lines.append(_lily_staff_block(staff, indent="    "))
+                block_lines.append("  >>")
+                system_blocks.append("\n".join(block_lines))
+            else:
+                for staff in staves:
+                    system_blocks.append(_lily_staff_block(staff, indent="  "))
 
     lines.append("\\score {")
     lines.append("  <<")
-    lines.extend(staff_blocks)
+    lines.extend(system_blocks)
     lines.append("  >>")
     lines.append("  \\layout { }")
     lines.append("  \\midi { }")
@@ -393,16 +445,32 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
 def to_musicxml(result: dict[str, Any]) -> str:
     """Serialize a transcribe.py result to a MusicXML score-partwise XML
     string. One <part> per (page, system, position-within-system) staff.
+
+    Systems with exactly 2 staves are wrapped in a `<part-group>` with
+    `<group-symbol>brace</group-symbol>` so they render as a piano
+    grand-staff. (Single voice per part — MusicXML voice splitting via
+    <backup> is not implemented in v1.)
     """
     divisions = _compute_divisions(result)
 
     parts_xml: list[str] = []
     part_list: list[str] = []
     part_idx = 0
+    pg_number = 0  # part-group number — increment per piano pair
 
     for page in result.get("pages", []):
         for sys_idx, sys_ in enumerate(page.get("systems", [])):
-            for staff_idx_in_sys, staff in enumerate(sys_.get("staves", [])):
+            staves = sys_.get("staves", [])
+            is_piano = len(staves) == 2
+            if is_piano:
+                pg_number += 1
+                part_list.append(
+                    f"  <part-group type=\"start\" number=\"{pg_number}\">\n"
+                    f"    <group-symbol>brace</group-symbol>\n"
+                    f"    <group-barline>yes</group-barline>\n"
+                    f"  </part-group>"
+                )
+            for staff_idx_in_sys, staff in enumerate(staves):
                 part_idx += 1
                 part_id = f"P{part_idx}"
                 part_name = (
@@ -489,6 +557,12 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     f"  <part id=\"{part_id}\">\n"
                     + "\n".join(measures_xml)
                     + "\n  </part>"
+                )
+            # After all staves in this piano system are listed, close
+            # the part-group.
+            if is_piano:
+                part_list.append(
+                    f"  <part-group type=\"stop\" number=\"{pg_number}\"/>"
                 )
 
     src = result.get("source_pdf") or "OMR transcription"

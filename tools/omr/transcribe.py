@@ -169,6 +169,57 @@ def _clef_name_from_class(smufl: str) -> str | None:
     return None
 
 
+def _find_attached_stem(notehead, stems):
+    """Pair a notehead to its stem (classical-CV stems).
+
+    A stem touches a notehead if:
+      - its x is within 0.6 notehead-widths of the notehead's x-edge
+      - its y-range overlaps the notehead's y-range
+
+    Among candidates, prefer the closest (smallest x-gap).
+    """
+    nh_x_l = notehead.x_canonical
+    nh_x_r = notehead.x_canonical + notehead.width_canonical
+    nh_y_top = notehead.y_canonical
+    nh_y_bot = notehead.y_canonical + notehead.height_canonical
+    max_dx = max(notehead.width_canonical * 0.6, 12)
+    best = None
+    best_dx = float("inf")
+    for s in stems:
+        s_x_l = s.x_canonical
+        s_x_r = s.x_canonical + s.width_canonical
+        if s_x_r < nh_x_l:
+            dx = nh_x_l - s_x_r
+        elif s_x_l > nh_x_r:
+            dx = s_x_l - nh_x_r
+        else:
+            dx = 0
+        if dx > max_dx:
+            continue
+        s_y_top = s.y_canonical
+        s_y_bot = s.y_canonical + s.height_canonical
+        if s_y_bot < nh_y_top - 5 or s_y_top > nh_y_bot + 5:
+            continue
+        if dx < best_dx:
+            best_dx = dx
+            best = s
+    return best
+
+
+def _stem_direction(notehead, stem) -> str:
+    """Decide stem direction ('up' / 'down') from notehead position
+    within the stem's y-range.
+
+    Stem-up: stem extends ABOVE the notehead (notehead at bottom of stem).
+    Stem-down: stem extends BELOW the notehead (notehead at top of stem).
+
+    Compare the notehead's y_center to the stem's y midpoint.
+    """
+    nh_y_c = notehead.y_canonical + notehead.height_canonical // 2
+    s_y_mid = stem.y_canonical + stem.height_canonical // 2
+    return "up" if nh_y_c > s_y_mid else "down"
+
+
 def _default_clef_for_position(position_in_system: int, system_size: int) -> str:
     """Best-guess clef before we see any clef detection.
 
@@ -430,6 +481,21 @@ def _detections_for_cell(
     #    no GPU. See tools/omr/line_detection.py.
     extra_lines = detect_lines(cell)
 
+    # ── Stem-direction inference. For each notehead, find its attached
+    #    stem (classical-CV) and decide whether the stem goes up (above
+    #    the notehead) or down (below). This drives voice splitting in
+    #    Phase 4h: stem-up = voice 1 (upper), stem-down = voice 2 (lower).
+    stem_direction_by_id: dict[int, str] = {}
+    cv_stems = extra_lines.get("stems") or []
+    if cv_stems:
+        for d in dets:
+            if getattr(d, "category", "") != "notehead":
+                continue
+            stem = _find_attached_stem(d, cv_stems)
+            if stem is None:
+                continue
+            stem_direction_by_id[id(d)] = _stem_direction(d, stem)
+
     # ── Rhythm pass: resolve duration_beats / duration_type / dots per
     #    notehead and rest. Uses beams + flags + augmentationDot geometry.
     #    Passes extra_lines so rhythm.py can use the classical-CV stems
@@ -511,6 +577,9 @@ def _detections_for_cell(
             out_d["duration_beats"] = rinfo["duration_beats"]
             out_d["duration_type"] = rinfo["duration_type"]
             out_d["dots"] = rinfo["dots"]
+        # Stem direction for noteheads (Phase 4h voice splitting).
+        if id(d) in stem_direction_by_id:
+            out_d["stem_direction"] = stem_direction_by_id[id(d)]
         out.append(out_d)
     return out, active_clef, active_key_sig, active_time_sig
 

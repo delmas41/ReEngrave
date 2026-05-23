@@ -120,12 +120,18 @@ def group_chords_in_measure(
         )
         (best_beats, best_type, best_dots), _ = durations.most_common(1)[0]
         x_pos = int(sum(_x_center(n) for n in group) / len(group))
+        # Stem direction: most-common direction in the group (if any).
+        directions = Counter(
+            n.get("stem_direction") for n in group if n.get("stem_direction")
+        )
+        stem_dir = directions.most_common(1)[0][0] if directions else None
         events.append({
             "kind": "chord",
             "x_position": x_pos,
             "duration_beats": best_beats,
             "duration_type": best_type,
             "dots": best_dots,
+            "stem_direction": stem_dir,
             "noteheads": list(group),
             "rest": None,
         })
@@ -138,6 +144,7 @@ def group_chords_in_measure(
             "duration_beats": r["duration_beats"],
             "duration_type": r["duration_type"],
             "dots": r.get("dots", 0),
+            "stem_direction": None,
             "noteheads": [],
             "rest": r,
         })
@@ -145,6 +152,46 @@ def group_chords_in_measure(
     # Sort everything by x_position so the output is in musical time order.
     events.sort(key=lambda ev: ev["x_position"])
     return events
+
+
+def split_events_into_voices(
+    events: list[dict[str, Any]],
+) -> list[list[dict[str, Any]]]:
+    """Split a measure's events into 1 or 2 voices.
+
+    V1 rule:
+      - If at least one event has stem-up AND another has stem-down at a
+        different x position, emit TWO voices: voice 1 = stem-up + rests,
+        voice 2 = stem-down + rests.
+      - Otherwise, single voice (all events on one staff line).
+
+    Rests appear in BOTH voices in the two-voice case so that LilyPond /
+    MusicXML render barlines + rhythm correctly per voice. The MusicXML
+    `<voice>` tag distinguishes which voice the rest belongs to; in
+    LilyPond, `\voiceTwo` rests appear lower on the staff.
+
+    Returns a list of voice-event-lists in voice-number order.
+    """
+    # Detect whether we have both stem-up and stem-down note events.
+    up_events = [e for e in events if e["kind"] == "chord"
+                 and e.get("stem_direction") == "up"]
+    down_events = [e for e in events if e["kind"] == "chord"
+                   and e.get("stem_direction") == "down"]
+    rest_events = [e for e in events if e["kind"] == "rest"]
+    unknown_events = [e for e in events if e["kind"] == "chord"
+                      and e.get("stem_direction") not in ("up", "down")]
+
+    # If only one direction (or none) appears, single voice.
+    if not up_events or not down_events:
+        return [events]
+
+    # Two-voice split: stem-up = voice 1, stem-down = voice 2. Unknown-
+    # direction notes go in voice 1 (closer to the "main" line). Rests
+    # appear in both voices.
+    v1 = sorted(up_events + unknown_events + rest_events,
+                key=lambda e: e["x_position"])
+    v2 = sorted(down_events + rest_events, key=lambda e: e["x_position"])
+    return [v1, v2]
 
 
 def group_chords_in_transcribe_result(result: dict[str, Any]) -> None:

@@ -432,18 +432,16 @@ methodology + per-class breakdown.
   more false negatives on small dynamics + grace notes. The labeling
   pipeline (`tools/omr/annotate`) is the path to fixing this.
 
-- **MusicXML + LilyPond export is a v1.** `tools/omr/export.py`
-  produces files that LilyPond renders without errors (with occasional
-  bar-check warnings) and that MuseScore / `musicxml2ly` accept. But:
-  - Per-measure durations don't always sum exactly to the time
-    signature (Phase 4c rhythm parsing is approximate).
-  - Each staff renders as a separate Part / Staff block — no piano
-    grand-staff grouping yet (no `\new PianoStaff` around treble +
-    bass).
-  - Single voice per staff. Two-voice piano writing is collapsed onto
-    one voice. Chord-grouping by x-position works but stem-direction
-    inference is not yet attempted (would need stems, which the Phase
-    3.3 detector doesn't emit).
+- **MusicXML + LilyPond export.** `tools/omr/export.py` produces
+  files that LilyPond renders to PDF and that MuseScore / `musicxml2ly`
+  accept. Systems with exactly 2 staves are wrapped in `\new PianoStaff`
+  (LilyPond) or `<part-group><group-symbol>brace</group-symbol>`
+  (MusicXML). When a staff has measures with both stem-up AND stem-down
+  noteheads, LilyPond renders it as a two-voice block (`\voiceOne` +
+  `\voiceTwo`). MusicXML voice-splitting via `<backup>` is **not yet
+  implemented** — MusicXML output is single-voice-per-part. Bar-check
+  warnings on LilyPond output reflect the rhythm-parsing approximation
+  (Phase 4c/g caveats).
 
 ---
 
