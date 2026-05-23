@@ -8,6 +8,8 @@ Over time the system learns from human decisions, building auto-accept rules for
 
 **Stack:** FastAPI + SQLite + Audiveris (Java OMR) + Claude Vision API + Verovio + LilyPond · React + Vite + React Query · Docker Compose
 
+**Backlog / research notes**: see [NOTES.md](NOTES.md) — surface these to Sean at the start of a ReEngrave session.
+
 ---
 
 ## Running locally
