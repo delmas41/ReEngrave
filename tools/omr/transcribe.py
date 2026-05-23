@@ -751,6 +751,94 @@ def _detections_for_cell(
     return out, active_clef, active_key_sig, active_time_sig
 
 
+def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
+    """Cross-cell tie pairing for a single staff.
+
+    Pairs tie glyphs with their two flanking noteheads using page-pixel
+    coordinates (`bbox_page`), so ties spanning a barline (most ties in
+    real music — the canonical use connects the final note of measure N
+    to the first of measure N+1) get caught. Complements the within-cell
+    pass in `_pair_ties_in_cell`; flag-setting is idempotent so the two
+    passes don't fight.
+
+    Mutates `staff_dict` in place. Returns the number of NEW pairs
+    created (pairs already set by the within-cell pass aren't counted).
+    """
+    measures = staff_dict.get("measures", [])
+    if not measures:
+        return 0
+
+    # Collect every notehead and every tie across the staff, with their
+    # page-pixel centers. Page coords are the only coordinate system
+    # shared across cells (each cell has its own cell-local origin).
+    nh_list: list[tuple[float, float, int, dict[str, Any]]] = []
+    tie_list: list[tuple[list[int], dict[str, Any]]] = []
+    for m in measures:
+        for det in m.get("detections", []):
+            bp = det.get("bbox_page")
+            if not bp or len(bp) != 4:
+                continue
+            xc = bp[0] + bp[2] / 2.0
+            yc = bp[1] + bp[3] / 2.0
+            nh_w = bp[2]
+            if det.get("category") == "notehead":
+                nh_list.append((xc, yc, nh_w, det))
+            elif (det.get("class") or "").lower() == "tie":
+                tie_list.append((bp, det))
+
+    if not tie_list or len(nh_list) < 2:
+        return 0
+
+    avg_nh_h = sum(
+        det.get("bbox_page", [0, 0, 0, 0])[3] for _, _, _, det in nh_list
+    ) / len(nh_list)
+    y_tol = max(avg_nh_h * 3, 30)
+
+    n_new_pairs = 0
+    for tie_bp, _tie_det in tie_list:
+        tx0, ty0, tw, th = tie_bp
+        tie_left = tx0
+        tie_right = tx0 + tw
+        tie_yc = ty0 + th / 2.0
+
+        best_left = None
+        best_left_dx = float("inf")
+        best_right = None
+        best_right_dx = float("inf")
+
+        for xc, yc, w, det in nh_list:
+            if abs(yc - tie_yc) > y_tol:
+                continue
+            # Start notehead: x-center at or just left of tie's left edge.
+            # The window is generous (3× notehead width) so cross-barline
+            # ties still pair even when the next-measure notehead is a
+            # bit further away due to the barline space.
+            dx_left = tie_left - xc
+            if 0 <= dx_left < w * 3 and dx_left < best_left_dx:
+                best_left = det
+                best_left_dx = dx_left
+            # Stop notehead: x-center at or just right of tie's right edge
+            dx_right = xc - tie_right
+            if 0 <= dx_right < w * 3 and dx_right < best_right_dx:
+                best_right = det
+                best_right_dx = dx_right
+
+        if (
+            best_left is not None
+            and best_right is not None
+            and best_left is not best_right
+        ):
+            was_already_paired = (
+                best_left.get("tied_to_next") and best_right.get("tied_from_prev")
+            )
+            best_left["tied_to_next"] = True
+            best_right["tied_from_prev"] = True
+            if not was_already_paired:
+                n_new_pairs += 1
+
+    return n_new_pairs
+
+
 def _pair_ties_in_cell(dets, ties_to_next: set, ties_from_prev: set) -> None:
     """Pair tie detections with their two flanking noteheads in the same
     cell. Mutates `ties_to_next` / `ties_from_prev` in place (adds id()s
@@ -972,6 +1060,13 @@ def transcribe(
                     first_cell_effective_key_sig or {}
                 )
                 staff_dict["time_signature"] = first_cell_effective_time_sig
+
+                # Cross-cell tie pairing — runs after every cell of this
+                # staff has been processed. Catches ties whose start
+                # notehead is in measure N and stop notehead in measure
+                # N+1 (the canonical use across a barline). Works in
+                # page-pixel coords (the only frame shared across cells).
+                _pair_ties_in_staff(staff_dict)
 
                 # Flag measures that are anomalously wide (Phase 1 likely
                 # missed an internal barline so the cell contains multiple
