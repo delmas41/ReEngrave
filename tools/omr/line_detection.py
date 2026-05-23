@@ -197,14 +197,14 @@ def detect_beams(
     cell,
     *,
     min_width_lines: float = 1.5,
-    min_height_lines: float = 0.15,
-    max_height_lines: float = 0.65,
+    min_height_lines: float = 0.10,
+    max_height_lines: float = 1.0,
+    typical_single_beam_lines: float = 0.22,
 ) -> list[LineDetection]:
     """Find beam-like horizontal ink runs in `cell`.
 
     Algorithm mirrors stems but with a horizontal structuring element:
-      1. Pick the cleanest source — staff-removed if available (so the
-         long staff lines don't fight us, since they ARE horizontal).
+      1. Pick the cleanest source — staff-removed if available.
       2. Threshold → binary ink.
       3. Horizontal morphological opening with a (line_spacing×1.5 × 1)
          element. Erases everything that isn't a long horizontal run.
@@ -212,10 +212,18 @@ def detect_beams(
       5. Filter:
            - width ≥ min_width_lines × line_spacing
            - height between min/max_height_lines × line_spacing
-             (min cutoff rejects single-pixel staff-line residuals after
-              staff removal; max cutoff rejects vertical-bar-thickness
-              artifacts)
            - aspect ratio ≥ 2:1 horizontal
+      6. **Split stacked beams.** A double-beam (16th notes) or triple-
+         beam (32nds) often appears as one tall component because the
+         vertical gap between parallel beams is too small to survive
+         binarization at this resolution. If a component's height is
+         ≥ 1.7× the typical single-beam height, split it into
+         `round(h / typical_beam_h)` equal sub-beams.
+
+    `typical_single_beam_lines` controls when split fires. 0.22×
+    line_spacing ≈ 10-12 px at canonical resolution, which matches a
+    single engraved beam. Set this lower to split more aggressively,
+    higher to split less.
     """
     if cell is None:
         return []
@@ -241,6 +249,11 @@ def detect_beams(
     min_w = int(round(line_spacing * min_width_lines))
     min_h = max(2, int(round(line_spacing * min_height_lines)))
     max_h = max(3, int(round(line_spacing * max_height_lines)))
+    typical_h = max(3, int(round(line_spacing * typical_single_beam_lines)))
+    # Only split components clearly thicker than a single beam — 1.7× is
+    # the safety margin against engraving variance on solo beams.
+    split_threshold = int(typical_h * 1.7)
+
     for i in range(1, num):
         x, y, w, h, area = stats[i]
         if w < min_w:
@@ -251,15 +264,31 @@ def detect_beams(
             continue
         if w / max(1, h) < 2.0:
             continue
-        out.append(LineDetection(
-            smufl_name="beam",
-            category="structural",
-            x_canonical=int(x),
-            y_canonical=int(y),
-            width_canonical=int(w),
-            height_canonical=int(h),
-            confidence=1.0,
-        ))
+
+        if h >= split_threshold:
+            n_levels = max(2, round(h / typical_h))
+            sub_h = max(1, h // n_levels)
+            for k in range(n_levels):
+                sub_y = int(y + k * (h / n_levels))
+                out.append(LineDetection(
+                    smufl_name="beam",
+                    category="structural",
+                    x_canonical=int(x),
+                    y_canonical=sub_y,
+                    width_canonical=int(w),
+                    height_canonical=int(sub_h),
+                    confidence=1.0,
+                ))
+        else:
+            out.append(LineDetection(
+                smufl_name="beam",
+                category="structural",
+                x_canonical=int(x),
+                y_canonical=int(y),
+                width_canonical=int(w),
+                height_canonical=int(h),
+                confidence=1.0,
+            ))
     return out
 
 

@@ -231,6 +231,46 @@ def _staff_line_spacing(cell) -> float:
     return 24.0  # canonical default
 
 
+def _deduplicate_beams(beams: list, line_spacing: float) -> list:
+    """Drop beam detections that overlap another beam too closely.
+
+    YOLO + classical-CV often both fire on the same physical beam stroke
+    at slightly different bboxes. If left alone, the cluster-counter
+    treats the duplicate detections as separate vertical levels and
+    over-counts beam depth (a 16th becomes a 32nd, etc.).
+
+    Greedy: sort by confidence (descending), keep the first detection,
+    drop any later beam whose center is within `line_spacing × 0.18` in
+    y AND whose x-range overlaps the kept beam by ≥ 60%.
+    """
+    y_tol = max(3, int(round(line_spacing * 0.18)))
+    sorted_beams = sorted(
+        beams,
+        key=lambda b: -getattr(b, "confidence", 1.0),
+    )
+    kept: list = []
+    for b in sorted_beams:
+        b_y_c = b.y_canonical + b.height_canonical // 2
+        b_x_l = b.x_canonical
+        b_x_r = b.x_canonical + b.width_canonical
+        b_w = max(1, b.width_canonical)
+        is_dup = False
+        for k in kept:
+            k_y_c = k.y_canonical + k.height_canonical // 2
+            if abs(b_y_c - k_y_c) > y_tol:
+                continue
+            # x overlap fraction
+            k_x_l = k.x_canonical
+            k_x_r = k.x_canonical + k.width_canonical
+            overlap = max(0, min(b_x_r, k_x_r) - max(b_x_l, k_x_l))
+            if overlap / b_w >= 0.6:
+                is_dup = True
+                break
+        if not is_dup:
+            kept.append(b)
+    return kept
+
+
 def _stem_for_notehead(nh, stems, max_x_distance: float):
     """Find the stem touching this notehead (classical-CV stems).
 
@@ -272,38 +312,60 @@ def _stem_for_notehead(nh, stems, max_x_distance: float):
 
 
 def _beams_attached_to_stem(stem, beams,
-                            beam_y_cluster_tol: float) -> int:
-    """Count distinct vertical beam levels attached to a stem.
+                            beam_y_cluster_tol: float,
+                            end_window: float | None = None) -> int:
+    """Count distinct vertical beam levels attached to one end of a stem.
 
-    A beam attaches to a stem if its x-range overlaps the stem's x AND
-    its y-position is anywhere within the stem's vertical extent (with a
-    small tolerance). This naturally handles both stem-up (beams above
-    the notehead) and stem-down (beams below).
+    Beams attach to ONE end of a stem (the end opposite the notehead).
+    Counting across the WHOLE stem includes beams that belong to other
+    voices/staves rendered nearby and inflates the count.
+
+    Algorithm:
+      1. Find every beam whose x-range overlaps the stem's x.
+      2. Partition them by which stem end they're nearer to (top vs
+         bottom).
+      3. Within `end_window` of each end, count clusters using
+         `beam_y_cluster_tol`.
+      4. Return the LARGER of the two end-counts (whichever end has
+         beams is the "free" end).
+
+    `end_window` defaults to `4 × beam_y_cluster_tol` — enough room
+    for 3-4 stacked beam levels (a 64th-note's worth) at one end.
     """
     s_x_l = stem.x_canonical
     s_x_r = stem.x_canonical + stem.width_canonical
     s_y_top = stem.y_canonical
     s_y_bot = stem.y_canonical + stem.height_canonical
+    if end_window is None:
+        end_window = beam_y_cluster_tol * 4.0
 
-    attached_ys: list[int] = []
+    top_ys: list[int] = []
+    bot_ys: list[int] = []
     for b in beams:
         b_x_l = b.x_canonical
         b_x_r = b.x_canonical + b.width_canonical
-        # x overlap: beam's range must reach the stem's range
         if b_x_r < s_x_l - 5 or b_x_l > s_x_r + 5:
             continue
         b_y_c = b.y_canonical + b.height_canonical // 2
-        if b_y_c < s_y_top - 10 or b_y_c > s_y_bot + 10:
-            continue
-        attached_ys.append(b_y_c)
-    if not attached_ys:
-        return 0
-    attached_ys.sort()
-    levels = 1
-    for i in range(1, len(attached_ys)):
-        if attached_ys[i] - attached_ys[i - 1] > beam_y_cluster_tol:
-            levels += 1
-    return levels
+        # Must be at one end of the stem (not in the middle).
+        d_top = abs(b_y_c - s_y_top)
+        d_bot = abs(b_y_c - s_y_bot)
+        if d_top <= end_window and d_top <= d_bot:
+            top_ys.append(b_y_c)
+        elif d_bot <= end_window:
+            bot_ys.append(b_y_c)
+
+    def _count(ys: list[int]) -> int:
+        if not ys:
+            return 0
+        ys = sorted(ys)
+        levels = 1
+        for i in range(1, len(ys)):
+            if ys[i] - ys[i - 1] > beam_y_cluster_tol:
+                levels += 1
+        return levels
+
+    return max(_count(top_ys), _count(bot_ys))
 
 
 def _beam_levels_for_notehead(nh, beams, max_stem_distance: float,
@@ -450,12 +512,17 @@ def resolve_rhythms_for_cell(
     line_spacing = _staff_line_spacing(cell)
     # A stem typically spans ~3.5 staff-spacings; allow a bit more for safety.
     max_stem_distance = line_spacing * 5.5
-    # Beams within ~70% of a staff-line spacing of each other are the same
-    # beam thickness; further apart = a new beam level.
-    beam_y_cluster_tol = line_spacing * 0.7
+    # Beam clustering: a single physical beam may produce multiple
+    # detections (CV bbox + YOLO bbox + a fragment from morphological
+    # post-processing) at slightly different y positions — those merge
+    # into one cluster. Two STACKED beams (16th-note doubles) sit ~10–14
+    # px apart center-to-center at canonical resolution. So we want a
+    # tolerance just under that:  0.22 × line_spacing ≈ 10–11 px keeps
+    # near-duplicates merged but separates stacked-beam levels.
+    beam_y_cluster_tol = line_spacing * 0.22
 
     noteheads: list = []
-    rests: list = []
+    rests_raw: list = []
     beams: list = []
     flags: list = []
     aug_dots: list = []
@@ -465,13 +532,56 @@ def resolve_rhythms_for_cell(
         if cat == "notehead":
             noteheads.append(d)
         elif cat == "rest":
-            rests.append(d)
+            rests_raw.append(d)
         elif cat == "flag":
             flags.append(d)
         elif cat == "structural" and cls == "beam":
             beams.append(d)
         elif cat == "structural" and cls == "augmentationdot":
             aug_dots.append(d)
+
+    # ── Spurious-rest filter ──────────────────────────────────────────────
+    # YOLO occasionally produces "rest" detections in dense note clusters
+    # (noteheadHalf misclassified as restHalf, etc.) and far above the
+    # staff (where ledger lines or markings sit). Real rests live on or
+    # very near the staff and don't coexist with noteheads at the same x.
+    # Drop rest detections that:
+    #   (a) sit more than 2× line_spacing above the top staff line, or
+    #   (b) sit more than 2× line_spacing below the bottom staff line, or
+    #   (c) overlap a notehead's x-center within ~1 notehead width
+    #       (duplicate detection of the same glyph).
+    staff_lines = getattr(cell, "staff_line_ys_canonical", None) or []
+    if staff_lines:
+        staff_top = min(staff_lines)
+        staff_bot = max(staff_lines)
+    else:
+        staff_top = 0
+        staff_bot = cell.height if cell is not None else 0
+    nh_avg_w = (
+        sum(n.width_canonical for n in noteheads) / len(noteheads)
+        if noteheads
+        else 30
+    )
+    rest_y_margin = line_spacing * 2.0
+    rest_dup_x_tol = max(nh_avg_w * 0.7, line_spacing * 0.8)
+    rests: list = []
+    for r in rests_raw:
+        r_y_c = r.y_canonical + r.height_canonical // 2
+        if r_y_c < staff_top - rest_y_margin:
+            continue
+        if r_y_c > staff_bot + rest_y_margin:
+            continue
+        # Duplicate-of-notehead filter: any notehead at this x with overlap?
+        r_x_c = r.x_canonical + r.width_canonical // 2
+        is_dup = False
+        for nh in noteheads:
+            nh_x_c = nh.x_canonical + nh.width_canonical // 2
+            if abs(nh_x_c - r_x_c) < rest_dup_x_tol:
+                is_dup = True
+                break
+        if is_dup:
+            continue
+        rests.append(r)
 
     # Classical-CV stems are pure additive value — the YOLO detector
     # doesn't emit stems at all, so we have no prior anchor to lose.
@@ -488,6 +598,12 @@ def resolve_rhythms_for_cell(
             stems = list(cv_stems)
         if cv_beams:
             beams = beams + list(cv_beams)
+
+    # Deduplicate beams: if two beam detections overlap heavily in both
+    # x AND y, they're the same physical beam (CV + YOLO both fired on
+    # the same stroke). Keep the one with higher confidence. Without
+    # this, the cluster-counter sees doubled levels and over-counts.
+    beams = _deduplicate_beams(beams, line_spacing)
 
     # Pair augmentation dots to whichever notehead / rest sits to their left
     # at the same y. (Dots after rests are rarer but real.)
@@ -531,12 +647,14 @@ def resolve_rhythms_for_cell(
                                     line_spacing * 0.6),
                 )
             if n_beam_levels >= 1:
-                refined = _BEAM_COUNT_DURATIONS.get(
-                    n_beam_levels,
-                    # Fall back to 64th-equivalent for >5 beams
-                    (1.0 / (2 ** n_beam_levels), f"{n_beam_levels}beams"),
-                )
-                base_beats, base_type = refined
+                # Cap at 5 levels (128th note). Anything higher is
+                # almost certainly duplicate-detection noise rather
+                # than real notation — engraved music rarely goes past
+                # 64ths (4 levels).
+                capped = min(n_beam_levels, 5)
+                refined = _BEAM_COUNT_DURATIONS.get(capped)
+                if refined is not None:
+                    base_beats, base_type = refined
             else:
                 # No beam — look for a flag.
                 f = _flag_for_notehead(nh, flags, max_x_distance=max(
