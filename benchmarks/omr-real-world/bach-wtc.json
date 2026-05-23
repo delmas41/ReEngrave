@@ -9,17 +9,17 @@
   "n_pages_processed": 1,
   "n_systems_total": 5,
   "n_staves_total": 10,
-  "n_measures_total": 32,
-  "n_detections_total": 884,
-  "n_noteheads_total": 445,
-  "n_noteheads_pitched_total": 445,
-  "n_noteheads_with_duration_total": 445,
+  "n_measures_total": 28,
+  "n_detections_total": 856,
+  "n_noteheads_total": 420,
+  "n_noteheads_pitched_total": 420,
+  "n_noteheads_with_duration_total": 420,
   "n_rests_total": 27,
   "n_rests_with_duration_total": 2,
   "runtime": {
-    "phase1_s": 2.19,
-    "yolo_s": 5.79,
-    "total_s": 7.98
+    "phase1_s": 2.16,
+    "yolo_s": 7.59,
+    "total_s": 9.75
   },
   "pages": [
     {
@@ -3528,7 +3528,7 @@
                 "alterations": {}
               },
               "time_signature": null,
-              "n_measures": 3,
+              "n_measures": 2,
               "measures": [
                 {
                   "measure_index": 0,
@@ -5091,257 +5091,6 @@
                       "pitch": null
                     }
                   ]
-                },
-                {
-                  "measure_index": 2,
-                  "bbox_page_px": [
-                    4476,
-                    1523,
-                    4816,
-                    1967
-                  ],
-                  "clef": "treble",
-                  "key_signature": {
-                    "sharps": 0,
-                    "flats": 0,
-                    "alterations": {}
-                  },
-                  "time_signature": null,
-                  "n_detections": 11,
-                  "detections": [
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        394,
-                        374,
-                        113,
-                        78
-                      ],
-                      "bbox_page": [
-                        4622,
-                        1661,
-                        42,
-                        29
-                      ],
-                      "confidence": 0.627,
-                      "pitch": "F5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0,
-                      "stem_direction": "up"
-                    },
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        382,
-                        412,
-                        79,
-                        42
-                      ],
-                      "bbox_page": [
-                        4617,
-                        1675,
-                        29,
-                        16
-                      ],
-                      "confidence": 0.611,
-                      "pitch": "E5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0,
-                      "stem_direction": "up"
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        1,
-                        399,
-                        99,
-                        51
-                      ],
-                      "bbox_page": [
-                        4476,
-                        1671,
-                        37,
-                        19
-                      ],
-                      "confidence": 0.521,
-                      "pitch": "F5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        671,
-                        312,
-                        97,
-                        80
-                      ],
-                      "bbox_page": [
-                        4725,
-                        1638,
-                        36,
-                        30
-                      ],
-                      "confidence": 0.425,
-                      "pitch": "G5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0,
-                      "stem_direction": "up"
-                    },
-                    {
-                      "class": "beam",
-                      "category": "structural",
-                      "bbox": [
-                        4,
-                        795,
-                        891,
-                        13
-                      ],
-                      "bbox_page": [
-                        4477,
-                        1817,
-                        330,
-                        5
-                      ],
-                      "confidence": 0.409,
-                      "pitch": null
-                    },
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        459,
-                        374,
-                        49,
-                        70
-                      ],
-                      "bbox_page": [
-                        4646,
-                        1661,
-                        18,
-                        26
-                      ],
-                      "confidence": 0.384,
-                      "pitch": "F5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0,
-                      "stem_direction": "up"
-                    },
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        700,
-                        293,
-                        56,
-                        52
-                      ],
-                      "bbox_page": [
-                        4735,
-                        1631,
-                        21,
-                        19
-                      ],
-                      "confidence": 0.319,
-                      "pitch": "A5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0,
-                      "stem_direction": "up"
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        73,
-                        395,
-                        46,
-                        39
-                      ],
-                      "bbox_page": [
-                        4503,
-                        1669,
-                        17,
-                        14
-                      ],
-                      "confidence": 0.295,
-                      "pitch": "F5",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        4,
-                        312,
-                        116,
-                        85
-                      ],
-                      "bbox_page": [
-                        4477,
-                        1638,
-                        43,
-                        31
-                      ],
-                      "confidence": 0.277,
-                      "pitch": "G5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0,
-                      "stem_direction": "up"
-                    },
-                    {
-                      "class": "flag8thDown",
-                      "category": "flag",
-                      "bbox": [
-                        19,
-                        405,
-                        102,
-                        88
-                      ],
-                      "bbox_page": [
-                        4483,
-                        1673,
-                        38,
-                        33
-                      ],
-                      "confidence": 0.265,
-                      "pitch": null
-                    },
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        398,
-                        345,
-                        103,
-                        68
-                      ],
-                      "bbox_page": [
-                        4623,
-                        1651,
-                        38,
-                        25
-                      ],
-                      "confidence": 0.258,
-                      "pitch": "F5",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
-                      "dots": 0,
-                      "stem_direction": "up"
-                    }
-                  ]
                 }
               ]
             },
@@ -5354,7 +5103,7 @@
                 "alterations": {}
               },
               "time_signature": null,
-              "n_measures": 3,
+              "n_measures": 2,
               "measures": [
                 {
                   "measure_index": 0,
@@ -6755,128 +6504,6 @@
                       ],
                       "confidence": 0.278,
                       "pitch": null
-                    }
-                  ]
-                },
-                {
-                  "measure_index": 2,
-                  "bbox_page_px": [
-                    4476,
-                    1972,
-                    4816,
-                    2416
-                  ],
-                  "clef": "bass",
-                  "key_signature": {
-                    "sharps": 0,
-                    "flats": 0,
-                    "alterations": {}
-                  },
-                  "time_signature": null,
-                  "n_detections": 5,
-                  "detections": [
-                    {
-                      "class": "beam",
-                      "category": "structural",
-                      "bbox": [
-                        5,
-                        596,
-                        889,
-                        19
-                      ],
-                      "bbox_page": [
-                        4478,
-                        2193,
-                        329,
-                        7
-                      ],
-                      "confidence": 0.456,
-                      "pitch": null
-                    },
-                    {
-                      "class": "noteheadBlackOnLine",
-                      "category": "notehead",
-                      "bbox": [
-                        8,
-                        381,
-                        112,
-                        72
-                      ],
-                      "bbox_page": [
-                        4479,
-                        2113,
-                        41,
-                        27
-                      ],
-                      "confidence": 0.427,
-                      "pitch": "A3",
-                      "duration_beats": 0.125,
-                      "duration_type": "thirty_second",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        382,
-                        400,
-                        109,
-                        68
-                      ],
-                      "bbox_page": [
-                        4617,
-                        2120,
-                        40,
-                        25
-                      ],
-                      "confidence": 0.351,
-                      "pitch": "G3",
-                      "duration_beats": 0.5,
-                      "duration_type": "eighth",
-                      "dots": 0,
-                      "stem_direction": "down"
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        448,
-                        403,
-                        62,
-                        70
-                      ],
-                      "bbox_page": [
-                        4642,
-                        2121,
-                        23,
-                        26
-                      ],
-                      "confidence": 0.306,
-                      "pitch": "G3",
-                      "duration_beats": 0.125,
-                      "duration_type": "thirty_second",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        2,
-                        413,
-                        67,
-                        43
-                      ],
-                      "bbox_page": [
-                        4477,
-                        2125,
-                        25,
-                        16
-                      ],
-                      "confidence": 0.272,
-                      "pitch": "G3",
-                      "duration_beats": 0.125,
-                      "duration_type": "thirty_second",
-                      "dots": 0
                     }
                   ]
                 }
@@ -14688,7 +14315,7 @@
                 "alterations": {}
               },
               "time_signature": null,
-              "n_measures": 4,
+              "n_measures": 3,
               "measures": [
                 {
                   "measure_index": 0,
@@ -16874,172 +16501,6 @@
                       "pitch": null
                     }
                   ]
-                },
-                {
-                  "measure_index": 3,
-                  "bbox_page_px": [
-                    4776,
-                    5298,
-                    4816,
-                    5748
-                  ],
-                  "clef": "treble",
-                  "key_signature": {
-                    "sharps": 0,
-                    "flats": 0,
-                    "alterations": {}
-                  },
-                  "time_signature": null,
-                  "n_detections": 7,
-                  "detections": [
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        800,
-                        52,
-                        31
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5598,
-                        20,
-                        12
-                      ],
-                      "confidence": 0.345,
-                      "pitch": "E4",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        45,
-                        1171,
-                        59,
-                        29
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5737,
-                        22,
-                        11
-                      ],
-                      "confidence": 0.334,
-                      "pitch": "D3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        1078,
-                        56,
-                        52
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5702,
-                        21,
-                        20
-                      ],
-                      "confidence": 0.29,
-                      "pitch": "F3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        693,
-                        57,
-                        48
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5558,
-                        22,
-                        18
-                      ],
-                      "confidence": 0.275,
-                      "pitch": "G4",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        594,
-                        57,
-                        54
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5521,
-                        22,
-                        20
-                      ],
-                      "confidence": 0.274,
-                      "pitch": "B4",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        756,
-                        57,
-                        46
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5582,
-                        22,
-                        17
-                      ],
-                      "confidence": 0.265,
-                      "pitch": "E4",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        1105,
-                        56,
-                        49
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5712,
-                        21,
-                        18
-                      ],
-                      "confidence": 0.264,
-                      "pitch": "E3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    }
-                  ]
                 }
               ]
             },
@@ -17052,7 +16513,7 @@
                 "alterations": {}
               },
               "time_signature": null,
-              "n_measures": 4,
+              "n_measures": 3,
               "measures": [
                 {
                   "measure_index": 0,
@@ -18335,130 +17796,6 @@
                       ],
                       "confidence": 0.276,
                       "pitch": null
-                    }
-                  ]
-                },
-                {
-                  "measure_index": 3,
-                  "bbox_page_px": [
-                    4776,
-                    5778,
-                    4816,
-                    6228
-                  ],
-                  "clef": "bass",
-                  "key_signature": {
-                    "sharps": 0,
-                    "flats": 0,
-                    "alterations": {}
-                  },
-                  "time_signature": null,
-                  "n_detections": 5,
-                  "detections": [
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        45,
-                        401,
-                        54,
-                        45
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5928,
-                        20,
-                        17
-                      ],
-                      "confidence": 0.341,
-                      "pitch": "A3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        500,
-                        56,
-                        42
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5966,
-                        21,
-                        16
-                      ],
-                      "confidence": 0.336,
-                      "pitch": "F3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        564,
-                        55,
-                        45
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5990,
-                        21,
-                        17
-                      ],
-                      "confidence": 0.333,
-                      "pitch": "D3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        45,
-                        0,
-                        57,
-                        31
-                      ],
-                      "bbox_page": [
-                        4793,
-                        5778,
-                        22,
-                        12
-                      ],
-                      "confidence": 0.326,
-                      "pitch": "B4",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
-                    },
-                    {
-                      "class": "noteheadBlackInSpace",
-                      "category": "notehead",
-                      "bbox": [
-                        44,
-                        597,
-                        58,
-                        51
-                      ],
-                      "bbox_page": [
-                        4793,
-                        6002,
-                        22,
-                        19
-                      ],
-                      "confidence": 0.27,
-                      "pitch": "D3",
-                      "duration_beats": 1.0,
-                      "duration_type": "quarter",
-                      "dots": 0
                     }
                   ]
                 }

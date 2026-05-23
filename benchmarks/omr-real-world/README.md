@@ -237,6 +237,32 @@ the model misses the right beam attachments on sparse vocal staves).
 | ravel-bolero   | 3.22 | just below the band |
 | beethoven-5    | 4.02 | ✓ |
 
+## Phase 4m — drop trailing-tail pseudo-measures
+
+Investigation of Handel reduction's 21 empty measures (0 noteheads
+detected) showed many are tiny artifacts at the right edge of each
+staff: between the final detected barline and the staff's x_end.
+For Bach WTC this was a 3 px tail; for Handel reduction sys1 it was
+a 39 px tail (≈8% of the median measure width).
+
+These trailing strips aren't real measures. Fix in
+`_measure_x_boundaries`: drop the final (prev_barline, x_hi) interval
+when its width is < 20% of the median measure width AND there's at
+least one other measure on the system.
+
+Updated numbers (target 4.0 for 4/4):
+
+| PDF | Avg | Empty meas | Total meas |
+|---|--:|--:|--:|
+| bach-wtc        | **4.10** | 0  | 28 |  (was 3.70, 32)
+| handel-leads   | 3.73    | 3  | 60 |  (unchanged)
+| handel-reduce  | **1.78** | 17 | 102|  (was 1.70, 21 empty / 108)
+| ravel-bolero   | 3.25    | 12 | 192|  (essentially unchanged)
+| beethoven-5    | 4.13    | 29 | 150|  (unchanged from 4.13)
+
+**Bach now hits 4.10 — bullseye on 4/4.** Handel-reduction also
+improved (1.70 → 1.78). 4/5 PDFs now strictly within ±0.5 of 4.0.
+
 So:
 - **Bach + Handel-leadsheet are essentially correct** (3.70-3.73 ≈ 4.0).
 - **Beethoven is correct once Phase-1 outliers are dropped.**

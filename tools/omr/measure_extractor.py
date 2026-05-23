@@ -262,15 +262,28 @@ def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[
     x_lo = min(s.x_start for s in staves)
     x_hi = max(s.x_end for s in staves)
     xs = sorted({bl.x for bl in barlines})
-    boundaries: list[tuple[int, int]] = []
     # Drop barlines that coincide with the system edges (some scores have a
     # leftmost system barline as part of the bracket).
     xs = [x for x in xs if x > x_lo + 10 and x < x_hi - 10]
+    boundaries: list[tuple[int, int]] = []
     prev = x_lo
     for x in xs:
         boundaries.append((prev, x))
         prev = x
-    boundaries.append((prev, x_hi))
+    # Trailing tail: from final barline to x_hi. Often this is just the
+    # narrow strip between the score's final barline and the end of the
+    # staff lines — NOT a real empty measure. Drop it when it's <20% of
+    # the median measure width AND there's at least one real measure
+    # already; otherwise keep it (it's the only measure).
+    widths = [x1 - x0 for (x0, x1) in boundaries]
+    tail_width = x_hi - prev
+    if boundaries and widths:
+        median_w = sorted(widths)[len(widths) // 2]
+        if tail_width >= median_w * 0.20:
+            boundaries.append((prev, x_hi))
+        # else: skip the tail — it's an artifact between final barline + staff edge
+    else:
+        boundaries.append((prev, x_hi))
     return boundaries
 
 

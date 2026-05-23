@@ -179,7 +179,6 @@
     e''2 |
     <cis'' d'' d''>4 |
     r1 |
-    r1 |
   }
   \new Staff {
     \clef treble
@@ -193,7 +192,6 @@
     <a' a' a'>8 |
     r1 |
     <a' a' b'>4 |
-    r1 |
     r1 |
   }
   \new Staff {
@@ -209,7 +207,6 @@
     r1 |
     <e'' fis''>4 |
     r1 |
-    r1 |
   }
   \new Staff {
     \clef bass
@@ -223,7 +220,6 @@
     <gis a>8 |
     r1 |
     <cis d>8 |
-    r1 |
     r1 |
   }
   \new Staff {
@@ -242,7 +238,6 @@
       e''64 |
       <a' cis'' gis' e'' cis'' fis'' d'' d'' d'' e'' b'>8 |
       r1 |
-      <fis d' cis' fis'' fis fis gis d' cis' e d' b a a cis' a fis' e'' fis' gis gis a' a' e' b' gis' e e' gis' b' cis'' cis'' e d'' d>4 |
       }
       \new Voice {
       \voiceTwo
@@ -255,7 +250,6 @@
       e''64 |
       <a' cis'' gis' e'' cis'' fis'' d'' d'' d'' e'' b'>8 |
       r1 |
-      <fis d' cis' fis'' fis fis gis d' cis' e d' b a a cis' a fis' e'' fis' gis gis a' a' e' b' gis' e e' gis' b' cis'' cis'' e d'' d>4 |
       }
     >>
   }
@@ -272,7 +266,6 @@
     r1 |
     d8 <cis d>8 |
     r1 |
-    <e' d' cis' e e' d' cis' cis' cis' b b fis' fis' gis' a' e cis gis e cis gis d d a b, a, gis b, a' a gis' fis fis gis' gis' b'>4 |
   }
   >>
   \layout { }
