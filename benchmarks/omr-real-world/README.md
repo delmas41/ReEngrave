@@ -86,6 +86,46 @@ non-fatal — LilyPond renders the score anyway).
   Ravel
 - This was the page we used for early Phase 3.4 fine-tuning
 
+## Phase 4i update (after the benchmark)
+
+Investigation of the Beethoven 5 over-counting (5.37 in the first benchmark
+table) revealed it isn't a rhythm-parsing bug at all — it's **Phase 1
+barline detection failing on orchestral scores**. The leading barlines at
+the start of each staff's row weren't being detected, so the "first
+measure" of each staff contained 2-3 actual measures of music fused
+together. Those super-wide cells inflated the beat count.
+
+Quantified: on Beethoven 5 p15, the first measure of each staff is 1592
+pixels wide while subsequent measures are 81-215 pixels wide. 18 of 98
+total measures are flagged as outliers (width > 2× the staff's median).
+
+**Mitigation (Phase 4i):**
+1. Added a `phase1_warning` field on measure dicts whose width exceeds
+   2× the staff median. Downstream consumers (the LilyPond/MusicXML
+   exporter, the human-review UI, automated tests) can filter these
+   out.
+2. `line_detection.detect_beams` now rejects components whose y-center
+   coincides with a staff line (within `line_spacing × 0.10` px), which
+   eliminates a class of false-positive "beams" from imperfect staff
+   removal — particularly visible on orchestral cells where the small
+   staff line spacing makes residuals look beam-thick.
+
+Updated numbers (target 4.0 for 4/4):
+
+| PDF | All measures avg | Excluding `phase1_warning` cells |
+|---|--:|--:|
+| bach-wtc           | 3.70 | 3.70 (0 flagged) |
+| handel-leadsheet   | 3.73 | 3.73 (0 flagged) |
+| handel-reduction   | 1.57 | 1.57 (0 flagged) |
+| ravel-bolero       | 5.80 | 5.80 (0 flagged) |
+| beethoven-5        | 6.28 | **3.77** (18/98 flagged) |
+
+So:
+- **Bach + Handel-leadsheet are essentially correct** (3.70-3.73 ≈ 4.0).
+- **Beethoven is correct once Phase-1 outliers are dropped.**
+- **Ravel + Handel-reduction stay off-target** because of different
+  root causes (see below).
+
 ## Failure modes identified
 
 1. **Orchestral over-counting** (Ravel 4.94, Beethoven 5.37). Long

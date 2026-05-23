@@ -748,6 +748,28 @@ def transcribe(
                     first_cell_effective_key_sig or {}
                 )
                 staff_dict["time_signature"] = first_cell_effective_time_sig
+
+                # Flag measures that are anomalously wide (Phase 1 likely
+                # missed an internal barline so the cell contains multiple
+                # actual measures fused). These cells will have inflated
+                # beat counts; downstream consumers should treat them with
+                # caution. Heuristic: width > 2.0 × median width of this
+                # staff's measures.
+                widths = [
+                    md["bbox_page_px"][2] - md["bbox_page_px"][0]
+                    for md in staff_dict["measures"]
+                ]
+                if widths:
+                    sorted_w = sorted(widths)
+                    median_w = sorted_w[len(sorted_w) // 2]
+                    for md in staff_dict["measures"]:
+                        w = md["bbox_page_px"][2] - md["bbox_page_px"][0]
+                        if median_w > 0 and w > median_w * 2.0:
+                            md["phase1_warning"] = (
+                                "measure width is >2× the staff median — "
+                                "Phase 1 likely missed a barline; this cell "
+                                "may contain multiple real measures fused"
+                            )
                 # If clef or key sig changed by the end of the staff, surface
                 # the final state too so a clef-change / key-change is visible.
                 if active_clef != first_cell_effective_clef:

@@ -200,6 +200,7 @@ def detect_beams(
     min_height_lines: float = 0.10,
     max_height_lines: float = 1.0,
     typical_single_beam_lines: float = 0.22,
+    min_height_absolute: int = 2,
 ) -> list[LineDetection]:
     """Find beam-like horizontal ink runs in `cell`.
 
@@ -247,8 +248,20 @@ def detect_beams(
     num, _, stats, _ = cv2.connectedComponentsWithStats(opened, connectivity=8)
     out: list[LineDetection] = []
     min_w = int(round(line_spacing * min_width_lines))
-    min_h = max(2, int(round(line_spacing * min_height_lines)))
+    # Absolute pixel floor on beam height is critical at orchestral cell
+    # resolution where `line_spacing × 0.15` collapses to 2-3 px. Staff-line
+    # residuals + ledger-line fragments are typically 1-3 px tall; real
+    # beams are 5+ px even on the smallest cells.
+    min_h = max(min_height_absolute, int(round(line_spacing * min_height_lines)))
     max_h = max(3, int(round(line_spacing * max_height_lines)))
+
+    # Staff-line proximity filter: a beam whose y-range straddles a staff
+    # line is almost certainly residual ink from imperfect staff removal,
+    # not a real beam. Real beams sit between staves OR distinctly above /
+    # below the staff (at the end of a stem). Reject candidates that
+    # vertically overlap any staff line within `staff_line_band` pixels.
+    staff_lines = getattr(cell, "staff_line_ys_canonical", None) or []
+    staff_line_band = max(2, int(round(line_spacing * 0.10)))
     typical_h = max(3, int(round(line_spacing * typical_single_beam_lines)))
     # Only split components clearly thicker than a single beam — 1.7× is
     # the safety margin against engraving variance on solo beams.
@@ -263,6 +276,15 @@ def detect_beams(
         if area < max(6, line_spacing):
             continue
         if w / max(1, h) < 2.0:
+            continue
+
+        # Reject components that straddle a staff line (residual ink).
+        # A real beam has its y-center clearly off the staff lines.
+        y_center = y + h // 2
+        on_staff_line = any(
+            abs(y_center - sl) <= staff_line_band for sl in staff_lines
+        )
+        if on_staff_line:
             continue
 
         if h >= split_threshold:

@@ -17,9 +17,9 @@
   "n_rests_total": 27,
   "n_rests_with_duration_total": 2,
   "runtime": {
-    "phase1_s": 2.2,
-    "yolo_s": 8.47,
-    "total_s": 10.67
+    "phase1_s": 2.19,
+    "yolo_s": 5.33,
+    "total_s": 7.52
   },
   "pages": [
     {
@@ -6062,8 +6062,8 @@
                       ],
                       "confidence": 0.909,
                       "pitch": "A3",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
+                      "duration_beats": 0.5,
+                      "duration_type": "eighth",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -6084,8 +6084,8 @@
                       ],
                       "confidence": 0.9,
                       "pitch": "G3",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
+                      "duration_beats": 0.5,
+                      "duration_type": "eighth",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -6447,8 +6447,8 @@
                       ],
                       "confidence": 0.844,
                       "pitch": "A3",
-                      "duration_beats": 0.125,
-                      "duration_type": "thirty_second",
+                      "duration_beats": 0.5,
+                      "duration_type": "eighth",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -6607,8 +6607,8 @@
                       ],
                       "confidence": 0.831,
                       "pitch": "Bb3",
-                      "duration_beats": 0.125,
-                      "duration_type": "thirty_second",
+                      "duration_beats": 0.5,
+                      "duration_type": "eighth",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -6810,8 +6810,8 @@
                       ],
                       "confidence": 0.427,
                       "pitch": "A3",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 0.125,
+                      "duration_type": "thirty_second",
                       "dots": 0
                     },
                     {
@@ -6853,8 +6853,8 @@
                       ],
                       "confidence": 0.306,
                       "pitch": "G3",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 0.125,
+                      "duration_type": "thirty_second",
                       "dots": 0
                     },
                     {
@@ -6874,8 +6874,8 @@
                       ],
                       "confidence": 0.272,
                       "pitch": "G3",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 0.125,
+                      "duration_type": "thirty_second",
                       "dots": 0
                     }
                   ]
@@ -9143,8 +9143,8 @@
                       ],
                       "confidence": 0.906,
                       "pitch": "G3",
-                      "duration_beats": 0.0625,
-                      "duration_type": "sixty_fourth",
+                      "duration_beats": 0.125,
+                      "duration_type": "thirty_second",
                       "dots": 0,
                       "stem_direction": "up"
                     },
@@ -10591,8 +10591,8 @@
                       ],
                       "confidence": 0.907,
                       "pitch": "G3",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
+                      "duration_beats": 0.5,
+                      "duration_type": "eighth",
                       "dots": 0,
                       "stem_direction": "down"
                     },
@@ -13377,8 +13377,8 @@
                       ],
                       "confidence": 0.833,
                       "pitch": "B3",
-                      "duration_beats": 0.25,
-                      "duration_type": "sixteenth",
+                      "duration_beats": 0.5,
+                      "duration_type": "eighth",
                       "dots": 0,
                       "stem_direction": "down"
                     },
