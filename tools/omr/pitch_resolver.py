@@ -26,6 +26,23 @@ _CLEF_ANCHORS = {
     "bass":   ("A", 3),   # top line of bass clef = A3
     "alto":   ("G", 4),   # top line of alto clef = G4
     "tenor":  ("E", 4),   # top line of tenor clef = E4
+
+    # Octave-shifted clefs. A `clef8`/`clef15` glyph detected ABOVE the
+    # base clef means "sounds an octave (or two) HIGHER than written"
+    # (8va / 15ma), and BELOW means LOWER (8vb / 15mb). transcribe.py
+    # appends the suffix to the base clef name; this table just shifts
+    # the anchor octave accordingly. Common in real music:
+    #   - tenor part written treble_8vb (very common in choral)
+    #   - piccolo written treble_8va
+    #   - double bass written bass_8vb
+    "treble_8va":  ("F", 6),
+    "treble_8vb":  ("F", 4),
+    "treble_15ma": ("F", 7),
+    "treble_15mb": ("F", 3),
+    "bass_8va":    ("A", 4),
+    "bass_8vb":    ("A", 2),
+    "bass_15ma":   ("A", 5),
+    "bass_15mb":   ("A", 1),
 }
 
 

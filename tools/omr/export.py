@@ -160,6 +160,26 @@ def _lily_key_for_sig(sharps: int, flats: int) -> str | None:
     return None  # C major / no signature
 
 
+def _clef_to_lily(clef: str) -> str:
+    """Translate a pitch_resolver clef key to its LilyPond `\\clef` argument.
+
+    pitch_resolver uses "treble_8vb" (suffix style); LilyPond's clef
+    names are quoted-string variants like "treble_8" (down an octave)
+    or "treble^8" (up an octave). The base clefs need no quoting.
+    """
+    suffix_map = {
+        "_8va": "^8",
+        "_8vb": "_8",
+        "_15ma": "^15",
+        "_15mb": "_15",
+    }
+    for suffix, lily_suffix in suffix_map.items():
+        if clef.endswith(suffix):
+            base = clef[: -len(suffix)]
+            return f'"{base}{lily_suffix}"'
+    return clef
+
+
 def _lily_event(event: dict[str, Any]) -> str:
     """Render one chord/rest event in LilyPond syntax."""
     lily_suffix, _, dots = _duration_to_lily_xml(
@@ -195,7 +215,7 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     time_sig = staff.get("time_signature")
 
     lines: list[str] = [f"{indent}\\new Staff {{"]
-    lines.append(f"{indent}  \\clef {clef}")
+    lines.append(f"{indent}  \\clef {_clef_to_lily(clef)}")
     lily_key = _lily_key_for_sig(
         key_sig.get("sharps", 0), key_sig.get("flats", 0)
     )
@@ -321,6 +341,27 @@ _MXL_CLEF_SIGN = {
 }
 
 
+# Suffix → MusicXML <clef-octave-change> value
+# (positive = sounds higher than written; negative = lower)
+_MXL_CLEF_OCT_SHIFT = {
+    "_8va":  1,
+    "_8vb":  -1,
+    "_15ma": 2,
+    "_15mb": -2,
+}
+
+
+def _split_clef_octave(clef: str) -> tuple[str, int]:
+    """Strip a "_8va"/"_8vb"/"_15ma"/"_15mb" suffix off a pitch_resolver
+    clef key, returning (base, octave_change). Returns (clef, 0) for
+    plain base clefs.
+    """
+    for suffix, shift in _MXL_CLEF_OCT_SHIFT.items():
+        if clef.endswith(suffix):
+            return clef[: -len(suffix)], shift
+    return clef, 0
+
+
 def _gcd(a: int, b: int) -> int:
     while b:
         a, b = b, a % b
@@ -408,10 +449,15 @@ def _mxl_attributes_block(
         lines.append(f"{indent}    <beat-type>{time_sig.get('denominator', 4)}</beat-type>")
         lines.append(f"{indent}  </time>")
     if clef is not None:
-        sign, line = _MXL_CLEF_SIGN.get(clef, ("G", 2))
+        base, octave_change = _split_clef_octave(clef)
+        sign, line = _MXL_CLEF_SIGN.get(base, ("G", 2))
         lines.append(f"{indent}  <clef>")
         lines.append(f"{indent}    <sign>{sign}</sign>")
         lines.append(f"{indent}    <line>{line}</line>")
+        if octave_change != 0:
+            lines.append(
+                f"{indent}    <clef-octave-change>{octave_change}</clef-octave-change>"
+            )
         lines.append(f"{indent}  </clef>")
     lines.append(f"{indent}</attributes>")
     return "\n".join(lines)

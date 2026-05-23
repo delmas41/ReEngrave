@@ -148,8 +148,9 @@ DEFAULT_WEIGHTS = (
 def _clef_name_from_class(smufl: str) -> str | None:
     """Map a DSv2 clef class name to a pitch_resolver clef key.
 
-    Returns None for unpitched / octave-marker clefs (we don't resolve pitches
-    on those — leaves the noteheads' pitch field as null).
+    Returns None for unpitched / octave-marker clefs (clef8 / clef15 are
+    standalone glyphs that visually attach to a base clef; they're picked
+    up separately by `_octave_shift_for_base_clef`).
     """
     if not smufl:
         return None
@@ -167,6 +168,52 @@ def _clef_name_from_class(smufl: str) -> str | None:
     if s.startswith("clefc") or s == "cclef":  # generic C-clef → alto fallback
         return "alto"
     return None
+
+
+def _octave_shift_for_base_clef(dets, base_clef_det) -> str:
+    """Look for clef8 / clef15 detections positioned near `base_clef_det`
+    (the chosen base-clef detection in a cell). Returns the pitch_resolver
+    suffix to append to the base clef name:
+
+      ""       — no octave marker
+      "_8va"   — clef8 ABOVE the base clef (sounds an octave higher)
+      "_8vb"   — clef8 BELOW the base clef (octave lower)
+      "_15ma"  — clef15 ABOVE (two octaves higher)
+      "_15mb"  — clef15 BELOW (two octaves lower)
+
+    Pairing heuristic: an octave glyph "belongs to" a base clef if their
+    x-centers are within one base-clef-width of each other. Above vs
+    below is decided by y-center.
+
+    Returns "" if `base_clef_det` is None or no octave marker is found.
+    """
+    if base_clef_det is None:
+        return ""
+    base_xc = base_clef_det.x_canonical + base_clef_det.width_canonical / 2.0
+    base_yc = base_clef_det.y_canonical + base_clef_det.height_canonical / 2.0
+    x_tolerance = max(base_clef_det.width_canonical, 50)
+
+    best_marker = None  # (kind, dx, is_above)
+    for d in dets:
+        s = (d.smufl_name or "").lower()
+        if s not in ("clef8", "clef15"):
+            continue
+        m_xc = d.x_canonical + d.width_canonical / 2.0
+        m_yc = d.y_canonical + d.height_canonical / 2.0
+        dx = abs(m_xc - base_xc)
+        if dx > x_tolerance:
+            continue
+        # Pick whichever octave marker is closest horizontally
+        if best_marker is None or dx < best_marker[1]:
+            best_marker = (s, dx, m_yc < base_yc)
+
+    if best_marker is None:
+        return ""
+    kind, _dx, is_above = best_marker
+    if kind == "clef8":
+        return "_8va" if is_above else "_8vb"
+    # clef15
+    return "_15ma" if is_above else "_15mb"
 
 
 def _notehead_fill_ratio(notehead, cell) -> float | None:
@@ -531,8 +578,12 @@ def _detections_for_cell(
     )
 
     # ── Clef pass: update active_clef from the highest-confidence clef
-    #    detection in this cell, if any. ──────────────────────────────────────
+    #    detection in this cell, if any. If a clef8 / clef15 octave marker
+    #    sits next to the chosen base clef, append the corresponding
+    #    "_8va" / "_8vb" / "_15ma" / "_15mb" suffix so the pitch resolver
+    #    picks up the right anchor (e.g. choral tenor on treble_8vb). ────
     best_clef_name: str | None = None
+    best_clef_det = None
     best_clef_conf = -1.0
     for d in dets:
         if d.category != "clef":
@@ -542,9 +593,11 @@ def _detections_for_cell(
             continue
         if d.confidence > best_clef_conf:
             best_clef_name = mapped
+            best_clef_det = d
             best_clef_conf = d.confidence
     if best_clef_name is not None:
-        active_clef = best_clef_name
+        suffix = _octave_shift_for_base_clef(dets, best_clef_det)
+        active_clef = best_clef_name + suffix
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
     new_key_sig = _detect_key_sig_from_cell(dets)
