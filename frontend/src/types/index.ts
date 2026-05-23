@@ -38,6 +38,15 @@ export type ProcessingStatus =
 
 export type HumanDecision = 'accept' | 'reject' | 'edit';
 
+export type OMREngine = 'audiveris' | 'claude_vision';
+
+export interface OMRProgress {
+  total_pages: number;
+  current_page: number;
+  status: string;
+  failed_pages: number[];
+}
+
 export type DifferenceType =
   | 'note'
   | 'rhythm'
@@ -51,7 +60,7 @@ export type DifferenceType =
 
 export type Era = 'baroque' | 'classical' | 'romantic' | 'modern';
 
-export type ScoreSource = 'imslp' | 'upload';
+export type ScoreSource = 'upload';
 
 // ---------------------------------------------------------------------------
 // Core domain interfaces
@@ -124,15 +133,6 @@ export interface AutoAcceptRule {
   created_at: string;
 }
 
-export interface IMSLPSearchResult {
-  title: string;
-  composer: string;
-  era: Era;
-  url: string;
-  pdf_urls: string[];
-  description: string;
-}
-
 // ---------------------------------------------------------------------------
 // Analytics / reporting interfaces
 // ---------------------------------------------------------------------------
@@ -184,4 +184,43 @@ export interface CropRegion {
   y: number;
   w: number;
   h: number;
+}
+
+// ---------------------------------------------------------------------------
+// Gradus Library interfaces
+// ---------------------------------------------------------------------------
+
+export interface GradusScore {
+  id: string;
+  title: string;
+  composer: string;
+  xml_path: string;
+  pdf_path: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ComparisonSession {
+  id: string;
+  name: string | null;
+  gradus_score_id: string | null;
+  xml_paths_json: string; // JSON-encoded string[]
+  result_json: string | null; // JSON-encoded ComparisonResult
+  created_at: string;
+}
+
+/** Decoded result from a comparison session. */
+export interface ComparisonResult {
+  labels: string[];
+  matrix: number[][];
+  per_measure_agreement: PerMeasureAgreement[];
+  consensus_issues: number[];
+  error: string | null;
+}
+
+export interface PerMeasureAgreement {
+  measure_num: number;
+  agreement_pct: number;
+  sources_agreeing: number;
 }

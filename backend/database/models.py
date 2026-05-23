@@ -51,7 +51,7 @@ class Score(Base):
     title: Mapped[str] = mapped_column(String, nullable=False)
     composer: Mapped[str] = mapped_column(String, nullable=False)
     era: Mapped[str] = mapped_column(String, nullable=False)  # baroque/classical/romantic/modern
-    source: Mapped[str] = mapped_column(String, nullable=False)  # imslp/upload
+    source: Mapped[str] = mapped_column(String, nullable=False)  # upload
     source_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     original_pdf_path: Mapped[str] = mapped_column(String, nullable=False)
     musicxml_path: Mapped[Optional[str]] = mapped_column(String, nullable=True)
@@ -212,6 +212,57 @@ class FineTuningDataset(Base):
     # Relationships
     flagged_diff: Mapped[FlaggedDifference] = relationship(
         "FlaggedDifference", back_populates="finetuning_records"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Gradus Library ORM Models
+# ---------------------------------------------------------------------------
+
+
+class GradusScore(Base):
+    """Master/reference score in the Gradus Library."""
+
+    __tablename__ = "gradus_scores"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    title: Mapped[str] = mapped_column(String, nullable=False)
+    composer: Mapped[str] = mapped_column(String, nullable=False)
+    xml_path: Mapped[str] = mapped_column(String, nullable=False)
+    pdf_path: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=func.now(), onupdate=func.now()
+    )
+
+    # Relationships
+    comparison_sessions: Mapped[list[ComparisonSession]] = relationship(
+        "ComparisonSession", back_populates="gradus_score"
+    )
+
+
+class ComparisonSession(Base):
+    """A multi-source XML comparison workspace."""
+
+    __tablename__ = "comparison_sessions"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    gradus_score_id: Mapped[Optional[str]] = mapped_column(
+        String, ForeignKey("gradus_scores.id"), nullable=True
+    )
+    xml_paths_json: Mapped[str] = mapped_column(Text, nullable=False, default="[]")
+    result_json: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=func.now()
+    )
+
+    # Relationships
+    gradus_score: Mapped[Optional[GradusScore]] = relationship(
+        "GradusScore", back_populates="comparison_sessions"
     )
 
 
@@ -420,6 +471,30 @@ class FineTuningDatasetResponse(BaseModel):
     exported_at: Optional[datetime]
 
 
+class GradusScoreResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    title: str
+    composer: str
+    xml_path: str
+    pdf_path: Optional[str]
+    notes: Optional[str]
+    created_at: datetime
+    updated_at: datetime
+
+
+class ComparisonSessionResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    name: Optional[str]
+    gradus_score_id: Optional[str]
+    xml_paths_json: str
+    result_json: Optional[str]
+    created_at: datetime
+
+
 class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -457,3 +532,5 @@ ClaudePromptVersionResponse.model_rebuild()
 FineTuningDatasetResponse.model_rebuild()
 UserResponse.model_rebuild()
 PaymentResponse.model_rebuild()
+GradusScoreResponse.model_rebuild()
+ComparisonSessionResponse.model_rebuild()

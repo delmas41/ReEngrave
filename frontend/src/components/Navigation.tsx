@@ -3,8 +3,8 @@ import { useAuth } from '../context/AuthContext';
 
 const NAV_LINKS = [
   { to: '/', label: 'Dashboard' },
-  { to: '/search', label: 'IMSLP Search' },
   { to: '/upload', label: 'Upload' },
+  { to: '/gradus', label: 'Gradus Library' },
 ];
 
 const styles: Record<string, React.CSSProperties> = {

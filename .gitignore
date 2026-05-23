@@ -28,6 +28,15 @@ frontend/.vite/
 # Uploads / exports (runtime data)
 uploads/
 exports/
+backend/uploads/
+backend/exports/
+
+# ML model weights (kept locally, never committed — large binary blobs)
+omr-weights/
+*.pt
+*.pth
+*.onnx
+*.safetensors
 
 # OS
 .DS_Store
@@ -35,3 +44,8 @@ Thumbs.db
 
 # Claude worktrees
 .claude/worktrees/
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp

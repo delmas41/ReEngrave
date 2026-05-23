@@ -11,9 +11,17 @@ import {
   getDiffs,
   recordDecision,
   runComparison,
+  runTheoryCheck,
 } from '../api/client';
 import DiffCard from '../components/DiffCard';
 import type { FlaggedDifference, HumanDecision } from '../types';
+
+interface TheoryIssue {
+  measure: number;
+  part: string;
+  check: 'rhythm' | 'range' | 'enharmonic' | 'error';
+  detail: string;
+}
 
 type Filter = 'all' | 'pending' | 'accepted' | 'rejected' | 'edited';
 
@@ -154,6 +162,66 @@ const styles: Record<string, React.CSSProperties> = {
   },
   empty: { color: '#888', fontSize: 14, textAlign: 'center' as const, padding: 32 },
   error: { color: '#c0392b', fontSize: 14 },
+  theoryPanel: {
+    border: '1px solid #dee2e6',
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    overflow: 'hidden',
+  },
+  theoryHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '12px 16px',
+    cursor: 'pointer',
+    userSelect: 'none' as const,
+    backgroundColor: '#f8f9fa',
+    borderBottom: '1px solid #dee2e6',
+  },
+  theoryHeaderTitle: { fontWeight: 700, fontSize: 14, color: '#1a1a2e' },
+  theoryBody: { padding: '0 0 8px' },
+  theoryGroup: { padding: '10px 16px 4px' },
+  theoryGroupTitle: (check: string): React.CSSProperties => {
+    const colors: Record<string, string> = {
+      rhythm: '#e74c3c',
+      range: '#f39c12',
+      enharmonic: '#e74c3c',
+      error: '#7f8c8d',
+    };
+    return {
+      fontWeight: 700,
+      fontSize: 12,
+      textTransform: 'uppercase' as const,
+      letterSpacing: 1,
+      color: colors[check] ?? '#333',
+      marginBottom: 6,
+    };
+  },
+  theoryIssueRow: (check: string): React.CSSProperties => {
+    const bg: Record<string, string> = {
+      rhythm: '#fdf2f2',
+      range: '#fef9ec',
+      enharmonic: '#fdf2f2',
+      error: '#f8f9fa',
+    };
+    const border: Record<string, string> = {
+      rhythm: '#f5c6cb',
+      range: '#fde9a0',
+      enharmonic: '#f5c6cb',
+      error: '#dee2e6',
+    };
+    return {
+      backgroundColor: bg[check] ?? '#fff',
+      border: `1px solid ${border[check] ?? '#dee2e6'}`,
+      borderRadius: 6,
+      padding: '6px 10px',
+      marginBottom: 4,
+      fontSize: 13,
+    };
+  },
+  theoryIssueLabel: { fontWeight: 600, color: '#555', fontSize: 12 },
+  theoryEmpty: { padding: '16px', fontSize: 13, color: '#27ae60', textAlign: 'center' as const },
 };
 
 const FILTER_LABELS: { key: Filter; label: string }[] = [
@@ -180,6 +248,9 @@ export default function ReviewUI() {
   const qc = useQueryClient();
   const [filter, setFilter] = useState<Filter>('pending');
   const [pollingEnabled, setPollingEnabled] = useState(false);
+  const [theoryIssues, setTheoryIssues] = useState<TheoryIssue[] | null>(null);
+  const [theoryPanelOpen, setTheoryPanelOpen] = useState(false);
+  const [theoryError, setTheoryError] = useState<string | null>(null);
 
   const { data: score, error: scoreError } = useQuery({
     queryKey: ['score', scoreId],
@@ -220,6 +291,19 @@ export default function ReviewUI() {
     },
   });
 
+  const theoryCheckMutation = useMutation({
+    mutationFn: () => runTheoryCheck(scoreId!),
+    onSuccess: (data) => {
+      setTheoryIssues(data.issues as TheoryIssue[]);
+      setTheoryPanelOpen(true);
+      setTheoryError(null);
+    },
+    onError: (err: unknown) => {
+      setTheoryError(err instanceof Error ? err.message : 'Theory check failed');
+      setTheoryPanelOpen(true);
+    },
+  });
+
   if (scoreError) {
     return <p style={styles.error}>Failed to load score.</p>;
   }
@@ -231,6 +315,15 @@ export default function ReviewUI() {
   const pendingCount = diffs.filter((d) => d.human_decision === null && !d.auto_accepted).length;
 
   const filteredDiffs = filterDiffs(diffs, filter);
+
+  // Group theory issues by check type for display
+  const theoryGroups: Record<string, TheoryIssue[]> = {};
+  if (theoryIssues) {
+    for (const issue of theoryIssues) {
+      if (!theoryGroups[issue.check]) theoryGroups[issue.check] = [];
+      theoryGroups[issue.check].push(issue);
+    }
+  }
 
   return (
     <div>
@@ -266,13 +359,84 @@ export default function ReviewUI() {
             Claude Vision will compare each measure of your original PDF against the
             re-engraved MusicXML to flag any differences for your review.
           </p>
-          <button
-            style={styles.primaryBtn}
-            onClick={() => runCompareMutation.mutate()}
-            disabled={runCompareMutation.isPending || !score?.musicxml_path}
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button
+              style={styles.primaryBtn}
+              onClick={() => runCompareMutation.mutate()}
+              disabled={runCompareMutation.isPending || !score?.musicxml_path}
+            >
+              {runCompareMutation.isPending ? 'Starting…' : '✦ Run Vision Comparison'}
+            </button>
+            <button
+              style={styles.secondaryBtn(theoryCheckMutation.isPending || !score?.musicxml_path)}
+              onClick={() => theoryCheckMutation.mutate()}
+              disabled={theoryCheckMutation.isPending || !score?.musicxml_path}
+            >
+              {theoryCheckMutation.isPending ? 'Checking…' : '♩ Theory Check'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Theory Check results panel (when shown before diffs are loaded) */}
+      {total === 0 && (theoryIssues !== null || theoryError) && (
+        <div style={styles.theoryPanel}>
+          <div
+            style={styles.theoryHeader}
+            onClick={() => setTheoryPanelOpen((o) => !o)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && setTheoryPanelOpen((o) => !o)}
           >
-            {runCompareMutation.isPending ? 'Starting…' : '✦ Run Vision Comparison'}
-          </button>
+            <span style={styles.theoryHeaderTitle}>
+              Theory Check Results
+              {theoryIssues !== null && (
+                <span style={{ marginLeft: 8, fontWeight: 400, color: '#666' }}>
+                  {theoryIssues.length === 0
+                    ? '— no issues found'
+                    : `— ${theoryIssues.length} issue${theoryIssues.length !== 1 ? 's' : ''}`}
+                </span>
+              )}
+            </span>
+            <span style={{ fontSize: 12, color: '#888' }}>{theoryPanelOpen ? '▲' : '▼'}</span>
+          </div>
+          {theoryPanelOpen && (
+            <div style={styles.theoryBody}>
+              {theoryError && (
+                <div style={{ padding: '12px 16px', color: '#c0392b', fontSize: 13 }}>
+                  {theoryError}
+                </div>
+              )}
+              {theoryIssues !== null && theoryIssues.length === 0 && (
+                <div style={styles.theoryEmpty}>No theory issues detected.</div>
+              )}
+              {theoryIssues !== null && theoryIssues.length > 0 &&
+                (['rhythm', 'enharmonic', 'range', 'error'] as const).map((checkType) => {
+                  const group = theoryGroups[checkType];
+                  if (!group || group.length === 0) return null;
+                  return (
+                    <div key={checkType} style={styles.theoryGroup}>
+                      <div style={styles.theoryGroupTitle(checkType)}>
+                        {checkType === 'rhythm' && 'Rhythm Issues'}
+                        {checkType === 'range' && 'Instrument Range Warnings'}
+                        {checkType === 'enharmonic' && 'Enharmonic Spelling Issues'}
+                        {checkType === 'error' && 'Check Errors'}
+                        {' '}({group.length})
+                      </div>
+                      {group.map((issue, idx) => (
+                        <div key={idx} style={styles.theoryIssueRow(checkType)}>
+                          <span style={styles.theoryIssueLabel}>
+                            m.{issue.measure} · {issue.part}
+                          </span>
+                          <span style={{ marginLeft: 8, color: '#333' }}>{issue.detail}</span>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })
+              }
+            </div>
+          )}
         </div>
       )}
 
@@ -291,7 +455,7 @@ export default function ReviewUI() {
         </div>
       )}
 
-      {/* Action row (re-run comparison + progress context) */}
+      {/* Action row (re-run comparison + theory check + progress context) */}
       {total > 0 && (
         <div style={styles.actionRow}>
           <button
@@ -301,10 +465,79 @@ export default function ReviewUI() {
           >
             {runCompareMutation.isPending ? 'Starting…' : '↻ Re-run Comparison'}
           </button>
+          <button
+            style={styles.secondaryBtn(theoryCheckMutation.isPending || !score?.musicxml_path)}
+            onClick={() => theoryCheckMutation.mutate()}
+            disabled={theoryCheckMutation.isPending || !score?.musicxml_path}
+          >
+            {theoryCheckMutation.isPending ? 'Checking…' : '♩ Theory Check'}
+          </button>
           {!allReviewed && (
             <span style={{ fontSize: 13, color: '#888' }}>
               {pendingCount} difference{pendingCount !== 1 ? 's' : ''} pending review
             </span>
+          )}
+        </div>
+      )}
+
+      {/* Theory Check results panel */}
+      {(theoryIssues !== null || theoryError) && (
+        <div style={styles.theoryPanel}>
+          <div
+            style={styles.theoryHeader}
+            onClick={() => setTheoryPanelOpen((o) => !o)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && setTheoryPanelOpen((o) => !o)}
+          >
+            <span style={styles.theoryHeaderTitle}>
+              Theory Check Results
+              {theoryIssues !== null && (
+                <span style={{ marginLeft: 8, fontWeight: 400, color: '#666' }}>
+                  {theoryIssues.length === 0
+                    ? '— no issues found'
+                    : `— ${theoryIssues.length} issue${theoryIssues.length !== 1 ? 's' : ''}`}
+                </span>
+              )}
+            </span>
+            <span style={{ fontSize: 12, color: '#888' }}>{theoryPanelOpen ? '▲' : '▼'}</span>
+          </div>
+          {theoryPanelOpen && (
+            <div style={styles.theoryBody}>
+              {theoryError && (
+                <div style={{ padding: '12px 16px', color: '#c0392b', fontSize: 13 }}>
+                  {theoryError}
+                </div>
+              )}
+              {theoryIssues !== null && theoryIssues.length === 0 && (
+                <div style={styles.theoryEmpty}>No theory issues detected.</div>
+              )}
+              {theoryIssues !== null && theoryIssues.length > 0 &&
+                (['rhythm', 'enharmonic', 'range', 'error'] as const).map((checkType) => {
+                  const group = theoryGroups[checkType];
+                  if (!group || group.length === 0) return null;
+                  return (
+                    <div key={checkType} style={styles.theoryGroup}>
+                      <div style={styles.theoryGroupTitle(checkType)}>
+                        {checkType === 'rhythm' && 'Rhythm Issues'}
+                        {checkType === 'range' && 'Instrument Range Warnings'}
+                        {checkType === 'enharmonic' && 'Enharmonic Spelling Issues'}
+                        {checkType === 'error' && 'Check Errors'}
+                        {' '}({group.length})
+                      </div>
+                      {group.map((issue, idx) => (
+                        <div key={idx} style={styles.theoryIssueRow(checkType)}>
+                          <span style={styles.theoryIssueLabel}>
+                            m.{issue.measure} · {issue.part}
+                          </span>
+                          <span style={{ marginLeft: 8, color: '#333' }}>{issue.detail}</span>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })
+              }
+            </div>
           )}
         </div>
       )}

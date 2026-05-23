@@ -23,3 +23,4 @@ aiofiles==23.2.1
 greenlet>=3.0.0
 verovio>=4.0.0
 cairosvg>=2.7.0
+music21>=9.1.0

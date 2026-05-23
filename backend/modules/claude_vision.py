@@ -50,6 +50,8 @@ async def compare_score_measures(
     musicxml_path: str,
     score_metadata: dict,
     prompt_version: Optional[str] = None,
+    knowledge_patterns: list[dict] = None,
+    flagged_measures: dict[int, float] = None,
 ) -> list[MeasureDiff]:
     """Main comparison function.
 
@@ -73,6 +75,48 @@ async def compare_score_measures(
 
     client = anthropic.AsyncAnthropic(api_key=ANTHROPIC_API_KEY)
 
+    # Build knowledge context string from learned patterns
+    knowledge_context = ""
+    if knowledge_patterns:
+        high_accept = [
+            p for p in knowledge_patterns
+            if p.get("accept_rate", 0) >= 0.8 and p.get("occurrence_count", 0) > 0
+        ]
+        high_reject = [
+            p for p in knowledge_patterns
+            if p.get("accept_rate", 1) <= 0.2 and p.get("occurrence_count", 0) > 0
+        ]
+        lines: list[str] = []
+        if high_accept:
+            lines.append("Patterns to lean toward accepting:")
+            for p in high_accept:
+                lines.append(
+                    f"  - {p['difference_type']} in {p.get('instrument', 'unknown')}: "
+                    f"accepted {p['accept_rate']:.0%} of the time "
+                    f"({p['occurrence_count']} cases) — lean toward accepting"
+                )
+        if high_reject:
+            lines.append("Patterns to lean toward rejecting:")
+            for p in high_reject:
+                lines.append(
+                    f"  - {p['difference_type']} in {p.get('instrument', 'unknown')}: "
+                    f"accepted {p['accept_rate']:.0%} of the time "
+                    f"({p['occurrence_count']} cases) — lean toward rejecting"
+                )
+        # Include mid-range patterns too
+        mid = [
+            p for p in knowledge_patterns
+            if 0.2 < p.get("accept_rate", 0.5) < 0.8 and p.get("occurrence_count", 0) > 0
+        ]
+        if mid:
+            for p in mid:
+                lines.append(
+                    f"  - {p['difference_type']} in {p.get('instrument', 'unknown')}: "
+                    f"accepted {p['accept_rate']:.0%} of the time "
+                    f"({p['occurrence_count']} cases)"
+                )
+        knowledge_context = "\n".join(lines)
+
     # Pair up images by index (assumes 1:1 page correspondence)
     pairs = list(zip(pdf_image_paths, xml_image_paths))
     tasks = [
@@ -82,6 +126,8 @@ async def compare_score_measures(
             measure_num=i + 1,
             metadata=score_metadata,
             client=client,
+            knowledge_context=knowledge_context,
+            flagged_measures=flagged_measures,
         )
         for i, (pdf_img, xml_img) in enumerate(pairs)
     ]
@@ -170,12 +216,32 @@ async def compare_measure_pair(
     measure_num: int,
     metadata: dict,
     client: anthropic.AsyncAnthropic,
+    knowledge_context: str = "",
+    flagged_measures: dict[int, float] = None,
 ) -> Optional[MeasureDiff]:
     """Send a PDF/MusicXML image pair to Claude Vision for comparison.
 
     Returns a MeasureDiff if a difference is found, else None.
     """
-    prompt_text = build_comparison_prompt(metadata, measure_num)
+    flagged_measures_note = ""
+    if flagged_measures and measure_num in flagged_measures:
+        agreement_pct = flagged_measures[measure_num]
+        if agreement_pct < 0.5:
+            flagged_measures_note = (
+                f"⚠️⚠️ STRONG DISAGREEMENT across sources — this measure is very likely "
+                f"to contain an error."
+            )
+        else:
+            flagged_measures_note = (
+                f"⚠️ XML CONSENSUS ALERT: Multiple XML sources disagree on this measure "
+                f"({agreement_pct:.0%} agreement). Examine extra carefully."
+            )
+
+    prompt_text = build_comparison_prompt(
+        metadata, measure_num,
+        knowledge_context=knowledge_context,
+        flagged_measures_note=flagged_measures_note,
+    )
 
     def _encode(path: str) -> tuple[str, str]:
         with open(path, "rb") as f:
@@ -236,12 +302,29 @@ async def compare_measure_pair(
     )
 
 
-def build_comparison_prompt(metadata: dict, measure_num: int) -> str:
+def build_comparison_prompt(
+    metadata: dict,
+    measure_num: int,
+    knowledge_context: str = "",
+    flagged_measures_note: str = "",
+) -> str:
     """Build the Claude Vision comparison prompt from score metadata."""
     title = metadata.get("title", "Unknown")
     composer = metadata.get("composer", "Unknown")
     era = metadata.get("era", "unknown")
     instrument = metadata.get("instrument", "unknown")
+
+    learned_section = ""
+    if knowledge_context:
+        learned_section = f"""
+LEARNED PATTERNS FROM PREVIOUS CORRECTIONS:
+{knowledge_context}
+Use these patterns to calibrate your confidence scores.
+"""
+
+    consensus_section = ""
+    if flagged_measures_note:
+        consensus_section = f"\n{flagged_measures_note}\n"
 
     return f"""You are an expert music engraver reviewing OMR (Optical Music Recognition) output.
 
@@ -252,7 +335,7 @@ You are given two images:
 Score: "{title}" by {composer} ({era} era)
 Instrument: {instrument}
 Page: {measure_num}
-
+{consensus_section}{learned_section}
 Compare the two images carefully. Identify any differences between them.
 
 Respond ONLY with a JSON object in this exact format:

@@ -11,7 +11,6 @@ import type {
   ExportFormat,
   FlaggedDifference,
   HumanDecision,
-  IMSLPSearchResult,
   KnowledgePattern,
   LearningReport,
   PaymentStatus,
@@ -162,35 +161,6 @@ export async function createCheckoutSession(scoreId: string): Promise<CheckoutRe
 }
 
 // ---------------------------------------------------------------------------
-// IMSLP
-// ---------------------------------------------------------------------------
-
-export async function searchIMSLP(
-  query: string,
-  maxResults = 10
-): Promise<IMSLPSearchResult[]> {
-  const res = await api.get<IMSLPSearchResult[]>('/api/imslp/search', {
-    params: { q: query, max_results: maxResults },
-  });
-  return res.data;
-}
-
-export async function downloadScore(
-  url: string,
-  title: string,
-  composer: string,
-  era: string
-): Promise<{ score_id: string; status: string }> {
-  const res = await api.post('/api/imslp/download', {
-    url,
-    score_title: title,
-    composer,
-    era,
-  });
-  return res.data;
-}
-
-// ---------------------------------------------------------------------------
 // File import
 // ---------------------------------------------------------------------------
 
@@ -254,9 +224,12 @@ export async function deleteScore(id: string): Promise<{ deleted: string }> {
 // ---------------------------------------------------------------------------
 
 export async function runOMR(
-  scoreId: string
+  scoreId: string,
+  engine: 'audiveris' | 'claude_vision' = 'claude_vision'
 ): Promise<{ score_id: string; status: string }> {
-  const res = await api.post(`/api/scores/${scoreId}/process/omr`);
+  const res = await api.post(`/api/scores/${scoreId}/process/omr`, null, {
+    params: { omr_engine: engine },
+  });
   return res.data;
 }
 
@@ -271,6 +244,13 @@ export async function getScoreStatus(
   scoreId: string
 ): Promise<{ score_id: string; status: string; updated_at: string }> {
   const res = await api.get(`/api/scores/${scoreId}/status`);
+  return res.data;
+}
+
+export async function runTheoryCheck(
+  scoreId: string
+): Promise<{ score_id: string; issues: Array<{ measure: number; part: string; check: string; detail: string }>; total: number }> {
+  const res = await api.post(`/api/scores/${scoreId}/theory-check`);
   return res.data;
 }
 
@@ -355,5 +335,66 @@ export async function triggerFinetuningExport(): Promise<{
   path: string;
 }> {
   const res = await api.get('/api/analytics/finetuning-export');
+  return res.data;
+}
+
+// ---------------------------------------------------------------------------
+// Gradus Library
+// ---------------------------------------------------------------------------
+
+import type { GradusScore, ComparisonSession } from '../types';
+
+export async function listGradusScores(): Promise<GradusScore[]> {
+  const res = await api.get<GradusScore[]>('/api/gradus/');
+  return res.data;
+}
+
+export async function createGradusScore(
+  xmlFile: File,
+  title: string,
+  composer: string,
+  notes?: string,
+  pdfFile?: File,
+): Promise<GradusScore> {
+  const form = new FormData();
+  form.append('xml_file', xmlFile);
+  form.append('title', title);
+  form.append('composer', composer);
+  if (notes) form.append('notes', notes);
+  if (pdfFile) form.append('pdf_file', pdfFile);
+  const res = await api.post<GradusScore>('/api/gradus/', form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return res.data;
+}
+
+export async function deleteGradusScore(id: string): Promise<{ deleted: string }> {
+  const res = await api.delete(`/api/gradus/${id}`);
+  return res.data;
+}
+
+export async function listComparisonSessions(): Promise<ComparisonSession[]> {
+  const res = await api.get<ComparisonSession[]>('/api/compare/');
+  return res.data;
+}
+
+export async function getComparisonSession(id: string): Promise<ComparisonSession> {
+  const res = await api.get<ComparisonSession>(`/api/compare/${id}`);
+  return res.data;
+}
+
+export async function createComparisonSession(
+  xmlFiles: File[],
+  gradusScoreId?: string,
+  name?: string,
+): Promise<ComparisonSession> {
+  const form = new FormData();
+  xmlFiles.forEach((f) => form.append('xml_files', f));
+  if (gradusScoreId) form.append('gradus_score_id', gradusScoreId);
+  if (name) form.append('name', name);
+  const res = await api.post<ComparisonSession>('/api/compare/', form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120_000, // music21 can be slow on large scores
+  });
   return res.data;
 }

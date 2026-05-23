@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Dashboard from './pages/Dashboard';
-import IMSLPSearch from './pages/IMSLPSearch';
 import FileUpload from './pages/FileUpload';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -10,6 +9,7 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import ScoreProcess from './pages/ScoreProcess';
 import ReviewUI from './pages/ReviewUI';
 import Export from './pages/Export';
+import GradusLibrary from './pages/GradusLibrary';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { setAccessToken } from './api/client';
 
@@ -55,11 +55,11 @@ function AppShell() {
 
           {/* Protected routes — redirect to login if not authenticated */}
           <Route path="/" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
-          <Route path="/search" element={user ? <IMSLPSearch /> : <Navigate to="/login" replace />} />
           <Route path="/upload" element={user ? <FileUpload /> : <Navigate to="/login" replace />} />
           <Route path="/scores/:id/process" element={user ? <ScoreProcess /> : <Navigate to="/login" replace />} />
           <Route path="/scores/:id/review" element={user ? <ReviewUI /> : <Navigate to="/login" replace />} />
           <Route path="/scores/:id/export" element={user ? <Export /> : <Navigate to="/login" replace />} />
+          <Route path="/gradus" element={user ? <GradusLibrary /> : <Navigate to="/login" replace />} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to={user ? '/' : '/login'} replace />} />

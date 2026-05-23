@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getScore, runOMR } from '../api/client';
-import type { ProcessingStatus } from '../types';
+import type { OMREngine, OMRProgress, ProcessingStatus } from '../types';
 
 const STATUS_COLOR: Record<ProcessingStatus, string> = {
   pending: '#f39c12',
@@ -205,6 +205,7 @@ export default function ScoreProcess() {
   const qc = useQueryClient();
   const [polling, setPolling] = useState(false);
   const wasProcessing = useRef(false);
+  const [selectedEngine, setSelectedEngine] = useState<OMREngine>('claude_vision');
 
   const { data: score, isLoading } = useQuery({
     queryKey: ['score', scoreId],
@@ -227,13 +228,20 @@ export default function ScoreProcess() {
   }, [score?.status, scoreId, navigate]);
 
   const omrMutation = useMutation({
-    mutationFn: () => runOMR(scoreId!),
+    mutationFn: () => runOMR(scoreId!, selectedEngine),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['score', scoreId] });
       wasProcessing.current = true;
       setPolling(true);
     },
+    onError: (err: any) => {
+      alert(err?.response?.data?.detail || err?.message || 'OMR failed to start. Please try again.');
+    },
   });
+
+  // Extract progress from metadata
+  const omrProgress: OMRProgress | null = score?.metadata_json?.omr_progress as OMRProgress | null;
+  const omrEngine: string = (score?.metadata_json?.omr_engine as string) || '';
 
   if (isLoading) {
     return <div style={styles.page}><p style={{ color: '#888', fontSize: 14 }}>Loading…</p></div>;
@@ -263,14 +271,44 @@ export default function ScoreProcess() {
       <StepIndicator currentStatus={score.status} />
 
       <div style={styles.ctaCard}>
-        {/* Pending — show ReEngrave CTA */}
+        {/* Pending — show engine selector + ReEngrave CTA */}
         {score.status === 'pending' && (
           <>
             <div style={styles.ctaIcon}>🎼</div>
             <div style={styles.ctaTitle}>Ready to ReEngrave</div>
             <p style={styles.ctaDesc}>
-              Run optical music recognition (OMR) to convert your PDF score to MusicXML.
-              This usually takes 1–3 minutes depending on the score length.
+              Convert your PDF score to MusicXML. Choose an OMR engine below.
+            </p>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 20, justifyContent: 'center' }}>
+              <button
+                style={{
+                  padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600,
+                  cursor: 'pointer', transition: 'all 0.15s',
+                  border: selectedEngine === 'claude_vision' ? '2px solid #1a1a2e' : '2px solid #ccc',
+                  background: selectedEngine === 'claude_vision' ? '#1a1a2e' : '#fff',
+                  color: selectedEngine === 'claude_vision' ? '#fff' : '#555',
+                }}
+                onClick={() => setSelectedEngine('claude_vision')}
+              >
+                Claude Vision AI
+              </button>
+              <button
+                style={{
+                  padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600,
+                  cursor: 'pointer', transition: 'all 0.15s',
+                  border: selectedEngine === 'audiveris' ? '2px solid #1a1a2e' : '2px solid #ccc',
+                  background: selectedEngine === 'audiveris' ? '#1a1a2e' : '#fff',
+                  color: selectedEngine === 'audiveris' ? '#fff' : '#555',
+                }}
+                onClick={() => setSelectedEngine('audiveris')}
+              >
+                Audiveris (Java)
+              </button>
+            </div>
+            <p style={{ color: '#888', fontSize: 12, marginBottom: 16, textAlign: 'center' as const }}>
+              {selectedEngine === 'claude_vision'
+                ? 'Claude Vision reads the score visually and generates MusicXML. Best quality, uses API credits.'
+                : 'Audiveris runs locally via Java. Fast but often inaccurate on complex scores.'}
             </p>
             <button
               style={styles.primaryBtn}
@@ -282,15 +320,42 @@ export default function ScoreProcess() {
           </>
         )}
 
-        {/* Processing — spinner */}
+        {/* Processing — spinner with progress */}
         {isProcessing && (
           <>
             <div style={styles.spinner} />
-            <div style={styles.ctaTitle}>ReEngraving in progress…</div>
-            <p style={styles.ctaDesc}>
-              Audiveris is scanning your score. This page will automatically advance
-              when processing is complete.
-            </p>
+            <div style={styles.ctaTitle}>
+              {omrEngine === 'claude_vision'
+                ? 'Claude Vision is reading your score…'
+                : 'Audiveris is scanning your score…'}
+            </div>
+            {omrProgress && omrProgress.total_pages > 0 ? (
+              <>
+                <p style={{ color: '#555', fontSize: 14, marginBottom: 12, fontWeight: 600 }}>
+                  Page {omrProgress.current_page} of {omrProgress.total_pages}
+                </p>
+                <div style={{
+                  width: '100%', maxWidth: 400, height: 8, background: '#e9ecef',
+                  borderRadius: 4, overflow: 'hidden', margin: '0 auto 12px',
+                }}>
+                  <div style={{
+                    width: `${(omrProgress.current_page / omrProgress.total_pages) * 100}%`,
+                    height: '100%', background: '#2980b9', borderRadius: 4,
+                    transition: 'width 0.3s ease',
+                  }} />
+                </div>
+                {omrProgress.failed_pages.length > 0 && (
+                  <p style={{ color: '#e67e22', fontSize: 12 }}>
+                    {omrProgress.failed_pages.length} page(s) had issues — will retry or skip
+                  </p>
+                )}
+              </>
+            ) : (
+              <p style={styles.ctaDesc}>
+                Preparing score for analysis. This page will automatically advance
+                when processing is complete.
+              </p>
+            )}
             <div style={styles.processingNote}>
               Tip: you can close this tab and come back — the job runs in the background.
             </div>
