@@ -60,3 +60,11 @@ benchmarks/omr-phase1/*-overlay.png
 benchmarks/omr-phase2/wtc-p5/
 benchmarks/omr-phase2/wtc-p5-*/
 benchmarks/omr-phase3/verdicts-yolo/
+
+# Stale / superseded benchmark outputs — old experiments preserved only
+# in commit history. Keep canonical `detections/`, `verdicts/`, `overlays/`
+# (when small) plus reports. Anything with these suffixes is throwaway.
+benchmarks/**/*-aborted/
+benchmarks/**/*-backup/
+benchmarks/**/*-old/
+benchmarks/**/overlays-*/
