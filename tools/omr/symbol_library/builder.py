@@ -17,7 +17,15 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from freetype import Face
+
+# freetype is only used by rasterize_glyph() during template-library
+# generation, never at OMR runtime. Import lazily so importing this
+# module (e.g. for hu_moments) doesn't pull freetype into the runtime
+# dependency set.
+try:
+    from freetype import Face  # type: ignore
+except ImportError:
+    Face = None  # type: ignore
 
 DATA_DIR = Path(__file__).parent / "data"
 TEMPLATES_DIR = DATA_DIR / "templates"
@@ -90,9 +98,17 @@ def load_smufl_map() -> dict[str, int]:
     return out
 
 
-def rasterize_glyph(face: Face, codepoint: int, size_px: int) -> np.ndarray | None:
+def rasterize_glyph(face: "Face", codepoint: int, size_px: int) -> np.ndarray | None:
     """Render a single glyph to a uint8 array (255=paper, 0=ink). Returns
-    None if the glyph has no bitmap (empty glyph)."""
+    None if the glyph has no bitmap (empty glyph). Requires the freetype
+    pip package — install with `pip install freetype-py` if you need to
+    regenerate the template library."""
+    if Face is None:
+        raise RuntimeError(
+            "rasterize_glyph requires the freetype-py package "
+            "(pip install freetype-py). It's only needed for template "
+            "library generation, not at OMR runtime."
+        )
     face.set_char_size(size_px * 64)
     face.load_char(chr(codepoint))
     bm = face.glyph.bitmap
