@@ -123,6 +123,7 @@ from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
 from .pitch_resolver import pitch_for_notehead
 from .rhythm import parse_time_signature, resolve_rhythms_for_cell
+from .line_detection import detect_lines
 
 
 # Default weights — Phase 3.3, F1 98.8% on the 25 verdict cells.
@@ -422,9 +423,18 @@ def _detections_for_cell(
     if new_time_sig is not None:
         active_time_sig = new_time_sig
 
+    # ── Classical-CV line detection: stems + cleaner beams. The YOLO
+    #    Phase 3.3 model misses stems entirely and emits beam bboxes
+    #    with imprecise endpoints; classical morphology + connected
+    #    components produces both with millisecond-scale latency and
+    #    no GPU. See tools/omr/line_detection.py.
+    extra_lines = detect_lines(cell)
+
     # ── Rhythm pass: resolve duration_beats / duration_type / dots per
     #    notehead and rest. Uses beams + flags + augmentationDot geometry.
-    rhythm_map = resolve_rhythms_for_cell(dets, cell)
+    #    Passes extra_lines so rhythm.py can use the classical-CV stems
+    #    + beams (much more accurate than YOLO's beams alone).
+    rhythm_map = resolve_rhythms_for_cell(dets, cell, extra_lines=extra_lines)
 
     # ── Pair inline accidentals to their target noteheads. ─────────────────
     inline_map = _pair_accidentals_to_noteheads(dets)

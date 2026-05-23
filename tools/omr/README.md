@@ -68,6 +68,7 @@ tools/omr/
 ├── export.py                  ← JSON → LilyPond / MusicXML (Phase 4d)
 ├── voicing.py                 ← Chord-grouping helper used by export
 ├── rhythm.py                  ← Duration parsing (Phase 4c)
+├── line_detection.py          ← Classical-CV stems + beams (Phase 4f)
 ├── run_pipeline.py            ← Older Phase-1-only CLI (staves/measures only,
 │                                no symbol detection). Mostly for debugging
 │                                the staff/measure extractor in isolation.
@@ -391,29 +392,33 @@ methodology + per-class breakdown.
   parsing, no key-signature inference, no MusicXML output. That layer is
   the job of downstream tools that consume this JSON.
 
-- **Rhythm parsing is approximate** (Phase 4c v1). Each notehead /
-  rest gets `duration_beats`, `duration_type`, and `dots`. Algorithm:
-  notehead class gives the intrinsic duration (whole / half / black);
-  for black noteheads, count distinct vertical beam levels that
-  horizontally cover the notehead (1 = 8th, 2 = 16th, 3 = 32nd, ...).
-  Falls back to a paired flag detection if no beam, then to "quarter"
-  if neither. Dots are paired to the nearest left-side notehead at the
-  same y position.
+- **Rhythm parsing is hybrid YOLO + classical-CV** (Phase 4c + 4f).
+  Each notehead / rest gets `duration_beats`, `duration_type`, and
+  `dots`. Algorithm: notehead class gives the intrinsic duration
+  (whole / half / black); for black noteheads, classical-CV stem
+  detection (`tools/omr/line_detection.py`) finds the stem attached
+  to the notehead, then we count distinct vertical beam levels
+  attached to that stem (1 = 8th, 2 = 16th, 3 = 32nd, ...). Beam
+  detection uses both YOLO's beam class and a classical-CV horizontal
+  morphology pass for redundancy. Falls back to a paired flag
+  detection if no beam, then to "quarter" if neither. Dots are paired
+  to the nearest left-side notehead at the same y position.
 
-  Known v1 quirks:
-  - **Stems are not detected by the Phase 3.3 model** (0 detections
-    even at conf=0.05), so the algorithm pairs noteheads to beams
-    directly. Edge noteheads at the very ends of a beam group can be
-    missed if the beam bbox is short — partly mitigated by adding
-    `notehead_width × 0.6` x-tolerance on each side.
-  - 32nd-note count is somewhat inflated because two adjacent thick
-    beam bboxes at slightly different y positions cluster as separate
-    levels.
-  - Per-measure beat sums should approximately match the time
-    signature, but won't be exact on busy keyboard music.
-  - **No voicing / chord grouping yet.** Multiple noteheads at the
-    same x-position aren't merged into a chord; they each carry
-    independent durations.
+  Why classical CV here? YOLO bounding boxes are structurally bad at
+  thin lines (extreme aspect ratios, mostly-empty bboxes). The Phase
+  3.3 model emits **zero stem detections** even at conf=0.05, and its
+  beam bboxes routinely end 20-50 px short of the actual beam stroke.
+  Morphological opening + connected components handles these shapes
+  natively, in milliseconds per cell, deterministically.
+
+  Known quirks:
+  - Per-measure beat sums are close to but not exactly the time
+    signature on busy keyboard music — LilyPond bar-check warnings
+    typically report fractional offsets (e.g. 1/32, 3/32) rather than
+    full-beat errors as in Phase 4c v1.
+  - **No chord voicing yet** — multiple noteheads at the same
+    x-position are merged into one chord (Phase 4e), but stem-up vs
+    stem-down separation into multiple voices isn't done.
 
 - **Time signature uses the detector's per-digit classes**
   (`timeSig0`–`timeSig9` plus `timeSigCommon` / `timeSigCutCommon`).

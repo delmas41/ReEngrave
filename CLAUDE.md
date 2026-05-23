@@ -237,11 +237,18 @@ PDF → render_page (PyMuPDF, 600 DPI default)
     → detect_barlines + extract_measures
     → MeasureCell × N  (canonical scale-normalized cells)
     → YoloDetector.detect (yolov8l, imgsz=640, agnostic_nms=True)
+    → line_detection (classical CV stems + beams)
     → pitch_resolver  (clef + key sig + accidentals  → "F#4")
     → rhythm          (beams + flags + dots          → duration_beats)
     → transcribe.py groups by (system, staff, measure) → JSON
     → export.py (voicing → LilyPond or MusicXML)
 ```
+
+YOLO handles "thing-like" symbols (notes, clefs, accidentals, dynamics).
+Classical CV (`line_detection.py`) handles "line-like" symbols (stems,
+beams) — YOLO bounding boxes are structurally poor at thin lines, and
+the Phase 3.3 model emits **zero stem detections**. Hybrid approach
+gets the best of both: each algorithm runs on the shapes it's good at.
 
 Phase 1 (staves/measures) is ~1–3 s/page CPU. Phase 3 (YOLO) is
 ~0.15–0.4 s/cell on CPU; faster on MPS/CUDA when available

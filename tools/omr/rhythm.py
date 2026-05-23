@@ -231,6 +231,81 @@ def _staff_line_spacing(cell) -> float:
     return 24.0  # canonical default
 
 
+def _stem_for_notehead(nh, stems, max_x_distance: float):
+    """Find the stem touching this notehead (classical-CV stems).
+
+    A stem "touches" a notehead if its x-range is within
+    `max_x_distance` of the notehead's x-range (either side — stem-up
+    notes have the stem on the right, stem-down on the left) AND its
+    y-range overlaps the notehead's y-range.
+
+    Returns the stem (a `line_detection.LineDetection` or any
+    quack-compatible object exposing `x_canonical` etc.) or None.
+    """
+    nh_x_l = nh.x_canonical
+    nh_x_r = nh.x_canonical + nh.width_canonical
+    nh_y_top = nh.y_canonical
+    nh_y_bot = nh.y_canonical + nh.height_canonical
+    best = None
+    best_dist = float("inf")
+    for s in stems:
+        s_x_l = s.x_canonical
+        s_x_r = s.x_canonical + s.width_canonical
+        # Horizontal proximity (closest edge-to-edge gap)
+        if s_x_r < nh_x_l:
+            dx = nh_x_l - s_x_r
+        elif s_x_l > nh_x_r:
+            dx = s_x_l - nh_x_r
+        else:
+            dx = 0
+        if dx > max_x_distance:
+            continue
+        # Vertical: stem must reach into the notehead's y-range
+        s_y_top = s.y_canonical
+        s_y_bot = s.y_canonical + s.height_canonical
+        if s_y_bot < nh_y_top - 5 or s_y_top > nh_y_bot + 5:
+            continue
+        if dx < best_dist:
+            best_dist = dx
+            best = s
+    return best
+
+
+def _beams_attached_to_stem(stem, beams,
+                            beam_y_cluster_tol: float) -> int:
+    """Count distinct vertical beam levels attached to a stem.
+
+    A beam attaches to a stem if its x-range overlaps the stem's x AND
+    its y-position is anywhere within the stem's vertical extent (with a
+    small tolerance). This naturally handles both stem-up (beams above
+    the notehead) and stem-down (beams below).
+    """
+    s_x_l = stem.x_canonical
+    s_x_r = stem.x_canonical + stem.width_canonical
+    s_y_top = stem.y_canonical
+    s_y_bot = stem.y_canonical + stem.height_canonical
+
+    attached_ys: list[int] = []
+    for b in beams:
+        b_x_l = b.x_canonical
+        b_x_r = b.x_canonical + b.width_canonical
+        # x overlap: beam's range must reach the stem's range
+        if b_x_r < s_x_l - 5 or b_x_l > s_x_r + 5:
+            continue
+        b_y_c = b.y_canonical + b.height_canonical // 2
+        if b_y_c < s_y_top - 10 or b_y_c > s_y_bot + 10:
+            continue
+        attached_ys.append(b_y_c)
+    if not attached_ys:
+        return 0
+    attached_ys.sort()
+    levels = 1
+    for i in range(1, len(attached_ys)):
+        if attached_ys[i] - attached_ys[i - 1] > beam_y_cluster_tol:
+            levels += 1
+    return levels
+
+
 def _beam_levels_for_notehead(nh, beams, max_stem_distance: float,
                               beam_y_cluster_tol: float,
                               x_tolerance: float) -> int:
@@ -345,7 +420,12 @@ def _name_for_dots(n_dots: int) -> str:
 # ---------------------------------------------------------------------------
 
 
-def resolve_rhythms_for_cell(dets, cell) -> dict[int, dict[str, Any]]:
+def resolve_rhythms_for_cell(
+    dets,
+    cell,
+    *,
+    extra_lines: dict[str, list] | None = None,
+) -> dict[int, dict[str, Any]]:
     """For each notehead and rest in `dets`, decide a duration.
 
     Returns `{id(detection): {"duration_beats", "duration_type", "dots"}}`.
@@ -354,6 +434,18 @@ def resolve_rhythms_for_cell(dets, cell) -> dict[int, dict[str, Any]]:
     For noteheads: precedence is (beams > flags > intrinsic class).
     For rests: just the intrinsic class duration.
     For both: augmentation dots multiply the duration.
+
+    Args:
+        dets: list of detection objects (YOLO SymbolDetection or dicts).
+        cell: the MeasureCell — used for staff-line spacing reference.
+        extra_lines: optional output from
+            `tools.omr.line_detection.detect_lines(cell)` —
+            `{"stems": [LineDetection...], "beams": [LineDetection...]}`.
+            When provided, classical-CV beams REPLACE the YOLO beams
+            (cleaner endpoints) and the stems are used as the primary
+            anchor for beam-counting: notehead → stem → beams attached
+            to that stem. Falls back to direct notehead → beam pairing
+            when no stem is found.
     """
     line_spacing = _staff_line_spacing(cell)
     # A stem typically spans ~3.5 staff-spacings; allow a bit more for safety.
@@ -381,6 +473,22 @@ def resolve_rhythms_for_cell(dets, cell) -> dict[int, dict[str, Any]]:
         elif cat == "structural" and cls == "augmentationdot":
             aug_dots.append(d)
 
+    # Classical-CV stems are pure additive value — the YOLO detector
+    # doesn't emit stems at all, so we have no prior anchor to lose.
+    # Classical-CV beams, on the other hand, are MORE conservative than
+    # YOLO's (precise endpoints, fewer false positives) but in practice
+    # miss real beams that YOLO catches. So we UNION the two beam lists
+    # rather than replacing: the loose YOLO bboxes set the broad
+    # coverage, the CV bboxes add coverage where YOLO misses.
+    stems: list = []
+    if extra_lines is not None:
+        cv_stems = extra_lines.get("stems") or []
+        cv_beams = extra_lines.get("beams") or []
+        if cv_stems:
+            stems = list(cv_stems)
+        if cv_beams:
+            beams = beams + list(cv_beams)
+
     # Pair augmentation dots to whichever notehead / rest sits to their left
     # at the same y. (Dots after rests are rarer but real.)
     dot_targets = noteheads + rests
@@ -399,14 +507,33 @@ def resolve_rhythms_for_cell(dets, cell) -> dict[int, dict[str, Any]]:
         # noteheads can technically be beamed in modern notation but it's
         # vanishingly rare for engraved music; skip the refinement.
         if base_type == "quarter":
-            n_beam_levels = _beam_levels_for_notehead(
-                nh, beams, max_stem_distance, beam_y_cluster_tol,
-                x_tolerance=max(nh.width_canonical * 0.6, line_spacing * 0.6),
-            )
+            n_beam_levels = 0
+            # Prefer stem-anchored beam-counting when stems are available.
+            # A stem is a precise vertical line that the beams visibly
+            # attach to; pairing through the stem rather than directly
+            # from the notehead is much more accurate.
+            if stems:
+                stem = _stem_for_notehead(
+                    nh, stems,
+                    max_x_distance=max(nh.width_canonical * 0.6,
+                                       line_spacing * 0.4),
+                )
+                if stem is not None:
+                    n_beam_levels = _beams_attached_to_stem(
+                        stem, beams, beam_y_cluster_tol
+                    )
+            if n_beam_levels == 0:
+                # No stem found (or no stems available) — fall back to
+                # direct notehead → beam pairing.
+                n_beam_levels = _beam_levels_for_notehead(
+                    nh, beams, max_stem_distance, beam_y_cluster_tol,
+                    x_tolerance=max(nh.width_canonical * 0.6,
+                                    line_spacing * 0.6),
+                )
             if n_beam_levels >= 1:
                 refined = _BEAM_COUNT_DURATIONS.get(
                     n_beam_levels,
-                    # Fall back to 64th for >5 beams (would be insanely fast)
+                    # Fall back to 64th-equivalent for >5 beams
                     (1.0 / (2 ** n_beam_levels), f"{n_beam_levels}beams"),
                 )
                 base_beats, base_type = refined
