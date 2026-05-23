@@ -761,14 +761,12 @@ def _pair_ties_in_cell(dets, ties_to_next: set, ties_from_prev: set) -> None:
         its right edge sits near the left edge of the stop notehead.
       - Vertical alignment: the tie's y-center is within ~3 notehead
         heights of the notehead y-centers.
-      - Pitch match: not required (the OMR sometimes resolves the same
-        physical note slightly differently; trusting geometry alone is
-        more robust here).
+      - Pitch match: not checked (and not available — pitches are
+        resolved into a separate id-keyed dict in `_detections_for_cell`,
+        not onto `SymbolDetection.pitch`). Geometry alone is fine here
+        because real tied notes are at the same y-position by definition.
     """
-    noteheads = [
-        d for d in dets
-        if (d.category or "") == "notehead" and d.pitch is not None
-    ]
+    noteheads = [d for d in dets if (d.category or "") == "notehead"]
     ties = [d for d in dets if (d.smufl_name or "").lower() == "tie"]
     if not ties or len(noteheads) < 2:
         return
