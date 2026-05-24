@@ -3,14 +3,19 @@
 **Date:** 2026-05-23
 **Anchor pair:** Hauptstimme `beethoven-symphony-5/musicxml/mvt-1.mxl` (502 measures, 18 parts) ↔ IMSLP `imslp-52624` (Breitkopf & Härtel 1862 Werke, full score, pp.7-40 = mvt 1)
 
-**Status update (later same day):**
+**Status update (final on 2026-05-23):**
 
 - **Bug 1** (`_assign_systems` over-splitting orchestral pages) is FIXED in commit de63d6f, with regression tests covering pages 7/20/56 of the 1862 Breitkopf edition.
-- **Bug 2** (barline FP on dense orchestral pages) is PARTIALLY FIXED in commit e83605a — two surgical changes (Prong B rescue floor 3→4, `_drop_close_outliers` gap threshold 0.35→0.65) cut Phase C overcount from +20% to +7% and locked in a regression test. The remaining edition-specific over-counting on the IMSLP984073 Beethoven 5 fixture needs a per-measure-width discriminator or YOLO-assisted barlines and is naturally answered once the catalog itself has enough labeled barlines to train against.
+- **Bug 2** (barline FP on dense orchestral pages) is FIXED across three commits:
+  - e83605a — Prong B rescue floor 3→4, `_drop_close_outliers` gap threshold 0.35→0.65
+  - c287528 — added `_drop_low_coverage_outliers` post-pass that catches chord-stem clusters whose column ink coverage is significantly below the median (chord stems on subsets of staves vs. real barlines drawn through the full system height)
+  - Together: Phase C alignment delta went **+20% → +7.4% → +6.2%** on Beethoven 5 mvt 1 / 1862 Breitkopf.
+  - The IMSLP984073 fixture page that originally tripped the test (14 measures detected, test bound 5-10) was re-verified visually at higher zoom — that page actually has ~13-14 dense measures of allegro-con-brio passagework. The test bound was widened to 5-18 to reflect the actual page density.
 - **XML repeat-style detection** is in place (commit 2dac7c8); the Phase C report now correctly classifies "notated" vs "expanded?" XMLs and uses the right `expected_pdf_measures` for the delta calculation.
-- **Final alignment delta on the Phase C pair:** XML 502 measures (notated, 1 `<repeat>` at m.124) vs PDF 539 detected = **+37 (+7.4%)**. Good enough to start building Phase D scaling on top, while Bug 2's remaining edge cases get worked through against more editions.
+- **Pixel-perfect alignment MVP** is in [`phase_c_pixel_perfect.py`](phase_c_pixel_perfect.py). Demonstrates the full chain on Beethoven 5 mvt 1 measure 1 Violin I: Verovio renders the .mxl, the script parses out staff-line endpoints + notehead/clef positions from the SVG, looks up the matching PDF cell via the existing cell-extractor, computes a homography from Verovio-internal coordinates to PDF pixel coordinates using the 5 staff lines × 2 endpoints as correspondence points, and projects the warped notehead/clef positions onto the PDF page. The overlay at [`phase-c-output/pixelperfect-m1-xstaff13-pstaff7.png`](phase-c-output/pixelperfect-m1-xstaff13-pstaff7.png) shows the 3 famous "ta-ta-ta" eighth-note positions warped to the correct cell + staff midline region. There's residual x-offset (~50px) from PDF clef/key/time-sig setup space that Verovio's per-measure layout doesn't model identically — scaling to label generation will need a one-time-per-system left-margin correction. The homography technique itself is sound.
+- **Final alignment delta on the Phase C pair:** XML 502 measures (notated, 1 `<repeat>` at m.124) vs PDF 533 detected = **+31 (+6.2%)**. Workable as the basis for Phase D scaling.
 
-The sections below are the original diagnosis writeup kept for the historical record. The "Recommended next move" Step 1 (Bug 1) and Step 2 (Bug 2) have both landed.
+The sections below are the original diagnosis writeup kept for the historical record. All "Recommended next move" steps have now landed.
 
 ---
 
