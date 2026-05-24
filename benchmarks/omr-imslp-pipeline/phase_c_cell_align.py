@@ -140,6 +140,62 @@ def parse_xml_measures(mxl_path: Path) -> tuple[list[XmlMeasure], int]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Repeat-style classification
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def classify_xml_repeat_style(xml_measures: list[XmlMeasure]) -> dict:
+    """Determine whether the XML notates repeats or has them written out.
+
+    Two MusicXML conventions coexist:
+      - NOTATED: the XML uses <repeat direction="forward|backward"/> elements
+        and the measure count matches the printed score. PDF count = XML count.
+      - EXPANDED: the XML omits <repeat> elements and writes the repeated
+        measures twice, so the played measure count equals the XML count and
+        the PDF count is smaller. Common in some MuseScore exports.
+
+    Without a heuristic that finds the repeat boundary in the XML
+    (content-duplication detection), we can't compute the exact target PDF
+    count for the EXPANDED case. This classifier flags ambiguity so the
+    caller can request manual input or hand-spot-check.
+
+    Returns a dict with keys:
+        style: "notated" | "expanded?" | "no-repeat"
+        repeat_count: number of <repeat> elements in the XML
+        expected_pdf_measures: best-guess PDF measure count
+        notes: human-readable explanation
+    """
+    repeat_count = sum(
+        (1 if m.has_repeat_start else 0) + (1 if m.has_repeat_end else 0)
+        for m in xml_measures
+    )
+    n = len(xml_measures)
+
+    if repeat_count > 0:
+        return {
+            "style": "notated",
+            "repeat_count": repeat_count,
+            "expected_pdf_measures": n,
+            "notes": (
+                f"XML uses {repeat_count} <repeat> element(s); the score is notated "
+                f"with repeat signs and PDF measure count should match XML."
+            ),
+        }
+
+    return {
+        "style": "expanded?",
+        "repeat_count": 0,
+        "expected_pdf_measures": n,
+        "notes": (
+            "No <repeat> elements in the XML. Could be (a) a piece without repeats "
+            "(true PDF count == XML count) or (b) the XML wrote repeats out (true "
+            "PDF count < XML count). Disambiguate by hand-counting one PDF page "
+            "or by checking for measure-by-measure content duplication in the XML."
+        ),
+    }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # PDF cell extraction
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -244,10 +300,11 @@ def main() -> int:
           f"time_sig={xml_measures[0].time_signature}, key={xml_measures[0].key_fifths}, "
           f"clefs={xml_measures[0].clef_changes[:3]}...")
     print(f"  last measure:  number={xml_measures[-1].number}, barline={xml_measures[-1].barline_type}")
-    # Find barline anomalies
-    repeats = sum(1 for m in xml_measures if m.has_repeat_start or m.has_repeat_end)
-    finals = sum(1 for m in xml_measures if m.barline_type in ("light-heavy", "final"))
-    print(f"  repeats: {repeats},  non-regular barlines: {sum(1 for m in xml_measures if m.barline_type != 'regular')}")
+    print(f"  non-regular barlines: {sum(1 for m in xml_measures if m.barline_type != 'regular')}")
+
+    repeat_info = classify_xml_repeat_style(xml_measures)
+    print(f"  repeat style:  {repeat_info['style']}  ({repeat_info['repeat_count']} <repeat> elements)")
+    print(f"    {repeat_info['notes']}")
     print()
 
     print("── PDF cell extraction ──")
@@ -257,13 +314,19 @@ def main() -> int:
 
     print("── Alignment ──")
     alignment, total_pdf_measures = build_alignment(per_page, xml_measures)
-    print(f"PDF: {total_pdf_measures} measures accumulated across {len(per_page)} pages")
-    print(f"XML: {len(xml_measures)} measures")
-    delta = total_pdf_measures - len(xml_measures)
+    expected_pdf = repeat_info["expected_pdf_measures"]
+    print(f"PDF detected: {total_pdf_measures} measures across {len(per_page)} pages")
+    print(f"XML measures: {len(xml_measures)}")
+    print(f"Expected PDF: {expected_pdf}  (from XML count, repeat style = {repeat_info['style']})")
+    delta = total_pdf_measures - expected_pdf
     if delta == 0:
-        print("MEASURE COUNTS MATCH")
+        print("PDF count matches expected.")
     else:
-        print(f"MISMATCH: PDF has {delta:+d} relative to XML")
+        pct = 100.0 * delta / max(expected_pdf, 1)
+        print(f"MISMATCH: PDF is {delta:+d} ({pct:+.1f}%) from expected.")
+        if repeat_info["style"] == "expanded?" and delta < 0:
+            print("  (negative delta + ambiguous repeat style — XML may have repeats written out;"
+                  " check by hand.)")
     print()
 
     # Write the manifest
@@ -273,6 +336,9 @@ def main() -> int:
         "page_range_1indexed": [MVT1_FIRST_PAGE, MVT1_LAST_PAGE],
         "dpi": DPI,
         "xml_measure_count": len(xml_measures),
+        "xml_repeat_style": repeat_info["style"],
+        "xml_repeat_element_count": repeat_info["repeat_count"],
+        "expected_pdf_measures": expected_pdf,
         "pdf_measure_count": total_pdf_measures,
         "delta": delta,
         "alignment": {
