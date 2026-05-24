@@ -93,17 +93,37 @@ def run_one(work_dir: Path, edition_dir: Path, cell_align) -> dict | None:
 
     print(f"  → PDF {pdf.name}: {total_pages} pages × XML {xml_total} measures")
     t0 = time.time()
-    result = cell_align.align_pair(
-        pdf_path=pdf,
-        mxl_path=mxl_files[0],   # dummy — we only need repeat_style for the FIRST mvt
-        page_first_1indexed=1,
-        page_last_1indexed=total_pages,
-        dpi=CATALOG_DPI,
-        verbose=False,
-    )
+    # Stream pages one at a time and accumulate only the measure counts.
+    # Holding all per-page cell data in memory OOM-killed the script on
+    # large facsimile PDFs (197+ pages × heavy bitmaps).
+    pdf_detected = 0
+    n_pages_processed = 0
+    n_pages_errored = 0
+    from tools.omr.preprocessing import render_page  # local import for memory locality
+    from tools.omr.staff_detector import detect_staves
+    from tools.omr.measure_extractor import extract_measures
+    import gc
+    for page_idx in range(total_pages):
+        try:
+            pi = render_page(pdf, page_idx, dpi=CATALOG_DPI)
+            pws = detect_staves(pi)
+            cells = extract_measures(pws)
+        except Exception as e:
+            n_pages_errored += 1
+            continue
+        # Accumulate the per-system measure counts (matches align_pair's
+        # build_alignment math: sum of measures_in_each_system across
+        # all systems on this page).
+        sys_measures: dict[int, int] = {}
+        for c in cells:
+            sys_measures[c.system_index] = max(sys_measures.get(c.system_index, -1), c.measure_index)
+        pdf_detected += sum(v + 1 for v in sys_measures.values())
+        n_pages_processed += 1
+        # Release memory before next page
+        del pi, pws, cells
+        if page_idx % 20 == 0:
+            gc.collect()
     elapsed = time.time() - t0
-    # Replace expected/delta with TOTAL XML measure count across all mvts
-    pdf_detected = result["pdf_measure_count"]
     delta = pdf_detected - xml_total
     delta_pct = 100.0 * delta / max(xml_total, 1)
     return {
