@@ -1,11 +1,89 @@
-# Phase H — Catalog-augmented YOLO retrain (Attempt 1 — FAILED, not promoted)
+# Phase H — Catalog-augmented YOLO retrain (Attempts 1 & 2 — both FAILED, neither promoted)
 
 **Date:** 2026-05-24
 **Branch:** `claude/interesting-curran-3ca1b7`
-**Compute:** Vast.ai UK RTX 4090 24 GB (instance 37657586, $0.737/hr; total $0.75)
-**Status:** ❌ **FAILED — broken weights archived, prod unchanged**
+**Compute:** Vast.ai UK RTX 4090 (attempt 1, $0.75) + Netherlands RTX 4090 (attempt 2, $0.17). Total $0.92.
+**Status:** ❌ **Both attempts failed — broken weights archived, prod unchanged**
 
-## TL;DR
+## What we tried, two ways
+
+1. **Attempt 1 — all 154k catalog labels (30 epochs):** model collapsed to predicting
+   only `clefG` at conf<0.05; 0 detections per Bach WTC cell at conf=0.10.
+2. **Attempt 2 — filter to high-match-rate movements only (113 train images,
+   patience-stopped at epoch 6):** model still degraded. Bach WTC went from
+   prod's 72–157 detections/cell to 5–27 detections/cell of wrong categories
+   (a 959×12-pixel "restHBar" stripe, a "beam" overlaying a staff line).
+   `noteheadBlackOnLine` (the most-frequent symbol on Bach piano music)
+   went from prod's 78 detections on Beethoven 5 p10 → **zero** for the
+   trained model. New "staff" hallucinations appeared.
+
+**Conclusion:** even with the partial-label problem filtered out, the
+remaining catalog labels are not training-grade for fine-tuning. The
+~50 px x-offset and the orchestral-biased class distribution are
+sufficient on their own to shift the model's priors in ways that hurt
+both Bach (wrong things detected) and would likely hurt orchestral
+recall too (we just can't measure it because the orchestral val is also
+noisy). Recommendation in "Lessons" section below now restated more
+strongly.
+
+## Attempt 2 (filter-only fix) — added 2026-05-24 after attempt 1 commit
+
+After attempt 1 collapsed, hypothesized that the "predict nothing" failure
+mode was driven by movements where 30-50% of cells had no labels (XML
+match rate <95%). Filter test:
+
+- **Filtered train:** 113 images across 6 movements, all with XML-match
+  rate ≥ 97%. Val unchanged (124 images, 7 movements).
+- **Same config as attempt 1:** SGD lr0=0.0005, momentum=0.937,
+  mosaic=0, degrees=1, batch=4, imgsz=1280.
+- **Patience-stopped at epoch 6** (vs attempt 1 running all 30):
+  val mAP didn't improve so EarlyStopping triggered. train/cls_loss
+  dropped 74→16 in 6 epochs vs attempt 1's 91→4 over 30. Less drift
+  from prod baseline.
+
+**Beethoven 5 p10 spot-check, conf=0.25:**
+
+| Class | Prod | Attempt 2 (filtered, 6 ep) |
+|---|---:|---:|
+| Total detections | 300 | 177 |
+| noteheadBlackOnLine | 78 | **0** |
+| noteheadBlackInSpace | 46 | 12 |
+| noteheadHalfOnLine | 10 | 21 |
+| noteheadHalfInSpace | 9 | 19 |
+| restWhole | 12 | 12 |
+| clefG | 14 | **0** |
+| clefF | 8 | 8 |
+| keyFlat | 29 | 17 |
+| slur | 27 | 16 |
+| tie | 19 | 14 |
+| rest8th | 14 | 9 |
+| **(new)** staff | 0 | 16 |
+
+The model has **shifted its priors**: under-predicts black noteheads
+(the dominant Bach class), over-predicts half noteheads, drops clefG,
+and hallucinates "staff" objects (likely confusing staff lines with the
+labeled "barline → staff-tall" rectangles from the catalog warp).
+
+**Bach WTC verdict scoring:** 5-27 detections per cell (vs prod's
+72-157), and `ported=0` for every cell — the spatial ports of human
+verdicts to YOLO detections found no matches, meaning the model's
+detections aren't where the music symbols actually are. F1 effectively
+0%, well below the ≥95% promotion gate.
+
+**Decision:** Do NOT promote. Archived at
+`tools/omr/training/data/weights/_archive/2026-05-24-phase-h-attempt2-filtered-6ep.pt`.
+
+**Updated diagnosis:** the filter-only fix is insufficient. Even with
+clean (≥97% match) labels, the residual issues — most importantly the
+~50 px x-offset, but also the catalog's class-distribution bias toward
+orchestral patterns (half notes, ties, beams) — are enough to shift the
+model away from Bach-style detection. The x-offset fix from
+PHASE_E_SUMMARY Phase F is now upgraded from "should do" to **required
+gate** for any future Phase H retry.
+
+---
+
+## TL;DR (attempt 1)
 
 Fine-tuning `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` on the Phase G
 catalog labels for 30 epochs at SGD lr0=0.0005 / batch 4 collapsed the
