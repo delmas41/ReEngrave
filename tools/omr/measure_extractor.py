@@ -286,6 +286,15 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         # gaps. Remove the smaller member of any adjacent pair whose gap is
         # < 0.5 × median gap.
         accepted = _drop_close_outliers(accepted)
+        # Third pass: ink-coverage outlier rejection. A real barline runs as
+        # an ink stripe through most of the system height; columns that
+        # happen to be accepted by the vote+connectivity rules but actually
+        # only have ink across a smaller fraction of the system are usually
+        # chord-stem clusters where only some staves contribute to the
+        # vertical line. Drop columns whose coverage is significantly below
+        # the median of accepted columns on this system.
+        if len(accepted) >= 4:
+            accepted = _drop_low_coverage_outliers(accepted, bin_img, y_top, y_bot)
         for x_mean in accepted:
             pws.barlines.append(Barline(
                 page_index=pws.page.page_index,
@@ -295,6 +304,43 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 system_index=sys_idx,
             ))
     return pws
+
+
+def _column_ink_coverage(bin_img: np.ndarray, x: int, y_top: int, y_bot: int, tol: int = 3) -> float:
+    """Fraction of rows in [y_top, y_bot] that contain at least one ink pixel
+    within ±tol of column x. A genuine barline has near-1.0 coverage; a chord-
+    stem cluster that only fires on some staves has lower coverage because
+    the inter-stem-region rows are blank."""
+    h, w = bin_img.shape
+    x0 = max(0, x - tol)
+    x1 = min(w, x + tol + 1)
+    y0 = max(0, y_top)
+    y1 = min(h, y_bot + 1)
+    if x1 <= x0 or y1 <= y0:
+        return 0.0
+    strip = bin_img[y0:y1, x0:x1]
+    row_has_ink = (strip < 128).any(axis=1)
+    return float(row_has_ink.mean())
+
+
+def _drop_low_coverage_outliers(xs: list[int], bin_img: np.ndarray, y_top: int, y_bot: int) -> list[int]:
+    """Drop barlines whose column ink coverage is significantly below the
+    median of accepted columns. A real barline runs unbroken through the
+    system height (coverage ~0.85-1.0); a chord-stem cluster impersonating
+    a barline often has gaps where some instruments aren't playing and
+    coverage drops to ~0.5-0.7. Threshold: < 0.80 × median AND < 0.75
+    absolute. (Both conditions required so a system where ALL barlines are
+    legitimately low-coverage doesn't lose everything.)"""
+    if len(xs) < 4:
+        return list(xs)
+    coverages = [_column_ink_coverage(bin_img, x, y_top, y_bot) for x in xs]
+    median_cov = float(np.median(coverages))
+    if median_cov <= 0:
+        return list(xs)
+    threshold_rel = 0.80 * median_cov
+    threshold_abs = 0.75
+    kept = [x for x, c in zip(xs, coverages) if not (c < threshold_rel and c < threshold_abs)]
+    return kept
 
 
 def _drop_close_outliers(xs: list[int]) -> list[int]:
