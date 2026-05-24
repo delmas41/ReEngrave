@@ -137,3 +137,64 @@ Still present. The fixed bounding boxes are large enough that the YOLO labels ov
 - **2 of 3 Phase F blockers resolved.** Label generator runs end-to-end on Beethoven 1 (1862 Werke) and Beethoven 8 (1863 Werke). Auto-mapper is ready for the remaining 4 catalog-ready editions (B2 Litolff, B2 Ricordi, B4 Heugel, B6 Pastoral).
 - **Scale-out is unblocked** modulo the x-offset polish.
 - Next phase (Phase G): expand the 6-class MVP label space to the full DSv2 set and mix-train.
+
+---
+
+## Phase G update (2026-05-24, commit c05aeab)
+
+### Class space expansion to DSv2-compatible labels
+
+The 6-class MVP (notehead/clef/barline/keysig/timesig/accidental) was replaced with the full 146-class DSv2 label space from `tools/omr/training/deepscores_classes.py`. The expansion works in three layers:
+
+1. **SMUFL_TO_DSV2 mapping** in `phase_e_emit_labels.py`. Verovio emits each music symbol as `<use xlink:href="#E0A4-...">` where the leading 4 hex digits are the SMuFL codepoint. The new SMUFL_TO_DSV2 dict covers ~50 codepoints across clefs (E050/E05C/E062), noteheads (E0A0-E0A4), accidentals (E260-E264), articulations (E4A0-E4AD), fermatas (E4C0-E4C1), rests (E4E1-E4EE), dynamics (E520-E526), and time signature digits (E080-E08B).
+
+2. **Per-element class refinement at warp time.** Two classes depend on PDF-space geometry:
+   - `noteheadBlack/Half/Whole/DoubleWhole` → suffix with `OnLine` or `InSpace` by comparing the warped y to the 5 PDF staff line ys (with ±30% of avg gap tolerance, also considering 4 ledger lines above + below).
+   - `cClefAlto` (default) → `cClefTenor` if the warped clef center is closer to staff line 4 than line 3.
+
+3. **DSv2 class index lookup** via `tools/omr/training/deepscores_classes.DEEPSCORES_V2_CLASSES`. Class names not in the list (e.g. the synthetic `"barline"` we draw on overlays) are filtered out of the YOLO emission and counted in a per-run `dropped_classes` diagnostic. DSv2 itself has no `barline` class — barlines are detected via classical CV in the production pipeline — so this is the expected behavior.
+
+Verified against the Beethoven 1 mvt 1 p008 class distribution: 132 `noteheadBlackInSpace`, 105 `noteheadBlackOnLine`, 71 `rest16th`, 38 `articStaccatoBelow`, 35 `rest8th`, 26 `gClef`, 16 `timeSigCutCommon` (correct — mvt 1 transitions from common-time Adagio to cut-time Allegro), 8 `fClef`, 2 `cClefAlto` (viola), various accidentals and dynamics.
+
+### Catalog-scale batch run
+
+`phase_g_batch_emit.py` walks all 7 catalog-ready editions × their hand-curated movements:
+
+- Beethoven 1 imslp-52848 mvts 1-4
+- Beethoven 2 imslp-503997 mvts 1-4
+- Beethoven 2 imslp-977672 mvts 1-4
+- Beethoven 4 imslp-411721 mvts 1, 2, 4 (skips mvt 3 — unverified boundary)
+- Beethoven 6 imslp-57857 mvts 1, 2, 5 (skips 3+4 — mid-page transition)
+- Beethoven 8 imslp-06303 mvts 1-4
+- Beethoven 8 imslp-875077 mvts 1-4
+
+A first end-to-end pass on these 26 (work, edition, mvt) tuples (pre-expansion, 6-class labels) yielded:
+
+| Metric | Value |
+|---|---:|
+| Pages processed | 489 |
+| Cells extracted | 46,634 |
+| Cells with XML match | 40,083 (86%) |
+| Labels emitted | 131,416 |
+| Homography failures | 0 |
+
+Lower XML-match rates (50-85% on a handful of movements) appear when the running PDF measure count drifts vs the XML (typically the "expanded?" repeats style or missed barlines on dense pages). Unmatched cells get no labels — recall hit, not precision hit.
+
+### Training handoff
+
+`tools/omr/training/HANDOFF_CATALOG_AUGMENTED_TRAINING.md` documents the next step: fine-tune the production weights (`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`, F1 98.8% on Bach WTC) on a 50/50 mix of DSv2 + catalog labels. Key parameters:
+
+- Warm-start from production weights, **don't retrain from scratch**.
+- `lr0=0.001` (10× lower than the original full-DSv2 train).
+- `epochs=30 patience=10` — should converge by ~20 epochs.
+- Hold out one full movement per edition as val (e.g. B1 mvt 4) for orchestral mAP.
+- **Promote only if WTC verdict set stays ≥ 98% F1 AND orchestral holdout shows +5 mAP50.**
+- Expected wall time: 4-8 hours on A100, ~$7-12.
+
+### Phase G state
+
+- ✅ Class space expanded to DSv2 146-class labels with position-dependent refinement (notehead OnLine/InSpace, cClef alto/tenor).
+- ✅ Catalog-scale batch runs across all 7 editions × ~24 movements.
+- ✅ Training handoff doc written.
+- ⚪ Catalog-augmented retrain — **not run** in this session (compute-heavy; needs Vast.ai or comparable). See the handoff doc.
+- ⚪ X-offset polish still deferred (structural; labels remain training-grade noisy but bounding-box-overlap with actual noteheads is still high).
