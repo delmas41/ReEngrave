@@ -1,0 +1,39 @@
+{
+  "work": "beethoven-symphony-8",
+  "edition": "imslp-875074",
+  "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-875074/score.pdf",
+  "total_pages": 116,
+  "xml_total_measures": 1041,
+  "xml_movements": 4,
+  "xml_movement_breakdown": [
+    {
+      "mvt": "mvt-1",
+      "measures": 374,
+      "repeats": 1,
+      "style": "notated"
+    },
+    {
+      "mvt": "mvt-2",
+      "measures": 81,
+      "repeats": 0,
+      "style": "expanded?"
+    },
+    {
+      "mvt": "mvt-3",
+      "measures": 83,
+      "repeats": 5,
+      "style": "notated"
+    },
+    {
+      "mvt": "mvt-4",
+      "measures": 503,
+      "repeats": 0,
+      "style": "expanded?"
+    }
+  ],
+  "pdf_detected_measures": 1391,
+  "delta": 350,
+  "delta_pct": 33.62151777137368,
+  "elapsed_seconds": 23.777667999267578,
+  "dpi": 150
+}

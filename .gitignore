@@ -61,6 +61,12 @@ yolov8m.pt
 runs/
 # DeepScoresV2 dataset (downloaded; many GB)
 tools/omr/training/data/
+# …but DO commit the IMSLP catalog's small yaml metadata + movement maps
+# (the PDFs and .mxl files are not committed; the yamls are tiny and
+# version the curated catalog state.)
+!tools/omr/training/data/imslp/
+!tools/omr/training/data/imslp/**/
+!tools/omr/training/data/imslp/**/*.yaml
 # Shared OMR weights directory mounted into the backend container
 # (lives at repo root so all worktrees can share one weights file)
 omr-weights/

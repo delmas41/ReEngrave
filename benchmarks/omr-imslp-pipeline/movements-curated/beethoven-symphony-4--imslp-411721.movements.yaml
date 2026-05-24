@@ -1,0 +1,28 @@
+# Hand-curated movement page ranges for Beethoven Symphony No.4 — Heugel
+# & Cie Paris n.d. (imslp-411721). 1-indexed PDF page numbers.
+#
+# Verified 2026-05-24 via visual inspection of rendered top-half + full-
+# page strips at 150-160 DPI.
+#
+# Per-movement boundary pages:
+#   p001 = mvt 1 start ("IVe SYMPHONIE / I / L. van BEETHOVEN op. 60 / Adagio")
+#   p042 = mvt 2 start ("II / Adagio (♪=84)")
+#   p092 = mvt 4 start ("IV / Allegro ma non troppo (♩=80)")
+#
+# CAUTION — mvt 3 boundary is NOT visually confirmed. This Heugel edition
+# does not place a "III" header at the start of mvt 3 (Allegro vivace); the
+# Scherzo appears to start mid-page somewhere in the p056-p064 range. Best
+# estimate using measure-count math: mvt 2 = 104 measures starting p042 at
+# ~9 m/page = ends ~p053; mvt 3 = 228 measures of fast 3/4 starting ~p054.
+# This needs spot-check before Phase E label generation on this edition.
+total_pdf_pages: 125
+front_matter: []
+back_matter: []
+movements:
+  mvt_1: { name: "Adagio - Allegro vivace",     pages: [1, 41],   xml_measures: 512 }
+  mvt_2: { name: "Adagio",                       pages: [42, 53],  xml_measures: 104, note: "end boundary estimated from measure count, not visually verified" }
+  mvt_3: { name: "Allegro vivace",               pages: [54, 91],  xml_measures: 228, note: "start boundary estimated; no 'III' header in this edition" }
+  mvt_4: { name: "Allegro ma non troppo",        pages: [92, 125], xml_measures: 359 }
+xml_total_measures: 1203
+verified: false
+review_reason: "mvt 2/3 boundary needs visual confirmation — this Heugel edition lacks a III header"

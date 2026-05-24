@@ -1,0 +1,2579 @@
+[
+  {
+    "work": "beethoven-symphony-1",
+    "edition": "imslp-00074",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-1/pdfs/imslp-00074/score.pdf",
+    "total_pages": 43,
+    "xml_total_measures": 943,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 300,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 196,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 141,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 306,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1035,
+    "delta": 92,
+    "delta_pct": 9.75609756097561,
+    "elapsed_seconds": 22.610007762908936,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-1",
+    "edition": "imslp-13842",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-1/pdfs/imslp-13842/score.pdf",
+    "total_pages": 84,
+    "xml_total_measures": 943,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 300,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 196,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 141,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 306,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1011,
+    "delta": 68,
+    "delta_pct": 7.21102863202545,
+    "elapsed_seconds": 28.88426423072815,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-1",
+    "edition": "imslp-46060",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-1/pdfs/imslp-46060/score.pdf",
+    "total_pages": 62,
+    "xml_total_measures": 943,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 300,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 196,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 141,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 306,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 0,
+    "delta": -943,
+    "delta_pct": -100.0,
+    "elapsed_seconds": 0.662614107131958,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-1",
+    "edition": "imslp-52848",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-1/pdfs/imslp-52848/score.pdf",
+    "total_pages": 52,
+    "xml_total_measures": 943,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 300,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 196,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 141,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 306,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 952,
+    "delta": 9,
+    "delta_pct": 0.9544008483563097,
+    "elapsed_seconds": 22.34124493598938,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-1",
+    "edition": "imslp-862762",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-1/pdfs/imslp-862762/score.pdf",
+    "total_pages": 59,
+    "xml_total_measures": 943,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 300,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 196,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 141,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 306,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1248,
+    "delta": 305,
+    "delta_pct": 32.34358430540827,
+    "elapsed_seconds": 27.716129064559937,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-1",
+    "edition": "imslp-862776",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-1/pdfs/imslp-862776/score.pdf",
+    "total_pages": 129,
+    "xml_total_measures": 943,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 300,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 196,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 141,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 306,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2820,
+    "delta": 1877,
+    "delta_pct": 199.0455991516437,
+    "elapsed_seconds": 63.26637601852417,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-2",
+    "edition": "imslp-46061",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-2/pdfs/imslp-46061/score.pdf",
+    "total_pages": 46,
+    "xml_total_measures": 1216,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 364,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 276,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 133,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 443,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 0,
+    "delta": -1216,
+    "delta_pct": -100.0,
+    "elapsed_seconds": 0.7766599655151367,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-2",
+    "edition": "imslp-503997",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-2/pdfs/imslp-503997/score.pdf",
+    "total_pages": 61,
+    "xml_total_measures": 1216,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 364,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 276,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 133,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 443,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1205,
+    "delta": -11,
+    "delta_pct": -0.9046052631578947,
+    "elapsed_seconds": 31.447040557861328,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-2",
+    "edition": "imslp-52551",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-2/pdfs/imslp-52551/score.pdf",
+    "total_pages": 70,
+    "xml_total_measures": 1216,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 364,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 276,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 133,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 443,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1099,
+    "delta": -117,
+    "delta_pct": -9.62171052631579,
+    "elapsed_seconds": 24.373966217041016,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-2",
+    "edition": "imslp-862789",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-2/pdfs/imslp-862789/score.pdf",
+    "total_pages": 184,
+    "xml_total_measures": 1216,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 364,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 276,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 133,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 443,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 2554,
+    "delta": 1338,
+    "delta_pct": 110.03289473684211,
+    "elapsed_seconds": 89.65474104881287,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-2",
+    "edition": "imslp-862803",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-2/pdfs/imslp-862803/score.pdf",
+    "total_pages": 81,
+    "xml_total_measures": 1216,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 364,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 276,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 133,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 443,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1416,
+    "delta": 200,
+    "delta_pct": 16.44736842105263,
+    "elapsed_seconds": 35.059107065200806,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-2",
+    "edition": "imslp-977672",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-2/pdfs/imslp-977672/score.pdf",
+    "total_pages": 120,
+    "xml_total_measures": 1216,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 364,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 276,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 133,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 443,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1190,
+    "delta": -26,
+    "delta_pct": -2.138157894736842,
+    "elapsed_seconds": 21.586549997329712,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-3",
+    "edition": "imslp-46066",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-3/pdfs/imslp-46066/score.pdf",
+    "total_pages": 130,
+    "xml_total_measures": 1875,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 695,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 453,
+        "repeats": 4,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 479,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 0,
+    "delta": -1875,
+    "delta_pct": -100.0,
+    "elapsed_seconds": 1.49863600730896,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-3",
+    "edition": "imslp-504077",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-3/pdfs/imslp-504077/score.pdf",
+    "total_pages": 89,
+    "xml_total_measures": 1875,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 695,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 453,
+        "repeats": 4,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 479,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2314,
+    "delta": 439,
+    "delta_pct": 23.413333333333334,
+    "elapsed_seconds": 48.45812201499939,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-3",
+    "edition": "imslp-52766",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-3/pdfs/imslp-52766/score.pdf",
+    "total_pages": 102,
+    "xml_total_measures": 1875,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 695,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 453,
+        "repeats": 4,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 479,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1304,
+    "delta": -571,
+    "delta_pct": -30.453333333333333,
+    "elapsed_seconds": 33.08263611793518,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-3",
+    "edition": "imslp-862821",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-3/pdfs/imslp-862821/score.pdf",
+    "total_pages": 117,
+    "xml_total_measures": 1875,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 695,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 453,
+        "repeats": 4,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 479,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2946,
+    "delta": 1071,
+    "delta_pct": 57.12,
+    "elapsed_seconds": 54.63705611228943,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-3",
+    "edition": "imslp-947643",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-3/pdfs/imslp-947643/score.pdf",
+    "total_pages": 106,
+    "xml_total_measures": 1875,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 695,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 453,
+        "repeats": 4,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 479,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 3315,
+    "delta": 1440,
+    "delta_pct": 76.8,
+    "elapsed_seconds": 90.05666875839233,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-3",
+    "edition": "imslp-978920",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-3/pdfs/imslp-978920/score.pdf",
+    "total_pages": 177,
+    "xml_total_measures": 1875,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 695,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 453,
+        "repeats": 4,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 479,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1279,
+    "delta": -596,
+    "delta_pct": -31.786666666666665,
+    "elapsed_seconds": 29.754188060760498,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-4",
+    "edition": "imslp-09340",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-4/pdfs/imslp-09340/score.pdf",
+    "total_pages": 124,
+    "xml_total_measures": 1203,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 104,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 228,
+        "repeats": 3,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 359,
+        "repeats": 1,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1441,
+    "delta": 238,
+    "delta_pct": 19.783873649210307,
+    "elapsed_seconds": 41.247267961502075,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-4",
+    "edition": "imslp-411721",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-4/pdfs/imslp-411721/score.pdf",
+    "total_pages": 125,
+    "xml_total_measures": 1203,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 104,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 228,
+        "repeats": 3,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 359,
+        "repeats": 1,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1166,
+    "delta": -37,
+    "delta_pct": -3.0756442227763925,
+    "elapsed_seconds": 29.7771258354187,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-4",
+    "edition": "imslp-440380",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-4/pdfs/imslp-440380/score.pdf",
+    "total_pages": 80,
+    "xml_total_measures": 1203,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 104,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 228,
+        "repeats": 3,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 359,
+        "repeats": 1,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1434,
+    "delta": 231,
+    "delta_pct": 19.201995012468828,
+    "elapsed_seconds": 31.821760892868042,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-4",
+    "edition": "imslp-46075",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-4/pdfs/imslp-46075/score.pdf",
+    "total_pages": 100,
+    "xml_total_measures": 1203,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 104,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 228,
+        "repeats": 3,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 359,
+        "repeats": 1,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 618,
+    "delta": -585,
+    "delta_pct": -48.6284289276808,
+    "elapsed_seconds": 63.66628694534302,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-4",
+    "edition": "imslp-504078",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-4/pdfs/imslp-504078/score.pdf",
+    "total_pages": 73,
+    "xml_total_measures": 1203,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 104,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 228,
+        "repeats": 3,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 359,
+        "repeats": 1,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1722,
+    "delta": 519,
+    "delta_pct": 43.14214463840399,
+    "elapsed_seconds": 34.795844078063965,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-4",
+    "edition": "imslp-862828",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-4/pdfs/imslp-862828/score.pdf",
+    "total_pages": 82,
+    "xml_total_measures": 1203,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 104,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 228,
+        "repeats": 3,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 359,
+        "repeats": 1,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1829,
+    "delta": 626,
+    "delta_pct": 52.036575228595176,
+    "elapsed_seconds": 41.6053569316864,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-4",
+    "edition": "imslp-947625",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-4/pdfs/imslp-947625/score.pdf",
+    "total_pages": 103,
+    "xml_total_measures": 1203,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 104,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 228,
+        "repeats": 3,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 359,
+        "repeats": 1,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1963,
+    "delta": 760,
+    "delta_pct": 63.17539484621779,
+    "elapsed_seconds": 78.27425408363342,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-5",
+    "edition": "imslp-52624",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-52624/score.pdf",
+    "total_pages": 106,
+    "xml_total_measures": 1572,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 502,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 376,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 446,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1920,
+    "delta": 348,
+    "delta_pct": 22.137404580152673,
+    "elapsed_seconds": 37.782922983169556,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-5",
+    "edition": "imslp-575951",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "total_pages": 87,
+    "xml_total_measures": 1572,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 502,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 376,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 446,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1730,
+    "delta": 158,
+    "delta_pct": 10.05089058524173,
+    "elapsed_seconds": 42.45992588996887,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-5",
+    "edition": "imslp-575952",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575952/score.pdf",
+    "total_pages": 136,
+    "xml_total_measures": 1572,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 502,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 376,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 446,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1701,
+    "delta": 129,
+    "delta_pct": 8.206106870229007,
+    "elapsed_seconds": 45.6568660736084,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-5",
+    "edition": "imslp-862873",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-862873/score.pdf",
+    "total_pages": 103,
+    "xml_total_measures": 1572,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 502,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 376,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 446,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2498,
+    "delta": 926,
+    "delta_pct": 58.905852417302796,
+    "elapsed_seconds": 49.04427123069763,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-5",
+    "edition": "imslp-943147",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-943147/score.pdf",
+    "total_pages": 197,
+    "xml_total_measures": 1572,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 502,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 376,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 446,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 992,
+    "delta": -580,
+    "delta_pct": -36.895674300254456,
+    "elapsed_seconds": 41.95721912384033,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-5",
+    "edition": "imslp-947601",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-947601/score.pdf",
+    "total_pages": 122,
+    "xml_total_measures": 1572,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 502,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 376,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 446,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2903,
+    "delta": 1331,
+    "delta_pct": 84.66921119592875,
+    "elapsed_seconds": 86.19964790344238,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-5",
+    "edition": "imslp-957856",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-957856/score.pdf",
+    "total_pages": 108,
+    "xml_total_measures": 1572,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 502,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 248,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 376,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 446,
+        "repeats": 2,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1870,
+    "delta": 298,
+    "delta_pct": 18.956743002544528,
+    "elapsed_seconds": 61.177330017089844,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-6",
+    "edition": "imslp-1016349",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-1016349/score.pdf",
+    "total_pages": 89,
+    "xml_total_measures": 1336,
+    "xml_movements": 5,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 139,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 266,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 155,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-5",
+        "measures": 264,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1893,
+    "delta": 557,
+    "delta_pct": 41.691616766467064,
+    "elapsed_seconds": 41.459190130233765,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-6",
+    "edition": "imslp-46101",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-46101/score.pdf",
+    "total_pages": 96,
+    "xml_total_measures": 1336,
+    "xml_movements": 5,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 139,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 266,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 155,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-5",
+        "measures": 264,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 0,
+    "delta": -1336,
+    "delta_pct": -100.0,
+    "elapsed_seconds": 1.098625898361206,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-6",
+    "edition": "imslp-504082",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "total_pages": 79,
+    "xml_total_measures": 1336,
+    "xml_movements": 5,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 139,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 266,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 155,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-5",
+        "measures": 264,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1565,
+    "delta": 229,
+    "delta_pct": 17.14071856287425,
+    "elapsed_seconds": 33.82074499130249,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-6",
+    "edition": "imslp-516705",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-516705/score.pdf",
+    "total_pages": 152,
+    "xml_total_measures": 1336,
+    "xml_movements": 5,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 139,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 266,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 155,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-5",
+        "measures": 264,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1618,
+    "delta": 282,
+    "delta_pct": 21.107784431137723,
+    "elapsed_seconds": 39.96022295951843,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-6",
+    "edition": "imslp-57857",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-57857/score.pdf",
+    "total_pages": 92,
+    "xml_total_measures": 1336,
+    "xml_movements": 5,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 139,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 266,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 155,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-5",
+        "measures": 264,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1400,
+    "delta": 64,
+    "delta_pct": 4.790419161676646,
+    "elapsed_seconds": 65.29367184638977,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-6",
+    "edition": "imslp-862849",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-862849/score.pdf",
+    "total_pages": 127,
+    "xml_total_measures": 1336,
+    "xml_movements": 5,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 139,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 266,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 155,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-5",
+        "measures": 264,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 2156,
+    "delta": 820,
+    "delta_pct": 61.377245508982035,
+    "elapsed_seconds": 39.32325196266174,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-6",
+    "edition": "imslp-875069",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-875069/score.pdf",
+    "total_pages": 160,
+    "xml_total_measures": 1336,
+    "xml_movements": 5,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 512,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 139,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 266,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 155,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-5",
+        "measures": 264,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1728,
+    "delta": 392,
+    "delta_pct": 29.34131736526946,
+    "elapsed_seconds": 29.280548095703125,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-06800",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-06800/score.pdf",
+    "total_pages": 176,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2249,
+    "delta": 370,
+    "delta_pct": 19.691325172964344,
+    "elapsed_seconds": 61.493799924850464,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-1009605",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-1009605/score.pdf",
+    "total_pages": 117,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2460,
+    "delta": 581,
+    "delta_pct": 30.920702501330496,
+    "elapsed_seconds": 98.43950414657593,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-46251",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-46251/score.pdf",
+    "total_pages": 228,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 37,
+    "delta": -1842,
+    "delta_pct": -98.03086748270357,
+    "elapsed_seconds": 2.5318989753723145,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-504084",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-504084/score.pdf",
+    "total_pages": 89,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2324,
+    "delta": 445,
+    "delta_pct": 23.68281000532198,
+    "elapsed_seconds": 43.3648419380188,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-57874",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-57874/score.pdf",
+    "total_pages": 98,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2759,
+    "delta": 880,
+    "delta_pct": 46.833422032996275,
+    "elapsed_seconds": 80.18230772018433,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-862889",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-862889/score.pdf",
+    "total_pages": 102,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2244,
+    "delta": 365,
+    "delta_pct": 19.4252261841405,
+    "elapsed_seconds": 40.928210973739624,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-874874",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-874874/score.pdf",
+    "total_pages": 92,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 1666,
+    "delta": -213,
+    "delta_pct": -11.33581692389569,
+    "elapsed_seconds": 21.83518099784851,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-7",
+    "edition": "imslp-874875",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-7/pdfs/imslp-874875/score.pdf",
+    "total_pages": 180,
+    "xml_total_measures": 1879,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 450,
+        "repeats": 2,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 278,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 661,
+        "repeats": 7,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 490,
+        "repeats": 8,
+        "style": "notated"
+      }
+    ],
+    "pdf_detected_measures": 2406,
+    "delta": 527,
+    "delta_pct": 28.046833422032996,
+    "elapsed_seconds": 39.1981520652771,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-06303",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-06303/score.pdf",
+    "total_pages": 89,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1009,
+    "delta": -32,
+    "delta_pct": -3.073967339097022,
+    "elapsed_seconds": 25.400387048721313,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-1006042",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-1006042/score.pdf",
+    "total_pages": 138,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 888,
+    "delta": -153,
+    "delta_pct": -14.697406340057636,
+    "elapsed_seconds": 38.28958702087402,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-244620",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-244620/score.pdf",
+    "total_pages": 135,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1139,
+    "delta": 98,
+    "delta_pct": 9.41402497598463,
+    "elapsed_seconds": 43.68783617019653,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-46253",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-46253/score.pdf",
+    "total_pages": 153,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 852,
+    "delta": -189,
+    "delta_pct": -18.155619596541786,
+    "elapsed_seconds": 100.95555877685547,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-504091",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-504091/score.pdf",
+    "total_pages": 63,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1301,
+    "delta": 260,
+    "delta_pct": 24.975984630163303,
+    "elapsed_seconds": 29.59440517425537,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-61814",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-61814/score.pdf",
+    "total_pages": 66,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1200,
+    "delta": 159,
+    "delta_pct": 15.27377521613833,
+    "elapsed_seconds": 24.563755989074707,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-862901",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-862901/score.pdf",
+    "total_pages": 80,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1382,
+    "delta": 341,
+    "delta_pct": 32.75696445725264,
+    "elapsed_seconds": 28.079676866531372,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-875074",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-875074/score.pdf",
+    "total_pages": 116,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1391,
+    "delta": 350,
+    "delta_pct": 33.62151777137368,
+    "elapsed_seconds": 23.777667999267578,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-8",
+    "edition": "imslp-875077",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-8/pdfs/imslp-875077/score.pdf",
+    "total_pages": 66,
+    "xml_total_measures": 1041,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 374,
+        "repeats": 1,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 81,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 83,
+        "repeats": 5,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 503,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 1056,
+    "delta": 15,
+    "delta_pct": 1.440922190201729,
+    "elapsed_seconds": 20.339015007019043,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-46254",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-46254/score.pdf",
+    "total_pages": 230,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 2389,
+    "delta": 167,
+    "delta_pct": 7.515751575157516,
+    "elapsed_seconds": 178.92542910575867,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-516486",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-516486/score.pdf",
+    "total_pages": 276,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 4972,
+    "delta": 2750,
+    "delta_pct": 123.76237623762377,
+    "elapsed_seconds": 103.50780987739563,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-516487",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-516487/score.pdf",
+    "total_pages": 284,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 3585,
+    "delta": 1363,
+    "delta_pct": 61.34113411341134,
+    "elapsed_seconds": 82.6428861618042,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-516488",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-516488/score.pdf",
+    "total_pages": 189,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 7175,
+    "delta": 4953,
+    "delta_pct": 222.9072907290729,
+    "elapsed_seconds": 89.39879393577576,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-830830",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-830830/score.pdf",
+    "total_pages": 332,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 11212,
+    "delta": 8990,
+    "delta_pct": 404.5904590459046,
+    "elapsed_seconds": 115.03062701225281,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-875079",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-875079/score.pdf",
+    "total_pages": 305,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 4313,
+    "delta": 2091,
+    "delta_pct": 94.10441044104411,
+    "elapsed_seconds": 70.45504379272461,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-958507",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-958507/score.pdf",
+    "total_pages": 350,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 10153,
+    "delta": 7931,
+    "delta_pct": 356.9306930693069,
+    "elapsed_seconds": 103.61061096191406,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-976496",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-976496/score.pdf",
+    "total_pages": 284,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 3822,
+    "delta": 1600,
+    "delta_pct": 72.007200720072,
+    "elapsed_seconds": 57.8862841129303,
+    "dpi": 150
+  },
+  {
+    "work": "beethoven-symphony-9",
+    "edition": "imslp-998204",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-998204/score.pdf",
+    "total_pages": 301,
+    "xml_total_measures": 2222,
+    "xml_movements": 4,
+    "xml_movement_breakdown": [
+      {
+        "mvt": "mvt-1",
+        "measures": 547,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-2",
+        "measures": 575,
+        "repeats": 8,
+        "style": "notated"
+      },
+      {
+        "mvt": "mvt-3",
+        "measures": 157,
+        "repeats": 0,
+        "style": "expanded?"
+      },
+      {
+        "mvt": "mvt-4",
+        "measures": 943,
+        "repeats": 0,
+        "style": "expanded?"
+      }
+    ],
+    "pdf_detected_measures": 3523,
+    "delta": 1301,
+    "delta_pct": 58.55085508550855,
+    "elapsed_seconds": 34.90026593208313,
+    "dpi": 150
+  }
+]

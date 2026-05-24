@@ -1,0 +1,26 @@
+# Hand-curated movement page ranges for Beethoven Symphony No.1 — 1862
+# Breitkopf B&H Werke Serie I No.1 (imslp-52848). All values are 1-indexed
+# PDF page numbers.
+#
+# Verified 2026-05-24 via visual inspection of rendered top-half strips at
+# 150 DPI. Each movement start was confirmed by:
+#   - Title at top of page (e.g. "Andante cantabile con moto.")
+#   - Full instrument labels in left margin (Flauti., Oboi., ...)
+#   - Large top margin above first system
+#
+# Per-movement boundary pages:
+#   p007 = mvt 1 start ("ERSTE SYMPHONIE / Op. 21. / Adagio molto.")
+#   p023 = mvt 2 start ("Andante cantabile con moto.")
+#   p032 = mvt 3 start ("MENUETTO. / Allegro molto e vivace.")
+#   p037 = mvt 4 start ("Adagio. / Allegro molto e vivace.")
+#   p052 = colophon (Beethoven's Werke title catalog page)
+total_pdf_pages: 52
+front_matter: [1, 2, 3, 4, 5, 6]
+back_matter: [52]
+movements:
+  mvt_1: { name: "Adagio molto - Allegro con brio",     pages: [7, 22],  xml_measures: 300 }
+  mvt_2: { name: "Andante cantabile con moto",           pages: [23, 31], xml_measures: 196 }
+  mvt_3: { name: "Menuetto. Allegro molto e vivace",     pages: [32, 36], xml_measures: 141 }
+  mvt_4: { name: "Adagio - Allegro molto e vivace",      pages: [37, 51], xml_measures: 306 }
+xml_total_measures: 943
+verified: true

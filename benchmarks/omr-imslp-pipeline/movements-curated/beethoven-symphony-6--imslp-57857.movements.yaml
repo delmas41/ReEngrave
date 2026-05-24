@@ -1,0 +1,34 @@
+# Hand-curated movement page ranges for Beethoven Symphony No.6 — 1863
+# Breitkopf B&H Werke (imslp-57857). 1-indexed PDF page numbers.
+#
+# Verified 2026-05-24 via visual inspection of rendered top-half strips at
+# 150 DPI + full pages for the attacca mvt 3/4 boundary.
+#
+# Per-movement boundary pages:
+#   p007 = mvt 1 start ("SECHSTE SYMPHONIE (Pastorale) / Op. 68 /
+#                        Erwachen heiterer Empfindungen ... / Allegro ma non troppo")
+#   p030 = mvt 2 start ("Scene am Bach. / Andante molto moto")
+#   p049 = mvt 3 start ("Lustiges Zusammensein der Landleute. / Allegro")
+#   p066 = mvt 4 ATTACCA mid-page — trombones enter on system 2 (printed p62).
+#            mvt 3 ends in system 1 of p066; mvt 4 (Gewitter, Sturm) begins
+#            in system 2 of p066.
+#   p073 = mvt 5 start ("Hirtengesang. Frohe und dankbare Gefühle nach dem
+#                        Sturm. / Allegretto")
+#
+# CAUTION for Phase E label generation: p066 has a mid-page movement
+# transition (mvt 3 → mvt 4). Cell assignment by page alone will mis-label
+# the trombone-onset system. Per-system mvt attribution required for this
+# page.
+total_pdf_pages: 92
+front_matter: [1, 2, 3, 4, 5, 6]
+back_matter: [91, 92]
+movements:
+  mvt_1: { name: "Erwachen heiterer Empfindungen (Allegro ma non troppo)",  pages: [7, 29],    xml_measures: 512 }
+  mvt_2: { name: "Scene am Bach (Andante molto moto)",                       pages: [30, 48],   xml_measures: 139 }
+  mvt_3: { name: "Lustiges Zusammensein der Landleute (Allegro)",            pages: [49, 66],   xml_measures: 266, note: "ends mid-page p66 (system 1)" }
+  mvt_4: { name: "Gewitter, Sturm",                                          pages: [66, 72],   xml_measures: 155, note: "starts mid-page p66 (system 2); attacca from mvt 3 and into mvt 5" }
+  mvt_5: { name: "Hirtengesang (Allegretto)",                                pages: [73, 90],   xml_measures: 264 }
+xml_total_measures: 1336
+verified: true
+mid_page_transitions:
+  - { page: 66, leaving_mvt: 3, entering_mvt: 4, signal: "Tromboni instrument enters at system 2" }

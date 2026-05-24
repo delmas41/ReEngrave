@@ -1,0 +1,21 @@
+# Hand-curated movement page ranges for Beethoven Symphony No.2 — Litolff
+# 1870 (imslp-503997). 1-indexed PDF page numbers.
+#
+# Verified 2026-05-24 via visual inspection of rendered top-half strips at
+# 150 DPI.
+#
+# Per-movement boundary pages:
+#   p001 = mvt 1 start ("Symphony No. 2 in D Major, Op. 36 / Adagio molto")
+#   p024 = mvt 2 start ("Larghetto")
+#   p037 = mvt 3 start ("SCHERZO. Allegro")
+#   p042 = mvt 4 start ("Allegro molto")
+total_pdf_pages: 61
+front_matter: []
+back_matter: []
+movements:
+  mvt_1: { name: "Adagio molto - Allegro con brio", pages: [1, 23],  xml_measures: 364 }
+  mvt_2: { name: "Larghetto",                        pages: [24, 36], xml_measures: 276 }
+  mvt_3: { name: "Scherzo. Allegro",                 pages: [37, 41], xml_measures: 133 }
+  mvt_4: { name: "Allegro molto",                    pages: [42, 61], xml_measures: 443 }
+xml_total_measures: 1216
+verified: true

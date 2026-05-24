@@ -1,0 +1,21 @@
+# Hand-curated movement page ranges for Beethoven Symphony No.8 — 1863
+# Breitkopf B&H Werke (imslp-875077). 1-indexed PDF page numbers.
+#
+# Verified 2026-05-24 via visual inspection of rendered top-half strips at
+# 150 DPI.
+#
+# Per-movement boundary pages:
+#   p003 = mvt 1 start ("Sinfonie Nr. 8 F-Dur" title; "Allegro vivace e con brio")
+#   p025 = mvt 2 start ("Allegretto scherzando")
+#   p032 = mvt 3 start ("Tempo di Menuetto")
+#   p037 = mvt 4 start ("Allegro vivace")
+total_pdf_pages: 66
+front_matter: [1, 2]
+back_matter: []
+movements:
+  mvt_1: { name: "Allegro vivace e con brio",  pages: [3, 24],  xml_measures: 374 }
+  mvt_2: { name: "Allegretto scherzando",       pages: [25, 31], xml_measures: 81 }
+  mvt_3: { name: "Tempo di Menuetto",           pages: [32, 36], xml_measures: 83 }
+  mvt_4: { name: "Allegro vivace",              pages: [37, 66], xml_measures: 503 }
+xml_total_measures: 1041
+verified: true

@@ -1,0 +1,21 @@
+# Hand-curated movement page ranges for Beethoven Symphony No.2 — Ricordi
+# 1909 (imslp-977672). 1-indexed PDF page numbers.
+#
+# Verified 2026-05-24 via visual inspection at 150 DPI top-half + full-page
+# scans of mid-PDF candidates.
+#
+# Per-movement boundary pages:
+#   p003 = mvt 1 start ("SINFONIA N. 2 in Re maggiore / Op. 36 / Adagio molto")
+#   p049 = mvt 2 start ("Larghetto" with full instrument labels)
+#   p073 = mvt 3 start ("SCHERZO")
+#   p080 = mvt 4 start ("Allegro molto")
+total_pdf_pages: 120
+front_matter: [1, 2]
+back_matter: []
+movements:
+  mvt_1: { name: "Adagio molto - Allegro con brio", pages: [3, 48],   xml_measures: 364 }
+  mvt_2: { name: "Larghetto",                        pages: [49, 72],  xml_measures: 276 }
+  mvt_3: { name: "Scherzo. Allegro",                 pages: [73, 79],  xml_measures: 133 }
+  mvt_4: { name: "Allegro molto",                    pages: [80, 120], xml_measures: 443 }
+xml_total_measures: 1216
+verified: true

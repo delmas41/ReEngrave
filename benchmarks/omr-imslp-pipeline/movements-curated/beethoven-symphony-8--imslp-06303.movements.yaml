@@ -1,0 +1,21 @@
+# Hand-curated movement page ranges for Beethoven Symphony No.8 —
+# Eulenburg 1938 (Unger edition) — imslp-06303. 1-indexed PDF page numbers.
+#
+# Verified 2026-05-24 via visual inspection of rendered top-half strips at
+# 150 DPI.
+#
+# Per-movement boundary pages:
+#   p001 = mvt 1 start ("Symphony No. 8 / Op. 93 / I / Allegro vivace e con brio")
+#   p041 = mvt 2 start ("II / Allegretto scherzando")
+#   p052 = mvt 3 start ("III / Tempo di Menuetto")
+#   p061 = mvt 4 start ("IV / Allegro vivace")
+total_pdf_pages: 89
+front_matter: []
+back_matter: []
+movements:
+  mvt_1: { name: "Allegro vivace e con brio",  pages: [1, 40],   xml_measures: 374 }
+  mvt_2: { name: "Allegretto scherzando",       pages: [41, 51],  xml_measures: 81 }
+  mvt_3: { name: "Tempo di Menuetto",           pages: [52, 60],  xml_measures: 83 }
+  mvt_4: { name: "Allegro vivace",              pages: [61, 89],  xml_measures: 503 }
+xml_total_measures: 1041
+verified: true

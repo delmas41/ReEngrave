@@ -1,0 +1,17 @@
+# Hand-curated movement page ranges for this edition (1862 Breitkopf B&H
+# Werke Serie I No.5). All values are 1-indexed PDF page numbers.
+#
+# Mvt 1 verified by visual inspection (rendered page strip) on 2026-05-23.
+# Mvt 4 confirmed by piccolo+trombones+contrabassoon entering at page 56.
+# Mvt 2 boundary firm (page 41 = mvt 2 start with full instrument labels).
+# Mvt 3 boundary is BEST-GUESS — needs visual verification of the page-by-
+# page transition between mvt 2 and mvt 4.
+total_pdf_pages: 106
+front_matter: [1, 2, 3, 4, 5, 6]
+movements:
+  mvt_1: { name: "Allegro con brio",    pages: [7, 40],   xml_measures: 502 }
+  mvt_2: { name: "Andante con moto",    pages: [41, 52],  xml_measures: null, note: "end boundary approximate" }
+  mvt_3: { name: "Scherzo. Allegro",    pages: [53, 55],  xml_measures: null, note: "boundaries unverified — Scherzo + Trio in 3-page block" }
+  mvt_4: { name: "Allegro",             pages: [56, 106], xml_measures: null, note: "attacca from mvt 3" }
+verified: false
+review_reason: "mvt 2 end + mvt 3 boundary need visual verification"

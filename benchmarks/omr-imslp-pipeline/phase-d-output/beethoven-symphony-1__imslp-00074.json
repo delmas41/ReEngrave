@@ -1,0 +1,39 @@
+{
+  "work": "beethoven-symphony-1",
+  "edition": "imslp-00074",
+  "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-1/pdfs/imslp-00074/score.pdf",
+  "total_pages": 43,
+  "xml_total_measures": 943,
+  "xml_movements": 4,
+  "xml_movement_breakdown": [
+    {
+      "mvt": "mvt-1",
+      "measures": 300,
+      "repeats": 2,
+      "style": "notated"
+    },
+    {
+      "mvt": "mvt-2",
+      "measures": 196,
+      "repeats": 0,
+      "style": "expanded?"
+    },
+    {
+      "mvt": "mvt-3",
+      "measures": 141,
+      "repeats": 7,
+      "style": "notated"
+    },
+    {
+      "mvt": "mvt-4",
+      "measures": 306,
+      "repeats": 2,
+      "style": "notated"
+    }
+  ],
+  "pdf_detected_measures": 1035,
+  "delta": 92,
+  "delta_pct": 9.75609756097561,
+  "elapsed_seconds": 22.610007762908936,
+  "dpi": 150
+}
