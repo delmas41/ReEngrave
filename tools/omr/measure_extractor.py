@@ -56,6 +56,7 @@ BARLINE_MIN_HEIGHT_FRAC = 0.80
 # measures downstream.
 BARLINE_MAX_WIDTH_LINESPACINGS = 0.7  # stems are typically ~0.3 line-spacing wide
 BARLINE_MIN_DISTANCE_PX = 60      # neighbouring barlines must be ≥60px apart
+CLOSE_OUTLIER_FRAC = 0.65         # barlines closer than 65% × median measure-gap drop as false positives
 
 
 # ─── Barline detection ───────────────────────────────────────────────────────
@@ -236,6 +237,16 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
             # or doubled lines). 50% catches Bolero-style sparseness.
             min_votes = max(5, int(round(0.50 * n_staves)))
 
+        # Prong B rescue threshold — accepts low-vote clusters when
+        # connectivity is high. Was max(3, 0.3*n_staves); the 3-vote floor
+        # rescued chord-stem columns on dense pages (their inter-staff ink
+        # comes from beams/slurs rather than a real barline). Bumped the
+        # absolute floor to 4 while keeping the 0.3*n proportional rule,
+        # which keeps tacet-section barlines (Beethoven 5 mvt 1 opening
+        # has only ~4 of 12 staves voting for the first few real barlines)
+        # while dropping the egregious 3-vote false positives.
+        rescue_min_votes = max(4, int(round(0.30 * n_staves)))
+
         y_top = min(s.top_y for s in staves)
         y_bot = max(s.bottom_y for s in staves)
         # Acceptance rule. On 1-2 staff systems (piano, duet, lead sheet)
@@ -267,7 +278,7 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 accepted.append(x_mean)
                 continue
             # Prong B: rescue sparse real barlines via strong connectivity.
-            if connectivity >= 0.7 and n_votes >= max(3, int(0.3 * n_staves)):
+            if connectivity >= 0.7 and n_votes >= rescue_min_votes:
                 accepted.append(x_mean)
         accepted.sort()
         # Second pass: outlier-small-gap rejection. Real measure widths
@@ -290,14 +301,17 @@ def _drop_close_outliers(xs: list[int]) -> list[int]:
     """Given a sorted list of barline x's on a system, drop entries that
     create gaps much smaller than the median gap (likely false positives).
 
-    Conservative: only applies when there are ≥6 barlines (enough samples
-    for median to be meaningful) AND the gap is < 0.35 × median. In real
-    music, the shortest legitimate measure is rarely less than ~40% of the
-    median. The 0.35 threshold leaves a small margin.
+    Applies when there are ≥6 barlines (enough samples for median to be
+    meaningful) AND the gap is < CLOSE_OUTLIER_FRAC × median. The shortest
+    legitimate measure in real orchestral music is rarely less than ~65%
+    of the median (most movements have time-signature-stable measure
+    widths). Earlier threshold of 0.35 was too lenient — it caught only
+    egregiously narrow gaps and missed the half-measure-spacing artifacts
+    on dense Beethoven pages where chord-stem clusters created
+    "false barlines" at ~50-70% of the real measure spacing.
 
-    On WTC and other simple piano scores this filter is a no-op. On dense
-    orchestral pages where false positives cluster between real barlines,
-    it removes the spurious entries.
+    On WTC and other simple piano scores this filter is a no-op (those
+    systems rarely have ≥6 barlines per page).
     """
     if len(xs) < 6:
         return list(xs)
@@ -310,7 +324,7 @@ def _drop_close_outliers(xs: list[int]) -> list[int]:
         median_gap = float(np.median(gaps))
         if median_gap <= 0:
             break
-        too_small = [(i, gaps[i]) for i in range(len(gaps)) if gaps[i] < 0.35 * median_gap]
+        too_small = [(i, gaps[i]) for i in range(len(gaps)) if gaps[i] < CLOSE_OUTLIER_FRAC * median_gap]
         if not too_small:
             break
         i, _ = min(too_small, key=lambda t: t[1])

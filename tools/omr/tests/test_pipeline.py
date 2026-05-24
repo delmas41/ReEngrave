@@ -21,7 +21,7 @@ import pytest
 
 from tools.omr.preprocessing import render_page
 from tools.omr.staff_detector import detect_staves
-from tools.omr.measure_extractor import detect_barlines, extract_measures
+from tools.omr.measure_extractor import detect_barlines, extract_measures, _drop_close_outliers
 from tools.omr.staff_line_removal import remove_staff_lines
 
 
@@ -197,6 +197,28 @@ class TestBeethoven5Breitkopf1862SystemGrouping:
         assert len(pws.staves) >= expected_min_staves, (
             f"page {page_1indexed}: staff detection regressed "
             f"(found {len(pws.staves)}, expected >= {expected_min_staves})"
+        )
+
+    def test_page7_barline_count_not_overcounting(self):
+        """Bug 2 regression — Beethoven 5 mvt 1 first music page should not
+        produce 14+ false-positive barlines from chord-stem clusters.
+
+        Pre-Bug-2-fix this page produced 14 barlines from a system of
+        ~7-9 actual measures (chord-stem columns at half-measure spacing
+        got rescued by the lenient Prong B 3-vote threshold). After the
+        fix it should be in a reasonable range — we assert it's at most
+        12 (a conservative upper bound on plausible orchestral measure
+        density for a first music page that carries title + tempo + key/
+        time-sig setup).
+        """
+        _require(BEETHOVEN5_BREITKOPF1862)
+        pi = render_page(BEETHOVEN5_BREITKOPF1862, 6, dpi=300)  # page 7, 0-indexed
+        pws = detect_staves(pi)
+        pws = detect_barlines(pws)
+        sys0_barlines = [bl for bl in pws.barlines if bl.system_index == 0]
+        assert 5 <= len(sys0_barlines) <= 12, (
+            f"page 7 sys0: {len(sys0_barlines)} barlines "
+            f"(expected 5-12; pre-fix was 14)"
         )
 
 
