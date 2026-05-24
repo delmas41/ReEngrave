@@ -31,7 +31,7 @@ MIN_PEAK_DISTANCE_PX = 4         # staff lines won't be closer than this
 MIN_LINE_LENGTH_FRAC = 0.35      # staff line spans >= 35% of page width
 PEAK_PROMINENCE_FRAC = 0.30      # peak must be 30% of (max - min) profile range
 GROUP_LINE_SPACING_TOLERANCE = 0.30  # ±30% gap variation within a 5-line group
-MAX_SYSTEM_GAP_FACTOR = 6.0      # fallback if auto-bipartition fails
+SYSTEM_GAP_MEDIAN_FACTOR = 2.5   # fallback: gap >= 2.5 × median = system break
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -154,10 +154,20 @@ def _bipartition_threshold(values: list[float]) -> float | None:
         if abs(new_c1 - c1) < 1e-6 and abs(new_c2 - c2) < 1e-6:
             break
         c1, c2 = new_c1, new_c2
-    # Require the gap between clusters to be at least 2x the spread of the
-    # smaller cluster — otherwise this isn't really bimodal.
-    intra_spread = float(np.std(arr[arr <= (c1 + c2) / 2])) or 1.0
-    if (c2 - c1) < 2.0 * intra_spread:
+    # Two checks for "really bimodal", both must pass:
+    #   1. Mean separation is large vs spread within EITHER cluster.
+    #      (Using the larger of the two spreads is stricter — catches cases
+    #      where one cluster has near-zero variance from a coincidence but
+    #      the other is broad.)
+    #   2. Ratio of means > 1.5. Catches orchestral pages where all inter-
+    #      staff gaps are similar in magnitude (e.g. 96-137 px). Without
+    #      this check, Lloyd's would split the gaps near the median and
+    #      return a spurious threshold even though there's no real break.
+    small_spread = float(np.std(arr[arr <= (c1 + c2) / 2])) or 1.0
+    large_spread = float(np.std(arr[arr > (c1 + c2) / 2])) or 1.0
+    if (c2 - c1) < 2.0 * max(small_spread, large_spread):
+        return None
+    if c2 / max(c1, 1.0) < 1.5:
         return None
     return (c1 + c2) / 2
 
@@ -169,10 +179,18 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
       1. Compute all inter-staff vertical gaps on the page.
       2. If the gaps cleanly bipartition into "small" (intra-system) and
          "large" (inter-system) clusters, use the midpoint as the threshold.
-      3. Otherwise fall back to MAX_SYSTEM_GAP_FACTOR × line_spacing.
+      3. Otherwise fall back to SYSTEM_GAP_MEDIAN_FACTOR × median_gap —
+         this scales with the actual layout (orchestral pages have larger
+         intra-system gaps than piano/chamber, so a fixed multiple of line
+         spacing under-shoots).
 
-    Also requires horizontal overlap > 50% for two staves to be in the same
-    system (catches multi-column scores).
+    Earlier versions also broke on x-overlap < 50%, intended to catch
+    multi-column piano-vocal scores. In practice _staff_x_extent finds the
+    longest ink run rather than the full staff-line span, so sparse
+    instruments (piccolo, snare drum) on orchestral pages produced narrow,
+    shifted ranges that looked non-overlapping with their vertical neighbors
+    and incorrectly fired as system breaks. Removed in favor of gap-only
+    grouping; multi-column scores are out of scope for now.
     """
     if not staves:
         return staves
@@ -184,41 +202,18 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
     gaps = [staves_sorted[i + 1].top_y - staves_sorted[i].bottom_y
             for i in range(len(staves_sorted) - 1)]
     threshold = _bipartition_threshold(gaps)
-    mean_spacing = float(np.mean([s.line_spacing_px for s in staves_sorted]))
-    if threshold is None:
-        threshold = mean_spacing * MAX_SYSTEM_GAP_FACTOR
-
-    # Secondary MAD-based threshold: catches mid-magnitude system breaks
-    # that bipartition merges with the small-gap cluster. Common on
-    # orchestral scores where there's a clearly-bigger-than-normal gap
-    # between bracketed sub-systems (e.g., winds vs brass vs strings)
-    # but it's still much smaller than the page-spanning system break.
-    # Rule: a gap > 2.0 × median + max(0, gap > min(fallback, ...)) is
-    # also a break. This is additive — a gap counts as break if EITHER
-    # threshold fires.
-    if gaps:
-        median_gap = float(np.median(gaps))
-        mad_threshold = median_gap * 2.0
-    else:
-        mad_threshold = float("inf")
+    if threshold is None and gaps:
+        threshold = float(np.median(gaps)) * SYSTEM_GAP_MEDIAN_FACTOR
+    elif threshold is None:
+        threshold = float("inf")
 
     current_system = 0
     staves_sorted[0].system_index = 0
     for i in range(1, len(staves_sorted)):
-        prev = staves_sorted[i - 1]
-        cur = staves_sorted[i]
-        gap = cur.top_y - prev.bottom_y
-        overlap = min(prev.x_end, cur.x_end) - max(prev.x_start, cur.x_start)
-        min_extent = min(prev.x_end - prev.x_start, cur.x_end - cur.x_start)
-        x_overlap_frac = overlap / max(1, min_extent)
-        is_break = (
-            gap >= threshold
-            or gap >= mad_threshold
-            or x_overlap_frac <= 0.5
-        )
-        if is_break:
+        gap = staves_sorted[i].top_y - staves_sorted[i - 1].bottom_y
+        if gap >= threshold:
             current_system += 1
-        cur.system_index = current_system
+        staves_sorted[i].system_index = current_system
     return staves_sorted
 
 

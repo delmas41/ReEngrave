@@ -31,6 +31,15 @@ SCORE_DIR = Path("/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For G
 WTC = SCORE_DIR / "PDF Scores" / "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf"
 BEETHOVEN5 = SCORE_DIR / "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf"
 
+# Beethoven 5, 1862 Breitkopf & Härtel Werke edition — sits in the gitignored
+# IMSLP training catalog. Used to lock in the orchestral system-grouping fix
+# (Phase C, 2026-05-23) since this edition's tighter inter-staff spacing was
+# what surfaced the bug.
+BEETHOVEN5_BREITKOPF1862 = Path(
+    "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/"
+    "beethoven-symphony-5/pdfs/imslp-52624/score.pdf"
+)
+
 
 def _require(path: Path):
     if not path.exists():
@@ -154,6 +163,41 @@ class TestBeethoven5Page10:
         widths = [c.width for c in cells]
         # At least some cells should be at the upscale ceiling.
         assert max(widths) == 2048
+
+
+# ─── Beethoven 5, 1862 Breitkopf — orchestral system grouping regression ──────
+
+
+class TestBeethoven5Breitkopf1862SystemGrouping:
+    """Regression test for the orchestral system-grouping bug (Phase C,
+    2026-05-23). This edition has tighter inter-staff spacing (~100 px
+    intra-system) than other Beethoven editions; the old _assign_systems
+    heuristic split it into 8 spurious sub-systems instead of 1.
+
+    Page expectations are confirmed visually against the 1862 B&H Werke
+    score (Beethoven 5 in C minor, Op.67, plate B.5, 106 pp). DPI is 300
+    here to keep the test under a few seconds — the production pipeline
+    runs at 600 DPI but staff grouping is DPI-invariant.
+    """
+
+    @pytest.mark.parametrize("page_1indexed, expected_systems, expected_min_staves", [
+        (7,  1,  12),   # mvt 1 first music page — 1 system × 12 instruments
+        (20, 2,  24),   # mvt 1 mid-movement — 2 stacked orchestral systems
+        (56, 1,  16),   # mvt 4 start — 1 system, expanded orchestration
+                        # (piccolo + contrabassoon + 3 trombones enter here)
+    ])
+    def test_system_grouping(self, page_1indexed, expected_systems, expected_min_staves):
+        _require(BEETHOVEN5_BREITKOPF1862)
+        pi = render_page(BEETHOVEN5_BREITKOPF1862, page_1indexed - 1, dpi=300)
+        pws = detect_staves(pi)
+        n_systems = 1 + max((s.system_index for s in pws.staves), default=-1)
+        assert n_systems == expected_systems, (
+            f"page {page_1indexed}: expected {expected_systems} systems, got {n_systems}"
+        )
+        assert len(pws.staves) >= expected_min_staves, (
+            f"page {page_1indexed}: staff detection regressed "
+            f"(found {len(pws.staves)}, expected >= {expected_min_staves})"
+        )
 
 
 # ─── Preprocessing primitives ─────────────────────────────────────────────────
