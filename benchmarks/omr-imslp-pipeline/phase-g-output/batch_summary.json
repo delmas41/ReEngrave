@@ -1,0 +1,509 @@
+{
+  "started_at": "2026-05-24 13:27:12",
+  "runs": [
+    {
+      "movement_pages": [
+        7,
+        22
+      ],
+      "pages_processed": 16,
+      "cells_total": 2456,
+      "cells_with_xml_match": 2456,
+      "labels_total": 9376,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 2456
+      },
+      "elapsed_seconds": 32.3,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        23,
+        31
+      ],
+      "pages_processed": 9,
+      "cells_total": 1474,
+      "cells_with_xml_match": 745,
+      "labels_total": 1940,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 745
+      },
+      "elapsed_seconds": 15.1,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        32,
+        36
+      ],
+      "pages_processed": 5,
+      "cells_total": 1063,
+      "cells_with_xml_match": 1063,
+      "labels_total": 2518,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1063
+      },
+      "elapsed_seconds": 12.1,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        37,
+        51
+      ],
+      "pages_processed": 14,
+      "cells_total": 2582,
+      "cells_with_xml_match": 2582,
+      "labels_total": 7070,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 2582
+      },
+      "elapsed_seconds": 32.7,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        1,
+        23
+      ],
+      "pages_processed": 23,
+      "cells_total": 2554,
+      "cells_with_xml_match": 2477,
+      "labels_total": 12034,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 2477
+      },
+      "elapsed_seconds": 40.2,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        24,
+        36
+      ],
+      "pages_processed": 13,
+      "cells_total": 1350,
+      "cells_with_xml_match": 1350,
+      "labels_total": 5298,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1350
+      },
+      "elapsed_seconds": 21.6,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        37,
+        41
+      ],
+      "pages_processed": 5,
+      "cells_total": 1238,
+      "cells_with_xml_match": 1221,
+      "labels_total": 2552,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1221
+      },
+      "elapsed_seconds": 12.2,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        42,
+        61
+      ],
+      "pages_processed": 20,
+      "cells_total": 3784,
+      "cells_with_xml_match": 2181,
+      "labels_total": 6299,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 2181
+      },
+      "elapsed_seconds": 34.1,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        3,
+        48
+      ],
+      "pages_processed": 46,
+      "cells_total": 2833,
+      "cells_with_xml_match": 1939,
+      "labels_total": 7945,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1939
+      },
+      "elapsed_seconds": 30.6,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        49,
+        72
+      ],
+      "pages_processed": 24,
+      "cells_total": 1872,
+      "cells_with_xml_match": 1529,
+      "labels_total": 5558,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1529
+      },
+      "elapsed_seconds": 20.1,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        73,
+        79
+      ],
+      "pages_processed": 7,
+      "cells_total": 1028,
+      "cells_with_xml_match": 1028,
+      "labels_total": 1810,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1028
+      },
+      "elapsed_seconds": 9.1,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        80,
+        120
+      ],
+      "pages_processed": 41,
+      "cells_total": 3721,
+      "cells_with_xml_match": 3165,
+      "labels_total": 8821,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 3165
+      },
+      "elapsed_seconds": 34.3,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        1,
+        41
+      ],
+      "pages_processed": 41,
+      "cells_total": 3775,
+      "cells_with_xml_match": 3700,
+      "labels_total": 10320,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 3700
+      },
+      "elapsed_seconds": 37.4,
+      "work": "beethoven-symphony-4",
+      "edition": "imslp-411721",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        42,
+        53
+      ],
+      "pages_processed": 12,
+      "cells_total": 455,
+      "cells_with_xml_match": 455,
+      "labels_total": 3196,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 455
+      },
+      "elapsed_seconds": 8.7,
+      "work": "beethoven-symphony-4",
+      "edition": "imslp-411721",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        92,
+        125
+      ],
+      "pages_processed": 34,
+      "cells_total": 2909,
+      "cells_with_xml_match": 2468,
+      "labels_total": 6284,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 2468
+      },
+      "elapsed_seconds": 29.7,
+      "work": "beethoven-symphony-4",
+      "edition": "imslp-411721",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        7,
+        29
+      ],
+      "pages_processed": 23,
+      "cells_total": 1276,
+      "cells_with_xml_match": 1276,
+      "labels_total": 3188,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1276
+      },
+      "elapsed_seconds": 69.4,
+      "work": "beethoven-symphony-6",
+      "edition": "imslp-57857",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        30,
+        48
+      ],
+      "pages_processed": 19,
+      "cells_total": 530,
+      "cells_with_xml_match": 530,
+      "labels_total": 5791,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 530
+      },
+      "elapsed_seconds": 55.4,
+      "work": "beethoven-symphony-6",
+      "edition": "imslp-57857",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        73,
+        90
+      ],
+      "pages_processed": 18,
+      "cells_total": 1077,
+      "cells_with_xml_match": 562,
+      "labels_total": 1558,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 562
+      },
+      "elapsed_seconds": 53.0,
+      "work": "beethoven-symphony-6",
+      "edition": "imslp-57857",
+      "mvt": 5,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        1,
+        40
+      ],
+      "pages_processed": 40,
+      "cells_total": 2861,
+      "cells_with_xml_match": 1891,
+      "labels_total": 6898,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 1891
+      },
+      "elapsed_seconds": 40.9,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        41,
+        51
+      ],
+      "pages_processed": 11,
+      "cells_total": 495,
+      "cells_with_xml_match": 345,
+      "labels_total": 3469,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 345
+      },
+      "elapsed_seconds": 10.9,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        52,
+        60
+      ],
+      "pages_processed": 9,
+      "cells_total": 701,
+      "cells_with_xml_match": 544,
+      "labels_total": 2159,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 544
+      },
+      "elapsed_seconds": 10.1,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        61,
+        89
+      ],
+      "pages_processed": 29,
+      "cells_total": 2709,
+      "cells_with_xml_match": 2709,
+      "labels_total": 10562,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 2709
+      },
+      "elapsed_seconds": 41.4,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        3,
+        24
+      ],
+      "pages_processed": 22,
+      "cells_total": 3407,
+      "cells_with_xml_match": 2469,
+      "labels_total": 9441,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 2469
+      },
+      "elapsed_seconds": 36.9,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        25,
+        31
+      ],
+      "pages_processed": 7,
+      "cells_total": 329,
+      "cells_with_xml_match": 218,
+      "labels_total": 1892,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 218
+      },
+      "elapsed_seconds": 8.2,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        32,
+        36
+      ],
+      "pages_processed": 5,
+      "cells_total": 760,
+      "cells_with_xml_match": 592,
+      "labels_total": 2171,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 592
+      },
+      "elapsed_seconds": 8.9,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        37,
+        66
+      ],
+      "pages_processed": 30,
+      "cells_total": 3891,
+      "cells_with_xml_match": 3867,
+      "labels_total": 16587,
+      "homography_failures": 0,
+      "dropped_classes": {
+        "barline": 3867
+      },
+      "elapsed_seconds": 53.0,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 4,
+      "status": "ok"
+    }
+  ],
+  "totals": {
+    "pages_processed": 523,
+    "cells_total": 51130,
+    "cells_with_xml_match": 43362,
+    "labels_total": 154737,
+    "homography_failures": 0,
+    "runs_succeeded": 26,
+    "runs_failed": 0
+  },
+  "finished_at": "2026-05-24 13:39:51"
+}
