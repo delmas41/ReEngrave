@@ -26,30 +26,6 @@ from tools.omr.staff_detector import detect_staves  # noqa: E402
 from tools.omr.measure_extractor import extract_measures  # noqa: E402
 
 
-def regroup_orchestral_staves(pws, break_factor: float = 2.5):
-    """Override the default _assign_systems result for orchestral pages.
-
-    The production grouping uses bipartition + x-overlap heuristics tuned for
-    piano/chamber music. On orchestral pages (~12 instruments stacked with
-    similar gaps and varying label widths) it over-splits. We replace it with
-    a simple rule: a system break is an inter-staff gap >= break_factor * median.
-    """
-    import numpy as np
-    staves = sorted(pws.staves, key=lambda s: s.top_y)
-    if len(staves) < 2:
-        return pws
-    gaps = [staves[i + 1].top_y - staves[i].bottom_y for i in range(len(staves) - 1)]
-    median_gap = float(np.median(gaps))
-    sys_idx = 0
-    staves[0].system_index = 0
-    for i in range(1, len(staves)):
-        if gaps[i - 1] >= break_factor * median_gap:
-            sys_idx += 1
-        staves[i].system_index = sys_idx
-    pws.staves = staves
-    return pws
-
-
 REPO_ROOT = Path("/Users/seanjohnson/Desktop/ReEngrave")
 DATA_ROOT = REPO_ROOT / "tools/omr/training/data/imslp"
 WORK_DIR = DATA_ROOT / "beethoven-symphony-5"
@@ -179,7 +155,6 @@ def extract_cells_for_range(pdf_path: Path, page_indices: list[int], dpi: int = 
         try:
             pi = render_page(pdf_path, page_idx, dpi=dpi)
             pws = detect_staves(pi)
-            pws = regroup_orchestral_staves(pws)
             cells = extract_measures(pws)
         except Exception as e:
             print(f"    ! page {page_idx + 1} failed: {e}", flush=True)

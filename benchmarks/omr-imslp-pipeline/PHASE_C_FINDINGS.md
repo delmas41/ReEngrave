@@ -3,6 +3,8 @@
 **Date:** 2026-05-23
 **Anchor pair:** Hauptstimme `beethoven-symphony-5/musicxml/mvt-1.mxl` (502 measures, 18 parts) ↔ IMSLP `imslp-52624` (Breitkopf & Härtel 1862 Werke, full score, pp.7-40 = mvt 1)
 
+**Status update (later same day):** Bug 1 (`_assign_systems` over-splitting orchestral pages) is fixed and committed with regression tests covering pages 7/20/56 of the 1862 Breitkopf edition. After the fix, the cell-level alignment produces 604 PDF measures vs 502 XML, off by +102 — entirely from Bug 2 (barline false positives on dense pages) which is now the remaining blocker. Sections below describe both bugs as originally diagnosed; Bug 1's section is kept as the historical record of why the fix landed.
+
 ---
 
 ## TL;DR
