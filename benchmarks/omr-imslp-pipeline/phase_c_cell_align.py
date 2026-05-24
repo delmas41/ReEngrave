@@ -29,14 +29,15 @@ from tools.omr.measure_extractor import extract_measures  # noqa: E402
 REPO_ROOT = Path("/Users/seanjohnson/Desktop/ReEngrave")
 DATA_ROOT = REPO_ROOT / "tools/omr/training/data/imslp"
 WORK_DIR = DATA_ROOT / "beethoven-symphony-5"
-PDF_PATH = WORK_DIR / "pdfs/imslp-52624/score.pdf"
-MXL_PATH = WORK_DIR / "musicxml/mvt-1.mxl"
 OUT_DIR = REPO_ROOT / ".claude/worktrees/interesting-curran-3ca1b7/benchmarks/omr-imslp-pipeline/phase-c-output"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-MVT1_FIRST_PAGE = 7   # 1-indexed PDF page
-MVT1_LAST_PAGE = 40   # 1-indexed PDF page inclusive
-DPI = 300             # 300 is enough to read; 600 is what production uses
+# Default anchor pair (used when invoked as a script without arguments).
+DEFAULT_PDF_PATH = WORK_DIR / "pdfs/imslp-52624/score.pdf"
+DEFAULT_MXL_PATH = WORK_DIR / "musicxml/mvt-1.mxl"
+DEFAULT_MVT1_FIRST_PAGE = 7   # 1-indexed
+DEFAULT_MVT1_LAST_PAGE = 40   # 1-indexed (inclusive)
+DEFAULT_DPI = 300             # 300 is enough to read; 600 is production
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -200,7 +201,7 @@ def classify_xml_repeat_style(xml_measures: list[XmlMeasure]) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def extract_cells_for_range(pdf_path: Path, page_indices: list[int], dpi: int = DPI):
+def extract_cells_for_range(pdf_path: Path, page_indices: list[int], dpi: int = DEFAULT_DPI):
     """Run staff & barline detection + measure extraction on each page.
     Returns: (per_page_results, total_cells)
     per_page_results: list of dicts with page metadata + cells
@@ -288,70 +289,74 @@ def build_alignment(per_page_results, xml_measures: list[XmlMeasure]):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def main() -> int:
-    print(f"PDF : {PDF_PATH}")
-    print(f"XML : {MXL_PATH}")
-    print(f"Pages: {MVT1_FIRST_PAGE}-{MVT1_LAST_PAGE} (1-indexed)\n")
+def align_pair(
+    pdf_path: Path,
+    mxl_path: Path,
+    page_first_1indexed: int,
+    page_last_1indexed: int,
+    dpi: int = DEFAULT_DPI,
+    verbose: bool = True,
+) -> dict:
+    """Run XML↔PDF cell alignment for one (PDF page range, XML movement) pair.
+    Returns a stats dict; does NOT write a manifest. The caller decides where
+    (if at all) to persist results — Phase D uses this to aggregate across
+    the catalog without writing per-movement manifests."""
+    if verbose:
+        print(f"PDF : {pdf_path}")
+        print(f"XML : {mxl_path}")
+        print(f"Pages: {page_first_1indexed}-{page_last_1indexed} (1-indexed) @ {dpi} DPI\n")
 
-    print("── XML parse ──")
-    xml_measures, num_parts = parse_xml_measures(MXL_PATH)
-    print(f"XML: {len(xml_measures)} measures across {num_parts} parts")
-    print(f"  first measure: number={xml_measures[0].number}, implicit={xml_measures[0].is_implicit}, "
-          f"time_sig={xml_measures[0].time_signature}, key={xml_measures[0].key_fifths}, "
-          f"clefs={xml_measures[0].clef_changes[:3]}...")
-    print(f"  last measure:  number={xml_measures[-1].number}, barline={xml_measures[-1].barline_type}")
-    print(f"  non-regular barlines: {sum(1 for m in xml_measures if m.barline_type != 'regular')}")
-
+    xml_measures, num_parts = parse_xml_measures(mxl_path)
     repeat_info = classify_xml_repeat_style(xml_measures)
-    print(f"  repeat style:  {repeat_info['style']}  ({repeat_info['repeat_count']} <repeat> elements)")
-    print(f"    {repeat_info['notes']}")
-    print()
+    if verbose:
+        print(f"XML: {len(xml_measures)} measures, {num_parts} parts, repeat={repeat_info['style']}")
 
-    print("── PDF cell extraction ──")
-    page_indices = list(range(MVT1_FIRST_PAGE - 1, MVT1_LAST_PAGE))  # 0-indexed
-    per_page = extract_cells_for_range(PDF_PATH, page_indices, dpi=DPI)
-    print()
-
-    print("── Alignment ──")
+    page_indices = list(range(page_first_1indexed - 1, page_last_1indexed))
+    per_page = extract_cells_for_range(pdf_path, page_indices, dpi=dpi)
     alignment, total_pdf_measures = build_alignment(per_page, xml_measures)
-    expected_pdf = repeat_info["expected_pdf_measures"]
-    print(f"PDF detected: {total_pdf_measures} measures across {len(per_page)} pages")
-    print(f"XML measures: {len(xml_measures)}")
-    print(f"Expected PDF: {expected_pdf}  (from XML count, repeat style = {repeat_info['style']})")
-    delta = total_pdf_measures - expected_pdf
-    if delta == 0:
-        print("PDF count matches expected.")
-    else:
-        pct = 100.0 * delta / max(expected_pdf, 1)
-        print(f"MISMATCH: PDF is {delta:+d} ({pct:+.1f}%) from expected.")
-        if repeat_info["style"] == "expanded?" and delta < 0:
-            print("  (negative delta + ambiguous repeat style — XML may have repeats written out;"
-                  " check by hand.)")
-    print()
 
-    # Write the manifest
-    manifest = {
-        "pdf_path": str(PDF_PATH),
-        "xml_path": str(MXL_PATH),
-        "page_range_1indexed": [MVT1_FIRST_PAGE, MVT1_LAST_PAGE],
-        "dpi": DPI,
+    expected_pdf = repeat_info["expected_pdf_measures"]
+    delta = total_pdf_measures - expected_pdf
+
+    if verbose:
+        pct = 100.0 * delta / max(expected_pdf, 1)
+        print(f"PDF: {total_pdf_measures} measures, expected {expected_pdf}, delta {delta:+d} ({pct:+.1f}%)\n")
+
+    return {
+        "pdf_path": str(pdf_path),
+        "xml_path": str(mxl_path),
+        "page_range_1indexed": [page_first_1indexed, page_last_1indexed],
+        "dpi": dpi,
         "xml_measure_count": len(xml_measures),
         "xml_repeat_style": repeat_info["style"],
         "xml_repeat_element_count": repeat_info["repeat_count"],
         "expected_pdf_measures": expected_pdf,
         "pdf_measure_count": total_pdf_measures,
         "delta": delta,
-        "alignment": {
-            str(m): cells for m, cells in alignment.items()
-        },
-        "per_page_summary": [
-            {k: v for k, v in p.items() if k != "cells"} | {"cell_count": len(p.get("cells", []))}
-            for p in per_page
-        ],
-        "xml_measures_summary": [asdict(m) for m in xml_measures[:5]] + ["..."] + [asdict(m) for m in xml_measures[-3:]],
+        "delta_pct": 100.0 * delta / max(expected_pdf, 1),
+        "n_pages_processed": sum(1 for p in per_page if "error" not in p),
+        "n_pages_errored": sum(1 for p in per_page if "error" in p),
     }
+
+
+def main() -> int:
+    result = align_pair(
+        pdf_path=DEFAULT_PDF_PATH,
+        mxl_path=DEFAULT_MXL_PATH,
+        page_first_1indexed=DEFAULT_MVT1_FIRST_PAGE,
+        page_last_1indexed=DEFAULT_MVT1_LAST_PAGE,
+        dpi=DEFAULT_DPI,
+        verbose=True,
+    )
+    delta = result["delta"]
+    pct = result["delta_pct"]
+    if delta == 0:
+        print("PDF count matches expected.")
+    else:
+        print(f"MISMATCH: PDF is {delta:+d} ({pct:+.1f}%) from expected.")
+
     out_path = OUT_DIR / "cell_alignment.json"
-    out_path.write_text(json.dumps(manifest, indent=2, default=str))
+    out_path.write_text(json.dumps(result, indent=2, default=str))
     print(f"Wrote {out_path}")
     return 0 if delta == 0 else 1
 
