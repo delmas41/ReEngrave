@@ -3,7 +3,14 @@
 **Date:** 2026-05-23
 **Anchor pair:** Hauptstimme `beethoven-symphony-5/musicxml/mvt-1.mxl` (502 measures, 18 parts) ↔ IMSLP `imslp-52624` (Breitkopf & Härtel 1862 Werke, full score, pp.7-40 = mvt 1)
 
-**Status update (later same day):** Bug 1 (`_assign_systems` over-splitting orchestral pages) is fixed and committed with regression tests covering pages 7/20/56 of the 1862 Breitkopf edition. After the fix, the cell-level alignment produces 604 PDF measures vs 502 XML, off by +102 — entirely from Bug 2 (barline false positives on dense pages) which is now the remaining blocker. Sections below describe both bugs as originally diagnosed; Bug 1's section is kept as the historical record of why the fix landed.
+**Status update (later same day):**
+
+- **Bug 1** (`_assign_systems` over-splitting orchestral pages) is FIXED in commit de63d6f, with regression tests covering pages 7/20/56 of the 1862 Breitkopf edition.
+- **Bug 2** (barline FP on dense orchestral pages) is PARTIALLY FIXED in commit e83605a — two surgical changes (Prong B rescue floor 3→4, `_drop_close_outliers` gap threshold 0.35→0.65) cut Phase C overcount from +20% to +7% and locked in a regression test. The remaining edition-specific over-counting on the IMSLP984073 Beethoven 5 fixture needs a per-measure-width discriminator or YOLO-assisted barlines and is naturally answered once the catalog itself has enough labeled barlines to train against.
+- **XML repeat-style detection** is in place (commit 2dac7c8); the Phase C report now correctly classifies "notated" vs "expanded?" XMLs and uses the right `expected_pdf_measures` for the delta calculation.
+- **Final alignment delta on the Phase C pair:** XML 502 measures (notated, 1 `<repeat>` at m.124) vs PDF 539 detected = **+37 (+7.4%)**. Good enough to start building Phase D scaling on top, while Bug 2's remaining edge cases get worked through against more editions.
+
+The sections below are the original diagnosis writeup kept for the historical record. The "Recommended next move" Step 1 (Bug 1) and Step 2 (Bug 2) have both landed.
 
 ---
 
