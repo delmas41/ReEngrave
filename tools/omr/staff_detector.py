@@ -172,6 +172,34 @@ def _bipartition_threshold(values: list[float]) -> float | None:
     return (c1 + c2) / 2
 
 
+def _top_outlier_threshold(gaps: list[float]) -> float | None:
+    """When bipartition rejects a gap distribution as not-clearly-bimodal,
+    look for a single outlier at the top of the sorted gap list — the
+    pattern of "one inter-system gap, many intra-system gaps".
+
+    Bipartition's mean-ratio check (c2/c1 >= 1.5) is the right safety
+    against splitting unimodal single-system pages where intra-instrument
+    gaps span 96-137 px (Werke 1862 Beethoven 5 p.7 layout). But it
+    over-rejects when the inter-system gap is only ~1.5× the median —
+    e.g. Beethoven 1 1862 Werke p.11 has gaps in [70, 133] with the lone
+    133 px gap being the real system break, but c2/c1 = 1.4 fails the
+    ratio test. This helper catches that lone-outlier case explicitly.
+
+    Heuristic: if the max gap is at least 15% larger than the next-largest
+    gap, treat it (and any gaps within the same range) as system breaks.
+    Returns the midpoint of (max, second_max) as the cut threshold, or
+    None if no clear single outlier exists.
+    """
+    if len(gaps) < 3:
+        return None
+    arr = sorted(gaps, reverse=True)
+    if arr[1] <= 0:
+        return None
+    if arr[0] / arr[1] < 1.15:
+        return None
+    return (arr[0] + arr[1]) / 2
+
+
 def _assign_systems(staves: list[Staff]) -> list[Staff]:
     """A 'system' is a group of staves that are read together (e.g. grand
     staff, full orchestral score). Algorithm:
@@ -179,7 +207,10 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
       1. Compute all inter-staff vertical gaps on the page.
       2. If the gaps cleanly bipartition into "small" (intra-system) and
          "large" (inter-system) clusters, use the midpoint as the threshold.
-      3. Otherwise fall back to SYSTEM_GAP_MEDIAN_FACTOR × median_gap —
+      3. Else, look for a single outlier at the top of the gap distribution
+         (the "one inter-system gap, many intra-system gaps" case that
+         bipartition's mean-ratio check rejects).
+      4. Otherwise fall back to SYSTEM_GAP_MEDIAN_FACTOR × median_gap —
          this scales with the actual layout (orchestral pages have larger
          intra-system gaps than piano/chamber, so a fixed multiple of line
          spacing under-shoots).
@@ -202,6 +233,8 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
     gaps = [staves_sorted[i + 1].top_y - staves_sorted[i].bottom_y
             for i in range(len(staves_sorted) - 1)]
     threshold = _bipartition_threshold(gaps)
+    if threshold is None:
+        threshold = _top_outlier_threshold(gaps)
     if threshold is None and gaps:
         threshold = float(np.median(gaps)) * SYSTEM_GAP_MEDIAN_FACTOR
     elif threshold is None:

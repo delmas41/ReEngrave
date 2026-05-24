@@ -40,6 +40,16 @@ BEETHOVEN5_BREITKOPF1862 = Path(
     "beethoven-symphony-5/pdfs/imslp-52624/score.pdf"
 )
 
+# Beethoven 1, 1862 Werke Breitkopf — same gitignored catalog. This edition's
+# orchestration is dense enough that the inter-section gaps within a single
+# system are only ~1.3× the typical staff gap, so bipartition's c2/c1 ≥ 1.5
+# ratio check rejects the bimodal split. Used in Phase E to lock in the
+# single-outlier fallback in _assign_systems.
+BEETHOVEN1_BREITKOPF1862 = Path(
+    "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/"
+    "beethoven-symphony-1/pdfs/imslp-52848/score.pdf"
+)
+
 
 def _require(path: Path):
     if not path.exists():
@@ -226,6 +236,64 @@ class TestBeethoven5Breitkopf1862SystemGrouping:
             f"page 7 sys0: {len(sys0_barlines)} barlines "
             f"(expected 5-12; pre-fix was 14)"
         )
+
+
+class TestBeethoven1Breitkopf1862SystemGrouping:
+    """Regression test for the orchestral system-grouping bug (Phase E,
+    2026-05-24). This edition's typical 2-system layout has inter-system
+    gaps only ~1.5× the intra-system median, which is rejected by
+    bipartition's c2/c1 ≥ 1.5 mean-ratio check. The fix added a single-
+    outlier fallback that catches the lone inter-system gap when it's
+    ≥1.15× the second-largest gap.
+
+    Page 11 of imslp-52848 is a typical 2-system 11-staff-per-system page
+    in the development of mvt 1 (Adagio molto / Allegro con brio). It was
+    silently merged into one 22-staff system before the fix.
+    """
+
+    @pytest.mark.parametrize("page_1indexed, expected_systems, expected_staves", [
+        (7,  1,  11),   # mvt 1 first music page — 1 system × 11 detectable staves
+        (11, 2,  22),   # mvt 1 mid-movement — 2 stacked systems × 11 staves each
+    ])
+    def test_system_grouping(self, page_1indexed, expected_systems, expected_staves):
+        _require(BEETHOVEN1_BREITKOPF1862)
+        pi = render_page(BEETHOVEN1_BREITKOPF1862, page_1indexed - 1, dpi=300)
+        pws = detect_staves(pi)
+        n_systems = 1 + max((s.system_index for s in pws.staves), default=-1)
+        assert n_systems == expected_systems, (
+            f"page {page_1indexed}: expected {expected_systems} systems, got {n_systems}"
+        )
+        assert len(pws.staves) >= expected_staves, (
+            f"page {page_1indexed}: staff detection regressed "
+            f"(found {len(pws.staves)}, expected >= {expected_staves})"
+        )
+
+
+class TestTopOutlierThreshold:
+    """Unit tests for _top_outlier_threshold (Phase E, 2026-05-24).
+    Runs without a PDF — always executes in CI."""
+
+    def test_clear_outlier_triggers(self):
+        from tools.omr.staff_detector import _top_outlier_threshold
+        # 1 large gap (133), many small gaps clustered around 70-113.
+        gaps = [92, 88, 113, 88, 71, 70, 70, 102, 87, 87, 133,
+                100, 84, 113, 81, 75, 87, 90, 87, 87, 86]
+        thr = _top_outlier_threshold(gaps)
+        assert thr is not None
+        # Threshold should be the midpoint of 133 and 113
+        assert 122 <= thr <= 124, f"threshold={thr}, expected ~123"
+
+    def test_no_outlier_returns_none(self):
+        from tools.omr.staff_detector import _top_outlier_threshold
+        # Beethoven 5 p7 — all gaps in [96, 137], no clear outlier
+        gaps = [96, 119, 137, 109, 98, 101, 110, 123, 124, 133, 136]
+        assert _top_outlier_threshold(gaps) is None
+
+    def test_short_lists_skip(self):
+        from tools.omr.staff_detector import _top_outlier_threshold
+        assert _top_outlier_threshold([]) is None
+        assert _top_outlier_threshold([100]) is None
+        assert _top_outlier_threshold([100, 200]) is None
 
 
 # ─── Preprocessing primitives ─────────────────────────────────────────────────
