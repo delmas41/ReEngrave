@@ -15,15 +15,18 @@ For each (work, edition), the script:
 
 Per-movement alignment is deferred until movement-segmentation auto-detection is more reliable. The current `phase_d_segment_movements.py` (v1 geometric) and `phase_d_segment_movements_v2.py` (OCR-confirmed) both work on the canonical 1862 Werke editions but generalize poorly across other edition layouts.
 
-## Aggregate (58/65 editions processed)
+## Aggregate (65/65 editions processed — RUN COMPLETE)
 
-- Succeeded: 54 editions
+- Succeeded: 61 editions
 - Detected 0 measures: 4 editions (Cianchettini & Sperati 1808-09 London + Beethoven 6 imslp-46101; tiny scan dimensions defeat the OMR pipeline)
-- **Within ±5% delta: 7/54 editions** ← catalog-ready
-- Within ±10%: 13/54
-- Within ±20%: 25/54
-- Mean delta: +22.5%
-- Median delta: +19.3%
+- **Within ±5% delta: 7/61 editions** ← catalog-ready
+- Within ±10%: 13/61
+- Within ±20%: 25/61
+- Mean delta: +40.8%  (pulled up by Beethoven 9 modern editions; median is the more robust signal)
+- Median delta: +21.1%
+- Std dev: 80.8%
+- Min: -98.0% (imslp-46251 Beethoven 7 — only 37 measures detected on 228 pages; likely heavy scan damage or unusual layout)
+- Max: +404.6% (imslp-830830 Beethoven 9 Bärenreiter — 332 pages with 11212 detected vs 2222 expected; almost certainly score+parts bundled)
 
 ## Catalog-ready editions (Δ within ±5%, sorted by accuracy)
 
@@ -150,13 +153,21 @@ Note: imslp-52624 (our Phase C anchor) shows +22.1% here — but recall Phase C 
 | imslp-875074 | 116 | 1391 | +350 | +33.6% | high-delta |
 | imslp-875077 | 66 | 1056 | +15 | +1.4% | **OK** |
 
-### beethoven-symphony-9 (XML 2222, 8 editions — 2/8 done so far)
+### beethoven-symphony-9 (XML 2222, 9 editions — all complete)
 
 | Edition | PDF pages | PDF measures | Δ | Δ % | Status |
 |---|---:|---:|---:|---:|:---:|
 | imslp-46254 | 230 | 2389 | +167 | +7.5% | review |
 | imslp-516486 | 276 | 4972 | +2750 | +123.8% | high-delta |
-| (6 more in progress) | | | | | |
+| imslp-516487 | 284 | 3585 | +1363 | +61.3% | high-delta |
+| imslp-516488 | 189 | 7175 | +4953 | +222.9% | high-delta |
+| imslp-830830 | 332 | 11212 | +8990 | +404.6% | high-delta |
+| imslp-875079 | 305 | 4313 | +2091 | +94.1% | high-delta |
+| imslp-958507 | 350 | 10153 | +7931 | +356.9% | high-delta |
+| imslp-976496 | 284 | 3822 | +1600 | +72.0% | high-delta |
+| imslp-998204 | 301 | 3523 | +1301 | +58.6% | high-delta |
+
+Note: **Beethoven 9 has zero catalog-ready editions.** All 9 editions show high delta. Most likely cause: Beethoven 9's final choral movement uses an extended orchestra (piccolo, contrabassoon, trombones, percussion, 4 vocal soloists, SATB choir) — so the score has many more staves per system than mvts 1-3. Modern reprints often bundle vocal scores or full parts alongside the conductor's score, inflating page counts. The 300+ page editions (imslp-830830 at 332pp, imslp-958507 at 350pp) are almost certainly parts bundles. For Phase E label generation, exclude Beethoven 9 from the catalog-ready set until each edition can be visually classified as full-score-only.
 
 ## Patterns observed
 
