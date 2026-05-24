@@ -2,15 +2,32 @@
 
 ## What this project is
 
-ReEngrave is a web application for music score quality control. It takes a scanned PDF of a music score, runs optical music recognition (OMR) to produce MusicXML, then uses Claude Vision to compare each measure of the original PDF against the re-engraved output and flag differences. A human reviews those differences, accepts/rejects/edits them, and then exports a corrected, publication-quality engraved score.
+ReEngrave is a system for music score quality control. It takes a scanned PDF of a music score, runs optical music recognition (OMR) to produce MusicXML, then either:
 
-Over time the system learns from human decisions, building auto-accept rules for patterns it has seen before.
+1. **Auto-checks** the MusicXML against itself (theory checks) or against a known-good reference in the Gradus Library (multi-source XML comparison), **or**
+2. **Vision-checks** each measure of the original PDF against the re-engraved output with Claude Vision and flags differences for a human to accept / reject / edit.
 
-**Stack:** FastAPI + SQLite + in-house OMR (YOLOv8l + classical CV; `tools/omr/`) + Claude Vision API + Verovio + LilyPond · React + Vite + React Query · Docker Compose
+The corrected MusicXML is then exported as `.musicxml`, LilyPond `.ly`, or an engraved PDF.
 
-> **Note (May 2026):** the OMR engine was changed from Audiveris to a local Python pipeline (`tools/omr/transcribe.py`). The pipeline was developed across 9 sub-phases — see `benchmarks/omr-phase4-session/retrospective.md` for the full story. The Docker image no longer needs a JDK or Audiveris build, but the YOLO weights file (~88 MB) is **not** in git — see "OMR weights" below.
+Over time the analytics layer learns from human decisions, building auto-accept rules for patterns it has seen before.
 
-**Backlog / research notes**: see [NOTES.md](NOTES.md) — surface these to Sean at the start of a ReEngrave session.
+**Two ways to use the project:**
+
+| Use it from | Entry point | Best for |
+|---|---|---|
+| **Web app** | `docker compose up -d` → http://localhost | Reviewing scores, comparison sessions, payment-gated multi-user setup |
+| **CLI** | `python3 -m tools.omr.transcribe score.pdf` | Batch transcription, scripting, anyone who just wants `PDF → MusicXML / LilyPond` without spinning up Docker |
+
+**Stack:**
+- **OMR (primary):** In-house YOLOv8l + classical CV pipeline (`tools/omr/`) — fine-tuned on DeepScoresV2, **F1 98.8%** on the Bach WTC verdict set.
+- **OMR (secondary):** Claude Vision API (Opus 4.6) — reads pages visually, slower, costs API credits, useful when the YOLO model is wrong.
+- **Backend:** FastAPI + SQLAlchemy 2.0 async + SQLite (aiosqlite) + Claude Vision API + Verovio + LilyPond + music21 + ultralytics
+- **Frontend:** React + Vite + React Query + TypeScript
+- **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
+
+**Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
+
+**Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ---
 
@@ -45,7 +62,7 @@ ls /Users/seanjohnson/Desktop/ReEngrave/omr-weights/
 # Should contain: deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
 ```
 
-If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads.
+If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads and the Gradus / comparison flows.
 
 ### Hot-patching without a full rebuild
 
@@ -53,6 +70,7 @@ For quick backend iteration, copy files directly into the running container and 
 
 ```bash
 docker cp backend/modules/some_module.py reengrave-backend-1:/app/modules/some_module.py
+docker cp tools/omr/transcribe.py reengrave-backend-1:/app/tools/omr/transcribe.py
 docker restart reengrave-backend-1
 ```
 
@@ -60,7 +78,7 @@ For frontend changes, a full `docker compose build frontend && docker compose up
 
 ### Default login
 
-Register at http://localhost/register. To give yourself admin access (bypasses Stripe payment gate), add your email to `backend/.env`:
+Register at http://localhost/register. To give yourself admin access (bypasses the Stripe payment gate), add your email to `backend/.env`:
 
 ```
 ADMIN_EMAILS=you@example.com
@@ -77,7 +95,7 @@ ReEngrave/
 ├── backend/
 │   ├── main.py                  # FastAPI app, all routes
 │   ├── dependencies.py          # get_current_user() Depends
-│   ├── requirements.txt
+│   ├── requirements.txt         # FastAPI + ultralytics + opencv + PyMuPDF + music21 …
 │   ├── Dockerfile               # python:3.11-slim + LilyPond + opencv runtime
 │   ├── .env                     # local secrets (never commit)
 │   ├── .env.production.example  # template for prod deployment
@@ -86,45 +104,78 @@ ReEngrave/
 │   │   ├── security.py          # JWT + bcrypt helpers
 │   │   └── limiter.py           # slowapi rate limiter
 │   ├── database/
-│   │   ├── models.py            # SQLAlchemy ORM models + Pydantic response schemas
+│   │   ├── models.py            # SQLAlchemy ORM + Pydantic response schemas
 │   │   └── connection.py        # async engine, get_db() dependency
 │   ├── modules/
-│   │   ├── local_omr.py         # PDF → JSON + MusicXML via tools.omr (replaces Audiveris)
-│   │   ├── claude_vision.py     # MusicXML + PDF → flagged diffs via Claude Vision
+│   │   ├── local_omr.py         # Primary OMR: thin wrapper around tools.omr
+│   │   ├── claude_vision_omr.py # Secondary OMR: Claude Vision → JSON → MusicXML
+│   │   ├── musicxml_builder.py  # JSON → MusicXML serializer (used by Vision OMR)
+│   │   ├── score_comparison.py  # music21-backed comparison + theory checks
+│   │   ├── claude_vision.py     # Diff-flagging: PDF vs re-engraved → JSON diffs
 │   │   ├── export_module.py     # MusicXML / LilyPond / PDF export dispatcher
 │   │   ├── lilypond_engrave.py  # MusicXML → LilyPond → engraved PDF (fallback path)
 │   │   ├── file_import.py       # save uploads, detect file type
-│   │   ├── imslp_agent.py       # IMSLP search + PDF download
 │   │   └── analytics.py         # self-improving pattern learning
 │   └── routers/
 │       ├── auth.py              # register, login, refresh, logout, /me
 │       └── payments.py          # Stripe checkout + webhook
 ├── tools/
-│   └── omr/                     # In-house OMR pipeline (Phase 4)
-│       ├── transcribe.py        # PDF → structured JSON (entry point)
-│       ├── export.py            # JSON → LilyPond / MusicXML serializers
+│   └── omr/                     # In-house OMR pipeline (49-commit Phase 1 → 4m history)
+│       ├── README.md            # Full pipeline + class space + CLI reference
+│       ├── transcribe.py        # ENTRY POINT — PDF → structured JSON
+│       ├── export.py            # JSON → LilyPond / MusicXML
 │       ├── yolo_detector.py     # ultralytics YOLOv8l wrapper
 │       ├── line_detection.py    # classical-CV stems + beams (Phase 4f)
-│       ├── rhythm.py / voicing.py / pitch_resolver.py
-│       ├── staff_detector.py / measure_extractor.py / preprocessing.py
-│       └── training/data/weights/  # gitignored; mounted from host omr-weights/
+│       ├── rhythm.py            # duration parsing (Phase 4c)
+│       ├── voicing.py           # chord grouping, voice splitting
+│       ├── pitch_resolver.py    # notehead y → pitch + accidental
+│       ├── staff_detector.py    # 5-line staff detection
+│       ├── measure_extractor.py # barline detection + cell extraction
+│       ├── preprocessing.py     # PDF → PageImage (render, binarize, deskew)
+│       ├── staff_line_removal.py # optional staff-line-removed cell variant
+│       ├── visualize.py         # debug overlay PNGs
+│       ├── types.py             # PageImage, Staff, MeasureCell, SymbolDetection
+│       ├── annotate/            # FastAPI labeling UI for hand-labeled cells
+│       ├── symbol_library/      # Bravura SMuFL archetype PNGs
+│       ├── training/            # DSv2 prep + ultralytics training scripts
+│       │   ├── train_yolo.py
+│       │   ├── prepare_yolo_data.py
+│       │   ├── build_catalog_yaml.py
+│       │   ├── verdicts_to_yolo_labels.py
+│       │   ├── eval_on_score_cells.py
+│       │   ├── download_dataset.py
+│       │   ├── merge_shards.py
+│       │   ├── deepscores_classes.py
+│       │   ├── HANDOFF_PREMIUM_TRAINING.md
+│       │   ├── VAST_AI_SETUP.md
+│       │   └── data/            # gitignored — DSv2 dataset, fine-tuning shards, weights
+│       └── tests/               # 156 unit tests across Phase 4 modules
 ├── omr-weights/                 # gitignored, mounted into the container
 │   └── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB
+├── benchmarks/
+│   ├── omr-phase1/              # staff/measure extraction
+│   ├── omr-phase2.5/            # classical-CV vs YOLO bake-off
+│   ├── omr-phase3/              # initial YOLO runs
+│   ├── omr-phase3.1 .. 3.4b/    # iterative training rounds (F1 91.5% → 98.8%)
+│   ├── omr-phase-realft/        # real-orchestral hand-labeled set (Phase 3.4)
+│   ├── omr-phase4-extension/    # validate Phase 4 features on 5 PDFs
+│   ├── omr-phase4-session/      # retrospective.md — full Phase 4 story
+│   └── omr-real-world/          # 5 diverse PDFs end-to-end
 ├── frontend/
 │   ├── src/
 │   │   ├── App.tsx              # routes + AuthProvider wrapper
 │   │   ├── main.tsx             # React entry, QueryClient, BrowserRouter
 │   │   ├── api/client.ts        # typed Axios client, JWT injection, auto-refresh
 │   │   ├── context/
-│   │   │   └── AuthContext.tsx  # global auth state, session restore on mount
-│   │   ├── types/index.ts       # TypeScript interfaces (mirror backend schemas)
+│   │   │   └── AuthContext.tsx
+│   │   ├── types/index.ts       # TypeScript interfaces mirroring backend schemas
 │   │   ├── pages/
 │   │   │   ├── Dashboard.tsx    # score library + analytics
-│   │   │   ├── ScoreProcess.tsx # Step 1: ReEngrave (OMR)
-│   │   │   ├── ReviewUI.tsx     # Step 2: Vision comparison + diff review
+│   │   │   ├── FileUpload.tsx   # upload PDF or MusicXML
+│   │   │   ├── ScoreProcess.tsx # Step 1: ReEngrave (OMR — pick engine)
+│   │   │   ├── ReviewUI.tsx     # Step 2: Vision comparison + diff review + theory checks
 │   │   │   ├── Export.tsx       # Step 3: export score
-│   │   │   ├── IMSLPSearch.tsx  # search and download IMSLP scores
-│   │   │   ├── FileUpload.tsx   # upload local PDF or MusicXML
+│   │   │   ├── GradusLibrary.tsx # Reference XML library + multi-source comparison
 │   │   │   ├── Login.tsx
 │   │   │   ├── Register.tsx
 │   │   │   └── PaymentSuccess.tsx
@@ -140,7 +191,9 @@ ReEngrave/
 │   ├── setup-vps.sh             # first-time Ubuntu server bootstrap
 │   └── deploy.sh                # git pull → build → up -d
 ├── docker-compose.yml           # local dev
-└── docker-compose.prod.yml      # production (Traefik + SSL)
+├── docker-compose.prod.yml      # production (Traefik + SSL)
+├── NOTES.md                     # parked research / backlog
+└── PROJECT_STATUS.md            # where we are right now
 ```
 
 ---
@@ -148,29 +201,36 @@ ReEngrave/
 ## The pipeline
 
 ```
-[User] → Upload PDF or search IMSLP
+[User] → Upload PDF (or open Gradus Library to upload reference MusicXML)
     ↓
-[ScoreProcess page] → "ReEngrave" button
-    → POST /api/scores/{id}/process/omr
-    → local_omr.run_local_omr() (in a thread, via asyncio.to_thread):
-        1. tools.omr.transcribe.transcribe()  → structured JSON (rendered
-           at 300 DPI, YOLOv8l at imgsz=1280 by default — env-overridable)
-        2. tools.omr.export.to_musicxml(json) → MusicXML string
-        3. Both written to uploads/{score_id}/{pdf_stem}.{omr.json,musicxml}
-    → Score.musicxml_path = ...musicxml; Score.status = "review"
-    → Score.metadata_json["omr_json_path"] = ...omr.json
+[ScoreProcess page] → Pick engine → "ReEngrave" button
+    → POST /api/scores/{id}/process/omr?omr_engine=local|claude_vision
+    ┌──────────────────────────┐    ┌──────────────────────────────────┐
+    │ local (default)           │    │ claude_vision                     │
+    │ local_omr.run_local_omr() │    │ claude_vision_omr.run_…()         │
+    │  → tools.omr.transcribe   │    │  → per-page Vision API calls      │
+    │  → tools.omr.export       │    │  → musicxml_builder.write_…       │
+    │     to_musicxml()         │    │                                   │
+    │ Writes:                   │    │ Writes:                           │
+    │  - {stem}.omr.json        │    │  - {stem}.musicxml                │
+    │  - {stem}.musicxml        │    │ Supports per-page progress in UI  │
+    └──────────────────────────┘    └──────────────────────────────────┘
+    → Score.musicxml_path set, Score.status = "review"
     ↓
-[ReviewUI page] → "Run Vision Comparison" button
-    → POST /api/scores/{id}/process/compare
-    → claude_vision.py:
-        1. Verovio renders MusicXML pages → PNG
-        2. pdf2image renders PDF pages → PNG
-        3. Each page pair → Claude Vision API (claude-opus-4-6)
-        4. Diffs saved as FlaggedDifference records
-        5. Snippet images saved to uploads/score_id/snippets/
-    ↓
-[ReviewUI page] → Human reviews each FlaggedDifference
-    → PATCH /api/diffs/{id}/decision  (accept / reject / edit)
+[ReviewUI page] options:
+    A. "Run Vision Comparison" (paid / admin)
+       → POST /api/scores/{id}/process/compare
+       → claude_vision.py:
+            1. Verovio renders MusicXML pages → PNG
+            2. pdf2image renders PDF pages → PNG
+            3. Each page pair → Claude Vision (opus-4-6) → JSON diffs
+            4. FlaggedDifference rows + snippet PNGs saved
+       → Human reviews each diff: PATCH /api/diffs/{id}/decision
+
+    B. "Run Theory Checks" (free)
+       → POST /api/scores/{id}/theory-check
+       → score_comparison.run_theory_checks(): rhythm, range, enharmonic
+       → Returns issues list (no DB writes — informational)
     ↓
 [Export page] → Choose format
     → GET /api/scores/{id}/export?format=lilypond|pdf|musicxml
@@ -180,60 +240,49 @@ ReEngrave/
                     tools.omr.export.to_lilypond() directly (skip musicxml2ly)
                     else MusicXML → musicxml2ly → .ly
         - pdf:      lilypond .ly → lilypond CLI → .pdf
+
+[Gradus Library page] — parallel workflow
+    Tab 1 (Library):  upload/view/delete master reference MusicXML
+    Tab 2 (Compare):  upload 2–6 XMLs, optionally pin a Gradus master,
+                       music21 measure-by-measure comparison → similarity
+                       matrix + per-measure agreement report
+    → POST /api/gradus/ (master upload)
+    → POST /api/compare/ (session create, runs synchronously, 10–30s)
 ```
 
-### OMR knobs
-
-The defaults aim for "first-page preview is fast, full transcription
-still tractable on CPU." Override via env vars on the backend container:
+### OMR knobs (env-overridable on the backend container)
 
 | Env var               | Default | What it tunes |
 |-----------------------|--------:|---|
-| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override the weights file path |
-| `OMR_MAX_PAGES`       | `5`     | Hard cap on how many pages of a PDF the OMR step processes |
+| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override weights file path |
+| `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
-| `OMR_IMGSZ`           | `1280`  | YOLO inference image size (larger = slower but finds small noteheads) |
-| `OMR_DPI`             | `300`   | PDF rasterization DPI (600 in the standalone CLI, 300 here to keep latency reasonable) |
+| `OMR_IMGSZ`           | `1280`  | YOLO inference image size (larger = slower, catches small noteheads) |
+| `OMR_DPI`             | `300`   | PDF rasterization DPI (600 in standalone CLI, 300 here for latency) |
 
 ---
 
-## Local OMR pipeline (`tools/omr/`)
+## Local OMR CLI (`tools/omr/`)
 
-In parallel with the web-app Audiveris flow above, there is a local
-Python OMR pipeline under `tools/omr/`. It uses a YOLOv8l detector
-fine-tuned on DeepScoresV2 (currently **F1 98.8%** on the Bach WTC
-verdict set) and produces structured JSON detections without going
-anywhere near a browser, Docker, or database.
-
-**Use this when you want to transcribe a PDF without spinning up the
-full web stack — e.g., from another Claude session, a CLI script, or
-inside a Python notebook.**
-
-### One-shot CLI
+In parallel with the web app, you can run the OMR pipeline standalone — no Docker, no DB, no auth. Useful from another Claude session, a notebook, or a one-off script.
 
 ```bash
-# From the repo root, transcribe one or more pages → JSON
+# From the repo root, transcribe → JSON:
 python3 -m tools.omr.transcribe path/to/score.pdf --out out.json
 
-# Specific pages, with overlay PNGs for visual debug
+# Specific pages, with overlay PNGs for visual debugging:
 python3 -m tools.omr.transcribe score.pdf --pages 0-4 \
     --out out.json --overlays-dir overlays/
 
-# Convert JSON → LilyPond (.ly) or MusicXML (.musicxml):
+# JSON → LilyPond or MusicXML:
 python3 -m tools.omr.export out.json --format lilypond --out out.ly
 python3 -m tools.omr.export out.json --format musicxml --out out.musicxml
 
-# .ly compiles to PDF: lilypond out.ly  → out.pdf
-# .musicxml opens in MuseScore, plays back in DAWs, etc.
+# .ly compiles to PDF:
+lilypond out.ly  # → out.pdf
 ```
 
-The JSON groups detections by `page → system → staff → measure` with
-each notehead carrying `pitch`, `duration_beats`, `duration_type`, and
-`dots`. The exporter groups same-x noteheads into chords via
-`tools/omr/voicing.py` and serializes via `tools/omr/export.py`. Full
-schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
-
-### From Python
+From Python:
 
 ```python
 from pathlib import Path
@@ -244,105 +293,76 @@ result = transcribe(
     pages=[0, 1, 2],
     weights=DEFAULT_WEIGHTS,
 )
+
+# Walk the structure
 for page in result["pages"]:
     for sys_ in page["systems"]:
         for staff in sys_["staves"]:
             for measure in staff["measures"]:
                 for det in measure["detections"]:
-                    ...  # det["class"], det["bbox_page"], det["confidence"]
+                    if det["category"] == "notehead":
+                        print(measure["measure_index"], det["class"],
+                              det["bbox_page"], det["confidence"])
 ```
 
-### When to use what
-
-| Task | Use |
-|---|---|
-| Quick PDF → structured detections | `python3 -m tools.omr.transcribe ...` |
-| One-off Phase-1-only run (staves + measures, no symbol detection) | `python3 -m tools.omr.run_pipeline ...` |
-| Hand-labeling cells to grow the training catalog | `tools/omr/annotate/` FastAPI app |
-| Retraining the detector | `tools/omr/training/` |
-| Full review-loop with human accept/reject | The web app (the same pipeline above, run from `backend/modules/local_omr.py`) |
-
-### Production weights
-
-`tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`
-(84 MB, Phase 3.3, F1 98.8%). The `transcribe.py` `DEFAULT_WEIGHTS`
-constant points here. Other checkpoints (earlier phases, the
-realft-v1b attempt) live alongside in the same directory — see
-`tools/omr/README.md` for the chain.
-
-**Best for** clean engraved PDFs. **Degrades on** handwritten scores,
-extreme densities (dense conductor's scores), and any class the model
-hasn't been trained on yet (custom barline classes are captured in the
-labeling UI but not yet learned — see "Known limitations" below).
-
-### Pipeline at a glance
-
-```
-PDF → render_page (PyMuPDF, 600 DPI default)
-    → detect_staves (horizontal ink projection)
-    → detect_barlines + extract_measures
-    → MeasureCell × N  (canonical scale-normalized cells)
-    → YoloDetector.detect (yolov8l, imgsz=640, agnostic_nms=True)
-    → line_detection (classical CV stems + beams)
-    → pitch_resolver  (clef + key sig + accidentals  → "F#4")
-    → rhythm          (beams + flags + dots          → duration_beats)
-    → transcribe.py groups by (system, staff, measure) → JSON
-    → export.py (voicing → LilyPond or MusicXML)
-```
-
-YOLO handles "thing-like" symbols (notes, clefs, accidentals, dynamics).
-Classical CV (`line_detection.py`) handles "line-like" symbols (stems,
-beams) — YOLO bounding boxes are structurally poor at thin lines, and
-the Phase 3.3 model emits **zero stem detections**. Hybrid approach
-gets the best of both: each algorithm runs on the shapes it's good at.
-
-Phase 1 (staves/measures) is ~1–3 s/page CPU. Phase 3 (YOLO) is
-~0.15–0.4 s/cell on CPU; faster on MPS/CUDA when available
-(`device="auto"` in `YoloDetector`).
+Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 
 ---
 
 ## Key technical details
 
 ### Authentication
-- JWT access tokens (8 hr expiry, configured in `.env` as `ACCESS_TOKEN_EXPIRE_MINUTES=480`)
+- JWT access tokens (8 hr expiry, `ACCESS_TOKEN_EXPIRE_MINUTES=480` in `.env`)
 - httpOnly refresh cookie (7 day expiry) — auto-refresh on 401 via axios interceptor
-- `AuthProvider` wraps the entire React app. `useAuth()` throws if called outside it.
+- `AuthProvider` wraps the entire React app. `useAuth()` throws outside it.
 - Auth state syncs to the axios client via `setAccessToken()` in `App.tsx`'s `AppShell`
 
 ### Database
 - SQLite via aiosqlite (async). File lives at `/app/data/reengrave.db` in the container, backed by the `db` Docker named volume.
-- SQLAlchemy 2.0 async style. All models in `database/models.py`.
-- No migrations (Alembic is installed but not used — tables created via `create_all_tables()` on startup). **Schema changes require dropping and recreating the DB.**
+- SQLAlchemy 2.0 async style. All models in [`backend/database/models.py`](backend/database/models.py).
+- Models include `Score`, `FlaggedDifference`, `KnowledgePattern`, `AutoAcceptRule`, `GradusScore`, `ComparisonSession`, `User`, `Payment`, `ScoreAccess`, `PasswordResetToken`, `TokenBlacklist`.
+- **No migrations** — tables created via `create_all_tables()` on startup. Schema changes require dropping and recreating the DB.
 
 ### File storage
-- Uploads: `/app/uploads/` → exposed as `/uploads/` via both FastAPI `StaticFiles` mount and nginx proxy
+- Uploads: `/app/uploads/` → exposed as `/uploads/` via FastAPI `StaticFiles` and nginx proxy
 - Exports: `/app/exports/`
-- Snippet images saved at: `uploads/{score_id}/snippets/{diff_id}_pdf.png` and `_xml.png`
-- Both directories backed by Docker named volumes so they survive container recreation
+- Snippet images: `uploads/{score_id}/snippets/{diff_id}_pdf.png` and `_xml.png`
+- Local OMR JSON: `uploads/{score_id}/{pdf_stem}.omr.json`
+- Local OMR MusicXML: `uploads/{score_id}/{pdf_stem}.musicxml`
+- Gradus uploads: `uploads/gradus/{id}/`
+- Comparison uploads: `uploads/compare/{session_id}/`
+- All backed by Docker named volumes so they survive container recreation
 
-### Local OMR (replaces Audiveris)
-- `backend/modules/local_omr.py` wraps `tools.omr.transcribe.transcribe()` + `tools.omr.export.to_musicxml()`
-- Runs in `asyncio.to_thread` so it doesn't block the event loop
-- Writes both `{score_id}/{stem}.omr.json` (structured) and `{score_id}/{stem}.musicxml` (for Claude Vision + the existing export path)
-- The MusicXML the in-house exporter produces is single-voice-per-part; the `export_module` LilyPond/PDF path prefers the OMR JSON directly to skip a lossy musicxml2ly hop
-- Legacy `.mxl` (ZIP-compressed MusicXML) handling in `export_module._ensure_plain_xml()` is now only used for directly-uploaded MusicXML files
-- Weights file (~88 MB) is mounted from `omr-weights/` on the host — not in the image
+### Local OMR engine notes
+- `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
+- The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.
+- Phase 4f introduced classical-CV stem and beam detection (morphological opening + connected components) because YOLO bounding boxes are structurally bad at thin lines.
+- Production weights: `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (Phase 3.3, F1 98.8% on 25-cell Bach WTC verdict set).
+- Phase 3.4 attempted to add 6 custom classes (barlines, textDynamic) and caused catastrophic forgetting — those classes are now learned via classical CV instead, not YOLO. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
+
+### Claude Vision OMR notes
+- Uses `claude-opus-4-6` (configurable). Two-stage prompt:
+  1. Header pass — title, composer, parts, key sigs, time sigs.
+  2. Per-page pass — measure-by-measure notes per staff per voice.
+- Returns JSON via strict-JSON prompting (no markdown fences) and feeds it into `musicxml_builder` to produce valid MusicXML.
+- Supports per-page progress callbacks via `progress_callback` arg — used by the web app to update `Score.metadata_json["omr_progress"]` after each page.
+- Token budget per page is large (`MAX_TOKENS_PAGE = 32768`) because dense orchestral pages take a lot of room.
 
 ### Verovio rendering
-- Python bindings (`import verovio`) — NOT a CLI tool. `verovio` pip package is bindings only.
-- Used in `claude_vision.py` for MusicXML → SVG → PNG rendering
-- SVG → PNG conversion chain: cairosvg (preferred) → rsvg-convert → inkscape (fallback)
+- Python bindings (`import verovio`) — NOT a CLI tool. The `verovio` pip package is bindings only.
+- Used in `claude_vision.py` for MusicXML → SVG → PNG rendering.
+- SVG → PNG conversion chain: cairosvg (preferred) → rsvg-convert → inkscape (fallback).
 
 ### Payments / access gate
-- Vision comparison requires payment ($5/score) OR admin email bypass
-- If `STRIPE_SECRET_KEY` is not configured, access falls back to admin-only
-- Admin emails: comma-separated list in `.env` as `ADMIN_EMAILS`
-- `VisionComparisonPaywall` component handles the UI gate on the ReviewUI page
+- Vision comparison requires payment ($5/score) OR admin email bypass.
+- If `STRIPE_SECRET_KEY` is not configured, access falls back to admin-only.
+- Admin emails: comma-separated list in `.env` as `ADMIN_EMAILS`.
+- `VisionComparisonPaywall` component handles the UI gate on the ReviewUI page.
+- **Gradus Library, theory checks, and local OMR are FREE** — no payment gate.
 
 ### nginx (frontend container)
-- `^~` prefix modifier on `/uploads/` prevents regex location from intercepting it
-- Without `^~`, the `~* \.(js|css|png...)` regex would match PNG snippets and serve cached static files instead of proxying to backend
+- `^~` prefix modifier on `/uploads/` prevents the regex location from intercepting it.
+- Without `^~`, the `~* \.(js|css|png...)` regex would match snippet PNGs and serve cached static files instead of proxying to backend.
 
 ---
 
@@ -353,9 +373,9 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | Variable | Purpose |
 |---|---|
 | `DATABASE_URL` | SQLite path (set by docker-compose, don't change) |
-| `SECRET_KEY` | JWT signing key — generate with `python3 -c "import secrets; print(secrets.token_hex(32))"` |
+| `SECRET_KEY` | JWT signing key — `python3 -c "import secrets; print(secrets.token_hex(32))"` |
 | `ADMIN_EMAILS` | Comma-separated, bypass Stripe payment gate |
-| `ANTHROPIC_API_KEY` | Claude Vision API key |
+| `ANTHROPIC_API_KEY` | Claude Vision API key (used by claude_vision_omr + claude_vision diff) |
 | `STRIPE_SECRET_KEY` | From dashboard.stripe.com |
 | `STRIPE_PUBLISHABLE_KEY` | From dashboard.stripe.com |
 | `STRIPE_PRICE_ID` | Create a product in Stripe dashboard |
@@ -365,24 +385,56 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | JWT expiry (480 = 8 hours) |
 | `UPLOAD_DIR` | File upload path (set by docker-compose) |
 | `EXPORT_DIR` | Export output path (set by docker-compose) |
-| `OMR_WEIGHTS_PATH` | Override the YOLO weights file path (default: `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`) |
-| `OMR_MAX_PAGES` | Max PDF pages per OMR job (default: 5; raise on a beefy host) |
-| `OMR_CONF_THRESHOLD` / `OMR_IMGSZ` / `OMR_DPI` | YOLO + rasterization knobs (see "OMR knobs" above) |
+| `OMR_WEIGHTS_PATH` | YOLO weights path override |
+| `OMR_MAX_PAGES` | Max pages per OMR job (default 5) |
+| `OMR_CONF_THRESHOLD` | YOLO min confidence (default 0.25) |
+| `OMR_IMGSZ` | YOLO inference image size (default 1280) |
+| `OMR_DPI` | PDF rasterization DPI (default 300) |
 
 ---
 
 ## Common tasks
 
 ### Add a new backend route
-All routes are in `backend/main.py`. Add the endpoint there. Auth-protected routes use `Depends(get_current_user)`.
+All routes are in [`backend/main.py`](backend/main.py). Auth-protected routes use `Depends(get_current_user)`.
 
 ### Add a new frontend page
 1. Create `frontend/src/pages/NewPage.tsx`
 2. Add route in `frontend/src/App.tsx` (protected or public)
 3. Add nav link in `frontend/src/components/Navigation.tsx` if needed
 
-### Change the Claude Vision prompt
-Edit `backend/modules/claude_vision.py`. The prompt template is in the `compare_measure_pair` function. The system instructs Claude to return JSON: `{ has_difference, difference_type, description, confidence, is_omr_error }`.
+### Train a new YOLO model
+See [`tools/omr/training/`](tools/omr/training/) (and `HANDOFF_PREMIUM_TRAINING.md` / `VAST_AI_SETUP.md` for cloud GPU runs). The canonical pipeline:
+
+```bash
+# 1. Prep DSv2 dataset (one-time)
+python3 tools/omr/training/download_dataset.py
+python3 tools/omr/training/prepare_yolo_data.py
+python3 tools/omr/training/build_catalog_yaml.py
+
+# 2. (Optional) Convert your hand-labeled .verdict.json files to YOLO labels
+python3 tools/omr/training/verdicts_to_yolo_labels.py
+
+# 3. Train
+python3 tools/omr/training/train_yolo.py
+```
+
+Hand-labeling new cells:
+
+```bash
+# Pick cells from a real PDF
+python3 -m tools.omr.annotate.select_cells path/to/score.pdf
+
+# Launch the labeling UI
+python3 -m tools.omr.annotate.server
+# → http://localhost:8001
+```
+
+### Change the Claude Vision diff prompt
+Edit [`backend/modules/claude_vision.py`](backend/modules/claude_vision.py). The diff prompt is in `compare_measure_pair`. Returns JSON: `{ has_difference, difference_type, description, confidence, is_omr_error }`.
+
+### Change the Claude Vision OMR prompts
+Edit [`backend/modules/claude_vision_omr.py`](backend/modules/claude_vision_omr.py). Two prompts: `HEADER_PROMPT` (title/parts) and `PAGE_PROMPT` (notes). Strict-JSON output — don't break the format.
 
 ### Reset the database
 ```bash
@@ -397,43 +449,38 @@ export DOMAIN=localhost ACME_EMAIL=test@test.com
 docker compose -f docker-compose.prod.yml up -d
 ```
 
+### Benchmarks
+Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most important file: [`benchmarks/omr-phase4-session/retrospective.md`](benchmarks/omr-phase4-session/retrospective.md) — full story of how the Phase 4 (rhythm + voicing + line detection) work came together.
+
 ---
 
 ## Known limitations / TODOs
 
 - **MusicXML correction patching is a stub.** `export_module.apply_corrections_to_musicxml()` copies the original file and injects accepted diffs as XML comments rather than actually patching the XML. Real measure-level patching (replacing `<measure>` elements with `human_edit_value` content) is not yet implemented.
 
-- **OMR confidence is a synthesized average.** `local_omr._confidence_from_result()` averages notehead pitch-resolution coverage and notehead rhythm-resolution coverage. Stored as `Score.metadata_json["omr_confidence"]`. The `FlaggedDifference.audiveris_confidence` column is now a misnomer — it's hardcoded to 0.5 in the Vision flow. Renaming the column needs a DB reset.
+- **Custom OMR classes (barlines, textDynamic) are not YOLO-learned.** Phase 3.4 tried to expand from 208 → 214 classes and caused catastrophic forgetting (F1 cratered to 79.3%). Barlines are currently detected by classical CV; textDynamic isn't detected at all. Re-introduce when there are ~200+ examples per new class, or seed via synthetic warm-up.
+
+- **MusicXML voice-splitting via `<backup>` is not yet implemented** in `tools.omr.export.to_musicxml()` — LilyPond export handles two-voice blocks correctly, but the MusicXML export is single-voice-per-part. Bar-check warnings on LilyPond output reflect the rhythm-parsing approximation from Phase 4c/g.
+
+- **OMR time-signature detection is unreliable.** The DSv2 model often misclassifies time-sig digits, so this field is `null` for many pages.
+
+- **Orchestral conductor's scores.** The current model was trained predominantly on DSv2 (synthetic) + 60 hand-labeled real cells. Dense conductor's scores (Mahler 5, Debussy La Mer) work but with more false negatives on small dynamics + grace notes. The labeling pipeline (`tools/omr/annotate`) is the path to fixing this.
 
 - **PDF.js crop region in DiffCard is incomplete.** `PDFjsRenderer.tsx` has a TODO for full crop viewport implementation.
 
 - **No database migrations.** Schema changes require dropping and recreating the DB (all data lost). Add Alembic migrations before going to production with real user data.
 
-- **Single-server architecture.** Background tasks (OMR, Vision) run in FastAPI `BackgroundTasks` — no task queue. Long jobs will fail if the server restarts. For production scale, replace with Celery + Redis.
+- **Single-server architecture.** Background tasks (OMR, Vision diff) run in FastAPI `BackgroundTasks` — no task queue. Long jobs will fail if the server restarts. For production scale, replace with Celery + Redis.
 
-- **IMSLP downloads are unreliable.** IMSLP's bot-check pages occasionally return HTML instead of a PDF. The file_import module detects this but there's no automatic retry with different headers.
-
-- **Local OMR pipeline does pitch + rhythm + LilyPond/MusicXML export
-  (v1).** `tools/omr/transcribe.py` produces a structured `page →
-  system → staff → measure → detections` JSON with pitches (including
-  key signature + accidentals), durations (whole / half / quarter /
-  eighth / 16th / dotted variants), clefs, and time signatures.
-  `tools/omr/export.py` serializes to LilyPond or MusicXML. **Caveats**
-  for the v1 export: per-measure durations don't always sum exactly to
-  the time signature (rhythm parsing is approximate); each staff
-  renders as its own Part with no PianoStaff grouping; single voice
-  per staff (no stem-direction inference). See `tools/omr/README.md`
-  § "Known limitations" for the per-component status.
-
-- **Custom OMR classes (barlines, textDynamic) not yet learned.** The labeling UI captures `barlineSingle/Double/Final`, `repeatRight/Left`, and `textDynamic` at class IDs 208–213, but the current production weights don't see them. Phase 3.4 attempted nc-expansion and caused catastrophic forgetting; refer to `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
+- **Frontend field names still say "audiveris".** `FlaggedDifference.audiveris_confidence`, `AutoAcceptRule.min_audiveris_confidence`, and `KnowledgePattern.pattern_type === 'audiveris_failure'` are vestigial — they now refer to the primary OMR engine's confidence (local YOLO). Rename when there's a DB migration story.
 
 ---
 
 ## Deployment
 
-See `scripts/setup-vps.sh` (first-time server bootstrap) and `scripts/deploy.sh` (update). Production uses `docker-compose.prod.yml` with Traefik v3 for automatic Let's Encrypt SSL.
+See [`scripts/setup-vps.sh`](scripts/setup-vps.sh) (first-time server bootstrap) and [`scripts/deploy.sh`](scripts/deploy.sh) (update). Production uses [`docker-compose.prod.yml`](docker-compose.prod.yml) with Traefik v3 for automatic Let's Encrypt SSL.
 
-Minimum server spec: **4 vCPU, 8 GB RAM** (Audiveris JVM needs ~2–4 GB). Recommended: Hetzner CPX31 (~$14/mo) or DigitalOcean 8 GB Droplet ($48/mo).
+Minimum server spec: **4 vCPU, 8 GB RAM** (ultralytics CPU inference needs RAM headroom for the model + page rasters). Recommended: Hetzner CPX31 (~$14/mo) or DigitalOcean 8 GB Droplet ($48/mo). GPU not required for inference, but a CUDA-capable box drops per-cell time by 5–10×.
 
 ```bash
 export DOMAIN=yourdomain.com ACME_EMAIL=you@yourdomain.com
