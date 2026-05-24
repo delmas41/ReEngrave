@@ -15,3 +15,9 @@ phase-e-labels/
 phase-g-output/*
 !phase-g-output/batch_summary.json
 !phase-g-output/.gitkeep
+
+# Phase H training-prep artifacts. Rendered images + labels + train.txt
+# regenerate from phase_h_render_pages.py + phase_h_build_splits.py.
+# The bundle.tar.gz is the scp payload; not source-of-truth.
+phase-h-data/
+phase-h-bundle.tar.gz
