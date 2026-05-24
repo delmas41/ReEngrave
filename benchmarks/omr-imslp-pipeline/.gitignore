@@ -1,0 +1,4 @@
+# Phase C alignment manifest is a transient script output, large, and only
+# meaningful once the OMR bugs from PHASE_C_FINDINGS.md are fixed. The reference
+# overlay PNG IS committed (it illustrates the findings doc).
+phase-c-output/*.json
