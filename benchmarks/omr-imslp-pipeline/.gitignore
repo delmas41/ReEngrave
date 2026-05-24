@@ -9,3 +9,9 @@ phase-c-output/*.json
 # regeneratable from the scripts + source PDFs and would bloat the repo.
 phase-e-output/
 phase-e-labels/
+
+# Phase G batch run output — large catalog-wide label set, regeneratable.
+# Keep the run summary JSON only.
+phase-g-output/*
+!phase-g-output/batch_summary.json
+!phase-g-output/.gitkeep

@@ -87,6 +87,112 @@ CLASS_ACCIDENTAL = 5
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# SMuFL glyph ID → DSv2 class name (Phase G class-space expansion)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Verovio's SVG renders symbols via <use xlink:href="#E0A4-..."/>, where
+# the leading 4 hex digits are the SMuFL codepoint (private use area
+# U+E000-U+F8FF). Map each one to the DSv2 class name as defined in
+# tools/omr/training/deepscores_classes.py.
+#
+# For DSv2 noteheads (and a few other glyphs), the OnLine/InSpace
+# distinction depends on the notehead's y position relative to the staff
+# lines — that's resolved at warp time via _split_notehead_line_space.
+
+SMUFL_TO_DSV2 = {
+    # Clefs (E050-E07F)
+    "E050": "gClef",
+    "E051": "gClef",       # gClef8va (octave-up) — fold for training
+    "E052": "gClef",       # gClef8vb
+    "E053": "gClef",       # gClef15ma
+    "E054": "gClef",       # gClef15mb
+    "E05C": "cClefAlto",   # default; refined to cClefTenor at warp time if the clef y is near staff line 4
+    "E05D": "cClefAlto",
+    "E062": "fClef",
+    "E063": "fClef",       # fClef8va
+    "E064": "fClef",       # fClef8vb
+    "E069": "unpitchedPercussionClef1",
+    "E06A": "unpitchedPercussionClef1",
+    # Time signatures
+    "E080": "timeSig0",
+    "E081": "timeSig1",
+    "E082": "timeSig2",
+    "E083": "timeSig3",
+    "E084": "timeSig4",
+    "E085": "timeSig5",
+    "E086": "timeSig6",
+    "E087": "timeSig7",
+    "E088": "timeSig8",
+    "E089": "timeSig9",
+    "E08A": "timeSigCommon",        # NB: also unpitchedPercussionClef1; resolve via SVG class context
+    "E08B": "timeSigCutCommon",
+    # Noteheads — needs OnLine/InSpace suffix
+    "E0A0": "noteheadDoubleWhole",
+    "E0A2": "noteheadWhole",
+    "E0A3": "noteheadHalf",
+    "E0A4": "noteheadBlack",
+    # Accidentals (standalone — keySig variants handled separately)
+    "E260": "accidentalFlat",
+    "E261": "accidentalNatural",
+    "E262": "accidentalSharp",
+    "E263": "accidentalDoubleSharp",
+    "E264": "accidentalDoubleFlat",
+    # Articulations
+    "E4A0": "articAccentAbove",
+    "E4A1": "articAccentBelow",
+    "E4A2": "articStaccatoAbove",
+    "E4A3": "articStaccatoBelow",
+    "E4A4": "articTenutoAbove",
+    "E4A5": "articTenutoBelow",
+    "E4A6": "articStaccatissimoAbove",
+    "E4A7": "articStaccatissimoBelow",
+    "E4AC": "articMarcatoAbove",
+    "E4AD": "articMarcatoBelow",
+    # Fermatas
+    "E4C0": "fermataAbove",
+    "E4C1": "fermataBelow",
+    "E4D1": "caesura",
+    # Rests
+    "E4E1": "restWhole",
+    "E4E2": "restHalf",
+    "E4E3": "restQuarter",
+    "E4E4": "rest8th",
+    "E4E5": "rest16th",
+    "E4E6": "rest32nd",
+    "E4E7": "rest64th",
+    "E4E8": "rest128th",
+    "E4EE": "restHBar",
+    # Dynamics (text-based — Verovio still uses use refs)
+    "E520": "dynamicPiano",
+    "E521": "dynamicMezzo",
+    "E522": "dynamicForte",
+    "E523": "dynamicRinforzando",
+    "E524": "dynamicSforzando",
+    "E525": "dynamicZ",
+    "E526": "dynamicNiente",
+    # Misc structural (mapped to "structural" category)
+    "E003": "brace",
+    "E1E7": "augmentationDot",
+    # Beam / staff line itself — usually drawn by paths, not glyphs; the
+    # YOLO model has separate classes for them but they're easier to label
+    # via classical CV than via this Verovio path.
+}
+
+
+def smufl_id_from_href(href: str) -> str | None:
+    """Extract the 4-hex-digit SMuFL codepoint from a Verovio use href.
+    Returns None if href doesn't look like a SMuFL symbol id."""
+    if not href:
+        return None
+    href = href.lstrip("#")
+    parts = href.split("-", 1)
+    code = parts[0].upper()
+    if len(code) == 4 and all(c in "0123456789ABCDEF" for c in code):
+        return code
+    return None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Verovio caching
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -145,16 +251,24 @@ class MeasureStaffData:
     """Staff lines + element positions for one (XML measure × XML staff)."""
 
     staff_lines: list[tuple[float, float, float, float]]      # 5 endpoints
-    elements: list[tuple[str, float, float, float, float]]    # (kind, x, y, w, h) in Verovio internal coords
+    # Each element: (dsv2_class_name, smufl_id, x, y, w, h) in Verovio internal coords.
+    # dsv2_class_name may still be a generic base (e.g. "noteheadBlack") until
+    # the OnLine/InSpace refinement at warp time.
+    elements: list[tuple[str, str, float, float, float, float]]
 
 
 def parse_measure_staves(svg: str, measure_id: str) -> list[MeasureStaffData]:
-    """Walk the <g class="measure" id="..."> subtree and return per-staff data."""
+    """Walk the <g class="measure" id="..."> subtree and return per-staff data.
+
+    For each <use> we extract the SMuFL glyph ID from its xlink:href and look
+    up the DSv2 class name in SMUFL_TO_DSV2. Glyphs we don't recognize fall
+    back to the parent <g class=...> hint (notehead/clef/accidental)."""
     from lxml import etree
     parser = etree.XMLParser(remove_blank_text=False)
     root = etree.fromstring(svg.encode("utf-8"), parser)
     ns = {"svg": "http://www.w3.org/2000/svg",
           "xlink": "http://www.w3.org/1999/xlink"}
+    xlink = "{http://www.w3.org/1999/xlink}href"
 
     measure_els = root.xpath(f'//svg:g[@id="{measure_id}"]', namespaces=ns)
     if not measure_els:
@@ -174,43 +288,117 @@ def parse_measure_staves(svg: str, measure_id: str) -> list[MeasureStaffData]:
         if len(lines) != 5:
             continue
 
-        # Staff-line spacing in Verovio units → approximate element extent
+        # Staff-line spacing in Verovio units → element extents
         staff_top = lines[0][1]
         staff_bot = lines[-1][1]
         line_spacing = (staff_bot - staff_top) / 4 if staff_bot > staff_top else 50
-        # Element extents (rough; tuned later via overlay review)
-        nh_w = line_spacing * 1.3
-        nh_h = line_spacing * 1.0
-        clef_w = line_spacing * 2.5
-        clef_h = line_spacing * 5.0
-        acc_w = line_spacing * 1.0
-        acc_h = line_spacing * 2.2
 
-        elements: list[tuple[str, float, float, float, float]] = []
+        elements: list[tuple[str, str, float, float, float, float]] = []
 
-        def harvest(kind: str, parent, w: float, h: float):
+        def harvest(group_kind: str, parent, default_w: float, default_h: float):
             for use in parent.xpath('.//svg:use', namespaces=ns):
                 t = use.get("transform", "")
                 m = trans_re.search(t)
-                if m:
-                    elements.append((kind, float(m.group(1)), float(m.group(2)), w, h))
+                if not m:
+                    continue
+                x, y = float(m.group(1)), float(m.group(2))
+                href = use.get(xlink) or use.get("href") or ""
+                smufl = smufl_id_from_href(href) or ""
+                # Map SMuFL → DSv2 class; fall back to group_kind base when unknown.
+                # Note: SMuFL E08A is timeSigCommon (in `<g class="meterSig">`)
+                # but also unpitchedPercussionClef1 (in `<g class="clef">`).
+                # Resolve by parent group class.
+                dsv2 = SMUFL_TO_DSV2.get(smufl)
+                if dsv2 is None:
+                    dsv2 = group_kind  # fallback to the parent's <g class=...>
+                elif smufl == "E08A":
+                    dsv2 = "unpitchedPercussionClef1" if group_kind == "clef" else "timeSigCommon"
+                # Per-class extent (in Verovio units)
+                w, h = _element_extent(dsv2, line_spacing, default_w, default_h)
+                elements.append((dsv2, smufl, x, y, w, h))
 
+        # Notehead group
         for nh_g in staff_el.xpath('.//svg:g[@class="notehead"]', namespaces=ns):
-            harvest("notehead", nh_g, nh_w, nh_h)
+            harvest("noteheadBlack", nh_g, line_spacing * 1.3, line_spacing * 1.0)
+        # Clef group
         for clef_g in staff_el.xpath('.//svg:g[@class="clef"]', namespaces=ns):
-            harvest("clef", clef_g, clef_w, clef_h)
+            harvest("gClef", clef_g, line_spacing * 2.5, line_spacing * 5.0)
+        # Accidental (standalone)
         for acc_g in staff_el.xpath(
             './/svg:g[@class="accid"] | .//svg:g[@class="accidental"]',
             namespaces=ns,
         ):
-            harvest("accidental", acc_g, acc_w, acc_h)
-        # Key signature accidentals usually live in <g class="keySig">
+            harvest("accidentalSharp", acc_g, line_spacing * 1.0, line_spacing * 2.2)
+        # Key signature — these are accidentals but live in keySig group
         for ks_g in staff_el.xpath('.//svg:g[@class="keySig"]', namespaces=ns):
-            harvest("keysig_acc", ks_g, acc_w, acc_h)
+            # Use the SMuFL id to distinguish keyFlat/keyNatural/keySharp.
+            for use in ks_g.xpath('.//svg:use', namespaces=ns):
+                t = use.get("transform", "")
+                m = trans_re.search(t)
+                if not m:
+                    continue
+                x, y = float(m.group(1)), float(m.group(2))
+                href = use.get(xlink) or use.get("href") or ""
+                smufl = smufl_id_from_href(href) or ""
+                # SMuFL accidental codes used in key signatures:
+                #   E260 flat, E261 natural, E262 sharp
+                key_class_map = {
+                    "E260": "keyFlat",
+                    "E261": "keyNatural",
+                    "E262": "keySharp",
+                }
+                dsv2 = key_class_map.get(smufl, "keySharp")
+                w, h = _element_extent(dsv2, line_spacing,
+                                       line_spacing * 1.0, line_spacing * 2.2)
+                elements.append((dsv2, smufl, x, y, w, h))
+        # Time signature digits
+        for ts_g in staff_el.xpath('.//svg:g[@class="meterSig"]', namespaces=ns):
+            harvest("timeSig4", ts_g, line_spacing * 1.6, line_spacing * 2.0)
+        # Rests
+        for r_g in staff_el.xpath('.//svg:g[@class="rest"]', namespaces=ns):
+            harvest("restQuarter", r_g, line_spacing * 1.5, line_spacing * 2.5)
+        # Articulations + ornaments + fermatas
+        for art_g in staff_el.xpath(
+            './/svg:g[@class="artic"] | .//svg:g[@class="ornament"] '
+            '| .//svg:g[@class="fermata"]',
+            namespaces=ns,
+        ):
+            harvest("articStaccatoAbove", art_g, line_spacing * 1.2, line_spacing * 0.8)
+        # Dynamics — Verovio puts these under <g class="dynam"> using text or use refs
+        for dyn_g in staff_el.xpath('.//svg:g[@class="dynam"]', namespaces=ns):
+            harvest("dynamicForte", dyn_g, line_spacing * 2.5, line_spacing * 2.0)
 
         out.append(MeasureStaffData(staff_lines=lines, elements=elements))
 
     return out
+
+
+def _element_extent(
+    dsv2_class: str,
+    line_spacing: float,
+    default_w: float,
+    default_h: float,
+) -> tuple[float, float]:
+    """Return a (width, height) in Verovio internal units for a given DSv2
+    class. Heuristic — tuned later via overlay review."""
+    # Tall thin glyphs
+    if dsv2_class in ("gClef", "fClef", "cClef", "unpitchedPercussionClef1"):
+        return line_spacing * 2.5, line_spacing * 5.5
+    if dsv2_class.startswith("timeSig"):
+        return line_spacing * 1.6, line_spacing * 2.2
+    if dsv2_class.startswith("accidental") or dsv2_class.startswith("key"):
+        return line_spacing * 1.0, line_spacing * 2.2
+    if dsv2_class.startswith("notehead"):
+        return line_spacing * 1.3, line_spacing * 1.0
+    if dsv2_class.startswith("rest"):
+        return line_spacing * 1.5, line_spacing * 2.5
+    if dsv2_class.startswith("artic"):
+        return line_spacing * 1.0, line_spacing * 0.7
+    if dsv2_class.startswith("fermata"):
+        return line_spacing * 2.0, line_spacing * 1.2
+    if dsv2_class.startswith("dynamic"):
+        return line_spacing * 2.5, line_spacing * 2.0
+    return default_w, default_h
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -246,29 +434,61 @@ def compute_homography(
 
 
 def warp_elements(
-    elements: list[tuple[str, float, float, float, float]],
+    elements: list[tuple[str, str, float, float, float, float]],
     H: np.ndarray,
+    pdf_staff_line_ys: list[int] | None = None,
 ) -> list[tuple[str, float, float, float, float]]:
-    """Apply homography to (kind, x, y, w, h) tuples. Width/height are
-    scaled by the local linear approximation of H at the element's position
-    (cheaper than warping bbox corners, accurate enough for the MVP)."""
+    """Apply homography to (dsv2_class, smufl, x, y, w, h) tuples and return
+    a list of (dsv2_class_refined, cx_pdf, cy_pdf, w_pdf, h_pdf) tuples in
+    PDF pixel coords. The dsv2_class is refined post-warp where it depends
+    on PDF-space geometry:
+      - notehead{Black,Half,Whole,DoubleWhole} → suffixed with OnLine /
+        InSpace by comparing warped y vs the PDF staff line ys.
+    """
     out: list[tuple[str, float, float, float, float]] = []
     if not elements:
         return out
-    pts = np.array([[(x, y)] for _, x, y, _, _ in elements], dtype=np.float32)
+    pts = np.array([[(x, y)] for _, _, x, y, _, _ in elements], dtype=np.float32)
     warped = cv2.perspectiveTransform(pts, H).reshape(-1, 2)
-    # Local scale factor — derived from the (1,1) jacobian of the homography
-    # in the middle of the source space. For a near-affine H this is just
-    # sqrt(|det J|) which is roughly the staff scale ratio.
     src_test = np.array([[(0, 0), (100, 0), (0, 100)]], dtype=np.float32)
     warped_test = cv2.perspectiveTransform(src_test, H).reshape(-1, 2)
     dx = warped_test[1] - warped_test[0]
     dy = warped_test[2] - warped_test[0]
     sx = float(np.linalg.norm(dx) / 100)
     sy = float(np.linalg.norm(dy) / 100)
-    for (kind, _, _, w, h), (px, py) in zip(elements, warped):
-        out.append((kind, float(px), float(py), w * sx, h * sy))
+    line_ys = sorted(pdf_staff_line_ys) if pdf_staff_line_ys else None
+    avg_line_gap = (line_ys[-1] - line_ys[0]) / 4 if line_ys else 18
+
+    for (dsv2_class, _smufl, _vx, _vy, w, h), (px, py) in zip(elements, warped):
+        refined = dsv2_class
+        # Refine notehead{Black,Half,Whole,DoubleWhole} → OnLine/InSpace.
+        if dsv2_class.startswith("notehead") and line_ys:
+            on_line = _is_on_staff_line(py, line_ys, avg_line_gap)
+            refined = f"{dsv2_class}{'OnLine' if on_line else 'InSpace'}"
+        # Refine C clef alto/tenor by where the clef center sits on the
+        # staff: alto = middle line (index 2), tenor = 4th from top (index 3).
+        elif dsv2_class == "cClefAlto" and line_ys and len(line_ys) == 5:
+            d_alto = abs(py - line_ys[2])
+            d_tenor = abs(py - line_ys[3])
+            if d_tenor < d_alto:
+                refined = "cClefTenor"
+        out.append((refined, float(px), float(py), w * sx, h * sy))
     return out
+
+
+def _is_on_staff_line(y: float, line_ys: list[int], avg_gap: float) -> bool:
+    """Return True if y is within ±30% of avg_gap of any of the 5 staff
+    lines (or any ledger-line extension above/below). Otherwise it's in a
+    space (between lines, or in the middle of a between-ledger gap)."""
+    # Walk both staff lines and extrapolated ledger lines.
+    tol = avg_gap * 0.3
+    # Generate ledger line ys above and below the staff (4 above, 4 below)
+    ledger_ys = []
+    for i in range(1, 5):
+        ledger_ys.append(line_ys[0] - i * avg_gap)
+        ledger_ys.append(line_ys[-1] + i * avg_gap)
+    all_lines = list(line_ys) + ledger_ys
+    return any(abs(y - ly) <= tol for ly in all_lines)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -391,25 +611,47 @@ PDF_XML_STAFF_MAP_BEETHOVEN_1 = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _build_dsv2_class_index() -> dict[str, int]:
+    """Build DSv2 class_name → integer_id for YOLO. Pulled in lazily so
+    the script still runs when tools.omr is not on the path (tests)."""
+    try:
+        from tools.omr.training.deepscores_classes import DEEPSCORES_V2_CLASSES
+    except Exception:
+        return {}
+    return {name: idx for idx, name in enumerate(DEEPSCORES_V2_CLASSES)}
+
+
+# Built once at import time. None if the DSv2 list isn't reachable; then
+# we'll fall back to the 6-class MVP labels for backward compatibility.
+DSV2_CLASS_INDEX: dict[str, int] = _build_dsv2_class_index()
+
+
+# Barline gets a synthetic class. DSv2's published 146-class list does
+# NOT include a "barline" entry — barlines are detected via classical CV
+# in the existing pipeline. To keep the YOLO labels strictly DSv2-
+# compatible we drop barlines from the YOLO emission (warped_to_yolo's
+# `dropped` counter will surface them in the summary for diagnostics).
+# Overlay drawing still uses this name to color the synthesized barline.
+BARLINE_DSV2_CLASS = "barline"   # filtered out by warped_to_yolo; for overlays only
+
+
 def warped_to_yolo(
     warped: list[tuple[str, float, float, float, float]],
     image_w: int,
     image_h: int,
-) -> list[tuple[int, float, float, float, float]]:
-    """Convert (kind, cx, cy, w, h) in PDF pixels → YOLO (class, cx, cy, w, h)
-    normalized to image dims. Clamps to [0,1]."""
-    kind_to_class = {
-        "notehead": CLASS_NOTEHEAD,
-        "clef": CLASS_CLEF,
-        "barline": CLASS_BARLINE,
-        "keysig_acc": CLASS_KEYSIG,
-        "timesig": CLASS_TIMESIG,
-        "accidental": CLASS_ACCIDENTAL,
-    }
+) -> tuple[list[tuple[int, float, float, float, float]], dict[str, int]]:
+    """Convert (dsv2_class, cx, cy, w, h) in PDF px → YOLO (class_id, cx,
+    cy, w, h) normalized to image dims. Class id comes from
+    DSV2_CLASS_INDEX; classes not present in the DSv2 list are dropped
+    (and counted in the returned `dropped` dict for diagnostics).
+
+    Returns (yolo_labels, dropped_counts)."""
     out: list[tuple[int, float, float, float, float]] = []
-    for kind, cx, cy, w, h in warped:
-        cls = kind_to_class.get(kind)
+    dropped: dict[str, int] = {}
+    for dsv2_class, cx, cy, w, h in warped:
+        cls = DSV2_CLASS_INDEX.get(dsv2_class)
         if cls is None:
+            dropped[dsv2_class] = dropped.get(dsv2_class, 0) + 1
             continue
         ncx = max(0.0, min(1.0, cx / image_w))
         ncy = max(0.0, min(1.0, cy / image_h))
@@ -418,7 +660,7 @@ def warped_to_yolo(
         if nw <= 0 or nh <= 0:
             continue
         out.append((cls, ncx, ncy, nw, nh))
-    return out
+    return out, dropped
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -558,21 +800,31 @@ def process_movement(
                         summary["homography_failures"] += 1
                         continue
 
-                    warped = warp_elements(msd.elements, H)
+                    warped = warp_elements(
+                        msd.elements, H,
+                        pdf_staff_line_ys=list(pdf_staff.line_ys),
+                    )
 
-                    # Synthesize barline at cell right edge
+                    # Synthesize barline at cell right edge (DSv2 has a single
+                    # "barline" class — finer barline-type discrimination
+                    # belongs to a follow-up class-list extension).
                     barline_h = pdf_staff.bottom_y - pdf_staff.top_y + 6
                     barline_cy = (pdf_staff.top_y + pdf_staff.bottom_y) / 2
                     warped.append((
-                        "barline",
+                        BARLINE_DSV2_CLASS,
                         float(cx1), float(barline_cy),
                         max(3.0, barline_h * 0.02),
                         float(barline_h),
                     ))
                     page_warped_for_overlay.extend(warped)
 
-                    yolo = warped_to_yolo(warped, pi.width, pi.height)
+                    yolo, dropped = warped_to_yolo(warped, pi.width, pi.height)
                     page_labels.extend(yolo)
+                    for k, v in dropped.items():
+                        summary.setdefault("dropped_classes", {})
+                        summary["dropped_classes"][k] = (
+                            summary["dropped_classes"].get(k, 0) + v
+                        )
 
             # System done — advance running measure
             running_measure += n_measures
@@ -588,15 +840,31 @@ def process_movement(
         # Overlay
         if debug_overlays:
             overlay = cv2.cvtColor(pi.rgb, cv2.COLOR_RGB2BGR).copy()
-            colors = {
-                "notehead":   (0, 0, 255),
-                "clef":       (0, 200, 0),
-                "barline":    (255, 0, 0),
-                "keysig_acc": (200, 0, 200),
-                "accidental": (0, 200, 200),
-            }
-            for kind, cx, cy, w, h in page_warped_for_overlay:
-                col = colors.get(kind, (128, 128, 128))
+
+            def _color_for(dsv2_class: str) -> tuple[int, int, int]:
+                # Group DSv2 classes by visual category and assign a color.
+                if dsv2_class.startswith("notehead"):
+                    return (0, 0, 255)      # red
+                if dsv2_class in ("gClef", "fClef", "cClef") or "Clef" in dsv2_class:
+                    return (0, 200, 0)      # green
+                if dsv2_class == "barline":
+                    return (255, 0, 0)      # blue
+                if dsv2_class.startswith("key"):
+                    return (200, 0, 200)    # magenta
+                if dsv2_class.startswith("timeSig"):
+                    return (255, 255, 0)    # cyan
+                if dsv2_class.startswith("accidental"):
+                    return (0, 200, 200)    # yellow-ish
+                if dsv2_class.startswith("rest"):
+                    return (128, 0, 255)    # purple
+                if dsv2_class.startswith("artic") or dsv2_class.startswith("fermata"):
+                    return (255, 128, 0)    # orange
+                if dsv2_class.startswith("dynamic"):
+                    return (0, 255, 128)    # teal
+                return (128, 128, 128)      # gray = unknown
+
+            for dsv2_class, cx, cy, w, h in page_warped_for_overlay:
+                col = _color_for(dsv2_class)
                 x0 = int(round(cx - w / 2))
                 y0 = int(round(cy - h / 2))
                 x1 = int(round(cx + w / 2))
