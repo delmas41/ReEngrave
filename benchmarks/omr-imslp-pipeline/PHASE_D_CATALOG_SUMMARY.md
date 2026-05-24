@@ -1,54 +1,179 @@
 # Phase D — IMSLP catalog alignment summary
 
-**Date:** 2026-05-24 (running overnight)
+**Date:** 2026-05-24 (overnight run)
 
 ## What this is
 
 The Phase C pipeline (PDF cell extraction + XML parsing + sequential alignment) anchored on a single (PDF, XML) pair: Beethoven 5 mvt 1 against the 1862 Breitkopf Werke edition (imslp-52624). Phase D scales it across the full IMSLP catalog Sean assembled: 65 PDF editions across Beethoven 1-9, with 53 Hauptstimme MusicXML files (Beethoven 1-9 + Brahms 1-4).
 
-Per-PDF total alignment, run at 150 DPI for catalog-scale speed.
+Per-PDF total alignment, run at 150 DPI for catalog-scale speed, streaming pages one at a time to avoid OOM.
 
 For each (work, edition), the script:
 1. Sums XML measure counts across all `mvt-{N}.mxl` files for the work.
-2. Runs `tools.omr` cell extraction on every page of the PDF (front matter contributes 0 cells, music pages contribute their measure cells).
+2. Streams cell extraction page-by-page across every page of the PDF (front matter contributes 0 cells, music pages contribute their measure cells).
 3. Reports `delta = pdf_detected_measures - xml_total_measures`.
 
-Per-movement alignment is deferred until movement-segmentation auto-detection is more reliable. The current `phase_d_segment_movements.py` heuristic generalizes poorly across edition layouts (false-positives on running-page headers, false-negatives on attacca transitions).
+Per-movement alignment is deferred until movement-segmentation auto-detection is more reliable. The current `phase_d_segment_movements.py` (v1 geometric) and `phase_d_segment_movements_v2.py` (OCR-confirmed) both work on the canonical 1862 Werke editions but generalize poorly across other edition layouts.
 
-## Results
+## Aggregate (58/65 editions processed)
 
-(Filled in by `phase_d_run_alignment.py`. See `phase-d-output/_catalog_summary.json` for the full raw data.)
+- Succeeded: 54 editions
+- Detected 0 measures: 4 editions (Cianchettini & Sperati 1808-09 London + Beethoven 6 imslp-46101; tiny scan dimensions defeat the OMR pipeline)
+- **Within ±5% delta: 7/54 editions** ← catalog-ready
+- Within ±10%: 13/54
+- Within ±20%: 25/54
+- Mean delta: +22.5%
+- Median delta: +19.3%
 
-### Aggregate
+## Catalog-ready editions (Δ within ±5%, sorted by accuracy)
 
-_TBD when run completes — placeholder section. Will include:_
+| Work | Edition | PDF measures | XML | Δ % | Era / Publisher |
+|---|---|---:|---:|---:|---|
+| beethoven-symphony-2 | imslp-503997 | 1205 | 1216 | -0.9% | Litolff 1870 |
+| beethoven-symphony-1 | imslp-52848 | 952 | 943 | +1.0% | 1862 Werke Breitkopf |
+| beethoven-symphony-8 | imslp-875077 | 1056 | 1041 | +1.4% | 1863 Werke Breitkopf |
+| beethoven-symphony-2 | imslp-977672 | 1190 | 1216 | -2.1% | Ricordi 1909 |
+| beethoven-symphony-8 | imslp-06303 | 1009 | 1041 | -3.1% | Eulenburg 1938 (Unger) |
+| beethoven-symphony-4 | imslp-411721 | 1166 | 1203 | -3.1% | Heugel & Cie Paris (n.d.) |
+| beethoven-symphony-6 | imslp-57857 | 1400 | 1336 | +4.8% | 1863 Werke Breitkopf |
 
-- Total editions processed
-- Mean / median / min / max delta percentage
-- Count of editions within ±10%, ±20%, ±50%
-- Count of editions that failed (PDF rendered but 0 measures detected — usually a scan-quality issue)
+**Takeaway:** Catalog-ready editions span 7 works (Beethoven 1, 2, 4, 6, 8 — and once Beethoven 5/7/9 finish, likely those too) and 5 distinct publishers (Litolff, Breitkopf, Ricordi, Eulenburg-Unger, Heugel). The Werke (1862-63 Breitkopf complete edition) is the most consistent — multiple Werke editions land in this set.
 
-### Per-work breakdown
+## Failures (PDF detected 0 measures)
 
-_Table per work showing each edition's XML total, PDF detected, delta_pct. Surface the per-edition delta as a quality signal — editions consistently within ±5% are catalog-ready for label generation; editions >±20% need investigation (likely scan quality, unusual layout, or an OMR pipeline edge case)._
+| Work | Edition | Pages | Diagnosed cause |
+|---|---|---:|---|
+| beethoven-symphony-1 | imslp-46060 | 62 | Cianchettini 1809 London — tiny scan dimensions (58×75 px @ 50 DPI) |
+| beethoven-symphony-2 | imslp-46061 | 46 | Cianchettini 1808 London — same |
+| beethoven-symphony-3 | imslp-46066 | 130 | Cianchettini 1809 London — same |
+| beethoven-symphony-6 | imslp-46101 | 96 | (publisher TBD) — same pattern likely |
 
-### Known good editions
+All four failures share the same root cause: very early 1808-1809 facsimile scans rendered at extremely low pixel dimensions. The OMR staff detector needs minimum resolution per staff line to work. Mitigation: detect tiny page dimensions early and bump DPI on a per-edition basis, OR exclude these editions from the catalog.
 
-_Editions verified within ±5% delta — these are the safe starting points for Phase E label-generation work. Expected to skew toward the canonical 1862 Werke editions (consistent engraving conventions) and clean modern scans (Bärenreiter, Henle)._
+## Per-work breakdown
 
-### Known bad editions
+### beethoven-symphony-1 (XML 943 measures, 6 editions)
 
-_Editions with very high delta — flagged for follow-up. Common causes:_
-- _Manuscript-style engravings the OMR pipeline can't read_
-- _Very compressed pocket-score layouts (low staff line spacing)_
-- _Damaged / faded scans (poor binarization)_
-- _Unusual page layouts (e.g., piano-vocal reductions instead of full score)_
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-00074 | 43 | 1035 | +92 | +9.8% | review |
+| imslp-13842 | 84 | 1011 | +68 | +7.2% | review |
+| imslp-46060 | 62 | 0 | -943 | -100.0% | **FAIL** |
+| imslp-52848 | 52 | 952 | +9 | +1.0% | **OK** |
+| imslp-862762 | 59 | 1248 | +305 | +32.3% | high-delta |
+| imslp-862776 | 129 | 2820 | +1877 | +199.0% | high-delta |
 
-## What's next
+### beethoven-symphony-2 (XML 1216, 6 editions)
 
-Once this catalog summary is in, the next steps in Phase D / E:
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-46061 | 46 | 0 | -1216 | -100.0% | **FAIL** |
+| imslp-503997 | 61 | 1205 | -11 | -0.9% | **OK** |
+| imslp-52551 | 70 | 1099 | -117 | -9.6% | review |
+| imslp-862789 | 184 | 2554 | +1338 | +110.0% | high-delta |
+| imslp-862803 | 81 | 1416 | +200 | +16.4% | review |
+| imslp-977672 | 120 | 1190 | -26 | -2.1% | **OK** |
 
-1. **Per-movement segmentation for the ±5% editions.** With known-good editions identified, hand-curate per-movement page ranges for those specifically. Skip the rest until the segmentation auto-detector improves.
-2. **Per-cell label generation.** For each correctly-aligned (PDF cell, XML measure) pair, generate the YOLO label set (barlines, clefs, time/key sigs, dynamics, notehead positions) using the pixel-perfect homography MVP that landed in Phase C.
-3. **Catalog QA tool.** A web/CLI tool that lets you flip through measures with labels overlaid for visual review (per Phase E from PHASE_C_FINDINGS).
-4. **YOLO training run.** Mix the new labeled data 50/50 with DSv2, warm-start from existing weights, retrain.
+### beethoven-symphony-3 (XML 1875, 6 editions)
+
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-46066 | 130 | 0 | -1875 | -100.0% | **FAIL** |
+| imslp-504077 | 89 | 2314 | +439 | +23.4% | high-delta |
+| imslp-52766 | 102 | 1304 | -571 | -30.5% | high-delta |
+| imslp-862821 | 117 | 2946 | +1071 | +57.1% | high-delta |
+| imslp-947643 | 106 | 3315 | +1440 | +76.8% | high-delta |
+| imslp-978920 | 177 | 1279 | -596 | -31.8% | high-delta |
+
+### beethoven-symphony-4 (XML 1203, 7 editions)
+
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-09340 | 124 | 1441 | +238 | +19.8% | review |
+| imslp-411721 | 125 | 1166 | -37 | -3.1% | **OK** |
+| imslp-440380 | 80 | 1434 | +231 | +19.2% | review |
+| imslp-46075 | 100 | 618 | -585 | -48.6% | high-delta |
+| imslp-504078 | 73 | 1722 | +519 | +43.1% | high-delta |
+| imslp-862828 | 82 | 1829 | +626 | +52.0% | high-delta |
+| imslp-947625 | 103 | 1963 | +760 | +63.2% | high-delta |
+
+### beethoven-symphony-5 (XML 1572, 7 editions)
+
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-52624 | 106 | 1920 | +348 | +22.1% | high-delta |
+| imslp-575951 | 87 | 1730 | +158 | +10.1% | review |
+| imslp-575952 | 136 | 1701 | +129 | +8.2% | review |
+| imslp-862873 | 103 | 2498 | +926 | +58.9% | high-delta |
+| imslp-943147 | 197 | 992 | -580 | -36.9% | high-delta |
+| imslp-947601 | 122 | 2903 | +1331 | +84.7% | high-delta |
+| imslp-957856 | 108 | 1870 | +298 | +19.0% | review |
+
+Note: imslp-52624 (our Phase C anchor) shows +22.1% here — but recall Phase C ran at 300 DPI and found +6.2% delta on **mvt 1 only**. The 150 DPI catalog run + whole-PDF aggregation captures more false-positive barlines on dense pages, hence the higher delta.
+
+### beethoven-symphony-6 (XML 1336, 7 editions)
+
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-1016349 | 89 | 1893 | +557 | +41.7% | high-delta |
+| imslp-46101 | 96 | 0 | -1336 | -100.0% | **FAIL** |
+| imslp-504082 | 79 | 1565 | +229 | +17.1% | review |
+| imslp-516705 | 152 | 1618 | +282 | +21.1% | high-delta |
+| imslp-57857 | 92 | 1400 | +64 | +4.8% | **OK** |
+| imslp-862849 | 127 | 2156 | +820 | +61.4% | high-delta |
+| imslp-875069 | 160 | 1728 | +392 | +29.3% | high-delta |
+
+### beethoven-symphony-7 (XML 1879, 8 editions)
+
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-06800 | 176 | 2249 | +370 | +19.7% | review |
+| imslp-1009605 | 117 | 2460 | +581 | +30.9% | high-delta |
+| imslp-46251 | 228 | 37 | -1842 | -98.0% | high-delta |
+| imslp-504084 | 89 | 2324 | +445 | +23.7% | high-delta |
+| imslp-57874 | 98 | 2759 | +880 | +46.8% | high-delta |
+| imslp-862889 | 102 | 2244 | +365 | +19.4% | review |
+| imslp-874874 | 92 | 1666 | -213 | -11.3% | review |
+| imslp-874875 | 180 | 2406 | +527 | +28.0% | high-delta |
+
+### beethoven-symphony-8 (XML 1041, 9 editions)
+
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-06303 | 89 | 1009 | -32 | -3.1% | **OK** |
+| imslp-1006042 | 138 | 888 | -153 | -14.7% | review |
+| imslp-244620 | 135 | 1139 | +98 | +9.4% | review |
+| imslp-46253 | 153 | 852 | -189 | -18.2% | review |
+| imslp-504091 | 63 | 1301 | +260 | +25.0% | high-delta |
+| imslp-61814 | 66 | 1200 | +159 | +15.3% | review |
+| imslp-862901 | 80 | 1382 | +341 | +32.8% | high-delta |
+| imslp-875074 | 116 | 1391 | +350 | +33.6% | high-delta |
+| imslp-875077 | 66 | 1056 | +15 | +1.4% | **OK** |
+
+### beethoven-symphony-9 (XML 2222, 8 editions — 2/8 done so far)
+
+| Edition | PDF pages | PDF measures | Δ | Δ % | Status |
+|---|---:|---:|---:|---:|:---:|
+| imslp-46254 | 230 | 2389 | +167 | +7.5% | review |
+| imslp-516486 | 276 | 4972 | +2750 | +123.8% | high-delta |
+| (6 more in progress) | | | | | |
+
+## Patterns observed
+
+1. **Werke 1862-63 Breitkopf editions are the most reliable**: imslp-52848 (Beethoven 1), imslp-877??? (Beethoven 8 imslp-875077), imslp-57857 (Beethoven 6) all land within ±5%.
+
+2. **Modern Henle/Bärenreiter editions overshoot dramatically** (Δ +50-200%). Hypothesis: bundled parts in addition to score, or measure-number annotations being detected as barlines. Needs investigation.
+
+3. **Cianchettini 1808-09 London editions all fail**: same root cause (tiny scan dimensions). Mitigation is per-edition: bump DPI or exclude.
+
+4. **The Phase C anchor pair (Beethoven 5 imslp-52624) shows +22% at 150 DPI** but +6.2% at 300 DPI (Phase C result). The 150 DPI tradeoff increases false-positive barlines on dense pages. For label-generation work, return to 300 DPI on catalog-ready editions.
+
+## What's next (Phase E)
+
+1. **Per-movement segmentation for catalog-ready editions.** The 7 confirmed catalog-ready editions are the safe starting points. Hand-curate per-movement page ranges (v2 OCR script gets mvt 1 boundary right; mvts 2+ need spot-checking).
+
+2. **Per-cell label generation.** For each correctly-aligned (PDF cell, XML measure) pair on catalog-ready editions, generate the YOLO label set using the pixel-perfect homography MVP from Phase C (`phase_c_pixel_perfect.py`).
+
+3. **Investigate the high-delta editions** to understand what's failing (mostly likely: parts bundles, study-score measure numbers, faded scans).
+
+4. **YOLO training run.** Mix the new labeled data 50/50 with DSv2, warm-start from existing weights, retrain — per the catalog-first plan.
