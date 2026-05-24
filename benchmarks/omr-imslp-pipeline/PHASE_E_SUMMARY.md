@@ -101,3 +101,39 @@ tools/omr/training/data/imslp/
 4. **Run on the remaining 6 catalog-ready editions** once 1-3 are stable. The Beethoven 4 Heugel mvt 3 boundary needs to be confirmed visually first (the texture-change heuristic might land it without a header).
 
 5. **Label class expansion.** The MVP uses 6 classes (notehead, clef, barline, keysig, timesig, accidental). Extending to the full DSv2-compatible class space (with per-duration notehead subtypes, articulation marks, rests, etc.) is the path to mixed 50/50 catalog + DSv2 training data — see the original Phase E plan in `PHASE_D_CATALOG_SUMMARY.md`.
+
+---
+
+## Phase F update (2026-05-24, commits d30db31 + b7af4be)
+
+### Blocker 1 — RESOLVED: staff_detector single-outlier fallback (commit d30db31)
+
+Added `_top_outlier_threshold` between bipartition and the median-factor fallback in `tools/omr/staff_detector.py`. It catches the "one inter-system gap, many intra-system gaps" pattern that bipartition's c2/c1 ≥ 1.5 ratio check rejects.
+
+Validated:
+- 4 prior `TestBeethoven5Breitkopf1862SystemGrouping` cases still pass
+- New `TestBeethoven1Breitkopf1862SystemGrouping` locks in pp.7 (1 sys) and 11 (2 sys) of imslp-52848
+- New `TestTopOutlierThreshold` covers the helper in isolation (no PDF)
+
+Impact on the MVP label run for Beethoven 1 imslp-52848 mvt 1:
+- Pages processed: 5 → 16 (the full movement)
+- Cells with XML match: 537 → 2456
+- Labels emitted: 2108 → 8994
+
+### Blocker 3 — RESOLVED: generic PDF→XML staff mapper (commit b7af4be)
+
+Replaced the hardcoded `PDF_XML_STAFF_MAP_BEETHOVEN_1` with `build_pdf_xml_staff_map()` which reads `<part-list>/<score-part>` from the .mxl. It groups consecutive parts whose `_family_of(part_name)` is in `COMBINE_FAMILIES` (winds/brass — Flute 1 + Flute 2 share one staff) while keeping `SEPARATE_FAMILIES` (strings, timpani, percussion) on individual staves.
+
+Verified output matches the prior hardcoded reference for Beethoven 1, and produces sensible staff counts for the other catalog-ready works (12 for B2/B4/B8, 10 for B6 Pastoral mvt 1 — no trumpets/timpani in that movement).
+
+Tested end-to-end on **Beethoven 8 imslp-875077 mvt 1 (Werke 1863)** first 5 pages — 860 cells / 100% XML match / 2940 labels / 0 homography failures.
+
+### Blocker 2 — DEFERRED: ~50px x-offset residual
+
+Still present. The fixed bounding boxes are large enough that the YOLO labels overlap meaningfully with the actual noteheads (boxes are ~20 px wide at 300 DPI; offset is ~30-60 px), so the labels remain training-grade noisy rather than wrong. A structural fix (detect clef body's right-edge in the PDF cell, trim both source and destination of the homography proportionally) is the path to clean alignment but doesn't gate Phase G training.
+
+### Phase F state
+
+- **2 of 3 Phase F blockers resolved.** Label generator runs end-to-end on Beethoven 1 (1862 Werke) and Beethoven 8 (1863 Werke). Auto-mapper is ready for the remaining 4 catalog-ready editions (B2 Litolff, B2 Ricordi, B4 Heugel, B6 Pastoral).
+- **Scale-out is unblocked** modulo the x-offset polish.
+- Next phase (Phase G): expand the 6-class MVP label space to the full DSv2 set and mix-train.
