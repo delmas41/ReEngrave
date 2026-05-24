@@ -275,24 +275,103 @@ def warp_elements(
 # XML staff → PDF staff mapping
 # ─────────────────────────────────────────────────────────────────────────────
 #
-# Beethoven 1 imslp-52848 mvt 1 is the cleanest catalog pair. The 1862
-# Werke layout in this edition uses 12 visible instrument staves per
-# system. Hauptstimme's beethoven-symphony-1/mvt-1.mxl, however, splits
-# many of these into separate parts (Flauto 1 + Flauto 2 instead of a
-# combined Flauti staff, etc.). The mapping below assigns each PDF staff
-# the FIRST matching XML part (so the printed Flauti staff which carries
-# both flute voices maps to XML staff "Flauto 1" for label-generation
-# purposes — the warped notehead positions for Flauto 1 should mostly
-# coincide with the visible Flauti staff positions, with the secondary
-# Flauto 2 voice riding on the same staff).
+# Symphonic score convention (standard since ~1820):
+#   • Winds/brass come in numbered pairs (Flute 1, Flute 2; Oboe 1, Oboe 2;
+#     ...) and are written on ONE staff per family. Verovio renders each
+#     numbered part as its own staff system, so for label generation we
+#     map the visible "Flauti" staff to XML staff index of FLUTE 1 — the
+#     warped positions for Flute 2 ride on the same staff and would
+#     duplicate the labels.
+#   • Strings (Violin 1, Violin 2, Viola, Violoncello, Contrabass) get
+#     their own staff each, even when numbered.
+#   • Timpani and other percussion are always solo-staff.
 #
-# For now we hardcode for Beethoven 1; future editions will need their
-# own mapping or an automatic mapper that reads <part-list> instrument
-# names from the .mxl.
+# Build the map by walking the part-list and grouping consecutive parts
+# whose instrument-family is in COMBINE_FAMILIES.
 
+COMBINE_FAMILIES = {
+    "flute", "piccolo",
+    "oboe", "english horn", "cor anglais",
+    "clarinet", "bass clarinet",
+    "bassoon", "contrabassoon",
+    "horn", "french horn", "corno",
+    "trumpet", "tromba",
+    "trombone",
+    "tuba",
+}
+# Strings + percussion stay separate even when numbered.
+SEPARATE_FAMILIES = {
+    "violin", "violini",
+    "viola",
+    "violoncello", "cello",
+    "contrabass", "double bass", "bass",
+    "timpani",
+    "percussion", "snare drum", "bass drum", "cymbal",
+    "harp", "celesta", "piano",
+}
+
+
+def _family_of(part_name: str) -> str:
+    """Strip trailing number/voice tag from a part name to get its family.
+    'Flute 1' → 'flute', 'Bb Clarinet 2' → 'clarinet',
+    'C Horn 1' → 'horn'."""
+    import re as _re
+    name = part_name.strip().lower()
+    # Strip leading transposition / key tags ("Bb", "C", "F", etc.)
+    name = _re.sub(r"^[a-z]+\s+(?=[a-z])", "", name) if " " in name else name
+    # Strip trailing number/roman
+    name = _re.sub(r"\s+\d+$", "", name)
+    name = _re.sub(r"\s+[ivxIVX]+$", "", name)
+    # Strip parenthetical descriptors ("Bb (alto) Horn 1" → "horn")
+    name = _re.sub(r"\([^)]*\)\s*", "", name).strip()
+    # Strip leading "Bb" / "C" / "F" / "Eb" / "A" prefix again post-paren
+    name = _re.sub(r"^[a-g]b?\s+", "", name)
+    return name.strip()
+
+
+def build_pdf_xml_staff_map(mxl_path: Path) -> dict[int, int]:
+    """Read <part-list>/<score-part> from the .mxl and build a
+    PDF_staff_index → XML_staff_index map by grouping consecutive parts
+    whose family is in COMBINE_FAMILIES."""
+    import zipfile
+    from lxml import etree
+
+    with zipfile.ZipFile(mxl_path) as zf:
+        main = next(m for m in zf.namelist()
+                    if m.endswith(".xml") and "META-INF" not in m)
+        with zf.open(main) as f:
+            root = etree.fromstring(f.read())
+    score_parts = root.findall(".//part-list/score-part")
+    parts: list[tuple[int, str, str]] = []
+    for idx, sp in enumerate(score_parts):
+        name_el = sp.find("part-name")
+        name = (name_el.text or "").strip() if name_el is not None else ""
+        family = _family_of(name)
+        parts.append((idx, name, family))
+
+    pdf_to_xml: dict[int, int] = {}
+    pdf_staff_idx = 0
+    i = 0
+    while i < len(parts):
+        xml_idx, _, family = parts[i]
+        pdf_to_xml[pdf_staff_idx] = xml_idx
+        if family in COMBINE_FAMILIES:
+            # consume consecutive parts in the same family
+            j = i + 1
+            while j < len(parts) and parts[j][2] == family:
+                j += 1
+            i = j
+        else:
+            # solo / string section
+            i += 1
+        pdf_staff_idx += 1
+    return pdf_to_xml
+
+
+# Beethoven 1 imslp-52848 mvt 1 hardcoded reference. Kept for back-compat
+# and for the regression check below; runtime now uses build_pdf_xml_staff_map.
 PDF_XML_STAFF_MAP_BEETHOVEN_1 = {
-    # pdf_staff_index_within_system: xml_staff_index_in_rendered_verovio
-    0: 0,    # Flauti  → Flauto 1
+    0: 0,    # Flauti  → Flute 1
     1: 2,    # Oboi   → Oboe 1
     2: 4,    # Clarinetti → Clarinet 1
     3: 6,    # Fagotti → Bassoon 1
@@ -576,11 +655,14 @@ def main(argv: list[str]) -> int:
           f"pages {p_start}-{p_end}")
     print(f"Out: {out_dir}")
 
-    if args.work == "beethoven-symphony-1":
-        xml_staff_map = PDF_XML_STAFF_MAP_BEETHOVEN_1
-    else:
-        print(f"No PDF→XML staff map for {args.work} — add one to the script")
-        return 1
+    xml_staff_map = build_pdf_xml_staff_map(mxl)
+    print(f"PDF→XML staff map ({len(xml_staff_map)} PDF staves): {xml_staff_map}")
+    # Sanity check against the Beethoven 1 hard-coded reference
+    if args.work == "beethoven-symphony-1" and args.mvt == 1:
+        ref = PDF_XML_STAFF_MAP_BEETHOVEN_1
+        if xml_staff_map != ref:
+            print(f"  ! auto-generated map differs from Beethoven 1 reference")
+            print(f"    ref: {ref}")
 
     summary = process_movement(
         pdf_path=pdf,
