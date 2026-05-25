@@ -34,7 +34,15 @@ Sean asked to recover suggestions he'd made across past YOLO-era sessions that h
 
 ### 1. Maestro Analyzer as a theory-constraint layer over OMR (highest leverage)
 
-**Status (2026-05-24): SCOPED — see [docs/maestro-integration-plan.md](docs/maestro-integration-plan.md).** Decisions locked: Bun CLI + thin Python wrapper, git submodule of gradus-vercel, scholarly seed = WTC I.1 + Beethoven 5/i + Brahms 4/iv + Chopin Ballade 1 + Debussy La Mer/i, MCP server deferred, music21 stays in parallel. Personal-use constraint applies. Next action: M0 (~1 day).
+**Status (2026-05-24): SHIPPED M0–M4.** See [docs/maestro-integration-plan.md](docs/maestro-integration-plan.md) for the full picture. All five scholarly seed works curated. M4 in-pipeline pitch re-ranking with auto-correction is live (env-gated). Two follow-up bugs surfaced during the handel-leadsheet audit and are tracked below as separate items.
+
+### Follow-up A — `tools/omr/export.to_musicxml` writes `<measure number="1">` for every measure
+
+Symptom: re-OMR'd `handel-leadsheet.musicxml` has 32 `<measure>` elements all numbered "1". Cause: the exporter uses each staff's local `m_idx + 1`, so when a page is split into many single-measure staves (the leadsheet case), every measure gets number 1. Effect: maestroAnalyst sees `measure_count = 1` and `local_keys` has only one entry. This is what made M4 fall back to its `overall_key` default for everything. Re-rank.ts now handles this gracefully (overall-key fallback instead of hardcoded C major) but the underlying exporter bug remains. Fix: aggregate measures across staves so they share consistent printed measure numbers. Affects MusicXML quality independent of M4.
+
+### Follow-up B — M4 candidate selection over-prefers enharmonic spellings
+
+Symptom: on bach-wtc, M4 auto-applied F#4 → E#4 in D minor. E# is technically diatonic by pitch-class (pc 5 = F), but the natural spelling F would be the musically expected correction. The bug is in `tools/maestro_bridge/re-rank.ts`'s `pitchToPc` + diatonic-membership check — it treats E# and F as equivalent, so candidates carrying inherited sharp accidentals from the inline accidental map can be picked as "diatonic" when only the pc matches. Fix: prefer candidates with the most natural spelling for the local key (e.g., for D minor's pc 5, prefer "F" spelling over "E#"). Minor impact in practice (~1 questionable correction per several hundred notes) but worth fixing.
 
 
 **Idea**: wire the existing `gradus-vercel/lib/maestroAnalyst/` TypeScript engine into ReEngrave as a *constraining* layer over YOLO output, not just as a post-hoc validator. Narrow ambiguous pitches by key + modulation + chromatic context; validate range; suggest enharmonic spellings. The MaestroAnalyst already covers cadence, enharmonicSpelling, keyDetection, modalAnalysis, pcSet, phraseSegmentation, pitch, pitchTendencyTags, rangeValidation, reduction, romanNumeral, scale, voiceLeading, xmlParser.

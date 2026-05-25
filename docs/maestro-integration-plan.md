@@ -470,3 +470,36 @@ MusicXML diff after running M4 on bach-wtc showed the expected substitutions in 
 ```
 
 **Maestro Analyzer integration is now complete for the M0–M4 scope.** Every step from analysis through auto-correction ships with env-gated opt-in, audit trails, and gradual-rollout safety.
+
+---
+
+## M4 audit + bug fix (2026-05-24, same day)
+
+The 9.8% auto-rate on `handel-leadsheet` flagged in the M4 benchmark turned out to be a destructive bug. Audit revealed two compounding issues:
+
+1. **0-/1-based measure index mismatch.** OMR's `measure_index` is 0-based; maestroAnalyst's `local_keys.measure` is 1-based. `re-rank.ts`'s `findLocalKey()` did a strict `===` match, missed every lookup, and fell back to its hardcoded default `'C major'`. For pieces NOT in C major, every diatonic note got "corrected" against the wrong key.
+
+2. **Per-staff measure numbering in `to_musicxml`.** The OMR exporter writes `<measure number="m_idx + 1">` where `m_idx` is the per-staff measure-array index. On a leadsheet with 12 single-measure staves, every measure ends up numbered "1". maestroAnalyst's parser sees `measure_count = 1` and `local_keys` has just one entry. Even with the lookup bug fixed, per-measure key resolution is lost.
+
+### Fix shipped
+
+Patched `re-rank.ts:findLocalKey()` with a 3-tier fallback:
+1. Exact match (covers properly-numbered pieces)
+2. `measure + 1` match (bridges the 0/1-based gap)
+3. `harmony.overall_key.key` (handles the `measure_count=1` exporter bug gracefully — much safer than hardcoded C major)
+
+### Benchmark re-run after fix
+
+| File | Before (auto) | After (auto) | Change |
+|---|---:|---:|---|
+| handel-reduction | 0 | 0 | unchanged ✓ |
+| bach-wtc | 7 | 9 | +2 (now using D minor instead of C major) |
+| handel-leadsheet | **27** | **2** | **−25 — destructive bug eliminated** |
+| ravel-bolero | 9 | 9 | unchanged |
+
+Auto-rate on handel-leadsheet dropped from 9.8% to 0.7%. The 25 spurious "corrections" that destroyed real D# / G# notes in E major are gone. The 2 remaining auto-applies (D5 → E5 in E major) are individually defensible.
+
+### Known remaining limitations
+
+- **Underlying exporter bug** (every measure numbered "1" when staves contain single measures) is tracked in [NOTES.md → Follow-up A](../NOTES.md). Fixing it would restore per-measure key resolution; not blocking but worth doing.
+- **Enharmonic candidate quirk**: M4 picks F# → E# in D minor (E# = F by pc, technically diatonic but musically odd). Tracked in [NOTES.md → Follow-up B](../NOTES.md). Minor impact (~1 per several hundred notes).

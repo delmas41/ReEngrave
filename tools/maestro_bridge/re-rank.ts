@@ -70,6 +70,7 @@ interface OmrJson {
 }
 
 interface HarmonyAnalysis {
+  overall_key?: { key: string; confidence: number };
   local_keys: Array<{ measure: number; key: string; confidence: number }>;
   chord_analyses: Array<{
     measure: number;
@@ -131,8 +132,17 @@ function pitchToPc(pitch: string): number | null {
 }
 
 function findLocalKey(harmony: HarmonyAnalysis, measure: number): string {
-  const lk = harmony.local_keys.find(l => l.measure === measure);
-  return lk?.key ?? 'C major';
+  // OMR's `measure_index` is 0-based; maestroAnalyst's `local_keys.measure`
+  // is 1-based per its Score model. We try the exact match first, then a
+  // +1 shifted lookup to bridge the convention gap.
+  let lk = harmony.local_keys.find(l => l.measure === measure);
+  if (!lk) lk = harmony.local_keys.find(l => l.measure === measure + 1);
+  if (lk) return lk.key;
+  // Fallback hierarchy: harmony.overall_key, then absolute default. The
+  // hardcoded 'C major' default was a destructive bug for non-C pieces —
+  // M4 was treating every diatonic note in (e.g.) E major as non-diatonic.
+  if (harmony.overall_key?.key) return harmony.overall_key.key;
+  return 'C major';
 }
 
 function hasHighConfidenceChordInMeasure(
