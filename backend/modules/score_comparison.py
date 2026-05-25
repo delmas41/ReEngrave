@@ -513,3 +513,42 @@ def compare_multiple(
         "consensus_issues": consensus_issues,
         "error": None,
     }
+
+
+def run_dual_theory_checks(xml_path: str) -> dict:
+    """Run both engines in parallel(-ish) and return their outputs together.
+
+    Composes:
+      - music21 rhythm/range/enharmonic checks (existing — returns list)
+      - maestro_bridge harmony + rhythm hints (new — returns dict or None)
+
+    The two engines are complementary. music21 produces rule-violation
+    entries (one per issue); maestro produces structured analysis (overall
+    key, RN progression, cadences, per-voice beat sums). The web app can
+    show them side by side; CLI consumers can use either.
+
+    Maestro path is gated behind MAESTRO_BRIDGE_ENABLED env var (default
+    off) and failures are swallowed — if the bridge isn't installed or
+    errors, `maestro` is None and music21 still runs.
+    """
+    music21_issues = run_theory_checks(xml_path)
+
+    try:
+        from .theory_layer import compute_theory_hints  # type: ignore
+    except ImportError:
+        try:
+            from theory_layer import compute_theory_hints  # type: ignore
+        except ImportError:
+            compute_theory_hints = None  # type: ignore
+
+    maestro_hints = None
+    if compute_theory_hints is not None:
+        try:
+            maestro_hints = compute_theory_hints(xml_path)
+        except Exception:
+            maestro_hints = None
+
+    return {
+        "music21": music21_issues,
+        "maestro": maestro_hints,
+    }

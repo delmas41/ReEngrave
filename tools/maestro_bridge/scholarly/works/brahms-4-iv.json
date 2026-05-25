@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_id": "brahms-4-iv",
+  "composer": "Johannes Brahms",
+  "title": "Symphony no. 4 in E minor, mvt 4 (Allegro energico e passionato)",
+  "catalog": "Op. 98",
+  "year_composed": 1885,
+  "source_citations": [
+    "Donald Tovey, Essays in Musical Analysis vol. I (1935)",
+    "Arnold Schoenberg, Style and Idea — 'Brahms the Progressive' (1947)",
+    "Walter Frisch, Brahms: The Four Symphonies (1996)"
+  ],
+
+  "known_overall_key": "E minor",
+  "expected_measure_count": 253,
+  "expected_time_signature": "3/4",
+
+  "key_plan": [
+    {
+      "section": "theme_chaconne",
+      "measure_start": 1,
+      "measure_end": 8,
+      "key": "E minor",
+      "role": "Eight-bar chaconne ground bass (rising chromatic descent E–F#–G–A–A#–B–B–E), winds and brass chorale; modeled on Bach Cantata 150"
+    },
+    {
+      "section": "variations_1_to_11_minor",
+      "measure_start": 9,
+      "measure_end": 96,
+      "key": "E minor",
+      "role": "Variations 1–11; the ground bass repeats 11 times with increasing rhythmic and motivic activity, all in E minor with Phrygian inflections"
+    },
+    {
+      "section": "variations_12_to_15_major",
+      "measure_start": 97,
+      "measure_end": 128,
+      "key": "E major",
+      "role": "Variations 12–15; modal shift to E major, flute solo at var. 12 — the lyrical center of the movement"
+    },
+    {
+      "section": "variations_16_onward_minor_return",
+      "measure_start": 129,
+      "measure_end": 252,
+      "key": "E minor",
+      "role": "Return to E minor at var. 16; further variations build to climax (the bass line eventually emerges into the upper voices)"
+    },
+    {
+      "section": "coda",
+      "measure_start": 253,
+      "measure_end": 253,
+      "key": "E minor",
+      "role": "Più allegro coda (the boundary is loosely m. 253; exact count depends on edition). Final cadence in E minor."
+    }
+  ],
+
+  "notable_cadences": [
+    { "measure": 8,   "type": "HC",  "key": "E minor", "basis": "Theme's closing half cadence onto V (B major)" },
+    { "measure": 96,  "type": "HC",  "key": "E minor", "basis": "Cadence preparing the major-mode pivot at variation 12" },
+    { "measure": 128, "type": "HC",  "key": "E major", "basis": "Cadence closing the major-mode variation group" },
+    { "measure": 253, "type": "PAC", "key": "E minor", "basis": "Final perfect authentic cadence of movement (approximate measure — varies by edition)" }
+  ],
+
+  "characteristic_features": [
+    "Chaconne / passacaglia form — 30+ variations on an 8-bar ground bass",
+    "Ground bass is itself a chromatic descent — Brahms's contribution to the lament-bass tradition (Purcell, Bach)",
+    "Modal shift to E major at variations 12–15 is the structural fulcrum",
+    "Schoenberg cited the work as an exemplar of 'developing variation'"
+  ],
+
+  "common_omr_pitfalls": [
+    "Late-Romantic orchestral score with 16+ parts — significant voice-conflation risk",
+    "Chromatic neighbor tones in the ground bass (A and A#) frequently misread as the same pitch by OMR",
+    "Variation boundaries are sometimes obscured by overlapping voicings — section boundaries in analysis may shift ±2 measures from edition to edition"
+  ],
+
+  "_notes": "Curated 2026-05-24. Measure counts approximate — Brahms's variation boundaries can shift by 1-2 measures across editions (Breitkopf, Eulenburg, Bärenreiter). Cross-check tolerance of ±2 should accommodate this. Major-mode variation group (vars. 12–15) is the most analytically distinctive feature and the strongest match-signal."
+}

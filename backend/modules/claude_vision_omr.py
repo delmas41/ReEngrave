@@ -517,6 +517,24 @@ async def run_claude_vision_omr(
             error_message=f"MusicXML assembly failed: {exc}",
         )
 
+    # Step 4b: Theory enrichment via maestro_bridge — adds harmony + rhythm
+    # hints alongside the MusicXML. Gated by MAESTRO_BRIDGE_ENABLED env var.
+    # Failures are swallowed inside compute_theory_hints. Output is a
+    # sibling JSON next to the MusicXML so downstream consumers can read
+    # it the same way as local_omr's omr.json.
+    try:
+        from modules.theory_layer import compute_theory_hints
+    except ImportError:
+        from backend.modules.theory_layer import compute_theory_hints  # type: ignore
+    theory_hints = compute_theory_hints(output_path)
+    if theory_hints is not None:
+        theory_json_path = os.path.join(output_dir, f"{stem}_vision.theory.json")
+        try:
+            with open(theory_json_path, "w", encoding="utf-8") as fh:
+                json.dump({"theory_hints": theory_hints}, fh)
+        except OSError as exc:
+            logger.warning("Could not write theory JSON to %s: %s", theory_json_path, exc)
+
     # Step 5: Count measures and compute confidence
     total_measures = last_measure_num
     pages_succeeded = total_pages - len(failed_pages)

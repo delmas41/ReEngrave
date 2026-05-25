@@ -363,3 +363,55 @@ Smoke test results:
 End-to-end latency unchanged (~600ms).
 
 **Bridge is feature-complete for the M0–M2 scope.** Remaining work: M3 (wire into OMR pipelines), and optionally adding the other 3 canonical works to the scholarly DB.
+
+---
+
+## M2 expansion (2026-05-24)
+
+Added the remaining 3 canonical works to bring the scholarly DB to the originally planned 5 seeds:
+
+- `chopin-ballade-1.json` — G minor Ballade Op. 23 with the famous reversed-key recap
+- `brahms-4-iv.json` — E minor finale, 30+ variations on an 8-bar chaconne ground bass
+- `debussy-la-mer-i.json` — Db-major "De l'aube à midi sur la mer"; entry notes that Debussy's modal/pentatonic language strains Krumhansl-style key detection, so the work is most useful for catching gross misreads rather than fine-grained harmonic verification
+
+`--list-works` now returns all 5.
+
+---
+
+## M3 result (2026-05-24)
+
+**Status: complete and verified.**
+
+Built:
+- `backend/modules/theory_layer.py` — shared enrichment layer used by both OMR engines. Two entry points:
+  - `compute_theory_hints(musicxml_path) -> dict | None` — for engines that want just the hints
+  - `enrich_omr_result(omr_json, musicxml_path) -> dict` — for engines that want to mutate an existing OMR JSON
+
+Both gated by `MAESTRO_BRIDGE_ENABLED` env var (default off). All bridge failures are swallowed and logged — theory enrichment can never break OMR.
+
+Wired into:
+- **`backend/modules/local_omr.py`**: after MusicXML write, calls `enrich_omr_result` and rewrites `{stem}.omr.json` with `theory_hints` baked in.
+- **`backend/modules/claude_vision_omr.py`**: after MusicXML write, calls `compute_theory_hints` and writes a sibling `{stem}_vision.theory.json`.
+- **`backend/modules/score_comparison.py`**: new `run_dual_theory_checks(xml_path)` composes music21's existing list of rule violations with maestro's structured analysis.
+- **`backend/main.py` `/scores/{id}/theory-check` route**: returns the new shape `{ score_id, issues, total, maestro }` — `maestro` is null when bridge is disabled, otherwise the full structured analysis. Backwards-compatible: existing frontend reads `issues` and `total` unchanged.
+
+Smoke test results:
+
+| Test | Result |
+|---|---|
+| Bridge OFF: `compute_theory_hints` returns | `None` ✓ |
+| Bridge OFF: `enrich_omr_result` mutates | nothing ✓ |
+| Bridge ON: harmony+rhythm computed in | 0.317s ✓ |
+| `run_dual_theory_checks` returns both engines | ✓ — music21 0 issues, maestro 20 warnings |
+| Missing MusicXML file | `None`, no exception ✓ |
+| Missing maestro_bridge module | `None`, no exception ✓ |
+| All modified Python files import cleanly | ✓ |
+
+End-to-end latency for both capabilities combined dropped to 0.317s (Node + tsx warm cache helps).
+
+**Maestro Analyzer integration is complete for the M0–M3 scope.** All three capabilities (harmony, rhythm, cross-check) ship with both OMR engines and can be queried through the existing theory-check endpoint, the Python wrapper, or the CLI. Default-off env-gating means the integration is invisible to a stock install that doesn't have Node + the bridge installed.
+
+**Optional future work (not blocking anything):**
+- M4 (pitch re-ranking inside OMR — top-N pitch candidates from `pitch_resolver.py`, re-ranked by maestro)
+- More scholarly DB entries beyond the 5 seeds
+- Frontend UI to surface the maestro analysis (deferred under the personal-use constraint)

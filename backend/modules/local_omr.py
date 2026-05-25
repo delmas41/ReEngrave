@@ -240,6 +240,7 @@ def _run_omr_blocking(
     )
 
     # Write the structured JSON to disk so the exporter can read it.
+    # We may rewrite this after the theory enrichment step.
     pdf_stem = Path(pdf_path).stem
     json_path = os.path.join(output_dir, f"{pdf_stem}.omr.json")
     with open(json_path, "w", encoding="utf-8") as fh:
@@ -266,6 +267,22 @@ def _run_omr_blocking(
             ),
             error_message=f"MusicXML serialization failed: {exc}",
         )
+
+    # Theory enrichment via the maestro_bridge — adds harmony + rhythm
+    # hints to omr_result if MAESTRO_BRIDGE_ENABLED is set. Failures are
+    # swallowed inside theory_layer; OMR proceeds either way.
+    try:
+        from modules.theory_layer import enrich_omr_result
+    except ImportError:
+        # Two-layer fallback for non-Docker layouts where backend is
+        # imported as a package (backend.modules.theory_layer).
+        from backend.modules.theory_layer import enrich_omr_result  # type: ignore
+    omr_result = enrich_omr_result(omr_result, musicxml_path)
+
+    # If theory_hints were added, rewrite the JSON so disk reflects it.
+    if "theory_hints" in omr_result:
+        with open(json_path, "w", encoding="utf-8") as fh:
+            json.dump(omr_result, fh)
 
     return LocalOmrResult(
         musicxml_path=musicxml_path,

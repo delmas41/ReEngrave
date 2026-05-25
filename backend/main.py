@@ -906,12 +906,22 @@ async def theory_check(
         raise HTTPException(status_code=400, detail="No MusicXML available – run OMR first")
 
     try:
-        from modules.score_comparison import run_theory_checks
-        issues = run_theory_checks(score.musicxml_path)
+        from modules.score_comparison import run_dual_theory_checks
+        dual = run_dual_theory_checks(score.musicxml_path)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Theory check failed: {exc}")
 
-    return {"score_id": score_id, "issues": issues, "total": len(issues)}
+    # Keep the original response shape for backwards-compat (issues/total
+    # reflect music21 — what the existing frontend reads). `maestro` is
+    # additive: a structured harmony+rhythm analysis from the maestroAnalyst
+    # bridge, or null when the bridge is disabled or failed.
+    issues = dual["music21"]
+    return {
+        "score_id": score_id,
+        "issues": issues,
+        "total": len(issues),
+        "maestro": dual["maestro"],
+    }
 
 
 # ---------------------------------------------------------------------------

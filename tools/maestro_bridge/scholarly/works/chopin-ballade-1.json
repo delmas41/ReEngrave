@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "work_id": "chopin-ballade-1",
+  "composer": "Frédéric Chopin",
+  "title": "Ballade no. 1 in G minor",
+  "catalog": "Op. 23",
+  "year_composed": 1836,
+  "source_citations": [
+    "James Parakilas, Ballads Without Words: Chopin and the Tradition of the Instrumental Ballade (1992)",
+    "Edward Aldwell & Carl Schachter, Harmony and Voice Leading (analysis of Op. 23)",
+    "John Rink, Chopin: The Piano Concertos and Ballades (multiple references)"
+  ],
+
+  "known_overall_key": "G minor",
+  "expected_measure_count": 264,
+  "expected_time_signature": "6/4",
+
+  "key_plan": [
+    {
+      "section": "introduction_largo",
+      "measure_start": 1,
+      "measure_end": 7,
+      "key": "C minor",
+      "role": "Largo introduction in Neapolitan area (Ab–C minor inflection), unison declamation"
+    },
+    {
+      "section": "main_theme_A_first_statement",
+      "measure_start": 8,
+      "measure_end": 35,
+      "key": "G minor",
+      "role": "Moderato; first theme in G minor — narrative-arched main idea"
+    },
+    {
+      "section": "transition",
+      "measure_start": 36,
+      "measure_end": 66,
+      "key": "G minor",
+      "role": "Transition modulating toward relative major (E♭)"
+    },
+    {
+      "section": "theme_B_first_statement",
+      "measure_start": 67,
+      "measure_end": 93,
+      "key": "Eb major",
+      "role": "Lyrical second theme in relative major — chordal, hymn-like"
+    },
+    {
+      "section": "elaboration",
+      "measure_start": 94,
+      "measure_end": 125,
+      "key": "Eb major",
+      "role": "Theme B continuation; passes through A minor and other keys before development"
+    },
+    {
+      "section": "development",
+      "measure_start": 126,
+      "measure_end": 165,
+      "key": "various",
+      "role": "Development of theme A through A minor, F minor; brilliant figuration"
+    },
+    {
+      "section": "theme_A_recap_reversed_key",
+      "measure_start": 166,
+      "measure_end": 193,
+      "key": "A minor",
+      "role": "Theme A returns in A minor (reversed key relationship vs. exposition) — Chopin's structural reversal"
+    },
+    {
+      "section": "theme_B_recap_in_Eb",
+      "measure_start": 194,
+      "measure_end": 207,
+      "key": "Eb major",
+      "role": "Theme B returns briefly in Eb major (the exposition key, not tonic)"
+    },
+    {
+      "section": "coda_presto_con_fuoco",
+      "measure_start": 208,
+      "measure_end": 264,
+      "key": "G minor",
+      "role": "Presto con fuoco — virtuosic coda returning to G minor; famous double-octave passages"
+    }
+  ],
+
+  "notable_cadences": [
+    { "measure": 7,   "type": "HC",  "key": "C minor",  "basis": "Half cadence closing introduction, prepares G-minor main theme" },
+    { "measure": 35,  "type": "PAC", "key": "G minor",  "basis": "First cadence of theme A" },
+    { "measure": 93,  "type": "PAC", "key": "Eb major", "basis": "Cadence closing theme B's first statement" },
+    { "measure": 193, "type": "PAC", "key": "A minor",  "basis": "Cadence closing the reversed-key recap of theme A" },
+    { "measure": 264, "type": "PAC", "key": "G minor",  "basis": "Final cadence after Presto coda" }
+  ],
+
+  "characteristic_features": [
+    "First piano ballade — established the genre",
+    "Sonata-form modification: themes return in reversed key relationship in the recap (theme A in A minor instead of tonic, theme B in Eb instead of tonic)",
+    "Presto con fuoco coda is one of the most technically demanding passages in the 19th-century piano repertoire",
+    "Famous opening Neapolitan-flavored introduction has been the subject of extensive harmonic debate"
+  ],
+
+  "common_omr_pitfalls": [
+    "Wide-range piano writing — OMR voice splitting between hands often misassigns notes",
+    "Tempo rubato implied notation (small note values within larger metric pulses) creates rhythm-fragility issues",
+    "The Presto coda has very dense 32nd-note figuration that strains YOLO notehead detection"
+  ],
+
+  "_notes": "Curated 2026-05-24. The reversed key recap (A minor for theme A, Eb major for theme B) is the structurally most distinctive feature and gives the cross-check strong differentiating signal. Time signature varies between 6/4 (opening) and 2/2 (Presto coda) in some editions."
+}
