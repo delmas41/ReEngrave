@@ -5,11 +5,21 @@ Mirrors `port_verdicts.py` but with the YOLO detector as the engine.
 Detections-side output is identical in schema to the template-matcher
 detections so `tools/omr/annotate/score.py` works unchanged.
 
+Labeling defaults (changed 2026-05-25):
+    - imgsz=1280 (was 640) so the per-class ensemble prescription applies
+    - Per-class imgsz ensemble ON: runs YOLO at [1280, 2048] and merges via
+      tools/omr/ensemble.py. Surfaces ~30% more candidate detections than a
+      single pass. Pass --no-ensemble to disable.
+    - Raw per-pass detections also written to <cid>.i1280.json and
+      <cid>.i2048.json alongside the merged <cid>.json, so labels stay
+      valid even if the prescription is later refined. Pass --no-save-passes
+      to disable.
+
 CLI:
     python3 -m tools.omr.annotate.run_yolo \
         --manifest benchmarks/omr-phase2.5/cells.json \
         --cells wtc-p5-sys0-s0-m0 wtc-p5-sys0-s0-m1 wtc-p5-sys0-s0-m2 wtc-p5-sys0-s0-m3 \
-        --weights yolov8m.pt \
+        --weights tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt \
         --baseline-verdicts benchmarks/omr-phase2.5/verdicts \
         --out-dir benchmarks/omr-phase3/verdicts-yolo \
         --detections-out benchmarks/omr-phase3/detections-yolo \
@@ -27,6 +37,7 @@ import numpy as np
 
 import cv2
 
+from ..ensemble import merge_per_class
 from ..yolo_detector import YoloDetector
 from ..template_matcher import SymbolDetection
 from .build_template import _load_cell_from_manifest, _detections_to_dict, render_overlay
@@ -44,7 +55,9 @@ def run(
     device: str,
     time_n_runs: int,
     overlays_out: Path | None = None,
-    imgsz: int = 640,
+    imgsz: int = 1280,
+    ensemble_imgszs: list[int] | None = None,
+    save_passes: bool = True,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     detections_out.mkdir(parents=True, exist_ok=True)
@@ -71,8 +84,33 @@ def run(
             continue
         cell = _load_cell_from_manifest(entry, root)
 
-        # Time multiple runs to get a stable median.
-        if time_n_runs >= 2:
+        if ensemble_imgszs and len(ensemble_imgszs) > 1:
+            # Per-class imgsz ensemble for labeling: surfaces ~30% more
+            # candidate detections than a single pass. Slower (one YOLO call
+            # per imgsz) but human time per cell dominates the cost.
+            t0 = time.perf_counter()
+            passes = {
+                sz: detector.detect(cell, conf_threshold=conf_threshold, imgsz=sz)
+                for sz in ensemble_imgszs
+            }
+            t1 = time.perf_counter()
+            detections = merge_per_class(passes, default_imgsz=imgsz)
+            timing = {
+                "n_runs": 1,
+                "n_detections": len(detections),
+                "all_times_s": [t1 - t0],
+                "median_s_excluding_warmup": t1 - t0,
+                "mean_s_excluding_warmup": t1 - t0,
+                "ensemble_imgszs": ensemble_imgszs,
+                "per_pass_n_detections": {str(sz): len(d) for sz, d in passes.items()},
+            }
+            if save_passes:
+                for sz, raw_dets in passes.items():
+                    pass_path = detections_out / f"{cid}.i{sz}.json"
+                    pass_path.write_text(json.dumps(
+                        _detections_to_dict(cid, raw_dets), indent=2,
+                    ))
+        elif time_n_runs >= 2:
             timing = detector.time_detect(
                 cell, conf_threshold=conf_threshold, n_runs=time_n_runs,
             )
@@ -166,10 +204,30 @@ def main() -> None:
     ap.add_argument("--conf", type=float, default=0.10)
     ap.add_argument("--device", default="auto")
     ap.add_argument("--time-n-runs", type=int, default=5)
-    ap.add_argument("--imgsz", type=int, default=640,
-                    help="YOLO inference image size. Use 2048 for high-res orchestral cells "
-                         "to keep small symbols above the detection floor.")
+    ap.add_argument("--imgsz", type=int, default=1280,
+                    help="YOLO inference image size for the default pass. The default "
+                         "matches production OMR (1280); the ensemble adds a 2048 pass "
+                         "on top. Changed from the original 640 because the ensemble's "
+                         "per-class prescription is calibrated for 1280/2048.")
+    ap.add_argument("--no-ensemble", action="store_true",
+                    help="Disable the per-class imgsz ensemble. Defaults: ensemble ON "
+                         "with [1280, 2048] for labeling -- surfaces ~30%% more "
+                         "candidate detections via tools/omr/ensemble.py's "
+                         "per-class prescription. Disable for speed-mode labeling.")
+    ap.add_argument("--no-save-passes", action="store_true",
+                    help="Disable writing each pass's raw detections to "
+                         "<detections-out>/<cid>.i<imgsz>.json. Defaults: ON when "
+                         "ensemble is on. Preserved files let labels be re-scored "
+                         "against future prescriptions without re-running YOLO.")
     args = ap.parse_args()
+
+    ensemble_imgszs = None if args.no_ensemble else [args.imgsz, 2048]
+    if ensemble_imgszs and args.imgsz == 2048:
+        # Avoid duplicate-pass when imgsz happens to equal 2048
+        ensemble_imgszs = [2048]
+        if len(ensemble_imgszs) < 2:
+            ensemble_imgszs = None
+
     run(
         manifest_path=Path(args.manifest),
         cell_ids=args.cells,
@@ -182,6 +240,8 @@ def main() -> None:
         time_n_runs=args.time_n_runs,
         overlays_out=Path(args.overlays_out) if args.overlays_out else None,
         imgsz=args.imgsz,
+        ensemble_imgszs=ensemble_imgszs,
+        save_passes=not args.no_save_passes,
     )
 
 
