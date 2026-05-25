@@ -62,9 +62,10 @@ HTML_TEMPLATE = """<!doctype html>
     </li>
     <li><span style="color:#0d47a1;font-weight:bold;">Blue boxes (beams):</span>
       <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span> if the box is on an actual <em>beam stroke</em> (a thick black horizontal/diagonal bar connecting two or more stems — what marks eighth-notes-as-a-group).
-      <span class="det wrong" style="display:inline-block;padding:1px 6px;">wrong</span> if it's on a slur, tie, hairpin, staff line residue, ledger line, or other non-beam horizontal mark.
+      <span class="det wrong" style="display:inline-block;padding:1px 6px;">wrong</span> if it's on a slur, tie, hairpin, staff line residue, ledger line, non-beam horizontal mark, <em>or</em> if it's a duplicate of a real beam that's already been counted (see below).
     </li>
   </ul>
+  <p><strong>For stacked beams (16th, 32nd notes):</strong> each <em>visible</em> beam stroke is one real beam. A 32nd-note group has 3 real beams (triple-beam); a 16th-note group has 2 (double-beam); an 8th-note group has 1. If the detector emits more boxes than real beams in the same cluster, mark only the matching number as correct and the rest as wrong. Example: 5 boxes piled on a clearly-triple-beam group → 3 correct, 2 wrong.</p>
   <p><strong>Workflow:</strong> chips default to <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span>. Click each one to flip to <span class="det wrong" style="display:inline-block;padding:1px 6px;">wrong</span>. <em>Hover</em> a chip to highlight its box on the image. Count any real stems/beams that have NO box and enter the count in the missed fields. When done, click <strong>Download verdicts.json</strong> in the top-right.</p>
   <p><em>If unsure about a box, leave it as <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span> and skip — being thorough on the obvious ones is more useful than getting paralyzed on edge cases.</em></p>
 </div>
