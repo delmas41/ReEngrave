@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "work_id": "wtc-i-1",
+  "composer": "Johann Sebastian Bach",
+  "title": "The Well-Tempered Clavier, Book I, Prelude no. 1 in C major",
+  "catalog": "BWV 846/1",
+  "year_composed": 1722,
+  "source_citations": [
+    "Heinrich Schenker, Five Graphic Music Analyses (1933)",
+    "Donald Tovey, A Companion to Bach's Well-Tempered Clavier (1924)"
+  ],
+
+  "known_overall_key": "C major",
+  "expected_measure_count": 35,
+  "expected_time_signature": "4/4",
+
+  "key_plan": [
+    {
+      "section": "opening_tonic",
+      "measure_start": 1,
+      "measure_end": 11,
+      "key": "C major",
+      "role": "Tonic prolongation via I–ii–V7/V–V cycles"
+    },
+    {
+      "section": "tonicization_dominant",
+      "measure_start": 12,
+      "measure_end": 19,
+      "key": "C major",
+      "role": "Tonicization of V (G major) then return — analytically still in C major (Schenkerian background)"
+    },
+    {
+      "section": "closing_pedal_to_PAC",
+      "measure_start": 20,
+      "measure_end": 35,
+      "key": "C major",
+      "role": "Long dominant pedal (G) under chromatic upper-voice activity, resolving to final PAC"
+    }
+  ],
+
+  "notable_cadences": [
+    { "measure": 11, "type": "HC",  "key": "C major", "basis": "Half cadence on V — closes opening tonic prolongation" },
+    { "measure": 19, "type": "HC",  "key": "C major", "basis": "Half cadence preparing dominant pedal" },
+    { "measure": 35, "type": "PAC", "key": "C major", "basis": "Final perfect authentic cadence — V7–I" }
+  ],
+
+  "characteristic_features": [
+    "Single broken-chord arpeggiation pattern throughout — no melody/accompaniment distinction",
+    "Famously diatonic — secondary dominants are the most adventurous chromatic feature",
+    "Influential as a study in pure harmonic progression; Schenker chose it for Five Graphic Music Analyses"
+  ],
+
+  "common_omr_pitfalls": [
+    "Arpeggiation pattern means chord pitches are spread across many beats — chordify may over-fragment chord boundaries",
+    "No real polyphony — voice splitting should be trivial; multiple detected voices in the OMR output suggests an OMR error rather than real voice independence"
+  ],
+
+  "_notes": "Curated 2026-05-24. Conservative encoding — only includes structural facts where Schenker / Tovey / Forte agree. Don't add Schenkerian middle-ground or foreground graph data here; that's M3+ if ever."
+}

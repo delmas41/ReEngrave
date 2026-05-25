@@ -58,10 +58,12 @@ def analyze_musicxml(
 
     Args:
         xml_path: Path to a .musicxml, .xml, or .mxl file.
-        capability: Which capability to run. Only "harmony" is implemented in
-                    M0; "rhythm" and "cross-check" raise NotImplementedError
-                    until M1/M2.
-        work_id: For "cross-check" only — the canonical work identifier.
+        capability: Which capability to run. "harmony", "rhythm", and
+                    "cross-check" are all supported.
+        work_id: For "cross-check" only — the canonical work identifier
+                 from the scholarly DB (e.g. "wtc-i-1", "beethoven-5-i").
+                 Required for cross-check. Use list_scholarly_works() to
+                 see what's available.
         timeout_s: Subprocess timeout, defaults to MAESTRO_TIMEOUT_S (60s).
 
     Returns:
@@ -69,8 +71,9 @@ def analyze_musicxml(
         see docs/maestro-integration-plan.md.
 
     Raises:
-        MaestroBridgeError: subprocess failed, output was malformed, or the
-                             bridge isn't installed.
+        MaestroBridgeError: subprocess failed, output was malformed, the
+                             bridge isn't installed, or cross-check was
+                             called without a work_id.
         FileNotFoundError: xml_path does not exist.
     """
     xml_path = Path(xml_path)
@@ -88,10 +91,15 @@ def analyze_musicxml(
             f"tsx binary not found at {_TSX_BIN}. Run `npm install` in tools/maestro_bridge/."
         )
 
-    if capability not in ("harmony", "rhythm"):
+    if capability not in ("harmony", "rhythm", "cross-check"):
         raise NotImplementedError(
             f"capability '{capability}' is not implemented yet. "
-            "See docs/maestro-integration-plan.md (M2 = cross-check)."
+            "See docs/maestro-integration-plan.md."
+        )
+
+    if capability == "cross-check" and not work_id:
+        raise MaestroBridgeError(
+            "cross-check requires work_id. Call list_scholarly_works() to see available works."
         )
 
     cmd = [_NODE_BIN, _TSX_BIN, str(_ANALYZE_TS_PATH), capability, str(xml_path.resolve())]
@@ -130,4 +138,48 @@ def analyze_musicxml(
         ) from e
 
 
-__all__ = ["analyze_musicxml", "MaestroBridgeError"]
+def list_scholarly_works(timeout_s: float | None = None) -> dict:
+    """List the canonical works available in the scholarly DB.
+
+    Returns the JSON output from `cross-check --list-works`. Use the
+    work_id of any entry as the work_id argument to analyze_musicxml.
+
+    Raises:
+        MaestroBridgeError: bridge isn't installed or returns malformed JSON.
+    """
+    if not _ANALYZE_TS_PATH.exists():
+        raise MaestroBridgeError(
+            f"maestro bridge entry not found at {_ANALYZE_TS_PATH}. "
+            "Did you run `npm install` in tools/maestro_bridge/?"
+        )
+    if not Path(_TSX_BIN).exists():
+        raise MaestroBridgeError(
+            f"tsx binary not found at {_TSX_BIN}. Run `npm install` in tools/maestro_bridge/."
+        )
+
+    cmd = [_NODE_BIN, _TSX_BIN, str(_ANALYZE_TS_PATH), "cross-check", "--list-works"]
+
+    try:
+        proc = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=timeout_s or _DEFAULT_TIMEOUT,
+            check=False,
+        )
+    except subprocess.TimeoutExpired as e:
+        raise MaestroBridgeError(f"bridge timed out after {e.timeout}s listing works") from e
+
+    if proc.returncode != 0:
+        stderr_tail = (proc.stderr or "").strip().splitlines()[-5:]
+        raise MaestroBridgeError(
+            f"bridge exited with code {proc.returncode}:\n" + "\n".join(stderr_tail)
+        )
+
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError as e:
+        raise MaestroBridgeError(f"bridge returned non-JSON output: {e}") from e
+
+
+__all__ = ["analyze_musicxml", "list_scholarly_works", "MaestroBridgeError"]

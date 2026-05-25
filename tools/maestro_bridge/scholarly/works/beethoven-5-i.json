@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "work_id": "beethoven-5-i",
+  "composer": "Ludwig van Beethoven",
+  "title": "Symphony no. 5 in C minor, mvt 1 (Allegro con brio)",
+  "catalog": "Op. 67",
+  "year_composed": 1808,
+  "source_citations": [
+    "Donald Tovey, Essays in Musical Analysis vol. I (1935)",
+    "Heinrich Schenker, Beethovens Fünfte Sinfonie (1925)"
+  ],
+
+  "known_overall_key": "C minor",
+  "expected_measure_count": 502,
+  "expected_time_signature": "2/4",
+
+  "key_plan": [
+    {
+      "section": "exposition_group_1",
+      "measure_start": 1,
+      "measure_end": 58,
+      "key": "C minor",
+      "role": "Main theme, four-note motive saturation, tonic with motion to V"
+    },
+    {
+      "section": "exposition_transition",
+      "measure_start": 59,
+      "measure_end": 62,
+      "key": "C minor",
+      "role": "Horn-call transition modulating to relative major"
+    },
+    {
+      "section": "exposition_group_2",
+      "measure_start": 63,
+      "measure_end": 124,
+      "key": "Eb major",
+      "role": "Lyrical second theme in relative major; closes with PAC"
+    },
+    {
+      "section": "development",
+      "measure_start": 125,
+      "measure_end": 247,
+      "key": "various",
+      "role": "Fragmented motivic working through F minor, G minor, F# diminished; climax on V/V (D major)"
+    },
+    {
+      "section": "recap_group_1",
+      "measure_start": 248,
+      "measure_end": 302,
+      "key": "C minor",
+      "role": "Restatement of main theme — with the famous oboe cadenza at m. 268"
+    },
+    {
+      "section": "recap_group_2",
+      "measure_start": 303,
+      "measure_end": 373,
+      "key": "C major",
+      "role": "Second theme transposed to parallel major (picardy-third effect — Schenker emphasizes this)"
+    },
+    {
+      "section": "coda",
+      "measure_start": 374,
+      "measure_end": 502,
+      "key": "C minor",
+      "role": "Long coda back in C minor with motivic intensification — ~25% of movement"
+    }
+  ],
+
+  "notable_cadences": [
+    { "measure": 122, "type": "PAC", "key": "Eb major", "basis": "Exposition close in relative major" },
+    { "measure": 268, "type": "HC",  "key": "C minor",  "basis": "Half cadence followed by the iconic oboe cadenza" },
+    { "measure": 373, "type": "PAC", "key": "C major",  "basis": "Recap second-theme close in parallel major" },
+    { "measure": 502, "type": "PAC", "key": "C minor",  "basis": "Movement-final cadence" }
+  ],
+
+  "characteristic_features": [
+    "Iconic 4-note motive (G-G-G-Eb in C minor; F-F-F-D when transposed) saturates every section",
+    "Sonata form with second theme appearing in parallel major in the recap rather than tonic — Schenkerian point of analytical interest",
+    "Coda is unusually long for the period (~25% of movement)"
+  ],
+
+  "common_omr_pitfalls": [
+    "Dense orchestration: 14+ instrumental parts — OMR voice-splitting often conflates staves",
+    "Fast 2/4 tempo with frequent eighth-note arpeggiation — per-measure rhythm fragility expected",
+    "Repeat signs in the exposition (mm. 1–124) often confuse OMR — measure numbers may double-count or skip",
+    "Hairpin dynamics and sforzando marks are common — DSv2-trained YOLO may miss these (separate from key-plan accuracy)"
+  ],
+
+  "_notes": "Curated 2026-05-24. Measure numbers reflect standard editions (Breitkopf 1809, Eulenburg, Bärenreiter). Differences of ±1 measure between editions are normal — comparison engine should tolerate ±2 around section boundaries."
+}

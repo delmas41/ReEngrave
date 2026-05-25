@@ -2,14 +2,14 @@
 // ReEngrave ↔ maestroAnalyst bridge. CLI entry.
 //
 // Usage:
-//   npx tsx analyze.ts harmony <musicxml-path>
-//   npx tsx analyze.ts harmony <musicxml-path> --pretty
+//   tsx analyze.ts harmony     <musicxml-path> [--pretty]
+//   tsx analyze.ts rhythm      <musicxml-path> [--pretty]
+//   tsx analyze.ts cross-check <musicxml-path> --work <id> [--pretty]
+//   tsx analyze.ts cross-check --list-works [--pretty]
 //
 // Reads a MusicXML file, runs maestroAnalyst's analyzeScore() over it, and
 // prints a structured JSON report to stdout. Exit 0 on success; non-zero
 // with a one-line error on stderr otherwise.
-//
-// M0 scope: harmony subcommand only. rhythm + cross-check come in M1+M2.
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -17,6 +17,7 @@ import { parseXmlString, parseMxlBuffer } from './gradus/lib/maestroAnalyst/xmlP
 import { analyzeScore } from './gradus/lib/maestroAnalyst';
 import type { ScoreAnalysis } from './gradus/lib/maestroAnalyst/types';
 import { analyzeRhythm } from './rhythm';
+import { crossCheck, listAvailableWorks } from './cross-check';
 
 interface HarmonyOutput {
   schema_version: 1;
@@ -60,9 +61,16 @@ function usage(): never {
   process.stderr.write(
     'usage: analyze.ts harmony     <musicxml-path> [--pretty]\n' +
     '       analyze.ts rhythm      <musicxml-path> [--pretty]\n' +
-    '       analyze.ts cross-check <musicxml-path> --work <id> (not yet — M2)\n',
+    '       analyze.ts cross-check <musicxml-path> --work <id> [--pretty]\n' +
+    '       analyze.ts cross-check --list-works [--pretty]\n',
   );
   process.exit(2);
+}
+
+function getFlagValue(argv: string[], flag: string): string | undefined {
+  const idx = argv.indexOf(flag);
+  if (idx === -1 || idx + 1 >= argv.length) return undefined;
+  return argv[idx + 1];
 }
 
 function fail(msg: string): never {
@@ -135,17 +143,27 @@ function shapeHarmony(analysis: ScoreAnalysis, sourcePath: string): HarmonyOutpu
 
 async function main() {
   const argv = process.argv.slice(2);
-  if (argv.length < 2) usage();
-  const subcommand = argv[0];
-  const xmlPath = argv[1];
-  const pretty = argv.includes('--pretty');
+  if (argv.length < 1) usage();
 
-  if (subcommand !== 'harmony' && subcommand !== 'rhythm') {
-    if (subcommand === 'cross-check') {
-      fail(`subcommand "cross-check" not implemented yet — see docs/maestro-integration-plan.md (M2)`);
-    }
+  const subcommand = argv[0];
+  const pretty = argv.includes('--pretty');
+  const listWorks = argv.includes('--list-works');
+
+  // cross-check --list-works: no MusicXML needed, just dump the catalog.
+  if (subcommand === 'cross-check' && listWorks) {
+    const out = listAvailableWorks();
+    process.stdout.write(JSON.stringify(out, null, pretty ? 2 : 0));
+    process.stdout.write('\n');
+    return;
+  }
+
+  if (subcommand !== 'harmony' && subcommand !== 'rhythm' && subcommand !== 'cross-check') {
     usage();
   }
+
+  // All non-list subcommands require a MusicXML path as the second arg.
+  if (argv.length < 2) usage();
+  const xmlPath = argv[1];
 
   const score = await readMusicXml(xmlPath);
   const analysis = analyzeScore(score);
@@ -153,8 +171,15 @@ async function main() {
   let out: unknown;
   if (subcommand === 'harmony') {
     out = shapeHarmony(analysis, xmlPath);
-  } else {
+  } else if (subcommand === 'rhythm') {
     out = analyzeRhythm(analysis, xmlPath);
+  } else {
+    // cross-check requires --work <id>
+    const workId = getFlagValue(argv, '--work');
+    if (!workId) {
+      fail('cross-check requires --work <id> (or use --list-works to see available works)');
+    }
+    out = crossCheck(analysis, workId, xmlPath);
   }
 
   process.stdout.write(JSON.stringify(out, null, pretty ? 2 : 0));

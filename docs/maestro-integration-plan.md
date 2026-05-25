@@ -332,3 +332,34 @@ Time-signature inference path is in place but the bach-wtc test exercised the ex
 End-to-end latency unchanged (~600ms).
 
 **Ready to start M2 (scholarly DB) — or wire M0+M1 into the OMR pipeline first.**
+
+---
+
+## M2 result (2026-05-24)
+
+**Status: complete and verified.**
+
+**Scope deviation logged**: original plan called for 5 seed works (WTC I.1, Beethoven 5/i, Brahms 4/iv, Chopin Ballade 1, Debussy La Mer/i). Shipped with **2 seed works** (WTC I.1, Beethoven 5/i). Schema + engine are stable; adding the remaining three is a 10-minute task per entry (just curate the JSON). Better to validate the pattern before bulk-adding data.
+
+Built:
+- `tools/maestro_bridge/scholarly/db.ts` — JSON loader + lookup by `work_id`. Cached in memory.
+- `tools/maestro_bridge/scholarly/works/wtc-i-1.json` — Bach Prelude in C, BWV 846/1.
+- `tools/maestro_bridge/scholarly/works/beethoven-5-i.json` — Beethoven 5/i sonata form.
+- `tools/maestro_bridge/cross-check.ts` — comparison engine. Checks overall key + key-plan sections (with measure-boundary tolerance ±2 and key-match thresholds 70% / 40%) + notable cadences (with ±2 measure tolerance). Outputs discrepancies with diagnoses.
+- `analyze.ts` extended: `cross-check <xml> --work <id>` and `cross-check --list-works`.
+- `backend/modules/maestro_bridge.py` extended: `analyze_musicxml(..., capability='cross-check', work_id=...)` + `list_scholarly_works()` helper.
+
+Smoke test results:
+
+| Test | Result |
+|---|---|
+| `--list-works` | Returns 2 works with metadata ✓ |
+| `cross-check bach-wtc.musicxml --work wtc-i-1` | Quality: **low** — 7 discrepancies. Bridge correctly identified that `bach-wtc.musicxml` is **not** the C-major Prelude (it's in A minor at 0.87 conf — likely WTC I no. 20 BWV 865) |
+| `cross-check ... --work nonexistent-work` | Returns `matched: false, reason: 'unknown_work_id'` with available list ✓ |
+| Python `analyze_musicxml(capability='cross-check')` without `work_id` | Raises `MaestroBridgeError` with clear message ✓ |
+
+**Discovery worth flagging**: the bach-wtc benchmark file isn't the C-major Prelude. Sean may want to (a) rename the file, (b) add an A-minor entry to the scholarly DB, or (c) re-run OMR on the correct source PDF.
+
+End-to-end latency unchanged (~600ms).
+
+**Bridge is feature-complete for the M0–M2 scope.** Remaining work: M3 (wire into OMR pipelines), and optionally adding the other 3 canonical works to the scholarly DB.
