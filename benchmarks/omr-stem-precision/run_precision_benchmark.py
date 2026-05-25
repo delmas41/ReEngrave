@@ -95,24 +95,27 @@ B1_MXL = ROOT / "tools/omr/training/data/imslp/beethoven-symphony-1/musicxml/mvt
 
 CELL_SAMPLES: list[CellSample] = [
     # Bach WTC — sparse keyboard, easy ground truth. Page 5 (0-indexed=4).
-    CellSample("wtc-p5-sys0-s0-m0", WTC_PDF, 5, 0, 0, 0, "wtc"),
-    CellSample("wtc-p5-sys0-s1-m1", WTC_PDF, 5, 0, 1, 1, "wtc"),
-    CellSample("wtc-p5-sys1-s0-m0", WTC_PDF, 5, 1, 0, 0, "wtc"),
+    # NOTE: staff_index is GLOBAL within the page, not per-system.
+    # WTC p5 layout: 5 systems × 2 staves each (treble+bass).
+    CellSample("wtc-p5-sys0-s0-m0",  WTC_PDF, 5, 0, 0, 0, "wtc"),      # sys0 treble m0
+    CellSample("wtc-p5-sys0-s1-m1",  WTC_PDF, 5, 0, 1, 1, "wtc"),      # sys0 bass m1
+    CellSample("wtc-p5-sys1-s2-m0",  WTC_PDF, 5, 1, 2, 0, "wtc"),      # sys1 treble m0
 
     # Beethoven 5 page 10 — dense orchestral, hard ground truth.
-    CellSample("beet5-p10-sys0-s8-m0",  BEET5_PDF, 10, 0,  8, 0, "beet5"),  # mid-staff string
-    CellSample("beet5-p10-sys0-s12-m1", BEET5_PDF, 10, 0, 12, 1, "beet5"),  # cello/bass
-    CellSample("beet5-p10-sys0-s0-m2",  BEET5_PDF, 10, 0,  0, 2, "beet5"),  # flutes top
-    CellSample("beet5-p10-sys0-s4-m3",  BEET5_PDF, 10, 0,  4, 3, "beet5"),  # horns
+    # B5 p10 layout: 2 systems × 12 staves each. sys0 = top half, sys1 = bottom.
+    CellSample("beet5-p10-sys0-s8-m0",   BEET5_PDF, 10, 0,  8, 0, "beet5"),  # mid-staff string m0
+    CellSample("beet5-p10-sys1-s12-m1",  BEET5_PDF, 10, 1, 12, 1, "beet5"),  # sys1 top staff m1
+    CellSample("beet5-p10-sys0-s0-m2",   BEET5_PDF, 10, 0,  0, 2, "beet5"),  # flutes m2
+    CellSample("beet5-p10-sys0-s4-m3",   BEET5_PDF, 10, 0,  4, 3, "beet5"),  # horns m3
 
-    # Beethoven 1 mvt 1 with XML — for automated rhythm precision check.
-    # Page 8 was densely-orchestrated in Phase K visual validation.
-    CellSample("b1m1-p8-sys0-s0-m0",  B1_PDF, 8, 0,  0, 0, "catalog-b1m1",
+    # Beethoven 1 mvt 1 page 8 — for automated rhythm precision check.
+    # B1 p8 layout: 3 systems with sizes 3 / 8 / 11 staves.
+    CellSample("b1m1-p8-sys0-s0-m0",   B1_PDF, 8, 0,  0, 0, "catalog-b1m1",
                mxl_path=B1_MXL, xml_measure_n=None, xml_staff=0),
-    CellSample("b1m1-p8-sys1-s6-m1",  B1_PDF, 8, 1,  6, 1, "catalog-b1m1",
-               mxl_path=B1_MXL, xml_measure_n=None, xml_staff=6),
-    CellSample("b1m1-p8-sys0-s10-m2", B1_PDF, 8, 0, 10, 2, "catalog-b1m1",
-               mxl_path=B1_MXL, xml_measure_n=None, xml_staff=10),
+    CellSample("b1m1-p8-sys2-s14-m2",  B1_PDF, 8, 2, 14, 2, "catalog-b1m1",
+               mxl_path=B1_MXL, xml_measure_n=None, xml_staff=3),     # sys2 mid staff
+    CellSample("b1m1-p8-sys2-s17-m4",  B1_PDF, 8, 2, 17, 4, "catalog-b1m1",
+               mxl_path=B1_MXL, xml_measure_n=None, xml_staff=6),     # sys2 mid staff m4
 ]
 
 
