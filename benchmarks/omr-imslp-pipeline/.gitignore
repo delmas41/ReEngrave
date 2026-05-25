@@ -21,3 +21,9 @@ phase-g-output/*
 # The bundle.tar.gz is the scp payload; not source-of-truth.
 phase-h-data/
 phase-h-bundle.tar.gz
+prod_names.tsv
+
+# Phase I visual validation outputs. Large PNG overlays regenerable from
+# phase_i_overlay_compare.py + phase_i_zoom_check.py against the catalog
+# PDFs; not source-of-truth.
+phase-i-overlay/

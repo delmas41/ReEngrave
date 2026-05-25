@@ -42,9 +42,11 @@ cp "$WEIGHTS" "$STAGE/training/data/weights/"
 mkdir -p "$STAGE/data"
 rsync -a "$PHASE_H/" "$STAGE/data/phase-h-data/"
 
-# Remote scripts
+# Remote scripts (include both Phase H and Phase I launchers when present)
 cp "$SCRIPTS_SRC/phase_h_remote_bootstrap.sh" "$STAGE/"
 cp "$SCRIPTS_SRC/phase_h_launch_training.sh"  "$STAGE/"
+[[ -f "$SCRIPTS_SRC/phase_i_launch_training.sh" ]] && \
+  cp "$SCRIPTS_SRC/phase_i_launch_training.sh" "$STAGE/"
 
 # Sanity print
 echo "Bundle contents:"

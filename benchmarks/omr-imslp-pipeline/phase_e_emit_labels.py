@@ -408,13 +408,54 @@ def _element_extent(
 
 def compute_homography(
     rendered_lines: list[tuple[float, float, float, float]],
+    source_left_x: float,
+    source_right_x: float,
+    pdf_dest_left_x: int,
+    pdf_dest_right_x: int,
+    pdf_staff_line_ys: list[int],
+) -> Optional[np.ndarray]:
+    """Map Verovio internal coords of a (one-measure) staff onto its PDF
+    cell. Uses 5 staff lines × 2 endpoints (10 correspondence points).
+
+    Phase I: source_left_x and pdf_dest_left_x are the *music-start* x in
+    each space (right edge of clef/keysig/timesig setup on system-first
+    cells; ≈ staff line left endpoint / cell left edge on non-system-first
+    cells). source_right_x and pdf_dest_right_x are the *measure-end* x
+    (staff line right endpoint / cell right edge — the barline). This
+    removes the ~30-60 px x-offset that the old "cell-edge-to-cell-edge"
+    correspondence produced on system-first cells, where the clef setup
+    space in Verovio and the PDF are NOT proportional.
+    """
+    if len(rendered_lines) != 5 or len(pdf_staff_line_ys) != 5:
+        return None
+    src_pts = []
+    for x0, y0, x1, y1 in rendered_lines:
+        # Staff lines are nominally horizontal; use the endpoint y values
+        # as-is so any tilt is preserved.
+        src_pts.append((source_left_x, y0))
+        src_pts.append((source_right_x, y1))
+    src_pts = np.asarray(src_pts, dtype=np.float32)
+
+    dst_pts = []
+    for y in pdf_staff_line_ys:
+        dst_pts.append((pdf_dest_left_x, y))
+        dst_pts.append((pdf_dest_right_x, y))
+    dst_pts = np.asarray(dst_pts, dtype=np.float32)
+
+    H, _ = cv2.findHomography(src_pts, dst_pts, method=cv2.RANSAC)
+    return H
+
+
+def compute_homography_legacy(
+    rendered_lines: list[tuple[float, float, float, float]],
     pdf_cell_x0: int,
     pdf_cell_x1: int,
     pdf_staff_line_ys: list[int],
 ) -> Optional[np.ndarray]:
-    """Map Verovio internal coords of a (one-measure) staff onto its PDF
-    cell. Uses the 5 staff lines × 2 endpoints (10 correspondence
-    points)."""
+    """Phase E/F/G behavior — maps Verovio staff-line endpoints to the
+    PDF cell's left and right edges. Retained so the visual validation
+    helper can render an OLD-vs-NEW overlay; not called by
+    process_movement after Phase I."""
     if len(rendered_lines) != 5 or len(pdf_staff_line_ys) != 5:
         return None
     src_pts = []
@@ -422,15 +463,118 @@ def compute_homography(
         src_pts.append((x0, y0))
         src_pts.append((x1, y1))
     src_pts = np.asarray(src_pts, dtype=np.float32)
-
     dst_pts = []
     for y in pdf_staff_line_ys:
         dst_pts.append((pdf_cell_x0, y))
         dst_pts.append((pdf_cell_x1, y))
     dst_pts = np.asarray(dst_pts, dtype=np.float32)
-
     H, _ = cv2.findHomography(src_pts, dst_pts, method=cv2.RANSAC)
     return H
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Phase I — music-start x detectors (close the ~50 px catalog x-offset)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def detect_verovio_music_start_x(msd: "MeasureStaffData") -> Optional[float]:
+    """Min x of noteheads/rests in this measure's staff (Verovio internal
+    coords). Falls back to the leftmost element x of any kind. Returns
+    None if the staff has no elements at all.
+
+    This is the source-side anchor for the homography. For system-first
+    measures, the staff-line left endpoint sits at the system left margin
+    (which includes clef/keysig setup space); using the leftmost
+    notehead/rest position instead skips that setup space, matching the
+    PDF detector's behavior on the destination side.
+    """
+    music_xs = [x for cls, _, x, _, _, _ in msd.elements
+                if cls.startswith("notehead") or cls.startswith("rest")]
+    if music_xs:
+        return float(min(music_xs))
+    all_xs = [x for _, _, x, _, _, _ in msd.elements]
+    if all_xs:
+        return float(min(all_xs))
+    return None
+
+
+def detect_pdf_music_start_x(
+    cell_binary: np.ndarray,
+    staff_line_ys_local: list[int],
+    cell_left_x: int,
+    is_system_first: bool,
+) -> int:
+    """Return the page-coord x where the music starts in this cell.
+
+    Non-system-first cells return ``cell_left_x`` unchanged (no clef
+    setup to skip). System-first cells scan the leftmost portion of the
+    cell for the right edge of the clef + keysig + timesig cluster,
+    then add a small breathing-room offset.
+
+    ``cell_binary`` is the cropped cell from PageImage.binary (255 =
+    paper, 0 = ink). ``staff_line_ys_local`` is the 5 staff line y's in
+    cell-LOCAL coordinates (page_y − cell_top).
+    """
+    if not is_system_first:
+        return int(cell_left_x)
+    H, W = cell_binary.shape[:2]
+    if W < 20 or H < 5 or not staff_line_ys_local or len(staff_line_ys_local) < 2:
+        return int(cell_left_x)
+
+    line_gap = (staff_line_ys_local[-1] - staff_line_ys_local[0]) / 4.0
+    if line_gap < 1.0:
+        return int(cell_left_x)
+    pad = int(round(line_gap * 1.5))
+    top = max(0, int(staff_line_ys_local[0]) - pad)
+    bot = min(H, int(staff_line_ys_local[-1]) + pad)
+    if bot - top < 5:
+        return int(cell_left_x)
+
+    staff_strip = cell_binary[top:bot, :]
+    # 1 where there's ink, 0 elsewhere
+    ink = (staff_strip < 128).astype(np.uint8)
+
+    # Kill staff lines via vertical opening (lines are thin horizontal).
+    line_thickness = max(1, int(round(line_gap / 5.0)))
+    vk = max(3, line_thickness * 2 + 1)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, vk))
+    ink_no_lines = cv2.morphologyEx(ink, cv2.MORPH_OPEN, kernel)
+
+    col_ink = ink_no_lines.sum(axis=0).astype(np.int32)
+
+    # Search only the leftmost portion to avoid catching ordinary
+    # noteheads. A typical setup (clef + keysig up to 7 accidentals +
+    # optional time sig) takes 25-35% of the cell width.
+    search_end = max(20, int(W * 0.35))
+    if search_end >= W:
+        search_end = W - 1
+
+    # A column "has a glyph" if its (line-removed) ink ≥ ~15% of the
+    # strip height. That catches clef bodies, key-sig accidentals,
+    # time-sig digits, AND ordinary noteheads (which IS what we want —
+    # if a notehead happens to fall within the leftmost 35%, it's
+    # effectively the music-start).
+    staff_h = bot - top
+    occ_thresh = max(3, int(round(staff_h * 0.15)))
+
+    occupied = col_ink >= occ_thresh
+    occ_idx = np.where(occupied[:search_end])[0]
+    if len(occ_idx) == 0:
+        # No glyph in leftmost 35% — odd; fall back to a conservative
+        # fixed offset (~3 line gaps ≈ typical clef width).
+        return int(cell_left_x) + max(30, int(round(line_gap * 3.0)))
+
+    # The rightmost occupied column in the leftmost 35% = right edge of
+    # the cluster of {clef, keysig, timesig, possibly first notehead}.
+    # That's effectively where the music starts (or just past its first
+    # symbol, which is the same anchor we use on the Verovio side).
+    last_occ = int(occ_idx[-1])
+
+    # Add a small breathing-room offset (~0.4 line_gap) so the anchor
+    # sits just past the setup, in the natural micro-gap engravers
+    # leave between the keysig/timesig and the first note.
+    music_local = min(W - 1, last_occ + max(3, int(round(line_gap * 0.4))))
+    return int(cell_left_x) + int(music_local)
 
 
 def warp_elements(
@@ -791,9 +935,31 @@ def process_movement(
                         continue
 
                     cx0, cy0, cx1, cy1 = cell.bbox_page_px
+                    # Phase I: anchor the homography on music-start x
+                    # (not cell edges) to remove the ~50 px clef-setup
+                    # offset on system-first cells.
+                    is_system_first = (cell.measure_index == 0)
+                    cell_binary = pi.binary[cy0:cy1, cx0:cx1]
+                    local_line_ys = [int(y - cy0) for y in pdf_staff.line_ys]
+                    pdf_music_x = detect_pdf_music_start_x(
+                        cell_binary, local_line_ys, cx0, is_system_first,
+                    )
+                    if is_system_first:
+                        v_start = detect_verovio_music_start_x(msd)
+                        source_left_x = (
+                            v_start if v_start is not None
+                            else float(msd.staff_lines[0][0])
+                        )
+                    else:
+                        source_left_x = float(msd.staff_lines[0][0])
+                    # Right anchor: staff line right endpoint (= barline)
+                    # always matches the PDF cell's right edge.
+                    source_right_x = float(msd.staff_lines[0][2])
+
                     H = compute_homography(
                         msd.staff_lines,
-                        cx0, cx1,
+                        source_left_x, source_right_x,
+                        pdf_music_x, cx1,
                         list(pdf_staff.line_ys),
                     )
                     if H is None:
