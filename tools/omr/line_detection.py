@@ -302,7 +302,10 @@ def detect_beams(
             continue
 
         if h >= split_threshold:
-            n_levels = max(2, round(h / typical_h))
+            # Cap at 5 levels — real music tops out at 1/128th-note beams.
+            # Without the cap a 64-px tall noise blob can split into 20+
+            # phantom sub-beams (see notes near `_merge_tilted_fragments`).
+            n_levels = max(2, min(5, round(h / typical_h)))
             sub_h = max(1, h // n_levels)
             for k in range(n_levels):
                 sub_y = int(y + k * (h / n_levels))
@@ -325,7 +328,154 @@ def detect_beams(
                 height_canonical=int(h),
                 confidence=1.0,
             ))
+
+    # Post-process: merge tilted-beam fragments, then NMS-dedupe overlaps.
+    # Order matters — merging first allows two small adjacent fragments to
+    # become one wide bbox that then survives NMS over a nearby duplicate.
+    out = _merge_tilted_fragments(out, line_spacing)
+    out = _nms_dedup(out)
     return out
+
+
+# ---------------------------------------------------------------------------
+# Post-processing — fragment merge + NMS-style dedup
+# ---------------------------------------------------------------------------
+
+
+def _bbox_iou(a: LineDetection, b: LineDetection) -> float:
+    """Standard IoU between two axis-aligned bboxes."""
+    ax1, ay1 = a.x_canonical, a.y_canonical
+    ax2, ay2 = ax1 + a.width_canonical, ay1 + a.height_canonical
+    bx1, by1 = b.x_canonical, b.y_canonical
+    bx2, by2 = bx1 + b.width_canonical, by1 + b.height_canonical
+    ix1, iy1 = max(ax1, bx1), max(ay1, by1)
+    ix2, iy2 = min(ax2, bx2), min(ay2, by2)
+    iw, ih = max(0, ix2 - ix1), max(0, iy2 - iy1)
+    inter = iw * ih
+    a_area = max(1, a.width_canonical * a.height_canonical)
+    b_area = max(1, b.width_canonical * b.height_canonical)
+    union = a_area + b_area - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _merge_two(a: LineDetection, b: LineDetection) -> LineDetection:
+    """Bbox-union two detections into one."""
+    x1 = min(a.x_canonical, b.x_canonical)
+    y1 = min(a.y_canonical, b.y_canonical)
+    x2 = max(a.x_canonical + a.width_canonical, b.x_canonical + b.width_canonical)
+    y2 = max(a.y_canonical + a.height_canonical, b.y_canonical + b.height_canonical)
+    return LineDetection(
+        smufl_name=a.smufl_name,
+        category=a.category,
+        x_canonical=int(x1),
+        y_canonical=int(y1),
+        width_canonical=int(x2 - x1),
+        height_canonical=int(y2 - y1),
+        confidence=max(a.confidence, b.confidence),
+    )
+
+
+def _merge_tilted_fragments(
+    beams: list[LineDetection],
+    line_spacing: float,
+    *,
+    max_x_gap_lines: float = 0.5,
+    max_y_drift_lines: float = 1.2,
+    max_x_overlap_fraction: float = 0.30,
+) -> list[LineDetection]:
+    """A tilted beam often opens into 2-3 adjacent fragments (the horizontal
+    morphological kernel can't sweep a slanted shape cleanly). Merge any
+    detections that look like fragments of the same beam.
+
+    Two detections merge if all three are true:
+      - **Adjacent in x** — the x-gap between them is ≤ max_x_gap_lines × line_spacing.
+      - **NOT heavily overlapping in x** — if they overlap by more than
+        max_x_overlap_fraction of the smaller width, they're treated as
+        parallel sub-beams (8th+16th double-beam structure) and kept separate.
+      - **Close in y** — y-midpoints differ by ≤ max_y_drift_lines × line_spacing
+        (allows for tilt staircase + thickness variance).
+    """
+    if len(beams) <= 1:
+        return list(beams)
+    sorted_beams = sorted(beams, key=lambda b: b.x_canonical)
+    n = len(sorted_beams)
+    parent = list(range(n))
+
+    def find(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    def union(i: int, j: int) -> None:
+        ri, rj = find(i), find(j)
+        if ri != rj:
+            parent[max(ri, rj)] = min(ri, rj)
+
+    max_gap = max(1, int(round(line_spacing * max_x_gap_lines)))
+    max_drift = max(1, int(round(line_spacing * max_y_drift_lines)))
+
+    for i in range(n):
+        a = sorted_beams[i]
+        a_x_end = a.x_canonical + a.width_canonical
+        a_y_mid = a.y_canonical + a.height_canonical / 2
+        # Sorted by x_canonical, so we only need to look forward until the
+        # gap exceeds the threshold.
+        for j in range(i + 1, n):
+            b = sorted_beams[j]
+            gap = b.x_canonical - a_x_end
+            if gap > max_gap:
+                break  # subsequent beams are even further right
+            # y closeness
+            b_y_mid = b.y_canonical + b.height_canonical / 2
+            if abs(a_y_mid - b_y_mid) > max_drift:
+                continue
+            # x-overlap check — sub-beams (parallel) heavily overlap; fragments don't
+            b_x_end = b.x_canonical + b.width_canonical
+            x_overlap = min(a_x_end, b_x_end) - max(a.x_canonical, b.x_canonical)
+            min_w = max(1, min(a.width_canonical, b.width_canonical))
+            if x_overlap > min_w * max_x_overlap_fraction:
+                continue
+            union(i, j)
+
+    groups: dict[int, list[LineDetection]] = {}
+    for i, b in enumerate(sorted_beams):
+        groups.setdefault(find(i), []).append(b)
+
+    merged: list[LineDetection] = []
+    for group in groups.values():
+        if len(group) == 1:
+            merged.append(group[0])
+        else:
+            m = group[0]
+            for other in group[1:]:
+                m = _merge_two(m, other)
+            merged.append(m)
+    return merged
+
+
+def _nms_dedup(
+    beams: list[LineDetection],
+    *,
+    iou_threshold: float = 0.55,
+) -> list[LineDetection]:
+    """Non-maximum suppression for over-detected beams: when two boxes have
+    IoU ≥ threshold, keep the wider one (it's almost always the more
+    complete detection)."""
+    if len(beams) <= 1:
+        return list(beams)
+    # Sort by width descending so we keep the largest detections first
+    sorted_beams = sorted(beams, key=lambda b: b.width_canonical, reverse=True)
+    kept: list[LineDetection] = []
+    for b in sorted_beams:
+        suppressed = False
+        for k in kept:
+            if _bbox_iou(b, k) >= iou_threshold:
+                suppressed = True
+                break
+        if not suppressed:
+            kept.append(b)
+    return kept
 
 
 # ---------------------------------------------------------------------------
