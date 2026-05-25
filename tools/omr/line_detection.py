@@ -329,11 +329,15 @@ def detect_beams(
                 confidence=1.0,
             ))
 
-    # Post-process: merge tilted-beam fragments, then NMS-dedupe overlaps.
-    # Order matters — merging first allows two small adjacent fragments to
-    # become one wide bbox that then survives NMS over a nearby duplicate.
+    # Post-process: merge tilted-beam fragments, NMS-dedupe overlaps, then
+    # validate each beam against detected stems (a real beam always
+    # connects to ≥1 stem end). Order matters — merging first so two small
+    # adjacent fragments become one wide bbox before NMS / stem-support
+    # checks; otherwise the small fragments individually might not pass.
     out = _merge_tilted_fragments(out, line_spacing)
     out = _nms_dedup(out)
+    stems = detect_stems(cell)
+    out = _prune_beams_by_stem_support(out, stems, line_spacing)
     return out
 
 
@@ -452,6 +456,65 @@ def _merge_tilted_fragments(
                 m = _merge_two(m, other)
             merged.append(m)
     return merged
+
+
+def _prune_beams_by_stem_support(
+    beams: list[LineDetection],
+    stems: list[LineDetection],
+    line_spacing: float,
+    *,
+    min_supporting_stems: int = 1,
+    proximity_lines: float = 0.6,
+) -> list[LineDetection]:
+    """Reject beams that don't connect to any stem ends.
+
+    A real beam always touches the END of one or more stems (on the side
+    opposite the notehead). Slurs, ties, hairpins, and stray horizontal
+    ink do not. Use this as a structural filter.
+
+    For each beam, count stems satisfying ALL of:
+      - stem's x_center is within the beam's x-range
+      - either the stem's top-y OR bottom-y is within
+        proximity_lines × line_spacing of the beam's y-center
+
+    Keep the beam iff at least `min_supporting_stems` such stems exist.
+
+    `min_supporting_stems=1` is lenient — beams CAN connect to a single
+    flagged stem in rare engravings, and detect_stems doesn't have 100%
+    recall (missing a stem shouldn't kill a real beam adjacent to it).
+    If the stem detector misses ALL stems in a beam group, the beam
+    gets rejected — acceptable tradeoff for the precision win on the
+    other false-positive categories.
+    """
+    if not beams:
+        return beams
+    if not stems:
+        # No stems to validate against — leave beams alone (better than
+        # rejecting everything, which would happen on stems-failed cells).
+        return beams
+
+    proximity = max(2, int(round(line_spacing * proximity_lines)))
+
+    kept: list[LineDetection] = []
+    for beam in beams:
+        bx0 = beam.x_canonical
+        bx1 = beam.x_canonical + beam.width_canonical
+        by_mid = beam.y_canonical + beam.height_canonical / 2
+        supporters = 0
+        for stem in stems:
+            stem_x_mid = stem.x_canonical + stem.width_canonical / 2
+            if stem_x_mid < bx0 or stem_x_mid > bx1:
+                continue
+            stem_y_top = stem.y_canonical
+            stem_y_bot = stem.y_canonical + stem.height_canonical
+            if (abs(stem_y_top - by_mid) <= proximity
+                    or abs(stem_y_bot - by_mid) <= proximity):
+                supporters += 1
+                if supporters >= min_supporting_stems:
+                    break
+        if supporters >= min_supporting_stems:
+            kept.append(beam)
+    return kept
 
 
 def _nms_dedup(

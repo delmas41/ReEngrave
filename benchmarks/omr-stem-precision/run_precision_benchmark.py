@@ -53,6 +53,77 @@ from tools.omr.preprocessing import render_page  # noqa: E402
 from tools.omr.staff_detector import detect_staves  # noqa: E402
 from tools.omr.measure_extractor import extract_measures  # noqa: E402
 from tools.omr.line_detection import detect_stems, detect_beams  # noqa: E402
+from tools.omr.yolo_detector import YoloDetector  # noqa: E402
+
+
+# Prod YOLO weights for front-matter masking (Idea 1: mask clefs / keysigs /
+# timesigs / accidentals before classical CV runs, so stem & beam detection
+# can't pick up clef strokes or accidental bars as false-positive stems).
+PROD_WEIGHTS = Path("/Users/seanjohnson/Desktop/ReEngrave/omr-weights/"
+                    "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt")
+
+# YOLO class names whose bboxes should be masked out before CV detection.
+# These are the symbols that LIVE at the front of the measure (clefs, key
+# sigs, time sigs) plus any inline accidentals — none of these are stems,
+# beams, or noteheads, so masking them does not hide musical content.
+FRONT_MATTER_CLASSES = {
+    # Clefs
+    "clefG", "clefF", "clefCAlto", "clefCTenor",
+    "clefUnpitchedPercussion", "clef8", "clef15",
+    # Time signatures (full + per-digit)
+    "timeSig0", "timeSig1", "timeSig2", "timeSig3", "timeSig4",
+    "timeSig5", "timeSig6", "timeSig7", "timeSig8", "timeSig9",
+    "timeSigCommon", "timeSigCutCommon",
+    # Key signatures + inline accidentals
+    "keySharp", "keyFlat", "keyNatural",
+    "accidentalSharp", "accidentalFlat", "accidentalNatural",
+    "accidentalDoubleSharp", "accidentalDoubleFlat",
+    # Numerals on tuplets & time-sig area
+    "numeral1", "numeral2", "numeral3", "numeral4", "numeral5",
+    "numeral6", "numeral7", "numeral8", "numeral9",
+}
+
+
+def mask_front_matter(cell, yolo_dets) -> int:
+    """Mutate cell.image (and cell.image_no_staff if present) to set the
+    pixels inside each YOLO front-matter bbox to paper-white. Returns the
+    number of bboxes masked."""
+    if not yolo_dets:
+        return 0
+    n_masked = 0
+    for det in yolo_dets:
+        if det.smufl_name not in FRONT_MATTER_CLASSES:
+            continue
+        x0 = max(0, det.x_canonical)
+        y0 = max(0, det.y_canonical)
+        x1 = min(cell.image.shape[1], det.x_canonical + det.width_canonical)
+        y1 = min(cell.image.shape[0], det.y_canonical + det.height_canonical)
+        if x1 <= x0 or y1 <= y0:
+            continue
+        # Paper is 255 (white). cell.image is BGR or grayscale uint8.
+        if cell.image.ndim == 3:
+            cell.image[y0:y1, x0:x1, :] = 255
+        else:
+            cell.image[y0:y1, x0:x1] = 255
+        if cell.image_no_staff is not None:
+            if cell.image_no_staff.ndim == 3:
+                cell.image_no_staff[y0:y1, x0:x1, :] = 255
+            else:
+                cell.image_no_staff[y0:y1, x0:x1] = 255
+        n_masked += 1
+    return n_masked
+
+
+# Module-level YOLO detector, lazy-init on first use (loading the weights
+# takes a few seconds).
+_yolo_detector: Optional[YoloDetector] = None
+
+
+def _get_yolo() -> YoloDetector:
+    global _yolo_detector
+    if _yolo_detector is None:
+        _yolo_detector = YoloDetector(weights_path=PROD_WEIGHTS, device="auto")
+    return _yolo_detector
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -158,6 +229,14 @@ def process_cell(
         return None
 
     cell = matches[0]
+
+    # Idea 1: run YOLO first to find clefs / keysigs / timesigs / accidentals,
+    # then mask their bboxes to paper-white before classical CV. Eliminates
+    # false-positive stems on clef strokes, accidental bars, and time-sig digits.
+    yolo = _get_yolo()
+    yolo_dets = yolo.detect(cell, conf_threshold=0.25, imgsz=1280)
+    n_masked = mask_front_matter(cell, yolo_dets)
+
     cv_stems = detect_stems(cell)
     cv_beams = detect_beams(cell)
 
@@ -243,6 +322,7 @@ def process_cell(
         "measure_index": sample.measure_index,
         "cell_canonical_w": cell.width,
         "cell_canonical_h": cell.height,
+        "front_matter_masked_count": n_masked,
         "auto": {
             "cv_stem_count": len(cv_stems),
             "cv_beam_count": len(cv_beams),
