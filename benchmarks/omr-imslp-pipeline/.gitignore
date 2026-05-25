@@ -34,3 +34,10 @@ phase-j-labels/
 phase-j-output/*
 !phase-j-output/batch_summary.json
 !phase-j-output/.gitkeep
+
+# Phase K structural-only label set (CV-detected stems/beams). Same shape
+# as Phase J — regenerable from phase_k_emit_labels.py.
+phase-k-labels/
+phase-k-output/*
+!phase-k-output/batch_summary.json
+!phase-k-output/.gitkeep
