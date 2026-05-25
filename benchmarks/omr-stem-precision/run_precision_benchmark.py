@@ -199,20 +199,35 @@ def process_cell(
             "ink_fill_ratio": round(ink_fill(det), 3),
         })
 
-    # Render overlay PNG with numbered detections for verdict
+    # Render overlay PNG with numbered detections for verdict. Make the
+    # labels large + boxed so they're readable when verdicting in a browser.
     overlay = cv2.cvtColor(cell.image, cv2.COLOR_GRAY2BGR) if cell.image.ndim == 2 else cell.image.copy()
+
+    def draw_labeled_box(img, x0, y0, x1, y1, color, label, *, thickness=3, font_scale=1.2):
+        cv2.rectangle(img, (x0, y0), (x1, y1), color, thickness)
+        # Draw a filled background rectangle for the label, then the label text in white
+        (tw, th), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, font_scale, 2)
+        pad = 4
+        # Place label above the box; if it'd clip the top, place it below
+        ly1 = y0 - pad
+        ly0 = ly1 - th - 2 * pad
+        if ly0 < 0:
+            ly0 = y1 + pad
+            ly1 = ly0 + th + 2 * pad
+        lx0 = x0
+        lx1 = lx0 + tw + 2 * pad
+        cv2.rectangle(img, (lx0, ly0), (lx1, ly1), color, -1)
+        cv2.putText(img, label, (lx0 + pad, ly1 - pad - 2),
+                    cv2.FONT_HERSHEY_SIMPLEX, font_scale, (255, 255, 255), 2)
+
     for i, det in enumerate(cv_stems):
         x0 = det.x_canonical; y0 = det.y_canonical
         x1 = x0 + det.width_canonical; y1 = y0 + det.height_canonical
-        cv2.rectangle(overlay, (x0, y0), (x1, y1), (0, 200, 0), 2)
-        cv2.putText(overlay, f"s{i}", (x0 + 2, y0 - 4),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 0), 1)
+        draw_labeled_box(overlay, x0, y0, x1, y1, (0, 200, 0), f"s{i}")
     for i, det in enumerate(cv_beams):
         x0 = det.x_canonical; y0 = det.y_canonical
         x1 = x0 + det.width_canonical; y1 = y0 + det.height_canonical
-        cv2.rectangle(overlay, (x0, y0), (x1, y1), (255, 0, 0), 2)
-        cv2.putText(overlay, f"b{i}", (x0 + 2, y0 - 4),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        draw_labeled_box(overlay, x0, y0, x1, y1, (255, 0, 0), f"b{i}")
 
     overlay_path = out_dir / "overlays" / f"{sample.cell_id}.png"
     overlay_path.parent.mkdir(parents=True, exist_ok=True)

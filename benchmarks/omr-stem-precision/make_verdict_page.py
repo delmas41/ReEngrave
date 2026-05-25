@@ -54,11 +54,19 @@ HTML_TEMPLATE = """<!doctype html>
 
 <h1>Stem & Beam Verdicts — __TITLE__</h1>
 <div class="help">
-  Each numbered box on the cell overlays is a CV detection. Click each box's chip below to flip it between
-  <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span> (default) and
-  <span class="det wrong" style="display:inline-block;padding:1px 6px;">wrong</span>.
-  Count any real stems/beams that have NO box and enter the count in the "missed" fields.
-  When done, click <strong>Download verdicts.json</strong> in the top-right and run <code>score_verdicts.py</code> on it.
+  <p><strong>How to judge each detection:</strong></p>
+  <ul>
+    <li><span style="color:#2e7d32;font-weight:bold;">Green boxes (stems):</span>
+      <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span> if the box is on an actual <em>note stem</em> (a thin vertical line connecting a notehead to a beam or flag).
+      <span class="det wrong" style="display:inline-block;padding:1px 6px;">wrong</span> if it's on a clef stroke, a letter in text, the bar of a sharp/flat/natural, the inner stroke of a double barline, or any other non-stem vertical ink.
+    </li>
+    <li><span style="color:#0d47a1;font-weight:bold;">Blue boxes (beams):</span>
+      <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span> if the box is on an actual <em>beam stroke</em> (a thick black horizontal/diagonal bar connecting two or more stems — what marks eighth-notes-as-a-group).
+      <span class="det wrong" style="display:inline-block;padding:1px 6px;">wrong</span> if it's on a slur, tie, hairpin, staff line residue, ledger line, or other non-beam horizontal mark.
+    </li>
+  </ul>
+  <p><strong>Workflow:</strong> chips default to <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span>. Click each one to flip to <span class="det wrong" style="display:inline-block;padding:1px 6px;">wrong</span>. <em>Hover</em> a chip to highlight its box on the image. Count any real stems/beams that have NO box and enter the count in the missed fields. When done, click <strong>Download verdicts.json</strong> in the top-right.</p>
+  <p><em>If unsure about a box, leave it as <span class="det correct" style="display:inline-block;padding:1px 6px;">correct</span> and skip — being thorough on the obvious ones is more useful than getting paralyzed on edge cases.</em></p>
 </div>
 
 <div class="summary" id="summary">
