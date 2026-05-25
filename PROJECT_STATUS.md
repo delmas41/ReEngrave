@@ -7,6 +7,10 @@ This document is a snapshot. For day-to-day reference docs see
 
 ---
 
+## Scope
+
+**Personal-use only** (re-affirmed 2026-05-24). Sean is the sole user. The Stripe payment gate and multi-user infra are already built but no longer the optimization target — design decisions should minimize complexity and ongoing cost, not maximize generality. The only acceptable interaction surface for new tooling is Claude Code itself (Claude sessions running locally, calling Bash / Python / YOLO). No new long-running services / MCP servers / HTTP proxy routes / UI surfaces unless Sean explicitly promotes them.
+
 ## TL;DR
 
 ReEngrave has **two converged tracks** of work now living together on `main`:
@@ -107,6 +111,18 @@ Payments: Stripe webhook, $5/score for Vision diff, admin-email bypass.
 - **YOLO training via symphony MusicXML × multiple IMSLP editions.** Avoid hand-labeling ~500 cells for measure-line detection by using symphony MusicXML as ground truth (authoritative for measure boundaries, stem direction, rhythm), then pulling every available IMSLP edition of the same symphonies and training YOLO by comparing detections against the XML. Includes a publisher/era axis as a transfer-learning hypothesis (Breitkopf & Härtel 1862–1890 etc.).
   - Limit: MusicXML lacks dynamics, expression, articulation — this is **only useful for structural classes**.
   - Status: parked. Surface at the start of the next ReEngrave session.
+
+### Plans recovered 2026-05-24 from past sessions
+
+Seven items Sean had proposed across earlier YOLO sessions that hadn't carried into the active plan. Full quotes + scoping notes in [NOTES.md](NOTES.md).
+
+1. **Maestro Analyzer as a theory-constraint layer over OMR** — wire `gradus-vercel/lib/maestroAnalyst/` in to verify harmony, beat mapping, and scholarly cross-check. Scoped 2026-05-24 → see [docs/maestro-integration-plan.md](docs/maestro-integration-plan.md). Personal-use constraint locks the shape to a Bun CLI + thin Python wrapper; no HTTP server, no MCP, no UI changes. Next action: M0 (Bun script + submodule + harmony capability, ~1 day).
+2. **GKB access for OMR context** — composer/period/harmonic-vocabulary knowledge. Bounded by item 1.
+3. **DoReMi + MUSCIMA++ training data** — expand beyond DSv2.
+4. **RTMDet / yolov8x@200ep escalation** — current weights stop at yolov8l@30ep; Sean already approved the full run.
+5. **Multi-type barline classification** — single / double / final / repeat instead of one class.
+6. **MusicXML repeat signs** — currently dropped on export.
+7. **"Just ink" as a label class** — needs 5-minute verification in the annotate UI.
 
 See [NOTES.md](NOTES.md) for the full note.
 
