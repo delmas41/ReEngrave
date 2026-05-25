@@ -53,6 +53,8 @@ cp "$SCRIPTS_SRC/phase_h_launch_training.sh"  "$STAGE/"
   cp "$SCRIPTS_SRC/phase_j_mix_setup.sh" "$STAGE/"
 [[ -f "$SCRIPTS_SRC/phase_k_launch_training.sh" ]] && \
   cp "$SCRIPTS_SRC/phase_k_launch_training.sh" "$STAGE/"
+[[ -f "$SCRIPTS_SRC/phase_l_launch_training.sh" ]] && \
+  cp "$SCRIPTS_SRC/phase_l_launch_training.sh" "$STAGE/"
 
 # Sanity print
 echo "Bundle contents:"

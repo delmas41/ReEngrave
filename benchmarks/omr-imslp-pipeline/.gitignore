@@ -41,3 +41,10 @@ phase-k-labels/
 phase-k-output/*
 !phase-k-output/batch_summary.json
 !phase-k-output/.gitkeep
+
+# Phase L — Phase K with catalog classes moved to DSv2-free slots
+# (stem=160, beam=200, barline=207). Regenerable from phase_l_emit_labels.py.
+phase-l-labels/
+phase-l-output/*
+!phase-l-output/batch_summary.json
+!phase-l-output/.gitkeep

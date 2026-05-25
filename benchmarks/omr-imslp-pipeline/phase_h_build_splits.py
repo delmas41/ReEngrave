@@ -142,9 +142,25 @@ def main() -> int:
     print(f"  train.repeated.txt: {len(train_paths)} × {args.repeat} = "
           f"{len(train_paths) * args.repeat} lines")
 
-    # Class names: DSv2 146-class list.
-    from tools.omr.training.deepscores_classes import DEEPSCORES_V2_CLASSES
-    nc = len(DEEPSCORES_V2_CLASSES)
+    # Class names: prod-208 class list (read directly from the warm-start
+    # weights so the yaml matches the model head exactly). The earlier
+    # 146-class DSv2 list was the source of a Phase K-blocker bug:
+    # catalog labels at class 207 were filtered as "out of range" during
+    # val cache building, leaving the val set empty and crashing training
+    # with `No valid images found in cache`. See PHASE_K_RESULTS.md.
+    try:
+        from ultralytics import YOLO
+        weights_path = Path("/Users/seanjohnson/Desktop/ReEngrave/omr-weights/"
+                            "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt")
+        prod_names = YOLO(str(weights_path)).names
+        names_list = [prod_names[i] for i in range(len(prod_names))]
+        nc = len(names_list)
+    except Exception as exc:  # noqa: BLE001
+        print(f"  WARN: could not read prod model names ({exc!r}); "
+              f"falling back to 146-class DSv2 list")
+        from tools.omr.training.deepscores_classes import DEEPSCORES_V2_CLASSES
+        names_list = list(DEEPSCORES_V2_CLASSES)
+        nc = len(names_list)
 
     # data-catalog-only.yaml — fine-tune on catalog ONLY
     # (Phase 3.4 v1b-style; smallest, fastest, preserves DSv2 by warm start)
@@ -153,7 +169,7 @@ def main() -> int:
         "train": "train.txt",
         "val": "val.txt",
         "nc": nc,
-        "names": list(DEEPSCORES_V2_CLASSES),
+        "names": names_list,
     }
 
     # data-catalog-mix.yaml — DSv2 + upsampled catalog (handoff plan)
@@ -174,7 +190,7 @@ def main() -> int:
         # regression check.
         "val": "val.txt",
         "nc": nc,
-        "names": list(DEEPSCORES_V2_CLASSES),
+        "names": names_list,
     }
 
     # Manual YAML emit (no PyYAML dependency required on the remote box's
