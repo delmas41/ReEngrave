@@ -19,7 +19,7 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 | **CLI** | `python3 -m tools.omr.transcribe score.pdf` | Batch transcription, scripting, anyone who just wants `PDF → MusicXML / LilyPond` without spinning up Docker |
 
 **Stack:**
-- **OMR (primary):** In-house YOLOv8l + classical CV pipeline (`tools/omr/`) — fine-tuned on DeepScoresV2, **F1 98.8%** on the Bach WTC verdict set.
+- **OMR (primary):** In-house YOLOv8l + classical CV pipeline (`tools/omr/`) — DeepScoresV2 baseline + Phase J catalog-augmented mix-mode fine-tune (Beethoven symphony editions × MusicXML for structural classes: barlines/stems/beams), **WTC F1 100%** on the 3-cell verdict sample (vs prior 99.2%), +24% black-notehead recall on Beethoven 5.
 - **OMR (secondary):** Claude Vision API (Opus 4.6) — reads pages visually, slower, costs API credits, useful when the YOLO model is wrong.
 - **Backend:** FastAPI + SQLAlchemy 2.0 async + SQLite (aiosqlite) + Claude Vision API + Verovio + LilyPond + music21 + ultralytics
 - **Frontend:** React + Vite + React Query + TypeScript
@@ -54,12 +54,12 @@ Site runs at **http://localhost**. Backend API at **http://localhost:8000**.
 
 ### OMR weights (required before first run)
 
-The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`, ~88 MB). It's gitignored.
+The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-phase-j-mix-30ep.pt`, ~88 MB). It's gitignored.
 
 ```bash
 # docker-compose mounts /Users/seanjohnson/Desktop/ReEngrave/omr-weights/ → /app/tools/omr/training/data/weights/
 ls /Users/seanjohnson/Desktop/ReEngrave/omr-weights/
-# Should contain: deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+# Should contain: deepscoresv2-yolov8l-phase-j-mix-30ep.pt
 ```
 
 If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads and the Gradus / comparison flows.
@@ -151,7 +151,7 @@ ReEngrave/
 │       │   └── data/            # gitignored — DSv2 dataset, fine-tuning shards, weights
 │       └── tests/               # 156 unit tests across Phase 4 modules
 ├── omr-weights/                 # gitignored, mounted into the container
-│   └── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB
+│   └── deepscoresv2-yolov8l-phase-j-mix-30ep.pt   # ~88 MB
 ├── benchmarks/
 │   ├── omr-phase1/              # staff/measure extraction
 │   ├── omr-phase2.5/            # classical-CV vs YOLO bake-off
@@ -254,7 +254,7 @@ ReEngrave/
 
 | Env var               | Default | What it tunes |
 |-----------------------|--------:|---|
-| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override weights file path |
+| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt` | Override weights file path |
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
 | `OMR_IMGSZ`           | `1280`  | YOLO inference image size (larger = slower, catches small noteheads) |
@@ -337,7 +337,7 @@ Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 - `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
 - The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.
 - Phase 4f introduced classical-CV stem and beam detection (morphological opening + connected components) because YOLO bounding boxes are structurally bad at thin lines.
-- Production weights: `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (Phase 3.3, F1 98.8% on 25-cell Bach WTC verdict set).
+- Production weights: `deepscoresv2-yolov8l-phase-j-mix-30ep.pt` (Phase J mix — Phase 3.3 baseline + catalog-augmented fine-tune on Beethoven symphony editions × MusicXML structural classes). WTC F1 100% on the 3-cell verdict sample; +24% noteheadBlack recall on Beethoven 5 vs the 30ep baseline. Prior baseline `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (F1 98.8% / 99.2% on the same set) is kept side-by-side under `omr-weights/`.
 - Phase 3.4 attempted to add 6 custom classes (barlines, textDynamic) and caused catastrophic forgetting — those classes are now learned via classical CV instead, not YOLO. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
 
 ### Claude Vision OMR notes

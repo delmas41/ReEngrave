@@ -126,7 +126,7 @@ See [NOTES.md](NOTES.md) for the full note.
 ## How to run things (quick reference)
 
 ```bash
-# Full web stack (requires omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt)
+# Full web stack (requires omr-weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt)
 docker compose up -d
 # → http://localhost
 

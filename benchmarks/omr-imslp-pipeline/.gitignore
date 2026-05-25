@@ -27,3 +27,10 @@ prod_names.tsv
 # phase_i_overlay_compare.py + phase_i_zoom_check.py against the catalog
 # PDFs; not source-of-truth.
 phase-i-overlay/
+
+# Phase J structural-only label set + batch output. Same shape as Phase
+# E/G — large auto-generated artifacts, regenerable from phase_j_emit_labels.py.
+phase-j-labels/
+phase-j-output/*
+!phase-j-output/batch_summary.json
+!phase-j-output/.gitkeep

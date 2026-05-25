@@ -22,7 +22,7 @@ Output schema (JSON):
 
     {
       "source_pdf": "score.pdf",
-      "weights":    "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+      "weights":    "deepscoresv2-yolov8l-phase-j-mix-30ep.pt",
       "conf_threshold": 0.25,
       "n_pages_processed": 3,
       "n_systems_total": 6,
@@ -126,10 +126,11 @@ from .rhythm import parse_time_signature, resolve_rhythms_for_cell
 from .line_detection import detect_lines
 
 
-# Default weights — Phase 3.3, F1 98.8% on the 25 verdict cells.
-# Keep this in sync with the latest "production" weights.
+# Default weights — Phase J mix (catalog-augmented), WTC F1 100% (vs prior
+# prod 99.2%) on the 3-cell verdict sample, +24% black-notehead recall on
+# Beethoven 5 p10. Keep this in sync with the latest "production" weights.
 DEFAULT_WEIGHTS = (
-    "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+    "tools/omr/training/data/weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt"
 )
 
 

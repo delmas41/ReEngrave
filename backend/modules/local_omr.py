@@ -91,10 +91,10 @@ def _weights_path() -> str:
     env_path = os.getenv("OMR_WEIGHTS_PATH", "").strip()
     if env_path:
         return env_path
-    # Fall back to the default the retrospective documented.
+    # Fall back to the latest promoted weights (Phase J mix, WTC F1 100%).
     return str(
         _REPO_ROOT
-        / "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+        / "tools/omr/training/data/weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt"
     )
 
 

@@ -1,0 +1,512 @@
+{
+  "started_at": "2026-05-24 18:46:30",
+  "runs": [
+    {
+      "movement_pages": [
+        7,
+        22
+      ],
+      "pages_processed": 16,
+      "cells_total": 2456,
+      "cells_with_xml_match": 2456,
+      "barlines_emitted": 2456,
+      "stems_emitted": 4900,
+      "beams_emitted": 882,
+      "labels_total": 8238,
+      "homography_failures": 0,
+      "elapsed_seconds": 27.0,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        23,
+        31
+      ],
+      "pages_processed": 9,
+      "cells_total": 1474,
+      "cells_with_xml_match": 745,
+      "barlines_emitted": 745,
+      "stems_emitted": 1065,
+      "beams_emitted": 681,
+      "labels_total": 2491,
+      "homography_failures": 0,
+      "elapsed_seconds": 13.8,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        32,
+        36
+      ],
+      "pages_processed": 5,
+      "cells_total": 1063,
+      "cells_with_xml_match": 1063,
+      "barlines_emitted": 1063,
+      "stems_emitted": 1245,
+      "beams_emitted": 83,
+      "labels_total": 2391,
+      "homography_failures": 0,
+      "elapsed_seconds": 10.3,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        37,
+        51
+      ],
+      "pages_processed": 14,
+      "cells_total": 2582,
+      "cells_with_xml_match": 2582,
+      "barlines_emitted": 2582,
+      "stems_emitted": 4129,
+      "beams_emitted": 1586,
+      "labels_total": 8297,
+      "homography_failures": 0,
+      "elapsed_seconds": 28.2,
+      "work": "beethoven-symphony-1",
+      "edition": "imslp-52848",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        1,
+        23
+      ],
+      "pages_processed": 23,
+      "cells_total": 2554,
+      "cells_with_xml_match": 2477,
+      "barlines_emitted": 2477,
+      "stems_emitted": 6008,
+      "beams_emitted": 2321,
+      "labels_total": 10806,
+      "homography_failures": 0,
+      "elapsed_seconds": 34.6,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        24,
+        36
+      ],
+      "pages_processed": 13,
+      "cells_total": 1350,
+      "cells_with_xml_match": 1350,
+      "barlines_emitted": 1350,
+      "stems_emitted": 2644,
+      "beams_emitted": 2227,
+      "labels_total": 6221,
+      "homography_failures": 0,
+      "elapsed_seconds": 19.5,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        37,
+        41
+      ],
+      "pages_processed": 5,
+      "cells_total": 1238,
+      "cells_with_xml_match": 1221,
+      "barlines_emitted": 1221,
+      "stems_emitted": 1180,
+      "beams_emitted": 96,
+      "labels_total": 2497,
+      "homography_failures": 0,
+      "elapsed_seconds": 10.4,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        42,
+        61
+      ],
+      "pages_processed": 20,
+      "cells_total": 3784,
+      "cells_with_xml_match": 2181,
+      "barlines_emitted": 2181,
+      "stems_emitted": 3285,
+      "beams_emitted": 353,
+      "labels_total": 5819,
+      "homography_failures": 0,
+      "elapsed_seconds": 30.7,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-503997",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        3,
+        48
+      ],
+      "pages_processed": 46,
+      "cells_total": 2833,
+      "cells_with_xml_match": 1939,
+      "barlines_emitted": 1938,
+      "stems_emitted": 4044,
+      "beams_emitted": 1194,
+      "labels_total": 7176,
+      "homography_failures": 1,
+      "elapsed_seconds": 26.4,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        49,
+        72
+      ],
+      "pages_processed": 24,
+      "cells_total": 1872,
+      "cells_with_xml_match": 1529,
+      "barlines_emitted": 1529,
+      "stems_emitted": 2663,
+      "beams_emitted": 2076,
+      "labels_total": 6268,
+      "homography_failures": 0,
+      "elapsed_seconds": 17.3,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        73,
+        79
+      ],
+      "pages_processed": 7,
+      "cells_total": 1028,
+      "cells_with_xml_match": 1028,
+      "barlines_emitted": 1028,
+      "stems_emitted": 795,
+      "beams_emitted": 30,
+      "labels_total": 1853,
+      "homography_failures": 0,
+      "elapsed_seconds": 7.6,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        80,
+        120
+      ],
+      "pages_processed": 41,
+      "cells_total": 3721,
+      "cells_with_xml_match": 3165,
+      "barlines_emitted": 3165,
+      "stems_emitted": 4325,
+      "beams_emitted": 411,
+      "labels_total": 7901,
+      "homography_failures": 0,
+      "elapsed_seconds": 28.3,
+      "work": "beethoven-symphony-2",
+      "edition": "imslp-977672",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        1,
+        41
+      ],
+      "pages_processed": 41,
+      "cells_total": 3775,
+      "cells_with_xml_match": 3700,
+      "barlines_emitted": 3700,
+      "stems_emitted": 4283,
+      "beams_emitted": 444,
+      "labels_total": 8427,
+      "homography_failures": 0,
+      "elapsed_seconds": 30.7,
+      "work": "beethoven-symphony-4",
+      "edition": "imslp-411721",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        42,
+        53
+      ],
+      "pages_processed": 12,
+      "cells_total": 455,
+      "cells_with_xml_match": 455,
+      "barlines_emitted": 455,
+      "stems_emitted": 1628,
+      "beams_emitted": 1504,
+      "labels_total": 3587,
+      "homography_failures": 0,
+      "elapsed_seconds": 7.3,
+      "work": "beethoven-symphony-4",
+      "edition": "imslp-411721",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        92,
+        125
+      ],
+      "pages_processed": 34,
+      "cells_total": 2909,
+      "cells_with_xml_match": 2468,
+      "barlines_emitted": 2468,
+      "stems_emitted": 3679,
+      "beams_emitted": 1637,
+      "labels_total": 7784,
+      "homography_failures": 0,
+      "elapsed_seconds": 25.1,
+      "work": "beethoven-symphony-4",
+      "edition": "imslp-411721",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        7,
+        29
+      ],
+      "pages_processed": 23,
+      "cells_total": 1276,
+      "cells_with_xml_match": 1276,
+      "barlines_emitted": 1276,
+      "stems_emitted": 1950,
+      "beams_emitted": 640,
+      "labels_total": 3866,
+      "homography_failures": 0,
+      "elapsed_seconds": 67.7,
+      "work": "beethoven-symphony-6",
+      "edition": "imslp-57857",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        30,
+        48
+      ],
+      "pages_processed": 19,
+      "cells_total": 530,
+      "cells_with_xml_match": 530,
+      "barlines_emitted": 530,
+      "stems_emitted": 3732,
+      "beams_emitted": 2323,
+      "labels_total": 6585,
+      "homography_failures": 0,
+      "elapsed_seconds": 53.7,
+      "work": "beethoven-symphony-6",
+      "edition": "imslp-57857",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        73,
+        90
+      ],
+      "pages_processed": 18,
+      "cells_total": 1077,
+      "cells_with_xml_match": 562,
+      "barlines_emitted": 562,
+      "stems_emitted": 864,
+      "beams_emitted": 148,
+      "labels_total": 1574,
+      "homography_failures": 0,
+      "elapsed_seconds": 53.4,
+      "work": "beethoven-symphony-6",
+      "edition": "imslp-57857",
+      "mvt": 5,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        1,
+        40
+      ],
+      "pages_processed": 40,
+      "cells_total": 2861,
+      "cells_with_xml_match": 1891,
+      "barlines_emitted": 1891,
+      "stems_emitted": 3764,
+      "beams_emitted": 870,
+      "labels_total": 6525,
+      "homography_failures": 0,
+      "elapsed_seconds": 37.1,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        41,
+        51
+      ],
+      "pages_processed": 11,
+      "cells_total": 495,
+      "cells_with_xml_match": 345,
+      "barlines_emitted": 345,
+      "stems_emitted": 1642,
+      "beams_emitted": 1504,
+      "labels_total": 3491,
+      "homography_failures": 0,
+      "elapsed_seconds": 9.9,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        52,
+        60
+      ],
+      "pages_processed": 9,
+      "cells_total": 701,
+      "cells_with_xml_match": 544,
+      "barlines_emitted": 544,
+      "stems_emitted": 1161,
+      "beams_emitted": 195,
+      "labels_total": 1900,
+      "homography_failures": 0,
+      "elapsed_seconds": 9.1,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        61,
+        89
+      ],
+      "pages_processed": 29,
+      "cells_total": 2709,
+      "cells_with_xml_match": 2709,
+      "barlines_emitted": 2709,
+      "stems_emitted": 5675,
+      "beams_emitted": 585,
+      "labels_total": 8969,
+      "homography_failures": 0,
+      "elapsed_seconds": 35.5,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-06303",
+      "mvt": 4,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        3,
+        24
+      ],
+      "pages_processed": 22,
+      "cells_total": 3407,
+      "cells_with_xml_match": 2469,
+      "barlines_emitted": 2469,
+      "stems_emitted": 5282,
+      "beams_emitted": 1231,
+      "labels_total": 8982,
+      "homography_failures": 0,
+      "elapsed_seconds": 31.9,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 1,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        25,
+        31
+      ],
+      "pages_processed": 7,
+      "cells_total": 329,
+      "cells_with_xml_match": 218,
+      "barlines_emitted": 218,
+      "stems_emitted": 851,
+      "beams_emitted": 738,
+      "labels_total": 1807,
+      "homography_failures": 0,
+      "elapsed_seconds": 7.5,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 2,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        32,
+        36
+      ],
+      "pages_processed": 5,
+      "cells_total": 760,
+      "cells_with_xml_match": 592,
+      "barlines_emitted": 592,
+      "stems_emitted": 1138,
+      "beams_emitted": 189,
+      "labels_total": 1919,
+      "homography_failures": 0,
+      "elapsed_seconds": 7.8,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 3,
+      "status": "ok"
+    },
+    {
+      "movement_pages": [
+        37,
+        66
+      ],
+      "pages_processed": 30,
+      "cells_total": 3891,
+      "cells_with_xml_match": 3867,
+      "barlines_emitted": 3867,
+      "stems_emitted": 8651,
+      "beams_emitted": 874,
+      "labels_total": 13392,
+      "homography_failures": 0,
+      "elapsed_seconds": 44.1,
+      "work": "beethoven-symphony-8",
+      "edition": "imslp-875077",
+      "mvt": 4,
+      "status": "ok"
+    }
+  ],
+  "totals": {
+    "pages_processed": 523,
+    "cells_total": 51130,
+    "cells_with_xml_match": 43362,
+    "barlines_emitted": 43361,
+    "stems_emitted": 80583,
+    "beams_emitted": 24822,
+    "labels_total": 148766,
+    "homography_failures": 1,
+    "runs_succeeded": 26,
+    "runs_failed": 0
+  },
+  "finished_at": "2026-05-24 18:57:45"
+}
