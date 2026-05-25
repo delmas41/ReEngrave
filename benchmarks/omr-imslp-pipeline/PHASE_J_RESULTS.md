@@ -130,13 +130,9 @@ Reasons:
 
 1. **Barline + beam detection went DOWN slightly** on Beethoven 5
    p10. The catalog labels we trained on aren't dominating the mix
-   strongly enough (catalog was 19% of mix). To improve structural
-   classes specifically, a follow-up phase could:
-   - Upsample catalog 3–5× so it's ~50% of mix.
-   - Or use a higher learning rate just for the catalog batches.
-   - Or do a 2-stage train: mix first to preserve prod, then catalog-
-     only at very low LR with frozen backbone for the structural-class
-     polish.
+   strongly enough (catalog was 19% of mix). Followup options not yet
+   tested: higher per-batch catalog lr, or 2-stage train (mix → frozen-
+   backbone catalog polish).
 
 2. **WTC F1 = 100% on 3 cells only.** The full WTC verdict set has 30
    cells but only 3 are hand-verdicted. A more thorough WTC verdict
@@ -153,6 +149,50 @@ Reasons:
    warrants a closer look — but per the F1 metric, every notehead we
    need IS detected.
 
+## Followup: CAT_REPEAT=4 upsample run (FAILED — DID NOT promote)
+
+Hypothesis: catalog was only 19% of the mix, so the model didn't lean
+into the structural classes hard enough. Try CAT_REPEAT=4 to push
+catalog to ~48% of the mix.
+
+Setup: same DSv2 dense subset (1714 images) + catalog × 4 (1596 images)
+= 3310 mix images. Same config (Phase 3.4 v1b), same instance class
+(2× RTX 4090 in CH). Training EarlyStopped at epoch ~10, best at
+epoch 4. Cost ~$0.70.
+
+Beethoven 5 p10 @ imgsz=1280 conf=0.25 — three-way compare:
+
+| Class | Prod | Phase J Mix (PROMOTED) | Phase J Mix cat4x (this run) |
+|---|---:|---:|---:|
+| Total | 300 | 300 | 300 |
+| noteheadBlack* (combined) | 147 | 183 (+24%) | **190 (+29%)** |
+| clefG | 14 | 14 | 14 |
+| keyFlat | 33 | 26 | 27 |
+| staff (=barline) | 18 | 16 | 17 |
+| beam | 13 | **8** | **3** ← worse |
+| stem | 0 | 0 | 0 |
+
+Bach WTC: cat4x emits ~1-4 detections per cell, ALL classed as `beam`
+(vs promoted Phase J Mix's 16-17 mixed-class detections per cell
+including noteheads/rests + beams). WTC F1 collapses back to ~0%
+because the verdict scorer ports notehead detections, not beams.
+
+**Diagnosis:** more catalog signal pushed the model *too far* toward
+the dominant catalog class (beam) at the expense of every other class
+including the very noteheads we wanted to preserve. On Bach piano
+cells (which are notehead-heavy and beam-light), the model now
+predicts mostly beams — which is wrong for Bach but locally
+correct-shaped relative to the catalog training distribution.
+
+**Decision:** keep promoted Phase J Mix (19% catalog), archive cat4x
+at `tools/omr/training/data/weights/_archive/2026-05-24-phase-j-mix-cat4x-superseded.pt`.
+
+The takeaway: there's an optimal mix ratio somewhere between 19% and
+48% catalog. The 19% promoted weights are a working operating point;
+20-35% might polish the structural-class detection slightly without
+sacrificing notehead precision. Not pursued this session — the
+promoted weights already exceed the WTC F1 promotion gate.
+
 ## Artifacts
 
 ```
@@ -166,7 +206,8 @@ benchmarks/omr-imslp-pipeline/
   phase-j-output/batch_summary.json  ← per-movement stats
   phase-j-results/
     results.csv                      ← catalog-only training trajectory (8 epochs, EarlyStopped)
-    results-mix.csv                  ← mix training trajectory (30 epochs)
+    results-mix.csv                  ← mix training trajectory (30 epochs, PROMOTED)
+    results-mix-cat4x.csv            ← upsample (CAT_REPEAT=4) trajectory (10 epochs, EarlyStopped, ARCHIVED)
     train.log / train-mix.log        ← full ultralytics logs
   PHASE_J_RESULTS.md                 ← this file
 
@@ -181,7 +222,8 @@ omr-weights/
 |---|---:|
 | Phase J catalog-only (UK 2x RTX 4090) | $0.42 |
 | Phase J mix (Spain 1x RTX 4090) | ~$1.20 |
-| **Phase J total** | **~$1.60** |
+| Phase J upsample CAT_REPEAT=4 (Switzerland 2x RTX 4090) | ~$0.70 |
+| **Phase J total** | **~$2.30** |
 | Phase I (broken) | $1.30 |
 | Phase H attempts 1+2 (broken) | $0.92 |
-| **Cumulative catalog-augmented training spend** | **~$3.80** |
+| **Cumulative catalog-augmented training spend** | **~$4.50** |

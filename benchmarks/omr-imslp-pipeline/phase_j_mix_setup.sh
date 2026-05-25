@@ -79,15 +79,16 @@ N_DSV2=$(wc -l < "$DSV2_TRAIN_LIST")
 N_CAT=$(wc -l < "$CAT_TRAIN")
 echo "DSv2 images: $N_DSV2  Catalog images: $N_CAT"
 
-# Upsample catalog so it's not drowned in DSv2. Target: catalog ≈ 20% of mix.
-# upsample_ratio = round(0.20 * N_DSV2 / (0.80 * N_CAT))
+# Upsample catalog so it's not drowned in DSv2. Default: catalog ≈ 20% of mix.
+# Override with CAT_REPEAT env var (e.g. CAT_REPEAT=4 → catalog dominates ~50%).
 if (( N_CAT > 0 )); then
-  REPEAT=$(( (N_DSV2 / 4) / N_CAT ))
-  (( REPEAT < 1 )) && REPEAT=1
+  DEFAULT_REPEAT=$(( (N_DSV2 / 4) / N_CAT ))
+  (( DEFAULT_REPEAT < 1 )) && DEFAULT_REPEAT=1
 else
-  REPEAT=1
+  DEFAULT_REPEAT=1
 fi
-echo "Upsampling catalog by ${REPEAT}x so it's ~20% of mix"
+REPEAT=${CAT_REPEAT:-$DEFAULT_REPEAT}
+echo "Upsampling catalog by ${REPEAT}x (default would be ${DEFAULT_REPEAT}x)"
 
 > "$MIX_TRAIN"
 for ((i=0; i<REPEAT; i++)); do
