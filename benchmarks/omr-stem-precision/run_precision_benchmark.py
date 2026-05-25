@@ -66,10 +66,12 @@ PROD_WEIGHTS = Path("/Users/seanjohnson/Desktop/ReEngrave/omr-weights/"
 # These are the symbols that LIVE at the front of the measure (clefs, key
 # sigs, time sigs) plus any inline accidentals — none of these are stems,
 # beams, or noteheads, so masking them does not hide musical content.
-FRONT_MATTER_CLASSES = {
-    # Clefs
+CLEF_CLASSES = {
     "clefG", "clefF", "clefCAlto", "clefCTenor",
     "clefUnpitchedPercussion", "clef8", "clef15",
+}
+
+FRONT_MATTER_CLASSES = CLEF_CLASSES | {
     # Time signatures (full + per-digit)
     "timeSig0", "timeSig1", "timeSig2", "timeSig3", "timeSig4",
     "timeSig5", "timeSig6", "timeSig7", "timeSig8", "timeSig9",
@@ -105,17 +107,53 @@ ALL_NOTEHEAD_CLASSES = STEMMED_NOTEHEAD_CLASSES | UNSTEMMED_NOTEHEAD_CLASSES
 def mask_front_matter(cell, yolo_dets) -> int:
     """Mutate cell.image (and cell.image_no_staff if present) to set the
     pixels inside each YOLO front-matter bbox to paper-white. Returns the
-    number of bboxes masked."""
+    number of bboxes masked.
+
+    Per-class margin expansion:
+      - Clefs: YOLO's bbox covers the loop/body but typically clips long
+        descenders (G clef tail, etc.). Extend the mask to cover the full
+        staff height + 1 line_spacing on each side, and add a small
+        horizontal pad to ensure the entire glyph is wiped.
+      - Other front-matter (timesig, keysig, accidentals): expand by a
+        small fixed pad (0.3 line_spacing) to cover dot residues / serifs.
+    """
     if not yolo_dets:
         return 0
+    line_spacing = _staff_line_spacing(cell)
+    staff_ys = getattr(cell, "staff_line_ys_canonical", None) or []
+    if staff_ys:
+        staff_top = min(staff_ys)
+        staff_bot = max(staff_ys)
+    else:
+        staff_top, staff_bot = 0, cell.image.shape[0]
+
+    clef_v_margin = max(4, int(round(line_spacing * 1.5)))   # G-clef tail buffer
+    clef_h_margin = max(2, int(round(line_spacing * 0.3)))
+    small_margin = max(2, int(round(line_spacing * 0.3)))
+
     n_masked = 0
+    h, w = cell.image.shape[:2]
     for det in yolo_dets:
         if det.smufl_name not in FRONT_MATTER_CLASSES:
             continue
-        x0 = max(0, det.x_canonical)
-        y0 = max(0, det.y_canonical)
-        x1 = min(cell.image.shape[1], det.x_canonical + det.width_canonical)
-        y1 = min(cell.image.shape[0], det.y_canonical + det.height_canonical)
+        x0 = det.x_canonical
+        y0 = det.y_canonical
+        x1 = det.x_canonical + det.width_canonical
+        y1 = det.y_canonical + det.height_canonical
+
+        if det.smufl_name in CLEF_CLASSES:
+            # Extend mask to cover the entire staff vertical span + clef_v_margin
+            # on each side. This wipes any descender (G clef tail) or ascender.
+            x0 = max(0, x0 - clef_h_margin)
+            x1 = min(w, x1 + clef_h_margin)
+            y0 = max(0, min(staff_top, y0) - clef_v_margin)
+            y1 = min(h, max(staff_bot, y1) + clef_v_margin)
+        else:
+            x0 = max(0, x0 - small_margin)
+            x1 = min(w, x1 + small_margin)
+            y0 = max(0, y0 - small_margin)
+            y1 = min(h, y1 + small_margin)
+
         if x1 <= x0 or y1 <= y0:
             continue
         # Paper is 255 (white). cell.image is BGR or grayscale uint8.
@@ -410,6 +448,15 @@ def process_cell(
     # false-positive stems on clef strokes, accidental bars, and time-sig digits.
     yolo = _get_yolo()
     yolo_dets = yolo.detect(cell, conf_threshold=0.25, imgsz=1280)
+
+    # Second sweep at lower confidence ONLY for clefs — they're high-value
+    # to mask out (the G-clef tail looks identical to a stem) and YOLO can
+    # occasionally drop below 0.25 on dense or low-contrast cells.
+    if not any(d.smufl_name in CLEF_CLASSES for d in yolo_dets):
+        low_conf_dets = yolo.detect(cell, conf_threshold=0.10, imgsz=1280)
+        clef_only = [d for d in low_conf_dets if d.smufl_name in CLEF_CLASSES]
+        yolo_dets = yolo_dets + clef_only
+
     n_masked = mask_front_matter(cell, yolo_dets)
 
     # Raw CV detections.
