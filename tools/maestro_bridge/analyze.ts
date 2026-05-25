@@ -16,6 +16,7 @@ import * as path from 'node:path';
 import { parseXmlString, parseMxlBuffer } from './gradus/lib/maestroAnalyst/xmlParser';
 import { analyzeScore } from './gradus/lib/maestroAnalyst';
 import type { ScoreAnalysis } from './gradus/lib/maestroAnalyst/types';
+import { analyzeRhythm } from './rhythm';
 
 interface HarmonyOutput {
   schema_version: 1;
@@ -57,8 +58,8 @@ interface HarmonyOutput {
 
 function usage(): never {
   process.stderr.write(
-    'usage: analyze.ts harmony <musicxml-path> [--pretty]\n' +
-    '       analyze.ts rhythm <musicxml-path> (not yet implemented — M1)\n' +
+    'usage: analyze.ts harmony     <musicxml-path> [--pretty]\n' +
+    '       analyze.ts rhythm      <musicxml-path> [--pretty]\n' +
     '       analyze.ts cross-check <musicxml-path> --work <id> (not yet — M2)\n',
   );
   process.exit(2);
@@ -139,16 +140,23 @@ async function main() {
   const xmlPath = argv[1];
   const pretty = argv.includes('--pretty');
 
-  if (subcommand !== 'harmony') {
-    if (subcommand === 'rhythm' || subcommand === 'cross-check') {
-      fail(`subcommand "${subcommand}" not implemented in M0 — see docs/maestro-integration-plan.md`);
+  if (subcommand !== 'harmony' && subcommand !== 'rhythm') {
+    if (subcommand === 'cross-check') {
+      fail(`subcommand "cross-check" not implemented yet — see docs/maestro-integration-plan.md (M2)`);
     }
     usage();
   }
 
   const score = await readMusicXml(xmlPath);
   const analysis = analyzeScore(score);
-  const out = shapeHarmony(analysis, xmlPath);
+
+  let out: unknown;
+  if (subcommand === 'harmony') {
+    out = shapeHarmony(analysis, xmlPath);
+  } else {
+    out = analyzeRhythm(analysis, xmlPath);
+  }
+
   process.stdout.write(JSON.stringify(out, null, pretty ? 2 : 0));
   process.stdout.write('\n');
 }

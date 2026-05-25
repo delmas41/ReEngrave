@@ -297,3 +297,38 @@ The bridge correctly processes whatever shape the OMR emits. The 141-chords-in-3
 End-to-end latency: ~600ms (Node cold start + tsx transform + analysis). Acceptable.
 
 **Ready to start M1 (rhythm validation).**
+
+---
+
+## M1 result (2026-05-24)
+
+**Status: complete and verified.**
+
+**Plan deviation logged**: `rhythmValidation` was scoped to live in `maestroAnalyst/` (inside the submodule). Moved to `tools/maestro_bridge/rhythm.ts` (inside ReEngrave) to avoid a cross-repo dance every iteration. Single-file move to promote it back if/when desired. The file imports types from the submodule but logic lives here.
+
+Built:
+- `tools/maestro_bridge/rhythm.ts` — measures-×-voices duration summer, time-signature inference (modal beat-count snapped to standard signatures), per-voice diagnostic with note-value hints (eighth-short, sixteenth-over, etc.) and cadence cross-reference.
+- `tools/maestro_bridge/analyze.ts` — extended with the `rhythm` subcommand.
+- `backend/modules/maestro_bridge.py` — extended to accept `capability='rhythm'`.
+
+Smoke test on every benchmark MusicXML in `benchmarks/omr-phase4-extension/output/`:
+
+| File | Measures | Warnings | Measures with issues |
+|---|---:|---:|---:|
+| `bach-wtc.musicxml` | 3 | 20 | 3 |
+| `handel-leadsheet.musicxml` | 4 | 45 | 4 |
+| `handel-reduction.musicxml` | 6 | 35 | 6 |
+| `beethoven-5.musicxml` | 14 | 162 | 14 |
+
+Every benchmark flags every measure — which matches the CLAUDE.md known limitation: "Per-measure beat sums on busy keyboard music are close to but not exactly the time signature." The bridge now gives a per-voice, per-measure breakdown of *exactly* where the OMR drift is, with note-value hints for the deltas.
+
+Sample diagnostic from `bach-wtc.musicxml` m1:
+- Voice 1 (Staff p4-s0-0): summed 9.500 quarter-beats, expected 4, delta +5.500 → "likely OMR stacked notes from multiple voices into voice 1"
+- Voice 2 (Staff p4-s0-1): summed 4.000 — clean
+- Voice 3 (Staff p4-s1-0): summed 3.5625, short by 0.4375 (~7/16) → "likely missed a note or rest"
+
+Time-signature inference path is in place but the bach-wtc test exercised the explicit path (maestroAnalyst's MusicXML parser appears to default to 4/4 when no `<time>` element is present, so the inference fallback only kicks in for files where the parser explicitly returns an empty timeSignatures array — a more aggressive null state). The inference logic is a backstop, not a hot path.
+
+End-to-end latency unchanged (~600ms).
+
+**Ready to start M2 (scholarly DB) — or wire M0+M1 into the OMR pipeline first.**

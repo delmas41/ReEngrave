@@ -88,10 +88,10 @@ def analyze_musicxml(
             f"tsx binary not found at {_TSX_BIN}. Run `npm install` in tools/maestro_bridge/."
         )
 
-    if capability != "harmony":
+    if capability not in ("harmony", "rhythm"):
         raise NotImplementedError(
-            f"capability '{capability}' is not implemented in M0. "
-            "See docs/maestro-integration-plan.md for the milestone plan."
+            f"capability '{capability}' is not implemented yet. "
+            "See docs/maestro-integration-plan.md (M2 = cross-check)."
         )
 
     cmd = [_NODE_BIN, _TSX_BIN, str(_ANALYZE_TS_PATH), capability, str(xml_path.resolve())]
