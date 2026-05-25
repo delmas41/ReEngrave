@@ -84,6 +84,24 @@ FRONT_MATTER_CLASSES = {
 }
 
 
+# Notehead class names that DO have a stem (filled or open noteheads,
+# half/quarter/eighth/sixteenth/etc.). Whole and double-whole noteheads
+# do NOT have a stem in standard engraving.
+STEMMED_NOTEHEAD_CLASSES = {
+    "noteheadBlackOnLine", "noteheadBlackOnLineSmall",
+    "noteheadBlackInSpace", "noteheadBlackInSpaceSmall",
+    "noteheadHalfOnLine", "noteheadHalfOnLineSmall",
+    "noteheadHalfInSpace", "noteheadHalfInSpaceSmall",
+}
+UNSTEMMED_NOTEHEAD_CLASSES = {
+    "noteheadWholeOnLine", "noteheadWholeOnLineSmall",
+    "noteheadWholeInSpace", "noteheadWholeInSpaceSmall",
+    "noteheadDoubleWholeOnLine", "noteheadDoubleWholeOnLineSmall",
+    "noteheadDoubleWholeInSpace", "noteheadDoubleWholeInSpaceSmall",
+}
+ALL_NOTEHEAD_CLASSES = STEMMED_NOTEHEAD_CLASSES | UNSTEMMED_NOTEHEAD_CLASSES
+
+
 def mask_front_matter(cell, yolo_dets) -> int:
     """Mutate cell.image (and cell.image_no_staff if present) to set the
     pixels inside each YOLO front-matter bbox to paper-white. Returns the
@@ -124,6 +142,163 @@ def _get_yolo() -> YoloDetector:
     if _yolo_detector is None:
         _yolo_detector = YoloDetector(weights_path=PROD_WEIGHTS, device="auto")
     return _yolo_detector
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Structurally-constrained stem detection
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _staff_line_spacing(cell) -> float:
+    ys = getattr(cell, "staff_line_ys_canonical", None) or []
+    if len(ys) >= 2:
+        sorted_ys = sorted(ys)
+        gaps = [sorted_ys[i+1] - sorted_ys[i] for i in range(len(sorted_ys)-1)]
+        return sum(gaps) / len(gaps)
+    return 24.0
+
+
+def _stem_touches_notehead(stem, noteheads, line_spacing) -> Optional[object]:
+    """Return the notehead this stem connects to (top OR bottom of stem must
+    be within ±0.6 line_spacing of a notehead, AND stem's x-center must be
+    within ±0.4 line_spacing of the notehead's left or right edge — stems
+    grow from the notehead edge, not the center).
+    """
+    y_tol = max(3, int(round(line_spacing * 0.6)))
+    x_tol = max(2, int(round(line_spacing * 0.4)))
+    stem_x_mid = stem.x_canonical + stem.width_canonical // 2
+    stem_y_top = stem.y_canonical
+    stem_y_bot = stem.y_canonical + stem.height_canonical
+    for nh in noteheads:
+        if nh.smufl_name not in ALL_NOTEHEAD_CLASSES:
+            continue
+        nh_x_left = nh.x_canonical
+        nh_x_right = nh.x_canonical + nh.width_canonical
+        nh_y_top = nh.y_canonical
+        nh_y_bot = nh.y_canonical + nh.height_canonical
+        # x must align with one of the notehead's edges (where stems grow)
+        if not (abs(stem_x_mid - nh_x_left) <= x_tol or abs(stem_x_mid - nh_x_right) <= x_tol):
+            continue
+        # y: top or bottom of stem must align with the notehead's y-range
+        # (allowing some slack because stems thread through the notehead)
+        if (nh_y_top - y_tol <= stem_y_top <= nh_y_bot + y_tol or
+                nh_y_top - y_tol <= stem_y_bot <= nh_y_bot + y_tol):
+            return nh
+    return None
+
+
+def filter_stems_by_noteheads(cv_stems, noteheads, line_spacing) -> tuple[list, set, dict]:
+    """Apply notehead-anchored elimination rules to CV stem detections.
+
+    Returns (kept_stems, anchored_notehead_ids, stats_dict) where:
+      - kept_stems: stems that connect to a real notehead
+      - anchored_notehead_ids: id() of each notehead that has at least
+        one anchored stem (so predictive logic can skip those columns)
+      - stats_dict: counters for kept / dropped / dropped-whole
+    """
+    kept = []
+    anchored_ids: set = set()
+    stats = {"kept_anchored": 0, "dropped_orphan": 0, "dropped_whole_only": 0}
+    for s in cv_stems:
+        nh = _stem_touches_notehead(s, noteheads, line_spacing)
+        if nh is None:
+            stats["dropped_orphan"] += 1
+            continue
+        if nh.smufl_name in UNSTEMMED_NOTEHEAD_CLASSES:
+            stats["dropped_whole_only"] += 1
+            continue
+        kept.append(s)
+        anchored_ids.add(id(nh))
+        stats["kept_anchored"] += 1
+    return kept, anchored_ids, stats
+
+
+def _group_noteheads_into_columns(noteheads, line_spacing) -> list[list]:
+    """Group noteheads whose x-centers cluster within ±0.4 line_spacing
+    into chord columns. Each column shares ONE stem (or none, if all whole)."""
+    x_tol = max(2, int(round(line_spacing * 0.4)))
+    sorted_nh = sorted(
+        [n for n in noteheads if n.smufl_name in ALL_NOTEHEAD_CLASSES],
+        key=lambda n: n.x_canonical + n.width_canonical / 2,
+    )
+    columns = []
+    for nh in sorted_nh:
+        nh_x_mid = nh.x_canonical + nh.width_canonical / 2
+        if columns and abs(
+            (columns[-1][0].x_canonical + columns[-1][0].width_canonical / 2) - nh_x_mid
+        ) <= x_tol:
+            columns[-1].append(nh)
+        else:
+            columns.append([nh])
+    return columns
+
+
+def predict_missing_stems(noteheads, anchored_ids, cell, line_spacing) -> list:
+    """For each stemmed-notehead COLUMN (chord) with NO CV-detected stem
+    anchored to ANY of its noteheads, scan a narrow vertical strip for ≥30 %
+    ink. If found, synthesize ONE predicted stem for the whole column.
+    """
+    if not noteheads:
+        return []
+
+    # Group noteheads into chord columns — one stem per column at most.
+    columns = _group_noteheads_into_columns(noteheads, line_spacing)
+
+    binary = cell.image if cell.image.ndim == 2 else cv2.cvtColor(cell.image, cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(binary, 180, 255, cv2.THRESH_BINARY_INV)
+    h, w = binary.shape[:2]
+
+    strip_h = int(round(line_spacing * 3.0))   # ~3 line_spacings tall scan
+    strip_w = max(3, int(round(line_spacing * 0.3)))
+
+    predicted = []
+    from tools.omr.line_detection import LineDetection
+
+    for column in columns:
+        # Skip columns that are entirely whole/double-whole noteheads — no stem expected
+        stemmed = [nh for nh in column if nh.smufl_name in STEMMED_NOTEHEAD_CLASSES]
+        if not stemmed:
+            continue
+        # Skip columns where ANY notehead already has a CV-anchored stem
+        if any(id(nh) in anchored_ids for nh in stemmed):
+            continue
+        # Use the highest + lowest notehead to define the column's notehead span
+        nh_x_left = min(nh.x_canonical for nh in stemmed)
+        nh_x_right = max(nh.x_canonical + nh.width_canonical for nh in stemmed)
+        col_top = min(nh.y_canonical for nh in stemmed)
+        col_bot = max(nh.y_canonical + nh.height_canonical for nh in stemmed)
+
+        # Two candidate directions: stem-up (right edge, scanning up from col_top)
+        # vs stem-down (left edge, scanning down from col_bot). Pick the one
+        # with higher ink fill.
+        candidates = [
+            ("up",   nh_x_right - strip_w // 2, max(0, col_top - strip_h), col_top),
+            ("down", nh_x_left,                col_bot, min(h, col_bot + strip_h)),
+        ]
+        best = None
+        for direction, cx, y0, y1 in candidates:
+            x0 = max(0, cx - strip_w // 2)
+            x1 = min(w, x0 + strip_w)
+            if y1 <= y0 or x1 <= x0:
+                continue
+            roi = binary[y0:y1, x0:x1]
+            if roi.size == 0:
+                continue
+            ink_fill = float((roi > 0).sum()) / roi.size
+            if ink_fill >= 0.30 and (best is None or ink_fill > best[0]):
+                best = (ink_fill, x0, y0, x1, y1)
+        if best is not None:
+            _, x0, y0, x1, y1 = best
+            predicted.append(LineDetection(
+                smufl_name="stem",
+                category="stem",
+                x_canonical=x0,
+                y_canonical=y0,
+                width_canonical=x1 - x0,
+                height_canonical=y1 - y0,
+                confidence=0.5,   # lower than CV-detected; marks as predicted
+            ))
+    return predicted
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -237,8 +412,28 @@ def process_cell(
     yolo_dets = yolo.detect(cell, conf_threshold=0.25, imgsz=1280)
     n_masked = mask_front_matter(cell, yolo_dets)
 
-    cv_stems = detect_stems(cell)
-    cv_beams = detect_beams(cell)
+    # Raw CV detections.
+    raw_stems = detect_stems(cell)
+    raw_beams = detect_beams(cell)
+
+    # Idea 4: notehead-anchored stem elimination — drop any CV stem that
+    # isn't connected to a real (non-whole) notehead.
+    line_spacing = _staff_line_spacing(cell)
+    noteheads = [d for d in yolo_dets if d.smufl_name in ALL_NOTEHEAD_CLASSES]
+    kept_stems, anchored_nh_ids, stem_filter_stats = filter_stems_by_noteheads(
+        raw_stems, noteheads, line_spacing
+    )
+
+    # Idea 6: predictive gap-fill — for each stemmed-notehead chord column
+    # without any anchored stem, scan a vertical strip for ink and predict.
+    predicted_stems = predict_missing_stems(noteheads, anchored_nh_ids, cell, line_spacing)
+    cv_stems = kept_stems + predicted_stems
+
+    # Beams: detect_beams already does stem-support filtering internally,
+    # but it uses the RAW stem set. Re-filter beams against our cleaner
+    # notehead-anchored stems for a final structural check.
+    from tools.omr.line_detection import _prune_beams_by_stem_support
+    cv_beams = _prune_beams_by_stem_support(raw_beams, cv_stems, line_spacing)
 
     # Auto ink-fill check (Tier 2): % of black pixels in each bbox.
     binary = cell.image if cell.image.ndim == 2 else cv2.cvtColor(cell.image, cv2.COLOR_BGR2GRAY)
@@ -323,6 +518,9 @@ def process_cell(
         "cell_canonical_w": cell.width,
         "cell_canonical_h": cell.height,
         "front_matter_masked_count": n_masked,
+        "n_noteheads_yolo": len(noteheads),
+        "stem_filter_stats": stem_filter_stats,
+        "predicted_stems_added": len(predicted_stems),
         "auto": {
             "cv_stem_count": len(cv_stems),
             "cv_beam_count": len(cv_beams),
