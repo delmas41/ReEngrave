@@ -201,6 +201,7 @@ def detect_beams(
     max_height_lines: float = 1.0,
     typical_single_beam_lines: float = 0.22,
     min_height_absolute: int = 2,
+    max_width_cell_fraction: float = 0.70,
 ) -> list[LineDetection]:
     """Find beam-like horizontal ink runs in `cell`.
 
@@ -212,6 +213,10 @@ def detect_beams(
       4. Connected components → candidate beams.
       5. Filter:
            - width ≥ min_width_lines × line_spacing
+           - **width ≤ max_width_cell_fraction × cell_width**
+             (rejects staff-line residue: real beams are local within a
+             measure; staff lines span the whole cell. A blob wider than
+             ~70 % of the cell is almost certainly staff-line ink.)
            - height between min/max_height_lines × line_spacing
            - aspect ratio ≥ 2:1 horizontal
       6. **Split stacked beams.** A double-beam (16th notes) or triple-
@@ -248,6 +253,12 @@ def detect_beams(
     num, _, stats, _ = cv2.connectedComponentsWithStats(opened, connectivity=8)
     out: list[LineDetection] = []
     min_w = int(round(line_spacing * min_width_lines))
+    # Real beams are local within a measure (typically span 2-4 noteheads).
+    # Staff lines span the entire cell. Reject anything wider than this
+    # fraction of the cell — it's almost certainly staff-line ink that
+    # survived horizontal morphology.
+    cell_w = cell.width
+    max_w_abs = max(int(round(cell_w * max_width_cell_fraction)), int(round(line_spacing * 3.0)))
     # Absolute pixel floor on beam height is critical at orchestral cell
     # resolution where `line_spacing × 0.15` collapses to 2-3 px. Staff-line
     # residuals + ledger-line fragments are typically 1-3 px tall; real
@@ -270,6 +281,9 @@ def detect_beams(
     for i in range(1, num):
         x, y, w, h, area = stats[i]
         if w < min_w:
+            continue
+        if w > max_w_abs:
+            # Cell-spanning blob — staff line residue, not a real beam.
             continue
         if h < min_h or h > max_h:
             continue
