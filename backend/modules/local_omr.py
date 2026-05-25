@@ -272,15 +272,26 @@ def _run_omr_blocking(
     # hints to omr_result if MAESTRO_BRIDGE_ENABLED is set. Failures are
     # swallowed inside theory_layer; OMR proceeds either way.
     try:
-        from modules.theory_layer import enrich_omr_result
+        from modules.theory_layer import enrich_omr_result, apply_pitch_corrections
     except ImportError:
         # Two-layer fallback for non-Docker layouts where backend is
         # imported as a package (backend.modules.theory_layer).
-        from backend.modules.theory_layer import enrich_omr_result  # type: ignore
+        from backend.modules.theory_layer import (  # type: ignore
+            enrich_omr_result,
+            apply_pitch_corrections,
+        )
     omr_result = enrich_omr_result(omr_result, musicxml_path)
 
-    # If theory_hints were added, rewrite the JSON so disk reflects it.
-    if "theory_hints" in omr_result:
+    # M4: auto-apply high-confidence pitch corrections (gated by a
+    # separate env var MAESTRO_PITCH_RERANK_ENABLED). When this kicks in,
+    # the MusicXML on disk is OVERWRITTEN with the corrected version, and
+    # the omr_result dict gets a `corrections_applied` audit field.
+    omr_result = apply_pitch_corrections(omr_result, musicxml_path)
+
+    # If theory_hints or corrections were added, rewrite the JSON so disk
+    # reflects it.
+    if "theory_hints" in omr_result or "corrections_applied" in omr_result \
+            or "corrections_meta" in omr_result:
         with open(json_path, "w", encoding="utf-8") as fh:
             json.dump(omr_result, fh)
 

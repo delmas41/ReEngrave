@@ -6,6 +6,7 @@
 //   tsx analyze.ts rhythm      <musicxml-path> [--pretty]
 //   tsx analyze.ts cross-check <musicxml-path> --work <id> [--pretty]
 //   tsx analyze.ts cross-check --list-works [--pretty]
+//   tsx analyze.ts re-rank     <omr.json> --harmony <harmony.json> [--threshold 0.9] [--pretty]
 //
 // Reads a MusicXML file, runs maestroAnalyst's analyzeScore() over it, and
 // prints a structured JSON report to stdout. Exit 0 on success; non-zero
@@ -18,6 +19,7 @@ import { analyzeScore } from './gradus/lib/maestroAnalyst';
 import type { ScoreAnalysis } from './gradus/lib/maestroAnalyst/types';
 import { analyzeRhythm } from './rhythm';
 import { crossCheck, listAvailableWorks } from './cross-check';
+import { reRankFromFiles } from './re-rank';
 
 interface HarmonyOutput {
   schema_version: 1;
@@ -62,7 +64,8 @@ function usage(): never {
     'usage: analyze.ts harmony     <musicxml-path> [--pretty]\n' +
     '       analyze.ts rhythm      <musicxml-path> [--pretty]\n' +
     '       analyze.ts cross-check <musicxml-path> --work <id> [--pretty]\n' +
-    '       analyze.ts cross-check --list-works [--pretty]\n',
+    '       analyze.ts cross-check --list-works [--pretty]\n' +
+    '       analyze.ts re-rank     <omr.json> --harmony <harmony.json> [--threshold 0.9] [--pretty]\n',
   );
   process.exit(2);
 }
@@ -157,11 +160,32 @@ async function main() {
     return;
   }
 
-  if (subcommand !== 'harmony' && subcommand !== 'rhythm' && subcommand !== 'cross-check') {
+  if (subcommand !== 'harmony' && subcommand !== 'rhythm'
+      && subcommand !== 'cross-check' && subcommand !== 're-rank') {
     usage();
   }
 
-  // All non-list subcommands require a MusicXML path as the second arg.
+  // re-rank takes an omr.json (not MusicXML) — handle it before the
+  // MusicXML-parsing common path.
+  if (subcommand === 're-rank') {
+    if (argv.length < 2) usage();
+    const omrPath = argv[1];
+    const harmonyPath = getFlagValue(argv, '--harmony');
+    if (!harmonyPath) {
+      fail('re-rank requires --harmony <harmony.json>');
+    }
+    const thresholdStr = getFlagValue(argv, '--threshold');
+    const threshold = thresholdStr ? parseFloat(thresholdStr) : 0.9;
+    if (Number.isNaN(threshold) || threshold < 0 || threshold > 1) {
+      fail(`--threshold must be in [0, 1], got: ${thresholdStr}`);
+    }
+    const out = reRankFromFiles(omrPath, harmonyPath, threshold);
+    process.stdout.write(JSON.stringify(out, null, pretty ? 2 : 0));
+    process.stdout.write('\n');
+    return;
+  }
+
+  // All non-list, non-rerank subcommands require a MusicXML path as the second arg.
   if (argv.length < 2) usage();
   const xmlPath = argv[1];
 

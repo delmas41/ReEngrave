@@ -121,7 +121,7 @@ from .staff_detector import detect_staves
 from .measure_extractor import detect_barlines, extract_measures
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
-from .pitch_resolver import pitch_for_notehead
+from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
 from .rhythm import parse_time_signature, resolve_rhythms_for_cell
 from .line_detection import detect_lines
 
@@ -657,6 +657,7 @@ def _detections_for_cell(
     #    tracking accidentals that carry through this measure. ─────────────
     explicit_in_measure: dict[tuple[str, int], str | None] = {}
     pitch_by_id: dict[int, str | None] = {}
+    candidates_by_id: dict[int, list[tuple[str, float]]] = {}
     if active_clef is not None:
         noteheads_sorted = sorted(
             (d for d in dets if d.category == "notehead"),
@@ -690,6 +691,35 @@ def _detections_for_cell(
                 final_alt = None
 
             pitch_by_id[id(nh)] = _build_pitch(letter, final_alt, octave)
+
+            # ── M4: compute top-N pitch candidates with the same accidental
+            #    treatment, so a re-ranking step (maestro_bridge re-rank)
+            #    can break ties by harmonic context. Candidates inherit the
+            #    inline / carried / key-sig accidental of the primary —
+            #    imperfect for some edge cases but a reasonable default; the
+            #    re-rank step only kicks in for noteheads maestro already
+            #    flagged as suspect anyway.
+            raw_candidates = pitch_candidates_for_notehead(nh, clef=active_clef)
+            final_candidates: list[tuple[str, float]] = []
+            for cand_diatonic, weight in raw_candidates:
+                cand_parsed = _parse_diatonic_pitch(cand_diatonic)
+                if cand_parsed is None:
+                    final_candidates.append((cand_diatonic, weight))
+                    continue
+                cand_letter, cand_octave = cand_parsed
+                if id(nh) in inline_map:
+                    a = inline_map[id(nh)]
+                    cand_alt: str | None = None if a == "natural" else a
+                elif (cand_letter, cand_octave) in explicit_in_measure:
+                    cand_alt = explicit_in_measure[(cand_letter, cand_octave)]
+                elif cand_letter in active_key_sig:
+                    cand_alt = active_key_sig[cand_letter]
+                else:
+                    cand_alt = None
+                final_candidates.append(
+                    (_build_pitch(cand_letter, cand_alt, cand_octave), weight)
+                )
+            candidates_by_id[id(nh)] = final_candidates
 
     # ── Tie pairing. For each `tie` glyph in this cell, find the two
     #    noteheads it connects (left edge + right edge of the tie bbox,
@@ -732,6 +762,13 @@ def _detections_for_cell(
             "confidence": round(float(d.confidence), 3),
             "pitch": pitch,
         }
+        # M4: top-N pitch candidates for re-ranking. Only emitted for
+        # noteheads that have any candidates (keeps JSON terser).
+        cand = candidates_by_id.get(id(d))
+        if cand:
+            out_d["pitch_candidates"] = [
+                {"pitch": p, "weight": round(w, 3)} for p, w in cand
+            ]
         # Attach rhythm info for noteheads + rests (other categories never
         # appear in rhythm_map — keeps the JSON terser for them).
         rinfo = rhythm_map.get(id(d))

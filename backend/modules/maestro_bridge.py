@@ -138,6 +138,79 @@ def analyze_musicxml(
         ) from e
 
 
+def re_rank_pitches(
+    omr_json_path: str | os.PathLike,
+    harmony_json_path: str | os.PathLike,
+    *,
+    threshold: float = 0.9,
+    timeout_s: float | None = None,
+) -> dict:
+    """Run the bridge's M4 pitch re-rank capability.
+
+    Args:
+        omr_json_path: path to omr.json (with pitch_candidates per notehead,
+                       emitted by M4-extended transcribe.py).
+        harmony_json_path: path to a saved harmony output JSON (from a prior
+                       analyze_musicxml(capability='harmony') call).
+        threshold: corrections with confidence >= threshold get apply='auto';
+                   below threshold are apply='suggestion'. Default 0.9.
+        timeout_s: subprocess timeout.
+
+    Returns:
+        Re-rank output dict — see docs/maestro-integration-plan.md.
+
+    Raises:
+        MaestroBridgeError: subprocess failed or output was malformed.
+        FileNotFoundError: omr_json_path or harmony_json_path doesn't exist.
+    """
+    omr_json_path = Path(omr_json_path)
+    harmony_json_path = Path(harmony_json_path)
+    if not omr_json_path.exists():
+        raise FileNotFoundError(str(omr_json_path))
+    if not harmony_json_path.exists():
+        raise FileNotFoundError(str(harmony_json_path))
+
+    if not _ANALYZE_TS_PATH.exists():
+        raise MaestroBridgeError(
+            f"maestro bridge entry not found at {_ANALYZE_TS_PATH}."
+        )
+    if not Path(_TSX_BIN).exists():
+        raise MaestroBridgeError(
+            f"tsx binary not found at {_TSX_BIN}. Run `npm install` in tools/maestro_bridge/."
+        )
+
+    cmd = [
+        _NODE_BIN, _TSX_BIN, str(_ANALYZE_TS_PATH),
+        "re-rank", str(omr_json_path.resolve()),
+        "--harmony", str(harmony_json_path.resolve()),
+        "--threshold", str(threshold),
+    ]
+
+    try:
+        proc = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=timeout_s or _DEFAULT_TIMEOUT,
+            check=False,
+        )
+    except subprocess.TimeoutExpired as e:
+        raise MaestroBridgeError(
+            f"re-rank timed out after {e.timeout}s"
+        ) from e
+
+    if proc.returncode != 0:
+        stderr_tail = (proc.stderr or "").strip().splitlines()[-10:]
+        raise MaestroBridgeError(
+            f"re-rank exited with code {proc.returncode}:\n" + "\n".join(stderr_tail)
+        )
+
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError as e:
+        raise MaestroBridgeError(f"re-rank returned non-JSON: {e}") from e
+
+
 def list_scholarly_works(timeout_s: float | None = None) -> dict:
     """List the canonical works available in the scholarly DB.
 
@@ -182,4 +255,9 @@ def list_scholarly_works(timeout_s: float | None = None) -> dict:
         raise MaestroBridgeError(f"bridge returned non-JSON output: {e}") from e
 
 
-__all__ = ["analyze_musicxml", "list_scholarly_works", "MaestroBridgeError"]
+__all__ = [
+    "analyze_musicxml",
+    "list_scholarly_works",
+    "re_rank_pitches",
+    "MaestroBridgeError",
+]

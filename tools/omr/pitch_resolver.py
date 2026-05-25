@@ -98,3 +98,70 @@ def pitch_for_notehead(detection: SymbolDetection, clef: str = "treble") -> str 
     pos = int(round(pos_float))
 
     return _pitch_from_position(pos, clef)
+
+
+def pitch_candidates_for_notehead(
+    detection: SymbolDetection,
+    clef: str = "treble",
+    *,
+    max_distance: float = 1.5,
+    top_n: int = 3,
+) -> list[tuple[str, float]]:
+    """Return top-N pitch candidates for a notehead, weighted by y-position
+    proximity.
+
+    Used by M4's in-pipeline re-ranking. The primary `pitch_for_notehead`
+    snaps to the single nearest staff position via round(); this function
+    surfaces the next-nearest candidates so maestroAnalyst can break ties
+    using harmonic context.
+
+    Weight formula: linear falloff, 1.0 when exactly on a staff position,
+    0.0 when `max_distance` half-steps away. With `max_distance=1.5` a
+    note exactly between two positions (pos_float = N+0.5) gets ~0.67 for
+    each adjacent position.
+
+    Args:
+        detection: the notehead detection.
+        clef: e.g. "treble", "bass", "treble_8vb".
+        max_distance: cutoff in half-step units. Candidates farther than
+                      this are dropped.
+        top_n: maximum number of candidates to return.
+
+    Returns:
+        List of (pitch_str, weight) tuples sorted descending by weight.
+        Empty list if the cell lacks staff lines, the detection isn't a
+        notehead, or no candidates lie within `max_distance`.
+    """
+    if detection.category != "notehead":
+        return []
+    cell = detection.cell
+    if not cell.staff_line_ys_canonical or len(cell.staff_line_ys_canonical) < 2:
+        return []
+
+    lines = sorted(cell.staff_line_ys_canonical)
+    line_gaps = [lines[i + 1] - lines[i] for i in range(len(lines) - 1)]
+    avg_gap = sum(line_gaps) / len(line_gaps)
+    half_step = avg_gap / 2.0
+
+    top_y = lines[0]
+    y_center = detection.y_center
+    pos_float = (y_center - top_y) / half_step
+    nearest = int(round(pos_float))
+
+    candidates: list[tuple[str, float]] = []
+    # Scan ±3 half-steps around the nearest integer position. That's
+    # always enough room to capture the top-3 closest staff positions
+    # given any reasonable max_distance value.
+    for offset in range(-3, 4):
+        pos = nearest + offset
+        dist = abs(pos - pos_float)
+        if dist > max_distance:
+            continue
+        pitch = _pitch_from_position(pos, clef)
+        if pitch is None:
+            continue
+        weight = max(0.0, 1.0 - dist / max_distance)
+        candidates.append((pitch, weight))
+
+    candidates.sort(key=lambda x: -x[1])
+    return candidates[:top_n]
