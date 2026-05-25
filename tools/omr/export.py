@@ -583,11 +583,118 @@ def to_musicxml(result: dict[str, Any]) -> str:
     part_list: list[str] = []
     part_idx = 0
     pg_number = 0  # part-group number — increment per piano pair
+    global_measure_num = 0  # cumulative measure counter across systems on every page
 
     for page in result.get("pages", []):
         for sys_idx, sys_ in enumerate(page.get("systems", [])):
             staves = sys_.get("staves", [])
+            if not staves:
+                continue
             is_piano = len(staves) == 2
+            # "Fragmented row" pattern: OMR layout detector sometimes splits
+            # a single melodic line on a page into many "staves" with one
+            # measure each (typically vertically-stacked single-line music).
+            # When that happens, MusicXML semantics would emit those as
+            # parallel parts — which is wrong. Merge them into a single
+            # part with sequential measure numbers.
+            is_fragmented_row = (
+                not is_piano
+                and len(staves) > 2
+                and all(len(s.get("measures", [])) == 1 for s in staves)
+            )
+
+            if is_fragmented_row:
+                part_idx += 1
+                part_id = f"P{part_idx}"
+                part_name = f"Page{page['page_index']}-System{sys_idx}-merged"
+                part_list.append(
+                    f"  <score-part id=\"{part_id}\">\n"
+                    f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
+                    f"  </score-part>"
+                )
+
+                measures_xml: list[str] = []
+                last_clef = None
+                last_key_sig = None
+                last_time_sig = None
+                first_in_part = True
+                for staff in staves:
+                    # By construction, each staff has exactly 1 measure.
+                    measure = staff["measures"][0]
+                    m_clef = measure.get("clef") or staff.get("clef")
+                    m_key = measure.get("key_signature") or staff.get("key_signature")
+                    m_time = measure.get("time_signature") or staff.get("time_signature")
+
+                    attrs_clef = m_clef if (m_clef != last_clef) else None
+                    attrs_key = m_key if (m_key != last_key_sig) else None
+                    attrs_time = m_time if (m_time != last_time_sig) else None
+                    include_divisions = first_in_part
+                    has_attrs = (
+                        include_divisions or attrs_clef or attrs_key or attrs_time
+                    )
+
+                    inner: list[str] = []
+                    if has_attrs:
+                        inner.append(_mxl_attributes_block(
+                            attrs_clef, attrs_key, attrs_time, divisions,
+                            "      ", include_divisions,
+                        ))
+                    last_clef = m_clef
+                    last_key_sig = m_key
+                    last_time_sig = m_time
+                    first_in_part = False
+
+                    events = group_chords_in_measure(measure.get("detections", []))
+                    voices = split_events_into_voices(events)
+
+                    if not events:
+                        inner.append(_mxl_note(
+                            None, "", "whole", 0, 4.0, divisions,
+                            is_chord=False, is_rest=True,
+                            indent="      ", voice=1,
+                        ))
+                    elif len(voices) == 1:
+                        v1_lines, _ = _mxl_voice_events(
+                            voices[0], voice=1, divisions=divisions, indent="      ",
+                        )
+                        inner.extend(v1_lines)
+                    else:
+                        v1_lines, v1_dur = _mxl_voice_events(
+                            voices[0], voice=1, divisions=divisions, indent="      ",
+                        )
+                        inner.extend(v1_lines)
+                        if v1_dur > 0:
+                            inner.append(
+                                "      <backup>\n"
+                                f"        <duration>{v1_dur}</duration>\n"
+                                "      </backup>"
+                            )
+                        v2_lines, _ = _mxl_voice_events(
+                            voices[1], voice=2, divisions=divisions, indent="      ",
+                        )
+                        inner.extend(v2_lines)
+
+                    global_measure_num += 1
+                    measures_xml.append(
+                        f"    <measure number=\"{global_measure_num}\">\n"
+                        + "\n".join(inner)
+                        + "\n    </measure>"
+                    )
+
+                parts_xml.append(
+                    f"  <part id=\"{part_id}\">\n"
+                    + "\n".join(measures_xml)
+                    + "\n  </part>"
+                )
+                continue  # done with this system
+
+            # Normal path: each staff becomes a part. Measures share numbers
+            # across staves within the system (parallel parts). The page-
+            # global counter advances by the system's max-measures so the
+            # next system continues numbering correctly.
+            sys_start_num = global_measure_num + 1
+            sys_max_measures = max(len(s.get("measures", [])) for s in staves)
+
             if is_piano:
                 pg_number += 1
                 part_list.append(
@@ -613,7 +720,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 key_sig = staff.get("key_signature")
                 time_sig = staff.get("time_signature")
 
-                measures_xml: list[str] = []
+                measures_xml = []
                 last_clef = None
                 last_key_sig = None
                 last_time_sig = None
@@ -622,9 +729,6 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     m_key = measure.get("key_signature") or key_sig
                     m_time = measure.get("time_signature") or time_sig
 
-                    # Decide what attributes to emit. First measure always
-                    # gets the full block. Later measures only when the
-                    # value changes.
                     attrs_clef = m_clef if (m_clef != last_clef) else None
                     attrs_key = m_key if (m_key != last_key_sig) else None
                     attrs_time = m_time if (m_time != last_time_sig) else None
@@ -633,7 +737,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                         include_divisions or attrs_clef or attrs_key or attrs_time
                     )
 
-                    inner: list[str] = []
+                    inner = []
                     if has_attrs:
                         inner.append(_mxl_attributes_block(
                             attrs_clef, attrs_key, attrs_time, divisions,
@@ -643,13 +747,10 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     last_key_sig = m_key
                     last_time_sig = m_time
 
-                    events = group_chords_in_measure(
-                        measure.get("detections", [])
-                    )
+                    events = group_chords_in_measure(measure.get("detections", []))
                     voices = split_events_into_voices(events)
 
                     if not events:
-                        # Empty measure — emit a whole rest as a placeholder.
                         inner.append(_mxl_note(
                             None, "", "whole", 0, 4.0, divisions,
                             is_chord=False, is_rest=True,
@@ -657,14 +758,12 @@ def to_musicxml(result: dict[str, Any]) -> str:
                         ))
                     elif len(voices) == 1:
                         v1_lines, _ = _mxl_voice_events(
-                            voices[0], voice=1, divisions=divisions,
-                            indent="      ",
+                            voices[0], voice=1, divisions=divisions, indent="      ",
                         )
                         inner.extend(v1_lines)
                     else:
                         v1_lines, v1_dur = _mxl_voice_events(
-                            voices[0], voice=1, divisions=divisions,
-                            indent="      ",
+                            voices[0], voice=1, divisions=divisions, indent="      ",
                         )
                         inner.extend(v1_lines)
                         if v1_dur > 0:
@@ -674,13 +773,13 @@ def to_musicxml(result: dict[str, Any]) -> str:
                                 "      </backup>"
                             )
                         v2_lines, _ = _mxl_voice_events(
-                            voices[1], voice=2, divisions=divisions,
-                            indent="      ",
+                            voices[1], voice=2, divisions=divisions, indent="      ",
                         )
                         inner.extend(v2_lines)
 
+                    measure_number_attr = sys_start_num + m_idx
                     measures_xml.append(
-                        f"    <measure number=\"{m_idx + 1}\">\n"
+                        f"    <measure number=\"{measure_number_attr}\">\n"
                         + "\n".join(inner)
                         + "\n    </measure>"
                     )
@@ -696,6 +795,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 part_list.append(
                     f"  <part-group type=\"stop\" number=\"{pg_number}\"/>"
                 )
+            global_measure_num += sys_max_measures
 
     src = result.get("source_pdf") or "OMR transcription"
     work_title = Path(src).name if src else "OMR transcription"

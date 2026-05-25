@@ -499,7 +499,25 @@ Patched `re-rank.ts:findLocalKey()` with a 3-tier fallback:
 
 Auto-rate on handel-leadsheet dropped from 9.8% to 0.7%. The 25 spurious "corrections" that destroyed real D# / G# notes in E major are gone. The 2 remaining auto-applies (D5 → E5 in E major) are individually defensible.
 
-### Known remaining limitations
+### Follow-ups A + B fixed (2026-05-24)
 
-- **Underlying exporter bug** (every measure numbered "1" when staves contain single measures) is tracked in [NOTES.md → Follow-up A](../NOTES.md). Fixing it would restore per-measure key resolution; not blocking but worth doing.
-- **Enharmonic candidate quirk**: M4 picks F# → E# in D minor (E# = F by pc, technically diatonic but musically odd). Tracked in [NOTES.md → Follow-up B](../NOTES.md). Minor impact (~1 per several hundred notes).
+**Follow-up A — to_musicxml measure numbering**: detect the "fragmented row" pattern (system with >2 staves where each has exactly 1 measure — the OMR layout detector's mode for vertically-stacked single-line music) and emit those as ONE part with sequential measure numbers. Use a page-global running counter so subsequent systems pick up where the previous left off. Piano grand-staff and orchestral systems unchanged (parallel parts share measure numbers as before).
+
+Before A: handel-leadsheet's 32 measures all numbered "1"; maestro saw `measure_count = 1`. After A: 32 distinct measure numbers, 32 local_keys entries, maestro can do per-measure resolution.
+
+**Follow-up B — natural-spelling candidate preference**: in re-rank.ts, filter candidates by *both* pitch-class membership AND letter spelling. Uses maestroAnalyst's `preferredSpelling(pc, key)` — but wraps minor keys via `relativeKey()` first, because maestroAnalyst's SHARP_KEYS/FLAT_KEYS sets only cover major keys (so `preferredSpelling(10, "D minor")` returned "A#" instead of "Bb"; the wrapper redirects to the relative major F major which gives the right answer).
+
+Before B: bach-wtc auto-corrected F# → E# (E# is enharmonic with F, technically diatonic by pc but musically wrong). Also some G# → A# (A# is enharmonic with Bb in D minor). After B: those enharmonic mis-corrections are gone.
+
+### Final benchmark sweep (after A + B)
+
+| File | XML measures | Emitted | Auto-applied | Suggestions | Auto-rate |
+|---|---:|---:|---:|---:|---:|
+| handel-reduction | 1..17 | 18 | 0 | 18 | 0.0% |
+| bach-wtc | 1..30 | 46 | 6 | 40 | 2.1% |
+| handel-leadsheet | 1..32 | 40 | 2 | 38 | 0.7% |
+| ravel-bolero | 1..59 | 75 | 3 | 72 | 0.3% |
+
+Across all 4 benchmarks: total auto-applies went from 25 (after the initial audit fix) → 11 (after A + B). Every auto-correction is now individually defensible — none are destroying real D♯/G♯ notes in sharp keys (Follow-up A's original bug) and none are picking enharmonic respellings over natural spellings (Follow-up B's bug). The bach-wtc corrections are all G# → A in D minor; the handel-leadsheet corrections are all D5 → E5 in E major.
+
+**M4 is now production-quality for the personal-use scope.** Audit trail, env-gated rollout, conservative auto-rate, and the two follow-up bugs that surfaced during the first real-data benchmark are fixed.

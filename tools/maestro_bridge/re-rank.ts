@@ -24,7 +24,22 @@
 // re-exporting the MusicXML.
 
 import * as fs from 'node:fs';
-import { getScalePcs } from './gradus/lib/maestroAnalyst/scale';
+import { getScalePcs, relativeKey } from './gradus/lib/maestroAnalyst/scale';
+import { preferredSpelling } from './gradus/lib/maestroAnalyst/enharmonicSpelling';
+
+// maestroAnalyst's preferredSpelling only knows about major-key
+// SHARP_KEYS / FLAT_KEYS sets. For minor keys, it falls through to
+// "default: sharps" — which gives "A#" for pc 10 in D minor when
+// "Bb" is musically correct (D minor has 1 flat, namely B♭). Wrap
+// to redirect minor keys to their relative major, which shares the
+// same key signature and is in the lookup tables.
+function preferredSpellingForKey(pc: number, key: string): string {
+  if (/\bminor\b/i.test(key)) {
+    const rel = relativeKey(key);
+    if (rel) return preferredSpelling(pc, rel);
+  }
+  return preferredSpelling(pc, key);
+}
 
 interface PitchCandidate {
   pitch: string;
@@ -208,34 +223,46 @@ export function reRankPitches(
               continue;
             }
 
-            // Score candidates: keep diatonic ones only.
+            // Score candidates: keep ones whose pc is diatonic in the
+            // local key AND whose SPELLING is the preferred one for that
+            // pc in that key. The spelling check guards against picking
+            // an enharmonic respelling that's diatonic by pitch-class
+            // but musically wrong (e.g. E# in D minor — pc 5, in scale,
+            // but the natural spelling of pc 5 is F).
             const diatonic = (det.pitch_candidates ?? [])
               .map(c => {
                 const pc = pitchToPc(c.pitch);
-                return pc === null ? null : { ...c, pc, diatonic: scalePcs.has(pc) };
+                if (pc === null) return null;
+                const preferred = preferredSpellingForKey(pc, localKey);
+                // Extract the letter+accidentals (drop octave) for comparison.
+                const candLetter = c.pitch.replace(/[0-9-]+$/, '');
+                const naturalSpelling = candLetter === preferred;
+                return { ...c, pc, diatonic: scalePcs.has(pc), naturalSpelling };
               })
-              .filter((c): c is { pitch: string; weight: number; pc: number; diatonic: boolean } =>
-                c !== null && c.diatonic && c.pitch !== det.pitch,
-              );
+              .filter((c): c is {
+                pitch: string; weight: number; pc: number;
+                diatonic: boolean; naturalSpelling: boolean;
+              } => c !== null && c.diatonic && c.pitch !== det.pitch && c.naturalSpelling);
 
             if (diatonic.length === 0) continue;
 
             // Candidates already arrive sorted descending by weight from
-            // transcribe.py — first diatonic = closest by y-position.
+            // transcribe.py — first diatonic-natural = closest by y-position.
             const best = diatonic[0];
 
             let confidence: number;
             let reason: string;
             if (diatonic.length === 1) {
-              // Single diatonic alternate: confidence scales with how close
-              // by y-position. weight=1.0 (right on a staff line) → 1.0
-              // confidence; weight=0.5 (halfway between positions) → 0.85.
+              // Single naturally-spelled diatonic alternate: confidence scales
+              // with how close by y-position. weight=1.0 → 1.0 confidence;
+              // weight=0.5 → 0.925.
               confidence = Math.min(1.0, 0.85 + 0.15 * best.weight);
-              reason = `Original ${det.pitch} (pc ${currentPc}) is non-diatonic in ${localKey} and not explained by any chord reading in m${measureIdx}; the only diatonic alternate from the y-position candidates is ${best.pitch} (pc ${best.pc}, weight ${best.weight.toFixed(2)}).`;
+              reason = `Original ${det.pitch} (pc ${currentPc}) is non-diatonic in ${localKey} and not explained by any chord reading in m${measureIdx}; the only naturally-spelled diatonic alternate from the y-position candidates is ${best.pitch} (pc ${best.pc}, weight ${best.weight.toFixed(2)}).`;
             } else {
-              // Multiple diatonic candidates: ambiguous, lower confidence.
+              // Multiple naturally-spelled diatonic candidates: ambiguous,
+              // lower confidence.
               confidence = 0.55 + 0.3 * best.weight;
-              reason = `Original ${det.pitch} (pc ${currentPc}) is non-diatonic in ${localKey}; ${diatonic.length} diatonic alternates available — picked closest by y-position: ${best.pitch}.`;
+              reason = `Original ${det.pitch} (pc ${currentPc}) is non-diatonic in ${localKey}; ${diatonic.length} naturally-spelled diatonic alternates available — picked closest by y-position: ${best.pitch}.`;
             }
 
             corrections.push({
