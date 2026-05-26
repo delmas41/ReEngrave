@@ -104,7 +104,7 @@ UNSTEMMED_NOTEHEAD_CLASSES = {
 ALL_NOTEHEAD_CLASSES = STEMMED_NOTEHEAD_CLASSES | UNSTEMMED_NOTEHEAD_CLASSES
 
 
-def mask_front_matter(cell, yolo_dets) -> int:
+def mask_front_matter(cell, yolo_dets) -> tuple[int, list[tuple[int, int, int, int]]]:
     """Mutate cell.image (and cell.image_no_staff if present) to set the
     pixels inside each YOLO front-matter bbox to paper-white. Returns the
     number of bboxes masked.
@@ -118,8 +118,9 @@ def mask_front_matter(cell, yolo_dets) -> int:
         small fixed pad (0.3 line_spacing) to cover dot residues / serifs.
     """
     if not yolo_dets:
-        return 0
+        return 0, []
     line_spacing = _staff_line_spacing(cell)
+    masked_regions: list[tuple[int, int, int, int]] = []  # (x0, y0, x1, y1)
     staff_ys = getattr(cell, "staff_line_ys_canonical", None) or []
     if staff_ys:
         staff_top = min(staff_ys)
@@ -166,8 +167,9 @@ def mask_front_matter(cell, yolo_dets) -> int:
                 cell.image_no_staff[y0:y1, x0:x1, :] = 255
             else:
                 cell.image_no_staff[y0:y1, x0:x1] = 255
+        masked_regions.append((x0, y0, x1, y1))
         n_masked += 1
-    return n_masked
+    return n_masked, masked_regions
 
 
 # Module-level YOLO detector, lazy-init on first use (loading the weights
@@ -457,7 +459,7 @@ def process_cell(
         clef_only = [d for d in low_conf_dets if d.smufl_name in CLEF_CLASSES]
         yolo_dets = yolo_dets + clef_only
 
-    n_masked = mask_front_matter(cell, yolo_dets)
+    n_masked, masked_regions = mask_front_matter(cell, yolo_dets)
 
     # Raw CV detections.
     raw_stems = detect_stems(cell)
@@ -466,7 +468,47 @@ def process_cell(
     # Idea 4: notehead-anchored stem elimination — drop any CV stem that
     # isn't connected to a real (non-whole) notehead.
     line_spacing = _staff_line_spacing(cell)
-    noteheads = [d for d in yolo_dets if d.smufl_name in ALL_NOTEHEAD_CLASSES]
+
+    # On orchestral pages, the cell crop can include ink from staves above
+    # and below the requested staff. Restrict to a tight band (staff lines
+    # ± 3 line_spacings ≈ 3 ledger lines on each side) so we anchor/predict
+    # using only this staff's notes, not bleed-in from neighbors.
+    staff_ys = getattr(cell, "staff_line_ys_canonical", None) or []
+    if staff_ys:
+        band_top = min(staff_ys) - line_spacing * 3.0
+        band_bot = max(staff_ys) + line_spacing * 3.0
+
+        def _on_staff(det) -> bool:
+            yc = det.y_canonical + det.height_canonical / 2
+            return band_top <= yc <= band_bot
+
+        # Drop noteheads whose centers fall inside a masked front-matter
+        # region. YOLO over-detects noteheads ON the clef/keysig glyphs
+        # themselves at low confidence — those are hallucinations, not
+        # real notes, and after masking they're sitting on white space.
+        def _in_masked_region(det) -> bool:
+            cx = det.x_canonical + det.width_canonical / 2
+            cy = det.y_canonical + det.height_canonical / 2
+            return any(mx0 <= cx <= mx1 and my0 <= cy <= my1
+                       for mx0, my0, mx1, my1 in masked_regions)
+
+        # Filter noteheads to:
+        #   1. on this staff (staff band ± 3 line-spacings)
+        #   2. NOT inside a masked front-matter region (clef hallucinations)
+        #   3. conf ≥ 0.35 — real noteheads from prod typically score 0.5+;
+        #      0.35 is a moderate floor that keeps small-but-real orchestral
+        #      noteheads while killing most front-matter hallucinations.
+        NOTEHEAD_CONF_MIN = 0.35
+        noteheads = [d for d in yolo_dets
+                     if d.smufl_name in ALL_NOTEHEAD_CLASSES
+                     and _on_staff(d)
+                     and not _in_masked_region(d)
+                     and d.confidence >= NOTEHEAD_CONF_MIN]
+        raw_stems = [s for s in raw_stems if _on_staff(s)]
+        raw_beams = [b for b in raw_beams if _on_staff(b)]
+    else:
+        noteheads = [d for d in yolo_dets if d.smufl_name in ALL_NOTEHEAD_CLASSES]
+
     kept_stems, anchored_nh_ids, stem_filter_stats = filter_stems_by_noteheads(
         raw_stems, noteheads, line_spacing
     )
@@ -523,6 +565,14 @@ def process_cell(
     # Render overlay PNG with numbered detections for verdict. Make the
     # labels large + boxed so they're readable when verdicting in a browser.
     overlay = cv2.cvtColor(cell.image, cv2.COLOR_GRAY2BGR) if cell.image.ndim == 2 else cell.image.copy()
+
+    # First: draw YOLO noteheads as small unlabeled red boxes so the user can
+    # visually verify "are these the notes the system thinks are here?"
+    # Drawn FIRST so detection boxes layer on top.
+    for nh in noteheads:
+        x0n = nh.x_canonical; y0n = nh.y_canonical
+        x1n = x0n + nh.width_canonical; y1n = y0n + nh.height_canonical
+        cv2.rectangle(overlay, (x0n, y0n), (x1n, y1n), (50, 50, 220), 1)
 
     def draw_labeled_box(img, x0, y0, x1, y1, color, label, *, thickness=3, font_scale=1.2):
         cv2.rectangle(img, (x0, y0), (x1, y1), color, thickness)
