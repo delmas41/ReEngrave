@@ -128,7 +128,7 @@ def mask_front_matter(cell, yolo_dets) -> tuple[int, list[tuple[int, int, int, i
     else:
         staff_top, staff_bot = 0, cell.image.shape[0]
 
-    clef_v_margin = max(4, int(round(line_spacing * 1.5)))   # G-clef tail buffer
+    clef_v_margin = max(4, int(round(line_spacing * 2.5)))   # G-clef tail buffer (Bach engraving has longer tails)
     clef_h_margin = max(2, int(round(line_spacing * 0.3)))
     small_margin = max(2, int(round(line_spacing * 0.3)))
 

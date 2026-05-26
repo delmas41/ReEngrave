@@ -196,12 +196,13 @@ def detect_stems(
 def detect_beams(
     cell,
     *,
-    min_width_lines: float = 1.5,
+    min_width_lines: float = 0.7,
     min_height_lines: float = 0.10,
     max_height_lines: float = 1.0,
     typical_single_beam_lines: float = 0.22,
     min_height_absolute: int = 2,
-    max_width_cell_fraction: float = 0.70,
+    max_width_cell_fraction: float = 0.55,
+    split_threshold_multiplier: float = 2.5,
 ) -> list[LineDetection]:
     """Find beam-like horizontal ink runs in `cell`.
 
@@ -276,7 +277,7 @@ def detect_beams(
     typical_h = max(3, int(round(line_spacing * typical_single_beam_lines)))
     # Only split components clearly thicker than a single beam — 1.7× is
     # the safety margin against engraving variance on solo beams.
-    split_threshold = int(typical_h * 1.7)
+    split_threshold = int(typical_h * split_threshold_multiplier)
 
     for i in range(1, num):
         x, y, w, h, area = stats[i]
