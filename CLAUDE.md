@@ -419,15 +419,52 @@ python3 tools/omr/training/verdicts_to_yolo_labels.py
 python3 tools/omr/training/train_yolo.py
 ```
 
-Hand-labeling new cells:
+### Hand-label cells for OMR training
 
+Hand-labeled cells become YOLO training data: each labeled cell exports as an image + a label file of symbol boxes. **Anything you don't box is treated as background** (the model is penalized for firing there), so completeness matters. Verdicts autosave; the UI serves at **http://127.0.0.1:5050** (port 5050, not 8001).
+
+**Two modes:**
+
+*Triage* — the model pre-labels, you confirm/correct. Fast when the model is mostly right.
 ```bash
-# Pick cells from a real PDF
-python3 -m tools.omr.annotate.select_cells path/to/score.pdf
+# 1. Pick cells (orchestral selector; page is 1-based, N = cells/page). Over-sample, then
+#    filter by density for a tractable batch.
+python3 -m tools.omr.annotate.select_cells_orchestral \
+    --out-dir benchmarks/omr-labeling-NEW --plan "tag=/abs/score.pdf:12:6,tag=/abs/score.pdf:55:6"
 
-# Launch the labeling UI
-python3 -m tools.omr.annotate.server
-# → http://localhost:8001
+# 2. Pre-label with the model → writes detections/ the UI triages. GOTCHAS:
+#    --weights DEFAULTS to generic yolov8m.pt (override!); --time-n-runs defaults to 5 (set 1);
+#    --cells is a list of cell_ids (zsh: ${=IDS} word-splits, plain $IDS does NOT).
+IDS=$(python3 -c "import json;print(' '.join(e['cell_id'] for e in json.load(open('benchmarks/omr-labeling-NEW/cells.json'))))")
+python3 -m tools.omr.annotate.run_yolo --manifest benchmarks/omr-labeling-NEW/cells.json --cells ${=IDS} \
+    --weights omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt \
+    --out-dir benchmarks/omr-labeling-NEW/yolo-scratch --detections-out benchmarks/omr-labeling-NEW/detections \
+    --baseline-verdicts "" --conf 0.25 --imgsz 2048 --time-n-runs 1
+# Raw orchestral cells = ~100+ dets/cell (mostly low-conf rest/notehead FPs). Filter to ~18/cell:
+# keep conf>=0.50 + per-class NMS, backing the raw set up to detections-pre-filter/.
+
+# 3. Serve
+python3 -m tools.omr.annotate.server --bench-dir benchmarks/omr-labeling-NEW   # → http://127.0.0.1:5050
+```
+
+*Draw-from-scratch* — blank canvas, you box every element. Best for dense/bleedy scores where the model over-detects. Skip run_yolo; write empty `detections/<cell>.json` = `{"cell_id":"<id>","detections":[]}`. Pair with SPARSE cells (rank a candidate pool by connected-component count on each `_nostaff.png`; keep the lightest ~5–15 elements/cell) or it's brutal.
+
+**What to box vs skip:**
+- **BOX** the symbols YOLO detects: noteheads, rests, accidentals, clefs, flags, dynamics (`p`/`f`/hairpins), ornaments, articulations, augmentation dots, ties, slurs, time-sig digits.
+- **SKIP** classical-CV structural elements — **staff lines (`staff`), stems (`stem`), beams (`beam`)**: detected by classical CV upstream (`staff_detector`, `line_detection`), 0 in all prior labels, and YOLO can't bbox thin lines. They become background.
+- **SKIP** free text — "sempre", "dolce", tempo marks, instrument names, rehearsal letters: no class exists (`textDynamic` is only for *dynamic* words like cresc./dim.).
+- **Barlines** (`barlineSingle`) OK to box (collected toward a future barline class); ledger lines low-value.
+- **Ink-bleed / mostly-FP cells are GOOD** — dropped FPs become hard-negative background that suppresses bleed hallucinations. Don't `f` every blob: confirm real notes, leave bleed **pending** (pending and FP convert identically → no label). Too bled to read → skip the cell.
+- **Edge-clipped extreme-range notes** — label what's in the *image*, not the musical measure. Notehead cropped out → skip; partly visible → box the visible part. Cells crop at `ORCH_PAD_STAFF_LINES` staff-spaces (`select_cells_orchestral`, default 2.5); raise it and re-cut only the unlabeled cells if clipping is frequent.
+
+**UI hotkeys:** `t`/`f`/`u` = TP/FP/unsure (triage) · `c` = fix class (`/` searches) · `b` = redraw bbox · `a` = draw a new box, stays in draw mode after each (`Esc` stops) · `Del`/`Backspace` = remove selected box · `Tab`/`Shift+Tab` = next/prev cell (autosaves).
+
+**Convert finished verdicts → YOLO labels:**
+```bash
+python3 -m tools.omr.training.verdicts_to_yolo_labels --verdicts-dir benchmarks/omr-labeling-NEW/verdicts \
+    --manifest benchmarks/omr-labeling-NEW/cells.json --version-name v<n>-<date>-<tag> \
+    --out-root data/user-labeled --labeler sean --description "..."   # --dry-run first
+python3 -m tools.omr.training.build_catalog_yaml --root data/user-labeled   # unions all versions → catalog.yaml
 ```
 
 ### Change the Claude Vision diff prompt

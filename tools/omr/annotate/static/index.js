@@ -21,8 +21,10 @@
     if (c.schema_version === "corrupt") return "corrupt";
     if (!c.has_verdict) return "untouched";
     if (c.schema_version === 1) return "schema_v1";
-    if (c.n_pending === 0 && c.n_detections > 0) return "done";
-    if (c.n_decided > 0) return "in-progress";
+    // "done" = nothing left pending AND at least one label exists — either a
+    // decided model detection or a drawn box (clean-canvas / added-only cells).
+    if (c.n_pending === 0 && (c.n_detections > 0 || c.n_added > 0)) return "done";
+    if (c.n_decided > 0 || c.n_added > 0) return "in-progress";
     return "pending";
   }
 
@@ -66,10 +68,11 @@
       `;
       tbody.appendChild(tr);
     }
+    const totalAdded = cells.reduce((s, c) => s + c.n_added, 0);
     counts.textContent =
       `showing ${shown}/${cells.length} · ` +
-      `decided ${totalDecided}/${totalDetections} detections · ` +
-      `${totalDone}/${cells.length} cells fully decided`;
+      `${totalDone}/${cells.length} cells done · ${totalAdded} boxes drawn` +
+      (totalDetections > 0 ? ` · decided ${totalDecided}/${totalDetections} detections` : ``);
   }
 
   filterStatus.addEventListener("change", render);

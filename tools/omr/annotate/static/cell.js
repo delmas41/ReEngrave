@@ -142,11 +142,12 @@ function renderDetectionList() {
   if (isEmpty) {
     const li = document.createElement("li");
     li.className = "no-detections-hint";
-    li.innerHTML = `<em>No detections in this cell.</em><br>
-      The model found nothing at conf≥0.25 here (common on first measures,
-      tempo-marking rows, or near-empty rests). Press <kbd>Tab</kbd> to
-      move on, or click <strong>+ add missed detection</strong> below to
-      label anything the model missed.`;
+    li.innerHTML = `<em>No detections — draw them in.</em><br>
+      Press <kbd>a</kbd> (or click <strong>+ add missed detection</strong>) to
+      draw a box around each element and label it; the UI stays in draw mode
+      so you can keep going. <kbd>Esc</kbd> stops, <kbd>Tab</kbd> goes to the
+      next cell. <kbd>Del</kbd> removes the selected box. Anything you don't
+      draw is treated as background.`;
     ul.appendChild(li);
   }
   $("det-count").textContent =
@@ -319,23 +320,46 @@ function setVerdict(id, verdict) {
   renderDetail();
 }
 
+function deleteSelected() {
+  const id = state.selectedId;
+  if (!id) return;
+  const { kind, obj } = findItem(id);
+  if (kind === "added") {
+    const i = state.verdict.added_detections.findIndex((h) => h.id === id);
+    if (i >= 0) state.verdict.added_detections.splice(i, 1);
+  } else if (kind === "detection" && obj) {
+    // Can't remove a model detection — reset its verdict back to pending.
+    obj.verdict = null;
+    obj.human_corrected_class = null;
+    obj.human_corrected_category = null;
+    obj.human_bbox = null;
+  } else {
+    return;
+  }
+  state.selectedId = null;
+  markDirty();
+  renderDetectionList();
+  renderOverlay();
+  renderDetail();
+}
+
 function applyClassCorrection(className) {
   if (!state.pickerFor) return;
+  const forKind = state.pickerFor.kind;
   const cat = state.classByName[className]?.category || "structural";
-  if (state.pickerFor.kind === "detection") {
+  if (forKind === "detection") {
     const { obj } = findItem(state.pickerFor.id);
     if (!obj) return;
     obj.verdict = "WRONG_CATEGORY";
     obj.human_corrected_class = className;
     obj.human_corrected_category = cat;
-  } else if (state.pickerFor.kind === "added") {
+  } else if (forKind === "added") {
     const { obj } = findItem(state.pickerFor.id);
     if (!obj) return;
     obj.human_class = className;
     obj.human_category = cat;
-  } else if (state.pickerFor.kind === "new") {
-    // Create a new added_detection from drawIntent.bbox
-    const idx = state.verdict.added_detections.length;
+  } else if (forKind === "new") {
+    // Create a new added_detection from the freshly-drawn bbox.
     const newId = `H${nextHId()}`;
     state.verdict.added_detections.push({
       id: newId,
@@ -353,8 +377,12 @@ function applyClassCorrection(className) {
   renderDetectionList();
   renderOverlay();
   renderDetail();
-  // Auto-advance to next pending detection for keyboard speed.
-  if (state.pickerFor === null) {
+  if (forKind === "new") {
+    // Rapid-draw loop: jump straight back into draw mode for the next
+    // element so you can label a whole measure without re-clicking. Esc stops.
+    enterDrawMode({ kind: "add-missed" });
+  } else {
+    // Auto-advance to next pending detection for keyboard speed.
     advanceToNextPending();
   }
 }
@@ -392,6 +420,14 @@ function openPicker(forKind, forId, hint) {
   state.pickerOpen = true;
   state.pickerFor = { kind: forKind, id: forId };
   if (hint && hint.bbox) state.pickerFor.bbox = hint.bbox;
+  // When the picker opens for a freshly-drawn "add missed detection" box,
+  // there's no selected detection yet — so #detail is still hidden, and
+  // the picker (which is nested inside #detail) would be invisible. Force
+  // the right panel open in that case.
+  if (forKind === "new") {
+    $("empty-detail").hidden = true;
+    $("detail").hidden = false;
+  }
   $("picker").hidden = false;
   if (!state.pickerTab) state.pickerTab = state.categories.order[0];
   renderPicker();
@@ -711,9 +747,19 @@ document.addEventListener("keydown", (evt) => {
     if (state.cell.prev_staff_id) { goToCell(state.cell.prev_staff_id); evt.preventDefault(); return; }
   }
 
+  // Delete / Backspace → remove the selected drawn box (or clear a model
+  // detection's verdict back to pending).
+  if (evt.key === "Delete" || evt.key === "Backspace") {
+    if (state.selectedId) { deleteSelected(); evt.preventDefault(); return; }
+  }
+
   const key = evt.key.toLowerCase();
   if (key === "n") { selectAdjacent(1); evt.preventDefault(); return; }
   if (key === "p") { selectAdjacent(-1); evt.preventDefault(); return; }
+
+  // "a" → draw a brand-new ground-truth box (no selection needed). After the
+  // class is picked the UI re-enters draw mode so you can keep drawing.
+  if (key === "a") { enterDrawMode({ kind: "add-missed" }); evt.preventDefault(); return; }
 
   if (!state.selectedId) return;
   const { kind } = findItem(state.selectedId);

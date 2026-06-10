@@ -151,10 +151,10 @@ python3 -m tools.omr.transcribe score.pdf --out out.json
 python3 -m tools.omr.export out.json --format lilypond --out out.ly
 lilypond out.ly
 
-# Hand-label more cells (open-loop labeling UI)
-python3 -m tools.omr.annotate.select_cells path/to/score.pdf
-python3 -m tools.omr.annotate.server
-# → http://localhost:8001
+# Hand-label more cells (full flow + run_yolo pre-labeling: tools/omr/annotate/READY-LABELING-UI.md)
+python3 -m tools.omr.annotate.select_cells_orchestral --out-dir benchmarks/omr-labeling-NEW --plan "tag=/path/to/score.pdf:12:6"
+python3 -m tools.omr.annotate.server --bench-dir benchmarks/omr-labeling-NEW
+# → http://127.0.0.1:5050
 
 # Train a new YOLO checkpoint
 python3 tools/omr/training/train_yolo.py
