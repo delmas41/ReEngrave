@@ -64,6 +64,15 @@ ls /Users/seanjohnson/Desktop/ReEngrave/omr-weights/
 
 If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads and the Gradus / comparison flows.
 
+### Theory layer (optional, host-side)
+
+The Maestro theory layer needs the `gradus` submodule + node deps — only required if you set `MAESTRO_BRIDGE_ENABLED` / `MAESTRO_PITCH_RERANK_ENABLED`:
+
+```bash
+git submodule update --init
+cd tools/maestro_bridge && npm install
+```
+
 ### Hot-patching without a full rebuild
 
 For quick backend iteration, copy files directly into the running container and restart uvicorn:
@@ -115,11 +124,18 @@ ReEngrave/
 │   │   ├── export_module.py     # MusicXML / LilyPond / PDF export dispatcher
 │   │   ├── lilypond_engrave.py  # MusicXML → LilyPond → engraved PDF (fallback path)
 │   │   ├── file_import.py       # save uploads, detect file type
-│   │   └── analytics.py         # self-improving pattern learning
+│   │   ├── analytics.py         # self-improving pattern learning
+│   │   ├── theory_layer.py      # env-gated Maestro enrichment + M4 pitch re-rank hooks
+│   │   └── maestro_bridge.py    # subprocess bridge → tools/maestro_bridge (node/tsx, host-side)
 │   └── routers/
 │       ├── auth.py              # register, login, refresh, logout, /me
 │       └── payments.py          # Stripe checkout + webhook
 ├── tools/
+│   ├── maestro_bridge/          # Theory layer CLI (TypeScript) — see docs/maestro-integration-plan.md
+│   │   ├── analyze.ts           # entry point: harmony / rhythm / cross-check / re-rank capabilities
+│   │   ├── re-rank.ts           # M4 pitch re-ranking against detected key
+│   │   ├── scholarly/           # curated reference analyses (5 seed works)
+│   │   └── gradus/              # git submodule → github.com/delmas41/gradus (maestroAnalyst lives here)
 │   └── omr/                     # In-house OMR pipeline (49-commit Phase 1 → 4m history)
 │       ├── README.md            # Full pipeline + class space + CLI reference
 │       ├── transcribe.py        # ENTRY POINT — PDF → structured JSON
@@ -151,7 +167,12 @@ ReEngrave/
 │       │   └── data/            # gitignored — DSv2 dataset, fine-tuning shards, weights
 │       └── tests/               # 156 unit tests across Phase 4 modules
 ├── omr-weights/                 # gitignored, mounted into the container
-│   └── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB
+│   ├── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB — PRODUCTION
+│   └── deepscoresv2-yolov8l-phase-j-mix-30ep.pt    # from the collapsed catalog run — DO NOT USE
+├── data/
+│   └── user-labeled/            # hand-labeled YOLO training data (v1, v2, …) + catalog.yaml
+├── docs/
+│   └── maestro-integration-plan.md  # theory-layer plan + M0–M4 results
 ├── benchmarks/
 │   ├── omr-phase1/              # staff/measure extraction
 │   ├── omr-phase2.5/            # classical-CV vs YOLO bake-off
@@ -215,6 +236,11 @@ ReEngrave/
     │  - {stem}.omr.json        │    │  - {stem}.musicxml                │
     │  - {stem}.musicxml        │    │ Supports per-page progress in UI  │
     └──────────────────────────┘    └──────────────────────────────────┘
+    → Optional theory layer (host-side only, env-gated — see "Maestro theory layer"):
+        MAESTRO_BRIDGE_ENABLED=true       → enrich result with key detection, rhythm
+                                            validation, scholarly cross-check
+        MAESTRO_PITCH_RERANK_ENABLED=true → M4: re-rank ambiguous pitches against the
+                                            detected key + auto-correct (local engine only)
     → Score.musicxml_path set, Score.status = "review"
     ↓
 [ReviewUI page] options:
@@ -364,6 +390,13 @@ Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 - `^~` prefix modifier on `/uploads/` prevents the regex location from intercepting it.
 - Without `^~`, the `~* \.(js|css|png...)` regex would match snippet PNGs and serve cached static files instead of proxying to backend.
 
+### Maestro theory layer (shipped 2026-05-24, M0–M4)
+- `backend/modules/theory_layer.py` calls `backend/modules/maestro_bridge.py`, which shells out to `tools/maestro_bridge/analyze.ts` via **node + tsx on the host**. Setup: `git submodule update --init && (cd tools/maestro_bridge && npm install)`.
+- **Off by default.** `MAESTRO_BRIDGE_ENABLED=true` turns on enrichment (key detection / rhythm + beat-mapping validation / scholarly cross-check against 5 curated seed works). `MAESTRO_PITCH_RERANK_ENABLED=true` turns on M4 in-pipeline pitch re-ranking + auto-correction — local YOLO engine only (Vision OMR emits no pitch candidates).
+- **Not available inside the Docker container** — the backend image has no Node, by design (personal-use scope: the bridge is for host-side / Claude-session runs). A web-app OMR run inside Docker silently skips theory enrichment.
+- Hooks: `local_omr.py` → `enrich_omr_result()` + `apply_pitch_corrections()`; `claude_vision_omr.py` → `compute_theory_hints()`.
+- Plan + per-milestone results: [docs/maestro-integration-plan.md](docs/maestro-integration-plan.md).
+
 ---
 
 ## Environment variables
@@ -390,6 +423,11 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_CONF_THRESHOLD` | YOLO min confidence (default 0.25) |
 | `OMR_IMGSZ` | YOLO inference image size (default 1280) |
 | `OMR_DPI` | PDF rasterization DPI (default 300) |
+| `MAESTRO_BRIDGE_ENABLED` | `true` → theory-layer enrichment (host-side only; default off) |
+| `MAESTRO_PITCH_RERANK_ENABLED` | `true` → M4 pitch re-rank + auto-correct (local engine; default off) |
+| `MAESTRO_PITCH_RERANK_THRESHOLD` | Min re-rank confidence to auto-correct (default 0.9) |
+| `MAESTRO_TIMEOUT_S` | Bridge subprocess timeout (default 60) |
+| `MAESTRO_NODE_BIN` / `MAESTRO_TSX_BIN` / `MAESTRO_ANALYZE_TS` | Override node / tsx / analyze.ts paths |
 
 ---
 
@@ -467,6 +505,15 @@ python3 -m tools.omr.training.verdicts_to_yolo_labels --verdicts-dir benchmarks/
 python3 -m tools.omr.training.build_catalog_yaml --root data/user-labeled   # unions all versions → catalog.yaml
 ```
 
+**Then COMMIT the results** (labeling runs in the main checkout, and verdicts are irreplaceable human work — don't leave them sitting untracked):
+
+```bash
+git add data/user-labeled/ benchmarks/omr-labeling-NEW/cells.json \
+    benchmarks/omr-labeling-NEW/verdicts/ benchmarks/omr-labeling-NEW/detections/
+git commit -m "Labeling batch <date>: <n> cells → v<n>"
+# (cells/ PNGs are gitignored by design; *_pre_cleanup/ dirs are scratch — don't add them)
+```
+
 ### Change the Claude Vision diff prompt
 Edit [`backend/modules/claude_vision.py`](backend/modules/claude_vision.py). The diff prompt is in `compare_measure_pair`. Returns JSON: `{ has_difference, difference_type, description, confidence, is_omr_error }`.
 
@@ -497,7 +544,9 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 
 - **Custom OMR classes (barlines, textDynamic) are not YOLO-learned.** Phase 3.4 tried to expand from 208 → 214 classes and caused catastrophic forgetting (F1 cratered to 79.3%). Barlines are currently detected by classical CV; textDynamic isn't detected at all. Re-introduce when there are ~200+ examples per new class, or seed via synthetic warm-up.
 
-- **MusicXML voice-splitting via `<backup>` is not yet implemented** in `tools.omr.export.to_musicxml()` — LilyPond export handles two-voice blocks correctly, but the MusicXML export is single-voice-per-part. Bar-check warnings on LilyPond output reflect the rhythm-parsing approximation from Phase 4c/g.
+- **Per-measure rhythm sums are approximate.** Bar-check warnings on LilyPond output reflect the rhythm-parsing approximation from Phase 4c/g (fractional offsets like 1/32, not full-beat errors). Note: MusicXML voice-splitting via `<backup>` *was* implemented 2026-05-23 (`tools/omr/export.py`, `_mxl_voice_events`) — older notes claiming otherwise are stale.
+
+- **MusicXML repeat signs are dropped on export** — no `<repeat>` barline emission yet (see NOTES.md item 6; tied to multi-type barline classification, item 5).
 
 - **OMR time-signature detection is unreliable.** The DSv2 model often misclassifies time-sig digits, so this field is `null` for many pages.
 

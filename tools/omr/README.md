@@ -438,14 +438,22 @@ methodology + per-class breakdown.
   (LilyPond) or `<part-group><group-symbol>brace</group-symbol>`
   (MusicXML). When a staff has measures with both stem-up AND stem-down
   noteheads, LilyPond renders it as a two-voice block (`\voiceOne` +
-  `\voiceTwo`). MusicXML voice-splitting via `<backup>` is **not yet
-  implemented** — MusicXML output is single-voice-per-part. Bar-check
-  warnings on LilyPond output reflect the rhythm-parsing approximation
-  (Phase 4c/g caveats).
+  `\voiceTwo`). MusicXML voice-splitting via `<backup>` was added
+  2026-05-23 (`export.py`, `_mxl_voice_events`) — both exporters now
+  handle two-voice measures. Bar-check warnings on LilyPond output
+  reflect the rhythm-parsing approximation (Phase 4c/g caveats).
 
 ---
 
 ## Going further
+
+- **Theory layer:** an optional, env-gated enrichment pass
+  (`MAESTRO_BRIDGE_ENABLED` / `MAESTRO_PITCH_RERANK_ENABLED`) runs the
+  Maestro Analyzer over OMR output — key detection, rhythm validation,
+  scholarly cross-check, and M4 pitch re-ranking with auto-correction.
+  Lives in `tools/maestro_bridge/` (node/tsx, host-side) +
+  `backend/modules/theory_layer.py`. See
+  `docs/maestro-integration-plan.md`.
 
 - **Labeling more cells:** `tools/omr/annotate/` is a FastAPI
   labeling UI. Hand-label cells in `data/user-labeled/vN-...` then

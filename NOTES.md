@@ -6,7 +6,9 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ## YOLO training via symphony MusicXML × multiple IMSLP editions (2026-05-23)
 
-**Idea**: avoid hand-labeling ~500 cells for measure-line detection by using existing symphony MusicXML as ground truth, then pulling every available PDF edition of those same symphonies from IMSLP and training YOLO to detect structural elements (measure lines, stems, rhythms) by comparing detections against the XML.
+**OUTCOME (2026-05-25): EXECUTED AND CONCLUDED — training part failed.** This idea was carried out as Phases A–L on branch `claude/interesting-curran-3ca1b7` (43 commits, never merged). The catalog/label-generation half worked (65/65 IMSLP editions aligned, 154k labels across 26 movements), but every training attempt on those labels collapsed the model (Phases H, I, J, K, L — including after fixing a ~50px x-offset and remapping class IDs to DSv2-free slots). Verdict: catalog-augmented YOLO training is a dead end with this recipe; structure stays with classical CV, symbol improvement comes from hand-labeling. Full story: PROJECT_STATUS.md → "The catalog-training experiment". The publisher/era research question below remains open but is no longer hooked to an active pipeline.
+
+**Original idea**: avoid hand-labeling ~500 cells for measure-line detection by using existing symphony MusicXML as ground truth, then pulling every available PDF edition of those same symphonies from IMSLP and training YOLO to detect structural elements (measure lines, stems, rhythms) by comparing detections against the XML.
 
 **Why it works for structural elements**:
 - MusicXML *is* authoritative for measure boundaries, stem direction, rhythm.
@@ -125,10 +127,10 @@ Sean asked to recover suggestions he'd made across past YOLO-era sessions that h
 
 ### 7. Confirm "just ink" as a label class
 
+**Verified 2026-06-10: the annotate UI does NOT expose a noise/ink class** — the picker is the DSv2 208-class vocabulary only. The current doctrine covers most of the need by omission: dropped FPs / unboxed bleed become hard-negative background (see CLAUDE.md → "Ink-bleed / mostly-FP cells are GOOD"). Revisit an explicit "noise/ink" class only if hard-negative-by-omission proves insufficient after the v2/v3 retrain.
+
 **Idea**: label noise/ink-artefacts explicitly during hand-labeling so the model learns to ignore them, instead of leaving them unclassified.
 
 **Quote**: "It might be helpful also just to classify ink" (objective-kare)
 
-**Current state**: unclear whether the annotate UI exposes "just ink" as a category. Check `tools/omr/annotate/static/archetypes/` and the cell.js picker categories.
-
-**What's needed**: 5-minute verification. If absent, add a category labeled "noise/ink" and update `verdicts_to_yolo_labels.py` to either drop or remap those during YOLO label emission.
+**What's needed if revived**: add a "noise/ink" category and update `verdicts_to_yolo_labels.py` to either drop or remap those during YOLO label emission.
