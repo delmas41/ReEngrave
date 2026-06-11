@@ -1,0 +1,164 @@
+{
+  "cell_id": "mahler5-p7-sys0-s4-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T21:12:57+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 381,
+        "y": 172,
+        "w": 307,
+        "h": 445
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restHalf",
+      "human_category": "rest",
+      "bbox": {
+        "x": 844,
+        "y": 310,
+        "w": 264,
+        "h": 193
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 1527,
+        "y": 198,
+        "w": 312,
+        "h": 339
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 24,
+        "y": 203,
+        "w": 1805,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 26,
+        "y": 305,
+        "w": 1815,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 28,
+        "y": 409,
+        "w": 1804,
+        "h": 75
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 24,
+        "y": 506,
+        "w": 1808,
+        "h": 92
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 26,
+        "y": 608,
+        "w": 1811,
+        "h": 89
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 5,
+        "y": 154,
+        "w": 30,
+        "h": 636
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 1829,
+        "y": 182,
+        "w": 34,
+        "h": 549
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "stem",
+      "human_category": "structural",
+      "bbox": {
+        "x": 307,
+        "y": 411,
+        "w": 67,
+        "h": 471
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "legerLine",
+      "human_category": "structural",
+      "bbox": {
+        "x": 144,
+        "y": 718,
+        "w": 288,
+        "h": 55
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "legerLine",
+      "human_category": "structural",
+      "bbox": {
+        "x": 159,
+        "y": 809,
+        "w": 262,
+        "h": 66
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "cell_id": "beet5-p75-sys1-s1-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T05:53:40+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": "restWhole",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "rest",
+      "model_bbox": {
+        "x": 794,
+        "y": 344,
+        "w": 88,
+        "h": 60
+      },
+      "human_bbox": {
+        "x": 706,
+        "y": 309,
+        "w": 204,
+        "h": 118
+      },
+      "confidence": 0.6417061686515808,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

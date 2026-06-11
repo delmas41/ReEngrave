@@ -1,0 +1,96 @@
+{
+  "cell_id": "beet5-p45-sys0-s0-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 0,
+      "y": 0,
+      "w": 68,
+      "h": 51,
+      "x_center": 34,
+      "y_center": 25,
+      "confidence": 0.6747938394546509,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 5,
+      "y": 279,
+      "w": 110,
+      "h": 72,
+      "x_center": 60,
+      "y_center": 315,
+      "confidence": 0.4669739902019501,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 719,
+      "y": 380,
+      "w": 88,
+      "h": 89,
+      "x_center": 763,
+      "y_center": 424,
+      "confidence": 0.5306466817855835,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1207,
+      "y": 512,
+      "w": 103,
+      "h": 103,
+      "x_center": 1258,
+      "y_center": 563,
+      "confidence": 0.45296522974967957,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1226,
+      "y": 587,
+      "w": 100,
+      "h": 73,
+      "x_center": 1276,
+      "y_center": 623,
+      "confidence": 0.5731351375579834,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 1669,
+      "y": 362,
+      "w": 67,
+      "h": 65,
+      "x_center": 1702,
+      "y_center": 394,
+      "confidence": 0.6785856485366821,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1949,
+      "y": 1,
+      "w": 66,
+      "h": 57,
+      "x_center": 1982,
+      "y_center": 29,
+      "confidence": 0.4650663435459137,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "cell_id": "beet5-p65-sys4-s8-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 7,
+      "y": 412,
+      "w": 46,
+      "h": 48,
+      "x_center": 30,
+      "y_center": 436,
+      "confidence": 0.6373691558837891,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 4,
+      "y": 512,
+      "w": 948,
+      "h": 51,
+      "x_center": 478,
+      "y_center": 537,
+      "confidence": 0.7839603424072266,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 4,
+      "y": 618,
+      "w": 948,
+      "h": 39,
+      "x_center": 478,
+      "y_center": 637,
+      "confidence": 0.677987277507782,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 5,
+      "y": 409,
+      "w": 947,
+      "h": 47,
+      "x_center": 478,
+      "y_center": 432,
+      "confidence": 0.6501232385635376,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 4,
+      "y": 208,
+      "w": 948,
+      "h": 54,
+      "x_center": 478,
+      "y_center": 235,
+      "confidence": 0.46739867329597473,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 442,
+      "y": 328,
+      "w": 74,
+      "h": 47,
+      "x_center": 479,
+      "y_center": 351,
+      "confidence": 0.6040121912956238,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 25,
+      "y": 313,
+      "w": 927,
+      "h": 53,
+      "x_center": 488,
+      "y_center": 339,
+      "confidence": 0.7587581276893616,
+      "pitch": null
+    }
+  ]
+}

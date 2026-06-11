@@ -1,0 +1,116 @@
+{
+  "cell_id": "mahler5-p25-sys0-s8-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T22:12:00+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 873,
+        "y": 370,
+        "w": 257,
+        "h": 132
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadHalfOnLineSmall",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 168,
+        "y": 59,
+        "w": 230,
+        "h": 136
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 176,
+        "y": 174,
+        "w": 159,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 167,
+        "y": 382,
+        "w": 200,
+        "h": 136
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 18,
+        "y": 11,
+        "w": 162,
+        "h": 124
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 0,
+        "y": 140,
+        "w": 182,
+        "h": 147
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 9,
+        "y": 440,
+        "w": 162,
+        "h": 92
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 0,
+        "y": 86,
+        "w": 38,
+        "h": 686
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 1549,
+        "y": 185,
+        "w": 44,
+        "h": 539
+      },
+      "notes": ""
+    }
+  ]
+}

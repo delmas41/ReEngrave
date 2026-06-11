@@ -1,0 +1,109 @@
+{
+  "cell_id": "beet5-p75-sys4-s7-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 0,
+      "y": 343,
+      "w": 31,
+      "h": 63,
+      "x_center": 15,
+      "y_center": 374,
+      "confidence": 0.596170961856842,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 0,
+      "y": 446,
+      "w": 32,
+      "h": 56,
+      "x_center": 16,
+      "y_center": 474,
+      "confidence": 0.6058297157287598,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 105,
+      "y": 694,
+      "w": 100,
+      "h": 64,
+      "x_center": 155,
+      "y_center": 726,
+      "confidence": 0.6246008276939392,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 226,
+      "y": 223,
+      "w": 54,
+      "h": 50,
+      "x_center": 253,
+      "y_center": 248,
+      "confidence": 0.5799627900123596,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "x": 311,
+      "y": 538,
+      "w": 66,
+      "h": 133,
+      "x_center": 344,
+      "y_center": 604,
+      "confidence": 0.6412795782089233,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 634,
+      "y": 312,
+      "w": 61,
+      "h": 67,
+      "x_center": 664,
+      "y_center": 345,
+      "confidence": 0.4973660707473755,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 712,
+      "y": 857,
+      "w": 50,
+      "h": 42,
+      "x_center": 737,
+      "y_center": 878,
+      "confidence": 0.6826100945472717,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 832,
+      "y": 842,
+      "w": 59,
+      "h": 57,
+      "x_center": 861,
+      "y_center": 870,
+      "confidence": 0.5361242294311523,
+      "pitch": null
+    }
+  ]
+}

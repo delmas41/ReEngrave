@@ -1,0 +1,171 @@
+{
+  "cell_id": "beet5-p5-sys0-s0-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-05-24T22:53:22+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 91,
+        "y": 774,
+        "w": 43,
+        "h": 85
+      },
+      "human_bbox": null,
+      "confidence": 0.2943219542503357,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "beam",
+      "human_corrected_class": "dynamicF",
+      "model_predicted_category": "structural",
+      "human_corrected_category": "dynamic",
+      "model_bbox": {
+        "x": 0,
+        "y": 576,
+        "w": 283,
+        "h": 98
+      },
+      "human_bbox": {
+        "x": 36,
+        "y": 573,
+        "w": 225,
+        "h": 303
+      },
+      "confidence": 0.5009721517562866,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": null,
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 293,
+        "w": 696,
+        "h": 78
+      },
+      "human_bbox": null,
+      "confidence": 0.8914273977279663,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": null,
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 214,
+        "w": 696,
+        "h": 60
+      },
+      "human_bbox": null,
+      "confidence": 0.6461219787597656,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": "dynamicF",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "dynamic",
+      "model_bbox": {
+        "x": 341,
+        "y": 660,
+        "w": 29,
+        "h": 23
+      },
+      "human_bbox": {
+        "x": 161,
+        "y": 565,
+        "w": 276,
+        "h": 313
+      },
+      "confidence": 0.33206605911254883,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "FP",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 72,
+        "y": 603,
+        "w": 611,
+        "h": 77
+      },
+      "human_bbox": null,
+      "confidence": 0.7273216247558594,
+      "notes": ""
+    },
+    {
+      "id": "D6",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "beam",
+      "human_corrected_class": "noteheadHalfInSpace",
+      "model_predicted_category": "structural",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 329,
+        "y": 1,
+        "w": 176,
+        "h": 143
+      },
+      "human_bbox": null,
+      "confidence": 0.43542566895484924,
+      "notes": ""
+    },
+    {
+      "id": "D7",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 507,
+        "y": 0,
+        "w": 20,
+        "h": 27
+      },
+      "human_bbox": null,
+      "confidence": 0.2925475835800171,
+      "notes": ""
+    },
+    {
+      "id": "D8",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 524,
+        "y": 633,
+        "w": 37,
+        "h": 31
+      },
+      "human_bbox": null,
+      "confidence": 0.29538413882255554,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

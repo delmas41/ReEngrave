@@ -1,0 +1,52 @@
+{
+  "cell_id": "beet5-p65-sys5-s9-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T05:53:07+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": "rest8th",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "rest",
+      "model_bbox": {
+        "x": 91,
+        "y": 441,
+        "w": 43,
+        "h": 28
+      },
+      "human_bbox": {
+        "x": 43,
+        "y": 320,
+        "w": 175,
+        "h": 296
+      },
+      "confidence": 0.5026464462280273,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": "noteheadBlackInSpaceSmall",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 323,
+        "y": 243,
+        "w": 39,
+        "h": 26
+      },
+      "human_bbox": {
+        "x": 238,
+        "y": 402,
+        "w": 133,
+        "h": 199
+      },
+      "confidence": 0.5898932814598083,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

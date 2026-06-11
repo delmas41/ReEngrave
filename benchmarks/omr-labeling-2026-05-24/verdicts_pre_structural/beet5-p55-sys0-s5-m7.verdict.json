@@ -1,0 +1,89 @@
+{
+  "cell_id": "beet5-p55-sys0-s5-m7",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-05-26T00:38:30+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 505,
+        "w": 39,
+        "h": 47
+      },
+      "human_bbox": null,
+      "confidence": 0.5161916613578796,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 313,
+        "w": 41,
+        "h": 51
+      },
+      "human_bbox": null,
+      "confidence": 0.47722718119621277,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 430,
+        "y": 622,
+        "w": 49,
+        "h": 35
+      },
+      "human_bbox": null,
+      "confidence": 0.5901329517364502,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 966,
+        "y": 217,
+        "w": 69,
+        "h": 35
+      },
+      "human_bbox": null,
+      "confidence": 0.5164378881454468,
+      "notes": ""
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 99,
+        "y": 188,
+        "w": 261,
+        "h": 202
+      },
+      "notes": ""
+    }
+  ]
+}

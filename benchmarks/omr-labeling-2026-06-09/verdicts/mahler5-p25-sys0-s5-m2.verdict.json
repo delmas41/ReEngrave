@@ -1,0 +1,68 @@
+{
+  "cell_id": "mahler5-p25-sys0-s5-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T04:04:14+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restHalf",
+      "human_category": "rest",
+      "bbox": {
+        "x": 99,
+        "y": 603,
+        "w": 234,
+        "h": 164
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "dynamicLetterP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 798,
+        "y": 972,
+        "w": 264,
+        "h": 243
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "dynamicCrescendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1072,
+        "y": 965,
+        "w": 708,
+        "h": 281
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 955,
+        "y": 416,
+        "w": 177,
+        "h": 161
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1135,
+        "y": 294,
+        "w": 666,
+        "h": 183
+      },
+      "notes": ""
+    }
+  ]
+}

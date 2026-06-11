@@ -1,0 +1,212 @@
+{
+  "cell_id": "mahler5-p25-sys0-s0-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T21:49:52+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 131,
+        "y": 187,
+        "w": 210,
+        "h": 618
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 358,
+        "y": 354,
+        "w": 87,
+        "h": 219
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 442,
+        "y": 236,
+        "w": 80,
+        "h": 209
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 514,
+        "y": 352,
+        "w": 84,
+        "h": 236
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 577,
+        "y": 253,
+        "w": 89,
+        "h": 227
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 649,
+        "y": 398,
+        "w": 93,
+        "h": 266
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 834,
+        "y": 251,
+        "w": 120,
+        "h": 107
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 963,
+        "y": 282,
+        "w": 124,
+        "h": 116
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1096,
+        "y": 362,
+        "w": 124,
+        "h": 106
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1292,
+        "y": 453,
+        "w": 113,
+        "h": 118
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1412,
+        "y": 442,
+        "w": 120,
+        "h": 93
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1603,
+        "y": 423,
+        "w": 112,
+        "h": 112
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1726,
+        "y": 386,
+        "w": 115,
+        "h": 115
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1842,
+        "y": 362,
+        "w": 136,
+        "h": 97
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1203,
+        "y": 371,
+        "w": 91,
+        "h": 274
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1500,
+        "y": 354,
+        "w": 105,
+        "h": 247
+      },
+      "notes": ""
+    },
+    {
+      "id": "H16",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 689,
+        "y": 148,
+        "w": 1228,
+        "h": 185
+      },
+      "notes": ""
+    }
+  ]
+}

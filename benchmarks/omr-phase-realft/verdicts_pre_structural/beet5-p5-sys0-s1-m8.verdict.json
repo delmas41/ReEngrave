@@ -1,0 +1,222 @@
+{
+  "cell_id": "beet5-p5-sys0-s1-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-05-24T22:56:01+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 322,
+        "w": 32,
+        "h": 93
+      },
+      "human_bbox": null,
+      "confidence": 0.39279115200042725,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "accidentalDoubleSharp",
+      "human_corrected_class": "noteheadBlackOnLine",
+      "model_predicted_category": "accidental",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 102,
+        "y": 108,
+        "w": 114,
+        "h": 35
+      },
+      "human_bbox": {
+        "x": 66,
+        "y": 17,
+        "w": 272,
+        "h": 194
+      },
+      "confidence": 0.40124544501304626,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 477,
+        "y": 514,
+        "w": 53,
+        "h": 48
+      },
+      "human_bbox": null,
+      "confidence": 0.4565560221672058,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 0,
+        "y": 223,
+        "w": 1011,
+        "h": 52
+      },
+      "human_bbox": null,
+      "confidence": 0.7145571112632751,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 0,
+        "y": 617,
+        "w": 1011,
+        "h": 60
+      },
+      "human_bbox": null,
+      "confidence": 0.3023639917373657,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 1,
+        "y": 421,
+        "w": 1012,
+        "h": 56
+      },
+      "human_bbox": null,
+      "confidence": 0.6165910363197327,
+      "notes": ""
+    },
+    {
+      "id": "D6",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 0,
+        "y": 518,
+        "w": 1015,
+        "h": 60
+      },
+      "human_bbox": null,
+      "confidence": 0.507735013961792,
+      "notes": ""
+    },
+    {
+      "id": "D7",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 28,
+        "y": 322,
+        "w": 981,
+        "h": 54
+      },
+      "human_bbox": null,
+      "confidence": 0.7143787145614624,
+      "notes": ""
+    },
+    {
+      "id": "D8",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 479,
+        "y": 419,
+        "w": 85,
+        "h": 49
+      },
+      "human_bbox": null,
+      "confidence": 0.2659565806388855,
+      "notes": ""
+    },
+    {
+      "id": "D9",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 507,
+        "y": 402,
+        "w": 57,
+        "h": 48
+      },
+      "human_bbox": null,
+      "confidence": 0.4348892271518707,
+      "notes": ""
+    },
+    {
+      "id": "D10",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "flag8thDown",
+      "human_corrected_class": "restQuarter",
+      "model_predicted_category": "flag",
+      "human_corrected_category": "rest",
+      "model_bbox": {
+        "x": 490,
+        "y": 316,
+        "w": 115,
+        "h": 116
+      },
+      "human_bbox": {
+        "x": 458,
+        "y": 213,
+        "w": 156,
+        "h": 388
+      },
+      "confidence": 0.35806217789649963,
+      "notes": ""
+    },
+    {
+      "id": "D11",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 779,
+        "y": 234,
+        "w": 36,
+        "h": 37
+      },
+      "human_bbox": null,
+      "confidence": 0.4253436028957367,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

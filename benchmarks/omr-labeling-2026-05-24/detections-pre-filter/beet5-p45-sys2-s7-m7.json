@@ -1,0 +1,18 @@
+{
+  "cell_id": "beet5-p45-sys2-s7-m7",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 0,
+      "y": 635,
+      "w": 649,
+      "h": 51,
+      "x_center": 324,
+      "y_center": 660,
+      "confidence": 0.5973345041275024,
+      "pitch": null
+    }
+  ]
+}

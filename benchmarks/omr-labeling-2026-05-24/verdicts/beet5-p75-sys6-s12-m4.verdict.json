@@ -1,0 +1,166 @@
+{
+  "cell_id": "beet5-p75-sys6-s12-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T05:58:57+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 7,
+        "y": 471,
+        "w": 69,
+        "h": 35
+      },
+      "human_bbox": null,
+      "confidence": 0.46018239855766296,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 22,
+        "y": 370,
+        "w": 59,
+        "h": 41
+      },
+      "human_bbox": null,
+      "confidence": 0.48826104402542114,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 89,
+        "y": 332,
+        "w": 46,
+        "h": 28
+      },
+      "human_bbox": null,
+      "confidence": 0.46111100912094116,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": "barlineSingle",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "barline",
+      "model_bbox": {
+        "x": 269,
+        "y": 366,
+        "w": 39,
+        "h": 32
+      },
+      "human_bbox": {
+        "x": 225,
+        "y": 199,
+        "w": 130,
+        "h": 542
+      },
+      "confidence": 0.4535481631755829,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 272,
+        "y": 263,
+        "w": 37,
+        "h": 32
+      },
+      "human_bbox": null,
+      "confidence": 0.535071074962616,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 258,
+        "y": 319,
+        "w": 66,
+        "h": 52
+      },
+      "human_bbox": null,
+      "confidence": 0.5887819528579712,
+      "notes": ""
+    },
+    {
+      "id": "D6",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 274,
+        "y": 396,
+        "w": 35,
+        "h": 35
+      },
+      "human_bbox": null,
+      "confidence": 0.5213780403137207,
+      "notes": ""
+    },
+    {
+      "id": "D7",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 266,
+        "y": 616,
+        "w": 59,
+        "h": 52
+      },
+      "human_bbox": null,
+      "confidence": 0.47218185663223267,
+      "notes": ""
+    },
+    {
+      "id": "D8",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 422,
+        "y": 527,
+        "w": 31,
+        "h": 31
+      },
+      "human_bbox": null,
+      "confidence": 0.5050338506698608,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

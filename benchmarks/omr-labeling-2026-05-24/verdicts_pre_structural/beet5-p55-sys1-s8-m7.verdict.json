@@ -1,0 +1,186 @@
+{
+  "cell_id": "beet5-p55-sys1-s8-m7",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-05-26T00:41:30+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 166,
+        "y": 294,
+        "w": 73,
+        "h": 78
+      },
+      "human_bbox": null,
+      "confidence": 0.6225549578666687,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 534,
+        "y": 419,
+        "w": 39,
+        "h": 61
+      },
+      "human_bbox": null,
+      "confidence": 0.4794803261756897,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "TP",
+      "model_predicted_class": "staff",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 615,
+        "w": 1542,
+        "h": 46
+      },
+      "human_bbox": null,
+      "confidence": 0.5523800253868103,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1045,
+        "y": 414,
+        "w": 60,
+        "h": 55
+      },
+      "human_bbox": null,
+      "confidence": 0.5678689479827881,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": "noteheadBlackOnLine",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 1138,
+        "y": 573,
+        "w": 127,
+        "h": 56
+      },
+      "human_bbox": {
+        "x": 1112,
+        "y": 558,
+        "w": 158,
+        "h": 170
+      },
+      "confidence": 0.5073304176330566,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": "beam",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 1218,
+        "y": 303,
+        "w": 55,
+        "h": 72
+      },
+      "human_bbox": {
+        "x": 1039,
+        "y": 275,
+        "w": 247,
+        "h": 117
+      },
+      "confidence": 0.5758755803108215,
+      "notes": ""
+    },
+    {
+      "id": "D6",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1268,
+        "y": 522,
+        "w": 53,
+        "h": 33
+      },
+      "human_bbox": null,
+      "confidence": 0.5632821321487427,
+      "notes": ""
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 52,
+        "y": 546,
+        "w": 202,
+        "h": 189
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 409,
+        "y": 197,
+        "w": 182,
+        "h": 358
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 690,
+        "y": 188,
+        "w": 241,
+        "h": 361
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 926,
+        "y": 556,
+        "w": 177,
+        "h": 179
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "cell_id": "mahler5-p175-sys3-s10-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T23:31:39+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 8,
+        "y": 77,
+        "w": 1033,
+        "h": 159
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 464,
+        "y": 394,
+        "w": 175,
+        "h": 132
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 898,
+        "y": 288,
+        "w": 187,
+        "h": 152
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 693,
+        "y": 334,
+        "w": 172,
+        "h": 142
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "stem",
+      "human_category": "structural",
+      "bbox": {
+        "x": 460,
+        "y": 476,
+        "w": 48,
+        "h": 227
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "stem",
+      "human_category": "structural",
+      "bbox": {
+        "x": 682,
+        "y": 458,
+        "w": 62,
+        "h": 185
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "stem",
+      "human_category": "structural",
+      "bbox": {
+        "x": 906,
+        "y": 397,
+        "w": 48,
+        "h": 221
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "beam",
+      "human_category": "structural",
+      "bbox": {
+        "x": 439,
+        "y": 609,
+        "w": 545,
+        "h": 165
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 6,
+        "y": 221,
+        "w": 1181,
+        "h": 63
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 9,
+        "y": 323,
+        "w": 1169,
+        "h": 54
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 11,
+        "y": 433,
+        "w": 1155,
+        "h": 45
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 24,
+        "y": 521,
+        "w": 1154,
+        "h": 65
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 18,
+        "y": 624,
+        "w": 1161,
+        "h": 66
+      },
+      "notes": ""
+    }
+  ]
+}

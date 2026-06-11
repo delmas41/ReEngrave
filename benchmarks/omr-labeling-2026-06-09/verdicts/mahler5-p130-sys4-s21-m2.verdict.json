@@ -1,0 +1,68 @@
+{
+  "cell_id": "mahler5-p130-sys4-s21-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T23:47:40+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 121,
+        "y": 80,
+        "w": 221,
+        "h": 163
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "dynamicCrescendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 86,
+        "y": 721,
+        "w": 373,
+        "h": 167
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 796,
+        "y": 695,
+        "w": 673,
+        "h": 169
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "dynamicLetterS",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 459,
+        "y": 709,
+        "w": 128,
+        "h": 176
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 586,
+        "y": 688,
+        "w": 164,
+        "h": 197
+      },
+      "notes": ""
+    }
+  ]
+}

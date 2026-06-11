@@ -1,0 +1,44 @@
+{
+  "cell_id": "mahler5-p130-sys3-s15-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T21:19:25+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 748,
+        "y": 301,
+        "w": 220,
+        "h": 161
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 5,
+        "y": 168,
+        "w": 49,
+        "h": 570
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 1720,
+        "y": 169,
+        "w": 41,
+        "h": 584
+      },
+      "notes": ""
+    }
+  ]
+}

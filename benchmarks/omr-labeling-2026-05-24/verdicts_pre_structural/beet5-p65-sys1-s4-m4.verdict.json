@@ -1,0 +1,59 @@
+{
+  "cell_id": "beet5-p65-sys1-s4-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T05:50:12+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 515,
+        "w": 45,
+        "h": 64
+      },
+      "human_bbox": null,
+      "confidence": 0.5098028779029846,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "TP",
+      "model_predicted_class": "staff",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 2,
+        "y": 327,
+        "w": 1503,
+        "h": 39
+      },
+      "human_bbox": null,
+      "confidence": 0.5710192322731018,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 761,
+        "y": 632,
+        "w": 139,
+        "h": 60
+      },
+      "human_bbox": null,
+      "confidence": 0.4756680727005005,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

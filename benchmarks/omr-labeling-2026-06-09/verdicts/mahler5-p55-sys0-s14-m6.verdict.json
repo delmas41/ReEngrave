@@ -1,0 +1,32 @@
+{
+  "cell_id": "mahler5-p55-sys0-s14-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T05:23:38+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 179,
+        "y": 770,
+        "w": 275,
+        "h": 163
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "dynamicP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 128,
+        "y": 1022,
+        "w": 340,
+        "h": 239
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "cell_id": "mahler5-p55-sys0-s6-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T05:20:51+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 184,
+        "y": 705,
+        "w": 194,
+        "h": 175
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 406,
+        "y": 819,
+        "w": 177,
+        "h": 171
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 597,
+        "y": 495,
+        "w": 232,
+        "h": 373
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "restHalf",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1018,
+        "y": 600,
+        "w": 221,
+        "h": 147
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 26,
+        "y": 289,
+        "w": 583,
+        "h": 196
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 23,
+        "y": 28,
+        "w": 460,
+        "h": 154
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 23,
+        "y": 1043,
+        "w": 486,
+        "h": 227
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "dynamicLetterS",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1295,
+        "y": 61,
+        "w": 150,
+        "h": 170
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1372,
+        "y": 7,
+        "w": 217,
+        "h": 315
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1601,
+        "y": 23,
+        "w": 324,
+        "h": 189
+      },
+      "notes": ""
+    }
+  ]
+}

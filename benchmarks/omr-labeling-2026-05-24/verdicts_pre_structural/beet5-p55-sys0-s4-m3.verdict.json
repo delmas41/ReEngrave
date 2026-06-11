@@ -1,0 +1,300 @@
+{
+  "cell_id": "beet5-p55-sys0-s4-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-05-26T00:38:06+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 332,
+        "w": 23,
+        "h": 60
+      },
+      "human_bbox": null,
+      "confidence": 0.5708377957344055,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 426,
+        "w": 25,
+        "h": 113
+      },
+      "human_bbox": null,
+      "confidence": 0.7679561972618103,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 521,
+        "y": 422,
+        "w": 67,
+        "h": 99
+      },
+      "human_bbox": null,
+      "confidence": 0.5230104923248291,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 522,
+        "y": 419,
+        "w": 65,
+        "h": 67
+      },
+      "human_bbox": null,
+      "confidence": 0.5147740244865417,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": "noteheadBlackInSpace",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 547,
+        "y": 225,
+        "w": 116,
+        "h": 53
+      },
+      "human_bbox": {
+        "x": 496,
+        "y": 128,
+        "w": 206,
+        "h": 124
+      },
+      "confidence": 0.4535394608974457,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 564,
+        "y": 445,
+        "w": 180,
+        "h": 33
+      },
+      "human_bbox": null,
+      "confidence": 0.5975889563560486,
+      "notes": ""
+    },
+    {
+      "id": "D6",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 902,
+        "y": 343,
+        "w": 64,
+        "h": 29
+      },
+      "human_bbox": null,
+      "confidence": 0.46591389179229736,
+      "notes": ""
+    },
+    {
+      "id": "D7",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 949,
+        "y": 418,
+        "w": 72,
+        "h": 71
+      },
+      "human_bbox": null,
+      "confidence": 0.489932119846344,
+      "notes": ""
+    },
+    {
+      "id": "D8",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": "noteheadBlackOnLine",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 1007,
+        "y": 298,
+        "w": 91,
+        "h": 63
+      },
+      "human_bbox": {
+        "x": 955,
+        "y": 294,
+        "w": 176,
+        "h": 142
+      },
+      "confidence": 0.46552160382270813,
+      "notes": ""
+    },
+    {
+      "id": "D9",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1071,
+        "y": 343,
+        "w": 110,
+        "h": 29
+      },
+      "human_bbox": null,
+      "confidence": 0.4683466851711273,
+      "notes": ""
+    },
+    {
+      "id": "D10",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": "clefF",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "clef",
+      "model_bbox": {
+        "x": 1151,
+        "y": 539,
+        "w": 89,
+        "h": 73
+      },
+      "human_bbox": {
+        "x": 1173,
+        "y": 209,
+        "w": 234,
+        "h": 456
+      },
+      "confidence": 0.5974770784378052,
+      "notes": ""
+    },
+    {
+      "id": "D11",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1173,
+        "y": 292,
+        "w": 112,
+        "h": 69
+      },
+      "human_bbox": null,
+      "confidence": 0.4689396321773529,
+      "notes": ""
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 112,
+        "y": 92,
+        "w": 211,
+        "h": 192
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 117,
+        "y": 278,
+        "w": 223,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 505,
+        "y": 271,
+        "w": 195,
+        "h": 160
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 741,
+        "y": 135,
+        "w": 179,
+        "h": 136
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 732,
+        "y": 298,
+        "w": 188,
+        "h": 150
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 943,
+        "y": 121,
+        "w": 191,
+        "h": 154
+      },
+      "notes": ""
+    }
+  ]
+}

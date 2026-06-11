@@ -1,0 +1,545 @@
+{
+  "cell_id": "beet5-p5-sys1-s3-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-05-24T22:58:36+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 36,
+        "y": 83,
+        "w": 24,
+        "h": 121
+      },
+      "human_bbox": null,
+      "confidence": 0.7589624524116516,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": "accidentalFlat",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "accidental",
+      "model_bbox": {
+        "x": 107,
+        "y": 104,
+        "w": 44,
+        "h": 64
+      },
+      "human_bbox": {
+        "x": 48,
+        "y": 13,
+        "w": 121,
+        "h": 215
+      },
+      "confidence": 0.403410941362381,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "accidentalNatural",
+      "human_corrected_class": null,
+      "model_predicted_category": "accidental",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 154,
+        "y": 0,
+        "w": 24,
+        "h": 92
+      },
+      "human_bbox": null,
+      "confidence": 0.780320405960083,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 185,
+        "y": 18,
+        "w": 45,
+        "h": 41
+      },
+      "human_bbox": null,
+      "confidence": 0.839935302734375,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 245,
+        "y": 18,
+        "w": 45,
+        "h": 41
+      },
+      "human_bbox": null,
+      "confidence": 0.8523243069648743,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadWholeInSpace",
+      "human_corrected_class": "noteheadBlackOnLine",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 245,
+        "y": 113,
+        "w": 69,
+        "h": 39
+      },
+      "human_bbox": {
+        "x": 183,
+        "y": 71,
+        "w": 183,
+        "h": 155
+      },
+      "confidence": 0.4606943726539612,
+      "notes": ""
+    },
+    {
+      "id": "D6",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 302,
+        "y": 18,
+        "w": 48,
+        "h": 40
+      },
+      "human_bbox": null,
+      "confidence": 0.8562328815460205,
+      "notes": ""
+    },
+    {
+      "id": "D7",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 422,
+        "y": 45,
+        "w": 19,
+        "h": 105
+      },
+      "human_bbox": null,
+      "confidence": 0.3797266483306885,
+      "notes": ""
+    },
+    {
+      "id": "D8",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 424,
+        "y": 17,
+        "w": 45,
+        "h": 40
+      },
+      "human_bbox": null,
+      "confidence": 0.8891608119010925,
+      "notes": ""
+    },
+    {
+      "id": "D9",
+      "verdict": "FP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 508,
+        "y": 74,
+        "w": 37,
+        "h": 96
+      },
+      "human_bbox": null,
+      "confidence": 0.34275132417678833,
+      "notes": ""
+    },
+    {
+      "id": "D10",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 693,
+        "y": 15,
+        "w": 46,
+        "h": 43
+      },
+      "human_bbox": null,
+      "confidence": 0.8771060705184937,
+      "notes": ""
+    },
+    {
+      "id": "D11",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 753,
+        "y": 14,
+        "w": 47,
+        "h": 42
+      },
+      "human_bbox": null,
+      "confidence": 0.8698915839195251,
+      "notes": ""
+    },
+    {
+      "id": "D12",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 825,
+        "y": 11,
+        "w": 48,
+        "h": 41
+      },
+      "human_bbox": null,
+      "confidence": 0.8707725405693054,
+      "notes": ""
+    },
+    {
+      "id": "D13",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 883,
+        "y": 93,
+        "w": 23,
+        "h": 90
+      },
+      "human_bbox": null,
+      "confidence": 0.27687498927116394,
+      "notes": ""
+    },
+    {
+      "id": "D14",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 951,
+        "y": 43,
+        "w": 18,
+        "h": 106
+      },
+      "human_bbox": null,
+      "confidence": 0.3537069261074066,
+      "notes": ""
+    },
+    {
+      "id": "D15",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 954,
+        "y": 14,
+        "w": 47,
+        "h": 39
+      },
+      "human_bbox": null,
+      "confidence": 0.8661870956420898,
+      "notes": ""
+    },
+    {
+      "id": "D16",
+      "verdict": "FP",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 57,
+        "w": 2048,
+        "h": 100
+      },
+      "human_bbox": null,
+      "confidence": 0.49601349234580994,
+      "notes": ""
+    },
+    {
+      "id": "D17",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1060,
+        "y": 13,
+        "w": 46,
+        "h": 41
+      },
+      "human_bbox": null,
+      "confidence": 0.8706290125846863,
+      "notes": ""
+    },
+    {
+      "id": "D18",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadWholeInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1057,
+        "y": 96,
+        "w": 82,
+        "h": 50
+      },
+      "human_bbox": null,
+      "confidence": 0.7916605472564697,
+      "notes": ""
+    },
+    {
+      "id": "D19",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1124,
+        "y": 12,
+        "w": 44,
+        "h": 40
+      },
+      "human_bbox": null,
+      "confidence": 0.875262975692749,
+      "notes": ""
+    },
+    {
+      "id": "D20",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1199,
+        "y": 71,
+        "w": 22,
+        "h": 129
+      },
+      "human_bbox": null,
+      "confidence": 0.2725592851638794,
+      "notes": ""
+    },
+    {
+      "id": "D21",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1315,
+        "y": 19,
+        "w": 25,
+        "h": 117
+      },
+      "human_bbox": null,
+      "confidence": 0.26173436641693115,
+      "notes": ""
+    },
+    {
+      "id": "D22",
+      "verdict": "FP",
+      "model_predicted_class": "dynamicF",
+      "human_corrected_class": null,
+      "model_predicted_category": "dynamic",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1301,
+        "y": 196,
+        "w": 70,
+        "h": 76
+      },
+      "human_bbox": null,
+      "confidence": 0.36590585112571716,
+      "notes": ""
+    },
+    {
+      "id": "D23",
+      "verdict": "FP",
+      "model_predicted_class": "dynamicF",
+      "human_corrected_class": null,
+      "model_predicted_category": "dynamic",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1342,
+        "y": 198,
+        "w": 66,
+        "h": 72
+      },
+      "human_bbox": null,
+      "confidence": 0.5229618549346924,
+      "notes": ""
+    },
+    {
+      "id": "D24",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1404,
+        "y": 54,
+        "w": 22,
+        "h": 150
+      },
+      "human_bbox": null,
+      "confidence": 0.3139714002609253,
+      "notes": ""
+    },
+    {
+      "id": "D25",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1472,
+        "y": 15,
+        "w": 22,
+        "h": 124
+      },
+      "human_bbox": null,
+      "confidence": 0.2966552674770355,
+      "notes": ""
+    },
+    {
+      "id": "D26",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1477,
+        "y": 0,
+        "w": 42,
+        "h": 28
+      },
+      "human_bbox": null,
+      "confidence": 0.7353711128234863,
+      "notes": ""
+    },
+    {
+      "id": "D27",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1591,
+        "y": 112,
+        "w": 48,
+        "h": 40
+      },
+      "human_bbox": null,
+      "confidence": 0.9170690774917603,
+      "notes": ""
+    },
+    {
+      "id": "D28",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1815,
+        "y": 98,
+        "w": 43,
+        "h": 37
+      },
+      "human_bbox": null,
+      "confidence": 0.36053821444511414,
+      "notes": ""
+    },
+    {
+      "id": "D29",
+      "verdict": "FP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1912,
+        "y": 71,
+        "w": 39,
+        "h": 98
+      },
+      "human_bbox": null,
+      "confidence": 0.81064373254776,
+      "notes": ""
+    },
+    {
+      "id": "D30",
+      "verdict": "FP",
+      "model_predicted_class": "arpeggiato",
+      "human_corrected_class": null,
+      "model_predicted_category": "ornament",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 2024,
+        "y": 0,
+        "w": 24,
+        "h": 202
+      },
+      "human_bbox": null,
+      "confidence": 0.6403481364250183,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

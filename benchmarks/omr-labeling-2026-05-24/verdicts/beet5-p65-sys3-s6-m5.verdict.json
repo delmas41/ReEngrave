@@ -1,0 +1,86 @@
+{
+  "cell_id": "beet5-p65-sys3-s6-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T05:51:23+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": "rest8th",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "rest",
+      "model_bbox": {
+        "x": 165,
+        "y": 394,
+        "w": 33,
+        "h": 25
+      },
+      "human_bbox": {
+        "x": 38,
+        "y": 325,
+        "w": 181,
+        "h": 278
+      },
+      "confidence": 0.5627920031547546,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 285,
+        "y": 884,
+        "w": 31,
+        "h": 16
+      },
+      "human_bbox": null,
+      "confidence": 0.6221898198127747,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": "barlineSingle",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "barline",
+      "model_bbox": {
+        "x": 275,
+        "y": 632,
+        "w": 57,
+        "h": 45
+      },
+      "human_bbox": {
+        "x": 249,
+        "y": 213,
+        "w": 112,
+        "h": 501
+      },
+      "confidence": 0.5497742891311646,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 280,
+        "y": 531,
+        "w": 50,
+        "h": 47
+      },
+      "human_bbox": null,
+      "confidence": 0.5778726935386658,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

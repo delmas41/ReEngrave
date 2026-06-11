@@ -1,0 +1,76 @@
+{
+  "cell_id": "beet5-p65-sys2-s5-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T05:50:27+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 781,
+        "w": 21,
+        "h": 39
+      },
+      "human_bbox": null,
+      "confidence": 0.5237334966659546,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 810,
+        "w": 34,
+        "h": 55
+      },
+      "human_bbox": null,
+      "confidence": 0.5414324998855591,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 241,
+        "y": 551,
+        "w": 39,
+        "h": 13
+      },
+      "human_bbox": null,
+      "confidence": 0.6177108883857727,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "TP",
+      "model_predicted_class": "staff",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 615,
+        "w": 1504,
+        "h": 56
+      },
+      "human_bbox": null,
+      "confidence": 0.8360996842384338,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

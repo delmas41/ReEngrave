@@ -1,0 +1,104 @@
+{
+  "cell_id": "mahler5-p130-sys1-s9-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T21:17:32+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 746,
+        "y": 305,
+        "w": 186,
+        "h": 118
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 35,
+        "y": 211,
+        "w": 1644,
+        "h": 78
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 33,
+        "y": 310,
+        "w": 1643,
+        "h": 83
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 32,
+        "y": 413,
+        "w": 1649,
+        "h": 67
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 29,
+        "y": 502,
+        "w": 1658,
+        "h": 86
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 37,
+        "y": 611,
+        "w": 1644,
+        "h": 74
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 0,
+        "y": 183,
+        "w": 38,
+        "h": 520
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 1657,
+        "y": 134,
+        "w": 51,
+        "h": 618
+      },
+      "notes": ""
+    }
+  ]
+}

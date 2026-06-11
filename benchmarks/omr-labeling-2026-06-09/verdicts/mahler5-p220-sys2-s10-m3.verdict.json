@@ -1,0 +1,128 @@
+{
+  "cell_id": "mahler5-p220-sys2-s10-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T21:36:34+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 61,
+        "y": 868,
+        "w": 165,
+        "h": 165
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 228,
+        "y": 838,
+        "w": 175,
+        "h": 132
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 410,
+        "y": 929,
+        "w": 172,
+        "h": 153
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 579,
+        "y": 831,
+        "w": 175,
+        "h": 165
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 810,
+        "y": 947,
+        "w": 195,
+        "h": 205
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 996,
+        "y": 828,
+        "w": 179,
+        "h": 163
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1159,
+        "y": 663,
+        "w": 156,
+        "h": 193
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1329,
+        "y": 828,
+        "w": 172,
+        "h": 163
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "dynamicLetterS",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1043,
+        "y": 1017,
+        "w": 156,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1154,
+        "y": 966,
+        "w": 191,
+        "h": 314
+      },
+      "notes": ""
+    }
+  ]
+}

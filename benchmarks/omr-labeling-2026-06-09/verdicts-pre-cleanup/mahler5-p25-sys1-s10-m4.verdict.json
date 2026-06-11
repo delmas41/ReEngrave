@@ -1,0 +1,68 @@
+{
+  "cell_id": "mahler5-p25-sys1-s10-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T22:19:07+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 5,
+        "y": 161,
+        "w": 130,
+        "h": 150
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 13,
+        "y": 321,
+        "w": 233,
+        "h": 48
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 16,
+        "y": 418,
+        "w": 221,
+        "h": 51
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 20,
+        "y": 520,
+        "w": 227,
+        "h": 48
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 4,
+        "y": 617,
+        "w": 233,
+        "h": 60
+      },
+      "notes": "sempre"
+    }
+  ]
+}

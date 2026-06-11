@@ -1,0 +1,44 @@
+{
+  "cell_id": "mahler5-p4-sys3-s12-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T21:37:37+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 88,
+        "y": 866,
+        "w": 201,
+        "h": 374
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 307,
+        "y": 933,
+        "w": 238,
+        "h": 259
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "articAccentAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 193,
+        "y": 300,
+        "w": 382,
+        "h": 233
+      },
+      "notes": ""
+    }
+  ]
+}

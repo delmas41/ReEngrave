@@ -1,0 +1,140 @@
+{
+  "cell_id": "mahler5-p7-sys0-s1-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T21:23:34+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 286,
+        "y": 584,
+        "w": 192,
+        "h": 144
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 9,
+        "y": 142,
+        "w": 409,
+        "h": 276
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 567,
+        "y": 221,
+        "w": 185,
+        "h": 399
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 823,
+        "y": 387,
+        "w": 206,
+        "h": 132
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 817,
+        "y": 493,
+        "w": 236,
+        "h": 125
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1145,
+        "y": 301,
+        "w": 223,
+        "h": 284
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1462,
+        "y": 377,
+        "w": 173,
+        "h": 137
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1457,
+        "y": 481,
+        "w": 190,
+        "h": 140
+      },
+      "notes": ""
+    },
+    {
+      "id": "H17",
+      "human_class": "flag8thUp",
+      "human_category": "flag",
+      "bbox": {
+        "x": 1575,
+        "y": 75,
+        "w": 178,
+        "h": 399
+      },
+      "notes": ""
+    },
+    {
+      "id": "H18",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 0,
+        "y": 99,
+        "w": 19,
+        "h": 666
+      },
+      "notes": ""
+    },
+    {
+      "id": "H19",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 1779,
+        "y": 123,
+        "w": 56,
+        "h": 613
+      },
+      "notes": ""
+    }
+  ]
+}

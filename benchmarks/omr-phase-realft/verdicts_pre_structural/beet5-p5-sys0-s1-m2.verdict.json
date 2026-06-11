@@ -1,0 +1,132 @@
+{
+  "cell_id": "beet5-p5-sys0-s1-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-05-24T22:54:28+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "beam",
+      "human_corrected_class": "noteheadHalfOnLine",
+      "model_predicted_category": "structural",
+      "human_corrected_category": "notehead",
+      "model_bbox": {
+        "x": 136,
+        "y": 103,
+        "w": 189,
+        "h": 98
+      },
+      "human_bbox": {
+        "x": 83,
+        "y": 21,
+        "w": 228,
+        "h": 200
+      },
+      "confidence": 0.34585535526275635,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "human_corrected_class": "restWhole",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "rest",
+      "model_bbox": {
+        "x": 282,
+        "y": 586,
+        "w": 123,
+        "h": 34
+      },
+      "human_bbox": null,
+      "confidence": 0.49531280994415283,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 0,
+        "y": 223,
+        "w": 698,
+        "h": 71
+      },
+      "human_bbox": null,
+      "confidence": 0.9516616463661194,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 0,
+        "y": 431,
+        "w": 698,
+        "h": 54
+      },
+      "human_bbox": null,
+      "confidence": 0.8094210028648376,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 0,
+        "y": 635,
+        "w": 698,
+        "h": 53
+      },
+      "human_bbox": null,
+      "confidence": 0.7991772294044495,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 0,
+        "y": 332,
+        "w": 698,
+        "h": 54
+      },
+      "human_bbox": null,
+      "confidence": 0.7806000113487244,
+      "notes": ""
+    },
+    {
+      "id": "D6",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": "staff",
+      "model_predicted_category": "rest",
+      "human_corrected_category": "structural",
+      "model_bbox": {
+        "x": 2,
+        "y": 535,
+        "w": 696,
+        "h": 48
+      },
+      "human_bbox": null,
+      "confidence": 0.8990850448608398,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

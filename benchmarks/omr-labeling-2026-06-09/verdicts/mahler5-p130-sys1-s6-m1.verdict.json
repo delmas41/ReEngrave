@@ -1,0 +1,80 @@
+{
+  "cell_id": "mahler5-p130-sys1-s6-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T23:27:01+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H5",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 222,
+        "y": 463,
+        "w": 165,
+        "h": 155
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 438,
+        "y": 454,
+        "w": 86,
+        "h": 78
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "barlineSingle",
+      "human_category": "barline",
+      "bbox": {
+        "x": 2,
+        "y": 160,
+        "w": 45,
+        "h": 540
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 328,
+        "y": 659,
+        "w": 1296,
+        "h": 130
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 8,
+        "y": 663,
+        "w": 217,
+        "h": 118
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 248,
+        "y": 773,
+        "w": 1379,
+        "h": 116
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -6,8 +6,9 @@ tall cells on orchestral pages — adjacent instrument staves are only ~2-3
 spacings apart, so a single 'cell' spills into ~5 instruments.
 
 This selector:
-  * Monkey-patches PAD_*_STAFF_LINES = 1.0 so each cell is tightly cropped
-    to one staff (ledger lines + dynamics still fit).
+  * Monkey-patches PAD_*_STAFF_LINES = 5.0 so extreme ledger-line notes are
+    fully captured in the crop (dynamics and articulations above/below still
+    fit without spilling into a neighbouring instrument's staff).
   * For each requested page, samples cells uniformly across the (staff x
     measure) grid so we get a mix of instrument families, page positions,
     and within-page densities.
@@ -38,10 +39,11 @@ from ..staff_line_removal import remove_staff_lines
 from ..types import MeasureCell
 
 
-# Tight padding for orchestral cells — just enough room above/below for
-# ledger lines and dynamics, not enough to spill into a neighbouring
-# instrument's staff. (Default in measure_extractor is 4.)
-ORCH_PAD_STAFF_LINES = 2.5
+# Padding for orchestral cells — 5.0 staff-spaces above/below captures
+# extreme ledger-line notes and high/low dynamics without spilling into
+# adjacent staves on typical orchestral page densities. (Default in
+# measure_extractor is 4; prior value here was 2.5 which clipped ledger notes.)
+ORCH_PAD_STAFF_LINES = 5.0
 
 
 @dataclass(frozen=True)

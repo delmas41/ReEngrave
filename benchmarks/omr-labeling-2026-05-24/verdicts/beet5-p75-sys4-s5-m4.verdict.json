@@ -1,0 +1,115 @@
+{
+  "cell_id": "beet5-p75-sys4-s5-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T05:54:48+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 555,
+        "w": 20,
+        "h": 26
+      },
+      "human_bbox": null,
+      "confidence": 0.48435521125793457,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 420,
+        "w": 27,
+        "h": 59
+      },
+      "human_bbox": null,
+      "confidence": 0.6312289237976074,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "WRONG_CATEGORY",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": "barlineSingle",
+      "model_predicted_category": "notehead",
+      "human_corrected_category": "barline",
+      "model_bbox": {
+        "x": 0,
+        "y": 317,
+        "w": 28,
+        "h": 55
+      },
+      "human_bbox": {
+        "x": 2,
+        "y": 199,
+        "w": 31,
+        "h": 489
+      },
+      "confidence": 0.5137014985084534,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "human_corrected_class": null,
+      "model_predicted_category": "notehead",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 419,
+        "w": 28,
+        "h": 85
+      },
+      "human_bbox": null,
+      "confidence": 0.4884284436702728,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "unsure",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 597,
+        "y": 635,
+        "w": 43,
+        "h": 22
+      },
+      "human_bbox": null,
+      "confidence": 0.689852237701416,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "rest",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 656,
+        "y": 852,
+        "w": 48,
+        "h": 24
+      },
+      "human_bbox": null,
+      "confidence": 0.585594892501831,
+      "notes": ""
+    }
+  ],
+  "added_detections": []
+}

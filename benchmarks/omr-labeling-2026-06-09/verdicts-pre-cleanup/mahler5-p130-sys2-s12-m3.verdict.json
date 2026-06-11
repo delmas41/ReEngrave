@@ -1,0 +1,128 @@
+{
+  "cell_id": "mahler5-p130-sys2-s12-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-09T22:14:41+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "dynamicLetterP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 113,
+        "y": 696,
+        "w": 226,
+        "h": 197
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "stem",
+      "human_category": "structural",
+      "bbox": {
+        "x": 205,
+        "y": 447,
+        "w": 55,
+        "h": 274
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 205,
+        "y": 364,
+        "w": 168,
+        "h": 159
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 377,
+        "y": 354,
+        "w": 107,
+        "h": 84
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 12,
+        "y": 269,
+        "w": 223,
+        "h": 152
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 16,
+        "y": 210,
+        "w": 1865,
+        "h": 66
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 25,
+        "y": 322,
+        "w": 1854,
+        "h": 56
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 21,
+        "y": 412,
+        "w": 1865,
+        "h": 56
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 21,
+        "y": 507,
+        "w": 1858,
+        "h": 69
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "staff",
+      "human_category": "structural",
+      "bbox": {
+        "x": 19,
+        "y": 612,
+        "w": 1862,
+        "h": 65
+      },
+      "notes": ""
+    }
+  ]
+}

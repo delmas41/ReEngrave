@@ -1,0 +1,164 @@
+{
+  "cell_id": "mahler5-p4-sys3-s10-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T04:02:49+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 99,
+        "y": 12,
+        "w": 145,
+        "h": 210
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWhole",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 363,
+        "y": 14,
+        "w": 272,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 254,
+        "y": 115,
+        "w": 215,
+        "h": 308
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 415,
+        "y": 129,
+        "w": 187,
+        "h": 301
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "tremolo3",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 310,
+        "y": 517,
+        "w": 320,
+        "h": 257
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 597,
+        "y": 117,
+        "w": 1000,
+        "h": 220
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 57,
+        "y": 851,
+        "w": 157,
+        "h": 425
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 205,
+        "y": 764,
+        "w": 140,
+        "h": 363
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 359,
+        "y": 844,
+        "w": 208,
+        "h": 175
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 373,
+        "y": 979,
+        "w": 194,
+        "h": 157
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 268,
+        "y": 1173,
+        "w": 222,
+        "h": 218
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 422,
+        "y": 1176,
+        "w": 180,
+        "h": 219
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 611,
+        "y": 1173,
+        "w": 975,
+        "h": 208
+      },
+      "notes": ""
+    }
+  ]
+}

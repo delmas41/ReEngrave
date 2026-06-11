@@ -1,0 +1,44 @@
+{
+  "cell_id": "beet5-p45-sys0-s5-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "timeSig4",
+      "category": "time_sig_digit",
+      "x": 0,
+      "y": 825,
+      "w": 21,
+      "h": 70,
+      "x_center": 10,
+      "y_center": 860,
+      "confidence": 0.6826053261756897,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 364,
+      "y": 109,
+      "w": 66,
+      "h": 42,
+      "x_center": 397,
+      "y_center": 130,
+      "confidence": 0.6237249374389648,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 398,
+      "y": 158,
+      "w": 57,
+      "h": 54,
+      "x_center": 426,
+      "y_center": 185,
+      "confidence": 0.5534015893936157,
+      "pitch": null
+    }
+  ]
+}

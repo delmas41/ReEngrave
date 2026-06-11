@@ -1,0 +1,104 @@
+{
+  "cell_id": "mahler5-p220-sys2-s7-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T05:25:16+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 49,
+        "y": 417,
+        "w": 184,
+        "h": 165
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 214,
+        "y": 319,
+        "w": 193,
+        "h": 160
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 517,
+        "y": 296,
+        "w": 235,
+        "h": 190
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 705,
+        "y": 431,
+        "w": 191,
+        "h": 155
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 403,
+        "y": 372,
+        "w": 165,
+        "h": 166
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 896,
+        "y": 375,
+        "w": 170,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1075,
+        "y": 472,
+        "w": 151,
+        "h": 166
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1219,
+        "y": 428,
+        "w": 177,
+        "h": 161
+      },
+      "notes": ""
+    }
+  ]
+}

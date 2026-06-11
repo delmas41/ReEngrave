@@ -1,0 +1,122 @@
+{
+  "cell_id": "beet5-p55-sys1-s7-m3",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 0,
+      "y": 321,
+      "w": 41,
+      "h": 67,
+      "x_center": 20,
+      "y_center": 354,
+      "confidence": 0.5475423336029053,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 1,
+      "y": 426,
+      "w": 1399,
+      "h": 46,
+      "x_center": 700,
+      "y_center": 449,
+      "confidence": 0.4648435711860657,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 4,
+      "y": 230,
+      "w": 1411,
+      "h": 42,
+      "x_center": 709,
+      "y_center": 251,
+      "confidence": 0.6062072515487671,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 704,
+      "y": 331,
+      "w": 88,
+      "h": 36,
+      "x_center": 748,
+      "y_center": 349,
+      "confidence": 0.49478232860565186,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 786,
+      "y": 687,
+      "w": 151,
+      "h": 76,
+      "x_center": 861,
+      "y_center": 725,
+      "confidence": 0.5122831463813782,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 905,
+      "y": 324,
+      "w": 49,
+      "h": 61,
+      "x_center": 929,
+      "y_center": 354,
+      "confidence": 0.5149827003479004,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 1082,
+      "y": 413,
+      "w": 54,
+      "h": 160,
+      "x_center": 1109,
+      "y_center": 493,
+      "confidence": 0.6085739731788635,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "restHalf",
+      "category": "rest",
+      "x": 1097,
+      "y": 743,
+      "w": 120,
+      "h": 36,
+      "x_center": 1157,
+      "y_center": 761,
+      "confidence": 0.4933578073978424,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 1390,
+      "y": 174,
+      "w": 25,
+      "h": 158,
+      "x_center": 1402,
+      "y_center": 253,
+      "confidence": 0.5150090456008911,
+      "pitch": null
+    }
+  ]
+}

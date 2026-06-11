@@ -1,0 +1,44 @@
+{
+  "cell_id": "mahler5-p90-sys0-s5-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T21:40:18+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 776,
+        "y": 566,
+        "w": 219,
+        "h": 139
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 150,
+        "y": 7,
+        "w": 207,
+        "h": 335
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 306,
+        "y": 12,
+        "w": 184,
+        "h": 349
+      },
+      "notes": ""
+    }
+  ]
+}
