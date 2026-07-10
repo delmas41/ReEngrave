@@ -1,22 +1,22 @@
 {
-  "generated_utc": "2026-07-10T17:16:54+00:00",
+  "generated_utc": "2026-07-10T21:13:43+00:00",
   "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled",
   "val_fraction": 0.15,
   "seed": "reengrave",
-  "n_versions": 2,
-  "n_train_images": 82,
-  "n_val_images": 15,
+  "n_versions": 3,
+  "n_train_images": 110,
+  "n_val_images": 22,
   "n_classes": 208,
   "n_classes_full_vocab": 214,
-  "n_boxes_dropped_over_nc": 68,
+  "n_boxes_dropped_over_nc": 82,
   "boxes_dropped_by_class": {
-    "barlineSingle": 60,
+    "barlineSingle": 74,
     "barlineDouble": 2,
     "repeatLeft": 5,
     "textDynamic": 1
   },
   "full_catalog": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/catalog-214.yaml",
-  "weights_source": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+  "weights_source": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt",
   "versions": [
     {
       "name": "v1-2026-05-18-orchestral",
@@ -37,6 +37,16 @@
       "labeler": "sean",
       "description": "Beethoven 5 pp.45-75 conductor score, 39 cells",
       "created_utc": "2026-06-09T06:33:27+00:00"
+    },
+    {
+      "name": "v3-2026-06-09-mahler5",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5",
+      "n_train_images": 28,
+      "n_val_images": 7,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Mahler 5 draw-from-scratch batch, 35 cells",
+      "created_utc": "2026-07-10T21:12:37+00:00"
     }
   ]
 }

@@ -13,3 +13,10 @@
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v2-2026-06-08-beet5/images/beet5-p45-sys1-s6-m7.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v2-2026-06-08-beet5/images/beet5-p45-sys2-s7-m7.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v2-2026-06-08-beet5/images/beet5-p75-sys6-s12-m4.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5/images/mahler5-p130-sys4-s21-m2.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5/images/mahler5-p25-sys0-s8-m6.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5/images/mahler5-p4-sys3-s10-m2.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5/images/mahler5-p55-sys0-s14-m6.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5/images/mahler5-p7-sys0-s0-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5/images/mahler5-p7-sys0-s4-m6.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v3-2026-06-09-mahler5/images/mahler5-p90-sys0-s8-m4.png
