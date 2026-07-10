@@ -309,14 +309,44 @@ def _run_omr_blocking(
 
 
 def _confidence_from_result(result: dict[str, Any]) -> float:
-    """Synthesize a 0-1 confidence by averaging:
-      - notehead pitch-resolution coverage
-      - notehead rhythm-resolution coverage
-    These are the two derived layers most likely to be incomplete when
-    the YOLO detections are noisy. The retrospective documents that on
-    clean engraved PDFs both hit 100% on most pages.
+    """Synthesize a 0-1 confidence score.
+
+    Pitch/rhythm coverage alone saturates near 1.0 even on bad pages —
+    nearly every notehead gets SOME pitch/duration resolved, right or
+    wrong, so a page full of confidently-wrong detections used to still
+    score ~1.0. Folds in real signal so bad pages score visibly lower:
+    equally-weighted (0.2 each) average of notehead pitch-resolution
+    coverage, notehead rhythm-resolution coverage, the fraction of
+    measures with no `phase1_warning` (Phase 1 fused/missed a barline),
+    the fraction with no `rhythm_sum_warning` (beat count doesn't match
+    the time signature), and the mean raw YOLO detection confidence.
     """
     n_nh = max(1, int(result.get("n_noteheads_total", 0)))
     pitched = int(result.get("n_noteheads_pitched_total", 0))
     timed = int(result.get("n_noteheads_with_duration_total", 0))
-    return (pitched / n_nh + timed / n_nh) / 2.0
+    pitch_cov = pitched / n_nh
+    rhythm_cov = timed / n_nh
+
+    n_measures = 0
+    n_phase1_warn = 0
+    n_rhythm_warn = 0
+    conf_sum = 0.0
+    n_dets = 0
+    for page in result.get("pages", []):
+        for sys_ in page.get("systems", []):
+            for staff in sys_.get("staves", []):
+                for measure in staff.get("measures", []):
+                    n_measures += 1
+                    if "phase1_warning" in measure:
+                        n_phase1_warn += 1
+                    if "rhythm_sum_warning" in measure:
+                        n_rhythm_warn += 1
+                    for det in measure.get("detections", []):
+                        conf_sum += float(det.get("confidence", 0.0))
+                        n_dets += 1
+
+    clean_structure = 1.0 - (n_phase1_warn / n_measures) if n_measures else 1.0
+    clean_rhythm = 1.0 - (n_rhythm_warn / n_measures) if n_measures else 1.0
+    mean_det_conf = (conf_sum / n_dets) if n_dets else 0.0
+
+    return 0.2 * (pitch_cov + rhythm_cov + clean_structure + clean_rhythm + mean_det_conf)

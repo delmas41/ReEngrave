@@ -124,6 +124,7 @@ from .types import MeasureCell
 from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
 from .rhythm import parse_time_signature, resolve_rhythms_for_cell
 from .line_detection import detect_lines
+from .voicing import group_chords_in_measure, split_events_into_voices
 
 
 # Default weights — Phase 3.3, F1 98.8% on the 25 verdict cells.
@@ -933,13 +934,66 @@ def _pair_ties_in_cell(dets, ties_to_next: set, ties_from_prev: set) -> None:
             ties_from_prev.add(id(best_right))
 
 
+# ---------------------------------------------------------------------------
+# Per-measure rhythm-sum check (audit follow-up to Phase 4c/g)
+# ---------------------------------------------------------------------------
+
+_RHYTHM_SUM_TOLERANCE = 1.0 / 64  # beats (quarter-note units)
+
+
+def _measure_rhythm_sum_warning(
+    detections: list[dict[str, Any]],
+    time_sig: dict[str, Any] | None,
+    *,
+    tolerance: float = _RHYTHM_SUM_TOLERANCE,
+) -> dict[str, float] | None:
+    """Compare a measure's chord-grouped event durations against its
+    active time signature. Returns `{"expected_beats": X, "actual_beats":
+    Y}` when the sum is off by more than `tolerance` beats, or None when
+    it matches (or no time signature is known — the check is skipped
+    entirely rather than guessing against a default 4/4).
+
+    Reuses `voicing.group_chords_in_measure` / `split_events_into_voices`
+    instead of re-summing durations directly, so multi-voice measures
+    (stem-up vs stem-down) are checked per voice — each voice should
+    independently sum to the measure length. When there's more than one
+    voice, this reports whichever voice deviates the most.
+    """
+    if not time_sig:
+        return None
+    num = time_sig.get("numerator")
+    den = time_sig.get("denominator")
+    if not num or not den:
+        return None
+    expected_beats = num * 4.0 / den
+
+    events = group_chords_in_measure(detections)
+    voices = split_events_into_voices(events)
+
+    actual_beats = 0.0
+    max_deviation = -1.0
+    for voice_events in voices:
+        voice_beats = sum(ev["duration_beats"] for ev in voice_events)
+        deviation = abs(voice_beats - expected_beats)
+        if deviation > max_deviation:
+            max_deviation = deviation
+            actual_beats = voice_beats
+
+    if max_deviation <= tolerance:
+        return None
+    return {
+        "expected_beats": round(expected_beats, 4),
+        "actual_beats": round(actual_beats, 4),
+    }
+
+
 def transcribe(
     *,
     pdf_path: Path,
     pages: list[int],
     weights: str,
     conf_threshold: float = 0.25,
-    imgsz: int = 640,
+    imgsz: int = 2048,
     iou_threshold: float = 0.5,
     agnostic_nms: bool = True,
     dpi: int = 600,
@@ -1126,6 +1180,17 @@ def transcribe(
                                 "Phase 1 likely missed a barline; this cell "
                                 "may contain multiple real measures fused"
                             )
+
+                # Flag measures whose chord-grouped event durations don't
+                # sum to the active time signature (beyond a small
+                # tolerance). Omitted entirely when no time signature is
+                # known for the measure. See _measure_rhythm_sum_warning.
+                for md in staff_dict["measures"]:
+                    warning = _measure_rhythm_sum_warning(
+                        md["detections"], md.get("time_signature")
+                    )
+                    if warning is not None:
+                        md["rhythm_sum_warning"] = warning
                 # If clef or key sig changed by the end of the staff, surface
                 # the final state too so a clef-change / key-change is visible.
                 if active_clef != first_cell_effective_clef:
@@ -1249,8 +1314,9 @@ def main(argv: list[str] | None = None) -> int:
                     help=f"YOLO weights path (default: {DEFAULT_WEIGHTS})")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
-    ap.add_argument("--imgsz", type=int, default=640,
-                    help="YOLO inference image size (default: 640)")
+    ap.add_argument("--imgsz", type=int, default=2048,
+                    help="YOLO inference image size (default: 2048 — matches "
+                         "the production weights' fine-tuning resolution)")
     ap.add_argument("--iou", type=float, default=0.5,
                     help="NMS IoU threshold (default: 0.5)")
     ap.add_argument("--no-agnostic-nms", action="store_true",
@@ -1328,6 +1394,22 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  runtime: phase1={result['runtime']['phase1_s']}s  "
                   f"yolo={result['runtime']['yolo_s']}s  "
                   f"total={result['runtime']['total_s']}s")
+            # Per-page warning summary: measures + how many carry a
+            # phase1_warning (Phase 1 likely fused/missed a barline) or a
+            # rhythm_sum_warning (beat count doesn't match the time sig).
+            for page_d in result["pages"]:
+                page_measures = [
+                    m
+                    for sys_d in page_d["systems"]
+                    for st in sys_d["staves"]
+                    for m in st["measures"]
+                ]
+                n_phase1 = sum(1 for m in page_measures if "phase1_warning" in m)
+                n_rhythm = sum(1 for m in page_measures if "rhythm_sum_warning" in m)
+                print(f"  page {page_d['page_index']}: "
+                      f"{len(page_measures)} measures, "
+                      f"{n_phase1} phase1_warnings, "
+                      f"{n_rhythm} rhythm_sum_warnings")
     return 0
 
 

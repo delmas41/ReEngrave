@@ -13,10 +13,14 @@ import pytest
 
 from tools.omr.export import (
     _DURATION_TABLE,
+    _dotted_duration_for_beats,
     _duration_to_lily_xml,
     _LILY_ACCIDENTAL,
     _lily_event,
     _lily_key_for_sig,
+    _lily_measure_rest,
+    _measure_rest_beats,
+    _mxl_measure_rest,
     _parse_pitch,
     _pitch_to_lily,
     _strip_dotted,
@@ -136,6 +140,143 @@ class TestDurationToLilyXml:
         # Both the prefix dot AND the explicit dot count should accumulate.
         lily, xml, dots = _duration_to_lily_xml("dotted_quarter", 1)
         assert dots == 2  # 1 from prefix + 1 from arg
+
+
+# ─── Empty-measure padding — time-signature-aware full-measure rests ──────
+
+
+class TestMeasureRestBeats:
+    def test_no_time_sig_falls_back_to_whole(self):
+        assert _measure_rest_beats(None) == 4.0
+
+    def test_missing_fields_falls_back_to_whole(self):
+        assert _measure_rest_beats({}) == 4.0
+
+    @pytest.mark.parametrize("num, den, expected", [
+        (4, 4, 4.0),
+        (3, 4, 3.0),
+        (2, 4, 2.0),
+        (6, 8, 3.0),
+        (2, 2, 4.0),
+        (3, 8, 1.5),
+        (5, 4, 5.0),
+    ])
+    def test_common_meters(self, num, den, expected):
+        time_sig = {"numerator": num, "denominator": den}
+        assert _measure_rest_beats(time_sig) == pytest.approx(expected)
+
+
+class TestDottedDurationForBeats:
+    @pytest.mark.parametrize("beats, expected", [
+        (4.0, ("whole", 0)),
+        (3.0, ("half", 1)),      # dotted half = 3 beats (3/4, 6/8)
+        (2.0, ("half", 0)),
+        (1.5, ("quarter", 1)),   # dotted quarter (3/8)
+        (1.0, ("quarter", 0)),
+    ])
+    def test_exact_matches(self, beats, expected):
+        assert _dotted_duration_for_beats(beats) == expected
+
+    def test_irregular_meter_returns_none(self):
+        # 5/4 doesn't reduce to a single (possibly dotted) note value.
+        assert _dotted_duration_for_beats(5.0) is None
+
+
+class TestLilyMeasureRest:
+    def test_no_time_sig_is_whole_rest(self):
+        assert _lily_measure_rest(None) == "r1"
+
+    def test_three_four_is_dotted_half(self):
+        assert _lily_measure_rest({"numerator": 3, "denominator": 4}) == "r2."
+
+    def test_six_eight_is_dotted_half(self):
+        assert _lily_measure_rest({"numerator": 6, "denominator": 8}) == "r2."
+
+    def test_two_four_is_half(self):
+        assert _lily_measure_rest({"numerator": 2, "denominator": 4}) == "r2"
+
+    def test_irregular_meter_uses_full_measure_rest_multiplier(self):
+        # 5/4 = 5 quarter-note beats = 5/4 of a whole note — LilyPond's
+        # full-measure rest 'R' with a duration multiplier always compiles.
+        assert _lily_measure_rest({"numerator": 5, "denominator": 4}) == "R1*5/4"
+
+
+class TestMxlMeasureRest:
+    def test_no_time_sig_is_whole(self):
+        assert _mxl_measure_rest(None) == (4.0, "whole", 0)
+
+    def test_three_four_is_dotted_half(self):
+        beats, xml_type, dots = _mxl_measure_rest({"numerator": 3, "denominator": 4})
+        assert beats == pytest.approx(3.0)
+        assert xml_type == "half"
+        assert dots == 1
+
+    def test_irregular_meter_keeps_exact_beats(self):
+        # No clean dotted-note match for 5/4 — <duration> (the semantic
+        # value) stays exact even though the cosmetic <type> falls back
+        # to whole.
+        beats, xml_type, dots = _mxl_measure_rest({"numerator": 5, "denominator": 4})
+        assert beats == pytest.approx(5.0)
+        assert xml_type == "whole"
+        assert dots == 0
+
+
+def _tiny_result_empty_measure(time_sig):
+    """One staff, one EMPTY measure (no detections) — exercises the
+    exporters' full-measure-rest padding path.
+    """
+    return {
+        "source_pdf": "synthetic.pdf",
+        "pages": [{
+            "page_index": 0,
+            "n_systems": 1,
+            "systems": [{
+                "system_index": 0,
+                "n_staves": 1,
+                "staves": [{
+                    "staff_index": 0,
+                    "clef": "treble",
+                    "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+                    "time_signature": time_sig,
+                    "n_measures": 1,
+                    "measures": [{
+                        "measure_index": 0,
+                        "bbox_page_px": [0, 0, 100, 50],
+                        "clef": "treble",
+                        "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+                        "time_signature": time_sig,
+                        "n_detections": 0,
+                        "detections": [],
+                    }],
+                }],
+            }],
+        }],
+    }
+
+
+class TestEmptyMeasurePadding:
+    def test_lilypond_three_four_uses_dotted_half_rest(self):
+        out = to_lilypond(_tiny_result_empty_measure({"numerator": 3, "denominator": 4}))
+        assert "r2. |" in out
+        assert "r1 |" not in out
+
+    def test_lilypond_no_time_sig_falls_back_to_whole_rest(self):
+        out = to_lilypond(_tiny_result_empty_measure(None))
+        assert "r1 |" in out
+
+    def test_musicxml_three_four_has_correct_duration(self):
+        out = to_musicxml(_tiny_result_empty_measure({"numerator": 3, "denominator": 4}))
+        # divisions defaults to 4 (no detections force finer resolution):
+        # 3 beats * 4 divisions = 12.
+        assert "<duration>12</duration>" in out
+        assert "<rest/>" in out
+        assert "<type>half</type>" in out
+        assert "<dot/>" in out
+
+    def test_musicxml_no_time_sig_falls_back_to_whole(self):
+        out = to_musicxml(_tiny_result_empty_measure(None))
+        assert "<duration>16</duration>" in out  # 4 beats * 4 divisions
+        assert "<type>whole</type>" in out
 
 
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────

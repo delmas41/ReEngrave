@@ -17,6 +17,7 @@ from tools.omr.transcribe import (
     _detect_key_sig_from_cell,
     _key_sig_alterations,
     _key_sig_summary,
+    _measure_rhythm_sum_warning,
     _parse_diatonic_pitch,
     _stem_direction,
 )
@@ -209,6 +210,86 @@ class TestBuildPitch:
 
     def test_double_sharp(self):
         assert _build_pitch("G", "##", 4) == "G##4"
+
+
+# ─── _measure_rhythm_sum_warning ───────────────────────────────────────────
+
+
+def _nh(x, beats, duration_type, dots=0, stem=None):
+    """A pitched, durationed notehead detection dict at canonical x=`x`,
+    the shape voicing.group_chords_in_measure expects.
+    """
+    det = {
+        "category": "notehead",
+        "pitch": "C4",
+        "bbox": [x, 0, 10, 10],
+        "duration_beats": beats,
+        "duration_type": duration_type,
+        "dots": dots,
+    }
+    if stem is not None:
+        det["stem_direction"] = stem
+    return det
+
+
+def _rest_det(x, beats, duration_type, dots=0):
+    return {
+        "category": "rest",
+        "bbox": [x, 0, 10, 10],
+        "duration_beats": beats,
+        "duration_type": duration_type,
+        "dots": dots,
+    }
+
+
+class TestMeasureRhythmSumWarning:
+    def test_no_time_signature_is_skipped(self):
+        # Only 3 quarters (3 beats) — would mismatch any 4/4-ish
+        # expectation, but the check is skipped entirely without a known
+        # time signature rather than assuming a default.
+        dets = [_nh(x, 1.0, "quarter") for x in (0, 20, 40)]
+        assert _measure_rhythm_sum_warning(dets, None) is None
+
+    def test_missing_numerator_or_denominator_is_skipped(self):
+        dets = [_nh(0, 1.0, "quarter")]
+        assert _measure_rhythm_sum_warning(dets, {"numerator": None, "denominator": 4}) is None
+
+    def test_exact_match_returns_none(self):
+        time_sig = {"numerator": 4, "denominator": 4}
+        dets = [_nh(x, 1.0, "quarter") for x in (0, 20, 40, 60)]
+        assert _measure_rhythm_sum_warning(dets, time_sig) is None
+
+    def test_within_tolerance_returns_none(self):
+        time_sig = {"numerator": 4, "denominator": 4}
+        # 3 full quarters + one a hair short of a quarter — total is off
+        # by less than the 1/64-beat tolerance.
+        dets = [_nh(x, 1.0, "quarter") for x in (0, 20, 40)]
+        dets.append(_nh(60, 1.0 - 1.0 / 128, "quarter"))
+        assert _measure_rhythm_sum_warning(dets, time_sig) is None
+
+    def test_mismatch_returns_expected_and_actual_beats(self):
+        time_sig = {"numerator": 4, "denominator": 4}
+        # Only 3 quarters detected — a dropped note, e.g. a missed rest.
+        dets = [_nh(x, 1.0, "quarter") for x in (0, 20, 40)]
+        warning = _measure_rhythm_sum_warning(dets, time_sig)
+        assert warning == {"expected_beats": 4.0, "actual_beats": 3.0}
+
+    def test_rest_only_measure_uses_rest_duration(self):
+        time_sig = {"numerator": 3, "denominator": 4}
+        dets = [_rest_det(0, 2.0, "half")]  # only 2 of 3 beats rested
+        warning = _measure_rhythm_sum_warning(dets, time_sig)
+        assert warning == {"expected_beats": 3.0, "actual_beats": 2.0}
+
+    def test_multi_voice_warns_on_max_deviation_voice(self):
+        # Stem-up "melody" voice matches 4/4 exactly; stem-down "bass"
+        # voice is missing two beats. group_chords_in_measure keeps each
+        # note a separate event (x-spacing exceeds the chord tolerance),
+        # split_events_into_voices then separates by stem direction.
+        time_sig = {"numerator": 4, "denominator": 4}
+        up_notes = [_nh(x, 1.0, "quarter", stem="up") for x in (0, 20, 40, 60)]
+        down_notes = [_nh(x, 1.0, "quarter", stem="down") for x in (10, 30)]
+        warning = _measure_rhythm_sum_warning(up_notes + down_notes, time_sig)
+        assert warning == {"expected_beats": 4.0, "actual_beats": 2.0}
 
 
 # ─── _stem_direction ────────────────────────────────────────────────────────
