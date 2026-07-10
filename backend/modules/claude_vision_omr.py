@@ -18,7 +18,6 @@ import base64
 import json
 import logging
 import os
-import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Coroutine, Optional
@@ -186,107 +185,228 @@ to the staff object.
 
 
 # ---------------------------------------------------------------------------
-# JSON extraction
+# Structured-output JSON schemas
+#
+# Passed to the Messages API via output_config.format so the model is
+# constrained to emit valid JSON matching these shapes — no fence-stripping
+# or truncation repair needed. They mirror the schemas described in
+# HEADER_PROMPT / _page_prompt and the fields read by
+# musicxml_builder.parse_header_json / parse_page_json.
+#
+# Note: structured outputs require additionalProperties: false on every
+# object; genuinely optional values are expressed as required-but-nullable.
 # ---------------------------------------------------------------------------
 
+HEADER_SCHEMA: dict = {
+    "type": "object",
+    "properties": {
+        "title": {"type": "string"},
+        "composer": {"type": "string"},
+        "staves": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "staff_id": {"type": "integer"},
+                    "instrument_name": {"type": "string"},
+                    "clef": {
+                        "type": "string",
+                        "enum": ["treble", "bass", "alto", "tenor"],
+                    },
+                    "key_signature": {
+                        "type": "object",
+                        "properties": {
+                            "fifths": {"type": "integer"},
+                            "mode": {"type": "string", "enum": ["major", "minor"]},
+                        },
+                        "required": ["fifths", "mode"],
+                        "additionalProperties": False,
+                    },
+                    "time_signature": {
+                        "type": "object",
+                        "properties": {
+                            "beats": {"type": "integer"},
+                            "beat_type": {"type": "integer"},
+                        },
+                        "required": ["beats", "beat_type"],
+                        "additionalProperties": False,
+                    },
+                },
+                "required": [
+                    "staff_id",
+                    "instrument_name",
+                    "clef",
+                    "key_signature",
+                    "time_signature",
+                ],
+                "additionalProperties": False,
+            },
+        },
+    },
+    "required": ["title", "composer", "staves"],
+    "additionalProperties": False,
+}
 
-def _extract_json(text: str) -> Optional[dict]:
-    """Extract JSON from Claude's response, handling markdown fences and truncation."""
-    # Strip markdown fences
-    fence_match = re.search(r"```(?:json)?\s*\n?(.*?)(?:```|$)", text, re.DOTALL)
-    if fence_match:
-        text = fence_match.group(1).strip()
 
-    # Try direct parse
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        pass
+_DURATION_ENUM = ["whole", "half", "quarter", "eighth", "16th", "32nd", "64th"]
 
-    # Try to find the first { ... } block
-    brace_start = text.find("{")
-    if brace_start == -1:
-        return None
+_PITCH_SCHEMA: dict = {
+    "type": "object",
+    "properties": {
+        "step": {"type": "string", "enum": ["A", "B", "C", "D", "E", "F", "G"]},
+        "octave": {"type": "integer"},
+        "alter": {"type": "integer"},
+    },
+    "required": ["step", "octave", "alter"],
+    "additionalProperties": False,
+}
 
-    depth = 0
-    for i in range(brace_start, len(text)):
-        if text[i] == "{":
-            depth += 1
-        elif text[i] == "}":
-            depth -= 1
-            if depth == 0:
-                try:
-                    return json.loads(text[brace_start : i + 1])
-                except json.JSONDecodeError:
-                    return None
+_TIE_SCHEMA: dict = {
+    "anyOf": [
+        {"type": "string", "enum": ["start", "stop", "continue"]},
+        {"type": "null"},
+    ]
+}
 
-    # JSON was truncated — try to salvage by closing open brackets
-    truncated = text[brace_start:]
-    result = _repair_truncated_json(truncated)
-    if result is not None:
-        logger.info("Salvaged truncated JSON (%d chars)", len(truncated))
-    return result
+_ELEMENT_SCHEMA: dict = {
+    "anyOf": [
+        {  # single note
+            "type": "object",
+            "properties": {
+                "type": {"const": "note"},
+                "pitch": _PITCH_SCHEMA,
+                "duration": {"type": "string", "enum": _DURATION_ENUM},
+                "dots": {"type": "integer"},
+                "tie": _TIE_SCHEMA,
+                "articulations": {"type": "array", "items": {"type": "string"}},
+                "fermata": {"type": "boolean"},
+            },
+            "required": [
+                "type", "pitch", "duration", "dots", "tie", "articulations", "fermata",
+            ],
+            "additionalProperties": False,
+        },
+        {  # rest
+            "type": "object",
+            "properties": {
+                "type": {"const": "rest"},
+                "duration": {"type": "string", "enum": _DURATION_ENUM},
+                "dots": {"type": "integer"},
+            },
+            "required": ["type", "duration", "dots"],
+            "additionalProperties": False,
+        },
+        {  # chord
+            "type": "object",
+            "properties": {
+                "type": {"const": "chord"},
+                "pitches": {"type": "array", "items": _PITCH_SCHEMA},
+                "duration": {"type": "string", "enum": _DURATION_ENUM},
+                "dots": {"type": "integer"},
+                "tie": _TIE_SCHEMA,
+                "articulations": {"type": "array", "items": {"type": "string"}},
+                "fermata": {"type": "boolean"},
+            },
+            "required": [
+                "type", "pitches", "duration", "dots", "tie", "articulations", "fermata",
+            ],
+            "additionalProperties": False,
+        },
+    ]
+}
 
+_SIGNATURE_CHANGE_SCHEMA: dict = {
+    # key_change: {"fifths": int, "mode": str} / time_change: {"beats": int,
+    # "beat_type": int} — or null when the measure has no change. A single
+    # permissive shape keeps the schema compact; parse_page_json passes these
+    # dicts through untyped.
+    "anyOf": [
+        {
+            "type": "object",
+            "properties": {
+                "fifths": {"type": "integer"},
+                "mode": {"type": "string"},
+                "beats": {"type": "integer"},
+                "beat_type": {"type": "integer"},
+            },
+            "required": [],
+            "additionalProperties": False,
+        },
+        {"type": "null"},
+    ]
+}
 
-def _repair_truncated_json(text: str) -> Optional[dict]:
-    """Attempt to repair truncated JSON by closing open brackets/braces."""
-    # Find the last valid comma or complete value, then close everything
-    # Strategy: progressively trim from the end until we can close brackets
-    closers = []
-    in_string = False
-    escape = False
-
-    for ch in text:
-        if escape:
-            escape = False
-            continue
-        if ch == "\\":
-            escape = True
-            continue
-        if ch == '"' and not escape:
-            in_string = not in_string
-            continue
-        if in_string:
-            continue
-        if ch == "{":
-            closers.append("}")
-        elif ch == "[":
-            closers.append("]")
-        elif ch in ("}", "]"):
-            if closers:
-                closers.pop()
-
-    if not closers:
-        return None
-
-    # Trim trailing incomplete values (after last comma or colon)
-    trimmed = text.rstrip()
-    # Remove trailing comma if present
-    if trimmed.endswith(","):
-        trimmed = trimmed[:-1]
-    # If it ends mid-string, close the string
-    # Count unmatched quotes
-    quote_count = 0
-    esc = False
-    for ch in trimmed:
-        if esc:
-            esc = False
-            continue
-        if ch == "\\":
-            esc = True
-            continue
-        if ch == '"':
-            quote_count += 1
-    if quote_count % 2 != 0:
-        trimmed += '"'
-
-    # Close all open brackets
-    trimmed += "".join(reversed(closers))
-
-    try:
-        return json.loads(trimmed)
-    except json.JSONDecodeError:
-        return None
+PAGE_SCHEMA: dict = {
+    "type": "object",
+    "properties": {
+        "page_number": {"type": "integer"},
+        "measures": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "number": {"type": "integer"},
+                    "staves": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "staff_id": {"type": "integer"},
+                                "voices": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "voice": {"type": "integer"},
+                                            "elements": {
+                                                "type": "array",
+                                                "items": _ELEMENT_SCHEMA,
+                                            },
+                                        },
+                                        "required": ["voice", "elements"],
+                                        "additionalProperties": False,
+                                    },
+                                },
+                                "directions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {"type": "string"},
+                                            "value": {"type": "string"},
+                                            "bpm": {
+                                                "anyOf": [
+                                                    {"type": "integer"},
+                                                    {"type": "null"},
+                                                ]
+                                            },
+                                        },
+                                        "required": ["type", "value", "bpm"],
+                                        "additionalProperties": False,
+                                    },
+                                },
+                                "key_change": _SIGNATURE_CHANGE_SCHEMA,
+                                "time_change": _SIGNATURE_CHANGE_SCHEMA,
+                            },
+                            "required": [
+                                "staff_id", "voices", "directions",
+                                "key_change", "time_change",
+                            ],
+                            "additionalProperties": False,
+                        },
+                    },
+                    "barline": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}]
+                    },
+                },
+                "required": ["number", "staves", "barline"],
+                "additionalProperties": False,
+            },
+        },
+    },
+    "required": ["page_number", "measures"],
+    "additionalProperties": False,
+}
 
 
 # ---------------------------------------------------------------------------
@@ -321,11 +441,13 @@ async def _call_claude_vision(
     client: anthropic.AsyncAnthropic,
     png_path: str,
     prompt: str,
+    schema: dict,
     max_tokens: int = MAX_TOKENS_PAGE,
 ) -> Optional[dict]:
     """Send a single page image to Claude and parse the JSON response.
 
-    Uses assistant prefill to force JSON output starting with '{'.
+    Uses structured outputs (output_config.format with a JSON schema) so the
+    model is constrained to emit valid, schema-conformant JSON.
     """
     b64 = _image_to_base64(png_path)
 
@@ -334,6 +456,9 @@ async def _call_claude_vision(
             model=DEFAULT_MODEL,
             max_tokens=max_tokens,
             system="You are an automated OMR system. You ONLY output valid JSON. Never include explanatory text, markdown fences, or preamble. Start your response with { and end with }.",
+            output_config={
+                "format": {"type": "json_schema", "schema": schema},
+            },
             messages=[
                 {
                     "role": "user",
@@ -349,23 +474,24 @@ async def _call_claude_vision(
                         {"type": "text", "text": prompt},
                     ],
                 },
-                {
-                    "role": "assistant",
-                    "content": "{",
-                },
             ],
         )
     except Exception as exc:
         logger.error("Claude API call failed: %s", exc)
         return None
 
-    text = response.content[0].text if response.content else ""
-    # Prepend the prefill "{" that was consumed by the assistant turn
-    text = "{" + text
-    result = _extract_json(text)
-    if result is None:
+    if response.stop_reason == "max_tokens":
+        # Output was truncated at the token cap — the JSON cannot be trusted
+        # (structured outputs guarantee validity only for complete responses).
+        logger.warning("Claude response hit max_tokens (%d); page skipped", max_tokens)
+        return None
+
+    text = next((b.text for b in response.content if b.type == "text"), "")
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
         logger.warning("Failed to parse JSON from Claude response: %s", text[:200])
-    return result
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -431,7 +557,7 @@ async def run_claude_vision_omr(
     # Step 2: Extract header from page 1
     logger.info("Extracting score header from page 1")
     header_json = await _call_claude_vision(
-        client, page_pngs[0], HEADER_PROMPT, MAX_TOKENS_HEADER
+        client, page_pngs[0], HEADER_PROMPT, HEADER_SCHEMA, MAX_TOKENS_HEADER
     )
     if not header_json:
         return AudiverisResult(
@@ -463,7 +589,7 @@ async def run_claude_vision_omr(
         logger.info("Processing page %d/%d (last measure: %d)", page_num, total_pages, last_measure_num)
 
         prompt = _page_prompt(header, page_num, total_pages, last_measure_num)
-        page_json = await _call_claude_vision(client, png_path, prompt)
+        page_json = await _call_claude_vision(client, png_path, prompt, PAGE_SCHEMA)
 
         if page_json:
             try:
