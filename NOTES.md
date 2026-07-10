@@ -6,14 +6,14 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ## ⏰ REVISIT — ensemble recognition for clef + detail prediction (2026-07-10)
 
-**Sean flagged this and asked to be reminded to come back to it.** One of the main orchestral-score OMR programs uses an **ensemble recognition tool** specifically to help predict **clefs and other details**. Investigate and consider adopting.
+**Sean flagged this and asked to be reminded to come back to it (dated reminder set ~2026-07-17).** **SmartScore 64 Professional** (Musitek) uses an **ensemble recognition tool** specifically to help predict **clefs and other details**. Investigate how it works and consider adopting the technique.
 
 **Why it's worth doing:** the July 2026 audit found clef handling is a real ReEngrave weakness — clef/key/time state resets across pages and relies on the detector catching courtesy clefs; a missed continuation-page clef silently defaults to treble (or bass for staff 2 of 2), shifting every pitch on that staff. Time-sig digit detection is similarly unreliable. A voting/ensemble predictor for these fields would target both directly.
 
 **Note the distinction:** this is an *internal* ensemble (several classifiers/heuristics voting on ONE field like clef), NOT the multi-*engine* OMR voting from the July research (Padilla et al. ISMIR 2015), which was skipped because ReEngrave has only 2 unequal engines.
 
 **To resolve when we pick this up:**
-- Identify the program (not named — likely candidates: Audiveris, PhotoScore, SmartScore, capella-scan). Confirm which one and how its ensemble actually works before designing anything.
+- Research how SmartScore 64 Professional's ensemble recognition actually works before designing anything.
 - Decide the cheapest ReEngrave adaptation: a per-staff clef-stability + key-signature-plausibility re-rank pass (no new model) vs an actual classifier ensemble; check whether the same voting extends to time-sig digits.
 
 ---
