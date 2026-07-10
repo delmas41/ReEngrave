@@ -1,7 +1,7 @@
 path: /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled
 train: /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/_catalog_train.txt
 val: /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/_catalog_val.txt
-nc: 214
+nc: 208
 names:
 - brace
 - ledgerLine
@@ -211,9 +211,3 @@ names:
 - tuple
 - tupleBracket
 - staff
-- barlineSingle
-- barlineDouble
-- barlineFinal
-- repeatRight
-- repeatLeft
-- textDynamic

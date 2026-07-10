@@ -62,7 +62,12 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .deepscores_classes import DEEPSCORES_V2_CLASSES
+# Committed snapshot of the trained weights' 208-name vocabulary. This is
+# the same list as `model.names` in the production .pt file, so conversion
+# works (correctly) even when the gitignored weights are absent.
+DEEPSCORES_208_JSON = (
+    Path(__file__).parent / "deepscoresv2_208_classes.json"
+)
 
 
 # Default bbox size for human-added FN noteheads, in canonical pixels.
@@ -98,22 +103,26 @@ _CUSTOM_CLASSES: list[str] = [
 ]
 
 
-def load_class_names(weights_path: Path | None, fallback_json: Path | None) -> list[str]:
-    """Resolve the canonical class-name list, INCLUDING custom classes
-    (barlines etc.) that DSv2 didn't annotate but humans label by hand.
+def load_base_class_names(
+    weights_path: Path | None,
+    fallback_json: Path | None,
+) -> list[str]:
+    """Resolve the trained model's class-name list (208 names, no customs).
 
-    Preference order for the base list:
+    Preference order:
       1. weights_path     — read `model.names` from a .pt file. This is the
                             ground truth: it's what the trained model uses
                             and what fine-tuning will need to match.
-      2. fallback_json    — a JSON list dumped from a prior load (so the
-                            scripts work without torch installed).
-      3. DEEPSCORES_V2_CLASSES — the in-repo snapshot. May be smaller than
-                            the model's actual class list, so this is a
-                            last resort.
+      2. fallback_json    — the committed 208-name snapshot of that same
+                            list (so the scripts work without torch or the
+                            gitignored weights). Defaults to
+                            `deepscoresv2_208_classes.json` next to this
+                            module; identical to the weights' vocabulary.
 
-    The custom classes are appended after the base list so their IDs are
-    deterministic across runs.
+    There is deliberately no further fallback: the old last resort
+    (`DEEPSCORES_V2_CLASSES`, a 146-name dataset snapshot) disagrees with
+    the trained vocabulary on 141 of 146 slots, so using it silently
+    mis-indexes or drops labels.
     """
     base: list[str] = []
     if weights_path is not None and weights_path.exists():
@@ -132,15 +141,32 @@ def load_class_names(weights_path: Path | None, fallback_json: Path | None) -> l
     if not base and fallback_json is not None and fallback_json.exists():
         base = json.loads(fallback_json.read_text())
     if not base:
-        base = list(DEEPSCORES_V2_CLASSES)
+        raise SystemExit(
+            "could not resolve the class-name vocabulary: weights "
+            f"({weights_path}) unreadable/missing and fallback JSON "
+            f"({fallback_json}) missing. Pass --weights or "
+            f"--fallback-class-names (committed copy: {DEEPSCORES_208_JSON})."
+        )
+    return base
+
+
+def load_class_names(weights_path: Path | None, fallback_json: Path | None) -> list[str]:
+    """Like `load_base_class_names`, but INCLUDING custom classes (barlines
+    etc.) that DSv2 didn't annotate but humans label by hand.
+
+    The custom classes are appended after the base list so their IDs are
+    deterministic across runs.
+    """
+    base = load_base_class_names(weights_path, fallback_json)
     # Append custom classes, skipping any that already happen to exist
     # (defensive — shouldn't happen with current DSv2).
-    seen = set(base)
+    out = list(base)
+    seen = set(out)
     for cc in _CUSTOM_CLASSES:
         if cc not in seen:
-            base.append(cc)
+            out.append(cc)
             seen.add(cc)
-    return base
+    return out
 
 
 def name_to_first_index(class_names: list[str]) -> dict[str, int]:
@@ -551,11 +577,11 @@ def main() -> None:
                     help="Trained weights to extract class names from. "
                          "Falls back to fallback-json then snapshot.")
     ap.add_argument("--fallback-class-names",
-                    default=Path("tools/omr/training/data/"
-                                 "deepscoresv2_208_classes.json"),
+                    default=DEEPSCORES_208_JSON,
                     type=Path,
                     help="JSON list of class names. Used if --weights "
-                         "is missing or torch isn't installed.")
+                         "is missing or torch isn't installed. Defaults "
+                         "to the committed 208-name snapshot.")
     ap.add_argument("--labeler", default="",
                     help="Free-text name of who did the labeling.")
     ap.add_argument("--description", default="",

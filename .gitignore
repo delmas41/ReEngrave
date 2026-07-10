@@ -92,3 +92,6 @@ benchmarks/*/page-thumbnails/
 # Pre-cleanup label backups — scratch copies; the cleaned labels + the
 # verdicts_pre_* snapshots in benchmarks/ are the durable record
 data/user-labeled/*/labels_pre_cleanup/
+
+# ultralytics label caches (written next to labels/ during training)
+labels.cache

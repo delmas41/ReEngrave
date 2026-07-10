@@ -158,7 +158,7 @@ Audit 2026-06-10. Five branches hold commits absent from main:
 Immediate (from the current labeling round):
 
 1. **Finish the 2026-06-10 labeling batch** (21/36 verdicts done), then convert the finished 06-09 + 06-10 batches → `v3` via `verdicts_to_yolo_labels` + rebuild the catalog.
-2. **Retrain / fine-tune on v1+v2(+v3)** and re-evaluate on the verdict sets.
+2. **Retrain / fine-tune on v1+v2(+v3)** and re-evaluate on the verdict sets. (2026-07-10: the committed `catalog.yaml` is now capped at nc=208 — custom-class boxes filtered via `_nc208/` — and `train_yolo.py` fails fast on an nc mismatch with the checkpoint, so this retrain can no longer silently re-trigger the Phase 3.4 head-reset collapse.)
 3. **Decide the fate of the unmerged branches** (table above) — especially the `line_detection` improvements and the two March web-app implementations.
 
 Parked (carried from NOTES.md — see there for full context):

@@ -68,6 +68,83 @@ def _validate_inputs(data_yaml: Path, weights: str) -> int | None:
     return None
 
 
+def _read_checkpoint_num_classes(weights_path: Path) -> int | None:
+    """Read the class count out of a .pt checkpoint. None if unreadable."""
+    try:
+        import torch  # local import — heavy
+    except ImportError:
+        return None
+    try:
+        ckpt = torch.load(str(weights_path), map_location="cpu",
+                          weights_only=False)
+    except Exception as exc:  # noqa: BLE001 — any load failure = can't check
+        print(f"WARNING: could not read checkpoint for the nc check: {exc}",
+              file=sys.stderr)
+        return None
+    model = ckpt.get("model") if isinstance(ckpt, dict) else ckpt
+    names = getattr(model, "names", None)
+    if isinstance(names, (dict, list)):
+        return len(names)
+    yaml_cfg = getattr(model, "yaml", None)
+    if isinstance(yaml_cfg, dict) and "nc" in yaml_cfg:
+        return int(yaml_cfg["nc"])
+    return None
+
+
+def _check_nc_consistency(
+    data_yaml: Path,
+    weights: str,
+    allow_expansion: bool,
+) -> int | None:
+    """Fail fast if data.yaml's `nc` differs from the checkpoint's.
+
+    When they differ, ultralytics silently re-initializes the ENTIRE
+    classification head before training — every learned class starts from
+    scratch. That's how Phase 3.4 collapsed F1 from 98.8% to 79.3%
+    (benchmarks/omr-phase3.4b/comparison-trained-v4.md). A mismatch is
+    only ever intentional, so it requires --allow-nc-expansion.
+
+    Skipped for ultralytics download aliases (e.g. bare `yolov8m.pt`):
+    a fresh COCO-pretrained model always gets a new head; there is
+    nothing fine-tuned to protect.
+    """
+    weights_path = Path(weights)
+    if not weights_path.exists():
+        return None
+    import yaml
+
+    data = yaml.safe_load(data_yaml.read_text()) or {}
+    data_nc = data.get("nc")
+    if data_nc is None and isinstance(data.get("names"), (list, dict)):
+        data_nc = len(data["names"])
+    if data_nc is None:
+        return None
+    ckpt_nc = _read_checkpoint_num_classes(weights_path)
+    if ckpt_nc is None:
+        print("WARNING: could not determine the checkpoint's class count — "
+              "skipping the nc consistency check.", file=sys.stderr)
+        return None
+    if int(data_nc) == int(ckpt_nc):
+        return None
+    if allow_expansion:
+        print(f"WARNING: nc mismatch (data.yaml nc={data_nc}, checkpoint "
+              f"nc={ckpt_nc}) allowed by --allow-nc-expansion. The whole "
+              "classification head will be re-initialized.",
+              file=sys.stderr)
+        return None
+    return _fail(
+        f"nc mismatch: data.yaml has nc={data_nc} but the checkpoint "
+        f"({weights}) was trained with nc={ckpt_nc}. Training would "
+        "silently re-initialize the entire classification head and forget "
+        "every learned class — this is exactly the Phase 3.4 collapse "
+        "(F1 98.8% → 79.3%, see "
+        "benchmarks/omr-phase3.4b/comparison-trained-v4.md). Fix: rebuild "
+        "the catalog with the default class cap "
+        "(python3 -m tools.omr.training.build_catalog_yaml), or pass "
+        "--allow-nc-expansion if the head reset is intentional."
+    )
+
+
 # ---------------------------------------------------------------------------
 # Smoke mode — runs a 1-epoch training on a tiny synthesized dataset
 # ---------------------------------------------------------------------------
@@ -206,6 +283,12 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--smoke", action="store_true",
                     help="Run a 1-epoch synthetic-data smoke test")
+    ap.add_argument("--allow-nc-expansion", action="store_true",
+                    help="Permit data.yaml `nc` to differ from the "
+                         "checkpoint's class count. Off by default because "
+                         "a mismatch silently re-initializes the whole "
+                         "classification head (the Phase 3.4 "
+                         "catastrophic-forgetting collapse).")
 
     # ─── Music-aware augmentation overrides ─────────────────────────────────
     # Music notation is direction-sensitive (a sharp ≠ a backwards sharp;
@@ -276,6 +359,10 @@ def main(argv: list[str] | None = None) -> int:
 
     data_yaml = Path(args.data)
     bad = _validate_inputs(data_yaml, args.weights)
+    if bad is not None:
+        return bad
+    bad = _check_nc_consistency(data_yaml, args.weights,
+                                args.allow_nc_expansion)
     if bad is not None:
         return bad
 

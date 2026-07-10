@@ -296,3 +296,178 @@ def test_eval_help_works():
     assert result.returncode == 0, result.stderr
     assert "--weights" in result.stdout
     assert "--cells" in result.stdout
+
+
+# ---------------------------------------------------------------------------
+# Class-name vocabulary (committed 208-name snapshot)
+# ---------------------------------------------------------------------------
+
+
+def test_committed_208_vocab_loads_without_weights():
+    """The committed JSON snapshot must resolve the full trained vocabulary
+    even when torch / the gitignored weights are unavailable."""
+    from tools.omr.training.verdicts_to_yolo_labels import (
+        DEEPSCORES_208_JSON,
+        load_base_class_names,
+        load_class_names,
+    )
+
+    assert DEEPSCORES_208_JSON.exists()
+    base = load_base_class_names(None, DEEPSCORES_208_JSON)
+    assert len(base) == 208
+    assert base[0] == "brace"
+    assert "noteheadBlackOnLine" in base
+    full = load_class_names(None, DEEPSCORES_208_JSON)
+    assert len(full) == 214
+    assert full[:208] == base
+    assert full[208] == "barlineSingle"
+
+
+def test_load_base_class_names_errors_with_no_sources(tmp_path: Path):
+    """No weights + no fallback JSON must be a hard error, not a silent
+    fall-through to the 146-name dataset snapshot (which disagrees with
+    the trained vocabulary on 141/146 slots)."""
+    from tools.omr.training.verdicts_to_yolo_labels import load_base_class_names
+
+    with pytest.raises(SystemExit):
+        load_base_class_names(None, tmp_path / "missing.json")
+
+
+# ---------------------------------------------------------------------------
+# build_catalog_yaml — nc capping
+# ---------------------------------------------------------------------------
+
+
+def _make_catalog_root(tmp_path: Path) -> Path:
+    """A minimal version dir: one cell with a base-class box and a
+    custom-class box, one cell with only base-class boxes."""
+    root = tmp_path / "user-labeled"
+    v1 = root / "v1-2026-01-01-test"
+    (v1 / "images").mkdir(parents=True)
+    (v1 / "labels").mkdir(parents=True)
+    (v1 / "images" / "mixed.png").write_bytes(_MINIMAL_PNG)
+    (v1 / "labels" / "mixed.txt").write_text(
+        "0 0.5 0.5 0.1 0.1\n208 0.2 0.2 0.1 0.1\n"
+    )
+    (v1 / "images" / "clean.png").write_bytes(_MINIMAL_PNG)
+    (v1 / "labels" / "clean.txt").write_text("5 0.5 0.5 0.1 0.1\n")
+    return root
+
+
+def test_cap_labels_to_nc_redirects_only_offending_cells(tmp_path: Path):
+    from tools.omr.training.build_catalog_yaml import _cap_labels_to_nc
+
+    root = _make_catalog_root(tmp_path)
+    imgs = [
+        root / "v1-2026-01-01-test" / "images" / "mixed.png",
+        root / "v1-2026-01-01-test" / "images" / "clean.png",
+    ]
+    out, dropped = _cap_labels_to_nc(root, imgs, 208)
+    assert dict(dropped) == {208: 1}
+    # clean.png untouched, mixed.png redirected into the capped tree
+    assert out[1] == imgs[1]
+    assert "_nc208" in str(out[0])
+    assert out[0].exists()  # symlink resolves back to the original image
+    capped_label = out[0].parent.parent / "labels" / "mixed.txt"
+    assert capped_label.read_text() == "0 0.5 0.5 0.1 0.1\n"
+    # the version dir itself is untouched
+    assert "208 0.2 0.2 0.1 0.1" in (
+        root / "v1-2026-01-01-test" / "labels" / "mixed.txt"
+    ).read_text()
+
+
+def test_build_catalog_cli_caps_nc_by_default(tmp_path: Path):
+    root = _make_catalog_root(tmp_path)
+    cmd = [
+        sys.executable, "-m", "tools.omr.training.build_catalog_yaml",
+        "--root", str(root), "--val-fraction", "0",
+        "--weights", str(tmp_path / "no-weights.pt"),
+        "--emit-full-catalog",
+    ]
+    result = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+
+    cat = yaml.safe_load((root / "catalog.yaml").read_text())
+    assert cat["nc"] == 208
+    assert len(cat["names"]) == 208
+    train_paths = [
+        Path(p) for p in (root / "_catalog_train.txt").read_text().splitlines()
+    ]
+    assert len(train_paths) == 2
+    for img in train_paths:
+        label = img.parent.parent / "labels" / f"{img.stem}.txt"
+        ids = [int(l.split()[0]) for l in label.read_text().splitlines() if l.strip()]
+        assert all(i < 208 for i in ids), f"{label}: {ids}"
+
+    full = yaml.safe_load((root / "catalog-214.yaml").read_text())
+    assert full["nc"] == 214
+    full_train = (root / "_catalog_full_train.txt").read_text()
+    assert "_nc208" not in full_train
+
+
+def test_build_catalog_cli_keep_custom_classes(tmp_path: Path):
+    root = _make_catalog_root(tmp_path)
+    cmd = [
+        sys.executable, "-m", "tools.omr.training.build_catalog_yaml",
+        "--root", str(root), "--val-fraction", "0",
+        "--weights", str(tmp_path / "no-weights.pt"),
+        "--keep-custom-classes",
+    ]
+    result = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    cat = yaml.safe_load((root / "catalog.yaml").read_text())
+    assert cat["nc"] == 214
+    assert "_nc208" not in (root / "_catalog_train.txt").read_text()
+
+
+# ---------------------------------------------------------------------------
+# train_yolo — nc consistency guard
+# ---------------------------------------------------------------------------
+
+
+def _nc_check_fixture(tmp_path: Path, nc: int) -> tuple[Path, Path]:
+    data_yaml = tmp_path / "data.yaml"
+    data_yaml.write_text(yaml.safe_dump({"nc": nc, "names": ["x"] * nc}))
+    weights = tmp_path / "ckpt.pt"
+    weights.write_bytes(b"not a real checkpoint")
+    return data_yaml, weights
+
+
+def test_nc_guard_blocks_mismatch(tmp_path: Path, monkeypatch):
+    from tools.omr.training import train_yolo
+
+    data_yaml, weights = _nc_check_fixture(tmp_path, 214)
+    monkeypatch.setattr(train_yolo, "_read_checkpoint_num_classes",
+                        lambda p: 208)
+    assert train_yolo._check_nc_consistency(
+        data_yaml, str(weights), allow_expansion=False) is not None
+
+
+def test_nc_guard_passes_on_match(tmp_path: Path, monkeypatch):
+    from tools.omr.training import train_yolo
+
+    data_yaml, weights = _nc_check_fixture(tmp_path, 208)
+    monkeypatch.setattr(train_yolo, "_read_checkpoint_num_classes",
+                        lambda p: 208)
+    assert train_yolo._check_nc_consistency(
+        data_yaml, str(weights), allow_expansion=False) is None
+
+
+def test_nc_guard_respects_allow_flag(tmp_path: Path, monkeypatch):
+    from tools.omr.training import train_yolo
+
+    data_yaml, weights = _nc_check_fixture(tmp_path, 214)
+    monkeypatch.setattr(train_yolo, "_read_checkpoint_num_classes",
+                        lambda p: 208)
+    assert train_yolo._check_nc_consistency(
+        data_yaml, str(weights), allow_expansion=True) is None
+
+
+def test_nc_guard_skips_download_aliases(tmp_path: Path):
+    from tools.omr.training import train_yolo
+
+    data_yaml, _ = _nc_check_fixture(tmp_path, 214)
+    # Non-existent path = ultralytics auto-download alias — nothing
+    # fine-tuned to protect, so the guard must not block.
+    assert train_yolo._check_nc_consistency(
+        data_yaml, "yolov8m.pt", allow_expansion=False) is None

@@ -17,6 +17,10 @@ data/user-labeled/
   _catalog_train.txt                 ← generated; list of train PNGs
   _catalog_val.txt                   ← generated; list of val PNGs
   _catalog_summary.json              ← generated; per-version counts + meta
+  _nc208/                            ← generated; filtered label copies for
+                                        cells that contain custom-class boxes
+  catalog-214.yaml                   ← generated (--emit-full-catalog); the
+                                        uncapped class space, incl. customs
   v1-2026-05-17-orchestral/          ← one labeling session
     images/<cell-id>.png             ← cropped cell PNGs (symlinks by default)
     labels/<cell-id>.txt             ← YOLO format: cls cx cy w h, normalized
@@ -40,10 +44,22 @@ data/user-labeled/
 
 The class vocabulary is the **208-class DeepScoresV2 list** (the same list the
 YOLOv8l weights were trained against). It's read from the trained `.pt` file at
-catalog-build time, with `tools/omr/training/data/deepscoresv2_208_classes.json`
-as a fallback if torch isn't installed. After deduping, those 208 names
-collapse to **168 unique classes** in the picker (DSv2 lists every glyph
-twice across two annotation sets).
+catalog-build time, with the committed snapshot at
+`tools/omr/training/deepscoresv2_208_classes.json` as a fallback if torch or
+the (gitignored) weights aren't available — the snapshot is byte-identical to
+the weights' `model.names`, so both paths resolve the same IDs. After
+deduping, those 208 names collapse to **168 unique classes** in the picker
+(DSv2 lists every glyph twice across two annotation sets).
+
+Hand-labeled boxes for the 6 **custom classes** (barlines, repeats,
+textDynamic — IDs 208–213) are kept in the version dirs, but the generated
+`catalog.yaml` is **capped at nc=208 by default**: cells containing custom
+boxes get filtered label copies under `_nc208/`. Training a DSv2 checkpoint
+against an `nc` that doesn't match silently re-initializes the whole
+classification head — the Phase 3.4 collapse (F1 98.8% → 79.3%). Use
+`--emit-full-catalog` to also produce `catalog-214.yaml` for a deliberate
+future nc-expansion run (which then needs
+`train_yolo --allow-nc-expansion`).
 
 ## The labeling UI
 
@@ -293,8 +309,9 @@ a new class (e.g. some specific articulation DSv2 didn't include), either:
     nearest existing class, or
   - File a followup to do a head-reset retrain on a different label space.
 
-The 208-class JSON at `tools/omr/training/data/deepscoresv2_208_classes.json`
-is a frozen snapshot. **Do not edit it.**
+The committed 208-class JSON at
+`tools/omr/training/deepscoresv2_208_classes.json` is a frozen snapshot of the
+trained weights' `model.names`. **Do not edit it.**
 
 ## FAQ
 
