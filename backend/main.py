@@ -305,6 +305,43 @@ async def run_omr(
     return {"score_id": score_id, "status": "processing", "omr_engine": omr_engine}
 
 
+def _mean_omr_confidence_for_page(score: "Score", page_number: int) -> float:
+    """Best-effort mean YOLO detection confidence for one page of a local-OMR
+    run. `page_number` is 1-based (matches the PDF/Verovio page pairing used
+    by claude_vision.compare_score_measures).
+
+    Falls back to 0.5 when the score used Vision OMR (no omr_json_path),
+    the JSON is missing/unreadable, or the page has no detections — this
+    mirrors the previous hardcoded default so behavior degrades gracefully.
+    """
+    try:
+        omr_json_path = (score.metadata_json or {}).get("omr_json_path")
+        if not omr_json_path or not os.path.isfile(omr_json_path):
+            return 0.5
+
+        import json as _json
+        with open(omr_json_path, "r", encoding="utf-8") as f:
+            omr_data = _json.load(f)
+
+        page_index = page_number - 1
+        for page in omr_data.get("pages", []):
+            if page.get("page_index") != page_index:
+                continue
+            confidences: list[float] = []
+            for system in page.get("systems", []):
+                for staff in system.get("staves", []):
+                    for measure in staff.get("measures", []):
+                        for det in measure.get("detections", []):
+                            conf = det.get("confidence")
+                            if isinstance(conf, (int, float)):
+                                confidences.append(float(conf))
+            return (sum(confidences) / len(confidences)) if confidences else 0.5
+
+        return 0.5
+    except Exception:
+        return 0.5
+
+
 @app.post("/api/scores/{score_id}/process/compare")
 async def run_comparison(
     score_id: str,
@@ -332,7 +369,6 @@ async def run_comparison(
     await db.flush()
 
     async def _run_compare():
-        import json as _json
         from database.connection import AsyncSessionLocal
         async with AsyncSessionLocal() as session:
             res = await session.execute(select(Score).where(Score.id == score_id))
@@ -358,36 +394,36 @@ async def run_comparison(
                     for p in patterns_result.scalars().all()
                 ]
 
-                # Load most recent XML consensus comparison to pre-flag measures
-                cs_result = await session.execute(
-                    select(ComparisonSession)
-                    .where(ComparisonSession.result_json.isnot(None))
-                    .order_by(ComparisonSession.created_at.desc())
-                    .limit(1)
-                )
-                comparison_session = cs_result.scalar_one_or_none()
-                flagged_measures: dict[int, float] = {}
-                if comparison_session and comparison_session.result_json:
-                    try:
-                        cs_data = _json.loads(comparison_session.result_json)
-                        per_measure = cs_data.get("per_measure_agreement", [])
-                        for entry in per_measure:
-                            agreement_pct = entry.get("agreement_pct", 100.0) / 100.0
-                            if agreement_pct < 0.9:
-                                flagged_measures[entry["measure_num"]] = agreement_pct
-                    except Exception:
-                        flagged_measures = {}
-
+                # NOTE: this used to pre-flag measures from the most recently
+                # created ComparisonSession, but ComparisonSession has no
+                # association to a Score (it's a standalone multi-XML-upload
+                # workspace — see /api/compare/), so that was injecting
+                # whatever score was most recently compared in the Gradus
+                # Library into this score's Vision prompt. There's no
+                # reliable way to tie a session back to this score without a
+                # schema change, so the injection is dropped rather than
+                # feeding in wrong-score data.
                 diffs = await claude_vision.compare_score_measures(
                     s.original_pdf_path, s.musicxml_path, metadata,
                     knowledge_patterns=knowledge_patterns,
-                    flagged_measures=flagged_measures if flagged_measures else None,
                 )
                 snippets_dir = os.path.join(settings.upload_dir, score_id, "snippets")
                 os.makedirs(snippets_dir, exist_ok=True)
 
+                # d.measure_number is really the page index (1-based) —
+                # compare_score_measures pairs PDF pages to XML pages 1:1.
+                # Cache the per-page mean OMR confidence so multiple diffs
+                # on the same page don't reload the JSON file each time.
+                omr_confidence_cache: dict[int, float] = {}
+
                 for d in diffs:
                     diff_id = str(uuid.uuid4())
+
+                    if d.measure_number not in omr_confidence_cache:
+                        omr_confidence_cache[d.measure_number] = (
+                            _mean_omr_confidence_for_page(s, d.measure_number)
+                        )
+                    omr_confidence = omr_confidence_cache[d.measure_number]
 
                     # Save snippet images to disk so the frontend can display them
                     pdf_snippet_path = ""
@@ -415,7 +451,7 @@ async def run_comparison(
                         description=d.description,
                         pdf_snippet_path=pdf_snippet_path,
                         musicxml_snippet_path=xml_snippet_path,
-                        audiveris_confidence=0.5,
+                        audiveris_confidence=omr_confidence,
                         claude_vision_confidence=d.confidence,
                         created_at=datetime.utcnow(),
                     )
@@ -425,14 +461,15 @@ async def run_comparison(
                     diff_dict = {
                         "difference_type": d.difference_type,
                         "instrument": d.instrument,
-                        "audiveris_confidence": 0.5,
+                        "audiveris_confidence": omr_confidence,
                         "claude_vision_confidence": d.confidence,
                         "era": s.era,
                     }
-                    was_auto_accepted = await analytics.apply_auto_accept(diff_dict, session)
-                    if was_auto_accepted:
+                    matched_rule_id = await analytics.apply_auto_accept(diff_dict, session)
+                    if matched_rule_id:
                         fd.human_decision = "accept"
                         fd.auto_accepted = True
+                        fd.auto_accept_rule_id = matched_rule_id
 
                 s.status = "review"
                 s.updated_at = datetime.utcnow()

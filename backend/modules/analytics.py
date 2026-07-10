@@ -50,6 +50,12 @@ class PatternAnalysis:
 async def analyze_correction_patterns(db: AsyncSession) -> list[PatternAnalysis]:
     """Query FlaggedDifference, group by instrument + difference_type,
     compute accept/reject rates, and return PatternAnalysis objects.
+
+    Auto-accepted diffs (auto_accept_rule_id is set) are excluded — they
+    reflect a rule firing, not a human confirming the correction, so
+    counting them here would let auto-accept self-reinforce: a rule fires,
+    gets counted as a fresh "accept", and pushes its own pattern's accept
+    rate even higher.
     """
     result = await db.execute(
         select(
@@ -66,7 +72,10 @@ async def analyze_correction_patterns(db: AsyncSession) -> list[PatternAnalysis]
                 case((FlaggedDifference.human_decision == "edit", 1), else_=0)
             ).label("edits"),
         )
-        .where(FlaggedDifference.human_decision.isnot(None))
+        .where(
+            FlaggedDifference.human_decision.isnot(None),
+            FlaggedDifference.auto_accept_rule_id.is_(None),
+        )
         .group_by(FlaggedDifference.instrument, FlaggedDifference.difference_type)
     )
 
@@ -196,13 +205,16 @@ async def evaluate_auto_accept_rules(db: AsyncSession) -> None:
     await db.flush()
 
 
-async def apply_auto_accept(diff: dict, db: AsyncSession) -> bool:
+async def apply_auto_accept(diff: dict, db: AsyncSession) -> Optional[str]:
     """Check if a new FlaggedDifference matches any active AutoAcceptRule.
 
     Matches on difference_type, instrument, confidence thresholds, and
     optionally era if the rule's pattern has era metadata.
 
-    Returns True if the diff was auto-accepted.
+    Returns the matching AutoAcceptRule.id if the diff was auto-accepted,
+    else None. Callers should stamp the returned id onto
+    FlaggedDifference.auto_accept_rule_id so analyze_correction_patterns can
+    tell auto-accepts apart from real human confirmations.
     """
     result = await db.execute(
         select(AutoAcceptRule).where(
@@ -241,9 +253,9 @@ async def apply_auto_accept(diff: dict, db: AsyncSession) -> bool:
                 if pattern.era != era:
                     continue
 
-        return True
+        return rule.id
 
-    return False
+    return None
 
 
 async def generate_learning_report(db: AsyncSession) -> dict:
