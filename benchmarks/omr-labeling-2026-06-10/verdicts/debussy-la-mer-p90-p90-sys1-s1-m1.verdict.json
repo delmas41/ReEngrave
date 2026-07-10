@@ -1,0 +1,56 @@
+{
+  "cell_id": "debussy-la-mer-p90-p90-sys1-s1-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-10T22:30:14+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 167,
+        "y": 635,
+        "w": 217,
+        "h": 157
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "dynamicCrescendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 257,
+        "y": 992,
+        "w": 686,
+        "h": 210
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 23,
+        "y": 742,
+        "w": 137,
+        "h": 110
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 44,
+        "y": 163,
+        "w": 893,
+        "h": 185
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "cell_id": "debussy-la-mer-p15-p15-sys1-s6-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T23:26:57+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "tremolo3",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 111,
+        "y": 547,
+        "w": 229,
+        "h": 297
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 48,
+        "y": 958,
+        "w": 386,
+        "h": 171
+      },
+      "notes": ""
+    }
+  ]
+}

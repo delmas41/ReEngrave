@@ -1,0 +1,200 @@
+{
+  "cell_id": "debussy-la-mer-p15-p15-sys0-s0-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T23:23:59+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefC",
+      "human_category": "clef",
+      "bbox": {
+        "x": 17,
+        "y": 72,
+        "w": 71,
+        "h": 135
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 78,
+        "y": 88,
+        "w": 36,
+        "h": 81
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 95,
+        "y": 63,
+        "w": 40,
+        "h": 63
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 128,
+        "y": 105,
+        "w": 30,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 147,
+        "y": 74,
+        "w": 28,
+        "h": 65
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 160,
+        "y": 124,
+        "w": 34,
+        "h": 63
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "numeral6",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 196,
+        "y": 103,
+        "w": 44,
+        "h": 53
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "numeral8",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 196,
+        "y": 152,
+        "w": 46,
+        "h": 54
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1089,
+        "y": 114,
+        "w": 63,
+        "h": 42
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "tuple",
+      "human_category": "structural",
+      "bbox": {
+        "x": 381,
+        "y": 29,
+        "w": 51,
+        "h": 43
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "tuple",
+      "human_category": "structural",
+      "bbox": {
+        "x": 933,
+        "y": 32,
+        "w": 76,
+        "h": 40
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 1936,
+        "y": 91,
+        "w": 89,
+        "h": 94
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "dynamicLetterM",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 221,
+        "y": 2,
+        "w": 45,
+        "h": 28
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 261,
+        "y": 2,
+        "w": 40,
+        "h": 53
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "dynamicCrescendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1180,
+        "y": 17,
+        "w": 622,
+        "h": 61
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "tuplet3",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1228,
+        "y": 2,
+        "w": 51,
+        "h": 36
+      },
+      "notes": ""
+    }
+  ]
+}

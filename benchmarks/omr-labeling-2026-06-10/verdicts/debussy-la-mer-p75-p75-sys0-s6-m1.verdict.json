@@ -1,0 +1,116 @@
+{
+  "cell_id": "debussy-la-mer-p75-p75-sys0-s6-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-14T02:50:11+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 49,
+        "y": 122,
+        "w": 202,
+        "h": 498
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 651,
+        "y": 297,
+        "w": 97,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 657,
+        "y": 373,
+        "w": 97,
+        "h": 90
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 807,
+        "y": 314,
+        "w": 86,
+        "h": 59
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 807,
+        "y": 365,
+        "w": 89,
+        "h": 61
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "articulationTenuto",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 640,
+        "y": 499,
+        "w": 133,
+        "h": 53
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "articulationMarcatoBelow",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 641,
+        "y": 541,
+        "w": 134,
+        "h": 127
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1968,
+        "y": 563,
+        "w": 78,
+        "h": 158
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "dynamicLetterF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1976,
+        "y": 4,
+        "w": 68,
+        "h": 108
+      },
+      "notes": ""
+    }
+  ]
+}

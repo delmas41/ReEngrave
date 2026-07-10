@@ -1,0 +1,116 @@
+{
+  "cell_id": "debussy-la-mer-p15-p15-sys0-s5-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T23:25:43+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 15,
+        "y": 95,
+        "w": 82,
+        "h": 97
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 86,
+        "y": 131,
+        "w": 40,
+        "h": 61
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 108,
+        "y": 93,
+        "w": 31,
+        "h": 57
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 148,
+        "y": 103,
+        "w": 33,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 128,
+        "y": 145,
+        "w": 32,
+        "h": 59
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 171,
+        "y": 152,
+        "w": 31,
+        "h": 73
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "numeral6",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 200,
+        "y": 101,
+        "w": 49,
+        "h": 55
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "numeral8",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 198,
+        "y": 150,
+        "w": 49,
+        "h": 56
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1104,
+        "y": 126,
+        "w": 84,
+        "h": 32
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "cell_id": "debussy-la-mer-p60-p60-sys0-s0-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-11T05:08:20+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 2,
+        "y": 154,
+        "w": 120,
+        "h": 465
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 114,
+        "y": 175,
+        "w": 97,
+        "h": 177
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 194,
+        "y": 278,
+        "w": 82,
+        "h": 186
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 265,
+        "y": 160,
+        "w": 91,
+        "h": 179
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1070,
+        "y": 308,
+        "w": 120,
+        "h": 71
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "cell_id": "debussy-la-mer-p45-p45-sys1-s14-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-11T05:07:24+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 23,
+        "y": 147,
+        "w": 44,
+        "h": 41
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 55,
+        "y": 160,
+        "w": 52,
+        "h": 38
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "flag8thDown",
+      "human_category": "flag",
+      "bbox": {
+        "x": 59,
+        "y": 219,
+        "w": 49,
+        "h": 51
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "flag8thUp",
+      "human_category": "flag",
+      "bbox": {
+        "x": 48,
+        "y": 74,
+        "w": 57,
+        "h": 61
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 238,
+        "y": 124,
+        "w": 76,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 415,
+        "y": 122,
+        "w": 68,
+        "h": 68
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 742,
+        "y": 120,
+        "w": 69,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1736,
+        "y": 120,
+        "w": 63,
+        "h": 49
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "dynamicLetterP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1123,
+        "y": 6,
+        "w": 89,
+        "h": 49
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1222,
+        "y": 4,
+        "w": 443,
+        "h": 63
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 0,
+        "y": 89,
+        "w": 49,
+        "h": 39
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 2,
+        "y": 215,
+        "w": 40,
+        "h": 34
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "cell_id": "debussy-la-mer-p5-p5-sys0-s0-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T22:21:30+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "dynamicLetterP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 6,
+        "y": 1101,
+        "w": 194,
+        "h": 278
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 221,
+        "y": 935,
+        "w": 159,
+        "h": 168
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 223,
+        "y": 538,
+        "w": 150,
+        "h": 201
+      },
+      "notes": ""
+    }
+  ]
+}

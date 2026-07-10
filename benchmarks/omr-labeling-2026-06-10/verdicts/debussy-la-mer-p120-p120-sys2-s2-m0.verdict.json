@@ -1,0 +1,32 @@
+{
+  "cell_id": "debussy-la-mer-p120-p120-sys2-s2-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-10T22:44:33+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 112,
+        "y": 175,
+        "w": 96,
+        "h": 61
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1378,
+        "y": 177,
+        "w": 88,
+        "h": 70
+      },
+      "notes": ""
+    }
+  ]
+}

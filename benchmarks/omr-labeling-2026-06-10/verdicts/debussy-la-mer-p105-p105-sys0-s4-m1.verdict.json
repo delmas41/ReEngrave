@@ -1,0 +1,68 @@
+{
+  "cell_id": "debussy-la-mer-p105-p105-sys0-s4-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-10T22:40:33+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 87,
+        "y": 193,
+        "w": 298,
+        "h": 713
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1232,
+        "y": 446,
+        "w": 212,
+        "h": 151
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 724,
+        "y": 37,
+        "w": 258,
+        "h": 94
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1142,
+        "y": 42,
+        "w": 886,
+        "h": 231
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 991,
+        "y": 22,
+        "w": 178,
+        "h": 41
+      },
+      "notes": ""
+    }
+  ]
+}

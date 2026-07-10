@@ -1,0 +1,104 @@
+{
+  "cell_id": "debussy-la-mer-p30-p30-sys0-s4-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T23:43:34+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 209,
+        "y": 177,
+        "w": 116,
+        "h": 114
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 485,
+        "y": 188,
+        "w": 78,
+        "h": 58
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "flag8thDown",
+      "human_category": "flag",
+      "bbox": {
+        "x": 499,
+        "y": 286,
+        "w": 57,
+        "h": 74
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 786,
+        "y": 198,
+        "w": 71,
+        "h": 53
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1342,
+        "y": 204,
+        "w": 82,
+        "h": 57
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 506,
+        "y": 135,
+        "w": 309,
+        "h": 59
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 497,
+        "y": 67,
+        "w": 917,
+        "h": 114
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "dynamicCrescendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 984,
+        "y": 341,
+        "w": 788,
+        "h": 83
+      },
+      "notes": ""
+    }
+  ]
+}

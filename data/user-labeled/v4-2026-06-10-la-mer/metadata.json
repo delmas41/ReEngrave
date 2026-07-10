@@ -1,0 +1,543 @@
+{
+  "version_name": "v4-2026-06-10-la-mer",
+  "created_utc": "2026-07-10T22:48:51+00:00",
+  "labeler": "sean",
+  "description": "Debussy La Mer draw-from-scratch batch, 29 cells",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-2026-06-10/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-2026-06-10/detections",
+    "manifest": "benchmarks/omr-labeling-2026-06-10/cells.json",
+    "weights_for_class_names": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 29,
+    "n_v1_cells": 0,
+    "n_v2_cells": 29,
+    "n_tp": 0,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 336,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "accidentalFlat",
+    "accidentalNatural",
+    "accidentalSharp",
+    "articStaccatoAbove",
+    "articulationMarcatoBelow",
+    "articulationTenuto",
+    "augmentationDot",
+    "clef8",
+    "clefC",
+    "clefF",
+    "clefG",
+    "dynamicCrescendoHairpin",
+    "dynamicDiminuendoHairpin",
+    "dynamicF",
+    "dynamicLetterF",
+    "dynamicLetterM",
+    "dynamicLetterP",
+    "flag8thDown",
+    "flag8thUp",
+    "flag8thUpSmall",
+    "noteheadBlackInSpace",
+    "noteheadBlackInSpaceSmall",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadWholeInSpace",
+    "noteheadWholeOnLine",
+    "numeral6",
+    "numeral8",
+    "rest8th",
+    "restHalf",
+    "restQuarter",
+    "restWhole",
+    "slur",
+    "textDynamic",
+    "tie",
+    "timeSig6",
+    "timeSig8",
+    "tremolo3",
+    "tuple",
+    "tuplet3"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "debussy-la-mer-p105-p105-sys0-s4-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "noteheadWholeOnLine",
+        "restWhole",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p105-p105-sys0-s6-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 28,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "augmentationDot",
+        "clefG",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpaceSmall",
+        "noteheadBlackOnLine",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p120-p120-sys2-s2-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p120-p120-sys6-s10-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p15-p15-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 16,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefC",
+        "clefF",
+        "dynamicCrescendoHairpin",
+        "dynamicF",
+        "dynamicLetterM",
+        "numeral6",
+        "numeral8",
+        "restWhole",
+        "tuple",
+        "tuplet3"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p15-p15-sys0-s5-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefF",
+        "numeral6",
+        "numeral8",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p15-p15-sys1-s6-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicDiminuendoHairpin",
+        "tremolo3"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p15-p15-sys2-s7-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p30-p30-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 17,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoAbove",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p30-p30-sys0-s4-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicCrescendoHairpin",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p30-p30-sys1-s8-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 25,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "augmentationDot",
+        "dynamicCrescendoHairpin",
+        "dynamicF",
+        "flag8thDown",
+        "flag8thUpSmall",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p30-p30-sys3-s13-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 36,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "clefF",
+        "clefG",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "restQuarter",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p45-p45-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 16,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "dynamicLetterM",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p45-p45-sys0-s4-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 20,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "clefC",
+        "dynamicDiminuendoHairpin",
+        "dynamicLetterP",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p45-p45-sys0-s8-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 25,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p45-p45-sys1-s14-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 12,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicDiminuendoHairpin",
+        "dynamicLetterP",
+        "flag8thDown",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter",
+        "restWhole",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p5-p5-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicLetterP",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p5-p5-sys1-s1-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p5-p5-sys2-s6-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicCrescendoHairpin",
+        "dynamicLetterP",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine",
+        "restWhole",
+        "timeSig6",
+        "timeSig8",
+        "tremolo3"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p5-p5-sys4-s12-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur",
+        "textDynamic"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p60-p60-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "clefG",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p60-p60-sys0-s2-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p60-p60-sys1-s5-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p60-p60-sys1-s8-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 32,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "accidentalSharp",
+        "articStaccatoAbove",
+        "dynamicCrescendoHairpin",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter",
+        "slur",
+        "tuplet3"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p75-p75-sys0-s6-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articulationMarcatoBelow",
+        "articulationTenuto",
+        "augmentationDot",
+        "clefG",
+        "dynamicLetterF",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p75-p75-sys0-s9-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 20,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articStaccatoAbove",
+        "clef8",
+        "clefG",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p90-p90-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicCrescendoHairpin",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p90-p90-sys1-s1-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicCrescendoHairpin",
+        "noteheadHalfOnLine",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "debussy-la-mer-p90-p90-sys3-s5-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 12,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "dynamicCrescendoHairpin",
+        "dynamicLetterF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur",
+        "tuplet3"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "cell_id": "debussy-la-mer-p5-p5-sys4-s12-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T22:25:57+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 66,
+        "y": 673,
+        "w": 184,
+        "h": 151
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 76,
+        "y": 789,
+        "w": 174,
+        "h": 156
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 292,
+        "y": 628,
+        "w": 123,
+        "h": 147
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 283,
+        "y": 828,
+        "w": 137,
+        "h": 161
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 34,
+        "y": 968,
+        "w": 388,
+        "h": 207
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "textDynamic",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 159,
+        "y": 1196,
+        "w": 263,
+        "h": 172
+      },
+      "notes": ""
+    }
+  ]
+}

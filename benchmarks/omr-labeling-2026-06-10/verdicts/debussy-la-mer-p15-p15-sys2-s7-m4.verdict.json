@@ -1,0 +1,56 @@
+{
+  "cell_id": "debussy-la-mer-p15-p15-sys2-s7-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T23:27:59+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 76,
+        "y": 518,
+        "w": 184,
+        "h": 166
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 305,
+        "y": 460,
+        "w": 193,
+        "h": 179
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 519,
+        "y": 819,
+        "w": 122,
+        "h": 164
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 4,
+        "y": 1006,
+        "w": 641,
+        "h": 156
+      },
+      "notes": ""
+    }
+  ]
+}

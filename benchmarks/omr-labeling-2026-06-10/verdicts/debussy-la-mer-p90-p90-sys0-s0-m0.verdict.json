@@ -1,0 +1,32 @@
+{
+  "cell_id": "debussy-la-mer-p90-p90-sys0-s0-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-10T22:29:11+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 8,
+        "y": 234,
+        "w": 392,
+        "h": 204
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "dynamicCrescendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 10,
+        "y": 1048,
+        "w": 388,
+        "h": 180
+      },
+      "notes": ""
+    }
+  ]
+}

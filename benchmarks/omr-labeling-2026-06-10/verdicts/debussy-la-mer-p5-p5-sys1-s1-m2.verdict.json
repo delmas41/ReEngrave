@@ -1,0 +1,20 @@
+{
+  "cell_id": "debussy-la-mer-p5-p5-sys1-s1-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-06-10T22:21:44+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 904,
+        "y": 305,
+        "w": 158,
+        "h": 106
+      },
+      "notes": ""
+    }
+  ]
+}
