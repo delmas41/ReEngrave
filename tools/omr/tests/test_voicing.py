@@ -130,13 +130,84 @@ class TestGroupChords:
         assert pitches == ["C4"]
 
     def test_stem_direction_aggregated(self):
+        # All members share the same explicit direction (or are unknown) —
+        # still one chord, aggregate direction = up.
         events = group_chords_in_measure([
             _nh("C4", 100, stem_direction="up"),
             _nh("E4", 100, stem_direction="up"),
-            _nh("G4", 100, stem_direction="down"),
+            _nh("G4", 100),  # unknown direction — doesn't block the merge
         ])
-        # Mode of stem directions = up
+        assert len(events) == 1
         assert events[0]["stem_direction"] == "up"
+
+    # ── Divisi guard (audit follow-up, 2026-07) ─────────────────────────────
+    # Noteheads at (near-)identical x with OPPOSITE, explicit stem
+    # directions are two independent voices (e.g. divisi strings), not one
+    # chord — merging them corrupted duration via chord-duration mode-vote.
+    # Same-x + same-direction (or unknown) must still group as one chord.
+
+    def test_same_x_opposite_stem_splits_into_two_events(self):
+        events = group_chords_in_measure([
+            _nh("C5", 100, stem_direction="up"),
+            _nh("C4", 100, stem_direction="down"),
+        ])
+        assert len(events) == 2
+        assert {events[0]["stem_direction"], events[1]["stem_direction"]} == {"up", "down"}
+        # Each event keeps its own single notehead — no merged chord.
+        assert all(len(ev["noteheads"]) == 1 for ev in events)
+
+    def test_same_x_same_stem_direction_stays_one_chord(self):
+        events = group_chords_in_measure([
+            _nh("C4", 100, stem_direction="up"),
+            _nh("E4", 100, stem_direction="up"),
+            _nh("G4", 100, stem_direction="up"),
+        ])
+        assert len(events) == 1
+        assert events[0]["stem_direction"] == "up"
+        assert len(events[0]["noteheads"]) == 3
+
+    def test_divisi_preserves_each_voices_own_duration(self):
+        # The core bug: x-only grouping used to mode-vote a single
+        # duration across both voices. Each divisi voice must keep its
+        # own independently-resolved duration after the split.
+        events = group_chords_in_measure([
+            _nh("C5", 100, stem_direction="up",
+                duration_beats=1.0, duration_type="quarter"),
+            _nh("C4", 100, stem_direction="down",
+                duration_beats=0.5, duration_type="eighth"),
+        ])
+        assert len(events) == 2
+        by_pitch = {ev["noteheads"][0]["pitch"]: ev for ev in events}
+        assert by_pitch["C5"]["duration_beats"] == 1.0
+        assert by_pitch["C4"]["duration_beats"] == 0.5
+
+    def test_same_x_multiple_noteheads_per_direction_split_cleanly(self):
+        # A 2-up / 2-down divisi cluster at the same x, interleaved in
+        # input order (not pre-sorted by direction) — both up-notes must
+        # land together and both down-notes must land together, not four
+        # separate one-note events.
+        events = group_chords_in_measure([
+            _nh("C5", 100, stem_direction="up"),
+            _nh("C4", 100, stem_direction="down"),
+            _nh("E5", 100, stem_direction="up"),
+            _nh("E4", 100, stem_direction="down"),
+        ])
+        assert len(events) == 2
+        up_ev = next(ev for ev in events if ev["stem_direction"] == "up")
+        down_ev = next(ev for ev in events if ev["stem_direction"] == "down")
+        assert {n["pitch"] for n in up_ev["noteheads"]} == {"C5", "E5"}
+        assert {n["pitch"] for n in down_ev["noteheads"]} == {"C4", "E4"}
+
+    def test_unknown_direction_notehead_joins_nearest_compatible_group(self):
+        # An unknown-direction notehead at the same x as a divisi pair
+        # should not force a third event — it merges into whichever
+        # group it reaches first (conservative default: doesn't split).
+        events = group_chords_in_measure([
+            _nh("C5", 100, stem_direction="up"),
+            _nh("C4", 100, stem_direction="down"),
+            _nh("G4", 100),  # unknown
+        ])
+        assert len(events) == 2
 
 
 class TestSplitVoices:

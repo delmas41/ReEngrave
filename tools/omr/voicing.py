@@ -13,8 +13,13 @@ overlapping single notes instead of one chord.
 
 V1 keeps things deliberately simple:
 
-  - **Chord grouping by x-position.** Noteheads whose x-centers fall
-    within a small tolerance are considered "simultaneous" → one chord.
+  - **Chord grouping by x-position, gated by stem direction.** Noteheads
+    whose x-centers fall within a small tolerance are considered
+    "simultaneous" and grouped into one chord — UNLESS they have
+    explicit, conflicting stem directions (one up, one down), in which
+    case they're kept as separate same-x events instead (audit
+    follow-up, 2026-07: divisi / two-voice writing at the same beat was
+    otherwise getting merged into one chord).
   - **Duration = mode of the chord's noteheads.** Realistically all
     noteheads in a chord share one stem, so they should have the same
     duration. If the detector disagrees (one of three was a half, the
@@ -99,17 +104,48 @@ def group_chords_in_measure(
         else:
             chord_x_tolerance = 30.0  # fallback
 
+    # Divisi guard (audit follow-up, 2026-07): on dense orchestral pages,
+    # two independent voices frequently sit at nearly the same x with
+    # OPPOSITE stem directions (e.g. divisi strings — upper divisi
+    # stem-up, lower divisi stem-down). x-only grouping used to merge
+    # these into one "chord" and pick a single duration via mode-vote
+    # over the merged noteheads, corrupting both durations and — via
+    # split_events_into_voices downstream — the per-voice beat sum.
+    # A real chord's noteheads share ONE physical stem, so a genuine
+    # chord's members should never disagree on stem direction; when they
+    # do, treat it as two simultaneous single-x events instead of one
+    # chord, so each keeps its own (already independently resolved —
+    # see rhythm.py) duration. Same/unknown direction still merges as
+    # before — this only changes behavior for the explicit-conflict case.
+    def _directions_conflict(nh, group) -> bool:
+        nh_dir = nh.get("stem_direction")
+        if not nh_dir:
+            return False  # unknown direction never blocks a merge
+        group_dirs = {n.get("stem_direction") for n in group if n.get("stem_direction")}
+        return bool(group_dirs) and nh_dir not in group_dirs
+
     chord_groups: list[list[dict[str, Any]]] = []
     for nh in noteheads:
         nh_x = _x_center(nh)
-        # Greedy: append to the last group if its x is within tolerance.
-        if chord_groups:
-            last_group = chord_groups[-1]
-            last_x = sum(_x_center(n) for n in last_group) / len(last_group)
-            if abs(nh_x - last_x) <= chord_x_tolerance:
-                last_group.append(nh)
+        # Search backward for the nearest x-compatible, direction-
+        # compatible open group. Noteheads are x-sorted and groups are
+        # created in non-decreasing x order (a divisi split creates two
+        # groups at nearly the same x, back to back), so once a group is
+        # further than `chord_x_tolerance` away, every earlier group is
+        # too — safe to stop scanning.
+        target = None
+        for group in reversed(chord_groups):
+            group_x = sum(_x_center(n) for n in group) / len(group)
+            if abs(nh_x - group_x) > chord_x_tolerance:
+                break
+            if _directions_conflict(nh, group):
                 continue
-        chord_groups.append([nh])
+            target = group
+            break
+        if target is not None:
+            target.append(nh)
+        else:
+            chord_groups.append([nh])
 
     # ── Build chord events ────────────────────────────────────────────────
     events: list[dict[str, Any]] = []
