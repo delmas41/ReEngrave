@@ -359,24 +359,98 @@ def infer_page_time_signature(page: dict[str, Any], **kwargs: Any) -> dict[str, 
     return infer_time_signature_from_lengths(_page_column_lengths(page), **kwargs)
 
 
+# Detected-meter PROPAGATION gates. Individual detections are unreliable, but
+# they AGGREGATE into signal: several staves independently reading the same
+# meter, with nothing plausible disagreeing, is stronger than any single read
+# and stronger than beat-sum voting on a dense page whose rhythm is corrupted.
+#
+# CRITICAL SAFETY RESTRICTION — only the distinctive `C` / cut-`C` GLYPHS are
+# propagated, never digit-stack meters. On orchestral pages the time-sig-digit
+# detector routinely MISREADS the stacked instrument-grouping numbers printed
+# left of the clefs ("Flöten 1 2 3 4", "Hoboen 1 2 3") as a time signature —
+# e.g. a continuation page with no printed meter yields a spurious "2/4" on
+# staff after staff, so those misreads AGREE and would propagate a wrong meter
+# onto the whole page. The common/cut-common symbols are curved glyphs that
+# instrument numbers can't be confused for, so they stay safe to aggregate.
+# (Digit meters can be revisited once parse_time_signature rejects glyphs left
+# of the clef — see the OMR README follow-up note.)
+_PROPAGATE_MIN_COUNT = 3        # min measures backing the winning meter
+_PROPAGATE_MIN_FRACTION = 0.66  # winner's share of propagatable detections
+_PROPAGATABLE_RAWS = frozenset({"C", "C|"})  # common / cut-common glyphs only
+
+
+def _dominant_detected_meter(
+    page: dict[str, Any],
+    *,
+    min_count: int = _PROPAGATE_MIN_COUNT,
+    min_fraction: float = _PROPAGATE_MIN_FRACTION,
+) -> dict[str, Any] | None:
+    """The dominant *detected* meter safe to propagate across a page — i.e. a
+    common/cut-common glyph read on `min_count`+ measures with no plausible
+    dissent. Counts only genuine detections (dicts with no `source` key) so it
+    ignores meters this module already back-filled, keeping
+    `backfill_page_time_signatures` idempotent. Digit-stack meters are
+    deliberately NOT propagatable (orchestral instrument-number misreads —
+    see the module comment). Returns a meter dict tagged
+    `source="detected_propagated"`, or None."""
+    votes: Counter[tuple[int, int]] = Counter()
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                ts = measure.get("time_signature")
+                if not ts or ts.get("source"):  # skip nulls + back-filled
+                    continue
+                if ts.get("raw") not in _PROPAGATABLE_RAWS:
+                    continue
+                num, den = ts.get("numerator"), ts.get("denominator")
+                if isinstance(num, int) and isinstance(den, int):
+                    votes[(num, den)] += 1
+    if not votes:
+        return None
+    (num, den), count = votes.most_common(1)[0]
+    total = sum(votes.values())
+    if count < min_count or count / total < min_fraction:
+        return None
+    raw = "C" if (num, den) == (4, 4) else "C|" if (num, den) == (2, 2) else f"{num}/{den}"
+    return {
+        "numerator": num,
+        "denominator": den,
+        "raw": raw,
+        "source": "detected_propagated",
+        "votes": count,
+        "voters": total,
+    }
+
+
 def backfill_page_time_signatures(page: dict[str, Any], **kwargs: Any) -> dict[str, Any] | None:
-    """Infer the page meter and back-fill it onto every measure/staff whose
-    `time_signature` is still None (detection missed it). Detected meters are
-    never overwritten. Records the result on `page["inferred_time_signature"]`.
-    Mutates `page` in place; returns the inferred meter dict, or None if the
-    vote wasn't confident (in which case nothing is touched)."""
-    inferred = infer_page_time_signature(page, **kwargs)
-    if inferred is None:
+    """Decide a page meter and back-fill it onto every measure/staff whose
+    `time_signature` is still None (detection missed it). Genuine detected
+    meters are never overwritten. Records the result on
+    `page["inferred_time_signature"]` (the dict's `source` says how it was
+    decided). Mutates `page` in place; returns the meter dict, or None when
+    neither method is confident (nothing is touched).
+
+    Two methods, most-reliable first:
+      1. **Propagate a dominant plausible DETECTED meter.** Aggregated digit
+         detections beat beat-sum voting on dense pages where rhythm
+         resolution is corrupted but the meter WAS read on some measures.
+      2. **Beat-sum inference** (`infer_page_time_signature`) as the fallback
+         when detection gave nothing usable.
+    """
+    meter = _dominant_detected_meter(page)
+    if meter is None:
+        meter = infer_page_time_signature(page, **kwargs)
+    if meter is None:
         return None
     for system in page.get("systems", []):
         for staff in system.get("staves", []):
             if not staff.get("time_signature"):
-                staff["time_signature"] = dict(inferred)
+                staff["time_signature"] = dict(meter)
             for measure in staff.get("measures", []):
                 if not measure.get("time_signature"):
-                    measure["time_signature"] = dict(inferred)
-    page["inferred_time_signature"] = dict(inferred)
-    return inferred
+                    measure["time_signature"] = dict(meter)
+    page["inferred_time_signature"] = dict(meter)
+    return meter
 
 
 # ---------------------------------------------------------------------------

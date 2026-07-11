@@ -284,15 +284,29 @@ the page was rendered at (default 600 — same as a 600 DPI bitmap).
 
 DSv2 misclassifies time-sig digit glyphs, so `parse_time_signature` returns
 `null` on most measures. After a page is built, `rhythm.backfill_page_time_signatures`
-majority-votes the per-measure resolved lengths (per time-column, taking the
-fullest staff at each column) and, **only when one standard meter wins a
-strong plurality**, back-fills it onto the measures/staves whose detection
+decides a page meter and back-fills it onto the measures/staves whose detection
 failed. This feeds the per-measure `rhythm_sum_warning` check and the LilyPond
-/ MusicXML exporters (which otherwise hardcode 4/4).
+/ MusicXML exporters (which otherwise hardcode 4/4). Two methods, most-reliable
+first:
 
-- A back-filled `time_signature` carries `"source": "inferred"` plus
-  `confidence` / `votes` / `voters`; a *detected* one has only
-  `numerator` / `denominator` / `raw` and is never overwritten.
+1. **Propagate a dominant DETECTED common/cut-common glyph.** When `C` (4/4)
+   or cut-`C` (2/2) is read on ≥3 measures with no plausible dissent, it's
+   propagated across the page. **Digit-stack meters (2/4, 3/4, …) are
+   deliberately NOT propagated** — on orchestral pages the digit detector
+   routinely misreads the stacked instrument-grouping numbers printed left of
+   the clefs ("Flöten 1 2 3 4") as a time signature, so those misreads *agree*
+   and would confidently propagate a wrong meter. (The distinctive C glyphs
+   can't be confused with instrument numbers.) *Follow-up to unlock safe digit
+   propagation: have `parse_time_signature` reject time-sig glyphs positioned
+   left of the clef.*
+2. **Beat-sum inference** as the fallback: majority-vote the per-measure
+   resolved lengths (per time-column, taking the fullest staff at each column),
+   firing **only when one standard meter wins a strong plurality**.
+
+- A back-filled `time_signature` carries `"source"` (`"detected_propagated"`
+  or `"inferred"`) plus `votes` / `voters` (and `confidence` for `inferred`);
+  a *detected* one has only `numerator` / `denominator` / `raw` and is never
+  overwritten.
 - The page dict gains `"inferred_time_signature": {...}` when the vote fires.
 - Deliberately conservative ("leave it null rather than guess wrong"): it
   abstains on pages whose rhythm resolution is too noisy for a clear mode

@@ -15,6 +15,7 @@ from tools.omr.rhythm import (
     infer_time_signature_from_lengths,
     infer_page_time_signature,
     backfill_page_time_signatures,
+    _dominant_detected_meter,
 )
 
 
@@ -223,3 +224,68 @@ class TestPageInference:
         # back-fill still fills the fused measure's null meter (harmless — the
         # rhythm-sum check then flags its 12-beat content against 4/4).
         assert ms[6]["time_signature"]["raw"] == "4/4"
+
+
+# ── detected-meter propagation ───────────────────────────────────────────────
+
+_DET_C = {"numerator": 4, "denominator": 4, "raw": "C"}          # common time glyph
+_DET_CUT = {"numerator": 2, "denominator": 2, "raw": "C|"}       # cut-common glyph
+_DET_24 = {"numerator": 2, "denominator": 4, "raw": "2/4"}       # digit stack
+
+
+class TestDetectedPropagation:
+    def test_common_time_glyph_propagates(self):
+        # C detected on 4 staff-measures, rest null -> propagate 4/4.
+        staff_a = [dict(_measure([], measure_index=0), time_signature=dict(_DET_C))
+                   for _ in range(4)]
+        staff_b = [_measure([], measure_index=0) for _ in range(4)]  # all null
+        page = _page([_system([staff_a]), _system([staff_b])])
+        meter = _dominant_detected_meter(page)
+        assert meter is not None
+        assert meter["raw"] == "C" and meter["source"] == "detected_propagated"
+        assert meter["votes"] == 4
+
+    def test_cut_common_glyph_propagates(self):
+        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_CUT))
+              for i in range(3)]
+        meter = _dominant_detected_meter(_page([_system([ms])]))
+        assert meter is not None and meter["raw"] == "C|"
+        assert (meter["numerator"], meter["denominator"]) == (2, 2)
+
+    def test_digit_meter_never_propagates(self):
+        # THE safety case: 9 staff-measures reading "2/4" (an orchestral
+        # instrument-number misread) must NOT propagate.
+        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_24))
+              for i in range(9)]
+        assert _dominant_detected_meter(_page([_system([ms])])) is None
+
+    def test_below_min_count_abstains(self):
+        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
+              for i in range(2)]  # only 2 < min_count 3
+        assert _dominant_detected_meter(_page([_system([ms])])) is None
+
+    def test_propagation_takes_priority_over_beatsum(self):
+        # C detected on 3 measures + 6 clean 3/4-length bars. Detection wins
+        # (4/4), beat-sum (which would say 3/4) is not consulted.
+        detected = [dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
+                    for i in range(3)]
+        threes = [_measure(_quarters(3), measure_index=3 + i) for i in range(6)]
+        page = _page([_system([detected + threes])])
+        meter = backfill_page_time_signatures(page)
+        assert meter["raw"] == "C" and meter["source"] == "detected_propagated"
+        # the null 3/4-length bars got back-filled with the propagated 4/4
+        assert page["inferred_time_signature"]["raw"] == "C"
+
+    def test_backfill_is_idempotent(self):
+        # Second call must not re-count the meters the first call back-filled.
+        staff = [dict(_measure([], measure_index=0), time_signature=dict(_DET_C))
+                 for _ in range(3)] + [_measure([], measure_index=1) for _ in range(3)]
+        page = _page([_system([staff])])
+        first = backfill_page_time_signatures(page)
+        second = backfill_page_time_signatures(page)
+        assert first["raw"] == second["raw"] == "C"
+        # every measure ends up 4/4; the 3 genuine detections keep raw "C"
+        # with no source, the back-filled ones carry source.
+        genuine = [m for m in staff if m["time_signature"].get("source") is None]
+        filled = [m for m in staff if m["time_signature"].get("source") == "detected_propagated"]
+        assert len(genuine) == 3 and len(filled) == 3
