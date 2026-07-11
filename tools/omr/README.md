@@ -280,6 +280,27 @@ current production weights — see "Known limitations" below.
 All page-pixel boxes are `[x, y, w, h]` (top-left + size), at the `dpi`
 the page was rendered at (default 600 — same as a 600 DPI bitmap).
 
+### Time-signature inference (back-fill)
+
+DSv2 misclassifies time-sig digit glyphs, so `parse_time_signature` returns
+`null` on most measures. After a page is built, `rhythm.backfill_page_time_signatures`
+majority-votes the per-measure resolved lengths (per time-column, taking the
+fullest staff at each column) and, **only when one standard meter wins a
+strong plurality**, back-fills it onto the measures/staves whose detection
+failed. This feeds the per-measure `rhythm_sum_warning` check and the LilyPond
+/ MusicXML exporters (which otherwise hardcode 4/4).
+
+- A back-filled `time_signature` carries `"source": "inferred"` plus
+  `confidence` / `votes` / `voters`; a *detected* one has only
+  `numerator` / `denominator` / `raw` and is never overwritten.
+- The page dict gains `"inferred_time_signature": {...}` when the vote fires.
+- Deliberately conservative ("leave it null rather than guess wrong"): it
+  abstains on pages whose rhythm resolution is too noisy for a clear mode
+  (dense conductor's scores, tuplet-heavy passages), so the effective meter
+  stays `null` there rather than a wrong guess. Only the bar **length** is
+  inferred — compound meters surface as their simple equivalent (6/8 → 3/4,
+  12/8 → 6/4) with the same length.
+
 ---
 
 ## CLI reference

@@ -32,7 +32,10 @@ y-position, multiplying that note's duration by 1.5 (1 dot) or 1.75 (2 dots).
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any
+
+from .voicing import group_chords_in_measure, split_events_into_voices
 
 
 # ---------------------------------------------------------------------------
@@ -212,6 +215,168 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
         return {"numerator": num, "denominator": den, "raw": f"{num}/{den}"}
     except ValueError:
         return None
+
+
+# ---------------------------------------------------------------------------
+# Time signature INFERENCE (audit lever, 2026-07)
+# ---------------------------------------------------------------------------
+#
+# DSv2 misclassifies time-sig digit glyphs, so `parse_time_signature` above
+# returns None on most measures. Rather than attack the hard digit-detection
+# problem, infer the meter from the rhythm the pipeline already resolves:
+# majority-vote the per-measure summed durations across a page and back-fill
+# the meter where detection failed. This unblocks (a) the per-measure
+# rhythm-sum check (skipped when no meter is known) and (b) export, which
+# otherwise hardcodes 4/4.
+#
+# What's actually inferred is the measure's total quarter-note LENGTH; a
+# length maps to a canonical meter via the table below. Multiple meters
+# share a length (6/8 and 3/4 are both 3.0 quarters; 4/4 and 2/2 both 4.0),
+# so the denominator is a best-guess representative — the bar LENGTH (all
+# the rhythm-sum check and empty-measure padding need) is what's reliable.
+# Compound meters therefore surface as their simple equivalent (6/8 -> 3/4,
+# 12/8 -> 6/4) with an identical bar length. Conservative by construction:
+# abstains (returns None) unless one length wins a strong plurality.
+
+# Measure total-length (quarter beats) -> representative (numerator,
+# denominator). Only real, common meters appear; fused-measure lengths
+# (8.5, 12.0, ...) and detection noise are intentionally absent so they
+# never vote and never get inferred.
+_INFERRABLE_METERS: dict[float, tuple[int, int]] = {
+    2.0: (2, 4), 3.0: (3, 4), 4.0: (4, 4), 5.0: (5, 4), 6.0: (6, 4), 7.0: (7, 4),
+    1.5: (3, 8), 2.5: (5, 8), 3.5: (7, 8), 4.5: (9, 8), 5.5: (11, 8),
+}
+
+# Vote gates (deliberately strict — "leave it null rather than guess wrong").
+_INFER_MIN_VOTES = 6       # min measures/columns with a valid-meter length
+_INFER_MIN_MODE_COUNT = 4  # min measures backing the winning meter
+_INFER_MIN_FRACTION = 0.6  # winning meter must be this share of valid votes
+
+
+def _meter_for_length(length_beats: float) -> tuple[int, int] | None:
+    """Map an observed measure length (quarter beats) to a canonical meter,
+    snapping to the nearest half-beat first (absorbs small rhythm-resolution
+    error). Returns None for lengths that aren't a standard meter."""
+    snapped = round(length_beats * 2.0) / 2.0
+    return _INFERRABLE_METERS.get(snapped)
+
+
+def measure_length_beats(detections: list[Any]) -> tuple[float, bool]:
+    """Observed length of a measure in quarter-note beats, plus whether it
+    contains any pitched note (vs rest-only / empty).
+
+    The length is the FULLEST voice's summed durations: a complete voice
+    spans the whole bar, and taking the max is robust to a voice with
+    under-detected rests (which would sum short). `has_note` is False for
+    empty or rest-only measures — a whole rest fills any bar regardless of
+    meter, so those carry no meter evidence and callers should skip them.
+    """
+    events = group_chords_in_measure(detections)
+    if not events:
+        return 0.0, False
+    length = 0.0
+    for voice in split_events_into_voices(events):
+        s = sum(ev["duration_beats"] for ev in voice)
+        if s > length:
+            length = s
+    has_note = any(ev["kind"] == "chord" for ev in events)
+    return length, has_note
+
+
+def infer_time_signature_from_lengths(
+    lengths: list[float],
+    *,
+    min_votes: int = _INFER_MIN_VOTES,
+    min_mode_count: int = _INFER_MIN_MODE_COUNT,
+    min_fraction: float = _INFER_MIN_FRACTION,
+) -> dict[str, Any] | None:
+    """Majority-vote a meter from a list of observed measure lengths.
+
+    Each length is mapped to a canonical meter (`_meter_for_length`);
+    lengths that aren't a standard meter are ignored. Returns the winning
+    meter dict — tagged `source="inferred"` with `confidence`/`votes`/
+    `voters` — only when it clears all three gates, else None.
+    """
+    votes: Counter[tuple[int, int]] = Counter()
+    n_valid = 0
+    for length in lengths:
+        meter = _meter_for_length(length)
+        if meter is None:
+            continue
+        n_valid += 1
+        votes[meter] += 1
+    if not votes:
+        return None
+    (num, den), count = votes.most_common(1)[0]
+    if (n_valid < min_votes
+            or count < min_mode_count
+            or count / n_valid < min_fraction):
+        return None
+    return {
+        "numerator": num,
+        "denominator": den,
+        "raw": f"{num}/{den}",
+        "source": "inferred",
+        "confidence": round(count / n_valid, 3),
+        "votes": count,
+        "voters": n_valid,
+    }
+
+
+def _page_column_lengths(page: dict[str, Any]) -> list[float]:
+    """One observed length per (system, measure-column): the max measure
+    length across the staves at that column.
+
+    Voting per time-column rather than per staff-measure is what makes this
+    work on orchestral scores — at any given bar SOME instrument plays the
+    full measure, so the column max recovers the true bar length even when
+    most staves are sparse (rests under-detected -> short sums). Fused
+    (phase1_warning) and rest-only measures are excluded from the max.
+    Within a system, staves share a renumbered measure_index, so grouping
+    by that index aligns the columns.
+    """
+    lengths: list[float] = []
+    for system in page.get("systems", []):
+        columns: dict[int, float] = {}
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                if measure.get("phase1_warning"):
+                    continue
+                length, has_note = measure_length_beats(measure.get("detections", []))
+                if not has_note or length <= 0:
+                    continue
+                idx = measure.get("measure_index", 0)
+                if length > columns.get(idx, 0.0):
+                    columns[idx] = length
+        lengths.extend(columns.values())
+    return lengths
+
+
+def infer_page_time_signature(page: dict[str, Any], **kwargs: Any) -> dict[str, Any] | None:
+    """Infer a page-level meter by voting the per-column measure lengths.
+    Thin wrapper over `infer_time_signature_from_lengths`; returns None
+    (abstains) unless the vote is confident."""
+    return infer_time_signature_from_lengths(_page_column_lengths(page), **kwargs)
+
+
+def backfill_page_time_signatures(page: dict[str, Any], **kwargs: Any) -> dict[str, Any] | None:
+    """Infer the page meter and back-fill it onto every measure/staff whose
+    `time_signature` is still None (detection missed it). Detected meters are
+    never overwritten. Records the result on `page["inferred_time_signature"]`.
+    Mutates `page` in place; returns the inferred meter dict, or None if the
+    vote wasn't confident (in which case nothing is touched)."""
+    inferred = infer_page_time_signature(page, **kwargs)
+    if inferred is None:
+        return None
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            if not staff.get("time_signature"):
+                staff["time_signature"] = dict(inferred)
+            for measure in staff.get("measures", []):
+                if not measure.get("time_signature"):
+                    measure["time_signature"] = dict(inferred)
+    page["inferred_time_signature"] = dict(inferred)
+    return inferred
 
 
 # ---------------------------------------------------------------------------

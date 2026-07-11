@@ -122,7 +122,11 @@ from .measure_extractor import detect_barlines, extract_measures, resegment_fuse
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
 from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
-from .rhythm import parse_time_signature, resolve_rhythms_for_cell
+from .rhythm import (
+    parse_time_signature,
+    resolve_rhythms_for_cell,
+    backfill_page_time_signatures,
+)
 from .line_detection import detect_lines
 from .voicing import group_chords_in_measure, split_events_into_voices
 
@@ -1275,16 +1279,10 @@ def transcribe(
                                 "may contain multiple real measures fused"
                             )
 
-                # Flag measures whose chord-grouped event durations don't
-                # sum to the active time signature (beyond a small
-                # tolerance). Omitted entirely when no time signature is
-                # known for the measure. See _measure_rhythm_sum_warning.
-                for md in staff_dict["measures"]:
-                    warning = _measure_rhythm_sum_warning(
-                        md["detections"], md.get("time_signature")
-                    )
-                    if warning is not None:
-                        md["rhythm_sum_warning"] = warning
+                # (The per-measure rhythm-sum check runs later, in a
+                # page-level pass — AFTER time-signature inference back-fills
+                # measures whose meter detection failed, so the check can
+                # fire on inferred meters too. See below.)
                 # If clef or key sig changed by the end of the staff, surface
                 # the final state too so a clef-change / key-change is visible.
                 if active_clef != first_cell_effective_clef:
@@ -1303,6 +1301,30 @@ def transcribe(
             page_dict["systems"].append(sys_dict)
             out["n_systems_total"] += 1
         out["runtime"]["yolo_s"] += time.perf_counter() - t_yolo
+
+        # ── Time-signature inference + back-fill (audit lever, 2026-07) ──
+        # Detection of time-sig digits is unreliable (DSv2 misclassifies
+        # them), so most measures carry time_signature=None. Infer the page
+        # meter by majority-voting the per-measure resolved lengths, then
+        # back-fill it onto the null measures/staves. Conservative: a no-op
+        # unless one length wins a strong plurality (see
+        # rhythm.backfill_page_time_signatures), so a clean page whose meter
+        # WAS detected — or a noisy page with no clear mode — is untouched.
+        backfill_page_time_signatures(page_dict)
+
+        # ── Per-measure rhythm-sum check ──
+        # Runs here (not in the staff loop) so it sees the back-filled
+        # meters and can fire on inferred measures too. Skipped entirely for
+        # measures still lacking a time signature. See
+        # _measure_rhythm_sum_warning.
+        for sys_d in page_dict["systems"]:
+            for st_d in sys_d["staves"]:
+                for md in st_d["measures"]:
+                    warning = _measure_rhythm_sum_warning(
+                        md["detections"], md.get("time_signature")
+                    )
+                    if warning is not None:
+                        md["rhythm_sum_warning"] = warning
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
