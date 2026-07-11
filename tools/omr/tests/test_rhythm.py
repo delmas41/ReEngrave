@@ -181,12 +181,14 @@ class TestParseInlineAccidental:
 
 class TestParseTimeSignature:
     def test_common_time_shortcut(self):
-        d = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon")
+        # x_canonical past the left-edge margin — a real time sig sits after
+        # the clef, not jammed against x==0 (which is a misread; see below).
+        d = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=50)
         result = parse_time_signature([d])
         assert result == {"numerator": 4, "denominator": 4, "raw": "C"}
 
     def test_cut_common_shortcut(self):
-        d = FakeDet(category="time_sig_digit", smufl_name="timeSigCutCommon")
+        d = FakeDet(category="time_sig_digit", smufl_name="timeSigCutCommon", x_canonical=50)
         result = parse_time_signature([d])
         assert result == {"numerator": 2, "denominator": 2, "raw": "C|"}
 
@@ -234,10 +236,25 @@ class TestParseTimeSignature:
 
     def test_ignores_non_time_sig_dets(self):
         nh = FakeDet(category="notehead", smufl_name="noteheadBlackOnLine")
-        ts = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon")
+        ts = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=50)
         assert parse_time_signature([nh, ts]) == {
             "numerator": 4, "denominator": 4, "raw": "C"
         }
+
+    def test_rejects_left_edge_misread(self):
+        # A time-sig glyph jammed at the cell's left edge (x==0) is the
+        # orchestral instrument-number / margin misread — must be ignored.
+        edge = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=0)
+        assert parse_time_signature([edge]) is None
+        # ... and stacked digit misreads at the edge (the "666/666" pattern)
+        d1 = FakeDet(category="time_sig_digit", smufl_name="timeSig6", x_canonical=0, y_canonical=10)
+        d2 = FakeDet(category="time_sig_digit", smufl_name="timeSig6", x_canonical=0, y_canonical=40)
+        assert parse_time_signature([d1, d2]) is None
+
+    def test_keeps_glyph_just_past_margin(self):
+        # A real time sig a bit past the margin (x >= threshold) is kept.
+        d = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=16)
+        assert parse_time_signature([d]) == {"numerator": 4, "denominator": 4, "raw": "C"}
 
 
 # ─── _deduplicate_beams ────────────────────────────────────────────────────

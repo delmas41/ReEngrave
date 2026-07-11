@@ -296,12 +296,22 @@ first:
    routinely misreads the stacked instrument-grouping numbers printed left of
    the clefs ("Flöten 1 2 3 4") as a time signature, so those misreads *agree*
    and would confidently propagate a wrong meter. (The distinctive C glyphs
-   can't be confused with instrument numbers.) *Follow-up to unlock safe digit
-   propagation: have `parse_time_signature` reject time-sig glyphs positioned
-   left of the clef.*
+   can't be confused with instrument numbers.) `parse_time_signature` drops
+   those misreads at the source (see "Left-edge misread filter" below);
+   re-enabling digit propagation on top of that cleaned signal is the next
+   step, pending a page with a correctly-detected digit meter to validate on.
 2. **Beat-sum inference** as the fallback: majority-vote the per-measure
    resolved lengths (per time-column, taking the fullest staff at each column),
    firing **only when one standard meter wins a strong plurality**.
+
+**Left-edge misread filter.** `parse_time_signature` rejects any time-sig glyph
+whose left edge sits within `_TIMESIG_MIN_X_CANONICAL` (16) canonical px of the
+cell's left edge. A real time signature is engraved after the clef (observed
+≥35 canonical px in), whereas the detector clamps spurious reads of the stacked
+instrument-grouping numbers / margin junk to x==0 — so this cleanly drops the
+`2/4` / `6/66` / `666/666` misreads that polluted orchestral pages while leaving
+the real `C` detections (and their propagation) untouched. Canonical coords are
+scale-normalized, so the threshold is DPI-independent.
 
 - A back-filled `time_signature` carries `"source"` (`"detected_propagated"`
   or `"inferred"`) plus `votes` / `voters` (and `confidence` for `inferred`);

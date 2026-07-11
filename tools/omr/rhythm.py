@@ -140,12 +140,31 @@ def _flag_duration(class_name: str) -> tuple[float, str] | None:
 # above the denominator at the start of the staff (after clef + key sig).
 
 
+# Time-sig glyphs whose left edge sits within this many CANONICAL px of the
+# cell's left edge are rejected as misreads. A real time signature is engraved
+# AFTER the clef (+ key sig), so it lands ~1.5+ staff-spaces in (observed >=35
+# canonical px on real detections); the digit detector, by contrast, clamps
+# spurious reads of the stacked instrument-grouping numbers / margin junk on
+# orchestral pages to x==0. Canonical coords are scale-normalized (staff span
+# is constant, line spacing ~24 px), so this threshold is DPI-independent.
+_TIMESIG_MIN_X_CANONICAL = 16
+
+
+def _timesig_at_left_edge(d: Any) -> bool:
+    """True if a time-sig glyph is jammed against the cell's left edge — the
+    signature of an instrument-number / margin misread, not a real meter."""
+    x = getattr(d, "x_canonical", None)
+    return x is not None and x < _TIMESIG_MIN_X_CANONICAL
+
+
 def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
     """Parse a time signature from the time-signature-digit detections in
     a cell, if any. Returns `{numerator, denominator, raw}` or None if no
     time sig markers were seen.
 
     Algorithm:
+      0. Drop glyphs at the extreme left edge (`_timesig_at_left_edge`) —
+         orchestral instrument-number misreads clamp there.
       1. Common / cut-common shortcuts win first.
       2. Otherwise collect timeSig0-9 detections, sort by x then y.
          If we have an even number of digits stacked top-and-bottom at the
@@ -158,6 +177,8 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
         cls = _normalize_class(getattr(d, "smufl_name", ""))
         if cat != "time_sig_digit":
             continue
+        if _timesig_at_left_edge(d):
+            continue  # margin / instrument-number misread
         if cls == "timesigcommon":
             return {"numerator": 4, "denominator": 4, "raw": "C"}
         if cls in ("timesigcuttime", "timesigcutcommon"):
@@ -364,16 +385,18 @@ def infer_page_time_signature(page: dict[str, Any], **kwargs: Any) -> dict[str, 
 # meter, with nothing plausible disagreeing, is stronger than any single read
 # and stronger than beat-sum voting on a dense page whose rhythm is corrupted.
 #
-# CRITICAL SAFETY RESTRICTION — only the distinctive `C` / cut-`C` GLYPHS are
+# SAFETY RESTRICTION — only the distinctive `C` / cut-`C` GLYPHS are
 # propagated, never digit-stack meters. On orchestral pages the time-sig-digit
 # detector routinely MISREADS the stacked instrument-grouping numbers printed
 # left of the clefs ("Flöten 1 2 3 4", "Hoboen 1 2 3") as a time signature —
 # e.g. a continuation page with no printed meter yields a spurious "2/4" on
 # staff after staff, so those misreads AGREE and would propagate a wrong meter
-# onto the whole page. The common/cut-common symbols are curved glyphs that
-# instrument numbers can't be confused for, so they stay safe to aggregate.
-# (Digit meters can be revisited once parse_time_signature rejects glyphs left
-# of the clef — see the OMR README follow-up note.)
+# onto the whole page. `parse_time_signature` now drops those left-edge
+# misreads (`_timesig_at_left_edge`), but the common/cut-common symbols remain
+# the only *aggregated* signal we've validated as safe to propagate. Digit
+# propagation is the clear next step now that the misreads are filtered — it
+# just needs validating on a page whose digit meter is CORRECTLY detected
+# (add plausible digit meters to `_PROPAGATABLE_RAWS` / the raw check below).
 _PROPAGATE_MIN_COUNT = 3        # min measures backing the winning meter
 _PROPAGATE_MIN_FRACTION = 0.66  # winner's share of propagatable detections
 _PROPAGATABLE_RAWS = frozenset({"C", "C|"})  # common / cut-common glyphs only
