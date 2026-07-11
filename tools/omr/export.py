@@ -37,6 +37,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
@@ -86,6 +87,94 @@ def _duration_to_lily_xml(duration_type: str, dots: int) -> tuple[str, str, int]
     total_dots = dots + prefix_dots
     lily_base, xml_base = _DURATION_TABLE.get(base, ("4", "quarter"))
     return lily_base, xml_base, total_dots
+
+
+# ---------------------------------------------------------------------------
+# Empty-measure padding — time-signature-aware full-measure rests
+# ---------------------------------------------------------------------------
+#
+# Both exporters need to pad a measure with zero resolved events (nothing
+# YOLO detected, or nothing survived pitch/rhythm resolution) with a rest
+# spanning the whole bar. Sizing that rest to the measure's time signature
+# (rather than always assuming 4/4) avoids emitting a bar that's the wrong
+# length in 3/4, 6/8, etc.
+
+# duration_type -> un-dotted length in quarter-note beats (mirrors the
+# keys of _DURATION_TABLE).
+_DURATION_BASE_BEATS: dict[str, float] = {
+    "double_whole":            8.0,
+    "whole":                   4.0,
+    "half":                    2.0,
+    "quarter":                 1.0,
+    "eighth":                  0.5,
+    "sixteenth":               0.25,
+    "thirty_second":           0.125,
+    "sixty_fourth":            0.0625,
+    "hundred_twenty_eighth":   0.03125,
+}
+
+
+def _measure_rest_beats(time_sig: dict[str, Any] | None) -> float:
+    """Total quarter-note beats for a rest spanning an entire measure,
+    sized to `time_sig`. Falls back to 4.0 (a whole rest) when no time
+    signature is known.
+    """
+    if not time_sig:
+        return 4.0
+    num = time_sig.get("numerator")
+    den = time_sig.get("denominator")
+    if not num or not den:
+        return 4.0
+    return num * 4.0 / den
+
+
+def _dotted_duration_for_beats(beats: float) -> tuple[str, int] | None:
+    """Find a (duration_type, dots) pair whose length equals `beats`
+    quarter-note beats, trying 0-2 augmentation dots against each base
+    duration. Returns None when no exact match exists — irregular meters
+    like 5/4 or 7/8 don't reduce to a single (possibly dotted) note value.
+    """
+    for duration_type, base_beats in _DURATION_BASE_BEATS.items():
+        for dots in (0, 1, 2):
+            if abs(base_beats * (2.0 - 2.0 ** -dots) - beats) < 1e-6:
+                return duration_type, dots
+    return None
+
+
+def _lily_measure_rest(time_sig: dict[str, Any] | None) -> str:
+    """LilyPond text for a rest spanning an entire empty measure, sized to
+    `time_sig` (e.g. 3/4 -> 'r2.'). Falls back to the whole rest 'r1' when
+    no time signature is known. Meters that don't reduce to a single
+    (possibly dotted) note value (5/4, 7/8, ...) use LilyPond's full-
+    measure rest 'R' with a duration multiplier over the whole note (e.g.
+    'R1*5/4'), which compiles regardless of how the beat count reduces.
+    """
+    beats = _measure_rest_beats(time_sig)
+    fit = _dotted_duration_for_beats(beats)
+    if fit is not None:
+        duration_type, dots = fit
+        return _lily_event({"kind": "rest", "duration_type": duration_type, "dots": dots})
+    frac = Fraction(beats).limit_denominator(64) / 4
+    if frac.denominator == 1:
+        return f"R1*{frac.numerator}"
+    return f"R1*{frac.numerator}/{frac.denominator}"
+
+
+def _mxl_measure_rest(time_sig: dict[str, Any] | None) -> tuple[float, str, int]:
+    """(beats, xml_type, dots) for a MusicXML rest spanning an entire
+    empty measure, sized to `time_sig`. `beats` (the semantic <duration>
+    value) is always exact; `xml_type`/`dots` (the cosmetic <type>/<dot>
+    tags) fall back to a plain whole note when the beat count doesn't
+    reduce to a single dotted duration (e.g. 5/4) — the <duration> value
+    still keeps the measure the correct length either way.
+    """
+    beats = _measure_rest_beats(time_sig)
+    fit = _dotted_duration_for_beats(beats)
+    if fit is not None:
+        duration_type, dots = fit
+        xml_type = _DURATION_TABLE[duration_type][1]
+        return beats, xml_type, dots
+    return beats, "whole", 0
 
 
 # ---------------------------------------------------------------------------
@@ -240,9 +329,11 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     # stem-down chords — otherwise it's overkill.
     needs_two_voices = False
     per_measure_events: list[list[dict[str, Any]]] = []
+    per_measure_time_sig: list[dict[str, Any] | None] = []
     for measure in staff.get("measures", []):
         events = group_chords_in_measure(measure.get("detections", []))
         per_measure_events.append(events)
+        per_measure_time_sig.append(measure.get("time_signature") or time_sig)
         voices = split_events_into_voices(events)
         if len(voices) > 1:
             needs_two_voices = True
@@ -251,17 +342,18 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
         # Two-voice block.
         v1_lines: list[str] = [f"{indent}    \\voiceOne"]
         v2_lines: list[str] = [f"{indent}    \\voiceTwo"]
-        for events in per_measure_events:
+        for events, m_time in zip(per_measure_events, per_measure_time_sig):
             voices = split_events_into_voices(events)
             v1_events = voices[0] if voices else []
             v2_events = voices[1] if len(voices) >= 2 else voices[0] if voices else []
+            empty_rest = _lily_measure_rest(m_time)
             v1_lines.append(
                 f"{indent}    " + " ".join(_lily_event(ev) for ev in v1_events)
-                + " |" if v1_events else f"{indent}    r1 |"
+                + " |" if v1_events else f"{indent}    {empty_rest} |"
             )
             v2_lines.append(
                 f"{indent}    " + " ".join(_lily_event(ev) for ev in v2_events)
-                + " |" if v2_events else f"{indent}    r1 |"
+                + " |" if v2_events else f"{indent}    {empty_rest} |"
             )
         lines.append(f"{indent}  <<")
         lines.append(f"{indent}    \\new Voice {{")
@@ -273,9 +365,9 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
         lines.append(f"{indent}  >>")
     else:
         # Single voice (the normal case).
-        for events in per_measure_events:
+        for events, m_time in zip(per_measure_events, per_measure_time_sig):
             if not events:
-                lines.append(f"{indent}  r1 |")
+                lines.append(f"{indent}  {_lily_measure_rest(m_time)} |")
                 continue
             rendered = " ".join(_lily_event(ev) for ev in events)
             lines.append(f"{indent}  {rendered} |")
@@ -648,8 +740,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     voices = split_events_into_voices(events)
 
                     if not events:
+                        r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
                         inner.append(_mxl_note(
-                            None, "", "whole", 0, 4.0, divisions,
+                            None, "", r_type, r_dots, r_beats, divisions,
                             is_chord=False, is_rest=True,
                             indent="      ", voice=1,
                         ))
@@ -751,8 +844,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     voices = split_events_into_voices(events)
 
                     if not events:
+                        r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
                         inner.append(_mxl_note(
-                            None, "", "whole", 0, 4.0, divisions,
+                            None, "", r_type, r_dots, r_beats, divisions,
                             is_chord=False, is_rest=True,
                             indent="      ", voice=1,
                         ))

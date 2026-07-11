@@ -118,12 +118,13 @@ from typing import Any
 
 from .preprocessing import render_page
 from .staff_detector import detect_staves
-from .measure_extractor import detect_barlines, extract_measures
+from .measure_extractor import detect_barlines, extract_measures, resegment_fused_measures
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
 from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
 from .rhythm import parse_time_signature, resolve_rhythms_for_cell
 from .line_detection import detect_lines
+from .voicing import group_chords_in_measure, split_events_into_voices
 
 
 # Default weights — Phase 3.3, F1 98.8% on the 25 verdict cells.
@@ -296,6 +297,85 @@ def _correct_notehead_class_by_fill(
     else:
         target = f"noteheadWhole{suffix}" if suffix else "noteheadWhole"
     notehead.smufl_name = target
+
+
+# ---------------------------------------------------------------------------
+# Tremolo / arpeggiato / ornament stem-rejection (audit follow-up, 2026-07)
+# ---------------------------------------------------------------------------
+#
+# line_detection.detect_stems finds tall, narrow, near-vertical ink runs —
+# a shape tremolo slash marks and arpeggiato squiggles also have. Verified
+# on real orchestral pages (Debussy "La Mer", Edition Peters/IMSLP scan):
+# the classical-CV stem detector picks up arpeggiato glyphs as extra
+# "stems" whose bbox overlaps 40-95% of a YOLO-detected arpeggiato glyph's
+# area, and on 6/8 sampled cells where this fired, removing the phantom
+# stem changed which real stem `_stem_for_notehead` / `_find_attached_stem`
+# picked (and therefore the notehead's beam-anchored duration and/or
+# inferred stem direction) — i.e. this is not just theoretical, the
+# phantom stems do get selected as a notehead's "closest" stem in
+# practice on dense pages. Since YOLO reliably detects these glyphs
+# (tremolo1-5, arpeggiato, the ornament* trill/turn/mordent marks — all
+# DSv2 classes under yolo_detector._CATEGORY_MAP's "ornament" category),
+# we can reject any CV stem whose bbox is substantially covered by one.
+
+_TREMOLO_ORNAMENT_CLASSES = frozenset({
+    "tremolo1", "tremolo2", "tremolo3", "tremolo4", "tremolo5",
+    "arpeggiato",
+    "ornamenttrill", "ornamentturn", "ornamentturninverted", "ornamentmordent",
+})
+
+
+def _is_tremolo_or_ornament_det(d) -> bool:
+    name = "".join(ch for ch in (getattr(d, "smufl_name", "") or "").lower() if ch.isalnum())
+    return name in _TREMOLO_ORNAMENT_CLASSES
+
+
+def _bbox_overlap_area(a, b) -> int:
+    """Intersection area (canonical px^2) between two bbox-like objects
+    exposing x_canonical/y_canonical/width_canonical/height_canonical."""
+    ax0, ay0 = a.x_canonical, a.y_canonical
+    ax1, ay1 = ax0 + a.width_canonical, ay0 + a.height_canonical
+    bx0, by0 = b.x_canonical, b.y_canonical
+    bx1, by1 = bx0 + b.width_canonical, by0 + b.height_canonical
+    iw = max(0, min(ax1, bx1) - max(ax0, bx0))
+    ih = max(0, min(ay1, by1) - max(ay0, by0))
+    return iw * ih
+
+
+def _filter_stems_overlapping_tremolo(
+    stems: list, dets, *, min_overlap_fraction: float = 0.3
+) -> list:
+    """Drop CV stem candidates that are actually tremolo / arpeggiato /
+    ornament ink rather than a real note stem.
+
+    A stem is rejected when its bbox overlaps a YOLO tremolo/arpeggiato/
+    ornament detection (`_TREMOLO_ORNAMENT_CLASSES`) by at least
+    `min_overlap_fraction` of the STEM's own area. Using the stem's area
+    (not the ornament glyph's, which is often much bigger — e.g. an
+    arpeggio squiggle spanning a whole chord) as the denominator keeps
+    this conservative: only a stem candidate that is substantially
+    "inside" the ornament glyph gets dropped, not one that merely grazes
+    one at the edge.
+
+    No-op when `dets` has no tremolo/arpeggiato/ornament detections — the
+    overwhelmingly common case (most pages/cells have none) is completely
+    unaffected.
+    """
+    if not stems:
+        return stems
+    ornament_dets = [d for d in dets if _is_tremolo_or_ornament_det(d)]
+    if not ornament_dets:
+        return stems
+    kept = []
+    for s in stems:
+        s_area = max(1, s.width_canonical * s.height_canonical)
+        if any(
+            _bbox_overlap_area(s, o) / s_area >= min_overlap_fraction
+            for o in ornament_dets
+        ):
+            continue
+        kept.append(s)
+    return kept
 
 
 def _find_attached_stem(notehead, stems):
@@ -615,6 +695,16 @@ def _detections_for_cell(
     #    components produces both with millisecond-scale latency and
     #    no GPU. See tools/omr/line_detection.py.
     extra_lines = detect_lines(cell)
+    # Reject CV "stems" that are actually tremolo/arpeggiato/ornament ink
+    # (see _filter_stems_overlapping_tremolo docstring above for the
+    # root-cause rationale). Filtering here, right where extra_lines is
+    # produced, means every downstream consumer of the stem list —
+    # rhythm-resolution below, the fill-based notehead reclassification,
+    # and stem-direction inference — sees the cleaned-up stems. No-op
+    # when the cell has no tremolo/arpeggiato/ornament YOLO detections.
+    extra_lines["stems"] = _filter_stems_overlapping_tremolo(
+        extra_lines.get("stems") or [], dets
+    )
     cv_stems_for_class_check = extra_lines.get("stems") or []
 
     # ── Notehead class correction by inner-pixel fill ratio + stem
@@ -933,13 +1023,66 @@ def _pair_ties_in_cell(dets, ties_to_next: set, ties_from_prev: set) -> None:
             ties_from_prev.add(id(best_right))
 
 
+# ---------------------------------------------------------------------------
+# Per-measure rhythm-sum check (audit follow-up to Phase 4c/g)
+# ---------------------------------------------------------------------------
+
+_RHYTHM_SUM_TOLERANCE = 1.0 / 64  # beats (quarter-note units)
+
+
+def _measure_rhythm_sum_warning(
+    detections: list[dict[str, Any]],
+    time_sig: dict[str, Any] | None,
+    *,
+    tolerance: float = _RHYTHM_SUM_TOLERANCE,
+) -> dict[str, float] | None:
+    """Compare a measure's chord-grouped event durations against its
+    active time signature. Returns `{"expected_beats": X, "actual_beats":
+    Y}` when the sum is off by more than `tolerance` beats, or None when
+    it matches (or no time signature is known — the check is skipped
+    entirely rather than guessing against a default 4/4).
+
+    Reuses `voicing.group_chords_in_measure` / `split_events_into_voices`
+    instead of re-summing durations directly, so multi-voice measures
+    (stem-up vs stem-down) are checked per voice — each voice should
+    independently sum to the measure length. When there's more than one
+    voice, this reports whichever voice deviates the most.
+    """
+    if not time_sig:
+        return None
+    num = time_sig.get("numerator")
+    den = time_sig.get("denominator")
+    if not num or not den:
+        return None
+    expected_beats = num * 4.0 / den
+
+    events = group_chords_in_measure(detections)
+    voices = split_events_into_voices(events)
+
+    actual_beats = 0.0
+    max_deviation = -1.0
+    for voice_events in voices:
+        voice_beats = sum(ev["duration_beats"] for ev in voice_events)
+        deviation = abs(voice_beats - expected_beats)
+        if deviation > max_deviation:
+            max_deviation = deviation
+            actual_beats = voice_beats
+
+    if max_deviation <= tolerance:
+        return None
+    return {
+        "expected_beats": round(expected_beats, 4),
+        "actual_beats": round(actual_beats, 4),
+    }
+
+
 def transcribe(
     *,
     pdf_path: Path,
     pages: list[int],
     weights: str,
     conf_threshold: float = 0.25,
-    imgsz: int = 640,
+    imgsz: int = 2048,
     iou_threshold: float = 0.5,
     agnostic_nms: bool = True,
     dpi: int = 600,
@@ -997,6 +1140,11 @@ def transcribe(
         pws = detect_staves(page)
         pws = detect_barlines(pws)
         cells = extract_measures(pws)
+        # Phase 1i: locally re-split any cell that's already going to be
+        # flagged as a >2x-median-width outlier below, if a genuine
+        # internal barline can be found inside it. Conservative by
+        # construction — see measure_extractor.resegment_fused_measures.
+        cells = resegment_fused_measures(pws, cells)
         remove_staff_lines(cells)
         out["runtime"]["phase1_s"] += time.perf_counter() - t_phase1
 
@@ -1126,6 +1274,17 @@ def transcribe(
                                 "Phase 1 likely missed a barline; this cell "
                                 "may contain multiple real measures fused"
                             )
+
+                # Flag measures whose chord-grouped event durations don't
+                # sum to the active time signature (beyond a small
+                # tolerance). Omitted entirely when no time signature is
+                # known for the measure. See _measure_rhythm_sum_warning.
+                for md in staff_dict["measures"]:
+                    warning = _measure_rhythm_sum_warning(
+                        md["detections"], md.get("time_signature")
+                    )
+                    if warning is not None:
+                        md["rhythm_sum_warning"] = warning
                 # If clef or key sig changed by the end of the staff, surface
                 # the final state too so a clef-change / key-change is visible.
                 if active_clef != first_cell_effective_clef:
@@ -1249,8 +1408,9 @@ def main(argv: list[str] | None = None) -> int:
                     help=f"YOLO weights path (default: {DEFAULT_WEIGHTS})")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
-    ap.add_argument("--imgsz", type=int, default=640,
-                    help="YOLO inference image size (default: 640)")
+    ap.add_argument("--imgsz", type=int, default=2048,
+                    help="YOLO inference image size (default: 2048 — matches "
+                         "the production weights' fine-tuning resolution)")
     ap.add_argument("--iou", type=float, default=0.5,
                     help="NMS IoU threshold (default: 0.5)")
     ap.add_argument("--no-agnostic-nms", action="store_true",
@@ -1328,6 +1488,22 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  runtime: phase1={result['runtime']['phase1_s']}s  "
                   f"yolo={result['runtime']['yolo_s']}s  "
                   f"total={result['runtime']['total_s']}s")
+            # Per-page warning summary: measures + how many carry a
+            # phase1_warning (Phase 1 likely fused/missed a barline) or a
+            # rhythm_sum_warning (beat count doesn't match the time sig).
+            for page_d in result["pages"]:
+                page_measures = [
+                    m
+                    for sys_d in page_d["systems"]
+                    for st in sys_d["staves"]
+                    for m in st["measures"]
+                ]
+                n_phase1 = sum(1 for m in page_measures if "phase1_warning" in m)
+                n_rhythm = sum(1 for m in page_measures if "rhythm_sum_warning" in m)
+                print(f"  page {page_d['page_index']}: "
+                      f"{len(page_measures)} measures, "
+                      f"{n_phase1} phase1_warnings, "
+                      f"{n_rhythm} rhythm_sum_warnings")
     return 0
 
 

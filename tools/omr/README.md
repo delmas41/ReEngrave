@@ -158,7 +158,8 @@ work better without the lines. The YOLO detector is trained on cells
 1. Reads `MeasureCell.image` (canonical-size, BGR or grayscale).
 2. Runs the model with `agnostic_nms=True` (collapses overlapping
    semantically-similar boxes — e.g. `dynamicF` + `dynamicFF` on one
-   `ff` mark) and `imgsz=640`.
+   `ff` mark) and `imgsz=2048` (matches the production weights'
+   fine-tuning resolution).
 3. Maps each box's class id back to a SMuFL glyph name + category.
 4. Returns `list[SymbolDetection]` in canonical-cell coordinates.
 
@@ -190,7 +191,7 @@ current production weights — see "Known limitations" below.
   "conf_threshold": 0.25,
   "iou_threshold":  0.5,
   "agnostic_nms":   true,
-  "imgsz":          640,
+  "imgsz":          2048,
   "dpi":            600,
   "n_pages_processed":  3,
   "n_systems_total":    6,
@@ -300,7 +301,8 @@ options:
   --pages PAGES         Pages to process: e.g. '0,4,9' or '0-4' (default: all)
   --weights WEIGHTS     YOLO weights path (default: Phase 3.3, F1 98.8%)
   --conf CONF           Detection confidence threshold (default: 0.25)
-  --imgsz IMGSZ         YOLO inference image size (default: 640)
+  --imgsz IMGSZ         YOLO inference image size (default: 2048 — matches
+                        the production weights' fine-tuning resolution)
   --iou IOU             NMS IoU threshold (default: 0.5)
   --no-agnostic-nms     Disable agnostic NMS
   --dpi DPI             Source-page render DPI (default: 600)
@@ -312,10 +314,10 @@ options:
 
 | Goal | Setting |
 |---|---|
-| Default — clean engraved scores | (defaults — `conf=0.25`, `imgsz=640`, `iou=0.5`, agnostic NMS on) |
+| Default — clean engraved scores | (defaults — `conf=0.25`, `imgsz=2048`, `iou=0.5`, agnostic NMS on) |
 | Higher recall (more, noisier detections) | `--conf 0.10` |
 | Cleaner output (fewer borderline calls) | `--conf 0.35` |
-| Very small / dense notation (orchestral scores) | `--imgsz 1280` or `--imgsz 2048` |
+| Faster on simple / low-density scores | `--imgsz 1280` or `--imgsz 640` |
 | Lower-DPI scan (300 DPI source) | `--dpi 300` |
 | Debug / visual inspection | `--overlays-dir overlays/` then open the PNGs |
 

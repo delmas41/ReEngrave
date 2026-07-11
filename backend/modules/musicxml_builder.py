@@ -554,19 +554,39 @@ def _measure_duration(
 # ---------------------------------------------------------------------------
 
 
+# Maps a clef name (as emitted by Claude Vision, e.g. "treble") or a bare
+# sign letter ("G"/"F"/"C") to the (sign, line) pair MusicXML expects.
+# Unknown/missing values fall back to treble (G, line 2).
+CLEF_NAME_TO_SIGN_LINE: dict[str, tuple[str, int]] = {
+    "treble": ("G", 2),
+    "bass": ("F", 4),
+    "alto": ("C", 3),
+    "tenor": ("C", 4),
+    "g": ("G", 2),
+    "f": ("F", 4),
+    "c": ("C", 3),
+}
+
+
+def _resolve_clef(clef: Optional[str]) -> tuple[str, int]:
+    """Resolve a clef name/sign string to a valid (sign, line) pair."""
+    if not clef:
+        return ("G", 2)
+    return CLEF_NAME_TO_SIGN_LINE.get(clef.strip().lower(), ("G", 2))
+
+
 def parse_header_json(data: dict) -> ScoreHeader:
     """Convert Claude's header JSON to a ScoreHeader dataclass."""
     staves = []
     for s in data.get("staves", []):
         ks = s.get("key_signature", {})
         ts = s.get("time_signature", {})
+        clef_sign, clef_line = _resolve_clef(s.get("clef"))
         staves.append(StaffHeader(
             staff_id=s.get("staff_id", len(staves) + 1),
             instrument_name=s.get("instrument_name", "Piano"),
-            clef_sign=s.get("clef", "G")[0].upper() if s.get("clef") else "G",
-            clef_line={"G": 2, "F": 4, "C": 3}.get(
-                s.get("clef", "G")[0].upper() if s.get("clef") else "G", 2
-            ),
+            clef_sign=clef_sign,
+            clef_line=clef_line,
             key_fifths=ks.get("fifths", 0),
             key_mode=ks.get("mode", "major"),
             time_beats=ts.get("beats", 4),

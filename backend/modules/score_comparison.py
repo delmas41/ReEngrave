@@ -60,55 +60,73 @@ def parse_musicxml(path: str):
 
 def extract_measures(score) -> list[dict]:
     """
-    Return a list of measure dicts from a parsed music21 Score.
+    Return a list of measure dicts covering ALL parts of a parsed music21
+    Score (orchestral/piano scores routinely carry the interesting
+    disagreements in parts other than the first).
 
     Each dict: {
+        "part_index": int,
+        "part_name": str,
         "number": int,
         "notes": [{"pitch": int|None, "duration": float, "voice": str}]
     }
-    Rests are included as pitch=None.
+    Rests are included as pitch=None. A given (part_index, number) pair
+    uniquely identifies a measure within the returned list.
     """
     import music21  # noqa: PLC0415
 
     measures = []
     try:
-        # Flatten to a single part view so we capture all parts.
-        # We iterate the first part only for measure-numbering stability;
-        # multi-part comparison is done at the score level.
         parts = list(score.parts)
         if not parts:
             return []
 
-        # Use the first part for measure extraction.
-        part = parts[0]
-        for element in part.getElementsByClass(music21.stream.Measure):
-            measure_num = int(element.number) if element.number else 0
-            notes = []
-            for n in element.flatten().notesAndRests:
-                if isinstance(n, music21.note.Note):
-                    notes.append({
-                        "pitch": n.pitch.midi,
-                        "duration": float(n.duration.quarterLength),
-                        "voice": str(n.voice) if n.voice else "1",
-                    })
-                elif isinstance(n, music21.chord.Chord):
-                    # Represent chord as sorted list of midi pitches in one entry.
-                    pitches = sorted(p.midi for p in n.pitches)
-                    notes.append({
-                        "pitch": pitches,
-                        "duration": float(n.duration.quarterLength),
-                        "voice": str(n.voice) if n.voice else "1",
-                    })
-                elif isinstance(n, music21.note.Rest):
-                    notes.append({
-                        "pitch": None,
-                        "duration": float(n.duration.quarterLength),
-                        "voice": str(n.voice) if n.voice else "1",
-                    })
-            measures.append({"number": measure_num, "notes": notes})
+        for part_index, part in enumerate(parts):
+            try:
+                part_name = part.partName or part.id or f"Part {part_index + 1}"
+            except Exception:
+                part_name = f"Part {part_index + 1}"
+
+            for element in part.getElementsByClass(music21.stream.Measure):
+                measure_num = int(element.number) if element.number else 0
+                notes = []
+                for n in element.flatten().notesAndRests:
+                    # getattr, not n.voice — not every music21 version exposes
+                    # a `.voice` attribute on GeneralNote (raises AttributeError
+                    # rather than returning None), so this stays version-safe.
+                    voice_id = getattr(n, "voice", None)
+                    voice = str(voice_id) if voice_id else "1"
+                    if isinstance(n, music21.note.Note):
+                        notes.append({
+                            "pitch": n.pitch.midi,
+                            "duration": float(n.duration.quarterLength),
+                            "voice": voice,
+                        })
+                    elif isinstance(n, music21.chord.Chord):
+                        # Represent chord as sorted list of midi pitches in one entry.
+                        pitches = sorted(p.midi for p in n.pitches)
+                        notes.append({
+                            "pitch": pitches,
+                            "duration": float(n.duration.quarterLength),
+                            "voice": voice,
+                        })
+                    elif isinstance(n, music21.note.Rest):
+                        notes.append({
+                            "pitch": None,
+                            "duration": float(n.duration.quarterLength),
+                            "voice": voice,
+                        })
+                measures.append({
+                    "part_index": part_index,
+                    "part_name": part_name,
+                    "number": measure_num,
+                    "notes": notes,
+                })
     except Exception as exc:
         # Return what we have so far; partial data is better than crashing.
-        measures.append({"number": -1, "notes": [], "error": str(exc)})
+        measures.append({
+            "part_index": -1, "part_name": "", "number": -1, "notes": [], "error": str(exc),
+        })
 
     return measures
 
@@ -128,11 +146,17 @@ def compare_two_scores(path_a: str, path_b: str) -> dict:
     """
     Compare two MusicXML files and return a similarity report.
 
+    Compares every part (not just the first) — each (part_index, measure
+    number) pair is a comparison unit, so an orchestral score's similarity
+    reflects the whole ensemble, not just whichever instrument happens to
+    be listed first.
+
     Returns:
         {
             "similarity_pct": float,
             "measure_diffs": [
-                {"measure_num": int, "status": "match"|"differ"|"missing", "detail": str}
+                {"measure_num": int, "part_index": int,
+                 "status": "match"|"differ"|"missing", "detail": str}
             ],
             "error": str | None
         }
@@ -149,38 +173,49 @@ def compare_two_scores(path_a: str, path_b: str) -> dict:
             "error": f"Failed to parse scores: {exc}",
         }
 
-    # Index by measure number.
-    index_a = {m["number"]: m for m in measures_a}
-    index_b = {m["number"]: m for m in measures_b}
+    # Index by (part_index, measure number).
+    index_a = {(m["part_index"], m["number"]): m for m in measures_a}
+    index_b = {(m["part_index"], m["number"]): m for m in measures_b}
 
-    all_nums = sorted(set(index_a.keys()) | set(index_b.keys()))
-    if not all_nums:
+    all_keys = sorted(set(index_a.keys()) | set(index_b.keys()))
+    if not all_keys:
         return {"similarity_pct": 100.0, "measure_diffs": [], "error": None}
 
     diffs = []
     matched = 0
 
-    for num in all_nums:
-        if num not in index_a:
-            diffs.append({"measure_num": num, "status": "missing", "detail": "Missing in score A"})
-        elif num not in index_b:
-            diffs.append({"measure_num": num, "status": "missing", "detail": "Missing in score B"})
+    for part_index, num in all_keys:
+        key = (part_index, num)
+        if key not in index_a:
+            diffs.append({
+                "measure_num": num, "part_index": part_index,
+                "status": "missing", "detail": "Missing in score A",
+            })
+        elif key not in index_b:
+            diffs.append({
+                "measure_num": num, "part_index": part_index,
+                "status": "missing", "detail": "Missing in score B",
+            })
         else:
-            fp_a = _measure_fingerprint(index_a[num])
-            fp_b = _measure_fingerprint(index_b[num])
+            fp_a = _measure_fingerprint(index_a[key])
+            fp_b = _measure_fingerprint(index_b[key])
             if fp_a == fp_b:
                 matched += 1
-                diffs.append({"measure_num": num, "status": "match", "detail": ""})
+                diffs.append({
+                    "measure_num": num, "part_index": part_index,
+                    "status": "match", "detail": "",
+                })
             else:
-                notes_a = len(index_a[num].get("notes", []))
-                notes_b = len(index_b[num].get("notes", []))
+                notes_a = len(index_a[key].get("notes", []))
+                notes_b = len(index_b[key].get("notes", []))
                 diffs.append({
                     "measure_num": num,
+                    "part_index": part_index,
                     "status": "differ",
                     "detail": f"Note count: {notes_a} vs {notes_b}",
                 })
 
-    similarity_pct = (matched / len(all_nums)) * 100 if all_nums else 100.0
+    similarity_pct = (matched / len(all_keys)) * 100 if all_keys else 100.0
 
     return {
         "similarity_pct": round(similarity_pct, 2),
@@ -404,10 +439,15 @@ def compare_multiple(
 
     The master (if provided) is prepended as paths[0] with label "master".
 
+    Per-measure agreement is computed across ALL parts: a source's
+    contribution to measure N is the tuple of that source's fingerprints
+    for every part at measure N, so two sources only "agree" on a measure
+    if every part agrees, not just whichever part happened to be first.
+
     Returns:
         {
             "labels": ["master", "source_0", ...],
-            "matrix": [[sim_pct, ...], ...],   # NxN similarity matrix
+            "matrix": [[sim_pct, ...], ...],   # NxN similarity matrix (all parts)
             "per_measure_agreement": [
                 {"measure_num": int, "agreement_pct": float, "sources_agreeing": int}
             ],
@@ -462,26 +502,42 @@ def compare_multiple(
             matrix[i][j] = pct
             matrix[j][i] = pct
 
-    # Per-measure agreement across all sources.
+    # Per-measure agreement across all sources, aggregated across all parts.
     all_measure_nums: set[int] = set()
     for measures in parsed:
         for m in measures:
             all_measure_nums.add(m["number"])
 
+    # Index each source as {measure_number: {part_index: measure_dict}}.
+    per_source_index: list[dict[int, dict[int, dict]]] = []
+    for measures in parsed:
+        idx: dict[int, dict[int, dict]] = {}
+        for m in measures:
+            idx.setdefault(m["number"], {})[m["part_index"]] = m
+        per_source_index.append(idx)
+
     per_measure: list[dict] = []
     consensus_issues: list[int] = []
 
     for num in sorted(all_measure_nums):
-        fingerprints = []
-        for measures in parsed:
-            idx = {m["number"]: m for m in measures}
-            if num in idx:
-                fingerprints.append(_measure_fingerprint(idx[num]))
+        # Composite fingerprint per source: the tuple of that source's
+        # per-part fingerprints (ordered by part_index) at this measure.
+        # Two sources compare equal only if every part matches.
+        composite_fingerprints = []
+        for idx in per_source_index:
+            parts_at_measure = idx.get(num)
+            if not parts_at_measure:
+                continue
+            composite = tuple(
+                _measure_fingerprint(parts_at_measure[part_index])
+                for part_index in sorted(parts_at_measure.keys())
+            )
+            composite_fingerprints.append(composite)
 
-        if not fingerprints:
+        if not composite_fingerprints:
             continue
 
-        if len(fingerprints) < 2:
+        if len(composite_fingerprints) < 2:
             per_measure.append({
                 "measure_num": num,
                 "agreement_pct": 100.0,
@@ -489,13 +545,13 @@ def compare_multiple(
             })
             continue
 
-        # Majority fingerprint is the most common one.
+        # Majority composite fingerprint is the most common one.
         from collections import Counter
-        counts = Counter(fingerprints)
+        counts = Counter(composite_fingerprints)
         most_common_fp, most_common_count = counts.most_common(1)[0]
 
         sources_agreeing = most_common_count
-        agreement_pct = round((sources_agreeing / len(fingerprints)) * 100, 2)
+        agreement_pct = round((sources_agreeing / len(composite_fingerprints)) * 100, 2)
 
         per_measure.append({
             "measure_num": num,

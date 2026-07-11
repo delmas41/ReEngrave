@@ -23,6 +23,31 @@ from PIL import Image
 ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
 DEFAULT_MODEL = "claude-opus-4-6"
 
+# Structured-output schema for compare_measure_pair's diff JSON. Passed via
+# output_config.format so the model is constrained to emit valid JSON —
+# no fence-stripping or regex extraction needed.
+DIFF_SCHEMA: dict = {
+    "type": "object",
+    "properties": {
+        "has_difference": {"type": "boolean"},
+        "difference_type": {
+            "type": "string",
+            "enum": [
+                "note", "rhythm", "articulation", "dynamic", "beam",
+                "slur", "accidental", "clef", "other",
+            ],
+        },
+        "description": {"type": "string"},
+        "confidence": {"type": "number"},
+        "is_omr_error": {"type": "boolean"},
+    },
+    "required": [
+        "has_difference", "difference_type", "description",
+        "confidence", "is_omr_error",
+    ],
+    "additionalProperties": False,
+}
+
 
 # ---------------------------------------------------------------------------
 # Data classes
@@ -260,6 +285,9 @@ async def compare_measure_pair(
     message = await client.messages.create(
         model=DEFAULT_MODEL,
         max_tokens=1024,
+        output_config={
+            "format": {"type": "json_schema", "schema": DIFF_SCHEMA},
+        },
         messages=[
             {
                 "role": "user",
@@ -286,7 +314,7 @@ async def compare_measure_pair(
         ],
     )
 
-    raw_text = message.content[0].text if message.content else ""
+    raw_text = next((b.text for b in message.content if b.type == "text"), "")
     diff_data = _parse_claude_response(raw_text)
     if diff_data is None:
         return None
@@ -330,7 +358,7 @@ Use these patterns to calibrate your confidence scores.
 
 You are given two images:
 1. LEFT IMAGE: A scan from the original PDF score (ground truth)
-2. RIGHT IMAGE: The MusicXML rendered by Audiveris OMR software
+2. RIGHT IMAGE: The score re-engraved from the OMR output (rendered from MusicXML)
 
 Score: "{title}" by {composer} ({era} era)
 Instrument: {instrument}
@@ -409,7 +437,13 @@ async def _svg_to_png(svg_path: str, png_path: str) -> bool:
 
 
 def _parse_claude_response(text: str) -> Optional[dict]:
-    """Extract and parse JSON from Claude's response text."""
+    """Parse the diff JSON from Claude's response text.
+
+    With structured outputs (output_config.format) the response is guaranteed
+    to be schema-valid JSON, so the fence/prose fallbacks below are defensive
+    legacy behavior only (kept for robustness and existing test coverage).
+    Returns None when parsing fails or when no difference was reported.
+    """
     text = text.strip()
     if text.startswith("```"):
         lines = text.split("\n")
