@@ -299,6 +299,85 @@ def _correct_notehead_class_by_fill(
     notehead.smufl_name = target
 
 
+# ---------------------------------------------------------------------------
+# Tremolo / arpeggiato / ornament stem-rejection (audit follow-up, 2026-07)
+# ---------------------------------------------------------------------------
+#
+# line_detection.detect_stems finds tall, narrow, near-vertical ink runs —
+# a shape tremolo slash marks and arpeggiato squiggles also have. Verified
+# on real orchestral pages (Debussy "La Mer", Edition Peters/IMSLP scan):
+# the classical-CV stem detector picks up arpeggiato glyphs as extra
+# "stems" whose bbox overlaps 40-95% of a YOLO-detected arpeggiato glyph's
+# area, and on 6/8 sampled cells where this fired, removing the phantom
+# stem changed which real stem `_stem_for_notehead` / `_find_attached_stem`
+# picked (and therefore the notehead's beam-anchored duration and/or
+# inferred stem direction) — i.e. this is not just theoretical, the
+# phantom stems do get selected as a notehead's "closest" stem in
+# practice on dense pages. Since YOLO reliably detects these glyphs
+# (tremolo1-5, arpeggiato, the ornament* trill/turn/mordent marks — all
+# DSv2 classes under yolo_detector._CATEGORY_MAP's "ornament" category),
+# we can reject any CV stem whose bbox is substantially covered by one.
+
+_TREMOLO_ORNAMENT_CLASSES = frozenset({
+    "tremolo1", "tremolo2", "tremolo3", "tremolo4", "tremolo5",
+    "arpeggiato",
+    "ornamenttrill", "ornamentturn", "ornamentturninverted", "ornamentmordent",
+})
+
+
+def _is_tremolo_or_ornament_det(d) -> bool:
+    name = "".join(ch for ch in (getattr(d, "smufl_name", "") or "").lower() if ch.isalnum())
+    return name in _TREMOLO_ORNAMENT_CLASSES
+
+
+def _bbox_overlap_area(a, b) -> int:
+    """Intersection area (canonical px^2) between two bbox-like objects
+    exposing x_canonical/y_canonical/width_canonical/height_canonical."""
+    ax0, ay0 = a.x_canonical, a.y_canonical
+    ax1, ay1 = ax0 + a.width_canonical, ay0 + a.height_canonical
+    bx0, by0 = b.x_canonical, b.y_canonical
+    bx1, by1 = bx0 + b.width_canonical, by0 + b.height_canonical
+    iw = max(0, min(ax1, bx1) - max(ax0, bx0))
+    ih = max(0, min(ay1, by1) - max(ay0, by0))
+    return iw * ih
+
+
+def _filter_stems_overlapping_tremolo(
+    stems: list, dets, *, min_overlap_fraction: float = 0.3
+) -> list:
+    """Drop CV stem candidates that are actually tremolo / arpeggiato /
+    ornament ink rather than a real note stem.
+
+    A stem is rejected when its bbox overlaps a YOLO tremolo/arpeggiato/
+    ornament detection (`_TREMOLO_ORNAMENT_CLASSES`) by at least
+    `min_overlap_fraction` of the STEM's own area. Using the stem's area
+    (not the ornament glyph's, which is often much bigger — e.g. an
+    arpeggio squiggle spanning a whole chord) as the denominator keeps
+    this conservative: only a stem candidate that is substantially
+    "inside" the ornament glyph gets dropped, not one that merely grazes
+    one at the edge.
+
+    No-op when `dets` has no tremolo/arpeggiato/ornament detections — the
+    overwhelmingly common case (most pages/cells have none) is completely
+    unaffected.
+    """
+    if not stems:
+        return stems
+    ornament_dets = [d for d in dets if _is_tremolo_or_ornament_det(d)]
+    if not ornament_dets:
+        return stems
+    kept = []
+    for s in stems:
+        s_area = max(1, s.width_canonical * s.height_canonical)
+        if any(
+            _bbox_overlap_area(s, o) / s_area >= min_overlap_fraction
+            for o in ornament_dets
+        ):
+            continue
+        kept.append(s)
+    return kept
+
+
 def _find_attached_stem(notehead, stems):
     """Pair a notehead to its stem (classical-CV stems).
 
@@ -616,6 +695,16 @@ def _detections_for_cell(
     #    components produces both with millisecond-scale latency and
     #    no GPU. See tools/omr/line_detection.py.
     extra_lines = detect_lines(cell)
+    # Reject CV "stems" that are actually tremolo/arpeggiato/ornament ink
+    # (see _filter_stems_overlapping_tremolo docstring above for the
+    # root-cause rationale). Filtering here, right where extra_lines is
+    # produced, means every downstream consumer of the stem list —
+    # rhythm-resolution below, the fill-based notehead reclassification,
+    # and stem-direction inference — sees the cleaned-up stems. No-op
+    # when the cell has no tremolo/arpeggiato/ornament YOLO detections.
+    extra_lines["stems"] = _filter_stems_overlapping_tremolo(
+        extra_lines.get("stems") or [], dets
+    )
     cv_stems_for_class_check = extra_lines.get("stems") or []
 
     # ── Notehead class correction by inner-pixel fill ratio + stem

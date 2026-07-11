@@ -11,10 +11,13 @@ from dataclasses import dataclass
 import pytest
 
 from tools.omr.transcribe import (
+    _bbox_overlap_area,
     _build_pitch,
     _clef_name_from_class,
     _default_clef_for_position,
     _detect_key_sig_from_cell,
+    _filter_stems_overlapping_tremolo,
+    _is_tremolo_or_ornament_det,
     _key_sig_alterations,
     _key_sig_summary,
     _measure_rhythm_sum_warning,
@@ -313,3 +316,125 @@ class TestStemDirection:
         # y_mid = 120
         # 50 < 120 → stem-down
         assert _stem_direction(nh, stem) == "down"
+
+
+# ─── _bbox_overlap_area / _is_tremolo_or_ornament_det /
+#     _filter_stems_overlapping_tremolo ────────────────────────────────────
+#
+# Audit follow-up (2026-07): the classical-CV stem detector picks up
+# tremolo/arpeggiato/ornament ink as phantom "stems" because it's also a
+# tall, narrow, near-vertical run. Verified on real orchestral pages
+# (Debussy "La Mer") that these phantom stems really do get selected by
+# _stem_for_notehead / _find_attached_stem in some cells, changing the
+# resolved duration or stem direction. These tests cover the geometric
+# filter that rejects them.
+
+
+def _stem(x, y, w=10, h=200):
+    return FakeDet(smufl_name="stem", category="stem",
+                    x_canonical=x, y_canonical=y,
+                    width_canonical=w, height_canonical=h)
+
+
+def _ornament(name, x, y, w=40, h=100):
+    return FakeDet(smufl_name=name, category="ornament",
+                    x_canonical=x, y_canonical=y,
+                    width_canonical=w, height_canonical=h)
+
+
+class TestBboxOverlapArea:
+    def test_disjoint_boxes_zero_overlap(self):
+        a = FakeDet(x_canonical=0, y_canonical=0, width_canonical=10, height_canonical=10)
+        b = FakeDet(x_canonical=100, y_canonical=100, width_canonical=10, height_canonical=10)
+        assert _bbox_overlap_area(a, b) == 0
+
+    def test_full_containment(self):
+        a = FakeDet(x_canonical=10, y_canonical=10, width_canonical=5, height_canonical=5)
+        b = FakeDet(x_canonical=0, y_canonical=0, width_canonical=100, height_canonical=100)
+        assert _bbox_overlap_area(a, b) == 25  # a's full area
+
+    def test_partial_overlap(self):
+        a = FakeDet(x_canonical=0, y_canonical=0, width_canonical=10, height_canonical=10)
+        b = FakeDet(x_canonical=5, y_canonical=5, width_canonical=10, height_canonical=10)
+        assert _bbox_overlap_area(a, b) == 25  # 5x5 overlap square
+
+
+class TestIsTremoloOrOrnamentDet:
+    @pytest.mark.parametrize("name", [
+        "tremolo1", "tremolo2", "tremolo3", "tremolo4", "tremolo5",
+        "arpeggiato",
+        "ornamentTrill", "ornamentTurn", "ornamentTurnInverted", "ornamentMordent",
+    ])
+    def test_recognized_classes(self, name):
+        assert _is_tremolo_or_ornament_det(FakeDet(smufl_name=name)) is True
+
+    def test_case_and_punctuation_insensitive(self):
+        assert _is_tremolo_or_ornament_det(FakeDet(smufl_name="TREMOLO-1")) is True
+
+    @pytest.mark.parametrize("name", [
+        "fermataAbove", "articStaccatoAbove", "graceNoteAppoggiaturaStemDown",
+        "caesura", "fingering1", "stringsUpBow", "keyboardPedalPed",
+        "noteheadBlackInSpace", "beam", "",
+    ])
+    def test_other_ornament_category_classes_not_matched(self, name):
+        # These are also mapped to category="ornament" by
+        # yolo_detector._CATEGORY_MAP, but they're not the tall/narrow
+        # tremolo-or-arpeggio shapes the stem detector confuses itself
+        # with — rejecting stems near them would be overly aggressive
+        # (e.g. a staccato dot or fingering number sitting right next to
+        # a real stem is extremely common).
+        assert _is_tremolo_or_ornament_det(FakeDet(smufl_name=name)) is False
+
+
+class TestFilterStemsOverlappingTremolo:
+    def test_no_stems_is_noop(self):
+        dets = [_ornament("arpeggiato", 0, 0)]
+        assert _filter_stems_overlapping_tremolo([], dets) == []
+
+    def test_no_ornament_dets_returns_stems_unchanged(self):
+        # The common case: most cells have zero tremolo/arpeggiato/ornament
+        # detections, so the filter must be a complete no-op.
+        stems = [_stem(10, 10), _stem(50, 50)]
+        dets = [FakeDet(smufl_name="noteheadBlackInSpace", category="notehead")]
+        result = _filter_stems_overlapping_tremolo(stems, dets)
+        assert result == stems
+
+    def test_stem_mostly_inside_arpeggiato_is_rejected(self):
+        # A phantom "stem" that the CV detector found INSIDE an arpeggio
+        # squiggle's bbox — the real-world failure mode (Debussy "La Mer").
+        stem = _stem(x=10, y=10, w=10, h=50)  # area 500
+        arpeggiato = _ornament("arpeggiato", x=0, y=0, w=40, h=200)  # fully covers stem
+        result = _filter_stems_overlapping_tremolo([stem], [arpeggiato])
+        assert result == []
+
+    def test_stem_barely_grazing_ornament_is_kept(self):
+        # Overlap well under the 0.3-of-stem-area threshold — conservative
+        # behavior: don't reject a real stem that just happens to be near
+        # an ornament glyph.
+        stem = _stem(x=0, y=0, w=10, h=100)  # area 1000
+        # Overlap is a 10x5 = 50px^2 sliver -> 5% of the stem's area.
+        arpeggiato = _ornament("arpeggiato", x=0, y=95, w=10, h=50)
+        result = _filter_stems_overlapping_tremolo([stem], [arpeggiato])
+        assert result == [stem]
+
+    def test_stem_far_from_ornament_is_kept(self):
+        stem = _stem(x=500, y=500, w=10, h=100)
+        arpeggiato = _ornament("arpeggiato", x=0, y=0)
+        result = _filter_stems_overlapping_tremolo([stem], [arpeggiato])
+        assert result == [stem]
+
+    def test_only_overlapping_stem_removed_others_kept(self):
+        overlapping = _stem(x=10, y=10, w=10, h=50)
+        distant = _stem(x=500, y=500, w=10, h=50)
+        arpeggiato = _ornament("arpeggiato", x=0, y=0, w=40, h=200)
+        result = _filter_stems_overlapping_tremolo([overlapping, distant], [arpeggiato])
+        assert result == [distant]
+
+    def test_non_ornament_notehead_does_not_trigger_rejection(self):
+        # A stem sitting inside a NOTEHEAD's bbox (totally normal —
+        # stems touch noteheads) must not be rejected.
+        stem = _stem(x=10, y=10, w=10, h=50)
+        notehead = FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                            x_canonical=0, y_canonical=0, width_canonical=40, height_canonical=200)
+        result = _filter_stems_overlapping_tremolo([stem], [notehead])
+        assert result == [stem]
