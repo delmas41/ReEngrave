@@ -12,6 +12,10 @@ Algorithm:
 Public surface:
     detect_barlines(page_with_staves) -> updates PageWithStaves.barlines
     extract_measures(page_with_staves, canonical_staff_span=400, max_cell_width=2048) -> list[MeasureCell]
+    resegment_fused_measures(page_with_staves, cells) -> list[MeasureCell]
+        Phase 1i: local re-split of cells >2x the staff's median width
+        (transcribe.py's phase1_warning outliers) wherever a genuine
+        internal barline can be found. Never touches normal-width cells.
 """
 
 from __future__ import annotations
@@ -61,32 +65,54 @@ BARLINE_MIN_DISTANCE_PX = 60      # neighbouring barlines must be ≥60px apart
 # ─── Barline detection ───────────────────────────────────────────────────────
 
 
-def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
-    """Find columns where this single staff has a vertical barline using
-    morphological vertical opening + connected-component shape filtering.
+def _detect_barlines_in_window(
+    bin_img: np.ndarray,
+    staff: Staff,
+    x0: int,
+    x1: int,
+    min_height_frac: float = BARLINE_MIN_HEIGHT_FRAC,
+) -> list[int]:
+    """Find columns in [x0, x1) where this staff has a vertical barline,
+    using morphological vertical opening + connected-component shape
+    filtering. Same geometric test as the old `_detect_barlines_per_staff`
+    (height / width / aspect ratio), factored out so the x-window and the
+    height threshold are both parameters instead of always being the
+    staff's full span + the global BARLINE_MIN_HEIGHT_FRAC.
+
+    Two callers:
+      - `_detect_barlines_per_staff` (global pass): window = staff's full
+        x-span, threshold = BARLINE_MIN_HEIGHT_FRAC. Behavior-identical to
+        the pre-refactor implementation.
+      - `_find_internal_barline_candidates` (local re-segmentation of
+        already-flagged fused cells, see resegment_fused_measures): window
+        = one flagged cell, threshold = a more lenient
+        RESEGMENT_MIN_HEIGHT_FRAC. Only ever invoked inside a cell
+        transcribe.py already flagged as a >2x-median-width outlier, so
+        relaxing the threshold there cannot reproduce the global
+        over-segmentation regression documented above (raising
+        BARLINE_MIN_HEIGHT_FRAC globally 0.80->0.95 blew Beethoven from
+        98->218 measures).
 
     A barline is a vertical ink stripe with these geometric properties:
-      - height ≥ 80% of staff span
+      - height ≥ min_height_frac × staff span
       - width < ~0.7 × line spacing
       - aspect ratio (h/w) >> 1
-
-    NOTE: A notehead-attachment rejection step was tried (commit history
-    in this file) but it was too easily fooled by ink near barlines that
-    isn't actually attached to them. Over-detection on very dense
-    orchestral pages is handled at the system level via gap-bipartition
-    outlier rejection (see _drop_close_outliers).
     """
     h, w = bin_img.shape
     y0, y1 = staff.top_y, staff.bottom_y + 1
     if y1 <= y0:
         return []
-    band = bin_img[y0:y1, staff.x_start:staff.x_end + 1]
+    x0 = max(0, x0)
+    x1 = min(w, x1)
+    if x1 <= x0:
+        return []
+    band = bin_img[y0:y1, x0:x1]
     if band.size == 0:
         return []
 
     staff_span = y1 - y0
     spacing = max(1.0, staff.line_spacing_px)
-    min_height = int(staff_span * BARLINE_MIN_HEIGHT_FRAC)
+    min_height = int(staff_span * min_height_frac)
     max_width = max(2, int(spacing * BARLINE_MAX_WIDTH_LINESPACINGS))
 
     ink = cv2.bitwise_not(band)
@@ -103,7 +129,7 @@ def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
             continue           # too wide — accidental or chord
         if h_l / max(w_l, 1) < 8.0:
             continue           # not skinny enough
-        x_center = staff.x_start + x_l + w_l // 2
+        x_center = x0 + x_l + w_l // 2
         barline_xs.append(int(x_center))
     barline_xs.sort()
     deduped: list[int] = []
@@ -111,6 +137,21 @@ def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
         if not deduped or x - deduped[-1] >= BARLINE_MIN_DISTANCE_PX:
             deduped.append(x)
     return deduped
+
+
+def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
+    """Find columns where this single staff has a vertical barline (global
+    pass — full staff x-span, global BARLINE_MIN_HEIGHT_FRAC threshold).
+
+    NOTE: A notehead-attachment rejection step was tried (commit history
+    in this file) but it was too easily fooled by ink near barlines that
+    isn't actually attached to them. Over-detection on very dense
+    orchestral pages is handled at the system level via gap-bipartition
+    outlier rejection (see _drop_close_outliers).
+    """
+    return _detect_barlines_in_window(
+        bin_img, staff, staff.x_start, staff.x_end + 1, BARLINE_MIN_HEIGHT_FRAC
+    )
 
 
 def _intersystem_connectivity(
@@ -394,6 +435,68 @@ def _upscale_to_canonical(
     return out, scale, new_line_ys
 
 
+def _build_measure_cell(
+    pws: PageWithStaves,
+    staff: Staff,
+    system_index: int,
+    x0: int,
+    x1: int,
+    measure_index: int,
+    max_cell_width: int = MAX_CELL_WIDTH_PX,
+) -> MeasureCell | None:
+    """Crop + canonically-upscale one (staff, x0:x1) cell from the page.
+
+    Shared by `extract_measures` (the initial page-wide scan) and
+    `resegment_fused_measures` (local re-split of a single already-flagged
+    fused cell) so both paths produce identically-shaped MeasureCell
+    objects. Returns None if the x-range is degenerate (<10px wide after
+    clamping to the page) — mirrors the "too narrow, skip" guard that used
+    to live inline in extract_measures.
+    """
+    rgb = pws.page.rgb
+    binary = pws.page.binary
+    spacing = max(1.0, staff.line_spacing_px)
+    pad_above = int(PAD_ABOVE_STAFF_LINES * spacing)
+    pad_below = int(PAD_BELOW_STAFF_LINES * spacing)
+    y0 = max(0, staff.top_y - pad_above)
+    y1 = min(rgb.shape[0], staff.bottom_y + pad_below)
+    x0 = max(0, x0)
+    x1 = min(rgb.shape[1], x1)
+    if x1 - x0 < 10:
+        return None  # too narrow, skip
+    cell_rgb = rgb[y0:y1, x0:x1].copy()
+    # Staff line ys in the cell's local coordinate frame
+    local_ys = [y - y0 for y in staff.line_ys]
+    page_span = staff.span_px
+    up_rgb, scale, up_ys = _upscale_to_canonical(
+        cell_rgb, page_span, local_ys, max_cell_width,
+    )
+    # Convert binary slice too, with the same scale, for later use
+    cell_bin = binary[y0:y1, x0:x1]
+    up_bin = cv2.resize(
+        cell_bin,
+        (up_rgb.shape[1], up_rgb.shape[0]),
+        interpolation=cv2.INTER_NEAREST,
+    )
+
+    cell = MeasureCell(
+        page_index=pws.page.page_index,
+        system_index=system_index,
+        staff_index=staff.staff_index,
+        measure_index=measure_index,
+        image=up_rgb,
+        image_no_staff=None,  # filled in by staff_line_removal
+        bbox_page_px=(x0, y0, x1, y1),
+        staff_line_ys_canonical=up_ys,
+        upscale_factor=scale,
+    )
+    # Stash binary on the cell as a side-channel attribute for the
+    # staff-line-removal step. (Not part of MeasureCell's formal schema —
+    # kept dynamic for now.)
+    cell.__dict__["binary"] = up_bin
+    return cell
+
+
 def extract_measures(
     pws: PageWithStaves,
     canonical_staff_span: int = CANONICAL_STAFF_SPAN_PX,
@@ -413,54 +516,271 @@ def extract_measures(
     for bl in pws.barlines:
         sys_barlines.setdefault(bl.system_index, []).append(bl)
 
-    rgb = pws.page.rgb
-    binary = pws.page.binary
-
     for sys_idx, staves in sys_staves.items():
         bls = sys_barlines.get(sys_idx, [])
         xb = _measure_x_boundaries(bls, staves)
         for staff in staves:
-            spacing = max(1.0, staff.line_spacing_px)
-            pad_above = int(PAD_ABOVE_STAFF_LINES * spacing)
-            pad_below = int(PAD_BELOW_STAFF_LINES * spacing)
-            y0 = max(0, staff.top_y - pad_above)
-            y1 = min(rgb.shape[0], staff.bottom_y + pad_below)
             for m_idx, (x0, x1) in enumerate(xb):
-                x0 = max(0, x0)
-                x1 = min(rgb.shape[1], x1)
-                if x1 - x0 < 10:
-                    continue  # too narrow, skip
-                cell_rgb = rgb[y0:y1, x0:x1].copy()
-                # Staff line ys in the cell's local coordinate frame
-                local_ys = [y - y0 for y in staff.line_ys]
-                page_span = staff.span_px
-                up_rgb, scale, up_ys = _upscale_to_canonical(
-                    cell_rgb, page_span, local_ys, max_cell_width,
+                cell = _build_measure_cell(
+                    pws, staff, sys_idx, x0, x1, m_idx,
+                    max_cell_width=max_cell_width,
                 )
-                # Convert binary slice too, with the same scale, for later use
-                cell_bin = binary[y0:y1, x0:x1]
-                up_bin = cv2.resize(
-                    cell_bin,
-                    (up_rgb.shape[1], up_rgb.shape[0]),
-                    interpolation=cv2.INTER_NEAREST,
-                )
-
-                cells.append(MeasureCell(
-                    page_index=pws.page.page_index,
-                    system_index=sys_idx,
-                    staff_index=staff.staff_index,
-                    measure_index=m_idx,
-                    image=up_rgb,
-                    image_no_staff=None,  # filled in by staff_line_removal
-                    bbox_page_px=(x0, y0, x1, y1),
-                    staff_line_ys_canonical=up_ys,
-                    upscale_factor=scale,
-                ))
-                # Stash binary on the cell as a side-channel attribute for
-                # the staff-line-removal step. (Not part of MeasureCell's
-                # formal schema — kept dynamic for now.)
-                cells[-1].__dict__["binary"] = up_bin
+                if cell is not None:
+                    cells.append(cell)
     return cells
+
+
+# ─── Local re-segmentation of fused measures (Phase 1i) ──────────────────────
+#
+# Problem: on dense orchestral pages, the system-level barline vote in
+# `detect_barlines` sometimes misses a real internal barline (faint ink,
+# partial staff occlusion, a column that only a minority of staves voted
+# for). The result is one over-wide MeasureCell that actually contains 2+
+# real measures fused together. transcribe.py already detects this after
+# the fact — any cell wider than 2x its staff's median measure width gets
+# `phase1_warning` set (see the width check in transcribe.py's per-staff
+# loop). Beethoven 5 p15: 18 of 98 measures were such outliers.
+#
+# Fix: re-run barline detection *inside* each already-flagged wide cell,
+# with a lower height threshold (real barlines are sometimes exactly what
+# got missed at the global threshold) and a lower cross-staff vote
+# requirement (justified because the search window is now narrow — far
+# fewer candidate columns, so false positives are much less likely to slip
+# through). A candidate is only trusted if the resulting sub-measures all
+# land within a plausible width band of the staff's median; otherwise the
+# whole split is rejected and the cell is left exactly as Phase 1 produced
+# it (still carrying its width outlier, still eligible for phase1_warning
+# downstream).
+#
+# This pass is intentionally narrow in scope:
+#   - It NEVER touches a normal-width cell — only cells already flagged as
+#     >2x-median outliers are examined at all.
+#   - It NEVER changes the global BARLINE_MIN_HEIGHT_FRAC or the global
+#     per-system vote thresholds in detect_barlines/_detect_barlines_per_staff.
+#   - It is MULTI-STAFF ONLY: a candidate must be voted for by ≥2 staves
+#     AND drawn through the inter-staff gap ink (connectivity). Single-staff
+#     "systems" (isolated instrument lines, or staff-detector mis-groupings)
+#     get no cross-staff corroboration, and the relaxed height test alone is
+#     fooled by dense tremolo/beam ink — so they are skipped. (On the
+#     Debussy validation set the single-staff path produced the one
+#     unverifiable split; every multi-staff split landed on a real barline.)
+#   - Barline x-positions are shared by every staff in a system (see
+#     `_measure_x_boundaries` — one `xb` list is reused for all staves), so
+#     a flagged measure_index is a SYSTEM-level event: candidates are
+#     searched using every staff in the system for corroboration, and an
+#     accepted split is applied identically to every staff in that system,
+#     then measure_index is renumbered sequentially so downstream code
+#     (transcribe.py) sees an ordinary 0..N-1 run per staff.
+# Together these make it categorically different from (and much safer
+# than) globally raising BARLINE_MIN_HEIGHT_FRAC, which over-segmented
+# Beethoven 98->162->218 measures (see the tuning note at the top of this
+# file) because it fires on *every* cell, not just already-fused ones.
+
+# Height threshold used when searching INSIDE an already-flagged cell.
+# Deliberately more lenient than the global BARLINE_MIN_HEIGHT_FRAC (0.80)
+# because a faint/partially-obscured barline is a plausible reason Phase 1
+# missed it in the first place. Safe to relax here because this function is
+# never called on a normal-width cell.
+RESEGMENT_MIN_HEIGHT_FRAC = 0.60
+# Minimum fraction of staves in the system that must vote for a candidate
+# column (vs. up to 0.80 for the global per-system vote in detect_barlines).
+# Safe to relax because the search window is a single narrow cell, not the
+# whole page, so there are far fewer candidate columns to false-positive on.
+RESEGMENT_MIN_VOTE_FRAC = 0.30
+# Minimum inter-staff-gap ink continuity (see _intersystem_connectivity) a
+# candidate column must show. A genuine barline is drawn through the
+# whitespace between staves; a stem or chord-column coincidence is not.
+RESEGMENT_MIN_CONNECTIVITY = 0.5
+# Matches the >2x-median check transcribe.py uses to set phase1_warning —
+# a cell is only a re-segmentation CANDIDATE if it's already flagged there.
+RESEGMENT_WIDTH_WARN_FACTOR = 2.0
+# Acceptance band (guardrail c): every resulting sub-measure's width must
+# land within [MIN_PIECE_FRAC, MAX_PIECE_FRAC] x the staff's median measure
+# width, or the whole split is rejected — never emit a sliver, and never
+# emit a piece that's still an implausible-width outlier.
+RESEGMENT_MIN_PIECE_FRAC = 0.5
+RESEGMENT_MAX_PIECE_FRAC = 1.75
+
+
+def _find_internal_barline_candidates(
+    bin_img: np.ndarray, staves: list[Staff], x0: int, x1: int,
+) -> list[int]:
+    """Search the narrow window [x0, x1) — a cell transcribe.py already
+    flagged as a fused-measure outlier — for internal barlines.
+
+    Uses relaxed per-staff height thresholds (RESEGMENT_MIN_HEIGHT_FRAC)
+    plus the same inter-staff connectivity check the global pass uses
+    (`_intersystem_connectivity`), scaled down (RESEGMENT_MIN_VOTE_FRAC /
+    RESEGMENT_MIN_CONNECTIVITY) to reflect that a narrow, already-suspect
+    window has far less room for false positives than a whole page.
+
+    MULTI-STAFF ONLY. A candidate must be corroborated by ≥2 staves of the
+    system AND drawn through the inter-staff whitespace (connectivity). A
+    single-staff "system" (an isolated instrument line, or a staff-detector
+    mis-grouping) has no cross-staff corroboration available, so the only
+    discriminator left is the relaxed height test — which dense
+    tremolo/beam ink on orchestral pages readily fools. Empirically, the
+    single-staff path produced the one unverifiable Debussy split (p9 sys0,
+    a dense tremolo staff) while every multi-staff split landed on a real
+    barline (e.g. p10 sys4, 7 staves). So we skip single-staff systems
+    entirely and lean on connectivity for the rest — that's exactly the
+    "consistent across staves of the system" signal a real barline gives.
+
+    Returns accepted x positions, sorted, strictly inside (x0, x1) —
+    candidates within BARLINE_MIN_DISTANCE_PX of either edge are dropped
+    because those are almost always the cell's OWN bounding barlines
+    getting re-detected, not a genuine internal split point.
+    """
+    n_staves = len(staves)
+    if n_staves < 2 or x1 - x0 < 2 * BARLINE_MIN_DISTANCE_PX:
+        return []  # single-staff (no corroboration) or too narrow
+
+    all_xs: list[int] = []
+    for staff in staves:
+        all_xs.extend(
+            _detect_barlines_in_window(bin_img, staff, x0, x1, RESEGMENT_MIN_HEIGHT_FRAC)
+        )
+    if not all_xs:
+        return []
+    all_xs.sort()
+
+    # Cluster close x's together (same tolerance the global pass uses).
+    x_tolerance = 12
+    clusters: list[list[int]] = []
+    for x in all_xs:
+        if clusters and x - clusters[-1][-1] <= x_tolerance:
+            clusters[-1].append(x)
+        else:
+            clusters.append([x])
+
+    # ≥2 votes always required (a lone staff firing can never carry a
+    # split); scale up with system size but keep the floor at 2.
+    min_votes = max(2, int(round(RESEGMENT_MIN_VOTE_FRAC * n_staves)))
+
+    accepted: list[int] = []
+    for cluster in clusters:
+        x_mean = int(round(sum(cluster) / len(cluster)))
+        if x_mean <= x0 + BARLINE_MIN_DISTANCE_PX or x_mean >= x1 - BARLINE_MIN_DISTANCE_PX:
+            continue  # too close to the cell's own edges
+        n_votes = len(cluster)
+        # Connectivity is meaningful for ≥2 staves (≥1 inter-staff gap): a
+        # real barline is drawn through the gap ink, a coincidental stem
+        # column is not.
+        connectivity = _intersystem_connectivity(bin_img, staves, x_mean)
+        if n_votes >= min_votes and connectivity >= RESEGMENT_MIN_CONNECTIVITY:
+            accepted.append(x_mean)
+    accepted.sort()
+    deduped: list[int] = []
+    for x in accepted:
+        if not deduped or x - deduped[-1] >= BARLINE_MIN_DISTANCE_PX:
+            deduped.append(x)
+    return deduped
+
+
+def resegment_fused_measures(
+    pws: PageWithStaves,
+    cells: list[MeasureCell],
+    max_cell_width: int = MAX_CELL_WIDTH_PX,
+) -> list[MeasureCell]:
+    """Local re-segmentation pass over cells `extract_measures` already
+    produced: split cells that are >2x-median-width outliers back into
+    their real sub-measures wherever a genuine internal barline can be
+    found, WITHOUT ever touching normal-width cells or global thresholds.
+    See the module-level comment above for the full rationale.
+
+    Cells that aren't split are returned unchanged (same object identity).
+    Cells that ARE split are replaced by 2+ new cells built via
+    `_build_measure_cell`, and every staff in the affected system has its
+    measure_index renumbered 0..N-1 afterward (barline x-positions are
+    shared across a system's staves, so a flagged cell at measure_index m
+    implies every staff in that system needs the same split at m).
+    """
+    if not cells:
+        return cells
+
+    bin_img = pws.page.binary
+
+    # Group cells by system, then by staff, sorted by measure_index.
+    by_system: dict[int, dict[int, list[MeasureCell]]] = {}
+    for c in cells:
+        by_system.setdefault(c.system_index, {}).setdefault(c.staff_index, []).append(c)
+    for sys_idx in by_system:
+        for staff_idx in by_system[sys_idx]:
+            by_system[sys_idx][staff_idx].sort(key=lambda c: c.measure_index)
+
+    result: list[MeasureCell] = []
+    for sys_idx, staff_groups in by_system.items():
+        staves = sorted(pws.staves_in_system(sys_idx), key=lambda s: s.staff_index)
+        if not staves:
+            for staff_cells in staff_groups.values():
+                result.extend(staff_cells)
+            continue
+
+        # Representative per-measure-index widths: pick the staff with the
+        # most cells (guards against a staff that dropped a trailing
+        # sliver cell in extract_measures) to compute the staff's median
+        # measure width and to decide which measure_index values are
+        # flagged. Barline x-positions — and therefore widths — are shared
+        # across every staff in the system by construction
+        # (_measure_x_boundaries), so any staff's cells give the same
+        # answer in the normal case.
+        rep_staff_idx = max(staff_groups, key=lambda k: len(staff_groups[k]))
+        rep_cells = staff_groups[rep_staff_idx]
+        widths = [c.bbox_page_px[2] - c.bbox_page_px[0] for c in rep_cells]
+        median_w = sorted(widths)[len(widths) // 2] if widths else 0
+
+        # measure_index -> accepted split boundaries [x0, x_mid.., x1].
+        split_boundaries: dict[int, list[int]] = {}
+        if median_w > 0:
+            for c in rep_cells:
+                x0, _, x1, _ = c.bbox_page_px
+                w = x1 - x0
+                if w <= median_w * RESEGMENT_WIDTH_WARN_FACTOR:
+                    continue  # not a flagged outlier -- leave untouched
+                candidates = _find_internal_barline_candidates(bin_img, staves, x0, x1)
+                if not candidates:
+                    continue  # no genuine internal barline found -- stays fused
+                boundaries = [x0] + candidates + [x1]
+                piece_widths = [boundaries[i + 1] - boundaries[i] for i in range(len(boundaries) - 1)]
+                lo = median_w * RESEGMENT_MIN_PIECE_FRAC
+                hi = median_w * RESEGMENT_MAX_PIECE_FRAC
+                if all(lo <= pw <= hi for pw in piece_widths):
+                    split_boundaries[c.measure_index] = boundaries
+                # else: at least one resulting piece would be a sliver (or
+                # still an implausible-width outlier) -- reject the WHOLE
+                # split and keep the cell as Phase 1 produced it. Never
+                # emit a partial/best-effort split.
+
+        if not split_boundaries:
+            # Nothing splittable in this system -- pass every cell through
+            # unchanged.
+            for staff_cells in staff_groups.values():
+                result.extend(staff_cells)
+            continue
+
+        # Apply the accepted splits identically to every staff in the
+        # system, then renumber measure_index sequentially.
+        for staff_idx, staff_cells in staff_groups.items():
+            staff = next((s for s in staves if s.staff_index == staff_idx), None)
+            new_cells: list[MeasureCell] = []
+            for c in staff_cells:
+                boundaries = split_boundaries.get(c.measure_index)
+                if boundaries is None or staff is None:
+                    new_cells.append(c)
+                    continue
+                for i in range(len(boundaries) - 1):
+                    sub = _build_measure_cell(
+                        pws, staff, sys_idx, boundaries[i], boundaries[i + 1],
+                        measure_index=-1,  # placeholder -- renumbered below
+                        max_cell_width=max_cell_width,
+                    )
+                    if sub is not None:
+                        new_cells.append(sub)
+            for new_idx, c in enumerate(new_cells):
+                c.measure_index = new_idx
+            result.extend(new_cells)
+
+    return result
 
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────

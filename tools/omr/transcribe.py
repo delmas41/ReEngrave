@@ -118,7 +118,7 @@ from typing import Any
 
 from .preprocessing import render_page
 from .staff_detector import detect_staves
-from .measure_extractor import detect_barlines, extract_measures
+from .measure_extractor import detect_barlines, extract_measures, resegment_fused_measures
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
 from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
@@ -1140,6 +1140,11 @@ def transcribe(
         pws = detect_staves(page)
         pws = detect_barlines(pws)
         cells = extract_measures(pws)
+        # Phase 1i: locally re-split any cell that's already going to be
+        # flagged as a >2x-median-width outlier below, if a genuine
+        # internal barline can be found inside it. Conservative by
+        # construction — see measure_extractor.resegment_fused_measures.
+        cells = resegment_fused_measures(pws, cells)
         remove_staff_lines(cells)
         out["runtime"]["phase1_s"] += time.perf_counter() - t_phase1
 
