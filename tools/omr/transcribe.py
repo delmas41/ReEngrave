@@ -446,6 +446,47 @@ def _default_clef_for_position(position_in_system: int, system_size: int) -> str
     return "treble"
 
 
+class _ClefContinuity:
+    """Track the last effective clef at each staff ROLE (vertical position
+    within a system) so a continuation system/page that doesn't re-print a
+    clef can inherit it by role, instead of falling back to the position
+    default (treble, or bass for staff-2-of-2) and silently transposing a
+    whole staff. Only inherits from a same-sized previous system (a differing
+    staff count means the layout changed and roles no longer line up); a
+    detected clef always overrides the starting value. Threaded through the
+    system/staff loops in `transcribe`.
+
+    For 2-staff piano the inherited clef equals the position default (top
+    treble / bottom bass), so clean piano output is unaffected.
+    """
+
+    def __init__(self) -> None:
+        self._by_role: dict[int, str] = {}   # role -> last system's clef
+        self._prev_size: int | None = None
+        self._inherit: dict[int, str] = {}   # what THIS system may inherit
+        self._current: dict[int, str] = {}   # this system's roles, building
+        self._size: int | None = None
+
+    def start_system(self, system_size: int) -> None:
+        self._inherit = self._by_role if self._prev_size == system_size else {}
+        self._current = {}
+        self._size = system_size
+
+    def starting_clef(self, position: int, default: str) -> str:
+        """Clef to start a staff with before its cells are read (a detected
+        clef overrides). The inherited clef for this role, else `default`."""
+        inherited = self._inherit.get(position)
+        return inherited if inherited is not None else default
+
+    def record(self, position: int, effective_clef: str) -> None:
+        """Store a staff's effective clef (after its cells) for its role."""
+        self._current[position] = effective_clef
+
+    def end_system(self) -> None:
+        self._by_role = self._current
+        self._prev_size = self._size
+
+
 # ---------------------------------------------------------------------------
 # Key signature + accidental helpers (Phase 4b — chromatic pitch)
 # ---------------------------------------------------------------------------
@@ -1130,12 +1171,27 @@ def transcribe(
     # Active clef + key signature + time signature per (page_idx,
     # system_idx, staff_idx). Each survives across cells within a staff so
     # a clef / key sig / time sig stays in effect through a whole line
-    # (until a change is detected). NOT carried across pages — the
-    # courtesy clef + key sig + time sig at the start of a new page should
-    # re-establish them; if the detector misses, defaults kick in.
+    # (until a change is detected). Key sig + time sig are NOT carried across
+    # pages — the courtesy accidentals / meter at a new page re-establish
+    # them; if the detector misses, defaults kick in. Clef IS carried, by
+    # role, via `clef_by_role` below (clefs aren't re-printed every page, so
+    # a missed continuation clef is the higher-blast-radius failure).
     active_clef_by_staff: dict[tuple[int, int, int], str | None] = {}
     active_key_sig_by_staff: dict[tuple[int, int, int], dict[str, str]] = {}
     active_time_sig_by_staff: dict[tuple[int, int, int], dict[str, Any] | None] = {}
+
+    # Clef CONTINUITY (Task-2 clef-stability pass). The last EFFECTIVE clef
+    # seen at each staff ROLE (vertical position within its system), carried
+    # across systems AND pages. When a continuation system/page doesn't
+    # re-print a clef and the detector catches nothing, the staff inherits the
+    # clef its role had last time instead of silently defaulting to treble
+    # (or bass for staff-2-of-2) — which on a 16-staff orchestral system would
+    # transpose whole instruments (violas/celli/basses). Only trusted when the
+    # layout is stable (same staff count as the system it inherits from); a
+    # detected clef always overrides it. For 2-staff piano the inherited clef
+    # equals the position default (top treble / bottom bass), so clean piano
+    # output is unaffected.
+    clef_continuity = _ClefContinuity()
 
     t_total = time.perf_counter()
     for p in pages:
@@ -1178,14 +1234,22 @@ def transcribe(
                 "n_staves": len(systems[sys_idx]),
                 "staves": [],
             }
+            # Clef continuity: this system may inherit per-role clefs from a
+            # same-sized previous system, and builds its own role map as it goes.
+            clef_continuity.start_system(len(staff_keys))
             for position_in_system, staff_idx in enumerate(staff_keys):
                 staff_cells = systems[sys_idx][staff_idx]
-                # Pick a default clef for this staff. Will be overridden the
-                # moment a clef detection appears (which on engraved music is
-                # typically inside the very first cell).
+                # Pick a starting clef for this staff. A clef detection in the
+                # cells overrides it (engraved music prints one at each system
+                # start); it only matters when the detector misses. Prefer the
+                # clef this role carried from a stable previous system, else
+                # the position-based default.
+                role_default = _default_clef_for_position(
+                    position_in_system, len(staff_keys)
+                )
                 active_clef = active_clef_by_staff.get(
                     (p, sys_idx, staff_idx),
-                    _default_clef_for_position(position_in_system, len(staff_keys)),
+                    clef_continuity.starting_clef(position_in_system, role_default),
                 )
                 active_key_sig = active_key_sig_by_staff.get(
                     (p, sys_idx, staff_idx),
@@ -1296,8 +1360,11 @@ def transcribe(
                 active_clef_by_staff[(p, sys_idx, staff_idx)] = active_clef
                 active_key_sig_by_staff[(p, sys_idx, staff_idx)] = active_key_sig
                 active_time_sig_by_staff[(p, sys_idx, staff_idx)] = active_time_sig
+                # Record this role's effective clef for the next system/page.
+                clef_continuity.record(position_in_system, active_clef)
                 sys_dict["staves"].append(staff_dict)
                 out["n_staves_total"] += 1
+            clef_continuity.end_system()
             page_dict["systems"].append(sys_dict)
             out["n_systems_total"] += 1
         out["runtime"]["yolo_s"] += time.perf_counter() - t_yolo

@@ -14,6 +14,7 @@ from tools.omr.transcribe import (
     _bbox_overlap_area,
     _build_pitch,
     _clef_name_from_class,
+    _ClefContinuity,
     _default_clef_for_position,
     _detect_key_sig_from_cell,
     _filter_stems_overlapping_tremolo,
@@ -99,6 +100,75 @@ class TestDefaultClefForPosition:
         # Anything with 3+ staves defaults to treble for unknown positions
         assert _default_clef_for_position(0, 3) == "treble"
         assert _default_clef_for_position(2, 3) == "treble"
+
+
+# ─── _ClefContinuity ───────────────────────────────────────────────────────
+
+
+def _run_system(cc, size, detections):
+    """Drive one system through the continuity tracker. `detections` is a list
+    (one per staff position) of a detected clef or None (missed). Returns the
+    effective clef used at each position (detection wins, else inherited/default).
+    """
+    cc.start_system(size)
+    effective = []
+    for pos in range(size):
+        start = cc.starting_clef(pos, _default_clef_for_position(pos, size))
+        eff = detections[pos] if detections[pos] is not None else start
+        cc.record(pos, eff)
+        effective.append(eff)
+    cc.end_system()
+    return effective
+
+
+class TestClefContinuity:
+    def test_first_system_uses_position_default(self):
+        cc = _ClefContinuity()
+        # nothing to inherit yet -> position defaults (treble/bass for 2-staff)
+        assert _run_system(cc, 2, [None, None]) == ["treble", "bass"]
+
+    def test_missed_clef_inherits_by_role(self):
+        cc = _ClefContinuity()
+        # sys0: a viola (alto, pos 2) and cello (bass, pos 3) are detected
+        _run_system(cc, 4, ["treble", "treble", "alto", "bass"])
+        # sys1: pos 2,3 clefs MISSED -> inherit alto,bass instead of treble
+        assert _run_system(cc, 4, ["treble", "treble", None, None]) == \
+            ["treble", "treble", "alto", "bass"]
+
+    def test_detection_overrides_inheritance(self):
+        cc = _ClefContinuity()
+        _run_system(cc, 3, ["treble", "alto", "bass"])
+        # a real clef change on pos 1 (alto -> treble) still wins over inherit
+        assert _run_system(cc, 3, [None, "treble", None]) == \
+            ["treble", "treble", "bass"]
+
+    def test_layout_change_blocks_inheritance(self):
+        cc = _ClefContinuity()
+        _run_system(cc, 4, ["treble", "treble", "alto", "bass"])
+        # next system has a different staff count -> roles don't line up, so
+        # fall back to position defaults (no wrong alto/bass carryover)
+        assert _run_system(cc, 3, [None, None, None]) == \
+            ["treble", "treble", "treble"]
+
+    def test_inheritance_carries_across_pages(self):
+        # No page concept inside the tracker — it just keeps threading, which
+        # is exactly cross-page continuity when the next page's first system is
+        # the same size.
+        cc = _ClefContinuity()
+        _run_system(cc, 2, ["treble", "bass"])       # page 0, last system
+        # page 1, first system, bass clef missed -> inherits bass (not default,
+        # which for 2-staff pos1 also happens to be bass; use a 3-staff case):
+        cc2 = _ClefContinuity()
+        _run_system(cc2, 3, ["treble", "bass", "bass"])   # e.g. bassoons on pos1,2
+        assert _run_system(cc2, 3, [None, None, None]) == \
+            ["treble", "bass", "bass"]
+
+    def test_updates_to_latest_clef_each_system(self):
+        cc = _ClefContinuity()
+        _run_system(cc, 2, ["treble", "bass"])
+        # pos1 changes to tenor via detection; the NEXT system should inherit tenor
+        _run_system(cc, 2, [None, "tenor"])
+        assert _run_system(cc, 2, [None, None]) == ["treble", "tenor"]
 
 
 # ─── _key_sig_alterations + summary ────────────────────────────────────────
