@@ -32,7 +32,10 @@ y-position, multiplying that note's duration by 1.5 (1 dot) or 1.75 (2 dots).
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any
+
+from .voicing import group_chords_in_measure, split_events_into_voices
 
 
 # ---------------------------------------------------------------------------
@@ -137,12 +140,31 @@ def _flag_duration(class_name: str) -> tuple[float, str] | None:
 # above the denominator at the start of the staff (after clef + key sig).
 
 
+# Time-sig glyphs whose left edge sits within this many CANONICAL px of the
+# cell's left edge are rejected as misreads. A real time signature is engraved
+# AFTER the clef (+ key sig), so it lands ~1.5+ staff-spaces in (observed >=35
+# canonical px on real detections); the digit detector, by contrast, clamps
+# spurious reads of the stacked instrument-grouping numbers / margin junk on
+# orchestral pages to x==0. Canonical coords are scale-normalized (staff span
+# is constant, line spacing ~24 px), so this threshold is DPI-independent.
+_TIMESIG_MIN_X_CANONICAL = 16
+
+
+def _timesig_at_left_edge(d: Any) -> bool:
+    """True if a time-sig glyph is jammed against the cell's left edge — the
+    signature of an instrument-number / margin misread, not a real meter."""
+    x = getattr(d, "x_canonical", None)
+    return x is not None and x < _TIMESIG_MIN_X_CANONICAL
+
+
 def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
     """Parse a time signature from the time-signature-digit detections in
     a cell, if any. Returns `{numerator, denominator, raw}` or None if no
     time sig markers were seen.
 
     Algorithm:
+      0. Drop glyphs at the extreme left edge (`_timesig_at_left_edge`) —
+         orchestral instrument-number misreads clamp there.
       1. Common / cut-common shortcuts win first.
       2. Otherwise collect timeSig0-9 detections, sort by x then y.
          If we have an even number of digits stacked top-and-bottom at the
@@ -155,6 +177,8 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
         cls = _normalize_class(getattr(d, "smufl_name", ""))
         if cat != "time_sig_digit":
             continue
+        if _timesig_at_left_edge(d):
+            continue  # margin / instrument-number misread
         if cls == "timesigcommon":
             return {"numerator": 4, "denominator": 4, "raw": "C"}
         if cls in ("timesigcuttime", "timesigcutcommon"):
@@ -212,6 +236,266 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
         return {"numerator": num, "denominator": den, "raw": f"{num}/{den}"}
     except ValueError:
         return None
+
+
+# ---------------------------------------------------------------------------
+# Time signature INFERENCE (audit lever, 2026-07)
+# ---------------------------------------------------------------------------
+#
+# DSv2 misclassifies time-sig digit glyphs, so `parse_time_signature` above
+# returns None on most measures. Rather than attack the hard digit-detection
+# problem, infer the meter from the rhythm the pipeline already resolves:
+# majority-vote the per-measure summed durations across a page and back-fill
+# the meter where detection failed. This unblocks (a) the per-measure
+# rhythm-sum check (skipped when no meter is known) and (b) export, which
+# otherwise hardcodes 4/4.
+#
+# What's actually inferred is the measure's total quarter-note LENGTH; a
+# length maps to a canonical meter via the table below. Multiple meters
+# share a length (6/8 and 3/4 are both 3.0 quarters; 4/4 and 2/2 both 4.0),
+# so the denominator is a best-guess representative — the bar LENGTH (all
+# the rhythm-sum check and empty-measure padding need) is what's reliable.
+# Compound meters therefore surface as their simple equivalent (6/8 -> 3/4,
+# 12/8 -> 6/4) with an identical bar length. Conservative by construction:
+# abstains (returns None) unless one length wins a strong plurality.
+
+# Measure total-length (quarter beats) -> representative (numerator,
+# denominator). Only real, common meters appear; fused-measure lengths
+# (8.5, 12.0, ...) and detection noise are intentionally absent so they
+# never vote and never get inferred.
+_INFERRABLE_METERS: dict[float, tuple[int, int]] = {
+    2.0: (2, 4), 3.0: (3, 4), 4.0: (4, 4), 5.0: (5, 4), 6.0: (6, 4), 7.0: (7, 4),
+    1.5: (3, 8), 2.5: (5, 8), 3.5: (7, 8), 4.5: (9, 8), 5.5: (11, 8),
+}
+
+# Vote gates (deliberately strict — "leave it null rather than guess wrong").
+# The fraction bar is HIGH because the observed lengths are biased, not just
+# noisy: on a sparse page no instrument fills the whole bar, so per-column-max
+# UNDER-counts (e.g. Boléro p.1, a printed 3/4, has most columns summing to
+# ~2.0 because instruments play 2 beats and rest the 3rd — a 0.6 gate inferred
+# a wrong 2/4 there). Requiring near-consensus (>=0.8) means only a page where
+# the vast majority of bars agree on one length fires; a mere plurality with
+# real dissent abstains. (Residual limit: a page that under-counts CONSISTENTLY
+# could still clear this — beat-sum inference is the last-resort fallback after
+# detected-meter propagation, not a reliable primary.)
+_INFER_MIN_VOTES = 6       # min measures/columns with a valid-meter length
+_INFER_MIN_MODE_COUNT = 4  # min measures backing the winning meter
+_INFER_MIN_FRACTION = 0.8  # winning meter must be this share of valid votes
+
+
+def _meter_for_length(length_beats: float) -> tuple[int, int] | None:
+    """Map an observed measure length (quarter beats) to a canonical meter,
+    snapping to the nearest half-beat first (absorbs small rhythm-resolution
+    error). Returns None for lengths that aren't a standard meter."""
+    snapped = round(length_beats * 2.0) / 2.0
+    return _INFERRABLE_METERS.get(snapped)
+
+
+def measure_length_beats(detections: list[Any]) -> tuple[float, bool]:
+    """Observed length of a measure in quarter-note beats, plus whether it
+    contains any pitched note (vs rest-only / empty).
+
+    The length is the FULLEST voice's summed durations: a complete voice
+    spans the whole bar, and taking the max is robust to a voice with
+    under-detected rests (which would sum short). `has_note` is False for
+    empty or rest-only measures — a whole rest fills any bar regardless of
+    meter, so those carry no meter evidence and callers should skip them.
+    """
+    events = group_chords_in_measure(detections)
+    if not events:
+        return 0.0, False
+    length = 0.0
+    for voice in split_events_into_voices(events):
+        s = sum(ev["duration_beats"] for ev in voice)
+        if s > length:
+            length = s
+    has_note = any(ev["kind"] == "chord" for ev in events)
+    return length, has_note
+
+
+def infer_time_signature_from_lengths(
+    lengths: list[float],
+    *,
+    min_votes: int = _INFER_MIN_VOTES,
+    min_mode_count: int = _INFER_MIN_MODE_COUNT,
+    min_fraction: float = _INFER_MIN_FRACTION,
+) -> dict[str, Any] | None:
+    """Majority-vote a meter from a list of observed measure lengths.
+
+    Each length is mapped to a canonical meter (`_meter_for_length`);
+    lengths that aren't a standard meter are ignored. Returns the winning
+    meter dict — tagged `source="inferred"` with `confidence`/`votes`/
+    `voters` — only when it clears all three gates, else None.
+    """
+    votes: Counter[tuple[int, int]] = Counter()
+    n_valid = 0
+    for length in lengths:
+        meter = _meter_for_length(length)
+        if meter is None:
+            continue
+        n_valid += 1
+        votes[meter] += 1
+    if not votes:
+        return None
+    (num, den), count = votes.most_common(1)[0]
+    if (n_valid < min_votes
+            or count < min_mode_count
+            or count / n_valid < min_fraction):
+        return None
+    return {
+        "numerator": num,
+        "denominator": den,
+        "raw": f"{num}/{den}",
+        "source": "inferred",
+        "confidence": round(count / n_valid, 3),
+        "votes": count,
+        "voters": n_valid,
+    }
+
+
+def _page_column_lengths(page: dict[str, Any]) -> list[float]:
+    """One observed length per (system, measure-column): the max measure
+    length across the staves at that column.
+
+    Voting per time-column rather than per staff-measure is what makes this
+    work on orchestral scores — at any given bar SOME instrument plays the
+    full measure, so the column max recovers the true bar length even when
+    most staves are sparse (rests under-detected -> short sums). Fused
+    (phase1_warning) and rest-only measures are excluded from the max.
+    Within a system, staves share a renumbered measure_index, so grouping
+    by that index aligns the columns.
+    """
+    lengths: list[float] = []
+    for system in page.get("systems", []):
+        columns: dict[int, float] = {}
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                if measure.get("phase1_warning"):
+                    continue
+                length, has_note = measure_length_beats(measure.get("detections", []))
+                if not has_note or length <= 0:
+                    continue
+                idx = measure.get("measure_index", 0)
+                if length > columns.get(idx, 0.0):
+                    columns[idx] = length
+        lengths.extend(columns.values())
+    return lengths
+
+
+def infer_page_time_signature(page: dict[str, Any], **kwargs: Any) -> dict[str, Any] | None:
+    """Infer a page-level meter by voting the per-column measure lengths.
+    Thin wrapper over `infer_time_signature_from_lengths`; returns None
+    (abstains) unless the vote is confident."""
+    return infer_time_signature_from_lengths(_page_column_lengths(page), **kwargs)
+
+
+# Detected-meter PROPAGATION gates. Individual detections are unreliable, but
+# they AGGREGATE into signal: several staves independently reading the same
+# meter, with nothing plausible disagreeing, is stronger than any single read
+# and stronger than beat-sum voting on a dense page whose rhythm is corrupted.
+#
+# SAFETY — the original hazard was the time-sig-digit detector MISREADING the
+# stacked instrument-grouping numbers printed left of the clefs ("Flöten 1 2 3
+# 4") as a time signature: on a continuation page with no printed meter that
+# yields a spurious "2/4" on staff after staff, and those misreads would AGREE
+# and propagate a wrong meter across the page. `parse_time_signature` now drops
+# them at the source (`_timesig_at_left_edge` — they clamp to the cell's left
+# edge, whereas a real meter sits after the clef). With that clean signal, a
+# plausible DIGIT meter (num 2-16, denominator a power of two) is safe to
+# aggregate too — validated on Boléro p.1 (printed 3/4 on every staff →
+# propagated 3/4 correctly). Distinctive `C` / cut-`C` glyphs are always
+# propagatable. Two gates still guard it: >=3 measures back the winner AND it
+# is >=66% of the propagatable detections (so scattered stray reads can't win).
+_PROPAGATE_MIN_COUNT = 3        # min measures backing the winning meter
+_PROPAGATE_MIN_FRACTION = 0.66  # winner's share of propagatable detections
+_PROPAGATABLE_RAWS = frozenset({"C", "C|"})  # common / cut-common glyphs
+_VALID_DENOMINATORS = frozenset({1, 2, 4, 8, 16})  # power-of-two beat units
+
+
+def _is_propagatable_meter(ts: dict[str, Any]) -> bool:
+    """A detected meter trustworthy enough to aggregate + propagate: the
+    distinctive common/cut-common glyphs, or a plausible digit meter
+    (numerator 2-16, denominator a power of two). Rejects garbage that could
+    survive upstream filtering (6/6, 6/66, 1/1, 1/4)."""
+    if ts.get("raw") in _PROPAGATABLE_RAWS:
+        return True
+    num, den = ts.get("numerator"), ts.get("denominator")
+    return (
+        isinstance(num, int) and isinstance(den, int)
+        and 2 <= num <= 16 and den in _VALID_DENOMINATORS
+    )
+
+
+def _dominant_detected_meter(
+    page: dict[str, Any],
+    *,
+    min_count: int = _PROPAGATE_MIN_COUNT,
+    min_fraction: float = _PROPAGATE_MIN_FRACTION,
+) -> dict[str, Any] | None:
+    """The dominant *detected* meter safe to propagate across a page — a
+    propagatable meter (`_is_propagatable_meter`: common/cut-common glyph or a
+    plausible digit meter) read on `min_count`+ measures with no plausible
+    dissent. Counts only genuine detections (dicts with no `source` key) so it
+    ignores meters this module already back-filled, keeping
+    `backfill_page_time_signatures` idempotent. Returns a meter dict tagged
+    `source="detected_propagated"`, or None."""
+    votes: Counter[tuple[int, int]] = Counter()
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                ts = measure.get("time_signature")
+                if not ts or ts.get("source"):  # skip nulls + back-filled
+                    continue
+                if not _is_propagatable_meter(ts):
+                    continue
+                num, den = ts.get("numerator"), ts.get("denominator")
+                votes[(num, den)] += 1
+    if not votes:
+        return None
+    (num, den), count = votes.most_common(1)[0]
+    total = sum(votes.values())
+    if count < min_count or count / total < min_fraction:
+        return None
+    raw = "C" if (num, den) == (4, 4) else "C|" if (num, den) == (2, 2) else f"{num}/{den}"
+    return {
+        "numerator": num,
+        "denominator": den,
+        "raw": raw,
+        "source": "detected_propagated",
+        "votes": count,
+        "voters": total,
+    }
+
+
+def backfill_page_time_signatures(page: dict[str, Any], **kwargs: Any) -> dict[str, Any] | None:
+    """Decide a page meter and back-fill it onto every measure/staff whose
+    `time_signature` is still None (detection missed it). Genuine detected
+    meters are never overwritten. Records the result on
+    `page["inferred_time_signature"]` (the dict's `source` says how it was
+    decided). Mutates `page` in place; returns the meter dict, or None when
+    neither method is confident (nothing is touched).
+
+    Two methods, most-reliable first:
+      1. **Propagate a dominant plausible DETECTED meter.** Aggregated digit
+         detections beat beat-sum voting on dense pages where rhythm
+         resolution is corrupted but the meter WAS read on some measures.
+      2. **Beat-sum inference** (`infer_page_time_signature`) as the fallback
+         when detection gave nothing usable.
+    """
+    meter = _dominant_detected_meter(page)
+    if meter is None:
+        meter = infer_page_time_signature(page, **kwargs)
+    if meter is None:
+        return None
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            if not staff.get("time_signature"):
+                staff["time_signature"] = dict(meter)
+            for measure in staff.get("measures", []):
+                if not measure.get("time_signature"):
+                    measure["time_signature"] = dict(meter)
+    page["inferred_time_signature"] = dict(meter)
+    return meter
 
 
 # ---------------------------------------------------------------------------

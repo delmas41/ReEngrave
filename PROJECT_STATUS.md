@@ -116,7 +116,7 @@ Audit 2026-06-10. Five branches hold commits absent from main:
 **OMR**
 
 - **Custom YOLO classes (barlines, textDynamic) caused catastrophic forgetting.** Phase 3.4 expanded `nc` from 208 → 214; F1 collapsed to 79.3%. Currently: barlines via classical CV; textDynamic not detected. Re-introduce when there are 200+ examples per new class or seed with synthetic warm-up. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
-- **OMR time-signature digit detection is unreliable** — the DSv2 model often misclassifies digit glyphs, so `time_signature` is `null` for many pages.
+- **OMR time-signature digit detection is unreliable** — the DSv2 model often misclassifies digit glyphs, so `time_signature` is `null` for many pages. *(Branch `claude/omr-time-signature-inference-e547f1`, unmerged: left-edge misread filter + detected-C/cut-C propagation + conservative beat-sum back-fill; on dense conductor's scores every "detected" meter turned out to be an instrument-number misread — now dropped — and beat-sum inference safely abstains because rhythm resolution there is too corrupted. Net lever is upstream rhythm/segmentation quality.)*
 - **Per-measure beat sums on busy keyboard music** are close to but not exactly the time signature — LilyPond bar-check warnings typically report fractional offsets (1/32, 3/32) rather than full-beat errors.
 - **Dense orchestral conductor's scores** (Mahler 5, Debussy La Mer) have more false negatives on small dynamics + grace notes. Path forward: the active hand-labeling rounds via `tools/omr/annotate`.
 

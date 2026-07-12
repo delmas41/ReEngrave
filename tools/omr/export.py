@@ -42,6 +42,19 @@ from pathlib import Path
 from typing import Any
 
 from .voicing import group_chords_in_measure, split_events_into_voices
+from .rhythm import backfill_page_time_signatures
+
+
+def _ensure_inferred_time_signatures(result: dict[str, Any]) -> None:
+    """Back-fill inferred time signatures onto any measures/staves the OMR
+    left as None, so the exporters emit a sensible `\\time` / bar-rest length
+    instead of hardcoding 4/4. Idempotent — a result already back-filled by
+    transcribe (the normal path) has no nulls left to fill, so this is a
+    no-op there; it matters when export runs on a JSON produced before this
+    inference existed. Conservative: only fires where a page's meter vote is
+    confident (see rhythm.backfill_page_time_signatures)."""
+    for page in result.get("pages", []):
+        backfill_page_time_signatures(page)
 
 
 # ---------------------------------------------------------------------------
@@ -388,6 +401,7 @@ def to_lilypond(result: dict[str, Any]) -> str:
         chords, the staff renders as a two-voice block (`\\voiceOne` +
         `\\voiceTwo`). Otherwise single voice.
     """
+    _ensure_inferred_time_signatures(result)
     lines: list[str] = []
     lines.append('\\version "2.20.0"')
     lines.append("")
@@ -669,6 +683,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
     duration, then voice 2 emits. This matches what the LilyPond exporter
     does with `\\voiceOne` / `\\voiceTwo`.
     """
+    _ensure_inferred_time_signatures(result)
     divisions = _compute_divisions(result)
 
     parts_xml: list[str] = []
