@@ -71,8 +71,13 @@ Output schema (JSON):
                                             #   >0 too many (spurious barline)
                       "confidence": 0.833,  # consensus strength (mode fraction)
                       "confidence_label": "high",  # low | medium | high
-                      "phase1_corroborated": true  # short staff + a >2×-median
-                                            # cell — the deviation is localized
+                      "phase1_corroborated": true, # short staff + a >2×-median
+                                            # cell WITH noteheads — a fused pair
+                                            # of real measures (missed barline)
+                      "likely_multimeasure_rest": false  # short staff whose gap
+                                            # is a wide NOTE-EMPTY cell (condensed
+                                            # multi-measure rest / tacet) — always
+                                            # down-weighted to low, never promoted
                   },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
@@ -1162,12 +1167,35 @@ def _measure_rhythm_sum_warning(
 # agree it points at the minority as the anomaly, but it deliberately ABSTAINS on
 # near-even splits (a 2-2 piano disagreement, a 3-3 tie) rather than guess which
 # side is right — resolving those is exactly the job of the dossier layer's known
-# measures-per-system. Known false-positive class it can't self-resolve, hence
-# the confidence grading rather than a hard error: independently-barred systems
-# and condensed multi-measure-rest staves.
+# measures-per-system.
+#
+# Multi-measure-rest / tacet false positives. The dominant false positive on real
+# orchestral scores: a resting instrument prints a CONDENSED multi-measure rest —
+# one wide bar spanning many measures — so its staff has far fewer cells than its
+# playing siblings and its wide cell trips phase1_warning, looking exactly like a
+# missed barline. We separate the two by NOTE CONTENT, which the pipeline already
+# has: a fused pair of real measures is note-DENSE (music crammed in — 9-27
+# noteheads observed on real fused cells), while a multi-measure rest is a wide,
+# note-EMPTY cell (0 noteheads; a real Beethoven-5 tacet cell measured 2.2×-wide
+# with zero detections). So a short staff is only promoted to high ("confirmed
+# fused measure") when its wide cell CONTAINS noteheads; a short staff whose gap
+# is a note-empty wide cell is flagged `likely_multimeasure_rest` and DOWN-WEIGHTED
+# to low (still surfaced — it could be a note-suppressed fusion — but never
+# high, even under strong consensus). Independently-barred systems remain an
+# unresolved FP class the confidence grading (not a hard error) hedges against.
 
 _MEASURE_COUNT_HIGH_CONSENSUS = 0.8       # e.g. a lone dissenter among 5+ staves
 _MEASURE_COUNT_MED_CONSENSUS = 2.0 / 3    # a 2:1-or-better majority
+
+
+def _measure_has_notehead(measure: dict[str, Any]) -> bool:
+    """True if a measure cell contains at least one detected notehead — i.e. it
+    holds real note content, not just rests / an empty wide multi-measure-rest
+    bar. Used to tell a fused missed-barline cell (note-dense) apart from a
+    condensed multi-measure rest (note-empty)."""
+    return any(
+        d.get("category") == "notehead" for d in measure.get("detections", [])
+    )
 
 
 def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
@@ -1207,18 +1235,26 @@ def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
             continue
         deviation = n - mode_value  # signed: <0 too few, >0 too many
 
-        # Corroboration: a SHORT staff (deviation < 0) whose shortfall coincides
-        # with a >2×-median-wide cell already carrying phase1_warning has the
-        # discrepancy LOCALIZED to that fused-looking cell — both more
-        # trustworthy and directly actionable (we can point at the cell), so
-        # promote to high confidence. (A genuine condensed multi-measure rest
-        # presents identically — wide and short — and is the benign case the
-        # dossier layer disambiguates; we still surface it for a human.)
-        phase1_corroborated = deviation < 0 and any(
-            "phase1_warning" in m for m in st.get("measures", [])
-        )
+        # A SHORT staff's shortfall may be localized to a >2×-median (phase1)
+        # cell. Split that case by note content (see module comment):
+        #  - a phase1 cell WITH noteheads  -> a fused pair of real measures
+        #    (missed barline). Corroborated -> promote to high; we can point a
+        #    human at the exact cell to re-segment.
+        #  - a phase1 cell with NO noteheads -> a wide note-empty bar, i.e. a
+        #    condensed multi-measure rest / tacet staff (the dominant orchestral
+        #    FP). Flag it, but DOWN-WEIGHT to low and never promote — even when
+        #    the consensus is strong (e.g. a lone resting instrument among many).
+        wide_cells = [m for m in st.get("measures", []) if "phase1_warning" in m]
+        dense_wide = deviation < 0 and any(_measure_has_notehead(m) for m in wide_cells)
+        empty_wide = deviation < 0 and any(not _measure_has_notehead(m) for m in wide_cells)
+        phase1_corroborated = dense_wide
+        likely_multimeasure_rest = empty_wide and not dense_wide
 
-        if phase1_corroborated or consensus_strength >= _MEASURE_COUNT_HIGH_CONSENSUS:
+        if phase1_corroborated:
+            label = "high"
+        elif likely_multimeasure_rest:
+            label = "low"   # down-weight the known multi-measure-rest FP class
+        elif consensus_strength >= _MEASURE_COUNT_HIGH_CONSENSUS:
             label = "high"
         elif consensus_strength >= _MEASURE_COUNT_MED_CONSENSUS:
             label = "medium"
@@ -1233,6 +1269,7 @@ def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
             "confidence": round(consensus_strength, 3),
             "confidence_label": label,
             "phase1_corroborated": phase1_corroborated,
+            "likely_multimeasure_rest": likely_multimeasure_rest,
         }
 
 

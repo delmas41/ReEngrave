@@ -518,23 +518,29 @@ class TestFilterStemsOverlappingTremolo:
 # from the strict-majority mode is flagged; near-even splits abstain.
 
 
-def _staff(n_measures, *, staff_index=0, phase1_measure=False):
+def _staff(n_measures, *, staff_index=0, phase1=None):
     """A staff dict shaped like transcribe.py's page_dict staves: `n_measures`
-    measure dicts, the last carrying a phase1_warning if `phase1_measure`.
+    measure dicts. `phase1` marks the last cell a >2×-median (phase1) outlier:
+      - "dense": phase1 cell WITH noteheads   (a fused pair of real measures)
+      - "empty": phase1 cell with NO noteheads (a multi-measure rest / tacet)
+      - None:    no phase1 cell
     """
-    measures = [{"measure_index": j} for j in range(n_measures)]
-    if phase1_measure and measures:
+    measures = [{"measure_index": j, "detections": []} for j in range(n_measures)]
+    if phase1 and measures:
         measures[-1]["phase1_warning"] = "measure width is >2× the staff median"
+        if phase1 == "dense":
+            measures[-1]["detections"] = [{"category": "notehead"} for _ in range(6)]
     return {"staff_index": staff_index, "n_measures": n_measures, "measures": measures}
 
 
-def _system(counts, *, phase1_on=()):
-    """A system dict from a list of per-staff measure counts. `phase1_on` = the
-    set of staff indices whose staff carries a phase1_warning.
+def _system(counts, *, dense=(), empty=()):
+    """A system dict from a list of per-staff measure counts. `dense`/`empty` are
+    sets of staff indices whose staff carries a dense / note-empty phase1 cell.
     """
+    def kind(i):
+        return "dense" if i in dense else ("empty" if i in empty else None)
     return {"staves": [
-        _staff(c, staff_index=i, phase1_measure=(i in phase1_on))
-        for i, c in enumerate(counts)
+        _staff(c, staff_index=i, phase1=kind(i)) for i, c in enumerate(counts)
     ]}
 
 
@@ -561,7 +567,7 @@ class TestFlagMeasureCountInconsistency:
         # One staff has no sibling to cross-check against, so even a fused
         # (phase1) measure does NOT produce a measure_count_warning — this check
         # is purely about cross-staff disagreement.
-        system = _run([4], phase1_on={0})
+        system = _run([4], dense={0})
         assert "measure_count_warning" not in system["staves"][0]
 
     def test_empty_system_is_noop(self):
@@ -583,28 +589,56 @@ class TestFlagMeasureCountInconsistency:
         assert w[7] == {
             "staff_measures": 4, "system_mode": 5, "agreement": "7/8",
             "deviation": -1, "confidence": 0.875, "confidence_label": "high",
-            "phase1_corroborated": False,
+            "phase1_corroborated": False, "likely_multimeasure_rest": False,
         }
 
-    def test_phase1_on_short_staff_sets_corroborated(self):
+    def test_dense_phase1_cell_sets_corroborated_high(self):
         # Same lone dissenter, but its shortfall coincides with a >2×-median
-        # (phase1) cell -> localized -> phase1_corroborated True, high.
-        w = _warnings(_run([5, 5, 5, 5, 5, 5, 5, 4], phase1_on={7}))
+        # (phase1) cell that CONTAINS noteheads -> a fused pair of real measures
+        # -> phase1_corroborated True, high (and NOT a multi-measure rest).
+        w = _warnings(_run([5, 5, 5, 5, 5, 5, 5, 4], dense={7}))
         assert w[7]["phase1_corroborated"] is True
+        assert w[7]["likely_multimeasure_rest"] is False
         assert w[7]["confidence_label"] == "high"
+
+    def test_empty_phase1_cell_downweighted_as_mmr(self):
+        # The dominant orchestral FP: the short staff's gap is a wide NOTE-EMPTY
+        # cell -> a condensed multi-measure rest / tacet staff. Still flagged (it
+        # IS a cross-staff disagreement), but NOT corroborated and DOWN-WEIGHTED
+        # to low despite the strong 0.875 consensus.
+        w = _warnings(_run([5, 5, 5, 5, 5, 5, 5, 4], empty={7}))
+        assert w[7]["phase1_corroborated"] is False
+        assert w[7]["likely_multimeasure_rest"] is True
+        assert w[7]["confidence_label"] == "low"
+
+    def test_mmr_downweight_overrides_strong_consensus(self):
+        # A lone resting instrument among 15 playing staves: consensus is a
+        # near-unanimous 0.9375, but a note-empty wide gap must never read as a
+        # high-confidence missed barline.
+        w = _warnings(_run([5] * 15 + [1], empty={15}))
+        assert w[15]["confidence"] == round(15 / 16, 3)   # strong consensus…
+        assert w[15]["likely_multimeasure_rest"] is True
+        assert w[15]["confidence_label"] == "low"          # …still down-weighted
 
     def test_too_many_flags_positive_deviation_not_corroborated(self):
         # A staff with an EXTRA measure (spurious barline). deviation is +1 and
-        # phase1 corroboration only applies to SHORT staves, so even a phase1
-        # warning on this staff must not set corroborated.
-        w = _warnings(_run([5, 5, 5, 6], phase1_on={3}))
+        # note-content corroboration only applies to SHORT staves, so even a
+        # dense phase1 cell on this staff must not set corroborated or mmr.
+        w = _warnings(_run([5, 5, 5, 6], dense={3}))
         assert w[3]["deviation"] == 1
         assert w[3]["phase1_corroborated"] is False
+        assert w[3]["likely_multimeasure_rest"] is False
+
+    def test_mmr_signature_needs_short_direction(self):
+        # An empty wide cell on a too-MANY staff is not an MMR signature
+        # (deviation > 0), so likely_multimeasure_rest stays False.
+        w = _warnings(_run([5, 5, 5, 6], empty={3}))
+        assert w[3]["likely_multimeasure_rest"] is False
 
     def test_promotion_needs_short_direction(self):
         # Guard: phase1 on a too-MANY staff does not promote via corroboration.
         # 3-of-4 majority -> consensus 0.75 -> medium (not high).
-        w = _warnings(_run([5, 5, 5, 6], phase1_on={3}))
+        w = _warnings(_run([5, 5, 5, 6], dense={3}))
         assert w[3]["confidence_label"] == "medium"
 
     def test_quartet_majority_medium(self):
