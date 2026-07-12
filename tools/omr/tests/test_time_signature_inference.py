@@ -135,9 +135,15 @@ class TestInferFromLengths:
         assert infer_time_signature_from_lengths([]) is None
 
     def test_fraction_boundary(self):
-        # 6 of 10 == 0.6 exactly -> fires (>= threshold).
-        r = infer_time_signature_from_lengths([4.0] * 6 + [3.0] * 4)
-        assert r is not None and r["confidence"] == 0.6
+        # 8 of 10 == 0.8 exactly -> fires (>= threshold).
+        r = infer_time_signature_from_lengths([4.0] * 8 + [3.0] * 2)
+        assert r is not None and r["confidence"] == 0.8
+
+    def test_plurality_with_real_dissent_abstains(self):
+        # A mere plurality (0.6) no longer fires — this is the Boléro p.1
+        # under-count case (a wrong 2/4 won 0.64 of the vote). Near-consensus
+        # is required.
+        assert infer_time_signature_from_lengths([4.0] * 6 + [3.0] * 4) is None
 
     def test_just_below_fraction_abstains(self):
         # 5 of 10 == 0.5 < 0.6 -> abstains even though 4/4 is the plurality.
@@ -230,7 +236,10 @@ class TestPageInference:
 
 _DET_C = {"numerator": 4, "denominator": 4, "raw": "C"}          # common time glyph
 _DET_CUT = {"numerator": 2, "denominator": 2, "raw": "C|"}       # cut-common glyph
-_DET_24 = {"numerator": 2, "denominator": 4, "raw": "2/4"}       # digit stack
+_DET_34 = {"numerator": 3, "denominator": 4, "raw": "3/4"}       # plausible digit
+_DET_666 = {"numerator": 666, "denominator": 666, "raw": "666/666"}  # garbage
+_DET_11 = {"numerator": 1, "denominator": 1, "raw": "1/1"}       # implausible (num 1)
+_DET_66 = {"numerator": 6, "denominator": 6, "raw": "6/6"}       # implausible (den 6)
 
 
 class TestDetectedPropagation:
@@ -252,12 +261,23 @@ class TestDetectedPropagation:
         assert meter is not None and meter["raw"] == "C|"
         assert (meter["numerator"], meter["denominator"]) == (2, 2)
 
-    def test_digit_meter_never_propagates(self):
-        # THE safety case: 9 staff-measures reading "2/4" (an orchestral
-        # instrument-number misread) must NOT propagate.
-        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_24))
-              for i in range(9)]
-        assert _dominant_detected_meter(_page([_system([ms])])) is None
+    def test_plausible_digit_meter_propagates(self):
+        # A real printed digit meter (3/4 on a movement's first page) — now
+        # that left-edge misreads are filtered upstream, this propagates.
+        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_34))
+              for i in range(5)] + [_measure([], measure_index=5) for _ in range(3)]
+        meter = _dominant_detected_meter(_page([_system([ms])]))
+        assert meter is not None
+        assert meter["raw"] == "3/4" and meter["source"] == "detected_propagated"
+        assert (meter["numerator"], meter["denominator"]) == (3, 4)
+
+    def test_implausible_digit_meters_never_propagate(self):
+        # Garbage that could survive upstream filtering (den not power-of-two,
+        # numerator 1) must still be rejected at the propagation gate.
+        for bad in (_DET_666, _DET_11, _DET_66):
+            ms = [dict(_measure([], measure_index=i), time_signature=dict(bad))
+                  for i in range(9)]
+            assert _dominant_detected_meter(_page([_system([ms])])) is None, bad
 
     def test_below_min_count_abstains(self):
         ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_C))

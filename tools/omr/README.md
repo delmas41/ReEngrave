@@ -289,20 +289,26 @@ failed. This feeds the per-measure `rhythm_sum_warning` check and the LilyPond
 / MusicXML exporters (which otherwise hardcode 4/4). Two methods, most-reliable
 first:
 
-1. **Propagate a dominant DETECTED common/cut-common glyph.** When `C` (4/4)
-   or cut-`C` (2/2) is read on ≥3 measures with no plausible dissent, it's
-   propagated across the page. **Digit-stack meters (2/4, 3/4, …) are
-   deliberately NOT propagated** — on orchestral pages the digit detector
-   routinely misreads the stacked instrument-grouping numbers printed left of
-   the clefs ("Flöten 1 2 3 4") as a time signature, so those misreads *agree*
-   and would confidently propagate a wrong meter. (The distinctive C glyphs
-   can't be confused with instrument numbers.) `parse_time_signature` drops
-   those misreads at the source (see "Left-edge misread filter" below);
-   re-enabling digit propagation on top of that cleaned signal is the next
-   step, pending a page with a correctly-detected digit meter to validate on.
+1. **Propagate a dominant DETECTED meter.** When a propagatable meter — a
+   `C`/cut-`C` glyph, or a plausible digit meter (numerator 2-16, denominator a
+   power of two) — is read on ≥3 measures with no plausible dissent, it's
+   propagated across the page. Digit-stack meters used to be excluded because
+   the detector misreads the stacked instrument-grouping numbers left of the
+   clefs ("Flöten 1 2 3 4") as a time signature; now that the left-edge filter
+   (below) drops those at the source, plausible digit meters aggregate safely
+   too. ⚠️ **Caveat found while validating this: the DSv2 digit detector barely
+   detects orchestral time signatures at all** — a printed 3/4 across every
+   staff of Boléro p.1 and a printed 2/4 on Mahler 5 p.1 both yielded *zero*
+   valid detections (only left-edge misreads, filtered out). So digit
+   propagation is correct but rarely gets a real orchestral signal; the only
+   reliably-detected meter in testing is the `C`/cut-`C` glyph.
 2. **Beat-sum inference** as the fallback: majority-vote the per-measure
    resolved lengths (per time-column, taking the fullest staff at each column),
-   firing **only when one standard meter wins a strong plurality**.
+   firing **only when one standard meter wins near-consensus (≥0.8)**. The bar
+   is high because observed lengths are *biased*, not just noisy — on a sparse
+   page no instrument fills the whole bar, so per-column-max UNDER-counts
+   (Boléro p.1, a real 3/4, had most columns at ~2.0 and a 0.6 gate inferred a
+   wrong 2/4). Near-consensus abstains on a mere plurality; it's a last resort.
 
 **Left-edge misread filter.** `parse_time_signature` rejects any time-sig glyph
 whose left edge sits within `_TIMESIG_MIN_X_CANONICAL` (16) canonical px of the

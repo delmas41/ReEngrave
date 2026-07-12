@@ -269,9 +269,18 @@ _INFERRABLE_METERS: dict[float, tuple[int, int]] = {
 }
 
 # Vote gates (deliberately strict — "leave it null rather than guess wrong").
+# The fraction bar is HIGH because the observed lengths are biased, not just
+# noisy: on a sparse page no instrument fills the whole bar, so per-column-max
+# UNDER-counts (e.g. Boléro p.1, a printed 3/4, has most columns summing to
+# ~2.0 because instruments play 2 beats and rest the 3rd — a 0.6 gate inferred
+# a wrong 2/4 there). Requiring near-consensus (>=0.8) means only a page where
+# the vast majority of bars agree on one length fires; a mere plurality with
+# real dissent abstains. (Residual limit: a page that under-counts CONSISTENTLY
+# could still clear this — beat-sum inference is the last-resort fallback after
+# detected-meter propagation, not a reliable primary.)
 _INFER_MIN_VOTES = 6       # min measures/columns with a valid-meter length
 _INFER_MIN_MODE_COUNT = 4  # min measures backing the winning meter
-_INFER_MIN_FRACTION = 0.6  # winning meter must be this share of valid votes
+_INFER_MIN_FRACTION = 0.8  # winning meter must be this share of valid votes
 
 
 def _meter_for_length(length_beats: float) -> tuple[int, int] | None:
@@ -385,21 +394,36 @@ def infer_page_time_signature(page: dict[str, Any], **kwargs: Any) -> dict[str, 
 # meter, with nothing plausible disagreeing, is stronger than any single read
 # and stronger than beat-sum voting on a dense page whose rhythm is corrupted.
 #
-# SAFETY RESTRICTION — only the distinctive `C` / cut-`C` GLYPHS are
-# propagated, never digit-stack meters. On orchestral pages the time-sig-digit
-# detector routinely MISREADS the stacked instrument-grouping numbers printed
-# left of the clefs ("Flöten 1 2 3 4", "Hoboen 1 2 3") as a time signature —
-# e.g. a continuation page with no printed meter yields a spurious "2/4" on
-# staff after staff, so those misreads AGREE and would propagate a wrong meter
-# onto the whole page. `parse_time_signature` now drops those left-edge
-# misreads (`_timesig_at_left_edge`), but the common/cut-common symbols remain
-# the only *aggregated* signal we've validated as safe to propagate. Digit
-# propagation is the clear next step now that the misreads are filtered — it
-# just needs validating on a page whose digit meter is CORRECTLY detected
-# (add plausible digit meters to `_PROPAGATABLE_RAWS` / the raw check below).
+# SAFETY — the original hazard was the time-sig-digit detector MISREADING the
+# stacked instrument-grouping numbers printed left of the clefs ("Flöten 1 2 3
+# 4") as a time signature: on a continuation page with no printed meter that
+# yields a spurious "2/4" on staff after staff, and those misreads would AGREE
+# and propagate a wrong meter across the page. `parse_time_signature` now drops
+# them at the source (`_timesig_at_left_edge` — they clamp to the cell's left
+# edge, whereas a real meter sits after the clef). With that clean signal, a
+# plausible DIGIT meter (num 2-16, denominator a power of two) is safe to
+# aggregate too — validated on Boléro p.1 (printed 3/4 on every staff →
+# propagated 3/4 correctly). Distinctive `C` / cut-`C` glyphs are always
+# propagatable. Two gates still guard it: >=3 measures back the winner AND it
+# is >=66% of the propagatable detections (so scattered stray reads can't win).
 _PROPAGATE_MIN_COUNT = 3        # min measures backing the winning meter
 _PROPAGATE_MIN_FRACTION = 0.66  # winner's share of propagatable detections
-_PROPAGATABLE_RAWS = frozenset({"C", "C|"})  # common / cut-common glyphs only
+_PROPAGATABLE_RAWS = frozenset({"C", "C|"})  # common / cut-common glyphs
+_VALID_DENOMINATORS = frozenset({1, 2, 4, 8, 16})  # power-of-two beat units
+
+
+def _is_propagatable_meter(ts: dict[str, Any]) -> bool:
+    """A detected meter trustworthy enough to aggregate + propagate: the
+    distinctive common/cut-common glyphs, or a plausible digit meter
+    (numerator 2-16, denominator a power of two). Rejects garbage that could
+    survive upstream filtering (6/6, 6/66, 1/1, 1/4)."""
+    if ts.get("raw") in _PROPAGATABLE_RAWS:
+        return True
+    num, den = ts.get("numerator"), ts.get("denominator")
+    return (
+        isinstance(num, int) and isinstance(den, int)
+        and 2 <= num <= 16 and den in _VALID_DENOMINATORS
+    )
 
 
 def _dominant_detected_meter(
@@ -408,13 +432,12 @@ def _dominant_detected_meter(
     min_count: int = _PROPAGATE_MIN_COUNT,
     min_fraction: float = _PROPAGATE_MIN_FRACTION,
 ) -> dict[str, Any] | None:
-    """The dominant *detected* meter safe to propagate across a page — i.e. a
-    common/cut-common glyph read on `min_count`+ measures with no plausible
+    """The dominant *detected* meter safe to propagate across a page — a
+    propagatable meter (`_is_propagatable_meter`: common/cut-common glyph or a
+    plausible digit meter) read on `min_count`+ measures with no plausible
     dissent. Counts only genuine detections (dicts with no `source` key) so it
     ignores meters this module already back-filled, keeping
-    `backfill_page_time_signatures` idempotent. Digit-stack meters are
-    deliberately NOT propagatable (orchestral instrument-number misreads —
-    see the module comment). Returns a meter dict tagged
+    `backfill_page_time_signatures` idempotent. Returns a meter dict tagged
     `source="detected_propagated"`, or None."""
     votes: Counter[tuple[int, int]] = Counter()
     for system in page.get("systems", []):
@@ -423,11 +446,10 @@ def _dominant_detected_meter(
                 ts = measure.get("time_signature")
                 if not ts or ts.get("source"):  # skip nulls + back-filled
                     continue
-                if ts.get("raw") not in _PROPAGATABLE_RAWS:
+                if not _is_propagatable_meter(ts):
                     continue
                 num, den = ts.get("numerator"), ts.get("denominator")
-                if isinstance(num, int) and isinstance(den, int):
-                    votes[(num, den)] += 1
+                votes[(num, den)] += 1
     if not votes:
         return None
     (num, den), count = votes.most_common(1)[0]
