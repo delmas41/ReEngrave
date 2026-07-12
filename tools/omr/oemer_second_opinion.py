@@ -1,4 +1,4 @@
-"""Second-opinion reconciliation of clef + time signature against oemer.
+"""Second-opinion reconciliation of clef + time signature (oemer / LEGATO).
 
 The local YOLO pipeline is strong at *detecting* glyphs but weak at two
 contextual reads: time signature (digits get misclassified, and an x=0
@@ -29,6 +29,15 @@ the oemer backend (run_oemer raises a clear error). For a second opinion on
 orchestral clef/time-sig, use a full-page model without that assumption
 (e.g. LEGATO) — see the OMR pretrained-weights survey.
 
+Engines (--engine):
+  oemer  (default) — piano / grand-staff only, CPU, no setup beyond the pip
+                     install above.
+  legato           — full-page incl. orchestral. Reads clef+meter from ABC
+                     headers (no MuseScore step). Needs a cloned LEGATO repo
+                     (LEGATO_DIR), its Python 3.12 / torch env (LEGATO_PY) and
+                     ~20GB weights (MPS on Apple Silicon, or a CUDA GPU). The
+                     ABC parsing is tested; run_legato() awaits that env.
+
 CLI
 ---
     # Diff two files directly (fast; no model run):
@@ -42,12 +51,17 @@ CLI
     # Diff two MusicXML files (e.g. pipeline export vs oemer):
     python3 -m tools.omr.oemer_second_opinion \
         --pipeline-xml pipeline.musicxml --oemer-xml page0.oemer.musicxml
+
+    # LEGATO engine on an orchestral page (diff its ABC vs the pipeline):
+    python3 -m tools.omr.oemer_second_opinion --engine legato \
+        --omr-json mahler.omr.json --page 0 --legato-abc page0.abc
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 from collections import defaultdict
@@ -238,11 +252,120 @@ def summarize_omr_json(obj: dict | str | Path, page: int = 0) -> Summary:
 
 
 # --------------------------------------------------------------------------- #
+# LEGATO (ABC notation) summariser
+# --------------------------------------------------------------------------- #
+# ABC encodes clef + meter directly in its headers, so we can read the two
+# fields we care about without LEGATO's heavyweight ABC->MusicXML (MuseScore)
+# step: `M:` is the meter, `V:<id> ... clef=<x>` is a voice's clef.
+_ABC_CLEF = {
+    "treble": "treble", "bass": "bass", "alto": "alto", "tenor": "tenor",
+    "treble-8": "treble_8vb", "treble+8": "treble_8va",
+    "bass-8": "bass_8vb", "bass+8": "bass_8va",
+    "g2": "treble", "f4": "bass", "c3": "alto", "c4": "tenor",
+    "perc": "percussion", "none": None,
+}
+
+
+def _clef_token_from_abc(raw: Optional[str]) -> Optional[str]:
+    if not raw:
+        return None
+    key = raw.strip().strip('"').lower()
+    return _ABC_CLEF.get(key, key or None)
+
+
+def _ts_token_from_abc(raw: str) -> Optional[str]:
+    m = raw.strip()
+    if m in ("C", "c"):
+        return "4/4"            # ABC common time
+    if m in ("C|", "c|"):
+        return "2/2"            # ABC cut time
+    mm = re.match(r"^\s*(\d+)\s*/\s*(\d+)", m)
+    return f"{int(mm.group(1))}/{int(mm.group(2))}" if mm else None
+
+
+def summarize_abc(abc: str | Path, source: str = "legato") -> Summary:
+    """Summarize LEGATO's ABC output into the common Summary shape.
+
+    Extracts per-voice clef (V: definitions and inline [V:id clef=...] / K: clef)
+    and the global meter (M: fields and inline [M:...]). Measure numbers for
+    mid-piece changes are approximate (a global bar counter), which is fine for
+    the diff — it keys on initial clef/meter and the clef-presence set.
+    """
+    if isinstance(abc, Path) or (isinstance(abc, str) and "\n" not in abc
+                                 and Path(abc).exists()):
+        abc = Path(abc).read_text()
+    text = str(abc)
+
+    voice_clefs: dict[str, list[tuple[int, str]]] = {}
+    voice_order: list[str] = []
+    meter_changes: list[tuple[int, str]] = []
+    bar = 1  # approximate global measure counter, advanced by barlines
+
+    def note_voice(vid: str) -> None:
+        if vid not in voice_clefs:
+            voice_clefs[vid] = []
+            voice_order.append(vid)
+
+    def set_clef(vid: str, raw: str, measure: int) -> None:
+        tok = _clef_token_from_abc(raw)
+        if tok is None:
+            return
+        note_voice(vid)
+        ch = voice_clefs[vid]
+        if not ch or ch[-1][1] != tok:
+            ch.append((measure, tok))
+
+    def push_meter(raw: str, measure: int) -> None:
+        ts = _ts_token_from_abc(raw)
+        if ts and (not meter_changes or meter_changes[-1][1] != ts):
+            meter_changes.append((measure, ts))
+
+    for ln in text.splitlines():
+        s = ln.strip()
+        # Voice definitions / inline voice, with optional clef= on the same token.
+        for vm in re.finditer(r"\[?V:\s*([^\s\]]+)([^\]\n]*)", ln):
+            vid, rest = vm.group(1), vm.group(2)
+            note_voice(vid)
+            cm = re.search(r"clef\s*=\s*([^\s\]\"]+)", rest)
+            if cm:
+                set_clef(vid, cm.group(1), bar)
+        # K: line may carry a clef that applies to voices without their own.
+        km = re.match(r"^K:(.*)$", s)
+        if km:
+            cm = re.search(r"clef\s*=\s*([^\s\]\"]+)", km.group(1))
+            if cm:
+                for vid in (voice_order or ["1"]):
+                    set_clef(vid, cm.group(1), bar)
+        # Meter: header field  (M:4/4)  and inline changes  [M:3/4].
+        mm = re.match(r"^M:(.+)$", s)
+        if mm:
+            push_meter(mm.group(1), bar)
+        for im in re.finditer(r"\[M:([^\]]+)\]", ln):
+            push_meter(im.group(1), bar)
+        # Advance the measure counter on music (non-header) lines by barline count.
+        if s and not re.match(r"^[A-Za-z]:", s):
+            bar += s.count("|")
+
+    summ = Summary(source=source)
+    for idx, vid in enumerate(voice_order):
+        tl = PartTimeline(index=idx)
+        tl.clef_changes = voice_clefs[vid]
+        tl.time_changes = list(meter_changes)  # meter is global; expose on each part
+        summ.parts.append(tl)
+    if not summ.parts and meter_changes:      # meter but no voices parsed
+        tl = PartTimeline(index=0)
+        tl.time_changes = list(meter_changes)
+        summ.parts.append(tl)
+    return summ
+
+
+# --------------------------------------------------------------------------- #
 # Diff
 # --------------------------------------------------------------------------- #
 def diff_summaries(pipeline: Summary, oemer: Summary) -> dict:
     """Compare clef (per staff) and time signature (global) between sources."""
     report: dict[str, Any] = {
+        "engine": oemer.source,   # "oemer" | "legato" — the second-opinion source
         "n_parts": {"pipeline": pipeline.n_parts, "oemer": oemer.n_parts},
         "part_count_match": pipeline.n_parts == oemer.n_parts,
         "time_signature": _diff_time(pipeline, oemer),
@@ -254,7 +377,9 @@ def diff_summaries(pipeline: Summary, oemer: Summary) -> dict:
     report["summary"] = {
         "time_sig_agree": ts["verdict"] == "agree",
         "clef_mismatches": sum(1 for c in cl if c["verdict"] == "disagree"),
-        "clef_supplied_by_oemer": sum(1 for c in cl if c["verdict"] == "only_oemer"),
+        # Use the alignment-free presence set (the reliable signal), not the
+        # per-staff count, so this matches the CLEF PRESENCE section.
+        "clef_supplied_by_oemer": len(report["clef_presence"]["only_oemer"]),
     }
     return report
 
@@ -348,37 +473,39 @@ _MARK = {"agree": "OK ", "disagree": "!! ", "only_oemer": "+? ",
 
 
 def render_report(report: dict) -> str:
+    eng = report.get("engine", "oemer")           # second-opinion engine label
+    vd = lambda v: v.replace("oemer", eng)         # display verdicts with the engine name
     L: list[str] = []
     L.append("=" * 66)
-    L.append("  oemer second opinion — clef / time signature reconciliation")
+    L.append(f"  {eng} second opinion — clef / time signature reconciliation")
     L.append("=" * 66)
     npp, noo = report["n_parts"]["pipeline"], report["n_parts"]["oemer"]
-    L.append(f"staves:  pipeline={npp}  oemer={noo}"
+    L.append(f"staves:  pipeline={npp}  {eng}={noo}"
              + ("" if report["part_count_match"] else "   (count differs — clef alignment by order is approximate)"))
     L.append("")
 
     ts = report["time_signature"]
     L.append("TIME SIGNATURE")
     L.append(f"  {_MARK[ts['verdict']]}pipeline={ts['pipeline_initial'] or '(none)'}"
-             f"   oemer={ts['oemer_initial'] or '(none)'}   [{ts['verdict']}]")
+             f"   {eng}={ts['oemer_initial'] or '(none)'}   [{vd(ts['verdict'])}]")
     if ts["verdict"] == "only_oemer":
-        L.append("      -> pipeline read no meter; oemer suggests one. Worth checking.")
+        L.append(f"      -> pipeline read no meter; {eng} suggests one. Worth checking.")
     elif ts["verdict"] == "disagree":
         L.append("      -> sources disagree on the meter. Check the barline.")
     if len(ts["pipeline_changes"]) > 1 or len(ts["oemer_changes"]) > 1:
         L.append(f"      pipeline changes: {ts['pipeline_changes']}")
-        L.append(f"      oemer changes:    {ts['oemer_changes']}")
+        L.append(f"      {eng} changes:    {ts['oemer_changes']}")
     L.append("")
 
     cp = report["clef_presence"]
     L.append("CLEFS PRESENT ON PAGE (alignment-free — the reliable clef signal)")
     mark = "OK " if cp["agree"] else "!! "
     L.append(f"  {mark}pipeline={[_pretty_clef(t) for t in cp['pipeline']] or '(none)'}"
-             f"   oemer={[_pretty_clef(t) for t in cp['oemer']] or '(none)'}")
+             f"   {eng}={[_pretty_clef(t) for t in cp['oemer']] or '(none)'}")
     if cp["only_pipeline"]:
         L.append(f"      only pipeline saw: {[_pretty_clef(t) for t in cp['only_pipeline']]}")
     if cp["only_oemer"]:
-        L.append(f"      only oemer saw:    {[_pretty_clef(t) for t in cp['only_oemer']]}"
+        L.append(f"      only {eng} saw:    {[_pretty_clef(t) for t in cp['only_oemer']]}"
                  "  (a clef the pipeline may have missed)")
     L.append("")
 
@@ -388,10 +515,10 @@ def render_report(report: dict) -> str:
     for row in report["clefs"]:
         L.append(f"  {_MARK[row['verdict']]}staff {row['staff']}: "
                  f"pipeline={_pretty_clef(row['pipeline_clef']):<12} "
-                 f"oemer={_pretty_clef(row['oemer_clef']):<12} [{row['verdict']}]")
+                 f"{eng}={_pretty_clef(row['oemer_clef']):<12} [{vd(row['verdict'])}]")
         # Surface mid-staff clef changes (the clef-reset weakness).
         for label, changes in (("pipeline", row["pipeline_clef_changes"]),
-                               ("oemer", row["oemer_clef_changes"])):
+                               (eng, row["oemer_clef_changes"])):
             if len(changes) > 1:
                 pretty = ", ".join(f"m{m}:{_pretty_clef(t)}" for m, t in changes)
                 L.append(f"        {label} clef changes: {pretty}")
@@ -401,7 +528,7 @@ def render_report(report: dict) -> str:
     L.append("-" * 66)
     L.append(f"  time signature: {'AGREE' if s['time_sig_agree'] else 'CHECK'}"
              f"   |   clef mismatches: {s['clef_mismatches']}"
-             f"   |   clefs only oemer saw: {s['clef_supplied_by_oemer']}")
+             f"   |   clefs only {eng} saw: {s['clef_supplied_by_oemer']}")
     L.append("-" * 66)
     return "\n".join(L)
 
@@ -470,6 +597,69 @@ def run_oemer(image_path: str | Path, out_xml: str | Path,
     return out_xml
 
 
+# LEGATO backend (orchestral-capable; the path oemer can't cover). NOT YET
+# exercised on this host — needs the legato repo + a torch env + weights
+# (~20GB; MPS on Apple Silicon or a CUDA GPU). The ABC parsing above is the
+# tested half; this is the integration point once the env is stood up.
+DEFAULT_LEGATO_DIR = os.environ.get("LEGATO_DIR", "")
+DEFAULT_LEGATO_MODEL = os.environ.get("LEGATO_MODEL", "guangyangmusic/legato")
+
+
+def _extract_abc_from_predictions(data: Any) -> str:
+    """Pull the ABC string out of LEGATO's predictions JSON (schema-tolerant)."""
+    if isinstance(data, dict):
+        for k in ("abc", "prediction", "text", "output"):
+            if isinstance(data.get(k), str):
+                return data[k]
+        for v in data.values():                       # {filename: abc}
+            if isinstance(v, str) and ("X:" in v or "K:" in v or "V:" in v):
+                return v
+    if isinstance(data, list) and data:
+        item = data[0]
+        if isinstance(item, str):
+            return item
+        if isinstance(item, dict):
+            for k in ("abc", "prediction", "text", "output"):
+                if isinstance(item.get(k), str):
+                    return item[k]
+    raise RuntimeError("could not locate ABC text in LEGATO predictions JSON "
+                       f"(top-level {type(data).__name__}).")
+
+
+def run_legato(image_path: str | Path, out_dir: str | Path,
+               legato_dir: str = DEFAULT_LEGATO_DIR,
+               model: str = DEFAULT_LEGATO_MODEL,
+               python_bin: Optional[str] = None, timeout: int = 1800) -> str:
+    """Run LEGATO inference on a page image; return its predicted ABC text.
+
+    Requires a cloned LEGATO repo (set LEGATO_DIR) with its own Python 3.12 /
+    torch env (set LEGATO_PY) and downloaded weights. Enables the MPS CPU
+    fallback so unsupported ops don't hard-fail on Apple Silicon.
+    """
+    if not legato_dir or not Path(legato_dir).exists():
+        raise FileNotFoundError(
+            "LEGATO repo not found. Clone https://github.com/guang-yng/legato, "
+            "set LEGATO_DIR to it and LEGATO_PY to its python. See module docstring.")
+    py = python_bin or os.environ.get("LEGATO_PY", sys.executable)
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    cmd = [py, "scripts/inference.py", "--model_path", model,
+           "--image_path", str(image_path), "--output_dir", str(out_dir)]
+    proc = subprocess.run(
+        cmd, cwd=legato_dir, capture_output=True, text=True, timeout=timeout,
+        env={**os.environ, "PYTHONPATH": legato_dir, "PYTORCH_ENABLE_MPS_FALLBACK": "1"})
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"legato inference failed (exit {proc.returncode}).\n"
+            f"stderr tail:\n{proc.stderr[-2000:]}")
+    preds = sorted(out_dir.glob("*prediction*.json")) or sorted(out_dir.glob("*.json"))
+    if not preds:
+        raise RuntimeError(f"legato produced no predictions JSON in {out_dir}")
+    abc = _extract_abc_from_predictions(json.loads(preds[-1].read_text()))
+    (out_dir / "page.abc").write_text(abc)
+    return abc
+
+
 # --------------------------------------------------------------------------- #
 # CLI
 # --------------------------------------------------------------------------- #
@@ -481,7 +671,20 @@ def _build_pipeline_summary(args) -> Summary:
     raise SystemExit("Provide --omr-json (a pipeline result) or --pipeline-xml.")
 
 
-def _build_oemer_summary(args, scratch: Path) -> Summary:
+def _build_second_opinion_summary(args, scratch: Path) -> Summary:
+    if args.engine == "legato":
+        if args.legato_abc:
+            return summarize_abc(args.legato_abc, source="legato")
+        if not args.pdf:
+            raise SystemExit("For --engine legato: provide --legato-abc, or --pdf to run legato live.")
+        png = render_pdf_page(args.pdf, args.page, scratch / "page.png", dpi=args.dpi)
+        print(f"[legato] rendered page {args.page} -> {png}", file=sys.stderr)
+        print("[legato] running inference (needs LEGATO_DIR + torch env + weights)...", file=sys.stderr)
+        abc = run_legato(png, scratch / "legato",
+                         legato_dir=(args.legato_dir or DEFAULT_LEGATO_DIR),
+                         timeout=max(args.timeout, 1800))
+        return summarize_abc(abc, source="legato")
+    # default engine: oemer (piano / grand-staff only)
     oemer_xml = args.oemer_xml
     if oemer_xml is None:
         if not args.pdf:
@@ -497,23 +700,28 @@ def _build_oemer_summary(args, scratch: Path) -> Summary:
 def main(argv: Optional[list[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--engine", choices=["oemer", "legato"], default="oemer",
+                    help="Second-opinion engine. oemer=piano/grand-staff (CPU); "
+                         "legato=full-page incl. orchestral (needs torch env + weights).")
     ap.add_argument("--omr-json", help="Pipeline .omr.json result (pipeline side).")
     ap.add_argument("--pipeline-xml", help="Pipeline MusicXML export (alt pipeline side).")
     ap.add_argument("--oemer-xml", help="Existing oemer MusicXML (skip running oemer).")
-    ap.add_argument("--pdf", help="Score PDF; render --page and run oemer on it.")
+    ap.add_argument("--legato-abc", help="Existing LEGATO ABC output (skip running legato).")
+    ap.add_argument("--legato-dir", help="Path to the cloned LEGATO repo (else $LEGATO_DIR).")
+    ap.add_argument("--pdf", help="Score PDF; render --page and run the engine on it.")
     ap.add_argument("--page", type=int, default=0, help="0-based page index (default 0).")
-    ap.add_argument("--dpi", type=int, default=200, help="Render DPI for oemer (default 200).")
-    ap.add_argument("--timeout", type=int, default=900, help="oemer timeout seconds.")
+    ap.add_argument("--dpi", type=int, default=200, help="Render DPI for the engine (default 200).")
+    ap.add_argument("--timeout", type=int, default=900, help="Engine timeout seconds.")
     ap.add_argument("--json-out", help="Also write the raw diff report as JSON here.")
-    ap.add_argument("--scratch", default=None, help="Scratch dir for renders/oemer output.")
+    ap.add_argument("--scratch", default=None, help="Scratch dir for renders / engine output.")
     args = ap.parse_args(argv)
 
-    scratch = Path(args.scratch or (Path(args.omr_json or args.pipeline_xml or ".").parent / "oemer_scratch"))
+    scratch = Path(args.scratch or (Path(args.omr_json or args.pipeline_xml or ".").parent / "second_opinion_scratch"))
     scratch.mkdir(parents=True, exist_ok=True)
 
     pipeline = _build_pipeline_summary(args)
-    oemer = _build_oemer_summary(args, scratch)
-    report = diff_summaries(pipeline, oemer)
+    second = _build_second_opinion_summary(args, scratch)
+    report = diff_summaries(pipeline, second)
     print(render_report(report))
     if args.json_out:
         Path(args.json_out).write_text(json.dumps(report, indent=2))
