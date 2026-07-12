@@ -18,6 +18,7 @@ from tools.omr.transcribe import (
     _default_clef_for_position,
     _detect_key_sig_from_cell,
     _filter_stems_overlapping_tremolo,
+    _flag_measure_count_inconsistency,
     _is_tremolo_or_ornament_det,
     _key_sig_alterations,
     _key_sig_summary,
@@ -508,3 +509,141 @@ class TestFilterStemsOverlappingTremolo:
                             x_canonical=0, y_canonical=0, width_canonical=40, height_canonical=200)
         result = _filter_stems_overlapping_tremolo([stem], [notehead])
         assert result == [stem]
+
+
+# ─── _flag_measure_count_inconsistency ─────────────────────────────────────
+#
+# Cross-staff measure-count consistency: barlines run through every staff of a
+# system, so all staves must share the same measure count. A staff deviating
+# from the strict-majority mode is flagged; near-even splits abstain.
+
+
+def _staff(n_measures, *, staff_index=0, phase1_measure=False):
+    """A staff dict shaped like transcribe.py's page_dict staves: `n_measures`
+    measure dicts, the last carrying a phase1_warning if `phase1_measure`.
+    """
+    measures = [{"measure_index": j} for j in range(n_measures)]
+    if phase1_measure and measures:
+        measures[-1]["phase1_warning"] = "measure width is >2× the staff median"
+    return {"staff_index": staff_index, "n_measures": n_measures, "measures": measures}
+
+
+def _system(counts, *, phase1_on=()):
+    """A system dict from a list of per-staff measure counts. `phase1_on` = the
+    set of staff indices whose staff carries a phase1_warning.
+    """
+    return {"staves": [
+        _staff(c, staff_index=i, phase1_measure=(i in phase1_on))
+        for i, c in enumerate(counts)
+    ]}
+
+
+def _run(counts, **kw):
+    system = _system(counts, **kw)
+    _flag_measure_count_inconsistency(system)
+    return system
+
+
+def _warnings(system):
+    """staff_index -> its measure_count_warning (or None)."""
+    return {st["staff_index"]: st.get("measure_count_warning")
+            for st in system["staves"]}
+
+
+class TestFlagMeasureCountInconsistency:
+    def test_all_agree_writes_nothing(self):
+        # The clean case: every staff has the same count -> byte-identical (no
+        # measure_count_warning key added anywhere).
+        system = _run([4, 4, 4])
+        assert all("measure_count_warning" not in st for st in system["staves"])
+
+    def test_single_staff_is_noop_even_with_phase1(self):
+        # One staff has no sibling to cross-check against, so even a fused
+        # (phase1) measure does NOT produce a measure_count_warning — this check
+        # is purely about cross-staff disagreement.
+        system = _run([4], phase1_on={0})
+        assert "measure_count_warning" not in system["staves"][0]
+
+    def test_empty_system_is_noop(self):
+        system = {"staves": []}
+        _flag_measure_count_inconsistency(system)   # must not raise
+        assert system == {"staves": []}
+
+    def test_missing_staves_key_is_noop(self):
+        system = {}
+        _flag_measure_count_inconsistency(system)   # must not raise
+        assert system == {}
+
+    def test_lone_dissenter_short_flags_high(self):
+        # 7 of 8 staves agree on 5 measures; one has 4 -> flag the deviant with
+        # high confidence (consensus 0.875 >= 0.8), signed deviation -1 ("too
+        # few" = a missed/fused barline).
+        w = _warnings(_run([5, 5, 5, 5, 5, 5, 5, 4]))
+        assert all(w[i] is None for i in range(7))
+        assert w[7] == {
+            "staff_measures": 4, "system_mode": 5, "agreement": "7/8",
+            "deviation": -1, "confidence": 0.875, "confidence_label": "high",
+            "phase1_corroborated": False,
+        }
+
+    def test_phase1_on_short_staff_sets_corroborated(self):
+        # Same lone dissenter, but its shortfall coincides with a >2×-median
+        # (phase1) cell -> localized -> phase1_corroborated True, high.
+        w = _warnings(_run([5, 5, 5, 5, 5, 5, 5, 4], phase1_on={7}))
+        assert w[7]["phase1_corroborated"] is True
+        assert w[7]["confidence_label"] == "high"
+
+    def test_too_many_flags_positive_deviation_not_corroborated(self):
+        # A staff with an EXTRA measure (spurious barline). deviation is +1 and
+        # phase1 corroboration only applies to SHORT staves, so even a phase1
+        # warning on this staff must not set corroborated.
+        w = _warnings(_run([5, 5, 5, 6], phase1_on={3}))
+        assert w[3]["deviation"] == 1
+        assert w[3]["phase1_corroborated"] is False
+
+    def test_promotion_needs_short_direction(self):
+        # Guard: phase1 on a too-MANY staff does not promote via corroboration.
+        # 3-of-4 majority -> consensus 0.75 -> medium (not high).
+        w = _warnings(_run([5, 5, 5, 6], phase1_on={3}))
+        assert w[3]["confidence_label"] == "medium"
+
+    def test_quartet_majority_medium(self):
+        # 3 of 4 agree -> consensus 0.75 -> medium.
+        w = _warnings(_run([6, 6, 6, 5]))
+        assert w[3]["confidence_label"] == "medium"
+        assert w[3]["deviation"] == -1 and w[3]["agreement"] == "3/4"
+
+    def test_two_to_one_majority_medium_boundary(self):
+        # consensus == 2/3 exactly -> medium (>= boundary).
+        w = _warnings(_run([5, 5, 4]))
+        assert w[2]["confidence"] == round(2 / 3, 3)
+        assert w[2]["confidence_label"] == "medium"
+
+    def test_bare_majority_is_low(self):
+        # 3 of 5 agree -> consensus 0.6 (< 2/3) -> low; both dissenters flagged.
+        w = _warnings(_run([2, 2, 2, 3, 3]))
+        assert w[0] is None and w[1] is None and w[2] is None
+        for i in (3, 4):
+            assert w[i]["confidence_label"] == "low"
+            assert w[i]["deviation"] == 1 and w[i]["agreement"] == "3/5"
+
+    def test_piano_tie_abstains(self):
+        # 2 staves disagree 1-1 -> no majority -> abstain (never guess which
+        # hand is right). This is the honest ceiling the dossier layer resolves.
+        assert all(v is None for v in _warnings(_run([5, 4])).values())
+
+    def test_even_split_abstains(self):
+        # 2-2 tie -> abstain.
+        assert all(v is None for v in _warnings(_run([6, 6, 5, 5])).values())
+
+    def test_plurality_without_majority_abstains(self):
+        # mode 4 has only 3 of 6 (exactly half) -> not a strict majority -> abstain.
+        assert all(v is None for v in _warnings(_run([4, 4, 4, 5, 5, 6])).values())
+
+    def test_multiple_deviants_all_flagged(self):
+        # Strong consensus (14/16); two different deviants both get flagged.
+        counts = [5] * 14 + [4, 6]
+        w = _warnings(_run(counts))
+        assert w[14]["deviation"] == -1 and w[15]["deviation"] == 1
+        assert w[14]["confidence_label"] == "high"   # consensus 0.875
+        assert w[15]["confidence_label"] == "high"

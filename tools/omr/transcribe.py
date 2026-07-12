@@ -56,6 +56,24 @@ Output schema (JSON):
                                             # mid-staff (rare)
                   "key_signature_final": {...},  # OPTIONAL — only if key changed
                   "n_measures": 4,
+                  "measure_count_warning": {   # OPTIONAL — only when this staff's
+                                            # measure count disagrees with a STRICT
+                                            # majority of the other staves in its
+                                            # system (barlines run through the whole
+                                            # system, so a deviation localizes a
+                                            # missed or spurious barline). See
+                                            # _flag_measure_count_inconsistency.
+                      "staff_measures": 3,  # this staff's n_measures
+                      "system_mode": 4,     # the count the majority of staves share
+                      "agreement": "5/6",   # staves at the mode / total staves
+                      "deviation": -1,      # signed: <0 too few (missed barline /
+                                            #   condensed multi-measure rest),
+                                            #   >0 too many (spurious barline)
+                      "confidence": 0.833,  # consensus strength (mode fraction)
+                      "confidence_label": "high",  # low | medium | high
+                      "phase1_corroborated": true  # short staff + a >2×-median
+                                            # cell — the deviation is localized
+                  },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
                   "measures": [
@@ -113,6 +131,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -1121,6 +1140,102 @@ def _measure_rhythm_sum_warning(
     }
 
 
+# ---------------------------------------------------------------------------
+# Cross-staff measure-count consistency (deterministic internal double-check)
+# ---------------------------------------------------------------------------
+#
+# Barlines are engraved vertically through EVERY staff of a system, so after
+# resegment_fused_measures renumbers measure_index 0..N-1 within a system
+# (measure_extractor.py:693-696), every staff in that system must contain the
+# same number of measures. A staff whose n_measures deviates from its siblings
+# therefore localizes a segmentation error: TOO FEW measures means a barline was
+# missed and two real measures were fused into one cell (or, benignly, the staff
+# holds a condensed multi-measure rest — indistinguishable here without an
+# external anchor); TOO MANY means a spurious barline split one measure in two.
+#
+# This is a pure integer invariant the pipeline already computed — ZERO meter /
+# clef / register / transposition reasoning — which makes it the always-on,
+# zero-external-input floor beneath the (planned) dossier-guided layer
+# (docs/dossier-verification-plan.md, the `total_measures`/`structure_warning`
+# row). With no external ground truth this check can only say "these staves
+# disagree, at most one matches the true count": when a STRICT majority of staves
+# agree it points at the minority as the anomaly, but it deliberately ABSTAINS on
+# near-even splits (a 2-2 piano disagreement, a 3-3 tie) rather than guess which
+# side is right — resolving those is exactly the job of the dossier layer's known
+# measures-per-system. Known false-positive class it can't self-resolve, hence
+# the confidence grading rather than a hard error: independently-barred systems
+# and condensed multi-measure-rest staves.
+
+_MEASURE_COUNT_HIGH_CONSENSUS = 0.8       # e.g. a lone dissenter among 5+ staves
+_MEASURE_COUNT_MED_CONSENSUS = 2.0 / 3    # a 2:1-or-better majority
+
+
+def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
+    """Flag staves whose measure count disagrees with a strict majority of the
+    other staves in the same system, mutating each deviating staff dict in
+    place with a ``measure_count_warning``. See the module comment above.
+
+    Pure additive post-pass: writes a key ONLY on a genuine cross-staff
+    disagreement, so a system whose staves all agree — or a single-staff
+    system, which has nothing to cross-check — is left byte-identical.
+
+    Abstains entirely unless one measure count is held by a strict majority
+    (more than half) of the staves; a tie or bare plurality gives no basis to
+    call one staff the anomaly.
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return  # a single staff has no sibling to cross-check against
+
+    counts = [st.get("n_measures", 0) for st in staves]
+    total = len(counts)
+    mode_value, mode_k = Counter(counts).most_common(1)[0]
+
+    # Strict majority required. mode_k * 2 > total means the modal group holds
+    # MORE than half the staves, so the modal count is the unique mode and the
+    # remaining (deviating) staves are unambiguously the minority. A 2-2 / 3-3 /
+    # 1-1 split fails this and we abstain — never assert which side is wrong.
+    if mode_k * 2 <= total:
+        return
+
+    consensus_strength = mode_k / total
+    agreement = f"{mode_k}/{total}"
+
+    for st in staves:
+        n = st.get("n_measures", 0)
+        if n == mode_value:
+            continue
+        deviation = n - mode_value  # signed: <0 too few, >0 too many
+
+        # Corroboration: a SHORT staff (deviation < 0) whose shortfall coincides
+        # with a >2×-median-wide cell already carrying phase1_warning has the
+        # discrepancy LOCALIZED to that fused-looking cell — both more
+        # trustworthy and directly actionable (we can point at the cell), so
+        # promote to high confidence. (A genuine condensed multi-measure rest
+        # presents identically — wide and short — and is the benign case the
+        # dossier layer disambiguates; we still surface it for a human.)
+        phase1_corroborated = deviation < 0 and any(
+            "phase1_warning" in m for m in st.get("measures", [])
+        )
+
+        if phase1_corroborated or consensus_strength >= _MEASURE_COUNT_HIGH_CONSENSUS:
+            label = "high"
+        elif consensus_strength >= _MEASURE_COUNT_MED_CONSENSUS:
+            label = "medium"
+        else:
+            label = "low"
+
+        st["measure_count_warning"] = {
+            "staff_measures": n,
+            "system_mode": mode_value,
+            "agreement": agreement,
+            "deviation": deviation,
+            "confidence": round(consensus_strength, 3),
+            "confidence_label": label,
+            "phase1_corroborated": phase1_corroborated,
+        }
+
+
 def transcribe(
     *,
     pdf_path: Path,
@@ -1392,6 +1507,16 @@ def transcribe(
                     )
                     if warning is not None:
                         md["rhythm_sum_warning"] = warning
+
+        # ── Cross-staff measure-count consistency check ──
+        # Pure additive internal double-check: barlines run through the whole
+        # system, so every staff must share the same measure count; a staff
+        # deviating from the strict-majority mode localizes a missed or spurious
+        # barline. Writes measure_count_warning only on a real disagreement, so
+        # a clean page (all staves agree) is byte-identical. Zero external input,
+        # zero meter/clef/pitch reasoning. See _flag_measure_count_inconsistency.
+        for sys_d in page_dict["systems"]:
+            _flag_measure_count_inconsistency(sys_d)
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
