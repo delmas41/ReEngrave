@@ -295,6 +295,14 @@ def summarize_abc(abc: str | Path, source: str = "legato") -> Summary:
                                  and Path(abc).exists()):
         abc = Path(abc).read_text()
     text = str(abc)
+    # Accept LEGATO's predictions JSON directly (from run_on_gpu), not just raw
+    # ABC — so `--legato-abc page_abc.json` works without a manual extract step.
+    stripped = text.lstrip()
+    if stripped[:1] in ("{", "["):
+        try:
+            text = _extract_abc_from_predictions(json.loads(text))
+        except Exception:
+            pass  # not a predictions JSON we recognise; treat as raw ABC
 
     voice_clefs: dict[str, list[tuple[int, str]]] = {}
     voice_order: list[str] = []

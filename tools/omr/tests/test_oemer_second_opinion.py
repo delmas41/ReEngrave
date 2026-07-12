@@ -66,6 +66,19 @@ def test_summarize_abc_voices_and_meter():
     assert s.global_time_changes() == [(1, "4/4")]
 
 
+def test_summarize_abc_accepts_predictions_json():
+    # The GPU round-trip returns LEGATO's predictions JSON; --legato-abc should
+    # accept it directly (not just pre-extracted ABC text).
+    import json as _json
+    payload = _json.dumps({"abc_transcription": [
+        'X:1\nM:3/4\nK:C\nV:1 clef=treble\nV:2 clef=bass\n[V:1] c2 c c |\n'],
+        "tokens": []})
+    s = summarize_abc(payload)
+    assert s.n_parts == 2
+    assert [p.initial_clef for p in s.parts] == ["treble", "bass"]
+    assert s.global_time_changes() == [(1, "3/4")]
+
+
 def test_summarize_abc_common_time_and_inline_change():
     abc = 'X:1\nM:C\nK:C\nV:1 clef=treble\n[V:1] c4 c4 | [M:3/4] c3 |\n'
     s = summarize_abc(abc)
