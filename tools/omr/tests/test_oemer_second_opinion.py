@@ -8,11 +8,18 @@ from __future__ import annotations
 
 from tools.omr.oemer_second_opinion import (
     _clef_token_from_abc,
+    _extract_abc_from_predictions,
     _ts_token_from_abc,
     diff_summaries,
     summarize_abc,
     summarize_omr_json,
 )
+
+
+def test_extract_abc_from_predictions_real_schema():
+    # scripts/inference.py writes {"abc_transcription": [<abc>], "tokens": ...}
+    data = {"abc_transcription": ["X:1\nM:4/4\nK:C\nV:1 clef=treble\n"], "tokens": [[1, 2]]}
+    assert _extract_abc_from_predictions(data).startswith("X:1")
 
 
 # --------------------------------------------------------------------------- #

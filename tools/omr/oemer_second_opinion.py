@@ -606,8 +606,16 @@ DEFAULT_LEGATO_MODEL = os.environ.get("LEGATO_MODEL", "guangyangmusic/legato")
 
 
 def _extract_abc_from_predictions(data: Any) -> str:
-    """Pull the ABC string out of LEGATO's predictions JSON (schema-tolerant)."""
+    """Pull the ABC string out of LEGATO's predictions JSON (schema-tolerant).
+
+    scripts/inference.py writes {"abc_transcription": [<abc>, ...], "tokens": ...}.
+    """
     if isinstance(data, dict):
+        at = data.get("abc_transcription")
+        if isinstance(at, list) and at and isinstance(at[0], str):
+            return at[0]
+        if isinstance(at, str):
+            return at
         for k in ("abc", "prediction", "text", "output"):
             if isinstance(data.get(k), str):
                 return data[k]
@@ -628,23 +636,32 @@ def _extract_abc_from_predictions(data: Any) -> str:
 
 def run_legato(image_path: str | Path, out_dir: str | Path,
                legato_dir: str = DEFAULT_LEGATO_DIR,
-               model: str = DEFAULT_LEGATO_MODEL,
-               python_bin: Optional[str] = None, timeout: int = 1800) -> str:
+               model: str = DEFAULT_LEGATO_MODEL, device: Optional[str] = None,
+               fp16: bool = True, python_bin: Optional[str] = None,
+               timeout: int = 1800) -> str:
     """Run LEGATO inference on a page image; return its predicted ABC text.
 
     Requires a cloned LEGATO repo (set LEGATO_DIR) with its own Python 3.12 /
-    torch env (set LEGATO_PY) and downloaded weights. Enables the MPS CPU
-    fallback so unsupported ops don't hard-fail on Apple Silicon.
+    torch env (set LEGATO_PY) and downloaded weights (~20GB on first run). MPS
+    needs no code patch — scripts/inference.py takes --device (default here mps
+    via $LEGATO_DEVICE) and --fp16; we also enable the MPS CPU fallback so an
+    unsupported op degrades to CPU instead of hard-failing. Flags/output schema
+    match scripts/inference.py: writes {"abc_transcription": [...]} to
+    <image_stem>_<model>_abc.json.
     """
     if not legato_dir or not Path(legato_dir).exists():
         raise FileNotFoundError(
             "LEGATO repo not found. Clone https://github.com/guang-yng/legato, "
             "set LEGATO_DIR to it and LEGATO_PY to its python. See module docstring.")
     py = python_bin or os.environ.get("LEGATO_PY", sys.executable)
+    device = device or os.environ.get("LEGATO_DEVICE", "mps")
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     cmd = [py, "scripts/inference.py", "--model_path", model,
-           "--image_path", str(image_path), "--output_dir", str(out_dir)]
+           "--image_path", str(image_path), "--output_path", str(out_dir),
+           "--device", device]
+    if fp16:
+        cmd.append("--fp16")
     proc = subprocess.run(
         cmd, cwd=legato_dir, capture_output=True, text=True, timeout=timeout,
         env={**os.environ, "PYTHONPATH": legato_dir, "PYTORCH_ENABLE_MPS_FALLBACK": "1"})
@@ -652,7 +669,7 @@ def run_legato(image_path: str | Path, out_dir: str | Path,
         raise RuntimeError(
             f"legato inference failed (exit {proc.returncode}).\n"
             f"stderr tail:\n{proc.stderr[-2000:]}")
-    preds = sorted(out_dir.glob("*prediction*.json")) or sorted(out_dir.glob("*.json"))
+    preds = sorted(out_dir.glob("*_abc.json")) or sorted(out_dir.glob("*.json"))
     if not preds:
         raise RuntimeError(f"legato produced no predictions JSON in {out_dir}")
     abc = _extract_abc_from_predictions(json.loads(preds[-1].read_text()))
