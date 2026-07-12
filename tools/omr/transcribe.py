@@ -150,6 +150,7 @@ from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
     backfill_page_time_signatures,
+    measure_length_beats,
 )
 from .line_detection import detect_lines
 from .voicing import group_chords_in_measure, split_events_into_voices
@@ -1145,6 +1146,102 @@ def _measure_rhythm_sum_warning(
     }
 
 
+# Ported verbatim from the dossier-verification track so the column rhythm
+# verifier is implemented ONCE, parameterized by meter-source (it reads each
+# measure's `time_signature`, which `backfill_page_time_signatures` populates
+# from beat-sum inference here, or a dossier there). Body kept byte-identical
+# to that branch's copy for clean reconciliation — do not edit divergently.
+def _annotate_column_rhythm_warnings(
+    page: dict[str, Any], *, tolerance: float = _RHYTHM_SUM_TOLERANCE
+) -> None:
+    """Notation-math verifier, reshaped for dossier-back-filled pages (mutates
+    `page` in place, writing `rhythm_sum_warning` onto measure dicts).
+
+    The naive per-staff-per-measure check (`_measure_rhythm_sum_warning`) is
+    fine when a meter was genuinely detected/inferred, but it over-fires
+    catastrophically once a dossier *force-fills* a meter onto a sparse
+    orchestral page: an empty/resting staff-measure sums to 0 and would flag
+    `{expected:3, actual:0}`, and even correctly-transcribed sparse bars sum
+    short because rests are under-detected (Boléro p.1's real 3/4 bars mostly
+    sum to ~2.0). Forcing the per-staff check there would flag nearly every
+    staff-measure — useless.
+
+    So aggregate to the measure COLUMN across all staves of a system (mirroring
+    the per-column MAX that beat-sum *inference* already uses,
+    `rhythm._page_column_lengths`):
+
+    * **Over-sum** (a voice longer than its bar): high-confidence. Extra beats
+      mean a fused barline (cross-referenced via `phase1_warning`) or
+      over-detected notes. Flag each over-long *staff-measure* (that's the cell
+      to inspect).
+    * **Under-sum**: flag only when the FULLEST voice across the WHOLE column
+      still falls short — never a resting/sparse staff whose column-mates fill
+      the bar. Low-confidence (usually an under-detected rest). Attached to the
+      fullest measure in the column.
+    * A column whose fullest voice reaches the bar does **not** flag at all,
+      even though its individual sparse staves sum short. This is the precision
+      win over the naive path.
+
+    Columns with no note anywhere (all rest/empty) carry no rhythm evidence and
+    are skipped. Only measures whose `time_signature` is known participate.
+    """
+    for system in page.get("systems", []):
+        # Group this system's measures into time-columns. Staves within a
+        # system share a renumbered `measure_index`, so it keys the columns.
+        columns: dict[int, list[dict[str, Any]]] = {}
+        for staff in system.get("staves", []):
+            for md in staff.get("measures", []):
+                ts = md.get("time_signature")
+                if not ts:
+                    continue
+                num, den = ts.get("numerator"), ts.get("denominator")
+                if not num or not den:
+                    continue
+                length, has_note = measure_length_beats(md.get("detections", []))
+                columns.setdefault(md.get("measure_index", 0), []).append({
+                    "md": md,
+                    "length": length,
+                    "has_note": has_note,
+                    "expected": num * 4.0 / den,
+                })
+
+        for idx, members in columns.items():
+            # Over-sum: a real (note-bearing) voice longer than its bar. A
+            # rest-only measure's length is meaningless (a whole rest fills any
+            # bar), so it can't over-flag.
+            over = [
+                m for m in members
+                if m["has_note"] and m["length"] > m["expected"] + tolerance
+            ]
+            if over:
+                for m in over:
+                    md = m["md"]
+                    md["rhythm_sum_warning"] = {
+                        "expected_beats": round(m["expected"], 4),
+                        "actual_beats": round(m["length"], 4),
+                        "kind": "over_sum",
+                        "severity": "high",
+                        "column": idx,
+                        "fused_suspected": bool(md.get("phase1_warning")),
+                    }
+                continue  # column already flagged; don't also under-flag it
+
+            # Under-sum: only if the fullest voice in the whole column is short.
+            noted = [m for m in members if m["has_note"] and m["length"] > 0]
+            if not noted:
+                continue  # all-resting column — no evidence, never flag
+            fullest = max(noted, key=lambda m: m["length"])
+            if fullest["length"] < fullest["expected"] - tolerance:
+                md = fullest["md"]
+                md["rhythm_sum_warning"] = {
+                    "expected_beats": round(fullest["expected"], 4),
+                    "actual_beats": round(fullest["length"], 4),
+                    "kind": "under_sum",
+                    "severity": "low",
+                    "column": idx,
+                }
+
+
 # ---------------------------------------------------------------------------
 # Cross-staff measure-count consistency (deterministic internal double-check)
 # ---------------------------------------------------------------------------
@@ -1531,19 +1628,17 @@ def transcribe(
         # WAS detected — or a noisy page with no clear mode — is untouched.
         backfill_page_time_signatures(page_dict)
 
-        # ── Per-measure rhythm-sum check ──
-        # Runs here (not in the staff loop) so it sees the back-filled
-        # meters and can fire on inferred measures too. Skipped entirely for
-        # measures still lacking a time signature. See
-        # _measure_rhythm_sum_warning.
-        for sys_d in page_dict["systems"]:
-            for st_d in sys_d["staves"]:
-                for md in st_d["measures"]:
-                    warning = _measure_rhythm_sum_warning(
-                        md["detections"], md.get("time_signature")
-                    )
-                    if warning is not None:
-                        md["rhythm_sum_warning"] = warning
+        # ── Rhythm-sum notation-math check (column-aggregated) ──
+        # Runs here (not in the staff loop) so it sees the meters
+        # backfill_page_time_signatures just inferred, and can fire on those
+        # back-filled measures too. Aggregated to the measure COLUMN so a
+        # resting/sparse staff never false-flags against a meter force-filled
+        # onto it — only a column whose FULLEST voice mis-sums flags (over-sum
+        # high = extra beats / fused barline; under-sum low). This supersedes
+        # the naive per-staff _measure_rhythm_sum_warning (retained for its
+        # unit tests + the dossier track). Measures still lacking a time
+        # signature don't participate. See _annotate_column_rhythm_warnings.
+        _annotate_column_rhythm_warnings(page_dict)
 
         # ── Cross-staff measure-count consistency check ──
         # Pure additive internal double-check: barlines run through the whole
