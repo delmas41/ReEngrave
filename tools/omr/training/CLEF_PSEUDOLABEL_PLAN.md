@@ -36,17 +36,31 @@ but **not pixel boxes**. And the valuable cases are exactly the disagreements,
 where LEGATO *might* be wrong — so a human confirms. We combine three sources,
 each doing what it's good at:
 
-1. **Geometry finds WHERE (reliable, no model).** The clef sits at the start of
-   every staff. `staff_detector` + `measure_extractor` already give staff
-   positions and the leftmost cell; the clef glyph is a connected-component blob
-   in that region. → a bbox per staff, deterministically.
-2. **LEGATO provides WHAT (the type).** Assign each staff its clef from LEGATO's
-   top-to-bottom sequence.
-3. **Human triages (the confidence gate).** Load the proposals into the existing
-   `tools/omr/annotate` UI in **triage mode** (`t`/`f`/`c` hotkeys). The human
-   confirms/corrects clef types fast (~26/page, seconds each). LEGATO's errors
-   never reach the labels. This is *faster* than from-scratch boxing — geometry
-   pre-boxes, LEGATO pre-types, human just confirms.
+1. **Geometry proposes a STARTING clef per staff (accelerator, not truth).**
+   Most staves carry one clef at the start; `staff_detector` +
+   `measure_extractor` locate that region and a connected-component blob gives a
+   bbox. This is only a *first proposal* — see the completeness caveat below.
+2. **LEGATO provides WHAT (the type)** — each staff's clef from its top-to-bottom
+   sequence, and it also emits **inline mid-bar clef changes** in the ABC, which
+   can seed proposals for those too.
+3. **Human triages AND completes (the confidence gate).** Load proposals into the
+   existing `tools/omr/annotate` UI (`t`/`f`/`c` to confirm/correct types; `a` to
+   draw boxes the proposal missed). The human confirms types **and adds any clef
+   the geometry didn't propose** — critically, **mid-bar clef changes** (a part
+   switching clef for range). LEGATO's errors never reach the labels.
+
+### Label completeness is load-bearing (must not skip)
+
+Clefs are **not** always at the start of a staff — parts change clef mid-bar for
+range (the "clef-reset" case). In YOLO labeling, **anything left unboxed becomes
+background the model is penalized for firing on**. So boxing only start-of-staff
+clefs and missing a mid-bar change would *teach the model to suppress clef
+changes* — reinforcing the exact weakness we're fixing. Therefore: **box every
+clef present in each cell, initial and mid-bar.** The training side needs no
+special handling (a mid-bar treble clef is the same class as an initial one), so
+completeness in the *labels* is the whole job. Geometry's start-of-staff proposal
+is a convenience; the human owns completeness. (For Phase 0, we can skip the
+geometry auto-proposer entirely and box from scratch with LEGATO type hints.)
 
 Output: verdicts → `verdicts_to_yolo_labels.py` → a **new** `data/user-labeled/
 vN-<date>-clef` → `build_catalog_yaml.py` (unions versions, nc=208 capped).
