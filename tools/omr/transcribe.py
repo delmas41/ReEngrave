@@ -56,6 +56,29 @@ Output schema (JSON):
                                             # mid-staff (rare)
                   "key_signature_final": {...},  # OPTIONAL — only if key changed
                   "n_measures": 4,
+                  "measure_count_warning": {   # OPTIONAL — only when this staff's
+                                            # measure count disagrees with a STRICT
+                                            # majority of the other staves in its
+                                            # system (barlines run through the whole
+                                            # system, so a deviation localizes a
+                                            # missed or spurious barline). See
+                                            # _flag_measure_count_inconsistency.
+                      "staff_measures": 3,  # this staff's n_measures
+                      "system_mode": 4,     # the count the majority of staves share
+                      "agreement": "5/6",   # staves at the mode / total staves
+                      "deviation": -1,      # signed: <0 too few (missed barline /
+                                            #   condensed multi-measure rest),
+                                            #   >0 too many (spurious barline)
+                      "confidence": 0.833,  # consensus strength (mode fraction)
+                      "confidence_label": "high",  # low | medium | high
+                      "phase1_corroborated": true, # short staff + a >2×-median
+                                            # cell WITH noteheads — a fused pair
+                                            # of real measures (missed barline)
+                      "likely_multimeasure_rest": false  # short staff whose gap
+                                            # is a wide NOTE-EMPTY cell (condensed
+                                            # multi-measure rest / tacet) — always
+                                            # down-weighted to low, never promoted
+                  },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
                   "measures": [
@@ -113,6 +136,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -1121,6 +1145,134 @@ def _measure_rhythm_sum_warning(
     }
 
 
+# ---------------------------------------------------------------------------
+# Cross-staff measure-count consistency (deterministic internal double-check)
+# ---------------------------------------------------------------------------
+#
+# Barlines are engraved vertically through EVERY staff of a system, so after
+# resegment_fused_measures renumbers measure_index 0..N-1 within a system
+# (measure_extractor.py:693-696), every staff in that system must contain the
+# same number of measures. A staff whose n_measures deviates from its siblings
+# therefore localizes a segmentation error: TOO FEW measures means a barline was
+# missed and two real measures were fused into one cell (or, benignly, the staff
+# holds a condensed multi-measure rest — indistinguishable here without an
+# external anchor); TOO MANY means a spurious barline split one measure in two.
+#
+# This is a pure integer invariant the pipeline already computed — ZERO meter /
+# clef / register / transposition reasoning — which makes it the always-on,
+# zero-external-input floor beneath the (planned) dossier-guided layer
+# (docs/dossier-verification-plan.md, the `total_measures`/`structure_warning`
+# row). With no external ground truth this check can only say "these staves
+# disagree, at most one matches the true count": when a STRICT majority of staves
+# agree it points at the minority as the anomaly, but it deliberately ABSTAINS on
+# near-even splits (a 2-2 piano disagreement, a 3-3 tie) rather than guess which
+# side is right — resolving those is exactly the job of the dossier layer's known
+# measures-per-system.
+#
+# Multi-measure-rest / tacet false positives. The dominant false positive on real
+# orchestral scores: a resting instrument prints a CONDENSED multi-measure rest —
+# one wide bar spanning many measures — so its staff has far fewer cells than its
+# playing siblings and its wide cell trips phase1_warning, looking exactly like a
+# missed barline. We separate the two by NOTE CONTENT, which the pipeline already
+# has: a fused pair of real measures is note-DENSE (music crammed in — 9-27
+# noteheads observed on real fused cells), while a multi-measure rest is a wide,
+# note-EMPTY cell (0 noteheads; a real Beethoven-5 tacet cell measured 2.2×-wide
+# with zero detections). So a short staff is only promoted to high ("confirmed
+# fused measure") when its wide cell CONTAINS noteheads; a short staff whose gap
+# is a note-empty wide cell is flagged `likely_multimeasure_rest` and DOWN-WEIGHTED
+# to low (still surfaced — it could be a note-suppressed fusion — but never
+# high, even under strong consensus). Independently-barred systems remain an
+# unresolved FP class the confidence grading (not a hard error) hedges against.
+
+_MEASURE_COUNT_HIGH_CONSENSUS = 0.8       # e.g. a lone dissenter among 5+ staves
+_MEASURE_COUNT_MED_CONSENSUS = 2.0 / 3    # a 2:1-or-better majority
+
+
+def _measure_has_notehead(measure: dict[str, Any]) -> bool:
+    """True if a measure cell contains at least one detected notehead — i.e. it
+    holds real note content, not just rests / an empty wide multi-measure-rest
+    bar. Used to tell a fused missed-barline cell (note-dense) apart from a
+    condensed multi-measure rest (note-empty)."""
+    return any(
+        d.get("category") == "notehead" for d in measure.get("detections", [])
+    )
+
+
+def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
+    """Flag staves whose measure count disagrees with a strict majority of the
+    other staves in the same system, mutating each deviating staff dict in
+    place with a ``measure_count_warning``. See the module comment above.
+
+    Pure additive post-pass: writes a key ONLY on a genuine cross-staff
+    disagreement, so a system whose staves all agree — or a single-staff
+    system, which has nothing to cross-check — is left byte-identical.
+
+    Abstains entirely unless one measure count is held by a strict majority
+    (more than half) of the staves; a tie or bare plurality gives no basis to
+    call one staff the anomaly.
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return  # a single staff has no sibling to cross-check against
+
+    counts = [st.get("n_measures", 0) for st in staves]
+    total = len(counts)
+    mode_value, mode_k = Counter(counts).most_common(1)[0]
+
+    # Strict majority required. mode_k * 2 > total means the modal group holds
+    # MORE than half the staves, so the modal count is the unique mode and the
+    # remaining (deviating) staves are unambiguously the minority. A 2-2 / 3-3 /
+    # 1-1 split fails this and we abstain — never assert which side is wrong.
+    if mode_k * 2 <= total:
+        return
+
+    consensus_strength = mode_k / total
+    agreement = f"{mode_k}/{total}"
+
+    for st in staves:
+        n = st.get("n_measures", 0)
+        if n == mode_value:
+            continue
+        deviation = n - mode_value  # signed: <0 too few, >0 too many
+
+        # A SHORT staff's shortfall may be localized to a >2×-median (phase1)
+        # cell. Split that case by note content (see module comment):
+        #  - a phase1 cell WITH noteheads  -> a fused pair of real measures
+        #    (missed barline). Corroborated -> promote to high; we can point a
+        #    human at the exact cell to re-segment.
+        #  - a phase1 cell with NO noteheads -> a wide note-empty bar, i.e. a
+        #    condensed multi-measure rest / tacet staff (the dominant orchestral
+        #    FP). Flag it, but DOWN-WEIGHT to low and never promote — even when
+        #    the consensus is strong (e.g. a lone resting instrument among many).
+        wide_cells = [m for m in st.get("measures", []) if "phase1_warning" in m]
+        dense_wide = deviation < 0 and any(_measure_has_notehead(m) for m in wide_cells)
+        empty_wide = deviation < 0 and any(not _measure_has_notehead(m) for m in wide_cells)
+        phase1_corroborated = dense_wide
+        likely_multimeasure_rest = empty_wide and not dense_wide
+
+        if phase1_corroborated:
+            label = "high"
+        elif likely_multimeasure_rest:
+            label = "low"   # down-weight the known multi-measure-rest FP class
+        elif consensus_strength >= _MEASURE_COUNT_HIGH_CONSENSUS:
+            label = "high"
+        elif consensus_strength >= _MEASURE_COUNT_MED_CONSENSUS:
+            label = "medium"
+        else:
+            label = "low"
+
+        st["measure_count_warning"] = {
+            "staff_measures": n,
+            "system_mode": mode_value,
+            "agreement": agreement,
+            "deviation": deviation,
+            "confidence": round(consensus_strength, 3),
+            "confidence_label": label,
+            "phase1_corroborated": phase1_corroborated,
+            "likely_multimeasure_rest": likely_multimeasure_rest,
+        }
+
+
 def transcribe(
     *,
     pdf_path: Path,
@@ -1392,6 +1544,16 @@ def transcribe(
                     )
                     if warning is not None:
                         md["rhythm_sum_warning"] = warning
+
+        # ── Cross-staff measure-count consistency check ──
+        # Pure additive internal double-check: barlines run through the whole
+        # system, so every staff must share the same measure count; a staff
+        # deviating from the strict-majority mode localizes a missed or spurious
+        # barline. Writes measure_count_warning only on a real disagreement, so
+        # a clean page (all staves agree) is byte-identical. Zero external input,
+        # zero meter/clef/pitch reasoning. See _flag_measure_count_inconsistency.
+        for sys_d in page_dict["systems"]:
+            _flag_measure_count_inconsistency(sys_d)
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
