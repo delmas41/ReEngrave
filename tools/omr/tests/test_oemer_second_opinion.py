@@ -66,6 +66,17 @@ def test_summarize_abc_voices_and_meter():
     assert s.global_time_changes() == [(1, "4/4")]
 
 
+def test_summarize_abc_bare_clef_form():
+    # LEGATO emits the bare form `V:1 treble`, not `V:1 clef=treble`.
+    abc = ('X:1\nM:3/4\nK:E\n'
+           'V:1 treble nm="Fl."\nV:2 bass nm="Fag."\n'
+           'V:8 alto nm="Vla."\nV:4 perc nm="Timp."\n'
+           '[V:1] E2 F2 G2 |\n')
+    s = summarize_abc(abc)
+    assert [p.initial_clef for p in s.parts] == ["treble", "bass", "alto", "percussion"]
+    assert s.global_time_changes() == [(1, "3/4")]
+
+
 def test_summarize_abc_accepts_predictions_json():
     # The GPU round-trip returns LEGATO's predictions JSON; --legato-abc should
     # accept it directly (not just pre-extracted ABC text).

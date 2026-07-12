@@ -330,13 +330,18 @@ def summarize_abc(abc: str | Path, source: str = "legato") -> Summary:
 
     for ln in text.splitlines():
         s = ln.strip()
-        # Voice definitions / inline voice, with optional clef= on the same token.
+        # Voice definitions / inline voice. Clef appears either as `clef=X` or,
+        # as LEGATO emits it, a bare clef word right after the id: `V:1 treble`.
         for vm in re.finditer(r"\[?V:\s*([^\s\]]+)([^\]\n]*)", ln):
             vid, rest = vm.group(1), vm.group(2)
             note_voice(vid)
             cm = re.search(r"clef\s*=\s*([^\s\]\"]+)", rest)
             if cm:
                 set_clef(vid, cm.group(1), bar)
+            else:
+                first = (rest.strip().split() or [""])[0]
+                if first.lower() in _ABC_CLEF:
+                    set_clef(vid, first, bar)
         # K: line may carry a clef that applies to voices without their own.
         km = re.match(r"^K:(.*)$", s)
         if km:
