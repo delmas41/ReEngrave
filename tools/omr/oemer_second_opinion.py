@@ -21,11 +21,13 @@ The `--no-deps` is required: oemer's default pin pulls `onnxruntime-gpu`,
 which has no CPU / Apple-Silicon wheel. The CPU `onnxruntime` package
 provides the same `onnxruntime` module oemer imports.
 
-Scope note: reliable on single-system-per-page music (leadsheet, piano,
-small ensemble) — the same shape oemer handles well. Dense orchestral
-conductor scores are best-effort; oemer often mis-segments many staves, so
-treat orchestral clef alignment as advisory and lean on the page-level
-time-signature comparison there.
+Scope note: oemer targets a 2-staff grand-staff layout (piano / keyboard) —
+it hard-asserts `track_nums == 2` in build_system.py. It runs when oemer
+resolves the page to a grand staff and ERRORS OUT otherwise. Orchestral /
+conductor scores (Mahler, etc.) detect many staves and are out of scope for
+the oemer backend (run_oemer raises a clear error). For a second opinion on
+orchestral clef/time-sig, use a full-page model without that assumption
+(e.g. LEGATO) — see the OMR pretrained-weights survey.
 
 CLI
 ---
@@ -453,9 +455,18 @@ def run_oemer(image_path: str | Path, out_xml: str | Path,
         capture_output=True, text=True, timeout=timeout,
     )
     if proc.returncode != 0 or not out_xml.exists():
+        stderr = proc.stderr or ""
+        if "track_nums == 2" in stderr:
+            raise RuntimeError(
+                "oemer only builds MusicXML for a 2-staff grand-staff layout "
+                "(piano / keyboard) — it hard-asserts track_nums==2 in "
+                "build_system.py. This page has more staves (orchestral / "
+                "conductor score), so oemer cannot process it. Restrict oemer to "
+                "piano / small-ensemble pages; for orchestral second opinions use "
+                "a full-page model without that assumption (e.g. LEGATO).")
         raise RuntimeError(
             f"oemer failed (exit {proc.returncode}).\n"
-            f"stderr tail:\n{proc.stderr[-1500:]}")
+            f"stderr tail:\n{stderr[-1500:]}")
     return out_xml
 
 
