@@ -1240,5 +1240,143 @@
     "cell_canonical_h": 1153,
     "n_staves_on_page": 18,
     "expected_time_sig": "2/2"
+  },
+  {
+    "cell_id": "wtc-p3-sys0-s0-m0",
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
+    "page": 2,
+    "system_index": 0,
+    "staff_index": 0,
+    "measure_index": 0,
+    "cell_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/wtc-p3-sys0-s0-m0.png",
+    "nostaff_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/wtc-p3-sys0-s0-m0_nostaff.png",
+    "staff_line_ys_canonical": [
+      183,
+      228,
+      273,
+      320,
+      367
+    ],
+    "clef": "treble",
+    "source_tag": "wtc-p3",
+    "cell_canonical_w": 2048,
+    "cell_canonical_h": 550,
+    "n_staves_on_page": 12,
+    "expected_time_sig": "C"
+  },
+  {
+    "cell_id": "wtc-p3-sys0-s1-m0",
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
+    "page": 2,
+    "system_index": 0,
+    "staff_index": 1,
+    "measure_index": 0,
+    "cell_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/wtc-p3-sys0-s1-m0.png",
+    "nostaff_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/wtc-p3-sys0-s1-m0_nostaff.png",
+    "staff_line_ys_canonical": [
+      183,
+      231,
+      275,
+      322,
+      367
+    ],
+    "clef": "treble",
+    "source_tag": "wtc-p3",
+    "cell_canonical_w": 2048,
+    "cell_canonical_h": 550,
+    "n_staves_on_page": 12,
+    "expected_time_sig": "C"
+  },
+  {
+    "cell_id": "kirchhoff-p2-sys0-s0-m0",
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/Kirchhoff_L'ABC-Musical.pdf",
+    "page": 1,
+    "system_index": 0,
+    "staff_index": 0,
+    "measure_index": 0,
+    "cell_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p2-sys0-s0-m0.png",
+    "nostaff_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p2-sys0-s0-m0_nostaff.png",
+    "staff_line_ys_canonical": [
+      49,
+      60,
+      72,
+      85,
+      97
+    ],
+    "clef": "treble",
+    "source_tag": "kirchhoff-p2",
+    "cell_canonical_w": 2048,
+    "cell_canonical_h": 145,
+    "n_staves_on_page": 8,
+    "expected_time_sig": "6/8"
+  },
+  {
+    "cell_id": "kirchhoff-p2-sys0-s1-m0",
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/Kirchhoff_L'ABC-Musical.pdf",
+    "page": 1,
+    "system_index": 0,
+    "staff_index": 1,
+    "measure_index": 0,
+    "cell_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p2-sys0-s1-m0.png",
+    "nostaff_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p2-sys0-s1-m0_nostaff.png",
+    "staff_line_ys_canonical": [
+      49,
+      62,
+      75,
+      87,
+      99
+    ],
+    "clef": "treble",
+    "source_tag": "kirchhoff-p2",
+    "cell_canonical_w": 2048,
+    "cell_canonical_h": 147,
+    "n_staves_on_page": 8,
+    "expected_time_sig": "6/8"
+  },
+  {
+    "cell_id": "kirchhoff-p10-sys0-s0-m0",
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/Kirchhoff_L'ABC-Musical.pdf",
+    "page": 9,
+    "system_index": 0,
+    "staff_index": 0,
+    "measure_index": 0,
+    "cell_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p10-sys0-s0-m0.png",
+    "nostaff_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p10-sys0-s0-m0_nostaff.png",
+    "staff_line_ys_canonical": [
+      268,
+      334,
+      403,
+      468,
+      537
+    ],
+    "clef": "treble",
+    "source_tag": "kirchhoff-p10",
+    "cell_canonical_w": 2048,
+    "cell_canonical_h": 805,
+    "n_staves_on_page": 8,
+    "expected_time_sig": "3/2"
+  },
+  {
+    "cell_id": "kirchhoff-p10-sys0-s1-m0",
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/Kirchhoff_L'ABC-Musical.pdf",
+    "page": 9,
+    "system_index": 0,
+    "staff_index": 1,
+    "measure_index": 0,
+    "cell_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p10-sys0-s1-m0.png",
+    "nostaff_png_path": "benchmarks/omr-labeling-timesig-2026-07-13/cells/kirchhoff-p10-sys0-s1-m0_nostaff.png",
+    "staff_line_ys_canonical": [
+      272,
+      337,
+      406,
+      475,
+      544
+    ],
+    "clef": "treble",
+    "source_tag": "kirchhoff-p10",
+    "cell_canonical_w": 2048,
+    "cell_canonical_h": 815,
+    "n_staves_on_page": 8,
+    "expected_time_sig": "3/2"
   }
 ]

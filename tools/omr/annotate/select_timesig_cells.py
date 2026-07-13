@@ -51,6 +51,11 @@ class Source:
     pdf: Path
     page: int          # 0-based
     meter: str         # human hint, e.g. "2/4" (or "?" if unknown)
+    first_system: bool = False  # keyboard pages: only the first system prints
+                                # the meter; later "systems" are continuation
+                                # lines (no time sig). Orchestral movement-start
+                                # pages split the ONE opening into bracket-group
+                                # "systems" that all show it → keep all (default).
 
 
 def _phase1(pdf: Path, page: int, dpi: int) -> list[MeasureCell]:
@@ -107,8 +112,11 @@ def select_timesig(sources: list[Source], out_dir: Path, dpi: int = 300) -> list
         # continuation system lower on the page won't — its header cell has a
         # clef but no time sig and is kept as a useful hard negative (the human
         # simply boxes nothing there). Key by (system, staff).
+        keep_sys = min(c.system_index for c in cells) if src.first_system else None
         header: dict[tuple[int, int], MeasureCell] = {}
         for c in cells:
+            if keep_sys is not None and c.system_index != keep_sys:
+                continue  # keyboard: only the first line carries the meter
             key = (c.system_index, c.staff_index)
             cur = header.get(key)
             if cur is None or c.measure_index < cur.measure_index:
@@ -186,11 +194,19 @@ def main(argv: list[str] | None = None) -> int:
                     help="tag=/abs/file.pdf:PAGE:METER,... (PAGE 1-based, METER like 2/4)")
     ap.add_argument("--dpi", type=int, default=300,
                     help="Render DPI — match transcribe (default 300)")
+    ap.add_argument("--first-system-tags", default="",
+                    help="Comma-separated tags whose pages are KEYBOARD/multi-line "
+                         "(take only the first system — the one that prints the "
+                         "meter). Orchestral tags keep all bracket-group systems.")
     args = ap.parse_args(argv)
     sources = parse_plan(args.plan)
     if not sources:
         print("ERROR: empty plan", file=sys.stderr)
         return 2
+    fs_tags = {t.strip() for t in args.first_system_tags.split(",") if t.strip()}
+    for s in sources:
+        if s.tag in fs_tags:
+            s.first_system = True
     select_timesig(sources, args.out_dir, dpi=args.dpi)
     return 0
 
