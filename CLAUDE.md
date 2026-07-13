@@ -281,6 +281,7 @@ ReEngrave/
 | Env var               | Default | What it tunes |
 |-----------------------|--------:|---|
 | `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override weights file path |
+| `OMR_CLEF_WEIGHTS`    | _(unset)_ | Optional **clef specialist** weights. When set, a 2nd detector reads each staff's clef from its start cell and overrides the main clef — fixes the all-treble disease on orchestral scans with zero cost to notehead detection (decoupled; the main detector still does all symbols). See `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. CLI: `--clef-weights`. |
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
 | `OMR_IMGSZ`           | `1280`  | YOLO inference image size (larger = slower, catches small noteheads) |
@@ -419,6 +420,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `UPLOAD_DIR` | File upload path (set by docker-compose) |
 | `EXPORT_DIR` | Export output path (set by docker-compose) |
 | `OMR_WEIGHTS_PATH` | YOLO weights path override |
+| `OMR_CLEF_WEIGHTS` | Optional decoupled clef-specialist weights (CLI: `--clef-weights`); default off |
 | `OMR_MAX_PAGES` | Max pages per OMR job (default 5) |
 | `OMR_CONF_THRESHOLD` | YOLO min confidence (default 0.25) |
 | `OMR_IMGSZ` | YOLO inference image size (default 1280) |

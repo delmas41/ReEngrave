@@ -337,6 +337,7 @@ scale-normalized, so the threshold is DPI-independent.
 
 ```
 usage: transcribe.py [-h] [--out OUT] [--pages PAGES] [--weights WEIGHTS]
+                     [--clef-weights CLEF_WEIGHTS] [--clef-reader-conf CONF]
                      [--conf CONF] [--imgsz IMGSZ] [--iou IOU]
                      [--no-agnostic-nms] [--dpi DPI]
                      [--overlays-dir OVERLAYS_DIR] [--quiet]
@@ -351,6 +352,14 @@ options:
   --out OUT             Output JSON file (default: stdout)
   --pages PAGES         Pages to process: e.g. '0,4,9' or '0-4' (default: all)
   --weights WEIGHTS     YOLO weights path (default: Phase 3.3, F1 98.8%)
+  --clef-weights W      OPTIONAL clef-specialist weights (env: OMR_CLEF_WEIGHTS).
+                        A 2nd detector reads each staff's clef from its start
+                        cell and overrides the main clef — fixes the all-treble
+                        disease on orchestral scans without touching notehead
+                        detection (the main --weights model still does all
+                        symbols). ~+1 inference/staff. See
+                        benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md.
+  --clef-reader-conf C  Min confidence for a clef-specialist override (def 0.30)
   --conf CONF           Detection confidence threshold (default: 0.25)
   --imgsz IMGSZ         YOLO inference image size (default: 2048 — matches
                         the production weights' fine-tuning resolution)

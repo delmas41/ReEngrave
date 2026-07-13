@@ -178,6 +178,33 @@ Alto is now solved in the fine-tuned weights, so a clef-only reader would inheri
 that. Original Task 3's remaining item — more viola/alto cells via the labeling UI
 — still applies for pushing tenor↔alto higher, but is secondary.
 
+## Decoupled clef-reader — implemented & validated ✅
+
+Built option 1 in `tools/omr/transcribe.py` (`--clef-weights` / `OMR_CLEF_WEIGHTS`,
+`--clef-reader-conf`). When set, a second detector runs on each staff's **start
+cell** and its clef overrides the main detector's (before pitch resolution);
+production still does all symbol detection. Gated to `cell_idx == 0` → ~1 extra
+inference per staff.
+
+Mahler 5 p.11, `--weights <production> --clef-weights <clef-ft-boxfix>`:
+
+| | production alone | clef-ft (coupled) | **decoupled** |
+|---|---|---|---|
+| noteheads | 2506 | 123 ✗ collapse | **2506** ✓ (detections 4878, identical) |
+| clef read | treble ×26 ✗ | realistic, but noteheads dead | **treble 10 / bass 13 / alto 2 / tenor 1** ✓ |
+
+Best of both: **production-quality notehead detection AND a corrected clef mix**
+— which neither coupled fine-tune could do. The decoupled clef read matches the
+standalone box-fix read on 25/26 staves, and the box-fix alto fix carries through
+(2 alto, vs 0 for the coupled clef-ft). Cost: yolo 170s → 232s (+37%) for the 26
+staff-start clef inferences.
+
+**Next optimisation:** run the specialist on just the **left ~15–20%** of the
+start cell (where the clef sits) instead of the whole cell — cheaper (no dense
+notes) and more robust. The prototype runs it on the full start cell, which
+already works. Same seam would host a key-sig / time-sig specialist (the
+"staff-header reader" — fixes the null-time-sig weakness too).
+
 ### Artifacts (this run)
 - `mahler_p11_{production,finetuned,boxfix}.omr.json` + `_ft_noagnostic` / `_ft_iou85`
   / `_boxfix_conf10` diagnostic runs; `mahler_p11_render.png`
