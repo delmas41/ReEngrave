@@ -176,6 +176,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 from collections import Counter
 from pathlib import Path
@@ -738,6 +739,9 @@ def _detections_for_cell(
     active_clef: str | None,
     active_key_sig: dict[str, str],
     active_time_sig: dict[str, Any] | None,
+    clef_reader=None,  # optional secondary YoloDetector — clef specialist
+    read_clef: bool = False,
+    clef_reader_conf: float = 0.30,
 ) -> tuple[list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None]:
     """Run YOLO on a single cell, resolve chromatic pitches for each
     notehead, and emit cleaned-up detection dicts.
@@ -789,6 +793,36 @@ def _detections_for_cell(
     if best_clef_name is not None:
         suffix = _octave_shift_for_base_clef(dets, best_clef_det)
         active_clef = best_clef_name + suffix
+
+    # ── Decoupled clef reader (specialist override). Run a secondary,
+    #    clef-specialized detector on this cell and let ITS clef win over the
+    #    production detector's. The production model under-detects clefs on
+    #    real orchestral scans (9% detection, 0% type → the "all-treble
+    #    disease"); a model fine-tuned on real clef cells reads them well but
+    #    collapses dense-notehead detection, so it can't be the main detector.
+    #    Using ONLY its clef output — on the staff-start cell where the printed
+    #    clef lives — gets the clef win with zero cost to notehead detection.
+    #    See benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. Runs before the
+    #    pitch pass below so the corrected clef anchors every pitch in the cell.
+    if read_clef and clef_reader is not None:
+        clef_dets = clef_reader.detect(
+            cell,
+            conf_threshold=clef_reader_conf,
+            imgsz=imgsz,
+            iou_threshold=iou_threshold,
+            agnostic_nms=agnostic_nms,
+        )
+        spec_name, spec_det, spec_conf = None, None, -1.0
+        for d in clef_dets:
+            if d.category != "clef":
+                continue
+            mapped = _clef_name_from_class(d.smufl_name)
+            if mapped is None:
+                continue
+            if d.confidence > spec_conf:
+                spec_name, spec_det, spec_conf = mapped, d, d.confidence
+        if spec_name is not None:
+            active_clef = spec_name + _octave_shift_for_base_clef(clef_dets, spec_det)
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
     new_key_sig = _detect_key_sig_from_cell(dets)
@@ -1716,6 +1750,8 @@ def transcribe(
     iou_threshold: float = 0.5,
     agnostic_nms: bool = True,
     dpi: int = 600,
+    clef_weights: str | None = None,
+    clef_reader_conf: float = 0.30,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -1730,10 +1766,14 @@ def transcribe(
     from .yolo_detector import YoloDetector
 
     detector = YoloDetector(weights, device="auto")
+    # Optional decoupled clef specialist (see _detections_for_cell). Loaded
+    # once and reused; None ⇒ clef comes from the production detector alone.
+    clef_reader = YoloDetector(clef_weights, device="auto") if clef_weights else None
 
     out: dict[str, Any] = {
         "source_pdf": str(pdf_path),
         "weights": weights,
+        "clef_weights": clef_weights,
         "conf_threshold": conf_threshold,
         "iou_threshold": iou_threshold,
         "agnostic_nms": agnostic_nms,
@@ -1871,6 +1911,9 @@ def transcribe(
                             active_clef=active_clef,
                             active_key_sig=active_key_sig,
                             active_time_sig=active_time_sig,
+                            clef_reader=clef_reader,
+                            read_clef=(cell_idx == 0),
+                            clef_reader_conf=clef_reader_conf,
                         )
                     )
                     if cell_idx == 0:
@@ -2100,6 +2143,15 @@ def main(argv: list[str] | None = None) -> int:
                     help="Pages to process: e.g. '0,4,9' or '0-4' (default: all)")
     ap.add_argument("--weights", default=DEFAULT_WEIGHTS,
                     help=f"YOLO weights path (default: {DEFAULT_WEIGHTS})")
+    ap.add_argument("--clef-weights", default=None,
+                    help="OPTIONAL clef-specialist weights. When set, a second "
+                         "detector reads each staff's clef from its start cell "
+                         "and overrides the main detector's clef (fixes the "
+                         "all-treble disease on orchestral scans without touching "
+                         "notehead detection). Env: OMR_CLEF_WEIGHTS.")
+    ap.add_argument("--clef-reader-conf", type=float, default=0.30,
+                    help="Min confidence for a clef-specialist detection to "
+                         "override the main clef (default: 0.30)")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
     ap.add_argument("--imgsz", type=int, default=2048,
@@ -2126,6 +2178,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: weights file not found: {args.weights}")
         return 2
 
+    # Clef specialist: CLI flag wins, else OMR_CLEF_WEIGHTS env.
+    clef_weights = args.clef_weights or os.environ.get("OMR_CLEF_WEIGHTS")
+    if clef_weights and not Path(clef_weights).exists():
+        print(f"ERROR: clef-weights file not found: {clef_weights}")
+        return 2
+
     # Count pages
     try:
         import fitz  # PyMuPDF
@@ -2145,6 +2203,8 @@ def main(argv: list[str] | None = None) -> int:
     if not args.quiet:
         print(f"transcribe: {args.pdf.name} ({n_pages} pages, processing {len(pages)})")
         print(f"  weights:  {args.weights}")
+        if clef_weights:
+            print(f"  clef:     {clef_weights} (specialist, conf {args.clef_reader_conf})")
         print(f"  conf:     {args.conf}, iou: {args.iou}, "
               f"agnostic_nms: {not args.no_agnostic_nms}, imgsz: {args.imgsz}")
 
@@ -2157,6 +2217,8 @@ def main(argv: list[str] | None = None) -> int:
         iou_threshold=args.iou,
         agnostic_nms=not args.no_agnostic_nms,
         dpi=args.dpi,
+        clef_weights=clef_weights,
+        clef_reader_conf=args.clef_reader_conf,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )
