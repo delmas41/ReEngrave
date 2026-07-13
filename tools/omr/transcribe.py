@@ -175,6 +175,7 @@ for the F1 numbers.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import os
 import time
@@ -728,6 +729,61 @@ def parse_pages(spec: str, n_pages: int) -> list[int]:
     return [p for p in out if 0 <= p < n_pages]
 
 
+def _read_staff_header(
+    clef_reader,
+    cell: MeasureCell,
+    *,
+    conf: float,
+    imgsz: int,
+    header_frac: float,
+    iou_threshold: float,
+    agnostic_nms: bool,
+) -> tuple[str | None, dict[str, Any] | None]:
+    """Run the clef/header specialist on the LEFT `header_frac` of a staff-start
+    cell — the region holding the clef, key signature, and time signature — and
+    return `(clef, time_sig)` read from it (`None` for whatever isn't found).
+
+    Cropping to the header does two things: it removes the dense note ink to the
+    right (fewer distractions for a specialist that collapses on dense scenes),
+    and it keeps the header glyphs large so the specialist can run at a much
+    SMALLER imgsz than a full cell — cheaper and, because the clef then sits near
+    its training scale, actually more accurate (see the imgsz sweep in
+    benchmarks/omr-clef-demo/tune_header_reader.py: on a 0.42 crop, imgsz 640
+    beats 1280). Cropping from x=0 preserves canonical x-coordinates, so the
+    octave-marker pairing and the left-edge time-sig filter still apply unchanged.
+
+    One inference serves both readers — clef and time signature share the crop.
+    """
+    if cell.image is None:
+        return None, None
+    hw = max(1, int(round(cell.width * header_frac)))
+    header_cell = dataclasses.replace(
+        cell, image=cell.image[:, :hw], image_no_staff=None
+    )
+    dets = clef_reader.detect(
+        header_cell,
+        conf_threshold=conf,
+        imgsz=imgsz,
+        iou_threshold=iou_threshold,
+        agnostic_nms=agnostic_nms,
+    )
+    # Clef: highest-confidence clef detection (+ any octave-marker suffix).
+    best_name, best_det, best_conf = None, None, -1.0
+    for d in dets:
+        if d.category != "clef":
+            continue
+        mapped = _clef_name_from_class(d.smufl_name)
+        if mapped is None:
+            continue
+        if d.confidence > best_conf:
+            best_name, best_det, best_conf = mapped, d, d.confidence
+    clef = None if best_name is None else best_name + _octave_shift_for_base_clef(dets, best_det)
+    # Time signature: the standard digit parser (drops left-edge instrument
+    # misreads, resolves common/cut-common) on the same header detections.
+    time_sig = parse_time_signature(dets)
+    return clef, time_sig
+
+
 def _detections_for_cell(
     detector,  # YoloDetector — passed in to avoid import at module import time
     cell: MeasureCell,
@@ -739,9 +795,11 @@ def _detections_for_cell(
     active_clef: str | None,
     active_key_sig: dict[str, str],
     active_time_sig: dict[str, Any] | None,
-    clef_reader=None,  # optional secondary YoloDetector — clef specialist
+    clef_reader=None,  # optional secondary YoloDetector — staff-header specialist
     read_clef: bool = False,
     clef_reader_conf: float = 0.30,
+    clef_reader_imgsz: int = 640,
+    clef_reader_header_frac: float = 0.42,
 ) -> tuple[list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None]:
     """Run YOLO on a single cell, resolve chromatic pitches for each
     notehead, and emit cleaned-up detection dicts.
@@ -794,36 +852,6 @@ def _detections_for_cell(
         suffix = _octave_shift_for_base_clef(dets, best_clef_det)
         active_clef = best_clef_name + suffix
 
-    # ── Decoupled clef reader (specialist override). Run a secondary,
-    #    clef-specialized detector on this cell and let ITS clef win over the
-    #    production detector's. The production model under-detects clefs on
-    #    real orchestral scans (9% detection, 0% type → the "all-treble
-    #    disease"); a model fine-tuned on real clef cells reads them well but
-    #    collapses dense-notehead detection, so it can't be the main detector.
-    #    Using ONLY its clef output — on the staff-start cell where the printed
-    #    clef lives — gets the clef win with zero cost to notehead detection.
-    #    See benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. Runs before the
-    #    pitch pass below so the corrected clef anchors every pitch in the cell.
-    if read_clef and clef_reader is not None:
-        clef_dets = clef_reader.detect(
-            cell,
-            conf_threshold=clef_reader_conf,
-            imgsz=imgsz,
-            iou_threshold=iou_threshold,
-            agnostic_nms=agnostic_nms,
-        )
-        spec_name, spec_det, spec_conf = None, None, -1.0
-        for d in clef_dets:
-            if d.category != "clef":
-                continue
-            mapped = _clef_name_from_class(d.smufl_name)
-            if mapped is None:
-                continue
-            if d.confidence > spec_conf:
-                spec_name, spec_det, spec_conf = mapped, d, d.confidence
-        if spec_name is not None:
-            active_clef = spec_name + _octave_shift_for_base_clef(clef_dets, spec_det)
-
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
     new_key_sig = _detect_key_sig_from_cell(dets)
     if new_key_sig is not None:
@@ -833,6 +861,30 @@ def _detections_for_cell(
     new_time_sig = parse_time_signature(dets)
     if new_time_sig is not None:
         active_time_sig = new_time_sig
+
+    # ── Decoupled staff-header specialist (clef + time-sig override). The
+    #    production detector under-detects clefs on real orchestral scans (9%
+    #    detection, 0% type → the "all-treble disease") and time-sig digits
+    #    (mostly null). A model fine-tuned on real staff cells reads them well
+    #    but collapses dense-notehead detection, so it can't be the main
+    #    detector. Using ONLY its clef + time-sig read of the staff-START header
+    #    crop (where they're printed) gets those wins with zero cost to notehead
+    #    detection. Runs after the production header passes (so it wins) and
+    #    before the pitch pass (so the corrected clef anchors every pitch). See
+    #    benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. ──
+    if read_clef and clef_reader is not None:
+        spec_clef, spec_time_sig = _read_staff_header(
+            clef_reader, cell,
+            conf=clef_reader_conf,
+            imgsz=clef_reader_imgsz,
+            header_frac=clef_reader_header_frac,
+            iou_threshold=iou_threshold,
+            agnostic_nms=agnostic_nms,
+        )
+        if spec_clef is not None:
+            active_clef = spec_clef
+        if spec_time_sig is not None:
+            active_time_sig = spec_time_sig
 
     # ── Classical-CV line detection: stems + cleaner beams. The YOLO
     #    Phase 3.3 model misses stems entirely and emits beam bboxes
@@ -1752,6 +1804,8 @@ def transcribe(
     dpi: int = 600,
     clef_weights: str | None = None,
     clef_reader_conf: float = 0.30,
+    clef_reader_imgsz: int = 640,
+    clef_reader_header_frac: float = 0.42,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -1914,6 +1968,8 @@ def transcribe(
                             clef_reader=clef_reader,
                             read_clef=(cell_idx == 0),
                             clef_reader_conf=clef_reader_conf,
+                            clef_reader_imgsz=clef_reader_imgsz,
+                            clef_reader_header_frac=clef_reader_header_frac,
                         )
                     )
                     if cell_idx == 0:
@@ -2152,6 +2208,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--clef-reader-conf", type=float, default=0.30,
                     help="Min confidence for a clef-specialist detection to "
                          "override the main clef (default: 0.30)")
+    ap.add_argument("--clef-reader-imgsz", type=int, default=640,
+                    help="Inference imgsz for the clef/header specialist on its "
+                         "crop (default: 640 — lower than main imgsz keeps the "
+                         "header glyphs near training scale; see tune_header_reader.py)")
+    ap.add_argument("--clef-reader-header-frac", type=float, default=0.42,
+                    help="Left fraction of the staff-start cell the specialist "
+                         "reads — the clef/key/time header (default: 0.42)")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
     ap.add_argument("--imgsz", type=int, default=2048,
@@ -2204,7 +2267,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"transcribe: {args.pdf.name} ({n_pages} pages, processing {len(pages)})")
         print(f"  weights:  {args.weights}")
         if clef_weights:
-            print(f"  clef:     {clef_weights} (specialist, conf {args.clef_reader_conf})")
+            print(f"  clef:     {clef_weights} (header specialist, conf "
+                  f"{args.clef_reader_conf}, imgsz {args.clef_reader_imgsz}, "
+                  f"frac {args.clef_reader_header_frac})")
         print(f"  conf:     {args.conf}, iou: {args.iou}, "
               f"agnostic_nms: {not args.no_agnostic_nms}, imgsz: {args.imgsz}")
 
@@ -2219,6 +2284,8 @@ def main(argv: list[str] | None = None) -> int:
         dpi=args.dpi,
         clef_weights=clef_weights,
         clef_reader_conf=args.clef_reader_conf,
+        clef_reader_imgsz=args.clef_reader_imgsz,
+        clef_reader_header_frac=args.clef_reader_header_frac,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )

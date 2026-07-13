@@ -338,6 +338,7 @@ scale-normalized, so the threshold is DPI-independent.
 ```
 usage: transcribe.py [-h] [--out OUT] [--pages PAGES] [--weights WEIGHTS]
                      [--clef-weights CLEF_WEIGHTS] [--clef-reader-conf CONF]
+                     [--clef-reader-imgsz N] [--clef-reader-header-frac F]
                      [--conf CONF] [--imgsz IMGSZ] [--iou IOU]
                      [--no-agnostic-nms] [--dpi DPI]
                      [--overlays-dir OVERLAYS_DIR] [--quiet]
@@ -352,14 +353,19 @@ options:
   --out OUT             Output JSON file (default: stdout)
   --pages PAGES         Pages to process: e.g. '0,4,9' or '0-4' (default: all)
   --weights WEIGHTS     YOLO weights path (default: Phase 3.3, F1 98.8%)
-  --clef-weights W      OPTIONAL clef-specialist weights (env: OMR_CLEF_WEIGHTS).
-                        A 2nd detector reads each staff's clef from its start
-                        cell and overrides the main clef — fixes the all-treble
-                        disease on orchestral scans without touching notehead
-                        detection (the main --weights model still does all
-                        symbols). ~+1 inference/staff. See
+  --clef-weights W      OPTIONAL staff-header specialist weights (env:
+                        OMR_CLEF_WEIGHTS). A 2nd detector reads each staff's
+                        clef + time signature from the left of its start cell
+                        and overrides them — fixes the all-treble disease on
+                        orchestral scans without touching notehead detection
+                        (the main --weights model still does all symbols).
+                        ~+2% runtime. NB the current clef weights read clefs but
+                        NOT time-sig digits (DSv2 gap) — the time-sig path waits
+                        on a time-sig-trained specialist. See
                         benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md.
-  --clef-reader-conf C  Min confidence for a clef-specialist override (def 0.30)
+  --clef-reader-conf C  Min confidence for a specialist override (def 0.30)
+  --clef-reader-imgsz N     Specialist inference imgsz on its crop (def 640)
+  --clef-reader-header-frac F  Left fraction of the start cell read (def 0.42)
   --conf CONF           Detection confidence threshold (default: 0.25)
   --imgsz IMGSZ         YOLO inference image size (default: 2048 — matches
                         the production weights' fine-tuning resolution)
