@@ -209,8 +209,14 @@ run `pytest tools/omr/tests` — incl. `test_dossier.py`, 66 tests — to verify
 5. Keep the dossier branch's `dossier` param on `transcribe()` and its `.dossier`
    imports (auto-merged in).
 
-This belongs to whoever owns the dossier WIP (it interleaves with its in-progress
-clef-seed / range-fit / structure-verify), so it was **not** executed here.
+**Verified (2026-07-13).** This exact resolution was carried out in a throwaway
+branch off the dossier tip (`note_name_to_midi` confirmed identical to
+`_pitch_to_midi`: C4=60, and a strict superset — handles unicode ♯/♭) and the
+**full suite passed (569, same pre-existing 4 fails + 14 errors)** — the dossier
+branch's own 66 `test_dossier.py` tests included. So the recipe is proven to
+produce a green tree. It was **not** applied to the live dossier branch (it's
+another session's active WIP), but a land-time application is a mechanical,
+verified 3-hunk merge.
 
 ---
 
