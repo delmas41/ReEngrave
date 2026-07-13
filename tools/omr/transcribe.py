@@ -56,6 +56,70 @@ Output schema (JSON):
                                             # mid-staff (rare)
                   "key_signature_final": {...},  # OPTIONAL — only if key changed
                   "n_measures": 4,
+                  "measure_count_warning": {   # OPTIONAL — only when this staff's
+                                            # measure count disagrees with a STRICT
+                                            # majority of the other staves in its
+                                            # system (barlines run through the whole
+                                            # system, so a deviation localizes a
+                                            # missed or spurious barline). See
+                                            # _flag_measure_count_inconsistency.
+                      "staff_measures": 3,  # this staff's n_measures
+                      "system_mode": 4,     # the count the majority of staves share
+                      "agreement": "5/6",   # staves at the mode / total staves
+                      "deviation": -1,      # signed: <0 too few (missed barline /
+                                            #   condensed multi-measure rest),
+                                            #   >0 too many (spurious barline)
+                      "confidence": 0.833,  # consensus strength (mode fraction)
+                      "confidence_label": "high",  # low | medium | high
+                      "phase1_corroborated": true, # short staff + a >2×-median
+                                            # cell WITH noteheads — a fused pair
+                                            # of real measures (missed barline)
+                      "likely_multimeasure_rest": false  # short staff whose gap
+                                            # is a wide NOTE-EMPTY cell (condensed
+                                            # multi-measure rest / tacet) — always
+                                            # down-weighted to low, never promoted
+                  },
+                  "key_signature_warning": {   # OPTIONAL — only when this staff's
+                                            # key signature can't be reconciled
+                                            # with the concert key the majority of
+                                            # staves share, via any standard
+                                            # instrument transposition. See
+                                            # _flag_key_signature_inconsistency.
+                      "staff_key": "5 sharps",   # this staff's written key sig
+                      "staff_fifths": 5,         # signed circle-of-fifths position
+                      "concert_key": "C major",  # concert key explaining the majority
+                      "consistent_written_fifths": [-3, 0, 1, 2, 3],  # allowed set
+                      "agreement": "6/7",   # staves fitting the concert key / total
+                                            #   with a (non-zero) key signature
+                      "circle_distance": 2, # fifths from the nearest allowed value
+                      "confidence": 0.857,
+                      "confidence_label": "high"  # low | medium | high
+                  },
+                  "clef_register_warning": {   # OPTIONAL, ADVISORY — this (lower)
+                                            # staff resolves an octave+ above the
+                                            # staff above it: a possible clef
+                                            # error, voice-crossing, or high
+                                            # instrument. See
+                                            # _flag_clef_register_inversion.
+                      "lower_staff_index": 3, "upper_staff_index": 2,
+                      "lower_staff_median_midi": 74, "upper_staff_median_midi": 55,
+                      "register_gap_semitones": 15,  # p25(lower) - p75(upper)
+                      "lower_staff_clef": "bass", "upper_staff_clef": "treble",
+                      "confidence_label": "advisory"
+                  },
+                  "time_signature_disagreement": {  # OPTIONAL — only when this
+                                            # staff's genuinely-DETECTED meter
+                                            # disagrees with the rest of the
+                                            # system (all staves share one meter,
+                                            # so a detected disagreement is a
+                                            # mis-read). See
+                                            # _flag_time_signature_disagreement.
+                      "staff_time_signature": "3/4",
+                      "system_detected_meters": ["3/4", "4/4"],
+                      "majority_meter": "4/4",  # null on a near-even split
+                      "agreement": "3/4", "confidence": 0.75,
+                      "confidence_label": "medium"
+                  },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
                   "measures": [
@@ -113,6 +177,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -126,6 +191,7 @@ from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
     backfill_page_time_signatures,
+    measure_length_beats,
 )
 from .line_detection import detect_lines
 from .voicing import group_chords_in_measure, split_events_into_voices
@@ -1121,6 +1187,525 @@ def _measure_rhythm_sum_warning(
     }
 
 
+# Ported verbatim from the dossier-verification track so the column rhythm
+# verifier is implemented ONCE, parameterized by meter-source (it reads each
+# measure's `time_signature`, which `backfill_page_time_signatures` populates
+# from beat-sum inference here, or a dossier there). Body kept byte-identical
+# to that branch's copy for clean reconciliation — do not edit divergently.
+def _annotate_column_rhythm_warnings(
+    page: dict[str, Any], *, tolerance: float = _RHYTHM_SUM_TOLERANCE
+) -> None:
+    """Notation-math verifier, reshaped for dossier-back-filled pages (mutates
+    `page` in place, writing `rhythm_sum_warning` onto measure dicts).
+
+    The naive per-staff-per-measure check (`_measure_rhythm_sum_warning`) is
+    fine when a meter was genuinely detected/inferred, but it over-fires
+    catastrophically once a dossier *force-fills* a meter onto a sparse
+    orchestral page: an empty/resting staff-measure sums to 0 and would flag
+    `{expected:3, actual:0}`, and even correctly-transcribed sparse bars sum
+    short because rests are under-detected (Boléro p.1's real 3/4 bars mostly
+    sum to ~2.0). Forcing the per-staff check there would flag nearly every
+    staff-measure — useless.
+
+    So aggregate to the measure COLUMN across all staves of a system (mirroring
+    the per-column MAX that beat-sum *inference* already uses,
+    `rhythm._page_column_lengths`):
+
+    * **Over-sum** (a voice longer than its bar): high-confidence. Extra beats
+      mean a fused barline (cross-referenced via `phase1_warning`) or
+      over-detected notes. Flag each over-long *staff-measure* (that's the cell
+      to inspect).
+    * **Under-sum**: flag only when the FULLEST voice across the WHOLE column
+      still falls short — never a resting/sparse staff whose column-mates fill
+      the bar. Low-confidence (usually an under-detected rest). Attached to the
+      fullest measure in the column.
+    * A column whose fullest voice reaches the bar does **not** flag at all,
+      even though its individual sparse staves sum short. This is the precision
+      win over the naive path.
+
+    Columns with no note anywhere (all rest/empty) carry no rhythm evidence and
+    are skipped. Only measures whose `time_signature` is known participate.
+    """
+    for system in page.get("systems", []):
+        # Group this system's measures into time-columns. Staves within a
+        # system share a renumbered `measure_index`, so it keys the columns.
+        columns: dict[int, list[dict[str, Any]]] = {}
+        for staff in system.get("staves", []):
+            for md in staff.get("measures", []):
+                ts = md.get("time_signature")
+                if not ts:
+                    continue
+                num, den = ts.get("numerator"), ts.get("denominator")
+                if not num or not den:
+                    continue
+                length, has_note = measure_length_beats(md.get("detections", []))
+                columns.setdefault(md.get("measure_index", 0), []).append({
+                    "md": md,
+                    "length": length,
+                    "has_note": has_note,
+                    "expected": num * 4.0 / den,
+                })
+
+        for idx, members in columns.items():
+            # Over-sum: a real (note-bearing) voice longer than its bar. A
+            # rest-only measure's length is meaningless (a whole rest fills any
+            # bar), so it can't over-flag.
+            over = [
+                m for m in members
+                if m["has_note"] and m["length"] > m["expected"] + tolerance
+            ]
+            if over:
+                for m in over:
+                    md = m["md"]
+                    md["rhythm_sum_warning"] = {
+                        "expected_beats": round(m["expected"], 4),
+                        "actual_beats": round(m["length"], 4),
+                        "kind": "over_sum",
+                        "severity": "high",
+                        "column": idx,
+                        "fused_suspected": bool(md.get("phase1_warning")),
+                    }
+                continue  # column already flagged; don't also under-flag it
+
+            # Under-sum: only if the fullest voice in the whole column is short.
+            noted = [m for m in members if m["has_note"] and m["length"] > 0]
+            if not noted:
+                continue  # all-resting column — no evidence, never flag
+            fullest = max(noted, key=lambda m: m["length"])
+            if fullest["length"] < fullest["expected"] - tolerance:
+                md = fullest["md"]
+                md["rhythm_sum_warning"] = {
+                    "expected_beats": round(fullest["expected"], 4),
+                    "actual_beats": round(fullest["length"], 4),
+                    "kind": "under_sum",
+                    "severity": "low",
+                    "column": idx,
+                }
+
+
+# ---------------------------------------------------------------------------
+# Cross-staff measure-count consistency (deterministic internal double-check)
+# ---------------------------------------------------------------------------
+#
+# Barlines are engraved vertically through EVERY staff of a system, so after
+# resegment_fused_measures renumbers measure_index 0..N-1 within a system
+# (measure_extractor.py:693-696), every staff in that system must contain the
+# same number of measures. A staff whose n_measures deviates from its siblings
+# therefore localizes a segmentation error: TOO FEW measures means a barline was
+# missed and two real measures were fused into one cell (or, benignly, the staff
+# holds a condensed multi-measure rest — indistinguishable here without an
+# external anchor); TOO MANY means a spurious barline split one measure in two.
+#
+# This is a pure integer invariant the pipeline already computed — ZERO meter /
+# clef / register / transposition reasoning — which makes it the always-on,
+# zero-external-input floor beneath the (planned) dossier-guided layer
+# (docs/dossier-verification-plan.md, the `total_measures`/`structure_warning`
+# row). With no external ground truth this check can only say "these staves
+# disagree, at most one matches the true count": when a STRICT majority of staves
+# agree it points at the minority as the anomaly, but it deliberately ABSTAINS on
+# near-even splits (a 2-2 piano disagreement, a 3-3 tie) rather than guess which
+# side is right — resolving those is exactly the job of the dossier layer's known
+# measures-per-system.
+#
+# Multi-measure-rest / tacet false positives. The dominant false positive on real
+# orchestral scores: a resting instrument prints a CONDENSED multi-measure rest —
+# one wide bar spanning many measures — so its staff has far fewer cells than its
+# playing siblings and its wide cell trips phase1_warning, looking exactly like a
+# missed barline. We separate the two by NOTE CONTENT, which the pipeline already
+# has: a fused pair of real measures is note-DENSE (music crammed in — 9-27
+# noteheads observed on real fused cells), while a multi-measure rest is a wide,
+# note-EMPTY cell (0 noteheads; a real Beethoven-5 tacet cell measured 2.2×-wide
+# with zero detections). So a short staff is only promoted to high ("confirmed
+# fused measure") when its wide cell CONTAINS noteheads; a short staff whose gap
+# is a note-empty wide cell is flagged `likely_multimeasure_rest` and DOWN-WEIGHTED
+# to low (still surfaced — it could be a note-suppressed fusion — but never
+# high, even under strong consensus). Independently-barred systems remain an
+# unresolved FP class the confidence grading (not a hard error) hedges against.
+
+# Consensus -> label thresholds shared by the cross-staff consistency checks
+# (measure-count below + key-signature further down): the fraction of the
+# agreeing majority needed to call a flag high vs medium.
+_CONSENSUS_HIGH = 0.8       # e.g. a lone dissenter among 5+ staves
+_CONSENSUS_MED = 2.0 / 3    # a 2:1-or-better majority
+
+
+def _measure_has_notehead(measure: dict[str, Any]) -> bool:
+    """True if a measure cell contains at least one detected notehead — i.e. it
+    holds real note content, not just rests / an empty wide multi-measure-rest
+    bar. Used to tell a fused missed-barline cell (note-dense) apart from a
+    condensed multi-measure rest (note-empty)."""
+    return any(
+        d.get("category") == "notehead" for d in measure.get("detections", [])
+    )
+
+
+def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
+    """Flag staves whose measure count disagrees with a strict majority of the
+    other staves in the same system, mutating each deviating staff dict in
+    place with a ``measure_count_warning``. See the module comment above.
+
+    Pure additive post-pass: writes a key ONLY on a genuine cross-staff
+    disagreement, so a system whose staves all agree — or a single-staff
+    system, which has nothing to cross-check — is left byte-identical.
+
+    Abstains entirely unless one measure count is held by a strict majority
+    (more than half) of the staves; a tie or bare plurality gives no basis to
+    call one staff the anomaly.
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return  # a single staff has no sibling to cross-check against
+
+    counts = [st.get("n_measures", 0) for st in staves]
+    total = len(counts)
+    mode_value, mode_k = Counter(counts).most_common(1)[0]
+
+    # Strict majority required. mode_k * 2 > total means the modal group holds
+    # MORE than half the staves, so the modal count is the unique mode and the
+    # remaining (deviating) staves are unambiguously the minority. A 2-2 / 3-3 /
+    # 1-1 split fails this and we abstain — never assert which side is wrong.
+    if mode_k * 2 <= total:
+        return
+
+    consensus_strength = mode_k / total
+    agreement = f"{mode_k}/{total}"
+
+    for st in staves:
+        n = st.get("n_measures", 0)
+        if n == mode_value:
+            continue
+        deviation = n - mode_value  # signed: <0 too few, >0 too many
+
+        # A SHORT staff's shortfall may be localized to a >2×-median (phase1)
+        # cell. Split that case by note content (see module comment):
+        #  - a phase1 cell WITH noteheads  -> a fused pair of real measures
+        #    (missed barline). Corroborated -> promote to high; we can point a
+        #    human at the exact cell to re-segment.
+        #  - a phase1 cell with NO noteheads -> a wide note-empty bar, i.e. a
+        #    condensed multi-measure rest / tacet staff (the dominant orchestral
+        #    FP). Flag it, but DOWN-WEIGHT to low and never promote — even when
+        #    the consensus is strong (e.g. a lone resting instrument among many).
+        wide_cells = [m for m in st.get("measures", []) if "phase1_warning" in m]
+        dense_wide = deviation < 0 and any(_measure_has_notehead(m) for m in wide_cells)
+        empty_wide = deviation < 0 and any(not _measure_has_notehead(m) for m in wide_cells)
+        phase1_corroborated = dense_wide
+        likely_multimeasure_rest = empty_wide and not dense_wide
+
+        if phase1_corroborated:
+            label = "high"
+        elif likely_multimeasure_rest:
+            label = "low"   # down-weight the known multi-measure-rest FP class
+        elif consensus_strength >= _CONSENSUS_HIGH:
+            label = "high"
+        elif consensus_strength >= _CONSENSUS_MED:
+            label = "medium"
+        else:
+            label = "low"
+
+        st["measure_count_warning"] = {
+            "staff_measures": n,
+            "system_mode": mode_value,
+            "agreement": agreement,
+            "deviation": deviation,
+            "confidence": round(consensus_strength, 3),
+            "confidence_label": label,
+            "phase1_corroborated": phase1_corroborated,
+            "likely_multimeasure_rest": likely_multimeasure_rest,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Cross-staff key-signature consistency (transposition-aware)
+# ---------------------------------------------------------------------------
+#
+# A naive "all staves in a system share one key signature" check is useless on
+# an orchestral score, because TRANSPOSING instruments legitimately print
+# DIFFERENT written key signatures for the same concert key. The relationship is
+# a fixed offset on the circle of fifths (sharps +, flats -): the written key =
+# concert key + the instrument's offset. The common families —
+#
+#     C  (non-transposing)              offset  0   (writes concert C as C)
+#     F  (horn, English horn)           offset +1   (...as G, 1 sharp)
+#     Bb (clarinet, trumpet, tenor sax) offset +2   (...as D, 2 sharps)
+#     Eb (alto sax, Eb clarinet)        offset +3   (...as A, 3 sharps)
+#     A  (clarinet in A)                offset -3   (...as Eb, 3 flats)
+#
+# So for ANY concert key K the internally-consistent written key signatures are
+# the SET {K-3, K, K+1, K+2, K+3} — for concert C that is {3b, 0, 1#, 2#, 3#},
+# i.e. only ~5 distinct signatures, all mutually consistent. This check asks:
+# does a SINGLE concert key K explain every staff's key signature via one of
+# those offsets? If yes the system is consistent (even when the raw signatures
+# differ — e.g. a clarinet at 2# beside a flute at 0). A staff that fits no such
+# key alongside the strict majority is the outlier — a likely mis-detected key.
+#
+# Two deliberate conservatism choices (this is a precision-first check):
+#  * A staff with NO key signature (0 accidentals) is a WILDCARD — it never
+#    flags and never constrains K. Parts are routinely written with no key
+#    signature and all-inline accidentals (horns, trumpets, timpani, and whole
+#    modern scores), so 0 must not be treated as "must be concert C".
+#  * An outlier only one fifth outside the consistent set (circle_distance == 1)
+#    is capped below "high": it may be a rarer transposition not in the common
+#    set (e.g. a D instrument at offset -2) rather than an error.
+
+_TRANSPOSITION_FIFTHS_OFFSETS = (-3, 0, 1, 2, 3)   # A, C, F, Bb, Eb (see table above)
+_FIFTHS_TO_MAJOR = {
+    0: "C", 1: "G", 2: "D", 3: "A", 4: "E", 5: "B", 6: "F#", 7: "C#",
+    -1: "F", -2: "Bb", -3: "Eb", -4: "Ab", -5: "Db", -6: "Gb", -7: "Cb",
+}
+
+
+def _staff_key_fifths(staff: dict[str, Any]) -> int:
+    """A staff's key signature as a signed circle-of-fifths position: +N for N
+    sharps, -N for N flats, 0 for none (a standard key sig has only one kind)."""
+    ks = staff.get("key_signature") or {}
+    return (ks.get("sharps") or 0) - (ks.get("flats") or 0)
+
+
+def _fifths_key_name(c: int) -> str:
+    return f"{_FIFTHS_TO_MAJOR.get(c, '?')} major"
+
+
+def _fifths_accidentals(c: int) -> str:
+    if c > 0:
+        return f"{c} sharp{'s' if c != 1 else ''}"
+    if c < 0:
+        return f"{-c} flat{'s' if c != -1 else ''}"
+    return "no accidentals"
+
+
+def _flag_key_signature_inconsistency(system: dict[str, Any]) -> None:
+    """Flag staves whose key signature can't be reconciled — via any standard
+    instrument transposition — with the concert key that explains the strict
+    majority of the system's staves. Mutates each outlier staff dict in place
+    with a ``key_signature_warning``. See the module comment above.
+
+    Pure additive post-pass: a system whose signatures are all consistent with
+    one concert key (the common case, incl. a whole orchestra of transposing
+    instruments) is left byte-identical. Abstains when fewer than two staves
+    carry a key signature, or when no single concert key covers a strict
+    majority (scattered / unreliable detection).
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return
+
+    # 0 (no key signature) is a wildcard — drop it (see module comment).
+    nonzero = [(st, c) for st in staves if (c := _staff_key_fifths(st)) != 0]
+    if len(nonzero) < 2:
+        return  # nothing to cross-check
+    values = [c for _, c in nonzero]
+
+    # Candidate concert keys: every K that could place at least one staff on a
+    # known transposition. Pick the K whose consistent set covers the most.
+    candidates = sorted({c - off for c in values for off in _TRANSPOSITION_FIFTHS_OFFSETS})
+    best_k, best_n = None, -1
+    for k in candidates:
+        n = sum(1 for c in values if (c - k) in _TRANSPOSITION_FIFTHS_OFFSETS)
+        # Max coverage; ties broken toward the concert key nearest C (fewest
+        # accidentals — the more likely reading, and a stable report).
+        if best_k is None or n > best_n or (n == best_n and abs(k) < abs(best_k)):
+            best_n, best_k = n, k
+
+    total = len(values)
+    # Strict majority must agree on one concert key, else we can't say which
+    # staves are the outliers — abstain (mirrors the measure-count check).
+    if best_n * 2 <= total:
+        return
+
+    consensus = best_n / total
+    consistent_set = sorted(best_k + off for off in _TRANSPOSITION_FIFTHS_OFFSETS)
+    for st, c in nonzero:
+        if (c - best_k) in _TRANSPOSITION_FIFTHS_OFFSETS:
+            continue
+        distance = min(abs(c - s) for s in consistent_set)
+        if consensus >= _CONSENSUS_HIGH:
+            label = "high"
+        elif consensus >= _CONSENSUS_MED:
+            label = "medium"
+        else:
+            label = "low"
+        # One fifth outside the set may be a rarer transposition, not an error.
+        if distance == 1 and label == "high":
+            label = "medium"
+        st["key_signature_warning"] = {
+            "staff_key": _fifths_accidentals(c),
+            "staff_fifths": c,
+            "concert_key": _fifths_key_name(best_k),
+            "consistent_written_fifths": consistent_set,
+            "agreement": f"{best_n}/{total}",
+            "circle_distance": distance,
+            "confidence": round(consensus, 3),
+            "confidence_label": label,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Clef-from-pitch register inversion (ADVISORY only)
+# ---------------------------------------------------------------------------
+#
+# The weakest of the internal-consistency checks, and deliberately advisory. A
+# wrong clef shifts every notehead on a staff by a constant diatonic offset, so
+# a single staff gives ZERO evidence: the mis-read pitches AND the (wrong) clef
+# field shift together and stay internally self-consistent. The only internal
+# signal is RELATIONAL — a staff resolving into the wrong register relative to
+# its neighbours. Staves in a system run (roughly) high-to-low, so a LOWER staff
+# whose notes sit well ABOVE the staff above it is suspicious: a possible clef
+# error (the classic "a nominally-bass staff resolving above the treble above
+# it"), OR a genuine voice-crossing / a high instrument (piccolo).
+#
+# Real limits (why this stays advisory, and why the dossier's per-instrument
+# RANGE is what makes clef-from-pitch actually reliable):
+#  * Adjacent instruments overlap heavily in range, and a clef shift (~an octave)
+#    often does NOT push a staff cleanly outside its neighbours — so recall is
+#    low by construction. Calibrated on the repo's real scores, benign adjacent
+#    pairs reach a p25(lower)-vs-p75(upper) separation of +9 semitones with no
+#    clef error present; a FULL octave (12) of separation is required to flag, so
+#    the flag never fires on those. It catches only GROSS inversions.
+#  * Voice-crossing and high solo instruments are real false positives.
+# So: never more than "advisory", and it points at an inverted PAIR (at most one
+# staff has a wrong clef) rather than asserting which staff or that it's an error.
+
+_NOTE_SEMITONE = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
+_CLEF_MIN_NOTEHEADS = 6      # per staff — fewer gives an unreliable register
+_CLEF_INVERSION_GAP = 12     # semitones (an octave) of p25/p75 separation to flag
+
+
+def _pitch_to_midi(pitch: str | None) -> int | None:
+    """Convert a pitch string ('F#3', 'Bb5', 'C4') to a MIDI number (C4 = 60),
+    or None if unparseable. Accepts any run of #/b accidentals after the letter."""
+    if not pitch or pitch[0] not in _NOTE_SEMITONE:
+        return None
+    semitone = _NOTE_SEMITONE[pitch[0]]
+    i = 1
+    while i < len(pitch) and pitch[i] in "#b":
+        semitone += 1 if pitch[i] == "#" else -1
+        i += 1
+    try:
+        octave = int(pitch[i:])
+    except ValueError:
+        return None
+    return 12 * (octave + 1) + semitone
+
+
+def _staff_notehead_midis(staff: dict[str, Any]) -> list[int]:
+    """MIDI numbers of every resolved notehead pitch on a staff (register
+    evidence). Skips unresolved / non-notehead detections."""
+    out: list[int] = []
+    for md in staff.get("measures", []):
+        for det in md.get("detections", []):
+            if det.get("category") == "notehead":
+                m = _pitch_to_midi(det.get("pitch"))
+                if m is not None:
+                    out.append(m)
+    return out
+
+
+def _percentile(sorted_vals: list[int], q: float) -> int:
+    """Value at quantile q of a pre-sorted, non-empty list (nearest-rank)."""
+    return sorted_vals[min(len(sorted_vals) - 1, int(q * len(sorted_vals)))]
+
+
+def _flag_clef_register_inversion(system: dict[str, Any]) -> None:
+    """Advisory flag on a lower staff whose register sits an octave+ above the
+    staff directly above it — a possible clef error (or voice-crossing / a high
+    instrument). Mutates the lower staff dict with a ``clef_register_warning``.
+    See the module comment above; this is advisory-only by design.
+
+    Pure additive post-pass: writes nothing unless a gross inversion exists, so
+    a normally-ordered system is byte-identical. Only staves with enough
+    resolved noteheads for a reliable register estimate participate.
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return
+    midis = [_staff_notehead_midis(st) for st in staves]
+    for i in range(len(staves) - 1):
+        upper_m, lower_m = midis[i], midis[i + 1]
+        if len(upper_m) < _CLEF_MIN_NOTEHEADS or len(lower_m) < _CLEF_MIN_NOTEHEADS:
+            continue
+        upper_sorted, lower_sorted = sorted(upper_m), sorted(lower_m)
+        # Robust separation: the lower staff's near-bottom (p25) above the upper
+        # staff's near-top (p75). Percentiles absorb a stray crossing note.
+        gap = _percentile(lower_sorted, 0.25) - _percentile(upper_sorted, 0.75)
+        if gap < _CLEF_INVERSION_GAP:
+            continue
+        upper, lower = staves[i], staves[i + 1]
+        lower["clef_register_warning"] = {
+            "lower_staff_index": lower.get("staff_index"),
+            "upper_staff_index": upper.get("staff_index"),
+            "lower_staff_median_midi": _percentile(lower_sorted, 0.5),
+            "upper_staff_median_midi": _percentile(upper_sorted, 0.5),
+            "register_gap_semitones": gap,
+            "lower_staff_clef": lower.get("clef"),
+            "upper_staff_clef": upper.get("clef"),
+            "confidence_label": "advisory",
+        }
+
+
+# ---------------------------------------------------------------------------
+# Cross-staff time-signature agreement (check e)
+# ---------------------------------------------------------------------------
+#
+# (A cross-system clef-continuity flag was prototyped here and dropped: a
+# post-pass that majority-votes each role's FINAL clef across same-sized systems
+# is unreliable — on reduction/condensed scores same-sized systems aren't the
+# same instruments, so it false-fires, and majority-clef != correct-clef so it
+# can even flag the RIGHT staff. The sound signal ("a DETECTED clef overrode the
+# inherited one") is only visible inside _ClefContinuity during transcription,
+# or from the dossier's expected per-role clef — deferred to there.)
+
+
+def _flag_time_signature_disagreement(system: dict[str, Any]) -> None:
+    """Flag staves whose genuinely-DETECTED time signature disagrees with the
+    rest of the system. Every staff of a system shares one meter, so a
+    disagreement among *detected* meters is a hard mis-read (unlike a
+    measure-count deviation, at most one detected meter can be right).
+
+    Only genuinely-detected (source-less) staff meters participate — a meter
+    tagged with a `source` was back-filled / propagated by inference, not read,
+    so it is not evidence. Additive: writes nothing when the detected meters
+    agree (or fewer than two staves detected one).
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return
+    detected: list[tuple[dict[str, Any], tuple[int, int]]] = []
+    for st in staves:
+        ts = st.get("time_signature")
+        if ts and not ts.get("source"):
+            num, den = ts.get("numerator"), ts.get("denominator")
+            if num and den:
+                detected.append((st, (num, den)))
+    if len(detected) < 2:
+        return
+    meters = [m for _, m in detected]
+    mode_meter, mode_k = Counter(meters).most_common(1)[0]
+    total = len(meters)
+    if mode_k == total:
+        return  # all detected meters agree
+
+    consensus = mode_k / total
+    strict = mode_k * 2 > total
+    distinct = sorted(f"{a}/{b}" for a, b in set(meters))
+    for st, m in detected:
+        if strict and m == mode_meter:
+            continue  # the majority-detected meter — not the outlier
+        if strict and consensus >= _CONSENSUS_HIGH:
+            label = "high"
+        elif strict and consensus >= _CONSENSUS_MED:
+            label = "medium"
+        else:
+            label = "low"   # near-even split: can't say which meter is right
+        st["time_signature_disagreement"] = {
+            "staff_time_signature": f"{m[0]}/{m[1]}",
+            "system_detected_meters": distinct,
+            "majority_meter": f"{mode_meter[0]}/{mode_meter[1]}" if strict else None,
+            "agreement": f"{mode_k}/{total}",
+            "confidence": round(consensus, 3),
+            "confidence_label": label,
+        }
+
+
 def transcribe(
     *,
     pdf_path: Path,
@@ -1379,19 +1964,39 @@ def transcribe(
         # WAS detected — or a noisy page with no clear mode — is untouched.
         backfill_page_time_signatures(page_dict)
 
-        # ── Per-measure rhythm-sum check ──
-        # Runs here (not in the staff loop) so it sees the back-filled
-        # meters and can fire on inferred measures too. Skipped entirely for
-        # measures still lacking a time signature. See
-        # _measure_rhythm_sum_warning.
+        # ── Rhythm-sum notation-math check (column-aggregated) ──
+        # Runs here (not in the staff loop) so it sees the meters
+        # backfill_page_time_signatures just inferred, and can fire on those
+        # back-filled measures too. Aggregated to the measure COLUMN so a
+        # resting/sparse staff never false-flags against a meter force-filled
+        # onto it — only a column whose FULLEST voice mis-sums flags (over-sum
+        # high = extra beats / fused barline; under-sum low). This supersedes
+        # the naive per-staff _measure_rhythm_sum_warning (retained for its
+        # unit tests + the dossier track). Measures still lacking a time
+        # signature don't participate. See _annotate_column_rhythm_warnings.
+        _annotate_column_rhythm_warnings(page_dict)
+
+        # ── Cross-staff consistency checks (additive, zero external input) ──
+        # Both write a warning key only on a genuine disagreement, so a clean
+        # page is byte-identical.
+        #  - measure count: barlines run through the whole system, so every
+        #    staff must share the same count; a deviating staff localizes a
+        #    missed/spurious barline. See _flag_measure_count_inconsistency.
+        #  - key signature: transposing instruments legitimately differ, so a
+        #    staff is flagged only when no single concert key reconciles it with
+        #    the majority via a standard transposition. See
+        #    _flag_key_signature_inconsistency.
+        #  - clef/register (ADVISORY): a lower staff resolving an octave+ above
+        #    the staff above it — a possible clef error, voice-crossing, or high
+        #    instrument. See _flag_clef_register_inversion.
+        #  - time-signature: staves of a system share one meter, so genuinely
+        #    DETECTED meters that disagree are a mis-read. See
+        #    _flag_time_signature_disagreement.
         for sys_d in page_dict["systems"]:
-            for st_d in sys_d["staves"]:
-                for md in st_d["measures"]:
-                    warning = _measure_rhythm_sum_warning(
-                        md["detections"], md.get("time_signature")
-                    )
-                    if warning is not None:
-                        md["rhythm_sum_warning"] = warning
+            _flag_measure_count_inconsistency(sys_d)
+            _flag_key_signature_inconsistency(sys_d)
+            _flag_clef_register_inversion(sys_d)
+            _flag_time_signature_disagreement(sys_d)
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
