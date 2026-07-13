@@ -199,11 +199,42 @@ standalone box-fix read on 25/26 staves, and the box-fix alto fix carries throug
 (2 alto, vs 0 for the coupled clef-ft). Cost: yolo 170s → 232s (+37%) for the 26
 staff-start clef inferences.
 
-**Next optimisation:** run the specialist on just the **left ~15–20%** of the
-start cell (where the clef sits) instead of the whole cell — cheaper (no dense
-notes) and more robust. The prototype runs it on the full start cell, which
-already works. Same seam would host a key-sig / time-sig specialist (the
-"staff-header reader" — fixes the null-time-sig weakness too).
+### Header crop + time-sig reader (done)
+
+The specialist now runs on the **left `header_frac` (default 0.42) of the start
+cell** — the clef/key/time header — at a **lower imgsz (default 640)**, and reads
+BOTH clef and time signature from that one inference (`_read_staff_header`).
+
+Cropping isn't just about excluding notes: ultralytics letterboxes to `imgsz²`
+regardless of input, so a crop only helps if paired with a lower imgsz — and the
+crop is what lets imgsz drop without shrinking the glyphs. Because canonical cells
+normalise staff span, the clef is always ~96 px, so the best imgsz is
+scale-determined (generalises across scores). Sweep on a 0.42 crop
+(`tune_header_reader.py`): imgsz 1280 -> 5/26 clef agreement, 768 -> 16/26,
+**640 -> 23/26** (lower is better — it keeps the clef near training scale).
+
+Result on Mahler p.11 vs the full-cell prototype:
+
+| | noteheads | clefs | yolo runtime |
+|---|---|---|---|
+| production | 2506 | treble x26 | 169.6 s |
+| decoupled, full cell @1280 | 2506 | t10/b13/a2/t1 | 231.7 s (**+37%**) |
+| decoupled, header crop @640 | 2506 | t11/b12/a2/t1 | **173.0 s (+2%)** |
+
+Same clefs (25/26 agreement with the full-cell run, alto intact), same noteheads,
+overhead cut from +37% to **+2%** — ~18x cheaper per clef inference.
+
+**Time-sig reader — wired, but model-limited.** `_read_staff_header` also runs the
+standard digit parser on the header crop and overrides the meter. The plumbing is
+unit-tested (`tools/omr/tests/test_header_reader.py`: stacked 2/4, common-time C,
+crop geometry). BUT on Beethoven 5 p.1 (a printed 2/4) it read nothing — a direct
+probe shows **neither production nor the clef specialist detects any time-sig
+digit** (imgsz 640 or 1280, conf 0.15). That's the DSv2 time-sig domain gap, not a
+pipeline bug. So the reader is dormant until a **time-sig-trained specialist** is
+dropped into `--clef-weights` — exactly the "staff-header specialist" this pattern
+is built to host (it shares the clef crop, so zero marginal cost). The clef read
+on Beethoven p.1 does improve (12x treble -> 8 treble / 4 bass), though the Viola
+alto is missed — the box-fix model's current ceiling.
 
 ### Artifacts (this run)
 - `mahler_p11_{production,finetuned,boxfix}.omr.json` + `_ft_noagnostic` / `_ft_iou85`
