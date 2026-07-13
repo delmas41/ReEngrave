@@ -1,0 +1,128 @@
+{
+  "cell_id": "beet5-p56-sys1-s8-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T08:16:04+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 79,
+        "y": 293,
+        "w": 269,
+        "h": 280
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 418,
+        "y": 549,
+        "w": 116,
+        "h": 108
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 540,
+        "y": 534,
+        "w": 106,
+        "h": 122
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 650,
+        "y": 527,
+        "w": 149,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1063,
+        "y": 516,
+        "w": 160,
+        "h": 136
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1427,
+        "y": 455,
+        "w": 142,
+        "h": 85
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1713,
+        "y": 451,
+        "w": 127,
+        "h": 96
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1589,
+        "y": 335,
+        "w": 116,
+        "h": 245
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1855,
+        "y": 326,
+        "w": 95,
+        "h": 250
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 845,
+        "y": 341,
+        "w": 157,
+        "h": 259
+      },
+      "notes": ""
+    }
+  ]
+}

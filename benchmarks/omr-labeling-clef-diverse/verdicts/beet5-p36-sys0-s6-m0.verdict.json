@@ -1,0 +1,116 @@
+{
+  "cell_id": "beet5-p36-sys0-s6-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T08:01:58+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 88,
+        "y": 228,
+        "w": 214,
+        "h": 255
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 634,
+        "y": 359,
+        "w": 103,
+        "h": 89
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 753,
+        "y": 267,
+        "w": 89,
+        "h": 195
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 860,
+        "y": 254,
+        "w": 100,
+        "h": 208
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1223,
+        "y": 267,
+        "w": 85,
+        "h": 173
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1341,
+        "y": 282,
+        "w": 92,
+        "h": 178
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1716,
+        "y": 306,
+        "w": 113,
+        "h": 79
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "dynamicLetterP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1077,
+        "y": 499,
+        "w": 155,
+        "h": 151
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1100,
+        "y": 359,
+        "w": 99,
+        "h": 96
+      },
+      "notes": ""
+    }
+  ]
+}

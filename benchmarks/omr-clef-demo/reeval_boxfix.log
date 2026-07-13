@@ -1,0 +1,105 @@
+=== copying last.pt -> omr-weights/deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt ===
+-rw-r--r--@ 1 seanjohnson  staff  88117434 Jul 13 09:06 omr-weights/deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt
+
+=== CLEF eval: 44-cell baseline set ===
+======================================================================
+  clef-count eval — deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt
+======================================================================
+cells: 44   |   clef detected on: 41/44  (93%)
+
+DETECTED clef-type distribution:
+    bass     21
+    alto     10
+    treble   9
+    (none)   3
+    tenor    1
+
+TYPE ACCURACY (on 15 cells with ground truth):
+    right type: 11/15  (73%)   |   missed entirely: 1
+    by true clef type (detected-right / total):
+        treble   3/5   ← MISSED
+        bass     4/5   ← MISSED
+        alto     3/3
+        tenor    1/2   ← MISSED
+
+    misses / wrong (true → detected):
+        mahler-p12-sys2-s24-m0       tenor → alto
+        mahler-p2-sys0-s0-m0         treble → bass
+        mahler-p2-sys0-s1-m0         treble → (none)
+        mahler-p2-sys3-s10-m0        bass → treble
+======================================================================
+
+=== CLEF eval: clef-diverse set ===
+======================================================================
+  clef-count eval — deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt
+======================================================================
+cells: 151   |   clef detected on: 105/151  (70%)
+
+DETECTED clef-type distribution:
+    treble   56
+    (none)   46
+    bass     29
+    alto     18
+    tenor    2
+
+TYPE ACCURACY (on 46 cells with ground truth):
+    right type: 31/46  (67%)   |   missed entirely: 8
+    by true clef type (detected-right / total):
+        treble   9/13   ← MISSED
+        bass     11/13   ← MISSED
+        alto     9/10   ← MISSED
+        tenor    2/10   ← MISSED
+
+    misses / wrong (true → detected):
+        beet5-p36-sys1-s11-m0        treble → (none)
+        beet5-p36-sys1-s13-m0        treble → (none)
+        beet5-p36-sys1-s14-m0        tenor → (none)
+        beet5-p36-sys1-s16-m0        bass → (none)
+        beet5-p36-sys1-s19-m0        alto → bass
+        beet5-p36-sys1-s20-m0        tenor → (none)
+        beet5-p56-sys1-s10-m0        tenor → alto
+        beet5-p56-sys1-s4-m0         tenor → alto
+        bolero-p31-sys0-s12-m0       tenor → alto
+        bolero-p31-sys0-s13-m0       tenor → alto
+        bolero-p31-sys1-s24-m0       tenor → alto
+        bolero-p31-sys1-s25-m0       tenor → alto
+        lamer-p26-sys2-s10-m0        bass → (none)
+        lamer-p26-sys6-s15-m0        treble → (none)
+        mahler-p121-sys1-s15-m0      treble → (none)
+======================================================================
+
+=== WTC forgetting audit: production vs box-fix (center) ===
+[match mode: center]
+========================================================================
+  WTC non-clef forgetting audit — production vs fine-tuned
+========================================================================
+cells scored: 18   (human-confirmed GT: TP boxes + FN noteheads)
+
+                 TP   FP   FN    prec  recall      F1
+production      216  272   15   0.443   0.935   0.601
+fine-tuned      204  277   27   0.424   0.883   0.573
+
+recall DELTA (ft - prod): -0.052   ← the forgetting signal (near 0 = no forgetting)
+
+recall on confirmed-real symbols, by category (matched/total):
+    category          production      fine-tuned
+    accidental               1/1             1/1
+    flag                     3/5             2/5
+    notehead             207/220         196/220
+    rest                     5/5             5/5
+
+raw detection category distribution (over/under-detection):
+    category          production      fine-tuned
+    accidental                14               8
+    articulation               1               1
+    aug                        8               3
+    beam                     112              64
+    clef                       5               5
+    flag                       9               5
+    notehead                 245             237
+    other                     51              98
+    rest                      27              37
+    slur                       5              16
+    tie                       11               7
+========================================================================
+REEVAL DONE

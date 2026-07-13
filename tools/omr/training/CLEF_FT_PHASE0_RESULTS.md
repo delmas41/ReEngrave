@@ -1,3 +1,12 @@
+> **⚠️ SUPERSEDED (2026-07-13, same day).** The "KEEP / deploy it" verdict below
+> was wrong — it rested on a 4-cell count-based forgetting check. A broadened
+> end-to-end audit found this checkpoint **collapses notehead detection on dense
+> orchestral pages** (Mahler p.11: 2506 → 123 noteheads) while only fixing clefs.
+> A corrected retrain (`-clef-ft-boxfix-`) did not fix the collapse either — it is
+> inherent to fine-tuning the shared detector on low-density cells. **Do NOT deploy
+> either fine-tuned checkpoint as the production default.** Full story +
+> recommended decoupled-clef path: `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`.
+
 # Clef pseudo-label fine-tune — Phase 0 results (2026-07-13)
 
 Clean fine-tune from the production checkpoint on 62 correctly-labeled clef

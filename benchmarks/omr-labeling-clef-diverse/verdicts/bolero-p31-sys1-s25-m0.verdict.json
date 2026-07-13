@@ -1,0 +1,176 @@
+{
+  "cell_id": "bolero-p31-sys1-s25-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T05:09:02+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefCTenor",
+      "human_category": "clef",
+      "bbox": {
+        "x": 29,
+        "y": 175,
+        "w": 186,
+        "h": 273
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 473,
+        "y": 52,
+        "w": 111,
+        "h": 86
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 676,
+        "y": 61,
+        "w": 120,
+        "h": 77
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1241,
+        "y": 59,
+        "w": 124,
+        "h": 75
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1610,
+        "y": 66,
+        "w": 138,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1820,
+        "y": 63,
+        "w": 121,
+        "h": 79
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 180,
+        "y": 13,
+        "w": 233,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 407,
+        "y": 0,
+        "w": 66,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 685,
+        "y": 37,
+        "w": 79,
+        "h": 27
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1263,
+        "y": 41,
+        "w": 80,
+        "h": 25
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1632,
+        "y": 33,
+        "w": 77,
+        "h": 37
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1833,
+        "y": 37,
+        "w": 84,
+        "h": 29
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "flag8thDown",
+      "human_category": "flag",
+      "bbox": {
+        "x": 492,
+        "y": 214,
+        "w": 75,
+        "h": 153
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "flag8thDown",
+      "human_category": "flag",
+      "bbox": {
+        "x": 1276,
+        "y": 206,
+        "w": 74,
+        "h": 161
+      },
+      "notes": ""
+    }
+  ]
+}

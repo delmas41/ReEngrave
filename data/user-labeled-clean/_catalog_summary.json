@@ -1,0 +1,39 @@
+{
+  "generated_utc": "2026-07-13T08:33:48+00:00",
+  "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean",
+  "val_fraction": 0.15,
+  "seed": "reengrave",
+  "n_versions": 2,
+  "n_train_images": 53,
+  "n_val_images": 9,
+  "n_classes": 208,
+  "n_classes_full_vocab": 214,
+  "n_boxes_dropped_over_nc": 1,
+  "boxes_dropped_by_class": {
+    "repeatRight": 1
+  },
+  "full_catalog": null,
+  "weights_source": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+  "versions": [
+    {
+      "name": "v5-2026-07-12-clef",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef",
+      "n_train_images": 12,
+      "n_val_images": 3,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Phase-0 clef batch: Mahler idx1+p13, 15 clefs incl 3 alto + 2 tenor",
+      "created_utc": "2026-07-13T01:31:23+00:00"
+    },
+    {
+      "name": "v6-2026-07-13-clef-diverse",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v6-2026-07-13-clef-diverse",
+      "n_train_images": 41,
+      "n_val_images": 6,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Cross-score clef diversity: 47 clefs (10 alto, 10 tenor, 14 bass, 13 treble)",
+      "created_utc": "2026-07-13T08:30:42+00:00"
+    }
+  ]
+}

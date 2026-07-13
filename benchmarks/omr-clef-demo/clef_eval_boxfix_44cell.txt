@@ -1,0 +1,26 @@
+======================================================================
+  clef-count eval — deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt
+======================================================================
+cells: 44   |   clef detected on: 41/44  (93%)
+
+DETECTED clef-type distribution:
+    bass     21
+    alto     10
+    treble   9
+    (none)   3
+    tenor    1
+
+TYPE ACCURACY (on 15 cells with ground truth):
+    right type: 11/15  (73%)   |   missed entirely: 1
+    by true clef type (detected-right / total):
+        treble   3/5   ← MISSED
+        bass     4/5   ← MISSED
+        alto     3/3
+        tenor    1/2   ← MISSED
+
+    misses / wrong (true → detected):
+        mahler-p12-sys2-s24-m0       tenor → alto
+        mahler-p2-sys0-s0-m0         treble → bass
+        mahler-p2-sys0-s1-m0         treble → (none)
+        mahler-p2-sys3-s10-m0        bass → treble
+======================================================================

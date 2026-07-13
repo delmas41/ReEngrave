@@ -1,0 +1,7 @@
+clef cells:            62
+anti-forgetting cells: 68
+total cells:           130  (train 113 / val 17)
+human clef boxes:      62
+production pseudo boxes:2702
+wrote dataset -> data/user-labeled-clef-fix/data.yaml
+BUILD DONE

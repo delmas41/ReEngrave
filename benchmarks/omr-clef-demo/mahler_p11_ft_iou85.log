@@ -1,0 +1,13 @@
+start Mon Jul 13 08:33:45 MST 2026
+transcribe: Mahler_5_.pdf (245 pages, processing 1)
+  weights:  omr-weights/deepscoresv2-yolov8l-clef-ft-2026-07-13.pt
+  conf:     0.25, iou: 0.85, agnostic_nms: True, imgsz: 1280
+  page 11: 3 systems, 26 staves, 221 measures, 935 detections (160/160 pitched, 160/160 durations)
+
+wrote benchmarks/omr-clef-demo/mahler_p11_ft_iou85.omr.json
+  pages=1  systems=3  staves=26  measures=221  detections=935
+  noteheads=160  pitched=160  (100% pitch coverage)
+  with_duration=160  (100% rhythm coverage)  rests=138/192
+  runtime: phase1=5.62s  yolo=169.84s  total=175.46s
+  page 11: 221 measures, 0 phase1_warnings, 30 rhythm_sum_warnings
+DONE Mon Jul 13 08:36:41 MST 2026

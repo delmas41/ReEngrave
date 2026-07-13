@@ -1,0 +1,224 @@
+{
+  "cell_id": "lamer-p26-sys3-s12-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T07:50:58+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 77,
+        "y": 215,
+        "w": 72,
+        "h": 135
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 41,
+        "y": 289,
+        "w": 64,
+        "h": 136
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 241,
+        "y": 473,
+        "w": 67,
+        "h": 131
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 322,
+        "y": 529,
+        "w": 81,
+        "h": 71
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 519,
+        "y": 492,
+        "w": 87,
+        "h": 75
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 943,
+        "y": 495,
+        "w": 101,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1179,
+        "y": 525,
+        "w": 88,
+        "h": 77
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1372,
+        "y": 497,
+        "w": 101,
+        "h": 74
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1786,
+        "y": 499,
+        "w": 89,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "articStaccatoBelow",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 956,
+        "y": 584,
+        "w": 55,
+        "h": 35
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "articStaccatoBelow",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1105,
+        "y": 558,
+        "w": 46,
+        "h": 44
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "articStaccatoBelow",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1790,
+        "y": 580,
+        "w": 70,
+        "h": 43
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "flag8thUp",
+      "human_category": "flag",
+      "bbox": {
+        "x": 387,
+        "y": 304,
+        "w": 72,
+        "h": 164
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "flag8thUp",
+      "human_category": "flag",
+      "bbox": {
+        "x": 1007,
+        "y": 317,
+        "w": 83,
+        "h": 154
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "flag8thUp",
+      "human_category": "flag",
+      "bbox": {
+        "x": 1249,
+        "y": 311,
+        "w": 83,
+        "h": 148
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "flag8thUp",
+      "human_category": "flag",
+      "bbox": {
+        "x": 1853,
+        "y": 330,
+        "w": 77,
+        "h": 141
+      },
+      "notes": ""
+    },
+    {
+      "id": "H16",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 326,
+        "y": 599,
+        "w": 225,
+        "h": 38
+      },
+      "notes": ""
+    },
+    {
+      "id": "H17",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1201,
+        "y": 610,
+        "w": 250,
+        "h": 24
+      },
+      "notes": ""
+    }
+  ]
+}

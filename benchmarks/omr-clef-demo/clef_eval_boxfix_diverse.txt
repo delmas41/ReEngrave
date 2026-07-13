@@ -1,0 +1,37 @@
+======================================================================
+  clef-count eval — deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt
+======================================================================
+cells: 151   |   clef detected on: 105/151  (70%)
+
+DETECTED clef-type distribution:
+    treble   56
+    (none)   46
+    bass     29
+    alto     18
+    tenor    2
+
+TYPE ACCURACY (on 46 cells with ground truth):
+    right type: 31/46  (67%)   |   missed entirely: 8
+    by true clef type (detected-right / total):
+        treble   9/13   ← MISSED
+        bass     11/13   ← MISSED
+        alto     9/10   ← MISSED
+        tenor    2/10   ← MISSED
+
+    misses / wrong (true → detected):
+        beet5-p36-sys1-s11-m0        treble → (none)
+        beet5-p36-sys1-s13-m0        treble → (none)
+        beet5-p36-sys1-s14-m0        tenor → (none)
+        beet5-p36-sys1-s16-m0        bass → (none)
+        beet5-p36-sys1-s19-m0        alto → bass
+        beet5-p36-sys1-s20-m0        tenor → (none)
+        beet5-p56-sys1-s10-m0        tenor → alto
+        beet5-p56-sys1-s4-m0         tenor → alto
+        bolero-p31-sys0-s12-m0       tenor → alto
+        bolero-p31-sys0-s13-m0       tenor → alto
+        bolero-p31-sys1-s24-m0       tenor → alto
+        bolero-p31-sys1-s25-m0       tenor → alto
+        lamer-p26-sys2-s10-m0        bass → (none)
+        lamer-p26-sys6-s15-m0        treble → (none)
+        mahler-p121-sys1-s15-m0      treble → (none)
+======================================================================

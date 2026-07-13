@@ -1,0 +1,9 @@
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v5-2026-07-12-clef/images/mahler-p2-sys0-s2-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v5-2026-07-12-clef/images/mahler-p2-sys3-s9-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v5-2026-07-12-clef/images/mahler-p2-sys4-s15-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v6-2026-07-13-clef-diverse/images/beet5-p36-sys1-s16-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v6-2026-07-13-clef-diverse/images/beet5-p56-sys1-s10-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v6-2026-07-13-clef-diverse/images/bolero-p31-sys1-s24-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v6-2026-07-13-clef-diverse/images/bolero-p38-sys0-s15-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v6-2026-07-13-clef-diverse/images/bolero-p38-sys1-s26-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled-clean/v6-2026-07-13-clef-diverse/images/lamer-p26-sys2-s9-m0.png

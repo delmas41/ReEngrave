@@ -95,3 +95,10 @@ data/user-labeled/*/labels_pre_cleanup/
 
 # ultralytics label caches (written next to labels/ during training)
 labels.cache
+
+# clef-ft demo (2026-07-13): bulky reproducible outputs — the durable findings
+# live in the *.log / *.txt / *.md; raw transcription JSON is regenerable
+benchmarks/omr-clef-demo/*.omr.json
+# clef-fix training images are copies of v1-v6 cells — regenerable via
+# tools/omr/training/build_clef_fix_dataset.py; labels + manifest are committed
+data/user-labeled-clef-fix/images/

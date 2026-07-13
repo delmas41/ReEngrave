@@ -1,0 +1,56 @@
+{
+  "cell_id": "lamer-p26-sys2-s10-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T07:47:49+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 53,
+        "y": 195,
+        "w": 170,
+        "h": 170
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 389,
+        "y": 252,
+        "w": 66,
+        "h": 131
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 453,
+        "y": 298,
+        "w": 103,
+        "h": 81
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "tremolo3",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 460,
+        "y": 169,
+        "w": 87,
+        "h": 120
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "cell_id": "bolero-p31-sys0-s15-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T05:01:01+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 31,
+        "y": 230,
+        "w": 173,
+        "h": 218
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 483,
+        "y": 355,
+        "w": 82,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1621,
+        "y": 433,
+        "w": 101,
+        "h": 79
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1030,
+        "y": 271,
+        "w": 108,
+        "h": 175
+      },
+      "notes": ""
+    }
+  ]
+}

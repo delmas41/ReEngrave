@@ -1,0 +1,320 @@
+{
+  "cell_id": "beet5-p36-sys0-s3-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T08:00:29+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 87,
+        "y": 210,
+        "w": 213,
+        "h": 291
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 287,
+        "y": 308,
+        "w": 85,
+        "h": 173
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 361,
+        "y": 223,
+        "w": 77,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 440,
+        "y": 346,
+        "w": 100,
+        "h": 144
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 584,
+        "y": 227,
+        "w": 66,
+        "h": 233
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 667,
+        "y": 241,
+        "w": 97,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 667,
+        "y": 308,
+        "w": 94,
+        "h": 73
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1147,
+        "y": 250,
+        "w": 96,
+        "h": 69
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1155,
+        "y": 315,
+        "w": 92,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 867,
+        "y": 219,
+        "w": 118,
+        "h": 72
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 860,
+        "y": 280,
+        "w": 135,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1595,
+        "y": 249,
+        "w": 110,
+        "h": 71
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1602,
+        "y": 320,
+        "w": 111,
+        "h": 69
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1057,
+        "y": 228,
+        "w": 81,
+        "h": 240
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1256,
+        "y": 254,
+        "w": 87,
+        "h": 54
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1262,
+        "y": 320,
+        "w": 66,
+        "h": 50
+      },
+      "notes": ""
+    },
+    {
+      "id": "H16",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1779,
+        "y": 234,
+        "w": 103,
+        "h": 193
+      },
+      "notes": ""
+    },
+    {
+      "id": "H17",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1914,
+        "y": 263,
+        "w": 86,
+        "h": 168
+      },
+      "notes": ""
+    },
+    {
+      "id": "H18",
+      "human_class": "dynamicLetterS",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 586,
+        "y": 538,
+        "w": 75,
+        "h": 86
+      },
+      "notes": ""
+    },
+    {
+      "id": "H19",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 613,
+        "y": 494,
+        "w": 197,
+        "h": 162
+      },
+      "notes": ""
+    },
+    {
+      "id": "H20",
+      "human_class": "dynamicLetterP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1494,
+        "y": 538,
+        "w": 130,
+        "h": 134
+      },
+      "notes": ""
+    },
+    {
+      "id": "H21",
+      "human_class": "dynamicLetterP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 1634,
+        "y": 523,
+        "w": 130,
+        "h": 149
+      },
+      "notes": ""
+    },
+    {
+      "id": "H22",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1140,
+        "y": 155,
+        "w": 484,
+        "h": 86
+      },
+      "notes": ""
+    },
+    {
+      "id": "H23",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 696,
+        "y": 145,
+        "w": 232,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H24",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 702,
+        "y": 368,
+        "w": 211,
+        "h": 67
+      },
+      "notes": ""
+    },
+    {
+      "id": "H25",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1199,
+        "y": 398,
+        "w": 416,
+        "h": 75
+      },
+      "notes": ""
+    }
+  ]
+}

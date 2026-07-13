@@ -1,0 +1,13 @@
+start Mon Jul 13 09:12:41 MST 2026
+transcribe: Mahler_5_.pdf (245 pages, processing 1)
+  weights:  omr-weights/deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt
+  conf:     0.1, iou: 0.5, agnostic_nms: True, imgsz: 1280
+  page 11: 3 systems, 26 staves, 221 measures, 4160 detections (506/506 pitched, 506/506 durations)
+
+wrote benchmarks/omr-clef-demo/mahler_p11_boxfix_conf10.omr.json
+  pages=1  systems=3  staves=26  measures=221  detections=4160
+  noteheads=506  pitched=506  (100% pitch coverage)
+  with_duration=506  (100% rhythm coverage)  rests=0/3273
+  runtime: phase1=5.39s  yolo=167.78s  total=173.18s
+  page 11: 221 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+DONE Mon Jul 13 09:15:35 MST 2026

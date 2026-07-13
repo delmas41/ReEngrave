@@ -1,0 +1,224 @@
+{
+  "cell_id": "bolero-p31-sys0-s0-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T04:44:27+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 29,
+        "y": 153,
+        "w": 174,
+        "h": 416
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 479,
+        "y": 101,
+        "w": 97,
+        "h": 72
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 678,
+        "y": 94,
+        "w": 112,
+        "h": 77
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1256,
+        "y": 99,
+        "w": 107,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1626,
+        "y": 98,
+        "w": 107,
+        "h": 77
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1827,
+        "y": 96,
+        "w": 109,
+        "h": 79
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 405,
+        "y": 29,
+        "w": 65,
+        "h": 157
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "articStaccatoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 696,
+        "y": 64,
+        "w": 65,
+        "h": 37
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "articStaccatoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1274,
+        "y": 64,
+        "w": 67,
+        "h": 37
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "articStaccatoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1650,
+        "y": 66,
+        "w": 48,
+        "h": 37
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "articStaccatoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1851,
+        "y": 64,
+        "w": 55,
+        "h": 37
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 685,
+        "y": 35,
+        "w": 87,
+        "h": 20
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1262,
+        "y": 35,
+        "w": 84,
+        "h": 22
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1634,
+        "y": 33,
+        "w": 77,
+        "h": 26
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "articTenutoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 1840,
+        "y": 37,
+        "w": 79,
+        "h": 22
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 166,
+        "y": 68,
+        "w": 247,
+        "h": 65
+      },
+      "notes": ""
+    },
+    {
+      "id": "H16",
+      "human_class": "flag8thDown",
+      "human_category": "flag",
+      "bbox": {
+        "x": 497,
+        "y": 219,
+        "w": 70,
+        "h": 146
+      },
+      "notes": ""
+    },
+    {
+      "id": "H17",
+      "human_class": "flag8thDown",
+      "human_category": "flag",
+      "bbox": {
+        "x": 1282,
+        "y": 221,
+        "w": 64,
+        "h": 146
+      },
+      "notes": ""
+    }
+  ]
+}
