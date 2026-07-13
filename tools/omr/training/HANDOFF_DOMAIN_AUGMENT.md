@@ -24,6 +24,28 @@ Driven by the **other (GPU) session**. Everything below is copy-paste.
   BadPhotoCopy).** Already baked in (`AUGRAPHY_SAFE_EFFECTS`). BadPhotoCopy is
   numba-unstable on numba 0.60 / numpy 2.0 (crashes mid-batch on some sizes).
 
+## ⚠️ RESULT of the first real run (vast.ai RTX 4090, 2026-07-13) — NEGATIVE
+
+This exact recipe was executed end-to-end (the §4-§5 commands above are the
+*fixed* versions from that run — see the git history for the 5 bugs found). It
+**undertrained and did not close the domain gap:**
+
+- Trained yolov8l from COCO, 50ep, batch 2, imgsz 1280 on the augmented dense set.
+- Synthetic DSv2 val: mAP@50 **0.54**, precision 0.92, recall 0.54 — learns fine
+  on synthetic.
+- **Real dense cells (76 hand-labeled Beethoven-5 orchestral cells): near-ZERO
+  confident detections — 6/20 cells fire at conf 0.25, recall ~0.02** vs the
+  production `imgsz2048-ft` checkpoint's ~0.30. The model detects on synthetic,
+  not on real scans — the gap it was meant to close is still wide open.
+
+**Why:** training *from COCO* (fresh head) for 50ep on only 1362 dense pages is
+too little to reach production quality — production was *fine-tuned* from a
+DSv2-pretrained base. This run also lacked a **clean-trained control**, so it
+can't isolate augmentation's delta. **Before spending more GPU on the from-COCO
+recipe, reconsider it** — the more promising design is to fine-tune the
+production checkpoint (nc=208, no head reset) on the augmented data *with* a
+clean control. Full write-up: memory `project_domain_augmentation`.
+
 ## What's already done (host session, no GPU)
 
 - Recipe decided + committed: `augment_scoreaug.py` — BadPhotoCopy dropped from
@@ -66,10 +88,16 @@ python3 -m tools.omr.training.augment_scoreaug --download-blanks \
 ## 4. DSv2 download + prepare (clean set)
 
 ```bash
-# dense (~6.5 GB) — recommended first pass
-python3 tools/omr/training/download_dataset.py --out data/deepscoresv2
-python3 tools/omr/training/prepare_yolo_data.py \
-    --src data/deepscoresv2 --dst data/deepscoresv2-yolo
+# dense set: ~700 MB compressed .tar.gz -> ds2_dense/ = 1362 train + 352 val PAGES
+# (small page count, but each DSv2 page is densely annotated). Recommended first pass.
+python3 -m tools.omr.training.download_dataset --out data/deepscoresv2
+# the downloader only DOWNLOADS — it does not extract. Untar it yourself:
+tar -xzf data/deepscoresv2/ds2_dense.tar.gz -C data/deepscoresv2
+# prepare: run as a MODULE (-m) — prepare_yolo_data uses relative imports and
+# raises "attempted relative import with no known parent package" as a plain
+# script. --src is the ds2_dense/ SUBDIR (holds images/ + deepscores_{train,test}.json):
+python3 -m tools.omr.training.prepare_yolo_data \
+    --src data/deepscoresv2/ds2_dense --dst data/deepscoresv2-yolo
 # -> data/deepscoresv2-yolo/{images,labels}/{train,val} + data.yaml (nc=208)
 #    (--full for the ~80 GB complete set: merge_shards.py first — see HANDOFF_PREMIUM_TRAINING.md)
 ```
@@ -94,19 +122,24 @@ python3 -m tools.omr.training.train_yolo --smoke --device 0
 
 python3 -m tools.omr.training.train_yolo \
     --data data/deepscoresv2-yolo-scoreaug/data.yaml \
-    --weights yolov8l.pt \
-    --epochs 50 --imgsz 1280 --batch 16 --device 0 --patience 15 \
+    --weights yolov8l.pt --allow-nc-expansion \
+    --epochs 50 --imgsz 1280 --batch 2 --device 0 --patience 15 \
     --fliplr 0 --flipud 0 --hsv_h 0 --hsv_s 0 --hsv_v 0.4 --mosaic 1.0 --degrees 2 \
     --name ds2-yolov8l-scoreaug \
     --extra-kwargs '{"cls": 1.0, "lr0": 0.01, "warmup_epochs": 5}'
-# run the full train in tmux. A100/full: --batch 8 --epochs 100 (see HANDOFF_PREMIUM_TRAINING.md)
+# BATCH SIZE: DSv2 dense pages carry 3-4k objects each, so yolov8's
+# TaskAlignedAssigner OOMs at batch >=8 on a 24GB card (falls back to CPU, it/s
+# collapses). --batch 2 fits a 4090 comfortably (~7-9GB, ~5.8 it/s, ~2h for
+# 50ep); a 40-80GB card can push --batch 4-8. Run the full train in tmux.
 ```
 
-> ⚠️ **GOTCHA (verified in the dry-run): `--weights` must be the ALIAS
-> `yolov8l.pt`, NOT a path to a downloaded file.** `train_yolo.py` skips its
-> nc-consistency guard only for download aliases; a *path* to an existing COCO
-> `.pt` (80 classes) vs data nc=208 hard-fails the guard. The alias downloads
-> COCO and lets ultralytics build a fresh 208-class head — exactly what we want.
+> ⚠️ **GOTCHA — the nc-guard + `--allow-nc-expansion`.** `train_yolo.py` skips
+> its nc-consistency guard only for a download *alias* (`yolov8l.pt` with no
+> local file). But the first training attempt DOWNLOADS `yolov8l.pt` into the CWD,
+> so any *retry* then sees it as an existing COCO (nc=80) **path** and the guard
+> hard-fails. Building a fresh 208-class head from the COCO backbone is exactly the
+> intent, so pass **`--allow-nc-expansion`** (above) — it's retry-proof and
+> harmless on a fresh box where the alias already skips the guard.
 
 > ⚠️ **Keep the music-safe aug flags** (`--fliplr 0 --flipud 0 --hsv_h 0
 > --hsv_s 0 --degrees 2`). Ultralytics' *defaults* would horizontally flip and
