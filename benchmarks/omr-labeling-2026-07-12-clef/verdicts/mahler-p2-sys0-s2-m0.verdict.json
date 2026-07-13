@@ -1,0 +1,68 @@
+{
+  "cell_id": "mahler-p2-sys0-s2-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T00:48:20+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 83,
+        "y": 249,
+        "w": 323,
+        "h": 835
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 446,
+        "y": 319,
+        "w": 163,
+        "h": 337
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "timeSig2",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 982,
+        "y": 468,
+        "w": 203,
+        "h": 211
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "timeSig2",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 982,
+        "y": 679,
+        "w": 194,
+        "h": 207
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1385,
+        "y": 475,
+        "w": 158,
+        "h": 348
+      },
+      "notes": ""
+    }
+  ]
+}

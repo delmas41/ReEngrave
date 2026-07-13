@@ -1,0 +1,30 @@
+Phase-0 clef labeling batch — Mahler 5, 44 clef cells (2 pages)
+================================================================================
+
+Each cell = the FIRST measure (m0) of a staff (top -> bottom), carrying a clef
+(+ key-sig accidentals + time signature + a rest).
+
+  idx1  (cell ids  mahler-p2-...)  = Trauermarsch opening, printed 2/2, 18 staves
+  p13   (cell ids  mahler-p12-...) = m.85 continuation, no printed meter, 26 staves
+
+Goal: real-scan clef examples — especially the types the model has barely seen
+(alto, perc, and mid-bar *Change classes).
+
+LEGATO clef reads, top -> bottom (HINT ONLY — trust your eyes on the glyph):
+  idx1: treble,treble,treble, bass, treble,treble,treble, alto, bass,bass, perc,perc
+  p13:  treble, bass,bass, perc,perc, treble,treble, alto,alto, bass
+
+Clef classes:
+  gClef=treble  cClefAlto=viola  cClefTenor=tenor  fClef=bass
+  unpitchedPercussionClef1=percussion
+  *Change (gClefChange/cClefAltoChange/cClefTenorChange/fClefChange) = a SMALLER
+    mid-bar clef change; use these (not the initial classes) wherever one appears.
+
+COMPLETENESS: box EVERY symbol in each cell (clef + key-sig accidentals + time-
+sig digits + rest), not just the clef. Unboxed = background the model is
+penalized for firing on.
+
+Next (me, after you label): verdicts_to_yolo_labels.py -> new
+data/user-labeled/v5-2026-07-12-clef; fine-tune from the production checkpoint
+(nc=208 + DSv2 rehearsal) to a NEW weights file; keep-or-discard eval. Nothing
+production is touched — see tools/omr/training/CLEF_PSEUDOLABEL_PLAN.md.

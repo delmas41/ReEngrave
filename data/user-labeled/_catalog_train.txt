@@ -134,3 +134,15 @@
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v4-2026-06-10-la-mer/images/debussy-la-mer-p75-p75-sys0-s9-m1.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v4-2026-06-10-la-mer/images/debussy-la-mer-p90-p90-sys0-s0-m0.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v4-2026-06-10-la-mer/images/debussy-la-mer-p90-p90-sys3-s5-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p12-sys1-s8-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p12-sys2-s15-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p12-sys2-s23-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p12-sys2-s24-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys0-s0-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys0-s1-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys0-s3-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys0-s4-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys1-s5-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys1-s6-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys3-s10-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef/images/mahler-p2-sys5-s16-m0.png

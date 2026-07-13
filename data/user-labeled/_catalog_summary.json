@@ -1,11 +1,11 @@
 {
-  "generated_utc": "2026-07-10T22:48:59+00:00",
+  "generated_utc": "2026-07-13T01:31:23+00:00",
   "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled",
   "val_fraction": 0.15,
   "seed": "reengrave",
-  "n_versions": 4,
-  "n_train_images": 136,
-  "n_val_images": 25,
+  "n_versions": 5,
+  "n_train_images": 148,
+  "n_val_images": 28,
   "n_classes": 208,
   "n_classes_full_vocab": 214,
   "n_boxes_dropped_over_nc": 83,
@@ -15,7 +15,7 @@
     "repeatLeft": 5,
     "textDynamic": 2
   },
-  "full_catalog": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/catalog-214.yaml",
+  "full_catalog": null,
   "weights_source": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt",
   "versions": [
     {
@@ -57,6 +57,16 @@
       "labeler": "sean",
       "description": "Debussy La Mer draw-from-scratch batch, 29 cells",
       "created_utc": "2026-07-10T22:48:51+00:00"
+    },
+    {
+      "name": "v5-2026-07-12-clef",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v5-2026-07-12-clef",
+      "n_train_images": 12,
+      "n_val_images": 3,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Phase-0 clef batch: Mahler idx1+p13, 15 clefs incl 3 alto + 2 tenor",
+      "created_utc": "2026-07-13T01:31:23+00:00"
     }
   ]
 }
