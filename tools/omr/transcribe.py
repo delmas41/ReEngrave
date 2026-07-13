@@ -79,6 +79,22 @@ Output schema (JSON):
                                             # multi-measure rest / tacet) — always
                                             # down-weighted to low, never promoted
                   },
+                  "key_signature_warning": {   # OPTIONAL — only when this staff's
+                                            # key signature can't be reconciled
+                                            # with the concert key the majority of
+                                            # staves share, via any standard
+                                            # instrument transposition. See
+                                            # _flag_key_signature_inconsistency.
+                      "staff_key": "5 sharps",   # this staff's written key sig
+                      "staff_fifths": 5,         # signed circle-of-fifths position
+                      "concert_key": "C major",  # concert key explaining the majority
+                      "consistent_written_fifths": [-3, 0, 1, 2, 3],  # allowed set
+                      "agreement": "6/7",   # staves fitting the concert key / total
+                                            #   with a (non-zero) key signature
+                      "circle_distance": 2, # fifths from the nearest allowed value
+                      "confidence": 0.857,
+                      "confidence_label": "high"  # low | medium | high
+                  },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
                   "measures": [
@@ -1281,8 +1297,11 @@ def _annotate_column_rhythm_warnings(
 # high, even under strong consensus). Independently-barred systems remain an
 # unresolved FP class the confidence grading (not a hard error) hedges against.
 
-_MEASURE_COUNT_HIGH_CONSENSUS = 0.8       # e.g. a lone dissenter among 5+ staves
-_MEASURE_COUNT_MED_CONSENSUS = 2.0 / 3    # a 2:1-or-better majority
+# Consensus -> label thresholds shared by the cross-staff consistency checks
+# (measure-count below + key-signature further down): the fraction of the
+# agreeing majority needed to call a flag high vs medium.
+_CONSENSUS_HIGH = 0.8       # e.g. a lone dissenter among 5+ staves
+_CONSENSUS_MED = 2.0 / 3    # a 2:1-or-better majority
 
 
 def _measure_has_notehead(measure: dict[str, Any]) -> bool:
@@ -1351,9 +1370,9 @@ def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
             label = "high"
         elif likely_multimeasure_rest:
             label = "low"   # down-weight the known multi-measure-rest FP class
-        elif consensus_strength >= _MEASURE_COUNT_HIGH_CONSENSUS:
+        elif consensus_strength >= _CONSENSUS_HIGH:
             label = "high"
-        elif consensus_strength >= _MEASURE_COUNT_MED_CONSENSUS:
+        elif consensus_strength >= _CONSENSUS_MED:
             label = "medium"
         else:
             label = "low"
@@ -1367,6 +1386,131 @@ def _flag_measure_count_inconsistency(system: dict[str, Any]) -> None:
             "confidence_label": label,
             "phase1_corroborated": phase1_corroborated,
             "likely_multimeasure_rest": likely_multimeasure_rest,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Cross-staff key-signature consistency (transposition-aware)
+# ---------------------------------------------------------------------------
+#
+# A naive "all staves in a system share one key signature" check is useless on
+# an orchestral score, because TRANSPOSING instruments legitimately print
+# DIFFERENT written key signatures for the same concert key. The relationship is
+# a fixed offset on the circle of fifths (sharps +, flats -): the written key =
+# concert key + the instrument's offset. The common families —
+#
+#     C  (non-transposing)              offset  0   (writes concert C as C)
+#     F  (horn, English horn)           offset +1   (...as G, 1 sharp)
+#     Bb (clarinet, trumpet, tenor sax) offset +2   (...as D, 2 sharps)
+#     Eb (alto sax, Eb clarinet)        offset +3   (...as A, 3 sharps)
+#     A  (clarinet in A)                offset -3   (...as Eb, 3 flats)
+#
+# So for ANY concert key K the internally-consistent written key signatures are
+# the SET {K-3, K, K+1, K+2, K+3} — for concert C that is {3b, 0, 1#, 2#, 3#},
+# i.e. only ~5 distinct signatures, all mutually consistent. This check asks:
+# does a SINGLE concert key K explain every staff's key signature via one of
+# those offsets? If yes the system is consistent (even when the raw signatures
+# differ — e.g. a clarinet at 2# beside a flute at 0). A staff that fits no such
+# key alongside the strict majority is the outlier — a likely mis-detected key.
+#
+# Two deliberate conservatism choices (this is a precision-first check):
+#  * A staff with NO key signature (0 accidentals) is a WILDCARD — it never
+#    flags and never constrains K. Parts are routinely written with no key
+#    signature and all-inline accidentals (horns, trumpets, timpani, and whole
+#    modern scores), so 0 must not be treated as "must be concert C".
+#  * An outlier only one fifth outside the consistent set (circle_distance == 1)
+#    is capped below "high": it may be a rarer transposition not in the common
+#    set (e.g. a D instrument at offset -2) rather than an error.
+
+_TRANSPOSITION_FIFTHS_OFFSETS = (-3, 0, 1, 2, 3)   # A, C, F, Bb, Eb (see table above)
+_FIFTHS_TO_MAJOR = {
+    0: "C", 1: "G", 2: "D", 3: "A", 4: "E", 5: "B", 6: "F#", 7: "C#",
+    -1: "F", -2: "Bb", -3: "Eb", -4: "Ab", -5: "Db", -6: "Gb", -7: "Cb",
+}
+
+
+def _staff_key_fifths(staff: dict[str, Any]) -> int:
+    """A staff's key signature as a signed circle-of-fifths position: +N for N
+    sharps, -N for N flats, 0 for none (a standard key sig has only one kind)."""
+    ks = staff.get("key_signature") or {}
+    return (ks.get("sharps") or 0) - (ks.get("flats") or 0)
+
+
+def _fifths_key_name(c: int) -> str:
+    return f"{_FIFTHS_TO_MAJOR.get(c, '?')} major"
+
+
+def _fifths_accidentals(c: int) -> str:
+    if c > 0:
+        return f"{c} sharp{'s' if c != 1 else ''}"
+    if c < 0:
+        return f"{-c} flat{'s' if c != -1 else ''}"
+    return "no accidentals"
+
+
+def _flag_key_signature_inconsistency(system: dict[str, Any]) -> None:
+    """Flag staves whose key signature can't be reconciled — via any standard
+    instrument transposition — with the concert key that explains the strict
+    majority of the system's staves. Mutates each outlier staff dict in place
+    with a ``key_signature_warning``. See the module comment above.
+
+    Pure additive post-pass: a system whose signatures are all consistent with
+    one concert key (the common case, incl. a whole orchestra of transposing
+    instruments) is left byte-identical. Abstains when fewer than two staves
+    carry a key signature, or when no single concert key covers a strict
+    majority (scattered / unreliable detection).
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return
+
+    # 0 (no key signature) is a wildcard — drop it (see module comment).
+    nonzero = [(st, c) for st in staves if (c := _staff_key_fifths(st)) != 0]
+    if len(nonzero) < 2:
+        return  # nothing to cross-check
+    values = [c for _, c in nonzero]
+
+    # Candidate concert keys: every K that could place at least one staff on a
+    # known transposition. Pick the K whose consistent set covers the most.
+    candidates = sorted({c - off for c in values for off in _TRANSPOSITION_FIFTHS_OFFSETS})
+    best_k, best_n = None, -1
+    for k in candidates:
+        n = sum(1 for c in values if (c - k) in _TRANSPOSITION_FIFTHS_OFFSETS)
+        # Max coverage; ties broken toward the concert key nearest C (fewest
+        # accidentals — the more likely reading, and a stable report).
+        if best_k is None or n > best_n or (n == best_n and abs(k) < abs(best_k)):
+            best_n, best_k = n, k
+
+    total = len(values)
+    # Strict majority must agree on one concert key, else we can't say which
+    # staves are the outliers — abstain (mirrors the measure-count check).
+    if best_n * 2 <= total:
+        return
+
+    consensus = best_n / total
+    consistent_set = sorted(best_k + off for off in _TRANSPOSITION_FIFTHS_OFFSETS)
+    for st, c in nonzero:
+        if (c - best_k) in _TRANSPOSITION_FIFTHS_OFFSETS:
+            continue
+        distance = min(abs(c - s) for s in consistent_set)
+        if consensus >= _CONSENSUS_HIGH:
+            label = "high"
+        elif consensus >= _CONSENSUS_MED:
+            label = "medium"
+        else:
+            label = "low"
+        # One fifth outside the set may be a rarer transposition, not an error.
+        if distance == 1 and label == "high":
+            label = "medium"
+        st["key_signature_warning"] = {
+            "staff_key": _fifths_accidentals(c),
+            "staff_fifths": c,
+            "concert_key": _fifths_key_name(best_k),
+            "consistent_written_fifths": consistent_set,
+            "agreement": f"{best_n}/{total}",
+            "circle_distance": distance,
+            "confidence": round(consensus, 3),
+            "confidence_label": label,
         }
 
 
@@ -1640,15 +1784,19 @@ def transcribe(
         # signature don't participate. See _annotate_column_rhythm_warnings.
         _annotate_column_rhythm_warnings(page_dict)
 
-        # ── Cross-staff measure-count consistency check ──
-        # Pure additive internal double-check: barlines run through the whole
-        # system, so every staff must share the same measure count; a staff
-        # deviating from the strict-majority mode localizes a missed or spurious
-        # barline. Writes measure_count_warning only on a real disagreement, so
-        # a clean page (all staves agree) is byte-identical. Zero external input,
-        # zero meter/clef/pitch reasoning. See _flag_measure_count_inconsistency.
+        # ── Cross-staff consistency checks (additive, zero external input) ──
+        # Both write a warning key only on a genuine disagreement, so a clean
+        # page is byte-identical.
+        #  - measure count: barlines run through the whole system, so every
+        #    staff must share the same count; a deviating staff localizes a
+        #    missed/spurious barline. See _flag_measure_count_inconsistency.
+        #  - key signature: transposing instruments legitimately differ, so a
+        #    staff is flagged only when no single concert key reconciles it with
+        #    the majority via a standard transposition. See
+        #    _flag_key_signature_inconsistency.
         for sys_d in page_dict["systems"]:
             _flag_measure_count_inconsistency(sys_d)
+            _flag_key_signature_inconsistency(sys_d)
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
