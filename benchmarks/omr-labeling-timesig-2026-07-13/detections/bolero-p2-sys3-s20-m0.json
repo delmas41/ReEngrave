@@ -1,0 +1,18 @@
+{
+  "cell_id": "bolero-p2-sys3-s20-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1239,
+      "y": 299,
+      "w": 87,
+      "h": 34,
+      "x_center": 1282,
+      "y_center": 316,
+      "confidence": 0.8042740225791931,
+      "pitch": null
+    }
+  ]
+}

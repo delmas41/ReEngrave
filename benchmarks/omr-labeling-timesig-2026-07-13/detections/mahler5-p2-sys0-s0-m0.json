@@ -1,0 +1,44 @@
+{
+  "cell_id": "mahler5-p2-sys0-s0-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 173,
+      "y": 533,
+      "w": 973,
+      "h": 83,
+      "x_center": 659,
+      "y_center": 574,
+      "confidence": 0.7619463801383972,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 282,
+      "y": 327,
+      "w": 1533,
+      "h": 117,
+      "x_center": 1048,
+      "y_center": 385,
+      "confidence": 0.4374547302722931,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1044,
+      "y": 3,
+      "w": 41,
+      "h": 36,
+      "x_center": 1064,
+      "y_center": 21,
+      "confidence": 0.40293899178504944,
+      "pitch": null
+    }
+  ]
+}

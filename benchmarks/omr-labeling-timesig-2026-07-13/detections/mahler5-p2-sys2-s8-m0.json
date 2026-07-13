@@ -1,0 +1,31 @@
+{
+  "cell_id": "mahler5-p2-sys2-s8-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 730,
+      "y": 0,
+      "w": 392,
+      "h": 33,
+      "x_center": 926,
+      "y_center": 16,
+      "confidence": 0.4028416574001312,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 955,
+      "y": 0,
+      "w": 20,
+      "h": 17,
+      "x_center": 965,
+      "y_center": 8,
+      "confidence": 0.41139885783195496,
+      "pitch": null
+    }
+  ]
+}

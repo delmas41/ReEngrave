@@ -1,0 +1,96 @@
+{
+  "cell_id": "mahler5-p2-sys2-s7-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 425,
+      "y": 65,
+      "w": 94,
+      "h": 99,
+      "x_center": 472,
+      "y_center": 114,
+      "confidence": 0.625349223613739,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 4,
+      "y": 397,
+      "w": 1333,
+      "h": 108,
+      "x_center": 670,
+      "y_center": 451,
+      "confidence": 0.7046304941177368,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 4,
+      "y": 344,
+      "w": 1486,
+      "h": 156,
+      "x_center": 747,
+      "y_center": 422,
+      "confidence": 0.4113369286060333,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 926,
+      "y": 464,
+      "w": 74,
+      "h": 43,
+      "x_center": 963,
+      "y_center": 485,
+      "confidence": 0.47400912642478943,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1668,
+      "y": 452,
+      "w": 79,
+      "h": 57,
+      "x_center": 1707,
+      "y_center": 480,
+      "confidence": 0.6713338494300842,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1807,
+      "y": 160,
+      "w": 57,
+      "h": 43,
+      "x_center": 1835,
+      "y_center": 181,
+      "confidence": 0.5914655327796936,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadHalfInSpace",
+      "category": "notehead",
+      "x": 1808,
+      "y": 159,
+      "w": 56,
+      "h": 44,
+      "x_center": 1836,
+      "y_center": 181,
+      "confidence": 0.6960289478302002,
+      "pitch": null
+    }
+  ]
+}

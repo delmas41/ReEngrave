@@ -1,0 +1,57 @@
+{
+  "cell_id": "mahler5-p2-sys5-s17-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 3,
+      "y": 638,
+      "w": 1507,
+      "h": 101,
+      "x_center": 756,
+      "y_center": 688,
+      "confidence": 0.6544994115829468,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHalf",
+      "category": "rest",
+      "x": 1078,
+      "y": 1139,
+      "w": 39,
+      "h": 14,
+      "x_center": 1097,
+      "y_center": 1146,
+      "confidence": 0.7594009041786194,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 333,
+      "y": 732,
+      "w": 1535,
+      "h": 94,
+      "x_center": 1100,
+      "y_center": 779,
+      "confidence": 0.7881936430931091,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 799,
+      "y": 554,
+      "w": 701,
+      "h": 64,
+      "x_center": 1149,
+      "y_center": 586,
+      "confidence": 0.680622935295105,
+      "pitch": null
+    }
+  ]
+}
