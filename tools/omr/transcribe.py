@@ -107,6 +107,19 @@ Output schema (JSON):
                       "lower_staff_clef": "bass", "upper_staff_clef": "treble",
                       "confidence_label": "advisory"
                   },
+                  "time_signature_disagreement": {  # OPTIONAL — only when this
+                                            # staff's genuinely-DETECTED meter
+                                            # disagrees with the rest of the
+                                            # system (all staves share one meter,
+                                            # so a detected disagreement is a
+                                            # mis-read). See
+                                            # _flag_time_signature_disagreement.
+                      "staff_time_signature": "3/4",
+                      "system_detected_meters": ["3/4", "4/4"],
+                      "majority_meter": "4/4",  # null on a near-even split
+                      "agreement": "3/4", "confidence": 0.75,
+                      "confidence_label": "medium"
+                  },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
                   "measures": [
@@ -1629,6 +1642,70 @@ def _flag_clef_register_inversion(system: dict[str, Any]) -> None:
         }
 
 
+# ---------------------------------------------------------------------------
+# Cross-staff time-signature agreement (check e)
+# ---------------------------------------------------------------------------
+#
+# (A cross-system clef-continuity flag was prototyped here and dropped: a
+# post-pass that majority-votes each role's FINAL clef across same-sized systems
+# is unreliable — on reduction/condensed scores same-sized systems aren't the
+# same instruments, so it false-fires, and majority-clef != correct-clef so it
+# can even flag the RIGHT staff. The sound signal ("a DETECTED clef overrode the
+# inherited one") is only visible inside _ClefContinuity during transcription,
+# or from the dossier's expected per-role clef — deferred to there.)
+
+
+def _flag_time_signature_disagreement(system: dict[str, Any]) -> None:
+    """Flag staves whose genuinely-DETECTED time signature disagrees with the
+    rest of the system. Every staff of a system shares one meter, so a
+    disagreement among *detected* meters is a hard mis-read (unlike a
+    measure-count deviation, at most one detected meter can be right).
+
+    Only genuinely-detected (source-less) staff meters participate — a meter
+    tagged with a `source` was back-filled / propagated by inference, not read,
+    so it is not evidence. Additive: writes nothing when the detected meters
+    agree (or fewer than two staves detected one).
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return
+    detected: list[tuple[dict[str, Any], tuple[int, int]]] = []
+    for st in staves:
+        ts = st.get("time_signature")
+        if ts and not ts.get("source"):
+            num, den = ts.get("numerator"), ts.get("denominator")
+            if num and den:
+                detected.append((st, (num, den)))
+    if len(detected) < 2:
+        return
+    meters = [m for _, m in detected]
+    mode_meter, mode_k = Counter(meters).most_common(1)[0]
+    total = len(meters)
+    if mode_k == total:
+        return  # all detected meters agree
+
+    consensus = mode_k / total
+    strict = mode_k * 2 > total
+    distinct = sorted(f"{a}/{b}" for a, b in set(meters))
+    for st, m in detected:
+        if strict and m == mode_meter:
+            continue  # the majority-detected meter — not the outlier
+        if strict and consensus >= _CONSENSUS_HIGH:
+            label = "high"
+        elif strict and consensus >= _CONSENSUS_MED:
+            label = "medium"
+        else:
+            label = "low"   # near-even split: can't say which meter is right
+        st["time_signature_disagreement"] = {
+            "staff_time_signature": f"{m[0]}/{m[1]}",
+            "system_detected_meters": distinct,
+            "majority_meter": f"{mode_meter[0]}/{mode_meter[1]}" if strict else None,
+            "agreement": f"{mode_k}/{total}",
+            "confidence": round(consensus, 3),
+            "confidence_label": label,
+        }
+
+
 def transcribe(
     *,
     pdf_path: Path,
@@ -1912,10 +1989,14 @@ def transcribe(
         #  - clef/register (ADVISORY): a lower staff resolving an octave+ above
         #    the staff above it — a possible clef error, voice-crossing, or high
         #    instrument. See _flag_clef_register_inversion.
+        #  - time-signature: staves of a system share one meter, so genuinely
+        #    DETECTED meters that disagree are a mis-read. See
+        #    _flag_time_signature_disagreement.
         for sys_d in page_dict["systems"]:
             _flag_measure_count_inconsistency(sys_d)
             _flag_key_signature_inconsistency(sys_d)
             _flag_clef_register_inversion(sys_d)
+            _flag_time_signature_disagreement(sys_d)
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
