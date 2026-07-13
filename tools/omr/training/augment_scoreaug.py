@@ -19,8 +19,9 @@ Three degradation families, randomly chosen/combined per selected image:
       bleed-through from the reverse side of the page.
   (c) Augraphy photometric effects — if the ``augraphy`` package is
       importable: InkBleed, BleedThrough, LowInkPeriodicLines,
-      LowInkRandomLines, InkMottling, NoiseTexturize, and a tame
-      BadPhotoCopy. Augraphy's spatial / warping augmentations are
+      LowInkRandomLines, InkMottling, NoiseTexturize (BadPhotoCopy is
+      supported but excluded from the default safe-list — see the note on
+      AUGRAPHY_SAFE_EFFECTS). Augraphy's spatial / warping augmentations are
       NEVER used (they would move pixels out from under the bboxes).
       Without augraphy installed the script still works with (a)+(b).
 
@@ -117,6 +118,14 @@ P_AUGRAPHY = 0.5
 # not in this list — especially geometric/warping augs like BookBinding,
 # Folding, Geometric, PageBorder — must never be added: they move pixels
 # and would silently invalidate the (copied-verbatim) YOLO labels.
+# BadPhotoCopy is intentionally NOT in this default list: its Worley-noise
+# path is JIT-compiled by numba, and numba 0.60 + numpy 2.0 (the combo pip
+# resolves on Python 3.9) crashes it non-deterministically on some image
+# sizes (`AssertionError: recvr.is_precise()`), which would abort a batch
+# mid-augmentation. InkMottling + NoiseTexturize already cover the grainy-
+# photocopier look. To re-enable on an environment with a known-good
+# numba/numpy combo, add "BadPhotoCopy" back — its `_build_augraphy_effect`
+# case is kept intact below.
 AUGRAPHY_SAFE_EFFECTS = (
     "InkBleed",
     "BleedThrough",
@@ -124,7 +133,6 @@ AUGRAPHY_SAFE_EFFECTS = (
     "LowInkRandomLines",
     "InkMottling",
     "NoiseTexturize",
-    "BadPhotoCopy",
 )
 
 AUGRAPHY_INSTALL_HINT = (
