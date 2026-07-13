@@ -95,6 +95,18 @@ Output schema (JSON):
                       "confidence": 0.857,
                       "confidence_label": "high"  # low | medium | high
                   },
+                  "clef_register_warning": {   # OPTIONAL, ADVISORY — this (lower)
+                                            # staff resolves an octave+ above the
+                                            # staff above it: a possible clef
+                                            # error, voice-crossing, or high
+                                            # instrument. See
+                                            # _flag_clef_register_inversion.
+                      "lower_staff_index": 3, "upper_staff_index": 2,
+                      "lower_staff_median_midi": 74, "upper_staff_median_midi": 55,
+                      "register_gap_semitones": 15,  # p25(lower) - p75(upper)
+                      "lower_staff_clef": "bass", "upper_staff_clef": "treble",
+                      "confidence_label": "advisory"
+                  },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
                   "measures": [
@@ -1514,6 +1526,109 @@ def _flag_key_signature_inconsistency(system: dict[str, Any]) -> None:
         }
 
 
+# ---------------------------------------------------------------------------
+# Clef-from-pitch register inversion (ADVISORY only)
+# ---------------------------------------------------------------------------
+#
+# The weakest of the internal-consistency checks, and deliberately advisory. A
+# wrong clef shifts every notehead on a staff by a constant diatonic offset, so
+# a single staff gives ZERO evidence: the mis-read pitches AND the (wrong) clef
+# field shift together and stay internally self-consistent. The only internal
+# signal is RELATIONAL — a staff resolving into the wrong register relative to
+# its neighbours. Staves in a system run (roughly) high-to-low, so a LOWER staff
+# whose notes sit well ABOVE the staff above it is suspicious: a possible clef
+# error (the classic "a nominally-bass staff resolving above the treble above
+# it"), OR a genuine voice-crossing / a high instrument (piccolo).
+#
+# Real limits (why this stays advisory, and why the dossier's per-instrument
+# RANGE is what makes clef-from-pitch actually reliable):
+#  * Adjacent instruments overlap heavily in range, and a clef shift (~an octave)
+#    often does NOT push a staff cleanly outside its neighbours — so recall is
+#    low by construction. Calibrated on the repo's real scores, benign adjacent
+#    pairs reach a p25(lower)-vs-p75(upper) separation of +9 semitones with no
+#    clef error present; a FULL octave (12) of separation is required to flag, so
+#    the flag never fires on those. It catches only GROSS inversions.
+#  * Voice-crossing and high solo instruments are real false positives.
+# So: never more than "advisory", and it points at an inverted PAIR (at most one
+# staff has a wrong clef) rather than asserting which staff or that it's an error.
+
+_NOTE_SEMITONE = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
+_CLEF_MIN_NOTEHEADS = 6      # per staff — fewer gives an unreliable register
+_CLEF_INVERSION_GAP = 12     # semitones (an octave) of p25/p75 separation to flag
+
+
+def _pitch_to_midi(pitch: str | None) -> int | None:
+    """Convert a pitch string ('F#3', 'Bb5', 'C4') to a MIDI number (C4 = 60),
+    or None if unparseable. Accepts any run of #/b accidentals after the letter."""
+    if not pitch or pitch[0] not in _NOTE_SEMITONE:
+        return None
+    semitone = _NOTE_SEMITONE[pitch[0]]
+    i = 1
+    while i < len(pitch) and pitch[i] in "#b":
+        semitone += 1 if pitch[i] == "#" else -1
+        i += 1
+    try:
+        octave = int(pitch[i:])
+    except ValueError:
+        return None
+    return 12 * (octave + 1) + semitone
+
+
+def _staff_notehead_midis(staff: dict[str, Any]) -> list[int]:
+    """MIDI numbers of every resolved notehead pitch on a staff (register
+    evidence). Skips unresolved / non-notehead detections."""
+    out: list[int] = []
+    for md in staff.get("measures", []):
+        for det in md.get("detections", []):
+            if det.get("category") == "notehead":
+                m = _pitch_to_midi(det.get("pitch"))
+                if m is not None:
+                    out.append(m)
+    return out
+
+
+def _percentile(sorted_vals: list[int], q: float) -> int:
+    """Value at quantile q of a pre-sorted, non-empty list (nearest-rank)."""
+    return sorted_vals[min(len(sorted_vals) - 1, int(q * len(sorted_vals)))]
+
+
+def _flag_clef_register_inversion(system: dict[str, Any]) -> None:
+    """Advisory flag on a lower staff whose register sits an octave+ above the
+    staff directly above it — a possible clef error (or voice-crossing / a high
+    instrument). Mutates the lower staff dict with a ``clef_register_warning``.
+    See the module comment above; this is advisory-only by design.
+
+    Pure additive post-pass: writes nothing unless a gross inversion exists, so
+    a normally-ordered system is byte-identical. Only staves with enough
+    resolved noteheads for a reliable register estimate participate.
+    """
+    staves = system.get("staves") or []
+    if len(staves) < 2:
+        return
+    midis = [_staff_notehead_midis(st) for st in staves]
+    for i in range(len(staves) - 1):
+        upper_m, lower_m = midis[i], midis[i + 1]
+        if len(upper_m) < _CLEF_MIN_NOTEHEADS or len(lower_m) < _CLEF_MIN_NOTEHEADS:
+            continue
+        upper_sorted, lower_sorted = sorted(upper_m), sorted(lower_m)
+        # Robust separation: the lower staff's near-bottom (p25) above the upper
+        # staff's near-top (p75). Percentiles absorb a stray crossing note.
+        gap = _percentile(lower_sorted, 0.25) - _percentile(upper_sorted, 0.75)
+        if gap < _CLEF_INVERSION_GAP:
+            continue
+        upper, lower = staves[i], staves[i + 1]
+        lower["clef_register_warning"] = {
+            "lower_staff_index": lower.get("staff_index"),
+            "upper_staff_index": upper.get("staff_index"),
+            "lower_staff_median_midi": _percentile(lower_sorted, 0.5),
+            "upper_staff_median_midi": _percentile(upper_sorted, 0.5),
+            "register_gap_semitones": gap,
+            "lower_staff_clef": lower.get("clef"),
+            "upper_staff_clef": upper.get("clef"),
+            "confidence_label": "advisory",
+        }
+
+
 def transcribe(
     *,
     pdf_path: Path,
@@ -1794,9 +1909,13 @@ def transcribe(
         #    staff is flagged only when no single concert key reconciles it with
         #    the majority via a standard transposition. See
         #    _flag_key_signature_inconsistency.
+        #  - clef/register (ADVISORY): a lower staff resolving an octave+ above
+        #    the staff above it — a possible clef error, voice-crossing, or high
+        #    instrument. See _flag_clef_register_inversion.
         for sys_d in page_dict["systems"]:
             _flag_measure_count_inconsistency(sys_d)
             _flag_key_signature_inconsistency(sys_d)
+            _flag_clef_register_inversion(sys_d)
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
