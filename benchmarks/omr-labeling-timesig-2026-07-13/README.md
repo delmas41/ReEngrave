@@ -31,9 +31,10 @@ staves 2–7 are continuation lines with no meter (box nothing → hard negative
 Cells were cut with `tools/omr/annotate/select_timesig_cells.py`, which runs the
 **exact `transcribe` phase-1** (no orchestral padding patch, dpi 300) so they are
 byte-for-byte what the reader sees at inference — a specialist trained on them
-transfers. They're pre-labeled with the production model (noteheads/clefs) for
-context; `detections/` + `cells.json` are complete (no `verdicts_to_yolo_labels`
-manifest patch needed).
+transfers. The canvas is **blank** (`detections/` are empty — draw-from-scratch):
+you box only the time signatures; nothing else clutters the view. Non-time-sig
+symbols are self-distilled from the production model at build time, so nothing is
+lost. `cells.json` is complete (no `verdicts_to_yolo_labels` manifest patch).
 
 Two source-specific notes:
 - **Keyboard pages** (WTC, Kirchhoff) print the meter only on the first line;
@@ -48,20 +49,39 @@ Two source-specific notes:
 
 ## What to label
 
-**Box ONLY the time-signature glyphs** — that's the one thing no model detects:
-- digits → class `timeSig0` … `timeSig9` (numerator on top, denominator below)
-- common time (C) → `timeSigCommon`; cut time (¢) → `timeSigCutCommon`
+The time signature sits at the **far left of the measure, right after the clef
+and key signature, before the first note**, vertically centred on the staff.
 
-You do **not** need to confirm noteheads/clefs — the build step self-distills
-every non-time-sig symbol from the production model (see below), so leave them
-pending. Cells with a clef but no time signature (continuation systems) → box
-nothing; they're useful hard negatives.
+**One TIGHT box per glyph** — the model's classes are per-digit, not per-meter:
+- **Stacked digits** → box each digit *separately*. `2/4` = one box on the **2**
+  (class `timeSig2`) + one box on the **4** (class `timeSig4`). `2/2` = two boxes,
+  both `timeSig2`.
+- **C** (common) → one box, class `timeSigCommon`.
+- **¢** (cut) → one box, class `timeSigCutCommon`.
 
-`TIMESIG_HINTS.txt` lists the meter printed on each page. Verify against the cell
-— hints are aids, not ground truth.
+Per page (verify against the actual cell — hints, not gospel):
+
+| cell prefix | meter | boxes to draw |
+|---|---|---|
+| `beet5-p2-*` | 2/4 | `timeSig2` + `timeSig4` |
+| `bolero-p2-*` | 3/4 | `timeSig3` + `timeSig4` |
+| `mahler5-p2-*` | 2/2 | `timeSig2` + `timeSig2` |
+| `wtc-p3-*` | C | `timeSigCommon` (1 box) |
+| `kirchhoff-p2-*` | 6/8 | `timeSig6` + `timeSig8` |
+| `kirchhoff-p6-*` | ¢ | `timeSigCutCommon` (1 box) — **only `s0`/`s1`; `s2`–`s7` have none** |
+| `kirchhoff-p10-*` | 3/2 | `timeSig3` + `timeSig2` |
+
+**Do NOT box anything else** (all self-distilled later): clefs, key-sig sharps/
+flats, noteheads, rests, stems, notes, tempo words, dynamics. **Especially skip
+Kirchhoff's figured-bass digits** — the 6 / 5 / 7 / ⁶₄ under the bass-staff notes
+look like meter digits but are NOT; only the glyph at the measure start counts.
+
+**Cells with no time signature** (continuation lines — the `kirchhoff-p6` staves
+2–7, and any staff whose header the meter isn't reprinted on) → box nothing, just
+`Tab` past. Empty is correct data (hard negative).
 
 UI hotkeys: `a` = draw a new box (stays in draw mode; `Esc` to stop) · `c` = set
-class (`/` searches, type "timeSig") · `b` = redraw a box · `Del` = remove ·
+class (`/` searches — type "timeSig") · `b` = redraw a box · `Del` = remove ·
 `Tab` / `Shift+Tab` = next / prev cell (autosaves).
 
 ## Serve
