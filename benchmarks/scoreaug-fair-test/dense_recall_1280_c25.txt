@@ -1,0 +1,19 @@
+==============================================================================
+  Dense-orchestral notehead RECALL (hand-labeled real cells, not in DSv2)
+==============================================================================
+recall = matched GT noteheads / total GT noteheads (center-match).
+precision is confounded by incomplete human GT — context only.
+
+RECALL  (higher = finds more real noteheads)
+source        GT        production            armA            armB
+beet5        313            0.537           0.077           0.268 
+lamer        132            0.742           0.311           0.485 
+mahler5       89            0.921           0.000           0.640 
+OVERALL      534            0.652           0.122           0.384 
+
+detail (TP / n_pred noteheads):
+source                    production            armA            armB
+beet5                       168/2527           24/33          84/582
+lamer                         98/237           41/53          64/116
+mahler5                      82/1278             0/4          57/565
+==============================================================================

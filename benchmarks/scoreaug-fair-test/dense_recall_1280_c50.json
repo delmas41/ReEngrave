@@ -1,0 +1,2240 @@
+{
+  "config": {
+    "imgsz": 1280,
+    "conf": 0.5,
+    "tol_frac": 0.6,
+    "tol_min": 40.0,
+    "catalog": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/catalog-214.yaml",
+    "nh_idx": [
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      156,
+      157,
+      158
+    ]
+  },
+  "results": [
+    {
+      "label": "production",
+      "weights": "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+      "overall": {
+        "tp": 172,
+        "n_gt": 534,
+        "n_pred": 547,
+        "recall": 0.32209737827715357,
+        "precision": 0.31444241316270566
+      },
+      "per_source": {
+        "beet5": {
+          "tp": 80,
+          "n_gt": 313,
+          "n_pred": 274,
+          "recall": 0.25559105431309903,
+          "precision": 0.291970802919708
+        },
+        "mahler5": {
+          "tp": 26,
+          "n_gt": 89,
+          "n_pred": 186,
+          "recall": 0.29213483146067415,
+          "precision": 0.13978494623655913
+        },
+        "lamer": {
+          "tp": 66,
+          "n_gt": 132,
+          "n_pred": 87,
+          "recall": 0.5,
+          "precision": 0.7586206896551724
+        }
+      },
+      "per_cell": [
+        {
+          "stem": "beet5-p15-sys0-s1-m5",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys1-s3-m2",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 14,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys1-s5-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 6,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s11-m1",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 9,
+          "tp": 3
+        },
+        {
+          "stem": "beet5-p15-sys2-s15-m0",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s17-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s9-m1",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 13,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p25-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s2-m1",
+          "tag": "beet5",
+          "n_gt": 11,
+          "n_pred": 2,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p25-sys0-s4-m2",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 10,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s6-m3",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s9-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 10,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p25-sys1-s11-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys1-s12-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys2-s13-m1",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 5,
+          "tp": 3
+        },
+        {
+          "stem": "beet5-p25-sys3-s17-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s3-m0",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s6-m1",
+          "tag": "beet5",
+          "n_gt": 22,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s9-m1",
+          "tag": "beet5",
+          "n_gt": 20,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s11-m4",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 6,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p35-sys1-s12-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s12-m6",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 4,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p35-sys1-s13-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s0-m5",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s1-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 7,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s1-m8",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys1-s11-m0",
+          "tag": "beet5",
+          "n_gt": 27,
+          "n_pred": 24,
+          "tp": 24
+        },
+        {
+          "stem": "beet5-p5-sys1-s13-m0",
+          "tag": "beet5",
+          "n_gt": 12,
+          "n_pred": 6,
+          "tp": 5
+        },
+        {
+          "stem": "beet5-p5-sys1-s3-m1",
+          "tag": "beet5",
+          "n_gt": 13,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys1-s5-m1",
+          "tag": "beet5",
+          "n_gt": 24,
+          "n_pred": 19,
+          "tp": 18
+        },
+        {
+          "stem": "beet5-p5-sys1-s7-m1",
+          "tag": "beet5",
+          "n_gt": 19,
+          "n_pred": 18,
+          "tp": 14
+        },
+        {
+          "stem": "beet5-p5-sys1-s9-m0",
+          "tag": "beet5",
+          "n_gt": 11,
+          "n_pred": 10,
+          "tp": 6
+        },
+        {
+          "stem": "beet5-p45-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s1-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s2-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s3-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s4-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s5-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys2-s7-m7",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s1-m4",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s2-m8",
+          "tag": "beet5",
+          "n_gt": 13,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s4-m3",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s5-m7",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s11-m6",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s7-m3",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 8,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p55-sys1-s8-m7",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys2-s13-m2",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys1-s2-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 15,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p65-sys1-s4-m4",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys5-s9-m3",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys4-s7-m1",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys5-s8-m10",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys6-s13-m11",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys7-s14-m18",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p10-sys0-s10-m3",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys1-s6-m1",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys2-s12-m3",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys4-s21-m2",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 5,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p175-sys3-s10-m0",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 3,
+          "tp": 3
+        },
+        {
+          "stem": "mahler5-p175-sys4-s12-m4",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 15,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p220-sys0-s0-m0",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p220-sys2-s10-m3",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 17,
+          "tp": 2
+        },
+        {
+          "stem": "mahler5-p220-sys2-s7-m4",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 19,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p25-sys0-s0-m0",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 6,
+          "tp": 2
+        },
+        {
+          "stem": "mahler5-p25-sys0-s1-m6",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s3-m4",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 6,
+          "tp": 2
+        },
+        {
+          "stem": "mahler5-p25-sys0-s5-m2",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s8-m6",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 8,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p25-sys1-s10-m4",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys0-s1-m5",
+          "tag": "mahler5",
+          "n_gt": 10,
+          "n_pred": 8,
+          "tp": 7
+        },
+        {
+          "stem": "mahler5-p4-sys0-s3-m4",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 6,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys3-s10-m2",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 13,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p4-sys3-s12-m1",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s10-m4",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 6,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s14-m6",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s4-m1",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 10,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p55-sys0-s6-m2",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 18,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p7-sys0-s1-m4",
+          "tag": "mahler5",
+          "n_gt": 5,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p7-sys0-s6-m3",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 6,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p90-sys0-s8-m4",
+          "tag": "mahler5",
+          "n_gt": 9,
+          "n_pred": 5,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p105-p105-sys0-s4-m1",
+          "tag": "lamer",
+          "n_gt": 1,
+          "n_pred": 4,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p105-p105-sys0-s6-m1",
+          "tag": "lamer",
+          "n_gt": 12,
+          "n_pred": 4,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p15-p15-sys2-s7-m4",
+          "tag": "lamer",
+          "n_gt": 3,
+          "n_pred": 1,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 6,
+          "n_pred": 7,
+          "tp": 5
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys0-s4-m0",
+          "tag": "lamer",
+          "n_gt": 3,
+          "n_pred": 3,
+          "tp": 3
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys1-s8-m1",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 6,
+          "tp": 6
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys3-s13-m0",
+          "tag": "lamer",
+          "n_gt": 29,
+          "n_pred": 26,
+          "tp": 25
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 4,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s4-m0",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s8-m1",
+          "tag": "lamer",
+          "n_gt": 16,
+          "n_pred": 10,
+          "tp": 10
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys1-s14-m0",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 3,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys2-s6-m0",
+          "tag": "lamer",
+          "n_gt": 4,
+          "n_pred": 9,
+          "tp": 4
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys4-s12-m2",
+          "tag": "lamer",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p60-p60-sys1-s8-m2",
+          "tag": "lamer",
+          "n_gt": 12,
+          "n_pred": 3,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p75-p75-sys0-s6-m1",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p75-p75-sys0-s9-m1",
+          "tag": "lamer",
+          "n_gt": 6,
+          "n_pred": 4,
+          "tp": 4
+        },
+        {
+          "stem": "debussy-la-mer-p90-p90-sys1-s1-m1",
+          "tag": "lamer",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p90-p90-sys3-s5-m0",
+          "tag": "lamer",
+          "n_gt": 5,
+          "n_pred": 0,
+          "tp": 0
+        }
+      ]
+    },
+    {
+      "label": "armA",
+      "weights": "ft-scoreaug-armA-best.pt",
+      "overall": {
+        "tp": 52,
+        "n_gt": 534,
+        "n_pred": 61,
+        "recall": 0.09737827715355805,
+        "precision": 0.8524590163934426
+      },
+      "per_source": {
+        "beet5": {
+          "tp": 15,
+          "n_gt": 313,
+          "n_pred": 17,
+          "recall": 0.04792332268370607,
+          "precision": 0.8823529411764706
+        },
+        "mahler5": {
+          "tp": 0,
+          "n_gt": 89,
+          "n_pred": 1,
+          "recall": 0.0,
+          "precision": 0.0
+        },
+        "lamer": {
+          "tp": 37,
+          "n_gt": 132,
+          "n_pred": 43,
+          "recall": 0.2803030303030303,
+          "precision": 0.8604651162790697
+        }
+      },
+      "per_cell": [
+        {
+          "stem": "beet5-p15-sys0-s1-m5",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys1-s3-m2",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys1-s5-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s11-m1",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s15-m0",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s17-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s9-m1",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s2-m1",
+          "tag": "beet5",
+          "n_gt": 11,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s4-m2",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s6-m3",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s9-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys1-s11-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys1-s12-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys2-s13-m1",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys3-s17-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s3-m0",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s6-m1",
+          "tag": "beet5",
+          "n_gt": 22,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s9-m1",
+          "tag": "beet5",
+          "n_gt": 20,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s11-m4",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s12-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s12-m6",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s13-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s0-m5",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s1-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s1-m8",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys1-s11-m0",
+          "tag": "beet5",
+          "n_gt": 27,
+          "n_pred": 4,
+          "tp": 4
+        },
+        {
+          "stem": "beet5-p5-sys1-s13-m0",
+          "tag": "beet5",
+          "n_gt": 12,
+          "n_pred": 3,
+          "tp": 3
+        },
+        {
+          "stem": "beet5-p5-sys1-s3-m1",
+          "tag": "beet5",
+          "n_gt": 13,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys1-s5-m1",
+          "tag": "beet5",
+          "n_gt": 24,
+          "n_pred": 3,
+          "tp": 3
+        },
+        {
+          "stem": "beet5-p5-sys1-s7-m1",
+          "tag": "beet5",
+          "n_gt": 19,
+          "n_pred": 3,
+          "tp": 3
+        },
+        {
+          "stem": "beet5-p5-sys1-s9-m0",
+          "tag": "beet5",
+          "n_gt": 11,
+          "n_pred": 2,
+          "tp": 2
+        },
+        {
+          "stem": "beet5-p45-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s1-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s2-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s3-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s4-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s5-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys2-s7-m7",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s1-m4",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s2-m8",
+          "tag": "beet5",
+          "n_gt": 13,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s4-m3",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s5-m7",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s11-m6",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s7-m3",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s8-m7",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys2-s13-m2",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys1-s2-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys1-s4-m4",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys5-s9-m3",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys4-s7-m1",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys5-s8-m10",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys6-s13-m11",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys7-s14-m18",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p10-sys0-s10-m3",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys1-s6-m1",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys2-s12-m3",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys4-s21-m2",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p175-sys3-s10-m0",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p175-sys4-s12-m4",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p220-sys0-s0-m0",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p220-sys2-s10-m3",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p220-sys2-s7-m4",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s0-m0",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s1-m6",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s3-m4",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s5-m2",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s8-m6",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys1-s10-m4",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys0-s1-m5",
+          "tag": "mahler5",
+          "n_gt": 10,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys0-s3-m4",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys3-s10-m2",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys3-s12-m1",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s10-m4",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s14-m6",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s4-m1",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s6-m2",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p7-sys0-s1-m4",
+          "tag": "mahler5",
+          "n_gt": 5,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p7-sys0-s6-m3",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p90-sys0-s8-m4",
+          "tag": "mahler5",
+          "n_gt": 9,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p105-p105-sys0-s4-m1",
+          "tag": "lamer",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p105-p105-sys0-s6-m1",
+          "tag": "lamer",
+          "n_gt": 12,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p15-p15-sys2-s7-m4",
+          "tag": "lamer",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 6,
+          "n_pred": 3,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys0-s4-m0",
+          "tag": "lamer",
+          "n_gt": 3,
+          "n_pred": 1,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys1-s8-m1",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 2,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys3-s13-m0",
+          "tag": "lamer",
+          "n_gt": 29,
+          "n_pred": 29,
+          "tp": 28
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s4-m0",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s8-m1",
+          "tag": "lamer",
+          "n_gt": 16,
+          "n_pred": 1,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys1-s14-m0",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 1,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys2-s6-m0",
+          "tag": "lamer",
+          "n_gt": 4,
+          "n_pred": 6,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys4-s12-m2",
+          "tag": "lamer",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p60-p60-sys1-s8-m2",
+          "tag": "lamer",
+          "n_gt": 12,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p75-p75-sys0-s6-m1",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p75-p75-sys0-s9-m1",
+          "tag": "lamer",
+          "n_gt": 6,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p90-p90-sys1-s1-m1",
+          "tag": "lamer",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p90-p90-sys3-s5-m0",
+          "tag": "lamer",
+          "n_gt": 5,
+          "n_pred": 0,
+          "tp": 0
+        }
+      ]
+    },
+    {
+      "label": "armB",
+      "weights": "ft-clean-armB-best.pt",
+      "overall": {
+        "tp": 112,
+        "n_gt": 534,
+        "n_pred": 312,
+        "recall": 0.20973782771535582,
+        "precision": 0.358974358974359
+      },
+      "per_source": {
+        "beet5": {
+          "tp": 43,
+          "n_gt": 313,
+          "n_pred": 124,
+          "recall": 0.13738019169329074,
+          "precision": 0.3467741935483871
+        },
+        "mahler5": {
+          "tp": 18,
+          "n_gt": 89,
+          "n_pred": 117,
+          "recall": 0.20224719101123595,
+          "precision": 0.15384615384615385
+        },
+        "lamer": {
+          "tp": 51,
+          "n_gt": 132,
+          "n_pred": 71,
+          "recall": 0.38636363636363635,
+          "precision": 0.7183098591549296
+        }
+      },
+      "per_cell": [
+        {
+          "stem": "beet5-p15-sys0-s1-m5",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys1-s3-m2",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 6,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p15-sys1-s5-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s11-m1",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 2,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p15-sys2-s15-m0",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s17-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p15-sys2-s9-m1",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 8,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p25-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s2-m1",
+          "tag": "beet5",
+          "n_gt": 11,
+          "n_pred": 1,
+          "tp": 1
+        },
+        {
+          "stem": "beet5-p25-sys0-s4-m2",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s6-m3",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys0-s9-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys1-s11-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys1-s12-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys2-s13-m1",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p25-sys3-s17-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s3-m0",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s6-m1",
+          "tag": "beet5",
+          "n_gt": 22,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys0-s9-m1",
+          "tag": "beet5",
+          "n_gt": 20,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s11-m4",
+          "tag": "beet5",
+          "n_gt": 7,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s12-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s12-m6",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p35-sys1-s13-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s0-m5",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s1-m2",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys0-s1-m8",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys1-s11-m0",
+          "tag": "beet5",
+          "n_gt": 27,
+          "n_pred": 17,
+          "tp": 16
+        },
+        {
+          "stem": "beet5-p5-sys1-s13-m0",
+          "tag": "beet5",
+          "n_gt": 12,
+          "n_pred": 5,
+          "tp": 4
+        },
+        {
+          "stem": "beet5-p5-sys1-s3-m1",
+          "tag": "beet5",
+          "n_gt": 13,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p5-sys1-s5-m1",
+          "tag": "beet5",
+          "n_gt": 24,
+          "n_pred": 11,
+          "tp": 9
+        },
+        {
+          "stem": "beet5-p5-sys1-s7-m1",
+          "tag": "beet5",
+          "n_gt": 19,
+          "n_pred": 13,
+          "tp": 8
+        },
+        {
+          "stem": "beet5-p5-sys1-s9-m0",
+          "tag": "beet5",
+          "n_gt": 11,
+          "n_pred": 6,
+          "tp": 2
+        },
+        {
+          "stem": "beet5-p45-sys0-s0-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s1-m0",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s2-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s3-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s4-m0",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys0-s5-m1",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p45-sys2-s7-m7",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s1-m4",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s2-m8",
+          "tag": "beet5",
+          "n_gt": 13,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s4-m3",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys0-s5-m7",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s11-m6",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s7-m3",
+          "tag": "beet5",
+          "n_gt": 8,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys1-s8-m7",
+          "tag": "beet5",
+          "n_gt": 3,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p55-sys2-s13-m2",
+          "tag": "beet5",
+          "n_gt": 4,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys1-s2-m0",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys1-s4-m4",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p65-sys5-s9-m3",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys4-s7-m1",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys5-s8-m10",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys6-s13-m11",
+          "tag": "beet5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "beet5-p75-sys7-s14-m18",
+          "tag": "beet5",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p10-sys0-s10-m3",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys1-s6-m1",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys2-s12-m3",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 3,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p130-sys4-s21-m2",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p175-sys3-s10-m0",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 3,
+          "tp": 2
+        },
+        {
+          "stem": "mahler5-p175-sys4-s12-m4",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 11,
+          "tp": 2
+        },
+        {
+          "stem": "mahler5-p220-sys0-s0-m0",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p220-sys2-s10-m3",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 11,
+          "tp": 2
+        },
+        {
+          "stem": "mahler5-p220-sys2-s7-m4",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 10,
+          "tp": 3
+        },
+        {
+          "stem": "mahler5-p25-sys0-s0-m0",
+          "tag": "mahler5",
+          "n_gt": 8,
+          "n_pred": 6,
+          "tp": 2
+        },
+        {
+          "stem": "mahler5-p25-sys0-s1-m6",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 4,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p25-sys0-s3-m4",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 4,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p25-sys0-s5-m2",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys0-s8-m6",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 7,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p25-sys1-s10-m4",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 5,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys0-s1-m5",
+          "tag": "mahler5",
+          "n_gt": 10,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys0-s3-m4",
+          "tag": "mahler5",
+          "n_gt": 4,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p4-sys3-s10-m2",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 4,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p4-sys3-s12-m1",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 5,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p55-sys0-s10-m4",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 2,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p55-sys0-s14-m6",
+          "tag": "mahler5",
+          "n_gt": 1,
+          "n_pred": 4,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p55-sys0-s4-m1",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 6,
+          "tp": 1
+        },
+        {
+          "stem": "mahler5-p55-sys0-s6-m2",
+          "tag": "mahler5",
+          "n_gt": 2,
+          "n_pred": 13,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p7-sys0-s1-m4",
+          "tag": "mahler5",
+          "n_gt": 5,
+          "n_pred": 4,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p7-sys0-s6-m3",
+          "tag": "mahler5",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "mahler5-p90-sys0-s8-m4",
+          "tag": "mahler5",
+          "n_gt": 9,
+          "n_pred": 2,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p105-p105-sys0-s4-m1",
+          "tag": "lamer",
+          "n_gt": 1,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p105-p105-sys0-s6-m1",
+          "tag": "lamer",
+          "n_gt": 12,
+          "n_pred": 1,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p15-p15-sys2-s7-m4",
+          "tag": "lamer",
+          "n_gt": 3,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 6,
+          "n_pred": 2,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys0-s4-m0",
+          "tag": "lamer",
+          "n_gt": 3,
+          "n_pred": 1,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys1-s8-m1",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 5,
+          "tp": 4
+        },
+        {
+          "stem": "debussy-la-mer-p30-p30-sys3-s13-m0",
+          "tag": "lamer",
+          "n_gt": 29,
+          "n_pred": 29,
+          "tp": 28
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 2,
+          "tp": 1
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s4-m0",
+          "tag": "lamer",
+          "n_gt": 8,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys0-s8-m1",
+          "tag": "lamer",
+          "n_gt": 16,
+          "n_pred": 7,
+          "tp": 7
+        },
+        {
+          "stem": "debussy-la-mer-p45-p45-sys1-s14-m0",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 2,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys0-s0-m0",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 1,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys2-s6-m0",
+          "tag": "lamer",
+          "n_gt": 4,
+          "n_pred": 11,
+          "tp": 3
+        },
+        {
+          "stem": "debussy-la-mer-p5-p5-sys4-s12-m2",
+          "tag": "lamer",
+          "n_gt": 4,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p60-p60-sys1-s8-m2",
+          "tag": "lamer",
+          "n_gt": 12,
+          "n_pred": 7,
+          "tp": 2
+        },
+        {
+          "stem": "debussy-la-mer-p75-p75-sys0-s6-m1",
+          "tag": "lamer",
+          "n_gt": 2,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p75-p75-sys0-s9-m1",
+          "tag": "lamer",
+          "n_gt": 6,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p90-p90-sys1-s1-m1",
+          "tag": "lamer",
+          "n_gt": 1,
+          "n_pred": 0,
+          "tp": 0
+        },
+        {
+          "stem": "debussy-la-mer-p90-p90-sys3-s5-m0",
+          "tag": "lamer",
+          "n_gt": 5,
+          "n_pred": 1,
+          "tp": 0
+        }
+      ]
+    }
+  ]
+}
