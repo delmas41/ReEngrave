@@ -1,18 +1,1 @@
-{
-  "cell_id": "bolero-p2-sys0-s3-m0",
-  "detections": [
-    {
-      "id": "D0",
-      "smufl_name": "restWhole",
-      "category": "rest",
-      "x": 1262,
-      "y": 239,
-      "w": 70,
-      "h": 26,
-      "x_center": 1297,
-      "y_center": 252,
-      "confidence": 0.7809656262397766,
-      "pitch": null
-    }
-  ]
-}
+{"cell_id": "bolero-p2-sys0-s3-m0", "detections": []}
