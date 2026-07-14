@@ -1,0 +1,70 @@
+{
+  "cell_id": "kirchhoff-p6-sys0-s4-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 10,
+      "y": 25,
+      "w": 35,
+      "h": 92,
+      "x_center": 27,
+      "y_center": 71,
+      "confidence": 0.9566160440444946,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 52,
+      "y": 31,
+      "w": 12,
+      "h": 34,
+      "x_center": 58,
+      "y_center": 48,
+      "confidence": 0.9010672569274902,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 68,
+      "y": 50,
+      "w": 13,
+      "h": 34,
+      "x_center": 74,
+      "y_center": 67,
+      "confidence": 0.9182230830192566,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 180,
+      "y": 44,
+      "w": 1535,
+      "h": 56,
+      "x_center": 947,
+      "y_center": 72,
+      "confidence": 0.6176633238792419,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 487,
+      "y": 44,
+      "w": 1535,
+      "h": 57,
+      "x_center": 1254,
+      "y_center": 72,
+      "confidence": 0.6253517866134644,
+      "pitch": null
+    }
+  ]
+}

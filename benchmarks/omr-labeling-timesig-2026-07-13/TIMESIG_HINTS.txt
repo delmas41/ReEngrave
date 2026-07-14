@@ -8,4 +8,5 @@ bolero-p2: 24 staves — expect time signature 3/4  (IMSLP421137-PMLP03667-Ravel
 mahler5-p2: 18 staves — expect time signature 2/2  (Mahler_5_.pdf)
 wtc-p3: 2 staves — expect time signature C  (IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf)
 kirchhoff-p2: 2 staves — expect time signature 6/8  (Kirchhoff_L'ABC-Musical.pdf)
+kirchhoff-p6: 8 staves — expect time signature cut-C  (Kirchhoff_L'ABC-Musical.pdf)
 kirchhoff-p10: 2 staves — expect time signature 3/2  (Kirchhoff_L'ABC-Musical.pdf)

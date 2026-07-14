@@ -10,8 +10,9 @@ Full backstory: `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`.
 
 ## What's here
 
-60 staff-header cells (first measure of each staff-row) — **6 meters** across
-orchestral (scanned) and keyboard (clean) engravings:
+68 staff-header cells (first measure of each staff-row) — **7 meters** across
+orchestral (scanned) and keyboard (clean) engravings, covering both digit meters
+and both shortcut glyphs (C, ¢):
 
 | source | meter | glyph classes | style | cells |
 |---|---|---|---|---|
@@ -20,7 +21,12 @@ orchestral (scanned) and keyboard (clean) engravings:
 | Mahler 5 p.1 | **2/2** | timeSig2 | scanned (Peters) | 18 |
 | WTC I Prelude 1 (p.2) | **C** | **timeSigCommon** | clean (Snortum) | 2 |
 | Kirchhoff Praeludium 1 (p.1) | **6/8** | timeSig6, timeSig8 | clean (Kremes) | 2 |
+| Kirchhoff Praeludium 3 (p.6) | **¢ cut-C** | **timeSigCutCommon** | clean (Kremes) | 8¹ |
 | Kirchhoff Praeludium 5 (p.9) | **3/2** | timeSig3, timeSig2 | clean (Kremes) | 2 |
+
+¹ On the cut-C page the OMR merged four keyboard lines into one "system", so 8
+cells came through — only the **first two** (staves 0, 1) actually carry the ¢;
+staves 2–7 are continuation lines with no meter (box nothing → hard negatives).
 
 Cells were cut with `tools/omr/annotate/select_timesig_cells.py`, which runs the
 **exact `transcribe` phase-1** (no orchestral padding patch, dpi 300) so they are
@@ -31,27 +37,25 @@ manifest patch needed).
 
 Two source-specific notes:
 - **Keyboard pages** (WTC, Kirchhoff) print the meter only on the first line;
-  they were cut with `--first-system-tags wtc,kirchhoff` so only that line's two
-  staves are included (all positives). Orchestral movement-start pages keep every
-  bracket-group system (all show the meter). The keyboard meters have just 2
-  examples each — bulk them up by adding more prelude/fugue pages (§ Expand).
+  they were cut with `--first-system-tags wtc,kirchhoff` so only the first
+  "system" is kept. Orchestral movement-start pages keep every bracket-group
+  system (all show the meter). Keyboard meters have few real examples each — bulk
+  them up by adding pages (§ Expand).
 - **Kirchhoff is figured-bass-heavy** — the bass staff is peppered with digits
   (6, 5, 6/4, 7…) that look like time-sig digits but AREN'T. Box **only** the
-  header meter; leave the figured bass alone (it becomes a valuable hard
-  negative — real scores have figured bass, and the specialist must not fire on
-  it).
+  header meter; leave the figured bass alone (valuable hard negative — real
+  scores have figured bass, and the specialist must not fire on it).
 
 ## What to label
 
 **Box ONLY the time-signature glyphs** — that's the one thing no model detects:
 - digits → class `timeSig0` … `timeSig9` (numerator on top, denominator below)
-- common time (C) → `timeSigCommon`; cut time → `timeSigCutCommon`
+- common time (C) → `timeSigCommon`; cut time (¢) → `timeSigCutCommon`
 
 You do **not** need to confirm noteheads/clefs — the build step self-distills
 every non-time-sig symbol from the production model (see below), so leave them
-pending. Some cells (a continuation system lower on an orchestral page) have a
-clef but **no** time signature — box nothing there; they're useful hard
-negatives.
+pending. Cells with a clef but no time signature (continuation systems) → box
+nothing; they're useful hard negatives.
 
 `TIMESIG_HINTS.txt` lists the meter printed on each page. Verify against the cell
 — hints are aids, not ground truth.
@@ -98,10 +102,11 @@ done) or serve this one on another port: add `--port 5051`.
 
 ## Expand
 
-Add pages (more meters — 12/8, 3/8, cut-C, 6/4; more examples per meter) by
-re-running the selector with a longer `--plan`
-(`tag=/abs/file.pdf:PAGE:METER,...`, PAGE 1-based; add keyboard tags to
-`--first-system-tags`). Rich sources: the WTC book (48 pieces — 12/8, 3/8, 6/4,
-24/16, cut-C) and Handel Messiah (12/8 Pastoral, cut-C choruses). Then re-run
-`run_yolo` to pre-label and COMMIT `cells.json`, `detections/`, `verdicts/`
-(cells/ PNGs are gitignored).
+Add pages (more meters — 12/8, 3/8, 6/4; more examples per meter) by re-running
+the selector with a longer `--plan` (`tag=/abs/file.pdf:PAGE:METER,...`, PAGE
+1-based; add keyboard tags to `--first-system-tags`). Rich sources: the WTC book
+(48 pieces — 12/8, 3/8, 6/4, 24/16) and Handel Messiah (12/8 Pastoral). Note
+compound meters often appear as mid-piece changes (e.g. Kirchhoff p.21 Presto =
+3/8), which the header selector doesn't reach — pick a page whose FIRST measure
+prints the meter. Then re-run `run_yolo` and COMMIT `cells.json`, `detections/`,
+`verdicts/` (cells/ PNGs are gitignored).

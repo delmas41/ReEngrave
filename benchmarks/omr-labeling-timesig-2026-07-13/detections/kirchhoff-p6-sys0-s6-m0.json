@@ -1,0 +1,57 @@
+{
+  "cell_id": "kirchhoff-p6-sys0-s6-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 10,
+      "y": 25,
+      "w": 35,
+      "h": 92,
+      "x_center": 27,
+      "y_center": 71,
+      "confidence": 0.9550659656524658,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 52,
+      "y": 31,
+      "w": 12,
+      "h": 34,
+      "x_center": 58,
+      "y_center": 48,
+      "confidence": 0.8989933133125305,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 68,
+      "y": 50,
+      "w": 13,
+      "h": 34,
+      "x_center": 74,
+      "y_center": 67,
+      "confidence": 0.9179250597953796,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 231,
+      "y": 44,
+      "w": 1535,
+      "h": 57,
+      "x_center": 998,
+      "y_center": 72,
+      "confidence": 0.6327350735664368,
+      "pitch": null
+    }
+  ]
+}
