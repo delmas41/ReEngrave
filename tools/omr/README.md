@@ -465,6 +465,17 @@ staff whose anchor sits deep in the music stops at the first barline it meets
 and over-reports, a sound staff walks back to the truth, and the minimum picks
 the sound one. On the system above it gives 287, against an eyeballed 285.
 
+The minimum is safe only while the walk cannot UNDER-report, and that took a
+correction once `_staff_x_extent` began bridging broken lines: the bridged run
+reaches back across the gap from the bracket to the instrument name, so
+`x_start` can land in the text, and a walk starting there is already outside the
+staff and never meets the bracket. One such staff sets the window for its whole
+system. The guarantee is now enforced rather than assumed — a full-band vertical
+rule is the staff's left boundary, so an anchor left of one is moved past it.
+Measured over 26 pages of 20 scores, that took the share of staves whose window
+actually contains a clef from 186/455 to 233/455
+(`benchmarks/omr-key-signature/probe_header_windows.py`).
+
 It does not touch `Staff.x_start` or measure segmentation. Phase 1 has no
 regression baseline (NOTES.md), so the measurement lives beside Phase 1 rather
 than inside it, and the clef readers switch to it only where the measure cell
@@ -517,7 +528,12 @@ which on real prints is the normal case: on Beethoven 5 p.1, across 3,246
 detections on a page whose every string and woodwind staff carries three flats,
 the model emits **zero** `keySharp`/`keyFlat`. The locator strips the vertical
 rules, traces the staff lines off (see below), and looks for a run of similar,
-glyph-sized clusters right after the clef. Sharps and flats zigzag in opposite
+glyph-sized clusters right after the clef — where "the clef" means an oversized
+cluster standing at the head of the window with a clef's height, not merely the
+largest ink in it. Beams, slurs and note groups are oversized too, and anchoring
+the run on one of those is what licenses ink in the middle of the bar as a
+signature; a window with no clef in it yields no reading at all. Sharps and
+flats zigzag in opposite
 directions, so for a run of two or more the pattern itself says which it is; a
 run of one falls back to ink distribution (a flat is bottom-heavy, a sharp is
 balanced about its middle).
@@ -583,15 +599,17 @@ p.2 and Beethoven 6 p.2 — 42 staves, both systems each):
 
 | | correct | wrong | missed | correct abstentions |
 |---|---|---|---|---|
-| per-staff reading | 10 | 7 | 19 | 8 |
-| after the vote | 10 | **2** | 22 | 8 |
+| per-staff reading | 14 | 6 | 14 | 8 |
+| after the vote | 18 | **0** | 16 | 8 |
 
-Recall is about a third, and that is the honest number: where it reads a
-signature it reads it exactly (three-flat staves come back with all three
-accidentals at residuals of 0.03–0.24 steps against a half-step tolerance), and
-where it cannot it abstains. Both surviving errors are one genuine misread — a
-clarinet's sharp read as a flat, which agrees with the page's reference and so
-cannot be told from a non-transposing part by any structural argument.
+Thirty-four of those 42 staves carry a signature, so recall is about a half, and
+that is the honest number: where it reads a signature it reads it exactly
+(three-flat staves come back with all three accidentals at residuals of
+0.03–0.24 steps against a half-step tolerance), and where it cannot it abstains.
+The vote leaves no wrong answers on either page — including the clarinets, whose
+one printed sharp against a page of flats cannot be told from a misread by any
+structural argument, and which therefore come back missed rather than
+asserted.
 
 **The reading only ever seeds a staff where the detector found no
 key-signature accidental at all** — the same "speaks only when the detector is
@@ -636,7 +654,9 @@ way.
 
 The consequence is that the two features improve together: where clefs read
 well, key signatures are read for most staves; on scans where the detector calls
-every staff treble, the key-signature reader stays quiet. That is the right
+every staff treble, the key-signature reader stays quiet. End to end that is two
+staves of twenty on Beethoven 6 p.2 and none at all on Beethoven 5 p.2, against
+10/10 on the clean WTC page where the detector carries it. That is the right
 failure, but it is the honest ceiling on this work today — clef *detection* on
 such scans is itself unsolved (see "Clef location" above).
 

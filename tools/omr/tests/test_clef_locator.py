@@ -197,6 +197,34 @@ class TestAbstains:
         found = locate_clef(make_cell(img))
         assert found is not None and found.read.line == 4
 
+    def test_sparse_residue_does_not_block_the_clef_behind_it(self):
+        """Stripping the system brace leaves a trail of specks down the left
+        edge. They are nothing individually, but x-clustering draws one box
+        around them, and a box 1.4 x 8 staff spaces reads as "bigger than any C
+        clef" — so the locator used to stop on it and never look at the clef
+        1.5 spaces to its right.
+
+        Measured on Nottebohm p.164: five specks at 6% of their bounding box
+        blocked a textbook 2.3 x 3.2-space alto clef. The ink-fraction test now
+        runs BEFORE the size test, so a cluster has to be a glyph before it is
+        worth stopping for.
+        """
+        img = blank_page()
+        for x, y in ((20, 58), (32, 72), (44, 58), (20, 200), (32, 214), (44, 200)):
+            cv2.rectangle(img, (x, y), (x + 3, y + 11), 0, -1)
+        draw_c_clef(img, 3, x=70)
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.name == "alto"
+
+    def test_a_solid_oversized_glyph_still_stops_the_search(self):
+        # The complement, and the one that must not break: a G clef is solid,
+        # so it clears the ink test and still stops the search. Without this
+        # the reordering above would reopen the read-the-key-signature bug.
+        img = blank_page()
+        draw_g_clef(img)
+        draw_c_clef(img, 3, x=110)   # a C clef further in must NOT be taken
+        assert locate_clef(make_cell(img)) is None
+
     def test_an_empty_staff_yields_nothing(self):
         assert locate_clef(make_cell(blank_page())) is None
 
