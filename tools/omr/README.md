@@ -597,6 +597,13 @@ today cannot be changed by it. `staff["key_signature_source"] == "cv_locator"`
 says when it fired, and `staff["key_signature_reason"]` says what the vote
 decided and why.
 
+All of these figures are reproducible — `benchmarks/omr-key-signature/` holds
+the hand-read ground truth for all three pages and the script that scores it:
+
+```bash
+python3 benchmarks/omr-key-signature/eval_key_signatures.py
+```
+
 ### It inherits the clef problem
 
 Those numbers are what the reader achieves **given a correct clef** — the
