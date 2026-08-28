@@ -1,0 +1,32 @@
+{
+  "cell_id": "beet5-p2-sys2-s7-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-14T21:20:40+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "timeSig2",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 781,
+        "y": 333,
+        "w": 173,
+        "h": 148
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "timeSig4",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 779,
+        "y": 503,
+        "w": 173,
+        "h": 140
+      },
+      "notes": ""
+    }
+  ]
+}
