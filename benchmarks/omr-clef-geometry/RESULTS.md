@@ -277,32 +277,56 @@ Fixing those broke barline detection, which had been depending on the damage:
    p.11 has real barlines at 0.4–1.0 and it is the *stem alignments* that score
    0.00. The filter now asks each system which kind it is.
 
-## Whole-book run
+## Book-scale measurement
 
-254 pages, of which 156 were transcribed before the run was stopped as no
-longer informative. Over those pages:
+A 20-page sample spread evenly through the book (every 12th page, p.20-248),
+run after all the Phase-1 fixes and the text filter. This supersedes an earlier
+156-page run whose numbers predated them.
 
 | | |
 |---|---|
-| "staves" reported | 1522 |
-| — real music (carrying noteheads) | 1366 |
-| — body text read as staves | 147 |
-| pages containing music | 124 of 156 |
-| noteheads / measures | 53,476 / 6,012 |
-| **clefs read** | **268 of 1366 staves (20%)** |
-| — by the CV locator | **204** (83 alto, 64 tenor, 57 soprano), on 85 pages |
-| — by the detector | 64 |
+| "staves" reported | 191 |
+| — carrying noteheads (real music) | 188 |
+| — **body text read as staves** | **0** (was ~10% of all staves) |
+| pages containing music | 18 of 20 |
+| noteheads | 6,202 |
+| measures on music staves | 742 (≈41/page, against ~12 before segmentation was fixed) |
+| **clefs read** | **31 of 188 (16.5%)** — 18 by the CV locator, 13 by the detector |
 
-On this book the shape locator does **three times the work of the model**, and
-all 204 of its reads are C clefs the detector cannot see at any confidence.
-That is the entire soprano/alto/tenor layer of the book, which previously
-defaulted to treble.
+Two of the three results are good: the text filter is finding **nothing** to
+reject on a 191-staff sample where roughly a tenth used to be prose, and
+measure segmentation has roughly tripled.
 
-The honest headline is the other 80%: **1098 staves still have no clef read**
-and carry an inherited clef or a positional default. Clef *reading* is
-essentially always right when it happens; clef *coverage* is not solved, and
-what limits it is still upstream — the clef outside the cell, or fused into
-neighbouring ink.
+Clef coverage has not moved, and the misses are real. Eight "not read" staves
+sampled at random and rendered: **seven have a clearly visible clef at the
+staff head**, so these are failures rather than correct abstention on
+continuation systems.
+
+### Where the coverage is actually lost
+
+Every staff-start cell on 17 sample pages, by the exact branch that rejected it:
+
+| | share | reason |
+|---|---|---|
+| 107 | **56.3%** | **first glyph too big — the clef fused with neighbouring ink** |
+| 34 | 17.9% | not symmetric enough |
+| 21 | 11.1% | *located* (9 alto, 8 tenor, 4 soprano) |
+| 15 | 7.9% | only debris in the header |
+| 5 | 2.6% | starts too far into the measure |
+| 3 | 1.6% | F-clef dot veto |
+| 3 | 1.6% | no clusters |
+| 2 | 1.1% | ambiguous line snap |
+
+**One cause holds the majority of the remaining coverage.** The clef is present
+and the right size, but the header clustering chains it into an oversized blob
+— vertically with the system brace, or horizontally through the key signature
+and into the first notes (observed at 10.9, 16.1 and 27.2 staff spaces wide,
+where a C clef is under 3) — and the "too big to be a C clef, stop" rule then
+aborts the search. Splitting the header cluster properly is the single lever
+that would move coverage most.
+
+Worth recording that the F-clef dot veto, added to kill one false positive,
+costs 3 staves out of 190. That trade was fine.
 
 ## What this still does NOT fix
 
