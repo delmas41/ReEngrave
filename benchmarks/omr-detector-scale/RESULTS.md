@@ -178,6 +178,37 @@ A constant lands *inside* the plateau on wide header cells and *past its edge* o
 narrow interior cells — on the same page. That is the whole of the remaining
 disagreement, and it is why the answer is a rule rather than a number.
 
+## On real orchestral prints
+
+The key-signature layer reads the detector's `keySharp` / `keyFlat` markers, so it
+moves with this. Scored against hand-read ground truth
+(`../omr-key-signature/eval_key_signatures.py --mode pipeline`), same tree:
+
+| page | pinned 1280 *(what the harness used to force)* | fixed 512 | **per-cell** |
+|---|---|---|---|
+| Beethoven 5 p.2 | 0 correct / 0 wrong, 0/22 voted | 0 / 0, 0/22, 64s | **3 / 2**, 5/22, **30s** |
+| Beethoven 6 p.2 | 0 correct / 4 wrong, 5/20 voted | 3 / 0, 6/20, 67s | **11 / 0**, 12/20, **28s** |
+| Bach WTC p.17 | 10 / 0, 10/10 | 10 / 0, 10/10, 9s | 10 / 0, 10/10, 10s |
+
+Beethoven 6 goes from **three correct signatures to eleven**, with no wrong ones,
+on a 19th-century print where `tools/omr/README.md` records the detector emitting
+*zero* key-signature markers. That claim was measured at an `imgsz` on the wrong
+side of the cliff; a good deal of the "the detector goes blind on orchestral
+prints" story may be the same artifact, and is worth re-opening.
+
+Report the cost honestly: **Beethoven 5 gains three correct readings and two
+wrong ones**, where before it abstained on all sixteen. This layer's doctrine
+prefers a miss to a wrong answer — a missed signature leaves a staff where it
+was, a wrong one re-pitches every note on it — so that trade is not free, and it
+is the one result here that argues for more scrutiny rather than less.
+
+Per-cell is also about **twice as fast** as the constant on these pages, because
+the narrow orchestral cells get a small `imgsz` instead of 512.
+
+> `../omr-key-signature/RESULTS.md` quotes pipeline-mode figures taken at the
+> pinned 1280 and is now stale in that section. Its `component` mode, which runs
+> no YOLO, is unaffected.
+
 ## The fix
 
 `yolo_detector.imgsz_for_cell` computes `imgsz` from the cell's own canonical
