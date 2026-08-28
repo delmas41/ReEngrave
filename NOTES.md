@@ -158,7 +158,40 @@ would overwrite a confidently-read clef.
 Limit: instrument identity comes from the text layer, so this is a no-op on the ~72% of
 the corpus without one. That is the argument for finishing #2.
 
-### #2 — Margin reading (instrument names)
+### #2 — Margin reading (instrument names) — **DONE 2026-08-28**
+Both halves shipped.
+
+**Text layer (free).** `tools/omr/staff_labels.py` + `instruments.py`. 18/65 IMSLP PDFs
+carry an OCR text layer; on those it resolves **79%** of labelled staves (70%
+high-confidence). The lexicon maps a printed label to instrument, family, default clef,
+written range and transposition (`fifths_offset = -fifths(key_name)`).
+
+**Vision (paid, opt-in).** `tools/omr/staff_labels_vision.py`, wired as
+`contextual.apply_contextual_analysis(vision_fallback=True)`. Covers the other 72%.
+Measured against the text layer as free ground truth
+([benchmarks/omr-margin-labels-2026-08/findings.md](benchmarks/omr-margin-labels-2026-08/findings.md)):
+8 systems / 76 staves / **$0.087** → **25 agree, 0 disagree, 30 recovered, 0 missed**,
+21 correctly-silent unlabelled staves. **100% agreement where both resolve.**
+
+Cost is bounded by design: identity is a property of the SCORE, and slots propagate one
+reading across every system and page, so `vision_system_budget` (default 3) means a few
+cents per work rather than per page.
+
+Three design points worth keeping: one call per **system** (the running order makes a
+smudged entry legible from its neighbours); the crop carries a **gutter of staff
+indices** so the answer keys to our numbering instead of to order, which breaks whenever
+strings go unlabelled; and the prompt demands **null** for an unlabelled staff, because
+an invented instrument propagates into a wrong clef and wrong pitches.
+
+Does **not** contradict the July VLM NO-GO — that measured symbol *counting* on degraded
+cells (89.7% vs a 95% bar). Reading printed words in a clean margin is a different task,
+which is why it got its own measurement.
+
+**Still bounded by staff detection.** On Beethoven 4 p59 the crop shows a `Cor. (Es)`
+label with no staff tick beside it — the detector missed that staff. Latent signal, not
+yet used: *more labels than numbered staves is evidence of a missed staff.*
+
+### #2 (original framing) — why margin reading matters
 No OCR anywhere in the project (`backend/requirements.txt` has none). Two paths:
 - **PDFs with a text layer — MEASURED 2026-08-28: 18/65 (28%) of the IMSLP corpus.**
   PyMuPDF is already imported (`preprocessing.py:18`) and used only to rasterize.
