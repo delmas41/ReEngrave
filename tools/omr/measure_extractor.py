@@ -391,18 +391,31 @@ def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[
     for x in xs:
         boundaries.append((prev, x))
         prev = x
-    # Trailing tail: from final barline to x_hi. Often this is just the
-    # narrow strip between the score's final barline and the end of the
-    # staff lines — NOT a real empty measure. Drop it when it's <20% of
-    # the median measure width AND there's at least one real measure
-    # already; otherwise keep it (it's the only measure).
+    # Trailing tail: from the final barline to x_hi. A tail much narrower than
+    # a real measure is usually the strip between the score's final barline and
+    # the end of the staff lines, which holds nothing and is not a measure.
+    #
+    # It is not, however, safe to DISCARD it. Doing so assumes the last
+    # detected barline is the last real one, and when a spurious barline is
+    # detected near the end of a system — two stems that happen to align across
+    # the staves will do it — everything after it is silently deleted from the
+    # page. Measured on WTC p.6 system 2: a false barline at x=4476 (no ink
+    # crosses the staves there; the notes on either side merely line up) made
+    # the last 340px its tail, and the notes standing in it never reached the
+    # detector. The measure COUNT was right, so nothing downstream could tell.
+    #
+    # So absorb the tail into the last measure instead. When the assumption
+    # holds, the cost is a sliver of blank paper on one cell; when it does not,
+    # the music is still there.
     widths = [x1 - x0 for (x0, x1) in boundaries]
     tail_width = x_hi - prev
     if boundaries and widths:
         median_w = sorted(widths)[len(widths) // 2]
         if tail_width >= median_w * 0.20:
             boundaries.append((prev, x_hi))
-        # else: skip the tail — it's an artifact between final barline + staff edge
+        else:
+            last_start, _ = boundaries[-1]
+            boundaries[-1] = (last_start, x_hi)
     else:
         boundaries.append((prev, x_hi))
     return boundaries
