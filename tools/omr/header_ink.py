@@ -176,3 +176,247 @@ def cluster_components(
         merged.append((int(x0), int(y0), int(x1 - x0), int(y1 - y0)))
     return merged
 
+
+
+# ─── tracing the printed staff lines ────────────────────────────────────────
+#
+# `strip_horizontal_rules` above removes staff lines the generic way — open with
+# a wide kernel, subtract what survives. That works when the lines are thin
+# relative to the glyphs. On 19th-century prints they are not: measured on
+# Beethoven 5 (IMSLP 575951) the printed lines are 0.15–0.31 staff spaces thick,
+# against roughly 0.08 for a modern engraving, and they wander by a pixel or two
+# across the width of a header. Opening wide enough to catch them takes the
+# accidentals with it; opening narrow enough to spare the accidentals leaves the
+# lines, and either way the header comes back as one connected mass — connected
+# components merge into a single window-spanning blob and a column projection
+# finds ink in every column.
+#
+# So these functions don't guess at the lines: they follow them. The nominal y
+# of each line is already known from Phase 1, which is enough to trace the ink
+# run at that height column by column, measure how thick the line actually is,
+# and erase exactly that band along its real path. What a glyph loses is the
+# sliver the line was drawn over, which is all it ever had.
+
+
+def _nearest_ink_row(window: np.ndarray, target: int) -> np.ndarray:
+    """For each column of `window` (a bool array, rows × columns), the row
+    nearest `target` that carries ink, or -1 where the column is blank.
+
+    Searched outward from the target rather than by distance transform: the
+    window is only a fraction of a staff space tall, so a handful of vectorised
+    passes settles it.
+    """
+    height, width = window.shape
+    found = np.full(width, -1, dtype=np.int32)
+    for offset in range(height):
+        for row in {target - offset, target + offset}:
+            if not 0 <= row < height:
+                continue
+            hit = (found < 0) & window[row]
+            found[hit] = row
+        if (found >= 0).all():
+            break
+    return found
+
+
+def _run_extent(window: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Top and bottom of the vertical ink run through `rows[x]` in each column.
+
+    Columns with no ink (`rows < 0`) come back as (-1, -1).
+    """
+    height, width = window.shape
+    top = rows.copy()
+    bottom = rows.copy()
+    live = rows >= 0
+    for _ in range(height):
+        moved = False
+        above = top - 1
+        can = live & (above >= 0)
+        if can.any():
+            step = can.copy()
+            step[can] = window[above[can], np.flatnonzero(can)]
+            if step.any():
+                top[step] -= 1
+                moved = True
+        below = bottom + 1
+        can = live & (below < height)
+        if can.any():
+            step = can.copy()
+            step[can] = window[below[can], np.flatnonzero(can)]
+            if step.any():
+                bottom[step] += 1
+                moved = True
+        if not moved:
+            break
+    return top, bottom
+
+
+def trace_staff_line(
+    mask: np.ndarray, nominal_y: float, spacing: float, search_spaces: float = 0.35
+) -> tuple[np.ndarray, float] | None:
+    """Follow one printed staff line across `mask`.
+
+    Returns `(centre_y_per_column, thickness)` — the line's measured path and
+    how thick it is printed, both in pixels — or None when there is too little
+    ink at that height to trace.
+
+    Thickness is the median of the run heights, taking only runs no more than
+    half a staff space tall: a column where a glyph sits on the line has a much
+    taller run, and including those would inflate the estimate and erase the
+    glyph along with the line.
+    """
+    height, width = mask.shape
+    lo = int(max(0, nominal_y - search_spaces * spacing))
+    hi = int(min(height, nominal_y + search_spaces * spacing + 1))
+    if hi - lo < 2:
+        return None
+    window = mask[lo:hi] > 0
+    rows = _nearest_ink_row(window, int(round(nominal_y)) - lo)
+    top, bottom = _run_extent(window, rows)
+
+    live = rows >= 0
+    if live.sum() < max(3, width // 10):
+        return None
+    centres = np.full(width, np.nan)
+    centres[live] = (top[live] + bottom[live]) / 2.0 + lo
+    runs = (bottom - top + 1).astype(float)
+    plausible = runs[live & (runs <= 0.5 * spacing)]
+    thickness = float(np.median(plausible)) if plausible.size else 0.12 * spacing
+
+    # Fill the blank columns from their neighbours and take a running median, so
+    # a few speckled columns can't kink the path.
+    xs = np.arange(width)
+    filled = np.interp(xs, xs[live], centres[live])
+    k = max(3, int(round(0.5 * spacing)) | 1)
+    padded = np.pad(filled, k // 2, mode="edge")
+    smoothed = np.array([np.median(padded[i : i + k]) for i in range(width)])
+    return smoothed, thickness
+
+
+def erase_staff_lines(
+    mask: np.ndarray,
+    staff_line_ys: list[int] | list[float],
+    spacing: float,
+    *,
+    max_bridge_spaces: float = 1.2,
+) -> np.ndarray:
+    """Erase the printed staff lines from `mask` along their traced paths, and
+    give back the glyph ink the erasure cut through.
+
+    The bridging rule is what makes this usable. Ink immediately above AND below
+    an erased band means something continues through it — but on a line thicker
+    than the band that is true along its whole length, so proximity alone would
+    simply redraw the line. What separates the two is how FAR it holds: a glyph
+    crosses a staff line over a narrow x-range, while a line's own leftover ink
+    crosses for as far as the line runs. Only runs shorter than
+    `max_bridge_spaces` are bridged.
+    """
+    out = mask.copy()
+    height, width = mask.shape
+    bands: list[tuple[np.ndarray, float]] = []
+    for nominal_y in staff_line_ys:
+        traced = trace_staff_line(mask, float(nominal_y), spacing)
+        if traced is None:
+            continue
+        path, thickness = traced
+        bands.append((path, thickness / 2.0 + max(1.0, 0.06 * spacing)))
+
+    xs = np.arange(width)
+    for path, half in bands:
+        tops = np.clip(np.floor(path - half).astype(int), 0, height)
+        bottoms = np.clip(np.ceil(path + half).astype(int) + 1, 0, height)
+        for x in xs:
+            out[tops[x] : bottoms[x], x] = 0
+
+    max_run = max(3, int(round(max_bridge_spaces * spacing)))
+    for path, half in bands:
+        tops = np.clip(np.floor(path - half).astype(int), 0, height)
+        bottoms = np.clip(np.ceil(path + half).astype(int) + 1, 0, height)
+        crosses = np.zeros(width, dtype=bool)
+        for x in xs:
+            above = mask[max(0, tops[x] - 3) : tops[x], x]
+            below = mask[bottoms[x] : bottoms[x] + 3, x]
+            crosses[x] = bool(above.size and below.size and above.max() > 0 and below.max() > 0)
+        start = None
+        for x in range(width + 1):
+            inside = x < width and crosses[x]
+            if inside and start is None:
+                start = x
+            elif not inside and start is not None:
+                if x - start <= max_run:
+                    for col in range(start, x):
+                        out[tops[col] : bottoms[col], col] = 255
+                start = None
+    return out
+
+
+def header_ink_mask(
+    cell: MeasureCell,
+    spacing: float,
+    staff_line_ys: list[int] | list[float],
+    config: InkMaskConfig = DEFAULT_INK_CONFIG,
+) -> np.ndarray | None:
+    """Glyph ink for a staff header: vertical rules stripped, staff lines traced
+    off, and the flat residue that survives both removed.
+
+    The counterpart to `ink_mask` for callers that know where the staff lines
+    are. It starts from the RAW cell image rather than the staff-line-removed
+    variant, because on the material this exists for that variant is the problem
+    — it leaves most of the line behind, in pieces, which is worse to work with
+    than the untouched print.
+    """
+    img = cell.image
+    if img is None or img.size == 0:
+        return None
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if img.ndim == 3 else img
+    _, mask = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
+    mask = strip_vertical_rules(mask, spacing, config)
+    mask = erase_staff_lines(mask, staff_line_ys, spacing)
+    return drop_flat_residue(mask, spacing, config)
+
+
+def cluster_components_2d(
+    boxes: list[tuple[int, int, int, int, int]],
+    max_gap: float,
+    min_y_overlap: float = 0.25,
+) -> list[tuple[int, int, int, int]]:
+    """Merge components into glyph clusters by horizontal proximity AND vertical
+    overlap.
+
+    `cluster_components` groups on the x-gap alone, which is right for a clef —
+    it is the only thing in its strip, so anything nearby belongs to it. It is
+    wrong for a key signature, where the accidentals stand in a column of other
+    ink: a flat merges with the stem or ledger fragment directly above it and
+    the cluster comes out four staff spaces tall, far too big to be an
+    accidental, and is thrown away. Fragments of ONE glyph overlap vertically;
+    a glyph and the thing above it do not.
+
+    `min_y_overlap` is a fraction of the shorter box's height. `boxes` are
+    (x, y, w, h, area); returns merged (x, y, w, h), left to right.
+    """
+    if not boxes:
+        return []
+    ordered = sorted(boxes, key=lambda b: b[0])
+    clusters: list[list[tuple[int, int, int, int, int]]] = [[ordered[0]]]
+    for b in ordered[1:]:
+        current = clusters[-1]
+        near = b[0] - max(c[0] + c[2] for c in current) <= max_gap
+        overlaps = False
+        for c in current:
+            top, bottom = max(b[1], c[1]), min(b[1] + b[3], c[1] + c[3])
+            shorter = max(1, min(b[3], c[3]))
+            if (bottom - top) / shorter >= min_y_overlap:
+                overlaps = True
+                break
+        if near and overlaps:
+            current.append(b)
+        else:
+            clusters.append([b])
+    merged: list[tuple[int, int, int, int]] = []
+    for cl in clusters:
+        x0 = min(c[0] for c in cl)
+        y0 = min(c[1] for c in cl)
+        x1 = max(c[0] + c[2] for c in cl)
+        y1 = max(c[1] + c[3] for c in cl)
+        merged.append((int(x0), int(y0), int(x1 - x0), int(y1 - y0)))
+    return sorted(merged, key=lambda m: m[0])

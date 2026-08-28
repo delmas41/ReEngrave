@@ -69,6 +69,14 @@ Two rules keep the fit honest:
     recovery this module exists for), trailing ones never are — otherwise a
     clean 3-flat signature could be "recovered" into a 4-flat one on no
     evidence at all.
+  * **The first slot must be seen, and inference must not outvote observation.**
+    Without this, two accidentals can be assigned to slots 4 and 5 and the fit
+    reports a five-accidental signature off two glyphs, inventing the three it
+    never saw — measured, on a page of three-flat staves reading as five sharps.
+    The first accidental is the one printed hard against the clef and the one a
+    locator finds first, so an assignment that skips it is describing something
+    other than a key signature. `max_inferred_ratio` then keeps the recovery
+    honest: it may fill gaps in what was observed, never outnumber it.
 """
 
 from __future__ import annotations
@@ -112,11 +120,18 @@ class KeySignatureFitConfig:
     max_offset:
         How large the shared glyph-anchor offset may be. A flat's box centre
         legitimately sits about a step above its pitch; much more than that
-        means the boxes are not key-signature accidentals at all.
+        means the boxes are not key-signature accidentals at all. Kept tight
+        because a loose offset lets a single stray glyph slide onto whichever
+        slot happens to be nearest and "fit" perfectly.
+    max_inferred_ratio:
+        How many slots the fit may fill in for each one it actually saw.
     """
 
     max_residual: float = 0.5
-    max_offset: float = 2.0
+    max_offset: float = 1.25
+    # At most this many inferred slots per observed one. 1.0 lets a run of two
+    # recover two gaps but never describe a signature it mostly did not see.
+    max_inferred_ratio: float = 1.0
 
 
 DEFAULT_CONFIG = KeySignatureFitConfig()
@@ -234,6 +249,13 @@ def fit_key_signature(
     # keeping x-order. `combinations` enumerates them already in order, so the
     # k-th observation goes to the k-th chosen slot.
     for assignment in combinations(range(len(slots)), len(observed)):
+        # A signature starts at slot 1. An assignment that begins later is
+        # describing something else — see the module docstring.
+        if assignment[0] != 0:
+            continue
+        n_inferred = (assignment[-1] + 1) - len(observed)
+        if n_inferred > config.max_inferred_ratio * len(observed):
+            continue
         deltas = [observed[k] - slots[s] for k, s in enumerate(assignment)]
         offset = sum(deltas) / len(deltas)
         if abs(offset) > config.max_offset:

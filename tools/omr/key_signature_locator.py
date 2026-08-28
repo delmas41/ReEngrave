@@ -51,26 +51,37 @@ off-pattern run, a clef with no slot table, a staff without clean 5-line
 geometry — rather than guessing, because a wrong key signature re-pitches every
 note on the staff for the rest of the system.
 
-## STATUS: not yet working on degraded prints
+## STATUS: works, but recall is about a third
 
-Measured on Beethoven 5 p.2 (IMSLP 575951), whose eleven staves carry a known
-mix of three flats, one flat and none: **0 of 8 signatures located**, no false
-positives. It abstains rather than misreading, so it is harmless, but it is not
-yet earning its place.
+Measured on two ground-truth pages, both 19th-century orchestral prints, with
+the signature on every staff read off the page by eye:
 
-The failure is upstream of everything this module does, and it is not the fit.
-On that print the staff lines are **0.15–0.31 staff spaces thick** (a modern
-engraving is nearer 0.08) and they wander in canonical coordinates, so they
-survive every removal this pipeline offers: `image_no_staff` leaves heavy
-residue, morphological opening by a wide kernel shreds the accidentals along
-with the lines, and erasing a straight band at each measured line y misses the
-parts that wander out of it. Whichever is tried, the header comes back as one
-connected mass spanning the full window — connected components merge into a
-single 16-space blob, and a column projection finds ink in every column.
+  Beethoven 5 p.2 sys0 (11 staves: 3 flats, one 1-flat clarinet, 3 with none)
+      3 correct, 1 wrong, 4 missed, 3 correct abstentions
+  Beethoven 6 p.2 sys0 (10 staves: 1 flat, one 1-sharp clarinet, 1 with none)
+      2 correct, 1 wrong, 6 missed, 1 correct abstention
 
-The fix belongs in staff-line removal — erasing along each line's actual traced
-path rather than a straight row band — not here. Until then this module is
-loaded but silent on exactly the material it was written for.
+So: 5 of 15 signatures read, 4 of 4 empty staves correctly left alone, and 2
+wrong. Where it does read a signature it reads it exactly — the three-flat
+staves come back with all three accidentals matched at residuals of 0.03 and
+0.24 steps, well inside the half-step gate.
+
+Both wrong answers are the same shape: a run where only ONE of several printed
+accidentals survived the ink mask. One glyph carries no pattern, so the
+sharp-or-flat decision falls to ink distribution and the count falls to
+whatever slot it lands nearest — and a bass-clef flat that fragments high can
+land nearer the first sharp's slot than the first flat's. This is the mode to
+fix next, and the fix is not local: within a system, staves largely share one
+concert key, and `transcribe._flag_key_signature_inconsistency` already models
+the transposition relation that connects their written signatures. A
+system-level vote would both reject these outliers and lift the missed staves.
+
+The misses are ink-mask recall — `header_ink_mask` clears the thick, wandering
+staff lines well enough for a clean read on some staves and not others, mostly
+lower on the page where the print is denser.
+
+Until that vote exists this locator should stay OFF by default: a missed key
+signature leaves a staff where it already was, but a wrong one re-pitches it.
 """
 
 from __future__ import annotations
@@ -83,8 +94,8 @@ import numpy as np
 from .header_ink import (
     DEFAULT_INK_CONFIG,
     InkMaskConfig,
-    cluster_components,
-    ink_mask,
+    cluster_components_2d,
+    header_ink_mask,
     staff_metrics,
 )
 from .key_signature_geometry import (
@@ -111,10 +122,12 @@ class KeySignatureLocatorConfig:
     min_height_spaces: float = 1.10
     max_height_spaces: float = 3.60
 
-    # Fragments this close together are one glyph — a flat cut in two by staff
-    # line removal, for instance. Smaller than the gap BETWEEN accidentals, or
-    # a whole signature would merge into a single cluster.
-    cluster_gap_spaces: float = 0.40
+    # Fragments this close together are one glyph — a flat cut in two where a
+    # staff line was erased through it. This has to stay WELL below the gap
+    # BETWEEN accidentals, which is only about a third of a space in a tightly
+    # set signature: at 0.40 a three-flat signature merges into one 3-space
+    # cluster and is thrown out as clef-sized.
+    cluster_gap_spaces: float = 0.15
     # And accidentals this close together are one run. A key signature is set
     # tight; the first note of the bar is much further off.
     run_gap_spaces: float = 1.90
@@ -131,6 +144,11 @@ class KeySignatureLocatorConfig:
 
     # A signature has at most seven accidentals. A longer run is note ink.
     max_run_length: int = 7
+    # How far past the clef the first accidental may sit. A key signature is
+    # printed hard against its clef; a glyph-sized cluster further into the bar
+    # is a notehead or a rest, and reading one as a lone accidental is the
+    # locator's easiest way to invent a key signature that isn't there.
+    max_start_after_clef_spaces: float = 2.00
     # Clusters bigger than this are the clef, not an accidental — the run
     # starts after them.
     clef_min_height_spaces: float = 3.60
@@ -252,7 +270,7 @@ def locate_key_signature(
     if metrics is None:
         return None
     spacing, top_y, bottom_y = metrics
-    mask = ink_mask(cell, spacing, ink_config)
+    mask = header_ink_mask(cell, spacing, cell.staff_line_ys_canonical, ink_config)
     if mask is None:
         return None
 
@@ -273,7 +291,7 @@ def locate_key_signature(
             (int(stats[i, cv2.CC_STAT_LEFT]), y_i, int(stats[i, cv2.CC_STAT_WIDTH]), h_i, area)
         )
 
-    clusters = cluster_components(components, max_gap=config.cluster_gap_spaces * spacing)
+    clusters = cluster_components_2d(components, max_gap=config.cluster_gap_spaces * spacing)
 
     # Keep accidental-sized clusters, and remember where the clef ended: the
     # signature is printed after it, and starting the search before it invites
@@ -297,8 +315,12 @@ def locate_key_signature(
             continue
         glyphs.append(bbox)
 
+    # The signature begins at the clef, so the run's FIRST accidental must sit
+    # close behind it; later glyphs belong to the run only by following one that
+    # does, which `_candidate_runs` enforces by gap.
     glyphs = [g for g in glyphs if g[0] >= clef_right]
-    if not glyphs:
+    start_limit = clef_right + config.max_start_after_clef_spaces * spacing
+    if not glyphs or glyphs[0][0] > start_limit:
         return None
 
     for run in _candidate_runs(glyphs, spacing, config):
