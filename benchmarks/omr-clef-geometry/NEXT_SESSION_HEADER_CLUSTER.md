@@ -145,6 +145,64 @@ Measured: Nottebohm located 32 → 43, "cluster too big" 113 → 73. Orchestral
 unchanged at 3. Every precision check held — 0 false positives on Bach WTC
 p.3-12, the hand-read page still 9/12 with 7/7 precision.
 
+## The F-clef dot veto fires on C clefs — fixed on a branch, NOT merged
+
+`claude/omr-clef-tenor-fixture`. The fix is right and its consequence is not,
+which is the whole story.
+
+**The bug.** A C clef's two right-hand lobes, cut into pieces by the staff
+lines running through them, are round, the right size, aligned in x and about a
+staff space apart: `_has_f_clef_dots`'s signature exactly. Whether it fires is
+luck of where the lines fall. On the engraved reference sheet — where the
+answer is known by construction — it vetoed the TENOR clef while soprano,
+mezzo, alto and baritone survived. That is why `RESULTS.md` measured 4/5 rather
+than the documented 5/5.
+
+**The fix.** What separates them is not the dots but their company. An F clef's
+dots stand alone to the right of the body; a C clef's lobes are part of a stack
+running the height of the glyph. So a pair only counts as dots if nothing else
+of substance shares their column. On the reference sheet the tenor pair has two
+such neighbours and the real bass clef's pair has none.
+
+    engraved reference sheet    4/5 -> 5/5 (7/7 with treble and bass declined)
+    Bach WTC p.3-12             0 false positives, unchanged
+    Nottebohm p.31              9/12, precision 7/7, unchanged
+    Nottebohm coverage          43 located, unchanged
+    orchestral coverage          3 -> 13 located over 9 pages
+    orchestral PRECISION         1/2 -> 3/4 on the two hand-read pages
+                                 (new: eval_orchestral_clefs.py)
+
+**Why it is not merged.** It makes shipped output worse. The two clefs it gains
+on Beethoven 6 p.2 are both correct — the viola's alto clef in each system —
+and that opens the key-signature gate on those staves, where the reader
+misreads the signature as +1 against a true -1. Two systems of the same part
+then agree, so they SET the page's modal reference to one sharp, and the one
+correct reading on the page is rejected against it:
+
+    sys0 ord7 (viola)  read +1, true -1  kept: "agrees with the system's 1 sharp"
+    sys1 ord7 (viola)  read +1, true -1  kept: "agrees with the system's 1 sharp"
+    sys1 ord0          read -1, true -1  REJECTED: "differs ... on too little evidence"
+
+Beethoven 6 p.2 end-to-end goes from 2 correct / 0 wrong to **0 correct / 2
+wrong**. And the fix buys no clef improvement on that page to set against it,
+because the CV clef is used ONLY to choose the slot table and is never written
+to the output — the staves still export as treble either way.
+
+**Three things this exposes, in the order they need solving:**
+
+1. **The key-signature reader misreads the viola staff** as one sharp under a
+   CORRECT alto clef. That is the root cause and the only one whose fix is
+   unambiguously good. Reproduce with `eval_key_signatures.py --mode component
+   --page pastoral-p2`; it is the ordinal-7 pair.
+2. **Cross-system agreement is not independent evidence.** The vote treats the
+   same part read alike in two systems as corroboration, but a systematic
+   misread — same engraving, same glyph, same print quality — repeats by
+   construction. Here it manufactured a majority out of one wrong reading.
+3. **The header clef is thrown away.** `transcribe` reads it, uses it to pick a
+   slot table, and discards it; the measure pass then defaults the staff to
+   treble. Everything the locator learns about orchestral clefs is currently
+   spent on key signatures alone.
+
 ## Approaches worth considering
 
 Nothing here is proven; these are the directions the measurements suggest.
