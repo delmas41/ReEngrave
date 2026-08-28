@@ -180,22 +180,63 @@ G-clef-then-sharp trap that produced the Bach false positives.
 
 ---
 
-## What this does NOT fix
+## What this does NOT fix — and exactly why
 
-**Recall on the Nottebohm book is low** — 5 clefs located across ~57 staves on
-the pages sampled. The limiter is upstream of clef reading, and it is worth
-recording plainly because it is the next real bottleneck for this material:
+**Recall on the Nottebohm book is low**: 5 clefs located across ~57 staves on
+the pages sampled. Where a staff-start cell actually contains its clef, the
+locator reads it. The limiter is upstream, and it is worth writing down
+precisely because it — not clef reading — is the next bottleneck for this
+material.
 
-- **Text blocks are detected as staves.** Two of p.90's seven "staves" are
-  columns of body text that the staff detector latched onto.
-- **Many staff-start cells don't contain the clef.** On several staves the
-  first cell begins after the clef, so there is nothing for any reader — model
-  or CV — to find. Where the cell does contain it, the locator reads it.
+### 1. Body text is detected as staves
 
-Neither is a clef problem. Fixing staff detection and cell extraction on
-small-format 19th-century prints is its own piece of work, and it would raise
-the yield of everything downstream, not just clefs.
+`staff_detector._ink_profile` counts ink *pixels* per row and requires a row to
+clear `MIN_LINE_LENGTH_FRAC` (35% of page width). A row of justified body text
+easily clears that on total ink while containing no long run at all, and five
+consecutive text baselines have regular enough spacing to pass the 5-line
+grouping test. So a paragraph becomes a "staff", with a clef and measures of
+its own. Two of Nottebohm p.90's seven staves are text columns; two of p.92's
+twelve are.
 
-The locator also abstains on Mahler 5 p.11 (dense orchestral, ink-heavy
-headers), where the decoupled `--clef-weights` specialist remains the better
-route.
+The natural fix — score rows by longest contiguous run instead of total ink —
+was measured and is **wrong**. Across 274 detected staves on eight scores, the
+minimum per-line run fraction separates badly: genuine, full-width staves in
+Boléro, WTC, La Mer and Handel score as low as 0.018, because heavy notation
+ink interrupts the line. Rejecting on line continuity would discard real staves.
+
+What *does* separate cleanly is **staff span versus the page's median span**:
+
+| | span | page median span | x-extent (of page width) |
+|---|---|---|---|
+| Nottebohm p.92 text "staves" | 215, 216 | 62 | 0.021, 0.015 |
+| every genuine staff measured | within ~10% of median | — | 0.147 … 0.908 |
+
+Text baselines sit ~3.5× further apart than staff lines, and the x-extent of the
+resulting "staff" is a couple of percent of the page (the longest ink run on a
+text row is one word). Either signal rejects the text blocks without touching a
+single genuine staff in the corpus.
+
+**Not implemented here.** It is a Phase-1 change, and Phase 1 currently has no
+trustworthy regression baseline — `test_pipeline.py`'s staff- and measure-count
+assertions already fail in this tree from earlier drift (identically on `main`,
+verified). Changing staff detection without a working Phase-1 baseline is how
+this project has been bitten before. The measurements above are the input to
+doing it properly.
+
+### 2. Some staff-start cells begin after the clef
+
+On p.92 the detected staves start at x = 256, 455, 530, 586, 589, 647, … —
+`_staff_x_extent` returns the longest contiguous run on the middle line, and on
+a page laid out as several short exercise fragments side by side that run often
+begins past the clef. The cell then opens mid-measure and there is nothing for
+any reader, model or CV, to find.
+
+Both are layout-analysis problems on small-format 19th-century prints, not clef
+problems, and fixing them would raise the yield of everything downstream.
+
+### 3. Dense orchestral headers
+
+The locator abstains on Mahler 5 p.11 — ink-heavy headers, no glyph-sized
+cluster it will commit to. The decoupled `--clef-weights` specialist remains the
+better route there, and the two compose: the specialist runs first, the locator
+only where it stayed silent.
