@@ -336,18 +336,19 @@ def extract_header_cell(
     return cell
 
 
-def header_cells_for_page(
+def header_windows_for_page(
     pws: PageWithStaves,
     config: HeaderWindowConfig = DEFAULT_CONFIG,
-) -> dict[int, MeasureCell]:
-    """Header cells for every staff on a page, keyed by `staff_index`.
+) -> dict[int, HeaderWindow]:
+    """Header windows for every staff on a page, keyed by `staff_index`.
 
-    The entry point header readers should use: it measures each system's left
-    edge once and shares it across that system's staves, which is both cheaper
-    and more accurate than each staff deciding alone (see `system_left_edge`).
-    Staves whose header can't be measured are simply absent from the mapping.
+    Measures each system's left edge ONCE and shares it across that system's
+    staves — both cheaper and more accurate than each staff deciding alone (see
+    `system_left_edge`, where the minimum over a system is what rescues a staff
+    whose own lines are broken). Staves whose window can't be measured are
+    simply absent.
     """
-    out: dict[int, MeasureCell] = {}
+    out: dict[int, HeaderWindow] = {}
     for system_index in sorted({s.system_index for s in pws.staves}):
         left = system_left_edge(pws, system_index, config)
         if left is None:
@@ -355,7 +356,35 @@ def header_cells_for_page(
         for staff in pws.staves:
             if staff.system_index != system_index:
                 continue
-            cell = extract_header_cell(pws, staff, config, left_edge=left)
-            if cell is not None:
-                out[staff.staff_index] = cell
+            window = measure_header_window(pws, staff, config, left_edge=left)
+            if window is not None:
+                out[staff.staff_index] = window
+    return out
+
+
+def header_cells_for_page(
+    pws: PageWithStaves,
+    config: HeaderWindowConfig = DEFAULT_CONFIG,
+    windows: dict[int, HeaderWindow] | None = None,
+) -> dict[int, MeasureCell]:
+    """Header cells for every staff on a page, keyed by `staff_index`.
+
+    The entry point header readers should use. Pass `windows` from
+    `header_windows_for_page` when the caller already has them, so the page is
+    measured once rather than once per consumer.
+    """
+    if windows is None:
+        windows = header_windows_for_page(pws, config)
+    out: dict[int, MeasureCell] = {}
+    for staff in pws.staves:
+        window = windows.get(staff.staff_index)
+        if window is None:
+            continue
+        cell = _build_measure_cell(
+            pws, staff, staff.system_index, window.x0, window.x1, HEADER_MEASURE_INDEX,
+        )
+        if cell is None:
+            continue
+        remove_staff_lines_from_cell(cell)
+        out[staff.staff_index] = cell
     return out

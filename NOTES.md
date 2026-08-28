@@ -44,6 +44,18 @@ middle line, so on a page laid out as several short exercise fragments side by
 side the measure cell often begins *past* the clef — nothing for any reader to
 find.
 
+> **ADDRESSED (2026-08-28), additively.** This half is fixed by
+> `tools/omr/staff_header.py`, which measures each staff's header window from
+> the page rather than inheriting it from measure segmentation, and by the clef
+> readers switching to that window where the measure cell demonstrably starts
+> past the header. It turns out not to be specific to multi-fragment layouts:
+> on Beethoven 5 p.2 a whole system's cells began past the clef and past all
+> three key-signature flats (`x_start` spread over 56 staff spaces on a system
+> whose staves are physically flush). `Staff.x_start` itself is untouched — the
+> Phase-1 regression-baseline problem below is exactly why the measurement lives
+> beside Phase 1 rather than inside it, and doing it that way needed no
+> baseline. The *text-as-staves* half below is still open.
+
 Together these, not clef reading, are what caps recall on this book (5 clefs
 located across ~57 staves).
 

@@ -142,6 +142,13 @@ ReEngrave/
 │       ├── export.py            # JSON → LilyPond / MusicXML
 │       ├── yolo_detector.py     # ultralytics YOLOv8l wrapper
 │       ├── line_detection.py    # classical-CV stems + beams (Phase 4f)
+│       ├── staff_header.py      # measures each staff's clef/key/time window
+│       ├── header_ink.py        # shared header CV: traces staff lines off, clusters glyphs
+│       ├── clef_geometry.py     # which line a clef names (measured, not classified)
+│       ├── clef_locator.py      # CV C-clef finder for scores no model reads
+│       ├── key_signature_geometry.py  # slot-table fit: read the positions, don't count
+│       ├── key_signature_locator.py   # CV finder for the accidental run
+│       ├── key_signature_vote.py      # reconcile readings across staves + systems
 │       ├── rhythm.py            # duration parsing (Phase 4c)
 │       ├── voicing.py           # chord grouping, voice splitting
 │       ├── pitch_resolver.py    # notehead y → pitch + accidental
@@ -281,7 +288,7 @@ ReEngrave/
 | Env var               | Default | What it tunes |
 |-----------------------|--------:|---|
 | `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override weights file path |
-| `OMR_CLEF_WEIGHTS`    | _(unset)_ | Optional **clef specialist** weights. When set, a 2nd detector reads each staff's clef from its start cell and overrides the main clef — fixes the all-treble disease on orchestral scans with zero cost to notehead detection (decoupled; the main detector still does all symbols). See `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. CLI: `--clef-weights`. |
+| `OMR_CLEF_WEIGHTS`    | _(unset)_ | Optional **clef-specialist** weights — a checkpoint fine-tuned to read clefs, **not** general-purpose detection weights. You don't need it: header reading (clef + key signature) is on by default and needs no extra files. When set, a 2nd detector reads each staff's clef from its header and overrides the main clef, which helps on some orchestral scans (decoupled; the main detector still does all symbols). **Pointing this at ordinary weights makes clefs worse.** See `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. CLI: `--clef-weights`. |
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
 | `OMR_IMGSZ`           | `1280`  | YOLO inference image size (larger = slower, catches small noteheads) |
@@ -420,7 +427,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `UPLOAD_DIR` | File upload path (set by docker-compose) |
 | `EXPORT_DIR` | Export output path (set by docker-compose) |
 | `OMR_WEIGHTS_PATH` | YOLO weights path override |
-| `OMR_CLEF_WEIGHTS` | Optional decoupled clef-specialist weights (CLI: `--clef-weights`); default off |
+| `OMR_CLEF_WEIGHTS` | Optional clef-**specialist** weights (CLI: `--clef-weights`); default off. Not general-purpose weights — see the OMR knobs table. |
 | `OMR_MAX_PAGES` | Max pages per OMR job (default 5) |
 | `OMR_CONF_THRESHOLD` | YOLO min confidence (default 0.25) |
 | `OMR_IMGSZ` | YOLO inference image size (default 1280) |
@@ -553,6 +560,8 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 - **MusicXML repeat signs are dropped on export** — no `<repeat>` barline emission yet (see NOTES.md item 6; tied to multi-type barline classification, item 5).
 
 - **OMR time-signature detection is unreliable.** The DSv2 model often misclassifies time-sig digits, so this field is `null` for many pages. *(Branch `claude/omr-time-signature-inference-e547f1`, unmerged: `parse_time_signature` now drops left-edge instrument-number misreads; a page meter is back-filled from a dominant detected C/cut-C glyph, else from a per-column beat-sum vote — conservatively, so dense pages still stay `null` rather than guess wrong. See `tools/omr/README.md` → "Time-signature inference".)*
+
+- **Key signatures are read by position, but recall is about a third.** The header of every staff is now measured (`tools/omr/staff_header.py`) rather than assumed to sit inside the staff-start measure cell — on faded prints it often doesn't, because `Staff.x_start` is the longest unbroken run on the middle line and that run can begin past the clef. Key signatures are then read by fitting accidental *positions* to the slot table for (clef, N) (`key_signature_geometry.py`), so a missed interior accidental is recovered rather than miscounted, and reconciled across staves and systems (`key_signature_vote.py`). Measured on two ground-truth orchestral pages (42 staves), **given the correct clef**: 10 correct, 2 wrong, 22 missed, 8 correct abstentions. It only seeds staves where the detector found no key-signature accidental at all, so it cannot make a correctly-detected score worse. **It inherits the clef problem**: the slot table is chosen by the clef, and a wrong clef produces wrong signatures rather than abstentions (measured: bass staves defaulted to treble read 3 flats as 2 sharps), so a staff whose clef is only the positional default is skipped. On scans where every staff reads as treble, the key-signature reader stays quiet — the two features improve together. All of this is **on by default** — `--no-header-reading` turns it off.
 
 - **Clef reading is geometric, but clef *detection* is still a model weakness.** Which line a clef names is now measured, not classified (`tools/omr/clef_geometry.py`) — alto/tenor/soprano/mezzo/baritone are the same glyph on different lines, so a class label can never separate them, and all ten clefs now flow through pitch resolution and both exporters. A classical-CV C-clef locator (`tools/omr/clef_locator.py`) covers scores where no model sees a clef at all (19th-century C-clef prints: zero detections even at conf 0.03). It runs only where nothing else read a clef, recognises C clefs only, and abstains otherwise. G/F clef *detection* on degraded scans is unimproved. See `benchmarks/omr-clef-geometry/RESULTS.md`.
 

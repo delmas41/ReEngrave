@@ -421,7 +421,180 @@ positives over 10 pages of Bach WTC piano; correct alto/tenor reads on Handel,
 Boléro, La Mer and Beethoven 5; and no change to notehead or detection counts
 anywhere (Mahler 5 p.11 stays at the 2506-notehead production baseline).
 
+
 ---
+
+## Reading a staff's header (clef + key signature)
+
+**You do not need to turn anything on, and you do not need any extra weights.**
+Everything in this section runs by default in `transcribe`, from the production
+`--weights` model plus classical CV. There is one entry point — `transcribe` —
+and no separate tool to invoke.
+
+A staff's header is the strip at its start holding the clef, the key signature
+and the time signature. All three readers work from the same measured window,
+so they cannot disagree about where the clef ends and the signature begins.
+
+### The window is measured, not assumed
+
+Header readers used to work from "the left 42% of the staff-START measure
+cell", and that cell does not reliably contain the header. `Staff.x_start` is
+the longest unbroken ink run on the middle staff line, so on a faded print the
+run — and the cell with it — begins *after* the clef. Measured on Beethoven 5
+p.2 (IMSLP 575951), a system whose eleven staves are physically flush at page
+x≈285:
+
+```
+x_start:  547, 436, 383, 777, 1007, 985, 1233, 1001, 927, 1048, 986
+```
+
+The staff-start cell began at x=383 — past the treble clef (310–355) and past
+all three key-signature flats (360–395). It contained a whole rest and a
+barline. NOTES.md records the same failure on Nottebohm's multi-fragment
+layouts; it happens on ordinary orchestral prints too.
+
+`staff_header.py` measures the window from the page instead: the staff *band*
+carries ink where the individual lines are broken, so the left edge is found by
+walking left along the band from a column known to be inside the staff, stopping
+at the system's initial vertical rule (which also keeps the walk out of the
+instrument names). It is taken per SYSTEM as the minimum over its staves — a
+staff whose anchor sits deep in the music stops at the first barline it meets
+and over-reports, a sound staff walks back to the truth, and the minimum picks
+the sound one. On the system above it gives 287, against an eyeballed 285.
+
+It does not touch `Staff.x_start` or measure segmentation. Phase 1 has no
+regression baseline (NOTES.md), so the measurement lives beside Phase 1 rather
+than inside it, and the clef readers switch to it only where the measure cell
+demonstrably starts past the header.
+
+### Key signatures are read by position, not by counting
+
+A key signature is N copies of one glyph at staff positions fixed by the clef —
+it is pure geometry, and counting detections throws that away. Four flats
+printed and three detected used to read as E♭ major instead of A♭, silently,
+moving every B, E and A on the staff.
+
+`key_signature_geometry.py` fits the observed positions to the slot table for
+(clef, N). Flats seen at slots 1, 2 and 4 mean **four flats with the third
+missed**, not three — the gap in the pattern says so. Off-slot ink stops
+counting at all. The tables are written out per clef, because the conventions
+have real exceptions: treble's third sharp sits *above* the staff, bass's
+seventh flat *below* it, and tenor's first sharp drops an octave outright, so
+deriving one clef's table from another's is wrong. A clef without a table
+abstains.
+
+The fit solves for one shared glyph-anchor offset (a flat's box centre sits
+above the note it alters), requires the first slot to be observed, and never
+extends past the last observation — so it recovers gaps but cannot invent a
+signature it did not see.
+
+`key_signature_locator.py` finds the accidentals when the detector sees none,
+which on real prints is the normal case: on Beethoven 5 p.1, across 3,246
+detections on a page whose every string and woodwind staff carries three flats,
+the model emits **zero** `keySharp`/`keyFlat`. The locator strips the vertical
+rules, traces the staff lines off (see below), and looks for a run of similar,
+glyph-sized clusters right after the clef. Sharps and flats zigzag in opposite
+directions, so for a run of two or more the pattern itself says which it is; a
+run of one falls back to ink distribution (a flat is bottom-heavy, a sharp is
+balanced about its middle).
+
+### Tracing the staff lines off
+
+The lines have to come off before any of this is readable, and on these prints
+they are **0.15–0.31 staff spaces thick** (a modern engraving is nearer 0.08)
+and they wander. Generic morphology either leaves them or shreds the
+accidentals with them; either way the header arrives as one connected mass.
+
+`header_ink.trace_staff_line` / `erase_staff_lines` follow each line instead:
+Phase 1 knows its nominal y, which is enough to walk the ink run at that height
+column by column, measure how thick the line is actually printed, and erase
+that band along its real path. Ink above *and* below an erased band means a
+glyph continues through it — but that also holds along a line thicker than the
+band, so only *narrow* runs of such columns are bridged back. A glyph crosses a
+line over a narrow x-range; a line's own residue crosses for as far as it runs.
+
+### Reconciling across the page
+
+One staff's reading is fragile. `key_signature_vote.py` reconciles them using
+two redundancies a single staff cannot see: the same part appears in every
+system down the page, and every staff of a system is in one concert key.
+
+The concert-key relation is weaker than it looks — for key K the legal written
+signatures are {K−3, K, K+1, K+2, K+3}, so an under-counted signature usually
+lands on a *legal* offset (three flats misread as one flat looks exactly like a
+correctly-notated B♭ instrument). What works is that transposing instruments are
+a minority: the page's **modal** written signature is the reference, and
+departing from it is a claim that needs evidence — a strong reading, or the same
+part read in another system.
+
+The vote rejects and carries; it never synthesises a signature from the
+reference, because the reference cannot know a staff's transposition.
+
+### What it is measured at
+
+Two ground-truth pages, every signature read off the page by eye (Beethoven 5
+p.2 and Beethoven 6 p.2 — 42 staves, both systems each):
+
+| | correct | wrong | missed | correct abstentions |
+|---|---|---|---|---|
+| per-staff reading | 10 | 7 | 19 | 8 |
+| after the vote | 10 | **2** | 22 | 8 |
+
+Recall is about a third, and that is the honest number: where it reads a
+signature it reads it exactly (three-flat staves come back with all three
+accidentals at residuals of 0.03–0.24 steps against a half-step tolerance), and
+where it cannot it abstains. Both surviving errors are one genuine misread — a
+clarinet's sharp read as a flat, which agrees with the page's reference and so
+cannot be told from a non-transposing part by any structural argument.
+
+**The reading only ever seeds a staff where the detector found no
+key-signature accidental at all** — the same "speaks only when the detector is
+silent" rule the C-clef locator follows. A score the detector reads correctly
+today cannot be changed by it. `staff["key_signature_source"] == "cv_locator"`
+says when it fired, and `staff["key_signature_reason"]` says what the vote
+decided and why.
+
+### It inherits the clef problem
+
+Those numbers are what the reader achieves **given a correct clef** — the
+evaluation supplied the true clef for each staff, because the slot table is
+chosen by it.
+
+In the pipeline the clef is not given, and that turns out to matter more than
+expected. The plan had been that a wrong clef costs recall rather than
+correctness: treble, bass and alto slot patterns are the same shape a constant
+apart, so a signature fitted against the wrong one should push the solved offset
+past tolerance and be dropped. Measured end-to-end, that is not reliable — with
+every staff defaulted to treble, two bass staves carrying three flats came back
+as **two sharps**, a different accidental type fitting a different prefix well
+inside tolerance.
+
+So a staff whose clef is only the positional default is **skipped**. Reading a
+key signature against a guessed clef is guessing twice.
+
+To make that gate something other than a permanent off switch, the clef is
+*read* in the header pass: one inference per staff, with the production
+detector, on the header crop — a few staff spaces wide, against the hundreds of
+inferences the measures need. Without it the estimate on a first page would only
+ever be the position default, and the reader would be gated off on every treble
+and bass staff in the score. That read is used ONLY to choose the slot table; it
+is not written to the output, and the measure pass still reads the clef its own
+way.
+
+The consequence is that the two features improve together: where clefs read
+well, key signatures are read for most staves; on scans where the detector calls
+every staff treble, the key-signature reader stays quiet. That is the right
+failure, but it is the honest ceiling on this work today — clef *detection* on
+such scans is itself unsolved (see "Clef location" above).
+
+### `--clef-weights` is optional, and is not general-purpose weights
+
+The one footgun worth naming. `--clef-weights` takes a **clef-specialist
+checkpoint** — a model fine-tuned specifically to read clefs. It is an optional
+enhancement, not a requirement: header reading works without it. Pointing it at
+ordinary detection weights (including the production `--weights` file) makes
+clefs *worse*, not better, because the specialist's clef read overrides the main
+detector's. If you have no clef-specialist checkpoint, leave it unset.
 
 ---
 
@@ -430,6 +603,7 @@ anywhere (Mahler 5 p.11 stays at the 2506-notehead production baseline).
 ```
 usage: transcribe.py [-h] [--out OUT] [--pages PAGES] [--weights WEIGHTS]
                      [--clef-weights CLEF_WEIGHTS] [--clef-reader-conf CONF]
+                     [--no-header-reading] [--no-clef-locator]
                      [--clef-reader-imgsz N] [--clef-reader-header-frac F]
                      [--no-clef-locator]
                      [--conf CONF] [--imgsz IMGSZ] [--iou IOU]
@@ -446,19 +620,28 @@ options:
   --out OUT             Output JSON file (default: stdout)
   --pages PAGES         Pages to process: e.g. '0,4,9' or '0-4' (default: all)
   --weights WEIGHTS     YOLO weights path (default: Phase 3.3, F1 98.8%)
-  --clef-weights W      OPTIONAL staff-header specialist weights (env:
-                        OMR_CLEF_WEIGHTS). A 2nd detector reads each staff's
-                        clef + time signature from the left of its start cell
-                        and overrides them — fixes the all-treble disease on
-                        orchestral scans without touching notehead detection
-                        (the main --weights model still does all symbols).
-                        ~+2% runtime. NB the current clef weights read clefs but
-                        NOT time-sig digits (DSv2 gap) — the time-sig path waits
-                        on a time-sig-trained specialist. See
+  --clef-weights W      OPTIONAL, and NOT general-purpose weights: this takes a
+                        CLEF-SPECIALIST checkpoint (a model fine-tuned to read
+                        clefs). You do not need it — header reading is on by
+                        default and needs no extra files. When set, a 2nd
+                        detector reads each staff's clef + time signature from
+                        its header and overrides them, which helps on some
+                        orchestral scans (~+2% runtime; the main --weights model
+                        still does all symbols). Pointing it at ordinary
+                        detection weights makes clefs WORSE. Env:
+                        OMR_CLEF_WEIGHTS. NB the current clef weights read clefs
+                        but NOT time-sig digits (DSv2 gap). See
                         benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md.
   --clef-reader-conf C  Min confidence for a specialist override (def 0.30)
   --clef-reader-imgsz N     Specialist inference imgsz on its crop (def 640)
   --clef-reader-header-frac F  Left fraction of the start cell read (def 0.42)
+  --no-header-reading   Disable the staff-header pass: measuring each staff's
+                        header window and reading its key signature from it.
+                        On by default, needs no weights. The reading only seeds
+                        staves where the detector found no key-signature
+                        accidental, so this cannot fix a wrong DETECTED
+                        signature — it only removes the fallback. See "Reading
+                        a staff's header" above.
   --no-clef-locator     Disable the classical-CV C-clef locator. It runs only
                         where NO model read a clef, and recognises only C
                         clefs, so it can add a reading but never overturn one.
@@ -520,6 +703,31 @@ for page in result["pages"]:
 
 The `transcribe` function loads the YOLO model once, then iterates pages
 internally — call it once per PDF for best throughput.
+
+### If you are an agent reading this
+
+**Call `transcribe`. That is the whole interface.** Clef reading, C-clef
+location, header measurement and key-signature reading are all inside it and
+all on by default; there is no separate step to run and nothing to enable.
+
+- **Do not pass `clef_weights` unless you have a clef-SPECIALIST checkpoint.**
+  It is not "better weights" — it is a second model fine-tuned only for clefs,
+  whose clef read overrides the main detector's. Passing the production weights
+  (or any general detection checkpoint) there makes clefs worse. If in doubt,
+  omit it.
+- **Do not call `clef_locator`, `key_signature_locator`, `clef_geometry`,
+  `key_signature_geometry` or `staff_header` directly** to transcribe a score.
+  They are components `transcribe` composes in a specific order — the locators
+  are gated to speak only where the detector is silent, and calling one on its
+  own loses that gating. Read them directly only when you are testing or
+  debugging that one component.
+- **`read_headers=False` and `locate_c_clefs=False` are for reproducing older
+  output**, not for fixing a bad read. Both readers only ADD a reading where
+  nothing else produced one, so turning them off cannot correct a wrong result
+  — it can only remove a fallback.
+- **Check `staff["clef_source"]` and `staff["key_signature_source"]`** to see
+  which reader produced a value. Absent means the detector or a default; a
+  `key_signature_reason` explains what the cross-page vote decided.
 
 ---
 

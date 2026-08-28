@@ -51,37 +51,35 @@ off-pattern run, a clef with no slot table, a staff without clean 5-line
 geometry — rather than guessing, because a wrong key signature re-pitches every
 note on the staff for the rest of the system.
 
-## STATUS: works, but recall is about a third
+## Where this stands
 
 Measured on two ground-truth pages, both 19th-century orchestral prints, with
-the signature on every staff read off the page by eye:
+every signature read off the page by eye and **the true clef supplied**
+(Beethoven 5 p.2 and Beethoven 6 p.2 — 42 staves across both systems each):
 
-  Beethoven 5 p.2 sys0 (11 staves: 3 flats, one 1-flat clarinet, 3 with none)
-      3 correct, 1 wrong, 4 missed, 3 correct abstentions
-  Beethoven 6 p.2 sys0 (10 staves: 1 flat, one 1-sharp clarinet, 1 with none)
-      2 correct, 1 wrong, 6 missed, 1 correct abstention
+    per-staff reading:   10 correct,  7 wrong, 19 missed, 8 correct abstentions
+    after the vote:      10 correct,  2 wrong, 22 missed, 8 correct abstentions
 
-So: 5 of 15 signatures read, 4 of 4 empty staves correctly left alone, and 2
-wrong. Where it does read a signature it reads it exactly — the three-flat
-staves come back with all three accidentals matched at residuals of 0.03 and
-0.24 steps, well inside the half-step gate.
+Where it reads a signature it reads it exactly — three-flat staves come back
+with all three accidentals matched at residuals of 0.03 and 0.24 steps, well
+inside the half-step gate. Recall is about a third; the misses are ink-mask
+recall on thick, wandering staff lines, worse lower on a page where the print is
+denser. Both surviving errors are one genuine misread — a clarinet's sharp read
+as a flat, which agrees with the page's reference and so cannot be told from a
+non-transposing part by any structural argument.
 
-Both wrong answers are the same shape: a run where only ONE of several printed
-accidentals survived the ink mask. One glyph carries no pattern, so the
-sharp-or-flat decision falls to ink distribution and the count falls to
-whatever slot it lands nearest — and a bass-clef flat that fragments high can
-land nearer the first sharp's slot than the first flat's. This is the mode to
-fix next, and the fix is not local: within a system, staves largely share one
-concert key, and `transcribe._flag_key_signature_inconsistency` already models
-the transposition relation that connects their written signatures. A
-system-level vote would both reject these outliers and lift the missed staves.
+`key_signature_vote` is what makes this safe to run: on its own the reader is
+wrong seven times, because a run where only one of several printed accidentals
+survived carries no pattern and both the count and the sharp/flat decision fall
+to weak evidence.
 
-The misses are ink-mask recall — `header_ink_mask` clears the thick, wandering
-staff lines well enough for a clean read on some staves and not others, mostly
-lower on the page where the print is denser.
-
-Until that vote exists this locator should stay OFF by default: a missed key
-signature leaves a staff where it already was, but a wrong one re-pitches it.
+**The clef is the real ceiling.** The slot table is chosen by the clef, and a
+wrong clef does NOT degrade gracefully: measured end-to-end with every staff
+defaulted to treble, two bass staves carrying three flats fitted cleanly as two
+sharps. So `transcribe` only reads a key signature for a staff whose clef is
+actually known — never for one sitting on the positional default. On scans where
+the detector calls every staff treble, this reader stays quiet. That is the
+right failure, and it means key signatures and clefs improve together.
 """
 
 from __future__ import annotations
