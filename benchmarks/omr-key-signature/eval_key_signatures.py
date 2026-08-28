@@ -133,13 +133,15 @@ def run_component(page: dict, pdf: Path) -> None:
 
 # ─── pipeline mode: what actually lands in the output ───────────────────────
 
-def run_pipeline(page: dict, pdf: Path, weights: Path, imgsz: int) -> None:
+def run_pipeline(page: dict, pdf: Path, weights: Path,
+                 imgsz: int | None) -> None:
     from tools.omr.transcribe import transcribe
 
     truth = {s["ordinal"]: s for s in page["staves"]}
     started = time.time()
     result = transcribe(pdf_path=pdf, pages=[page["page_index"]], weights=str(weights),
-                        dpi=page["dpi"], imgsz=imgsz, progress=False)
+                        dpi=page["dpi"], progress=False,
+                        **({} if imgsz is None else {"imgsz": imgsz}))
     rows, voted_staves = [], 0
     for out_page in result["pages"]:
         for system in out_page["systems"]:
@@ -151,7 +153,7 @@ def run_pipeline(page: dict, pdf: Path, weights: Path, imgsz: int) -> None:
                 voted_staves += bool(staff.get("key_signature_source"))
     print(_fmt("end to end", _tally(rows)))
     print(f"  {'':22} staves the vote spoke for: {voted_staves}/{len(rows)}"
-          f"   ({time.time() - started:.0f}s, imgsz={imgsz})")
+          f"   ({time.time() - started:.0f}s, "f"imgsz={imgsz if imgsz else 'per-cell'})")
 
 
 def main() -> int:
@@ -161,7 +163,10 @@ def main() -> int:
     ap.add_argument("--mode", choices=["component", "pipeline", "both"], default="both")
     ap.add_argument("--pdf", default=None, help="override the PDF path (one page only)")
     ap.add_argument("--weights", default=str(DEFAULT_WEIGHTS))
-    ap.add_argument("--imgsz", type=int, default=1280, help="pipeline mode only")
+    # None = whatever transcribe defaults to, so this harness tracks the
+    # pipeline instead of silently pinning a value the pipeline stopped using.
+    # It was pinned at 1280 while the CLI default was 2048 and then 512.
+    ap.add_argument("--imgsz", type=int, default=None, help="pipeline mode only")
     args = ap.parse_args()
 
     truth = json.loads(GROUND_TRUTH.read_text())
