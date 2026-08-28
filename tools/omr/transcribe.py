@@ -186,7 +186,8 @@ from .staff_detector import detect_staves
 from .measure_extractor import detect_barlines, extract_measures, resegment_fused_measures
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
-from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
+from .pitch_resolver import (pitch_candidates_for_notehead, pitch_for_notehead,
+                             pitch_to_midi)
 from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
@@ -1572,19 +1573,9 @@ _CLEF_INVERSION_GAP = 12     # semitones (an octave) of p25/p75 separation to fl
 
 def _pitch_to_midi(pitch: str | None) -> int | None:
     """Convert a pitch string ('F#3', 'Bb5', 'C4') to a MIDI number (C4 = 60),
-    or None if unparseable. Accepts any run of #/b accidentals after the letter."""
-    if not pitch or pitch[0] not in _NOTE_SEMITONE:
-        return None
-    semitone = _NOTE_SEMITONE[pitch[0]]
-    i = 1
-    while i < len(pitch) and pitch[i] in "#b":
-        semitone += 1 if pitch[i] == "#" else -1
-        i += 1
-    try:
-        octave = int(pitch[i:])
-    except ValueError:
-        return None
-    return 12 * (octave + 1) + semitone
+    or None if unparseable. Thin alias — the implementation lives in
+    pitch_resolver so the clef-correction pass shares exactly this parse."""
+    return pitch_to_midi(pitch)
 
 
 def _staff_notehead_midis(staff: dict[str, Any]) -> list[int]:

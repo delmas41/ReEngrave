@@ -46,6 +46,57 @@ _CLEF_ANCHORS = {
 }
 
 
+NOTE_SEMITONE = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
+
+
+def parse_pitch(pitch: str | None) -> tuple[str, int, int] | None:
+    """'F#4' -> ('F', +1, 4); 'Bb3' -> ('B', -1, 3). None if unparseable."""
+    if not pitch or pitch[0] not in NOTE_SEMITONE:
+        return None
+    letter, i, alt = pitch[0], 1, 0
+    while i < len(pitch) and pitch[i] in "#b":
+        alt += 1 if pitch[i] == "#" else -1
+        i += 1
+    try:
+        return letter, alt, int(pitch[i:])
+    except ValueError:
+        return None
+
+
+def pitch_to_midi(pitch: str | None) -> int | None:
+    """MIDI number for a pitch string (C4 = 60), or None if unparseable."""
+    parsed = parse_pitch(pitch)
+    if parsed is None:
+        return None
+    letter, alt, octave = parsed
+    return 12 * (octave + 1) + NOTE_SEMITONE[letter] + alt
+
+
+def diatonic_index(letter: str, octave: int) -> int:
+    """Position on the diatonic ladder: C0 = 0, D0 = 1, ... C1 = 7."""
+    return octave * 7 + _PITCH_CYCLE.index(letter)
+
+
+def pitch_from_diatonic_index(index: int) -> tuple[str, int]:
+    """Inverse of `diatonic_index`."""
+    return _PITCH_CYCLE[index % 7], index // 7
+
+
+def clef_diatonic_shift(from_clef: str, to_clef: str) -> int | None:
+    """How many diatonic steps every notehead moves when a staff is reread
+    under a different clef.
+
+    Reading a staff under another clef is a CONSTANT diatonic shift of all of
+    its notes — the staff positions are unchanged, only the anchor moves. So a
+    clef hypothesis can be evaluated by arithmetic on already-resolved pitches,
+    with no image and no re-detection. Returns None if either clef is unknown.
+    """
+    a, b = _CLEF_ANCHORS.get(to_clef), _CLEF_ANCHORS.get(from_clef)
+    if a is None or b is None:
+        return None
+    return diatonic_index(*a) - diatonic_index(*b)
+
+
 def _pitch_from_position(pos_half_steps: int, clef: str) -> str | None:
     """Given a position measured in half-line-spacings from the top staff line
     (positive = downward), return a pitch label like "C4".
