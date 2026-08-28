@@ -105,6 +105,17 @@ class ClefLocatorConfig:
     # Ink with less vertical extent than this is a staff-line fragment, not
     # part of a glyph — see _drop_flat_residue.
     min_ink_height_spaces: float = 0.2
+    # An F clef's two dots: round, of this size, sitting in the right-hand
+    # part of the glyph, aligned in x and about one staff space apart —
+    # because they straddle the line the clef names. See _has_f_clef_dots.
+    dot_min_size_spaces: float = 0.22
+    dot_max_size_spaces: float = 0.75
+    dot_min_aspect: float = 0.65
+    dot_max_aspect: float = 1.5
+    dot_right_fraction: float = 0.55   # dots sit right of the glyph's middle
+    dot_max_dx_spaces: float = 0.30
+    dot_min_dy_spaces: float = 0.60
+    dot_max_dy_spaces: float = 1.50
     # Staff spacing, in pixels, that the shape analysis is done at. Cells
     # arrive at whatever scale their measure width happened to force — a
     # narrow measure is upscaled far more than a wide one — and morphology is
@@ -361,6 +372,60 @@ def _refine_symmetry_axis(
     return float(y + best_axis), max(0.0, best_score)
 
 
+def _has_f_clef_dots(
+    mask: np.ndarray,
+    bbox: tuple[int, int, int, int],
+    spacing: float,
+    config: ClefLocatorConfig,
+) -> bool:
+    """Whether a candidate carries an F clef's two dots.
+
+    This is the one veto that catches an F clef reliably, and it works because
+    the dots are not decoration: they straddle the line the clef names, which
+    is what makes it an F clef. So they are always a pair, always round, always
+    about one staff space apart, always aligned in x, and always to the right
+    of the body — in any font and any century.
+
+    Needed because an F clef is otherwise a plausible C clef by the numbers.
+    Measured on Nottebohm p.31, a bass clef came in at width 2.50, height 2.73
+    and symmetry 0.81 — inside the range of every real C clef on the page
+    (0.76-0.85). No size or symmetry threshold separates them; the dots do,
+    cleanly, and on that page they are the only candidate that has them.
+
+    A wrong clef transposes every note on its staff, so this is worth a veto
+    even though it costs nothing on C clefs.
+    """
+    x, y, w, h = bbox
+    sub = mask[y : y + h, x : x + w]
+    if sub.size == 0 or w <= 0:
+        return False
+    n, _labels, stats, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
+    dots: list[tuple[float, float]] = []
+    for i in range(1, n):
+        bw = stats[i, cv2.CC_STAT_WIDTH] / spacing
+        bh = stats[i, cv2.CC_STAT_HEIGHT] / spacing
+        if not (config.dot_min_size_spaces <= bw <= config.dot_max_size_spaces):
+            continue
+        if not (config.dot_min_size_spaces <= bh <= config.dot_max_size_spaces):
+            continue
+        aspect = bw / max(bh, 1e-6)
+        if not (config.dot_min_aspect <= aspect <= config.dot_max_aspect):
+            continue
+        cx = stats[i, cv2.CC_STAT_LEFT] + stats[i, cv2.CC_STAT_WIDTH] / 2.0
+        if cx / w < config.dot_right_fraction:
+            continue
+        dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0))
+    for i in range(len(dots)):
+        for j in range(i + 1, len(dots)):
+            dx = abs(dots[i][0] - dots[j][0]) / spacing
+            dy = abs(dots[i][1] - dots[j][1]) / spacing
+            if dx <= config.dot_max_dx_spaces and (
+                config.dot_min_dy_spaces <= dy <= config.dot_max_dy_spaces
+            ):
+                return True
+    return False
+
+
 def _overlaps_any(
     bbox: tuple[int, int, int, int],
     boxes: list[tuple[int, int, int, int]] | None,
@@ -500,6 +565,8 @@ def locate_clef(
             # at the head of the staff is what the clef would have been, and
             # scanning on would only find noteheads to misread.
             return None
+        if _has_f_clef_dots(strip, bbox, spacing, config):
+            return None  # an F clef wearing a C clef's proportions
 
         # Hand the measurement to the same resolver the detector path uses, so
         # a located clef is named exactly as a detected one is — the only

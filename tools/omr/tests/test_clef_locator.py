@@ -64,6 +64,20 @@ def draw_c_clef(img: np.ndarray, line_from_bottom: int, x: int = 22) -> None:
     draw_c_clef_at(img, line_y(line_from_bottom), x=x)
 
 
+def draw_f_clef(img: np.ndarray, line_from_bottom: int = 4, x: int = 22) -> None:
+    """An F clef: a body of roughly C-clef proportions plus the two dots that
+    straddle the line it names. The body alone is deliberately drawn to pass
+    the size and symmetry gates — that is the situation the dot veto exists
+    for, and it is what a real bass clef did on Nottebohm p.31."""
+    cy = line_y(line_from_bottom)
+    cv2.rectangle(img, (x, cy - 30), (x + 11, cy + 30), 0, -1)
+    cv2.rectangle(img, (x + 14, cy - 30), (x + 25, cy + 30), 0, -1)
+    for dy in (-10, 10):
+        cv2.rectangle(img, (x, cy + dy - 4), (x + 25, cy + dy + 4), 0, -1)
+    for dy in (-SPACING // 2, SPACING // 2):   # the dots
+        cv2.circle(img, (x + 34, cy + dy), 5, 0, -1)
+
+
 def draw_g_clef(img: np.ndarray, x: int = 22) -> None:
     """A stand-in for a G clef: much taller than any C clef, and lopsided —
     a heavy loop up top and a long tail hanging below the staff."""
@@ -163,6 +177,25 @@ class TestAbstains:
             for cy in (130, 150):
                 cv2.rectangle(img, (x, cy - 4), (x + 25, cy + 4), 0, -1)
         assert locate_clef(make_cell(img)) is None
+
+    def test_an_f_clef_is_rejected_by_its_dots(self):
+        # An F clef can wear a C clef's proportions — width, height and
+        # symmetry all inside the range of real C clefs. Its two dots are what
+        # give it away, and they are reliable because they are not decoration:
+        # they straddle the line the clef names.
+        img = blank_page()
+        draw_f_clef(img, 4)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img)) is None
+
+    def test_the_same_body_without_dots_is_read_as_a_c_clef(self):
+        # Proves the dots are doing the rejecting, not the body's shape.
+        img = blank_page()
+        draw_f_clef(img, 4)
+        # Erase the dots.
+        cv2.rectangle(img, (48, 0), (70, CELL_H), 255, -1)
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.line == 4
 
     def test_an_empty_staff_yields_nothing(self):
         assert locate_clef(make_cell(blank_page())) is None
