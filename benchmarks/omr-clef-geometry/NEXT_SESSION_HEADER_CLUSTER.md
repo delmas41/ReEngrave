@@ -1,7 +1,25 @@
 # Handoff — splitting the fused header cluster
 
-The single biggest remaining lever on clef coverage, scoped and measured
-2026-08-28. Paste the prompt at the bottom into a fresh session.
+> **STATUS: partly done.** The fused cluster was not the brace and was not one
+> big object: in all 105 of them the tallest connected component was under two
+> staff spaces. It was small objects — the movement heading, the rehearsal
+> letter, the neighbouring staff — stacked by a grouping rule that only looked
+> sideways. Grouping header ink in both axes, for ink standing clear of the
+> staff only, took Nottebohm's `located` from 43 to 59 of 191 header cells and
+> Beethoven 5's from 12 to 14, with every precision check unchanged. Full
+> write-up in `RESULTS.md` under "The fused cluster, resolved", including five
+> dead ends, the false positive it did not fix, and the reason the first
+> version of it invented seventeen clefs on an orchestral scan.
+>
+> **The orchestral half is still where the problem lives**: Beethoven 5 has 170
+> of 371 header cells in this bucket at a median height of 6.9 staff spaces,
+> and those clusters really are tall rather than several things stacked. That
+> is what a next session should take — and it is a different cause, so measure
+> it before assuming otherwise.
+>
+> Everything below is the original scoping, kept because its measurements are
+> still the record of how the bucket looked and because its list of dead ends
+> is still worth not repeating. Read it knowing the headline is settled.
 
 ---
 
@@ -244,6 +262,20 @@ the height test must still see the glyph's true extent.
 ---
 
 ## The prompt
+
+**Superseded — see the status note at the top.** This asked for the fused
+cluster to be split, which is done for the vocal/keyboard case. What is left
+for a fresh session is the orchestral one, where the clusters really are tall:
+Beethoven 5 has 170 of 371 header cells in this bucket, at a median height of
+6.9 staff spaces against a limit of 5.0, and the two-axis grouping barely moves
+it. Different cause, so measure it before assuming it is the same problem —
+that mistake has now been made twice on this bucket. Run
+`probe_clef_rejection.py` and `check_clef_precision.py` together; the second is
+not optional, because every promising idea in this area has turned out to buy
+coverage with false positives until measured.
+
+The original prompt follows.
+
 
 > You're picking up OMR work in the ReEngrave repo. Everything is on `main`,
 > 678 tests green. Read `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`

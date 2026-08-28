@@ -165,6 +165,7 @@ def cluster_components(
     boxes: list[tuple[int, int, int, int, int]],
     max_gap: float,
     max_y_gap: float | None = None,
+    on_staff: tuple[float, float] | None = None,
 ) -> list[tuple[int, int, int, int]]:
     """Merge components into glyph-sized clusters by proximity — horizontally
     always, and vertically too when `max_y_gap` is given.
@@ -225,6 +226,19 @@ def cluster_components(
                 break
             if max_y_gap is not None:
                 dy = max(yj - (yi + hi), yi - (yj + hj), 0)
+                # Ink that touches the staff belongs to whatever glyph is
+                # printed on it, however the morphology has broken it up, so
+                # the vertical limit is not applied to it. Only ink standing
+                # CLEAR of the staff can be separated off by the gap — which
+                # is what the heading, the rehearsal letter and the page
+                # number all are, and what a clef never is.
+                if on_staff is not None:
+                    top, bottom = on_staff
+                    both_touch = (yi < bottom and top < yi + hi) and (
+                        yj < bottom and top < yj + hj
+                    )
+                    if both_touch:
+                        dy = 0.0
                 if dy > max_y_gap:
                     continue
             a, b = find(i), find(j)

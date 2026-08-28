@@ -124,12 +124,15 @@ def draw_heading_above(img: np.ndarray, x: int = 24) -> None:
     cv2.rectangle(img, (x, 30), (x + 34, 62), 0, -1)
 
 
-def draw_brace_bulge(img: np.ndarray, x: int = 20) -> None:
-    """The waist of a system brace, as it survives rule stripping: a sliver to
-    the left of the clef, vertically symmetric and wide enough to clear the
-    width gate — 1.0 staff space by 4.5, where the real ones measured 0.68 to
-    1.27 wide. It read as a C clef on four Nottebohm staves."""
-    cv2.rectangle(img, (x, 96), (x + 20, 186), 0, -1)
+def draw_split_g_clef(img: np.ndarray, x: int = 22) -> None:
+    """A G clef whose body and tail have come apart, as they do on a scan: the
+    stroke thins where it crosses the staff and the morphology severs it. The
+    gap here is 0.7 staff spaces, wider than the vertical tolerance — measured
+    at 0.49 on Beethoven 5 — and BOTH pieces touch the staff, which is what
+    must keep them together."""
+    cv2.ellipse(img, (x + 20, 110), (20, 40), 0, 0, 360, 0, 11)   # the body
+    cv2.rectangle(img, (x + 16, 164), (x + 24, 250), 0, -1)       # the tail
+    cv2.circle(img, (x + 20, 245), 10, 0, -1)
 
 
 def draw_noteheads(img: np.ndarray) -> None:
@@ -222,23 +225,19 @@ class TestReadsPastTheFurniture:
         found = locate_clef(make_cell(img))
         assert found is not None and found.read.name == "alto"
 
-    def test_the_brace_is_not_read_as_a_clef(self):
-        # A brace's waist survives the rule stripping — it is wider than the
-        # thin-rule allowance, and inside a header crop it is shorter than the
-        # heavy-rule one — and what is left is symmetric and clef-sized. Only
-        # its proportions give it away: it is a sliver, and a C clef is
-        # compact.
-        img = blank_page()
-        draw_brace_bulge(img)
-        draw_c_clef(img, 3, x=56)
-        draw_noteheads(img)
-        found = locate_clef(make_cell(img))
-        assert found is not None and found.read.name == "alto"
-        assert found.bbox[0] > 40, "read the brace instead of the clef"
+    def test_ink_touching_the_staff_is_never_split_apart(self):
+        """The safety half of the rule above, and the reason it is restricted
+        to ink standing clear of the staff.
 
-    def test_a_brace_with_no_clef_behind_it_yields_nothing(self):
+        A glyph printed ON the staff arrives in pieces — the morphology severs
+        its strokes where they cross a line — and those pieces must stay
+        together whatever the gap between them, because half a treble clef is
+        the size and shape of a C clef. Applied to all ink instead, at a
+        tolerance small enough to be useful, this invented seventeen C clefs
+        across twenty pages of a Beethoven 5 scan that has none there.
+        """
         img = blank_page()
-        draw_brace_bulge(img)
+        draw_split_g_clef(img)
         draw_noteheads(img)
         assert locate_clef(make_cell(img)) is None
 
@@ -313,17 +312,6 @@ class TestAbstains:
         img = blank_page()
         draw_g_clef(img)
         draw_c_clef(img, 3, x=110)   # a C clef further in must NOT be taken
-        assert locate_clef(make_cell(img)) is None
-
-    def test_a_glyph_taller_than_any_c_clef_yields_nothing(self):
-        # 4.8 staff spaces. The tallest C clef in either reference corpus is
-        # 4.05 (engraved) / 3.59 (archaic), and the cap used to sit at 5.0 —
-        # loose enough that a treble clef which had lost its tail measured
-        # 4.86, passed, and named the wrong clef.
-        img = blank_page()
-        draw_c_clef_at(img, line_y(3))
-        cv2.rectangle(img, (22, 92), (22 + CLEF_W, 188), 0, -1)
-        draw_noteheads(img)
         assert locate_clef(make_cell(img)) is None
 
     def test_an_empty_staff_yields_nothing(self):

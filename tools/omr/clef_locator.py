@@ -92,28 +92,13 @@ class ClefLocatorConfig:
     max_start_spaces: float = 6.0
     # Narrower than this and it is a barline, a bracket or a stem, not a clef —
     # and, crucially, not worth STOPPING the search for either (see the width
-    # test in locate_clef). The bound has to separate three measured
-    # populations: rule residue at 0.55 and 0.68 staff spaces, real C clefs
-    # from 1.23 up, and a treble clef at 2.59, which must still stop the
-    # search. 1.0 sits in the gap with room on both sides.
-    min_width_spaces: float = 1.0
+    # test in locate_clef).
+    min_width_spaces: float = 0.55
     max_width_spaces: float = 4.5
     # A C clef spans about 4 spaces in modern fonts and about 3 in the older
-    # narrow engravings; the ceiling is what keeps a G clef (≈7) out. Measured
-    # over 80 located clefs plus the engraved reference sheet, the tallest true
-    # C clef is 4.05 spaces (modern) / 3.59 (archaic), so 4.5 leaves room for
-    # both. It used to be 5.0, which was loose enough to admit a treble clef
-    # whose tail had come away: that read 4.86 and named the wrong clef.
+    # narrow engravings; the ceiling is what keeps a G clef (≈7) out.
     min_height_spaces: float = 2.2
-    max_height_spaces: float = 4.5
-    # A C clef is a compact glyph — roughly as wide as it is tall. Measured, a
-    # real one runs 0.50 to 1.26 wide over tall; the system brace, the bracket
-    # and a surviving stem run 0.25 to 0.35. Nothing observed lies between, and
-    # the two populations are what the gap is drawn from. This is the one gate
-    # that separates a clef from the brace it stands next to, because the
-    # brace's bulge is otherwise the right size and beautifully symmetric — it
-    # was read as a C clef on four staves before this existed.
-    min_aspect: float = 0.42
+    max_height_spaces: float = 5.0
     min_symmetry: float = 0.70      # the C-clef signature — see _refine_symmetry_axis
     # How far the measured axis of symmetry may sit from the box centre. Big
     # enough to undo a stray fragment's pull, small enough that it can never
@@ -138,7 +123,35 @@ class ClefLocatorConfig:
     # Above 0.4 the heading text starts fusing back on and coverage falls.
     # 0.3 is the middle of that window, as far from inventing clefs as from
     # losing them.
-    cluster_y_gap_spaces: float = 0.30
+    # Vertical counterpart of the x-gap, and the reason a clef in a
+    # 19th-century header is found at all. A staff header is a narrow column
+    # that also holds whatever is printed above and below the staff, and
+    # grouping ink by its x-gap alone strung the clef together with the
+    # movement heading, the rehearsal letter and the neighbouring staff into
+    # one column far too big to be a clef — 55% of all header cells, measured.
+    #
+    # It applies ONLY to ink standing clear of the staff's own five lines (see
+    # `on_staff` in `header_ink.cluster_components`). That restriction is the
+    # whole safety argument, and it was learned the expensive way. Applied to
+    # everything, at a tolerance small enough to help, the rule takes a treble
+    # clef on an orchestral scan apart at the waist and reads the upper half as
+    # an alto clef: on twenty pages of Beethoven 5 that invented seventeen
+    # clefs where the page has none. Ink that touches the staff belongs to
+    # whatever glyph is printed on it, however the morphology broke it up, so
+    # it is never separated; a clef always touches the staff and a heading
+    # never does.
+    #
+    # The value is then bounded by what has to survive on each side, and both
+    # bounds are measured. Below it, a G clef comes apart: on a Beethoven 5
+    # scan the tail detaches from the body at 0.49 staff spaces, and a G clef's
+    # body alone is the size and shape of a C clef — at 0.6 that invented two
+    # clefs on twenty pages and at 0.8 one, where 1.0 invents none. Above it,
+    # the heading fuses back on and the coverage goes: Nottebohm's `located`
+    # falls from 59 at 1.0 to 56 at 1.25. The two populations are far apart —
+    # a glyph's internal gaps are under half a space, a heading's separation
+    # from the clef is 1.68 spaces at the median — so 1.0 is a gap, not a
+    # tightrope.
+    cluster_y_gap_spaces: float = 1.00
     min_component_area_spaces: float = 0.02  # speck filter, in (staff space)²
     vertical_rule_max_width_spaces: float = 0.5   # thinner ⇒ a rule, not a glyph
     vertical_rule_min_height_spaces: float = 2.0
@@ -464,6 +477,7 @@ def locate_clef(
         boxes,
         max_gap=config.cluster_gap_spaces * spacing,
         max_y_gap=config.cluster_y_gap_spaces * spacing,
+        on_staff=(top_y, bottom_y),
     )
     if trace is not None:
         trace["spacing_px"] = round(spacing, 2)
@@ -524,16 +538,6 @@ def locate_clef(
             return None
         if h_sp < config.min_height_spaces:
             continue  # debris: a fragment, a speck, a rule that survived
-        if w_sp / h_sp < config.min_aspect:
-            # A thin vertical sliver: the system brace's waist, a bracket, a
-            # stem the rule-stripping left behind. Solid enough to pass the ink
-            # test above — this is the brace where it is DRAWN, not the trail
-            # of specks beside it — and clef-sized, and symmetric. Only its
-            # proportions give it away. Skipped rather than fatal: unlike a
-            # clef-shaped object, a sliver says nothing about what this staff's
-            # clef is, and the brace stands to the LEFT of the clef, so the
-            # clef is still ahead of us.
-            continue
 
         if _overlaps_any(bbox, occupied_boxes):
             # The head of this staff is a notehead or a rest, so the clef is

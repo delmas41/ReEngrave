@@ -97,6 +97,8 @@ class TestErase:
 class TestClusterComponents:
     """The clef clusterer: near in x AND near in y."""
 
+    STAFF = (100, 155)   # the staff's own top and bottom line, in pixels
+
     def test_a_heading_above_the_staff_does_not_join_the_clef(self):
         # What cost the clef locator most of its coverage. A movement heading
         # printed above the staff sits in the same narrow column as the clef,
@@ -105,7 +107,24 @@ class TestClusterComponents:
         # a clef.
         clef = (40, 100, 30, 55, 900)
         heading = (44, 20, 34, 30, 700)
-        assert len(cluster_components([clef, heading], max_gap=12, max_y_gap=6)) == 2
+        merged = cluster_components([clef, heading], max_gap=12, max_y_gap=6,
+                                    on_staff=self.STAFF)
+        assert len(merged) == 2
+
+    def test_two_pieces_that_both_touch_the_staff_always_join(self):
+        # The safety rule: a glyph printed on the staff arrives in pieces, and
+        # they must stay together however far apart the morphology left them,
+        # because half a treble clef is the size and shape of a C clef.
+        body = (40, 96, 30, 40, 900)
+        tail = (46, 150, 12, 40, 400)     # 14px below the body, well over the gap
+        merged = cluster_components([body, tail], max_gap=12, max_y_gap=6,
+                                    on_staff=self.STAFF)
+        assert len(merged) == 1
+
+    def test_without_on_staff_the_gap_applies_to_everything(self):
+        body = (40, 96, 30, 40, 900)
+        tail = (46, 150, 12, 40, 400)
+        assert len(cluster_components([body, tail], max_gap=12, max_y_gap=6)) == 2
 
     def test_pieces_of_one_glyph_still_join_across_an_erased_line(self):
         # Stripping the staff lines severs a glyph's vertical strokes, so its
