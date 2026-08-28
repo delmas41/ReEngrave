@@ -260,3 +260,61 @@ class TestSingleStaffSystemNeverSplit:
 
         assert len(out) == 3, "single-staff cell must never split"
         assert _staff_measure_widths(out, 0) == [200, 200, 412]
+
+
+# ─── Trailing tail handling (_measure_x_boundaries) ──────────────────────────
+
+
+class TestTrailingTail:
+    """A tail much narrower than a real measure used to be DISCARDED, on the
+    assumption it was the blank strip between the final barline and the end of
+    the staff lines. That assumption fails whenever a spurious barline is
+    detected near the end of a system, and then real music is deleted from the
+    page with nothing downstream able to tell (the measure COUNT stays right).
+
+    Measured on WTC p.6 system 2: a false barline at x=4476, where two stems
+    happen to align across the staves, ended the last cell there and dropped
+    the 340px of notes that followed. The tail is now absorbed into the last
+    measure instead.
+    """
+
+    @staticmethod
+    def _staff(x_start: int, x_end: int):
+        from tools.omr.types import Staff
+        return Staff(page_index=0, staff_index=0, line_ys=[100, 120, 140, 160, 180],
+                     x_start=x_start, x_end=x_end, system_index=0)
+
+    @staticmethod
+    def _barlines(xs: list[int]):
+        from tools.omr.types import Barline
+        return [Barline(page_index=0, x=x, y_top=95, y_bottom=185, system_index=0)
+                for x in xs]
+
+    def _boundaries(self, barline_xs, x_start=100, x_end=1100):
+        from tools.omr.measure_extractor import _measure_x_boundaries
+        return _measure_x_boundaries(self._barlines(barline_xs), [self._staff(x_start, x_end)])
+
+    def test_narrow_tail_is_absorbed_not_dropped(self):
+        # Two wide measures then a 60px sliver: the sliver is folded into the
+        # measure before it, so the covered span still reaches the staff edge.
+        got = self._boundaries([100, 500, 1040, 1100])
+        assert got[-1][1] == 1100, f"tail dropped: {got}"
+        assert got == [(100, 500), (500, 1100)]
+
+    def test_no_x_is_left_uncovered(self):
+        """The invariant that matters: boundaries must tile the staff."""
+        for xs in ([100, 500, 1040, 1100], [100, 400, 700, 1100], [100, 600, 1100]):
+            got = self._boundaries(xs)
+            assert got[0][0] == 100
+            assert got[-1][1] == 1100
+            for a, b in zip(got, got[1:]):
+                assert a[1] == b[0], f"gap between {a} and {b}"
+
+    def test_a_wide_tail_is_still_its_own_measure(self):
+        # 600px after the last barline is a measure, not a strip.
+        got = self._boundaries([100, 500, 1100])
+        assert got == [(100, 500), (500, 1100)]
+
+    def test_single_measure_page_is_unaffected(self):
+        got = self._boundaries([100, 1100])
+        assert got == [(100, 1100)]

@@ -1,0 +1,41 @@
+{
+  "_comment": [
+    "Stem and beam ground truth, known BY CONSTRUCTION rather than counted by",
+    "eye: the sheet is engraved by LilyPond from the score in",
+    "reference-lines.ly, so these numbers follow from the notation itself and",
+    "cannot drift. Regenerate with tools/omr/training/line_detection_eval.py.",
+    "",
+    "A stem is one vertical stroke attached to a notehead — a chord of three",
+    "noteheads on one stem counts once. Whole notes have none. A beam is one",
+    "BAR, matching what line_detection.detect_beams counts: a beamed pair of",
+    "eighths is 1, a beamed group of four sixteenths is 2 (primary plus",
+    "secondary).",
+    "",
+    "Compared per staff over the whole page, not per cell: measure",
+    "segmentation is not stable across line thicknesses (at thickness 1 the",
+    "barline before the chord measure is missed and two measures fuse into one",
+    "cell), and a per-cell comparison would score that as a stem/beam error."
+  ],
+  "per_measure": {
+    "0": [
+      {"bar": 1, "content": "four quarter notes", "stems": 4, "beams": 0},
+      {"bar": 2, "content": "one whole note", "stems": 0, "beams": 0},
+      {"bar": 3, "content": "eight eighths, beamed in pairs", "stems": 8, "beams": 4},
+      {"bar": 4, "content": "sixteen 16ths in four beamed groups", "stems": 16, "beams": 8},
+      {"bar": 5, "content": "four three-note chords", "stems": 4, "beams": 0},
+      {"bar": 6, "content": "two half notes", "stems": 2, "beams": 0}
+    ],
+    "1": [
+      {"bar": 1, "content": "two half notes", "stems": 2, "beams": 0},
+      {"bar": 2, "content": "one whole note", "stems": 0, "beams": 0},
+      {"bar": 3, "content": "four quarter notes", "stems": 4, "beams": 0},
+      {"bar": 4, "content": "two beamed pairs + two quarters", "stems": 6, "beams": 2},
+      {"bar": 5, "content": "two two-note chords", "stems": 2, "beams": 0},
+      {"bar": 6, "content": "one whole note", "stems": 0, "beams": 0}
+    ]
+  },
+  "per_staff_totals": {
+    "0": {"stems": 34, "beams": 12},
+    "1": {"stems": 14, "beams": 2}
+  }
+}
