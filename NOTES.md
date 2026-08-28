@@ -58,11 +58,18 @@ backed up by x-extent (the text "staves" span 1.5–2% of page width; every
 genuine staff measured spans 15–91%). Either signal rejects the text blocks
 without touching a single genuine staff in the corpus.
 
-**Why it wasn't done:** it's a Phase-1 change and Phase 1 has no trustworthy
-regression baseline right now — `test_pipeline.py`'s staff/measure-count
-assertions already fail from earlier drift (identically on `main`). Restore that
-baseline first, then apply the span filter. Numbers to work from are in
-`benchmarks/omr-clef-geometry/RESULTS.md`.
+**STATUS 2026-08-28: the x-extent half is DONE, the text-as-staff half is NOT.**
+The staff x-extent, system-edge and open-score-barline fixes shipped (see
+`benchmarks/omr-clef-geometry/RESULTS.md` → "Phase 1: what the clef work forced
+open"); they took Nottebohm p.31 from 16 cells to 88 and its clefs from 6/12 to
+9/12, with WTC / Boléro / Handel / Mahler layout unchanged.
+
+Body text detected as staves is still open — 147 of 1522 "staves" over 156
+pages of this book. The span-vs-page-median discriminator above is measured and
+ready; it was not applied because it needs a Phase-1 regression baseline that
+`test_pipeline.py` cannot currently provide (its count assertions fail from
+older drift, identically on `main`). Restore that baseline first. Numbers to
+work from: `benchmarks/omr-clef-geometry/RESULTS.md`.
 
 
 ## YOLO training via symphony MusicXML × multiple IMSLP editions (2026-05-23)
