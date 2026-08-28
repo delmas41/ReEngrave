@@ -217,38 +217,124 @@ def detect_stems(
 # ---------------------------------------------------------------------------
 
 
+def _stacked_bar_count(opened, x: int, y: int, w: int, h: int, max_samples: int = 48) -> int:
+    """How many beam bars are stacked here, counted as vertical ink runs.
+
+    Not from the bounding box's height, which was the old approach and is wrong
+    for the commonest case: a SLOPED beam. A beam over a rising figure has a
+    box far taller than the beam is thick — measured on the reference sheet,
+    sloped beams fill only 43-46% of their box against 95% for a level one — so
+    dividing the box height by a beam's thickness reported a single sloped bar
+    as two, three or eight.
+
+    A column through the component crosses each bar exactly once, whatever the
+    slope, so counting runs in a column counts bars. The median over sampled
+    columns keeps a stem or a notehead crossing the beam from swaying it.
+    """
+    roi = opened[y:y + h, x:x + w] > 0
+    if roi.size == 0:
+        return 1
+    step = max(1, roi.shape[1] // max_samples)
+    cols = roi[:, ::step]
+    # A run starts where ink appears under paper — count those per column.
+    above = np.vstack([np.zeros((1, cols.shape[1]), dtype=bool), cols[:-1]])
+    counts = (cols & ~above).sum(axis=0)
+    counts = counts[counts > 0]
+    if counts.size == 0:
+        return 1
+    return max(1, int(np.median(counts)))
+
+
+def _attached_stem_count(labels, label: int, stems, x: int, y: int, w: int, h: int,
+                         line_spacing: float, tolerance: float, end_reach: float) -> int:
+    """How many stems END at this component — which is what makes it a beam.
+
+    A beam exists to join stems, and it joins them at their ENDS. Nothing else
+    that draws a long horizontal line in a score does that: a slur or tie runs
+    between noteheads, a ledger line sits at a notehead's middle with at most
+    one stem beside it, and staff-line residue has no stem at all. Measured on
+    Mahler 5 p.11, those three were essentially the entire beam count — one
+    cell of half notes under slurs was reporting 27 beams.
+
+    The comparison is made against the component's ink IN THE STEM'S OWN COLUMN
+    rather than against its bounding box. A sloped beam's box reaches far above
+    and below the bar itself, so box edges put the far stem out of range and a
+    sloped double beam lost its lower bar.
+    """
+    found = 0
+    x_lo = x - line_spacing * 0.4
+    x_hi = x + w + line_spacing * 0.4
+    for s in stems:
+        sx = s.x_canonical + s.width_canonical / 2.0
+        if not (x_lo <= sx <= x_hi):
+            continue
+        # Clamp only for the lookup: a beam may stop a hair short of the stem
+        # that hangs from its end.
+        sx = min(max(int(round(sx)), x), x + w - 1)
+        column = labels[y:y + h, sx] == label
+        if not column.any():
+            continue
+        rows = np.flatnonzero(column)
+        local_top = y + int(rows[0])
+        local_bottom = y + int(rows[-1])
+        top = float(s.y_canonical)
+        bottom = top + s.height_canonical
+        # The stem must meet the beam: end at it, or run through it. A
+        # SECONDARY beam is run through rather than ended at — with a double
+        # beam the stems stop at the outer bar and cross the inner one — so
+        # requiring an end here would find the primary bar of every group and
+        # discard the secondary.
+        meets = (top - tolerance) <= local_bottom and (bottom + tolerance) >= local_top
+        if not meets:
+            continue
+        # ...but the stem's END still has to be in the neighbourhood, which is
+        # what keeps a long horizontal residue INSIDE the staff from being
+        # adopted by every stem that happens to cross it. A secondary beam sits
+        # less than a bar-pitch from the primary, so the reach only has to
+        # cover a stack of them.
+        nearest_end = min(abs(top - local_top), abs(top - local_bottom),
+                          abs(bottom - local_top), abs(bottom - local_bottom))
+        if nearest_end <= end_reach:
+            found += 1
+    return found
+
+
 def detect_beams(
     cell,
     *,
+    stems: list[LineDetection] | None = None,
     min_width_lines: float = 1.5,
     min_height_lines: float = 0.10,
-    max_height_lines: float = 1.0,
-    typical_single_beam_lines: float = 0.22,
+    max_height_lines: float = 2.5,
     min_height_absolute: int = 2,
+    stem_attach_tolerance_lines: float = 1.0,
+    stem_end_reach_lines: float = 2.5,
+    min_attached_stems: int = 2,
 ) -> list[LineDetection]:
-    """Find beam-like horizontal ink runs in `cell`.
+    """Find beams in `cell`.
 
-    Algorithm mirrors stems but with a horizontal structuring element:
       1. Pick the cleanest source — staff-removed if available.
-      2. Threshold → binary ink.
-      3. Horizontal morphological opening with a (line_spacing×1.5 × 1)
-         element. Erases everything that isn't a long horizontal run.
-      4. Connected components → candidate beams.
-      5. Filter:
-           - width ≥ min_width_lines × line_spacing
-           - height between min/max_height_lines × line_spacing
-           - aspect ratio ≥ 2:1 horizontal
-      6. **Split stacked beams.** A double-beam (16th notes) or triple-
-         beam (32nds) often appears as one tall component because the
-         vertical gap between parallel beams is too small to survive
-         binarization at this resolution. If a component's height is
-         ≥ 1.7× the typical single-beam height, split it into
-         `round(h / typical_beam_h)` equal sub-beams.
+      2. Horizontal morphological opening → candidate horizontal runs.
+      3. Connected components, filtered on width, height and aspect.
+      4. Keep only components that at least `min_attached_stems` stems END at.
+      5. Count the stacked bars in each by vertical ink runs, not box height.
 
-    `typical_single_beam_lines` controls when split fires. 0.22×
-    line_spacing ≈ 10-12 px at canonical resolution, which matches a
-    single engraved beam. Set this lower to split more aggressively,
-    higher to split less.
+    Steps 4 and 5 are what this function got wrong for a long time, and the
+    LilyPond reference sheet (`benchmarks/omr-phase4-lines/`) is what made it
+    visible: against a known 14 beam bars it reported 51, and against a known
+    12 on one staff it reported 41.
+
+    Without step 4 the count is dominated by things that are horizontal but are
+    not beams — slurs, ties, ledger lines, staff-line residue. Requiring two
+    stem ends removes all four classes at once without a rule per class:
+    measured on the reference sheet, error against ground truth falls from 157
+    to 3 summed over four staff-line thicknesses, and it holds under
+    degradation down to a 150 DPI render.
+
+    `max_height_lines` is 2.5 rather than 1.0 because both a stack of bars and
+    a sloped bar are legitimately taller than one beam. At 1.0 an entire
+    measure of sixteenths — two bars per group — was rejected outright and
+    scored 0 against a known 8.
     """
     if cell is None:
         return []
@@ -264,32 +350,23 @@ def detect_beams(
     if line_spacing <= 1.0:
         return []
 
+    if stems is None:
+        stems = detect_stems(cell)
+
     ink = _binary_ink(src)
     kernel_w = max(3, int(round(line_spacing * 1.5)))
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernel_w, 1))
     opened = cv2.morphologyEx(ink, cv2.MORPH_OPEN, kernel)
 
-    num, _, stats, _ = cv2.connectedComponentsWithStats(opened, connectivity=8)
+    num, labels, stats, _ = cv2.connectedComponentsWithStats(opened, connectivity=8)
     out: list[LineDetection] = []
     min_w = int(round(line_spacing * min_width_lines))
     # Absolute pixel floor on beam height is critical at orchestral cell
-    # resolution where `line_spacing × 0.15` collapses to 2-3 px. Staff-line
-    # residuals + ledger-line fragments are typically 1-3 px tall; real
-    # beams are 5+ px even on the smallest cells.
+    # resolution where `line_spacing × 0.10` collapses to 2-3 px.
     min_h = max(min_height_absolute, int(round(line_spacing * min_height_lines)))
     max_h = max(3, int(round(line_spacing * max_height_lines)))
-
-    # Staff-line proximity filter: a beam whose y-range straddles a staff
-    # line is almost certainly residual ink from imperfect staff removal,
-    # not a real beam. Real beams sit between staves OR distinctly above /
-    # below the staff (at the end of a stem). Reject candidates that
-    # vertically overlap any staff line within `staff_line_band` pixels.
-    staff_lines = getattr(cell, "staff_line_ys_canonical", None) or []
-    staff_line_band = max(2, int(round(line_spacing * 0.10)))
-    typical_h = max(3, int(round(line_spacing * typical_single_beam_lines)))
-    # Only split components clearly thicker than a single beam — 1.7× is
-    # the safety margin against engraving variance on solo beams.
-    split_threshold = int(typical_h * 1.7)
+    tolerance = line_spacing * stem_attach_tolerance_lines
+    end_reach = line_spacing * stem_end_reach_lines
 
     for i in range(1, num):
         x, y, w, h, area = stats[i]
@@ -301,38 +378,22 @@ def detect_beams(
             continue
         if w / max(1, h) < 2.0:
             continue
-
-        # Reject components that straddle a staff line (residual ink).
-        # A real beam has its y-center clearly off the staff lines.
-        y_center = y + h // 2
-        on_staff_line = any(
-            abs(y_center - sl) <= staff_line_band for sl in staff_lines
+        attached = _attached_stem_count(
+            labels, i, stems, x, y, w, h, line_spacing, tolerance, end_reach
         )
-        if on_staff_line:
+        if attached < min_attached_stems:
             continue
 
-        if h >= split_threshold:
-            n_levels = max(2, round(h / typical_h))
-            sub_h = max(1, h // n_levels)
-            for k in range(n_levels):
-                sub_y = int(y + k * (h / n_levels))
-                out.append(LineDetection(
-                    smufl_name="beam",
-                    category="structural",
-                    x_canonical=int(x),
-                    y_canonical=sub_y,
-                    width_canonical=int(w),
-                    height_canonical=int(sub_h),
-                    confidence=1.0,
-                ))
-        else:
+        n_bars = _stacked_bar_count(opened, x, y, w, h)
+        sub_h = max(1, h // n_bars)
+        for k in range(n_bars):
             out.append(LineDetection(
                 smufl_name="beam",
                 category="structural",
                 x_canonical=int(x),
-                y_canonical=int(y),
+                y_canonical=int(y + k * (h / n_bars)),
                 width_canonical=int(w),
-                height_canonical=int(h),
+                height_canonical=int(sub_h),
                 confidence=1.0,
             ))
     return out
@@ -344,8 +405,14 @@ def detect_beams(
 
 
 def detect_lines(cell) -> dict[str, list[LineDetection]]:
-    """Return {'stems': [...], 'beams': [...]}."""
+    """Return {'stems': [...], 'beams': [...]}.
+
+    Stems are found first and handed to the beam pass, which needs them to tell
+    a beam from a slur, a tie or a ledger line — and computing them once here
+    keeps that from costing a second detection.
+    """
+    stems = detect_stems(cell)
     return {
-        "stems": detect_stems(cell),
-        "beams": detect_beams(cell),
+        "stems": stems,
+        "beams": detect_beams(cell, stems=stems),
     }
