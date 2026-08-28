@@ -119,10 +119,15 @@ def _conf_threshold() -> float:
 
 
 def _imgsz() -> int:
+    """YOLO inference size. 512, matching tools.omr.transcribe — see
+    benchmarks/omr-imgsz-sweep-2026-08/findings.md. This used to be 1280 while
+    the CLI used 2048; both were too large. ultralytics letterboxes to
+    imgsz^2 regardless of cell size, so a bigger value buys anchors and false
+    noteheads rather than recall."""
     try:
-        return int(os.getenv("OMR_IMGSZ", "1280"))
+        return int(os.getenv("OMR_IMGSZ", "512"))
     except ValueError:
-        return 1280
+        return 512
 
 
 def _dpi() -> int:
