@@ -29,48 +29,29 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
-## Staff detection on mixed text/music pages (2026-08-27)
+## ~~Staff detection on mixed text/music pages~~ — DONE (2026-08-28)
 
-Found while chasing clef recall on Nottebohm's *Beethovens Studien* (Beethoven's
-counterpoint studies — the C-clef exercise material). **Body text is being
-detected as staves.** `staff_detector._ink_profile` counts ink *pixels* per row
-and requires 35% of page width; a row of justified body text clears that on
-total ink alone while containing no long run, and five consecutive text
-baselines are evenly enough spaced to pass the 5-line grouping. Two of p.90's
-seven "staves" are paragraphs; two of p.92's twelve are.
+Body text was being detected as staves (147 of 1522 "staves" over 156 pages of
+Nottebohm). Fixed in `staff_detector._line_ink_runs_per_space`: a staff line is
+one continuous stroke (a handful of ink runs over its whole length, even
+dashed), a text baseline is one run per letter. Music tops out at 1.39 runs per
+staff-space, text starts at 2.02, medians 0.017 vs 2.59.
 
-Second, related: `_staff_x_extent` returns the longest contiguous run on the
-middle line, so on a page laid out as several short exercise fragments side by
-side the measure cell often begins *past* the clef — nothing for any reader to
-find.
+Every music-only score is byte-identical; prose pages now yield zero staves,
+and p.92 went from 0 barlines / 12 cells to 10 / 26 because dropping the text
+blocks let system grouping and barline voting work again.
 
-Together these, not clef reading, are what caps recall on this book (5 clefs
-located across ~57 staves).
+**Two plausible discriminators that DON'T work** — don't re-propose them:
+- *Ink coverage along the line.* Separates on clean pages, overlaps on real
+  ones: notation ink interrupts the line, so genuine Beethoven 5 / La Mer
+  staves fall to 0.62-0.70, on top of body text at 0.62-0.72.
+- *Staff span vs the page median* (which this note previously recommended).
+  Works only on mixed pages — on unbroken prose the median is itself
+  text-derived and nothing is an outlier.
 
-**The obvious fix is measured and wrong.** Scoring rows by longest contiguous
-run instead of total ink discards real staves: across 274 detected staves on
-eight scores, genuine full-width staves in Boléro/WTC/La Mer/Handel score as low
-as 0.018 on line continuity, because notation ink interrupts the line.
-
-**What separates cleanly is staff span vs the page's median span** (text
-baselines sit ~3.5× further apart than staff lines: 215px vs a 62px median),
-backed up by x-extent (the text "staves" span 1.5–2% of page width; every
-genuine staff measured spans 15–91%). Either signal rejects the text blocks
-without touching a single genuine staff in the corpus.
-
-**STATUS 2026-08-28: the x-extent half is DONE, the text-as-staff half is NOT.**
-The staff x-extent, system-edge and open-score-barline fixes shipped (see
-`benchmarks/omr-clef-geometry/RESULTS.md` → "Phase 1: what the clef work forced
-open"); they took Nottebohm p.31 from 16 cells to 88 and its clefs from 6/12 to
-9/12, with WTC / Boléro / Handel / Mahler layout unchanged.
-
-Body text detected as staves is still open — 147 of 1522 "staves" over 156
-pages of this book. The span-vs-page-median discriminator above is measured and
-ready; it was not applied because it needs a Phase-1 regression baseline that
-`test_pipeline.py` cannot currently provide (its count assertions fail from
-older drift, identically on `main`). Restore that baseline first. Numbers to
-work from: `benchmarks/omr-clef-geometry/RESULTS.md`.
-
+Also: the first measurement pass labelled p.25 and p.29 as "text" when both
+contain music examples, which made the separation look marginal. Check page
+contents by eye before trusting a distribution built from them.
 
 ## YOLO training via symphony MusicXML × multiple IMSLP editions (2026-05-23)
 
