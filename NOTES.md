@@ -70,11 +70,37 @@ the window must reach *past* the staff extent to see the bracket and the closing
 barline; and coverage needs vertical gap-closing or it is resolution-sensitive
 (B5 p10 grouped as 2 systems at 300 dpi and 4 at 600).
 
-**Step 2 (next): assign stable slot ids** across systems and pages. Systems with
-identical structural signatures (staff count + group sizes) map slot-to-slot directly —
-p70's two systems are both `[4,2,5]`. The unequal case is real and common (p55 `[8,10]`,
-p65 `[7,11]`): **tacet instruments are omitted from a system**, which is exactly the
-condensed-system trap below, and resolving it needs the margin labels from #2.
+**Step 2 DONE (2026-08-28): stable slot ids.** `tools/omr/slots.py` +
+`Staff.slot_index`. Index matching does not work, because **a system omits the staves
+of instruments tacet through it** (Beethoven 9 p65 carries systems of 7 and 11 staves
+on one page — the same orchestra, four parts resting). Score order is monotone, so
+this is a **sequence alignment**, not a matching problem: each system aligns against a
+reference layout by DP, deletions allowed on the reference side, reordering
+disallowed. Driven by, in descending strength, instrument labels (a label *conflict*
+is the only hard constraint available), bracket group, then relative position.
+
+Reference layout recovered on Beethoven 9 — exactly the real orchestra:
+
+    Flute, Oboe, Clarinet, Bassoon | Horn, Horn, Trumpet, Trumpet | 5 strings
+
+Measured over 12 pages / 207 staves (`benchmarks/omr-system-grouping-2026-08/eval_slots.py`):
+**191/207 staves assigned a slot; label purity 92% (93/101)** — of every (slot, label)
+observation, the fraction agreeing with that slot's modal instrument. No hand
+labelling needed: the labels come from the text layer, and the question is only
+whether the alignment keeps them consistent.
+
+**One bad system boundary poisons the whole document**, so guard the reference. The
+first run built it from p25 — one of the two pages `system_grouping` merges — and got
+a 24-slot reference listing Flute..Trumpet *twice*, after which 20 of 24 slots had an
+unstable bracket group. Fixed by rejecting a candidate whose label sequence repeats an
+instrument non-adjacently (`_looks_merged`, the precise guard) plus a permissive size
+cap for documents with no labels at all. Note the cap must stay permissive — an
+earlier 1.5x-of-median cap threw away the genuine full system whenever most systems
+were condensed.
+
+Remaining: 16 unassigned staves, all on the two merged pages (a 24- or 18-staff
+"system" cannot fit 13 slots), and 8 single-observation label disagreements
+concentrated in one misaligned system.
 
 **VERIFIED 2026-08-28 — single-line percussion staves are invisible.**
 `_group_into_staves` only accepts five-peak evenly-spaced windows, so a one-line
