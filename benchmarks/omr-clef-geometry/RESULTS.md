@@ -151,6 +151,55 @@ against a staff line at exactly 478 (residual 0.00), naming a tenor clef, on a
 glyph a visual estimate had put on the middle line. The measurement was right
 and the eyeball wasn't — which is the argument for the whole approach.
 
+### Ground truth from the target book itself — Nottebohm p.31 (PDF 46)
+
+Sean read the clefs off exercises Nr. 20–22 by eye: three systems of four
+staves carrying the full vocal clef set, in the archaic square engraving. This
+is ground truth on exactly the material the detector cannot touch, and it is
+checked in (`nottebohm-p46-ground-truth.json`) with a scorer
+(`tools/omr/training/clef_ground_truth_eval.py`).
+
+|  | expected | read | source | |
+|---|---|---|---|---|
+| Nr. 20 | treble | treble | detector | ok |
+| Nr. 20 | **soprano** | soprano | cv_locator | ok |
+| Nr. 20 | **alto** | alto | cv_locator | ok |
+| Nr. 20 | tenor | *treble* | — not read — | miss |
+| Nr. 21 | **soprano** | soprano | cv_locator | ok |
+| Nr. 21 | alto | *treble* | — not read — | miss |
+| Nr. 21 | **tenor** | tenor | cv_locator | ok |
+| Nr. 21 | bass | bass | detector | ok |
+| Nr. 22 | soprano | *treble* | — not read — | miss |
+| Nr. 22 | alto | *treble* | — not read — | miss |
+| Nr. 22 | tenor | *treble* | — not read — | miss |
+| Nr. 22 | bass | *treble* | — not read — | miss |
+
+**Precision on read clefs: 6/6 (100%)** — 4/4 for the CV locator, 2/2 for the
+detector. The locator separated **soprano from alto from tenor** on the square
+lattice glyph, three clefs one staff line apart, twice over. **Overall 6/12**:
+the other six read nothing and fell back to the treble default.
+
+The two numbers must not be averaged into one, because they measure different
+subsystems. Reading is right every time it happens; coverage is the problem.
+Attributing all six misses by hand:
+
+| miss | cause | whose problem |
+|---|---|---|
+| Nr. 22 ×3 (soprano, alto, tenor) | the clef is **not in the cell** — it begins past it | Phase 1 (`_staff_x_extent`) |
+| Nr. 20 tenor, Nr. 22 bass | staff lines **mis-grouped**: spacing read as 100px where the page's staves are ~25px | Phase 1 (`staff_detector`) |
+| Nr. 21 alto | clef fused into an oversized ink cluster, so the locator stops | the locator |
+
+**Five of six are Phase-1 layout failures, one is the locator.** That is the
+same conclusion the corpus-wide diagnosis below reaches, now confirmed
+staff-by-staff against known answers.
+
+One negative result worth recording so it isn't retried: the fragmented-clef
+misses look like the horizontal-rule stripper eating the clef's bars (the
+archaic bars are ~1–1.5 staff spaces wide and the threshold is 1.5). Sweeping
+that threshold from 0.7 to 6.0 staff spaces makes it **worse** in both
+directions (4 located → 1–3), because keeping more horizontal ink re-fuses the
+glyph with staff-line remnants. 1.5 is already the optimum.
+
 ### No collateral damage
 
 | run | noteheads | detections |

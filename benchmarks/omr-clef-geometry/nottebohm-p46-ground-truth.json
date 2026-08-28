@@ -1,0 +1,27 @@
+{
+  "source": "Nottebohm, Beethovens Studien (1873) — IMSLP scan",
+  "pdf_page_index": 46,
+  "printed_page": 31,
+  "provided_by": "Sean (read off the page by eye)",
+  "why_this_page": [
+    "Three systems of four staves each (exercises Nr. 20, 21, 22), carrying",
+    "the full vocal clef set in archaic 'square lattice' engraving — the",
+    "glyph design DeepScoresV2 has never seen. Ground truth for clef reading",
+    "on exactly the material the detector cannot touch.",
+    "Staves are listed in page order, top to bottom."
+  ],
+  "clefs": [
+    {"system": "Nr. 20", "staff": 1, "clef": "treble"},
+    {"system": "Nr. 20", "staff": 2, "clef": "soprano",  "c_clef_line": 1},
+    {"system": "Nr. 20", "staff": 3, "clef": "alto",     "c_clef_line": 3},
+    {"system": "Nr. 20", "staff": 4, "clef": "tenor",    "c_clef_line": 4},
+    {"system": "Nr. 21", "staff": 1, "clef": "soprano",  "c_clef_line": 1},
+    {"system": "Nr. 21", "staff": 2, "clef": "alto",     "c_clef_line": 3},
+    {"system": "Nr. 21", "staff": 3, "clef": "tenor",    "c_clef_line": 4},
+    {"system": "Nr. 21", "staff": 4, "clef": "bass"},
+    {"system": "Nr. 22", "staff": 1, "clef": "soprano",  "c_clef_line": 1},
+    {"system": "Nr. 22", "staff": 2, "clef": "alto",     "c_clef_line": 3},
+    {"system": "Nr. 22", "staff": 3, "clef": "tenor",    "c_clef_line": 4},
+    {"system": "Nr. 22", "staff": 4, "clef": "bass"}
+  ]
+}
