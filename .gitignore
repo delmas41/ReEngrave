@@ -88,6 +88,10 @@ benchmarks/**/overlays-*/
 
 # Page-context thumbnails for the labeling UI — rendered from PDFs on demand
 benchmarks/*/page-thumbnails/
+# LilyPond output for the clef corpora — the .ly files are the source, and
+# `lilypond` rebuilds these in a second (see check_clef_precision.py).
+benchmarks/omr-clef-geometry/*.pdf
+benchmarks/omr-clef-geometry/*.ps
 
 # Transcribe output kept beside a benchmark run. Regenerable from the PDF and
 # the weights, and enormous: eleven of these reached main in the 2026-08-28
