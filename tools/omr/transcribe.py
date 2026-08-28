@@ -209,7 +209,11 @@ from .types import MeasureCell, PageWithStaves, Staff
 from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
 from .clef_geometry import clef_name_from_class, resolve_clef_for_detection
 from .clef_locator import locate_clef
-from .key_signature_geometry import alterations_for_fifths
+from .key_signature_geometry import (
+    KeySignatureFitConfig,
+    alterations_for_fifths,
+    fit_key_signature,
+)
 from .key_signature_locator import locate_key_signature
 from .key_signature_vote import StaffCandidate, reconcile
 from .staff_header import (
@@ -608,25 +612,78 @@ def _key_sig_alterations(n_sharps: int, n_flats: int) -> dict[str, str]:
     return {}
 
 
-def _detect_key_sig_from_cell(dets) -> dict[str, str] | None:
-    """Scan detections for keySharp / keyFlat markers (which the DSv2
-    detector emits distinctly from inline accidentals). Returns the new
-    alteration map, or None if no key-signature markers were seen (so the
-    caller should keep the previous active key sig).
+# A detected keySharp / keyFlat is a glyph the model recognised, so a set of
+# them with one stray is a good signature plus noise — see max_outliers.
+_DETECTOR_FIT_CONFIG = KeySignatureFitConfig(max_outliers=1)
+
+
+def _detect_key_sig_from_cell(dets, cell=None, clef: str | None = None) -> dict[str, str] | None:
+    """Read the key signature from the detector's keySharp / keyFlat markers
+    (which DSv2 emits distinctly from inline accidentals). Returns the new
+    alteration map, or None if no markers were seen (so the caller keeps the
+    previous active key sig).
+
+    Where the geometry can run — a cell with clean 5-line staff geometry and a
+    clef with a slot table — the markers' POSITIONS decide, not their count.
+    Counting is what this used to do, and counting is wrong in a specific,
+    common way: it believes exactly what the detector saw. Measured on WTC p.17
+    (E major, four sharps, a clean modern engraving where the detector fires on
+    every staff), counting reads 6 of 10 staves right and the four failures are
+    +1, +1, +2 and +5 — three truncated counts and one spurious extra, on a page
+    where every staff prints the same four sharps.
+
+    The slot fit catches all four shapes: sharps found at slots 1, 2 and 4 are
+    four sharps with the third missed rather than three, and a marker that sits
+    on no slot at all stops counting toward the total. See
+    `key_signature_geometry`.
+
+    Falls back to the count when geometry can't run or the fit abstains, so a
+    reading is never lost — only improved on.
     """
-    n_sharps = sum(
-        1 for d in dets if d.smufl_name.lower().startswith("keysharp")
-    )
-    n_flats = sum(
-        1 for d in dets if d.smufl_name.lower().startswith("keyflat")
-    )
-    if n_sharps == 0 and n_flats == 0:
+    sharps = [d for d in dets if d.smufl_name.lower().startswith("keysharp")]
+    flats = [d for d in dets if d.smufl_name.lower().startswith("keyflat")]
+    if not sharps and not flats:
         return None  # no update — keep whatever was active
-    # Music never has both sharps + flats in one key sig; if the detector
-    # somehow emits both, trust the larger count.
-    if n_sharps >= n_flats:
-        return _key_sig_alterations(n_sharps, 0)
-    return _key_sig_alterations(0, n_flats)
+    # Music never has both sharps and flats in one key signature; if the
+    # detector emits both, the larger group is the real one.
+    markers, accidental = (sharps, "#") if len(sharps) >= len(flats) else (flats, "b")
+
+    positions = _staff_positions_for(markers, cell)
+    if positions is not None:
+        # One stray marker may be set aside here; the locator's noisier
+        # clusters get no such licence. See KeySignatureFitConfig.max_outliers.
+        read = fit_key_signature(
+            positions, clef, accidental, _DETECTOR_FIT_CONFIG,
+        )
+        if read is not None and read.fifths:
+            return alterations_for_fifths(read.fifths)
+
+    n = len(markers)
+    return _key_sig_alterations(n, 0) if accidental == "#" else _key_sig_alterations(0, n)
+
+
+def _staff_positions_for(detections, cell) -> list[float] | None:
+    """Detection box centres as diatonic steps below the top staff line, in
+    x-order — the unit `key_signature_geometry`'s slot tables use.
+
+    None when the cell has no usable 5-line geometry, which is the signal to
+    fall back rather than fit against a staff we can't measure.
+    """
+    if cell is None or not detections:
+        return None
+    ys = cell.staff_line_ys_canonical
+    if not ys or len(ys) != 5:
+        return None
+    lines = sorted(float(y) for y in ys)
+    spacing = (lines[-1] - lines[0]) / 4.0
+    if spacing <= 0:
+        return None
+    half = spacing / 2.0
+    ordered = sorted(detections, key=lambda d: d.x_canonical)
+    return [
+        ((d.y_canonical + d.height_canonical / 2.0) - lines[0]) / half
+        for d in ordered
+    ]
 
 
 def _parse_inline_accidental(smufl: str) -> str | None:
@@ -1028,7 +1085,7 @@ def _detections_for_cell(
         clef_source = "detector"
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
-    new_key_sig = _detect_key_sig_from_cell(dets)
+    new_key_sig = _detect_key_sig_from_cell(dets, cell, active_clef)
     if new_key_sig is not None:
         active_key_sig = new_key_sig
 

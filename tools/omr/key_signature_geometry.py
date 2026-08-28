@@ -125,6 +125,23 @@ class KeySignatureFitConfig:
         slot happens to be nearest and "fit" perfectly.
     max_inferred_ratio:
         How many slots the fit may fill in for each one it actually saw.
+    max_outliers:
+        How many observations may be discarded as not belonging to the
+        signature. **Zero by default, and the default is the measured one.**
+
+        Allowing one is right for the DETECTOR's markers and wrong for the
+        LOCATOR's clusters, because the two differ in what an observation is
+        worth. A `keySharp` detection is a real glyph the model recognised, so a
+        set of them with one stray is a good signature plus noise, and
+        discarding the stray recovers it — measured on WTC p.17, a bass staff
+        whose five markers are the four real sharps plus one stray above the
+        staff reads as five by counting and as four once the stray may be set
+        aside. A locator cluster is only ink of about the right size, so
+        permission to discard one lets a bad run force a fit: on the two
+        ground-truth pages it took wrong readings from 2 to 7.
+
+        So `_detect_key_sig_from_cell` passes 1 and the locator keeps 0. Never
+        allowed to discard more than it keeps, either way.
     """
 
     max_residual: float = 0.5
@@ -132,6 +149,7 @@ class KeySignatureFitConfig:
     # At most this many inferred slots per observed one. 1.0 lets a run of two
     # recover two gaps but never describe a signature it mostly did not see.
     max_inferred_ratio: float = 1.0
+    max_outliers: int = 0
 
 
 DEFAULT_CONFIG = KeySignatureFitConfig()
@@ -229,9 +247,13 @@ def fit_key_signature(
     """Fit accidentals observed at `observed` staff positions (in x-order, in
     steps below the top staff line) to a key signature under `clef`.
 
-    Returns None when the clef has no slot table, when there are more
-    accidentals than slots, or when nothing fits within tolerance — abstaining
-    so the caller can fall back to the count rather than accept a bad reading.
+    Returns None when the clef has no slot table or when nothing fits within
+    tolerance — abstaining so the caller can fall back to the count rather than
+    accept a bad reading.
+
+    Up to `config.max_outliers` observations may be set aside as not part of the
+    signature; the fit that explains the most of them wins. A fit using every
+    observation is always preferred to one that discards any.
     """
     if accidental not in ("#", "b"):
         return None
@@ -240,7 +262,29 @@ def fit_key_signature(
         return None
     if not observed:
         return KeySignatureRead(0, None, (), (), 0.0, 0.0)
-    if len(observed) > len(slots):
+
+    # Try the whole set first, then progressively allow observations to be
+    # discarded — never more than are kept, and never more than the cap.
+    max_drop = min(config.max_outliers, max(0, len(observed) - 1))
+    for n_drop in range(max_drop + 1):
+        if n_drop >= len(observed) - n_drop:
+            break
+        for keep in combinations(range(len(observed)), len(observed) - n_drop):
+            kept = [observed[i] for i in keep]
+            read = _fit_exact(kept, slots, accidental, config)
+            if read is not None:
+                return read
+    return None
+
+
+def _fit_exact(
+    observed: list[float],
+    slots: list[float],
+    accidental: str,
+    config: KeySignatureFitConfig,
+) -> KeySignatureRead | None:
+    """Fit assuming EVERY observation belongs to the signature."""
+    if not observed or len(observed) > len(slots):
         return None
 
     best: tuple[float, tuple[int, ...]] | None = None

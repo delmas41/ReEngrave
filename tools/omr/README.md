@@ -488,6 +488,27 @@ above the note it alters), requires the first slot to be observed, and never
 extends past the last observation — so it recovers gaps but cannot invent a
 signature it did not see.
 
+**This applies to the detector's own markers, not just the locator's.** Where
+the detector fires — clean modern engravings, mostly — its `keySharp`/`keyFlat`
+boxes are fitted to the slots rather than counted, and counting is wrong there
+in a specific, common way. Measured on WTC p.17 (E major, four sharps on every
+staff, a clean engraving):
+
+| | correct |
+|---|---|
+| counting the markers | 6 / 10 |
+| fitting their positions | **7 / 10** |
+
+The staff that changed had five markers: the four real sharps, landing exactly
+on the bass slots [2, 5, 1, 4], plus one stray above the staff. Counting reads
+five sharps; the fit sets the stray aside and reads four.
+
+The three that remain wrong (+1, +1, +2) are all cases where the FIRST sharp was
+the one the detector missed, which "the first slot must be observed" rule
+forbids recovering. Lifting that rule is what let an earlier version report five
+sharps off two glyphs, so it stays — the fix is to route detected signatures
+through the cross-page vote as well, which is not done yet (see below).
+
 `key_signature_locator.py` finds the accidentals when the detector sees none,
 which on real prints is the normal case: on Beethoven 5 p.1, across 3,246
 detections on a page whose every string and woodwind staff carries three flats,
@@ -529,6 +550,11 @@ part read in another system.
 
 The vote rejects and carries; it never synthesises a signature from the
 reference, because the reference cannot know a staff's transposition.
+
+**Not yet wired: detected signatures don't go through the vote.** Only located
+ones do. On WTC p.17 the vote knows the page prints four sharps and would reject
+or repair the three staves reading +1/+1/+2, but it never sees them. That is the
+next piece of work on this layer.
 
 ### What it is measured at
 
