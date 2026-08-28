@@ -71,7 +71,10 @@ non-transposing part by any structural argument.
 `key_signature_vote` is what makes this safe to run: on its own the reader is
 wrong seven times, because a run where only one of several printed accidentals
 survived carries no pattern and both the count and the sharp/flat decision fall
-to weak evidence.
+to weak evidence. The vote sees the DETECTOR's readings too, and on a clean
+engraving that is what carries the page — WTC p.17 goes 6/10 by counting the
+detector's markers, 7/10 by fitting their positions, and 10/10 once the page
+reconciles them.
 
 **The clef is the real ceiling.** The slot table is chosen by the clef, and a
 wrong clef does NOT degrade gracefully: measured end-to-end with every staff
