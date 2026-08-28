@@ -122,6 +122,14 @@ by construction rather than by eye.
 **5/5 exact, including the alto/tenor pair**, with treble and bass declined
 rather than guessed.
 
+**Re-measured 2026-08-28 through the header-cell path and it is 4/5** — tenor
+declines; soprano, mezzosoprano, alto and baritone still read exactly, and
+treble and bass are still declined, so there are no false positives either way.
+Measured identically at `bcf87d4`, at `637f3cb` and after the sparse-residue
+fix, so it is not a regression from any of them: the 5/5 above was taken via a
+different route into the locator. Worth resolving before the row is quoted
+again.
+
 ### False positives — Bach WTC, 10 pages of piano music
 
 Piano music has no C clefs, so every hit would be a false positive.
@@ -129,6 +137,17 @@ Piano music has no C clefs, so every hit would be a false positive.
 | pages | hits |
 |---|---|
 | WTC I, p.3–12 | **0** |
+
+Still 0 after the sparse-residue fix (2026-08-28), which is the check that
+mattered for it — reordering the ink test in front of the size test could in
+principle have reopened the G-clef-then-sharp trap, and did not.
+
+Reproduce with the rejection probe, which reports `located` per page:
+
+```bash
+python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py \
+    --pdf <WTC I>.pdf --first 3 --last 12 --every 1
+```
 
 (Before the "stop at the first glyph-sized cluster" rule: 20 false "tenor"
 reads across the same pages, all of them key-signature sharps behind a skipped

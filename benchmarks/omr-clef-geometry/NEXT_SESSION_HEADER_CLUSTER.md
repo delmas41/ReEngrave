@@ -110,14 +110,40 @@ worktree of each).
 
 **The bucket holds on completely different material.** Nottebohm's vocal
 exercises and a Beethoven 5 orchestral scan agree that it is the one that
-matters, and that the excess is vertical:
+matters, and that the excess is vertical.
+
+**Part of it has since been fixed** — see "Sparse residue" below — so the
+current figures are:
 
 | | Nottebohm (191 cells) | Beethoven 5 (168 cells) |
 |---|---|---|
-| cluster too big | 113 (59%) | 134 (80%) |
-| located | 32 (17%) | 3 (2%) |
-| height median / max | 6.0 / 9.0 | 7.2 / 12.0 |
-| width median (limit 4.5) | 2.5 | 3.2 |
+| cluster too big | 113 → **73** (38%) | 134 → **127** (76%) |
+| located | 32 → **43** (23%) | 3 → **3** (2%) |
+| height median / max | 5.8 / 9.0 | 7.2 / 12.0 |
+| width median (limit 4.5) | 2.6 | 3.2 |
+
+The orchestral half is untouched by that fix and is where the remaining
+problem lives: those clusters are genuinely tall, not residue.
+
+## Sparse residue — FIXED
+
+One cause was not fusion at all. Stripping the system brace leaves a trail of
+specks down the left edge of the header; x-clustering draws one box around
+them; and a box 0.8 x 6.0 staff spaces reads as "bigger than any C clef", so
+the locator STOPPED on it and never looked at the clef 1.5 spaces to its right.
+On Nottebohm p.164 staff 6 the blocker was five specks at 6% of their bounding
+box, standing in front of a textbook 2.3 x 3.2-space alto clef.
+
+The size test was being asked a question about a thing that was not a glyph.
+`locate_clef` now runs the ink-fraction test BEFORE the size test: a cluster
+has to be a glyph before it is worth stopping for. A real G clef is solid, so
+it still clears the ink test and still stops the search — which is the property
+`test_a_g_clef_does_not_let_later_ink_stand_in_for_it` exists to protect, and
+there is now a companion test that a C clef further in is still not taken.
+
+Measured: Nottebohm located 32 → 43, "cluster too big" 113 → 73. Orchestral
+unchanged at 3. Every precision check held — 0 false positives on Bach WTC
+p.3-12, the hand-read page still 9/12 with 7/7 precision.
 
 ## Approaches worth considering
 

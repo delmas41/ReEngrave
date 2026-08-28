@@ -98,12 +98,12 @@ def classify(cell: MeasureCell) -> tuple[str, tuple[float, float] | None]:
         saw_any = True
         if x / spacing > CFG.max_start_spaces:
             return "too far in", (w_sp, h_sp)
+        ink = int(np.count_nonzero(strip[y : y + h, x : x + w]))
+        if w * h == 0 or ink / float(w * h) < CFG.min_ink_fraction:
+            continue
         if h_sp > CFG.max_height_spaces or w_sp > CFG.max_width_spaces:
             return "cluster too big", (w_sp, h_sp)
         if w_sp < CFG.min_width_spaces or h_sp < CFG.min_height_spaces:
-            continue
-        ink = int(np.count_nonzero(strip[y : y + h, x : x + w]))
-        if w * h == 0 or ink / float(w * h) < CFG.min_ink_fraction:
             continue
         axis_y, symmetry = _refine_symmetry_axis(
             strip, bbox, max_shift=CFG.axis_refine_spaces * spacing
