@@ -32,6 +32,7 @@ MIN_LINE_LENGTH_FRAC = 0.35      # staff line spans >= 35% of page width
 PEAK_PROMINENCE_FRAC = 0.30      # peak must be 30% of (max - min) profile range
 GROUP_LINE_SPACING_TOLERANCE = 0.30  # ±30% gap variation within a 5-line group
 MAX_SYSTEM_GAP_FACTOR = 6.0      # fallback if auto-bipartition fails
+STAFF_LINE_MAX_GAP_SPACES = 1.0  # a break this wide is still the same staff line
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -95,9 +96,24 @@ def _group_into_staves(peaks: np.ndarray) -> list[list[int]]:
 def _staff_x_extent(binary: np.ndarray, line_ys: list[int]) -> tuple[int, int]:
     """Find the left/right edges of the staff lines themselves.
 
-    The staff line row in the binary image is a long horizontal black run.
-    We scan the row for the first and last ink pixel that's part of a
-    sufficiently long contiguous run.
+    The staff line row in the binary image is a long horizontal black run — but
+    on a real scan it is not an UNBROKEN one. Printed lines drop out, scans
+    lose ink, and the line arrives as a dashed sequence. Taking the longest
+    strictly-contiguous run therefore returns whichever fragment happens to be
+    longest, not the line, and the staff's left edge lands wherever the first
+    break was.
+
+    That edge is where the first measure cell starts, so the damage is
+    concrete: everything to the left of it — clef, key signature, often the
+    opening notes — is cropped out of every cell and cannot be read by anything
+    downstream. Measured on a Bach page the offset is 1.2 staff spaces (enough
+    to lose the first measure's start); on a 19th-century engraving it reaches
+    46 staff spaces, well past the clef and into the middle of the music.
+
+    So bridge breaks up to `STAFF_LINE_MAX_GAP_SPACES` of a staff space. That
+    is far wider than any printing dropout and far narrower than the gap
+    between two separate staves set side by side on one row, which is the case
+    the tolerance must not merge.
     """
     h, w = binary.shape
     # Use the middle line as the reference for x-extent
@@ -107,27 +123,26 @@ def _staff_x_extent(binary: np.ndarray, line_ys: list[int]) -> tuple[int, int]:
     y1 = min(h, mid_y + 3)
     band = binary[y0:y1].min(axis=0)  # ink anywhere in band → ink pixel
 
-    ink_mask = band == 0
-    if not ink_mask.any():
+    ink_x = np.flatnonzero(band == 0)
+    if ink_x.size == 0:
         return 0, w - 1
 
-    # Find longest contiguous run of ink (the staff line itself)
-    runs: list[tuple[int, int]] = []
-    in_run = False
-    run_start = 0
-    for x in range(w):
-        if ink_mask[x] and not in_run:
-            run_start = x
-            in_run = True
-        elif not ink_mask[x] and in_run:
-            runs.append((run_start, x - 1))
-            in_run = False
-    if in_run:
-        runs.append((run_start, w - 1))
-    if not runs:
-        return 0, w - 1
-    longest = max(runs, key=lambda r: r[1] - r[0])
-    return longest
+    # Gap tolerance in pixels, from this staff's own line spacing, so the rule
+    # holds at any DPI or engraving size.
+    if len(line_ys) >= 2:
+        spacing = (max(line_ys) - min(line_ys)) / (len(line_ys) - 1)
+    else:
+        spacing = 0.0
+    max_gap = max(1, int(round(STAFF_LINE_MAX_GAP_SPACES * spacing)))
+
+    # Split the ink into runs, allowing gaps of up to `max_gap` blank pixels.
+    # Consecutive ink pixels differ by 1, so a run of `g` blanks shows up as a
+    # difference of g + 1.
+    breaks = np.flatnonzero(np.diff(ink_x) > max_gap + 1)
+    starts = np.concatenate(([0], breaks + 1))
+    ends = np.concatenate((breaks, [ink_x.size - 1]))
+    best = int(np.argmax(ink_x[ends] - ink_x[starts]))
+    return int(ink_x[starts[best]]), int(ink_x[ends[best]])
 
 
 # ─── Step 4: group staves into systems ───────────────────────────────────────

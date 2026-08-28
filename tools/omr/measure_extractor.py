@@ -373,19 +373,40 @@ def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[
     """Given barlines for a system and that system's staves, produce the
     list of (x_start, x_end) per measure.
 
-    The first measure starts at the system's leftmost staff content (after
-    any clef/key signature — we use the staff's x_start) and runs to the
-    first barline. Subsequent measures run between barlines. The last
-    measure runs from the final barline to the rightmost staff edge.
+    The first measure starts at the system's leftmost staff content (the
+    staff's x_start, which is the left end of the staff lines) and runs to the
+    first barline. Subsequent measures run between barlines. The last measure
+    runs from the final barline to the rightmost staff edge.
     """
     if not staves:
         return []
-    x_lo = min(s.x_start for s in staves)
+    # The staves of a system are engraved flush — bracketed together and
+    # starting at the same x — so the system's edges are a CONSENSUS across its
+    # staves, not the extreme. Taking min/max lets a single staff whose line
+    # extent came out long (a brace stroke picked up, a margin mark bridged)
+    # drag the whole system's left edge out with it, and everything between the
+    # false edge and the real one becomes a sliver "measure" holding the clef.
+    # Observed on Boléro p.31: one staff of seventeen read 4.5 staff spaces
+    # wider than its neighbours and cost that system its clefs.
+    x_lo = int(round(float(np.median([s.x_start for s in staves]))))
     x_hi = max(s.x_end for s in staves)
     xs = sorted({bl.x for bl in barlines})
-    # Drop barlines that coincide with the system edges (some scores have a
-    # leftmost system barline as part of the bracket).
-    xs = [x for x in xs if x > x_lo + 10 and x < x_hi - 10]
+    # Drop barlines that coincide with the system edges: the rule closing the
+    # system, and the one opening it as part of the bracket. Neither divides
+    # two measures, and treating the opening one as a boundary manufactures a
+    # sliver "measure" a couple of staff spaces wide in front of the real
+    # first measure — which then swallows the clef, since the clef sits in
+    # exactly that strip.
+    #
+    # The margin scales with the staff because that is what it is really
+    # measuring: engravers set the opening rule a small fraction of a staff
+    # space from the line start, but "small" in pixels depends on the print
+    # size and the DPI (observed at 1.5 staff spaces on Boléro, where a fixed
+    # 10px margin missed it). Two staff spaces is far wider than any opening
+    # rule's offset and far narrower than the narrowest real measure.
+    spacing = float(np.median([s.line_spacing_px for s in staves]))
+    edge_margin = max(10, int(round(2.0 * spacing)))
+    xs = [x for x in xs if x > x_lo + edge_margin and x < x_hi - edge_margin]
     boundaries: list[tuple[int, int]] = []
     prev = x_lo
     for x in xs:

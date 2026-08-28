@@ -18,7 +18,6 @@ import pytest
 from tools.omr.clef_locator import (
     ClefLocatorConfig,
     _refine_symmetry_axis,
-    _vertical_symmetry,
     locate_clef,
 )
 from tools.omr.types import MeasureCell
@@ -211,16 +210,20 @@ class TestAbstains:
 
 
 class TestSymmetryMeasurement:
-    def test_symmetry_rewards_a_balanced_profile(self):
+    def test_a_balanced_profile_scores_high(self):
         mask = np.zeros((40, 20), dtype=np.uint8)
         mask[5:10, :] = 255
         mask[30:35, :] = 255
-        assert _vertical_symmetry(mask, (0, 0, 20, 40)) > 0.99
+        _axis, score = _refine_symmetry_axis(mask, (0, 0, 20, 40), max_shift=5)
+        assert score > 0.99
 
-    def test_symmetry_punishes_a_one_sided_profile(self):
-        mask = np.zeros((40, 20), dtype=np.uint8)
-        mask[0:10, :] = 255  # all the ink at the top — a tail-less G clef
-        assert _vertical_symmetry(mask, (0, 0, 20, 40)) < 0.3
+    def test_a_one_sided_profile_scores_low(self):
+        # All the ink at the top — a G clef without its tail. The bounded
+        # search must not be able to rescue it by sliding onto the ink.
+        mask = np.zeros((60, 20), dtype=np.uint8)
+        mask[0:12, :] = 255
+        _axis, score = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=8)
+        assert score < 0.5
 
     def test_the_axis_ignores_a_stray_fragment(self):
         # A balanced glyph plus a scrap at the bottom. The box's midpoint is
@@ -230,7 +233,7 @@ class TestSymmetryMeasurement:
         mask[26:30, :] = 255          # glyph balanced about y = 20
         mask[57:59, 0:3] = 255        # the scrap
         box_centre = 30.0
-        axis = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=15)
+        axis, _score = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=15)
         assert abs(axis - 20) < abs(box_centre - 20)
         assert abs(axis - 20) <= 1.5
 
@@ -239,7 +242,7 @@ class TestSymmetryMeasurement:
         mask = np.zeros((60, 20), dtype=np.uint8)
         mask[0:4, :] = 255
         max_shift = 5
-        axis = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=max_shift)
+        axis, _score = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=max_shift)
         assert abs(axis - 29.5) <= max_shift + 0.5
 
 
