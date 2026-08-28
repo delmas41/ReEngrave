@@ -30,6 +30,10 @@ from tools.omr.staff_line_removal import remove_staff_lines
 SCORE_DIR = Path("/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus")
 WTC = SCORE_DIR / "PDF Scores" / "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf"
 BEETHOVEN5 = SCORE_DIR / "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf"
+# Nottebohm's Beethovens Studien — a 19th-century monograph, mostly prose with
+# open-score counterpoint examples set into it. A layout class neither score
+# above covers, and the one where Phase 1 is weakest.
+NOTTEBOHM = Path("/Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf")
 
 
 def _require(path: Path):
@@ -44,9 +48,16 @@ pytestmark = pytest.mark.omr_smoke
 
 
 class TestWTCPage5:
-    """Page 5 of WTC Book 1 (rendered at 600 DPI). Verified visually.
+    """Page 5 of WTC Book 1 (rendered at 600 DPI), printed page 6.
 
-    Layout: 5 grand-staff systems (10 staves total) with 3+3+3+3+4 measures.
+    Layout: 5 grand-staff systems (10 staves total) with **3+2+3+3+3**
+    measures — 14 in all, so 28 cells.
+
+    Counted off the page barline by barline (2026-08-28). The second system
+    has ONE internal barline and the fifth has TWO; earlier revisions of this
+    file asserted 3+3+3+3+4, which the page does not support. If these numbers
+    start failing again, re-count before changing them: they are ground truth,
+    not a record of what the pipeline happened to produce.
     """
 
     @pytest.fixture(scope="class")
@@ -85,12 +96,12 @@ class TestWTCPage5:
         for c in cells:
             per_sys.setdefault(c.system_index, set()).add(c.measure_index)
         counts = [len(per_sys[i]) for i in sorted(per_sys.keys())]
-        assert counts == [3, 3, 3, 3, 4], "verified visually: 3+3+3+3+4 measures"
+        assert counts == [3, 2, 3, 3, 3], "counted off the page: 3+2+3+3+3 measures"
 
     def test_total_cells(self, pipeline_output):
         _, _, cells = pipeline_output
-        # 2 staves/system × (3+3+3+3+4 measures) = 32 cells
-        assert len(cells) == 32
+        # 2 staves/system × (3+2+3+3+3 measures) = 28 cells
+        assert len(cells) == 28
 
     def test_cell_canonical_size(self, pipeline_output):
         _, _, cells = pipeline_output
@@ -112,10 +123,14 @@ class TestWTCPage5:
 class TestBeethoven5Page10:
     """Page 10 of Beethoven 5 score (m274 area). Orchestral, ~18 instruments.
 
-    Layout: 2 systems (top and bottom), 18 staves total. Measure counts
-    are partially verified visually — exact counts are bounded rather
-    than asserted-equal because dense orchestral pages have over-detection
-    margins we accept as Phase 1 limits.
+    Layout: 2 systems (top and bottom), 18 staves total, holding measures
+    **274-302: 14 in the first system and 15 in the second**.
+
+    That is not an estimate. This edition prints measure numbers, and they
+    settle it without counting barlines on a dense orchestral page: p.10 opens
+    at 274, its second system at 288, and p.11 opens at 303. So 288-274 = 14
+    and 303-288 = 15. An earlier revision of this file bounded the counts to
+    5-10 per system, which this page cannot satisfy.
     """
 
     @pytest.fixture(scope="class")
@@ -141,19 +156,93 @@ class TestBeethoven5Page10:
         per_sys: dict[int, set[int]] = {}
         for c in cells:
             per_sys.setdefault(c.system_index, set()).add(c.measure_index)
-        for sys, ms in per_sys.items():
-            n = len(ms)
-            # Verified visually: 6-8 measures per system on this page.
-            # Allow a small margin around that.
-            assert 5 <= n <= 10, f"system {sys}: {n} measures (expected 5-10)"
+        counts = [len(per_sys[i]) for i in sorted(per_sys.keys())]
+        # From the printed measure numbers (274 / 288 / 303 — see the class
+        # docstring): 14 then 15. Asserted exactly, because the page states
+        # the answer; a drift of even one measure here is a real regression.
+        assert counts == [14, 15], f"measures 274-302 split 14 + 15, got {counts}"
 
     def test_cell_quality(self, pipeline_output):
         _, _, cells = pipeline_output
         assert len(cells) > 0
-        # Sample a few cells; all should hit canonical max width or close.
         widths = [c.width for c in cells]
-        # At least some cells should be at the upscale ceiling.
-        assert max(widths) == 2048
+        # Cells are upscaled toward a 2048px ceiling and clamped there. This
+        # used to assert max(widths) == 2048 exactly, which tests whether the
+        # page's widest measure happens to OVERFLOW the ceiling — an accident
+        # of engraving, not a property of the pipeline. On this page the widest
+        # comes to 2012 and the assertion failed while nothing was wrong.
+        # What is worth pinning: nothing exceeds the ceiling, and the widest
+        # cell is being upscaled close to it rather than left small.
+        assert max(widths) <= 2048, "canonical width ceiling"
+        assert max(widths) >= 1900, f"widest cell only {max(widths)}px — under-upscaled"
+
+
+# ─── Nottebohm — open score on a mostly-prose page ────────────────────────────
+
+
+class TestNottebohmPage46:
+    """PDF page 46 (printed p.31) of Nottebohm's Beethovens Studien.
+
+    Three exercises (Nr. 20, 21, 22), each an open score of four staves — one
+    voice per staff, in the full vocal clef set. This layout class is absent
+    from the two scores above and is where Phase 1 has historically been
+    weakest, in two ways it is worth guarding against:
+
+      * staff lines here are dashed enough that taking the longest CONTIGUOUS
+        run put the cell's left edge up to 46 staff spaces past the clef;
+      * open-score barlines stop at each staff instead of running through the
+        gaps between them, so a connectivity filter tuned on orchestral scores
+        discards every one of them. When that happened, this page collapsed
+        from 88 cells to 12 — one measure per staff, no structure at all.
+
+    The counts below are the ones that can be stated with certainty: Sean read
+    the layout off the page, and it is plainly three groups of four. The
+    per-measure count is NOT asserted exactly — the engraving is too fine to
+    count reliably at the resolution available, and guessing it would repeat
+    the mistake this file's other expectations used to make. A floor is enough
+    to catch the collapse, which is the regression that actually happened.
+    """
+
+    @pytest.fixture(scope="class")
+    def pipeline_output(self):
+        _require(NOTTEBOHM)
+        page = render_page(NOTTEBOHM, 46, dpi=300)
+        pws = detect_staves(page)
+        pws = detect_barlines(pws)
+        cells = extract_measures(pws)
+        return page, pws, cells
+
+    def test_staff_count(self, pipeline_output):
+        _, pws, _ = pipeline_output
+        assert len(pws.staves) == 12, "three exercises of four staves each"
+
+    def test_system_count(self, pipeline_output):
+        _, pws, _ = pipeline_output
+        n_systems = 1 + max(s.system_index for s in pws.staves)
+        assert n_systems == 3, "Nr. 20, Nr. 21, Nr. 22"
+
+    def test_each_system_has_four_staves(self, pipeline_output):
+        _, pws, _ = pipeline_output
+        sizes = [0, 0, 0]
+        for staff in pws.staves:
+            sizes[staff.system_index] += 1
+        assert sizes == [4, 4, 4]
+
+    def test_measures_are_segmented_at_all(self, pipeline_output):
+        _, _, cells = pipeline_output
+        # The floor that matters: 12 cells means one measure per staff, i.e.
+        # barline detection produced nothing and each system became a single
+        # cell. Anything in that region is the collapse, not a near miss.
+        per_staff: dict[tuple[int, int], int] = {}
+        for c in cells:
+            per_staff[(c.system_index, c.staff_index)] = (
+                per_staff.get((c.system_index, c.staff_index), 0) + 1
+            )
+        assert min(per_staff.values()) >= 4, (
+            f"a staff segmented into {min(per_staff.values())} measures — "
+            "open-score barlines are being discarded again"
+        )
+        assert len(cells) >= 60, f"only {len(cells)} cells for 12 staves"
 
 
 # ─── Preprocessing primitives ─────────────────────────────────────────────────
