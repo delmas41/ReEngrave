@@ -256,6 +256,17 @@ What is *not* dead:
 
 ## ⏰ REVISIT — ensemble recognition for clef + detail prediction (2026-07-10)
 
+> **PARTLY OVERTAKEN (2026-08-27).** The clef half of this turned out not to need
+> an ensemble at all. Alto vs tenor (and soprano/mezzo/baritone) is not a
+> recognition problem — they are the same glyph on different staff lines, so no
+> number of classifiers voting on appearance can resolve it. Measuring the
+> glyph's position does, exactly. Shipped as `tools/omr/clef_geometry.py` plus a
+> classical-CV C-clef locator for scores where no model sees a clef at all;
+> results in `benchmarks/omr-clef-geometry/RESULTS.md`. **Still open from this
+> item:** the *time-signature* half, and clef/key/time state resets across pages
+> (the continuation-page clef inheritance is handled by `_ClefContinuity`, but
+> the underlying detection weakness is not).
+
 **Sean flagged this and asked to be reminded to come back to it (dated reminder set ~2026-07-17).** **SmartScore 64 Professional** (Musitek) uses an **ensemble recognition tool** specifically to help predict **clefs and other details**. Investigate how it works and consider adopting the technique.
 
 **Why it's worth doing:** the July 2026 audit found clef handling is a real ReEngrave weakness — clef/key/time state resets across pages and relies on the detector catching courtesy clefs; a missed continuation-page clef silently defaults to treble (or bass for staff 2 of 2), shifting every pitch on that staff. Time-sig digit detection is similarly unreliable. A voting/ensemble predictor for these fields would target both directly.
@@ -267,6 +278,51 @@ What is *not* dead:
 - Decide the cheapest ReEngrave adaptation: a per-staff clef-stability + key-signature-plausibility re-rank pass (no new model) vs an actual classifier ensemble; check whether the same voting extends to time-sig digits.
 
 ---
+
+## ~~Staff detection on mixed text/music pages~~ — DONE (2026-08-28)
+
+Body text was being detected as staves (147 of 1522 "staves" over 156 pages of
+Nottebohm). Fixed in `staff_detector._line_ink_runs_per_space`: a staff line is
+one continuous stroke (a handful of ink runs over its whole length, even
+dashed), a text baseline is one run per letter. Music tops out at 1.39 runs per
+staff-space, text starts at 2.02, medians 0.017 vs 2.59.
+
+Every music-only score is byte-identical; prose pages now yield zero staves,
+and p.92 went from 0 barlines / 12 cells to 10 / 26 because dropping the text
+blocks let system grouping and barline voting work again.
+
+**Two plausible discriminators that DON'T work** — don't re-propose them:
+- *Ink coverage along the line.* Separates on clean pages, overlaps on real
+  ones: notation ink interrupts the line, so genuine Beethoven 5 / La Mer
+  staves fall to 0.62-0.70, on top of body text at 0.62-0.72.
+- *Staff span vs the page median* (which this note previously recommended).
+  Works only on mixed pages — on unbroken prose the median is itself
+  text-derived and nothing is an outlier.
+
+> **The related x-extent half is also fixed, twice over and on purpose.** This
+> note used to pair the text-as-staves problem with `_staff_x_extent` returning
+> the longest strictly-contiguous ink run, so the measure cell began past the
+> clef. Both fixes are now in and they are complementary, not duplicates:
+>
+> - `staff_detector._staff_x_extent` now bridges breaks up to a staff space, so
+>   Phase 1 returns the real extent and the cell contains the header again
+>   (6/12 → 12/12 clefs on the Nottebohm ground-truth page).
+> - `tools/omr/staff_header.py` measures each staff's header WINDOW beside
+>   Phase 1 — left edge walked back to the system's initial rule, right edge at
+>   the first barline. It was written when the Phase-1 fix looked too risky to
+>   attempt without a regression baseline, and it stays because the CV readers
+>   want a tight crop that Phase 1 has no reason to produce: the key-signature
+>   locator reads that window, and the clef readers fall back to it only where
+>   the measure cell still starts past the header, which the Phase-1 fix now
+>   makes rare rather than routine.
+>
+> The regression baseline that blocked the Phase-1 change was itself built in
+> the same round (`test_pipeline` expectations checked against the pages), so
+> the reason for working around Phase 1 no longer applies to future work here.
+
+Also: the first measurement pass labelled p.25 and p.29 as "text" when both
+contain music examples, which made the separation look marginal. Check page
+contents by eye before trusting a distribution built from them.
 
 ## YOLO training via symphony MusicXML × multiple IMSLP editions (2026-05-23)
 

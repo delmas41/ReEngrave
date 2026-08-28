@@ -293,6 +293,34 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         #       staves voted).
         # Thresholds were chosen from the cluster-distribution data
         # captured by `_phase1_diagnostic` on Bach + Beethoven + Ravel.
+        # Does this system draw its barlines THROUGH the gaps between staves?
+        # An orchestral score does, which is what makes connectivity a good
+        # filter there. An open score — one staff per voice, as counterpoint
+        # and vocal music are set — does not: each voice's barlines stop at
+        # its own staff, so every real barline scores connectivity 0.00 and
+        # the filter throws all of them away. (Measured on Nottebohm p.31: 4/4
+        # votes and 0.00 connectivity on every barline of every system, versus
+        # Mahler 5 p.11 where real barlines run 0.4-1.0 and it is the stem
+        # alignments that score 0.00.)
+        #
+        # So ask the system which kind it is, rather than assuming. If most
+        # of the columns the votes already accept are connected, connectivity
+        # is meaningful here and gets to filter; if hardly any are, this is an
+        # open score and the votes stand alone. Either way the answer comes
+        # from the page in hand.
+        vote_passed = [
+            (int(round(sum(c) / len(c))), len(c)) for c in clusters
+            if len(c) >= min_votes
+        ]
+        connectivity_of = {
+            x: _intersystem_connectivity(bin_img, staves, x)
+            for x, _ in vote_passed
+        } if n_staves >= 3 else {}
+        n_connected = sum(1 for v in connectivity_of.values() if v >= 0.4)
+        barlines_cross_gaps = (
+            len(vote_passed) < 2 or n_connected * 2 >= len(vote_passed)
+        )
+
         accepted: list[int] = []
         for cluster in clusters:
             x_mean = int(round(sum(cluster) / len(cluster)))
@@ -302,7 +330,14 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 if n_votes >= min_votes:
                     accepted.append(x_mean)
                 continue
-            connectivity = _intersystem_connectivity(bin_img, staves, x_mean)
+            if not barlines_cross_gaps:
+                # Open score: the votes are the whole of the evidence.
+                if n_votes >= min_votes:
+                    accepted.append(x_mean)
+                continue
+            connectivity = connectivity_of.get(x_mean)
+            if connectivity is None:
+                connectivity = _intersystem_connectivity(bin_img, staves, x_mean)
             # Prong A: vote-pass + connectivity sanity check.
             if n_votes >= min_votes and connectivity >= 0.4:
                 accepted.append(x_mean)
@@ -373,19 +408,40 @@ def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[
     """Given barlines for a system and that system's staves, produce the
     list of (x_start, x_end) per measure.
 
-    The first measure starts at the system's leftmost staff content (after
-    any clef/key signature — we use the staff's x_start) and runs to the
-    first barline. Subsequent measures run between barlines. The last
-    measure runs from the final barline to the rightmost staff edge.
+    The first measure starts at the system's leftmost staff content (the
+    staff's x_start, which is the left end of the staff lines) and runs to the
+    first barline. Subsequent measures run between barlines. The last measure
+    runs from the final barline to the rightmost staff edge.
     """
     if not staves:
         return []
-    x_lo = min(s.x_start for s in staves)
+    # The staves of a system are engraved flush — bracketed together and
+    # starting at the same x — so the system's edges are a CONSENSUS across its
+    # staves, not the extreme. Taking min/max lets a single staff whose line
+    # extent came out long (a brace stroke picked up, a margin mark bridged)
+    # drag the whole system's left edge out with it, and everything between the
+    # false edge and the real one becomes a sliver "measure" holding the clef.
+    # Observed on Boléro p.31: one staff of seventeen read 4.5 staff spaces
+    # wider than its neighbours and cost that system its clefs.
+    x_lo = int(round(float(np.median([s.x_start for s in staves]))))
     x_hi = max(s.x_end for s in staves)
     xs = sorted({bl.x for bl in barlines})
-    # Drop barlines that coincide with the system edges (some scores have a
-    # leftmost system barline as part of the bracket).
-    xs = [x for x in xs if x > x_lo + 10 and x < x_hi - 10]
+    # Drop barlines that coincide with the system edges: the rule closing the
+    # system, and the one opening it as part of the bracket. Neither divides
+    # two measures, and treating the opening one as a boundary manufactures a
+    # sliver "measure" a couple of staff spaces wide in front of the real
+    # first measure — which then swallows the clef, since the clef sits in
+    # exactly that strip.
+    #
+    # The margin scales with the staff because that is what it is really
+    # measuring: engravers set the opening rule a small fraction of a staff
+    # space from the line start, but "small" in pixels depends on the print
+    # size and the DPI (observed at 1.5 staff spaces on Boléro, where a fixed
+    # 10px margin missed it). Two staff spaces is far wider than any opening
+    # rule's offset and far narrower than the narrowest real measure.
+    spacing = float(np.median([s.line_spacing_px for s in staves]))
+    edge_margin = max(10, int(round(2.0 * spacing)))
+    xs = [x for x in xs if x > x_lo + edge_margin and x < x_hi - edge_margin]
     boundaries: list[tuple[int, int]] = []
     prev = x_lo
     for x in xs:

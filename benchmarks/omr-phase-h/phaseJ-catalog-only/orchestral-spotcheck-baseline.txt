@@ -1,0 +1,17 @@
+baseline detection counts (top 15):
+  noteheadBlackOnLine            78
+  noteheadBlackInSpace           46
+  keyFlat                        29
+  slur                           27
+  tie                            19
+  clefG                          14
+  rest8th                        14
+  accidentalFlat                 14
+  restWhole                      12
+  noteheadHalfOnLine             10
+  noteheadHalfInSpace            9
+  clefF                          8
+  dynamicP                       5
+  brace                          4
+  accidentalNatural              3
+  TOTAL: 300

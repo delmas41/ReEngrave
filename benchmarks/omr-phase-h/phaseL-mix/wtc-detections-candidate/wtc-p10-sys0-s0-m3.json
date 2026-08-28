@@ -1,0 +1,96 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m3",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restHalf",
+      "category": "rest",
+      "x": 94,
+      "y": 1192,
+      "w": 30,
+      "h": 8,
+      "x_center": 109,
+      "y_center": 1196,
+      "confidence": 0.49832573533058167,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 154,
+      "y": 1175,
+      "w": 21,
+      "h": 23,
+      "x_center": 164,
+      "y_center": 1186,
+      "confidence": 0.11642570793628693,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1091,
+      "y": 1059,
+      "w": 93,
+      "h": 83,
+      "x_center": 1137,
+      "y_center": 1100,
+      "confidence": 0.2262682318687439,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "fermataAbove",
+      "category": "ornament",
+      "x": 1332,
+      "y": 1117,
+      "w": 32,
+      "h": 58,
+      "x_center": 1348,
+      "y_center": 1146,
+      "confidence": 0.14378181099891663,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "fermataAbove",
+      "category": "ornament",
+      "x": 1401,
+      "y": 1123,
+      "w": 29,
+      "h": 53,
+      "x_center": 1415,
+      "y_center": 1149,
+      "confidence": 0.23619939386844635,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "fermataAbove",
+      "category": "ornament",
+      "x": 1402,
+      "y": 1109,
+      "w": 35,
+      "h": 67,
+      "x_center": 1419,
+      "y_center": 1142,
+      "confidence": 0.12228431552648544,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "fermataBelow",
+      "category": "ornament",
+      "x": 1472,
+      "y": 1113,
+      "w": 63,
+      "h": 67,
+      "x_center": 1503,
+      "y_center": 1146,
+      "confidence": 0.13342243432998657,
+      "pitch": null
+    }
+  ]
+}

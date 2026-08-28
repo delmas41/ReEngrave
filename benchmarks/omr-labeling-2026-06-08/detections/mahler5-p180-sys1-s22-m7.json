@@ -1,0 +1,122 @@
+{
+  "cell_id": "mahler5-p180-sys1-s22-m7",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 0,
+      "y": 0,
+      "w": 21,
+      "h": 13,
+      "x_center": 10,
+      "y_center": 6,
+      "confidence": 0.7513945698738098,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 99,
+      "y": 353,
+      "w": 848,
+      "h": 39,
+      "x_center": 523,
+      "y_center": 372,
+      "confidence": 0.6127107739448547,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "fermataAbove",
+      "category": "ornament",
+      "x": 0,
+      "y": 403,
+      "w": 21,
+      "h": 37,
+      "x_center": 10,
+      "y_center": 421,
+      "confidence": 0.5283864736557007,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 0,
+      "y": 451,
+      "w": 640,
+      "h": 34,
+      "x_center": 320,
+      "y_center": 468,
+      "confidence": 0.7647693157196045,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 665,
+      "y": 451,
+      "w": 848,
+      "h": 41,
+      "x_center": 1089,
+      "y_center": 471,
+      "confidence": 0.6159064769744873,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 605,
+      "y": 460,
+      "w": 27,
+      "h": 25,
+      "x_center": 618,
+      "y_center": 472,
+      "confidence": 0.5846660733222961,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 0,
+      "y": 476,
+      "w": 21,
+      "h": 18,
+      "x_center": 10,
+      "y_center": 485,
+      "confidence": 0.5025734305381775,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 71,
+      "y": 549,
+      "w": 848,
+      "h": 41,
+      "x_center": 495,
+      "y_center": 569,
+      "confidence": 0.5293832421302795,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 128,
+      "y": 648,
+      "w": 848,
+      "h": 36,
+      "x_center": 552,
+      "y_center": 666,
+      "confidence": 0.6722412109375,
+      "pitch": null
+    }
+  ]
+}

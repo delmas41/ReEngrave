@@ -1,0 +1,1054 @@
+{
+  "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-phase-k-mix-30ep.pt",
+  "conf_threshold": 0.1,
+  "device": "auto",
+  "per_cell": {
+    "wtc-p5-sys0-s0-m0": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 2,
+      "confidence_min": 0.10978040844202042,
+      "confidence_max": 0.9084754586219788,
+      "confidence_mean": 0.3391673341393471,
+      "confidence_median": 0.27630309760570526,
+      "category_breakdown": {
+        "ornament": 8,
+        "rest": 1,
+        "time_sig_digit": 8,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "articStaccatissimoAbove",
+        "rest8th",
+        "fermataAbove",
+        "fermataAbove",
+        "timeSig8",
+        "tuplet6",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 20,
+        "all_times_s": [
+          2.2888522499999997,
+          0.09972470799999966,
+          0.08689358299999972,
+          0.08482770799999972,
+          0.08819370800000037
+        ],
+        "median_s_excluding_warmup": 0.08754364550000004,
+        "mean_s_excluding_warmup": 0.08990992674999987
+      }
+    },
+    "wtc-p5-sys0-s0-m1": {
+      "n_detections": 23,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10117975622415543,
+      "confidence_max": 0.8704648613929749,
+      "confidence_mean": 0.26414297488720523,
+      "confidence_median": 0.21815909445285797,
+      "category_breakdown": {
+        "time_sig_digit": 16,
+        "ornament": 6,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "timeSig8",
+        "keyboardPedalUp",
+        "timeSig8",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 24,
+        "all_times_s": [
+          0.10691016699999967,
+          0.11330616700000018,
+          0.10982720799999957,
+          0.11124608300000016,
+          0.11202820799999991
+        ],
+        "median_s_excluding_warmup": 0.11163714550000003,
+        "mean_s_excluding_warmup": 0.11160191649999995
+      }
+    },
+    "wtc-p5-sys0-s0-m2": {
+      "n_detections": 37,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10724014043807983,
+      "confidence_max": 0.4682433009147644,
+      "confidence_mean": 0.22333160223993095,
+      "confidence_median": 0.2052278071641922,
+      "category_breakdown": {
+        "ornament": 8,
+        "time_sig_digit": 27,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp",
+        "timeSig8",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSigCommon",
+        "timeSig8",
+        "timeSigCommon",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 38,
+        "all_times_s": [
+          0.09379058300000054,
+          0.09159579199999968,
+          0.08902624999999986,
+          0.08990787499999975,
+          0.10266879100000015
+        ],
+        "median_s_excluding_warmup": 0.09075183349999971,
+        "mean_s_excluding_warmup": 0.09329967699999986
+      }
+    },
+    "wtc-p5-sys0-s1-m0": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10169505327939987,
+      "confidence_max": 0.5512554049491882,
+      "confidence_mean": 0.25469675998796115,
+      "confidence_median": 0.20083917677402496,
+      "category_breakdown": {
+        "time_sig_digit": 1,
+        "structural": 3,
+        "ornament": 7
+      },
+      "sample_class_labels": [
+        "timeSig8",
+        "tuplet6",
+        "articStaccatissimoBelow",
+        "articStaccatissimoBelow",
+        "tuplet6",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "fermataAbove",
+        "fermataAbove",
+        "tuplet6"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 23,
+        "all_times_s": [
+          0.09021925000000053,
+          0.09152462499999992,
+          0.08999733300000035,
+          0.09050895900000011,
+          0.09503291700000016
+        ],
+        "median_s_excluding_warmup": 0.09101679200000001,
+        "mean_s_excluding_warmup": 0.09176595850000013
+      }
+    },
+    "wtc-p5-sys0-s1-m1": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10822809487581253,
+      "confidence_max": 0.8684923648834229,
+      "confidence_mean": 0.37343521641962457,
+      "confidence_median": 0.22020508348941803,
+      "category_breakdown": {
+        "ornament": 22,
+        "time_sig_digit": 10,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp",
+        "fermataAbove",
+        "fermataAbove",
+        "timeSig8",
+        "keyboardPedalUp",
+        "fermataAbove",
+        "fermataAbove",
+        "timeSig8",
+        "keyboardPedalUp",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 31,
+        "all_times_s": [
+          0.11556045799999914,
+          0.11212566699999904,
+          0.11390941699999857,
+          0.11033887500000006,
+          0.1143887500000016
+        ],
+        "median_s_excluding_warmup": 0.1130175419999988,
+        "mean_s_excluding_warmup": 0.11269067724999982
+      }
+    },
+    "wtc-p5-sys0-s1-m2": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10119758546352386,
+      "confidence_max": 0.8688641786575317,
+      "confidence_mean": 0.27210384071804583,
+      "confidence_median": 0.19936984032392502,
+      "category_breakdown": {
+        "ornament": 18,
+        "time_sig_digit": 14
+      },
+      "sample_class_labels": [
+        "fermataAbove",
+        "fermataAbove",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSig8",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 29,
+        "all_times_s": [
+          0.10452408299999938,
+          0.10607774999999897,
+          0.09601112500000042,
+          0.0922291659999992,
+          0.09742370899999919
+        ],
+        "median_s_excluding_warmup": 0.0967174169999998,
+        "mean_s_excluding_warmup": 0.09793543749999944
+      }
+    },
+    "wtc-p5-sys1-s2-m0": {
+      "n_detections": 61,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10130950063467026,
+      "confidence_max": 0.8713924288749695,
+      "confidence_mean": 0.36593089777915205,
+      "confidence_median": 0.2944165766239166,
+      "category_breakdown": {
+        "time_sig_digit": 46,
+        "ornament": 14,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "timeSigCommon",
+        "timeSig8",
+        "timeSigCommon",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 42,
+        "all_times_s": [
+          0.0759596250000012,
+          0.07779979200000042,
+          0.07776462500000036,
+          0.08114687499999995,
+          0.08421620899999915
+        ],
+        "median_s_excluding_warmup": 0.07947333350000019,
+        "mean_s_excluding_warmup": 0.08023187524999997
+      }
+    },
+    "wtc-p5-sys1-s2-m1": {
+      "n_detections": 36,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10998323559761047,
+      "confidence_max": 0.6750223636627197,
+      "confidence_mean": 0.24801170122292307,
+      "confidence_median": 0.17146436870098114,
+      "category_breakdown": {
+        "time_sig_digit": 23,
+        "ornament": 12,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "timeSigCommon",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 38,
+        "all_times_s": [
+          0.09341341699999894,
+          0.09357937499999913,
+          0.09521008299999956,
+          0.09861104100000162,
+          0.10497954100000051
+        ],
+        "median_s_excluding_warmup": 0.09691056200000059,
+        "mean_s_excluding_warmup": 0.0980950100000002
+      }
+    },
+    "wtc-p5-sys1-s3-m0": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.12418505549430847,
+      "confidence_max": 0.6772134900093079,
+      "confidence_mean": 0.27329314553311895,
+      "confidence_median": 0.22202283889055252,
+      "category_breakdown": {
+        "rest": 1,
+        "time_sig_digit": 19,
+        "ornament": 8
+      },
+      "sample_class_labels": [
+        "restDoubleWhole",
+        "timeSigCommon",
+        "timeSig8",
+        "timeSig8",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSigCommon",
+        "timeSigCommon",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 28,
+        "all_times_s": [
+          0.07802791599999992,
+          0.07749774999999914,
+          0.0753813749999992,
+          0.08023258399999911,
+          0.08157000000000103
+        ],
+        "median_s_excluding_warmup": 0.07886516699999913,
+        "mean_s_excluding_warmup": 0.07867042724999962
+      }
+    },
+    "wtc-p5-sys1-s3-m1": {
+      "n_detections": 42,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1029009148478508,
+      "confidence_max": 0.823474645614624,
+      "confidence_mean": 0.30896129388184773,
+      "confidence_median": 0.2506911978125572,
+      "category_breakdown": {
+        "time_sig_digit": 18,
+        "ornament": 20,
+        "notehead": 3,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "timeSigCommon",
+        "timeSigCommon",
+        "timeSigCommon",
+        "keyboardPedalUp",
+        "fermataAbove",
+        "timeSig8",
+        "keyboardPedalUp",
+        "timeSig8",
+        "noteheadDoubleWholeOnLine",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 34,
+        "all_times_s": [
+          0.08641120800000124,
+          0.0850845420000006,
+          0.08660091600000008,
+          0.0893919160000003,
+          0.1000923329999992
+        ],
+        "median_s_excluding_warmup": 0.08799641600000019,
+        "mean_s_excluding_warmup": 0.09029242675000004
+      }
+    },
+    "wtc-p5-sys2-s4-m0": {
+      "n_detections": 22,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10829861462116241,
+      "confidence_max": 0.5992766618728638,
+      "confidence_mean": 0.2115639874880964,
+      "confidence_median": 0.17126566171646118,
+      "category_breakdown": {
+        "ornament": 9,
+        "time_sig_digit": 12,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "fermataAbove",
+        "keyboardPedalUp",
+        "fermataAbove",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSig8",
+        "timeSigCommon",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 37,
+        "all_times_s": [
+          0.09118841600000138,
+          0.08972112499999874,
+          0.09798195800000187,
+          0.09191712500000193,
+          0.09416225000000011
+        ],
+        "median_s_excluding_warmup": 0.09303968750000102,
+        "mean_s_excluding_warmup": 0.09344561450000066
+      }
+    },
+    "wtc-p5-sys2-s4-m1": {
+      "n_detections": 24,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10222706943750381,
+      "confidence_max": 0.8958898186683655,
+      "confidence_mean": 0.3220078991726041,
+      "confidence_median": 0.19049108773469925,
+      "category_breakdown": {
+        "ornament": 10,
+        "time_sig_digit": 14
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8",
+        "keyboardPedalUp",
+        "articStaccatissimoAbove",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 26,
+        "all_times_s": [
+          0.08837337499999975,
+          0.08786108299999995,
+          0.09216708399999973,
+          0.09023191700000055,
+          0.09352608300000043
+        ],
+        "median_s_excluding_warmup": 0.09119950050000014,
+        "mean_s_excluding_warmup": 0.09094654175000016
+      }
+    },
+    "wtc-p5-sys2-s4-m2": {
+      "n_detections": 37,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10529698431491852,
+      "confidence_max": 0.8837603330612183,
+      "confidence_mean": 0.2801241677355122,
+      "confidence_median": 0.259590744972229,
+      "category_breakdown": {
+        "time_sig_digit": 21,
+        "ornament": 15,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "timeSig8",
+        "timeSig8",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalPed",
+        "timeSig8",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 34,
+        "all_times_s": [
+          0.09378687499999927,
+          0.09847308400000188,
+          0.09897162500000078,
+          0.0955830000000013,
+          0.10255437500000042
+        ],
+        "median_s_excluding_warmup": 0.09872235450000133,
+        "mean_s_excluding_warmup": 0.0988955210000011
+      }
+    },
+    "wtc-p5-sys2-s5-m0": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10398119688034058,
+      "confidence_max": 0.6157628297805786,
+      "confidence_mean": 0.2506986716762185,
+      "confidence_median": 0.22913631796836853,
+      "category_breakdown": {
+        "time_sig_digit": 10,
+        "ornament": 5,
+        "notehead": 1
+      },
+      "sample_class_labels": [
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8",
+        "timeSigCommon",
+        "timeSig8",
+        "timeSig8",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 36,
+        "all_times_s": [
+          0.09516125000000031,
+          0.09859120899999851,
+          0.09967362500000121,
+          0.09694650000000138,
+          0.09788429199999982
+        ],
+        "median_s_excluding_warmup": 0.09823775049999917,
+        "mean_s_excluding_warmup": 0.09827390650000023
+      }
+    },
+    "wtc-p5-sys2-s5-m1": {
+      "n_detections": 45,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10012377053499222,
+      "confidence_max": 0.790657103061676,
+      "confidence_mean": 0.24797905766301684,
+      "confidence_median": 0.17352508008480072,
+      "category_breakdown": {
+        "time_sig_digit": 16,
+        "ornament": 28,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "timeSig8",
+        "timeSig8",
+        "timeSigCommon",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "fermataAbove",
+        "fermataAbove",
+        "timeSig8",
+        "timeSig8",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 45,
+        "all_times_s": [
+          0.09129541600000124,
+          0.09032875000000118,
+          0.0876119580000001,
+          0.08682658300000057,
+          0.08624458399999924
+        ],
+        "median_s_excluding_warmup": 0.08721927050000033,
+        "mean_s_excluding_warmup": 0.08775296875000027
+      }
+    },
+    "beet5-p10-sys0-s0-m0": {
+      "n_detections": 0,
+      "n_ported_from_baseline": 0,
+      "confidence_min": null,
+      "confidence_max": null,
+      "confidence_mean": null,
+      "confidence_median": null,
+      "category_breakdown": {},
+      "sample_class_labels": [],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.08231770799999794,
+          0.08453841699999742,
+          0.08747845799999965,
+          0.08839200000000247,
+          0.08597608300000203
+        ],
+        "median_s_excluding_warmup": 0.08672727050000084,
+        "mean_s_excluding_warmup": 0.0865962395000004
+      }
+    },
+    "beet5-p10-sys0-s0-m1": {
+      "n_detections": 30,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10468786209821701,
+      "confidence_max": 0.7144204378128052,
+      "confidence_mean": 0.26281447485089304,
+      "confidence_median": 0.18626512587070465,
+      "category_breakdown": {
+        "ornament": 29,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp",
+        "ledgerLine",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 3,
+        "all_times_s": [
+          0.06447200000000208,
+          0.06444245799999848,
+          0.06165874999999943,
+          0.06082108300000044,
+          0.06138141699999977
+        ],
+        "median_s_excluding_warmup": 0.0615200834999996,
+        "mean_s_excluding_warmup": 0.06207592699999953
+      }
+    },
+    "beet5-p10-sys0-s0-m2": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10156844556331635,
+      "confidence_max": 0.6278948783874512,
+      "confidence_mean": 0.33771475683897734,
+      "confidence_median": 0.36109089851379395,
+      "category_breakdown": {
+        "ornament": 8
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.07922387500000028,
+          0.08039083399999924,
+          0.08051675000000103,
+          0.07728579100000132,
+          0.07829404199999956
+        ],
+        "median_s_excluding_warmup": 0.0793424379999994,
+        "mean_s_excluding_warmup": 0.07912185425000029
+      }
+    },
+    "beet5-p10-sys0-s0-m3": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.19365562498569489,
+      "confidence_max": 0.3022473454475403,
+      "confidence_mean": 0.2469155564904213,
+      "confidence_median": 0.245879627764225,
+      "category_breakdown": {
+        "ornament": 4
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "caesura"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.06437445800000319,
+          0.06102083300000061,
+          0.06542633300000134,
+          0.06319116699999938,
+          0.06375733299999808
+        ],
+        "median_s_excluding_warmup": 0.06347424999999873,
+        "mean_s_excluding_warmup": 0.06334891649999985
+      }
+    },
+    "beet5-p10-sys0-s0-m4": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10845936089754105,
+      "confidence_max": 0.4647134840488434,
+      "confidence_mean": 0.21626133945855228,
+      "confidence_median": 0.21599550545215607,
+      "category_breakdown": {
+        "time_sig_digit": 4,
+        "ornament": 7
+      },
+      "sample_class_labels": [
+        "timeSigCommon",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSigCommon",
+        "timeSig8"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.06371624999999881,
+          0.06403445899999838,
+          0.067434875,
+          0.07443649999999735,
+          0.07284495800000101
+        ],
+        "median_s_excluding_warmup": 0.07013991650000051,
+        "mean_s_excluding_warmup": 0.06968769799999919
+      }
+    },
+    "beet5-p10-sys0-s0-m5": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10081735253334045,
+      "confidence_max": 0.3071669638156891,
+      "confidence_mean": 0.19251848757266998,
+      "confidence_median": 0.17551882565021515,
+      "category_breakdown": {
+        "time_sig_digit": 1,
+        "ornament": 7
+      },
+      "sample_class_labels": [
+        "timeSigCommon",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.0694891670000004,
+          0.07476116699999835,
+          0.06450804199999993,
+          0.06343179199999938,
+          0.06281170799999813
+        ],
+        "median_s_excluding_warmup": 0.06396991699999965,
+        "mean_s_excluding_warmup": 0.06637817724999895
+      }
+    },
+    "beet5-p10-sys0-s0-m6": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11057543009519577,
+      "confidence_max": 0.1991073191165924,
+      "confidence_mean": 0.15491275638341903,
+      "confidence_median": 0.14937721192836761,
+      "category_breakdown": {
+        "time_sig_digit": 3,
+        "ornament": 2
+      },
+      "sample_class_labels": [
+        "timeSig8",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "timeSig8",
+        "timeSigCommon"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.07711020900000065,
+          0.07687562499999956,
+          0.06927129199999982,
+          0.06345266699999996,
+          0.06399425000000036
+        ],
+        "median_s_excluding_warmup": 0.06663277100000009,
+        "mean_s_excluding_warmup": 0.06839845849999993
+      }
+    },
+    "beet5-p10-sys0-s0-m7": {
+      "n_detections": 1,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.13528184592723846,
+      "confidence_max": 0.13528184592723846,
+      "confidence_mean": 0.13528184592723846,
+      "confidence_median": 0.13528184592723846,
+      "category_breakdown": {
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.06537279200000157,
+          0.06369204099999948,
+          0.06586408299999746,
+          0.06198858299999799,
+          0.06630420799999825
+        ],
+        "median_s_excluding_warmup": 0.06477806199999847,
+        "mean_s_excluding_warmup": 0.0644622287499983
+      }
+    },
+    "beet5-p10-sys0-s0-m8": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.11627279967069626,
+      "confidence_max": 0.5383144617080688,
+      "confidence_mean": 0.22927434891462325,
+      "confidence_median": 0.17941845953464508,
+      "category_breakdown": {
+        "time_sig_digit": 1,
+        "structural": 1,
+        "ornament": 13
+      },
+      "sample_class_labels": [
+        "timeSigCommon",
+        "segno",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 0,
+        "all_times_s": [
+          0.07914675000000315,
+          0.08192487499999856,
+          0.08709745899999888,
+          0.0809104170000019,
+          0.0796761669999988
+        ],
+        "median_s_excluding_warmup": 0.08141764600000023,
+        "mean_s_excluding_warmup": 0.08240222949999954
+      }
+    },
+    "beet5-p10-sys0-s0-m9": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10570639371871948,
+      "confidence_max": 0.4505002200603485,
+      "confidence_mean": 0.17829432462652525,
+      "confidence_median": 0.14003123342990875,
+      "category_breakdown": {
+        "time_sig_digit": 3,
+        "ornament": 9
+      },
+      "sample_class_labels": [
+        "timeSig8",
+        "timeSig8",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 1,
+        "all_times_s": [
+          0.08408791599999788,
+          0.08147783399999753,
+          0.07964025000000063,
+          0.08595604100000287,
+          0.0816560829999986
+        ],
+        "median_s_excluding_warmup": 0.08156695849999807,
+        "mean_s_excluding_warmup": 0.08218255199999991
+      }
+    },
+    "wtc-p10-sys0-s0-m0": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.10089114308357239,
+      "confidence_max": 0.2940905690193176,
+      "confidence_mean": 0.19055253432856667,
+      "confidence_median": 0.19328643381595612,
+      "category_breakdown": {
+        "ornament": 6,
+        "time_sig_digit": 2,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp",
+        "articStaccatissimoAbove",
+        "articStaccatissimoAbove",
+        "keyboardPedalUp",
+        "timeSigCommon",
+        "articStaccatissimoAbove",
+        "keyboardPedalUp",
+        "timeSig8",
+        "tuplet6"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 20,
+        "all_times_s": [
+          0.13557624999999973,
+          0.13719387500000124,
+          0.13743562500000195,
+          0.1339735829999995,
+          0.1352834999999999
+        ],
+        "median_s_excluding_warmup": 0.13623868750000057,
+        "mean_s_excluding_warmup": 0.13597164575000065
+      }
+    },
+    "wtc-p10-sys0-s0-m1": {
+      "n_detections": 1,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1182238757610321,
+      "confidence_max": 0.1182238757610321,
+      "confidence_mean": 0.1182238757610321,
+      "confidence_median": 0.1182238757610321,
+      "category_breakdown": {
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "keyboardPedalUp"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 11,
+        "all_times_s": [
+          0.20489070899999717,
+          0.18551137500000436,
+          0.1867297499999978,
+          0.18542462500000312,
+          0.1937694590000021
+        ],
+        "median_s_excluding_warmup": 0.18612056250000109,
+        "mean_s_excluding_warmup": 0.18785880225000184
+      }
+    },
+    "wtc-p10-sys0-s0-m2": {
+      "n_detections": 0,
+      "n_ported_from_baseline": 0,
+      "confidence_min": null,
+      "confidence_max": null,
+      "confidence_mean": null,
+      "confidence_median": null,
+      "category_breakdown": {},
+      "sample_class_labels": [],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 2,
+        "all_times_s": [
+          0.1915302909999994,
+          0.18700037499999667,
+          0.18349908300000095,
+          0.18197845800000323,
+          0.18303562500000226
+        ],
+        "median_s_excluding_warmup": 0.1832673540000016,
+        "mean_s_excluding_warmup": 0.18387838525000078
+      }
+    },
+    "wtc-p10-sys0-s0-m3": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.1066381186246872,
+      "confidence_max": 0.4165423512458801,
+      "confidence_mean": 0.18422679230570793,
+      "confidence_median": 0.13998620957136154,
+      "category_breakdown": {
+        "ornament": 10,
+        "time_sig_digit": 2
+      },
+      "sample_class_labels": [
+        "fermataBelow",
+        "timeSigCommon",
+        "timeSigCommon",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "keyboardPedalUp",
+        "articStaccatissimoAbove",
+        "articStaccatissimoAbove",
+        "articStaccatissimoAbove"
+      ],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 13,
+        "all_times_s": [
+          0.19392358300000012,
+          0.19496791599999597,
+          0.19439745799999741,
+          0.19559291699999903,
+          0.19402241699999934
+        ],
+        "median_s_excluding_warmup": 0.1946826869999967,
+        "mean_s_excluding_warmup": 0.19474517699999794
+      }
+    },
+    "wtc-p10-sys0-s0-m4": {
+      "n_detections": 0,
+      "n_ported_from_baseline": 0,
+      "confidence_min": null,
+      "confidence_max": null,
+      "confidence_mean": null,
+      "confidence_median": null,
+      "category_breakdown": {},
+      "sample_class_labels": [],
+      "timing": {
+        "n_runs": 5,
+        "n_detections": 3,
+        "all_times_s": [
+          0.18525170800000268,
+          0.1884698329999992,
+          0.19507116700000182,
+          0.20694350000000128,
+          0.21482937500000077
+        ],
+        "median_s_excluding_warmup": 0.20100733350000155,
+        "mean_s_excluding_warmup": 0.20132846875000077
+      }
+    }
+  }
+}

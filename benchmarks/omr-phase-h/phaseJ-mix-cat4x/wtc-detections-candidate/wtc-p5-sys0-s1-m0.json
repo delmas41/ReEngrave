@@ -1,0 +1,18 @@
+{
+  "cell_id": "wtc-p5-sys0-s1-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1517,
+      "y": 142,
+      "w": 21,
+      "h": 10,
+      "x_center": 1527,
+      "y_center": 147,
+      "confidence": 0.11480745673179626,
+      "pitch": null
+    }
+  ]
+}

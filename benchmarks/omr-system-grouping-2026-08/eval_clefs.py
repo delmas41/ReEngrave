@@ -65,7 +65,7 @@ def main() -> int:
             print(f"   [{verdict}] staff {r['staff_index']:2d} {r['instrument']:12s} "
                   f"{r['from_clef']}->{r['to_clef']:6s} fit {r['current_fit']:.2f}->{r['fit']:.2f} "
                   f"n={r['n_noteheads']:3d} {r['confidence_label']:6s} "
-                  f"{'APPLIED' if r['applied'] else 'flag only (detector saw a clef)'}")
+                  f"{'APPLIED' if r['applied'] else 'flag only (a reader read this clef)'}")
         applied += summary["clefs_applied"]
         restated += summary["noteheads_restated"]
 

@@ -1,0 +1,57 @@
+{
+  "cell_id": "wtc-p5-sys2-s4-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 44,
+      "y": 443,
+      "w": 246,
+      "h": 69,
+      "x_center": 167,
+      "y_center": 477,
+      "confidence": 0.1890636682510376,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 524,
+      "y": 433,
+      "w": 285,
+      "h": 89,
+      "x_center": 666,
+      "y_center": 477,
+      "confidence": 0.20966587960720062,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 526,
+      "y": 458,
+      "w": 285,
+      "h": 67,
+      "x_center": 668,
+      "y_center": 491,
+      "confidence": 0.4292598366737366,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1560,
+      "y": 473,
+      "w": 367,
+      "h": 78,
+      "x_center": 1743,
+      "y_center": 512,
+      "confidence": 0.17854459583759308,
+      "pitch": null
+    }
+  ]
+}

@@ -32,9 +32,10 @@ re-entering the detection pipeline.
 
 Three conditions, all required:
 
-1. **The detector never saw a clef glyph on this staff.** Same "speak only when
-   the detector is silent" rule the C-clef locator follows: a staff whose clef
-   was genuinely detected is left alone, and only flagged if it disagrees.
+1. **No reader read this staff's clef** — `staff["clef_source"]` is absent, so
+   the staff carries an inherited clef or the position default. Same "speak only
+   when the detector is silent" rule the C-clef locator follows: a staff whose
+   clef was genuinely read is left alone, and only flagged if it disagrees.
 2. **The instrument label is high confidence.** A wrong instrument would
    propagate a wrong range and "correct" a correct staff.
 3. **One candidate clef fits and the alternatives do not**, by a clear margin.
@@ -161,8 +162,27 @@ def restate_pitch(pitch: str, delta: int, key_alterations: dict[str, int],
     return f"{new_letter}{suffix}{new_octave}"
 
 
-def staff_has_detected_clef(staff: dict[str, Any]) -> bool:
-    """Whether any clef glyph was detected anywhere on this staff."""
+def clef_was_read(staff: dict[str, Any]) -> bool:
+    """Whether any reader actually read this staff's clef, as opposed to the
+    staff carrying an inherited clef or the position default.
+
+    `staff_dict["clef_source"]` is the authority: present means one of the
+    readers supplied the clef ("detector", "specialist", or "cv_locator"),
+    absent means nothing did. **This must not be replaced by scanning for a
+    `category == "clef"` detection.** The clef-geometry layer reads a clef by
+    SHAPE and by which staff line it sits on (`clef_locator`, `clef_geometry`)
+    and emits no clef detection at all, so a detection scan reports "silent" for
+    a staff whose clef was confidently read — and this pass would then overwrite
+    it.
+
+    The detection scan is still OR-ed in, for two reasons: it covers JSON
+    produced before `clef_source` existed, and `clef_source` reflects only the
+    staff's FIRST cell, so a mid-staff clef change detected later would
+    otherwise go unseen. Erring toward "it was read" is the safe direction —
+    the cost is a flag instead of a fix, rather than a good clef overwritten.
+    """
+    if staff.get("clef_source"):
+        return True
     return any(det.get("category") == "clef"
                for measure in staff.get("measures", [])
                for det in measure.get("detections", []))
@@ -318,7 +338,7 @@ def correct_clefs_from_instruments(
                 proposal = propose_clef(staff, instrument)
                 if proposal is None:
                     continue
-                detected = staff_has_detected_clef(staff)
+                detected = clef_was_read(staff)
                 do_apply = apply and not detected
                 record = {
                     "page_index": key[0], "system_index": key[1],
@@ -328,7 +348,8 @@ def correct_clefs_from_instruments(
                     "fit": proposal.fit, "current_fit": proposal.current_fit,
                     "margin": proposal.margin, "n_noteheads": proposal.n_noteheads,
                     "confidence_label": proposal.confidence_label,
-                    "detector_saw_a_clef": detected,
+                    "clef_was_read": detected,
+                    "clef_source": staff.get("clef_source"),
                     "applied": do_apply,
                 }
                 if do_apply:

@@ -1,0 +1,31 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "fermataAbove",
+      "category": "ornament",
+      "x": 908,
+      "y": 323,
+      "w": 31,
+      "h": 49,
+      "x_center": 923,
+      "y_center": 347,
+      "confidence": 0.14065687358379364,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1260,
+      "y": 313,
+      "w": 240,
+      "h": 7,
+      "x_center": 1380,
+      "y_center": 316,
+      "confidence": 0.135917529463768,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m8",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 707,
+      "w": 122,
+      "h": 3,
+      "x_center": 61,
+      "y_center": 708,
+      "confidence": 0.5889672040939331,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 739,
+      "w": 122,
+      "h": 9,
+      "x_center": 61,
+      "y_center": 743,
+      "confidence": 0.10065822303295135,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1,
+      "y": 284,
+      "w": 123,
+      "h": 5,
+      "x_center": 62,
+      "y_center": 286,
+      "confidence": 0.3719269633293152,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1,
+      "y": 932,
+      "w": 122,
+      "h": 5,
+      "x_center": 62,
+      "y_center": 934,
+      "confidence": 0.3010348975658417,
+      "pitch": null
+    }
+  ]
+}

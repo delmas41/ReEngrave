@@ -89,6 +89,17 @@ benchmarks/**/overlays-*/
 # Page-context thumbnails for the labeling UI — rendered from PDFs on demand
 benchmarks/*/page-thumbnails/
 
+# Transcribe output kept beside a benchmark run. Regenerable from the PDF and
+# the weights, and enormous: eleven of these reached main in the 2026-08-28
+# clef/key-signature merge and cost 30 MB between them — a single Mahler page
+# is 135k lines of JSON. Commit the REPORT that cites the numbers, not the dump
+# it read them from; if a specific run has to be pinned as evidence, add it by
+# path with `git add -f` and say in the commit message why this one is worth it.
+#
+# Note this does not untrack the eleven already in history — .gitignore never
+# applies to files git is already tracking. It stops the next ones.
+benchmarks/**/*.omr.json
+
 # Pre-cleanup label backups — scratch copies; the cleaned labels + the
 # verdicts_pre_* snapshots in benchmarks/ are the durable record
 data/user-labeled/*/labels_pre_cleanup/

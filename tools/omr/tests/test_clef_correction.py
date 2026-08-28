@@ -11,7 +11,7 @@ from tools.omr.clef_correction import (
     propose_clef,
     range_fit,
     restate_pitch,
-    staff_has_detected_clef,
+    clef_was_read,
 )
 from tools.omr.instruments import lookup
 from tools.omr.pitch_resolver import clef_diatonic_shift, pitch_to_midi
@@ -173,11 +173,29 @@ def _page(staff):
 def test_a_staff_whose_clef_the_detector_read_is_flagged_but_not_changed():
     clef_det = {"category": "clef", "class": "clefG", "bbox": [0, 0, 10, 10]}
     staff = _staff(["C5"] * 12, extra=[clef_det])
-    assert staff_has_detected_clef(staff)
+    assert clef_was_read(staff)
+
+
+def test_a_geometry_read_clef_counts_as_read_despite_no_clef_DETECTION():
+    """clef_locator / clef_geometry read a clef by shape and by which staff line
+    it sits on, emitting NO clef detection. Scanning detections would call this
+    staff 'silent' and overwrite a confidently-read clef."""
+    staff = _staff(["C5"] * 12)
+    staff["clef_source"] = "cv_locator"
+    assert clef_was_read(staff)
+    recs = correct_clefs_from_instruments(
+        [_page(staff)], {0: BASSOON}, {(0, 0, 0): 0}, apply=True)
+    assert recs and not recs[0]["applied"]
+    assert staff["clef"] == "treble", "a geometry-read clef must not be overwritten"
+
+
+def test_absent_clef_source_means_defaulted():
+    staff = _staff(["C5"] * 12)
+    assert not clef_was_read(staff)
     recs = correct_clefs_from_instruments(
         [_page(staff)], {0: BASSOON}, {(0, 0, 0): 0}, apply=True)
     assert len(recs) == 1
-    assert recs[0]["detector_saw_a_clef"] and not recs[0]["applied"]
+    assert recs[0]["clef_was_read"] and not recs[0]["applied"]
     assert staff["clef"] == "treble", "a read clef must not be overwritten"
 
 

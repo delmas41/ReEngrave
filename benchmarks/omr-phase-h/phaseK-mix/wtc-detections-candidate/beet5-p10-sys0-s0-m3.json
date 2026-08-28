@@ -1,0 +1,57 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m3",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 1,
+      "y": 935,
+      "w": 97,
+      "h": 3,
+      "x_center": 49,
+      "y_center": 936,
+      "confidence": 0.282244473695755,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 2,
+      "y": 891,
+      "w": 97,
+      "h": 3,
+      "x_center": 50,
+      "y_center": 892,
+      "confidence": 0.209514781832695,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 1,
+      "y": 845,
+      "w": 98,
+      "h": 4,
+      "x_center": 50,
+      "y_center": 847,
+      "confidence": 0.19365562498569489,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "caesura",
+      "category": "ornament",
+      "x": 50,
+      "y": 370,
+      "w": 10,
+      "h": 29,
+      "x_center": 55,
+      "y_center": 384,
+      "confidence": 0.3022473454475403,
+      "pitch": null
+    }
+  ]
+}

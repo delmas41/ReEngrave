@@ -1,0 +1,15 @@
+candidate detection counts (top 15):
+  noteheadHalfOnLine             7
+  clefF                          6
+  accidentalFlat                 5
+  restWhole                      5
+  brace                          4
+  tie                            4
+  noteheadHalfInSpace            4
+  rest8th                        3
+  keyFlat                        2
+  dynamicP                       2
+  accidentalNatural              2
+  clefCAlto                      1
+  noteheadWholeInSpace           1
+  TOTAL: 46
