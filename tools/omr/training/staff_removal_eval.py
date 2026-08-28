@@ -24,17 +24,25 @@ Usage:
 
 Baseline, 2026-08-28, one page per score at 600 DPI:
 
-    score      cells   cleared%   off-line%   measured line thickness
-    WTC           28       65.9        0.00    6.2 canonical px  (0.062 spaces)
-    Boléro       203       66.4        0.14    8.8              (0.088)
-    Mahler 5     234       79.2        1.03   24.2              (0.242)
-    Beethoven 5  302       69.3        4.30   25.4              (0.254)
-    La Mer        70       80.4        3.31   14.7              (0.147)
+    score      cells   cleared%   off-line%   line thickness (staff spaces)
+    WTC           28       65.9        0.00       0.134
+    Boléro       203       66.4        0.14       0.148
+    Mahler 5     234       79.2        1.03       0.242
+    Beethoven 5  302       69.3        4.30       0.254
+    La Mer        70       80.4        3.31       0.207
 
-Those thickness figures are the first ones measured on real scans rather than
-synthetically, and they confirm the 0.06-0.31 staff-space range this module's
-docstring cites: Mahler and Beethoven really are printed four times as heavily
-as the Bach.
+Those are the first line-thickness figures measured on real scans rather than
+synthetically, and they sit inside the 0.06-0.31 staff-space range this
+module's docstring cites — Beethoven and Mahler are printed about twice as
+heavily as the Bach.
+
+Thickness is reported in STAFF SPACES, against each cell's own spacing. It is
+tempting to read the canonical-pixel figure as hundredths of a space, since a
+cell is scaled to a 400px staff span and therefore a 100px spacing — but only
+when the scale is set by height. A cell wide enough to hit `MAX_CELL_WIDTH_PX`
+is scaled by width instead and its spacing comes out well under 100 (about 46
+on the WTC page), so that shortcut understates thickness by more than a factor
+of two on exactly the keyboard scores where measures are widest.
 
 DISPROVEN HERE — do not retry without new evidence
 --------------------------------------------------
@@ -132,8 +140,11 @@ def score_page(name: str, pdf: Path, page_index: int, dpi: int = 600) -> dict:
         cleared += int((removed & band[:, None]).sum())
         off_removed += int((removed & ~band[:, None]).sum())
         total_ink += int(ink_before.sum())
-        if cell.staff_line_thickness_canonical:
-            thicknesses.append(cell.staff_line_thickness_canonical)
+        if cell.staff_line_thickness_canonical and spacing > 0:
+            # Against THIS cell's spacing — see the note in the module
+            # docstring on why the canonical pixel count is not divisible by a
+            # constant 100.
+            thicknesses.append(cell.staff_line_thickness_canonical / spacing)
 
     return {
         "score": name,
@@ -141,8 +152,8 @@ def score_page(name: str, pdf: Path, page_index: int, dpi: int = 600) -> dict:
         "cells": len(cells),
         "line_ink_cleared_pct": round(100 * cleared / max(1, line_ink), 1),
         "off_line_removed_pct": round(100 * off_removed / max(1, total_ink), 2),
-        "measured_thickness_canonical": (
-            round(float(np.median(thicknesses)), 1) if thicknesses else None
+        "line_thickness_spaces": (
+            round(float(np.median(thicknesses)), 3) if thicknesses else None
         ),
     }
 
@@ -155,7 +166,8 @@ def main() -> None:
                     help="run one score by name (e.g. Mahler5)")
     args = ap.parse_args()
 
-    print(f"{'score':<12}{'cells':>6}{'cleared%':>10}{'off-line%':>11}{'thickness':>11}")
+    print(f"{'score':<12}{'cells':>6}{'cleared%':>10}{'off-line%':>11}"
+          f"{'thick(sp)':>11}")
     results = []
     for name, pdf, page_index in CORPUS:
         if args.only and name != args.only:
@@ -167,7 +179,7 @@ def main() -> None:
         results.append(r)
         print(f"{r['score']:<12}{r['cells']:>6}{r['line_ink_cleared_pct']:>10.1f}"
               f"{r['off_line_removed_pct']:>11.2f}"
-              f"{r['measured_thickness_canonical'] or float('nan'):>11.1f}")
+              f"{r['line_thickness_spaces'] or float('nan'):>11.3f}")
 
     if args.json_out:
         args.json_out.write_text(json.dumps(results, indent=2) + "\n")
