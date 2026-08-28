@@ -50,6 +50,7 @@ BENCH_DIR = Path("benchmarks/omr-phase4-lines")
 TEMPLATE = BENCH_DIR / "reference-lines.ly"
 GROUND_TRUTH_PATH = BENCH_DIR / "ground-truth.json"
 HAND_LABELS_PATH = BENCH_DIR / "hand-labeled-beams.json"
+HAND_STEMS_PATH = BENCH_DIR / "hand-labeled-stems.json"
 SCORE_ROOT = Path(
     "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
 )
@@ -154,6 +155,46 @@ def score_hand_labels(dpi_override: int | None = None) -> int:
     return total
 
 
+def score_hand_stems() -> int:
+    """Score stem detection against cells counted by eye on real scans.
+
+    Cells marked `null` were ones the labeler could not read confidently; they
+    are excluded rather than guessed, because a soft number here would tune the
+    detector in the wrong direction.
+    """
+    if not HAND_STEMS_PATH.exists():
+        print("no hand stem labels on disk")
+        return -1
+    data = json.loads(HAND_STEMS_PATH.read_text())
+    pages: dict[tuple[str, int], list] = {}
+    total = 0
+    print(f"\n{'cell':>4} {'score':>14} {'counted':>8} {'detected':>9}")
+    for entry in data["cells"]:
+        if entry["stems"] is None:
+            print(f"{entry['n']:>4} {entry['score']:>14} {'unsure':>8} {'-':>9}  excluded")
+            continue
+        spec = data["scores"][entry["score"]]
+        pdf = SCORE_ROOT / spec.split(",")[0]
+        if not pdf.exists():
+            print(f"{entry['n']:>4} SKIP (missing {pdf.name})")
+            continue
+        page_index = int(spec.rsplit(" ", 1)[-1])
+        key = (entry["score"], entry["dpi"])
+        if key not in pages:
+            page = render_page(pdf, page_index, dpi=entry["dpi"])
+            pws = detect_barlines(detect_staves(page))
+            cells = extract_measures(pws)[:30]
+            remove_staff_lines(cells)
+            pages[key] = cells
+        cell = pages[key][entry["cell_index"]]
+        got = len(detect_lines(cell)["stems"])
+        total += abs(got - entry["stems"])
+        mark = "OK" if got == entry["stems"] else f"{got - entry['stems']:+d}"
+        print(f"{entry['n']:>4} {entry['score']:>14} {entry['stems']:>8} {got:>9}  {mark}")
+    print(f"summed absolute error: {total}")
+    return total
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--keep-dir", type=Path, help="write the engraved sheets here")
@@ -165,6 +206,7 @@ def main() -> None:
 
     if args.hand_only:
         score_hand_labels()
+        score_hand_stems()
         return
 
     if shutil.which("lilypond") is None:
@@ -199,6 +241,7 @@ def main() -> None:
         shutil.rmtree(tmp, ignore_errors=True)
 
     score_hand_labels()
+    score_hand_stems()
 
 
 if __name__ == "__main__":
