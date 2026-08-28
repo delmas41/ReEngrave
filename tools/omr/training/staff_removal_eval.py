@@ -27,9 +27,15 @@ Baseline, 2026-08-28, one page per score at 600 DPI:
     score      cells   cleared%   off-line%   line thickness (staff spaces)
     WTC           28       65.9        0.00       0.134
     Boléro       203       66.4        0.14       0.148
-    Mahler 5     234       79.2        1.03       0.242
+    Mahler 5     247       78.8        1.02       0.242
     Beethoven 5  302       69.3        4.30       0.254
-    La Mer        70       80.4        3.31       0.207
+    La Mer        42       78.0        6.50       0.207
+
+Re-measure after any Phase-1 change, because the cell set moves under it: the
+staff-recovery and system-grouping work took Mahler from 234 cells to 247 and
+La Mer from 70 to 42, and the second of those took off-line removal from 3.31%
+to 6.50%. That is the largest counter-metric figure in the corpus and nothing
+here caused it — it is worth a look on its own.
 
 Those are the first line-thickness figures measured on real scans rather than
 synthetically, and they sit inside the 0.06-0.31 staff-space range this
@@ -55,7 +61,10 @@ them — `MAX_LINE_THICKNESS_SPACES`, which caps a per-CELL thickness median, an
 a per-cell median is taken over whatever columns that cell happens to have, and
 on a dense one most of them carry a symbol.
 
-Measured on this harness, it does not help:
+Measured on this harness, it does not help. (Run against the pre-merge tree,
+so the deltas below are against the older baseline in this file's history —
+the conclusion does not depend on the cell set, since it rests on the two
+thickness estimates agreeing, which is a property of the ink.)
 
   * Substituting the per-staff thickness moves cleared% by -0.7 to +0.2 across
     the five scores — slightly WORSE on three of them — while off-line removal
