@@ -70,6 +70,29 @@ the window must reach *past* the staff extent to see the bracket and the closing
 barline; and coverage needs vertical gap-closing or it is resolution-sensitive
 (B5 p10 grouped as 2 systems at 300 dpi and 4 at 600).
 
+**RE-MEASURED after merging `recognition-improvement-next` (2026-08-28).** That branch's
+comb pass recovers lightly printed staves the ink gates dropped — its headline is that
+**Beethoven 5 p10 has 22 staves, not the 18 asserted for months**, because five wind
+staves were losing all but one line each and the survivors were grouped into one
+phantom. Every number below was re-run on the merged tree:
+
+| | before merge | after |
+|---|--:|--:|
+| system-count accuracy | 12/14 (86%) | **12/14 (86%)** |
+| slot label purity | 93/101 (92%) | **57/57 (100%)** |
+| slots with no disagreement | 4/12 | **8/8** |
+| staves assigned a slot | 191/207 | **198/217** |
+
+Beethoven 5 p10 at 300 dpi now groups as `[11, 11]` where it read `[11, 7]` before the
+recovered staves existed.
+
+The merge also caught a half-built guard: `_looks_merged` spots a concatenation by
+seeing an instrument repeat, so it is **blind without labels**, and staff recovery raised
+the median system size until the size cap stopped excluding the one page connectivity
+merges. The reference came out as 24 unlabelled slots. Fixed with the label-free half —
+a merged "system" is a **one-off** while a real full system **recurs**, because the
+orchestra is the same on every page.
+
 **Step 2 DONE (2026-08-28): stable slot ids.** `tools/omr/slots.py` +
 `Staff.slot_index`. Index matching does not work, because **a system omits the staves
 of instruments tacet through it** (Beethoven 9 p65 carries systems of 7 and 11 staves
