@@ -47,12 +47,14 @@ Output schema (JSON):
                   "clef": "treble",         # effective clef for the staff (after
                                             # absorbing any clef detection in the
                                             # very first measure)
-                  "clef_source": "cv_locator",  # OPTIONAL — only when the clef
-                                            # came from a fallback reader:
-                                            # "specialist" (--clef-weights) or
+                  "clef_source": "cv_locator",  # OPTIONAL — which reader read
+                                            # this clef: "detector",
+                                            # "specialist" (--clef-weights), or
                                             # "cv_locator" (shape-located C clef,
-                                            # tools/omr/clef_locator.py). Absent
-                                            # for a detector read or a default.
+                                            # tools/omr/clef_locator.py). ABSENT
+                                            # = nothing read a clef here; the
+                                            # staff carries an inherited clef or
+                                            # the position default.
                   "key_signature": {
                       "sharps": 0,          # count of sharps in the key sig
                       "flats":  0,          # count of flats (mutually exclusive)
@@ -2042,11 +2044,12 @@ def transcribe(
                 # Staff-level effective state = whatever was in effect during
                 # the first measure of the staff (post any leading detections).
                 staff_dict["clef"] = first_cell_effective_clef
-                # Say where the clef came from when it wasn't the detector, so
-                # a reader can tell a measured clef from an inherited default
-                # without re-running the pipeline. Omitted in the ordinary case
-                # to keep untouched output byte-identical.
-                if first_cell_clef_source in ("specialist", "cv_locator"):
+                # Say which reader supplied the clef. Absent means nothing read
+                # one here and the staff is carrying an inherited clef or the
+                # position default — which is the single most useful thing to
+                # know when judging a page's pitches, since a defaulted clef
+                # transposes every note on the staff.
+                if first_cell_clef_source is not None:
                     staff_dict["clef_source"] = first_cell_clef_source
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}

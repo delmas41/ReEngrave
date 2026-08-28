@@ -218,15 +218,18 @@ current production weights — see "Known limitations" below.
             {
               "staff_index":  0,
               "clef":         "treble",       // effective clef for this staff
-              "clef_source":  "cv_locator",   // OPTIONAL — present only when
-                                              // the clef came from a fallback
-                                              // reader rather than the main
-                                              // detector: "specialist" (the
-                                              // --clef-weights model) or
+              "clef_source":  "cv_locator",   // OPTIONAL — which reader
+                                              // supplied the clef, when one
+                                              // did: "detector" (the main
+                                              // model), "specialist" (the
+                                              // --clef-weights model), or
                                               // "cv_locator" (shape-located
-                                              // C clef). Absent otherwise,
-                                              // including when the staff
-                                              // inherited a default.
+                                              // C clef). ABSENT means no clef
+                                              // was read on this staff and it
+                                              // is carrying an inherited clef
+                                              // or the position default — the
+                                              // case where its pitches may be
+                                              // transposed wholesale.
               "key_signature": {
                 "sharps":      7,             // C-sharp major
                 "flats":       0,
