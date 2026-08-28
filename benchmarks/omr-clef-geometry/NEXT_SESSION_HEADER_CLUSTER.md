@@ -28,6 +28,21 @@ The misses are real, not correct abstention on continuation systems: eight were
 sampled at random and rendered, and **seven have a clearly visible clef** at the
 staff head.
 
+**One caveat on that 19.1%, measured after the fact.** The key-signature
+retune (`96ceca9`) clamped the header window's leftward walk, which moves the
+window on some staves. Measured like-for-like over the 191-cell sample, that
+took `located` from 36 to **32** on Nottebohm while taking it from 1 to **3**
+on a Beethoven 5 orchestral scan — and moved 36 orchestral cells out of "no
+clusters" / "only debris", i.e. from windows holding nothing to windows holding
+real glyph ink. Roughly a wash on this metric, clearly positive for the window
+itself and for key signatures, but the Nottebohm figure above is the pre-retune
+one and the current number is 32. It is 8 cells lost (p44 s10, p56 s6, p92 s1,
+p152 s2, p164 s0, p164 s6, p188 s6, p224 s7) against 4 gained (p92 s6, p164 s5,
+p164 s7, p164 s8), net −4; `--per-cell` on each commit reproduces the list. In
+6 of the 8 losses the cluster that now blocks is narrow and tall — 0.27×5.45,
+0.82×6.05, 0.95×7.73 staff spaces — so it is rule-shaped, not clef-shaped, and
+that is the thread to pull.
+
 ## Where the coverage goes — every header cell, by rejecting branch
 
 190 header cells over 17 sample pages, on the current `main`:
@@ -78,6 +93,32 @@ as tall and gets rejected on height instead of being clipped into looking like a
 C clef — but it cannot help here, because a fused brace-plus-clef component has
 its centre inside the band.
 
+## Measure it first — the probe is now committed
+
+The per-branch breakdown below was originally produced ad hoc. It is now a
+script, so a change can be aimed at a branch and its effect read off directly:
+
+```bash
+python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py \
+    --pdf /Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf
+```
+
+It reads no ground truth and says nothing about whether a located clef is
+RIGHT, so always pair it with `clef_ground_truth_eval.py`. `--per-cell` prints
+one line per header cell, which diffs cleanly between two commits (run it in a
+worktree of each).
+
+**The bucket holds on completely different material.** Nottebohm's vocal
+exercises and a Beethoven 5 orchestral scan agree that it is the one that
+matters, and that the excess is vertical:
+
+| | Nottebohm (191 cells) | Beethoven 5 (168 cells) |
+|---|---|---|
+| cluster too big | 113 (59%) | 134 (80%) |
+| located | 32 (17%) | 3 (2%) |
+| height median / max | 6.0 / 9.0 | 7.2 / 12.0 |
+| width median (limit 4.5) | 2.5 | 3.2 |
+
 ## Approaches worth considering
 
 Nothing here is proven; these are the directions the measurements suggest.
@@ -124,6 +165,40 @@ The whole layer is built to prefer the second.
 
 ## Things already tried that DON'T work — don't repeat them
 
+- **Swapping `cluster_components` for `cluster_components_2d`** (the 2-D
+  version already in `header_ink`, used by the key-signature locator). Measured
+  on the Nottebohm sample: located **32 → 24**, and 144 of 191 cells (75%) died
+  as "only debris". The 1-D x-clustering is load-bearing, exactly as its
+  docstring claims — an archaic ladder C clef is a stack of horizontal bars
+  that do NOT overlap vertically, so requiring y-overlap shatters the glyph.
+  Any vertical rule must keep stacked bars together.
+- **Splitting a cluster on a large internal y-gap.** The distributions do not
+  separate. Largest internal y-gap, over the same sample: clusters that pass
+  the height test have median 0.23 spaces but 26% of them have a gap ≥ 0.8;
+  clusters rejected as too tall have median 0.82, and only ~half have a gap
+  ≥ 0.8. So a gap threshold splits a quarter of the glyphs that currently work
+  while leaving half the problem untouched.
+- **"The brace survives `strip_vertical_rules`."** It does not, on the cells
+  checked. Dumping the opened vertical components at the left edge of three
+  regressed cells, every one was caught — by the THIN rule (≤0.5 spaces), not
+  the heavy one. Whatever makes these clusters tall, it is not an unstripped
+  system rule.
+
+### One partial lever, and it is material-specific
+
+The band filter admits a component whose CENTRE is within `staff_band_spaces`
+(2.2) of the staff, so its EXTENT can reach far outside; x-clustering then
+unions those extents. Dropping cluster members that lie wholly outside the
+staff's own lines ± 0.75 spaces before measuring height rescues
+
+    Nottebohm     27 of 91 too-tall clusters (30%)
+    Beethoven 5    9 of 129 (7%)
+
+so on orchestral material the tall clusters genuinely span the staff and this
+is not the cause. Note also that this is precisely the clipping the warning
+above is about — it must not be adopted without the false-positive checks, and
+the height test must still see the glyph's true extent.
+
 - **Sweeping the horizontal-rule threshold** (`strip_horizontal_rules`, 1.5
   staff spaces) anywhere in 0.7–6.0 makes recall **worse in both directions**.
   Keeping more horizontal ink re-fuses the glyph with staff-line remnants.
@@ -145,9 +220,11 @@ The whole layer is built to prefer the second.
 ## The prompt
 
 > You're picking up OMR work in the ReEngrave repo. Everything is on `main`,
-> 670 tests green. Read `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`
-> first — it has the measurements, the approaches, and a list of things already
-> tried that don't work.
+> 678 tests green. Read `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`
+> first — it has the measurements, the approaches, a committed probe that
+> reports where the coverage goes, and a list of things already tried that
+> don't work (three of them, with numbers — don't spend the afternoon
+> rediscovering them).
 >
 > **The task:** clef coverage on 19th-century prints is 19%, and one cause holds
 > the majority of the rest. 55% of header cells are rejected because the clef
