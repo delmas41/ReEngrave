@@ -118,11 +118,22 @@ def _conf_threshold() -> float:
         return 0.25
 
 
-def _imgsz() -> int:
+def _imgsz() -> int | None:
+    """None = let the detector size each cell for itself.
+
+    A fixed `imgsz` is the wrong knob for cell-based inference. Cells are
+    already rescaled to a canonical staff span, so one number means a
+    different staff space in every cell, and the old default of 1280 put most
+    of them far above the scale the model reads noteheads at. Set OMR_IMGSZ to
+    pin a value; see `tools/omr/yolo_detector.imgsz_for_cell`.
+    """
+    raw = os.getenv("OMR_IMGSZ")
+    if not raw:
+        return None
     try:
-        return int(os.getenv("OMR_IMGSZ", "1280"))
+        return int(raw)
     except ValueError:
-        return 1280
+        return None
 
 
 def _dpi() -> int:
@@ -201,7 +212,7 @@ def _run_omr_blocking(
     weights: str,
     max_pages: int,
     conf_threshold: float,
-    imgsz: int,
+    imgsz: int | None,
     dpi: int,
 ) -> LocalOmrResult:
     # Import here so a missing PyMuPDF / ultralytics doesn't break the
@@ -224,9 +235,9 @@ def _run_omr_blocking(
         )
 
     logger.info(
-        "local_omr: %s → %d pages, weights=%s, conf=%.2f, imgsz=%d, dpi=%d",
+        "local_omr: %s → %d pages, weights=%s, conf=%.2f, imgsz=%s, dpi=%d",
         Path(pdf_path).name, len(pages), Path(weights).name,
-        conf_threshold, imgsz, dpi,
+        conf_threshold, imgsz if imgsz else "per-cell", dpi,
     )
 
     omr_result = transcribe(

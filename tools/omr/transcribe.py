@@ -839,7 +839,7 @@ def _read_staff_header(
     cell: MeasureCell,
     *,
     conf: float,
-    imgsz: int,
+    imgsz: int | None,
     header_frac: float,
     iou_threshold: float,
     agnostic_nms: bool,
@@ -992,7 +992,7 @@ def _header_detections(
     header_cell: MeasureCell,
     *,
     conf_threshold: float,
-    imgsz: int,
+    imgsz: int | None,
     iou_threshold: float,
     agnostic_nms: bool,
 ):
@@ -1052,7 +1052,7 @@ def _detections_for_cell(
     cell: MeasureCell,
     *,
     conf_threshold: float,
-    imgsz: int,
+    imgsz: int | None,
     iou_threshold: float,
     agnostic_nms: bool,
     active_clef: str | None,
@@ -2123,7 +2123,7 @@ def transcribe(
     pages: list[int],
     weights: str,
     conf_threshold: float = 0.25,
-    imgsz: int = 2048,
+    imgsz: int | None = None,
     iou_threshold: float = 0.5,
     agnostic_nms: bool = True,
     dpi: int = 600,
@@ -2141,6 +2141,13 @@ def transcribe(
     The defaults match what the Phase 3.3 evaluation used (conf=0.25,
     agnostic_nms=True). Lower conf_threshold (e.g. 0.10) for higher recall
     at the cost of more false positives.
+
+    `imgsz=None` (the default) lets the detector pick an inference size per
+    cell, so the model is shown a staff space near the one it recognises
+    noteheads at. A fixed value is the wrong knob for cell-based inference:
+    the cells have already been rescaled to a canonical staff span, so one
+    `imgsz` means a different staff space in every cell. See
+    `yolo_detector.imgsz_for_cell`.
 
     Everything needed to read a staff's header — its clef and key signature —
     is on by default and needs no extra files: `read_headers` measures each
@@ -2697,9 +2704,12 @@ def main(argv: list[str] | None = None) -> int:
                          "exactly. See tools/omr/clef_locator.py.")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
-    ap.add_argument("--imgsz", type=int, default=2048,
-                    help="YOLO inference image size (default: 2048 — matches "
-                         "the production weights' fine-tuning resolution)")
+    ap.add_argument("--imgsz", type=int, default=None,
+                    help="YOLO inference image size. Default: chosen per cell, "
+                         "so the model is shown a staff space it recognises "
+                         "noteheads at. A fixed size means a different staff "
+                         "space in every cell, because cells are already "
+                         "rescaled to a canonical staff span")
     ap.add_argument("--iou", type=float, default=0.5,
                     help="NMS IoU threshold (default: 0.5)")
     ap.add_argument("--no-agnostic-nms", action="store_true",
@@ -2751,7 +2761,8 @@ def main(argv: list[str] | None = None) -> int:
                   f"{args.clef_reader_conf}, imgsz {args.clef_reader_imgsz}, "
                   f"frac {args.clef_reader_header_frac})")
         print(f"  conf:     {args.conf}, iou: {args.iou}, "
-              f"agnostic_nms: {not args.no_agnostic_nms}, imgsz: {args.imgsz}")
+              f"agnostic_nms: {not args.no_agnostic_nms}, "
+              f"imgsz: {args.imgsz if args.imgsz else 'per-cell'}")
 
     result = transcribe(
         pdf_path=args.pdf,

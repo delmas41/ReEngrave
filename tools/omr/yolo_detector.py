@@ -181,6 +181,78 @@ def _class_name_to_category(name: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Inference scale
+# ---------------------------------------------------------------------------
+#
+# A detector does not see pixels, it sees a staff space. `imgsz` is only a
+# pixel budget; what decides whether the model recognises a notehead is how
+# large that notehead is once the image has been letterboxed to `imgsz`.
+#
+# The pipeline feeds this detector CELLS, not pages, and `measure_extractor`
+# has already rescaled every cell so its staff SPAN is 400 px — a staff space
+# of 100. Running such a cell at `imgsz=2048` (chosen because the weights were
+# fine-tuned on DeepScoresV2 pages at 2048) enlarges it again, and the model is
+# shown a staff space of 100-200 px. It was never shown anything like that.
+#
+# The failure is not a graceful loss of recall. Past roughly 25 px the model
+# stops finding noteheads and starts finding *fragments* of them: boxes a
+# quarter of a notehead tall, stacked in columns up the vertical stroke of a
+# time signature or a clef. On the authored end-to-end fixtures the note count
+# then runs at 1.4-1.9x truth while the true notes go missing underneath.
+#
+# Measured on `benchmarks/omr-detector-scale/` — 30 measures of authored music
+# whose note counts are exact — the response is a broad plateau and then a
+# cliff:
+#
+#     staff space shown     ratio got/truth     measures exactly right
+#            8 - 22             0.88-0.89              24/30
+#              26               0.96                   17/30
+#              50               1.77                    3/30
+#          100 - 150          1.41-1.91                1-3/30
+#
+# 16 sits in the middle of the plateau, with about a factor of two of margin on
+# either side, and is where notehead confidence peaks (0.91). At 16 the clef
+# and time-signature counts on those fixtures are also exactly right (7 clefs
+# on 7 staves, 14 digits on 7 "4/4" marks), where the wide end finds neither.
+TARGET_STAFF_SPACE_PX = 16
+
+# YOLO strides by 32; anything else is padded up to a multiple anyway.
+_IMGSZ_STRIDE = 32
+_MIN_AUTO_IMGSZ = 64
+_MAX_AUTO_IMGSZ = 2048
+
+
+def imgsz_for_cell(
+    cell: MeasureCell,
+    target_staff_space_px: float = TARGET_STAFF_SPACE_PX,
+) -> int:
+    """The `imgsz` that shows the model a staff space of `target_staff_space_px`.
+
+    Derived from the cell's OWN canonical staff spacing rather than from the
+    page, because that is the number the model is shown: ultralytics scales the
+    longest side to `imgsz`, so
+
+        staff space shown = canonical staff space * imgsz / longest side.
+
+    Falls back to `_MAX_AUTO_IMGSZ` for a cell with no usable staff lines —
+    there is nothing to calibrate against, and that is the historical default.
+    """
+    ys = getattr(cell, "staff_line_ys_canonical", None) or []
+    if len(ys) < 2:
+        return _MAX_AUTO_IMGSZ
+    space = (ys[-1] - ys[0]) / (len(ys) - 1)
+    if space <= 0:
+        return _MAX_AUTO_IMGSZ
+    image = getattr(cell, "image", None)
+    if image is None:
+        return _MAX_AUTO_IMGSZ
+    long_side = max(image.shape[0], image.shape[1])
+    raw = target_staff_space_px * long_side / space
+    rounded = int(round(raw / _IMGSZ_STRIDE)) * _IMGSZ_STRIDE
+    return max(_MIN_AUTO_IMGSZ, min(_MAX_AUTO_IMGSZ, rounded))
+
+
+# ---------------------------------------------------------------------------
 # Detector wrapper
 # ---------------------------------------------------------------------------
 
@@ -220,7 +292,7 @@ class YoloDetector:
         self,
         cell: MeasureCell,
         conf_threshold: float = 0.25,
-        imgsz: int = 640,
+        imgsz: int | None = None,
         iou_threshold: float = 0.7,
         agnostic_nms: bool = False,
     ) -> list[SymbolDetection]:
@@ -232,7 +304,10 @@ class YoloDetector:
 
         Args:
             conf_threshold: minimum detection confidence (0-1).
-            imgsz: inference image size.
+            imgsz: inference image size. None (the default) picks it per cell
+                so the model is shown a staff space of
+                `TARGET_STAFF_SPACE_PX`; pass a number to override. See
+                `imgsz_for_cell` for why a fixed value is the wrong knob here.
             iou_threshold: NMS IoU threshold. Lower = more aggressive
                 suppression of overlapping boxes.
             agnostic_nms: if True, NMS suppresses across classes (one box
@@ -253,6 +328,9 @@ class YoloDetector:
         else:
             # cv2 reads BGR; YOLO accepts BGR fine, but normalize for safety.
             img_rgb = img if img.shape[2] == 3 else cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
+
+        if imgsz is None:
+            imgsz = imgsz_for_cell(cell)
 
         # MPS device hint on Apple Silicon; "auto" lets ultralytics pick.
         results = self._model.predict(
