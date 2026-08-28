@@ -218,6 +218,15 @@ current production weights — see "Known limitations" below.
             {
               "staff_index":  0,
               "clef":         "treble",       // effective clef for this staff
+              "clef_source":  "cv_locator",   // OPTIONAL — present only when
+                                              // the clef came from a fallback
+                                              // reader rather than the main
+                                              // detector: "specialist" (the
+                                              // --clef-weights model) or
+                                              // "cv_locator" (shape-located
+                                              // C clef). Absent otherwise,
+                                              // including when the staff
+                                              // inherited a default.
               "key_signature": {
                 "sharps":      7,             // C-sharp major
                 "flats":       0,
@@ -331,6 +340,89 @@ scale-normalized, so the threshold is DPI-independent.
   inferred — compound meters surface as their simple equivalent (6/8 → 3/4,
   12/8 → 6/4) with the same length.
 
+### Clef reading (geometry, not classification)
+
+An alto clef and a tenor clef are **the same glyph printed one staff line
+apart**. So are soprano, mezzo-soprano and baritone clefs — five clefs, one
+drawing, five positions. Nothing in the ink distinguishes them, which means a
+detector class label *cannot* carry the distinction no matter how well the
+model is trained. DSv2 also has only two C-clef classes (`cClefAlto`,
+`cClefTenor`), so soprano/mezzo/baritone are unrepresentable in that label space
+at all. This is why a clef-targeted fine-tune couldn't fix alto/tenor confusion:
+it's a mislabelled task, not an under-trained model
+(`benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`).
+
+`clef_geometry.py` splits the work along the line where the evidence actually
+falls. The detector keeps what it can see — that there's a clef here, and which
+family it belongs to (G / C / F), a real visual distinction. Geometry decides
+the rest: the glyph's named line is snapped to the nearest of the five staff
+lines, and the clef is looked up by `(family, line)`.
+
+```
+CLEF_BY_FAMILY_LINE   line: 1 (bottom) … 5 (top)
+  G   1 french        2 treble
+  C   1 soprano       2 mezzosoprano   3 alto   4 tenor   5 baritone
+  F   3 varbaritone   4 bass           5 subbass
+```
+
+That one table is the single source of truth: `pitch_resolver._CLEF_ANCHORS`
+and `export._MXL_CLEF_SIGN` are both *derived* from it, so a clef the geometry
+can name is automatically one the pitch resolver can anchor and the exporters
+can write (`\clef soprano`, `<sign>C</sign><line>1</line>`).
+
+- A **C clef is symmetric about the line it names**, so its named line is
+  simply the middle of its box — exact, and true of archaic engraved C clefs
+  as much as of a modern font.
+- **G and F clefs keep their class label by default.** They aren't symmetric,
+  so their line would need a calibrated offset, and the payoff isn't there:
+  treble and bass dominate those families, french/varbaritone/subbass are
+  vanishingly rare, and a wrong guess transposes every pitch on the staff.
+  `ClefGeometryConfig(families=...)` can enable them.
+- **Abstention.** If the snapped line is more than `max_residual` (0.35 line
+  spacings) from a real staff line, or the staff has no clean 5-line geometry,
+  the class label stands rather than a guess.
+
+### Clef *location* — when no model sees a clef at all
+
+Geometry fixes which clef a detection is. It can't help when there's no
+detection, and on some material there is none: on 19th-century C-clef
+counterpoint prints (Nottebohm's *Beethovens Studien*) the production model and
+the clef specialist between them find **zero** clefs on a page carrying one per
+staff — even at confidence 0.03. The archaic "ladder" C clef simply isn't in
+the distribution DSv2 was rendered from, so no threshold reaches it. Every staff
+then falls back to the position default and a page of soprano/alto/tenor
+counterpoint transcribes as treble.
+
+`clef_locator.py` finds it by shape instead, the way Phase 4f handles stems and
+beams: strip the vertical rules (the barline sits a few pixels from the clef)
+and the horizontal ones (staff lines and their residue), cluster what's left in
+the header strip, and take the first glyph-sized cluster. It is accepted only if
+it carries the C-clef signature — symmetric about its own centre — and that same
+symmetry then locates the named line, refined to the axis the ink actually
+balances about so a stray surviving fragment can't drag the answer onto the next
+line.
+
+It is deliberately narrow:
+
+- **C clefs only.** They have the one shape signature that survives any
+  engraving style. A G or F clef yields nothing.
+- **It stops at the first glyph-sized cluster.** A too-tall cluster (a G clef)
+  ends the search rather than being skipped — otherwise the key signature's
+  first sharp, which is narrow, tall and beautifully symmetric, gets read as
+  the staff's clef.
+- **It only speaks when nothing else did.** Gated on no clef having been read
+  for that staff by either model, so it can add a reading but never overturn
+  one. `--no-clef-locator` disables it; `staff["clef_source"]` says
+  `"cv_locator"` when it fired.
+
+Measured (`benchmarks/omr-clef-geometry/RESULTS.md`): exact on LilyPond-engraved
+reference staves for all five C clefs, treble and bass declined; **zero** false
+positives over 10 pages of Bach WTC piano; correct alto/tenor reads on Handel,
+Boléro, La Mer and Beethoven 5; and no change to notehead or detection counts
+anywhere (Mahler 5 p.11 stays at the 2506-notehead production baseline).
+
+---
+
 ---
 
 ## CLI reference
@@ -339,6 +431,7 @@ scale-normalized, so the threshold is DPI-independent.
 usage: transcribe.py [-h] [--out OUT] [--pages PAGES] [--weights WEIGHTS]
                      [--clef-weights CLEF_WEIGHTS] [--clef-reader-conf CONF]
                      [--clef-reader-imgsz N] [--clef-reader-header-frac F]
+                     [--no-clef-locator]
                      [--conf CONF] [--imgsz IMGSZ] [--iou IOU]
                      [--no-agnostic-nms] [--dpi DPI]
                      [--overlays-dir OVERLAYS_DIR] [--quiet]
@@ -366,6 +459,11 @@ options:
   --clef-reader-conf C  Min confidence for a specialist override (def 0.30)
   --clef-reader-imgsz N     Specialist inference imgsz on its crop (def 640)
   --clef-reader-header-frac F  Left fraction of the start cell read (def 0.42)
+  --no-clef-locator     Disable the classical-CV C-clef locator. It runs only
+                        where NO model read a clef, and recognises only C
+                        clefs, so it can add a reading but never overturn one.
+                        Pass this to reproduce pre-locator output exactly.
+                        See "Clef location" above.
   --conf CONF           Detection confidence threshold (default: 0.25)
   --imgsz IMGSZ         YOLO inference image size (default: 2048 — matches
                         the production weights' fine-tuning resolution)

@@ -47,6 +47,12 @@ Output schema (JSON):
                   "clef": "treble",         # effective clef for the staff (after
                                             # absorbing any clef detection in the
                                             # very first measure)
+                  "clef_source": "cv_locator",  # OPTIONAL — only when the clef
+                                            # came from a fallback reader:
+                                            # "specialist" (--clef-weights) or
+                                            # "cv_locator" (shape-located C clef,
+                                            # tools/omr/clef_locator.py). Absent
+                                            # for a detector read or a default.
                   "key_signature": {
                       "sharps": 0,          # count of sharps in the key sig
                       "flats":  0,          # count of flats (mutually exclusive)
