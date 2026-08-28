@@ -106,6 +106,13 @@ def _staff_line_spacing(cell) -> float:
 # ---------------------------------------------------------------------------
 
 
+# The stem-isolating opening kernel, as a fraction of `min_height_lines` (see
+# detect_stems). Anything at or above 0.8 gives the same answer on the
+# reference sheet at every line thickness tested; below it, noteheads start
+# surviving the opening again.
+STEM_KERNEL_MARGIN = 0.8
+
+
 def detect_stems(
     cell,
     *,
@@ -151,8 +158,25 @@ def detect_stems(
     edge_margin = max(int(round(line_spacing * 0.8)), 12)
 
     ink = _binary_ink(src)
-    # Vertical structuring element: width 1, height ~= 1 line spacing.
-    kernel_h = max(3, int(round(line_spacing * 1.0)))
+    # Vertical structuring element: width 1, height just under the shortest
+    # stem this function will accept.
+    #
+    # It used to be one line spacing, which is exactly a notehead's height — so
+    # a notehead survived the opening, stayed joined to its own stem, and the
+    # component came out as wide as the notehead. The width filter below then
+    # threw the stem away along with it. That stayed hidden while staff-line
+    # removal was a no-op, because an un-removed staff line broke the notehead
+    # up for us; fixing removal exposed it, and Mahler 5 p.11 fell from 178
+    # stems to 145. Measured against the LilyPond reference sheet (which knows
+    # its own stem count), the 1.0 kernel scored 35 of 48 stems at 0.29 staff
+    # spaces of line thickness and 11 of 48 at 0.39; at this height, 53 and 50.
+    #
+    # The principle sets the value: a component shorter than `min_height_lines`
+    # is rejected a few lines below regardless, so erasing it here costs
+    # nothing, and the taller the kernel the more non-stem ink it clears first.
+    # So take it just under that floor — the margin absorbs a stem sitting
+    # exactly at the limit and the pixel or two rasterisation moves it.
+    kernel_h = max(3, int(round(line_spacing * min_height_lines * STEM_KERNEL_MARGIN)))
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, kernel_h))
     opened = cv2.morphologyEx(ink, cv2.MORPH_OPEN, kernel)
 
