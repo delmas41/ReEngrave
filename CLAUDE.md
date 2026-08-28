@@ -291,7 +291,7 @@ ReEngrave/
 | `OMR_CLEF_WEIGHTS`    | _(unset)_ | Optional **clef-specialist** weights — a checkpoint fine-tuned to read clefs, **not** general-purpose detection weights. You don't need it: header reading (clef + key signature) is on by default and needs no extra files. When set, a 2nd detector reads each staff's clef from its header and overrides the main clef, which helps on some orchestral scans (decoupled; the main detector still does all symbols). **Pointing this at ordinary weights makes clefs worse.** See `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. CLI: `--clef-weights`. |
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
-| `OMR_IMGSZ`           | `1280`  | YOLO inference image size (larger = slower, catches small noteheads) |
+| `OMR_IMGSZ`           | `512`   | YOLO inference image size. **Larger is NOT better** — ultralytics letterboxes to `imgsz²` regardless of cell size, so a big value buys anchors and false noteheads, not recall. Measured: `benchmarks/omr-imgsz-sweep-2026-08/findings.md` |
 | `OMR_DPI`             | `300`   | PDF rasterization DPI (600 in standalone CLI, 300 here for latency) |
 
 ---

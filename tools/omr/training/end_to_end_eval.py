@@ -135,9 +135,11 @@ def align(truth_parts: list[list[tuple[str, float]]],
     }
 
 
-def run_fixture(name: str, work: Path, weights: Path, dpi: int) -> dict[str, Any]:
+def run_fixture(name: str, work: Path, weights: Path, dpi: int,
+                imgsz: int | None = None) -> dict[str, Any]:
     truth_xml, pdf = render(name, work)
-    result = transcribe(pdf_path=pdf, pages=[0], weights=weights, dpi=dpi)
+    extra = {} if imgsz is None else {"imgsz": imgsz}
+    result = transcribe(pdf_path=pdf, pages=[0], weights=weights, dpi=dpi, **extra)
     omr_xml = work / f"{name}.omr.musicxml"
     omr_xml.write_text(to_musicxml(result))
 
@@ -161,6 +163,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--weights", type=Path, default=DEFAULT_WEIGHTS)
     ap.add_argument("--dpi", type=int, default=300)
+    # Detection is highly sensitive to this — see
+    # benchmarks/omr-imgsz-sweep-2026-08/findings.md. Default None means "use
+    # whatever transcribe's default is", so the harness tracks the pipeline
+    # instead of silently pinning an old value.
+    ap.add_argument("--imgsz", type=int, default=None)
     ap.add_argument("--keep-dir", type=Path)
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--out", type=Path)
@@ -181,7 +188,7 @@ def main() -> None:
     for name in FIXTURES:
         if args.only and name not in args.only:
             continue
-        r = run_fixture(name, work, args.weights, args.dpi)
+        r = run_fixture(name, work, args.weights, args.dpi, args.imgsz)
         results[name] = r
         t, o, n = r["truth"], r["omr"], r["notes"]
         print(f"{name:10s} {str(o['parts'])+'/'+str(t['parts']):>12} "

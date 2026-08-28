@@ -46,20 +46,52 @@ Per source, which is where it gets decisive:
 On la-mer and Beethoven 5, **640 wins on both axes**. Only Mahler 5 gains recall at 2048
 (+0.06), against a 5× precision collapse.
 
-## Mechanism, confirmed
+## Mechanism — the first explanation was WRONG
 
-Cells are canonically rescaled before detection, so `imgsz` sets an **upscale ratio**,
-not an absolute size. False positives track the ratio, not the setting:
+The initial reading was that cells are canonically rescaled before detection, so `imgsz`
+sets an **upscale ratio** and a narrow cell blown up makes the detector fire on texture.
+Pooled across all cells the false positives did track that ratio (13 → 35 → 51 per cell
+as the ratio went ≤1 → 1–2 → 2–4), which looked like confirmation.
 
-| upscale (`imgsz` / cell long edge) | median FP/cell | n |
-|---|--:|--:|
-| ≤ 1 | 13.0 | 577 |
-| 1–2 | 35.0 | 199 |
-| 2–4 | 51.0 | 29 |
+**It was an artefact of the pooling** — ratio and `imgsz` are correlated there. Splitting
+the cells into size bands separates them, and the answer flips:
 
-Visual confirmation on `beet5-p55-sys0-s4-m3` (8 labeled noteheads): at 2048 the model
-emits 42 boxes, most of them small and sitting on **staff lines**, largely missing the
-labeled heads; at 640 it emits 38, larger and far better aligned to them.
+| `imgsz` | FP/cell, cells 600–1000px | 1000–1500px | ≥1500px |
+|--:|--:|--:|--:|
+| 640 | 8.5 | 12.7 | 8.8 |
+| 1280 | 32.6 | 32.4 | 20.7 |
+| 2048 | 52.6 | 60.0 | 45.2 |
+
+At a given **`imgsz`** the FP rate is nearly identical across bands. At a given **ratio**
+it is not: ratio 0.80 gives 8.5 FP/cell in one band while ratio 0.89 gives 28.7 in
+another, a 3× gap.
+
+So the driver is **absolute `imgsz`**, not cell-relative scale. Ultralytics letterboxes
+the input to `imgsz × imgsz` regardless of source size, so a larger `imgsz` is simply
+more pixels, more anchors and more detections — FP/cell rising ~6× for a 10× area rise.
+
+**This changes the fix.** It is not a cell-relative rule; it is a smaller constant.
+
+## Confirmation on authored ground truth
+
+The hand-labeled cells understate precision by design (see the caveat below), so the
+decisive check is the end-to-end harness from `claude/recognition-improvement-next`
+(`tools/omr/training/end_to_end_eval.py`), which authors truth in music21, renders it
+through LilyPond, and asks the pipeline to recover it. That session found the same
+over-detection independently — "keyboard returns 111 notes for 27, a precision of 0.14
+on a clean render. **Whatever the mechanism**, it is not a subtle accuracy loss" — without
+identifying the cause.
+
+The cause is `imgsz`. On their `keyboard` fixture, 27 true notes:
+
+| `imgsz` | notes | pitch recall | pitch precision | duration |
+|--:|--:|--:|--:|--:|
+| **640** | **24** | **0.815** | **0.917** | **0.955** |
+| 1280 | 19 | 0.333 | 0.474 | 0.111 |
+| 2048 (their baseline) | 111 | 0.593 | 0.144 | — |
+
+and on `melody`, 24 true notes: recall 0.292 → **0.583** and precision 0.219 → **0.519**
+going from 2048 to 640. Both axes improve on clean, authored input.
 
 ## Why this does not contradict Phase 3.3
 
@@ -74,12 +106,8 @@ should not be a constant.
 
 ## Recommendation
 
-Scale `imgsz` with cell size, targeting an upscale ratio of **≤ 1** — never enlarge a
-cell before detection:
-
-```python
-imgsz = clamp(round_to_32(max(cell_w, cell_h)), 640, 2048)
-```
+**Lower the constant.** `imgsz=640` is the best value tested, on both the hand-labeled
+cells and the authored end-to-end fixtures, on both precision and recall.
 
 Note the two current defaults already disagree: `transcribe.py`'s CLI uses **2048**,
 while `CLAUDE.md` documents the web app's `OMR_IMGSZ` as **1280**. Neither is right as a
