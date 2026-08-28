@@ -104,6 +104,16 @@ def test_cl_b_is_a_clarinet_in_b_flat_not_a_bass_clarinet():
     assert lookup("Bassklarinette").instrument.name == "Bass clarinet"
 
 
+def test_tp_is_timpani_not_trumpet():
+    """Measured on Beethoven 1 (imslp-00074 p40), whose system reads
+    Fl / Ob / Cl / Fag / Cor / Tr / Tp — "Tr." is trumpets and the "Tp." below
+    it is timpani. The vision reader transcribed it correctly; the lexicon was
+    what got it wrong."""
+    assert lookup("Tp.").instrument.name == "Timpani"
+    assert lookup("Tr.").instrument.name == "Trumpet"
+    assert lookup("Tpt.").instrument.name == "Trumpet"
+
+
 def test_longest_alias_wins():
     assert lookup("Corno inglese").instrument.name == "English horn"
     assert lookup("Coro").instrument.name == "Chorus"      # not Horn via "cor"

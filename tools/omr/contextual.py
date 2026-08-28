@@ -13,9 +13,20 @@ a clef hypothesis is pure arithmetic on already-resolved pitches
 detection, rhythm or segmentation changes, and a score where it finds nothing is
 serialised unchanged.
 
-Instrument identity currently comes from the PDF's text layer, so this is a
-no-op on scans without one (about three quarters of the IMSLP corpus). It
-abstains loudly rather than guessing: no labels, no slots, no proposals.
+Instrument identity comes from the PDF's text layer where there is one (18 of 65
+IMSLP score PDFs). For the rest, `vision_fallback=True` reads the margin with
+Claude instead — measured at 100% agreement with the text layer where both
+resolve, plus 30 staves recovered that the text layer's OCR had garbled
+(`benchmarks/omr-margin-labels-2026-08/`). It is **off by default** because it
+costs money; roughly $0.01 per system read.
+
+That cost is small because identity is a property of the SCORE, not of each
+page. Slots propagate one reading across every system and page, so
+`vision_system_budget` (default 3) caps how many systems are ever sent — a few
+cents covers a whole work, not a few cents per page.
+
+With neither source it abstains loudly rather than guessing: no labels, no
+slots, no proposals.
 """
 
 from __future__ import annotations
@@ -28,7 +39,7 @@ from .instruments import Instrument, lookup
 from .preprocessing import render_page
 from .slots import Slot, assign_slots, labels_by_staff
 from .staff_detector import detect_staves
-from .staff_labels import has_text_layer, read_staff_labels
+from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
 
 
 def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
@@ -42,12 +53,38 @@ def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
     return out
 
 
+def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
+                     vision_fallback: bool, budget: list[int]) -> list[StaffLabel]:
+    """Text-layer labels, falling back to the vision reader when there are none.
+
+    `budget` is a one-element list of systems still allowed to be read, mutated
+    in place. It exists because instrument identity is a property of the SCORE,
+    not of each page: slots propagate one reading across every system and page,
+    so a handful of calls covers a whole work. Scores also label their first
+    system most fully and abbreviate or omit later — so reading early systems
+    buys the most, and reading all of them buys almost nothing extra.
+    """
+    labels = read_staff_labels(pws)
+    if labels or not vision_fallback or budget[0] <= 0:
+        return labels
+    from .staff_labels_vision import read_staff_labels_vision
+    n_systems = len({s.system_index for s in pws.staves})
+    budget[0] -= n_systems
+    try:
+        return read_staff_labels_vision(pws)
+    except Exception as exc:                              # noqa: BLE001
+        logger.warning("vision label fallback failed on page %s: %s", page_index, exc)
+        return []
+
+
 def apply_contextual_analysis(
     result: dict[str, Any],
     *,
     pdf_path: str | Path | None = None,
     dpi: int | None = None,
     apply_clefs: bool = True,
+    vision_fallback: bool = False,
+    vision_system_budget: int = 3,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
     detector never read.
@@ -70,15 +107,18 @@ def apply_contextual_analysis(
         return summary
 
     page_indices = [p.get("page_index") for p in pages]
-    if not any(has_text_layer(pdf_path, i) for i in page_indices):
+    if not vision_fallback and not any(has_text_layer(pdf_path, i) for i in page_indices):
         summary["reason"] = "no text layer — instrument identity unavailable"
         return summary
 
+    budget = [vision_system_budget]
     staved, labels = [], []
     for page_index in page_indices:
         pws = detect_staves(render_page(pdf_path, page_index, dpi=dpi))
         staved.append(pws)
-        labels.append(labels_by_staff(read_staff_labels(pws)))
+        labels.append(labels_by_staff(_labels_for_page(
+            pws, pdf_path, page_index,
+            vision_fallback=vision_fallback, budget=budget)))
 
     reference = assign_slots(staved, labels)
     if not reference:

@@ -128,9 +128,15 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # ── brass ──────────────────────────────────────────────────────────────
     Instrument("Horn", "brass", "treble", (41, 77), None, 1,
                aliases=("horn", "horns", "corno", "corni", "horner", "cor", "cors", "hn")),
+    # NOT "tp": in the German/Italian orchestral convention these scores use,
+    # "Tr." is Trombe (trumpets) and "Tp." on the staff below it is Timpani —
+    # measured on Beethoven 1 (imslp-00074 p40), whose system reads
+    # Fl / Ob / Cl / Fag / Cor / Tr / Tp. "Tpt." remains the unambiguous English
+    # trumpet abbreviation. A score-order prior (NOTES.md #3) would settle this
+    # from position rather than by convention; until then this is the safer read.
     Instrument("Trumpet", "brass", "treble", (52, 84), None, 2,
                aliases=("trumpet", "trumpets", "tromba", "trombe", "trompete", "trompeten",
-                        "trompette", "trompettes", "tr", "tp", "tpt", "clarino", "clarini")),
+                        "trompette", "trompettes", "tr", "tpt", "clarino", "clarini")),
     Instrument("Trombone", "brass", "bass", (34, 72), 0, 0,
                aliases=("trombone", "trombones", "trombono", "tromboni", "posaune",
                         "posaunen", "trb", "tbn", "pos")),
@@ -140,7 +146,7 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # ── percussion ─────────────────────────────────────────────────────────
     Instrument("Timpani", "percussion", "bass", (36, 60), 0, 0,
                aliases=("timpani", "timpano", "tympani", "pauken", "timbales", "kettledrum",
-                        "timp", "tmp", "pk")),
+                        "timp", "tmp", "pk", "tp")),
     Instrument("Percussion", "percussion", "treble", (0, 127), 0, 0, unpitched=True,
                aliases=("percussion", "schlagzeug", "batteria", "batterie", "perc",
                         "gran cassa", "grosse trommel", "bass drum", "piatti", "becken",
