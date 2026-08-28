@@ -912,7 +912,14 @@ def _detections_for_cell(
     #    staff, and only identifies C clefs, so it can add a reading where
     #    there was none but can never overturn one. See tools/omr/clef_locator.py.
     if read_clef and locate_c_clefs and clef_source is None:
-        located = locate_clef(cell)
+        # Hand the locator the boxes the detector is already sure about, so it
+        # can't nominate a notehead stack as a clef.
+        occupied = [
+            (d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical)
+            for d in dets
+            if d.category in ("notehead", "rest")
+        ]
+        located = locate_clef(cell, occupied_boxes=occupied)
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"

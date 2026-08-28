@@ -183,6 +183,23 @@ class TestAbstains:
         draw_c_clef(img, 3, x=300)  # 15 staff spaces in — not a clef position
         assert locate_clef(make_cell(img)) is None
 
+    def test_the_occupancy_check_overrides_the_shape_test(self):
+        # Observed on Nottebohm p.21: where a cell begins PAST its clef, the
+        # first cluster is real notation, and a stacked chord is tall,
+        # glyph-sized and vertically symmetric enough to pass for a C clef.
+        # The detector has already called those boxes noteheads, and a clef
+        # never overlaps one — so occupancy beats shape, whatever shape says.
+        cell = cell_with_c_clef(3)
+        found = locate_clef(cell)
+        assert found is not None
+        assert locate_clef(cell, occupied_boxes=[found.bbox]) is None
+
+    def test_a_real_clef_survives_the_occupancy_check(self):
+        cell = cell_with_c_clef(3)
+        elsewhere = [(300, 100, 30, 20)]  # a notehead further into the measure
+        found = locate_clef(cell, occupied_boxes=elsewhere)
+        assert found is not None and found.read.name == "alto"
+
     def test_ambiguous_placement_yields_nothing(self):
         # Sitting in a space rather than on a line: no clef names that.
         img = blank_page()

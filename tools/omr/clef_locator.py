@@ -328,9 +328,24 @@ def _refine_symmetry_axis(
     return float(y + best_axis)
 
 
+def _overlaps_any(
+    bbox: tuple[int, int, int, int],
+    boxes: list[tuple[int, int, int, int]] | None,
+) -> bool:
+    """Whether `bbox` shares any area with a box the detector already claimed."""
+    if not boxes:
+        return False
+    x, y, w, h = bbox
+    for bx, by, bw, bh in boxes:
+        if x < bx + bw and bx < x + w and y < by + bh and by < y + h:
+            return True
+    return False
+
+
 def locate_clef(
     cell: MeasureCell,
     *,
+    occupied_boxes: list[tuple[int, int, int, int]] | None = None,
     config: ClefLocatorConfig = DEFAULT_LOCATOR_CONFIG,
     geometry: ClefGeometryConfig = DEFAULT_CONFIG,
 ) -> LocatedClef | None:
@@ -338,6 +353,14 @@ def locate_clef(
 
     `cell` must be a staff-START cell — the clef only appears there, and on an
     interior measure this would happily nominate the first notehead cluster.
+
+    `occupied_boxes` are canonical (x, y, w, h) boxes the detector has already
+    identified as something other than a clef — noteheads and rests. A clef
+    never overlaps one, so a candidate that does is rejected. This matters
+    where a cell begins PAST its clef (see NOTES.md on staff x-extent): the
+    first cluster is then real notation, and a stacked chord in particular is
+    tall, glyph-sized and vertically symmetric enough to pass for a C clef.
+    Reusing the detector's own output costs nothing and settles it.
     """
     metrics = _staff_metrics(cell)
     if metrics is None:
@@ -407,6 +430,11 @@ def locate_clef(
         ink = int(np.count_nonzero(strip[y : y + h, x : x + w]))
         if w * h == 0 or ink / float(w * h) < config.min_ink_fraction:
             continue
+
+        if _overlaps_any(bbox, occupied_boxes):
+            # The head of this staff is a notehead or a rest, so the clef is
+            # not in this cell at all. Stop, exactly as for a G clef.
+            return None
 
         symmetry = _vertical_symmetry(strip, bbox)
         if symmetry < config.min_symmetry:
