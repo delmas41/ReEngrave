@@ -160,7 +160,12 @@ def run_fixture(name: str, work: Path, weights: Path, dpi: int) -> dict[str, Any
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--weights", type=Path, default=DEFAULT_WEIGHTS)
-    ap.add_argument("--dpi", type=int, default=300)
+    # The pipeline's own default. The first baseline was taken at 300 and that
+    # was simply a mistake: DPI moves these numbers a long way and not in one
+    # direction (melody's duration rate 0.29 -> 0.89, keyboard's precision
+    # 0.14 -> 0.33 but its recall 0.59 -> 0.41), so a benchmark run at a
+    # non-default setting measures a configuration nobody uses.
+    ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--keep-dir", type=Path)
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--out", type=Path)

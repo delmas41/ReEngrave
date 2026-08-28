@@ -1,0 +1,119 @@
+{
+  "n_cells": 9,
+  "TP": 4,
+  "FP": 27,
+  "FN": 106,
+  "precision": 0.129,
+  "recall": 0.036,
+  "f1": 0.057,
+  "per_cell": [
+    {
+      "cell_id": "beet5-p5-sys0-s0-m5",
+      "tp": 1,
+      "fp": 3,
+      "fn": 1,
+      "n_auto": 4,
+      "n_human": 2,
+      "hits": 2,
+      "n_blobs": 6,
+      "meas": 101,
+      "part": "13"
+    },
+    {
+      "cell_id": "beet5-p5-sys0-s1-m2",
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "n_auto": 2,
+      "n_human": 1,
+      "hits": 1,
+      "n_blobs": 2,
+      "meas": 83,
+      "part": "14"
+    },
+    {
+      "cell_id": "beet5-p5-sys0-s1-m8",
+      "tp": 0,
+      "fp": 1,
+      "fn": 1,
+      "n_auto": 1,
+      "n_human": 1,
+      "hits": 0,
+      "n_blobs": 4,
+      "meas": 89,
+      "part": "2"
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s3-m1",
+      "tp": 1,
+      "fp": 1,
+      "fn": 12,
+      "n_auto": 2,
+      "n_human": 13,
+      "hits": 0,
+      "n_blobs": 0,
+      "meas": 82,
+      "part": "13"
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s5-m1",
+      "tp": 1,
+      "fp": 6,
+      "fn": 23,
+      "n_auto": 7,
+      "n_human": 24,
+      "hits": 2,
+      "n_blobs": 71,
+      "meas": 101,
+      "part": "sect"
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s7-m1",
+      "tp": 1,
+      "fp": 3,
+      "fn": 18,
+      "n_auto": 4,
+      "n_human": 19,
+      "hits": 2,
+      "n_blobs": 72,
+      "meas": 83,
+      "part": "sect"
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s9-m0",
+      "tp": 0,
+      "fp": 3,
+      "fn": 11,
+      "n_auto": 3,
+      "n_human": 11,
+      "hits": 1,
+      "n_blobs": 74,
+      "meas": 82,
+      "part": "sect"
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s11-m0",
+      "tp": 0,
+      "fp": 5,
+      "fn": 27,
+      "n_auto": 5,
+      "n_human": 27,
+      "hits": 3,
+      "n_blobs": 96,
+      "meas": 84,
+      "part": "sect"
+    },
+    {
+      "cell_id": "beet5-p5-sys1-s13-m0",
+      "tp": 0,
+      "fp": 3,
+      "fn": 12,
+      "n_auto": 3,
+      "n_human": 12,
+      "hits": 1,
+      "n_blobs": 84,
+      "meas": 81,
+      "part": "sect"
+    }
+  ]
+}

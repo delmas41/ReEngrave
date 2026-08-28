@@ -10,11 +10,11 @@
     },
     "omr": {
       "parts": 1,
-      "measures": 9,
+      "measures": 12,
       "measures_per_part": [
-        9
+        12
       ],
-      "notes": 32
+      "notes": 61
     },
     "detected": {
       "staves": 1,
@@ -23,12 +23,12 @@
     "notes": {
       "part_aligned": true,
       "truth_notes": 24,
-      "omr_notes": 32,
-      "pitch_matched": 7,
-      "pitch_recall": 0.292,
-      "pitch_precision": 0.219,
-      "duration_ok_on_matched": 2,
-      "duration_rate": 0.286
+      "omr_notes": 61,
+      "pitch_matched": 9,
+      "pitch_recall": 0.375,
+      "pitch_precision": 0.148,
+      "duration_ok_on_matched": 8,
+      "duration_rate": 0.889
     }
   },
   "keyboard": {
@@ -48,7 +48,7 @@
         4,
         4
       ],
-      "notes": 111
+      "notes": 45
     },
     "detected": {
       "staves": 2,
@@ -57,12 +57,12 @@
     "notes": {
       "part_aligned": true,
       "truth_notes": 27,
-      "omr_notes": 111,
-      "pitch_matched": 16,
-      "pitch_recall": 0.593,
-      "pitch_precision": 0.144,
-      "duration_ok_on_matched": 7,
-      "duration_rate": 0.438
+      "omr_notes": 45,
+      "pitch_matched": 11,
+      "pitch_recall": 0.407,
+      "pitch_precision": 0.244,
+      "duration_ok_on_matched": 4,
+      "duration_rate": 0.364
     }
   },
   "ensemble": {
@@ -78,26 +78,29 @@
       "notes": 45
     },
     "omr": {
-      "parts": 1,
+      "parts": 4,
       "measures": 4,
       "measures_per_part": [
+        4,
+        4,
+        4,
         4
       ],
-      "notes": 47
+      "notes": 103
     },
     "detected": {
       "staves": 4,
       "systems": 1
     },
     "notes": {
-      "part_aligned": false,
+      "part_aligned": true,
       "truth_notes": 45,
-      "omr_notes": 47,
-      "pitch_matched": 32,
-      "pitch_recall": 0.711,
-      "pitch_precision": 0.681,
-      "duration_ok_on_matched": 29,
-      "duration_rate": 0.906
+      "omr_notes": 103,
+      "pitch_matched": 18,
+      "pitch_recall": 0.4,
+      "pitch_precision": 0.175,
+      "duration_ok_on_matched": 3,
+      "duration_rate": 0.167
     }
   }
 }
