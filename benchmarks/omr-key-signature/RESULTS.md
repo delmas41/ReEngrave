@@ -68,6 +68,37 @@ half-step tolerance.
 
 ---
 
+## After the clef-branch merge (2026-08-28)
+
+The Phase-1 x-extent fix from `claude/clef-recognition-improvement-ab75f6`
+changes the geometry the CV locator was tuned against, and its heavier
+rule-stripping changes what survives in the header mask. Component mode moved,
+measurably and for the worse:
+
+| the two orchestral pages, after the vote | correct | wrong |
+|---|---|---|
+| before the merge | 10 | 2 |
+| after, with the merged `header_ink` | 6 | 7 |
+| after, with the pre-merge `header_ink` | 4 | 0 |
+
+**It does not reach the output.** Pipeline mode is unchanged, verified
+like-for-like at identical settings on both sides of the merge:
+
+| page | mode | before | after |
+|---|---|---|---|
+| wtc-p17 | pipeline | 10 correct / 0 wrong | 10 correct / 0 wrong |
+| beet5-p2 | pipeline | 0 correct / 0 wrong, 0/22 voted | 0 correct / 0 wrong, 0/22 voted |
+
+On the degraded page the clef gate closes either way, so the locator never
+speaks and no wrong signature ships. The regression is confined to a mode that
+forces a path the pipeline does not take — which is precisely why component mode
+is documented below as not being a score for the layer.
+
+**The open follow-up** is to retune the locator against the new Phase-1
+geometry. Until that happens the component figures above are the honest state,
+and this section — not the tables further up, which are pre-merge — is the
+current record.
+
 ## What component mode does not measure
 
 `--mode component` forces the CV locator onto every staff and hands it the true
