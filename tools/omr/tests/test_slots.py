@@ -41,9 +41,17 @@ FULL = [(0, "Flute"), (0, "Oboe"), (0, "Clarinet"), (0, "Bassoon"),
 # ── reference ───────────────────────────────────────────────────────────────
 
 def test_reference_is_the_largest_system():
+    """The largest system wins — given that it recurs.
+
+    A full system that appears exactly ONCE among smaller ones is genuinely
+    ambiguous: at that point it is indistinguishable from two condensed systems
+    that got merged, which is a real failure mode (see the one-off test below).
+    Real scores do not pose that question — the orchestra is the same on every
+    page, so the full system is the common one and the condensed ones vary.
+    """
     condensed = _view(FULL[4:])          # 5 staves — winds tacet
     full = _view(FULL)                   # 9 staves
-    ref = build_reference([condensed, full, condensed])
+    ref = build_reference([condensed, full, full])
     assert [s.instrument for s in ref] == [n for _g, n in FULL]
     assert [s.group_index for s in ref] == [g for g, _n in FULL]
 
@@ -71,6 +79,22 @@ def test_adjacent_duplicate_instruments_are_not_a_merge():
     """Two horns on consecutive staves are normal orchestration, not a merge."""
     v = _view([(0, "Flute"), (1, "Horn"), (1, "Horn"), (1, "Trumpet"), (1, "Trumpet")])
     assert not _looks_merged(v)
+
+
+def test_a_one_off_oversized_system_loses_to_a_recurring_size():
+    """The label-free half of the merged-system guard.
+
+    `_looks_merged` reads instrument names, so it is blind on a score with no
+    text layer — which is exactly where a 24-staff concatenation of two 12-staff
+    systems became the reference, giving 24 unlabelled slots. A real full system
+    recurs across pages because the orchestra does not change; a merged one is a
+    one-off.
+    """
+    plain = [(g, None) for g, _n in FULL]
+    real = _view(plain)                     # 9 staves, appears several times
+    merged = _view(plain + plain[:4])       # 13 staves, appears once
+    ref = build_reference([real, real, real, merged])
+    assert len(ref) == len(FULL)
 
 
 def test_oversized_system_is_capped_out_even_without_labels():

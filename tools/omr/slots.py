@@ -38,6 +38,7 @@ when staff counts match and is the honest best guess when they do not.
 
 from __future__ import annotations
 
+import collections
 from dataclasses import dataclass, field
 
 from .types import PageWithStaves, Staff
@@ -133,6 +134,18 @@ def build_reference(views: list[SystemView]) -> list[Slot]:
     candidates = [v for v in views if v.size <= cap and not _looks_merged(v)]
     if not candidates:
         candidates = views
+
+    # A merged "system" is a ONE-OFF; a real full system recurs, because the
+    # orchestra is the same on every page. So prefer the largest size that
+    # appears more than once. This is the label-free half of the guard, and it
+    # is the half that matters: `_looks_merged` reads instrument names, so it is
+    # blind on a score with no text layer — exactly where a 24-staff
+    # concatenation of two 12-staff systems slipped through and became a
+    # 24-slot reference of entirely unlabelled parts.
+    counts = collections.Counter(v.size for v in candidates)
+    recurring = [v for v in candidates if counts[v.size] > 1]
+    if recurring:
+        candidates = recurring
     best = max(candidates, key=lambda v: (v.size, len(v.labels)))
     n = max(1, best.size - 1)
     return [
