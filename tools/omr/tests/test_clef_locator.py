@@ -102,9 +102,18 @@ def draw_f_clef(img: np.ndarray, line_from_bottom: int = 4, x: int = 22) -> None
 
 def draw_g_clef(img: np.ndarray, x: int = 22) -> None:
     """A stand-in for a G clef: much taller than any C clef, and lopsided —
-    a heavy loop up top and a long tail hanging below the staff."""
-    cv2.rectangle(img, (x, 70), (x + 40, 150), 0, -1)      # the loop
-    cv2.rectangle(img, (x + 16, 150), (x + 24, 250), 0, -1)  # the tail
+    a heavy loop up top and a long tail hanging below the staff.
+
+    The loop is drawn as a stroke rather than a filled block, because a filled
+    one is not what the locator sees. `strip_horizontal_rules` erases ink
+    belonging to any run of 1.5 staff spaces or more, so a solid 2-space-wide
+    rectangle is removed outright and what reached the gates was the 0.4-space
+    tail — narrower than any real G clef, which measures 2.55 to 3.18 spaces
+    across the engraved reference sheet and the piano corpus. The width of this
+    glyph is load-bearing for the test below, so it has to be real.
+    """
+    cv2.ellipse(img, (x + 20, 110), (20, 40), 0, 0, 360, 0, 11)   # the loop
+    cv2.rectangle(img, (x + 16, 150), (x + 24, 250), 0, -1)       # the tail
     cv2.circle(img, (x + 20, 245), 10, 0, -1)
 
 

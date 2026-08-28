@@ -90,7 +90,13 @@ class ClefLocatorConfig:
     # bound here would cost real viola and trombone clefs. The load-bearing
     # rule is "stop at the first glyph-sized cluster", below.
     max_start_spaces: float = 6.0
-    min_width_spaces: float = 0.55  # narrower ⇒ barline / bracket / stem
+    # Narrower than this and it is a barline, a bracket or a stem, not a clef —
+    # and, crucially, not worth STOPPING the search for either (see the width
+    # test in locate_clef). The bound has to separate three measured
+    # populations: rule residue at 0.55 and 0.68 staff spaces, real C clefs
+    # from 1.23 up, and a treble clef at 2.59, which must still stop the
+    # search. 1.0 sits in the gap with room on both sides.
+    min_width_spaces: float = 1.0
     max_width_spaces: float = 4.5
     # A C clef spans about 4 spaces in modern fonts and about 3 in the older
     # narrow engravings; the ceiling is what keeps a G clef (≈7) out. Measured
@@ -490,6 +496,15 @@ def locate_clef(
             # clef and stopped, and the real C clef 1.5 spaces to its right —
             # 2.3 x 3.2 spaces, textbook — was never looked at.
             continue
+        if w_sp < config.min_width_spaces:
+            # Narrower than any clef, whatever its height — so it cannot be the
+            # G or F clef the size test below is meant to stop for. Same
+            # reasoning as the ink test above, and the same failure without it:
+            # a 0.55 x 6.5-space rule remnant at the very left of the header
+            # read as "bigger than any C clef", stopped the search, and the
+            # textbook 2.1 x 2.9-space clef two spaces to its right was never
+            # looked at.
+            continue
         if h_sp > config.max_height_spaces or w_sp > config.max_width_spaces:
             # Glyph-sized but bigger than any C clef — overwhelmingly a G clef,
             # which is exactly two-thirds of all clefs. STOP here rather than
@@ -507,7 +522,7 @@ def locate_clef(
                 too_wide=w_sp > config.max_width_spaces,
             )
             return None
-        if w_sp < config.min_width_spaces or h_sp < config.min_height_spaces:
+        if h_sp < config.min_height_spaces:
             continue  # debris: a fragment, a speck, a rule that survived
         if w_sp / h_sp < config.min_aspect:
             # A thin vertical sliver: the system brace's waist, a bracket, a
