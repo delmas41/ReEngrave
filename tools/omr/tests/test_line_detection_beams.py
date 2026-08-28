@@ -102,3 +102,38 @@ class TestStackedAndSlopedBars:
         cell = _cell(lambda img: _beamed_pair(img, 300, 550, 150))
         stems = detect_stems(cell)
         assert detect_beams(cell, stems=stems) == detect_beams(cell)
+
+
+class TestOnlyFullLengthStemsAnchorABeam:
+    """`detect_stems` accepts anything from 2 staff spaces up, and at that floor
+    it also picks up the vertical strokes of sharps and naturals. Those false
+    stems used to lend their two-stem quorum to whatever horizontal ink lay near
+    them: on a hand-labeled Mahler cell holding no beams at all, five ledger
+    lines were reported as beams because the accidentals beside them counted.
+    """
+
+    def test_two_short_verticals_do_not_make_a_ledger_line_a_beam(self):
+        def paint(img):
+            # A ledger line with two accidental-height strokes beside it, the
+            # shape that produced the false positives.
+            img[600:616, 300:500] = 0
+            for x in (330, 470):
+                img[500:500 + int(2.2 * SPACING), x - 5:x + 5] = 0
+        assert detect_beams(_cell(paint)) == []
+
+    def test_the_same_line_with_full_length_stems_is_a_beam(self):
+        """The veto is about stem LENGTH, not about being a horizontal line."""
+        def paint(img):
+            img[600:616, 300:500] = 0
+            for x in (330, 470):
+                img[600 - int(3.5 * SPACING):600, x - 5:x + 5] = 0
+        assert len(detect_beams(_cell(paint))) == 1
+
+    def test_the_anchor_floor_can_be_relaxed_by_the_caller(self):
+        def paint(img):
+            img[600:616, 300:500] = 0
+            for x in (330, 470):
+                img[500:500 + int(2.2 * SPACING), x - 5:x + 5] = 0
+        cell = _cell(paint)
+        assert detect_beams(cell) == []
+        assert len(detect_beams(cell, stem_anchor_min_height_lines=1.5)) == 1

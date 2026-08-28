@@ -309,6 +309,7 @@ def detect_beams(
     min_height_absolute: int = 2,
     stem_attach_tolerance_lines: float = 1.0,
     stem_end_reach_lines: float = 2.5,
+    stem_anchor_min_height_lines: float = 2.8,
     min_attached_stems: int = 2,
 ) -> list[LineDetection]:
     """Find beams in `cell`.
@@ -368,6 +369,23 @@ def detect_beams(
     tolerance = line_spacing * stem_attach_tolerance_lines
     end_reach = line_spacing * stem_end_reach_lines
 
+    # Only FULL-LENGTH stems may anchor a beam. `detect_stems` accepts anything
+    # from 2 staff spaces up, and at that floor it also picks up the vertical
+    # strokes of sharps and naturals, which are about that tall. Those false
+    # stems were lending their two-stem quorum to whatever horizontal ink lay
+    # near them — on a hand-labeled Mahler cell holding no beams at all, five
+    # ledger lines were reported as beams because the accidentals beside them
+    # counted. A beam hangs off a real stem: conventionally 3.5 staff spaces,
+    # shortened in beamed groups but not to an accidental's height.
+    #
+    # This filters only the ANCHOR set. `detect_stems`' own output is untouched,
+    # because raising its floor would drop about 30% of the stems on real pages
+    # and there is no stem ground truth to say whether those are false.
+    anchors = [
+        s for s in stems
+        if s.height_canonical >= line_spacing * stem_anchor_min_height_lines
+    ]
+
     for i in range(1, num):
         x, y, w, h, area = stats[i]
         if w < min_w:
@@ -379,7 +397,7 @@ def detect_beams(
         if w / max(1, h) < 2.0:
             continue
         attached = _attached_stem_count(
-            labels, i, stems, x, y, w, h, line_spacing, tolerance, end_reach
+            labels, i, anchors, x, y, w, h, line_spacing, tolerance, end_reach
         )
         if attached < min_attached_stems:
             continue

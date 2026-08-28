@@ -49,6 +49,10 @@ from tools.omr.line_detection import detect_lines
 BENCH_DIR = Path("benchmarks/omr-phase4-lines")
 TEMPLATE = BENCH_DIR / "reference-lines.ly"
 GROUND_TRUTH_PATH = BENCH_DIR / "ground-truth.json"
+HAND_LABELS_PATH = BENCH_DIR / "hand-labeled-beams.json"
+SCORE_ROOT = Path(
+    "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
+)
 THICKNESSES = (1, 2, 3, 4)
 
 
@@ -110,12 +114,58 @@ def score_pdf(pdf: Path, dpi: int = 600) -> dict[str, Any]:
     }
 
 
+def score_hand_labels(dpi_override: int | None = None) -> int:
+    """Score beam detection against cells counted by eye on real scans.
+
+    The reference sheet is exact but clean. These six cells are degraded, dense
+    and real, which is the material the sheet cannot imitate — and they are what
+    established that the earlier fall from 249 beams to 19 on Mahler was
+    precision rather than lost recall. Returns the summed absolute error.
+    """
+    if not HAND_LABELS_PATH.exists():
+        print("no hand labels on disk")
+        return -1
+    data = json.loads(HAND_LABELS_PATH.read_text())
+    pages: dict[tuple[str, int], list] = {}
+    total = 0
+    print(f"\n{'cell':>4} {'score':>14} {'dpi':>4} {'counted':>8} {'detected':>9}")
+    for entry in data["cells"]:
+        rel = data["scores"][entry["score"]].split(",")[0]
+        pdf = SCORE_ROOT / rel
+        if not pdf.exists():
+            print(f"{entry['n']:>4} SKIP (missing {pdf.name})")
+            continue
+        page_index = int(data["scores"][entry["score"]].rsplit(" ", 1)[-1])
+        dpi = dpi_override or entry["dpi"]
+        key = (entry["score"], dpi)
+        if key not in pages:
+            page = render_page(pdf, page_index, dpi=dpi)
+            pws = detect_barlines(detect_staves(page))
+            cells = extract_measures(pws)[:25]
+            remove_staff_lines(cells)
+            pages[key] = cells
+        cell = pages[key][entry["cell_index"]]
+        got = len(detect_lines(cell)["beams"])
+        total += abs(got - entry["beams"])
+        mark = "OK" if got == entry["beams"] else f"{got - entry['beams']:+d}"
+        print(f"{entry['n']:>4} {entry['score']:>14} {dpi:>4} {entry['beams']:>8} "
+              f"{got:>9}  {mark}")
+    print(f"summed absolute error: {total}")
+    return total
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--keep-dir", type=Path, help="write the engraved sheets here")
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--json-out", type=Path)
+    ap.add_argument("--hand-only", action="store_true",
+                    help="skip the reference sheet, score only the hand-labeled cells")
     args = ap.parse_args()
+
+    if args.hand_only:
+        score_hand_labels()
+        return
 
     if shutil.which("lilypond") is None:
         raise SystemExit("lilypond not on PATH — needed to engrave the reference sheet")
@@ -147,6 +197,8 @@ def main() -> None:
         print(f"\nwrote {args.json_out}")
     if not args.keep_dir:
         shutil.rmtree(tmp, ignore_errors=True)
+
+    score_hand_labels()
 
 
 if __name__ == "__main__":

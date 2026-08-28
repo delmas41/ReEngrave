@@ -136,12 +136,58 @@ detections on Mahler were inspected and are slurs, ties, ledger lines and
 staff-line residue, while on the beam-rich WTC page the surviving detections sit
 squarely on real beams with the slurs and ties correctly ignored.
 
+### Checked against a real score, by hand
+
+The reference sheet is exact but clean, and cannot imitate a degraded scan. So
+six real cells were counted by eye (`hand-labeled-beams.json`) — small on
+purpose, and chosen to span the risk, including two cells where the detector
+reports **zero**, which is where a recall loss would hide. Predictions were
+withheld until the counts were in.
+
+| cell | source | counted | detected (before) | detected (after) |
+|---|---|---|---|---|
+| 1 | Mahler | 0 | 0 | 0 |
+| 2 | Mahler | 0 | 0 | 0 |
+| 3 | Mahler | **0** | **6** | **1** |
+| 4 | WTC | 12 | 11 | 10 |
+| 5 | WTC | 14* | 16 | 14 |
+| 6 | Boléro | 6 | 10 | 8 |
+
+\* the labeler excluded a few beams belonging to the measure below that
+intrude on that crop, so the true figure for the full cell region may be
+slightly higher.
+
+**It settled the open question.** Both zero-cells are confirmed zero, so the
+fall from 249 beams to 19 on Mahler was precision and not lost recall. Recall is
+sound where beams are dense (12 counted against 11 detected on WTC).
+
+**And it found something the synthetic sheet could not.** Cell 3 holds no beams
+and six were reported — five of them ledger lines. They had survived the
+two-stem rule because `detect_stems` accepts anything from 2 staff spaces up,
+and at that floor it also picks up the vertical strokes of **sharps and
+naturals**, which are about that tall. Those false stems were lending their
+quorum to the ledger lines beside them.
+
+The fix filters the ANCHOR set only: a beam may only be anchored by a stem of
+at least 2.8 staff spaces — conventionally a stem is 3.5, shortened in beamed
+groups but never to an accidental's height. `detect_stems`' own output is
+deliberately untouched, because raising its floor drops about 30% of the stems
+on real pages and there is no stem ground truth to say whether those are false.
+
+Summed error over the six cells: **13 → 5**, with the reference sheet unchanged
+at 3. A ledger-line veto by geometry was tried first and rejected: it scored
+better in aggregate but cost five real WTC beams, because in keyboard music real
+beams do sit just outside the staff at ledger offsets.
+
+    python3 -m tools.omr.training.line_detection_eval --hand-only
+
 ### Still open
 
-No page-level ground truth exists for beams on a *real* score, only on the
-reference sheet, so the real-page numbers above are supported by inspection
-rather than by counting. The residual +1 on the reference sheet, and the
-residual ~6-stem over-count (40 against 34), are both unexplained.
+The 2.8-space anchor floor was chosen on a six-cell sample plus the engraving
+convention; it is not a broad plateau (2.4 and 3.0 both score worse), so it is
+the value most at risk of being over-fitted to those six cells. There is still
+no stem ground truth on a real score. The residual ~6-stem over-count on the
+reference sheet (40 against 34) is unexplained.
 
 ## Tests
 

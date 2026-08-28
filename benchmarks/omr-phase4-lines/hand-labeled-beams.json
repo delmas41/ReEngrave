@@ -1,0 +1,38 @@
+{
+  "_comment": [
+    "Beam counts read off REAL scanned cells by eye (Sean, 2026-08-28). The",
+    "LilyPond reference sheet gives exact truth on clean engraving; this gives",
+    "truth on the degraded, dense material the reference sheet cannot imitate.",
+    "Six cells only — small on purpose — chosen to span the risk, including two",
+    "where the detector reports zero, which is where a recall loss would hide.",
+    "",
+    "Counting rule given: count beam BARS. Two eighths joined = 1; a group of",
+    "four sixteenths (primary + secondary) = 2. Slurs, ties, ledger lines and",
+    "tuplet brackets are NOT beams — a tuplet bracket is a bracket, and counting",
+    "it would corrupt the duration inference that reads beam counts.",
+    "",
+    "The predictions were withheld until after the counts were given.",
+    "",
+    "What this established: the earlier collapse from 249 beams to 19 on Mahler",
+    "was PRECISION, not lost recall — both zero-cells are confirmed zero. It",
+    "also found a residual false-positive class the synthetic sheet could not:",
+    "ledger lines readmitted because the vertical strokes of sharps and naturals",
+    "were being counted as the two stems a beam needs."
+  ],
+  "labeler": "sean",
+  "date": "2026-08-28",
+  "cells": [
+    {"n": 1, "score": "mahler-5-p11", "dpi": 300, "cell_index": 19, "beams": 0},
+    {"n": 2, "score": "mahler-5-p11", "dpi": 300, "cell_index": 4, "beams": 0},
+    {"n": 3, "score": "mahler-5-p11", "dpi": 300, "cell_index": 5, "beams": 0},
+    {"n": 4, "score": "wtc-p5", "dpi": 600, "cell_index": 2, "beams": 12},
+    {"n": 5, "score": "wtc-p5", "dpi": 600, "cell_index": 7, "beams": 14,
+     "note": "labeler excluded a few beams belonging to the measure below that intrude on this crop, so the true count for the full cell region may be slightly higher"},
+    {"n": 6, "score": "bolero-p31", "dpi": 300, "cell_index": 7, "beams": 6}
+  ],
+  "scores": {
+    "mahler-5-p11": "PDF Scores/Mahler_5_.pdf, page index 11",
+    "wtc-p5": "PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf, page index 5",
+    "bolero-p31": "PDF Scores/IMSLP421137-PMLP03667-Ravel_Bolero.pdf, page index 31"
+  }
+}
