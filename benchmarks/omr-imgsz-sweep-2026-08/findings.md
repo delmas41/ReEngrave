@@ -113,6 +113,31 @@ Note the two current defaults already disagree: `transcribe.py`'s CLI uses **204
 while `CLAUDE.md` documents the web app's `OMR_IMGSZ` as **1280**. Neither is right as a
 constant, and the CLI is the one on the bad side.
 
+## Result of the change, on all three end-to-end fixtures
+
+Default moved 2048 → **512**. Every metric on every fixture improves:
+
+| fixture | pitch recall | pitch precision | duration | notes reported (truth) |
+|---|---|---|---|---|
+| melody | 0.292 → **0.625** | 0.219 → **0.714** | 0.286 → **1.000** | 32 → 21 (24) |
+| keyboard | 0.593 → **0.852** | 0.144 → **1.000** | 0.438 → **1.000** | 111 → 23 (27) |
+| ensemble | 0.711 → **0.956** | 0.681 → **0.915** | 0.906 → **0.930** | 47 (45) |
+
+`ensemble` also now reports **4 parts against 4**, where it previously collapsed to one
+— the "four staves came back as one part" symptom in
+`benchmarks/omr-end-to-end/RESULTS.md`.
+
+Bracketing 384 / 512 / 640 / 800 picked 512: 384 wins `keyboard` outright (recall 0.963,
+precision 1.000) but costs `melody` badly (recall 0.375), and 800 collapses `melody`
+entirely. 512 is the only value at or near best on both, with duration accuracy 1.000 on
+each.
+
+**Reproducing this needs `--imgsz` threaded through
+`tools/omr/training/end_to_end_eval.py`**, which lives on the recognition session's
+branch rather than on main. That change defaults the flag to `None` so the harness uses
+whatever `transcribe` defaults to — the first run of this comparison silently reported
+the old numbers because the flag pinned 2048.
+
 ## Caveat on the absolute numbers
 
 Precision is understated everywhere. The hand-labeled sets deliberately include
