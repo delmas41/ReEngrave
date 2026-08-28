@@ -123,3 +123,85 @@ a second, conflicting rewrite would cost more than it buys. The measurement
 above is the input for it. The `test_system_grouping` case is marked
 `xfail(strict=True)`, so when that fix lands the test fails as an *unexpected
 pass* and asks to be updated rather than sitting green and forgotten.
+
+---
+
+# Staff-line removal — a no-op on most orchestral scores
+
+**2026-08-28, same session.** `staff_line_removal` preserved a pixel if ink sat
+a fixed **4px above and below** it. On any line thicker than about 8px that
+test is satisfied by the line itself, so the line preserved itself and nothing
+was removed. Measured share of staff-line ink actually cleared:
+
+| page | line thickness (canonical) | before | after |
+|---|---|---|---|
+| WTC p.5 | 6px (0.06 spaces) | 91.3% | 88.2% |
+| Boléro p.31 | 9px (0.09) | 72.5% | **88.5%** |
+| Mahler 5 p.11 | 17px (0.23) | **0.9%** | **89.7%** |
+| Beethoven 5 p.10 | 25px (0.25) | **0.0%** | **49.8%** |
+
+Every consumer of `image_no_staff` — stem and beam detection, template
+matching, the labeling UI's sparse-cell ranking, and the key-signature reader
+being built on `claude/key-signature-recognition-57ec0a` — was working on an
+image that still had its staff lines. That branch's note that "the header
+arrives as one connected mass" is this bug seen from the other end.
+
+## What replaced it
+
+Three changes, each one measured rather than reasoned:
+
+1. **Decide by the vertical run, not a fixed neighbourhood.** At each staff
+   line, walk the ink run through every column. A run no taller than the line
+   is printed IS the line; a taller one is a notehead, stem, beam or barline
+   and is left alone. The line's thickness is measured from the cell, because
+   across the corpus it ranges from 0.06 to 0.31 staff spaces — no pixel
+   constant can serve both ends of that.
+
+2. **Drop the morphological opening.** It required a candidate pixel to belong
+   to a horizontal run of 30% of cell width, which a broken line fails: only
+   37.7% of Beethoven 5 p.10's line-row ink survived it, and 73.0% of Mahler's.
+   Removing it improved every measure at once — more line ink cleared, a
+   smaller largest connected component, and **fewer** stray specks, since a
+   partly erased line leaves its own fragments behind (Mahler specks 78 → 1.5,
+   WTC 20 → 0.4).
+
+3. **Follow the line where it actually is.** Phase 1 reports one straight y per
+   line while the printed line drifts and residual skew tilts it, so across a
+   wide cell the ink wanders off its nominal row. Anchoring each column's run
+   to the nearest ink within 0.25 staff spaces raised Beethoven 5 p.10 from
+   36.9% to 49.8% and Boléro's mean from 75.6% to 85.2%.
+
+A cut cap of 0.45 staff spaces stops anything as thick as a beam from being
+erased. Honestly reported: it changes almost nothing measurable (Mahler's beam
+count is 239 with or without it, and it does not bind at all on WTC or Boléro).
+It is insurance against a case the corpus does not currently contain.
+
+## Downstream, and what is not established
+
+`line_detection` over 25 cells per page, before → after:
+
+| page | stems | beams |
+|---|---|---|
+| Mahler 5 p.11 | 178 → **145** | 249 → 233 |
+| WTC p.5 | 492 → 498 | 566 → 551 |
+| Boléro p.31 | 262 → 255 | 308 → 313 |
+
+WTC and Boléro barely move. **Mahler's stem count falls 19%, and this work does
+not establish whether that is right.** Before the change, stem detection on that
+page was running on an image whose staff lines were entirely intact, so some of
+those 178 were plausibly line artefacts — but there is no stem ground truth in
+the repo to say so, and the possibility that real stems were lost is not
+excluded. Visual inspection of the affected cells shows stems, beams, noteheads,
+clef, key signature and text surviving intact; that is evidence, not proof.
+Establishing stem/beam ground truth on a dense page is the natural next step,
+and it is a prerequisite for trusting Phase 4f the way Phase 1 can now be
+trusted.
+
+Beethoven 5 p.10 remains the weakest page at 49.8%. The residue there is not a
+threshold failure: on that print the line ink is genuinely fused with the
+symbols above and below it, so the runs through it are tall and are preserved
+on purpose. Over-erasing them would shred the glyphs.
+
+Tests: 17 new units on synthetic cells (`test_staff_line_removal.py`) covering
+each printed thickness from 2 to 30px, a wandering line, a crossing stem, a
+notehead on a line, and a beam lying along one.
