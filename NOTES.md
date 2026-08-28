@@ -6,6 +6,17 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ## ⏰ REVISIT — ensemble recognition for clef + detail prediction (2026-07-10)
 
+> **PARTLY OVERTAKEN (2026-08-27).** The clef half of this turned out not to need
+> an ensemble at all. Alto vs tenor (and soprano/mezzo/baritone) is not a
+> recognition problem — they are the same glyph on different staff lines, so no
+> number of classifiers voting on appearance can resolve it. Measuring the
+> glyph's position does, exactly. Shipped as `tools/omr/clef_geometry.py` plus a
+> classical-CV C-clef locator for scores where no model sees a clef at all;
+> results in `benchmarks/omr-clef-geometry/RESULTS.md`. **Still open from this
+> item:** the *time-signature* half, and clef/key/time state resets across pages
+> (the continuation-page clef inheritance is handled by `_ClefContinuity`, but
+> the underlying detection weakness is not).
+
 **Sean flagged this and asked to be reminded to come back to it (dated reminder set ~2026-07-17).** **SmartScore 64 Professional** (Musitek) uses an **ensemble recognition tool** specifically to help predict **clefs and other details**. Investigate how it works and consider adopting the technique.
 
 **Why it's worth doing:** the July 2026 audit found clef handling is a real ReEngrave weakness — clef/key/time state resets across pages and relies on the detector catching courtesy clefs; a missed continuation-page clef silently defaults to treble (or bass for staff 2 of 2), shifting every pitch on that staff. Time-sig digit detection is similarly unreliable. A voting/ensemble predictor for these fields would target both directly.
@@ -17,6 +28,42 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 - Decide the cheapest ReEngrave adaptation: a per-staff clef-stability + key-signature-plausibility re-rank pass (no new model) vs an actual classifier ensemble; check whether the same voting extends to time-sig digits.
 
 ---
+
+## Staff detection on mixed text/music pages (2026-08-27)
+
+Found while chasing clef recall on Nottebohm's *Beethovens Studien* (Beethoven's
+counterpoint studies — the C-clef exercise material). **Body text is being
+detected as staves.** `staff_detector._ink_profile` counts ink *pixels* per row
+and requires 35% of page width; a row of justified body text clears that on
+total ink alone while containing no long run, and five consecutive text
+baselines are evenly enough spaced to pass the 5-line grouping. Two of p.90's
+seven "staves" are paragraphs; two of p.92's twelve are.
+
+Second, related: `_staff_x_extent` returns the longest contiguous run on the
+middle line, so on a page laid out as several short exercise fragments side by
+side the measure cell often begins *past* the clef — nothing for any reader to
+find.
+
+Together these, not clef reading, are what caps recall on this book (5 clefs
+located across ~57 staves).
+
+**The obvious fix is measured and wrong.** Scoring rows by longest contiguous
+run instead of total ink discards real staves: across 274 detected staves on
+eight scores, genuine full-width staves in Boléro/WTC/La Mer/Handel score as low
+as 0.018 on line continuity, because notation ink interrupts the line.
+
+**What separates cleanly is staff span vs the page's median span** (text
+baselines sit ~3.5× further apart than staff lines: 215px vs a 62px median),
+backed up by x-extent (the text "staves" span 1.5–2% of page width; every
+genuine staff measured spans 15–91%). Either signal rejects the text blocks
+without touching a single genuine staff in the corpus.
+
+**Why it wasn't done:** it's a Phase-1 change and Phase 1 has no trustworthy
+regression baseline right now — `test_pipeline.py`'s staff/measure-count
+assertions already fail from earlier drift (identically on `main`). Restore that
+baseline first, then apply the span filter. Numbers to work from are in
+`benchmarks/omr-clef-geometry/RESULTS.md`.
+
 
 ## YOLO training via symphony MusicXML × multiple IMSLP editions (2026-05-23)
 
