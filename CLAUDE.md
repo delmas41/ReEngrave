@@ -554,6 +554,10 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 
 - **OMR time-signature detection is unreliable.** The DSv2 model often misclassifies time-sig digits, so this field is `null` for many pages. *(Branch `claude/omr-time-signature-inference-e547f1`, unmerged: `parse_time_signature` now drops left-edge instrument-number misreads; a page meter is back-filled from a dominant detected C/cut-C glyph, else from a per-column beat-sum vote — conservatively, so dense pages still stay `null` rather than guess wrong. See `tools/omr/README.md` → "Time-signature inference".)*
 
+- **Clef reading is geometric, but clef *detection* is still a model weakness.** Which line a clef names is now measured, not classified (`tools/omr/clef_geometry.py`) — alto/tenor/soprano/mezzo/baritone are the same glyph on different lines, so a class label can never separate them, and all ten clefs now flow through pitch resolution and both exporters. A classical-CV C-clef locator (`tools/omr/clef_locator.py`) covers scores where no model sees a clef at all (19th-century C-clef prints: zero detections even at conf 0.03). It runs only where nothing else read a clef, recognises C clefs only, and abstains otherwise. G/F clef *detection* on degraded scans is unimproved. See `benchmarks/omr-clef-geometry/RESULTS.md`.
+
+- **Body text can be detected as staves on mixed text/music pages.** Row ink-count passes the line-length test on justified paragraphs, so a text block becomes a "staff" (2 of 7 staves on a Nottebohm page). Diagnosed with a measured discriminator (staff span vs page median) but NOT fixed — Phase 1 has no working regression baseline. See NOTES.md → "Staff detection on mixed text/music pages".
+
 - **Orchestral conductor's scores.** The current model was trained predominantly on DSv2 (synthetic) + 60 hand-labeled real cells. Dense conductor's scores (Mahler 5, Debussy La Mer) work but with more false negatives on small dynamics + grace notes. The labeling pipeline (`tools/omr/annotate`) is the path to fixing this.
 
 - **PDF.js crop region in DiffCard is incomplete.** `PDFjsRenderer.tsx` has a TODO for full crop viewport implementation.
