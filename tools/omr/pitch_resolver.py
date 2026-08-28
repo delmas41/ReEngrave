@@ -21,29 +21,61 @@ _PITCH_CYCLE = ["C", "D", "E", "F", "G", "A", "B"]
 # F4 (1st space), E4 (bottom line = pos 8)
 #
 # So pos 0 = F5, increasing pos = decreasing diatonic pitch.
-_CLEF_ANCHORS = {
-    "treble": ("F", 5),   # (pitch_class, octave) at pos 0 (top line)
-    "bass":   ("A", 3),   # top line of bass clef = A3
-    "alto":   ("G", 4),   # top line of alto clef = G4
-    "tenor":  ("E", 4),   # top line of tenor clef = E4
+# Rather than hand-maintain one row per clef, the anchors are DERIVED from
+# what a clef actually is: a family glyph printed on a particular staff line,
+# naming one fixed pitch there. A G clef names G4 on its line, a C clef names
+# C4, an F clef names F3 — and the line it sits on is what tells alto from
+# tenor from soprano. Deriving means the five C clefs and the rare G/F variants
+# all get correct anchors for free, and none of them can drift out of step with
+# `clef_geometry.CLEF_BY_FAMILY_LINE`, which is the same table.
 
-    # Octave-shifted clefs. A `clef8`/`clef15` glyph detected ABOVE the
-    # base clef means "sounds an octave (or two) HIGHER than written"
-    # (8va / 15ma), and BELOW means LOWER (8vb / 15mb). transcribe.py
-    # appends the suffix to the base clef name; this table just shifts
-    # the anchor octave accordingly. Common in real music:
-    #   - tenor part written treble_8vb (very common in choral)
-    #   - piccolo written treble_8va
-    #   - double bass written bass_8vb
-    "treble_8va":  ("F", 6),
-    "treble_8vb":  ("F", 4),
-    "treble_15ma": ("F", 7),
-    "treble_15mb": ("F", 3),
-    "bass_8va":    ("A", 4),
-    "bass_8vb":    ("A", 2),
-    "bass_15ma":   ("A", 5),
-    "bass_15mb":   ("A", 1),
-}
+# The pitch each family's glyph names on the line it is centred on.
+_FAMILY_REFERENCE_PITCH = {"G": ("G", 4), "C": ("C", 4), "F": ("F", 3)}
+
+
+def _anchor_for(family: str, line_from_bottom: int) -> tuple[str, int]:
+    """The pitch on the TOP staff line (pos 0) for a family glyph printed on
+    `line_from_bottom` (1 = bottom … 5 = top).
+
+    The named line sits `2 * (5 - line)` half-spacings below the top line, and
+    each half-spacing is one diatonic step, so the top line is that many steps
+    ABOVE the pitch the clef names.
+    """
+    pc, octave = _FAMILY_REFERENCE_PITCH[family]
+    steps_to_top = 2 * (5 - line_from_bottom)
+    idx = _PITCH_CYCLE.index(pc) + steps_to_top
+    return _PITCH_CYCLE[idx % 7], octave + idx // 7
+
+
+# Octave-shifted clefs. A `clef8`/`clef15` glyph detected ABOVE the base clef
+# means "sounds an octave (or two) HIGHER than written" (8va / 15ma), and BELOW
+# means LOWER (8vb / 15mb). transcribe.py appends the suffix to the base clef
+# name; these shifts just move the anchor octave. Common in real music:
+#   - tenor part written treble_8vb (very common in choral)
+#   - piccolo written treble_8va
+#   - double bass written bass_8vb
+# Every base clef gets every suffix: an octave marker can attach to any of
+# them, and a missing combination would silently drop pitch for a whole staff.
+_OCTAVE_SUFFIX_SHIFT = {"_8va": 1, "_8vb": -1, "_15ma": 2, "_15mb": -2}
+
+
+def _build_clef_anchors() -> dict[str, tuple[str, int]]:
+    # Imported here (not at module top) purely to keep the dependency one-way
+    # and obvious: clef_geometry owns the clef table, pitch_resolver reads it.
+    from .clef_geometry import CLEF_BY_FAMILY_LINE
+
+    anchors: dict[str, tuple[str, int]] = {}
+    for family, lines in CLEF_BY_FAMILY_LINE.items():
+        for line, name in lines.items():
+            pc, octave = _anchor_for(family, line)
+            anchors[name] = (pc, octave)
+            for suffix, shift in _OCTAVE_SUFFIX_SHIFT.items():
+                anchors[name + suffix] = (pc, octave + shift)
+    return anchors
+
+
+# clef key → (pitch_class, octave) sounding at pos 0, the TOP staff line.
+_CLEF_ANCHORS = _build_clef_anchors()
 
 
 def _pitch_from_position(pos_half_steps: int, clef: str) -> str | None:

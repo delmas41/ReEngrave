@@ -189,6 +189,8 @@ from .measure_extractor import detect_barlines, extract_measures, resegment_fuse
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell
 from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
+from .clef_geometry import clef_name_from_class, resolve_clef_for_detection
+from .clef_locator import locate_clef
 from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
@@ -219,28 +221,17 @@ DEFAULT_WEIGHTS = (
 
 
 def _clef_name_from_class(smufl: str) -> str | None:
-    """Map a DSv2 clef class name to a pitch_resolver clef key.
+    """Map a DSv2 clef class name to a pitch_resolver clef key, from the class
+    label ALONE.
 
-    Returns None for unpitched / octave-marker clefs (clef8 / clef15 are
-    standalone glyphs that visually attach to a base clef; they're picked
-    up separately by `_octave_shift_for_base_clef`).
+    This is the weak reading: it cannot tell an alto clef from a tenor one any
+    better than the detector can, because they are the same glyph on different
+    lines. It survives as the fallback for when geometry can't run (see
+    `clef_geometry.resolve_clef`), and returns None for unpitched /
+    octave-marker clefs (clef8 / clef15 attach to a base clef and are picked up
+    by `_octave_shift_for_base_clef`).
     """
-    if not smufl:
-        return None
-    s = smufl.lower()
-    if "calto" in s:
-        return "alto"
-    if "ctenor" in s:
-        return "tenor"
-    if s.startswith("clefg") or s == "gclef":
-        return "treble"
-    if s.startswith("cleff") or s == "fclef":
-        return "bass"
-    if "percussion" in s or s in ("clef8", "clef15"):
-        return None
-    if s.startswith("clefc") or s == "cclef":  # generic C-clef → alto fallback
-        return "alto"
-    return None
+    return clef_name_from_class(smufl)
 
 
 def _octave_shift_for_base_clef(dets, base_clef_det) -> str:
@@ -767,17 +758,20 @@ def _read_staff_header(
         iou_threshold=iou_threshold,
         agnostic_nms=agnostic_nms,
     )
-    # Clef: highest-confidence clef detection (+ any octave-marker suffix).
-    best_name, best_det, best_conf = None, None, -1.0
+    # Clef: highest-confidence clef detection (+ any octave-marker suffix),
+    # with its named staff line resolved geometrically — see clef_geometry.
+    # The crop keeps canonical y-coordinates, so the cell's staff-line
+    # positions still line up with the detection boxes.
+    best_read, best_det, best_conf = None, None, -1.0
     for d in dets:
         if d.category != "clef":
             continue
-        mapped = _clef_name_from_class(d.smufl_name)
-        if mapped is None:
+        read = resolve_clef_for_detection(d)
+        if read is None:
             continue
         if d.confidence > best_conf:
-            best_name, best_det, best_conf = mapped, d, d.confidence
-    clef = None if best_name is None else best_name + _octave_shift_for_base_clef(dets, best_det)
+            best_read, best_det, best_conf = read, d, d.confidence
+    clef = None if best_read is None else best_read.name + _octave_shift_for_base_clef(dets, best_det)
     # Time signature: the standard digit parser (drops left-edge instrument
     # misreads, resolves common/cut-common) on the same header detections.
     time_sig = parse_time_signature(dets)
@@ -800,7 +794,10 @@ def _detections_for_cell(
     clef_reader_conf: float = 0.30,
     clef_reader_imgsz: int = 640,
     clef_reader_header_frac: float = 0.42,
-) -> tuple[list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None]:
+    locate_c_clefs: bool = True,
+) -> tuple[
+    list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None, str | None
+]:
     """Run YOLO on a single cell, resolve chromatic pitches for each
     notehead, and emit cleaned-up detection dicts.
 
@@ -820,7 +817,10 @@ def _detections_for_cell(
          d) otherwise apply the active key-signature alteration on that letter
          e) otherwise leave the pitch diatonic
 
-    Returns `(detection_dicts, new_active_clef, new_active_key_sig)`.
+    Returns `(detection_dicts, new_active_clef, new_active_key_sig,
+    new_active_time_sig, clef_source)`, where `clef_source` names which reader
+    supplied a clef IN THIS CELL — "detector", "specialist", "cv_locator", or
+    None when the clef was carried in rather than read here.
     """
     dets = detector.detect(
         cell,
@@ -835,22 +835,32 @@ def _detections_for_cell(
     #    sits next to the chosen base clef, append the corresponding
     #    "_8va" / "_8vb" / "_15ma" / "_15mb" suffix so the pitch resolver
     #    picks up the right anchor (e.g. choral tenor on treble_8vb). ────
-    best_clef_name: str | None = None
+    best_clef_read = None
     best_clef_det = None
     best_clef_conf = -1.0
     for d in dets:
         if d.category != "clef":
             continue
-        mapped = _clef_name_from_class(d.smufl_name)
-        if mapped is None:
+        # Geometry, not the class label, decides WHICH line a C clef names —
+        # alto and tenor are the same glyph one line apart, so the label can't
+        # know. See tools/omr/clef_geometry.py.
+        read = resolve_clef_for_detection(d)
+        if read is None:
             continue
         if d.confidence > best_clef_conf:
-            best_clef_name = mapped
+            best_clef_read = read
             best_clef_det = d
             best_clef_conf = d.confidence
-    if best_clef_name is not None:
+    # Which reader supplied this cell's clef, if any — the locator below only
+    # speaks when this is still None. Note it tracks THIS cell's reading, not
+    # the inherited `active_clef`: a staff carrying a clef forward from an
+    # earlier system has nothing detected here, and is exactly the case where
+    # a shape-located clef is worth having.
+    clef_source: str | None = None
+    if best_clef_read is not None:
         suffix = _octave_shift_for_base_clef(dets, best_clef_det)
-        active_clef = best_clef_name + suffix
+        active_clef = best_clef_read.name + suffix
+        clef_source = "detector"
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
     new_key_sig = _detect_key_sig_from_cell(dets)
@@ -883,8 +893,23 @@ def _detections_for_cell(
         )
         if spec_clef is not None:
             active_clef = spec_clef
+            clef_source = "specialist"
         if spec_time_sig is not None:
             active_time_sig = spec_time_sig
+
+    # ── Classical-CV C-clef locator (last resort). Both models above read a
+    #    clef by appearance, so both go blind on engravings whose glyphs aren't
+    #    in their training distribution — on 19th-century C-clef counterpoint
+    #    prints they find no clef at all, at any confidence, and every staff
+    #    silently defaults to treble. Shape-based location doesn't depend on
+    #    the font. It runs ONLY when nothing else produced a clef for this
+    #    staff, and only identifies C clefs, so it can add a reading where
+    #    there was none but can never overturn one. See tools/omr/clef_locator.py.
+    if read_clef and locate_c_clefs and clef_source is None:
+        located = locate_clef(cell)
+        if located is not None:
+            active_clef = located.read.name
+            clef_source = "cv_locator"
 
     # ── Classical-CV line detection: stems + cleaner beams. The YOLO
     #    Phase 3.3 model misses stems entirely and emits beam bboxes
@@ -1072,7 +1097,7 @@ def _detections_for_cell(
         if id(d) in ties_from_prev:
             out_d["tied_from_prev"] = True
         out.append(out_d)
-    return out, active_clef, active_key_sig, active_time_sig
+    return out, active_clef, active_key_sig, active_time_sig, clef_source
 
 
 def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
@@ -1806,6 +1831,7 @@ def transcribe(
     clef_reader_conf: float = 0.30,
     clef_reader_imgsz: int = 640,
     clef_reader_header_frac: float = 0.42,
+    locate_c_clefs: bool = True,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -1828,6 +1854,7 @@ def transcribe(
         "source_pdf": str(pdf_path),
         "weights": weights,
         "clef_weights": clef_weights,
+        "locate_c_clefs": locate_c_clefs,
         "conf_threshold": conf_threshold,
         "iou_threshold": iou_threshold,
         "agnostic_nms": agnostic_nms,
@@ -1951,10 +1978,17 @@ def transcribe(
                     "measures": [],
                 }
                 first_cell_effective_clef: str | None = None
+                first_cell_clef_source: str | None = None
                 first_cell_effective_key_sig: dict[str, str] | None = None
                 first_cell_effective_time_sig: dict[str, Any] | None = None
                 for cell_idx, cell in enumerate(staff_cells):
-                    detections, active_clef, active_key_sig, active_time_sig = (
+                    (
+                        detections,
+                        active_clef,
+                        active_key_sig,
+                        active_time_sig,
+                        cell_clef_source,
+                    ) = (
                         _detections_for_cell(
                             detector,
                             cell,
@@ -1970,10 +2004,12 @@ def transcribe(
                             clef_reader_conf=clef_reader_conf,
                             clef_reader_imgsz=clef_reader_imgsz,
                             clef_reader_header_frac=clef_reader_header_frac,
+                            locate_c_clefs=locate_c_clefs,
                         )
                     )
                     if cell_idx == 0:
                         first_cell_effective_clef = active_clef
+                        first_cell_clef_source = cell_clef_source
                         first_cell_effective_key_sig = dict(active_key_sig)
                         first_cell_effective_time_sig = (
                             dict(active_time_sig) if active_time_sig else None
@@ -1993,6 +2029,12 @@ def transcribe(
                 # Staff-level effective state = whatever was in effect during
                 # the first measure of the staff (post any leading detections).
                 staff_dict["clef"] = first_cell_effective_clef
+                # Say where the clef came from when it wasn't the detector, so
+                # a reader can tell a measured clef from an inherited default
+                # without re-running the pipeline. Omitted in the ordinary case
+                # to keep untouched output byte-identical.
+                if first_cell_clef_source in ("specialist", "cv_locator"):
+                    staff_dict["clef_source"] = first_cell_clef_source
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}
                 )
@@ -2215,6 +2257,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--clef-reader-header-frac", type=float, default=0.42,
                     help="Left fraction of the staff-start cell the specialist "
                          "reads — the clef/key/time header (default: 0.42)")
+    ap.add_argument("--no-clef-locator", action="store_true",
+                    help="Disable the classical-CV C-clef locator. It runs only "
+                         "where no model read a clef, and only recognises C "
+                         "clefs, so it can add a reading but never overturn "
+                         "one; turn it off to reproduce pre-locator output "
+                         "exactly. See tools/omr/clef_locator.py.")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
     ap.add_argument("--imgsz", type=int, default=2048,
@@ -2286,6 +2334,7 @@ def main(argv: list[str] | None = None) -> int:
         clef_reader_conf=args.clef_reader_conf,
         clef_reader_imgsz=args.clef_reader_imgsz,
         clef_reader_header_frac=args.clef_reader_header_frac,
+        locate_c_clefs=not args.no_clef_locator,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )
