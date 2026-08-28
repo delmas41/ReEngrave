@@ -108,5 +108,6 @@ count at real breaks too.
 staff below it carries a `staff_index` one lower than its true slot. Proof and
 consequence:
 `tools/omr/tests/test_system_grouping.py::test_detect_staves_misses_a_single_line_percussion_staff`.
-Not fixed: relaxing the 5-peak rule risks staff detection, which has no
-regression baseline.
+Not fixed: relaxing the 5-peak rule risks staff detection. (This originally read
+"which has no regression baseline"; that objection is retired — main's 9509990 /
+e6a4110 corrected the Phase-1 expectations against the pages themselves.)

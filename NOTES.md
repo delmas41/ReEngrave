@@ -109,8 +109,9 @@ percussion staff produces no `Staff` at all. Synthetic proof + consequence in
 on a page of 3 five-line staves plus one 1-line staff, the detector returns 3, and
 **every staff below the missing one carries a `staff_index` one lower than its true
 slot**. Not yet fixed — fixing it means relaxing the 5-peak rule without regressing
-staff detection, and Phase 1 has no regression baseline. Track as a slot-numbering
-hazard for Step 2.
+staff detection. Track as a slot-numbering hazard for Step 2. (The old "Phase 1 has
+no regression baseline" objection is retired — main's 9509990 / e6a4110 corrected
+the Phase-1 expectations against the pages themselves.)
 
 ### #1 (original framing) — why slots are the keystone
 Assign every staff a stable part id across all systems and pages. Signals available
@@ -127,6 +128,35 @@ Unlocks: clef continuity across page breaks instead of the silent treble default
 (`transcribe.py:519`); the dossier plan's `slot→staff` join without hand input;
 per-instrument range priors; **and it is the absolute register anchor that #4 turned
 out to require.**
+
+### #4c — Clef from the instrument's written range — **SHIPPED 2026-08-28**
+`tools/omr/clef_correction.py` + `tools/omr/contextual.py`. The retry of the #4
+negative, now that #1 supplies the **absolute register anchor** every earlier
+mechanism was missing. A clef hypothesis is a constant diatonic shift of the staff's
+pitches (`pitch_resolver.clef_diatonic_shift`), so this is a post-pass over built page
+dicts — no image, no re-detection.
+
+Range fit alone is not decisive: a bassoon staff fits bass 1.00 and tenor 0.95 (both
+real bassoon clefs), a viola fits alto 1.00 and treble 0.98. So the **instrument's own
+default clef leads and the range vetoes it** — the same reasoning a reader uses
+("violas read alto, unless what I see says otherwise"). That is sound exactly where
+this may act, because it only applies where no reader read the clef, and there the
+clef in effect is a positional guess carrying no evidence.
+
+**Complementary with the clef-geometry layer, not overlapping.** Measured on
+Beethoven 4 p59 after merging main: main's readers supplied 5 of 11 staves
+(`clef_source=detector`), all correct; 6 stayed DEFAULTED to treble. This pass fixed 3
+of those 6 — Bassoon→bass (fit 0.06→1.00), Viola→alto, Contrabass→bass — restating 84
+noteheads, and touched nothing main had read.
+
+**The integration trap, worth remembering:** the gate must consult
+`staff["clef_source"]`, NOT a scan for a `category == "clef"` detection. `clef_locator`
+/ `clef_geometry` read a clef by shape and by which staff line it sits on and emit **no
+clef detection at all**, so a detection scan calls such a staff "silent" and this pass
+would overwrite a confidently-read clef.
+
+Limit: instrument identity comes from the text layer, so this is a no-op on the ~72% of
+the corpus without one. That is the argument for finishing #2.
 
 ### #2 — Margin reading (instrument names)
 No OCR anywhere in the project (`backend/requirements.txt` has none). Two paths:
