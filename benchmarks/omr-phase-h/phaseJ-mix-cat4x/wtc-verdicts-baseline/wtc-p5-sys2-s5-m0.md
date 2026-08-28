@@ -1,0 +1,262 @@
+<!-- auto-ported from baseline verdicts; new detections are pending -->
+# Cell wtc-p5-sys2-s5-m0 — verdicts
+
+**Image:** ![overlay](../overlays/wtc-p5-sys2-s5-m0.png)
+
+**Clef assumed:** treble
+
+**Staff lines (canonical y):** 201, 252, 303, 351, 402
+
+**Source:** wtc-p5  ·  page 5  ·  sys 2  staff 5  measure 0
+
+
+## Detections
+
+- [x] D0  noteheadBlackOnLine (notehead) at (x=65, y=250)  conf=0.76
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D1  noteheadBlackOnLine (notehead) at (x=314, y=267)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D2  noteheadBlackOnLine (notehead) at (x=317, y=267)  conf=0.61
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D3  noteheadBlackOnLine (notehead) at (x=318, y=266)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D4  noteheadBlackInSpace (notehead) at (x=325, y=260)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D5  noteheadBlackOnLine (notehead) at (x=327, y=254)  conf=0.48
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D6  noteheadBlackOnLine (notehead) at (x=327, y=266)  conf=0.38
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D7  beam (structural) at (x=327, y=203)  conf=0.31
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D8  noteheadBlackInSpace (notehead) at (x=327, y=243)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D9  beam (structural) at (x=329, y=135)  conf=0.38
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D10  beam (structural) at (x=434, y=302)  conf=0.33
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D11  noteheadBlackOnLine (notehead) at (x=477, y=290)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D12  noteheadBlackInSpace (notehead) at (x=478, y=289)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D13  noteheadBlackOnLine (notehead) at (x=482, y=278)  conf=0.33
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D14  noteheadBlackInSpace (notehead) at (x=483, y=273)  conf=0.54
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D15  noteheadBlackInSpace (notehead) at (x=489, y=270)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D16  beam (structural) at (x=494, y=465)  conf=0.67
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D17  beam (structural) at (x=494, y=458)  conf=0.46
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D18  beam (structural) at (x=494, y=425)  conf=0.40
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D19  beam (structural) at (x=494, y=429)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D20  noteheadBlackInSpace (notehead) at (x=495, y=272)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D21  noteheadBlackOnLine (notehead) at (x=596, y=268)  conf=0.41
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D22  noteheadBlackInSpace (notehead) at (x=600, y=264)  conf=0.19
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D23  noteheadBlackOnLine (notehead) at (x=602, y=264)  conf=0.37
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D24  noteheadBlackOnLine (notehead) at (x=602, y=216)  conf=0.34
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D25  noteheadBlackInSpace (notehead) at (x=602, y=193)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D26  noteheadBlackOnLine (notehead) at (x=603, y=208)  conf=0.57
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D27  noteheadBlackOnLine (notehead) at (x=603, y=193)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D28  noteheadBlackOnLine (notehead) at (x=604, y=254)  conf=0.67
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D29  noteheadBlackInSpace (notehead) at (x=604, y=244)  conf=0.65
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D30  noteheadBlackOnLine (notehead) at (x=604, y=244)  conf=0.21
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D31  noteheadBlackInSpace (notehead) at (x=613, y=194)  conf=0.22
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D32  noteheadBlackOnLine (notehead) at (x=615, y=207)  conf=0.31
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D33  noteheadBlackOnLine (notehead) at (x=620, y=236)  conf=0.12
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D34  staff (structural) at (x=622, y=230)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D35  staff (structural) at (x=687, y=321)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D36  noteheadBlackOnLine (notehead) at (x=707, y=318)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D37  noteheadBlackOnLine (notehead) at (x=716, y=317)  conf=0.45
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D38  noteheadBlackInSpace (notehead) at (x=720, y=314)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D39  noteheadBlackOnLine (notehead) at (x=723, y=314)  conf=0.42
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D40  noteheadBlackInSpace (notehead) at (x=723, y=294)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D41  noteheadBlackOnLine (notehead) at (x=724, y=304)  conf=0.54
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D42  noteheadBlackOnLine (notehead) at (x=735, y=304)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D43  noteheadBlackOnLine (notehead) at (x=775, y=207)  conf=0.25
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D44  beam (structural) at (x=778, y=146)  conf=0.25
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D45  noteheadBlackOnLine (notehead) at (x=779, y=148)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D46  beam (structural) at (x=831, y=43)  conf=0.80
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D47  noteheadBlackInSpace (notehead) at (x=839, y=241)  conf=0.28
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D48  noteheadBlackInSpace (notehead) at (x=843, y=175)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D49  noteheadBlackOnLine (notehead) at (x=843, y=172)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D50  noteheadBlackOnLine (notehead) at (x=844, y=183)  conf=0.23
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D51  noteheadBlackInSpace (notehead) at (x=845, y=225)  conf=0.59
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D52  noteheadBlackOnLine (notehead) at (x=845, y=228)  conf=0.50
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D53  beam (structural) at (x=894, y=398)  conf=0.57
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D54  noteheadBlackInSpace (notehead) at (x=917, y=183)  conf=0.19
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D55  noteheadBlackOnLine (notehead) at (x=923, y=127)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D56  beam (structural) at (x=923, y=132)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D57  noteheadBlackOnLine (notehead) at (x=925, y=179)  conf=0.18
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D58  noteheadBlackOnLine (notehead) at (x=991, y=219)  conf=0.56
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D59  augmentationDot (structural) at (x=993, y=152)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D60  noteheadBlackInSpace (notehead) at (x=996, y=216)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D61  noteheadBlackOnLine (notehead) at (x=997, y=218)  conf=0.52
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D62  noteheadBlackInSpace (notehead) at (x=1000, y=213)  conf=0.24
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D63  noteheadBlackOnLine (notehead) at (x=1001, y=160)  conf=0.53
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D64  noteheadBlackInSpace (notehead) at (x=1001, y=143)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D65  noteheadBlackInSpace (notehead) at (x=1002, y=193)  conf=0.63
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D66  noteheadBlackOnLine (notehead) at (x=1002, y=214)  conf=0.46
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D67  noteheadBlackOnLine (notehead) at (x=1002, y=194)  conf=0.30
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D68  noteheadBlackOnLine (notehead) at (x=1005, y=204)  conf=0.68
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D69  noteheadBlackOnLine (notehead) at (x=1010, y=160)  conf=0.33
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D70  augmentationDot (structural) at (x=1033, y=153)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D71  augmentationDot (structural) at (x=1038, y=154)  conf=0.22
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D72  tie (structural) at (x=1042, y=410)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D73  noteheadBlackOnLine (notehead) at (x=1206, y=141)  conf=0.12
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D74  noteheadBlackOnLine (notehead) at (x=1209, y=137)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D75  noteheadBlackInSpace (notehead) at (x=1211, y=132)  conf=0.29
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D76  noteheadBlackInSpace (notehead) at (x=1213, y=120)  conf=0.25
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D77  noteheadBlackOnLine (notehead) at (x=1213, y=122)  conf=0.22
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D78  beam (structural) at (x=1214, y=153)  conf=0.68
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D79  restHalf (rest) at (x=1214, y=153)  conf=0.21
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D80  noteheadBlackOnLine (notehead) at (x=1214, y=130)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D81  noteheadBlackInSpace (notehead) at (x=1215, y=289)  conf=0.28
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D82  noteheadBlackOnLine (notehead) at (x=1218, y=318)  conf=0.38
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D83  noteheadBlackOnLine (notehead) at (x=1219, y=120)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D84  noteheadBlackOnLine (notehead) at (x=1224, y=120)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D85  beam (structural) at (x=1327, y=366)  conf=0.21
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D86  restWhole (rest) at (x=1394, y=103)  conf=0.35
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D87  noteheadBlackInSpace (notehead) at (x=1413, y=118)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D88  noteheadBlackInSpace (notehead) at (x=1426, y=116)  conf=0.12
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D89  noteheadBlackOnLine (notehead) at (x=1427, y=117)  conf=0.25
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D90  noteheadBlackOnLine (notehead) at (x=1429, y=90)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D91  noteheadBlackOnLine (notehead) at (x=1430, y=110)  conf=0.60
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D92  beam (structural) at (x=1430, y=153)  conf=0.58
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D93  noteheadBlackInSpace (notehead) at (x=1430, y=110)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D94  noteheadBlackInSpace (notehead) at (x=1431, y=91)  conf=0.19
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D95  restHalf (rest) at (x=1454, y=103)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D96  beam (structural) at (x=1454, y=350)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D97  augmentationDot (structural) at (x=1467, y=104)  conf=0.72
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D98  noteheadBlackOnLine (notehead) at (x=1522, y=142)  conf=0.12
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D99  noteheadBlackOnLine (notehead) at (x=1523, y=152)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D100  noteheadBlackInSpace (notehead) at (x=1526, y=136)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D101  noteheadBlackInSpace (notehead) at (x=1527, y=124)  conf=0.26
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D102  noteheadBlackOnLine (notehead) at (x=1527, y=121)  conf=0.20
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D103  noteheadBlackOnLine (notehead) at (x=1529, y=132)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D104  noteheadBlackInSpace (notehead) at (x=1529, y=131)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D105  beam (structural) at (x=1531, y=152)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D106  noteheadBlackOnLine (notehead) at (x=1540, y=122)  conf=0.23
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D107  beam (structural) at (x=1598, y=183)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D108  beam (structural) at (x=1609, y=369)  conf=0.25
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D109  noteheadBlackOnLine (notehead) at (x=1660, y=166)  conf=0.30
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D110  noteheadBlackInSpace (notehead) at (x=1664, y=145)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D111  noteheadBlackOnLine (notehead) at (x=1665, y=160)  conf=0.55
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D112  noteheadBlackOnLine (notehead) at (x=1665, y=143)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D113  noteheadBlackInSpace (notehead) at (x=1675, y=144)  conf=0.29
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D114  noteheadBlackOnLine (notehead) at (x=1681, y=160)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D115  noteheadBlackOnLine (notehead) at (x=1746, y=51)  conf=0.18
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D116  noteheadBlackInSpace (notehead) at (x=1820, y=88)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D117  noteheadBlackOnLine (notehead) at (x=1825, y=70)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D118  noteheadBlackInSpace (notehead) at (x=1828, y=81)  conf=0.24
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D119  noteheadBlackOnLine (notehead) at (x=1836, y=69)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D120  noteheadBlackInSpace (notehead) at (x=1838, y=81)  conf=0.43
+       verdict: __________  <!-- new detection, no baseline match -->
+
+## Missed noteheads (FN)
+
+(carried over from baseline — none in pre-filled cells)
+
+## Wrong-pitch corrections

@@ -151,6 +151,55 @@ against a staff line at exactly 478 (residual 0.00), naming a tenor clef, on a
 glyph a visual estimate had put on the middle line. The measurement was right
 and the eyeball wasn't — which is the argument for the whole approach.
 
+### Ground truth from the target book itself — Nottebohm p.31 (PDF 46)
+
+Sean read the clefs off exercises Nr. 20–22 by eye: three systems of four
+staves carrying the full vocal clef set, in the archaic square engraving. This
+is ground truth on exactly the material the detector cannot touch, and it is
+checked in (`nottebohm-p46-ground-truth.json`) with a scorer
+(`tools/omr/training/clef_ground_truth_eval.py`).
+
+| | first measured | after the Phase-1 fixes |
+|---|---|---|
+| clefs READ | 6 staves | **9 staves** |
+| precision on those | 6/6 | **7/7** |
+| overall (read + inherited + defaulted) | 6/12 | **9/12** |
+| supplied by the CV locator | 4/4 | 7/7 |
+
+The two numbers must not be averaged into one, because they measure different
+subsystems. **Reading is right every time it happens.** Coverage is the problem.
+
+Two cautions on reading this table. The intermediate figure of 12/12, reached
+partway through the Phase-1 work, was measured when barline detection had
+collapsed and every staff was a single cell — an easier and unrepresentative
+input, not a real high-water mark. And the final 9/12 is scored against
+*correct* measure segmentation, where the first cell is a real measure rather
+than a whole system.
+
+The locator separated **soprano from alto from tenor** on the square lattice
+glyph — three clefs one staff line apart — repeatedly across the page.
+
+### Why the misses were misses
+
+Attributing every miss by hand, at the point where 6 of 12 were read:
+
+| miss | cause | whose problem |
+|---|---|---|
+| Nr. 22 ×3 | the clef is **not in the cell** — it begins past it | Phase 1 (`_staff_x_extent`) |
+| Nr. 20 tenor, Nr. 22 bass | staff lines **mis-grouped** | Phase 1 (`staff_detector`) |
+| Nr. 21 alto | clef fused into an oversized cluster | the locator |
+
+Five of six were Phase-1 layout failures — which is what prompted fixing them
+(next section), and what took the page from 6/12 to 9/12.
+
+### One negative result, recorded so it isn't retried
+
+The fragmented-clef misses look like the horizontal-rule stripper eating the
+archaic clef's bars (those bars are ~1–1.5 staff spaces wide and the threshold
+is 1.5). Sweeping that threshold from 0.7 to 6.0 staff spaces makes it **worse
+in both directions** (4 located → 1–3), because keeping more horizontal ink
+re-fuses the glyph with staff-line remnants. 1.5 is already the optimum.
+
 ### No collateral damage
 
 | run | noteheads | detections |
@@ -180,13 +229,86 @@ G-clef-then-sharp trap that produced the Bach false positives.
 
 ---
 
-## What this does NOT fix — and exactly why
+## Phase 1: what the clef work forced open
 
-**Recall on the Nottebohm book is low**: 5 clefs located across ~57 staves on
-the pages sampled. Where a staff-start cell actually contains its clef, the
-locator reads it. The limiter is upstream, and it is worth writing down
-precisely because it — not clef reading — is the next bottleneck for this
-material.
+Chasing the misses above led into the layout stage, and the fixes there
+mattered more than the clef work itself. Full rationale in the commits; the
+measured effect:
+
+| page | systems | barlines | cells |
+|---|---|---|---|
+| Nottebohm p46 | 5 → **3** (correct) | 5 → **24** | 16 → **88** |
+| Nottebohm p90 | 4 | 9 → **21** | 18 → **39** |
+| Beethoven 5 p8 | 5 | 74 → 86 | 273 → 293 |
+| La Mer p25 | 9 → 3 | 14 → 12 | 65 → 78 |
+| Mahler 5 p11 | 3 | 23 → 27 | 221 (unchanged) |
+| WTC ×3, Boléro ×2, Handel | unchanged | unchanged | unchanged |
+
+p46 has 3 systems × 4 staves × ~7 measures, so 88 cells is about right where 16
+was not. Three causes, each a rule quietly depending on something else:
+
+1. **`_staff_x_extent` took the longest strictly-contiguous ink run.** Scanned
+   staff lines are dashed, so it returned a fragment. Offset measured at 1.2
+   staff spaces on Bach and **up to 46** on Nottebohm — past the clef entirely.
+2. **The system's opening barline survived as a measure boundary**, because its
+   margin was a fixed 10px where engravers set that rule a *fraction of a staff
+   space* in (1.5 spaces = 20px on Boléro). It manufactured a sliver measure
+   that swallowed the clef.
+3. **The system's left edge was `min(x_start)`** across its staves. Staves are
+   engraved flush, so that edge is a consensus: on Boléro p.31 one staff of
+   seventeen read 4.3 spaces wide of its neighbours and cost that system its
+   clefs. Now the median.
+
+Fixing those broke barline detection, which had been depending on the damage:
+
+4. **System grouping was being done by x-overlap**, accidentally. Staves whose
+   broken extents disagreed were split apart; once every staff spanned the page
+   they merged into one system and the barline vote threshold became
+   unreachable. The vertical-gap rules could not take over because both are
+   computed over ALL gaps, so on a page that is mostly system breaks the breaks
+   drag the thresholds above themselves (p.90: gaps 65, 65, 65, 341, 394, 830 —
+   a median of 203 sits above the 341 and 394 breaks). Added a threshold
+   against the low quartile, which estimates within-system spacing whatever
+   share of the page is breaks.
+5. **Open-score barlines do not cross the gaps between staves.** Each voice's
+   barlines stop at its own staff, so every real barline scored connectivity
+   0.00 and the orchestral-tuned filter discarded all of them. Measured:
+   Nottebohm p.31 is 4/4 votes and 0.00 connectivity on every barline; Mahler 5
+   p.11 has real barlines at 0.4–1.0 and it is the *stem alignments* that score
+   0.00. The filter now asks each system which kind it is.
+
+## Whole-book run
+
+254 pages, of which 156 were transcribed before the run was stopped as no
+longer informative. Over those pages:
+
+| | |
+|---|---|
+| "staves" reported | 1522 |
+| — real music (carrying noteheads) | 1366 |
+| — body text read as staves | 147 |
+| pages containing music | 124 of 156 |
+| noteheads / measures | 53,476 / 6,012 |
+| **clefs read** | **268 of 1366 staves (20%)** |
+| — by the CV locator | **204** (83 alto, 64 tenor, 57 soprano), on 85 pages |
+| — by the detector | 64 |
+
+On this book the shape locator does **three times the work of the model**, and
+all 204 of its reads are C clefs the detector cannot see at any confidence.
+That is the entire soprano/alto/tenor layer of the book, which previously
+defaulted to treble.
+
+The honest headline is the other 80%: **1098 staves still have no clef read**
+and carry an inherited clef or a positional default. Clef *reading* is
+essentially always right when it happens; clef *coverage* is not solved, and
+what limits it is still upstream — the clef outside the cell, or fused into
+neighbouring ink.
+
+## What this still does NOT fix
+
+Clef coverage on this book is 20%. Where a cell contains its clef, the locator
+reads it and reads it correctly; what remains is upstream. Two limits, both
+measured, neither addressed:
 
 ### 1. Body text is detected as staves
 
@@ -223,16 +345,14 @@ verified). Changing staff detection without a working Phase-1 baseline is how
 this project has been bitten before. The measurements above are the input to
 doing it properly.
 
-### 2. Some staff-start cells begin after the clef
+### 2. Some staff-start cells still begin after the clef
 
-On p.92 the detected staves start at x = 256, 455, 530, 586, 589, 647, … —
-`_staff_x_extent` returns the longest contiguous run on the middle line, and on
-a page laid out as several short exercise fragments side by side that run often
-begins past the clef. The cell then opens mid-measure and there is nothing for
-any reader, model or CV, to find.
-
-Both are layout-analysis problems on small-format 19th-century prints, not clef
-problems, and fixing them would raise the yield of everything downstream.
+The gross form of this is fixed (see the Phase-1 section above) and it is what
+took p.31 from 6/12 to 9/12. It has not gone away entirely: on pages laid out
+as several short exercise fragments side by side, `_staff_x_extent` can still
+land past the clef, and the cell then opens mid-measure with nothing for any
+reader to find. This is the largest single contributor to the 80% of staves
+with no clef read.
 
 ### 3. Dense orchestral headers
 

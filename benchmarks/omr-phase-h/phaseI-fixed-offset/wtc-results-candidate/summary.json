@@ -1,0 +1,20 @@
+{
+  "overall": {
+    "cells": 0,
+    "n_total_detections": 0,
+    "n_pending": 0,
+    "n_tp": 0,
+    "n_fp": 0,
+    "n_fn": 0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "notehead_pitch_correct": 0,
+    "notehead_pitch_wrong": 0,
+    "notehead_pitch_accuracy": null,
+    "per_category": {}
+  },
+  "per_piece": {},
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 0
+}

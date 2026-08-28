@@ -1,0 +1,96 @@
+{
+  "cell_id": "wtc-p5-sys0-s1-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 47,
+      "y": 235,
+      "w": 36,
+      "h": 25,
+      "x_center": 65,
+      "y_center": 247,
+      "confidence": 0.2260848730802536,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 206,
+      "y": 184,
+      "w": 687,
+      "h": 14,
+      "x_center": 549,
+      "y_center": 191,
+      "confidence": 0.10129141062498093,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 252,
+      "y": 175,
+      "w": 680,
+      "h": 30,
+      "x_center": 592,
+      "y_center": 190,
+      "confidence": 0.1486116647720337,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 863,
+      "y": 65,
+      "w": 103,
+      "h": 149,
+      "x_center": 914,
+      "y_center": 139,
+      "confidence": 0.2355392575263977,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1092,
+      "y": 47,
+      "w": 198,
+      "h": 24,
+      "x_center": 1191,
+      "y_center": 59,
+      "confidence": 0.18147824704647064,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1517,
+      "y": 142,
+      "w": 19,
+      "h": 10,
+      "x_center": 1526,
+      "y_center": 147,
+      "confidence": 0.6204663515090942,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1921,
+      "y": 142,
+      "w": 52,
+      "h": 10,
+      "x_center": 1947,
+      "y_center": 147,
+      "confidence": 0.15699881315231323,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 957,
+      "y": 112,
+      "w": 142,
+      "h": 74,
+      "x_center": 1028,
+      "y_center": 149,
+      "confidence": 0.11194117367267609,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 1073,
+      "y": 526,
+      "w": 894,
+      "h": 71,
+      "x_center": 1520,
+      "y_center": 561,
+      "confidence": 0.2524394989013672,
+      "pitch": null
+    }
+  ]
+}

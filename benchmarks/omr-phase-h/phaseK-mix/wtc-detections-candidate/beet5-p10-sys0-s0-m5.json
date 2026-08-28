@@ -1,0 +1,109 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m5",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "timeSigCommon",
+      "category": "time_sig_digit",
+      "x": 12,
+      "y": 575,
+      "w": 16,
+      "h": 13,
+      "x_center": 20,
+      "y_center": 581,
+      "confidence": 0.15249794721603394,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 1,
+      "y": 531,
+      "w": 95,
+      "h": 6,
+      "x_center": 48,
+      "y_center": 534,
+      "confidence": 0.2172776758670807,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 2,
+      "y": 844,
+      "w": 93,
+      "h": 4,
+      "x_center": 48,
+      "y_center": 846,
+      "confidence": 0.18265993893146515,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 2,
+      "y": 499,
+      "w": 93,
+      "h": 5,
+      "x_center": 48,
+      "y_center": 501,
+      "confidence": 0.16837771236896515,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 2,
+      "y": 800,
+      "w": 93,
+      "h": 4,
+      "x_center": 48,
+      "y_center": 802,
+      "confidence": 0.12084907293319702,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 2,
+      "y": 889,
+      "w": 93,
+      "h": 4,
+      "x_center": 48,
+      "y_center": 891,
+      "confidence": 0.10081735253334045,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 2,
+      "y": 330,
+      "w": 94,
+      "h": 5,
+      "x_center": 49,
+      "y_center": 332,
+      "confidence": 0.3071669638156891,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 2,
+      "y": 543,
+      "w": 94,
+      "h": 5,
+      "x_center": 49,
+      "y_center": 545,
+      "confidence": 0.2905012369155884,
+      "pitch": null
+    }
+  ]
+}

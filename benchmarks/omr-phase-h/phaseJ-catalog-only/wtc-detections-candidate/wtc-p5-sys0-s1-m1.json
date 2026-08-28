@@ -1,0 +1,109 @@
+{
+  "cell_id": "wtc-p5-sys0-s1-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 108,
+      "y": 0,
+      "w": 160,
+      "h": 38,
+      "x_center": 188,
+      "y_center": 19,
+      "confidence": 0.2334655523300171,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 257,
+      "y": 496,
+      "w": 527,
+      "h": 62,
+      "x_center": 520,
+      "y_center": 527,
+      "confidence": 0.5137802958488464,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 521,
+      "y": 0,
+      "w": 328,
+      "h": 64,
+      "x_center": 685,
+      "y_center": 32,
+      "confidence": 0.19886541366577148,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "slur",
+      "category": "structural",
+      "x": 865,
+      "y": 71,
+      "w": 228,
+      "h": 36,
+      "x_center": 979,
+      "y_center": 89,
+      "confidence": 0.32914042472839355,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 866,
+      "y": 71,
+      "w": 227,
+      "h": 36,
+      "x_center": 979,
+      "y_center": 89,
+      "confidence": 0.18977726995944977,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1163,
+      "y": 1,
+      "w": 203,
+      "h": 72,
+      "x_center": 1264,
+      "y_center": 37,
+      "confidence": 0.41936296224594116,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 1103,
+      "y": 510,
+      "w": 416,
+      "h": 21,
+      "x_center": 1311,
+      "y_center": 520,
+      "confidence": 0.14643271267414093,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1629,
+      "y": 465,
+      "w": 217,
+      "h": 63,
+      "x_center": 1737,
+      "y_center": 496,
+      "confidence": 0.2823997139930725,
+      "pitch": null
+    }
+  ]
+}

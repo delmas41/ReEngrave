@@ -60,10 +60,17 @@ import cv2
 import numpy as np
 
 from .clef_geometry import ClefGeometryConfig, ClefRead, DEFAULT_CONFIG, resolve_clef
+# The rule-stripping and clustering primitives live in header_ink so this
+# locator and the key-signature locator cannot drift apart about what counts as
+# ink. `_ink_mask` below stays here: it rescales the cell to a fixed analysis
+# spacing, which is right for this locator's tuned kernels and wrong to impose
+# on a caller that measures positions in the cell's own coordinates.
 from .header_ink import (
     cluster_components as _cluster_components,
-    ink_mask as _ink_mask,
+    drop_flat_residue as _drop_flat_residue,
     staff_metrics as _staff_metrics,
+    strip_horizontal_rules as _strip_horizontal_rules,
+    strip_vertical_rules as _strip_vertical_rules,
 )
 from .types import MeasureCell
 
@@ -89,7 +96,7 @@ class ClefLocatorConfig:
     # narrow engravings; the ceiling is what keeps a G clef (≈7) out.
     min_height_spaces: float = 2.2
     max_height_spaces: float = 5.0
-    min_symmetry: float = 0.72      # the C-clef signature — see _vertical_symmetry
+    min_symmetry: float = 0.70      # the C-clef signature — see _refine_symmetry_axis
     # How far the measured axis of symmetry may sit from the box centre. Big
     # enough to undo a stray fragment's pull, small enough that it can never
     # reach the next staff line (half a space would be the tipping point).
@@ -99,9 +106,38 @@ class ClefLocatorConfig:
     min_component_area_spaces: float = 0.02  # speck filter, in (staff space)²
     vertical_rule_max_width_spaces: float = 0.5   # thinner ⇒ a rule, not a glyph
     vertical_rule_min_height_spaces: float = 2.0
+    # A system barline or bracket is drawn heavier than a plain barline — wide
+    # enough to clear the width test above — but it runs the whole height of
+    # the system, joining staff to staff. Nothing that long can be part of a C
+    # clef, so length identifies it where width alone cannot. The floor is the
+    # tallest a C clef is allowed to be (`max_height_spaces`), which keeps the
+    # two rules from ever disagreeing about the same object.
+    heavy_rule_max_width_spaces: float = 1.2
+    heavy_rule_min_height_spaces: float = 5.0
     # Ink with less vertical extent than this is a staff-line fragment, not
     # part of a glyph — see _drop_flat_residue.
     min_ink_height_spaces: float = 0.2
+    # An F clef's two dots: round, of this size, sitting in the right-hand
+    # part of the glyph, aligned in x and about one staff space apart —
+    # because they straddle the line the clef names. See _has_f_clef_dots.
+    dot_min_size_spaces: float = 0.22
+    dot_max_size_spaces: float = 0.75
+    dot_min_aspect: float = 0.65
+    dot_max_aspect: float = 1.5
+    dot_right_fraction: float = 0.55   # dots sit right of the glyph's middle
+    dot_max_dx_spaces: float = 0.30
+    dot_min_dy_spaces: float = 0.60
+    dot_max_dy_spaces: float = 1.50
+    # Staff spacing, in pixels, that the shape analysis is done at. Cells
+    # arrive at whatever scale their measure width happened to force — a
+    # narrow measure is upscaled far more than a wide one — and morphology is
+    # not scale-free in practice even when its kernels are: heavy upscaling
+    # interpolates ink fatter, and glyphs that stand apart at one scale fuse
+    # at another. Normalising first means every constant above describes the
+    # same thing on every page. 22px keeps the archaic clef's thinnest stroke
+    # a few pixels wide, which is enough to survive and thin enough to stay
+    # separate from its neighbours.
+    analysis_spacing_px: float = 22.0
     # How far beyond the staff's own lines a component may be centred and
     # still belong to this staff — see the band filter in locate_clef. A C
     # clef on the bottom line reaches about two spaces below it; anything
@@ -127,50 +163,77 @@ class LocatedClef:
     symmetry: float
 
 
-def _vertical_symmetry(mask: np.ndarray, bbox: tuple[int, int, int, int]) -> float:
-    """How symmetric a cluster is about its own centre, top-to-bottom, 0 … 1.
-
-    This is the C-clef signature, and the gate the locator lives or dies by.
-    The glyph exists to mark a staff line and is drawn balanced about it, so
-    its row-wise ink profile reads nearly the same upside down — while a G clef
-    (long tail below) and an F clef (heavy head at the top, dots to one side)
-    do not.
-
-    Measured about the box's own centre, deliberately. An unconstrained search
-    for the best axis of symmetry scores far too kindly on lopsided glyphs —
-    every shape has *some* axis it half-balances about — and on real pages that
-    turned treble clefs into tenor clefs. Asking "is this thing symmetric where
-    a C clef would be symmetric" is the question worth answering.
+def _analysis_scale(spacing: float, config: ClefLocatorConfig) -> float:
+    """Factor to resize a cell by so its staff spacing becomes the analysis
+    spacing. Never upscales — inventing pixels cannot add detail, and the
+    tuned kernels behave fine on a cell that is already small.
     """
-    x, y, w, h = bbox
-    sub = mask[y : y + h, x : x + w]
-    if sub.size == 0:
-        return 0.0
-    profile = (sub > 0).sum(axis=1).astype(float)
-    denominator = float((profile * profile).sum())
-    if denominator <= 0:
-        return 0.0
-    return float((profile * profile[::-1]).sum() / denominator)
+    if spacing <= 0:
+        return 1.0
+    return min(1.0, config.analysis_spacing_px / spacing)
+
+
+def _ink_mask(
+    cell: MeasureCell, spacing: float, config: ClefLocatorConfig
+) -> np.ndarray | None:
+    """Binary ink mask (255 = ink) for the cell, with rules removed.
+
+    Starts from the staff-line-removed variant when there is one, but does not
+    rely on it: on old engravings with thick, uneven lines it leaves most of
+    the staff behind — which is exactly the material this locator exists for.
+    Vertical rules go first, while the barline is still whole; stripping the
+    horizontals first would cut it into short pieces that no longer look like
+    a rule.
+    """
+    img = cell.image_no_staff if cell.image_no_staff is not None else cell.image
+    if img is None or img.size == 0:
+        return None
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if img.ndim == 3 else img
+    scale = _analysis_scale(spacing, config)
+    if scale < 1.0:
+        gray = cv2.resize(
+            gray,
+            (max(1, int(round(gray.shape[1] * scale))),
+             max(1, int(round(gray.shape[0] * scale)))),
+            interpolation=cv2.INTER_AREA,
+        )
+        spacing = spacing * scale
+    # Phase 1 convention: 255 = paper, 0 = ink.
+    _, mask = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
+    mask = _strip_vertical_rules(mask, spacing, config)
+    mask = _strip_horizontal_rules(mask, spacing)
+    return _drop_flat_residue(mask, spacing, config)
 
 
 def _refine_symmetry_axis(
     mask: np.ndarray, bbox: tuple[int, int, int, int], max_shift: float
-) -> float:
-    """Locate the axis a cluster balances about, searching within `max_shift`
-    pixels of the box's centre. Returns the axis y in mask coordinates.
+) -> tuple[float, float]:
+    """Find the axis a cluster balances about, and how well it balances there.
+    Returns `(axis_y, score)` — the axis in mask coordinates, and the score in
+    0 … 1. The search is confined to `max_shift` pixels either side of the
+    box's centre.
 
-    Once a cluster is known to be a C clef, this is what reads it: the axis of
-    symmetry IS the line the clef names. Refining beyond the bounding box's
-    midpoint matters because a stray fragment that survives the rule stripping
-    — a beam stub, a scrap of a ledger line — drags the box's midpoint off by a
-    fraction of a staff space, and here a fraction of a space is the difference
-    between an alto clef and a tenor one. Scoring by mirror OVERLAP charges
-    that fragment against the fit (ink with no partner counts in the
-    denominator only) instead of letting it move the answer.
+    This answers both of the locator's questions at once, because for a C clef
+    they are one question. The glyph exists to mark a staff line and is drawn
+    balanced about it, so the axis of best symmetry IS the line it names, and
+    how well the ink balances there is the evidence that it is a C clef at all.
+    A G clef (long tail below) or an F clef (heavy head, dots to one side) has
+    no axis that scores well.
 
-    The search is bounded because it is a refinement, not a rediscovery: the
-    gate has already established what the glyph is and roughly where it sits,
-    and an unbounded search would happily wander onto a neighbouring line.
+    Scoring by mirror OVERLAP rather than correlation is what makes the score
+    trustworthy as a gate: ink with no mirror partner adds to the denominator
+    only, so a stray fragment that survived the rule stripping is charged
+    against the fit instead of quietly moving the answer.
+
+    The bound matters in both directions, and both were learned the hard way.
+    Searching WITHOUT one flatters lopsided glyphs — every shape half-balances
+    about something — and on real pages it read treble clefs as tenor clefs, 20
+    of them across ten pages of Bach. But insisting on the box centre exactly
+    is just as wrong the other way, because the centre carries a pixel or two
+    of error from whatever ink survived the stripping, and at these sizes a
+    pixel or two moved a real clef from 0.77 to 0.70 and lost it. A window
+    narrower than half a line spacing forgives the pixel without ever letting
+    the axis reach a neighbouring staff line.
     """
     x, y, w, h = bbox
     sub = mask[y : y + h, x : x + w]
@@ -178,7 +241,7 @@ def _refine_symmetry_axis(
     total = float(profile.sum())
     centre = (len(profile) - 1) / 2.0
     if total <= 0 or len(profile) == 0:
-        return float(y + centre)
+        return float(y + centre), 0.0
 
     n = len(profile)
     indices = np.arange(n)
@@ -196,7 +259,61 @@ def _refine_symmetry_axis(
         score = float(overlap.sum() / total)
         if score > best_score:
             best_axis, best_score = axis, score
-    return float(y + best_axis)
+    return float(y + best_axis), max(0.0, best_score)
+
+
+def _has_f_clef_dots(
+    mask: np.ndarray,
+    bbox: tuple[int, int, int, int],
+    spacing: float,
+    config: ClefLocatorConfig,
+) -> bool:
+    """Whether a candidate carries an F clef's two dots.
+
+    This is the one veto that catches an F clef reliably, and it works because
+    the dots are not decoration: they straddle the line the clef names, which
+    is what makes it an F clef. So they are always a pair, always round, always
+    about one staff space apart, always aligned in x, and always to the right
+    of the body — in any font and any century.
+
+    Needed because an F clef is otherwise a plausible C clef by the numbers.
+    Measured on Nottebohm p.31, a bass clef came in at width 2.50, height 2.73
+    and symmetry 0.81 — inside the range of every real C clef on the page
+    (0.76-0.85). No size or symmetry threshold separates them; the dots do,
+    cleanly, and on that page they are the only candidate that has them.
+
+    A wrong clef transposes every note on its staff, so this is worth a veto
+    even though it costs nothing on C clefs.
+    """
+    x, y, w, h = bbox
+    sub = mask[y : y + h, x : x + w]
+    if sub.size == 0 or w <= 0:
+        return False
+    n, _labels, stats, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
+    dots: list[tuple[float, float]] = []
+    for i in range(1, n):
+        bw = stats[i, cv2.CC_STAT_WIDTH] / spacing
+        bh = stats[i, cv2.CC_STAT_HEIGHT] / spacing
+        if not (config.dot_min_size_spaces <= bw <= config.dot_max_size_spaces):
+            continue
+        if not (config.dot_min_size_spaces <= bh <= config.dot_max_size_spaces):
+            continue
+        aspect = bw / max(bh, 1e-6)
+        if not (config.dot_min_aspect <= aspect <= config.dot_max_aspect):
+            continue
+        cx = stats[i, cv2.CC_STAT_LEFT] + stats[i, cv2.CC_STAT_WIDTH] / 2.0
+        if cx / w < config.dot_right_fraction:
+            continue
+        dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0))
+    for i in range(len(dots)):
+        for j in range(i + 1, len(dots)):
+            dx = abs(dots[i][0] - dots[j][0]) / spacing
+            dy = abs(dots[i][1] - dots[j][1]) / spacing
+            if dx <= config.dot_max_dx_spaces and (
+                config.dot_min_dy_spaces <= dy <= config.dot_max_dy_spaces
+            ):
+                return True
+    return False
 
 
 def _overlaps_any(
@@ -226,8 +343,8 @@ def locate_clef(
     interior measure this would happily nominate the first notehead cluster.
 
     `occupied_boxes` are canonical (x, y, w, h) boxes the detector has already
-    identified as something other than a clef — noteheads and rests. A clef
-    never overlaps one, so a candidate that does is rejected. This matters
+    identified as noteheads. A clef never overlaps one, so a candidate that
+    does is rejected. This matters
     where a cell begins PAST its clef (see NOTES.md on staff x-extent): the
     first cluster is then real notation, and a stacked chord in particular is
     tall, glyph-sized and vertically symmetric enough to pass for a C clef.
@@ -240,10 +357,23 @@ def locate_clef(
     mask = _ink_mask(cell, spacing, config)
     if mask is None:
         return None
+    # Everything below is measured in ANALYSIS space — the cell resized so its
+    # staff spacing is `analysis_spacing_px`. Convert the inputs into it, and
+    # the one output (the named line) back out at the end.
+    scale = _analysis_scale(spacing, config)
+    spacing *= scale
+    top_y *= scale
+    bottom_y *= scale
+    staff_line_ys = [y * scale for y in sorted(cell.staff_line_ys_canonical)]
+    occupied_boxes = [
+        (x * scale, y * scale, w * scale, h * scale)
+        for (x, y, w, h) in (occupied_boxes or [])
+    ]
+    cell_width = mask.shape[1]
 
     # Search the header strip only. The clef is the first thing on the staff,
     # and limiting the x-range keeps note ink from ever becoming a candidate.
-    hw = max(1, int(round(cell.width * config.header_frac)))
+    hw = max(1, int(round(cell_width * config.header_frac)))
     strip = mask[:, :hw]
 
     n, _labels, stats, _centroids = cv2.connectedComponentsWithStats(
@@ -307,28 +437,45 @@ def locate_clef(
             # not in this cell at all. Stop, exactly as for a G clef.
             return None
 
-        symmetry = _vertical_symmetry(strip, bbox)
+        # Measure symmetry about the axis the ink actually balances on, searched
+        # within a bounded window around the box centre. Bounded matters both
+        # ways: an UNCONSTRAINED search flatters lopsided glyphs — every shape
+        # half-balances about something — and on real pages that read treble
+        # clefs as tenor clefs. But insisting on the box centre exactly is just
+        # as wrong in the other direction, because the box centre carries a
+        # pixel or two of error from whatever ink survived the stripping, and
+        # at these sizes a pixel or two was enough to flip a real clef from
+        # 0.77 to 0.70 and lose it. The window is narrower than half a line
+        # spacing, so the axis can never reach a neighbouring staff line.
+        axis_y, symmetry = _refine_symmetry_axis(
+            strip, bbox, max_shift=config.axis_refine_spaces * spacing
+        )
         if symmetry < config.min_symmetry:
             # Not a C clef. Stop rather than look further right: whatever sits
             # at the head of the staff is what the clef would have been, and
             # scanning on would only find noteheads to misread.
             return None
+        if _has_f_clef_dots(strip, bbox, spacing, config):
+            return None  # an F clef wearing a C clef's proportions
 
         # Hand the measurement to the same resolver the detector path uses, so
         # a located clef is named exactly as a detected one is — the only
         # difference being that here the named line was measured from the ink
         # rather than inferred from a box.
-        axis_y = _refine_symmetry_axis(
-            strip, bbox, max_shift=config.axis_refine_spaces * spacing
-        )
         read = resolve_clef(
             "cClefAlto",
             anchor_y=axis_y,
-            staff_line_ys=cell.staff_line_ys_canonical,
+            staff_line_ys=staff_line_ys,
             config=geometry,
         )
         if read is None or read.source != "geometry":
             return None  # the snap was ambiguous — abstain
-        return LocatedClef(read=read, bbox=bbox, symmetry=round(symmetry, 4))
+        # Report the box in the cell's own coordinates, not analysis space.
+        inv = 1.0 / scale if scale else 1.0
+        return LocatedClef(
+            read=read,
+            bbox=tuple(int(round(v * inv)) for v in bbox),
+            symmetry=round(symmetry, 4),
+        )
 
     return None

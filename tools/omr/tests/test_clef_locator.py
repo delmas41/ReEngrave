@@ -18,7 +18,6 @@ import pytest
 from tools.omr.clef_locator import (
     ClefLocatorConfig,
     _refine_symmetry_axis,
-    _vertical_symmetry,
     locate_clef,
 )
 from tools.omr.types import MeasureCell
@@ -63,6 +62,20 @@ def draw_c_clef_at(img: np.ndarray, centre_y: int, x: int = 22) -> None:
 def draw_c_clef(img: np.ndarray, line_from_bottom: int, x: int = 22) -> None:
     """An archaic ladder C clef naming `line_from_bottom`."""
     draw_c_clef_at(img, line_y(line_from_bottom), x=x)
+
+
+def draw_f_clef(img: np.ndarray, line_from_bottom: int = 4, x: int = 22) -> None:
+    """An F clef: a body of roughly C-clef proportions plus the two dots that
+    straddle the line it names. The body alone is deliberately drawn to pass
+    the size and symmetry gates — that is the situation the dot veto exists
+    for, and it is what a real bass clef did on Nottebohm p.31."""
+    cy = line_y(line_from_bottom)
+    cv2.rectangle(img, (x, cy - 30), (x + 11, cy + 30), 0, -1)
+    cv2.rectangle(img, (x + 14, cy - 30), (x + 25, cy + 30), 0, -1)
+    for dy in (-10, 10):
+        cv2.rectangle(img, (x, cy + dy - 4), (x + 25, cy + dy + 4), 0, -1)
+    for dy in (-SPACING // 2, SPACING // 2):   # the dots
+        cv2.circle(img, (x + 34, cy + dy), 5, 0, -1)
 
 
 def draw_g_clef(img: np.ndarray, x: int = 22) -> None:
@@ -165,6 +178,25 @@ class TestAbstains:
                 cv2.rectangle(img, (x, cy - 4), (x + 25, cy + 4), 0, -1)
         assert locate_clef(make_cell(img)) is None
 
+    def test_an_f_clef_is_rejected_by_its_dots(self):
+        # An F clef can wear a C clef's proportions — width, height and
+        # symmetry all inside the range of real C clefs. Its two dots are what
+        # give it away, and they are reliable because they are not decoration:
+        # they straddle the line the clef names.
+        img = blank_page()
+        draw_f_clef(img, 4)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img)) is None
+
+    def test_the_same_body_without_dots_is_read_as_a_c_clef(self):
+        # Proves the dots are doing the rejecting, not the body's shape.
+        img = blank_page()
+        draw_f_clef(img, 4)
+        # Erase the dots.
+        cv2.rectangle(img, (48, 0), (70, CELL_H), 255, -1)
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.line == 4
+
     def test_an_empty_staff_yields_nothing(self):
         assert locate_clef(make_cell(blank_page())) is None
 
@@ -211,16 +243,20 @@ class TestAbstains:
 
 
 class TestSymmetryMeasurement:
-    def test_symmetry_rewards_a_balanced_profile(self):
+    def test_a_balanced_profile_scores_high(self):
         mask = np.zeros((40, 20), dtype=np.uint8)
         mask[5:10, :] = 255
         mask[30:35, :] = 255
-        assert _vertical_symmetry(mask, (0, 0, 20, 40)) > 0.99
+        _axis, score = _refine_symmetry_axis(mask, (0, 0, 20, 40), max_shift=5)
+        assert score > 0.99
 
-    def test_symmetry_punishes_a_one_sided_profile(self):
-        mask = np.zeros((40, 20), dtype=np.uint8)
-        mask[0:10, :] = 255  # all the ink at the top — a tail-less G clef
-        assert _vertical_symmetry(mask, (0, 0, 20, 40)) < 0.3
+    def test_a_one_sided_profile_scores_low(self):
+        # All the ink at the top — a G clef without its tail. The bounded
+        # search must not be able to rescue it by sliding onto the ink.
+        mask = np.zeros((60, 20), dtype=np.uint8)
+        mask[0:12, :] = 255
+        _axis, score = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=8)
+        assert score < 0.5
 
     def test_the_axis_ignores_a_stray_fragment(self):
         # A balanced glyph plus a scrap at the bottom. The box's midpoint is
@@ -230,7 +266,7 @@ class TestSymmetryMeasurement:
         mask[26:30, :] = 255          # glyph balanced about y = 20
         mask[57:59, 0:3] = 255        # the scrap
         box_centre = 30.0
-        axis = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=15)
+        axis, _score = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=15)
         assert abs(axis - 20) < abs(box_centre - 20)
         assert abs(axis - 20) <= 1.5
 
@@ -239,7 +275,7 @@ class TestSymmetryMeasurement:
         mask = np.zeros((60, 20), dtype=np.uint8)
         mask[0:4, :] = 255
         max_shift = 5
-        axis = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=max_shift)
+        axis, _score = _refine_symmetry_axis(mask, (0, 0, 20, 60), max_shift=max_shift)
         assert abs(axis - 29.5) <= max_shift + 0.5
 
 

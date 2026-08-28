@@ -47,21 +47,24 @@ Output schema (JSON):
                   "clef": "treble",         # effective clef for the staff (after
                                             # absorbing any clef detection in the
                                             # very first measure)
-                  "clef_source": "cv_locator",  # OPTIONAL — only when the clef
-                                            # came from a fallback reader:
-                                            # "specialist" (--clef-weights) or
+                  "clef_source": "cv_locator",  # OPTIONAL — which reader read
+                                            # this clef: "detector",
+                                            # "specialist" (--clef-weights), or
                                             # "cv_locator" (shape-located C clef,
-                                            # tools/omr/clef_locator.py). Absent
-                                            # for a detector read or a default.
-                  "key_signature_source": "cv_locator",  # OPTIONAL — only
-                                            # when the key signature was LOCATED
-                                            # by classical CV and reconciled
-                                            # across the page rather than
-                                            # detected. Absent for a detected
-                                            # signature. See
+                                            # tools/omr/clef_locator.py). ABSENT
+                                            # = nothing read a clef here; the
+                                            # staff carries an inherited clef or
+                                            # the position default.
+                  "key_signature_source": "header_vote",  # OPTIONAL — only when
+                                            # the key signature came from the
+                                            # staff-header pass (detector markers
+                                            # fitted to the slot table, or the CV
+                                            # locator) and was reconciled across
+                                            # the page. Absent when the measure
+                                            # pass supplied it. See
                                             # tools/omr/key_signature_locator.py
                                             # and key_signature_vote.py.
-                  "key_signature_reason": "kept: agrees with the system's 3 flats",
+                  "key_signature_reason": "carried: agrees with the system's 3 flats",
                                             # OPTIONAL — accompanies
                                             # key_signature_source: what the
                                             # cross-page vote decided, and why.
@@ -1183,12 +1186,20 @@ def _detections_for_cell(
     #    staff, and only identifies C clefs, so it can add a reading where
     #    there was none but can never overturn one. See tools/omr/clef_locator.py.
     if read_clef and locate_c_clefs and clef_source is None:
-        # Hand the locator the boxes the detector is already sure about, so it
-        # can't nominate a notehead stack as a clef.
+        # Hand the locator the noteheads the detector is already sure about, so
+        # it can't nominate a notehead stack as a clef.
+        #
+        # Noteheads only, deliberately. Rests were in this list once and had to
+        # come out: an archaic C clef is two heavy horizontal bars, which the
+        # detector reads as `restHBar` with high confidence (0.6-0.86 on
+        # Nottebohm), sitting exactly on top of the clef and vetoing every one
+        # of them. A rest is a poor veto anyway — the shapes that could be
+        # confused with a clef are the ones the detector misreads AS a clef,
+        # and rests are small enough to fail the size gates on their own.
         occupied = [
             (d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical)
             for d in dets
-            if d.category in ("notehead", "rest")
+            if d.category == "notehead"
         ]
         located = locate_clef(
             header_cell if header_cell is not None else cell,
@@ -2426,11 +2437,12 @@ def transcribe(
                 # Staff-level effective state = whatever was in effect during
                 # the first measure of the staff (post any leading detections).
                 staff_dict["clef"] = first_cell_effective_clef
-                # Say where the clef came from when it wasn't the detector, so
-                # a reader can tell a measured clef from an inherited default
-                # without re-running the pipeline. Omitted in the ordinary case
-                # to keep untouched output byte-identical.
-                if first_cell_clef_source in ("specialist", "cv_locator"):
+                # Say which reader supplied the clef. Absent means nothing read
+                # one here and the staff is carrying an inherited clef or the
+                # position default — which is the single most useful thing to
+                # know when judging a page's pitches, since a defaulted clef
+                # transposes every note on the staff.
+                if first_cell_clef_source is not None:
                     staff_dict["clef_source"] = first_cell_clef_source
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}

@@ -1,0 +1,18 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 656,
+      "y": 341,
+      "w": 122,
+      "h": 68,
+      "x_center": 717,
+      "y_center": 375,
+      "confidence": 0.1182238757610321,
+      "pitch": null
+    }
+  ]
+}

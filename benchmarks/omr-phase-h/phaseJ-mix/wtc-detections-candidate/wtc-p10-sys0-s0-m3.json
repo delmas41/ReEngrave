@@ -1,0 +1,70 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m3",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restHalf",
+      "category": "rest",
+      "x": 94,
+      "y": 1192,
+      "w": 31,
+      "h": 8,
+      "x_center": 109,
+      "y_center": 1196,
+      "confidence": 0.31488484144210815,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 154,
+      "y": 1176,
+      "w": 20,
+      "h": 21,
+      "x_center": 164,
+      "y_center": 1186,
+      "confidence": 0.2503832280635834,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 181,
+      "y": 979,
+      "w": 124,
+      "h": 105,
+      "x_center": 243,
+      "y_center": 1031,
+      "confidence": 0.3777645528316498,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1091,
+      "y": 1057,
+      "w": 93,
+      "h": 85,
+      "x_center": 1137,
+      "y_center": 1099,
+      "confidence": 0.4255574941635132,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "fermataAbove",
+      "category": "ornament",
+      "x": 1401,
+      "y": 1131,
+      "w": 28,
+      "h": 45,
+      "x_center": 1415,
+      "y_center": 1153,
+      "confidence": 0.17831002175807953,
+      "pitch": null
+    }
+  ]
+}

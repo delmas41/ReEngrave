@@ -37,6 +37,11 @@ class InkMaskConfig:
 
     vertical_rule_max_width_spaces: float = 0.5   # thinner ⇒ a rule, not a glyph
     vertical_rule_min_height_spaces: float = 2.0
+    # A system barline or bracket is heavier than a plain rule and clears the
+    # width test, so it is caught by LENGTH instead — it runs the height of the
+    # system. Width cannot separate it from a clef's own strokes; length can.
+    heavy_rule_max_width_spaces: float = 1.2
+    heavy_rule_min_height_spaces: float = 5.0
     min_ink_height_spaces: float = 0.2
 
 
@@ -52,19 +57,30 @@ def strip_vertical_rules(
     Necessary because the barline at the start of a system sits within a few
     pixels of the clef — far too close for any proximity-based grouping to keep
     them apart, so without this the clef arrives fused to a full-height rule
-    and fails every shape test. Thinness is what identifies a rule: a barline
-    is a fraction of a staff space wide, while the narrowest part of a clef is
-    comfortably wider.
+    and fails every shape test.
+
+    Two signatures, because rules come in two weights. A plain barline is
+    identified by **thinness**: a fraction of a staff space wide, where the
+    narrowest part of a clef is comfortably wider. A system barline or bracket
+    is heavier than that and clears the width test, so it is identified by
+    **length** instead — it runs the full height of the system, joining staff
+    to staff, and nothing that long belongs to a C clef. Note the clef's own
+    vertical strokes are similar in width to a heavy rule and must survive, so
+    width alone cannot separate them; length can.
     """
     tall = max(3, int(round(config.vertical_rule_min_height_spaces * spacing)))
     vert = cv2.morphologyEx(
         mask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (1, tall))
     )
     n, labels, stats, _ = cv2.connectedComponentsWithStats(vert, connectivity=8)
-    max_w = config.vertical_rule_max_width_spaces * spacing
+    thin_w = config.vertical_rule_max_width_spaces * spacing
+    heavy_w = config.heavy_rule_max_width_spaces * spacing
+    heavy_h = config.heavy_rule_min_height_spaces * spacing
     rules = np.zeros_like(mask)
     for i in range(1, n):
-        if stats[i, cv2.CC_STAT_WIDTH] <= max_w:
+        w_i = stats[i, cv2.CC_STAT_WIDTH]
+        h_i = stats[i, cv2.CC_STAT_HEIGHT]
+        if w_i <= thin_w or (w_i <= heavy_w and h_i >= heavy_h):
             rules[labels == i] = 255
     # Grow slightly so the rule's soft edges go too, instead of surviving as a
     # hairline that still bridges the clef to whatever is beside it.
@@ -175,7 +191,6 @@ def cluster_components(
         y1 = max(c[1] + c[3] for c in cl)
         merged.append((int(x0), int(y0), int(x1 - x0), int(y1 - y0)))
     return merged
-
 
 
 # ─── tracing the printed staff lines ────────────────────────────────────────

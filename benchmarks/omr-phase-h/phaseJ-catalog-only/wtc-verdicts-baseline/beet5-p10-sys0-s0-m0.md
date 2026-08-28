@@ -1,0 +1,220 @@
+<!-- auto-ported from baseline verdicts; new detections are pending -->
+# Cell beet5-p10-sys0-s0-m0 — verdicts
+
+**Image:** ![overlay](../overlays/beet5-p10-sys0-s0-m0.png)
+
+**Clef assumed:** treble
+
+**Staff lines (canonical y):** 319, 402, 521, 621, 719
+
+**Source:** beet5-p10  ·  page 10  ·  sys 0  staff 0  measure 0
+
+
+## Detections
+
+- [x] D0  clefF (clef) at (x=30, y=914)  conf=0.73
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D1  keySharp (accidental) at (x=53, y=307)  conf=0.25
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D2  keyFlat (accidental) at (x=54, y=419)  conf=0.47
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D3  accidentalSharp (accidental) at (x=56, y=1106)  conf=0.54
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D4  keySharp (accidental) at (x=56, y=1106)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D5  keySharp (accidental) at (x=65, y=295)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D6  accidentalFlat (accidental) at (x=67, y=403)  conf=0.86
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D7  keyFlat (accidental) at (x=67, y=598)  conf=0.70
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D8  accidentalNatural (accidental) at (x=67, y=1092)  conf=0.39
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D9  accidentalFlat (accidental) at (x=67, y=598)  conf=0.35
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D10  accidentalFlat (accidental) at (x=67, y=994)  conf=0.29
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D11  keyFlat (accidental) at (x=67, y=995)  conf=0.20
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D12  accidentalFlat (accidental) at (x=67, y=1091)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D13  tie (structural) at (x=76, y=894)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D14  accidentalSharp (accidental) at (x=79, y=1107)  conf=0.36
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D15  accidentalFlat (accidental) at (x=79, y=1108)  conf=0.29
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D16  accidentalNatural (accidental) at (x=79, y=1108)  conf=0.18
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D17  keyFlat (accidental) at (x=80, y=1014)  conf=0.87
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D18  accidentalNatural (accidental) at (x=80, y=424)  conf=0.23
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D19  keySharp (accidental) at (x=80, y=316)  conf=0.22
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D20  restWhole (rest) at (x=81, y=622)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D21  keySharp (accidental) at (x=81, y=618)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D22  noteheadBlackOnLine (notehead) at (x=82, y=1116)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D23  staff (structural) at (x=104, y=1018)  conf=0.61
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D24  staff (structural) at (x=104, y=318)  conf=0.58
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D25  tie (structural) at (x=104, y=645)  conf=0.41
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D26  staff (structural) at (x=104, y=430)  conf=0.37
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D27  staff (structural) at (x=104, y=624)  conf=0.36
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D28  staff (structural) at (x=104, y=918)  conf=0.31
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D29  tie (structural) at (x=104, y=611)  conf=0.23
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D30  tie (structural) at (x=104, y=890)  conf=0.21
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D31  slur (structural) at (x=104, y=596)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D32  beam (structural) at (x=104, y=618)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D33  restHBar (rest) at (x=104, y=598)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D34  tie (structural) at (x=105, y=720)  conf=0.51
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D35  tie (structural) at (x=105, y=741)  conf=0.32
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D36  beam (structural) at (x=105, y=639)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D37  staff (structural) at (x=105, y=739)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D38  beam (structural) at (x=105, y=543)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D39  beam (structural) at (x=105, y=644)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D40  tie (structural) at (x=106, y=445)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D41  tie (structural) at (x=107, y=711)  conf=0.42
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D42  tie (structural) at (x=107, y=731)  conf=0.40
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D43  tie (structural) at (x=107, y=290)  conf=0.35
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D44  tie (structural) at (x=107, y=300)  conf=0.25
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D45  tie (structural) at (x=107, y=707)  conf=0.21
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D46  tie (structural) at (x=107, y=801)  conf=0.18
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D47  beam (structural) at (x=107, y=707)  conf=0.18
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D48  tie (structural) at (x=107, y=737)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D49  beam (structural) at (x=107, y=851)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D50  beam (structural) at (x=107, y=1101)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D51  beam (structural) at (x=107, y=802)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D52  tie (structural) at (x=107, y=895)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D53  beam (structural) at (x=107, y=842)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D54  beam (structural) at (x=107, y=1089)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D55  beam (structural) at (x=107, y=801)  conf=0.10
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D56  tie (structural) at (x=108, y=501)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D57  tie (structural) at (x=109, y=991)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D58  beam (structural) at (x=111, y=503)  conf=0.20
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D59  tie (structural) at (x=112, y=1000)  conf=0.18
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D60  beam (structural) at (x=112, y=536)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D61  beam (structural) at (x=116, y=511)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D62  dynamicP (dynamic) at (x=119, y=781)  conf=0.89
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D63  dynamicP (dynamic) at (x=125, y=672)  conf=0.93
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D64  tie (structural) at (x=125, y=429)  conf=0.20
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D65  tie (structural) at (x=125, y=398)  conf=0.20
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D66  tie (structural) at (x=125, y=899)  conf=0.15
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D67  tie (structural) at (x=125, y=292)  conf=0.12
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D68  tie (structural) at (x=126, y=338)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D69  beam (structural) at (x=126, y=514)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D70  tie (structural) at (x=129, y=544)  conf=0.26
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D71  noteheadHalfOnLine (notehead) at (x=129, y=726)  conf=0.23
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D72  tie (structural) at (x=129, y=539)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D73  noteheadBlackOnLine (notehead) at (x=129, y=723)  conf=0.13
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D74  tie (structural) at (x=130, y=439)  conf=0.27
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D75  tie (structural) at (x=137, y=726)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D76  tie (structural) at (x=138, y=436)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D77  tie (structural) at (x=144, y=901)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D78  restWhole (rest) at (x=148, y=306)  conf=0.47
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D79  noteheadWholeInSpace (notehead) at (x=149, y=305)  conf=0.19
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D80  restWhole (rest) at (x=150, y=519)  conf=0.76
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D81  restWhole (rest) at (x=151, y=416)  conf=0.80
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D82  noteheadBlackInSpace (notehead) at (x=153, y=1045)  conf=0.83
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D83  restWhole (rest) at (x=154, y=907)  conf=0.71
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D84  restWhole (rest) at (x=154, y=817)  conf=0.70
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D85  noteheadBlackInSpace (notehead) at (x=154, y=907)  conf=0.24
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D86  tie (structural) at (x=159, y=612)  conf=0.19
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D87  tie (structural) at (x=160, y=720)  conf=0.17
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D88  accidentalSharp (accidental) at (x=160, y=1110)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D89  beam (structural) at (x=169, y=749)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D90  tie (structural) at (x=170, y=624)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D91  noteheadBlackInSpace (notehead) at (x=171, y=1044)  conf=0.58
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D92  beam (structural) at (x=172, y=703)  conf=0.26
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D93  tie (structural) at (x=172, y=630)  conf=0.19
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D94  slur (structural) at (x=172, y=706)  conf=0.14
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D95  beam (structural) at (x=174, y=588)  conf=0.33
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D96  noteheadBlackInSpace (notehead) at (x=189, y=1045)  conf=0.50
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D97  timeSig1 (time_sig_digit) at (x=204, y=303)  conf=0.57
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D98  keySharp (accidental) at (x=204, y=304)  conf=0.20
+       verdict: __________  <!-- new detection, no baseline match -->
+- [x] D99  accidentalSharp (accidental) at (x=204, y=303)  conf=0.16
+       verdict: __________  <!-- new detection, no baseline match -->
+
+## Missed noteheads (FN)
+
+(carried over from baseline — none in pre-filled cells)
+
+## Wrong-pitch corrections
