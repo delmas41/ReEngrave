@@ -1,0 +1,28 @@
+{
+  "movement_pages": [
+    7,
+    22
+  ],
+  "snap_to_ink": true,
+  "staves_per_system": 11,
+  "pages_processed": 1,
+  "cells_total": 45,
+  "cells_with_xml_match": 45,
+  "labels_total": 222,
+  "homography_failures": 0,
+  "dropped_classes": {
+    "barline": 45
+  },
+  "ink_metrics": {
+    "n_noteheads": 124,
+    "cov_before_mean": 0.3343,
+    "pct_onink_before": 67.7,
+    "pct_empty_before": 13.7,
+    "snapped": 81,
+    "unsnapped": 43,
+    "pct_snapped": 65.3,
+    "cov_after_mean": 0.5896,
+    "pct_onink_after": 80.6,
+    "pct_empty_after": 7.3
+  }
+}
