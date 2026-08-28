@@ -245,6 +245,51 @@ class TestNottebohmPage46:
         assert len(cells) >= 60, f"only {len(cells)} cells for 12 staves"
 
 
+class TestBodyTextIsNotAStaff:
+    """Paragraphs of body text must not be detected as staves.
+
+    The row-projection detector finds staves by looking for rows carrying a lot
+    of ink, and a row of justified prose carries a lot of ink — enough to clear
+    the line-length threshold — while five consecutive text baselines are
+    evenly enough spaced to pass the 5-line grouping. Before this was filtered,
+    a paragraph became a "staff" with a clef and measures of its own: 147 of
+    1522 "staves" over 156 pages of this book.
+
+    Nottebohm is a monograph, so it supplies both cases cleanly — pages of
+    unbroken prose, and pages where a music example sits inside the prose.
+    The page contents below were checked by eye.
+    """
+
+    @pytest.mark.parametrize("page_index", [23, 24, 27])
+    def test_a_page_of_pure_prose_yields_no_staves(self, page_index):
+        _require(NOTTEBOHM)
+        pws = detect_staves(render_page(NOTTEBOHM, page_index, dpi=300))
+        assert pws.staves == [], (
+            f"p{page_index} is unbroken prose but produced "
+            f"{len(pws.staves)} staves"
+        )
+
+    @pytest.mark.parametrize(
+        "page_index,n_music_staves",
+        [
+            (25, 8),   # prose with one eight-staff example set into it
+            (29, 2),   # prose with one two-staff example
+            (90, 6),   # several short fragments among the prose
+        ],
+    )
+    def test_prose_pages_keep_only_their_music(self, page_index, n_music_staves):
+        _require(NOTTEBOHM)
+        pws = detect_staves(render_page(NOTTEBOHM, page_index, dpi=300))
+        assert len(pws.staves) == n_music_staves
+
+    def test_the_filter_does_not_touch_a_page_of_pure_music(self):
+        # The guard that matters for everything else in the corpus: a real
+        # score must be unaffected. WTC p.5 is ten staves and stays ten.
+        _require(WTC)
+        pws = detect_staves(render_page(WTC, 5, dpi=600))
+        assert len(pws.staves) == 10
+
+
 # ─── Preprocessing primitives ─────────────────────────────────────────────────
 
 

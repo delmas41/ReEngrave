@@ -34,6 +34,7 @@ GROUP_LINE_SPACING_TOLERANCE = 0.30  # ±30% gap variation within a 5-line group
 MAX_SYSTEM_GAP_FACTOR = 6.0      # fallback if auto-bipartition fails
 STAFF_LINE_MAX_GAP_SPACES = 1.0  # a break this wide is still the same staff line
 SYSTEM_BREAK_GAP_FACTOR = 2.5    # gap this many × the typical within-system gap = a break
+MAX_LINE_INK_RUNS_PER_SPACE = 1.7  # above this the "lines" are rows of text, not staff lines
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -259,6 +260,46 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
     return staves_sorted
 
 
+def _line_ink_runs_per_space(binary: np.ndarray, staff: Staff) -> float:
+    """How many separate ink runs lie along this staff's lines, per staff-space
+    of line length (median over the five lines).
+
+    This is the test for whether a detected "staff" is a staff at all. The
+    row-projection detector finds staves by looking for rows with a lot of ink,
+    and a row of justified body text has a lot of ink — enough to clear the
+    line-length threshold — while five consecutive text baselines are evenly
+    enough spaced to pass the 5-line grouping. So paragraphs become staves,
+    complete with a clef and measures of their own.
+
+    What actually separates them is not how MUCH ink is in the row but how it
+    is arranged. A staff line is one continuous stroke: a handful of runs over
+    its whole length even on a scan that has broken it into dashes. A text
+    baseline is one run per letter. Measured over 310 staves on seven scores
+    and 20 text blocks, the two do not come close to overlapping — music tops
+    out at 1.39 runs per staff-space and text starts at 2.02, with the bulk two
+    orders of magnitude apart (music median 0.017, text median 2.59).
+
+    Note this deliberately does NOT test ink coverage, the obvious near-miss.
+    Coverage does separate on clean pages but overlaps on real ones: heavy
+    notation ink interrupts the line, so genuine staves in Beethoven 5 and
+    La Mer fall to 0.62-0.70, right on top of body text at 0.62-0.72.
+    """
+    height = binary.shape[0]
+    spacing = max(staff.line_spacing_px, 1.0)
+    length_spaces = max((staff.x_end - staff.x_start + 1) / spacing, 1e-6)
+    per_line: list[float] = []
+    for y in staff.line_ys:
+        band = binary[max(0, y - 1) : min(height, y + 2), staff.x_start : staff.x_end + 1]
+        if band.size == 0:
+            per_line.append(float("inf"))
+            continue
+        ink = (band == 0).any(axis=0).astype(np.int8)
+        # A run starts at each 0→1 transition, plus one if the line opens in ink.
+        runs = int(np.count_nonzero(np.diff(ink) == 1)) + (1 if ink[0] else 0)
+        per_line.append(runs / length_spaces)
+    return float(np.median(per_line)) if per_line else float("inf")
+
+
 # ─── Public entry point ──────────────────────────────────────────────────────
 
 
@@ -279,6 +320,16 @@ def detect_staves(page: PageImage) -> PageWithStaves:
             x_end=x_end,
             system_index=0,
         ))
+
+    # Drop the "staves" that are paragraphs of body text (see
+    # _line_ink_runs_per_space). Done before system assignment so the surviving
+    # staves are numbered contiguously, and before x-extent matters downstream.
+    staves = [
+        st for st in staves
+        if _line_ink_runs_per_space(page.binary, st) <= MAX_LINE_INK_RUNS_PER_SPACE
+    ]
+    for idx, st in enumerate(staves):
+        st.staff_index = idx
 
     staves = _assign_systems(staves)
     return PageWithStaves(page=page, staves=staves)
