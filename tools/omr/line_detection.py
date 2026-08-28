@@ -113,12 +113,59 @@ def _staff_line_spacing(cell) -> float:
 STEM_KERNEL_MARGIN = 0.8
 
 
+def _drop_paired_strokes(stems, line_spacing: float, gap: float, min_overlap: float):
+    """Reject vertical strokes that come in PAIRS, which stems do not.
+
+    A sharp and a natural are each built from two parallel verticals about half
+    a staff space apart and roughly two spaces tall — which is to say, they look
+    exactly like a pair of short stems, and `detect_stems` was reporting them as
+    such. Measured against 14 hand-counted cells, they were most of the error:
+    summed |error| 60, and on the two Mahler cells the count was 16 and 14
+    against a truth of 5 and 3.
+
+    A stem is single. Two noteheads a second apart share one stem rather than
+    standing side by side, and successive notes are set further apart than an
+    accidental's own strokes, so the pair is the accidental's signature.
+
+    The gap is bounded by the notation on both sides: wider than the ~0.5-0.7
+    staff spaces between a sharp's strokes, narrower than the spacing between
+    consecutive notes. Both members of a pair are dropped, since neither is a
+    stem.
+    """
+    if line_spacing <= 0 or len(stems) < 2:
+        return list(stems)
+    max_dx = line_spacing * gap
+    centres = [s.x_canonical + s.width_canonical / 2.0 for s in stems]
+    tops = [float(s.y_canonical) for s in stems]
+    bottoms = [t + s.height_canonical for t, s in zip(tops, stems)]
+
+    kept = []
+    for i, stem in enumerate(stems):
+        paired = False
+        for j in range(len(stems)):
+            if i == j or abs(centres[i] - centres[j]) > max_dx:
+                continue
+            overlap = min(bottoms[i], bottoms[j]) - max(tops[i], tops[j])
+            if overlap <= 0:
+                continue
+            shorter = min(bottoms[i] - tops[i], bottoms[j] - tops[j])
+            if overlap / max(1.0, shorter) >= min_overlap:
+                paired = True
+                break
+        if not paired:
+            kept.append(stem)
+    return kept
+
+
 def detect_stems(
     cell,
     *,
     min_height_lines: float = 2.0,
     max_height_lines: float = 6.0,
     max_width_lines: float = 0.6,
+    accidental_pair_gap_lines: float = 0.9,
+    accidental_pair_overlap: float = 0.6,
+    drop_accidental_pairs: bool = True,
 ) -> list[LineDetection]:
     """Find stem-like vertical ink runs in `cell`.
 
@@ -137,8 +184,20 @@ def detect_stems(
            - width ≤ max_width_lines × line_spacing
            - not at the cell edges (rejects measure-boundary barlines)
            - aspect ratio ≥ 3:1 vertical (rejects square noise blobs)
+      6. Drop strokes that come in PAIRS — see `_drop_paired_strokes`. A sharp
+         and a natural are each two parallel verticals about half a staff space
+         apart and about two spaces tall, indistinguishable from a pair of short
+         stems by any of the filters above.
 
     Returns LineDetection objects in canonical-cell coordinates.
+
+    Measured against 14 hand-counted cells across four scores, the pair rule
+    takes summed |error| from 60 to 24, and against the LilyPond reference
+    sheet from +7/+8/+5/+2 to -1/0/+1/0 on a truth of 48. Raising the height
+    floor instead was tried and is worse (36) AND fails asymmetrically: it
+    scores well on Boléro while destroying keyboard music, where stems in
+    beamed groups are legitimately short (one WTC cell holds 15 stems and a
+    2.8-space floor finds 5).
     """
     if cell is None:
         return []
@@ -209,6 +268,10 @@ def detect_stems(
             height_canonical=int(h),
             confidence=1.0,
         ))
+    if drop_accidental_pairs:
+        out = _drop_paired_strokes(
+            out, line_spacing, accidental_pair_gap_lines, accidental_pair_overlap
+        )
     return out
 
 

@@ -88,3 +88,47 @@ class TestStemVsNotehead:
             img[500 - 2 * SPACING:500, 450:460] = 0     # exactly 2.0 spaces
         found = detect_stems(_cell(paint))
         assert len(found) == 1
+
+
+class TestAccidentalStrokesAreNotStems:
+    """A sharp and a natural are each two parallel verticals about half a staff
+    space apart and roughly two spaces tall — which passes every shape filter a
+    stem passes. What separates them is that they come in PAIRS: two noteheads a
+    second apart share one stem rather than standing side by side, and
+    successive notes are set further apart than an accidental's own strokes.
+
+    Measured on 14 hand-counted cells, this was most of the stem error (summed
+    |error| 60 -> 24), and on the LilyPond reference sheet it took the count
+    from +7 to -1 against a truth of 48.
+    """
+
+    @staticmethod
+    def _sharp(img, x: int, y_centre: int) -> None:
+        """Two verticals 0.55 spaces apart, two spaces tall — a sharp's strokes."""
+        h = int(2.0 * SPACING)
+        for dx in (0, int(0.55 * SPACING)):
+            img[y_centre - h // 2:y_centre + h // 2, x + dx - 4:x + dx + 4] = 0
+
+    def test_a_lone_sharp_yields_no_stems(self):
+        cell = _cell(lambda img: self._sharp(img, 300, 300))
+        assert detect_stems(cell) == []
+
+    def test_a_sharp_beside_a_note_leaves_only_the_note_s_stem(self):
+        def paint(img):
+            self._sharp(img, 250, 300)
+            _note(img, 500, 400)
+        found = detect_stems(_cell(paint))
+        assert len(found) == 1
+        assert found[0].x_canonical > 450, "the surviving stroke should be the note's"
+
+    def test_two_notes_a_normal_distance_apart_both_survive(self):
+        """The rule must not eat real stems: consecutive notes are set further
+        apart than an accidental's strokes."""
+        def paint(img):
+            _note(img, 300, 400)
+            _note(img, 300 + int(1.6 * SPACING), 400)
+        assert len(detect_stems(_cell(paint))) == 2
+
+    def test_the_rule_can_be_switched_off(self):
+        cell = _cell(lambda img: self._sharp(img, 300, 300))
+        assert len(detect_stems(cell, drop_accidental_pairs=False)) == 2

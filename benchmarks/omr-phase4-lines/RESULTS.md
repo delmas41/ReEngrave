@@ -214,9 +214,59 @@ group of two bars under a slur reports three. The distinguishing feature is
 curvature — a beam is straight and a slur bends — which is measurable but is its
 own piece of work.
 
-**Stems still have no ground truth on a real score.** That blocks judging both
-the ~30% of stems a raised floor would remove and the residual ~6-stem
-over-count on the reference sheet (40 against 34).
+### Stems, counted by hand — and height turns out to be the wrong test
+
+Fifteen more cells were counted for STEMS (`hand-labeled-stems.json`), chosen
+adversarially: eleven are cells where a 2.0- and a 2.8-staff-space height floor
+disagreed — by up to 10 stems — so a hand count decides between them directly.
+One cell the labeler could not read is recorded as unsure and excluded rather
+than guessed.
+
+**Neither floor is right, and the failure is asymmetric by score:**
+
+| score | 2.0 floor \|err\| | 2.8 floor \|err\| |
+|---|---|---|
+| Boléro | 18 | **1** |
+| Mahler | 22 | 10 |
+| WTC | **5** | 12 |
+| La Mer | 15 | 13 |
+
+On Boléro the 2.8 floor is nearly exact, because there the surplus really was
+accidental strokes. On WTC it is a disaster: one cell holds **15 stems and the
+2.8 floor finds 5**, because stems in beamed groups are legitimately short — the
+beam stands where the rest of the stem would be. Height cannot separate them.
+
+**What does:** a sharp and a natural are each built from two parallel verticals
+about half a staff space apart. A stem is single — two noteheads a second apart
+share one stem rather than standing side by side, and successive notes are set
+further apart than an accidental's own strokes. So the pair is the accidental's
+signature, and the gap is bounded by the notation on both sides: wider than the
+~0.5-0.7 spaces inside a sharp, narrower than the space between notes.
+
+| | hand \|err\| (14 cells) | reference sheet (truth 48) |
+|---|---|---|
+| before | 60 | +7 / +8 / +5 / +2 |
+| height floor 2.8 | 36 | — |
+| **pair rule** | **24** | **-2 / -2 / -1 / -1** |
+
+The pair rule also explains and removes the reference sheet's residual
+over-count, which the previous round recorded as unexplained, and takes the
+sheet's beam count to exactly 12/12 at every thickness. The beam benchmark over
+the sixteen hand-counted cells is unchanged at 9.
+
+    python3 -m tools.omr.training.line_detection_eval --hand-only
+
+### Still open
+
+**Slurs that run parallel to a beam** (unchanged from above) — the residual
+Boléro beam over-counts. Curvature is the discriminator; it is its own piece of
+work.
+
+**Stems are better but not solved: 24 over 14 cells, 5 exact.** The worst
+remaining cases are a WTC cell counted 15 and detected 9, and two cells where
+ink that is not a stem still survives (La Mer counted 0, detected 5). The pair
+rule removes the accidental class; what is left is a different class again, and
+it has not been diagnosed.
 
 ## Tests
 
