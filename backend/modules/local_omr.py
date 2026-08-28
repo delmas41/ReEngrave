@@ -123,9 +123,11 @@ def _imgsz() -> int | None:
 
     A fixed `imgsz` is the wrong knob for cell-based inference. Cells are
     already rescaled to a canonical staff span, so one number means a
-    different staff space in every cell, and the old default of 1280 put most
-    of them far above the scale the model reads noteheads at. Set OMR_IMGSZ to
-    pin a value; see `tools/omr/yolo_detector.imgsz_for_cell`.
+    different staff space in every cell — and this default and the CLI's used
+    to disagree (1280 here, 2048 there), both far above the scale the model
+    reads noteheads at. Set OMR_IMGSZ to pin a value; 512 is the best fixed
+    one measured. See `tools/omr/yolo_detector.imgsz_for_cell` and
+    `benchmarks/omr-detector-scale/RESULTS.md`.
     """
     raw = os.getenv("OMR_IMGSZ")
     if not raw:

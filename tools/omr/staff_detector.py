@@ -24,6 +24,7 @@ from __future__ import annotations
 import numpy as np
 from scipy.signal import find_peaks
 
+from .system_grouping import assign_systems as assign_systems_by_bridging
 from .types import PageImage, Staff, PageWithStaves
 
 
@@ -494,7 +495,15 @@ def detect_staves(page: PageImage) -> PageWithStaves:
     for idx, st in enumerate(staves):
         st.staff_index = idx
 
-    staves = _assign_systems(staves)
+    # System grouping from vertical connectivity (barlines + bracket run
+    # through a system; nothing crosses the gap between two systems). The
+    # gap-size heuristic is the fallback for pages whose barlines and bracket
+    # are too faint to see at all — on a conductor's score it splits at
+    # bracket-GROUP gaps and reports one system as several. See
+    # system_grouping.py for the measured comparison.
+    staves, used_bridging = assign_systems_by_bridging(page.binary, staves)
+    if not used_bridging:
+        staves = _assign_systems(staves)
     return PageWithStaves(page=page, staves=staves)
 
 

@@ -1,0 +1,306 @@
+[
+  {
+    "png": "beethoven-symphony-1_imslp-00074_p40_s0.png",
+    "work": "beethoven-symphony-1_imslp-00074",
+    "page_index": 40,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "truth": {}
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-00074_p40_s1.png",
+    "work": "beethoven-symphony-1_imslp-00074",
+    "page_index": 40,
+    "system_index": 1,
+    "staff_indices": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "truth": {}
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-13842_p40_s0.png",
+    "work": "beethoven-symphony-1_imslp-13842",
+    "page_index": 40,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "4": {
+        "text": ".",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "5": {
+        "text": "Tr (0)",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Tim p.",
+        "instrument": "Timpani",
+        "confidence": "high"
+      },
+      "9": {
+        "text": "V la.",
+        "instrument": "Viola",
+        "confidence": "high"
+      },
+      "10": {
+        "text": "V e. e B.",
+        "instrument": null,
+        "confidence": "none"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-13842_p59_s0.png",
+    "work": "beethoven-symphony-1_imslp-13842",
+    "page_index": 59,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "truth": {
+      "10": {
+        "text": "e",
+        "instrument": null,
+        "confidence": "none"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-13842_p59_s1.png",
+    "work": "beethoven-symphony-1_imslp-13842",
+    "page_index": 59,
+    "system_index": 1,
+    "staff_indices": [
+      11,
+      12,
+      13,
+      14
+    ],
+    "truth": {
+      "12": {
+        "text": "VI-~",
+        "instrument": "Violin",
+        "confidence": "low"
+      },
+      "13": {
+        "text": "V}a.",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "14": {
+        "text": "vc. eB-",
+        "instrument": "Cello",
+        "confidence": "medium"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-2_imslp-503997_p40_s0.png",
+    "work": "beethoven-symphony-2_imslp-503997",
+    "page_index": 40,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "OL.",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Fag",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "5": {
+        "text": "Tr.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Tp.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-2_imslp-503997_p40_s1.png",
+    "work": "beethoven-symphony-2_imslp-503997",
+    "page_index": 40,
+    "system_index": 1,
+    "staff_indices": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "truth": {
+      "11": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "12": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "13": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "15": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-2_imslp-503997_p59_s0.png",
+    "work": "beethoven-symphony-2_imslp-503997",
+    "page_index": 59,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Fag.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "5": {
+        "text": "Tr.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Tp.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      }
+    }
+  }
+]
