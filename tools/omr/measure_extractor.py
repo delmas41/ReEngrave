@@ -293,6 +293,34 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         #       staves voted).
         # Thresholds were chosen from the cluster-distribution data
         # captured by `_phase1_diagnostic` on Bach + Beethoven + Ravel.
+        # Does this system draw its barlines THROUGH the gaps between staves?
+        # An orchestral score does, which is what makes connectivity a good
+        # filter there. An open score — one staff per voice, as counterpoint
+        # and vocal music are set — does not: each voice's barlines stop at
+        # its own staff, so every real barline scores connectivity 0.00 and
+        # the filter throws all of them away. (Measured on Nottebohm p.31: 4/4
+        # votes and 0.00 connectivity on every barline of every system, versus
+        # Mahler 5 p.11 where real barlines run 0.4-1.0 and it is the stem
+        # alignments that score 0.00.)
+        #
+        # So ask the system which kind it is, rather than assuming. If most
+        # of the columns the votes already accept are connected, connectivity
+        # is meaningful here and gets to filter; if hardly any are, this is an
+        # open score and the votes stand alone. Either way the answer comes
+        # from the page in hand.
+        vote_passed = [
+            (int(round(sum(c) / len(c))), len(c)) for c in clusters
+            if len(c) >= min_votes
+        ]
+        connectivity_of = {
+            x: _intersystem_connectivity(bin_img, staves, x)
+            for x, _ in vote_passed
+        } if n_staves >= 3 else {}
+        n_connected = sum(1 for v in connectivity_of.values() if v >= 0.4)
+        barlines_cross_gaps = (
+            len(vote_passed) < 2 or n_connected * 2 >= len(vote_passed)
+        )
+
         accepted: list[int] = []
         for cluster in clusters:
             x_mean = int(round(sum(cluster) / len(cluster)))
@@ -302,7 +330,14 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 if n_votes >= min_votes:
                     accepted.append(x_mean)
                 continue
-            connectivity = _intersystem_connectivity(bin_img, staves, x_mean)
+            if not barlines_cross_gaps:
+                # Open score: the votes are the whole of the evidence.
+                if n_votes >= min_votes:
+                    accepted.append(x_mean)
+                continue
+            connectivity = connectivity_of.get(x_mean)
+            if connectivity is None:
+                connectivity = _intersystem_connectivity(bin_img, staves, x_mean)
             # Prong A: vote-pass + connectivity sanity check.
             if n_votes >= min_votes and connectivity >= 0.4:
                 accepted.append(x_mean)

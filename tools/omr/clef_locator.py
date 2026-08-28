@@ -105,6 +105,16 @@ class ClefLocatorConfig:
     # Ink with less vertical extent than this is a staff-line fragment, not
     # part of a glyph — see _drop_flat_residue.
     min_ink_height_spaces: float = 0.2
+    # Staff spacing, in pixels, that the shape analysis is done at. Cells
+    # arrive at whatever scale their measure width happened to force — a
+    # narrow measure is upscaled far more than a wide one — and morphology is
+    # not scale-free in practice even when its kernels are: heavy upscaling
+    # interpolates ink fatter, and glyphs that stand apart at one scale fuse
+    # at another. Normalising first means every constant above describes the
+    # same thing on every page. 22px keeps the archaic clef's thinnest stroke
+    # a few pixels wide, which is enough to survive and thin enough to stay
+    # separate from its neighbours.
+    analysis_spacing_px: float = 22.0
     # How far beyond the staff's own lines a component may be centred and
     # still belong to this staff — see the band filter in locate_clef. A C
     # clef on the bottom line reaches about two spaces below it; anything
@@ -206,6 +216,16 @@ def _drop_flat_residue(mask: np.ndarray, spacing: float, config: ClefLocatorConf
     )
 
 
+def _analysis_scale(spacing: float, config: ClefLocatorConfig) -> float:
+    """Factor to resize a cell by so its staff spacing becomes the analysis
+    spacing. Never upscales — inventing pixels cannot add detail, and the
+    tuned kernels behave fine on a cell that is already small.
+    """
+    if spacing <= 0:
+        return 1.0
+    return min(1.0, config.analysis_spacing_px / spacing)
+
+
 def _ink_mask(
     cell: MeasureCell, spacing: float, config: ClefLocatorConfig
 ) -> np.ndarray | None:
@@ -222,6 +242,15 @@ def _ink_mask(
     if img is None or img.size == 0:
         return None
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if img.ndim == 3 else img
+    scale = _analysis_scale(spacing, config)
+    if scale < 1.0:
+        gray = cv2.resize(
+            gray,
+            (max(1, int(round(gray.shape[1] * scale))),
+             max(1, int(round(gray.shape[0] * scale)))),
+            interpolation=cv2.INTER_AREA,
+        )
+        spacing = spacing * scale
     # Phase 1 convention: 255 = paper, 0 = ink.
     _, mask = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
     mask = _strip_vertical_rules(mask, spacing, config)
@@ -359,8 +388,8 @@ def locate_clef(
     interior measure this would happily nominate the first notehead cluster.
 
     `occupied_boxes` are canonical (x, y, w, h) boxes the detector has already
-    identified as something other than a clef — noteheads and rests. A clef
-    never overlaps one, so a candidate that does is rejected. This matters
+    identified as noteheads. A clef never overlaps one, so a candidate that
+    does is rejected. This matters
     where a cell begins PAST its clef (see NOTES.md on staff x-extent): the
     first cluster is then real notation, and a stacked chord in particular is
     tall, glyph-sized and vertically symmetric enough to pass for a C clef.
@@ -373,10 +402,23 @@ def locate_clef(
     mask = _ink_mask(cell, spacing, config)
     if mask is None:
         return None
+    # Everything below is measured in ANALYSIS space — the cell resized so its
+    # staff spacing is `analysis_spacing_px`. Convert the inputs into it, and
+    # the one output (the named line) back out at the end.
+    scale = _analysis_scale(spacing, config)
+    spacing *= scale
+    top_y *= scale
+    bottom_y *= scale
+    staff_line_ys = [y * scale for y in sorted(cell.staff_line_ys_canonical)]
+    occupied_boxes = [
+        (x * scale, y * scale, w * scale, h * scale)
+        for (x, y, w, h) in (occupied_boxes or [])
+    ]
+    cell_width = mask.shape[1]
 
     # Search the header strip only. The clef is the first thing on the staff,
     # and limiting the x-range keeps note ink from ever becoming a candidate.
-    hw = max(1, int(round(cell.width * config.header_frac)))
+    hw = max(1, int(round(cell_width * config.header_frac)))
     strip = mask[:, :hw]
 
     n, _labels, stats, _centroids = cv2.connectedComponentsWithStats(
@@ -466,11 +508,17 @@ def locate_clef(
         read = resolve_clef(
             "cClefAlto",
             anchor_y=axis_y,
-            staff_line_ys=cell.staff_line_ys_canonical,
+            staff_line_ys=staff_line_ys,
             config=geometry,
         )
         if read is None or read.source != "geometry":
             return None  # the snap was ambiguous — abstain
-        return LocatedClef(read=read, bbox=bbox, symmetry=round(symmetry, 4))
+        # Report the box in the cell's own coordinates, not analysis space.
+        inv = 1.0 / scale if scale else 1.0
+        return LocatedClef(
+            read=read,
+            bbox=tuple(int(round(v * inv)) for v in bbox),
+            symmetry=round(symmetry, 4),
+        )
 
     return None

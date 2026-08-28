@@ -33,6 +33,7 @@ PEAK_PROMINENCE_FRAC = 0.30      # peak must be 30% of (max - min) profile range
 GROUP_LINE_SPACING_TOLERANCE = 0.30  # ±30% gap variation within a 5-line group
 MAX_SYSTEM_GAP_FACTOR = 6.0      # fallback if auto-bipartition fails
 STAFF_LINE_MAX_GAP_SPACES = 1.0  # a break this wide is still the same staff line
+SYSTEM_BREAK_GAP_FACTOR = 2.5    # gap this many × the typical within-system gap = a break
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -217,6 +218,26 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
     else:
         mad_threshold = float("inf")
 
+    # Third threshold, against a statistic the breaks cannot contaminate.
+    # Both rules above are computed over ALL gaps, so on a page where system
+    # breaks are a large share of them — a monograph laying out many short
+    # music examples between paragraphs, say — the breaks drag the median and
+    # the bipartition up past themselves and the page reads as one system.
+    # (Observed on Nottebohm p.90: gaps of 65, 65, 65, 341, 394, 830, where a
+    # median of 203 puts both thresholds above the 341 and 394 breaks.)
+    #
+    # Staves WITHIN a system are set at a consistent small distance, so the
+    # low quartile of the gaps estimates that distance whatever fraction of
+    # the page is system breaks — and a break is a clear multiple of it.
+    if gaps:
+        typical_within_system = float(np.percentile(gaps, 25))
+        quartile_threshold = max(
+            typical_within_system * SYSTEM_BREAK_GAP_FACTOR,
+            mean_spacing * 2.0,   # floor: never split on a hair's difference
+        )
+    else:
+        quartile_threshold = float("inf")
+
     current_system = 0
     staves_sorted[0].system_index = 0
     for i in range(1, len(staves_sorted)):
@@ -229,6 +250,7 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
         is_break = (
             gap >= threshold
             or gap >= mad_threshold
+            or gap >= quartile_threshold
             or x_overlap_frac <= 0.5
         )
         if is_break:
