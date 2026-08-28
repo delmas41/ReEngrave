@@ -50,54 +50,104 @@ supplied (see "What component mode does not measure" below).
 
 | | correct | wrong | missed | correct abstentions |
 |---|---|---|---|---|
-| locator, per-staff | 10 | 7 | 19 | 8 |
-| locator, after the vote | 10 | **2** | 22 | 8 |
+| locator, per-staff | 14 | 6 | 14 | 8 |
+| locator, after the vote | 18 | **0** | 16 | 8 |
 
-Wrong answers down 71% for no loss of correct ones. The trade the vote makes is
-`wrong → missed`, and that is the right trade: a missed key signature leaves a
-staff where it already was, a wrong one re-pitches every note on it.
+The vote takes every remaining wrong answer off the page, and gains four
+correct ones on top — it carries a part's reading from the system where it was
+legible to the system where it was not. The trade it makes is `wrong → missed`,
+and that is the right trade: a missed key signature leaves a staff where it
+already was, a wrong one re-pitches every note on it.
 
-Both surviving errors are the same staff — the Beethoven 6 clarinet, whose one
-printed sharp was read as a flat. It agrees with the page's reference signature
-and so cannot be told from a non-transposing part by any structural argument.
+The two staves that used to survive as errors — the Beethoven 6 clarinet, the
+same part in both systems, printing one sharp against a page of flats — now
+come back missed rather than wrong. Nothing structural can tell a transposing
+part from a misread one, so abstaining is the correct end state for them, not a
+lucky one.
 
-Recall of about a third is the honest figure on this material. Where the layer
-does read a signature it reads it exactly: the three-flat staves come back with
-all three accidentals matched at residuals of 0.03 and 0.24 steps against a
-half-step tolerance.
+Thirty-four of the 42 staves carry a signature, so this is recall of about a
+half (18/34), up from about a third before the merge. Where the layer does read
+a signature it reads it exactly: the three-flat staves come back with all three
+accidentals matched at residuals of 0.03 and 0.24 steps against a half-step
+tolerance.
 
 ---
 
-## After the clef-branch merge (2026-08-28)
+## Retuning against the Phase-1 geometry (2026-08-28)
 
-The Phase-1 x-extent fix from `claude/clef-recognition-improvement-ab75f6`
-changes the geometry the CV locator was tuned against, and its heavier
-rule-stripping changes what survives in the header mask. Component mode moved,
-measurably and for the worse:
+The clef-branch merge moved the geometry this layer was tuned against, in two
+ways: `staff_detector._staff_x_extent` now bridges breaks of up to a staff
+space, and `header_ink` strips heavy system rules as well as thin ones. The
+figures above are AFTER retuning against that. Before it:
 
 | the two orchestral pages, after the vote | correct | wrong |
 |---|---|---|
 | before the merge | 10 | 2 |
-| after, with the merged `header_ink` | 6 | 7 |
-| after, with the pre-merge `header_ink` | 4 | 0 |
+| after the merge, untuned (`efd59f7`) | 6 | 7 |
+| **after this retune** | **18** | **0** |
 
-**It does not reach the output.** Pipeline mode is unchanged, verified
-like-for-like at identical settings on both sides of the merge:
+Two faults, both of them "the geometry moved and a rule that assumed the old
+geometry kept firing":
 
-| page | mode | before | after |
+**The header window stopped containing the header on three systems of four.**
+`staff_header._anchor_column` walked left from `Staff.x_start`, documented as
+safe because the longest strictly-contiguous run "can only push it right". Gap
+bridging removed that guarantee: the run now reaches back across the gap from
+the system bracket to the instrument name, so `x_start` lands in the TEXT, and
+a walk starting there never meets the bracket that was supposed to stop it.
+`system_left_edge` takes the MINIMUM over the system, so one such staff set the
+window for all eleven — 110 px too far left, which also stopped the window
+being trimmed at the system's own initial rule instead of starting there. On
+Beethoven 5 p.2 system 1 that window held the instrument names and no clef at
+all, and the locator read the letters of "Fl." and "Cor." as key signatures.
+The fix enforces the lost guarantee instead of assuming it: a full-band
+vertical rule is the staff's left boundary, so an anchor left of one is outside
+the staff and is moved past it.
+
+**Any large piece of ink could be "the clef".** The locator anchors the run on
+where the clef ends, and took that as the rightmost oversized cluster in the
+window — but a beam, a slur and a stemmed note group are all oversized too. On
+Beethoven 6 p.2 that put the anchor 13.6 staff spaces into a 16-space window,
+and the "a key signature is printed hard against its clef" rule then licensed
+ink nine spaces past the real clef. The two questions are now separate: a
+cluster is skipped for being too big to be an accidental, but it only anchors
+the run if it stands at the head of the window and has a clef's height. If
+nothing does, the locator abstains — `clef_right` of 0 used to mean "the anchor
+is at x = 0", which put the search window over the bracket and the margin.
+
+### Correcting the earlier record
+
+The note this section replaces said the merge regression "does not reach the
+output", on the strength of Beethoven 5 p.2 reading identically either side of
+the merge. That page does — its clef gate stays shut — but it was the only
+orchestral page measured end to end, and the generalisation was wrong.
+Beethoven 6 p.2 reads two staves in pipeline mode, and at `efd59f7` **both of
+them were wrong**:
+
+| page | mode | before (`efd59f7`) | after |
 |---|---|---|---|
-| wtc-p17 | pipeline | 10 correct / 0 wrong | 10 correct / 0 wrong |
+| wtc-p17 | pipeline | 10 correct / 0 wrong, 10/10 voted | 10 correct / 0 wrong, 10/10 voted |
 | beet5-p2 | pipeline | 0 correct / 0 wrong, 0/22 voted | 0 correct / 0 wrong, 0/22 voted |
+| pastoral-p2 | pipeline | **0 correct / 2 wrong**, 2/20 voted | **2 correct / 0 wrong**, 2/20 voted |
 
-On the degraded page the clef gate closes either way, so the locator never
-speaks and no wrong signature ships. The regression is confined to a mode that
-forces a path the pipeline does not take — which is precisely why component mode
-is documented below as not being a score for the layer.
+So this was a live defect in shipped output, not a latent one. The lesson is
+the cheap one: a mode that "does not ship" only proves it on the pages you
+actually ran it on.
 
-**The open follow-up** is to retune the locator against the new Phase-1
-geometry. Until that happens the component figures above are the honest state,
-and this section — not the tables further up, which are pre-merge — is the
-current record.
+### The window, measured without ground truth
+
+Hand-read ground truth exists for three pages, which is too few to tell whether
+a window fix generalises. `probe_header_windows.py` scores the WINDOW instead
+of the reading — a staff counts when a clef-sized cluster stands at the head of
+its measured window — which needs no ground truth and so can run over the whole
+corpus:
+
+```bash
+python3 benchmarks/omr-key-signature/probe_header_windows.py --scores 20 --pages 3
+```
+
+Across 26 pages of 20 scores, **186/455 staves → 233/455**. One page of the 26
+went backwards, by one staff, on a sub-staff-space shift in the left edge.
 
 ## What component mode does not measure
 
@@ -106,19 +156,23 @@ clef. That is deliberate — it isolates the reader from clef detection, which i
 a real ceiling on the end-to-end result and would otherwise hide what the reader
 itself can do — but it is **not a score for the layer**, for two reasons.
 
-**It bypasses the detector.** On WTC p.17 component mode scores 0 correct / 5
-wrong, forcing the locator onto a page the detector reads perfectly well. The
-pipeline scores 10/10 on that same page because it prefers the detector and
-falls back to the locator only where the detector is silent. That ordering is
-the whole game on clean engravings, and component mode inverts it.
+**It bypasses the detector.** Component mode forces the locator onto WTC p.17, a
+page the detector reads perfectly well; the pipeline scores 10/10 there because
+it prefers the detector and falls back to the locator only where the detector is
+silent. That ordering is the whole game on clean engravings, and component mode
+inverts it. (The locator now abstains on all ten of those staves rather than
+reading five of them wrongly, which is the right behaviour for a reader being
+shown a page that is not its job — but it is still not a measurement of the
+layer.)
 
 **It supplies the clef.** In the pipeline the clef must be read, and a staff
 whose clef is only the positional default is skipped, because a signature fitted
 against a guessed clef is a guess squared — measurably: with every staff
 defaulted to treble, two bass staves carrying three flats fitted cleanly as two
-sharps. So end-to-end recall on degraded scans is lower than component mode
-suggests, and key-signature reading **inherits the clef problem**. The two
-improve together.
+sharps. So end-to-end recall on degraded scans is far lower than component mode
+suggests — two staves of twenty on Beethoven 6 p.2, none at all on Beethoven 5
+p.2 — and key-signature reading **inherits the clef problem**. The two improve
+together.
 
 Use `--mode pipeline` for the number that describes what lands in the output.
 
