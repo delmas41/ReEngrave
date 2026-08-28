@@ -1,0 +1,53 @@
+{
+  "_comment": [
+    "Stem counts read off real scanned cells by eye (Sean, 2026-08-28). Before",
+    "this there was no stem ground truth on a real score at all, which blocked",
+    "judging both the residual over-count on the LilyPond reference sheet and",
+    "the ~30% of stems that a raised height floor would have removed.",
+    "",
+    "Counting rule given: one stem per note OR CHORD — three noteheads sharing",
+    "one stem count once. Whole notes have none. Barlines, ledger lines and the",
+    "vertical strokes of sharps, naturals and flats are NOT stems; that last",
+    "exclusion is the whole point of the exercise.",
+    "",
+    "The cells were chosen adversarially rather than at random: eleven are cells",
+    "where the two candidate settings (a 2.0- and a 2.8-staff-space height",
+    "floor) disagreed, by up to 10 stems, so a hand count decides between them",
+    "directly. Four are controls where the two settings agree.",
+    "",
+    "WHAT IT DECIDED. Neither height floor is right, and the failure is",
+    "asymmetric by score. The 2.8 floor is nearly exact on Boléro (|err| 1 over",
+    "4 cells) because there the surplus really was accidental strokes — but it",
+    "destroys keyboard music, where stems in beamed groups are legitimately",
+    "short: one WTC cell holds 15 stems and the 2.8 floor finds 5. Height is the",
+    "wrong discriminator. What separates them is that an accidental's strokes",
+    "come in PAIRS and a stem is single; that rule takes summed |error| from 60",
+    "to 24 here, and the reference sheet from +7 to -1 on a truth of 48."
+  ],
+  "labeler": "sean",
+  "date": "2026-08-28",
+  "cells": [
+    {"n": 17, "score": "lamer-p25", "dpi": 300, "cell_index": 2, "stems": 7},
+    {"n": 18, "score": "bolero-p31", "dpi": 300, "cell_index": 12, "stems": 7},
+    {"n": 19, "score": "mahler-5-p11", "dpi": 300, "cell_index": 5, "stems": 5},
+    {"n": 20, "score": "wtc-p5", "dpi": 600, "cell_index": 19, "stems": 15},
+    {"n": 21, "score": "lamer-p25", "dpi": 300, "cell_index": 14, "stems": 7},
+    {"n": 22, "score": "bolero-p31", "dpi": 300, "cell_index": 14, "stems": 9},
+    {"n": 23, "score": "mahler-5-p11", "dpi": 300, "cell_index": 23, "stems": null,
+     "note": "labeler could not count it — the stems are cut off in the crop. Recorded as unsure and excluded from scoring rather than guessed."},
+    {"n": 24, "score": "lamer-p25", "dpi": 300, "cell_index": 7, "stems": 0},
+    {"n": 25, "score": "bolero-p31", "dpi": 300, "cell_index": 0, "stems": 7},
+    {"n": 26, "score": "wtc-p5", "dpi": 600, "cell_index": 3, "stems": 8},
+    {"n": 27, "score": "mahler-5-p11", "dpi": 300, "cell_index": 8, "stems": 3},
+    {"n": 28, "score": "bolero-p31", "dpi": 300, "cell_index": 19, "stems": 11},
+    {"n": 29, "score": "wtc-p5", "dpi": 600, "cell_index": 21, "stems": 9},
+    {"n": 30, "score": "lamer-p25", "dpi": 300, "cell_index": 8, "stems": 2},
+    {"n": 31, "score": "lamer-p25", "dpi": 300, "cell_index": 11, "stems": 4}
+  ],
+  "scores": {
+    "mahler-5-p11": "PDF Scores/Mahler_5_.pdf, page index 11",
+    "wtc-p5": "PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf, page index 5",
+    "bolero-p31": "PDF Scores/IMSLP421137-PMLP03667-Ravel_Bolero.pdf, page index 31",
+    "lamer-p25": "PDF Scores/IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf, page index 25"
+  }
+}

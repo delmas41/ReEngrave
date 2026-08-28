@@ -44,6 +44,8 @@ class Staff:
     x_start: int                # left edge of staff content (after clef margin)
     x_end: int                  # right edge
     system_index: int = 0       # which system this staff belongs to (group of staves played together)
+    group_index: int = 0        # bracket group within the system (winds | brass | strings) — see system_grouping.py
+    slot_index: int = -1        # stable part identity across systems/pages, -1 = unassigned — see slots.py
 
     @property
     def top_y(self) -> int:

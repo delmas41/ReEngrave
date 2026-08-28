@@ -24,6 +24,7 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 - **July — deterministic verification layers.** Five internal-consistency checks (time-sig, rhythm sums, measure counts, transposition-aware key agreement, advisory clef-from-register) that ABSTAIN where detection is blind rather than guess. Two training experiments were run properly and **disproven**: ScoreAug/Augraphy domain augmentation made real-cell recall worse, not better, and fine-tuning the detector on clef cells collapses dense-page noteheads. Both are dead recipes; don't retry them.
 - **August — a trusted Phase-1 baseline.** Layout had no regression baseline at all, which had blocked several fixes. Now: a hand-verified ground-truth fixture, a corpus probe, and xfails for known gaps. That unblocked real bugs — phantom staves, music deleted after a false barline, staff-line removal being a no-op on thick-line prints, body text detected as staves.
 - **August — the header layer.** Clef *reading* is now measured rather than classified (alto/tenor/soprano are the same glyph on different lines, so no classifier can separate them), and key signatures are read by fitting accidental POSITIONS to the slot table for (clef, N) and reconciling across the page.
+- **August — contextual analysis, and the over-detection bug it turned up.** The pipeline now knows *which staff is which instrument*: systems from vertical connectivity (43% → 86%), instrument identity from the PDF text layer and, for scans, from a margin reader, and stable part slots across systems and pages. Re-running the whole-pipeline validation for the first time since May then exposed the single largest accuracy bug in the project — `imgsz` was set so high the detector was reporting 2–4× the notes that exist. Fixing it took end-to-end pitch precision from **0.144 to 1.000** on the keyboard fixture.
 
 ---
 
@@ -88,6 +89,37 @@ On by default in `transcribe`; `--no-header-reading` turns it off. No extra weig
 
 Measured, given a correct clef, on 42 hand-read orchestral staves: **18 correct / 0 wrong / 16 missed / 8 correct abstentions**. End to end on a clean engraving (Bach WTC p.17) 10/10. End to end on degraded orchestral prints it is far lower — 2 staves of 20 on Beethoven 6 p.2, none on Beethoven 5 p.2 — because a staff whose clef is only the positional default is skipped by design. **Key signatures inherit the clef problem, and clef coverage is the ceiling on both.**
 
+### Contextual analysis — which staff is which instrument (`tools/omr/`)
+
+A human reading a large score deduces most of it from context: which staves transpose,
+what instrument order to expect, what the natural groupings are. The pipeline now does
+some of that.
+
+- **`system_grouping.py`** — systems from **vertical connectivity**, not gap size. A
+  system break is a gap no vertical ink crosses, because barlines and the bracket run
+  through a system and nothing runs between two of them. System-count accuracy **43% →
+  86%** over 14 bracket-verified pages, and spurious single-staff "systems" 19 → 0. The
+  same pass recovers the instrument-family grouping as `Staff.group_index` (verified on
+  Beethoven 9: 4 woodwinds | 2 horns | 5 strings).
+- **`instruments.py` + `staff_labels.py`** — instrument identity from the PDF's text
+  layer, free. 18/65 IMSLP score PDFs have one; **79% of labelled staves resolve**. The
+  lexicon maps a printed label to instrument, family, default clef, written range and
+  transposition (`fifths_offset = -fifths(key_name)`).
+- **`staff_labels_vision.py`** — the same for scans, reading the margin with Claude.
+  Opt-in (`vision_fallback=True`), because it costs money — about a cent per system, and
+  bounded per *work* rather than per page since slots propagate one reading. Validated
+  against the text layer as free ground truth: **25 agree, 0 disagree, 30 recovered,
+  0 missed** on 76 staves.
+- **`slots.py`** — stable part identity across systems and pages, by **monotone sequence
+  alignment**. Index matching fails because a system omits the staves of instruments
+  tacet through it. **100% label purity**, 198/217 staves assigned.
+- **`clef_correction.py`** — proposes a clef from the instrument's written range where
+  no reader read one. Gated on `staff["clef_source"]` being absent, never on a scan for
+  clef detections: the geometry readers emit no detection, so a scan would overwrite a
+  confidently-read clef.
+
+Benchmarks: `benchmarks/omr-system-grouping-2026-08/`, `benchmarks/omr-margin-labels-2026-08/`.
+
 ### Hand-labeled training data (`data/user-labeled/`)
 
 | Version | Cells | Content |
@@ -113,12 +145,11 @@ The branch also carries **post-experiment OMR improvements that may still be val
 
 ## Unmerged work on branches
 
-Audit 2026-08-28. Seventeen branches hold commits absent from main; these are the ones worth a decision. Anything not listed is an archive of a concluded experiment.
+Audit 2026-08-28 (contextual-analysis branch merged since).  Branches holding commits absent from main; these are the ones worth a decision. Anything not listed is an archive of a concluded experiment.
 
 | Branch | Commits | What it has | Disposition |
 |---|---|---|---|
 | `claude/omr-clef-tenor-fixture` | 1 | **The F-clef dot veto fires on C clefs.** Fixes the engraved reference sheet 4/5 → 5/5 and orchestral clef precision 1/2 → 3/4, with Bach still at 0 false positives. | **Deliberately held back.** Correct in isolation; makes shipped key signatures worse, because the clefs it gains open the key-sig gate on staves the key-sig reader misreads. Reasons in `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`. Ship once the viola misread is fixed. |
-| `claude/reengraver-contextual-analysis-29cdd5` | 25 | Contextual analysis: system grouping by vertical connectivity (43% → 86%), instrument labels from the PDF text layer (79%), slot identity by monotone DP alignment (92% purity) | Evaluate for merge — the shipped parts are described in NOTES.md |
 | `claude/omr-info-retention-erasure-c26534` | 13 | Information retention through the erasure/removal stages | Unreviewed |
 | `claude/recognition-improvement-next-2f1709` | 10 | Follow-on recognition work | Unreviewed |
 | `claude/omr-dossier-verification-layer-eaf6d0` | 4 | Dossier-guided verification, slice 1 (meter back-fill + column notation-math) | Active WIP; the reconciliation recipe against main is written up in `docs/internal-consistency-checks.md` but not executed |
@@ -132,6 +163,19 @@ Audit 2026-08-28. Seventeen branches hold commits absent from main; these are th
 
 ## What does not yet work / known limitations
 
+
+- **Detection was massively over-reporting until 2026-08-28.** `imgsz` defaulted to 2048
+  in the CLI and 1280 in the backend; ultralytics letterboxes to `imgsz²` regardless of
+  cell size, so both were simply buying anchors and false noteheads. Now 512 everywhere.
+  Anything measured before that date — notehead counts, "100% pitch coverage", the
+  July confidence probe's false-positive flood — was measured through this and may need
+  re-reading. `benchmarks/omr-imgsz-sweep-2026-08/findings.md`.
+- **Instrument identity needs a text layer or a paid vision call.** 18/65 corpus PDFs
+  have a text layer; the rest need `vision_fallback=True`.
+- **One-line percussion staves are invisible.** `_group_into_staves` accepts only
+  five-peak windows, so a single-line staff produces no `Staff` at all and every staff
+  below it carries a `staff_index` one lower than its true slot. Proven in
+  `tools/omr/tests/test_system_grouping.py`.
 **OMR**
 
 - **Custom YOLO classes (barlines, textDynamic) caused catastrophic forgetting.** Phase 3.4 expanded `nc` from 208 → 214; F1 collapsed to 79.3%. Currently: barlines via classical CV; textDynamic not detected. Re-introduce when there are 200+ examples per new class or seed with synthetic warm-up. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
@@ -178,6 +222,7 @@ Audit 2026-08-28. Seventeen branches hold commits absent from main; these are th
 | 2026-08-28 | **Phase 1 finally has a trusted baseline** — a hand-verified ground-truth fixture, a corpus probe and xfails for known gaps. That unblocked fixes that had been parked for want of one: phantom-staff collapse, music deleted after a false barline, staff-line removal being a total no-op on thick-line prints (0.9% → 89.7%), and paragraphs of body text being detected as staves. |
 | 2026-08-28 | **The staff-header layer.** Clef reading by geometry rather than classification (`clef_geometry.py` + a CV C-clef locator), key signatures by fitting accidental positions to the slot table and reconciling across the page (`key_signature_*.py`), both working from one measured header window (`staff_header.py`). 18 correct / 0 wrong on 42 hand-read orchestral staves given a correct clef; 10/10 end-to-end on a clean engraving. |
 | 2026-08-28 | **Retuned against the new Phase-1 geometry, and found a live defect.** The gap-bridging x-extent fix broke an invariant the header window relied on; correcting it took the two orchestral ground-truth pages from 6 correct / 7 wrong to 18 / 0, and turned two *shipped* wrong key signatures on Beethoven 6 p.2 into two correct ones. Also fixed brace residue blocking the clef search (Nottebohm coverage 32 → 43 cells). |
+| 2026-08-28 | **Contextual analysis + the over-detection fix.** Systems by connectivity (43% → 86%), instrument identity from the text layer and, for scans, a margin reader, stable part slots (100% label purity), clef from instrument range. Re-running the whole-pipeline validation for the first time since May found `imgsz` over-reporting notes 2–4×; fixing it took end-to-end pitch precision 0.144 → 1.000 on the keyboard fixture, and every metric on every fixture improved. Also disproved clef-from-key-fit with measurements. |
 
 ---
 
@@ -215,7 +260,8 @@ Parked (carried from NOTES.md — see there for full context):
 - **Training:** [`tools/omr/training/`](tools/omr/training/). Cloud-GPU notes in `HANDOFF_PREMIUM_TRAINING.md` + `VAST_AI_SETUP.md`. Hand-labeled data: [`data/user-labeled/`](data/user-labeled/).
 - **Benchmarks:** [`benchmarks/`](benchmarks/). The headline write-up is [`benchmarks/omr-phase4-session/retrospective.md`](benchmarks/omr-phase4-session/retrospective.md).
 - **Setup & operational reference:** [`CLAUDE.md`](CLAUDE.md).
-- **Open ideas:** [`NOTES.md`](NOTES.md).
+- **Open ideas:** [`NOTES.md`](NOTES.md) — including the **contextual analysis roadmap**.
+- **Cross-session picture (2026-08-28):** [`docs/state-of-play-2026-08-28.md`](docs/state-of-play-2026-08-28.md).
 
 ---
 
