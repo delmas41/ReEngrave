@@ -86,12 +86,25 @@ def test_bridging_counts_flag_degenerate_gaps_as_no_evidence():
 def test_robust_x_window_ignores_a_broken_x_start():
     # Staff.x_start is the longest unbroken ink run, so a degraded scan can put
     # it far right (Beethoven 9 p60 staff 3: 885 against ~275 for neighbours).
-    staves = _staves_from([[100 + 12 * i] * 5 for i in range(5)])
+    # The window is the median extent widened by WINDOW_MARGIN_SPACINGS, so it
+    # must sit near 275/2485 and nowhere near the outlier.
+    staves = _staves_from([[100 + LINE_SPACING * i] * 5 for i in range(5)])
     for s in staves:
         s.x_start, s.x_end = 275, 2485
     staves[2].x_start, staves[2].x_end = 885, 1826
     x0, x1 = _robust_x_window(staves)
-    assert (x0, x1) == (275, 2485)
+    assert 200 < x0 <= 275, "outlier x_start must not drag the window right"
+    assert 2485 <= x1 < 2560, "outlier x_end must not drag the window left"
+
+
+def test_robust_x_window_reaches_past_the_staff_extent():
+    """The bracket sits left of where the staff lines start and the closing
+    barline right of where they end; a window clipped to the staff extent
+    misses both (Beethoven 5 p10 at 600 dpi)."""
+    staves = _staves_from([[100 + LINE_SPACING * i for i in range(5)]])
+    staves[0].x_start, staves[0].x_end = 1000, 2000
+    x0, x1 = _robust_x_window(staves)
+    assert x0 < 1000 and x1 > 2000
 
 
 # ── assign_systems ──────────────────────────────────────────────────────────

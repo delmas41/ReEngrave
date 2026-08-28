@@ -32,7 +32,19 @@ on the same fact to separate real barlines from stem columns — this module
 applies it one level earlier, to decide the grouping in the first place.
 
 Per adjacent staff pair we count the columns whose ink covers
->= `BRIDGE_INK_FRACTION` of the gap band. Measured counts are sharply trimodal:
+>= `BRIDGE_INK_FRACTION` of the band running from the **top line of the upper
+staff to the bottom line of the lower staff**.
+
+Measuring the gap alone is not enough. On a tightly-packed page the gap band is
+only a few line spacings tall, and a stem hanging below the upper staff plus a
+stem rising into the lower one will fill it: Beethoven 9 p25 gap 11 — a real
+system break — had 66 "crossing" columns scattered across the page, all of them
+music ink. Extending the band through both staves discriminates, because a
+barline or bracket is inked over that whole height while a stem is not (a
+column crossing a staff away from a barline only meets its five lines, ~15%
+coverage).
+
+Measured counts are sharply trimodal:
 
     0            -> system break
     ~4-18        -> a bracket-GROUP boundary inside a system: only the bracket
@@ -61,6 +73,7 @@ from __future__ import annotations
 
 import statistics
 
+import cv2
 import numpy as np
 
 from .types import Staff
@@ -69,9 +82,26 @@ from .types import Staff
 # whole band. Keeps slurs, hairpins, text and speckle from bridging.
 BRIDGE_INK_FRACTION = 0.8
 
+# Printed rules break. A bracket that is solid at 300 dpi resolves into a
+# dotted line at 600 dpi, and then no column clears BRIDGE_INK_FRACTION and a
+# system splits at every bracket-group gap — measured on Beethoven 5 p10, which
+# grouped correctly as 2 systems at 300 dpi and wrongly as 4 at 600. So small
+# vertical gaps are closed before coverage is measured, with a tolerance tied
+# to staff line spacing so it scales with resolution rather than being a
+# pixel constant. (`staff_header._walk_left` bridges gaps for the same reason.)
+BRIDGE_GAP_TOLERANCE_SPACINGS = 0.6
+
 # Within a system, a gap bridged by less than this fraction of the system's
 # typical bridging is a bracket-group boundary (winds | brass | strings).
 GROUP_BOUNDARY_RATIO = 0.5
+
+# The scan window must reach PAST the staff lines on both sides: the system
+# bracket is engraved just left of where the staff lines start, and the closing
+# system barline just right of where they end. On Beethoven 5 p10 at 600 dpi the
+# only columns crossing two bracket-group gaps sat at x=334-353 and x=2630+,
+# against a median staff extent of 355..2629 — so a window clipped to the staff
+# extent saw nothing and split the system. Margin scales with line spacing.
+WINDOW_MARGIN_SPACINGS = 4.0
 
 # Two staves that barely overlap horizontally are in different columns of a
 # multi-column layout, never the same system — regardless of connectivity.
@@ -86,9 +116,13 @@ MIN_X_OVERLAP_FRAC = 0.5
 
 
 def _robust_x_window(staves: list[Staff]) -> tuple[int, int]:
-    """Median staff extent across the page — robust to broken `x_start`."""
-    x0 = int(statistics.median([s.x_start for s in staves]))
-    x1 = int(statistics.median([s.x_end for s in staves]))
+    """Scan window: the median staff extent — robust to a broken `x_start` —
+    widened by `WINDOW_MARGIN_SPACINGS` so it takes in the bracket on the left
+    and the closing system barline on the right."""
+    spacing = statistics.median([s.line_spacing_px for s in staves]) or 1.0
+    margin = int(round(spacing * WINDOW_MARGIN_SPACINGS))
+    x0 = int(statistics.median([s.x_start for s in staves])) - margin
+    x1 = int(statistics.median([s.x_end for s in staves])) + margin
     return x0, x1
 
 
@@ -105,7 +139,9 @@ def gap_bridging_counts(
     ink_fraction: float = BRIDGE_INK_FRACTION,
 ) -> list[int]:
     """For each adjacent staff pair (top→bottom), the number of columns whose
-    ink spans at least `ink_fraction` of the gap between them.
+    ink spans at least `ink_fraction` of the gap between them, after closing
+    vertical breaks shorter than `BRIDGE_GAP_TOLERANCE_SPACINGS` of a staff
+    line spacing.
 
     `staves` must be sorted by `top_y`. Returns `len(staves) - 1` counts; a
     pair whose gap or scan window is degenerate yields `-1` ("no evidence").
@@ -120,13 +156,16 @@ def gap_bridging_counts(
 
     counts: list[int] = []
     for upper, lower in zip(staves, staves[1:]):
-        top = upper.bottom_y + 2
-        bot = lower.top_y - 2
-        if bot <= top or x1 <= x0 or top < 0 or bot > height:
+        top = max(0, upper.bottom_y + 2)
+        bot = min(height, lower.top_y - 2)
+        if bot <= top or x1 <= x0:
             counts.append(-1)
             continue
-        band = binary[top:bot, x0:x1] < 128
-        counts.append(int((band.mean(axis=0) > ink_fraction).sum()))
+        band = (binary[top:bot, x0:x1] < 128).astype(np.uint8)
+        spacing = max(upper.line_spacing_px, lower.line_spacing_px)
+        k = max(3, int(round(spacing * BRIDGE_GAP_TOLERANCE_SPACINGS)) * 2 + 1)
+        closed = cv2.morphologyEx(band, cv2.MORPH_CLOSE, np.ones((k, 1), np.uint8))
+        counts.append(int((closed.mean(axis=0) > ink_fraction).sum()))
     return counts
 
 

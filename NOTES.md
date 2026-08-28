@@ -28,39 +28,47 @@ The four human deductions and where they stand:
 **Step 1 DONE (2026-08-28): system grouping rebuilt on vertical connectivity.**
 `tools/omr/system_grouping.py` + wired into `staff_detector.detect_staves`. Slots are
 assigned per system, so correct systems are a hard prerequisite — and the gap-size
-heuristic was badly wrong on exactly the scores that matter. Measured on Beethoven 9
-(imslp-516488, 300 dpi, 12 pages sampled every 5 from p20):
+heuristic was badly wrong on exactly the scores that matter. Full writeup:
+[benchmarks/omr-system-grouping-2026-08/findings.md](benchmarks/omr-system-grouping-2026-08/findings.md).
 
-| | gap-based (before) | connectivity (after) |
-|---|---|---|
-| "systems" found | 52 | 18 |
-| distinct sizes | 12 | 7 |
-| **single-staff "systems"** | **19 (37% of all)** | **0** |
-| most common size | 1 staff | 12 staves |
+Measured on 14 pages (Beethoven 9 + Beethoven 5 p10 at 300 and 600 dpi), against
+ground truth read off the **left brackets**:
 
-Page 40 alone was reported as `[3, 1, 2, 1, 5]`; it is one 12-staff system. The cause
-is named in the old code's own comment: its MAD rule deliberately split at "a
-clearly-bigger-than-normal gap between bracketed sub-systems (winds vs brass vs
+| | gap heuristic | connectivity |
+|---|--:|--:|
+| system count correct | **6/14 (43%)** | **12/14 (86%)** |
+| spurious single-staff "systems" | **19** | **0** |
+
+The cause is named in the old code's own comment: its MAD rule deliberately split at
+"a clearly-bigger-than-normal gap between bracketed sub-systems (winds vs brass vs
 strings)" — but those blocks are *inside* one system. Signal used instead: **a system
 break is a gap that no vertical ink crosses** (barlines and the bracket run through a
-system; nothing crosses between two systems), the same fact
+system; nothing crosses between two), the same fact
 `measure_extractor._intersystem_connectivity` already uses one level downstream.
 
 **Bonus: this also recovers the instrument-family grouping** as `Staff.group_index`.
-Bridging counts are trimodal — `0` = system break, `~4-18` = bracket-group boundary
+Bridging counts are trimodal — `0` = system break, `~4-25` = bracket-group boundary
 (only the bracket crosses), `~35-95` = inside a group. Visually verified on Beethoven 9
 p70: two systems, each grouped **4 woodwinds | 2 horns | 5 strings**. That is direct
 input to #3, and it means the old detector was finding the right *groups* and
 mislabelling them as systems.
 
-Two traps found and recorded in the module:
-- **Do not use `Staff.x_start` for the scan window** — p60 staff 3 reports
-  `x_start=885, x_end=1826` against ~275/~2485 for its neighbours, which produced a
-  false system break. Use the median across the page. Same root cause as the
-  header-window problem in `staff_header.py`.
-- **Do not gate a break on gap size.** An earlier revision required a break to exceed
-  the median gap; on p25 the true break between two 12-staff systems has a 68 px gap
-  while intra-system gaps reach 99 px, so it suppressed a real break.
+Remaining failures (2/14) are **merges** — a real break that something crosses. The old
+heuristic fails the opposite way, shredding one system into as many as 12.
+
+**Method warning, worth remembering.** Two attempts at ground truth were wrong before
+the bracket crop settled it, and both produced confident numbers: a ground-truth-free
+proxy ("instrumentation is constant, so staves-per-system should cluster tightly")
+rewards merging everything into one system; and counting systems off a whole-page
+thumbnail mislabels single 13-staff systems as 2, because at that scale the
+brass-to-strings gap looks like a system break. Render the left margin and count
+brackets.
+
+Traps found, each costing a measurement, all documented in the module: `Staff.x_start`
+is unusable as a scan window (p60 staff 3 reports 885 against ~275 for its neighbours);
+the window must reach *past* the staff extent to see the bracket and the closing
+barline; and coverage needs vertical gap-closing or it is resolution-sensitive
+(B5 p10 grouped as 2 systems at 300 dpi and 4 at 600).
 
 **Step 2 (next): assign stable slot ids** across systems and pages. Systems with
 identical structural signatures (staff count + group sizes) map slot-to-slot directly —
