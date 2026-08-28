@@ -88,7 +88,11 @@ def summarize(result: dict) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dpi", type=int, default=600)
+    # The May README does not record its DPI. Inferred as 300: bach-wtc p5
+    # gives 496 noteheads at 300 against May's 445, and 686 at 600. Running the
+    # comparison at 600 inflates every count and reads as a huge regression that
+    # is purely a rendering-resolution difference.
+    ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", default=str(Path(__file__).parent / "results-2026-08-28.json"))
     ap.add_argument("--only", default=None, help="run one label")
     args = ap.parse_args()
