@@ -2123,7 +2123,7 @@ def transcribe(
     pages: list[int],
     weights: str,
     conf_threshold: float = 0.25,
-    imgsz: int = 2048,
+    imgsz: int = 512,
     iou_threshold: float = 0.5,
     agnostic_nms: bool = True,
     dpi: int = 600,
@@ -2697,7 +2697,13 @@ def main(argv: list[str] | None = None) -> int:
                          "exactly. See tools/omr/clef_locator.py.")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
-    ap.add_argument("--imgsz", type=int, default=2048,
+    # 512 rather than 2048: measured on the end-to-end fixtures
+    # (benchmarks/omr-imgsz-sweep-2026-08/findings.md), where the keyboard
+    # fixture's pitch precision goes 0.144 -> 1.000 and duration 0.0 -> 1.000.
+    # ultralytics letterboxes to imgsz^2 regardless of cell size, so a large
+    # value is simply more anchors and more false noteheads; recall does not
+    # improve to pay for it.
+    ap.add_argument("--imgsz", type=int, default=512,
                     help="YOLO inference image size (default: 2048 — matches "
                          "the production weights' fine-tuning resolution)")
     ap.add_argument("--iou", type=float, default=0.5,
