@@ -181,13 +181,42 @@ beams do sit just outside the staff at ledger offsets.
 
     python3 -m tools.omr.training.line_detection_eval --hand-only
 
+### The anchor floor, re-tested on ten more cells
+
+2.8 was chosen on six cells and flagged as the value most at risk of being
+over-fitted, so ten more were counted (cells 7-16: four Boléro, three Beethoven
+5, two La Mer, one Mahler). It held, and the failure mode changes character
+around it:
+
+| anchor floor | reference sheet | hand error | exact | under-counts |
+|---|---|---|---|---|
+| 2.0 | 3 | 24 | 5 | 1 |
+| 2.4 | 3 | 13 | 8 | 1 |
+| **2.8** | **3** | **9** | **10** | **1** |
+| 3.0 | 3 | 11 | 9 | **3** |
+| 3.2 | 7 | 12 | 9 | 3 |
+
+Below 2.8 the count runs high; above it real beams start being rejected and
+under-counts triple. Over the sixteen hand-counted cells: 10 exact, error 9, and
+**every error but one is an over-count** — recall is not the problem.
+
+One label was corrected in the process. Cell 9 was first given as 2 and is 4:
+two 16th groups, each carrying a primary AND a secondary bar. Bars-versus-groups
+is the one genuine ambiguity in the counting rule, and it is worth stating
+explicitly when asking for more labels.
+
 ### Still open
 
-The 2.8-space anchor floor was chosen on a six-cell sample plus the engraving
-convention; it is not a broad plateau (2.4 and 3.0 both score worse), so it is
-the value most at risk of being over-fitted to those six cells. There is still
-no stem ground truth on a real score. The residual ~6-stem over-count on the
-reference sheet (40 against 34) is unexplained.
+**Slurs that run parallel to a beam.** The residual over-counts on Boléro are
+not ledger lines but slurs: a slur arcing just above a beam group is long,
+horizontal, and close enough to the stem ends to pass the two-stem test, so a
+group of two bars under a slur reports three. The distinguishing feature is
+curvature — a beam is straight and a slur bends — which is measurable but is its
+own piece of work.
+
+**Stems still have no ground truth on a real score.** That blocks judging both
+the ~30% of stems a raised floor would remove and the residual ~6-stem
+over-count on the reference sheet (40 against 34).
 
 ## Tests
 
