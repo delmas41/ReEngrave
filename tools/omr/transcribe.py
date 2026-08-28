@@ -149,7 +149,15 @@ Output schema (JSON):
                                             # not read as a clean 5-line staff.
                       "line_ys_page": [268, 291, 314, 337, 360],  # top → bottom
                       "line_spacing_px": 23.0,
-                      "x_start": 186, "x_end": 1755
+                      "x_start": 186, "x_end": 1755,
+                      # What those five ideal rows cost. Both are measured
+                      # (staff_detector.measure_line_geometry) and both are
+                      # null when the lines were too faint to trace.
+                      "line_thickness_px": [4.0, 5.0, 4.0, 5.0, 4.0],
+                                            # ink per line — what staff-line
+                                            # removal has to erase
+                      "line_wander_px": 1.5 # how far the printed line strays
+                                            # from its nominal row
                   },
                   "measures": [
                     {
@@ -854,12 +862,27 @@ def _staff_geometry(staff: Staff | None) -> dict[str, Any] | None:
     """
     if staff is None or len(staff.line_ys) != 5:
         return None
-    return {
+    geom: dict[str, Any] = {
         "line_ys_page": [int(y) for y in staff.line_ys],
         "line_spacing_px": round(float(staff.line_spacing_px), 3),
         "x_start": int(staff.x_start),
         "x_end": int(staff.x_end),
     }
+    # What the five ideal rows above cost: how much ink each printed line
+    # actually occupies, and how far it strays from its row. Both are
+    # measurements of what staff-line removal erases (`measure_line_geometry`);
+    # null when the lines were too faint or broken to trace.
+    geom["line_thickness_px"] = (
+        [round(float(t), 3) for t in staff.line_thickness_px]
+        if staff.line_thickness_px
+        else None
+    )
+    geom["line_wander_px"] = (
+        round(float(staff.line_wander_px), 3)
+        if staff.line_wander_px is not None
+        else None
+    )
+    return geom
 
 
 def parse_pages(spec: str, n_pages: int) -> list[int]:

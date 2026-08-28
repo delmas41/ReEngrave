@@ -247,7 +247,11 @@ current production weights — see "Known limitations" below.
                 "line_ys_page":    [268, 291, 314, 337, 360],  // top → bottom
                 "line_spacing_px": 23.0,        // mean gap
                 "x_start":         186,
-                "x_end":           1755
+                "x_end":           1755,
+                // What the five ideal rows above COST — measured, and null
+                // when the lines were too faint or broken to trace.
+                "line_thickness_px": [4.0, 5.0, 4.0, 5.0, 4.0],  // ink per line
+                "line_wander_px":    1.5        // departure from nominal
               },
               "n_measures":      4,
               "measures": [

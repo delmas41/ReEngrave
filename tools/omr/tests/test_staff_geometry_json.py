@@ -22,6 +22,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from tools.omr.clef_geometry import resolve_clef, resolve_clef_for_detection
 from tools.omr.measure_extractor import _build_measure_cell
@@ -36,12 +37,13 @@ STAFF_YS = [100, 120, 140, 160, 180]  # spacing 20, span 80
 MEASURE_X0, MEASURE_X1 = 50, 250
 
 
-def _cell_and_staff():
+def _cell_and_staff(staff: Staff | None = None):
     """One real MeasureCell off a synthetic page, plus the Staff it came from.
 
     Built through `_build_measure_cell` rather than by hand so the canonical
     rescale is the production one — the scale factor and the canonical line
-    positions are whatever the real code computes.
+    positions are whatever the real code computes. Pass a `staff` to re-cut the
+    cell from one whose measured line geometry has been set.
     """
     page = PageImage(
         pdf_path=Path("synthetic.pdf"),
@@ -50,10 +52,11 @@ def _cell_and_staff():
         rgb=np.full((PAGE_H, PAGE_W, 3), 255, dtype=np.uint8),
         binary=np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8),
     )
-    staff = Staff(
-        page_index=0, staff_index=0, line_ys=list(STAFF_YS),
-        x_start=MEASURE_X0, x_end=850, system_index=0,
-    )
+    if staff is None:
+        staff = Staff(
+            page_index=0, staff_index=0, line_ys=list(STAFF_YS),
+            x_start=MEASURE_X0, x_end=850, system_index=0,
+        )
     pws = PageWithStaves(page=page, staves=[staff])
     cell = _build_measure_cell(pws, staff, 0, MEASURE_X0, MEASURE_X1, 0)
     assert cell is not None
@@ -172,3 +175,50 @@ class TestAbstention:
         # A consumer checks one key. Emitting nothing at all would be
         # indistinguishable from an older file that predates the block.
         assert _staff_geometry(None) is None
+
+
+class TestPrintedLineGeometry:
+    """`staff_geometry` also records what the five ideal rows COST — how much
+    ink each printed line occupies, and how far it strays from its row. Both
+    describe what staff-line removal erases, and the erased image can no longer
+    answer either question."""
+
+    def test_emitted_when_the_lines_were_measured(self):
+        _, staff = _cell_and_staff()
+        staff.line_thickness_px = [4.0, 5.0, 4.0, 5.0, 4.0]
+        staff.line_wander_px = 1.5
+        geom = _staff_geometry(staff)
+        assert geom["line_thickness_px"] == [4.0, 5.0, 4.0, 5.0, 4.0]
+        assert geom["line_wander_px"] == 1.5
+
+    def test_null_not_missing_when_the_lines_were_not_traced(self):
+        # A faint or broken staff still gets the keys, so a consumer can tell
+        # "not measurable" from "this file predates the fields".
+        _, staff = _cell_and_staff()
+        staff.line_thickness_px = None
+        staff.line_wander_px = None
+        geom = _staff_geometry(staff)
+        assert geom["line_thickness_px"] is None
+        assert geom["line_wander_px"] is None
+
+    def test_thickness_reaches_the_cell_in_its_own_scale(self):
+        # Canonical px, not page px — the cell's consumers work in the frame
+        # detections[].bbox is in, and a thickness in the wrong frame is worse
+        # than none at all.
+        cell, staff = _cell_and_staff()
+        assert cell.staff_line_thickness_canonical is None  # nothing measured
+
+        staff.line_thickness_px = [4.0, 4.0, 4.0, 4.0, 4.0]
+        rescaled, _ = _cell_and_staff(staff)
+        assert rescaled.staff_line_thickness_canonical == pytest.approx(
+            4.0 * rescaled.upscale_factor, abs=1e-3
+        )
+
+    def test_json_serializable(self):
+        import json
+
+        _, staff = _cell_and_staff()
+        staff.line_thickness_px = [4.0, 5.0, 4.0, 5.0, 4.0]
+        staff.line_wander_px = 1.5
+        geom = _staff_geometry(staff)
+        assert json.loads(json.dumps(geom)) == geom

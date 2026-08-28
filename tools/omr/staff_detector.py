@@ -20,6 +20,7 @@ from __future__ import annotations
 import numpy as np
 from scipy.signal import find_peaks
 
+from .header_ink import measure_staff_line
 from .types import PageImage, Staff, PageWithStaves
 
 
@@ -300,6 +301,62 @@ def _line_ink_runs_per_space(binary: np.ndarray, staff: Staff) -> float:
     return float(np.median(per_line)) if per_line else float("inf")
 
 
+# ─── Step 4: measure what the lines actually are ─────────────────────────────
+
+
+def measure_line_geometry(
+    binary: np.ndarray, line_ys: list[int], x_start: int, x_end: int
+) -> tuple[list[float], float] | None:
+    """Measure how thick each staff line is printed and how far it wanders.
+
+    Returns `(thickness_per_line, max_wander)` in page pixels, or None when
+    the lines are too faint or broken to trace.
+
+    Everything downstream models a staff line as one integer row. That model
+    is what staff-line removal erases along, and where the print disagrees
+    with it the removal misses: on 19th-century engravings the lines run
+    0.15–0.31 staff spaces thick against roughly 0.08 for a modern one, so a
+    band sized for a modern line leaves most of an old one behind, in pieces.
+    The pipeline had no way to say which case it was in — `line_ys` looks the
+    same either way — and these two numbers are that missing fact.
+
+    The measuring is `header_ink.measure_staff_line`, which follows the line
+    column by column rather than assuming it is straight, and reads it only
+    where no glyph is sitting on it; this runs it on the page instead of on a
+    header crop, over the staff's own x-extent, where the lines are the thing
+    being measured rather than something to strip away.
+    """
+    if len(line_ys) < 2 or x_end <= x_start:
+        return None
+    spacing = (max(line_ys) - min(line_ys)) / (len(line_ys) - 1)
+    if spacing <= 0:
+        return None
+
+    # `trace_staff_line` wants 255=ink; Phase 1's binary is 0=ink. Crop to the
+    # staff's own band first — tracing needs a window of about a third of a
+    # staff space around each line, so copying the whole page per staff would
+    # be most of a page image thrown away five times over.
+    height, width = binary.shape
+    y_lo = max(0, int(min(line_ys) - spacing))
+    y_hi = min(height, int(max(line_ys) + spacing) + 1)
+    x_lo = max(0, x_start)
+    x_hi = min(width, x_end + 1)
+    if y_hi - y_lo < 2 or x_hi - x_lo < 2:
+        return None
+    band = np.where(binary[y_lo:y_hi, x_lo:x_hi] == 0, 255, 0).astype(np.uint8)
+
+    thicknesses: list[float] = []
+    wanders: list[float] = []
+    for y in line_ys:
+        measured = measure_staff_line(band, float(y - y_lo), spacing)
+        if measured is None:
+            return None  # all five or nothing — a partial read would mislead
+        thickness, wander = measured
+        thicknesses.append(round(thickness, 3))
+        wanders.append(wander)
+    return thicknesses, round(max(wanders), 3)
+
+
 # ─── Public entry point ──────────────────────────────────────────────────────
 
 
@@ -312,6 +369,7 @@ def detect_staves(page: PageImage) -> PageWithStaves:
     staves: list[Staff] = []
     for idx, line_ys in enumerate(groups):
         x_start, x_end = _staff_x_extent(page.binary, line_ys)
+        measured = measure_line_geometry(page.binary, line_ys, x_start, x_end)
         staves.append(Staff(
             page_index=page.page_index,
             staff_index=idx,
@@ -319,6 +377,8 @@ def detect_staves(page: PageImage) -> PageWithStaves:
             x_start=x_start,
             x_end=x_end,
             system_index=0,
+            line_thickness_px=measured[0] if measured else None,
+            line_wander_px=measured[1] if measured else None,
         ))
 
     # Drop the "staves" that are paragraphs of body text (see
