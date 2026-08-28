@@ -418,19 +418,30 @@ def locate_clef(
             # Too far in to be a clef, and everything further right is further
             # still — whatever is at the head of this staff, we didn't find it.
             return None
+        ink = int(np.count_nonzero(strip[y : y + h, x : x + w]))
+        if w * h == 0 or ink / float(w * h) < config.min_ink_fraction:
+            # Not a glyph at all — scattered specks that x-clustering has
+            # drawn one box around. This test comes BEFORE the size test on
+            # purpose. A cluster is only worth stopping for if it is a glyph,
+            # and stripping the system brace leaves a trail of fragments down
+            # the left edge that are individually far too small to be anything:
+            # on Nottebohm p.164 five specks totalling 6% of their bounding box
+            # made a 0.8 x 6.0-space "cluster", the size test read it as a G
+            # clef and stopped, and the real C clef 1.5 spaces to its right —
+            # 2.3 x 3.2 spaces, textbook — was never looked at.
+            continue
         if h_sp > config.max_height_spaces or w_sp > config.max_width_spaces:
             # Glyph-sized but bigger than any C clef — overwhelmingly a G clef,
             # which is exactly two-thirds of all clefs. STOP here rather than
             # look past it. Scanning on was the locator's one dangerous bug: a
             # treble clef would be skipped for being too tall and the key
             # signature's sharp behind it — narrow, tall, and beautifully
-            # symmetric — would be read as the staff's clef instead.
+            # symmetric — would be read as the staff's clef instead. A real
+            # clef is solid enough to clear the ink test above, so it still
+            # stops here.
             return None
         if w_sp < config.min_width_spaces or h_sp < config.min_height_spaces:
             continue  # debris: a fragment, a speck, a rule that survived
-        ink = int(np.count_nonzero(strip[y : y + h, x : x + w]))
-        if w * h == 0 or ink / float(w * h) < config.min_ink_fraction:
-            continue
 
         if _overlaps_any(bbox, occupied_boxes):
             # The head of this staff is a notehead or a rest, so the clef is
