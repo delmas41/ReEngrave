@@ -1,0 +1,273 @@
+{
+  "wtc-p5": {
+    "page_px": [
+      5100,
+      6600
+    ],
+    "n_staves": 10,
+    "n_systems": 5,
+    "staves_per_system": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "measures_per_system": [
+      3,
+      2,
+      3,
+      3,
+      3
+    ],
+    "n_cells": 28,
+    "median_line_spacing": 37.2,
+    "spacing_outlier_staves": []
+  },
+  "wtc-p8": {
+    "page_px": [
+      5100,
+      6600
+    ],
+    "n_staves": 10,
+    "n_systems": 5,
+    "staves_per_system": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "measures_per_system": [
+      3,
+      3,
+      4,
+      4,
+      5
+    ],
+    "n_cells": 38,
+    "median_line_spacing": 37.2,
+    "spacing_outlier_staves": []
+  },
+  "beet5-p10": {
+    "page_px": [
+      2897,
+      3813
+    ],
+    "n_staves": 18,
+    "n_systems": 2,
+    "staves_per_system": [
+      7,
+      11
+    ],
+    "measures_per_system": [
+      14,
+      15
+    ],
+    "n_cells": 263,
+    "median_line_spacing": 15.8,
+    "spacing_outlier_staves": [
+      {
+        "staff_index": 0,
+        "spacing": 142.5
+      }
+    ]
+  },
+  "beet5-p2": {
+    "page_px": [
+      2897,
+      3813
+    ],
+    "n_staves": 16,
+    "n_systems": 4,
+    "staves_per_system": [
+      4,
+      1,
+      4,
+      7
+    ],
+    "measures_per_system": [
+      12,
+      12,
+      12,
+      16
+    ],
+    "n_cells": 220,
+    "median_line_spacing": 15.8,
+    "spacing_outlier_staves": []
+  },
+  "beet5-p8": {
+    "page_px": [
+      2897,
+      3813
+    ],
+    "n_staves": 16,
+    "n_systems": 5,
+    "staves_per_system": [
+      1,
+      1,
+      1,
+      2,
+      11
+    ],
+    "measures_per_system": [
+      15,
+      15,
+      16,
+      9,
+      19
+    ],
+    "n_cells": 273,
+    "median_line_spacing": 15.9,
+    "spacing_outlier_staves": []
+  },
+  "bolero-p31": {
+    "page_px": [
+      3508,
+      4961
+    ],
+    "n_staves": 29,
+    "n_systems": 2,
+    "staves_per_system": [
+      17,
+      12
+    ],
+    "measures_per_system": [
+      6,
+      6
+    ],
+    "n_cells": 174,
+    "median_line_spacing": 13.5,
+    "spacing_outlier_staves": []
+  },
+  "bolero-p5": {
+    "page_px": [
+      3508,
+      4961
+    ],
+    "n_staves": 26,
+    "n_systems": 6,
+    "staves_per_system": [
+      4,
+      6,
+      2,
+      6,
+      2,
+      6
+    ],
+    "measures_per_system": [
+      6,
+      6,
+      7,
+      6,
+      5,
+      6
+    ],
+    "n_cells": 156,
+    "median_line_spacing": 13.5,
+    "spacing_outlier_staves": []
+  },
+  "lamer-p25": {
+    "page_px": [
+      2736,
+      3582
+    ],
+    "n_staves": 20,
+    "n_systems": 9,
+    "staves_per_system": [
+      7,
+      1,
+      3,
+      2,
+      1,
+      1,
+      2,
+      1,
+      2
+    ],
+    "measures_per_system": [
+      3,
+      2,
+      3,
+      2,
+      3,
+      2,
+      1,
+      2,
+      3
+    ],
+    "n_cells": 51,
+    "median_line_spacing": 13.0,
+    "spacing_outlier_staves": []
+  },
+  "mahler5-p11": {
+    "page_px": [
+      2193,
+      2929
+    ],
+    "n_staves": 26,
+    "n_systems": 3,
+    "staves_per_system": [
+      6,
+      7,
+      13
+    ],
+    "measures_per_system": [
+      4,
+      8,
+      9
+    ],
+    "n_cells": 197,
+    "median_line_spacing": 12.5,
+    "spacing_outlier_staves": []
+  },
+  "handel-red-p1": {
+    "page_px": [
+      4961,
+      7016
+    ],
+    "n_staves": 0,
+    "n_systems": 0,
+    "staves_per_system": [],
+    "measures_per_system": [],
+    "n_cells": 0,
+    "median_line_spacing": 0.0,
+    "spacing_outlier_staves": []
+  },
+  "handel-lead-p1": {
+    "page_px": [
+      4961,
+      7016
+    ],
+    "n_staves": 0,
+    "n_systems": 0,
+    "staves_per_system": [],
+    "measures_per_system": [],
+    "n_cells": 0,
+    "median_line_spacing": 0.0,
+    "spacing_outlier_staves": []
+  },
+  "kirchhoff-p10": {
+    "page_px": [
+      7017,
+      4959
+    ],
+    "n_staves": 8,
+    "n_systems": 4,
+    "staves_per_system": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "measures_per_system": [
+      7,
+      7,
+      6,
+      8
+    ],
+    "n_cells": 56,
+    "median_line_spacing": 39.1,
+    "spacing_outlier_staves": []
+  }
+}
