@@ -47,6 +47,24 @@ Output schema (JSON):
                   "clef": "treble",         # effective clef for the staff (after
                                             # absorbing any clef detection in the
                                             # very first measure)
+                  "clef_source": "cv_locator",  # OPTIONAL — only when the clef
+                                            # came from a fallback reader:
+                                            # "specialist" (--clef-weights) or
+                                            # "cv_locator" (shape-located C clef,
+                                            # tools/omr/clef_locator.py). Absent
+                                            # for a detector read or a default.
+                  "key_signature_source": "cv_locator",  # OPTIONAL — only
+                                            # when the key signature was LOCATED
+                                            # by classical CV and reconciled
+                                            # across the page rather than
+                                            # detected. Absent for a detected
+                                            # signature. See
+                                            # tools/omr/key_signature_locator.py
+                                            # and key_signature_vote.py.
+                  "key_signature_reason": "kept: agrees with the system's 3 flats",
+                                            # OPTIONAL — accompanies
+                                            # key_signature_source: what the
+                                            # cross-page vote decided, and why.
                   "key_signature": {
                       "sharps": 0,          # count of sharps in the key sig
                       "flats":  0,          # count of flats (mutually exclusive)
@@ -175,7 +193,9 @@ for the F1 numbers.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
+import os
 import time
 from collections import Counter
 from pathlib import Path
@@ -185,8 +205,23 @@ from .preprocessing import render_page
 from .staff_detector import detect_staves
 from .measure_extractor import detect_barlines, extract_measures, resegment_fused_measures
 from .staff_line_removal import remove_staff_lines
-from .types import MeasureCell
+from .types import MeasureCell, PageWithStaves, Staff
 from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
+from .clef_geometry import clef_name_from_class, resolve_clef_for_detection
+from .clef_locator import locate_clef
+from .key_signature_geometry import (
+    KeySignatureFitConfig,
+    alterations_for_fifths,
+    fit_key_signature,
+)
+from .key_signature_locator import locate_key_signature
+from .key_signature_vote import StaffCandidate, reconcile
+from .staff_header import (
+    HEADER_MEASURE_INDEX,
+    HeaderWindow,
+    header_cells_for_page,
+    header_windows_for_page,
+)
 from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
@@ -217,28 +252,17 @@ DEFAULT_WEIGHTS = (
 
 
 def _clef_name_from_class(smufl: str) -> str | None:
-    """Map a DSv2 clef class name to a pitch_resolver clef key.
+    """Map a DSv2 clef class name to a pitch_resolver clef key, from the class
+    label ALONE.
 
-    Returns None for unpitched / octave-marker clefs (clef8 / clef15 are
-    standalone glyphs that visually attach to a base clef; they're picked
-    up separately by `_octave_shift_for_base_clef`).
+    This is the weak reading: it cannot tell an alto clef from a tenor one any
+    better than the detector can, because they are the same glyph on different
+    lines. It survives as the fallback for when geometry can't run (see
+    `clef_geometry.resolve_clef`), and returns None for unpitched /
+    octave-marker clefs (clef8 / clef15 attach to a base clef and are picked up
+    by `_octave_shift_for_base_clef`).
     """
-    if not smufl:
-        return None
-    s = smufl.lower()
-    if "calto" in s:
-        return "alto"
-    if "ctenor" in s:
-        return "tenor"
-    if s.startswith("clefg") or s == "gclef":
-        return "treble"
-    if s.startswith("cleff") or s == "fclef":
-        return "bass"
-    if "percussion" in s or s in ("clef8", "clef15"):
-        return None
-    if s.startswith("clefc") or s == "cclef":  # generic C-clef → alto fallback
-        return "alto"
-    return None
+    return clef_name_from_class(smufl)
 
 
 def _octave_shift_for_base_clef(dets, base_clef_det) -> str:
@@ -588,25 +612,97 @@ def _key_sig_alterations(n_sharps: int, n_flats: int) -> dict[str, str]:
     return {}
 
 
-def _detect_key_sig_from_cell(dets) -> dict[str, str] | None:
-    """Scan detections for keySharp / keyFlat markers (which the DSv2
-    detector emits distinctly from inline accidentals). Returns the new
-    alteration map, or None if no key-signature markers were seen (so the
-    caller should keep the previous active key sig).
+# A detected keySharp / keyFlat is a glyph the model recognised, so a set of
+# them with one stray is a good signature plus noise — see max_outliers.
+_DETECTOR_FIT_CONFIG = KeySignatureFitConfig(max_outliers=1)
+
+
+def _detect_key_sig_from_cell(dets, cell=None, clef: str | None = None) -> dict[str, str] | None:
+    """Read the key signature from the detector's keySharp / keyFlat markers
+    (which DSv2 emits distinctly from inline accidentals). Returns the new
+    alteration map, or None if no markers were seen (so the caller keeps the
+    previous active key sig).
+
+    Where the geometry can run — a cell with clean 5-line staff geometry and a
+    clef with a slot table — the markers' POSITIONS decide, not their count.
+    Counting is what this used to do, and counting is wrong in a specific,
+    common way: it believes exactly what the detector saw. Measured on WTC p.17
+    (E major, four sharps, a clean modern engraving where the detector fires on
+    every staff), counting reads 6 of 10 staves right and the four failures are
+    +1, +1, +2 and +5 — three truncated counts and one spurious extra, on a page
+    where every staff prints the same four sharps.
+
+    The slot fit catches all four shapes: sharps found at slots 1, 2 and 4 are
+    four sharps with the third missed rather than three, and a marker that sits
+    on no slot at all stops counting toward the total. See
+    `key_signature_geometry`.
+
+    Falls back to the count when geometry can't run or the fit abstains, so a
+    reading is never lost — only improved on.
     """
-    n_sharps = sum(
-        1 for d in dets if d.smufl_name.lower().startswith("keysharp")
-    )
-    n_flats = sum(
-        1 for d in dets if d.smufl_name.lower().startswith("keyflat")
-    )
-    if n_sharps == 0 and n_flats == 0:
+    sharps = [d for d in dets if d.smufl_name.lower().startswith("keysharp")]
+    flats = [d for d in dets if d.smufl_name.lower().startswith("keyflat")]
+    if not sharps and not flats:
         return None  # no update — keep whatever was active
-    # Music never has both sharps + flats in one key sig; if the detector
-    # somehow emits both, trust the larger count.
-    if n_sharps >= n_flats:
-        return _key_sig_alterations(n_sharps, 0)
-    return _key_sig_alterations(0, n_flats)
+    # Music never has both sharps and flats in one key signature; if the
+    # detector emits both, the larger group is the real one.
+    markers, accidental = (sharps, "#") if len(sharps) >= len(flats) else (flats, "b")
+
+    positions = _staff_positions_for(markers, cell)
+    if positions is not None:
+        # One stray marker may be set aside here; the locator's noisier
+        # clusters get no such licence. See KeySignatureFitConfig.max_outliers.
+        read = fit_key_signature(
+            positions, clef, accidental, _DETECTOR_FIT_CONFIG,
+        )
+        if read is not None and read.fifths:
+            return alterations_for_fifths(read.fifths)
+
+    n = len(markers)
+    return _key_sig_alterations(n, 0) if accidental == "#" else _key_sig_alterations(0, n)
+
+
+def _key_sig_read_from_dets(dets, cell, clef: str | None):
+    """Fit the detector's key-signature markers to the slot table.
+
+    Returns the `KeySignatureRead` (so a caller can see how many slots were
+    actually matched, which is what the cross-page vote weights by), or None
+    when there are no markers, no usable staff geometry, no slot table for the
+    clef, or nothing that fits.
+    """
+    sharps = [d for d in dets if d.smufl_name.lower().startswith("keysharp")]
+    flats = [d for d in dets if d.smufl_name.lower().startswith("keyflat")]
+    if not sharps and not flats:
+        return None
+    markers, accidental = (sharps, "#") if len(sharps) >= len(flats) else (flats, "b")
+    positions = _staff_positions_for(markers, cell)
+    if positions is None:
+        return None
+    return fit_key_signature(positions, clef, accidental, _DETECTOR_FIT_CONFIG)
+
+
+def _staff_positions_for(detections, cell) -> list[float] | None:
+    """Detection box centres as diatonic steps below the top staff line, in
+    x-order — the unit `key_signature_geometry`'s slot tables use.
+
+    None when the cell has no usable 5-line geometry, which is the signal to
+    fall back rather than fit against a staff we can't measure.
+    """
+    if cell is None or not detections:
+        return None
+    ys = cell.staff_line_ys_canonical
+    if not ys or len(ys) != 5:
+        return None
+    lines = sorted(float(y) for y in ys)
+    spacing = (lines[-1] - lines[0]) / 4.0
+    if spacing <= 0:
+        return None
+    half = spacing / 2.0
+    ordered = sorted(detections, key=lambda d: d.x_canonical)
+    return [
+        ((d.y_canonical + d.height_canonical / 2.0) - lines[0]) / half
+        for d in ordered
+    ]
 
 
 def _parse_inline_accidental(smufl: str) -> str | None:
@@ -697,6 +793,14 @@ def _build_pitch(letter: str, alteration: str | None, octave: int) -> str:
     return f"{letter}{alteration or ''}{octave}"
 
 
+def _key_sig_fifths(alterations: dict[str, str]) -> int:
+    """An alteration map as a signed circle-of-fifths position (+N sharps /
+    −N flats), the form `key_signature_vote` speaks."""
+    return sum(1 for v in alterations.values() if v == "#") - sum(
+        1 for v in alterations.values() if v == "b"
+    )
+
+
 def _key_sig_summary(alterations: dict[str, str]) -> dict[str, Any]:
     """Friendly summary of an alteration map for the output JSON.
 
@@ -727,6 +831,219 @@ def parse_pages(spec: str, n_pages: int) -> list[int]:
     return [p for p in out if 0 <= p < n_pages]
 
 
+def _read_staff_header(
+    clef_reader,
+    cell: MeasureCell,
+    *,
+    conf: float,
+    imgsz: int,
+    header_frac: float,
+    iou_threshold: float,
+    agnostic_nms: bool,
+) -> tuple[str | None, dict[str, Any] | None]:
+    """Run the clef/header specialist on the LEFT `header_frac` of a staff-start
+    cell — the region holding the clef, key signature, and time signature — and
+    return `(clef, time_sig)` read from it (`None` for whatever isn't found).
+
+    Cropping to the header does two things: it removes the dense note ink to the
+    right (fewer distractions for a specialist that collapses on dense scenes),
+    and it keeps the header glyphs large so the specialist can run at a much
+    SMALLER imgsz than a full cell — cheaper and, because the clef then sits near
+    its training scale, actually more accurate (see the imgsz sweep in
+    benchmarks/omr-clef-demo/tune_header_reader.py: on a 0.42 crop, imgsz 640
+    beats 1280). Cropping from x=0 preserves canonical x-coordinates, so the
+    octave-marker pairing and the left-edge time-sig filter still apply unchanged.
+
+    One inference serves both readers — clef and time signature share the crop.
+    """
+    if cell.image is None:
+        return None, None
+    # A cell from `staff_header` is already the header; cropping it again would
+    # cut into the key signature. Only a full measure cell needs the fraction.
+    if cell.measure_index == HEADER_MEASURE_INDEX:
+        header_frac = 1.0
+    hw = max(1, int(round(cell.width * header_frac)))
+    header_cell = dataclasses.replace(
+        cell, image=cell.image[:, :hw], image_no_staff=None
+    )
+    dets = clef_reader.detect(
+        header_cell,
+        conf_threshold=conf,
+        imgsz=imgsz,
+        iou_threshold=iou_threshold,
+        agnostic_nms=agnostic_nms,
+    )
+    # Clef: highest-confidence clef detection (+ any octave-marker suffix),
+    # with its named staff line resolved geometrically — see clef_geometry.
+    # The crop keeps canonical y-coordinates, so the cell's staff-line
+    # positions still line up with the detection boxes.
+    best_read, best_det, best_conf = None, None, -1.0
+    for d in dets:
+        if d.category != "clef":
+            continue
+        read = resolve_clef_for_detection(d)
+        if read is None:
+            continue
+        if d.confidence > best_conf:
+            best_read, best_det, best_conf = read, d, d.confidence
+    clef = None if best_read is None else best_read.name + _octave_shift_for_base_clef(dets, best_det)
+    # Time signature: the standard digit parser (drops left-edge instrument
+    # misreads, resolves common/cut-common) on the same header detections.
+    time_sig = parse_time_signature(dets)
+    return clef, time_sig
+
+
+# ---------------------------------------------------------------------------
+# The staff-header pass
+# ---------------------------------------------------------------------------
+#
+# One pass, before the measures are read, that looks at the start of every staff
+# on the page — the strip holding the clef, the key signature and the time
+# signature. It exists because the header is not reliably inside the staff-START
+# measure cell: `Staff.x_start` is the longest unbroken run on the middle staff
+# line, and on a faded print that run begins AFTER the clef, so the cell does
+# too (NOTES.md, and measured on Beethoven 5 p.2 where a whole system's cells
+# began past the clef and past all three key-signature flats). `staff_header`
+# measures the window instead, and this pass hands it to the readers.
+#
+# What it produces is a key signature per staff, reconciled across the page by
+# `key_signature_vote`. It never overrides the detector: the reading is a SEED,
+# used as the staff's starting key signature, and any keySharp / keyFlat the
+# detector finds in the music replaces it — the same "only speaks when the
+# detector is silent" rule the CV clef locator follows.
+
+
+def _header_key_signatures(
+    pws: PageWithStaves,
+    header_cells: dict[int, MeasureCell],
+    clef_for_staff: dict[int, str | None],
+    dets_for_staff: dict[int, tuple[list, MeasureCell]],
+) -> tuple[dict[int, int], dict[int, str]]:
+    """Read and reconcile this page's key signatures.
+
+    Returns `({staff_index: fifths}, {staff_index: reason})` for the staves the
+    vote is willing to speak for.
+
+    Both readings feed the same vote, which is the point of doing it here. The
+    DETECTOR's markers are used where it found any — its boxes are real glyphs,
+    fitted to the slot table rather than counted. The CV LOCATOR is the fallback
+    where the detector is silent, which on degraded prints is nearly everywhere.
+    Reconciling them together is what lets a page decide: on WTC p.17, three
+    staves whose FIRST sharp went undetected read +1, +1 and +2 against a page
+    that plainly prints four, and only a cross-page view can say so.
+
+    `clef_for_staff` supplies each staff's KNOWN clef; a staff mapped to None
+    has nothing but the position default behind it and is skipped, because a
+    signature fitted against a guessed clef is a guess squared — measurably so:
+    on Beethoven 5 p.2 with every staff defaulted to treble, two bass staves
+    carrying three flats fitted cleanly as two sharps.
+
+    This makes key-signature reading inherit the clef problem. On material where
+    clefs read well it speaks for most staves; on the degraded orchestral prints
+    where the detector reads every staff as treble, it stays quiet — which is
+    the right failure, but it means the two features improve together.
+    """
+    candidates: list[StaffCandidate] = []
+    for system_index in sorted({st.system_index for st in pws.staves}):
+        staves = sorted(
+            (st for st in pws.staves if st.system_index == system_index),
+            key=lambda st: st.top_y,
+        )
+        for ordinal, staff in enumerate(staves):
+            cell = header_cells.get(staff.staff_index)
+            clef = clef_for_staff.get(staff.staff_index)
+            read, source = None, ""
+            if clef:
+                dets, dets_cell = dets_for_staff.get(staff.staff_index, ([], None))
+                if dets_cell is not None:
+                    read = _key_sig_read_from_dets(dets, dets_cell, clef)
+                    source = "detector"
+                if (read is None or not read.fifths) and cell is not None:
+                    located = locate_key_signature(cell, clef)
+                    read = located.read if located else None
+                    source = "cv_locator"
+            candidates.append(StaffCandidate(
+                staff_index=staff.staff_index,
+                system_index=system_index,
+                ordinal=ordinal,
+                fifths=read.fifths if read else None,
+                weight=float(len(read.matched_slots)) if read else 0.0,
+                source=source if read else "",
+            ))
+    result = reconcile(candidates)
+    fifths: dict[int, int] = {}
+    reasons: dict[int, str] = {}
+    for staff_index, verdict in result.verdicts.items():
+        if verdict.action == "unread":
+            continue
+        # A rejected staff is recorded too, with fifths 0: the vote judged its
+        # reading untrustworthy, and that judgement has to reach the measure
+        # pass or the same reading simply reappears there.
+        fifths[staff_index] = verdict.fifths or 0
+        reasons[staff_index] = f"{verdict.action}: {verdict.reason}"
+    return fifths, reasons
+
+
+def _header_detections(
+    detector,
+    header_cell: MeasureCell,
+    *,
+    conf_threshold: float,
+    imgsz: int,
+    iou_threshold: float,
+    agnostic_nms: bool,
+):
+    """One detector pass over a staff's header crop.
+
+    A crop a few staff spaces wide, run once before the measures are, and read
+    twice: for the clef (which chooses the key signature's slot table) and for
+    the key-signature markers themselves. Neither result is written to the
+    output directly — the clef is re-read by the measure pass in its own way,
+    and the signature goes through the cross-page vote first.
+    """
+    return detector.detect(
+        header_cell,
+        conf_threshold=conf_threshold,
+        imgsz=imgsz,
+        iou_threshold=iou_threshold,
+        agnostic_nms=agnostic_nms,
+    )
+
+
+def _clef_from_dets(dets) -> str | None:
+    """The highest-confidence clef among some detections, or None.
+
+    None means "clef unknown", which callers treat as a reason to abstain
+    rather than to fall back on a guess.
+    """
+    best, best_conf = None, -1.0
+    for d in dets:
+        if d.category != "clef":
+            continue
+        read = resolve_clef_for_detection(d)
+        if read is not None and d.confidence > best_conf:
+            best, best_conf = read.name, d.confidence
+    return best
+
+
+def _header_cell_beats_measure_cell(
+    window: HeaderWindow | None, staff: Staff, measure_cell: MeasureCell | None
+) -> bool:
+    """Whether the measured header window reaches material the staff-start
+    measure cell does not.
+
+    The clef readers are pointed at the header cell ONLY when this is true. The
+    measure cell is what they were tuned and validated on, so switching input
+    unconditionally would re-open a settled question on every score; switching
+    only where the measure cell demonstrably starts past the header fixes the
+    documented failure and leaves everything else exactly as it was.
+    """
+    if measure_cell is None or window is None:
+        return False
+    spacing = max(1.0, staff.line_spacing_px)
+    return measure_cell.bbox_page_px[0] - window.x0 > spacing
+
+
 def _detections_for_cell(
     detector,  # YoloDetector — passed in to avoid import at module import time
     cell: MeasureCell,
@@ -738,7 +1055,17 @@ def _detections_for_cell(
     active_clef: str | None,
     active_key_sig: dict[str, str],
     active_time_sig: dict[str, Any] | None,
-) -> tuple[list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None]:
+    clef_reader=None,  # optional secondary YoloDetector — staff-header specialist
+    header_cell: MeasureCell | None = None,
+    skip_key_sig_detection: bool = False,
+    read_clef: bool = False,
+    clef_reader_conf: float = 0.30,
+    clef_reader_imgsz: int = 640,
+    clef_reader_header_frac: float = 0.42,
+    locate_c_clefs: bool = True,
+) -> tuple[
+    list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None, str | None
+]:
     """Run YOLO on a single cell, resolve chromatic pitches for each
     notehead, and emit cleaned-up detection dicts.
 
@@ -758,7 +1085,10 @@ def _detections_for_cell(
          d) otherwise apply the active key-signature alteration on that letter
          e) otherwise leave the pitch diatonic
 
-    Returns `(detection_dicts, new_active_clef, new_active_key_sig)`.
+    Returns `(detection_dicts, new_active_clef, new_active_key_sig,
+    new_active_time_sig, clef_source)`, where `clef_source` names which reader
+    supplied a clef IN THIS CELL — "detector", "specialist", "cv_locator", or
+    None when the clef was carried in rather than read here.
     """
     dets = detector.detect(
         cell,
@@ -773,32 +1103,102 @@ def _detections_for_cell(
     #    sits next to the chosen base clef, append the corresponding
     #    "_8va" / "_8vb" / "_15ma" / "_15mb" suffix so the pitch resolver
     #    picks up the right anchor (e.g. choral tenor on treble_8vb). ────
-    best_clef_name: str | None = None
+    best_clef_read = None
     best_clef_det = None
     best_clef_conf = -1.0
     for d in dets:
         if d.category != "clef":
             continue
-        mapped = _clef_name_from_class(d.smufl_name)
-        if mapped is None:
+        # Geometry, not the class label, decides WHICH line a C clef names —
+        # alto and tenor are the same glyph one line apart, so the label can't
+        # know. See tools/omr/clef_geometry.py.
+        read = resolve_clef_for_detection(d)
+        if read is None:
             continue
         if d.confidence > best_clef_conf:
-            best_clef_name = mapped
+            best_clef_read = read
             best_clef_det = d
             best_clef_conf = d.confidence
-    if best_clef_name is not None:
+    # Which reader supplied this cell's clef, if any — the locator below only
+    # speaks when this is still None. Note it tracks THIS cell's reading, not
+    # the inherited `active_clef`: a staff carrying a clef forward from an
+    # earlier system has nothing detected here, and is exactly the case where
+    # a shape-located clef is worth having.
+    clef_source: str | None = None
+    if best_clef_read is not None:
         suffix = _octave_shift_for_base_clef(dets, best_clef_det)
-        active_clef = best_clef_name + suffix
+        active_clef = best_clef_read.name + suffix
+        clef_source = "detector"
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
-    new_key_sig = _detect_key_sig_from_cell(dets)
-    if new_key_sig is not None:
-        active_key_sig = new_key_sig
+    #
+    # Skipped on the staff's FIRST cell when the cross-page vote has already
+    # ruled on this staff. The vote saw these same markers — the header pass
+    # reads them from the header crop and feeds them in — plus the rest of the
+    # page, so re-reading them here in isolation can only discard that context.
+    # It is what let three WTC staves whose first sharp went undetected report
+    # +1, +1 and +2 on a page that plainly prints four. Later cells still run,
+    # so a genuine mid-staff key change is still picked up.
+    if not skip_key_sig_detection:
+        new_key_sig = _detect_key_sig_from_cell(dets, cell, active_clef)
+        if new_key_sig is not None:
+            active_key_sig = new_key_sig
 
     # ── Time-signature pass: parse from timeSig0-9 / timeSigCommon detections.
     new_time_sig = parse_time_signature(dets)
     if new_time_sig is not None:
         active_time_sig = new_time_sig
+
+    # ── Decoupled staff-header specialist (clef + time-sig override). The
+    #    production detector under-detects clefs on real orchestral scans (9%
+    #    detection, 0% type → the "all-treble disease") and time-sig digits
+    #    (mostly null). A model fine-tuned on real staff cells reads them well
+    #    but collapses dense-notehead detection, so it can't be the main
+    #    detector. Using ONLY its clef + time-sig read of the staff-START header
+    #    crop (where they're printed) gets those wins with zero cost to notehead
+    #    detection. Runs after the production header passes (so it wins) and
+    #    before the pitch pass (so the corrected clef anchors every pitch). See
+    #    benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. ──
+    if read_clef and clef_reader is not None:
+        spec_clef, spec_time_sig = _read_staff_header(
+            clef_reader, header_cell if header_cell is not None else cell,
+            conf=clef_reader_conf,
+            imgsz=clef_reader_imgsz,
+            header_frac=clef_reader_header_frac,
+            iou_threshold=iou_threshold,
+            agnostic_nms=agnostic_nms,
+        )
+        if spec_clef is not None:
+            active_clef = spec_clef
+            clef_source = "specialist"
+        if spec_time_sig is not None:
+            active_time_sig = spec_time_sig
+
+    # ── Classical-CV C-clef locator (last resort). Both models above read a
+    #    clef by appearance, so both go blind on engravings whose glyphs aren't
+    #    in their training distribution — on 19th-century C-clef counterpoint
+    #    prints they find no clef at all, at any confidence, and every staff
+    #    silently defaults to treble. Shape-based location doesn't depend on
+    #    the font. It runs ONLY when nothing else produced a clef for this
+    #    staff, and only identifies C clefs, so it can add a reading where
+    #    there was none but can never overturn one. See tools/omr/clef_locator.py.
+    if read_clef and locate_c_clefs and clef_source is None:
+        # Hand the locator the boxes the detector is already sure about, so it
+        # can't nominate a notehead stack as a clef.
+        occupied = [
+            (d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical)
+            for d in dets
+            if d.category in ("notehead", "rest")
+        ]
+        located = locate_clef(
+            header_cell if header_cell is not None else cell,
+            # The detector's boxes belong to the measure cell's frame; they only
+            # describe the header cell when it IS the measure cell.
+            occupied_boxes=occupied if header_cell is None else None,
+        )
+        if located is not None:
+            active_clef = located.read.name
+            clef_source = "cv_locator"
 
     # ── Classical-CV line detection: stems + cleaner beams. The YOLO
     #    Phase 3.3 model misses stems entirely and emits beam bboxes
@@ -986,7 +1386,7 @@ def _detections_for_cell(
         if id(d) in ties_from_prev:
             out_d["tied_from_prev"] = True
         out.append(out_d)
-    return out, active_clef, active_key_sig, active_time_sig
+    return out, active_clef, active_key_sig, active_time_sig, clef_source
 
 
 def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
@@ -1716,6 +2116,12 @@ def transcribe(
     iou_threshold: float = 0.5,
     agnostic_nms: bool = True,
     dpi: int = 600,
+    clef_weights: str | None = None,
+    clef_reader_conf: float = 0.30,
+    clef_reader_imgsz: int = 640,
+    clef_reader_header_frac: float = 0.42,
+    locate_c_clefs: bool = True,
+    read_headers: bool = True,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -1724,16 +2130,30 @@ def transcribe(
     The defaults match what the Phase 3.3 evaluation used (conf=0.25,
     agnostic_nms=True). Lower conf_threshold (e.g. 0.10) for higher recall
     at the cost of more false positives.
+
+    Everything needed to read a staff's header — its clef and key signature —
+    is on by default and needs no extra files: `read_headers` measures each
+    staff's header window and reads the key signature from it with classical CV,
+    and `locate_c_clefs` does the same for C clefs. `clef_weights` is an
+    OPTIONAL second detector that reads clefs better on some material; the
+    pipeline is complete without it, and passing a path that isn't a
+    clef-trained checkpoint makes clefs worse, not better.
     """
     # Lazy-import the YOLO wrapper so this module imports cheaply when the
     # caller doesn't actually need OMR (e.g. when listing pages).
     from .yolo_detector import YoloDetector
 
     detector = YoloDetector(weights, device="auto")
+    # Optional decoupled clef specialist (see _detections_for_cell). Loaded
+    # once and reused; None ⇒ clef comes from the production detector alone.
+    clef_reader = YoloDetector(clef_weights, device="auto") if clef_weights else None
 
     out: dict[str, Any] = {
         "source_pdf": str(pdf_path),
         "weights": weights,
+        "clef_weights": clef_weights,
+        "locate_c_clefs": locate_c_clefs,
+        "read_headers": read_headers,
         "conf_threshold": conf_threshold,
         "iou_threshold": iou_threshold,
         "agnostic_nms": agnostic_nms,
@@ -1791,6 +2211,13 @@ def transcribe(
         # construction — see measure_extractor.resegment_fused_measures.
         cells = resegment_fused_measures(pws, cells)
         remove_staff_lines(cells)
+
+        # The staff-header pass. Header cells are cheap (one crop per staff) and
+        # are what the clef readers and the key-signature locator work from.
+        header_windows = header_windows_for_page(pws) if read_headers else {}
+        header_cells = (
+            header_cells_for_page(pws, windows=header_windows) if read_headers else {}
+        )
         out["runtime"]["phase1_s"] += time.perf_counter() - t_phase1
 
         # Group cells by (system, staff). Keep them in measure_index order
@@ -1810,6 +2237,75 @@ def transcribe(
             "n_systems": len(systems),
             "systems": [],
         }
+
+        # The clef each staff's key signature will be read against. The slot
+        # table is chosen by it, so this has to be settled before the signature
+        # is fitted — and it has to be a clef that was actually READ, not a
+        # default.
+        #
+        # That gate is load-bearing. The plan had been that a wrong clef costs
+        # recall rather than correctness: the slot patterns of treble, bass and
+        # alto are the same shape a constant apart, so a signature fitted
+        # against the wrong one should push the solved offset past tolerance and
+        # be dropped. Measured end-to-end on Beethoven 5 p.2, that does not
+        # hold — with every staff defaulted to treble, two bass staves carrying
+        # three flats came back as TWO SHARPS, a different accidental type
+        # fitting a different prefix well inside tolerance. Reading a key
+        # signature against a guessed clef is guessing twice.
+        #
+        # So the clef is read here from the header crop: one production-detector
+        # inference per staff on an image a few staff spaces wide, against the
+        # hundreds the measures need. It chooses the slot table and nothing
+        # else — it is not written to the output, and the measure pass below
+        # still reads the clef its own way. A staff left at None had no clef
+        # read at all, and `_header_key_signatures` skips it.
+        #
+        # Clef CONTINUITY is deliberately not consulted: the main loop has not
+        # initialised its per-system state yet, so reading it here would pick up
+        # the previous system's roles.
+        clef_estimate: dict[int, str | None] = {}
+        header_dets: dict[int, tuple[list, MeasureCell]] = {}
+        if read_headers:
+            for sys_idx in sorted(systems.keys()):
+                staff_keys = sorted(systems[sys_idx].keys())
+                for staff_idx in staff_keys:
+                    estimate = active_clef_by_staff.get((p, sys_idx, staff_idx))
+                    hc = header_cells.get(staff_idx)
+                    # The DETECTOR reads the staff-start MEASURE cell, not the
+                    # header crop, and the difference is total. Measured on WTC
+                    # p.17: on the header cell the model finds ZERO
+                    # key-signature markers at imgsz 640, 1280 and 2048 alike,
+                    # and almost no clefs; on the measure cell it finds four or
+                    # five markers and the right clef. A narrow crop is better
+                    # input for classical CV, which doesn't care what scale ink
+                    # arrives at, and worse for a model, which was trained on
+                    # whole cells and sees a letterboxed sliver as nothing it
+                    # knows. So each reader gets the picture it can read.
+                    start_cells = systems[sys_idx][staff_idx]
+                    if start_cells:
+                        header_dets[staff_idx] = (
+                            _header_detections(
+                                detector, start_cells[0],
+                                conf_threshold=conf_threshold,
+                                imgsz=imgsz,
+                                iou_threshold=iou_threshold,
+                                agnostic_nms=agnostic_nms,
+                            ),
+                            start_cells[0],
+                        )
+                        detected = _clef_from_dets(header_dets[staff_idx][0])
+                        if detected is not None:
+                            estimate = detected
+                    if estimate is None and locate_c_clefs and hc is not None:
+                        found = locate_clef(hc)
+                        if found is not None:
+                            estimate = found.read.name
+                    clef_estimate[staff_idx] = estimate
+            voted_fifths, voted_reasons = _header_key_signatures(
+                pws, header_cells, clef_estimate, header_dets
+            )
+        else:
+            voted_fifths, voted_reasons = {}, {}
 
         t_yolo = time.perf_counter()
         for sys_idx in sorted(systems.keys()):
@@ -1836,9 +2332,14 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     clef_continuity.starting_clef(position_in_system, role_default),
                 )
+                # Seed from the located + reconciled reading when there is one.
+                # A keySharp / keyFlat the detector finds in the music replaces
+                # it, so this only decides staves the detector says nothing about
+                # — which, on real prints, is nearly all of them.
+                seeded_fifths = voted_fifths.get(staff_idx)
                 active_key_sig = active_key_sig_by_staff.get(
                     (p, sys_idx, staff_idx),
-                    {},  # default: C major / A minor — no alterations
+                    alterations_for_fifths(seeded_fifths or 0),
                 )
                 active_time_sig = active_time_sig_by_staff.get(
                     (p, sys_idx, staff_idx),
@@ -1856,11 +2357,31 @@ def transcribe(
                     "n_measures": len(staff_cells),
                     "measures": [],
                 }
+                # Point the clef readers at the measured header only where the
+                # staff-start measure cell actually misses it — see
+                # `_header_cell_beats_measure_cell`.
+                header_cell_for_clef = None
+                if read_headers and staff_cells:
+                    staff_obj = next(
+                        (st for st in pws.staves if st.staff_index == staff_idx), None
+                    )
+                    if staff_obj is not None and _header_cell_beats_measure_cell(
+                        header_windows.get(staff_idx), staff_obj, staff_cells[0]
+                    ):
+                        header_cell_for_clef = header_cells.get(staff_idx)
+
                 first_cell_effective_clef: str | None = None
+                first_cell_clef_source: str | None = None
                 first_cell_effective_key_sig: dict[str, str] | None = None
                 first_cell_effective_time_sig: dict[str, Any] | None = None
                 for cell_idx, cell in enumerate(staff_cells):
-                    detections, active_clef, active_key_sig, active_time_sig = (
+                    (
+                        detections,
+                        active_clef,
+                        active_key_sig,
+                        active_time_sig,
+                        cell_clef_source,
+                    ) = (
                         _detections_for_cell(
                             detector,
                             cell,
@@ -1871,10 +2392,21 @@ def transcribe(
                             active_clef=active_clef,
                             active_key_sig=active_key_sig,
                             active_time_sig=active_time_sig,
+                            clef_reader=clef_reader,
+                            header_cell=header_cell_for_clef,
+                            skip_key_sig_detection=(
+                                cell_idx == 0 and staff_idx in voted_fifths
+                            ),
+                            read_clef=(cell_idx == 0),
+                            clef_reader_conf=clef_reader_conf,
+                            clef_reader_imgsz=clef_reader_imgsz,
+                            clef_reader_header_frac=clef_reader_header_frac,
+                            locate_c_clefs=locate_c_clefs,
                         )
                     )
                     if cell_idx == 0:
                         first_cell_effective_clef = active_clef
+                        first_cell_clef_source = cell_clef_source
                         first_cell_effective_key_sig = dict(active_key_sig)
                         first_cell_effective_time_sig = (
                             dict(active_time_sig) if active_time_sig else None
@@ -1894,9 +2426,26 @@ def transcribe(
                 # Staff-level effective state = whatever was in effect during
                 # the first measure of the staff (post any leading detections).
                 staff_dict["clef"] = first_cell_effective_clef
+                # Say where the clef came from when it wasn't the detector, so
+                # a reader can tell a measured clef from an inherited default
+                # without re-running the pipeline. Omitted in the ordinary case
+                # to keep untouched output byte-identical.
+                if first_cell_clef_source in ("specialist", "cv_locator"):
+                    staff_dict["clef_source"] = first_cell_clef_source
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}
                 )
+                # Say where a key signature came from when it wasn't the
+                # detector, so a reader can tell a located-and-voted signature
+                # from a detected one without re-running the pipeline. Only
+                # written when the seed actually survived into the output.
+                if (
+                    staff_idx in voted_fifths
+                    and _key_sig_fifths(first_cell_effective_key_sig or {})
+                    == (seeded_fifths or 0)
+                ):
+                    staff_dict["key_signature_source"] = "header_vote"
+                    staff_dict["key_signature_reason"] = voted_reasons.get(staff_idx, "")
                 staff_dict["time_signature"] = first_cell_effective_time_sig
 
                 # Cross-cell tie pairing — runs after every cell of this
@@ -2100,6 +2649,40 @@ def main(argv: list[str] | None = None) -> int:
                     help="Pages to process: e.g. '0,4,9' or '0-4' (default: all)")
     ap.add_argument("--weights", default=DEFAULT_WEIGHTS,
                     help=f"YOLO weights path (default: {DEFAULT_WEIGHTS})")
+    ap.add_argument("--clef-weights", default=None,
+                    help="OPTIONAL. Path to a CLEF-SPECIALIST checkpoint — a "
+                         "model fine-tuned to read clefs. You do not need it: "
+                         "header reading (clef + key signature) is on by default "
+                         "and needs no extra files. When set, this second "
+                         "detector reads each staff's clef from its header and "
+                         "overrides the main detector's, which helps on some "
+                         "orchestral scans. Pointing it at ordinary detection "
+                         "weights makes clefs WORSE, not better. "
+                         "Env: OMR_CLEF_WEIGHTS.")
+    ap.add_argument("--clef-reader-conf", type=float, default=0.30,
+                    help="Min confidence for a clef-specialist detection to "
+                         "override the main clef (default: 0.30)")
+    ap.add_argument("--clef-reader-imgsz", type=int, default=640,
+                    help="Inference imgsz for the clef/header specialist on its "
+                         "crop (default: 640 — lower than main imgsz keeps the "
+                         "header glyphs near training scale; see tune_header_reader.py)")
+    ap.add_argument("--clef-reader-header-frac", type=float, default=0.42,
+                    help="Left fraction of the staff-start cell the specialist "
+                         "reads — the clef/key/time header (default: 0.42)")
+    ap.add_argument("--no-header-reading", action="store_true",
+                    help="Disable the staff-header pass: measuring each staff's "
+                         "header window and reading its key signature from it "
+                         "(tools/omr/staff_header.py, key_signature_locator.py). "
+                         "On by default and needs no weights. The reading only "
+                         "seeds staves where the detector finds no key-signature "
+                         "accidental, so turning it off cannot fix a wrong "
+                         "detected signature — it only removes the fallback.")
+    ap.add_argument("--no-clef-locator", action="store_true",
+                    help="Disable the classical-CV C-clef locator. It runs only "
+                         "where no model read a clef, and only recognises C "
+                         "clefs, so it can add a reading but never overturn "
+                         "one; turn it off to reproduce pre-locator output "
+                         "exactly. See tools/omr/clef_locator.py.")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
     ap.add_argument("--imgsz", type=int, default=2048,
@@ -2126,6 +2709,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: weights file not found: {args.weights}")
         return 2
 
+    # Clef specialist: CLI flag wins, else OMR_CLEF_WEIGHTS env.
+    clef_weights = args.clef_weights or os.environ.get("OMR_CLEF_WEIGHTS")
+    if clef_weights and not Path(clef_weights).exists():
+        print(f"ERROR: clef-weights file not found: {clef_weights}")
+        return 2
+
     # Count pages
     try:
         import fitz  # PyMuPDF
@@ -2145,6 +2734,10 @@ def main(argv: list[str] | None = None) -> int:
     if not args.quiet:
         print(f"transcribe: {args.pdf.name} ({n_pages} pages, processing {len(pages)})")
         print(f"  weights:  {args.weights}")
+        if clef_weights:
+            print(f"  clef:     {clef_weights} (header specialist, conf "
+                  f"{args.clef_reader_conf}, imgsz {args.clef_reader_imgsz}, "
+                  f"frac {args.clef_reader_header_frac})")
         print(f"  conf:     {args.conf}, iou: {args.iou}, "
               f"agnostic_nms: {not args.no_agnostic_nms}, imgsz: {args.imgsz}")
 
@@ -2157,6 +2750,12 @@ def main(argv: list[str] | None = None) -> int:
         iou_threshold=args.iou,
         agnostic_nms=not args.no_agnostic_nms,
         dpi=args.dpi,
+        clef_weights=clef_weights,
+        clef_reader_conf=args.clef_reader_conf,
+        clef_reader_imgsz=args.clef_reader_imgsz,
+        clef_reader_header_frac=args.clef_reader_header_frac,
+        locate_c_clefs=not args.no_clef_locator,
+        read_headers=not args.no_header_reading,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )

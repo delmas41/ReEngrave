@@ -1,0 +1,12 @@
+page 11: 26 staff-start cells (canonical widths 2048–2048)
+REFERENCE full@1280 clefs: {'treble': 3, 'bass': 13, '(none)': 7, 'alto': 2, 'tenor': 1}
+
+setting             clef agree  detected  n_timesig     time
+frac1.0 imgsz1280     26/26             19          0    10.1s
+frac0.42 imgsz1280      5/26              5          0    25.7s
+frac0.42 imgsz1024      7/26              3          0    19.2s
+frac0.42 imgsz768      16/26             14          0     9.5s
+frac0.42 imgsz640      23/26             18          0     6.9s
+frac0.3 imgsz768      16/26             11          0     7.5s
+frac0.3 imgsz640      23/26             18          0     4.9s
+frac0.25 imgsz640      24/26             19          0     4.6s
