@@ -174,6 +174,11 @@ def test_a_staff_whose_clef_the_detector_read_is_flagged_but_not_changed():
     clef_det = {"category": "clef", "class": "clefG", "bbox": [0, 0, 10, 10]}
     staff = _staff(["C5"] * 12, extra=[clef_det])
     assert clef_was_read(staff)
+    recs = correct_clefs_from_instruments(
+        [_page(staff)], {0: BASSOON}, {(0, 0, 0): 0}, apply=True)
+    assert len(recs) == 1
+    assert recs[0]["clef_was_read"] and not recs[0]["applied"]
+    assert staff["clef"] == "treble", "a read clef must not be overwritten"
 
 
 def test_a_geometry_read_clef_counts_as_read_despite_no_clef_DETECTION():
@@ -192,11 +197,6 @@ def test_a_geometry_read_clef_counts_as_read_despite_no_clef_DETECTION():
 def test_absent_clef_source_means_defaulted():
     staff = _staff(["C5"] * 12)
     assert not clef_was_read(staff)
-    recs = correct_clefs_from_instruments(
-        [_page(staff)], {0: BASSOON}, {(0, 0, 0): 0}, apply=True)
-    assert len(recs) == 1
-    assert recs[0]["clef_was_read"] and not recs[0]["applied"]
-    assert staff["clef"] == "treble", "a read clef must not be overwritten"
 
 
 def test_a_staff_the_detector_was_silent_on_is_corrected():
