@@ -43,20 +43,39 @@ def blank_page() -> np.ndarray:
     return img
 
 
+# A C clef is a compact glyph, and the drawing below has to be one too or the
+# tests pass a shape no engraver prints. Measured: on the engraved reference
+# sheet a C clef is 2.75 staff spaces wide by 4.0 tall — 0.68 wide over tall —
+# and across 74 hand-checked archaic clefs in Nottebohm the ratio runs 0.50 to
+# 1.26. This glyph was 1.4 by 4.0, a ratio of 0.35, narrower than anything in
+# either corpus. Its width is fixed by the engraving: the bars have to stay
+# under the 1.5-space run that `strip_horizontal_rules` erases, which is what
+# lets them survive at all. So the height comes down to 2.6 spaces instead —
+# squarely inside the 2.4-to-3.6 the real clefs measure, where 4.0 was taller
+# than any of them — and the ratio lands at 0.54.
+CLEF_W = 28   # 1.4 staff spaces: bars short enough to survive rule stripping
+CLEF_HALF = int(1.3 * SPACING)
+
+
 def draw_c_clef_at(img: np.ndarray, centre_y: int, x: int = 22) -> None:
     """An archaic ladder C clef centred on `centre_y`: two vertical strokes
     joined by two bars, symmetric top-to-bottom.
 
-    Stroke widths are chosen the way a real engraver's are, not minimally —
-    a clef's strokes are visibly thicker than a barline (which is what lets
-    the locator tell them apart) and its bars are shorter than a staff line
-    (which is what lets them survive rule stripping).
+    Proportions follow real clefs rather than a schematic — see CLEF_W. Stroke
+    widths are chosen the way a real engraver's are, not minimally: a clef's
+    strokes are visibly thicker than a barline (which is what lets the locator
+    tell them apart) and its bars are shorter than a staff line (which is what
+    lets them survive rule stripping).
     """
-    half = 2 * SPACING  # the glyph spans two spaces either side of its line
+    half = CLEF_HALF  # the glyph spans two spaces either side of its line
     cv2.rectangle(img, (x, centre_y - half), (x + 11, centre_y + half), 0, -1)
-    cv2.rectangle(img, (x + 16, centre_y - half), (x + 27, centre_y + half), 0, -1)
+    cv2.rectangle(
+        img, (x + CLEF_W - 11, centre_y - half), (x + CLEF_W, centre_y + half), 0, -1
+    )
     for dy in (-SPACING // 2, SPACING // 2):
-        cv2.rectangle(img, (x, centre_y + dy - 4), (x + 27, centre_y + dy + 4), 0, -1)
+        cv2.rectangle(
+            img, (x, centre_y + dy - 4), (x + CLEF_W, centre_y + dy + 4), 0, -1
+        )
 
 
 def draw_c_clef(img: np.ndarray, line_from_bottom: int, x: int = 22) -> None:
@@ -70,8 +89,11 @@ def draw_f_clef(img: np.ndarray, line_from_bottom: int = 4, x: int = 22) -> None
     the size and symmetry gates — that is the situation the dot veto exists
     for, and it is what a real bass clef did on Nottebohm p.31."""
     cy = line_y(line_from_bottom)
-    cv2.rectangle(img, (x, cy - 30), (x + 11, cy + 30), 0, -1)
-    cv2.rectangle(img, (x + 14, cy - 30), (x + 25, cy + 30), 0, -1)
+    # Body drawn to real clef proportions, so this cell reaches the dot veto
+    # rather than being turned away earlier by the size or aspect gates — the
+    # veto is what the test is about.
+    cv2.rectangle(img, (x, cy - 26), (x + 11, cy + 26), 0, -1)
+    cv2.rectangle(img, (x + 14, cy - 26), (x + 25, cy + 26), 0, -1)
     for dy in (-10, 10):
         cv2.rectangle(img, (x, cy + dy - 4), (x + 25, cy + dy + 4), 0, -1)
     for dy in (-SPACING // 2, SPACING // 2):   # the dots
@@ -84,6 +106,21 @@ def draw_g_clef(img: np.ndarray, x: int = 22) -> None:
     cv2.rectangle(img, (x, 70), (x + 40, 150), 0, -1)      # the loop
     cv2.rectangle(img, (x + 16, 150), (x + 24, 250), 0, -1)  # the tail
     cv2.circle(img, (x + 20, 245), 10, 0, -1)
+
+
+def draw_heading_above(img: np.ndarray, x: int = 24) -> None:
+    """A movement heading printed above the staff, in the clef's own column —
+    "Nr. 15.", a rehearsal letter, a marking. Real ink, well clear of the top
+    staff line, and the thing that used to fuse with the clef."""
+    cv2.rectangle(img, (x, 30), (x + 34, 62), 0, -1)
+
+
+def draw_brace_bulge(img: np.ndarray, x: int = 20) -> None:
+    """The waist of a system brace, as it survives rule stripping: a sliver to
+    the left of the clef, vertically symmetric and wide enough to clear the
+    width gate — 1.0 staff space by 4.5, where the real ones measured 0.68 to
+    1.27 wide. It read as a C clef on four Nottebohm staves."""
+    cv2.rectangle(img, (x, 96), (x + 20, 186), 0, -1)
 
 
 def draw_noteheads(img: np.ndarray) -> None:
@@ -153,6 +190,50 @@ class TestLocatesCClefs:
         assert found.symmetry > 0.9
 
 
+class TestReadsPastTheFurniture:
+    """What the header actually contains besides the clef."""
+
+    def test_a_heading_above_the_staff_does_not_hide_the_clef(self):
+        # The single largest drain on clef coverage: the heading sits in the
+        # clef's own column, so grouping ink by its x-gap alone made one
+        # cluster six-plus staff spaces tall and the search gave up on it.
+        # Measured over 191 headers of 19th-century engraving, that was 55% of
+        # them.
+        img = blank_page()
+        draw_c_clef(img, 3)
+        draw_heading_above(img)
+        draw_noteheads(img)
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.name == "alto"
+
+    def test_a_heading_below_the_staff_does_not_hide_the_clef(self):
+        img = blank_page()
+        draw_c_clef(img, 3)
+        cv2.rectangle(img, (24, 220), (58, 252), 0, -1)   # a page number
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.name == "alto"
+
+    def test_the_brace_is_not_read_as_a_clef(self):
+        # A brace's waist survives the rule stripping — it is wider than the
+        # thin-rule allowance, and inside a header crop it is shorter than the
+        # heavy-rule one — and what is left is symmetric and clef-sized. Only
+        # its proportions give it away: it is a sliver, and a C clef is
+        # compact.
+        img = blank_page()
+        draw_brace_bulge(img)
+        draw_c_clef(img, 3, x=56)
+        draw_noteheads(img)
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.name == "alto"
+        assert found.bbox[0] > 40, "read the brace instead of the clef"
+
+    def test_a_brace_with_no_clef_behind_it_yields_nothing(self):
+        img = blank_page()
+        draw_brace_bulge(img)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img)) is None
+
+
 # ─── declining to guess ─────────────────────────────────────────────────────
 
 
@@ -196,6 +277,17 @@ class TestAbstains:
         cv2.rectangle(img, (48, 0), (70, CELL_H), 255, -1)
         found = locate_clef(make_cell(img))
         assert found is not None and found.read.line == 4
+
+    def test_a_glyph_taller_than_any_c_clef_yields_nothing(self):
+        # 4.8 staff spaces. The tallest C clef in either reference corpus is
+        # 4.05 (engraved) / 3.59 (archaic), and the cap used to sit at 5.0 —
+        # loose enough that a treble clef which had lost its tail measured
+        # 4.86, passed, and named the wrong clef.
+        img = blank_page()
+        draw_c_clef_at(img, line_y(3))
+        cv2.rectangle(img, (22, 92), (22 + CLEF_W, 188), 0, -1)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img)) is None
 
     def test_an_empty_staff_yields_nothing(self):
         assert locate_clef(make_cell(blank_page())) is None

@@ -14,6 +14,7 @@ import numpy as np
 import pytest
 
 from tools.omr.header_ink import (
+    cluster_components,
     cluster_components_2d,
     erase_staff_lines,
     trace_staff_line,
@@ -92,6 +93,56 @@ class TestErase:
 
 
 # ─── clustering ─────────────────────────────────────────────────────────────
+
+class TestClusterComponents:
+    """The clef clusterer: near in x AND near in y."""
+
+    def test_a_heading_above_the_staff_does_not_join_the_clef(self):
+        # What cost the clef locator most of its coverage. A movement heading
+        # printed above the staff sits in the same narrow column as the clef,
+        # so grouping on the x-gap alone produced one cluster six or more
+        # staff spaces tall, which was then thrown away as far too big to be
+        # a clef.
+        clef = (40, 100, 30, 55, 900)
+        heading = (44, 20, 34, 30, 700)
+        assert len(cluster_components([clef, heading], max_gap=12, max_y_gap=6)) == 2
+
+    def test_pieces_of_one_glyph_still_join_across_an_erased_line(self):
+        # Stripping the staff lines severs a glyph's vertical strokes, so its
+        # pieces arrive a line-thickness apart and MUST rejoin: a piece of a
+        # treble clef on its own is the size and shape of a C clef.
+        upper = (40, 100, 30, 24, 500)
+        lower = (40, 129, 30, 26, 520)
+        assert len(cluster_components([upper, lower], max_gap=12, max_y_gap=6)) == 1
+
+    def test_a_fragment_can_bridge_two_others_it_sits_between(self):
+        # Why this is union-find and not a left-to-right chain: the middle
+        # fragment is what connects the outer two, and it is not the one
+        # immediately preceding either of them in x order.
+        left = (40, 100, 10, 20, 180)
+        right = (70, 100, 10, 20, 180)
+        middle = (52, 104, 16, 12, 150)
+        merged = cluster_components([left, right, middle], max_gap=12, max_y_gap=6)
+        assert len(merged) == 1
+
+    def test_without_a_y_limit_it_groups_on_x_alone(self):
+        clef = (40, 100, 30, 55, 900)
+        heading = (44, 20, 34, 30, 700)
+        assert len(cluster_components([clef, heading], max_gap=12)) == 1
+
+    def test_horizontally_distant_boxes_do_not_merge(self):
+        boxes = [(10, 100, 20, 40, 800), (200, 100, 20, 40, 800)]
+        assert len(cluster_components(boxes, max_gap=20, max_y_gap=6)) == 2
+
+    def test_empty_input(self):
+        assert cluster_components([], max_gap=20, max_y_gap=6) == []
+
+    def test_output_is_left_to_right(self):
+        boxes = [(200, 100, 20, 40, 800), (10, 100, 20, 40, 800),
+                 (100, 100, 20, 40, 800)]
+        merged = cluster_components(boxes, max_gap=5, max_y_gap=6)
+        assert [m[0] for m in merged] == sorted(m[0] for m in merged)
+
 
 class TestCluster2D:
     def test_vertically_disjoint_neighbours_do_not_merge(self):

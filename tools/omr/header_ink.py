@@ -162,35 +162,86 @@ def staff_metrics(cell: MeasureCell) -> tuple[float, float, float] | None:
 
 
 def cluster_components(
-    boxes: list[tuple[int, int, int, int, int]], max_gap: float
+    boxes: list[tuple[int, int, int, int, int]],
+    max_gap: float,
+    max_y_gap: float | None = None,
 ) -> list[tuple[int, int, int, int]]:
-    """Merge components into glyph-sized clusters by horizontal proximity.
+    """Merge components into glyph-sized clusters by proximity — horizontally
+    always, and vertically too when `max_y_gap` is given.
 
     An archaic C clef is drawn as a stack of separate bars, and stripping the
     staff lines cuts even a solid glyph into pieces, so a clef is routinely
     several components that belong together. Grouping by x-gap rejoins them
     without assuming how many pieces the engraver — or the morphology — left.
 
+    The x-gap **alone** was the rule here originally, on the reasoning that a
+    clef is the only thing in its strip so anything nearby belongs to it. That
+    reasoning is wrong on real pages and it was the single largest drain on
+    clef coverage. A staff header is a narrow column that also holds whatever
+    is printed above and below the staff — a movement heading ("Nr. 15."), a
+    rehearsal letter, a marking, the neighbouring staff's ink — and grouping on
+    x alone strings the clef together with all of it into one column six to ten
+    staff spaces tall, which is then discarded for being far too big to be a
+    clef. Measured over 191 staff headers of 19th-century engraving, 55% of
+    them ended that way, and in every single case the tallest component in the
+    oversized cluster was under two staff spaces: there was never a large
+    object, only small ones stacked by a rule that could not see the stacking.
+
+    `max_y_gap` is what stops it: components merge only if they are close in
+    BOTH axes, so ink separated by a band of blank stays separate. It has to be
+    a real tolerance rather than a demand that the boxes touch, because the
+    horizontal-rule stripping severs a glyph's vertical strokes wherever they
+    cross a staff line and leaves the pieces a line-thickness apart. Too tight
+    and those pieces come apart — which is not merely a lost clef but a WRONG
+    one, since a fragment of a treble clef is about the size and shape of a C
+    clef. Measured on braced piano music in all fifteen keys: a tolerance of
+    0.15 staff spaces invents C clefs, 0.2 and above does not.
+
     `boxes` are (x, y, w, h, area); returns merged (x, y, w, h), left to right.
     """
     if not boxes:
         return []
     ordered = sorted(boxes, key=lambda b: b[0])
-    clusters: list[list[tuple[int, int, int, int, int]]] = [[ordered[0]]]
-    for b in ordered[1:]:
-        cur_right = max(c[0] + c[2] for c in clusters[-1])
-        if b[0] - cur_right <= max_gap:
-            clusters[-1].append(b)
-        else:
-            clusters.append([b])
+    n = len(ordered)
+    # Union-find rather than a left-to-right chain: with two axes, "belongs
+    # with" is no longer decided by the immediately preceding box — a fragment
+    # can bridge two others it sits between — so the grouping has to be the
+    # connected components of the "near enough" relation.
+    parent = list(range(n))
+
+    def find(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    for i in range(n):
+        xi, yi, wi, hi, _ = ordered[i]
+        for j in range(i + 1, n):
+            xj, yj, wj, hj, _ = ordered[j]
+            # Sorted by x, so once one box starts beyond reach every later one
+            # does too.
+            if xj - (xi + wi) > max_gap:
+                break
+            if max_y_gap is not None:
+                dy = max(yj - (yi + hi), yi - (yj + hj), 0)
+                if dy > max_y_gap:
+                    continue
+            a, b = find(i), find(j)
+            if a != b:
+                parent[a] = b
+
+    groups: dict[int, list[tuple[int, int, int, int, int]]] = {}
+    for i in range(n):
+        groups.setdefault(find(i), []).append(ordered[i])
     merged: list[tuple[int, int, int, int]] = []
-    for cl in clusters:
+    for cl in groups.values():
         x0 = min(c[0] for c in cl)
         y0 = min(c[1] for c in cl)
         x1 = max(c[0] + c[2] for c in cl)
         y1 = max(c[1] + c[3] for c in cl)
         merged.append((int(x0), int(y0), int(x1 - x0), int(y1 - y0)))
-    return merged
+    return sorted(merged, key=lambda m: m[0])
 
 
 # ─── tracing the printed staff lines ────────────────────────────────────────
@@ -398,13 +449,15 @@ def cluster_components_2d(
     """Merge components into glyph clusters by horizontal proximity AND vertical
     overlap.
 
-    `cluster_components` groups on the x-gap alone, which is right for a clef —
-    it is the only thing in its strip, so anything nearby belongs to it. It is
-    wrong for a key signature, where the accidentals stand in a column of other
-    ink: a flat merges with the stem or ledger fragment directly above it and
-    the cluster comes out four staff spaces tall, far too big to be an
-    accidental, and is thrown away. Fragments of ONE glyph overlap vertically;
-    a glyph and the thing above it do not.
+    `cluster_components` separates ink by the size of the vertical GAP between
+    it, which is what a clef needs: an archaic C clef is a stack of bars a
+    hairline apart, so its own pieces must still merge. A key signature needs a
+    stricter test, because its accidentals stand in a column of other ink and a
+    flat can sit directly beneath a stem or ledger fragment with no gap at all
+    to separate them — the cluster then comes out four staff spaces tall, far
+    too big to be an accidental, and is thrown away. Overlap rather than
+    distance is what settles that case: fragments of ONE glyph overlap
+    vertically; a glyph and the thing stacked above it do not.
 
     `min_y_overlap` is a fraction of the shorter box's height. `boxes` are
     (x, y, w, h, area); returns merged (x, y, w, h), left to right.
