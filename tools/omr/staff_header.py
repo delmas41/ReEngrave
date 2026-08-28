@@ -47,6 +47,13 @@ the window is bracket and instrument-name text that every reader already has to
 skip, while a window that starts too late loses the clef outright. So the left
 edge carries a deliberate `left_margin_spaces` bias.
 
+Taking the minimum is only safe while the walk cannot under-report, and it once
+could: `_staff_x_extent` bridges broken lines, which lets `Staff.x_start` land
+in the instrument name, and a walk starting there never meets the bracket meant
+to stop it. `_anchor_column` now enforces what it used to assume. The failure
+that rule prevents is not small — the under-reported edge also stops the window
+being cut at the system's own initial rule, so it ends where the header begins.
+
 ## What this module does NOT do
 
 It does not touch `Staff.x_start` or measure segmentation. Phase 1 has no
@@ -191,16 +198,47 @@ def _walk_left(ink: np.ndarray, anchor: int, gap_px: int, wall: np.ndarray) -> i
     return x
 
 
-def _anchor_column(ink: np.ndarray, staff: Staff) -> int | None:
+def _anchor_column(ink: np.ndarray, staff: Staff, wall: np.ndarray | None = None) -> int | None:
     """A column that is certainly inside the staff, to walk left from.
 
-    `staff.x_start` is the natural candidate and is never too far LEFT (the
-    longest-run rule can only push it right), which is exactly the direction
-    that keeps the walk inside the staff. If it happens to land on a blank
-    column, scan right for the nearest ink.
+    `staff.x_start` is the natural candidate, and this module was written when
+    it could only ever be too far RIGHT — the longest strictly-contiguous run
+    can start late but never early, and starting late is the direction that
+    keeps the walk inside the staff.
+
+    That guarantee is gone. `_staff_x_extent` now bridges breaks of up to a
+    staff space (`STAFF_LINE_MAX_GAP_SPACES`), which is what put the clef back
+    inside the measure cell — but the same bridging also reaches LEFT across
+    the gap between the system's bracket and the instrument name printed beside
+    it, and `x_start` then lands in the TEXT. Measured on Beethoven 6 p.2,
+    whose bracket stands at x≈435: two of the ten staves of system 0 report
+    `x_start` 328 and 334. A walk starting there is already outside the staff,
+    so it never meets the bracket, runs on through the instrument name and
+    returns a left edge a hundred pixels too far out.
+
+    `system_left_edge` takes the MINIMUM across the system, so one such staff
+    sets the window for all of them — and the damage is not just a wide window.
+    The right edge is the first barline at least `min_width_spaces` from the
+    left one, so an edge that starts too far out stops SKIPPING the system's
+    own initial rule and cuts the window there instead. On Beethoven 5 p.2
+    system 1 that produced a 6.4-space window running from before the bracket
+    to the rule the clefs stand behind: instrument names, and no clef at all.
+
+    So the guarantee is now enforced rather than assumed, using the fact
+    `_walk_left` already stops on: a full-band vertical rule is the staff's
+    left boundary. An anchor left of the leftmost such rule is outside the
+    staff, and is moved to the first ink beyond that rule — beyond rather than
+    onto it, so the walk stops ON the rule rather than stepping across it.
     """
     n = ink.size
     x = int(np.clip(staff.x_start, 0, n - 1))
+    if wall is not None and wall.any():
+        first_wall = int(np.flatnonzero(wall)[0])
+        if x < first_wall:
+            end = first_wall
+            while end + 1 < n and wall[end + 1]:
+                end += 1
+            x = min(n - 1, end + 1)
     if ink[x]:
         return x
     rest = np.flatnonzero(ink[x:])
@@ -217,10 +255,10 @@ def _staff_left_candidate(
     ink = _band_ink_profile(pws.page.binary, staff)
     if not ink.any():
         return None
-    anchor = _anchor_column(ink, staff)
+    wall = _rule_columns(pws.page.binary, staff)
+    anchor = _anchor_column(ink, staff, wall)
     if anchor is None:
         return None
-    wall = _rule_columns(pws.page.binary, staff)
     return _walk_left(
         ink, anchor,
         gap_px=max(1, int(round(config.gap_tolerance_spaces * spacing))),

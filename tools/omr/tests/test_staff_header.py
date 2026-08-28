@@ -102,6 +102,28 @@ class TestSystemLeftEdge:
         pws = _pws(_page(tops), tops, [STAFF_LEFT])
         assert system_left_edge(pws, 0) >= BRACKET_X - 1
 
+    def test_an_x_start_inside_the_instrument_name_does_not_drag_the_edge_out(self):
+        """The regression the Phase-1 x-extent fix introduced here.
+
+        `_staff_x_extent` now bridges breaks of up to a staff space, which is
+        what put the clef back inside the measure cell — but the same bridging
+        reaches LEFT across the gap from the bracket to the instrument name, so
+        `x_start` can land in the TEXT. A walk starting there never meets the
+        bracket and runs on to the left edge of "Fl.". Measured on Beethoven 6
+        p.2: three of ten staves reported `x_start` around 330 against a
+        bracket at 435, and the MINIMUM rule then handed that to all ten.
+        """
+        tops = [100, 250]
+        pws = _pws(_page(tops), tops, [40, STAFF_LEFT])   # staff 0 starts in "Fl."
+        assert system_left_edge(pws, 0) >= BRACKET_X - 1
+
+    def test_a_whole_system_of_text_anchors_still_finds_the_bracket(self):
+        # The minimum is over the system, so one sound staff used to be enough.
+        # This is the case where there is none.
+        tops = [100, 250]
+        pws = _pws(_page(tops), tops, [40, 42])
+        assert system_left_edge(pws, 0) >= BRACKET_X - 1
+
     def test_blank_page_abstains(self):
         tops = [100]
         img = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
