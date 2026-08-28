@@ -24,8 +24,10 @@ from tools.omr.transcribe import (
     _key_sig_summary,
     _measure_rhythm_sum_warning,
     _parse_diatonic_pitch,
+    _staff_geometry,
     _stem_direction,
 )
+from tools.omr.types import Staff
 
 
 @dataclass
@@ -750,3 +752,59 @@ class TestFlagMeasureCountInconsistency:
         assert w[14]["deviation"] == -1 and w[15]["deviation"] == 1
         assert w[14]["confidence_label"] == "high"   # consensus 0.875
         assert w[15]["confidence_label"] == "high"
+
+
+# ─── _staff_geometry ────────────────────────────────────────────────────────
+
+
+class TestStaffGeometry:
+    """The staff frame emitted into the output JSON.
+
+    Every geometric reading the pipeline makes — clef line, notehead pitch,
+    key-signature slot — is measured against a staff's five lines, and until
+    this block existed those lines were discarded at the file boundary: the
+    readings shipped, the frame they were measured in did not.
+    """
+
+    @staticmethod
+    def _staff(line_ys=(100, 120, 140, 160, 180), x_start=50, x_end=900):
+        return Staff(
+            page_index=0,
+            staff_index=0,
+            line_ys=list(line_ys),
+            x_start=x_start,
+            x_end=x_end,
+        )
+
+    def test_emits_the_five_lines_in_page_pixels(self):
+        g = _staff_geometry(self._staff())
+        assert g["line_ys_page"] == [100, 120, 140, 160, 180]
+        assert g["line_spacing_px"] == 20.0
+        assert g["x_start"] == 50 and g["x_end"] == 900
+
+    def test_lines_are_ordered_top_to_bottom(self):
+        # The clef table and the slot tables number lines 1=bottom..5=top off
+        # this ordering; a reversed list would mis-number every reading.
+        g = _staff_geometry(self._staff())
+        assert g["line_ys_page"] == sorted(g["line_ys_page"])
+
+    def test_uneven_spacing_reports_the_mean(self):
+        g = _staff_geometry(self._staff(line_ys=(100, 121, 140, 159, 180)))
+        assert g["line_spacing_px"] == 20.0
+
+    def test_json_serializable(self):
+        # numpy ints from Phase 1 would serialize-fail at the very end of a
+        # long run; the cast has to happen here.
+        import json
+
+        g = _staff_geometry(self._staff())
+        assert json.loads(json.dumps(g)) == g
+        assert all(type(y) is int for y in g["line_ys_page"])
+
+    def test_none_staff_abstains(self):
+        assert _staff_geometry(None) is None
+
+    def test_non_five_line_staff_abstains(self):
+        # Same abstain-when-blind rule the geometric readers follow: line
+        # numbering is only defined on a 5-line staff.
+        assert _staff_geometry(self._staff(line_ys=(100, 120, 140, 160))) is None

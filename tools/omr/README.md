@@ -239,11 +239,26 @@ current production weights — see "Known limitations" below.
                 }
               },
               "time_signature":  {"numerator": 4, "denominator": 4, "raw": "4/4"},
+              "staff_geometry": {               // the five lines every reading
+                                                // above was MEASURED against —
+                                                // see "The staff frame" below.
+                                                // null when this staff was not
+                                                // read as a clean 5-line staff.
+                "line_ys_page":    [268, 291, 314, 337, 360],  // top → bottom
+                "line_spacing_px": 23.0,        // mean gap
+                "x_start":         186,
+                "x_end":           1755
+              },
               "n_measures":      4,
               "measures": [
                 {
                   "measure_index":   0,
                   "bbox_page_px":    [186, 268, 1755, 715],
+                  "staff_line_ys_canonical": [100, 200, 300, 400, 500],
+                                                 // the same five lines in THIS
+                                                 // cell's canonical frame — the
+                                                 // one detections[].bbox is in
+                  "upscale_factor":  2.13,       // canonical px per page px
                   "clef":            "treble",   // active clef at this measure
                   "key_signature":   { ... },    // active key sig at this measure
                   "time_signature":  { ... },    // active time sig at this measure
@@ -288,9 +303,58 @@ current production weights — see "Known limitations" below.
 | `detections[].bbox` | Canonical cell coords (px) | Cropping the symbol out of `MeasureCell.image` |
 | `detections[].bbox_page` | Source-page pixels at `dpi` | Drawing on the source PDF / overlaying back |
 | `measures[].bbox_page_px` | Source-page pixels at `dpi` | Cropping the whole measure from the PDF |
+| `staves[].staff_geometry` | Source-page pixels at `dpi` | Placing anything on the staff in the page frame |
+| `measures[].staff_line_ys_canonical` | Canonical cell coords (px) | Placing a `detections[].bbox` on the staff |
 
 All page-pixel boxes are `[x, y, w, h]` (top-left + size), at the `dpi`
 the page was rendered at (default 600 — same as a 600 DPI bitmap).
+
+### The staff frame
+
+This pipeline is a sequence of erasures — binarize, deskew, crop, rescale,
+remove the staff lines — and every one of them is safe only because what it
+destroys is written down somewhere else. `MeasureCell` keeps the original
+image beside the staff-line-removed one, and carries the staff's five lines
+along with it, which is why `clef_geometry` can separate an alto clef from a
+tenor (the same drawing, one line apart) without looking at a single pixel of
+the erased image: it reads `cell.staff_line_ys_canonical`, not the picture.
+
+Every geometric reading here works that way — the clef's named line, a
+notehead's line-or-space, a key signature's slot positions are all
+measurements against those five lines. So the lines are emitted too. Without
+them the JSON carried the *answers* but not the frame they were measured in,
+and nothing downstream could check a clef against the staff it sits on,
+re-derive a pitch from a box, or repeat a snap.
+
+Two blocks, because there are two frames and each cell is scaled
+independently — the staff-level page geometry does **not** describe a cell's
+canonical coordinates:
+
+```python
+staff  = sys_["staves"][0]
+meas   = staff["measures"][0]
+geom   = staff["staff_geometry"]          # page frame, or None if abstained
+lines  = meas["staff_line_ys_canonical"]  # canonical frame — same 5 lines
+scale  = meas["upscale_factor"]           # canonical px per page px
+
+# The two are interconvertible through the measure's own bbox:
+y0 = meas["bbox_page_px"][1]
+assert [round((y - y0) * scale) for y in geom["line_ys_page"]] == lines
+
+# Re-derive a pitch the way pitch_resolver did, from the JSON alone:
+half = ((lines[-1] - lines[0]) / 4.0) / 2.0
+for det in meas["detections"]:
+    if det["category"] == "notehead":
+        x, y, w, h = det["bbox"]
+        position = round(((y + h // 2) - lines[0]) / half)   # half-steps down
+        # → feed `position` + meas["clef"] to pitch_resolver._pitch_from_position
+```
+
+`staff_geometry` is `null` — present, but null — on a staff that was not read
+as a clean five-line staff, following the same abstain-when-blind rule as the
+geometric readers: the line numbering the clef and slot tables are defined on
+only means something on five lines. A **missing** key means the file predates
+this block.
 
 ### Time-signature inference (back-fill)
 

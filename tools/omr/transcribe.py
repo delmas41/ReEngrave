@@ -143,10 +143,26 @@ Output schema (JSON):
                   },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
+                  "staff_geometry": {       # the five lines every geometric
+                                            # reading above was measured
+                                            # against. null when the staff was
+                                            # not read as a clean 5-line staff.
+                      "line_ys_page": [268, 291, 314, 337, 360],  # top → bottom
+                      "line_spacing_px": 23.0,
+                      "x_start": 186, "x_end": 1755
+                  },
                   "measures": [
                     {
                       "measure_index": 0,
                       "bbox_page_px": [x0, y0, x1, y1],
+                      "staff_line_ys_canonical": [100, 200, 300, 400, 500],
+                                            # the same five lines in THIS
+                                            # cell's canonical frame — the one
+                                            # detections[].bbox is in. Cells
+                                            # are scaled independently, so the
+                                            # staff-level page geometry does
+                                            # not describe this frame.
+                      "upscale_factor": 2.13,   # canonical px per page px
                       "clef": "treble",     # active clef AT this measure
                       "key_signature": {...},  # active key sig at this measure
                       "time_signature": {...},  # active time sig at this measure
@@ -816,6 +832,33 @@ def _key_sig_summary(alterations: dict[str, str]) -> dict[str, Any]:
         "sharps": n_sharps,
         "flats": n_flats,
         "alterations": dict(alterations),
+    }
+
+
+def _staff_geometry(staff: Staff | None) -> dict[str, Any] | None:
+    """The staff's own five lines, in page pixels, for the output JSON.
+
+    Every geometric reading in this pipeline is a measurement against these
+    lines: which line a clef names (`clef_geometry`), which line or space a
+    notehead sits on (`pitch_resolver`), where a key signature's accidentals
+    fall in the slot table (`key_signature_geometry`). The *readings* were
+    emitted; the frame they were measured in was not, so nothing downstream
+    could check a clef against the staff it sits on, re-derive a pitch from a
+    box, or repeat any snap — the geometry lived only for the length of the
+    run. This block is that frame, written down.
+
+    Returns None for a staff without a clean 5-line reading, matching the
+    abstain-when-blind rule the geometric readers themselves follow: the
+    line-numbering the clef table and the slot tables are defined on only
+    means anything on five lines.
+    """
+    if staff is None or len(staff.line_ys) != 5:
+        return None
+    return {
+        "line_ys_page": [int(y) for y in staff.line_ys],
+        "line_spacing_px": round(float(staff.line_spacing_px), 3),
+        "x_start": int(staff.x_start),
+        "x_end": int(staff.x_end),
     }
 
 
@@ -2356,6 +2399,9 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     None,  # default: unknown — only set when detected
                 )
+                staff_obj = next(
+                    (st for st in pws.staves if st.staff_index == staff_idx), None
+                )
                 staff_dict: dict[str, Any] = {
                     "staff_index": staff_idx,
                     # clef + key_signature + time_signature get filled in
@@ -2365,6 +2411,8 @@ def transcribe(
                     "clef": None,
                     "key_signature": None,
                     "time_signature": None,
+                    # The lines every reading above was measured against.
+                    "staff_geometry": _staff_geometry(staff_obj),
                     "n_measures": len(staff_cells),
                     "measures": [],
                 }
@@ -2372,14 +2420,15 @@ def transcribe(
                 # staff-start measure cell actually misses it — see
                 # `_header_cell_beats_measure_cell`.
                 header_cell_for_clef = None
-                if read_headers and staff_cells:
-                    staff_obj = next(
-                        (st for st in pws.staves if st.staff_index == staff_idx), None
-                    )
-                    if staff_obj is not None and _header_cell_beats_measure_cell(
+                if (
+                    read_headers
+                    and staff_cells
+                    and staff_obj is not None
+                    and _header_cell_beats_measure_cell(
                         header_windows.get(staff_idx), staff_obj, staff_cells[0]
-                    ):
-                        header_cell_for_clef = header_cells.get(staff_idx)
+                    )
+                ):
+                    header_cell_for_clef = header_cells.get(staff_idx)
 
                 first_cell_effective_clef: str | None = None
                 first_cell_clef_source: str | None = None
@@ -2425,6 +2474,15 @@ def transcribe(
                     staff_dict["measures"].append({
                         "measure_index": cell.measure_index,
                         "bbox_page_px": list(cell.bbox_page_px),
+                        # The staff lines in THIS cell's canonical frame — the
+                        # frame `detections[].bbox` is in. Each cell is scaled
+                        # independently, so the staff-level page geometry does
+                        # not describe it; without these a canonical box cannot
+                        # be placed on the staff at all.
+                        "staff_line_ys_canonical": [
+                            int(y) for y in cell.staff_line_ys_canonical
+                        ],
+                        "upscale_factor": round(float(cell.upscale_factor), 6),
                         "clef": active_clef,
                         "key_signature": _key_sig_summary(active_key_sig),
                         "time_signature": dict(active_time_sig) if active_time_sig else None,
