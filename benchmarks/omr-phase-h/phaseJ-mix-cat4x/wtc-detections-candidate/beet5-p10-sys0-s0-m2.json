@@ -1,0 +1,18 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 0,
+      "y": 846,
+      "w": 111,
+      "h": 3,
+      "x_center": 55,
+      "y_center": 847,
+      "confidence": 0.25265419483184814,
+      "pitch": null
+    }
+  ]
+}

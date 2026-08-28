@@ -1,0 +1,70 @@
+{
+  "cell_id": "mahler5-p180-sys0-s9-m4",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 78,
+      "y": 349,
+      "w": 667,
+      "h": 30,
+      "x_center": 411,
+      "y_center": 364,
+      "confidence": 0.6313499212265015,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 0,
+      "y": 398,
+      "w": 7,
+      "h": 14,
+      "x_center": 3,
+      "y_center": 405,
+      "confidence": 0.5896978974342346,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restHBar",
+      "category": "rest",
+      "x": 145,
+      "y": 448,
+      "w": 667,
+      "h": 31,
+      "x_center": 478,
+      "y_center": 463,
+      "confidence": 0.6824783682823181,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 0,
+      "y": 676,
+      "w": 12,
+      "h": 13,
+      "x_center": 6,
+      "y_center": 682,
+      "confidence": 0.6251822113990784,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1390,
+      "y": 811,
+      "w": 28,
+      "h": 19,
+      "x_center": 1404,
+      "y_center": 820,
+      "confidence": 0.5653092265129089,
+      "pitch": null
+    }
+  ]
+}

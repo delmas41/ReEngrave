@@ -6,7 +6,7 @@ once and check the PNGs in — it's faster than rendering on every page load
 and the labeling UI ships with the repo so the PNGs ship with it too.
 
 For each of the 208 DeepScoresV2 class names from
-``tools/omr/training/data/deepscoresv2_208_classes.json``:
+``tools/omr/training/deepscoresv2_208_classes.json``:
 
   1. Resolve to a SMuFL glyph name (`_SMUFL_OVERRIDES` for the ~70 DSv2
      names that don't have a 1:1 SMuFL hit — most are notehead-position
@@ -45,8 +45,10 @@ _STATIC = _HERE / "static"
 _BRAVURA = _STATIC / "bravura" / "Bravura.otf"
 _GLYPHNAMES = _STATIC / "bravura" / "glyphnames.json"
 _ARCHETYPES = _STATIC / "archetypes"
+# The committed copy — training/data/ is gitignored (the DSv2 download lands
+# there), so anything kept inside it is absent from a fresh clone.
 _CLASSES_JSON = (
-    _HERE.parent / "training" / "data" / "deepscoresv2_208_classes.json"
+    _HERE.parent / "training" / "deepscoresv2_208_classes.json"
 )
 
 TILE = 72

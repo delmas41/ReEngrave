@@ -1,0 +1,68 @@
+{
+  "overall": {
+    "cells": 3,
+    "n_total_detections": 57,
+    "n_pending": 20,
+    "n_tp": 37,
+    "n_fp": 0,
+    "n_fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "notehead_pitch_correct": 37,
+    "notehead_pitch_wrong": 0,
+    "notehead_pitch_accuracy": 1.0,
+    "per_category": {
+      "structural": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 12
+      },
+      "rest": {
+        "tp": 0,
+        "fp": 0,
+        "pending": 7
+      },
+      "notehead": {
+        "tp": 37,
+        "fp": 0,
+        "pending": 1
+      }
+    }
+  },
+  "per_piece": {
+    "wtc-p5": {
+      "cells": 3,
+      "n_total_detections": 57,
+      "n_pending": 20,
+      "n_tp": 37,
+      "n_fp": 0,
+      "n_fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "notehead_pitch_correct": 37,
+      "notehead_pitch_wrong": 0,
+      "notehead_pitch_accuracy": 1.0,
+      "per_category": {
+        "structural": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 12
+        },
+        "rest": {
+          "tp": 0,
+          "fp": 0,
+          "pending": 7
+        },
+        "notehead": {
+          "tp": 37,
+          "fp": 0,
+          "pending": 1
+        }
+      }
+    }
+  },
+  "n_cells_total": 30,
+  "n_cells_with_any_verdicts": 3
+}

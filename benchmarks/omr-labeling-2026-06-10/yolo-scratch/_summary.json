@@ -1,0 +1,1245 @@
+{
+  "weights": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+  "conf_threshold": 0.25,
+  "device": "auto",
+  "per_cell": {
+    "debussy-la-mer-p5-p5-sys0-s0-m0": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2650787830352783,
+      "confidence_max": 0.8095316290855408,
+      "confidence_mean": 0.38867947985144224,
+      "confidence_median": 0.34405550360679626,
+      "category_breakdown": {
+        "notehead": 3,
+        "rest": 3,
+        "structural": 11
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          5.826087708
+        ],
+        "median_s_excluding_warmup": 5.826087708,
+        "mean_s_excluding_warmup": 5.826087708
+      }
+    },
+    "debussy-la-mer-p5-p5-sys1-s1-m2": {
+      "n_detections": 24,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25797611474990845,
+      "confidence_max": 0.7150325775146484,
+      "confidence_mean": 0.3958265421291192,
+      "confidence_median": 0.37199316918849945,
+      "category_breakdown": {
+        "notehead": 8,
+        "rest": 16
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 24,
+        "all_times_s": [
+          0.8722448329999999
+        ],
+        "median_s_excluding_warmup": 0.8722448329999999,
+        "mean_s_excluding_warmup": 0.8722448329999999
+      }
+    },
+    "debussy-la-mer-p5-p5-sys2-s6-m0": {
+      "n_detections": 36,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25030723214149475,
+      "confidence_max": 0.8580611348152161,
+      "confidence_mean": 0.4136844161483977,
+      "confidence_median": 0.34408898651599884,
+      "category_breakdown": {
+        "accidental": 2,
+        "structural": 18,
+        "notehead": 13,
+        "ornament": 1,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "accidentalDoubleSharp",
+        "tie",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "ledgerLine",
+        "tie",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "ledgerLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 36,
+        "all_times_s": [
+          0.20772000000000013
+        ],
+        "median_s_excluding_warmup": 0.20772000000000013,
+        "mean_s_excluding_warmup": 0.20772000000000013
+      }
+    },
+    "debussy-la-mer-p5-p5-sys4-s12-m2": {
+      "n_detections": 25,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2522923946380615,
+      "confidence_max": 0.7085603475570679,
+      "confidence_mean": 0.3895930564403534,
+      "confidence_median": 0.34332650899887085,
+      "category_breakdown": {
+        "notehead": 7,
+        "structural": 13,
+        "rest": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 25,
+        "all_times_s": [
+          1.3236499999999998
+        ],
+        "median_s_excluding_warmup": 1.3236499999999998,
+        "mean_s_excluding_warmup": 1.3236499999999998
+      }
+    },
+    "debussy-la-mer-p15-p15-sys0-s0-m0": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2807828187942505,
+      "confidence_max": 0.6763595938682556,
+      "confidence_mean": 0.4190855398774147,
+      "confidence_median": 0.38963671028614044,
+      "category_breakdown": {
+        "structural": 6,
+        "rest": 3,
+        "notehead": 3
+      },
+      "sample_class_labels": [
+        "tie",
+        "tie",
+        "ledgerLine",
+        "tie",
+        "tie",
+        "restWhole",
+        "restHalf",
+        "restHalf",
+        "tie",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          0.29116154099999925
+        ],
+        "median_s_excluding_warmup": 0.29116154099999925,
+        "mean_s_excluding_warmup": 0.29116154099999925
+      }
+    },
+    "debussy-la-mer-p15-p15-sys0-s5-m0": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.250430703163147,
+      "confidence_max": 0.6332910060882568,
+      "confidence_mean": 0.37907188719716567,
+      "confidence_median": 0.33695676922798157,
+      "category_breakdown": {
+        "clef": 1,
+        "flag": 1,
+        "structural": 23,
+        "accidental": 2,
+        "rest": 1,
+        "notehead": 1
+      },
+      "sample_class_labels": [
+        "clefF",
+        "flag8thDown",
+        "tie",
+        "tie",
+        "ledgerLine",
+        "tie",
+        "tie",
+        "tie",
+        "tie",
+        "tie"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          0.29296462499999976
+        ],
+        "median_s_excluding_warmup": 0.29296462499999976,
+        "mean_s_excluding_warmup": 0.29296462499999976
+      }
+    },
+    "debussy-la-mer-p15-p15-sys1-s6-m8": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2537075877189636,
+      "confidence_max": 0.6538334488868713,
+      "confidence_mean": 0.3256195043695384,
+      "confidence_median": 0.28787463903427124,
+      "category_breakdown": {
+        "structural": 9,
+        "rest": 7,
+        "notehead": 13
+      },
+      "sample_class_labels": [
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "beam",
+        "restHBar",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          1.7420558329999984
+        ],
+        "median_s_excluding_warmup": 1.7420558329999984,
+        "mean_s_excluding_warmup": 1.7420558329999984
+      }
+    },
+    "debussy-la-mer-p15-p15-sys2-s7-m4": {
+      "n_detections": 69,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25029370188713074,
+      "confidence_max": 0.6567625403404236,
+      "confidence_mean": 0.34129851797352667,
+      "confidence_median": 0.2977047264575958,
+      "category_breakdown": {
+        "notehead": 39,
+        "structural": 17,
+        "rest": 13
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 69,
+        "all_times_s": [
+          1.942656458
+        ],
+        "median_s_excluding_warmup": 1.942656458,
+        "mean_s_excluding_warmup": 1.942656458
+      }
+    },
+    "debussy-la-mer-p30-p30-sys0-s0-m0": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2586217224597931,
+      "confidence_max": 0.7048509120941162,
+      "confidence_mean": 0.44068130701780317,
+      "confidence_median": 0.4073304831981659,
+      "category_breakdown": {
+        "notehead": 11,
+        "rest": 5,
+        "structural": 2,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "restHBar",
+        "noteheadBlackOnLine",
+        "augmentationDot",
+        "accidentalDoubleSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          0.4184726249999997
+        ],
+        "median_s_excluding_warmup": 0.4184726249999997,
+        "mean_s_excluding_warmup": 0.4184726249999997
+      }
+    },
+    "debussy-la-mer-p30-p30-sys0-s4-m0": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25570374727249146,
+      "confidence_max": 0.7707352042198181,
+      "confidence_mean": 0.4097170144319534,
+      "confidence_median": 0.36138051748275757,
+      "category_breakdown": {
+        "notehead": 9,
+        "rest": 4,
+        "accidental": 1,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "rest16th",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "accidentalDoubleSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "ledgerLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          0.42130204200000065
+        ],
+        "median_s_excluding_warmup": 0.42130204200000065,
+        "mean_s_excluding_warmup": 0.42130204200000065
+      }
+    },
+    "debussy-la-mer-p30-p30-sys1-s8-m1": {
+      "n_detections": 47,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25765955448150635,
+      "confidence_max": 0.770110011100769,
+      "confidence_mean": 0.4303272398228341,
+      "confidence_median": 0.3913862109184265,
+      "category_breakdown": {
+        "dynamic": 7,
+        "notehead": 15,
+        "accidental": 5,
+        "rest": 7,
+        "structural": 12,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "dynamicF",
+        "dynamicF",
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "accidentalDoubleSharp",
+        "restHalf",
+        "beam",
+        "restWhole",
+        "augmentationDot",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 47,
+        "all_times_s": [
+          0.537010166
+        ],
+        "median_s_excluding_warmup": 0.537010166,
+        "mean_s_excluding_warmup": 0.537010166
+      }
+    },
+    "debussy-la-mer-p30-p30-sys3-s13-m0": {
+      "n_detections": 78,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25657302141189575,
+      "confidence_max": 0.8831993341445923,
+      "confidence_mean": 0.49293728249195295,
+      "confidence_median": 0.41122646629810333,
+      "category_breakdown": {
+        "structural": 43,
+        "notehead": 28,
+        "dynamic": 1,
+        "accidental": 2,
+        "ornament": 1,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "augmentationDot",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "tie",
+        "dynamicM",
+        "ledgerLine",
+        "accidentalSharp",
+        "beam",
+        "noteheadBlackInSpace",
+        "arpeggiato"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 78,
+        "all_times_s": [
+          0.20071129199999937
+        ],
+        "median_s_excluding_warmup": 0.20071129199999937,
+        "mean_s_excluding_warmup": 0.20071129199999937
+      }
+    },
+    "debussy-la-mer-p45-p45-sys0-s0-m0": {
+      "n_detections": 44,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25936320424079895,
+      "confidence_max": 0.771194338798523,
+      "confidence_mean": 0.42965893989259546,
+      "confidence_median": 0.3727162927389145,
+      "category_breakdown": {
+        "rest": 20,
+        "ornament": 1,
+        "notehead": 10,
+        "structural": 11,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "restWhole",
+        "restQuarter",
+        "fermataAbove",
+        "restHalf",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHBar",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 44,
+        "all_times_s": [
+          0.9386985830000008
+        ],
+        "median_s_excluding_warmup": 0.9386985830000008,
+        "mean_s_excluding_warmup": 0.9386985830000008
+      }
+    },
+    "debussy-la-mer-p45-p45-sys0-s4-m0": {
+      "n_detections": 49,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2502073347568512,
+      "confidence_max": 0.8122652173042297,
+      "confidence_mean": 0.3878655938469634,
+      "confidence_median": 0.3289671242237091,
+      "category_breakdown": {
+        "notehead": 24,
+        "rest": 18,
+        "structural": 6,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 49,
+        "all_times_s": [
+          0.9504103750000006
+        ],
+        "median_s_excluding_warmup": 0.9504103750000006,
+        "mean_s_excluding_warmup": 0.9504103750000006
+      }
+    },
+    "debussy-la-mer-p45-p45-sys0-s8-m1": {
+      "n_detections": 47,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25446081161499023,
+      "confidence_max": 0.7994824647903442,
+      "confidence_mean": 0.4384111419637152,
+      "confidence_median": 0.38313594460487366,
+      "category_breakdown": {
+        "notehead": 29,
+        "structural": 8,
+        "ornament": 5,
+        "rest": 3,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackInSpace",
+        "beam",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "arpeggiato",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 47,
+        "all_times_s": [
+          0.4578319999999998
+        ],
+        "median_s_excluding_warmup": 0.4578319999999998,
+        "mean_s_excluding_warmup": 0.4578319999999998
+      }
+    },
+    "debussy-la-mer-p45-p45-sys1-s14-m0": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.26923102140426636,
+      "confidence_max": 0.8614993691444397,
+      "confidence_mean": 0.49298299476504326,
+      "confidence_median": 0.43448306620121,
+      "category_breakdown": {
+        "structural": 8,
+        "notehead": 3,
+        "rest": 4,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "ledgerLine",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "ledgerLine",
+        "ledgerLine",
+        "ledgerLine",
+        "ledgerLine",
+        "restQuarter",
+        "ledgerLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          0.28775570900000247
+        ],
+        "median_s_excluding_warmup": 0.28775570900000247,
+        "mean_s_excluding_warmup": 0.28775570900000247
+      }
+    },
+    "debussy-la-mer-p60-p60-sys0-s0-m0": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.30503058433532715,
+      "confidence_max": 0.6683136820793152,
+      "confidence_mean": 0.40448723174631596,
+      "confidence_median": 0.40763819217681885,
+      "category_breakdown": {
+        "notehead": 9,
+        "rest": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          0.8093389170000016
+        ],
+        "median_s_excluding_warmup": 0.8093389170000016,
+        "mean_s_excluding_warmup": 0.8093389170000016
+      }
+    },
+    "debussy-la-mer-p60-p60-sys0-s2-m2": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2549680173397064,
+      "confidence_max": 0.6021608114242554,
+      "confidence_mean": 0.37173974845144486,
+      "confidence_median": 0.32856588065624237,
+      "category_breakdown": {
+        "rest": 16,
+        "notehead": 1,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restWhole",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          0.8079770409999973
+        ],
+        "median_s_excluding_warmup": 0.8079770409999973,
+        "mean_s_excluding_warmup": 0.8079770409999973
+      }
+    },
+    "debussy-la-mer-p60-p60-sys1-s5-m1": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2562370002269745,
+      "confidence_max": 0.6573311686515808,
+      "confidence_mean": 0.41031462592738016,
+      "confidence_median": 0.39826448261737823,
+      "category_breakdown": {
+        "notehead": 10,
+        "rest": 18
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          0.779244834
+        ],
+        "median_s_excluding_warmup": 0.779244834,
+        "mean_s_excluding_warmup": 0.779244834
+      }
+    },
+    "debussy-la-mer-p60-p60-sys1-s8-m2": {
+      "n_detections": 47,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2507733106613159,
+      "confidence_max": 0.6744738817214966,
+      "confidence_mean": 0.3807953323455567,
+      "confidence_median": 0.3592373728752136,
+      "category_breakdown": {
+        "notehead": 37,
+        "rest": 6,
+        "ornament": 1,
+        "structural": 2,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 47,
+        "all_times_s": [
+          0.44097020799999953
+        ],
+        "median_s_excluding_warmup": 0.44097020799999953,
+        "mean_s_excluding_warmup": 0.44097020799999953
+      }
+    },
+    "debussy-la-mer-p75-p75-sys0-s0-m0": {
+      "n_detections": 56,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2527623772621155,
+      "confidence_max": 0.3471830189228058,
+      "confidence_mean": 0.29136441754443304,
+      "confidence_median": 0.29265958070755005,
+      "category_breakdown": {
+        "notehead": 54,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "beam",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 56,
+        "all_times_s": [
+          0.3019451249999996
+        ],
+        "median_s_excluding_warmup": 0.3019451249999996,
+        "mean_s_excluding_warmup": 0.3019451249999996
+      }
+    },
+    "debussy-la-mer-p75-p75-sys0-s3-m0": {
+      "n_detections": 134,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2510169744491577,
+      "confidence_max": 0.661963164806366,
+      "confidence_mean": 0.3612052420182015,
+      "confidence_median": 0.36519695818424225,
+      "category_breakdown": {
+        "notehead": 134
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 134,
+        "all_times_s": [
+          0.30276699999999934
+        ],
+        "median_s_excluding_warmup": 0.30276699999999934,
+        "mean_s_excluding_warmup": 0.30276699999999934
+      }
+    },
+    "debussy-la-mer-p75-p75-sys0-s6-m1": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2526339888572693,
+      "confidence_max": 0.7279064655303955,
+      "confidence_mean": 0.3817909061908722,
+      "confidence_median": 0.3741360604763031,
+      "category_breakdown": {
+        "notehead": 8,
+        "rest": 11,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          0.6164890000000014
+        ],
+        "median_s_excluding_warmup": 0.6164890000000014,
+        "mean_s_excluding_warmup": 0.6164890000000014
+      }
+    },
+    "debussy-la-mer-p75-p75-sys0-s9-m1": {
+      "n_detections": 19,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.26817354559898376,
+      "confidence_max": 0.5436899662017822,
+      "confidence_mean": 0.37172151082440424,
+      "confidence_median": 0.3449734151363373,
+      "category_breakdown": {
+        "structural": 1,
+        "accidental": 2,
+        "notehead": 6,
+        "rest": 9,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "ledgerLine",
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHBar",
+        "restHBar",
+        "articAccentBelow",
+        "noteheadWholeInSpace",
+        "restHBar",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 19,
+        "all_times_s": [
+          0.6423808330000007
+        ],
+        "median_s_excluding_warmup": 0.6423808330000007,
+        "mean_s_excluding_warmup": 0.6423808330000007
+      }
+    },
+    "debussy-la-mer-p90-p90-sys0-s0-m0": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2686479985713959,
+      "confidence_max": 0.6433547735214233,
+      "confidence_mean": 0.421882410134588,
+      "confidence_median": 0.43500012159347534,
+      "category_breakdown": {
+        "notehead": 1,
+        "rest": 13
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          1.502200834
+        ],
+        "median_s_excluding_warmup": 1.502200834,
+        "mean_s_excluding_warmup": 1.502200834
+      }
+    },
+    "debussy-la-mer-p90-p90-sys1-s1-m1": {
+      "n_detections": 132,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2518051564693451,
+      "confidence_max": 0.8264972567558289,
+      "confidence_mean": 0.34743158158027765,
+      "confidence_median": 0.31220804154872894,
+      "category_breakdown": {
+        "notehead": 104,
+        "structural": 2,
+        "rest": 26
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 132,
+        "all_times_s": [
+          3.2232414170000006
+        ],
+        "median_s_excluding_warmup": 3.2232414170000006,
+        "mean_s_excluding_warmup": 3.2232414170000006
+      }
+    },
+    "debussy-la-mer-p90-p90-sys3-s5-m0": {
+      "n_detections": 23,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2509983479976654,
+      "confidence_max": 0.825933039188385,
+      "confidence_mean": 0.45617192854052,
+      "confidence_median": 0.44094276428222656,
+      "category_breakdown": {
+        "notehead": 2,
+        "rest": 20,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restWhole",
+        "restHBar",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 23,
+        "all_times_s": [
+          0.9932232499999998
+        ],
+        "median_s_excluding_warmup": 0.9932232499999998,
+        "mean_s_excluding_warmup": 0.9932232499999998
+      }
+    },
+    "debussy-la-mer-p90-p90-sys5-s8-m2": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2503277063369751,
+      "confidence_max": 0.966022253036499,
+      "confidence_mean": 0.5025881474668329,
+      "confidence_median": 0.4409768879413605,
+      "category_breakdown": {
+        "flag": 1,
+        "notehead": 3,
+        "rest": 6,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "flag16thDown",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          0.6505319579999984
+        ],
+        "median_s_excluding_warmup": 0.6505319579999984,
+        "mean_s_excluding_warmup": 0.6505319579999984
+      }
+    },
+    "debussy-la-mer-p105-p105-sys0-s0-m0": {
+      "n_detections": 65,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2536538243293762,
+      "confidence_max": 0.4356987476348877,
+      "confidence_mean": 0.29598898520836464,
+      "confidence_median": 0.29341578483581543,
+      "category_breakdown": {
+        "notehead": 59,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 65,
+        "all_times_s": [
+          0.479778833000001
+        ],
+        "median_s_excluding_warmup": 0.479778833000001,
+        "mean_s_excluding_warmup": 0.479778833000001
+      }
+    },
+    "debussy-la-mer-p105-p105-sys0-s2-m0": {
+      "n_detections": 91,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2507057189941406,
+      "confidence_max": 0.557725727558136,
+      "confidence_mean": 0.30090590787457894,
+      "confidence_median": 0.28730663657188416,
+      "category_breakdown": {
+        "notehead": 84,
+        "structural": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 91,
+        "all_times_s": [
+          0.47692116600000034
+        ],
+        "median_s_excluding_warmup": 0.47692116600000034,
+        "mean_s_excluding_warmup": 0.47692116600000034
+      }
+    },
+    "debussy-la-mer-p105-p105-sys0-s4-m1": {
+      "n_detections": 49,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2506336271762848,
+      "confidence_max": 0.7056759595870972,
+      "confidence_mean": 0.38846467040023025,
+      "confidence_median": 0.3536520302295685,
+      "category_breakdown": {
+        "notehead": 26,
+        "structural": 2,
+        "rest": 21
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 49,
+        "all_times_s": [
+          0.9781270840000005
+        ],
+        "median_s_excluding_warmup": 0.9781270840000005,
+        "mean_s_excluding_warmup": 0.9781270840000005
+      }
+    },
+    "debussy-la-mer-p105-p105-sys0-s6-m1": {
+      "n_detections": 109,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.25257283449172974,
+      "confidence_max": 0.7936143279075623,
+      "confidence_mean": 0.39304588092576476,
+      "confidence_median": 0.3621416985988617,
+      "category_breakdown": {
+        "notehead": 79,
+        "ornament": 1,
+        "rest": 24,
+        "structural": 4,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 109,
+        "all_times_s": [
+          0.9938121660000014
+        ],
+        "median_s_excluding_warmup": 0.9938121660000014,
+        "mean_s_excluding_warmup": 0.9938121660000014
+      }
+    },
+    "debussy-la-mer-p120-p120-sys0-s0-m0": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.26836782693862915,
+      "confidence_max": 0.9035594463348389,
+      "confidence_mean": 0.48933422068754834,
+      "confidence_median": 0.4449485242366791,
+      "category_breakdown": {
+        "structural": 2,
+        "rest": 10
+      },
+      "sample_class_labels": [
+        "staff",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          2.445741874999996
+        ],
+        "median_s_excluding_warmup": 2.445741874999996,
+        "mean_s_excluding_warmup": 2.445741874999996
+      }
+    },
+    "debussy-la-mer-p120-p120-sys2-s2-m0": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2503634989261627,
+      "confidence_max": 0.6926936507225037,
+      "confidence_mean": 0.41926194727420807,
+      "confidence_median": 0.3694079518318176,
+      "category_breakdown": {
+        "structural": 3,
+        "rest": 6,
+        "accidental": 1,
+        "notehead": 2
+      },
+      "sample_class_labels": [
+        "tie",
+        "restWhole",
+        "ledgerLine",
+        "restWhole",
+        "restHBar",
+        "restWhole",
+        "accidentalDoubleSharp",
+        "tie",
+        "restWhole",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          0.4912953329999965
+        ],
+        "median_s_excluding_warmup": 0.4912953329999965,
+        "mean_s_excluding_warmup": 0.4912953329999965
+      }
+    },
+    "debussy-la-mer-p120-p120-sys4-s7-m0": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2629961669445038,
+      "confidence_max": 0.7375792264938354,
+      "confidence_mean": 0.43817144015739706,
+      "confidence_median": 0.38314157724380493,
+      "category_breakdown": {
+        "rest": 18,
+        "structural": 1,
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "restWhole",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          1.1748747500000007
+        ],
+        "median_s_excluding_warmup": 1.1748747500000007,
+        "mean_s_excluding_warmup": 1.1748747500000007
+      }
+    },
+    "debussy-la-mer-p120-p120-sys6-s10-m0": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.2646602690219879,
+      "confidence_max": 0.6202213764190674,
+      "confidence_mean": 0.3874719366431236,
+      "confidence_median": 0.3894624710083008,
+      "category_breakdown": {
+        "notehead": 4,
+        "rest": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restHBar",
+        "restHBar",
+        "restHBar",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          0.7276541660000007
+        ],
+        "median_s_excluding_warmup": 0.7276541660000007,
+        "mean_s_excluding_warmup": 0.7276541660000007
+      }
+    }
+  }
+}

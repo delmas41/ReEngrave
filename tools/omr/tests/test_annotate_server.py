@@ -180,7 +180,19 @@ def test_api_bench_summary(client: TestClient) -> None:
     assert resp.status_code == 200
     info = resp.json()
     assert info["n_cells"] == 2
-    assert info["n_classes"] == 168
+    # 208 DSv2 classes + 6 hand-labelled custom ones (5 barline/repeat +
+    # textDynamic), less those whose category the picker doesn't display.
+    # This read 168 — the count from before the custom classes were added
+    # (af0d4c0, after this test was written) — and went stale unnoticed
+    # because the whole module was erroring on a missing class list.
+    assert info["n_classes"] == 174
+    # The relationship worth pinning, rather than the magic number. DSv2
+    # annotates no barlines at all, so the "barline" category exists only
+    # because the custom classes were merged into the catalog — if they stop
+    # reaching it, a labeller cannot mark a barline, and this says so.
+    assert "barline" in info["categories"], (
+        "custom barline/repeat classes are not reaching the class picker"
+    )
     # All 9 picker categories should be available.
     assert set(info["categories"]) >= {
         "notehead", "rest", "clef", "accidental", "flag",

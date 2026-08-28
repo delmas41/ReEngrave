@@ -36,6 +36,9 @@ MIN_LINE_LENGTH_FRAC = 0.35      # staff line spans >= 35% of page width
 PEAK_PROMINENCE_FRAC = 0.30      # peak must be 30% of (max - min) profile range
 GROUP_LINE_SPACING_TOLERANCE = 0.30  # ±30% gap variation within a 5-line group
 MAX_SYSTEM_GAP_FACTOR = 6.0      # fallback if auto-bipartition fails
+STAFF_LINE_MAX_GAP_SPACES = 1.0  # a break this wide is still the same staff line
+SYSTEM_BREAK_GAP_FACTOR = 2.5    # gap this many × the typical within-system gap = a break
+MAX_LINE_INK_RUNS_PER_SPACE = 1.7  # above this the "lines" are rows of text, not staff lines
 
 # The comb pass (step 3b below) admits a candidate row on a much weaker ink
 # threshold than the first pass, because it does not have to decide alone: a row
@@ -245,9 +248,24 @@ def _merge_staff_groups(
 def _staff_x_extent(binary: np.ndarray, line_ys: list[int]) -> tuple[int, int]:
     """Find the left/right edges of the staff lines themselves.
 
-    The staff line row in the binary image is a long horizontal black run.
-    We scan the row for the first and last ink pixel that's part of a
-    sufficiently long contiguous run.
+    The staff line row in the binary image is a long horizontal black run — but
+    on a real scan it is not an UNBROKEN one. Printed lines drop out, scans
+    lose ink, and the line arrives as a dashed sequence. Taking the longest
+    strictly-contiguous run therefore returns whichever fragment happens to be
+    longest, not the line, and the staff's left edge lands wherever the first
+    break was.
+
+    That edge is where the first measure cell starts, so the damage is
+    concrete: everything to the left of it — clef, key signature, often the
+    opening notes — is cropped out of every cell and cannot be read by anything
+    downstream. Measured on a Bach page the offset is 1.2 staff spaces (enough
+    to lose the first measure's start); on a 19th-century engraving it reaches
+    46 staff spaces, well past the clef and into the middle of the music.
+
+    So bridge breaks up to `STAFF_LINE_MAX_GAP_SPACES` of a staff space. That
+    is far wider than any printing dropout and far narrower than the gap
+    between two separate staves set side by side on one row, which is the case
+    the tolerance must not merge.
     """
     h, w = binary.shape
     # Use the middle line as the reference for x-extent
@@ -257,27 +275,26 @@ def _staff_x_extent(binary: np.ndarray, line_ys: list[int]) -> tuple[int, int]:
     y1 = min(h, mid_y + 3)
     band = binary[y0:y1].min(axis=0)  # ink anywhere in band → ink pixel
 
-    ink_mask = band == 0
-    if not ink_mask.any():
+    ink_x = np.flatnonzero(band == 0)
+    if ink_x.size == 0:
         return 0, w - 1
 
-    # Find longest contiguous run of ink (the staff line itself)
-    runs: list[tuple[int, int]] = []
-    in_run = False
-    run_start = 0
-    for x in range(w):
-        if ink_mask[x] and not in_run:
-            run_start = x
-            in_run = True
-        elif not ink_mask[x] and in_run:
-            runs.append((run_start, x - 1))
-            in_run = False
-    if in_run:
-        runs.append((run_start, w - 1))
-    if not runs:
-        return 0, w - 1
-    longest = max(runs, key=lambda r: r[1] - r[0])
-    return longest
+    # Gap tolerance in pixels, from this staff's own line spacing, so the rule
+    # holds at any DPI or engraving size.
+    if len(line_ys) >= 2:
+        spacing = (max(line_ys) - min(line_ys)) / (len(line_ys) - 1)
+    else:
+        spacing = 0.0
+    max_gap = max(1, int(round(STAFF_LINE_MAX_GAP_SPACES * spacing)))
+
+    # Split the ink into runs, allowing gaps of up to `max_gap` blank pixels.
+    # Consecutive ink pixels differ by 1, so a run of `g` blanks shows up as a
+    # difference of g + 1.
+    breaks = np.flatnonzero(np.diff(ink_x) > max_gap + 1)
+    starts = np.concatenate(([0], breaks + 1))
+    ends = np.concatenate((breaks, [ink_x.size - 1]))
+    best = int(np.argmax(ink_x[ends] - ink_x[starts]))
+    return int(ink_x[starts[best]]), int(ink_x[ends[best]])
 
 
 # ─── Step 4: group staves into systems ───────────────────────────────────────
@@ -352,6 +369,26 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
     else:
         mad_threshold = float("inf")
 
+    # Third threshold, against a statistic the breaks cannot contaminate.
+    # Both rules above are computed over ALL gaps, so on a page where system
+    # breaks are a large share of them — a monograph laying out many short
+    # music examples between paragraphs, say — the breaks drag the median and
+    # the bipartition up past themselves and the page reads as one system.
+    # (Observed on Nottebohm p.90: gaps of 65, 65, 65, 341, 394, 830, where a
+    # median of 203 puts both thresholds above the 341 and 394 breaks.)
+    #
+    # Staves WITHIN a system are set at a consistent small distance, so the
+    # low quartile of the gaps estimates that distance whatever fraction of
+    # the page is system breaks — and a break is a clear multiple of it.
+    if gaps:
+        typical_within_system = float(np.percentile(gaps, 25))
+        quartile_threshold = max(
+            typical_within_system * SYSTEM_BREAK_GAP_FACTOR,
+            mean_spacing * 2.0,   # floor: never split on a hair's difference
+        )
+    else:
+        quartile_threshold = float("inf")
+
     current_system = 0
     staves_sorted[0].system_index = 0
     for i in range(1, len(staves_sorted)):
@@ -364,12 +401,53 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
         is_break = (
             gap >= threshold
             or gap >= mad_threshold
+            or gap >= quartile_threshold
             or x_overlap_frac <= 0.5
         )
         if is_break:
             current_system += 1
         cur.system_index = current_system
     return staves_sorted
+
+
+def _line_ink_runs_per_space(binary: np.ndarray, staff: Staff) -> float:
+    """How many separate ink runs lie along this staff's lines, per staff-space
+    of line length (median over the five lines).
+
+    This is the test for whether a detected "staff" is a staff at all. The
+    row-projection detector finds staves by looking for rows with a lot of ink,
+    and a row of justified body text has a lot of ink — enough to clear the
+    line-length threshold — while five consecutive text baselines are evenly
+    enough spaced to pass the 5-line grouping. So paragraphs become staves,
+    complete with a clef and measures of their own.
+
+    What actually separates them is not how MUCH ink is in the row but how it
+    is arranged. A staff line is one continuous stroke: a handful of runs over
+    its whole length even on a scan that has broken it into dashes. A text
+    baseline is one run per letter. Measured over 310 staves on seven scores
+    and 20 text blocks, the two do not come close to overlapping — music tops
+    out at 1.39 runs per staff-space and text starts at 2.02, with the bulk two
+    orders of magnitude apart (music median 0.017, text median 2.59).
+
+    Note this deliberately does NOT test ink coverage, the obvious near-miss.
+    Coverage does separate on clean pages but overlaps on real ones: heavy
+    notation ink interrupts the line, so genuine staves in Beethoven 5 and
+    La Mer fall to 0.62-0.70, right on top of body text at 0.62-0.72.
+    """
+    height = binary.shape[0]
+    spacing = max(staff.line_spacing_px, 1.0)
+    length_spaces = max((staff.x_end - staff.x_start + 1) / spacing, 1e-6)
+    per_line: list[float] = []
+    for y in staff.line_ys:
+        band = binary[max(0, y - 1) : min(height, y + 2), staff.x_start : staff.x_end + 1]
+        if band.size == 0:
+            per_line.append(float("inf"))
+            continue
+        ink = (band == 0).any(axis=0).astype(np.int8)
+        # A run starts at each 0→1 transition, plus one if the line opens in ink.
+        runs = int(np.count_nonzero(np.diff(ink) == 1)) + (1 if ink[0] else 0)
+        per_line.append(runs / length_spaces)
+    return float(np.median(per_line)) if per_line else float("inf")
 
 
 # ─── Public entry point ──────────────────────────────────────────────────────
@@ -405,6 +483,16 @@ def detect_staves(page: PageImage) -> PageWithStaves:
             x_end=x_end,
             system_index=0,
         ))
+
+    # Drop the "staves" that are paragraphs of body text (see
+    # _line_ink_runs_per_space). Done before system assignment so the surviving
+    # staves are numbered contiguously, and before x-extent matters downstream.
+    staves = [
+        st for st in staves
+        if _line_ink_runs_per_space(page.binary, st) <= MAX_LINE_INK_RUNS_PER_SPACE
+    ]
+    for idx, st in enumerate(staves):
+        st.staff_index = idx
 
     staves = _assign_systems(staves)
     return PageWithStaves(page=page, staves=staves)

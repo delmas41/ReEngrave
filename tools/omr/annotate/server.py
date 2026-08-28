@@ -62,7 +62,12 @@ from PIL import Image
 _HERE = Path(__file__).parent
 _STATIC_DIR = _HERE / "static"
 _ARCHETYPES_DIR = _STATIC_DIR / "archetypes"
-_CLASSES_JSON = _HERE.parent / "training" / "data" / "deepscoresv2_208_classes.json"
+# The COMMITTED copy, one level up from training/data/. That directory is
+# gitignored wholesale (it is where the multi-GB DeepScoresV2 download lands),
+# so a copy kept inside it exists only on the machine that downloaded the
+# dataset — every fresh clone and every git worktree came up without it and
+# this module raised on import of the class catalog.
+_CLASSES_JSON = _HERE.parent / "training" / "deepscoresv2_208_classes.json"
 
 
 # ---------------------------------------------------------------------------
@@ -166,8 +171,8 @@ def _load_class_catalog() -> tuple[list[dict], dict[str, list[str]]]:
     """
     if not _CLASSES_JSON.exists():
         raise FileNotFoundError(
-            f"missing class list at {_CLASSES_JSON} — see "
-            "tools/omr/training/data/deepscoresv2_208_classes.json"
+            f"missing class list at {_CLASSES_JSON} — it should be committed; "
+            "see tools/omr/training/deepscoresv2_208_classes.json"
         )
     raw = json.loads(_CLASSES_JSON.read_text())
     # The 208 DSv2 classes + custom classes (barlines etc) that DSv2 didn't

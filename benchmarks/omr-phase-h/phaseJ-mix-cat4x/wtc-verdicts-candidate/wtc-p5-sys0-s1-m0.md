@@ -1,0 +1,22 @@
+<!-- auto-ported from baseline verdicts; new detections are pending -->
+# Cell wtc-p5-sys0-s1-m0 — verdicts
+
+**Image:** ![overlay](../overlays/wtc-p5-sys0-s1-m0.png)
+
+**Clef assumed:** treble
+
+**Staff lines (canonical y):** 194, 243, 292, 342, 389
+
+**Source:** wtc-p5  ·  page 5  ·  sys 0  staff 1  measure 0
+
+
+## Detections
+
+- [x] D0  restWhole (rest) at (x=1527, y=147)  conf=0.11
+       verdict: __________  <!-- new detection, no baseline match -->
+
+## Missed noteheads (FN)
+
+(carried over from baseline — none in pre-filled cells)
+
+## Wrong-pitch corrections

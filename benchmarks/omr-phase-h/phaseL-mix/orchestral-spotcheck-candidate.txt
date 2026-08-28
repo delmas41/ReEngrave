@@ -1,0 +1,5 @@
+candidate detection counts (top 15):
+  noteheadHalfInSpace            1
+  noteheadBlackInSpace           1
+  rest8th                        1
+  TOTAL: 3

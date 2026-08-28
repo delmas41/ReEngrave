@@ -1,0 +1,18 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m7",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 1,
+      "y": 542,
+      "w": 102,
+      "h": 5,
+      "x_center": 52,
+      "y_center": 544,
+      "confidence": 0.13528184592723846,
+      "pitch": null
+    }
+  ]
+}

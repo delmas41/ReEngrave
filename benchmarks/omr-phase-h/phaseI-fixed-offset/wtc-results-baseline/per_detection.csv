@@ -1,0 +1,336 @@
+cell_id,source_tag,det_id,smufl_name,category,x,y,pitch,confidence,verdict,reason
+wtc-p5-sys0-s0-m0,wtc-p5,D0,fermataAbove,ornament,300,412,,0.2,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D1,noteheadBlackInSpace,notehead,300,412,,0.15,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D2,noteheadWholeInSpace,notehead,305,412,,0.1,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D3,noteheadBlackInSpace,notehead,306,412,,0.47,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D4,noteheadBlackOnLine,notehead,309,327,,0.21,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D5,noteheadBlackInSpace,notehead,317,313,,0.37,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D6,noteheadBlackOnLine,notehead,318,317,,0.53,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D7,beam,structural,321,445,,0.47,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D8,noteheadBlackOnLine,notehead,328,316,,0.16,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D9,noteheadBlackInSpace,notehead,329,309,,0.48,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D10,restWhole,rest,462,437,,0.16,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D11,noteheadBlackOnLine,notehead,483,452,,0.28,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D12,noteheadBlackOnLine,notehead,488,452,,0.44,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D13,noteheadBlackOnLine,notehead,496,440,,0.57,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D14,noteheadBlackOnLine,notehead,496,447,,0.34,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D15,noteheadBlackOnLine,notehead,498,429,,0.18,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D16,augmentationDot,structural,529,438,,0.2,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D17,beam,structural,655,541,,0.8,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D18,rest8th,rest,664,232,,0.19,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D19,noteheadBlackOnLine,notehead,664,225,,0.11,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D20,restQuarter,rest,664,233,,0.11,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D21,noteheadBlackOnLine,notehead,665,218,,0.33,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D22,noteheadBlackInSpace,notehead,665,217,,0.12,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D23,noteheadBlackInSpace,notehead,668,182,,0.32,pending,small-glyph  <!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D24,noteheadBlackInSpace,notehead,677,177,,0.13,pending,small-glyph  <!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D25,noteheadBlackOnLine,notehead,678,427,,0.46,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D26,noteheadBlackOnLine,notehead,685,426,,0.25,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D27,noteheadBlackInSpace,notehead,687,406,,0.57,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D28,noteheadBlackOnLine,notehead,688,422,,0.29,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D29,noteheadBlackOnLine,notehead,689,413,,0.62,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D30,noteheadBlackOnLine,notehead,691,163,,0.23,pending,small-glyph  <!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D31,noteheadBlackInSpace,notehead,700,406,,0.14,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D32,noteheadBlackOnLine,notehead,862,402,,0.65,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D33,noteheadBlackOnLine,notehead,871,402,,0.51,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D34,noteheadBlackInSpace,notehead,872,397,,0.12,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D35,noteheadBlackOnLine,notehead,874,398,,0.48,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D36,noteheadBlackOnLine,notehead,880,389,,0.62,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D37,noteheadBlackOnLine,notehead,1053,380,,0.28,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D38,noteheadBlackInSpace,notehead,1062,362,,0.45,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D39,noteheadBlackOnLine,notehead,1065,372,,0.11,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D40,noteheadBlackInSpace,notehead,1069,178,,0.14,fp,above-staff-artifact  <!-- ported from baseline D12 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D41,noteheadBlackOnLine,notehead,1070,179,,0.12,fp,above-staff-artifact  <!-- ported from baseline D12 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D42,noteheadBlackOnLine,notehead,1071,365,,0.46,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D43,noteheadBlackInSpace,notehead,1071,358,,0.11,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D44,noteheadBlackInSpace,notehead,1078,356,,0.24,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D45,noteheadBlackInSpace,notehead,1081,351,,0.2,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D46,noteheadBlackInSpace,notehead,1128,364,,0.56,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D47,restHBar,rest,1232,526,,0.32,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D48,noteheadBlackOnLine,notehead,1341,355,,0.64,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D49,noteheadBlackOnLine,notehead,1345,446,,0.13,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D50,noteheadBlackInSpace,notehead,1350,347,,0.14,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D51,noteheadBlackOnLine,notehead,1351,341,,0.66,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D52,noteheadBlackOnLine,notehead,1351,354,,0.49,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D53,noteheadBlackOnLine,notehead,1351,349,,0.18,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D54,noteheadBlackInSpace,notehead,1351,331,,0.15,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D55,noteheadBlackOnLine,notehead,1377,446,,0.14,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D56,noteheadBlackOnLine,notehead,1447,377,,0.23,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D57,noteheadBlackInSpace,notehead,1453,376,,0.13,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D58,noteheadBlackOnLine,notehead,1453,375,,0.11,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D59,noteheadBlackInSpace,notehead,1458,362,,0.58,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D60,noteheadBlackOnLine,notehead,1458,365,,0.5,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D61,noteheadBlackOnLine,notehead,1458,372,,0.14,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D62,noteheadBlackInSpace,notehead,1466,357,,0.16,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D63,noteheadBlackOnLine,notehead,1550,400,,0.32,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D64,noteheadBlackOnLine,notehead,1556,402,,0.5,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D65,noteheadBlackInSpace,notehead,1557,402,,0.21,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D66,noteheadBlackOnLine,notehead,1564,400,,0.49,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D67,noteheadBlackInSpace,notehead,1564,381,,0.11,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D68,noteheadBlackOnLine,notehead,1568,389,,0.68,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D69,beam,structural,1638,485,,0.91,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D70,noteheadBlackInSpace,notehead,1753,327,,0.1,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D71,noteheadBlackOnLine,notehead,1759,328,,0.12,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D72,noteheadBlackInSpace,notehead,1763,328,,0.12,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D73,noteheadBlackInSpace,notehead,1764,308,,0.58,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D74,noteheadBlackOnLine,notehead,1769,325,,0.23,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D75,noteheadBlackOnLine,notehead,1770,318,,0.45,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D76,noteheadBlackOnLine,notehead,1777,315,,0.15,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D77,noteheadBlackInSpace,notehead,1783,304,,0.31,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D78,noteheadBlackInSpace,notehead,1783,309,,0.13,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D16 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D79,beam,structural,1792,389,,0.47,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D0,noteheadBlackOnLine,notehead,67,459,,0.24,tp,<!-- ported from baseline D0 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D1,noteheadBlackOnLine,notehead,69,458,,0.52,tp,<!-- ported from baseline D0 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D2,noteheadBlackOnLine,notehead,74,454,,0.15,tp,<!-- ported from baseline D0 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D3,noteheadBlackInSpace,notehead,77,436,,0.43,tp,<!-- ported from baseline D0 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D4,noteheadBlackOnLine,notehead,82,446,,0.22,tp,<!-- ported from baseline D0 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D5,beam,structural,86,192,,0.13,fp,above-staff-artifact  <!-- ported from baseline D1 -->  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D6,noteheadBlackInSpace,notehead,86,190,,0.1,fp,above-staff-artifact  <!-- ported from baseline D1 -->  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D7,beam,structural,155,543,,0.88,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D8,noteheadBlackOnLine,notehead,277,382,,0.2,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D9,noteheadBlackInSpace,notehead,279,378,,0.18,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D10,noteheadBlackOnLine,notehead,280,381,,0.62,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D11,noteheadBlackOnLine,notehead,283,375,,0.1,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D12,noteheadBlackOnLine,notehead,287,381,,0.23,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D13,noteheadBlackOnLine,notehead,291,377,,0.21,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D14,noteheadBlackInSpace,notehead,292,354,,0.13,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D15,noteheadBlackOnLine,notehead,293,370,,0.46,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D16,noteheadBlackOnLine,notehead,304,365,,0.18,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D17,slur,structural,392,341,,0.56,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D18,staff,structural,472,390,,0.2,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D19,noteheadBlackOnLine,notehead,480,382,,0.12,tp,<!-- ported from baseline D3 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D20,noteheadBlackOnLine,notehead,486,383,,0.53,tp,<!-- ported from baseline D3 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D21,noteheadBlackOnLine,notehead,489,381,,0.23,tp,<!-- ported from baseline D3 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D22,noteheadBlackOnLine,notehead,493,377,,0.24,tp,<!-- ported from baseline D3 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D23,noteheadBlackInSpace,notehead,493,354,,0.19,tp,<!-- ported from baseline D3 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D24,noteheadBlackOnLine,notehead,494,369,,0.46,tp,<!-- ported from baseline D3 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D25,staff,structural,496,515,,0.14,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D26,noteheadBlackOnLine,notehead,503,366,,0.34,tp,<!-- ported from baseline D3 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D27,noteheadBlackInSpace,notehead,631,354,,0.1,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D28,noteheadBlackInSpace,notehead,639,357,,0.17,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D29,noteheadBlackOnLine,notehead,643,355,,0.11,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D30,noteheadBlackInSpace,notehead,645,352,,0.15,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D31,noteheadBlackInSpace,notehead,653,332,,0.47,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D32,noteheadBlackOnLine,notehead,655,339,,0.4,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D33,noteheadBlackOnLine,notehead,664,338,,0.22,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D34,noteheadBlackInSpace,notehead,669,328,,0.26,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D35,beam,structural,696,505,,0.3,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D36,restHBar,rest,700,540,,0.87,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D37,beam,structural,702,541,,0.27,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D38,beam,structural,703,488,,0.32,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D39,beam,structural,709,495,,0.62,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D40,noteheadBlackOnLine,notehead,806,382,,0.52,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D41,noteheadBlackOnLine,notehead,808,381,,0.28,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D42,noteheadBlackInSpace,notehead,810,376,,0.13,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D43,noteheadBlackOnLine,notehead,814,377,,0.26,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D44,noteheadBlackInSpace,notehead,814,354,,0.2,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D45,noteheadBlackOnLine,notehead,816,370,,0.43,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D46,noteheadBlackOnLine,notehead,816,355,,0.14,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D47,noteheadBlackOnLine,notehead,823,367,,0.61,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D48,noteheadBlackOnLine,notehead,830,356,,0.12,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D49,noteheadBlackOnLine,notehead,963,408,,0.21,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D50,noteheadBlackInSpace,notehead,975,386,,0.42,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D51,noteheadBlackOnLine,notehead,976,393,,0.35,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D52,noteheadBlackOnLine,notehead,990,392,,0.24,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D53,noteheadBlackInSpace,notehead,990,384,,0.12,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D54,noteheadBlackOnLine,notehead,1115,181,,0.17,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D55,noteheadBlackInSpace,notehead,1122,433,,0.12,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D56,noteheadBlackOnLine,notehead,1127,433,,0.38,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D57,noteheadBlackInSpace,notehead,1129,430,,0.18,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D58,noteheadBlackOnLine,notehead,1130,430,,0.12,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D59,noteheadBlackInSpace,notehead,1133,426,,0.15,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D60,noteheadBlackInSpace,notehead,1136,405,,0.21,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D61,noteheadBlackOnLine,notehead,1136,427,,0.15,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D62,noteheadBlackOnLine,notehead,1143,417,,0.54,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D63,staff,structural,1295,389,,0.47,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D64,noteheadBlackInSpace,notehead,1317,434,,0.14,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D65,noteheadBlackInSpace,notehead,1321,377,,0.21,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D66,noteheadBlackOnLine,notehead,1323,434,,0.5,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D67,noteheadBlackInSpace,notehead,1323,431,,0.26,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D68,noteheadBlackInSpace,notehead,1327,426,,0.34,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D69,noteheadBlackOnLine,notehead,1328,380,,0.33,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D70,noteheadBlackOnLine,notehead,1330,375,,0.38,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D71,noteheadBlackInSpace,notehead,1330,353,,0.19,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D72,noteheadBlackOnLine,notehead,1330,431,,0.11,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D73,noteheadBlackOnLine,notehead,1332,425,,0.21,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D74,noteheadBlackInSpace,notehead,1333,405,,0.62,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D75,noteheadBlackOnLine,notehead,1333,417,,0.56,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D76,noteheadBlackOnLine,notehead,1336,370,,0.55,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D77,noteheadBlackOnLine,notehead,1338,404,,0.33,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D78,noteheadBlackOnLine,notehead,1344,354,,0.26,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D79,noteheadBlackInSpace,notehead,1345,356,,0.12,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D80,noteheadBlackOnLine,notehead,1346,416,,0.55,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D81,noteheadBlackOnLine,notehead,1346,369,,0.4,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D82,noteheadBlackOnLine,notehead,1352,399,,0.18,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D83,noteheadBlackOnLine,notehead,1374,199,,0.3,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D84,noteheadBlackOnLine,notehead,1383,198,,0.15,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D85,noteheadBlackOnLine,notehead,1443,196,,0.12,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D86,noteheadBlackOnLine,notehead,1449,195,,0.15,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D87,beam,structural,1455,532,,0.24,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D88,beam,structural,1465,191,,0.12,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D89,restHBar,rest,1474,532,,0.85,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D90,noteheadBlackOnLine,notehead,1572,371,,0.11,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D91,noteheadBlackOnLine,notehead,1574,365,,0.37,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D92,noteheadBlackOnLine,notehead,1576,368,,0.11,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D93,noteheadBlackOnLine,notehead,1577,423,,0.23,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D94,noteheadBlackOnLine,notehead,1582,422,,0.46,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D95,noteheadBlackOnLine,notehead,1584,363,,0.37,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D96,noteheadBlackOnLine,notehead,1584,420,,0.11,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D97,noteheadBlackOnLine,notehead,1589,359,,0.13,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D98,noteheadBlackOnLine,notehead,1590,361,,0.28,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D99,noteheadBlackOnLine,notehead,1590,415,,0.25,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D100,noteheadBlackInSpace,notehead,1590,358,,0.14,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D101,noteheadBlackInSpace,notehead,1592,414,,0.17,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D102,beam,structural,1594,195,,0.11,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D103,beam,structural,1623,203,,0.1,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D104,beam,structural,1627,183,,0.45,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D105,beam,structural,1632,176,,0.7,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D106,noteheadBlackOnLine,notehead,1645,408,,0.19,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D107,noteheadBlackInSpace,notehead,1650,406,,0.13,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D108,noteheadBlackOnLine,notehead,1660,347,,0.2,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D109,noteheadBlackOnLine,notehead,1661,339,,0.64,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D110,noteheadBlackInSpace,notehead,1661,337,,0.57,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D111,noteheadBlackInSpace,notehead,1661,386,,0.53,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D112,noteheadBlackOnLine,notehead,1662,393,,0.21,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D113,noteheadBlackOnLine,notehead,1673,339,,0.47,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D114,noteheadBlackInSpace,notehead,1676,328,,0.41,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D115,tie,structural,1769,365,,0.15,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D116,beam,structural,1811,415,,0.15,pending,
+wtc-p5-sys0-s0-m1,wtc-p5,D117,noteheadBlackOnLine,notehead,1862,381,,0.65,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D118,noteheadBlackInSpace,notehead,1863,376,,0.2,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D119,noteheadBlackOnLine,notehead,1866,372,,0.19,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D120,noteheadBlackOnLine,notehead,1869,325,,0.12,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D121,noteheadBlackInSpace,notehead,1871,354,,0.56,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D122,noteheadBlackInSpace,notehead,1871,302,,0.13,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D123,noteheadBlackOnLine,notehead,1872,320,,0.6,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D124,noteheadBlackOnLine,notehead,1872,379,,0.19,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D125,noteheadBlackOnLine,notehead,1873,372,,0.38,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D126,noteheadBlackOnLine,notehead,1880,367,,0.61,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D127,noteheadBlackOnLine,notehead,1880,354,,0.3,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D128,noteheadBlackOnLine,notehead,1882,317,,0.16,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D129,noteheadBlackInSpace,notehead,1882,305,,0.14,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D130,noteheadBlackOnLine,notehead,1887,354,,0.37,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m1,wtc-p5,D131,beam,structural,1981,391,,0.9,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D0,noteheadBlackOnLine,notehead,64,344,,0.14,tp,<!-- ported from baseline D1 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D1,noteheadBlackInSpace,notehead,65,346,,0.17,tp,<!-- ported from baseline D1 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D2,noteheadBlackOnLine,notehead,69,346,,0.18,tp,<!-- ported from baseline D1 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D3,noteheadBlackInSpace,notehead,71,341,,0.13,tp,<!-- ported from baseline D1 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D4,noteheadBlackInSpace,notehead,74,271,,0.15,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D5,noteheadBlackInSpace,notehead,75,259,,0.5,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D6,noteheadBlackOnLine,notehead,76,343,,0.33,tp,<!-- ported from baseline D1 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D7,noteheadBlackInSpace,notehead,76,325,,0.19,tp,<!-- ported from baseline D1 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D8,noteheadBlackOnLine,notehead,77,335,,0.67,tp,<!-- ported from baseline D1 -->  <!-- ported from baseline D0 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D9,noteheadBlackOnLine,notehead,79,263,,0.59,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D10,noteheadBlackInSpace,notehead,88,257,,0.11,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D11,noteheadBlackInSpace,notehead,89,263,,0.2,tp,<!-- ported from baseline D2 -->  <!-- ported from baseline D1 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D12,beam,structural,146,453,,0.32,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D13,beam,structural,147,463,,0.45,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D14,noteheadBlackOnLine,notehead,200,330,,0.16,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D15,noteheadBlackOnLine,notehead,200,384,,0.14,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D16,noteheadBlackInSpace,notehead,273,356,,0.34,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D17,noteheadBlackOnLine,notehead,274,358,,0.25,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D18,noteheadBlackOnLine,notehead,285,358,,0.1,tp,<!-- ported from baseline D4 -->  <!-- ported from baseline D3 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D19,restHBar,rest,300,75,,0.36,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D20,beam,structural,312,333,,0.19,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D21,noteheadBlackOnLine,notehead,362,248,,0.22,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D22,noteheadBlackOnLine,notehead,365,243,,0.68,tp,<!-- ported from baseline D5 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D23,noteheadBlackInSpace,notehead,445,148,,0.2,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D24,beam,structural,446,110,,0.11,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D25,noteheadBlackOnLine,notehead,464,273,,0.2,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D26,noteheadBlackInSpace,notehead,468,273,,0.11,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D27,noteheadBlackInSpace,notehead,469,258,,0.57,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D28,noteheadBlackOnLine,notehead,469,266,,0.54,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D29,noteheadBlackInSpace,notehead,477,254,,0.44,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D30,noteheadBlackOnLine,notehead,479,265,,0.28,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D31,noteheadBlackInSpace,notehead,483,251,,0.24,tp,<!-- ported from baseline D6 -->  <!-- ported from baseline D5 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D32,noteheadBlackInSpace,notehead,530,314,,0.38,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D33,noteheadBlackOnLine,notehead,530,365,,0.16,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D34,noteheadBlackOnLine,notehead,533,364,,0.28,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D35,noteheadBlackOnLine,notehead,535,361,,0.25,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D36,noteheadBlackInSpace,notehead,544,314,,0.33,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D37,noteheadBlackOnLine,notehead,546,307,,0.18,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D38,noteheadBlackOnLine,notehead,546,360,,0.16,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D39,noteheadBlackInSpace,notehead,548,302,,0.17,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D40,noteheadBlackOnLine,notehead,552,353,,0.12,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D41,noteheadBlackInSpace,notehead,558,302,,0.43,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D42,noteheadBlackInSpace,notehead,561,352,,0.27,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D43,accidentalNatural,accidental,563,298,,0.11,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D44,noteheadBlackOnLine,notehead,610,345,,0.28,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D45,noteheadBlackOnLine,notehead,614,347,,0.51,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D46,noteheadBlackInSpace,notehead,614,347,,0.13,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D47,noteheadBlackInSpace,notehead,618,341,,0.12,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D48,noteheadBlackOnLine,notehead,619,280,,0.12,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D49,noteheadBlackOnLine,notehead,620,292,,0.57,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D50,noteheadBlackInSpace,notehead,621,324,,0.68,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D51,noteheadBlackInSpace,notehead,621,280,,0.19,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D52,noteheadBlackOnLine,notehead,622,346,,0.56,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D53,noteheadBlackOnLine,notehead,622,327,,0.16,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D54,noteheadBlackOnLine,notehead,623,335,,0.7,tp,<!-- ported from baseline D7 -->  <!-- ported from baseline D6 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D55,noteheadBlackOnLine,notehead,629,289,,0.22,tp,<!-- ported from baseline D8 -->  <!-- ported from baseline D7 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D56,beam,structural,740,446,,0.7,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D57,beam,structural,794,136,,0.53,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D58,beam,structural,795,143,,0.65,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D59,staff,structural,847,276,,0.33,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D60,noteheadBlackInSpace,notehead,904,320,,0.18,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D61,noteheadBlackInSpace,notehead,912,304,,0.58,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D62,noteheadBlackOnLine,notehead,913,266,,0.53,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D63,noteheadBlackInSpace,notehead,913,260,,0.48,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D64,noteheadBlackOnLine,notehead,914,319,,0.24,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D65,noteheadBlackOnLine,notehead,915,311,,0.33,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D66,noteheadBlackInSpace,notehead,922,255,,0.4,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D67,noteheadBlackInSpace,notehead,926,252,,0.17,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D68,noteheadBlackOnLine,notehead,926,309,,0.11,tp,<!-- ported from baseline D9 -->  <!-- ported from baseline D8 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D69,noteheadBlackInSpace,notehead,928,258,,0.1,tp,<!-- ported from baseline D10 -->  <!-- ported from baseline D9 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D70,beam,structural,1038,358,,0.15,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D71,slur,structural,1040,358,,0.71,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D72,noteheadBlackOnLine,notehead,1195,322,,0.19,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D73,staff,structural,1200,269,,0.51,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D74,noteheadBlackInSpace,notehead,1205,301,,0.55,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D75,noteheadBlackOnLine,notehead,1206,251,,0.52,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D76,noteheadBlackInSpace,notehead,1206,232,,0.16,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D77,noteheadBlackOnLine,notehead,1207,242,,0.68,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D78,noteheadBlackOnLine,notehead,1208,231,,0.12,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D79,noteheadBlackOnLine,notehead,1209,310,,0.54,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D80,noteheadBlackInSpace,notehead,1215,303,,0.16,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D81,noteheadBlackOnLine,notehead,1219,310,,0.32,tp,<!-- ported from baseline D11 -->  <!-- ported from baseline D10 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D82,noteheadBlackInSpace,notehead,1219,230,,0.17,tp,<!-- ported from baseline D12 -->  <!-- ported from baseline D11 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D83,beam,structural,1329,112,,0.6,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D84,noteheadBlackOnLine,notehead,1329,305,,0.18,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D85,noteheadBlackOnLine,notehead,1380,347,,0.28,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D86,noteheadBlackOnLine,notehead,1384,348,,0.44,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D87,noteheadBlackOnLine,notehead,1385,225,,0.14,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D88,noteheadBlackInSpace,notehead,1393,341,,0.11,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D89,noteheadBlackInSpace,notehead,1394,212,,0.52,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D90,noteheadBlackOnLine,notehead,1395,219,,0.58,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D91,noteheadBlackOnLine,notehead,1395,345,,0.49,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D92,noteheadBlackOnLine,notehead,1398,335,,0.65,tp,<!-- ported from baseline D13 -->  <!-- ported from baseline D12 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D93,noteheadBlackInSpace,notehead,1400,211,,0.11,tp,<!-- ported from baseline D14 -->  <!-- ported from baseline D13 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D94,restHBar,rest,1460,444,,0.73,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D95,noteheadBlackOnLine,notehead,1572,322,,0.32,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D96,noteheadBlackOnLine,notehead,1579,201,,0.49,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D97,noteheadBlackInSpace,notehead,1580,303,,0.52,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D98,noteheadBlackOnLine,notehead,1582,310,,0.54,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D99,noteheadBlackOnLine,notehead,1585,197,,0.6,tp,<!-- ported from baseline D16 -->  <!-- ported from baseline D15 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D100,noteheadBlackInSpace,notehead,1590,306,,0.17,tp,<!-- ported from baseline D15 -->  <!-- ported from baseline D14 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D101,noteheadBlackOnLine,notehead,1701,316,,0.11,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D102,noteheadBlackOnLine,notehead,1705,256,,0.24,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D103,noteheadBlackOnLine,notehead,1757,300,,0.59,tp,<!-- ported from baseline D18 -->  <!-- ported from baseline D17 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D104,noteheadBlackOnLine,notehead,1766,299,,0.47,tp,<!-- ported from baseline D18 -->  <!-- ported from baseline D17 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D105,noteheadBlackOnLine,notehead,1768,295,,0.49,tp,<!-- ported from baseline D18 -->  <!-- ported from baseline D17 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D106,noteheadBlackInSpace,notehead,1768,294,,0.11,tp,<!-- ported from baseline D18 -->  <!-- ported from baseline D17 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D107,noteheadBlackOnLine,notehead,1769,287,,0.47,tp,<!-- ported from baseline D18 -->  <!-- ported from baseline D17 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D108,noteheadBlackInSpace,notehead,1769,280,,0.12,tp,<!-- ported from baseline D18 -->  <!-- ported from baseline D17 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D109,beam,structural,1796,10,,0.12,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D110,noteheadBlackOnLine,notehead,1854,177,,0.24,tp,<!-- ported from baseline D19 -->  <!-- ported from baseline D18 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D111,noteheadBlackInSpace,notehead,1859,162,,0.22,tp,<!-- ported from baseline D19 -->  <!-- ported from baseline D18 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D112,noteheadBlackOnLine,notehead,1859,162,,0.15,tp,<!-- ported from baseline D19 -->  <!-- ported from baseline D18 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D113,noteheadBlackOnLine,notehead,1862,169,,0.57,tp,<!-- ported from baseline D19 -->  <!-- ported from baseline D18 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D114,noteheadBlackOnLine,notehead,1872,169,,0.27,tp,<!-- ported from baseline D19 -->  <!-- ported from baseline D18 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D115,noteheadBlackInSpace,notehead,1873,168,,0.26,tp,<!-- ported from baseline D19 -->  <!-- ported from baseline D18 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D116,noteheadBlackInSpace,notehead,1942,85,,0.13,pending,
+wtc-p5-sys0-s0-m2,wtc-p5,D117,noteheadBlackInSpace,notehead,1956,201,,0.11,tp,<!-- ported from baseline D20 -->  <!-- ported from baseline D19 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D118,noteheadBlackOnLine,notehead,1958,203,,0.31,tp,<!-- ported from baseline D20 -->  <!-- ported from baseline D19 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D119,noteheadBlackInSpace,notehead,1963,198,,0.11,tp,<!-- ported from baseline D20 -->  <!-- ported from baseline D19 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D120,noteheadBlackInSpace,notehead,1963,181,,0.1,tp,<!-- ported from baseline D20 -->  <!-- ported from baseline D19 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D121,noteheadBlackOnLine,notehead,1964,197,,0.6,tp,<!-- ported from baseline D20 -->  <!-- ported from baseline D19 -->
+wtc-p5-sys0-s0-m2,wtc-p5,D122,noteheadBlackOnLine,notehead,1973,197,,0.67,tp,<!-- ported from baseline D20 -->  <!-- ported from baseline D19 -->

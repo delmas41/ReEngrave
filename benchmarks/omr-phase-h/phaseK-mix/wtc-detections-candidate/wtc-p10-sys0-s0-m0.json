@@ -1,0 +1,122 @@
+{
+  "cell_id": "wtc-p10-sys0-s0-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 3,
+      "y": 249,
+      "w": 201,
+      "h": 6,
+      "x_center": 103,
+      "y_center": 252,
+      "confidence": 0.10089114308357239,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "articStaccatissimoAbove",
+      "category": "ornament",
+      "x": 907,
+      "y": 264,
+      "w": 28,
+      "h": 47,
+      "x_center": 921,
+      "y_center": 287,
+      "confidence": 0.2789495587348938,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "articStaccatissimoAbove",
+      "category": "ornament",
+      "x": 908,
+      "y": 324,
+      "w": 31,
+      "h": 47,
+      "x_center": 923,
+      "y_center": 347,
+      "confidence": 0.2180078774690628,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 900,
+      "y": 313,
+      "w": 240,
+      "h": 8,
+      "x_center": 1020,
+      "y_center": 317,
+      "confidence": 0.17381826043128967,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "timeSigCommon",
+      "category": "time_sig_digit",
+      "x": 1064,
+      "y": 746,
+      "w": 26,
+      "h": 16,
+      "x_center": 1077,
+      "y_center": 754,
+      "confidence": 0.2940905690193176,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "articStaccatissimoAbove",
+      "category": "ornament",
+      "x": 1067,
+      "y": 705,
+      "w": 90,
+      "h": 47,
+      "x_center": 1112,
+      "y_center": 728,
+      "confidence": 0.10780049115419388,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 1260,
+      "y": 313,
+      "w": 240,
+      "h": 7,
+      "x_center": 1380,
+      "y_center": 316,
+      "confidence": 0.19328643381595612,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "timeSig8",
+      "category": "time_sig_digit",
+      "x": 1383,
+      "y": 460,
+      "w": 43,
+      "h": 19,
+      "x_center": 1404,
+      "y_center": 469,
+      "confidence": 0.2373659610748291,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "tuplet6",
+      "category": "structural",
+      "x": 1063,
+      "y": 533,
+      "w": 904,
+      "h": 37,
+      "x_center": 1515,
+      "y_center": 551,
+      "confidence": 0.11076251417398453,
+      "pitch": null
+    }
+  ]
+}

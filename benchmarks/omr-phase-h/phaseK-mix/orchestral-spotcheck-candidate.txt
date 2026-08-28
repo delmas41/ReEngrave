@@ -1,0 +1,4 @@
+candidate detection counts (top 15):
+  timeSigCommon                  2
+  noteheadBlackInSpace           1
+  TOTAL: 3

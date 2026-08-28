@@ -1,0 +1,27 @@
+start Mon Jul 13 10:19:59 MST 2026
+--- production only ---
+transcribe: IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf (88 pages, processing 1)
+  weights:  omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: 1280
+  page 1: 3 systems, 12 staves, 132 measures, 3246 detections (2323/2323 pitched, 2323/2323 durations)
+
+wrote benchmarks/omr-clef-demo/beet5_p1_production.omr.json
+  pages=1  systems=3  staves=12  measures=132  detections=3246
+  noteheads=2323  pitched=2323  (100% pitch coverage)
+  with_duration=2323  (100% rhythm coverage)  rests=2/743
+  runtime: phase1=1.83s  yolo=100.51s  total=102.36s
+  page 1: 132 measures, 17 phase1_warnings, 0 rhythm_sum_warnings
+--- header reader ---
+transcribe: IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf (88 pages, processing 1)
+  weights:  omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+  clef:     omr-weights/deepscoresv2-yolov8l-clef-ft-boxfix-2026-07-13.pt (header specialist, conf 0.3, imgsz 640, frac 0.42)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: 1280
+  page 1: 3 systems, 12 staves, 132 measures, 3246 detections (2323/2323 pitched, 2323/2323 durations)
+
+wrote benchmarks/omr-clef-demo/beet5_p1_headerreader.omr.json
+  pages=1  systems=3  staves=12  measures=132  detections=3246
+  noteheads=2323  pitched=2323  (100% pitch coverage)
+  with_duration=2323  (100% rhythm coverage)  rests=2/743
+  runtime: phase1=1.92s  yolo=104.28s  total=106.21s
+  page 1: 132 measures, 17 phase1_warnings, 0 rhythm_sum_warnings
+DONE Mon Jul 13 10:23:29 MST 2026

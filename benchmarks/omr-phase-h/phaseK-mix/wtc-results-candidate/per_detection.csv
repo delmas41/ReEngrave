@@ -1,0 +1,19 @@
+cell_id,source_tag,det_id,smufl_name,category,x,y,pitch,confidence,verdict,reason
+wtc-p5-sys0-s0-m0,wtc-p5,D0,articStaccatissimoAbove,ornament,102,131,,0.2,fp,clef-curl  <!-- ported from baseline D2 -->  <!-- ported from baseline D2 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D1,rest8th,rest,328,445,,0.19,pending,rest-or-flag  <!-- ported from baseline D4 -->  <!-- ported from baseline D4 -->
+wtc-p5-sys0-s0-m0,wtc-p5,D2,fermataAbove,ornament,464,437,,0.16,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D3,fermataAbove,ornament,490,437,,0.34,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D4,timeSig8,time_sig_digit,490,455,,0.31,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D5,tuplet6,structural,559,193,,0.12,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D6,keyboardPedalUp,ornament,658,540,,0.75,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D7,keyboardPedalUp,ornament,660,549,,0.5,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D8,timeSig8,time_sig_digit,868,405,,0.27,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D9,timeSig8,time_sig_digit,1344,357,,0.36,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D10,timeSig8,time_sig_digit,1357,342,,0.15,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D11,keyboardPedalUp,ornament,1376,440,,0.11,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D12,timeSig8,time_sig_digit,1459,365,,0.2,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D13,timeSig8,time_sig_digit,1557,404,,0.49,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D14,timeSig8,time_sig_digit,1564,404,,0.2,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D15,timeSig8,time_sig_digit,1565,391,,0.28,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D16,keyboardPedalUp,ornament,1637,493,,0.91,pending,
+wtc-p5-sys0-s0-m0,wtc-p5,D17,keyboardPedalUp,ornament,1790,389,,0.57,pending,

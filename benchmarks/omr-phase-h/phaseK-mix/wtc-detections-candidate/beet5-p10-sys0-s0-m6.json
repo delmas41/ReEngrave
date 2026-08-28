@@ -1,0 +1,70 @@
+{
+  "cell_id": "beet5-p10-sys0-s0-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "timeSig8",
+      "category": "time_sig_digit",
+      "x": 31,
+      "y": 582,
+      "w": 16,
+      "h": 11,
+      "x_center": 39,
+      "y_center": 587,
+      "confidence": 0.1991073191165924,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 0,
+      "y": 499,
+      "w": 100,
+      "h": 3,
+      "x_center": 50,
+      "y_center": 500,
+      "confidence": 0.19069260358810425,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keyboardPedalUp",
+      "category": "ornament",
+      "x": 0,
+      "y": 543,
+      "w": 100,
+      "h": 4,
+      "x_center": 50,
+      "y_center": 545,
+      "confidence": 0.12481121718883514,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "timeSig8",
+      "category": "time_sig_digit",
+      "x": 53,
+      "y": 581,
+      "w": 15,
+      "h": 11,
+      "x_center": 60,
+      "y_center": 586,
+      "confidence": 0.11057543009519577,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "timeSigCommon",
+      "category": "time_sig_digit",
+      "x": 72,
+      "y": 592,
+      "w": 13,
+      "h": 9,
+      "x_center": 78,
+      "y_center": 596,
+      "confidence": 0.14937721192836761,
+      "pitch": null
+    }
+  ]
+}

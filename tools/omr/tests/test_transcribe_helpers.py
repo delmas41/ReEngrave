@@ -197,6 +197,75 @@ class TestKeySigAlterations:
         assert _key_sig_alterations(0, 3) == {"B": "b", "E": "b", "A": "b"}
 
 
+class TestKeySigFromDetectionPositions:
+    """The slot fit applied to the DETECTOR's own key-signature markers.
+
+    This is the path that matters on clean engravings, where the detector fires
+    and its count is believed. Measured on WTC p.17 (E major, four sharps on
+    every staff) counting read 6 of 10 staves right, failing as +1, +1, +2 and
+    +5 — truncated counts and one spurious extra.
+    """
+
+    @staticmethod
+    def _cell(spacing=100):
+        @dataclass
+        class FakeCell:
+            staff_line_ys_canonical: list
+        return FakeCell([400 + i * spacing for i in range(5)])
+
+    @staticmethod
+    def _markers(positions, spacing=100, accidental="keySharp"):
+        """Detections centred at `positions` (steps below the top staff line)."""
+        out = []
+        for i, pos in enumerate(positions):
+            centre = 400 + pos * (spacing / 2.0)
+            out.append(FakeDet(
+                smufl_name=accidental, category="accidental",
+                x_canonical=100 + 60 * i, y_canonical=int(centre - 25),
+                width_canonical=40, height_canonical=50,
+            ))
+        return out
+
+    def test_all_four_sharps_seen(self):
+        # treble sharp slots: F5 C5 G5 D5 -> 0, 3, -1, 2
+        dets = self._markers([0, 3, -1, 2])
+        assert _detect_key_sig_from_cell(dets, self._cell(), "treble") == \
+            _key_sig_alterations(4, 0)
+
+    def test_missed_interior_sharp_is_recovered(self):
+        # Slots 1, 2 and 4 seen: FOUR sharps with the third missed, not three.
+        # Counting these gives 3 — the WTC failure shape.
+        dets = self._markers([0, 3, 2])
+        assert _detect_key_sig_from_cell(dets, self._cell(), "treble") == \
+            _key_sig_alterations(4, 0)
+
+    def test_off_slot_marker_does_not_inflate_the_count(self):
+        # Three real sharps plus one detection sitting on no slot at all.
+        # Counting gives 4; the fit refuses to place the stray one.
+        dets = self._markers([0, 3, -1, 6.5])
+        result = _detect_key_sig_from_cell(dets, self._cell(), "treble")
+        assert result == _key_sig_alterations(3, 0)
+
+    def test_falls_back_to_counting_without_staff_geometry(self):
+        dets = self._markers([0, 3, -1])
+        assert _detect_key_sig_from_cell(dets, None, "treble") == \
+            _key_sig_alterations(3, 0)
+
+    def test_falls_back_to_counting_for_a_clef_with_no_slot_table(self):
+        dets = self._markers([0, 3, -1])
+        assert _detect_key_sig_from_cell(dets, self._cell(), "soprano") == \
+            _key_sig_alterations(3, 0)
+
+    def test_no_markers_returns_none(self):
+        assert _detect_key_sig_from_cell([], self._cell(), "treble") is None
+
+    def test_flats_are_read_the_same_way(self):
+        # treble flat slots: B4 E5 A4 -> 4, 1, 5
+        dets = self._markers([4, 1, 5], accidental="keyFlat")
+        assert _detect_key_sig_from_cell(dets, self._cell(), "treble") == \
+            _key_sig_alterations(0, 3)
+
+
 class TestKeySigSummary:
     def test_empty(self):
         summary = _key_sig_summary({})

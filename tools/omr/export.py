@@ -444,12 +444,22 @@ def to_lilypond(result: dict[str, Any]) -> str:
 # ---------------------------------------------------------------------------
 
 
-_MXL_CLEF_SIGN = {
-    "treble": ("G", 2),
-    "bass":   ("F", 4),
-    "alto":   ("C", 3),
-    "tenor":  ("C", 4),
-}
+# clef key → MusicXML (<sign>, <line>). This is exactly what a clef IS — a
+# family glyph on a staff line — so it comes straight from the clef table in
+# clef_geometry rather than being restated here, and the five C clefs and the
+# rare G/F variants export correctly without a second list to keep in sync.
+# MusicXML numbers staff lines from the bottom, the same way the table does.
+def _build_mxl_clef_signs() -> dict[str, tuple[str, int]]:
+    from .clef_geometry import CLEF_BY_FAMILY_LINE
+
+    return {
+        name: (family, line)
+        for family, lines in CLEF_BY_FAMILY_LINE.items()
+        for line, name in lines.items()
+    }
+
+
+_MXL_CLEF_SIGN = _build_mxl_clef_signs()
 
 
 # Suffix → MusicXML <clef-octave-change> value

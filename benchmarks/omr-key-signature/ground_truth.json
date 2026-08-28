@@ -1,0 +1,91 @@
+{
+  "_about": [
+    "Hand-read key signatures, one entry per staff position, for the pages the",
+    "key-signature layer was measured on. Every value here was read off the",
+    "printed page by eye at high zoom — it is not pipeline output, and it is the",
+    "part of this benchmark that cannot be regenerated.",
+    "",
+    "`fifths` is the circle-of-fifths position of the WRITTEN signature: +N for N",
+    "sharps, -N for N flats, 0 for none. `clef` is the printed clef, supplied to",
+    "the locator in component mode because the slot table is chosen by it.",
+    "",
+    "Staves are keyed by ORDINAL — position within a system, top to bottom —",
+    "because that is what identifies the instrument across the systems of a page.",
+    "Every system on these pages carries the same instrumentation."
+  ],
+  "pages": [
+    {
+      "id": "beet5-p2",
+      "work": "Beethoven, Symphony No. 5, Op. 67 — first movement, concert C minor",
+      "pdf": "tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+      "page_index": 1,
+      "dpi": 450,
+      "n_systems": 2,
+      "why_this_page": [
+        "A degraded 19th-century print, and the page that motivated the whole",
+        "layer. It carries three different written signatures for one concert",
+        "key: 3 flats on the non-transposing parts, 1 flat on the Bb clarinet,",
+        "and none on the horns, trumpets and timpani. A naive 'all staves in a",
+        "system agree' check fails on it, and so does counting detections."
+      ],
+      "staves": [
+        {"ordinal": 0,  "instrument": "Flauti",      "clef": "treble", "fifths": -3},
+        {"ordinal": 1,  "instrument": "Oboi",        "clef": "treble", "fifths": -3},
+        {"ordinal": 2,  "instrument": "Clarinetti in Bb", "clef": "treble", "fifths": -1},
+        {"ordinal": 3,  "instrument": "Fagotti",     "clef": "bass",   "fifths": -3},
+        {"ordinal": 4,  "instrument": "Corni",       "clef": "treble", "fifths": 0},
+        {"ordinal": 5,  "instrument": "Trombe",      "clef": "treble", "fifths": 0},
+        {"ordinal": 6,  "instrument": "Timpani",     "clef": "bass",   "fifths": 0},
+        {"ordinal": 7,  "instrument": "Violino I",   "clef": "treble", "fifths": -3},
+        {"ordinal": 8,  "instrument": "Violino II",  "clef": "treble", "fifths": -3},
+        {"ordinal": 9,  "instrument": "Viola",       "clef": "alto",   "fifths": -3},
+        {"ordinal": 10, "instrument": "Violoncello e Basso", "clef": "bass", "fifths": -3}
+      ]
+    },
+    {
+      "id": "pastoral-p2",
+      "work": "Beethoven, Symphony No. 6, Op. 68 — first movement, concert F major",
+      "pdf": "tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+      "page_index": 1,
+      "dpi": 450,
+      "n_systems": 2,
+      "why_this_page": [
+        "A second degraded print, and the one case where a transposing part",
+        "prints the OPPOSITE accidental to the rest of the page: the Bb clarinet",
+        "writes 1 sharp against everyone else's 1 flat. It is the staff both",
+        "surviving errors land on."
+      ],
+      "staves": [
+        {"ordinal": 0, "instrument": "Flauti",      "clef": "treble", "fifths": -1},
+        {"ordinal": 1, "instrument": "Oboi",        "clef": "treble", "fifths": -1},
+        {"ordinal": 2, "instrument": "Clarinetti in Bb", "clef": "treble", "fifths": 1},
+        {"ordinal": 3, "instrument": "Fagotti",     "clef": "bass",   "fifths": -1},
+        {"ordinal": 4, "instrument": "Corni in F",  "clef": "treble", "fifths": 0},
+        {"ordinal": 5, "instrument": "Violino I",   "clef": "treble", "fifths": -1,
+         "uncertain": "The flat is hard to make out at this staff's print quality; read as 1 flat because every other string part on the page prints one and the part is non-transposing."},
+        {"ordinal": 6, "instrument": "Violino II",  "clef": "treble", "fifths": -1},
+        {"ordinal": 7, "instrument": "Viola",       "clef": "alto",   "fifths": -1},
+        {"ordinal": 8, "instrument": "Violoncello", "clef": "bass",   "fifths": -1},
+        {"ordinal": 9, "instrument": "Basso",       "clef": "bass",   "fifths": -1}
+      ]
+    },
+    {
+      "id": "wtc-p17",
+      "work": "Bach, Well-Tempered Clavier I — E major",
+      "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
+      "page_index": 16,
+      "dpi": 600,
+      "n_systems": 5,
+      "why_this_page": [
+        "The opposite material: a clean modern engraving where the DETECTOR",
+        "fires, so it measures the path the CV locator never reaches. Four",
+        "sharps on every staff of five systems, which is what makes the",
+        "cross-page vote's job checkable by eye."
+      ],
+      "staves": [
+        {"ordinal": 0, "instrument": "right hand", "clef": "treble", "fifths": 4},
+        {"ordinal": 1, "instrument": "left hand",  "clef": "bass",   "fifths": 4}
+      ]
+    }
+  ]
+}
