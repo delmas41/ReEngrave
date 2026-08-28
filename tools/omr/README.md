@@ -172,7 +172,7 @@ and `bbox_page` (page-pixel) per detection.
 
 The DSv2 classification head has **208 classes** (the canonical
 DeepScoresV2 class list — see
-`tools/omr/training/data/deepscoresv2_208_classes.json`). The labeling UI
+`tools/omr/training/deepscoresv2_208_classes.json`). The labeling UI
 also defines **6 custom classes** at IDs 208–213
 (`barlineSingle`, `barlineDouble`, `barlineFinal`, `repeatRight`,
 `repeatLeft`, `textDynamic`). Those are **not yet learned** by the
