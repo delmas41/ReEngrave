@@ -23,7 +23,62 @@ The four human deductions and where they stand:
 | *staves run winds→brass→perc→strings in these groups* | bracket gaps are used only to split systems (`staff_detector.py:194`); the grouping is then discarded |
 | *key is X, so these accidentals mean Y* | M4 re-rank does this, but off one global detected key, not per-staff |
 
-### #1 — Persistent staff/part identity ("slots") — **THE KEYSTONE, DO FIRST**
+### #1 — Persistent staff/part identity ("slots") — **IN PROGRESS**
+
+**Step 1 DONE (2026-08-28): system grouping rebuilt on vertical connectivity.**
+`tools/omr/system_grouping.py` + wired into `staff_detector.detect_staves`. Slots are
+assigned per system, so correct systems are a hard prerequisite — and the gap-size
+heuristic was badly wrong on exactly the scores that matter. Measured on Beethoven 9
+(imslp-516488, 300 dpi, 12 pages sampled every 5 from p20):
+
+| | gap-based (before) | connectivity (after) |
+|---|---|---|
+| "systems" found | 52 | 18 |
+| distinct sizes | 12 | 7 |
+| **single-staff "systems"** | **19 (37% of all)** | **0** |
+| most common size | 1 staff | 12 staves |
+
+Page 40 alone was reported as `[3, 1, 2, 1, 5]`; it is one 12-staff system. The cause
+is named in the old code's own comment: its MAD rule deliberately split at "a
+clearly-bigger-than-normal gap between bracketed sub-systems (winds vs brass vs
+strings)" — but those blocks are *inside* one system. Signal used instead: **a system
+break is a gap that no vertical ink crosses** (barlines and the bracket run through a
+system; nothing crosses between two systems), the same fact
+`measure_extractor._intersystem_connectivity` already uses one level downstream.
+
+**Bonus: this also recovers the instrument-family grouping** as `Staff.group_index`.
+Bridging counts are trimodal — `0` = system break, `~4-18` = bracket-group boundary
+(only the bracket crosses), `~35-95` = inside a group. Visually verified on Beethoven 9
+p70: two systems, each grouped **4 woodwinds | 2 horns | 5 strings**. That is direct
+input to #3, and it means the old detector was finding the right *groups* and
+mislabelling them as systems.
+
+Two traps found and recorded in the module:
+- **Do not use `Staff.x_start` for the scan window** — p60 staff 3 reports
+  `x_start=885, x_end=1826` against ~275/~2485 for its neighbours, which produced a
+  false system break. Use the median across the page. Same root cause as the
+  header-window problem in `staff_header.py`.
+- **Do not gate a break on gap size.** An earlier revision required a break to exceed
+  the median gap; on p25 the true break between two 12-staff systems has a 68 px gap
+  while intra-system gaps reach 99 px, so it suppressed a real break.
+
+**Step 2 (next): assign stable slot ids** across systems and pages. Systems with
+identical structural signatures (staff count + group sizes) map slot-to-slot directly —
+p70's two systems are both `[4,2,5]`. The unequal case is real and common (p55 `[8,10]`,
+p65 `[7,11]`): **tacet instruments are omitted from a system**, which is exactly the
+condensed-system trap below, and resolving it needs the margin labels from #2.
+
+**VERIFIED 2026-08-28 — single-line percussion staves are invisible.**
+`_group_into_staves` only accepts five-peak evenly-spaced windows, so a one-line
+percussion staff produces no `Staff` at all. Synthetic proof + consequence in
+`tools/omr/tests/test_system_grouping.py::test_detect_staves_misses_a_single_line_percussion_staff`:
+on a page of 3 five-line staves plus one 1-line staff, the detector returns 3, and
+**every staff below the missing one carries a `staff_index` one lower than its true
+slot**. Not yet fixed — fixing it means relaxing the 5-peak rule without regressing
+staff detection, and Phase 1 has no regression baseline. Track as a slot-numbering
+hazard for Step 2.
+
+### #1 (original framing) — why slots are the keystone
 Assign every staff a stable part id across all systems and pages. Signals available
 today: y-order, staves-per-system, bracket/brace topology at the left edge
 (`system_left_edge()` in `staff_header.py` on branch
@@ -41,10 +96,15 @@ out to require.**
 
 ### #2 — Margin reading (instrument names)
 No OCR anywhere in the project (`backend/requirements.txt` has none). Two paths:
-- **Born-digital PDFs**: PyMuPDF is already imported (`preprocessing.py:18`) and used
-  only to rasterize. `page.get_text()` with coordinates yields "Flöten 1. 2." at a
-  known bbox, exactly, for free. Cheap probe: what fraction of the corpus has a text
-  layer?
+- **PDFs with a text layer — MEASURED 2026-08-28: 18/65 (28%) of the IMSLP corpus.**
+  PyMuPDF is already imported (`preprocessing.py:18`) and used only to rasterize.
+  `page.get_text()` returns the instrument abbreviations directly — sampled pages gave
+  `Fl. / Ob. / Cl. / Fag. / Cor. / Tr. / Timp. / Vl. / Vla. / Vc. / Cb.`, and one gave a
+  full instrumentation list: `2 Flauti / 2 Oboi / 2 Clarinetti in C / 2 Fagotti /
+  2 Corni in C / 2 Trombe in C / Timpani in C.G / Violino I`. These are OCR'd text
+  layers over scans (surrounding music glyphs come out as garbage), but the *labels*
+  are clean. With bboxes they join to staves by y-position. **Free instrument identity
+  on ~a quarter of the corpus** — do this before any OCR/VLM work.
 - **Scans**: crop left of `system_left_edge` → OCR or a VLM call.
 
 Then fuzzy-match a multilingual instrument lexicon (Flauti/Flöten/Fl., Clarinetti in
@@ -104,6 +164,30 @@ once the key is known from elsewhere (that is M4's existing job, just fed a per-
 key instead of a global one), and inferring the **key signature** itself — Beethoven 5
 reads `0 sharps / 0 flats` on all 18 staves when it is in C minor.
 
+### #4b — Infer the KEY SIGNATURE from the music — **OPEN, wanted (Sean, 2026-08-28)**
+Untouched by the #4 negative, which killed only the *clef* half. Sean's heuristic:
+*"the clear repetition of a root note — it starts and ends on an A, so I look for no
+sharps and flats, or 3 sharps."*
+
+Live evidence that this is a real, unflagged error class:
+- **beethoven-5 p15 reads `0 sharps / 0 flats` on all 18 staves** — the movement is in
+  C minor (3 flats), and there are 33 inline flat detections on the page.
+- **ravel-bolero p10 reads five different signatures across 32 staves** (0,1,2,4,5
+  sharps) for a piece in C major. The shipped check (b) catches only **1** of them.
+
+Why it is a different problem from #4, and more tractable: the key signature is a
+*global* property corroborated by many staves at once, so cross-staff voting applies
+(check (b) already has the transposition machinery), whereas the clef is per-staff and
+clef-invariant in the geometry. Candidate signals: inline-accidental letter statistics
+aggregated over a whole page rather than one staff; a flat:sharp ratio far from
+balanced implying the signature is missing accidentals; tonal frame of the lowest
+staff. **Do not reuse per-staff KS profile fitting — measured as noise (#4).**
+
+Prerequisite worth checking first: whether the failure is *reading* the signature or
+*detecting* the glyphs at all (beethoven-5 has 1 `keySharp` detection on the whole
+page, so it is likely detection, in which case the fix belongs with the positional
+key-signature reader on `claude/key-signature-recognition-57ec0a`).
+
 ### #5 — Auto-populate the dossier
 `docs/dossier-verification-plan.md` requires hand-input facts. #1–#3 make it
 self-populating: derive the instrumentation from the score, ask Sean only to
@@ -129,11 +213,10 @@ What is *not* dead:
 3. **End-to-end sequence models as a second opinion** (LEGATO / oemer / homr) — they
    read clef and meter contextually by construction. Host-side, not a replacement.
 
-### Two structural bugs noticed while surveying (unverified, worth confirming)
-- `staff_detector.py:229` detects **five-line staves only**, so single-line percussion
-  staves are likely dropped entirely — which would silently shift every slot index
-  below them, breaking #1.
-- Nothing excludes unpitched/percussion staves from the key and pitch checks.
+### Structural bugs noticed while surveying
+- ~~five-line-only staff detection~~ — **VERIFIED, see #1 above.**
+- Nothing excludes unpitched/percussion staves from the key and pitch checks
+  (still unverified).
 
 ---
 
