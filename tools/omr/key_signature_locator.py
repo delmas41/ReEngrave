@@ -46,10 +46,11 @@ Two answers, from two independent signals:
 ## What it will not do
 
 It speaks only when the detector found no key-signature accidentals, so a score
-that reads correctly today cannot be made worse by it. It abstains — no run, an
-off-pattern run, a clef with no slot table, a staff without clean 5-line
-geometry — rather than guessing, because a wrong key signature re-pitches every
-note on the staff for the rest of the system.
+that reads correctly today cannot be made worse by it. It abstains — no clef
+found at the head of the window, no run, an off-pattern run, a clef with no slot
+table, a staff without clean 5-line geometry — rather than guessing, because a
+wrong key signature re-pitches every note on the staff for the rest of the
+system.
 
 ## Where this stands
 
@@ -57,32 +58,33 @@ Measured on two ground-truth pages, both 19th-century orchestral prints, with
 every signature read off the page by eye and **the true clef supplied**
 (Beethoven 5 p.2 and Beethoven 6 p.2 — 42 staves across both systems each):
 
-    per-staff reading:   10 correct,  7 wrong, 19 missed, 8 correct abstentions
-    after the vote:      10 correct,  2 wrong, 22 missed, 8 correct abstentions
+    per-staff reading:   14 correct,  6 wrong, 14 missed, 8 correct abstentions
+    after the vote:      18 correct,  0 wrong, 16 missed, 8 correct abstentions
 
 Where it reads a signature it reads it exactly — three-flat staves come back
 with all three accidentals matched at residuals of 0.03 and 0.24 steps, well
-inside the half-step gate. Recall is about a third; the misses are ink-mask
-recall on thick, wandering staff lines, worse lower on a page where the print is
-denser. Both surviving errors are one genuine misread — a clarinet's sharp read
-as a flat, which agrees with the page's reference and so cannot be told from a
-non-transposing part by any structural argument.
+inside the half-step gate. Thirty-four of the 42 staves carry a signature, so
+recall is about a half; the misses are ink-mask recall on thick, wandering staff
+lines, worse lower on a page where the print is denser.
 
 `key_signature_vote` is what makes this safe to run: on its own the reader is
-wrong seven times, because a run where only one of several printed accidentals
+wrong six times, because a run where only one of several printed accidentals
 survived carries no pattern and both the count and the sharp/flat decision fall
-to weak evidence. The vote sees the DETECTOR's readings too, and on a clean
-engraving that is what carries the page — WTC p.17 goes 6/10 by counting the
-detector's markers, 7/10 by fitting their positions, and 10/10 once the page
-reconciles them.
+to weak evidence. The vote clears all six and adds four correct readings on top,
+carrying a part from the system where it was legible to the one where it was
+not. It sees the DETECTOR's readings too, and on a clean engraving that is what
+carries the page — WTC p.17 goes 6/10 by counting the detector's markers, 7/10
+by fitting their positions, and 10/10 once the page reconciles them.
 
 **The clef is the real ceiling.** The slot table is chosen by the clef, and a
 wrong clef does NOT degrade gracefully: measured end-to-end with every staff
 defaulted to treble, two bass staves carrying three flats fitted cleanly as two
 sharps. So `transcribe` only reads a key signature for a staff whose clef is
 actually known — never for one sitting on the positional default. On scans where
-the detector calls every staff treble, this reader stays quiet. That is the
-right failure, and it means key signatures and clefs improve together.
+the detector calls every staff treble, this reader stays quiet: end to end the
+figures above become two staves of twenty on Beethoven 6 p.2 and none at all on
+Beethoven 5 p.2. That is the right failure, and it means key signatures and
+clefs improve together.
 """
 
 from __future__ import annotations
@@ -150,9 +152,28 @@ class KeySignatureLocatorConfig:
     # is a notehead or a rest, and reading one as a lone accidental is the
     # locator's easiest way to invent a key signature that isn't there.
     max_start_after_clef_spaces: float = 2.00
-    # Clusters bigger than this are the clef, not an accidental — the run
-    # starts after them.
+    # Clusters this tall are too big to be an accidental — skipped whatever
+    # else they are.
     clef_min_height_spaces: float = 3.60
+
+    # ── which oversized cluster is the CLEF ──────────────────────────────
+    # "Too big to be an accidental" and "is the clef" are different questions,
+    # and answering them with one test is how the run's starting point ends up
+    # in the middle of the bar. A beam, a slur or a stemmed note group is also
+    # too big to be an accidental, so taking the rightmost oversized cluster as
+    # the clef put `clef_right` at 13.6 staff spaces into a 16-space window on
+    # Beethoven 6 p.2 — and the "printed hard against its clef" rule then
+    # licensed ink nine spaces past the real clef as a key signature.
+    #
+    # A clef is separated from that ink by both measures, with room to spare.
+    # Over the 42 ground-truth staves plus WTC p.17, every real clef stands
+    # between 1.2 and 4.3 spaces from the window's left edge and is at least
+    # 2.0 spaces tall, while every cluster that was wrongly anchored on fails
+    # one of the two: the ones inside the head of the window are beams and
+    # slurs, flatter than 1.7 spaces (one measured 13.9 wide by 0.5 tall), and
+    # the rest are note ink from 6.8 spaces out.
+    clef_anchor_max_start_spaces: float = 5.50
+    clef_anchor_min_height_spaces: float = 1.80
 
 
 DEFAULT_LOCATOR_CONFIG = KeySignatureLocatorConfig()
@@ -294,16 +315,27 @@ def locate_key_signature(
 
     clusters = cluster_components_2d(components, max_gap=config.cluster_gap_spaces * spacing)
 
-    # Keep accidental-sized clusters, and remember where the clef ended: the
+    # Keep accidental-sized clusters, and find where the clef ended: the
     # signature is printed after it, and starting the search before it invites
     # the clef's own strokes into the run.
+    #
+    # Only clusters at the head of the window with a clef's height anchor the
+    # run — see `clef_anchor_max_start_spaces`. The rest are skipped as
+    # oversized without moving the anchor, so ink deeper in the bar can no
+    # longer decide where the signature "starts".
     clef_right = 0
+    clef_found = False
+    clef_start_limit = config.clef_anchor_max_start_spaces * spacing
     glyphs: list[tuple[int, int, int, int]] = []
     for bbox in clusters:
         x, y, w, h = bbox
         w_sp, h_sp = w / spacing, h / spacing
         if h_sp >= config.clef_min_height_spaces or w_sp > config.max_width_spaces:
-            clef_right = max(clef_right, x + w)
+            if x <= clef_start_limit and h_sp >= config.clef_anchor_min_height_spaces:
+                # A clef broken into two clusters is still one clef, so take
+                # the far edge of every head-of-window piece.
+                clef_right = max(clef_right, x + w)
+                clef_found = True
             continue
         if not (config.min_width_spaces <= w_sp <= config.max_width_spaces):
             continue
@@ -319,6 +351,15 @@ def locate_key_signature(
     # The signature begins at the clef, so the run's FIRST accidental must sit
     # close behind it; later glyphs belong to the run only by following one that
     # does, which `_candidate_runs` enforces by gap.
+    #
+    # No clef located means no anchor, and the "close behind the clef" rule is
+    # then unenforced rather than satisfied — `clef_right` of 0 put the search
+    # window at the very left of the cell, where the bracket, the initial rule
+    # and the instrument name are. Measured, that is where the locator read a
+    # bass staff's margin ink as one sharp. So abstain instead: a signature
+    # located without its clef is not located.
+    if not clef_found:
+        return None
     glyphs = [g for g in glyphs if g[0] >= clef_right]
     start_limit = clef_right + config.max_start_after_clef_spaces * spacing
     if not glyphs or glyphs[0][0] > start_limit:
