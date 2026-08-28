@@ -1,0 +1,170 @@
+# Handoff — splitting the fused header cluster
+
+The single biggest remaining lever on clef coverage, scoped and measured
+2026-08-28. Paste the prompt at the bottom into a fresh session.
+
+---
+
+## The state of things
+
+Clef **reading** is solved. Where a clef reaches the reader it is named
+correctly essentially every time: 7/7 on the hand-checked ground-truth page,
+5/5 on engraved reference staves, zero false positives across ten pages of Bach
+piano. Alto vs tenor vs soprano is decided by measuring which staff line the
+glyph is centred on, not by classification, so it is exact rather than
+probabilistic (`tools/omr/clef_geometry.py`).
+
+Clef **coverage** is the open problem. On a 20-page sample of Nottebohm's
+*Beethovens Studien* (every 12th page, p.20–248, 188 real music staves):
+
+| | |
+|---|---|
+| clefs read | **36 of 188 (19.1%)** |
+| — by the CV locator | 23 (9 alto, 8 tenor, 6 soprano) |
+| — by the detector | 13 |
+| no clef read → inherited or defaulted | 152 (80.9%) |
+
+The misses are real, not correct abstention on continuation systems: eight were
+sampled at random and rendered, and **seven have a clearly visible clef** at the
+staff head.
+
+## Where the coverage goes — every header cell, by rejecting branch
+
+190 header cells over 17 sample pages, on the current `main`:
+
+| | share | reason |
+|---|---|---|
+| **105** | **55.3%** | **cluster too big — the clef is fused to something** |
+| 21 | 11.1% | not symmetric enough |
+| 36 | 18.9% | *located* (18 alto, 10 tenor, 8 soprano) |
+| 12 | 6.3% | no clusters |
+| 7 | 3.7% | only debris |
+| 6 | 3.2% | ambiguous line snap |
+| 3 | 1.6% | F-clef dot veto |
+
+**One cause holds the majority.** And it has narrowed usefully: of the 105
+fused clusters,
+
+    too TALL only    98
+    too WIDE only     2
+    both              4
+
+    width  median 2.5 spaces, max 4.8   (limit 4.5 — essentially fine)
+    height median 6.0 spaces, max 9.6   (limit 5.0 — this is the problem)
+
+The width is **already correct** — median 2.5 staff spaces is exactly
+clef-sized. Before `staff_header.py` gave the readers a measured header window,
+clusters ran 10.9, 16.1 and 27.2 spaces wide, chaining through the key
+signature into the first notes. That half is fixed.
+
+What remains is **vertical** fusion: a cluster of the right width and 6–9.6
+staff spaces of height, where a C clef is under 5.
+
+## What it is fusing with
+
+The system **brace or bracket**, and ink from the staves above and below.
+
+`header_ink.strip_vertical_rules` already removes rules by two signatures —
+thin ones (≤0.5 staff spaces wide), and heavy-but-long ones (≤1.2 wide and ≥5
+tall, which is what catches a straight system barline). A **curly brace** defeats
+both: at its bulge it is wider than 1.2 spaces, so it survives, and it runs the
+full height of the system, so once it touches the clef the cluster is 6+ spaces
+tall and the "too big to be a C clef, stop" rule aborts the search.
+
+`clef_locator.locate_clef` also has a band filter that keeps only components
+whose **centre** lies within `staff_band_spaces` (2.2) of the staff. That is
+deliberately on the centre rather than the extent, so a tall G clef still reads
+as tall and gets rejected on height instead of being clipped into looking like a
+C clef — but it cannot help here, because a fused brace-plus-clef component has
+its centre inside the band.
+
+## Approaches worth considering
+
+Nothing here is proven; these are the directions the measurements suggest.
+
+1. **Recognise the brace as a brace.** It is a specific, recognisable object —
+   very tall, spanning multiple staves, with a distinctive curl — and it is
+   drawn once per system, not per staff. Detecting it at page level and erasing
+   it before any header reader runs would be reusable by the key-signature
+   reader too.
+2. **Split a too-tall cluster instead of giving up.** The abort is what costs
+   the coverage. A cluster 6–9 spaces tall that contains a clef-sized,
+   symmetric sub-region centred on a staff line could be split rather than
+   rejected. Riskier: this is exactly the loosening that once let a treble clef
+   be read as a tenor clef, so any split must keep the "measured at true full
+   height" property that the band filter exists to protect.
+3. **Cut the header window to the staff band before clustering.** Cheap, but
+   note the warning above — clipping a G clef into band height is how it starts
+   passing as a C clef. Whatever is clipped for *clustering* must still be
+   measured unclipped for the height test.
+
+## How to measure whether you have helped
+
+Three checks, all fast, all already written:
+
+    # 1. the hand-read ground-truth page (currently 9/12, precision 7/7)
+    python3 -m tools.omr.training.clef_ground_truth_eval \
+        --pdf /Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf \
+        --ground-truth benchmarks/omr-clef-geometry/nottebohm-p46-ground-truth.json \
+        --weights omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+
+    # 2. the whole test suite — 670 passing, and test_pipeline.py is now a REAL
+    #    Phase-1 regression baseline (verified to fail on pre-fix code)
+    python3 -m pytest tools/omr/tests/ -q
+
+    # 3. false positives must stay at zero on Bach piano, and the engraved
+    #    reference sheet must stay 5/5 (soprano/mezzo/alto/tenor/baritone,
+    #    with treble and bass declined) — benchmarks/omr-clef-geometry/RESULTS.md
+    #    documents both.
+
+**Report precision and coverage separately.** They measure different
+subsystems, and averaging them hides which half moved. A wrong clef transposes
+every note on its staff; a missed one leaves the staff where it already was.
+The whole layer is built to prefer the second.
+
+## Things already tried that DON'T work — don't repeat them
+
+- **Sweeping the horizontal-rule threshold** (`strip_horizontal_rules`, 1.5
+  staff spaces) anywhere in 0.7–6.0 makes recall **worse in both directions**.
+  Keeping more horizontal ink re-fuses the glyph with staff-line remnants.
+  1.5 is the optimum.
+- **Widening the heavy-rule width allowance** to catch the brace is not free:
+  a clef's own vertical strokes are of similar width, and the ≥5-space height
+  condition is the only thing keeping them. Any widening must keep that.
+- **An unconstrained search for the axis of symmetry** scores lopsided glyphs
+  far too kindly — every shape half-balances about something — and read 20
+  treble clefs as tenor clefs across ten pages of Bach. The search is bounded
+  to ±0.35 staff spaces for that reason.
+- **Fine-tuning the detector on clef cells** fixes clefs and collapses
+  dense-page notehead detection (2506 → 114). See
+  `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. The decoupled reader
+  exists because of this.
+
+---
+
+## The prompt
+
+> You're picking up OMR work in the ReEngrave repo. Everything is on `main`,
+> 670 tests green. Read `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`
+> first — it has the measurements, the approaches, and a list of things already
+> tried that don't work.
+>
+> **The task:** clef coverage on 19th-century prints is 19%, and one cause holds
+> the majority of the rest. 55% of header cells are rejected because the clef
+> has fused into an oversized ink cluster. That fusion is now almost entirely
+> *vertical*: the clusters are the right width (median 2.5 staff spaces) but 6
+> to 9.6 staff spaces tall, against a 5-space limit. They are fusing with the
+> system brace and with ink from neighbouring staves. Fix that.
+>
+> Work on `tools/omr/clef_locator.py` and `tools/omr/header_ink.py`. The
+> handoff doc suggests three directions; pick on evidence, not on which sounds
+> best, and measure before and after with the three checks it lists.
+>
+> Two things to hold onto. **Measure before you conclude** — this problem has
+> repeatedly looked like one thing and measured as another (the obvious
+> discriminator for text-vs-staff was disproven by measurement; so was the
+> horizontal-rule threshold). And **report precision and coverage separately**:
+> a wrong clef transposes every note on its staff, a missed one costs nothing
+> that wasn't already lost, so the layer abstains by design. Don't buy coverage
+> with false positives — zero on Bach piano and 5/5 on the engraved reference
+> sheet are hard constraints.

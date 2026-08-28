@@ -280,53 +280,54 @@ Fixing those broke barline detection, which had been depending on the damage:
 ## Book-scale measurement
 
 A 20-page sample spread evenly through the book (every 12th page, p.20-248),
-run after all the Phase-1 fixes and the text filter. This supersedes an earlier
-156-page run whose numbers predated them.
+re-run on `main` after the staff-header/key-signature layer was merged in.
 
-| | |
-|---|---|
-| "staves" reported | 191 |
-| — carrying noteheads (real music) | 188 |
-| — **body text read as staves** | **0** (was ~10% of all staves) |
-| pages containing music | 18 of 20 |
-| noteheads | 6,202 |
-| measures on music staves | 742 (≈41/page, against ~12 before segmentation was fixed) |
-| **clefs read** | **31 of 188 (16.5%)** — 18 by the CV locator, 13 by the detector |
+| | before the Phase-1 work | on current main |
+|---|---|---|
+| "staves" reported | — | 191 |
+| — carrying noteheads (real music) | — | 188 |
+| — **body text read as staves** | ~10% of all staves | **0** |
+| measures on music staves | ~12/page | **742 over 18 pages (~41/page)** |
+| **clefs read** | — | **36 of 188 (19.1%)** |
+| — by the CV locator | — | 23 (9 alto, 8 tenor, 6 soprano) |
+| — by the detector | — | 13 |
 
-Two of the three results are good: the text filter is finding **nothing** to
-reject on a 191-staff sample where roughly a tenth used to be prose, and
-measure segmentation has roughly tripled.
+Two of the three results are good. The text filter finds **nothing** to reject
+on a 191-staff sample where roughly a tenth used to be prose, and measure
+segmentation has roughly tripled.
 
-Clef coverage has not moved, and the misses are real. Eight "not read" staves
-sampled at random and rendered: **seven have a clearly visible clef at the
-staff head**, so these are failures rather than correct abstention on
-continuation systems.
+Clef coverage is the open problem at 19.1%, and the misses are real: eight
+"not read" staves sampled at random and rendered, **seven with a clearly
+visible clef**. This is lost recall, not correct abstention.
 
-### Where the coverage is actually lost
+### Where the coverage is lost — and how the header window changed it
 
-Every staff-start cell on 17 sample pages, by the exact branch that rejected it:
+Every header cell on 17 sample pages, by the branch that rejected it:
 
 | | share | reason |
 |---|---|---|
-| 107 | **56.3%** | **first glyph too big — the clef fused with neighbouring ink** |
-| 34 | 17.9% | not symmetric enough |
-| 21 | 11.1% | *located* (9 alto, 8 tenor, 4 soprano) |
-| 15 | 7.9% | only debris in the header |
-| 5 | 2.6% | starts too far into the measure |
+| 105 | **55.3%** | **cluster too big — the clef is fused to something** |
+| 21 | 11.1% | not symmetric enough |
+| 36 | 18.9% | *located* (18 alto, 10 tenor, 8 soprano) |
+| 12 | 6.3% | no clusters |
+| 7 | 3.7% | only debris |
+| 6 | 3.2% | ambiguous line snap |
 | 3 | 1.6% | F-clef dot veto |
-| 3 | 1.6% | no clusters |
-| 2 | 1.1% | ambiguous line snap |
 
-**One cause holds the majority of the remaining coverage.** The clef is present
-and the right size, but the header clustering chains it into an oversized blob
-— vertically with the system brace, or horizontally through the key signature
-and into the first notes (observed at 10.9, 16.1 and 27.2 staff spaces wide,
-where a C clef is under 3) — and the "too big to be a C clef, stop" rule then
-aborts the search. Splitting the header cluster properly is the single lever
-that would move coverage most.
+One cause holds the majority — but `staff_header.py` has already fixed half of
+it. Of the 105 fused clusters, **98 are too tall only**, 2 too wide only, 4
+both:
 
-Worth recording that the F-clef dot veto, added to kill one false positive,
-costs 3 staves out of 190. That trade was fine.
+    width  median 2.5 spaces, max 4.8   (limit 4.5 — essentially fine)
+    height median 6.0 spaces, max 9.6   (limit 5.0 — this is the problem)
+
+The width is now correct. Before the readers were given a measured header
+window, clusters ran 10.9, 16.1 and 27.2 staff spaces wide, chaining through
+the key signature and into the first notes. What remains is **vertical**
+fusion — with the system brace, whose curl is wider than the heavy-rule width
+allowance, and with ink from neighbouring staves.
+
+Scoped for a fresh session in `NEXT_SESSION_HEADER_CLUSTER.md`.
 
 ## What this still does NOT fix
 
