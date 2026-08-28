@@ -7,6 +7,10 @@ Algorithm:
   2. Find peaks in the profile. Each peak is a candidate staff-line row.
   3. Cluster consecutive peaks into groups of 5 — one staff = 5 lines, the
      gaps between them are roughly equal.
+  3b. Re-read the page as a comb at the spacing step 3 measured, which recovers
+     staves whose lines were too lightly printed to clear step 2's gates, and
+     drop groups whose spacing says they are one line borrowed from each of
+     several staves rather than one staff.
   4. Group staves into systems: staves whose horizontal x-extent overlaps
      and whose vertical separation is small (typically < 3× line spacing)
      belong to the same system (e.g., piano grand staff = treble + bass).
@@ -21,6 +25,7 @@ import numpy as np
 from scipy.signal import find_peaks
 
 from .header_ink import measure_staff_line
+from .system_grouping import assign_systems as assign_systems_by_bridging
 from .types import PageImage, Staff, PageWithStaves
 
 
@@ -36,6 +41,28 @@ MAX_SYSTEM_GAP_FACTOR = 6.0      # fallback if auto-bipartition fails
 STAFF_LINE_MAX_GAP_SPACES = 1.0  # a break this wide is still the same staff line
 SYSTEM_BREAK_GAP_FACTOR = 2.5    # gap this many × the typical within-system gap = a break
 MAX_LINE_INK_RUNS_PER_SPACE = 1.7  # above this the "lines" are rows of text, not staff lines
+
+# The comb pass (step 3b below) admits a candidate row on a much weaker ink
+# threshold than the first pass, because it does not have to decide alone: a row
+# only becomes a staff line if four more rows sit at the page's own staff
+# spacing behind it. The gate is a fraction of the median ink of a line in a
+# CONFIDENTLY detected staff, so it calibrates to the page's own printing
+# weight rather than to an absolute pixel count.
+#
+# Measured on the corpus (Beethoven 5 pp. 2 & 10, WTC p.5, Mahler 5 p.11,
+# Boléro p.31, La Mer p.25, Kirchhoff p.10): every value in 0.20-0.35 gives
+# identical, correct counts on all seven pages; below 0.20 false staves appear
+# (Beethoven 5 p.2 gains a 23rd, La Mer a 21st). 0.30 sits inside that plateau,
+# toward the strict end.
+STAFF_COMB_POOL_FRAC = 0.30
+# How far a line may sit from the position the comb predicts, in staff spaces.
+# Engraving is regular; this only has to absorb rasterisation and a scan's skew.
+STAFF_COMB_TOLERANCE = 0.25
+# A group whose line spacing is a large multiple of the page's spacing is not a
+# staff — it is one line borrowed from each of several staves (see
+# `_reject_spacing_outliers`). Real size variation on a page (ossia staves,
+# a reduced cue staff) is always SMALLER than the main staves, never 60% larger.
+STAFF_SPACING_OUTLIER_FACTOR = 1.6
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -91,6 +118,130 @@ def _group_into_staves(peaks: np.ndarray) -> list[list[int]]:
         else:
             i += 1
     return groups
+
+
+# ─── Step 3b: recover staves the ink gates missed, using the page's own comb ──
+
+
+def _page_line_spacing(groups: list[list[int]]) -> float:
+    """The page's characteristic staff-line spacing, taken as the median over
+    already-detected staves. Robust to a phantom group or two because those are
+    a minority and sit far above the median."""
+    if not groups:
+        return 0.0
+    spacings = [(g[-1] - g[0]) / 4.0 for g in groups]
+    return float(np.median(spacings))
+
+
+def _reject_spacing_outliers(groups: list[list[int]], spacing: float) -> list[list[int]]:
+    """Drop groups whose line spacing is far above the page's.
+
+    Five evenly spaced rows are not necessarily a staff. When the ink gates
+    reject most of a staff's lines — which happens wherever the print is
+    lighter than the page's densest music — the survivors are one line from
+    each of several DIFFERENT staves, and they are as evenly spaced as the
+    staves themselves are. The greedy grouper then accepts that as one staff.
+
+    Measured on Beethoven 5 p.10: five wind staves lost all but one line each,
+    and their survivors (rows 455, 573, 742, 885, 1025) were grouped into a
+    single "staff" of spacing 142.5 on a page whose real spacing is 15.8. Five
+    staves became one, and the page reported 18 staves where it has 22 — which
+    is exactly the number `test_pipeline.py` asserted, so the bug held a green
+    test in place.
+
+    Only the high side is rejected. A page may legitimately carry staves
+    smaller than its main ones (ossia, cue staves); none carries a staff whose
+    lines are 60% further apart than the page's median.
+    """
+    if spacing <= 0:
+        return groups
+    return [
+        g for g in groups
+        if (g[-1] - g[0]) / 4.0 <= spacing * STAFF_SPACING_OUTLIER_FACTOR
+    ]
+
+
+def _comb_match_staves(
+    profile: np.ndarray, page_width: int, spacing: float, reference_ink: float,
+) -> list[list[int]]:
+    """Find five-line staves by matching the page's own spacing as a comb.
+
+    The first pass has to decide row by row whether ink looks like a staff
+    line, and it gets that wrong wherever the printing is lighter than the
+    page's densest passage: a row's prominence is measured against a threshold
+    set by the whole page, and a wind staff engraved above dense strings never
+    clears it. On Beethoven 5 p.10 the missed rows carry 1000-1350 ink against a
+    1013 floor and a 695 prominence requirement — they are not faint in any
+    absolute sense, only faint relative to the strings below them.
+
+    Knowing the spacing removes the need to make that judgement per row. A
+    staff is five rows at a known pitch, so a row can be admitted on much
+    weaker evidence and then required to stand in that pattern. Candidates are
+    scored by how closely their lines land on the comb and resolved
+    greedily — best fit first, no two staves overlapping in y.
+    """
+    if spacing <= 0 or reference_ink <= 0:
+        return []
+    gate = max(1.0, STAFF_COMB_POOL_FRAC * reference_ink)
+    peaks, _ = find_peaks(profile, height=gate, distance=MIN_PEAK_DISTANCE_PX)
+    if len(peaks) < 5:
+        return []
+    rows = np.asarray(peaks, dtype=int)
+    tol = STAFF_COMB_TOLERANCE * spacing
+
+    candidates: list[tuple[float, float, list[int]]] = []
+    for first in rows:
+        lines = [int(first)]
+        deviations: list[float] = []
+        for k in range(1, 5):
+            target = first + k * spacing
+            near = rows[np.abs(rows - target) <= tol]
+            if len(near) == 0:
+                break
+            pick = int(near[np.argmin(np.abs(near - target))])
+            if pick <= lines[-1]:
+                break
+            deviations.append(abs(pick - target) / spacing)
+            lines.append(pick)
+        if len(lines) == 5:
+            # Best fit first; ink breaks ties so that where two combs fit
+            # equally well the more strongly printed one wins.
+            candidates.append(
+                (float(np.mean(deviations)), -float(profile[lines].sum()), lines)
+            )
+
+    candidates.sort(key=lambda c: (c[0], c[1]))
+    accepted: list[list[int]] = []
+    for _, _, lines in candidates:
+        if any(not (lines[-1] < a[0] or lines[0] > a[-1]) for a in accepted):
+            continue
+        accepted.append(lines)
+    accepted.sort(key=lambda g: g[0])
+    return accepted
+
+
+def _merge_staff_groups(
+    strict: list[list[int]], comb: list[list[int]],
+) -> list[list[int]]:
+    """Add comb staves only where the strict pass found nothing.
+
+    The comb is a RECOVERY pass, not a replacement. Where the strict pass
+    already read a staff, its rows are kept: they were confirmed by prominence,
+    which is real evidence the comb does not have, and re-deciding them would
+    churn the output of every page that already works. (Measured: letting the
+    comb win on overlap moved two cells on Boléro p.5 for no reason.)
+
+    So the comb only speaks where nothing was heard. The phantom must therefore
+    be rejected from `strict` BEFORE this merge — otherwise a phantom spanning
+    five staves' worth of page would block the very staves it stands in for.
+    """
+    out = list(strict)
+    for g in comb:
+        if any(not (g[-1] < a[0] or g[0] > a[-1]) for a in out):
+            continue
+        out.append(g)
+    out.sort(key=lambda g: g[0])
+    return out
 
 
 # ─── Step 3: find horizontal extent of each staff ────────────────────────────
@@ -366,6 +517,19 @@ def detect_staves(page: PageImage) -> PageWithStaves:
     peaks = _candidate_staff_rows(profile, page.width)
     groups = _group_into_staves(peaks)
 
+    # The strict pass above is the page's own calibration: whatever it found
+    # confidently tells us the staff spacing and how much ink a printed line
+    # carries here. The comb pass then re-reads the page with those two
+    # numbers, which is what recovers staves in lightly printed regions.
+    spacing = _page_line_spacing(groups)
+    if spacing > 0:
+        reference_ink = float(np.median([profile[y] for g in groups for y in g]))
+        # Reject phantoms first: a phantom spans the staves it was assembled
+        # from, so leaving it in would block their recovery on overlap.
+        groups = _reject_spacing_outliers(groups, spacing)
+        comb = _comb_match_staves(profile, page.width, spacing, reference_ink)
+        groups = _merge_staff_groups(groups, comb)
+
     staves: list[Staff] = []
     for idx, line_ys in enumerate(groups):
         x_start, x_end = _staff_x_extent(page.binary, line_ys)
@@ -391,7 +555,15 @@ def detect_staves(page: PageImage) -> PageWithStaves:
     for idx, st in enumerate(staves):
         st.staff_index = idx
 
-    staves = _assign_systems(staves)
+    # System grouping from vertical connectivity (barlines + bracket run
+    # through a system; nothing crosses the gap between two systems). The
+    # gap-size heuristic is the fallback for pages whose barlines and bracket
+    # are too faint to see at all — on a conductor's score it splits at
+    # bracket-GROUP gaps and reports one system as several. See
+    # system_grouping.py for the measured comparison.
+    staves, used_bridging = assign_systems_by_bridging(page.binary, staves)
+    if not used_bridging:
+        staves = _assign_systems(staves)
     return PageWithStaves(page=page, staves=staves)
 
 
