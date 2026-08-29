@@ -60,7 +60,11 @@ yolov8m.pt
 # Trained model directories from ultralytics
 runs/
 # DeepScoresV2 dataset (downloaded; many GB)
-tools/omr/training/data/
+# No trailing slash: with one this matches only a DIRECTORY, and a symlink
+# left at this path (to reach the dataset from a git worktree) is not a
+# directory — so `git add -A` tracked it, and merging that into the main
+# checkout replaced the real dataset with a symlink to itself.
+tools/omr/training/data
 # Shared OMR weights directory mounted into the backend container
 # (lives at repo root so all worktrees can share one weights file)
 omr-weights/
