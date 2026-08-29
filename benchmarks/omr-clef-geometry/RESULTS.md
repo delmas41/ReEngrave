@@ -374,6 +374,163 @@ allowance, and with ink from neighbouring staves.
 
 Scoped for a fresh session in `NEXT_SESSION_HEADER_CLUSTER.md`.
 
+---
+
+## The fused cluster: diagnosed, fixed, and held back (2026-08-28, second pass)
+
+The cause is settled and the fix is written, tested and measured. It is
+**off by default** (`ClefLocatorConfig.cluster_y_gap_spaces`), because the
+coverage it buys lands disproportionately on staves where a different, older
+hole is open. Both halves of that sentence are measured below.
+
+### It was not the brace, and there was never a big object
+
+The handoff attributed the fusion to the system brace and to ink from
+neighbouring staves. **In all 105 oversized clusters the tallest connected
+component was under two staff spaces** — median 0.9 to 1.4. There was never a
+large object in these headers. There were small ones, stacked, and a grouping
+rule that could not see the stacking: `cluster_components` grouped ink by its
+horizontal gap alone, on the reasoning — written in its docstring — that a clef
+is the only thing in its strip. A staff header is a narrow column that also
+holds the movement heading, the rehearsal letter, the page number and the
+neighbouring staff's ink. Grouped on x alone, the clef and all of that became
+one column 6–10 spaces tall.
+
+So the fix is not to split an oversized cluster but never to build one:
+`cluster_components` can now require proximity in **both** axes, as connected
+components of the "near enough" relation.
+
+### What it is worth
+
+| | main | rule on |
+|---|---:|---:|
+| Nottebohm, 205 headers over 20 pages | 61 located | **72** |
+| Beethoven 5, 396 headers over 20 pages | 27 located | **33** |
+| reads lost or changed on either | — | **0** |
+
+### The restriction that makes it safe, and how it was learned
+
+The vertical limit applies **only to ink standing clear of the staff's own five
+lines.** Ink that touches the staff belongs to whatever glyph is printed there,
+however the morphology broke it up, and is never separated.
+
+The first version did not have that restriction. Without it the rule takes a
+treble clef apart at the waist on an orchestral scan and reads the upper half
+as an alto clef: **seventeen invented clefs across twenty pages of Beethoven
+5**, on a corpus where main invents none. It passed every check that existed at
+the time — the hand-read page, the engraved reference sheet, and sixty staves
+of braced piano — because all three are either vocal-clef material or clean
+engraving. It took adding an orchestral scan to see it.
+
+The same round produced three gates tuned on Nottebohm alone: an aspect floor
+at 0.42, the height cap dropped to 4.5, a width floor at 1.0. Each sat in what
+looked like a clean gap between two measured populations. All three are
+**reverted**: against Beethoven 5 they reject genuine viola clefs, which
+present at aspect 0.22 and 0.32 and at height 4.55 — well inside the range the
+Nottebohm-only sample said was impossible. A threshold that separates two
+populations on one corpus is a fact about that corpus until a second one
+agrees.
+
+### The tolerance
+
+1.0 staff spaces, bounded on both sides. Below it a G clef comes apart even
+when both halves touch the staff — the tail detaches at 0.49 spaces on
+Beethoven 5 — and a G clef's body alone is the size and shape of a C clef:
+measured, that invents two clefs at 0.6 and one at 0.8. Above it the heading
+fuses back on and coverage falls. The populations are far apart (a glyph's
+internal gaps are under half a space; a heading stands 1.68 spaces clear at the
+median), so this is a gap, not a tightrope.
+
+### Why it is off
+
+Of the 19 staves the rule adds across both books, **14 are right and 5 are bass
+clefs read as C clefs.** Every one of the five is the same pre-existing hole:
+`_has_f_clef_dots` is the only thing separating an F clef from a C clef — by
+width, height and symmetry a bass clef is a plausible C clef — and on these
+prints the two dots merge into the clef's body under thresholding, so there is
+no pair to find. One survives as a 0.23 × 0.41-space smear that fails the
+roundness test; the other has run into the key-signature flat.
+
+The rate is what decides it. Main's own located reads are wrong at roughly 8%
+on this material — it has bass-clef misreads of its own, on Nottebohm p.44 and
+elsewhere — and the reads this rule adds are wrong at 26%. Coverage bought at a
+worse precision than the layer already has is the one trade this layer refuses.
+
+Three candidate discriminators were measured and all three fail:
+
+| | correct reads | the wrong ones |
+|---|---|---|
+| symmetry | 0.701 … (median 0.862) | 0.700 – 0.801 |
+| horizontal ink centroid | 0.400 – 0.656 | 0.446 |
+| largest internal hole in the ink profile | median 0.00 | 0.00 |
+
+The last one is the sharpest disappointment: a glyph *should* be vertically
+continuous, and the bass clef's two halves *are* separated — but the
+key-signature flat standing beside them fills the gap in the column's profile.
+
+The dot-veto change scoped on `main` will not close this either. It makes the
+veto fire **less**, to stop it eating the engraved reference sheet's tenor clef,
+which is the opposite of what these staves need.
+
+### Dead ends from this pass
+
+- **The traced staff-line removal** (`erase_staff_lines`, which the
+  key-signature locator uses) applied to the clef locator. It is better at
+  keeping a glyph connected and worse here: it erases the archaic clef's rungs,
+  which sit *on* the staff lines, and the glyph shrinks below the height floor.
+  "Only debris" went 7 → 42. The generic stripper is right for this material
+  precisely because it removes only runs ≥ 1.5 spaces, and an archaic clef's
+  bars are shorter than that.
+- **Bridging the generic stripper's cuts** — restoring ink inside a removed
+  band where a stroke continues through it. No measurable change at all. The
+  fragmentation is not what was fusing the clusters.
+- **Making the tolerance adaptive** by bridging only where the horizontal
+  stripper actually removed ink, so it follows the printed line thickness
+  rather than a constant. No better than the constant, and the premise was
+  wrong anyway: the erased band measures 0.18–0.27 spaces at the median on
+  Nottebohm, Beethoven 5 and engraved piano alike, so line thickness is not
+  what differs between them.
+- **Dropping cluster members that lie wholly outside the staff's own lines**,
+  with or without a margin. This is the clipping the handoff warns about, and
+  the warning is right in both directions: at zero margin a treble clef's
+  severed tail is dropped and its head passes as a C clef (9–12 piano false
+  positives), and at a 0.75-space margin it costs four genuine orchestral
+  clefs, because a C clef on the top or bottom line has real ink out there and
+  dropping it destroys the symmetry the reading depends on.
+
+### The corpus that was missing
+
+The precision harness is now four corpora, not three, and the fourth is the one
+that mattered:
+
+    python3 benchmarks/omr-clef-geometry/check_clef_precision.py
+
+`beethoven5-clef-spot-check.json` lists seventeen staves of a scanned
+orchestral score, read off the rendered header crops by eye — fourteen carrying
+a real C clef and three carrying a treble clef that must never yield one. Two
+of those three are the staves the unrestricted vertical rule invented clefs on,
+so the corpus encodes the specific failure rather than a general hope of
+catching one. It is a spot check, not ground truth for the page, and it says
+nothing about coverage; `probe_clef_rejection.py` is for that.
+`eval_orchestral_clefs.py` complements it with real hand-read truth for two
+pages.
+
+### Two measurement traps worth recording
+
+**Path pollution.** A helper written during this session carried an absolute
+`sys.path` entry pointing at its own worktree, so runs launched inside a
+`git worktree` of `main` silently imported the branch and reported the branch's
+numbers as the baseline. It made a change look like it had gained two staves on
+the hand-read page when it had gained none. `check_clef_precision.py` and
+`probe_clef_rejection.py` both root themselves off `__file__`.
+
+**Fixtures that do not survive the pipeline.** Three synthetic glyphs in
+`test_clef_locator.py` were drawn as filled blocks, and
+`strip_horizontal_rules` erases any run of 1.5 staff spaces or more — so the
+G clef arrived as its 0.4-space tail, the heading was removed before it could
+fuse with anything, and the tests were passing whatever the code did. A test
+whose fixture is destroyed upstream asserts nothing, and it will not tell you.
+
 ## What this still does NOT fix
 
 Clef coverage on this book is 20%. Where a cell contains its clef, the locator

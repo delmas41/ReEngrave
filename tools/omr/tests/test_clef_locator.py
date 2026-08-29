@@ -11,12 +11,15 @@ it names.
 
 from __future__ import annotations
 
+import dataclasses
+
 import cv2
 import numpy as np
 import pytest
 
 from tools.omr.clef_locator import (
     ClefLocatorConfig,
+    DEFAULT_LOCATOR_CONFIG,
     _refine_symmetry_axis,
     locate_clef,
 )
@@ -43,20 +46,39 @@ def blank_page() -> np.ndarray:
     return img
 
 
+# A C clef is a compact glyph, and the drawing below has to be one too or the
+# tests pass a shape no engraver prints. Measured: on the engraved reference
+# sheet a C clef is 2.75 staff spaces wide by 4.0 tall — 0.68 wide over tall —
+# and across 74 hand-checked archaic clefs in Nottebohm the ratio runs 0.50 to
+# 1.26. This glyph was 1.4 by 4.0, a ratio of 0.35, narrower than anything in
+# either corpus. Its width is fixed by the engraving: the bars have to stay
+# under the 1.5-space run that `strip_horizontal_rules` erases, which is what
+# lets them survive at all. So the height comes down to 2.6 spaces instead —
+# squarely inside the 2.4-to-3.6 the real clefs measure, where 4.0 was taller
+# than any of them — and the ratio lands at 0.54.
+CLEF_W = 28   # 1.4 staff spaces: bars short enough to survive rule stripping
+CLEF_HALF = int(1.3 * SPACING)
+
+
 def draw_c_clef_at(img: np.ndarray, centre_y: int, x: int = 22) -> None:
     """An archaic ladder C clef centred on `centre_y`: two vertical strokes
     joined by two bars, symmetric top-to-bottom.
 
-    Stroke widths are chosen the way a real engraver's are, not minimally —
-    a clef's strokes are visibly thicker than a barline (which is what lets
-    the locator tell them apart) and its bars are shorter than a staff line
-    (which is what lets them survive rule stripping).
+    Proportions follow real clefs rather than a schematic — see CLEF_W. Stroke
+    widths are chosen the way a real engraver's are, not minimally: a clef's
+    strokes are visibly thicker than a barline (which is what lets the locator
+    tell them apart) and its bars are shorter than a staff line (which is what
+    lets them survive rule stripping).
     """
-    half = 2 * SPACING  # the glyph spans two spaces either side of its line
+    half = CLEF_HALF  # the glyph spans two spaces either side of its line
     cv2.rectangle(img, (x, centre_y - half), (x + 11, centre_y + half), 0, -1)
-    cv2.rectangle(img, (x + 16, centre_y - half), (x + 27, centre_y + half), 0, -1)
+    cv2.rectangle(
+        img, (x + CLEF_W - 11, centre_y - half), (x + CLEF_W, centre_y + half), 0, -1
+    )
     for dy in (-SPACING // 2, SPACING // 2):
-        cv2.rectangle(img, (x, centre_y + dy - 4), (x + 27, centre_y + dy + 4), 0, -1)
+        cv2.rectangle(
+            img, (x, centre_y + dy - 4), (x + CLEF_W, centre_y + dy + 4), 0, -1
+        )
 
 
 def draw_c_clef(img: np.ndarray, line_from_bottom: int, x: int = 22) -> None:
@@ -70,8 +92,11 @@ def draw_f_clef(img: np.ndarray, line_from_bottom: int = 4, x: int = 22) -> None
     the size and symmetry gates — that is the situation the dot veto exists
     for, and it is what a real bass clef did on Nottebohm p.31."""
     cy = line_y(line_from_bottom)
-    cv2.rectangle(img, (x, cy - 30), (x + 11, cy + 30), 0, -1)
-    cv2.rectangle(img, (x + 14, cy - 30), (x + 25, cy + 30), 0, -1)
+    # Body drawn to real clef proportions, so this cell reaches the dot veto
+    # rather than being turned away earlier by the size or aspect gates — the
+    # veto is what the test is about.
+    cv2.rectangle(img, (x, cy - 26), (x + 11, cy + 26), 0, -1)
+    cv2.rectangle(img, (x + 14, cy - 26), (x + 25, cy + 26), 0, -1)
     for dy in (-10, 10):
         cv2.rectangle(img, (x, cy + dy - 4), (x + 25, cy + dy + 4), 0, -1)
     for dy in (-SPACING // 2, SPACING // 2):   # the dots
@@ -80,9 +105,46 @@ def draw_f_clef(img: np.ndarray, line_from_bottom: int = 4, x: int = 22) -> None
 
 def draw_g_clef(img: np.ndarray, x: int = 22) -> None:
     """A stand-in for a G clef: much taller than any C clef, and lopsided —
-    a heavy loop up top and a long tail hanging below the staff."""
-    cv2.rectangle(img, (x, 70), (x + 40, 150), 0, -1)      # the loop
-    cv2.rectangle(img, (x + 16, 150), (x + 24, 250), 0, -1)  # the tail
+    a heavy loop up top and a long tail hanging below the staff.
+
+    The loop is drawn as a stroke rather than a filled block, because a filled
+    one is not what the locator sees. `strip_horizontal_rules` erases ink
+    belonging to any run of 1.5 staff spaces or more, so a solid 2-space-wide
+    rectangle is removed outright and what reached the gates was the 0.4-space
+    tail — narrower than any real G clef, which measures 2.55 to 3.18 spaces
+    across the engraved reference sheet and the piano corpus. The width of this
+    glyph is load-bearing for the test below, so it has to be real.
+    """
+    cv2.ellipse(img, (x + 20, 110), (20, 40), 0, 0, 360, 0, 11)   # the loop
+    cv2.rectangle(img, (x + 16, 150), (x + 24, 250), 0, -1)       # the tail
+    cv2.circle(img, (x + 20, 245), 10, 0, -1)
+
+
+def draw_heading_above(img: np.ndarray, x: int = 24) -> None:
+    """A movement heading printed above the staff, in the clef's own column —
+    "Nr. 15.", a rehearsal letter, a marking. Real ink, well clear of the top
+    staff line, and the thing that used to fuse with the clef.
+
+    Drawn as letterforms rather than a solid block, for the same reason the G
+    clef is drawn as a stroke: `strip_horizontal_rules` erases ink belonging to
+    a run of 1.5 staff spaces or more, so a filled block of heading-sized text
+    is removed outright and cannot fuse with anything. Type has strokes, and
+    the strokes are what survives.
+    """
+    for dx in (0, 13, 26):
+        cv2.rectangle(img, (x + dx, 56), (x + dx + 7, 88), 0, -1)      # stems
+        cv2.rectangle(img, (x + dx - 2, 56), (x + dx + 9, 61), 0, -1)  # serifs
+        cv2.rectangle(img, (x + dx - 2, 83), (x + dx + 9, 88), 0, -1)
+
+
+def draw_split_g_clef(img: np.ndarray, x: int = 22) -> None:
+    """A G clef whose body and tail have come apart, as they do on a scan: the
+    stroke thins where it crosses the staff and the morphology severs it. The
+    gap here is 0.7 staff spaces, wider than the vertical tolerance — measured
+    at 0.49 on Beethoven 5 — and BOTH pieces touch the staff, which is what
+    must keep them together."""
+    cv2.ellipse(img, (x + 20, 110), (20, 40), 0, 0, 360, 0, 11)   # the body
+    cv2.rectangle(img, (x + 16, 164), (x + 24, 250), 0, -1)       # the tail
     cv2.circle(img, (x + 20, 245), 10, 0, -1)
 
 
@@ -151,6 +213,55 @@ class TestLocatesCClefs:
     def test_symmetry_is_high_for_a_c_clef(self):
         found = locate_clef(cell_with_c_clef(3))
         assert found.symmetry > 0.9
+
+
+class TestTheVerticalGroupingRule:
+    """Grouping header ink by proximity in BOTH axes, not just across.
+
+    Off by default — see `ClefLocatorConfig.cluster_y_gap_spaces` for the
+    measured reason, which is not that it fails to work. These tests pin what
+    it does when it is on, and that it is off.
+    """
+
+    ON = dataclasses.replace(DEFAULT_LOCATOR_CONFIG, cluster_y_gap_spaces=1.0)
+
+    def _heading_cell(self):
+        img = blank_page()
+        draw_c_clef(img, 3)
+        draw_heading_above(img)
+        draw_noteheads(img)
+        return make_cell(img)
+
+    def test_it_is_off_by_default(self):
+        assert DEFAULT_LOCATOR_CONFIG.cluster_y_gap_spaces is None
+
+    def test_a_heading_above_the_staff_hides_the_clef_when_it_is_off(self):
+        # The default behaviour, and the thing the rule exists to fix: the
+        # heading and the clef are one column 5.5 staff spaces tall, which is
+        # bigger than any C clef, so the search stops on it.
+        assert locate_clef(self._heading_cell()) is None
+
+    def test_a_heading_above_the_staff_does_not_hide_the_clef_when_it_is_on(self):
+        # Measured over 191 headers of 19th-century engraving, that fusion was
+        # 55% of all header cells — the single largest drain on clef coverage.
+        found = locate_clef(self._heading_cell(), config=self.ON)
+        assert found is not None and found.read.name == "alto"
+
+    def test_ink_touching_the_staff_is_never_split_apart(self):
+        """The safety half of the rule, and the reason it is restricted to ink
+        standing clear of the staff.
+
+        A glyph printed ON the staff arrives in pieces — the morphology severs
+        its strokes where they cross a line — and those pieces must stay
+        together whatever the gap between them, because half a treble clef is
+        the size and shape of a C clef. Applied to all ink instead, at a
+        tolerance small enough to be useful, this invented seventeen C clefs
+        across twenty pages of a Beethoven 5 scan that has none there.
+        """
+        img = blank_page()
+        draw_split_g_clef(img)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img), config=self.ON) is None
 
 
 # ─── declining to guess ─────────────────────────────────────────────────────
