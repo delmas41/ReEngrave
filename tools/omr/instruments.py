@@ -104,7 +104,7 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Flute", "woodwind", "treble", (59, 96), 0, 0,
                aliases=("flute", "flutes", "flauto", "flauti", "flote", "floten", "fl", "fla", "fl gr")),
     Instrument("Oboe", "woodwind", "treble", (58, 91), 0, 0,
-               aliases=("oboe", "oboen", "oboi", "hautbois", "ob")),
+               aliases=("oboe", "oboen", "oboi", "hoboen", "hautbois", "ob")),
     Instrument("English horn", "woodwind", "treble", (52, 86), -7, 1,
                aliases=("english horn", "cor anglais", "corno inglese", "englisch horn",
                         "englischhorn", "c ing", "c a")),
@@ -120,8 +120,9 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                aliases=("bassoon", "bassoons", "fagotto", "fagotti", "fagott", "fagotte",
                         "basson", "bassons", "fag", "fg")),
     Instrument("Contrabassoon", "woodwind", "bass", (22, 60), -12, 0,
-               aliases=("contrabassoon", "double bassoon", "contrafagotto", "kontrafagott",
-                        "contrebasson", "cfag", "kfag")),
+               aliases=("contrabassoon", "double bassoon", "contrafagotto",
+                        "contrafagotte", "kontrafagott", "contrebasson",
+                        "cfag", "kfag")),
     Instrument("Saxophone", "woodwind", "treble", (49, 89), None, 3,
                aliases=("saxophone", "saxophon", "sax", "sassofono")),
 
@@ -145,8 +146,12 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Trombone", "brass", "bass", (34, 72), 0, 0,
                aliases=("trombone", "trombones", "trombono", "tromboni", "posaune",
                         "posaunen", "trb", "tbn", "pos")),
+    # "tenor tuba" before the voice aliases can reach it: the alias index is
+    # longest-first, so without it "Tenor Tuba in B-flat" resolves to the VOICE
+    # Tenor and takes Holst's Planets out of score order on all eight movements.
     Instrument("Tuba", "brass", "bass", (26, 65), 0, 0,
-               aliases=("tuba", "tuben", "basstuba", "bass tuba", "tb")),
+               aliases=("tenor tuba", "tenortuba", "tuba", "tuben", "basstuba",
+                        "bass tuba", "tb")),
 
     # ── percussion ─────────────────────────────────────────────────────────
     Instrument("Timpani", "percussion", "bass", (36, 60), 0, 0,
@@ -156,14 +161,18 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                aliases=("percussion", "schlagzeug", "batteria", "batterie", "perc",
                         "gran cassa", "grosse trommel", "bass drum", "piatti", "becken",
                         "cymbals", "triangolo", "triangel", "triangle", "tamburo",
-                        "kleine trommel", "snare drum", "tamburo militare", "tam tam")),
+                        "kleine trommel", "snare drum", "tamburo militare", "tam tam", "tam-tam",
+                        # named in the Gradus corpus and unresolved before:
+                        "tamtam", "cymbal", "tambourine", "tamburino",
+                        "glockenspiel", "xylophone", "xylophon", "tubular bells",
+                        "cloches", "castanets", "cassa")),
 
     # ── keyboard / plucked ─────────────────────────────────────────────────
     Instrument("Harp", "keyboard", "treble", (24, 104), 0, 0,
                aliases=("harp", "harpe", "arpa", "harfe", "arp", "hrf")),
     Instrument("Piano", "keyboard", "treble", (21, 108), 0, 0,
                aliases=("piano", "pianoforte", "klavier", "pf", "pno", "cembalo",
-                        "harpsichord", "clavicembalo")),
+                        "harpsichord", "clavicembalo", "celesta", "celeste")),
     Instrument("Organ", "keyboard", "treble", (24, 96), 0, 0,
                aliases=("organ", "orgel", "organo", "orgue", "org")),
 
@@ -171,11 +180,12 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Soprano", "voice", "treble", (60, 84), 0, 0,
                aliases=("soprano", "sopran", "sopr")),
     Instrument("Alto", "voice", "treble", (55, 79), 0, 0,
-               aliases=("alto", "alt", "contralto", "mezzosoprano", "mezzo soprano")),
+               aliases=("alto", "alt", "contralto", "mezzosoprano", "mezzo soprano",
+                        "mezzo")),
     Instrument("Tenor", "voice", "treble", (48, 72), -12, 0,
                aliases=("tenore", "tenor", "ten")),
     Instrument("Bass voice", "voice", "bass", (40, 64), 0, 0,
-               aliases=("basso", "bass solo", "bariton", "baritone", "basse")),
+               aliases=("basso", "bass", "bass solo", "bariton", "baritone", "basse")),
     Instrument("Chorus", "voice", "treble", (40, 84), 0, 0,
                aliases=("coro", "chor", "chorus", "choeur")),
 
@@ -186,14 +196,17 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         # ("V}a." for Vla. would resolve to Violin).
                         "violon", "violons", "vl", "vln", "vni")),
     Instrument("Viola", "string", "alto", (48, 88), 0, 0,
-               aliases=("viola", "viole", "violas", "bratsche", "bratschen", "alto viola",
+               aliases=("viola", "viole", "violas", "violen", "bratsche", "bratschen",
+                        "alto viola",
                         "vla", "vl a", "br")),
     Instrument("Cello", "string", "bass", (36, 81), 0, 0,
-               aliases=("cello", "violoncello", "violoncelli", "violoncelle", "violoncell",
+               aliases=("cello", "violoncello", "violoncelli", "violoncellos",
+                        "violoncelle", "violoncelles", "violoncell",
                         "celli", "vc", "vcl", "vlc")),
     Instrument("Contrabass", "string", "bass", (28, 67), -12, 0,
                aliases=("contrabass", "double bass", "contrabasso", "contrabassi",
-                        "contrebasse", "kontrabass", "kontrabasse", "basse", "bassi",
+                        "contrebasse", "contrebasses", "contrabasses", "kontrabass",
+                        "kontrabasse", "kontrabaß", "violone", "basse", "bassi",
                         "basso", "cb", "kb", "ctb", "db")),
 )
 
@@ -212,6 +225,18 @@ AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
     # caught by its own longer alias, so this one is listed for the rarer case
     # of a bare "Cor." on a French wind score meaning cornet.
     "cor": ("Horn", "Trumpet"),
+    # "Basso" and "Bässe" are the contrabasses at the foot of an orchestral
+    # score and the bass voice under a vocal stave, and the word is identical.
+    # Measured over 89 orchestral movements in the Gradus MusicXML library, the
+    # voice reading takes Mozart 41 and Mahler 5 out of score order — the label
+    # sits directly below the cellos, where no voice belongs. Position settles
+    # it, so both readings are offered here rather than one being chosen.
+    # First entry stays the lexicon's own answer, so nothing moves when the
+    # score-order prior has no opinion.
+    "basso": ("Bass voice", "Contrabass"),
+    "basse": ("Bass voice", "Contrabass"),
+    "bass": ("Bass voice", "Contrabass"),
+    "bassi": ("Contrabass", "Bass voice"),
 }
 
 
