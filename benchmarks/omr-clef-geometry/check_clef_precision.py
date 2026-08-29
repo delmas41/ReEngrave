@@ -17,6 +17,15 @@ Three checks, in decreasing order of how much they should be trusted:
              There are no C clefs in it, so ANY read is a false positive. This
              stands in for the ten pages of scanned Bach WTC the earlier rounds
              used, which are not in the repo.
+  orchestral a spot check on a scanned Beethoven 5, from
+             `beethoven5-clef-spot-check.json`. The one corpus here that is a
+             SCAN of an ORCHESTRAL score, and it earns its place: a change that
+             grouped header ink vertically passed every other check and still
+             read seventeen treble clefs as alto clefs on this material,
+             because a thick scanned G clef fragments in ways a clean engraving
+             never does. Skipped when the score, which lives in a gitignored
+             data directory, is not present.
+
   coverage   the hand-read Nottebohm page. Real material, real engraving, but
              twelve staves — too small to steer by on its own, which is what
              the probe is for.
@@ -120,6 +129,37 @@ def check_piano(pdf: Path, dpis: tuple[int, ...]) -> tuple[int, int]:
     return staves, wrong
 
 
+def check_orchestral(pdf: Path, spec_path: Path, dpi: int) -> tuple[int, int, int]:
+    spec = json.loads(spec_path.read_text())
+    print(f"\norchestral spot check ({pdf.name}) — {spec['source']}")
+    by_page: dict[int, list[dict]] = {}
+    for row in spec["staves"]:
+        by_page.setdefault(row["page"], []).append(row)
+    found = missed = wrong = 0
+    for page_index in sorted(by_page):
+        read = dict(read_page(pdf, page_index, dpi))
+        for row in by_page[page_index]:
+            got = read.get(row["staff"])
+            if row["c_clef"]:
+                if got is not None:
+                    found += 1
+                else:
+                    missed += 1
+                    print(f"    MISS            p{page_index} staff {row['staff']}: "
+                          f"declined a real C clef")
+            elif got is not None:
+                # A staff main already misreads is the baseline, not a
+                # regression — printed, but it must not mask a new one.
+                tag = "KNOWN       " if row.get("pre_existing") else "FALSE POSITIVE"
+                if not row.get("pre_existing"):
+                    wrong += 1
+                print(f"    {tag}  p{page_index} staff {row['staff']}: "
+                      f"read {got} — {row.get('note', 'not a C clef')}")
+    print(f"  {found} of {found + missed} known C clefs still read"
+          f"   NEW false positives {wrong}")
+    return found, missed, wrong
+
+
 def check_coverage(pdf: Path, truth_path: Path, dpi: int) -> tuple[int, int, int]:
     truth = json.loads(truth_path.read_text())
     print(f"\ncoverage ({pdf.name} page {truth['pdf_page_index']}) — hand-read truth")
@@ -150,6 +190,11 @@ def main() -> int:
                     default=Path.home() / "Downloads"
                     / "Nottebohm-Beethovens-Studien-1873.pdf")
     ap.add_argument("--truth", type=Path, default=HERE / "nottebohm-p46-ground-truth.json")
+    ap.add_argument("--orchestral", type=Path,
+                    default=REPO / "tools/omr/training/data/imslp"
+                    / "beethoven-symphony-5/pdfs/imslp-575951/score.pdf")
+    ap.add_argument("--orchestral-spec", type=Path,
+                    default=HERE / "beethoven5-clef-spot-check.json")
     ap.add_argument("--reference-dpi", type=int, default=600)
     ap.add_argument("--dpi", type=int, default=300)
     args = ap.parse_args()
@@ -165,15 +210,21 @@ def main() -> int:
 
     exact, ref_wrong = check_reference(args.reference, args.reference_dpi)
     _staves, piano_wrong = check_piano(args.piano, (args.dpi, args.reference_dpi))
+    if args.orchestral.exists():
+        _f, orch_missed, orch_wrong = check_orchestral(
+            args.orchestral, args.orchestral_spec, args.dpi)
+    else:
+        print(f"\norchestral spot check — skipped, no score at {args.orchestral}")
+        orch_missed = orch_wrong = 0
     if args.nottebohm.exists():
         right, cov_wrong, n_c = check_coverage(args.nottebohm, args.truth, args.dpi)
     else:
         print(f"\ncoverage — skipped, no PDF at {args.nottebohm}")
         right, cov_wrong, n_c = 0, 0, 0
 
-    total_wrong = ref_wrong + piano_wrong + cov_wrong
+    total_wrong = ref_wrong + piano_wrong + cov_wrong + orch_wrong
     print(f"\nreference {exact}/5 exact | coverage {right}/{n_c} | "
-          f"FALSE POSITIVES {total_wrong}")
+          f"orchestral misses {orch_missed} | FALSE POSITIVES {total_wrong}")
     print("Report these separately. A missed clef costs nothing that was not "
           "already lost;\na wrong one transposes every note on its staff.")
     return 1 if (total_wrong or exact < 5) else 0

@@ -482,6 +482,24 @@ cheap, while a missed veto costs a wrong clef, which is not.
   clef's two halves are bridged in the profile by the key-signature flat beside
   them, so its largest internal hole is 0.0.
 
+### The corpus that was missing
+
+The precision harness is now four corpora, not three, and the fourth is the
+one that mattered:
+
+    python3 benchmarks/omr-clef-geometry/check_clef_precision.py
+
+`beethoven5-clef-spot-check.json` lists seventeen staves of a scanned
+orchestral score, read off the rendered header crops by eye — fourteen that
+carry a real C clef and three that carry a treble clef and must never yield
+one. Two of those three are the staves the unrestricted vertical rule invented
+clefs on. It is a spot check, not ground truth for the page, and it says
+nothing about coverage; `probe_clef_rejection.py` is for that.
+
+It exists because every other corpus here is either vocal-clef material or
+clean LilyPond engraving, and the failure that took the longest to find was
+visible only on a thick scanned G clef.
+
 ### A measurement trap worth recording
 
 `clef_ground_truth_eval.py` and the harness around it must be run from the tree
