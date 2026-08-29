@@ -2,9 +2,11 @@
 
 **Date:** 2026-08-29
 **Verdict:** lexicon coverage **93% → 99%** of 2,345 real part names; symphonic
-works in score order **74 → 89** of 105. Score order is confirmed as a
+works in score order **74 → 95** of 105. Score order is confirmed as a
 convention strong enough to resolve labels by, and Baroque confirmed as a
-genuinely different layout.
+genuinely different layout. Every one of the 30 order violations fixed here was
+a lexicon misreading, not a layout; the 10 that remain are real variation and
+were left alone.
 
 ```bash
 python3 benchmarks/omr-score-order-2026-08/score_the_lexicon.py
@@ -87,10 +89,53 @@ reports Baroque separately instead of counting it as failure.
 instrument — a keyboard and a bass string instrument together. It wants the
 Baroque layout, not an alias.
 
-## The remaining 16
+## The remaining 16 — a second pass, and a wrong guess corrected
 
-Sixteen symphonic works are still non-monotone with position-aware resolution,
-and they are mostly Holst, whose percussion battery and two harps sit in an
-order the family ranking does not capture. Worth a look, but the return is much
-smaller than the 8 above and the cause is the rank table rather than the
-lexicon.
+The first pass left 16 symphonic works out of order and guessed the cause was
+the rank table, "mostly Holst, whose percussion battery and two harps sit in an
+order the family ranking does not capture". **That was wrong.** Listing the
+offending labels instead of assuming showed 46 of ~76 breaks were the SAME
+greedy voice alias again, in a third costume:
+
+| label | resolved to | should be | count |
+|---|---|---|---|
+| `Bb (basso) Horn 4`, `Bb (basso) Horn 2`, `B basso Horn 2` | Bass voice | Horn | 31 |
+| `Bass Sarrusophone` | Bass voice | Sarrusophone — the lexicon did not know the instrument | 15 |
+| `Bass Drums` | Bass voice | Percussion — `bass drum` was an alias, the plural was not | 1 |
+
+`Bb (basso) Horn 4` is a horn whose crook is in low B-flat. It read as a bass
+VOICE because the alias index is longest-first and `basso` (5) beats `horn`
+(4) — a rule that is right for "Bass Clarinet" beating "Bass" and wrong here,
+because the longer alias is the qualifier rather than the noun.
+
+**The discriminator is whether the two readings fire on different words.**
+"Bb (basso) Horn" matches `basso` and `horn`: two words, so the label names an
+instrument and says what size it is, and the instrument wins. "Basso" alone
+matches `basso` for both the voice and the contrabass: one word, two readings,
+which is genuine ambiguity and stays with `AMBIGUOUS_ALIASES` for position to
+settle. That is `_prefer_instrument_over_voice`.
+
+The regression that mattered: **0 of 364** four-part Bach chorales change. A
+fix here that made "Bass" stop being a bass voice would have been much worse
+than the bug.
+
+|  | first pass | after |
+|---|---:|---:|
+| symphonic works in score order — lexicon alone | 81/105 | **87/105** |
+| — with ambiguity settled by position | 89/105 | **95/105** |
+
+## The last 10 are real, and should not be "fixed"
+
+What remains is genuine layout variation, which is the argument for a library
+of layouts rather than a better single rank:
+
+* **Voices below the strings** (9 breaks) — `Viola` then `Soprano`/`Alto`/
+  `Tenor`. Editions differ on whether a chorus is printed above the strings or
+  beneath them, and both are correct.
+* **A second ensemble** — `Timpani` then `Oboe 1`, which is Tchaikovsky's
+  banda, a separate wind band printed after the orchestra.
+* One garbled part name (`Soprano Oboe 1,2 Violin1`) in a file whose names did
+  not survive its conversion.
+
+Encoding any of these in the family rank would trade a real variation for a
+wrong constant.

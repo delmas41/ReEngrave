@@ -231,3 +231,33 @@ def test_a_longer_alias_still_wins_over_bare_bass():
                             ("Bass Trombone", "Trombone"),
                             ("Bass Drum", "Percussion")):
         assert lookup(label).instrument.name == expected, label
+
+
+def test_a_voice_word_does_not_beat_an_instrument_noun():
+    """"Bb (basso) Horn 4" names a horn. It resolved to a bass VOICE, because
+    the alias index is longest-first and "basso" is longer than "horn" — right
+    for "Bass Clarinet" beating "Bass", wrong here, where the longer alias is
+    the qualifier and not the noun. 31 part names across Beethoven 4 and 9."""
+    for label in ("Bb (basso) Horn 4", "B basso Horn 2", "Basso Horn"):
+        assert lookup(label).instrument.name == "Horn", label
+    assert lookup("Bass Sarrusophone").instrument.name == "Sarrusophone"
+
+
+def test_a_voice_word_alone_is_still_a_voice():
+    """The other half, and the one a fix here can easily break: a chorale's
+    "Bass" is a bass. The rule only fires when the label names something else
+    on a DIFFERENT word — "Basso" matches `basso` for both the voice and the
+    contrabass, one word and two readings, which is genuine ambiguity and stays
+    with AMBIGUOUS_ALIASES."""
+    for label, expected in (("Bass", "Bass voice"), ("Basso", "Bass voice"),
+                            ("Bass solo", "Bass voice"), ("Alto", "Alto"),
+                            ("Tenor", "Tenor"), ("Soprano", "Soprano")):
+        assert lookup(label).instrument.name == expected, label
+
+
+def test_size_qualified_instruments_are_unaffected():
+    for label, expected in (("Bass Clarinet", "Bass clarinet"),
+                            ("Alto Flute", "Flute"),
+                            ("Tenor Trombone 1", "Trombone"),
+                            ("Bass Drums", "Percussion")):
+        assert lookup(label).instrument.name == expected, label

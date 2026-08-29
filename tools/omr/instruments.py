@@ -125,6 +125,10 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         "cfag", "kfag")),
     Instrument("Saxophone", "woodwind", "treble", (49, 89), None, 3,
                aliases=("saxophone", "saxophon", "sax", "sassofono")),
+    # Boulanger scores one; without it "Bass Sarrusophone" resolves on the word
+    # "Bass" and lands in the voices, fifteen part names adrift.
+    Instrument("Sarrusophone", "woodwind", "bass", (28, 67), 0, 0,
+               aliases=("sarrusophone", "sarrusophon", "sarrus")),
 
     # ── brass ──────────────────────────────────────────────────────────────
     Instrument("Horn", "brass", "treble", (41, 77), None, 1,
@@ -161,7 +165,7 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                aliases=("percussion", "schlagzeug", "batteria", "batterie", "perc",
                         "gran cassa", "grosse trommel", "bass drum", "piatti", "becken",
                         "cymbals", "triangolo", "triangel", "triangle", "tamburo",
-                        "kleine trommel", "snare drum", "tamburo militare", "tam tam", "tam-tam",
+                        "kleine trommel", "snare drum", "tamburo militare", "tam tam", "tam-tam", "bass drums", "drums", "drum",
                         # named in the Gradus corpus and unresolved before:
                         "tamtam", "cymbal", "tambourine", "tamburino",
                         "glockenspiel", "xylophone", "xylophon", "tubular bells",
@@ -343,6 +347,75 @@ def _search(candidate: str, folded: bool) -> tuple[str, Instrument] | None:
     return None
 
 
+# Words that name a voice AND size an instrument: "Bass Clarinet", "Tenor
+# Tuba", "Alto Flute", "Bb (basso) Horn". The alias index is longest-first, so
+# where the label carries no longer alias these win and put a HORN among the
+# voices — measured on Beethoven 4 and 9, 31 part names between them.
+#
+# They stay in the voice aliases, because alone they really do name a voice: a
+# chorale's "Bass" is a bass. What settles it is whether the label names
+# anything else — see `_prefer_instrument_over_voice`.
+VOICE_QUALIFIERS = frozenset({
+    "soprano", "alto", "tenor", "bass", "basso", "basse", "bassi",
+    "bariton", "baritone", "mezzo",
+})
+
+
+def _all_matches(text: str) -> list["Match"]:
+    """Every instrument whose alias matches `text`, longest alias first.
+
+    `lookup` returns only the winner, which is right when a label names one
+    instrument and unhelpful when it names one ambiguously.
+    """
+    norm = normalize_label(text)
+    if not norm:
+        return []
+    stripped = re.sub(r"\s+", " ", _STRIP_TOKENS.sub(" ", norm)).strip()
+    probes = (norm, stripped, norm.replace(" ", ""), stripped.replace(" ", ""))
+    seen: dict[str, Match] = {}
+    for folded in (False, True):
+        for candidate in probes:
+            if not candidate:
+                continue
+            probe = _fold_ocr(candidate) if folded else candidate
+            for alias, inst in _ALIAS_INDEX:
+                a = _fold_ocr(alias) if folded else alias
+                if inst.name in seen:
+                    continue
+                if not re.search(rf"(?<![a-z]){re.escape(a)}(?![a-z])", probe):
+                    continue
+                coverage = _letters(alias) / max(1, _letters(candidate))
+                seen[inst.name] = Match(inst, inst.default_fifths_offset, alias,
+                                        min(1.0, coverage), folded)
+        if seen:
+            break
+    return sorted(seen.values(), key=lambda m: -_letters(m.alias))
+
+
+def _prefer_instrument_over_voice(text: str, winner: "Match") -> "Match":
+    """Let an instrument noun beat a voice word in the same label.
+
+    "Bb (basso) Horn 4" names a horn. It resolved to a bass VOICE because
+    "basso" is longer than "horn" and the alias index prefers length — a rule
+    that is right for "Bass Clarinet" beating "Bass" and wrong here, because
+    the longer alias is the qualifier rather than the noun.
+
+    The discriminator is whether the other reading fires on a DIFFERENT word.
+    "Bb (basso) Horn" matches `basso` and `horn`, two words, so the label names
+    an instrument and says what size it is. "Basso" alone matches `basso` for
+    both the voice and the contrabass — one word, two readings — which is
+    genuine ambiguity that only position can settle, and is left to
+    `AMBIGUOUS_ALIASES` untouched.
+    """
+    if winner.instrument.family != "voice" or winner.alias not in VOICE_QUALIFIERS:
+        return winner
+    for other in _all_matches(text):
+        if other.instrument.family != "voice" and other.alias != winner.alias:
+            return Match(other.instrument, other.instrument.default_fifths_offset,
+                         other.alias, other.coverage, other.ocr_folded)
+    return winner
+
+
 def lookup(text: str) -> Match | None:
     """Match a printed label to an instrument.
 
@@ -379,5 +452,7 @@ def lookup(text: str) -> Match | None:
             if offset is None:
                 offset = inst.default_fifths_offset
             coverage = _letters(alias) / max(1, _letters(candidate))
-            return Match(inst, offset, alias, min(1.0, coverage), folded)
+            return _prefer_instrument_over_voice(
+                text, Match(inst, offset, alias, min(1.0, coverage), folded)
+            )
     return None
