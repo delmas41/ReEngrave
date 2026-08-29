@@ -14,8 +14,12 @@ handoff: four ranked threads with evidence, entry points and done-criteria.
 2. **Key signature from the music** — Sean asked for this; Beethoven 5 p15 still reads
    "no accidentals" for a C-minor movement. Check whether it is a *detection* failure first.
 3. **Score-order prior** — the principled fix for the `Tp.`/`Tr.` ambiguity hard-coded today.
-4. **Re-read July's "domain gap" conclusion** — its false-positive flood was measured
-   through the `imgsz` bug fixed on 2026-08-28.
+4. ~~**Re-read July's "domain gap" conclusion**~~ — **DONE 2026-08-28, and it did not
+   survive.** The flood, the invisible meters and the mostly-treble clefs were all
+   artefacts of `imgsz 2048`: same pages, same weights, same confidence, Boléro p.1
+   goes from 0 time-signature digits and 13 clefs to 36 digits and 24/24 clefs.
+   `benchmarks/omr-detection-probe-2026-08/findings.md`. A class-specific gap remains
+   real — key-signature flats on Beethoven 5 p.15 are undetected at any threshold.
 
 ⚠️ **Any measurement predating 2026-08-28 went through an `imgsz` reporting 2–4× the notes
 that exist.** Re-measure before building on one. `imgsz` is now derived per cell — see

@@ -164,25 +164,33 @@ without the alias hack.
 
 ---
 
-## 4. Re-read the July "domain gap" conclusion now that `imgsz` is fixed
+## 4. The July "domain gap" conclusion — DONE, and it did not survive
 
-**What.** `benchmarks/omr-detection-probe-2026-07/findings.md` concluded the orchestral
-wall is a **synthetic→real domain gap, not a threshold problem**, resting partly on a
-conf-0.10 probe that "floods noteheads with 2.4–3.5× false positives".
+**Re-measured 2026-08-28.** Same pages, same weights, same confidence, same cells;
+only `imgsz` differs.
 
-**Why it matters.** That probe ran on narrow orchestral cells — exactly the geometry
-where the old `imgsz` inflated detections. Some of that flood was probably an `imgsz`
-artefact. This is a **strategic** conclusion: it is the stated reason the project stopped
-trying to improve detection and moved to deterministic verification layers.
+| Boléro p.1 (printed 3/4) | timeSig digits | clefs | noteheads |
+|---|---|---|---|
+| per-cell `imgsz` | **36** | **24 / 24** | 14 |
+| `imgsz 2048` (July's setting) | 0 | 13 | 705 |
 
-**What is NOT in doubt.** The probe also found **zero** real time-signature digits
-recovered at conf 0.10, and mostly-treble clefs. That stands on its own and is not an
-`imgsz` artefact.
+Mahler 5 p.1 tells the same story: 0 digits and 1 clef at 2048, **7 and 18** per cell.
+The recovered digits are `timeSig3` / `timeSig4` at **0.94–0.95 confidence** in measure 0
+of 18 staves, and the page reads 3/4 — correctly. End to end, dropping the threshold to
+0.10 now moves Boléro's noteheads from 141 to 142, where July measured 372 → 1310.
 
-**Where to start.** Re-run the probe at `imgsz=512`. It is cheap.
+**This includes the part this file said was not in doubt.** "Zero real time-signature
+digits at conf 0.10, and mostly-treble clefs" was an `imgsz` artefact like the rest.
 
-**Done when.** The false-positive multiple is re-measured and the findings file either
-confirms or qualifies its conclusion.
+**What survives.** A domain gap for *specific classes on specific prints*, not a general
+wall: Beethoven 5 p.15's key-signature flats are undetected at conf 0.25, 0.10 **and
+0.05** alike, with the per-cell `imgsz` already in effect. That one is real, and it is
+now the sharpest open detection question in the project.
+
+Full measurement and a committed re-run script (July's was scratch):
+`benchmarks/omr-detection-probe-2026-08/`. The July file carries a supersession banner,
+and `docs/internal-consistency-checks.md` — which rests on the old conclusion — is
+annotated.
 
 ---
 

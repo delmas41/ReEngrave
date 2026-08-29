@@ -142,7 +142,11 @@ clef. Deferred there.
 
 ## Lessons learned
 
-- **The wall is a synthetic→real domain gap, not a threshold.** The detector is
+- **The wall is a synthetic→real domain gap, not a threshold.** *(Substantially
+  retracted 2026-08-28: the probe behind this ran at `imgsz 2048` and its
+  headline numbers were artefacts of that — see
+  `benchmarks/omr-detection-probe-2026-08/findings.md`. A class-specific gap
+  remains real.)* The detector is
   often *blind* on dense orchestral pages (the conf-0.10 probe recovered zero
   real time-sig digits, mostly-treble clefs — see
   `benchmarks/omr-detection-probe-2026-07/findings.md`). So these checks, like
