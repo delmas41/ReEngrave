@@ -117,12 +117,22 @@ like a wrong answer rather than a silence. p.15 now says: read on 4 of 23 staves
 - **8 have no clef.** The reader abstains there on purpose — a signature fitted against a
   guessed clef is a guess squared. This is the clef thread, not this one.
 - **11 have a clef, and neither the detector's markers nor the CV locator found
-  accidentals in the header.** The page plainly prints three flats on them. This is the
-  real remaining question, and it could not be seen until the window started containing
-  the header.
+  accidentals in the header.** The page plainly prints three flats on them.
 
-Start there — on the header crop specifically, since that is where both readers are now
-looking and coming back empty. The inference ideas below stay parked; there is no case
+**That bucket was worked, and two defects came out of it (2026-08-28).** The header
+cell's staff lines were not where the print has them — off by 0.12 spaces on average and
+0.47 at worst, against slots half a space apart — because the cell inherited the staff's
+page-wide model and the header sits at the far left end where a line wanders furthest.
+And a clef cut up by staff-line erasure stops anchoring the search, while its fragments
+join the run ahead of the signature. Both fixed (`refine_staff_lines_in_cell`; the
+locator's tail pass). Given true clefs, p.15 system 0 goes from 0 correct / 3 wrong to
+3 correct / 0 wrong; end to end 0/1 wrong → 1 correct / 0 wrong, with clefs 15 → 16.
+Five approaches were measured and ruled out along the way — see
+`benchmarks/omr-key-signature/RESULTS.md`.
+
+**What is left is the clef.** Two of p.15's string staves read treble where they are
+alto and tenor, and a wrong clef picks a wrong slot table. That, plus the detector's
+blindness to these flats at any confidence, is the whole of the remainder. The inference ideas below stay parked; there is no case
 for guessing a signature from the music while the printed one is sitting unread in a
 window nobody can read.
 
@@ -130,11 +140,12 @@ window nobody can read.
 noise — median margin between best and second-best signature 0.0000, 62 of 80 staves
 under 0.01 (`benchmarks/omr-clef-key-fit-2026-08/findings.md`).
 
-**Note on reproducing any of this:** the two orchestral ground-truth PDFs for
-`benchmarks/omr-key-signature/` (`beet5-p2`, `pastoral-p2`) are **no longer on this
-machine** — `tools/omr/training/data/imslp/` is empty. Only `wtc-p17` can still be
-scored, and it holds at 10/10. Anything measured on those two pages is currently
-unverifiable.
+**Correction to an earlier note here:** this file previously said the two orchestral
+ground-truth PDFs (`beet5-p2`, `pastoral-p2`) were gone from this machine. They are
+not. They live under `tools/omr/training/data/imslp/`, which a git WORKTREE reaches
+through a symlink — and the symlink, not the corpus, was missing. All three pages score,
+and the whole benchmark is reproducible: `beet5-p2` 10 correct, `pastoral-p2` 9,
+`wtc-p17` 10, none wrong. Create the link before measuring from a worktree.
 
 ---
 
