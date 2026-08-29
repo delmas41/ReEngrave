@@ -206,3 +206,63 @@ One caveat is recorded in `ground_truth.json` itself: Beethoven 6 ordinal 5
 (Violino I) is read as one flat, but the flat is hard to make out at that
 staff's print quality. It is marked `uncertain` in the file rather than silently
 asserted.
+
+---
+
+## Beethoven 5 p.15 — why a C minor page read as C major
+
+**2026-08-28.** The 2026-08-28 handoff reported this page as the evidence that
+key-signature reading was broken: `0 sharps / 0 flats` on every staff of a
+movement that prints three flats on most of them. Four separate things were
+happening, and only the first was in the key-signature layer's control.
+
+**1. The header was not in the window.** `_staff_x_extent` lost the staff's left
+edge (see `benchmarks/omr-phase1-baseline/RESULTS.md`), so the clef and the
+signature were cropped out of every measure cell. Nine of the twelve staves in
+system 0 started between x=274 and x=773 on a system whose staves all begin at
+x≈172. Fixed. Every header window on the page now holds its clef and its flats
+— checked by rendering all 23 of them.
+
+**2. Clefs followed immediately.** 0 of 23 read → **13 of 23** by the detector
+in the pipeline, and 16 of 23 counting the detector's raw output on staff-start
+cells. The key-signature reader abstains where the clef is only a positional
+default, so this alone moved it from silent to speaking on 4 staves.
+
+**3. The detector is blind to these flats, and it is not a threshold.** Running
+the production weights over the 23 staff-start cells at 600 DPI:
+
+| conf | key markers found | staff-start cells with one | clefs found |
+|---|---|---|---|
+| 0.25 | 3 | 2 / 23 | 16 |
+| 0.10 | 3 | 2 / 23 | 21 |
+| 0.05 | **3** | **2 / 23** | 28 |
+
+Lowering the threshold by a factor of five adds **no** key markers while adding
+75% more clefs. The cells are fine and the model simply does not fire on these
+glyphs — a domain gap for this class on this print, measured on the current
+tree with a correct window and the per-cell `imgsz`.
+
+**4. The CV locator fragments them.** On s2 — a treble staff printing three
+flats, plainly visible in its window — the locator finds exactly one
+accidental-sized cluster after the clef, 0.35 staff spaces wide against a
+flat's 0.7–0.9. The rest is either fused into the oversized cluster the clef
+anchors on, or split below the size floor. That is why the fits fail: the runs
+being fitted are not the signature.
+
+**And the dossier cannot stand in.** `--dossier beethoven-sym5-mvt1` changes
+nothing here: the work has 18 parts and the page has 23 staves, so the
+part→staff join abstains, as designed.
+
+### What this leaves
+
+The output no longer asserts C major on a C minor page — `key_signature_read`
+is false on the 19 unread staves, with the reason on each. The remaining work
+is **the locator's ink mask on degraded prints** (why a printed flat arrives as
+a 0.35-space fragment), or **a part→staff join that survives condensation**
+(18 parts, 23 staves). It is not a threshold, and it is not inference from the
+music: the printed signature is sitting in the window, legible to a human,
+unread by both readers.
+
+Reproduce: `benchmarks/omr-key-signature/probe_header_windows.py` for the window,
+and the conf sweep above with `tools/omr/yolo_detector.py` over the staff-start
+cells of PDF page 14 of IMSLP984073 at 600 DPI.
