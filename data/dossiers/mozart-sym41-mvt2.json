@@ -1,0 +1,206 @@
+{
+  "schema_version": 3,
+  "work_id": "mozart-sym41-mvt2",
+  "source": {
+    "kind": "musicxml",
+    "path": "/Users/seanjohnson/Desktop/gradus-vercel/public/scores/mozart-sym41-mvt2.mxl",
+    "generated_by": "tools.omr.training.build_dossiers"
+  },
+  "title": "Symphony No. 41 in C Major (\u201cJupiter\u201d)",
+  "composer": "Wolfgang Amadeus Mozart",
+  "total_measures": 101,
+  "starting_meter": {
+    "beats": 3,
+    "beat_type": 4
+  },
+  "meter_changes": [
+    {
+      "measure": 1,
+      "beats": 3,
+      "beat_type": 4
+    }
+  ],
+  "constant_meter": true,
+  "parts": [
+    {
+      "slot": 0,
+      "name": "Flauto",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 1,
+      "name": "Oboe I",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 2,
+      "name": "Oboe II",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 3,
+      "name": "Fagotto I",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 4,
+      "name": "Fagotto II",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 5,
+      "name": "Corno I in C",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": -12,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 6,
+      "name": "Corno II in C",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": -12,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 7,
+      "name": "Corno I in F",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": -7,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 8,
+      "name": "Corno II in F",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": -7,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 9,
+      "name": "Clarino I in C",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 10,
+      "name": "Clarino II in C",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 11,
+      "name": "Timpani in C\u2013G",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 12,
+      "name": "Violino I",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 13,
+      "name": "Violino II",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 14,
+      "name": "Viola",
+      "written_clef": "alto",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 15,
+      "name": "Violoncello",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    },
+    {
+      "slot": 16,
+      "name": "Basso",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": -12,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 101
+    }
+  ],
+  "clefs_used": [
+    "alto",
+    "bass",
+    "treble"
+  ],
+  "written_fifths_used": [
+    -1,
+    1
+  ],
+  "n_parts": 17
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 3,
+  "work_id": "ravel-bolero",
+  "source": {
+    "kind": "musicxml",
+    "path": "/Users/seanjohnson/Desktop/gradus-vercel/public/scores/ravel-bolero.mxl",
+    "generated_by": "tools.omr.training.build_dossiers"
+  },
+  "title": "Bol\u00e9ro \u2014 study reduction (340 bars)",
+  "composer": "Maurice Ravel",
+  "total_measures": 340,
+  "starting_meter": {
+    "beats": 3,
+    "beat_type": 4
+  },
+  "meter_changes": [
+    {
+      "measure": 1,
+      "beats": 3,
+      "beat_type": 4
+    }
+  ],
+  "constant_meter": true,
+  "parts": [
+    {
+      "slot": 0,
+      "name": "Melody (lead instruments per statement)",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 1,
+      "name": "Parallel mixture lines (12th/17th, 7th partial)",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 2,
+      "name": "Timpani",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 3,
+      "name": "Snare Drum (bolero ostinato)",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 4,
+      "name": "Percussion (B.D., cymbals, tam-tam)",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 5,
+      "name": "Violas (pizz. ostinato)",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 6,
+      "name": "Harmony (tutti chords)",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 7,
+      "name": "Violoncellos (pizz. C\u2013G pedal)",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    },
+    {
+      "slot": 8,
+      "name": "Contrabasses",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 340
+    }
+  ],
+  "clefs_used": [
+    "alto",
+    "bass",
+    "treble"
+  ],
+  "written_fifths_used": [
+    0
+  ],
+  "n_parts": 9
+}

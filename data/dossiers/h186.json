@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "work_id": "h186",
+  "source": {
+    "kind": "musicxml",
+    "path": "/Users/seanjohnson/Desktop/gradus-vercel/public/scores/h186.mxl",
+    "generated_by": "tools.omr.training.build_dossiers"
+  },
+  "title": "None",
+  "composer": "Carl Philipp Emanuel Bach",
+  "total_measures": 32,
+  "starting_meter": {
+    "beats": 4,
+    "beat_type": 4
+  },
+  "meter_changes": [
+    {
+      "measure": 1,
+      "beats": 4,
+      "beat_type": 4
+    }
+  ],
+  "constant_meter": true,
+  "parts": [
+    {
+      "slot": 0,
+      "name": "MusicXML Part",
+      "written_clef": "treble",
+      "written_fifths": 3,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 32
+    },
+    {
+      "slot": 1,
+      "name": "MusicXML Part",
+      "written_clef": "bass",
+      "written_fifths": 3,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 32
+    }
+  ],
+  "clefs_used": [
+    "bass",
+    "treble"
+  ],
+  "written_fifths_used": [
+    3
+  ],
+  "n_parts": 2
+}

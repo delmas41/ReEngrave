@@ -1,0 +1,1053 @@
+{
+  "schema_version": 3,
+  "work_id": "ravel-bolero-pt2",
+  "source": {
+    "kind": "musicxml",
+    "path": "/Users/seanjohnson/Desktop/gradus-vercel/public/scores/ravel-bolero-pt2.mxl",
+    "generated_by": "tools.omr.training.build_dossiers"
+  },
+  "title": "None",
+  "composer": "None",
+  "total_measures": 91,
+  "starting_meter": {
+    "beats": 4,
+    "beat_type": 4
+  },
+  "meter_changes": [
+    {
+      "measure": 1,
+      "beats": 4,
+      "beat_type": 4
+    }
+  ],
+  "constant_meter": true,
+  "parts": [
+    {
+      "slot": 0,
+      "name": "P*\u00b0s Fl.",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 1,
+      "name": "F.",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 2,
+      "name": "Hautb.",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 3,
+      "name": "Cor A.",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 4,
+      "name": "Clar.",
+      "written_clef": "treble",
+      "written_fifths": 2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 37,
+          "fifths": 1
+        },
+        {
+          "measure": 43,
+          "fifths": 2
+        }
+      ],
+      "measures": 91
+    },
+    {
+      "slot": 5,
+      "name": "Be\u00b0\"s",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 6,
+      "name": "C.B\u00b0\"",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 7,
+      "name": "Sax. \u00a7ano",
+      "written_clef": "treble",
+      "written_fifths": 2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 82,
+          "fifths": 1
+        }
+      ],
+      "measures": 91
+    },
+    {
+      "slot": 8,
+      "name": "Sax. T.",
+      "written_clef": "treble",
+      "written_fifths": 2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 9,
+      "name": "Cors",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 37,
+          "fifths": 2
+        }
+      ],
+      "measures": 91
+    },
+    {
+      "slot": 10,
+      "name": "Track 11",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 82,
+          "fifths": 2
+        }
+      ],
+      "measures": 91
+    },
+    {
+      "slot": 11,
+      "name": "Tromp.",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 12,
+      "name": "Trb.",
+      "written_clef": "tenor",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 13,
+      "name": "Tuba",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 14,
+      "name": "Track 15",
+      "written_clef": "tenor",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 15,
+      "name": "Timb.",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 16,
+      "name": "Track 17",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 17,
+      "name": "Tamb.",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 18,
+      "name": "Track 19",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 19,
+      "name": "Track 20",
+      "written_clef": "tenor",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 20,
+      "name": "Track 21",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 21,
+      "name": "Harpe",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 22,
+      "name": "Track 23",
+      "written_clef": "tenor",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 23,
+      "name": "Track 24",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 24,
+      "name": "Track 25",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 25,
+      "name": "Track 25",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 26,
+      "name": "Track 27",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 13,
+          "fifths": 2
+        },
+        {
+          "measure": 19,
+          "fifths": 1
+        }
+      ],
+      "measures": 91
+    },
+    {
+      "slot": 27,
+      "name": "Track 28",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 28,
+      "name": "Track 28",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 29,
+      "name": "Track 30",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 30,
+      "name": "1\"S yers",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 13,
+          "fifths": 2
+        }
+      ],
+      "measures": 91
+    },
+    {
+      "slot": 31,
+      "name": "Track 32",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 32,
+      "name": "Track 33",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 33,
+      "name": "Track 34",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 34,
+      "name": "Track 35",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 35,
+      "name": "Track 36",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 36,
+      "name": "Track 37",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 37,
+      "name": "Track 38",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 38,
+      "name": "Track 39",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 39,
+      "name": "Track 40",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 40,
+      "name": "9ds yons",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 41,
+      "name": "Track 42",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 42,
+      "name": "Track 43",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 43,
+      "name": "Track 44",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 44,
+      "name": "Track 45",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 45,
+      "name": "Track 46",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 46,
+      "name": "Track 47",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 47,
+      "name": "Track 48",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 48,
+      "name": "Track 49",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 49,
+      "name": "Track 50",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 50,
+      "name": "Track 51",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 51,
+      "name": "Track 52",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 52,
+      "name": "Altos",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 53,
+      "name": "Track 54",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 54,
+      "name": "Track 55",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 55,
+      "name": "Track 56",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 56,
+      "name": "Track 57",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 57,
+      "name": "Track 58",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 58,
+      "name": "Track 59",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 59,
+      "name": "yelles",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 60,
+      "name": "Track 61",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 61,
+      "name": "Track 62",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 62,
+      "name": "Track 63",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 63,
+      "name": "Track 64",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 64,
+      "name": "Track 65",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [
+        {
+          "measure": 90,
+          "clef": "bass"
+        },
+        {
+          "measure": 90,
+          "clef": "treble"
+        }
+      ],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 65,
+      "name": "Track 66",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 66,
+      "name": "C.B.",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 67,
+      "name": "Track 68",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 68,
+      "name": "Track 69",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [
+        {
+          "measure": 25,
+          "clef": "tenor"
+        },
+        {
+          "measure": 31,
+          "clef": "bass"
+        }
+      ],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 69,
+      "name": "Track 70",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 70,
+      "name": "Track 71",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 71,
+      "name": "Track 72",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 72,
+      "name": "Track 73",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 73,
+      "name": "Track 74",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [
+        {
+          "measure": 25,
+          "clef": "tenor"
+        },
+        {
+          "measure": 31,
+          "clef": "bass"
+        }
+      ],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 74,
+      "name": "Track 75",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 75,
+      "name": "Track 76",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 76,
+      "name": "Track 77",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 77,
+      "name": "Track 78",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 78,
+      "name": "Track 79",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 79,
+      "name": "Track 80",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 80,
+      "name": "Track 81",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 81,
+      "name": "Track 82",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 82,
+      "name": "Track 83",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 83,
+      "name": "Track 84",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 84,
+      "name": "Track 85",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 85,
+      "name": "Track 86",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 86,
+      "name": "Track 87",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 87,
+      "name": "Track 88",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 88,
+      "name": "Track 89",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 89,
+      "name": "Track 90",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 90,
+      "name": "Track 91",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 91,
+      "name": "Track 92",
+      "written_clef": "alto",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 92,
+      "name": "Track 93",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 93,
+      "name": "Track 94",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    },
+    {
+      "slot": 94,
+      "name": "Track 95",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 91
+    }
+  ],
+  "clefs_used": [
+    "alto",
+    "bass",
+    "tenor",
+    "treble"
+  ],
+  "written_fifths_used": [
+    0,
+    1,
+    2
+  ],
+  "n_parts": 95
+}

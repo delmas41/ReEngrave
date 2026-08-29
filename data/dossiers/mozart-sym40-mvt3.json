@@ -1,0 +1,225 @@
+{
+  "schema_version": 3,
+  "work_id": "mozart-sym40-mvt3",
+  "source": {
+    "kind": "musicxml",
+    "path": "/Users/seanjohnson/Desktop/gradus-vercel/public/scores/mozart-sym40-mvt3.mxl",
+    "generated_by": "tools.omr.training.build_dossiers"
+  },
+  "title": "Symphony No. 40 in G Minor, K. 550",
+  "composer": "Wolfgang Amadeus Mozart",
+  "total_measures": 88,
+  "starting_meter": {
+    "beats": 3,
+    "beat_type": 4
+  },
+  "meter_changes": [
+    {
+      "measure": 1,
+      "beats": 3,
+      "beat_type": 4
+    }
+  ],
+  "constant_meter": true,
+  "parts": [
+    {
+      "slot": 0,
+      "name": "Oboi.",
+      "written_clef": "treble",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 1,
+      "name": "Clarinetti in B.",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -2,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 3
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 2,
+      "name": "Flauto.",
+      "written_clef": "treble",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 3,
+      "name": "Oboi.",
+      "written_clef": "treble",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 4,
+      "name": "Fagotti.",
+      "written_clef": "bass",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [
+        {
+          "measure": 38,
+          "clef": "tenor"
+        },
+        {
+          "measure": 42,
+          "clef": "bass"
+        }
+      ],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 5,
+      "name": "Corni in G.",
+      "written_clef": "treble",
+      "written_fifths": -3,
+      "transposition_semitones": -5,
+      "clef_changes": [
+        {
+          "measure": 33,
+          "clef": "bass_8va"
+        },
+        {
+          "measure": 34,
+          "clef": "treble"
+        }
+      ],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 0
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 6,
+      "name": "Violino I.",
+      "written_clef": "treble",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 7,
+      "name": "Violino II.",
+      "written_clef": "treble",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 8,
+      "name": "Viola.",
+      "written_clef": "alto",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 9,
+      "name": "Violoncello.",
+      "written_clef": "bass",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    },
+    {
+      "slot": 10,
+      "name": "Contrabasso.",
+      "written_clef": "bass_8vb",
+      "written_fifths": -2,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 45,
+          "fifths": 1
+        }
+      ],
+      "measures": 88
+    }
+  ],
+  "clefs_used": [
+    "alto",
+    "bass",
+    "bass_8va",
+    "bass_8vb",
+    "tenor",
+    "treble"
+  ],
+  "written_fifths_used": [
+    -3,
+    -2,
+    0,
+    1,
+    3
+  ],
+  "n_parts": 11
+}
