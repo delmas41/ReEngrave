@@ -80,6 +80,35 @@ default for a wrong correction at no net gain. The register veto inside
 `propose_clef` did not catch it. The gate stays: identity deduced from position
 still does not drive clef correction.
 
+## The same join does NOT work for key signatures
+
+The join returns each part's `written_fifths` as well as its clef, and thread 2
+of the handoff ended by naming this join as the blocker for the dossier seeding
+key signatures. It was measured on the same 42 staves, filling only staves whose
+signature nothing read, only where the join is anchored:
+
+    fix 5, break 4
+
+Barely positive, and the breaks are systematic rather than noisy:
+
+| staff | dossier | printed on this page |
+|---|---|---|
+| C Trumpet | 3 flats | none |
+| C, G Timpani | 3 flats | none |
+| Bb Clarinet | 1 flat | 1 flat ✓ |
+| Oboe | 1 flat | 1 flat ✓ |
+
+The dossier is right about the WORK and wrong about this PRINTING. Whether
+natural brass and timpani carry a key signature is an editorial convention that
+varies between editions — the Gradus MusicXML gives them one, this
+19th-century engraving does not — while the transposing woodwinds, where the
+written signature genuinely differs from concert pitch and the reader most needs
+help, come out right.
+
+So the join supplies clefs and not key signatures. A clef is a property of the
+part; a natural-brass key signature is a property of the edition, and the
+dossier is not a dossier of this edition.
+
 ## What is left
 
 Three errors, all non-treble read as treble, and only one kind now:
