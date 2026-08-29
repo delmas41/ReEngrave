@@ -4,6 +4,7 @@ from __future__ import annotations
 import pytest
 
 from tools.omr.instruments import (
+    candidates_for_alias,
     INSTRUMENTS,
     lookup,
     normalize_label,
@@ -168,3 +169,65 @@ def test_written_ranges_are_ordered_and_sane():
     for inst in INSTRUMENTS:
         lo, hi = inst.written_range
         assert 0 <= lo < hi <= 127, inst.name
+
+
+# ─── measured against real part lists ───────────────────────────────────────
+#
+# Every case below is a name the Gradus MusicXML library actually contains,
+# found by scoring the lexicon against 2,345 part names from 111 orchestral
+# works (`benchmarks/omr-score-order-2026-08/`). They are here rather than in
+# that benchmark because the benchmark needs the library on disk and these do
+# not.
+
+
+def test_tenor_tuba_is_a_tuba_not_a_voice():
+    """The alias index is longest-first, so "tenor" (5) beat "tuba" (4) and
+    Holst's tenor tuba read as a TENOR VOICE — which took all eight movements
+    of The Planets out of score order, a voice appearing among the brass."""
+    assert lookup("Tenor Tuba in B♭").instrument.name == "Tuba"
+    assert lookup("Tenor Trombone 1").instrument.name == "Trombone"
+    assert lookup("Tenor").instrument.name == "Tenor"
+
+
+def test_plural_and_german_part_names_resolve():
+    for label, expected in (
+        ("Violoncellos", "Cello"),
+        ("Contrabasses", "Contrabass"),
+        ("Violen", "Viola"),
+        ("Drei Hoboen", "Oboe"),
+        ("Contrafagotte", "Contrabassoon"),
+        ("Kontrabaß", "Contrabass"),
+        ("Violone", "Contrabass"),
+    ):
+        match = lookup(label)
+        assert match is not None, f"{label} unread"
+        assert match.instrument.name == expected, label
+
+
+def test_the_percussion_battery_resolves():
+    for label in ("Cymbal", "Tambourine", "Glockenspiel", "Xylophone",
+                  "Tubular Bells", "Tam-tam", "Snare Drum"):
+        match = lookup(label)
+        assert match is not None, f"{label} unread"
+        assert match.instrument.family == "percussion", label
+
+
+def test_basso_is_ambiguous_rather_than_decided():
+    """"Basso" is the contrabass at the foot of the strings and the bass voice
+    under a vocal stave, and the word is identical — so the lexicon must OFFER
+    both and let `score_layouts.resolve_ambiguous_label` settle it from where
+    the staff sits. Deciding it here is what put Mozart 41 and Mahler 5 out of
+    score order, a voice appearing below the cellos."""
+    for alias in ("basso", "basse", "bass"):
+        names = [i.name for i in candidates_for_alias(alias)]
+        assert "Contrabass" in names and "Bass voice" in names, alias
+    # the first entry stays the lexicon's own answer, so nothing moves when the
+    # score-order prior has no opinion
+    assert lookup("Basso").instrument.name == "Bass voice"
+
+
+def test_a_longer_alias_still_wins_over_bare_bass():
+    for label, expected in (("Bass Clarinet", "Bass clarinet"),
+                            ("Bass Trombone", "Trombone"),
+                            ("Bass Drum", "Percussion")):
+        assert lookup(label).instrument.name == expected, label
