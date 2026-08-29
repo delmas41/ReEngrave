@@ -240,6 +240,8 @@ from .line_detection import detect_lines
 from .voicing import group_chords_in_measure, split_events_into_voices
 from .dossier import (
     apply_meter,
+    slot_facts_for_page,
+    slot_facts_for_system,
     check_total_measures,
     resolve_dossier,
     summarize as summarize_dossier_warnings,
@@ -1078,6 +1080,9 @@ def _detections_for_cell(
     clef_reader_imgsz: int = 640,
     clef_reader_header_frac: float = 0.42,
     locate_c_clefs: bool = True,
+    forced_clef: str | None = None,
+    forced_fifths: int | None = None,
+    clef_overrides: list[dict[str, Any]] | None = None,
 ) -> tuple[
     list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None, str | None
 ]:
@@ -1105,6 +1110,8 @@ def _detections_for_cell(
     supplied a clef IN THIS CELL — "detector", "specialist", "cv_locator", or
     None when the clef was carried in rather than read here.
     """
+    if clef_overrides is None:
+        clef_overrides = []
     dets = detector.detect(
         cell,
         conf_threshold=conf_threshold,
@@ -1222,6 +1229,32 @@ def _detections_for_cell(
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
+
+    # ── Dossier override. The work's own written clef and key signature, when
+    #    the caller supplied a dossier AND the part→staff join was safe enough
+    #    to establish one (dossier.slot_facts_for_system decides that, not us).
+    #
+    #    It runs LAST, after every reader, because unlike them it is not an
+    #    opinion: it is what the page says, taken from the score. Every other
+    #    ordering here is "later reader wins where earlier ones were silent";
+    #    this one wins even where they spoke, because a reader that disagrees
+    #    with the work is wrong. Measured on an engraved Brahms 1 excerpt the
+    #    detector read a bass staff and a tenor staff as treble, and those two
+    #    clefs alone mis-pitched 98 of the page's notes.
+    #
+    #    What each reader said is still returned via `clef_source`, so an
+    #    override is visible rather than silent.
+    if forced_clef is not None and forced_clef != active_clef:
+        overridden_clef = active_clef if clef_source else None
+        active_clef = forced_clef
+        clef_source = "dossier"
+        if overridden_clef is not None:
+            clef_overrides.append({"read": overridden_clef, "used": forced_clef})
+    elif forced_clef is not None:
+        clef_source = clef_source or "dossier"
+
+    if forced_fifths is not None:
+        active_key_sig = alterations_for_fifths(forced_fifths)
 
     # ── Classical-CV line detection: stems + cleaner beams. The YOLO
     #    Phase 3.3 model misses stems entirely and emits beam bboxes
@@ -2336,6 +2369,7 @@ def transcribe(
     locate_c_clefs: bool = True,
     read_headers: bool = True,
     dossier: dict[str, Any] | None = None,
+    dossier_seeding: bool = True,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -2521,6 +2555,17 @@ def transcribe(
         else:
             voted_fifths, voted_reasons = {}, {}
 
+        # Dossier slot facts for the whole page, used when per-system grouping
+        # is too fragmented to join (which is the normal case — see
+        # dossier.slot_facts_for_page). Consumed by a running top-to-bottom
+        # index across systems, which is the order the staves were detected in.
+        page_staff_total = sum(len(systems[k]) for k in systems)
+        page_slot_facts = (
+            slot_facts_for_page(page_staff_total, dossier)
+            if (dossier is not None and dossier_seeding) else None
+        )
+        page_slot_cursor = 0
+
         t_yolo = time.perf_counter()
         for sys_idx in sorted(systems.keys()):
             staff_keys = sorted(systems[sys_idx].keys())
@@ -2532,6 +2577,12 @@ def transcribe(
             # Clef continuity: this system may inherit per-role clefs from a
             # same-sized previous system, and builds its own role map as it goes.
             clef_continuity.start_system(len(staff_keys))
+            # Per-staff written clef + key from the dossier, or None when there
+            # is no dossier, seeding is off, or the part→staff join is unsafe.
+            system_slot_facts = (
+                slot_facts_for_system(len(staff_keys), dossier)
+                if (dossier is not None and dossier_seeding) else None
+            )
             for position_in_system, staff_idx in enumerate(staff_keys):
                 staff_cells = systems[sys_idx][staff_idx]
                 # Pick a starting clef for this staff. A clef detection in the
@@ -2546,6 +2597,19 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     clef_continuity.starting_clef(position_in_system, role_default),
                 )
+                # The work's own clef and key for this staff, when a dossier was
+                # given and its parts join 1:1 to this system's staves. None
+                # everywhere else, which leaves the readers in charge.
+                if system_slot_facts is not None:
+                    slot = system_slot_facts[position_in_system]
+                elif page_slot_facts is not None:
+                    slot = page_slot_facts[page_slot_cursor]
+                else:
+                    slot = None
+                page_slot_cursor += 1
+                forced_clef = slot["clef"] if slot else None
+                forced_fifths = slot["fifths"] if slot else None
+                staff_clef_overrides: list[dict[str, Any]] = []
                 # Seed from the located + reconciled reading when there is one.
                 # A keySharp / keyFlat the detector finds in the music replaces
                 # it, so this only decides staves the detector says nothing about
@@ -2612,6 +2676,9 @@ def transcribe(
                                 cell_idx == 0 and staff_idx in voted_fifths
                             ),
                             read_clef=(cell_idx == 0),
+                            forced_clef=forced_clef,
+                            forced_fifths=forced_fifths,
+                            clef_overrides=staff_clef_overrides,
                             clef_reader_conf=clef_reader_conf,
                             clef_reader_imgsz=clef_reader_imgsz,
                             clef_reader_header_frac=clef_reader_header_frac,
@@ -2647,6 +2714,11 @@ def transcribe(
                 # transposes every note on the staff.
                 if first_cell_clef_source is not None:
                     staff_dict["clef_source"] = first_cell_clef_source
+                # What the readers said where the dossier overruled them. Kept
+                # so a seeded run can still be audited for detector quality —
+                # seeding must not hide how well the page was actually read.
+                if staff_clef_overrides:
+                    staff_dict["clef_overridden_by_dossier"] = staff_clef_overrides[0]
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}
                 )
@@ -2952,6 +3024,13 @@ def main(argv: list[str] | None = None) -> int:
                          "work does not contain. Build them from MusicXML with "
                          "tools.omr.training.build_dossiers. See "
                          "tools/omr/dossier.py.")
+    ap.add_argument("--no-dossier-seeding", action="store_true",
+                    help="With --dossier, CHECK the reading against the work "
+                         "but do not seed from it. By default a dossier also "
+                         "supplies each staff's written clef and key signature "
+                         "— the thing clef detection is worst at — but only "
+                         "where its parts join 1:1 to the system's staves. Use "
+                         "this to measure what the detector reads unaided.")
     ap.add_argument("--no-clef-locator", action="store_true",
                     help="Disable the classical-CV C-clef locator. It runs only "
                          "where no model read a clef, and only recognises C "
@@ -3058,6 +3137,7 @@ def main(argv: list[str] | None = None) -> int:
         locate_c_clefs=not args.no_clef_locator,
         read_headers=not args.no_header_reading,
         dossier=dossier,
+        dossier_seeding=not args.no_dossier_seeding,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )

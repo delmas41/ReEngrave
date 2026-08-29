@@ -1,0 +1,267 @@
+[
+  {
+    "work_id": "beethoven-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth": {
+      "parts": 18,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 81
+    },
+    "omr": {
+      "parts": 18,
+      "measures": 14,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        14,
+        11,
+        9,
+        9
+      ],
+      "notes": 93
+    },
+    "detected": {
+      "systems": 4,
+      "staves": 18
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 81,
+      "omr_notes": 93,
+      "pitch_matched": 56,
+      "pitch_recall": 0.691,
+      "pitch_precision": 0.602,
+      "duration_ok_on_matched": 42,
+      "duration_rate": 0.75
+    },
+    "rhythm_reconciliations": 2,
+    "dossier_warnings": {
+      "dossier_meter_disagreement": 31
+    },
+    "dossier_used": true
+  },
+  {
+    "work_id": "brahms-sym1-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth": {
+      "parts": 21,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 661
+    },
+    "omr": {
+      "parts": 21,
+      "measures": 9,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        6,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        9,
+        2,
+        2
+      ],
+      "notes": 496
+    },
+    "detected": {
+      "systems": 12,
+      "staves": 21
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 661,
+      "omr_notes": 496,
+      "pitch_matched": 167,
+      "pitch_recall": 0.253,
+      "pitch_precision": 0.337,
+      "duration_ok_on_matched": 63,
+      "duration_rate": 0.377
+    },
+    "rhythm_reconciliations": 1,
+    "dossier_warnings": {},
+    "dossier_used": true
+  },
+  {
+    "work_id": "mahler-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth": {
+      "parts": 38,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 24
+    },
+    "omr": {
+      "parts": 31,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 46
+    },
+    "detected": {
+      "systems": 4,
+      "staves": 31
+    },
+    "notes": {
+      "part_aligned": false,
+      "truth_notes": 24,
+      "omr_notes": 46,
+      "pitch_matched": 5,
+      "pitch_recall": 0.208,
+      "pitch_precision": 0.109,
+      "duration_ok_on_matched": 1,
+      "duration_rate": 0.2
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {
+      "dossier_clef_absent": 1
+    },
+    "dossier_used": true
+  }
+]

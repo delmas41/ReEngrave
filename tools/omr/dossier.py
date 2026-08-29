@@ -383,6 +383,52 @@ def check_slot_alignment(page: dict[str, Any],
     return out
 
 
+# ── seeding: the dossier as an INPUT, not only a judge ──────────────────────
+
+def slot_facts_for_system(n_staves: int,
+                          dossier: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """Per-staff written clef and key signature, or None when the join is unsafe.
+
+    Same gate as `check_slot_alignment`, and for the same reason: a printed
+    score condenses and splits, so part index equals staff index only when the
+    two counts agree. Everything else abstains.
+
+    This is what turns the dossier from a checker into a source. Clef DETECTION
+    is the documented ceiling on the whole header layer — 2% coverage on
+    orchestral scans — and it has already resisted a fine-tune (which collapsed
+    dense-page noteheads), ensemble voting, and a CV locator. None of that
+    matters if the clef is simply known.
+    """
+    parts = dossier.get("parts") or []
+    if not parts or len(parts) != n_staves:
+        return None
+    return [
+        {"clef": p.get("written_clef"), "fifths": p.get("written_fifths"),
+         "part": p.get("name")}
+        for p in parts
+    ]
+
+
+def slot_facts_for_page(n_staves_on_page: int,
+                        dossier: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """The same join, made against the whole PAGE rather than one system.
+
+    Needed because system grouping is unreliable: measured on an engraved
+    Brahms 1 excerpt, one musical system of 21 staves was reported as TWELVE
+    systems of 1–5 staves, so a per-system join can never match a 21-part
+    dossier even though the page is a perfect 1:1. Beethoven 5 splits 18 staves
+    across 4 systems the same way.
+
+    A conductor's page normally carries exactly one system, so page staff count
+    equalling part count is the same evidence the per-system test was reaching
+    for, and it survives the grouping being wrong. A page holding two real
+    systems would count 2 × parts and fail this, which is the desired answer.
+
+    Prefer `slot_facts_for_system` where it applies; this is the fallback.
+    """
+    return slot_facts_for_system(n_staves_on_page, dossier)
+
+
 # ── whole-run check ──────────────────────────────────────────────────────────
 
 def check_total_measures(result: dict[str, Any],

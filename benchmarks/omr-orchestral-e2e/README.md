@@ -67,6 +67,40 @@ eighths, the bar is exact, and that is what the page says. Duration accuracy on
 the excerpt moved 0.673 → 0.731 with note recall and precision unchanged — the
 correction re-reads durations and never adds or drops a note.
 
+## Seeding: the dossier as an input, not only a judge
+
+Clef DETECTION is the documented ceiling on the header layer — 2% coverage on
+orchestral scans — and it has resisted a fine-tune (which collapsed dense-page
+noteheads), ensemble voting, and a CV locator. None of that matters if the clef
+is simply known. With `--dossier` the pipeline now also SEEDS each staff's
+written clef and key signature, where the parts join 1:1 to the staves.
+
+| work | recall | precision | duration | matched notes |
+|---|---|---|---|---|
+| beethoven-sym5-mvt1 | 0.642 → **0.691** | 0.559 → **0.602** | 0.731 → **0.750** | 52 → 56 |
+| brahms-sym1-mvt1    | 0.206 → **0.253** | 0.274 → **0.337** | 0.397 → 0.377 | 136 → **167** |
+| mahler-sym5-mvt1    | 0.208 → 0.208 | 0.109 → 0.109 | 0.200 → 0.200 | 5 → 5 |
+
+Brahms's duration *rate* dips only because the denominator grew faster than the
+numerator: absolute `duration_ok` went 54 → 63 on 31 more matched notes.
+Mahler is unchanged because it detects 31 staves against 38 parts, so the join
+is unsafe and seeding correctly abstains — which is the behaviour that makes
+this safe to leave on.
+
+### It exposed system grouping as the real blocker
+
+Seeding did nothing at first. The per-system join could never match, because
+**Phase 1 reports one musical system of 21 Brahms staves as TWELVE systems** of
+1–5 staves each; Beethoven's 18 staves come back as 4 systems. The counts are
+right, the grouping is not.
+
+A page-level join (page staff total == part count) works around it — a
+conductor's page normally carries one system — and that is what produced the
+numbers above. But the fragmentation is worth fixing on its own: it is the kind
+of structural error that moves every note after it. Note that
+`claude/reengraver-contextual-analysis-29cdd5` carries an unmerged system
+grouping improvement measured at 43% → 86%.
+
 ## It also settled the DPI question
 
 Running this at 300 DPI — which the authored fixtures prefer — collapses

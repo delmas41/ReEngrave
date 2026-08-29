@@ -342,6 +342,22 @@ meter is what the meter IS, so a detected meter that disagrees is a misread and
 is replaced — every override is still reported. Measured on an engraved
 Beethoven 5 excerpt the detector read 4/4, 4/24 and 7/24 across a 2/4 movement.
 
+**The dossier also SEEDS, not just checks.** With `--dossier` the pipeline takes
+each staff's written clef and key signature from the work, where the parts join
+1:1 to the staves (`--no-dossier-seeding` turns this off). Clef detection is the
+documented ceiling — 2% coverage on orchestral scans, and a fine-tune, ensemble
+voting and a CV locator have all failed to move it — so knowing the clef beats
+reading it. Measured on the orchestral benchmark: Beethoven recall .642 → .691,
+Brahms .206 → .253 (matched notes 136 → 167). Mahler is untouched because it
+detects 31 staves against 38 parts and the join correctly abstains.
+
+**Caveat: system grouping is fragmented, so the join is made at PAGE level.**
+Phase 1 reports one 21-staff Brahms system as *twelve* systems of 1–5 staves, so
+a per-system join can never match. `slot_facts_for_page` falls back to page
+staff total == part count. Worth fixing at source —
+`claude/reengraver-contextual-analysis-29cdd5` has an unmerged 43% → 86%
+improvement.
+
 **Do not use dossiers to generate training labels.** The MXL→bounding-box path
 is closed: F1 0.064 on 76 hand-mapped cells, x-drift diagnosed as the cause.
 Measure-level alignment works; per-symbol placement does not.

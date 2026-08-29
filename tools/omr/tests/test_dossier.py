@@ -300,3 +300,27 @@ def test_parse_time_signature_rejects_an_absurd_numerator():
     dets = [FakeDigit(40, 10, 6), FakeDigit(60, 10, 8),  # 68
             FakeDigit(40, 40, 4)]
     assert parse_time_signature(dets) is None
+
+
+# ── seeding: the dossier as an input ────────────────────────────────────────
+
+def test_slot_facts_join_only_when_counts_match():
+    d = make_dossier()
+    assert dz.slot_facts_for_system(4, d) is not None
+    assert dz.slot_facts_for_system(6, d) is None
+    assert dz.slot_facts_for_system(0, d) is None
+
+
+def test_slot_facts_carry_written_clef_and_key():
+    facts = dz.slot_facts_for_system(4, make_dossier())
+    assert [f["clef"] for f in facts] == ["treble", "treble", "alto", "bass"]
+    assert [f["fifths"] for f in facts] == [-3, -1, -3, -3]
+
+
+def test_page_level_join_survives_broken_system_grouping():
+    """One musical system of 21 staves was reported as TWELVE systems of 1-5,
+    so a per-system join can never match. The page total still can."""
+    d = make_dossier()
+    assert dz.slot_facts_for_page(4, d) is not None
+    # Two real systems on one page count 2x parts and must NOT join.
+    assert dz.slot_facts_for_page(8, d) is None
