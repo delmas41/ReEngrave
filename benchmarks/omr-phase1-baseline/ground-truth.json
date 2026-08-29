@@ -1,0 +1,57 @@
+{
+  "_comment": [
+    "Hand-verified Phase-1 layout truth. Every number here was read off the",
+    "printed page by a human, NOT copied from pipeline output — that is the",
+    "whole point. The previous baseline in test_pipeline.py was written from an",
+    "eyeballed layout that was never checked, and two of its numbers were wrong",
+    "in the direction that HID bugs: it asserted 18 staves on a 22-staff page,",
+    "which a phantom staff satisfied, and 3 bars in a 2-bar system.",
+    "",
+    "Verified by Sean 2026-08-28 (beethoven-5 p.10, both systems; wtc p.6",
+    "system 2) and by an independent ink probe that scores columns of near-",
+    "solid ink across each staff's full 5-line span (wtc p.6, all systems).",
+    "The probe is deliberately not the detector: it shares no thresholds with",
+    "measure_extractor, so agreement between them is evidence, not tautology."
+  ],
+  "pages": {
+    "wtc-p5": {
+      "source": "IMSLP932182 Well-Tempered Clavier I, PDF page index 5 (printed p.6), 600 DPI",
+      "verified_by": "ink probe (all systems) + Sean (system 2)",
+      "n_staves": 10,
+      "n_systems": 5,
+      "staves_per_system": [2, 2, 2, 2, 2],
+      "measures_per_system": [3, 2, 3, 3, 3],
+      "n_cells": 28,
+      "notes": [
+        "System 2 has TWO bars, not three. The detector finds a third barline at",
+        "x=4476 where two stems align across the staves; no ink crosses the gap",
+        "between the staves there."
+      ]
+    },
+    "beet5-p10": {
+      "source": "IMSLP984073 Beethoven 5, PDF page index 10 (m274/m288), 600 DPI",
+      "verified_by": "Sean 2026-08-28",
+      "n_staves": 22,
+      "n_systems": 2,
+      "staves_per_system": [11, 11],
+      "measures_per_system": [14, 15],
+      "n_cells": null,
+      "notes": [
+        "A pocket score: 15.8px line spacing at 600 DPI. The wind staves are",
+        "printed lightly enough that their lines break into ~25 runs with gaps",
+        "up to 11 staff spaces, which is why they were missed entirely and why",
+        "their x-extents are still wrong (see known_gaps)."
+      ]
+    }
+  },
+  "known_gaps": [
+    {
+      "page": "beet5-p10",
+      "symptom": "systems read as [1, 10, 11] instead of [11, 11]",
+      "cause": "staff_detector._staff_x_extent returns the longest CONTIGUOUS ink run on the middle line. On these lightly printed staves that run is a fragment: staff 0 reads x=353..1379 while staff 1 reads x=1715..2633, so they do not overlap and _assign_systems splits them on its x_overlap_frac <= 0.5 rule.",
+      "measured": "staff 0's middle line spans 276..2633 (the full staff) but in 28 runs, 13 of whose gaps exceed one staff space; the largest is 175px = 11 staff spaces.",
+      "owner": "branch claude/clef-recognition-improvement-ab75f6 is rewriting _staff_x_extent (commit 46ca8c6) with a one-staff-space bridge. Simulated here: a one-space bridge does NOT close these gaps and the split remains. That branch needs a far more generous bridge for faint prints, and this measurement is the input for it.",
+      "not_fixed_here": "to avoid a second, conflicting rewrite of a function that branch is actively changing"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-06-10 (process audit)
+**Last updated:** 2026-08-28 (OMR header layer — clefs and key signatures)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -19,7 +19,12 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 2. **An in-house YOLO + classical-CV OMR pipeline** — `tools/omr/`, fine-tuned on DeepScoresV2 (F1 98.8% on the Bach WTC verdict set). Built May 2026 across 49 commits / Phase 1 → Phase 4m.
 3. **Maestro theory layer** (shipped 2026-05-24) — `tools/maestro_bridge/` (TypeScript, runs host-side via node/tsx) + `backend/modules/theory_layer.py`. Env-gated: harmony/rhythm validation, scholarly cross-check against 5 seed works, and in-pipeline pitch re-ranking with auto-correction (M4, local-YOLO pipeline only). See [docs/maestro-integration-plan.md](docs/maestro-integration-plan.md).
 
-**Current activity (June 2026): hand-labeling round to improve the model on dense orchestral scores.** Labeling sessions ran 2026-06-08 → 06-10 (Beethoven 5); a draw-from-scratch labeling mode landed 2026-06-09; label set `v2-2026-06-08-beet5` (37 cells) was produced, and v1 labels were cleaned to the current doctrine (structural elements — staff lines / stems / beams — are no longer boxed; they're classical-CV's job).
+**Current activity (August 2026): reading the staff HEADER — clef and key signature — by geometry rather than classification.** Twenty-five merges since the last audit, in three arcs:
+
+- **July — deterministic verification layers.** Five internal-consistency checks (time-sig, rhythm sums, measure counts, transposition-aware key agreement, advisory clef-from-register) that ABSTAIN where detection is blind rather than guess. Two training experiments were run properly and **disproven**: ScoreAug/Augraphy domain augmentation made real-cell recall worse, not better, and fine-tuning the detector on clef cells collapses dense-page noteheads. Both are dead recipes; don't retry them.
+- **August — a trusted Phase-1 baseline.** Layout had no regression baseline at all, which had blocked several fixes. Now: a hand-verified ground-truth fixture, a corpus probe, and xfails for known gaps. That unblocked real bugs — phantom staves, music deleted after a false barline, staff-line removal being a no-op on thick-line prints, body text detected as staves.
+- **August — the header layer.** Clef *reading* is now measured rather than classified (alto/tenor/soprano are the same glyph on different lines, so no classifier can separate them), and key signatures are read by fitting accidental POSITIONS to the slot table for (clef, N) and reconciling across the page.
+- **August — contextual analysis, and the over-detection bug it turned up.** The pipeline now knows *which staff is which instrument*: systems from vertical connectivity (43% → 86%), instrument identity from the PDF text layer and, for scans, from a margin reader, and stable part slots across systems and pages. Re-running the whole-pipeline validation for the first time since May then exposed the single largest accuracy bug in the project — `imgsz` was set so high the detector was reporting 2–4× the notes that exist. Fixing it took end-to-end pitch precision from **0.144 to 1.000** on the keyboard fixture.
 
 ---
 
@@ -72,7 +77,48 @@ Payments: Stripe webhook, $5/score for Vision diff, admin-email bypass.
 | `staff_line_removal.py` | Optional staff-removed cell variant |
 | `annotate/` | FastAPI labeling UI — triage mode + draw-from-scratch mode (2026-06-09) |
 | `training/` | DSv2 prep + ultralytics training scripts |
-| `tests/` | 156 unit tests |
+| `tests/` | 680 unit tests |
+
+### Reading the staff header (`tools/omr/staff_header.py` + friends)
+
+On by default in `transcribe`; `--no-header-reading` turns it off. No extra weights needed.
+
+- **The header window is measured from the page**, not taken from the staff-start measure cell — on degraded prints that cell routinely begins *past* the clef. Measured over 26 pages of 20 scores, 233/455 staves have a clef inside their measured window (`benchmarks/omr-key-signature/probe_header_windows.py`).
+- **Clefs are read by geometry** (`clef_geometry.py`) — which staff line the glyph is centred on. Exact rather than probabilistic, and it is the only thing that can separate alto from tenor from soprano. A classical-CV locator (`clef_locator.py`) finds C clefs the detector cannot see at any confidence.
+- **Key signatures are read by position** (`key_signature_geometry.py`) and reconciled across staves and systems (`key_signature_vote.py`). Both the detector's markers and the locator's clusters go through the same vote.
+
+Measured, given a correct clef, on 42 hand-read orchestral staves: **18 correct / 0 wrong / 16 missed / 8 correct abstentions**. End to end on a clean engraving (Bach WTC p.17) 10/10. End to end on degraded orchestral prints it is far lower — 2 staves of 20 on Beethoven 6 p.2, none on Beethoven 5 p.2 — because a staff whose clef is only the positional default is skipped by design. **Key signatures inherit the clef problem, and clef coverage is the ceiling on both.**
+
+### Contextual analysis — which staff is which instrument (`tools/omr/`)
+
+A human reading a large score deduces most of it from context: which staves transpose,
+what instrument order to expect, what the natural groupings are. The pipeline now does
+some of that.
+
+- **`system_grouping.py`** — systems from **vertical connectivity**, not gap size. A
+  system break is a gap no vertical ink crosses, because barlines and the bracket run
+  through a system and nothing runs between two of them. System-count accuracy **43% →
+  86%** over 14 bracket-verified pages, and spurious single-staff "systems" 19 → 0. The
+  same pass recovers the instrument-family grouping as `Staff.group_index` (verified on
+  Beethoven 9: 4 woodwinds | 2 horns | 5 strings).
+- **`instruments.py` + `staff_labels.py`** — instrument identity from the PDF's text
+  layer, free. 18/65 IMSLP score PDFs have one; **79% of labelled staves resolve**. The
+  lexicon maps a printed label to instrument, family, default clef, written range and
+  transposition (`fifths_offset = -fifths(key_name)`).
+- **`staff_labels_vision.py`** — the same for scans, reading the margin with Claude.
+  Opt-in (`vision_fallback=True`), because it costs money — about a cent per system, and
+  bounded per *work* rather than per page since slots propagate one reading. Validated
+  against the text layer as free ground truth: **25 agree, 0 disagree, 30 recovered,
+  0 missed** on 76 staves.
+- **`slots.py`** — stable part identity across systems and pages, by **monotone sequence
+  alignment**. Index matching fails because a system omits the staves of instruments
+  tacet through it. **100% label purity**, 198/217 staves assigned.
+- **`clef_correction.py`** — proposes a clef from the instrument's written range where
+  no reader read one. Gated on `staff["clef_source"]` being absent, never on a scan for
+  clef detections: the geometry readers emit no detection, so a scan would overwrite a
+  confidently-read clef.
+
+Benchmarks: `benchmarks/omr-system-grouping-2026-08/`, `benchmarks/omr-margin-labels-2026-08/`.
 
 ### Hand-labeled training data (`data/user-labeled/`)
 
@@ -99,24 +145,45 @@ The branch also carries **post-experiment OMR improvements that may still be val
 
 ## Unmerged work on branches
 
-Audit 2026-06-10. Five branches hold commits absent from main:
+Audit 2026-08-28 (contextual-analysis branch merged since).  Branches holding commits absent from main; these are the ones worth a decision. Anything not listed is an archive of a concluded experiment.
 
 | Branch | Commits | What it has | Disposition |
 |---|---|---|---|
-| `claude/interesting-curran-3ca1b7` | 43 | Catalog experiment Phases A–L (above) **plus** 2026-05-25 `line_detection` improvements (beam fragment-merge + NMS dedup, cell-width filter, notehead-anchored stems, clef masking) and a stem-precision benchmark UI | Evaluate the line_detection + benchmark commits for cherry-pick; keep branch as the experiment's archive |
-| `claude/gallant-hellman-29ffdd` | 3 | Per-class OMR improvements: grammar verification, phantom-rest corrector, imgsz ensemble `[1280, 2048]` in hand-labeling pre-label runs | Evaluate for cherry-pick (overlaps with curran's ensemble commit) |
-| `claude/magical-bhabha` | 1 (March) | **Real MusicXML measure-level patching in `export_module`** — an implementation of what docs list as the #1 web-app TODO | Pre-consolidation code; evaluate against current export_module before deciding |
-| `claude/peaceful-kapitsa` | 1 (March) | SQLite-backed persistent job queue replacing FastAPI BackgroundTasks — another listed limitation | Same: pre-consolidation; evaluate or discard |
-| `claude/quizzical-bell` | 1 (April) | The parked `/engrave` skill (Claude Vision-only OMR) | Superseded by local YOLO; backed up on origin; safe to delete |
+| `claude/omr-clef-tenor-fixture` | 1 | **The F-clef dot veto fires on C clefs.** Fixes the engraved reference sheet 4/5 → 5/5 and orchestral clef precision 1/2 → 3/4, with Bach still at 0 false positives. | **Deliberately held back.** Correct in isolation; makes shipped key signatures worse, because the clefs it gains open the key-sig gate on staves the key-sig reader misreads. Reasons in `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`. Ship once the viola misread is fixed. |
+| `claude/omr-info-retention-erasure-c26534` | 13 | Information retention through the erasure/removal stages | Unreviewed |
+| `claude/recognition-improvement-next-2f1709` | 10 | Follow-on recognition work | Unreviewed |
+| `claude/omr-dossier-verification-layer-eaf6d0` | 4 | Dossier-guided verification, slice 1 (meter back-fill + column notation-math) | Active WIP; the reconciliation recipe against main is written up in `docs/internal-consistency-checks.md` but not executed |
+| `claude/interesting-curran-3ca1b7` | 43 | Catalog experiment Phases A–L (concluded, do not retrain from it) **plus** 2026-05-25 `line_detection` improvements | Keep as the experiment's archive; the `line_detection` commits are still worth a cherry-pick review. Its label-EMITTER half is validated prior art for MXL-guided auto-labeling. |
+| `clef-phase0-eval` / `claude/scoreaug-fair-test-a2928e` / `claude/training-domain-augmentation-a29baf` | 15 / 2 / 3 | The two **disproven** training experiments and their audit tooling | Archives. Do not deploy their weights; do not retry the recipes. |
+| `claude/magical-bhabha` | 1 (March) | **Real MusicXML measure-level patching in `export_module`** — the #1 web-app TODO | Pre-consolidation code; evaluate against current `export_module` |
+| `claude/peaceful-kapitsa` | 1 (March) | SQLite-backed persistent job queue replacing FastAPI `BackgroundTasks` | Same: pre-consolidation; evaluate or discard |
+| `claude/quizzical-bell` | 1 (April) | The parked `/engrave` skill (Claude Vision-only OMR) | Superseded; safe to delete |
 
 ---
 
 ## What does not yet work / known limitations
 
+
+- **Detection was massively over-reporting until 2026-08-28.** `imgsz` defaulted to 2048
+  in the CLI and 1280 in the backend; ultralytics letterboxes to `imgsz²` regardless of
+  cell size, so both were simply buying anchors and false noteheads. Now 512 everywhere.
+  Anything measured before that date — notehead counts, "100% pitch coverage", the
+  July confidence probe's false-positive flood — was measured through this and may need
+  re-reading. `benchmarks/omr-imgsz-sweep-2026-08/findings.md`.
+- **Instrument identity needs a text layer or a paid vision call.** 18/65 corpus PDFs
+  have a text layer; the rest need `vision_fallback=True`.
+- **One-line percussion staves are invisible.** `_group_into_staves` accepts only
+  five-peak windows, so a single-line staff produces no `Staff` at all and every staff
+  below it carries a `staff_index` one lower than its true slot. Proven in
+  `tools/omr/tests/test_system_grouping.py`.
 **OMR**
 
 - **Custom YOLO classes (barlines, textDynamic) caused catastrophic forgetting.** Phase 3.4 expanded `nc` from 208 → 214; F1 collapsed to 79.3%. Currently: barlines via classical CV; textDynamic not detected. Re-introduce when there are 200+ examples per new class or seed with synthetic warm-up. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
-- **OMR time-signature digit detection is unreliable** — the DSv2 model often misclassifies digit glyphs, so `time_signature` is `null` for many pages. *(Branch `claude/omr-time-signature-inference-e547f1`, unmerged: left-edge misread filter + detected-C/cut-C propagation + conservative beat-sum back-fill; on dense conductor's scores every "detected" meter turned out to be an instrument-number misread — now dropped — and beat-sum inference safely abstains because rhythm resolution there is too corrupted. Net lever is upstream rhythm/segmentation quality.)*
+- **OMR time-signature digit detection is unreliable** — the DSv2 model often misclassifies digit glyphs, so `time_signature` is `null` for many pages. The deterministic layer (merged 2026-07-11) filters left-edge instrument-number misreads, propagates a detected C / cut-C, and back-fills from a per-column beat-sum vote, but abstains rather than guessing on dense pages. Root cause is a synthetic→real domain gap, not a threshold.
+- **Clef COVERAGE is the ceiling on the whole header layer.** Reading is solved — where a clef reaches the reader it is named correctly essentially always (7/7 on the hand-checked page, 0 false positives on 10 pages of Bach piano). Coverage on main is 43 of 191 header cells (23%) on Nottebohm and 3 of 168 (2%) on orchestral — the unmerged dot-veto fix would take the orchestral figure to 13. One branch of `locate_clef` holds the rest: the clef fuses into a cluster bigger than any C clef and the search stops. Measure it with `benchmarks/omr-clef-geometry/probe_clef_rejection.py`; three approaches are already measured and closed in `NEXT_SESSION_HEADER_CLUSTER.md`.
+- **The header clef is computed and then thrown away.** `transcribe` reads a clef per staff in the header pass, uses it only to choose a key-signature slot table, and never writes it to the output — the measure pass then defaults the staff to treble. Everything the locator learns about orchestral clefs is currently spent on key signatures alone.
+- **The key-signature vote can be captured by a repeated misread.** Cross-system agreement is treated as corroboration, but a systematic misread — same engraving, same glyph, same print quality — repeats by construction. Measured on Beethoven 6 p.2: two systems of one misread viola staff set the page's modal reference and rejected the one correct reading on it.
+- **Two training recipes are DISPROVEN — do not retry.** ScoreAug/Augraphy domain augmentation made dense real-cell notehead recall *worse* than the clean control (0.652 → 0.384 → 0.122), and was best on synthetic validation while worst on real pages. Fine-tuning the shared detector on clef cells fixes clefs and collapses dense-page noteheads (2506 → 114). See `benchmarks/omr-phase*/` and the branch archives.
 - **Per-measure beat sums on busy keyboard music** are close to but not exactly the time signature — LilyPond bar-check warnings typically report fractional offsets (1/32, 3/32) rather than full-beat errors.
 - **Dense orchestral conductor's scores** (Mahler 5, Debussy La Mer) have more false negatives on small dynamics + grace notes. Path forward: the active hand-labeling rounds via `tools/omr/annotate`.
 
@@ -150,16 +217,27 @@ Audit 2026-06-10. Five branches hold commits absent from main:
 | 2026-05-24 | **Maestro theory layer shipped** (M0–M4 + follow-ups A/B, on main): bridge CLI, harmony/rhythm validation, scholarly cross-check (5 seed works), in-pipeline pitch re-ranking with auto-correction, wired into both OMR engines behind env flags. |
 | 2026-06-08 → 06-10 | **Hand-labeling round on Beethoven 5.** Draw-from-scratch labeling mode + box delete (commit 1fe5484). Label set `v2-2026-06-08-beet5` (37 cells) created; v1 cleaned of structural-element boxes. Batches: 05-24 ✅ (became v2), 06-09 ✅ (35/36, not yet converted), 06-10 in progress (21/36), 06-08 abandoned. |
 | 2026-06-10 | **Process audit** — docs refreshed, stale worktrees/branches pruned, orphaned label data committed. |
+| 2026-07-10 → 07-13 | **Deterministic verification layers.** Five internal-consistency checks merged (time-sig disagreement, column rhythm sums, cross-staff measure counts, transposition-aware key agreement, advisory clef-from-register) — a safety net that abstains where detection is blind. Capstone: `docs/internal-consistency-checks.md`. Also the `catalog.yaml` nc=208 cap + `train_yolo.py` nc guard, closing the Phase-3.4 silent-head-reset footgun. |
+| 2026-07-13 | **Two training recipes disproven, properly.** A fair three-way fine-tune showed ScoreAug/Augraphy domain augmentation is *worse* than the clean control on real cells, and best on synthetic validation — i.e. synthetic validation is misleading here. Separately, clef fine-tuning fixes clefs and collapses dense-page noteheads. Both dead; the real levers are verification layers and real data. |
+| 2026-08-28 | **Phase 1 finally has a trusted baseline** — a hand-verified ground-truth fixture, a corpus probe and xfails for known gaps. That unblocked fixes that had been parked for want of one: phantom-staff collapse, music deleted after a false barline, staff-line removal being a total no-op on thick-line prints (0.9% → 89.7%), and paragraphs of body text being detected as staves. |
+| 2026-08-28 | **The staff-header layer.** Clef reading by geometry rather than classification (`clef_geometry.py` + a CV C-clef locator), key signatures by fitting accidental positions to the slot table and reconciling across the page (`key_signature_*.py`), both working from one measured header window (`staff_header.py`). 18 correct / 0 wrong on 42 hand-read orchestral staves given a correct clef; 10/10 end-to-end on a clean engraving. |
+| 2026-08-28 | **Retuned against the new Phase-1 geometry, and found a live defect.** The gap-bridging x-extent fix broke an invariant the header window relied on; correcting it took the two orchestral ground-truth pages from 6 correct / 7 wrong to 18 / 0, and turned two *shipped* wrong key signatures on Beethoven 6 p.2 into two correct ones. Also fixed brace residue blocking the clef search (Nottebohm coverage 32 → 43 cells). |
+| 2026-08-28 | **Contextual analysis + the over-detection fix.** Systems by connectivity (43% → 86%), instrument identity from the text layer and, for scans, a margin reader, stable part slots (100% label purity), clef from instrument range. Re-running the whole-pipeline validation for the first time since May found `imgsz` over-reporting notes 2–4×; fixing it took end-to-end pitch precision 0.144 → 1.000 on the keyboard fixture, and every metric on every fixture improved. Also disproved clef-from-key-fit with measurements. |
 
 ---
 
 ## What's parked / next up
 
-Immediate (from the current labeling round):
+Immediate, in dependency order — the first two unlock the third:
 
-1. **Finish the 2026-06-10 labeling batch** (21/36 verdicts done), then convert the finished 06-09 + 06-10 batches → `v3` via `verdicts_to_yolo_labels` + rebuild the catalog.
-2. **Retrain / fine-tune on v1+v2(+v3)** and re-evaluate on the verdict sets. (2026-07-10: the committed `catalog.yaml` is now capped at nc=208 — custom-class boxes filtered via `_nc208/` — and `train_yolo.py` fails fast on an nc mismatch with the checkpoint, so this retrain can no longer silently re-trigger the Phase 3.4 head-reset collapse.)
-3. **Decide the fate of the unmerged branches** (table above) — especially the `line_detection` improvements and the two March web-app implementations.
+1. **Fix the viola key-signature misread.** On Beethoven 6 p.2 the viola staff reads one sharp against a true one flat *under a correct alto clef*, so this is the key-signature reader, not the clef. It is the single thing blocking `claude/omr-clef-tenor-fixture` from merging. Reproduce: `python3 benchmarks/omr-key-signature/eval_key_signatures.py --mode component --page pastoral-p2`, ordinal 7.
+2. **Clef coverage on orchestral prints.** 76% of Beethoven 5 header cells are rejected for one reason — an oversized cluster — at a height median of 7.2 staff spaces against a 5-space limit. Genuinely tall, not residue. Scoped, with three approaches already closed, in `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`.
+3. **Then: write the header clef to the output.** It is read and discarded today. Once coverage and precision justify it, this is where clef work starts reaching the exported score rather than only the key-signature gate.
+
+Also open:
+
+4. **Finish the 2026-06-10 labeling batch** (21/36 verdicts done), then convert the finished 06-09 + 06-10 batches → `v3` via `verdicts_to_yolo_labels` + rebuild the catalog. Note the retrain can no longer silently re-trigger the Phase 3.4 head-reset collapse (nc=208 cap + `train_yolo.py` guard).
+5. **Decide the fate of the unmerged branches** (table above) — especially `claude/reengraver-contextual-analysis-29cdd5` (25 commits, shipped results) and the two March web-app implementations.
 
 Parked (carried from NOTES.md — see there for full context):
 
@@ -182,7 +260,8 @@ Parked (carried from NOTES.md — see there for full context):
 - **Training:** [`tools/omr/training/`](tools/omr/training/). Cloud-GPU notes in `HANDOFF_PREMIUM_TRAINING.md` + `VAST_AI_SETUP.md`. Hand-labeled data: [`data/user-labeled/`](data/user-labeled/).
 - **Benchmarks:** [`benchmarks/`](benchmarks/). The headline write-up is [`benchmarks/omr-phase4-session/retrospective.md`](benchmarks/omr-phase4-session/retrospective.md).
 - **Setup & operational reference:** [`CLAUDE.md`](CLAUDE.md).
-- **Open ideas:** [`NOTES.md`](NOTES.md).
+- **Open ideas:** [`NOTES.md`](NOTES.md) — including the **contextual analysis roadmap**.
+- **Cross-session picture (2026-08-28):** [`docs/state-of-play-2026-08-28.md`](docs/state-of-play-2026-08-28.md).
 
 ---
 

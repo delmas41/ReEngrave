@@ -126,9 +126,18 @@ rather than guessed.
 declines; soprano, mezzosoprano, alto and baritone still read exactly, and
 treble and bass are still declined, so there are no false positives either way.
 Measured identically at `bcf87d4`, at `637f3cb` and after the sparse-residue
-fix, so it is not a regression from any of them: the 5/5 above was taken via a
-different route into the locator. Worth resolving before the row is quoted
-again.
+fix, so it is not a regression from any of them.
+
+**Diagnosed, and fixed on a branch that is deliberately not merged.** The
+F-clef dot veto was firing on the tenor clef: a C clef's right-hand lobes, cut
+into pieces by the staff lines through them, are round, correctly sized,
+aligned in x and a staff space apart — the dot signature exactly, and whether
+it fires is luck of where the lines fall. Requiring the pair to stand ALONE in
+its column (an F clef's dots do; a C clef's lobes have a stack around them)
+restores 5/5 with treble and bass still declined, keeps Bach at 0 false
+positives, and takes orchestral precision from 1/2 to 3/4. It is not merged
+because it makes shipped key signatures worse — see
+`NEXT_SESSION_HEADER_CLUSTER.md` → "The F-clef dot veto fires on C clefs".
 
 ### False positives — Bach WTC, 10 pages of piano music
 
@@ -152,6 +161,23 @@ python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py \
 (Before the "stop at the first glyph-sized cluster" rule: 20 false "tenor"
 reads across the same pages, all of them key-signature sharps behind a skipped
 treble clef.)
+
+### Precision on orchestral prints
+
+Nottebohm is the material the locator was built for. Orchestral scores are what
+most real work is, and they behave differently — a bracket, instrument names
+and stacked part numbers in the header, and two thirds of the staves carrying
+the G and F clefs the locator is supposed to decline. There is hand-read ground
+truth for two such pages sitting in the key-signature benchmark, so:
+
+```bash
+python3 benchmarks/omr-clef-geometry/eval_orchestral_clefs.py
+```
+
+On `main` today: **2 staves located, 1 correct** — the viola's alto clef read
+correctly on Beethoven 5 p.2, and a bassoon's bass clef misread as tenor. The
+unmerged dot-veto fix takes it to 4 located, 3 correct; the bassoon error is
+untouched by it and is the oldest thing on this list.
 
 ### True positives — real scores
 
