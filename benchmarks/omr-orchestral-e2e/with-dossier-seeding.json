@@ -32,7 +32,7 @@
     },
     "omr": {
       "parts": 18,
-      "measures": 14,
+      "measures": 8,
       "measures_per_part": [
         8,
         8,
@@ -48,30 +48,30 @@
         8,
         8,
         8,
-        14,
-        11,
-        9,
-        9
+        8,
+        8,
+        8,
+        8
       ],
-      "notes": 93
+      "notes": 88
     },
     "detected": {
-      "systems": 4,
+      "systems": 1,
       "staves": 18
     },
     "notes": {
       "part_aligned": true,
       "truth_notes": 81,
-      "omr_notes": 93,
+      "omr_notes": 88,
       "pitch_matched": 56,
       "pitch_recall": 0.691,
-      "pitch_precision": 0.602,
-      "duration_ok_on_matched": 42,
-      "duration_rate": 0.75
+      "pitch_precision": 0.636,
+      "duration_ok_on_matched": 48,
+      "duration_rate": 0.857
     },
-    "rhythm_reconciliations": 2,
+    "rhythm_reconciliations": 3,
     "dossier_warnings": {
-      "dossier_meter_disagreement": 31
+      "dossier_meter_disagreement": 6
     },
     "dossier_used": true
   },
@@ -111,13 +111,12 @@
     },
     "omr": {
       "parts": 21,
-      "measures": 9,
+      "measures": 4,
       "measures_per_part": [
         4,
         4,
         4,
         4,
-        6,
         4,
         4,
         4,
@@ -131,25 +130,26 @@
         4,
         4,
         4,
-        9,
-        2,
-        2
+        4,
+        4,
+        4,
+        4
       ],
-      "notes": 496
+      "notes": 492
     },
     "detected": {
-      "systems": 12,
+      "systems": 1,
       "staves": 21
     },
     "notes": {
       "part_aligned": true,
       "truth_notes": 661,
-      "omr_notes": 496,
-      "pitch_matched": 167,
-      "pitch_recall": 0.253,
-      "pitch_precision": 0.337,
-      "duration_ok_on_matched": 63,
-      "duration_rate": 0.377
+      "omr_notes": 492,
+      "pitch_matched": 173,
+      "pitch_recall": 0.262,
+      "pitch_precision": 0.352,
+      "duration_ok_on_matched": 72,
+      "duration_rate": 0.416
     },
     "rhythm_reconciliations": 1,
     "dossier_warnings": {},
@@ -245,7 +245,7 @@
       "notes": 46
     },
     "detected": {
-      "systems": 4,
+      "systems": 1,
       "staves": 31
     },
     "notes": {
@@ -259,9 +259,7 @@
       "duration_rate": 0.2
     },
     "rhythm_reconciliations": 0,
-    "dossier_warnings": {
-      "dossier_clef_absent": 1
-    },
+    "dossier_warnings": {},
     "dossier_used": true
   }
 ]
