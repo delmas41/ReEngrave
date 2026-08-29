@@ -324,3 +324,55 @@ def test_page_level_join_survives_broken_system_grouping():
     assert dz.slot_facts_for_page(4, d) is not None
     # Two real systems on one page count 2x parts and must NOT join.
     assert dz.slot_facts_for_page(8, d) is None
+
+
+# ── one glyph, one staff ────────────────────────────────────────────────────
+# Cells are padded 4 staff-spaces each way, so on a conductor's score adjacent
+# cells overlap and the detector finds the same ink twice.
+
+from tools.omr.transcribe import _dedupe_cross_staff_detections  # noqa: E402
+
+
+def _staff_with(idx, dets):
+    return {"staff_index": idx,
+            "measures": [{"measure_index": 0, "detections": list(dets)}]}
+
+
+def _det(x, y, w=30, h=30, cat="notehead"):
+    return {"category": cat, "bbox": [x, y, w, h], "bbox_page": [x, y, w, h],
+            "duration_beats": 1.0, "pitch": "C4"}
+
+
+def test_duplicate_is_kept_on_the_nearer_staff():
+    # staff 0 band 0..100, staff 1 band 300..400. The glyph sits at y=110,
+    # inside both padded cells but far nearer staff 0.
+    a, b = _det(50, 110), _det(50, 110)
+    pg = page(_staff_with(0, [a]), _staff_with(1, [b]))
+    removed = _dedupe_cross_staff_detections(pg, {0: (0, 100), 1: (300, 400)})
+    assert removed == 1
+    kept = [s["measures"][0]["detections"] for s in pg["systems"][0]["staves"]]
+    assert len(kept[0]) == 1 and kept[1] == []
+
+
+def test_distinct_glyphs_are_untouched():
+    pg = page(_staff_with(0, [_det(50, 10)]), _staff_with(1, [_det(400, 350)]))
+    assert _dedupe_cross_staff_detections(pg, {0: (0, 100), 1: (300, 400)}) == 0
+
+
+def test_different_categories_never_merge():
+    """A rest and a notehead at the same place are two readings of one glyph,
+    but resolving that is the detector's job, not this pass's."""
+    pg = page(_staff_with(0, [_det(50, 110)]),
+              _staff_with(1, [_det(50, 110, cat="rest")]))
+    assert _dedupe_cross_staff_detections(pg, {0: (0, 100), 1: (300, 400)}) == 0
+
+
+def test_a_page_whose_bands_never_overlap_is_unchanged():
+    """The keyboard case: nothing to arbitrate, so nothing changes."""
+    pg = page(_staff_with(0, [_det(50, 10), _det(90, 20)]),
+              _staff_with(1, [_det(50, 320), _det(90, 330)]))
+    before = [list(s["measures"][0]["detections"])
+              for s in pg["systems"][0]["staves"]]
+    assert _dedupe_cross_staff_detections(pg, {0: (0, 100), 1: (300, 400)}) == 0
+    after = [s["measures"][0]["detections"] for s in pg["systems"][0]["staves"]]
+    assert before == after

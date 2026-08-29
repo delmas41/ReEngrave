@@ -120,18 +120,32 @@ End-to-end, with seeding already on:
 
 | work | bars | parts | measures | notes (omr/truth) | recall | precision | duration |
 |---|---:|---|---|---:|---:|---:|---:|
-| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 88/81 | 0.691 | 0.636 | 0.857 |
-| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 661/337 | 0.656 | 0.334 | 0.285 |
-| mahler-sym5-mvt1 | 7 | 31/38 | **7/7** | 54/22 | 0.136 | 0.056 | 0.000 |
+| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 80/81 | 0.691 | 0.700 | 0.857 |
+| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 400/337 | 0.599 | 0.505 | 0.243 |
+| mahler-sym5-mvt1 | 7 | 31/38 | **7/7** | 36/22 | 0.136 | 0.083 | 0.000 |
+
+Beethoven now reports **80 notes against a truth of 81** — the note count is
+essentially exact, where before deduplication it reported 88.
 
 **Every measure count is now exact**, on all three works — that is what the
 grouping fix bought. Structure is solved on this benchmark.
 
-What is left is **over-detection**: Brahms reports 661 notes where 337 exist and
-Mahler 54 where 22 do. Mahler's page is almost entirely rests (the movement
-opens with a solo trumpet), so 54-for-22 is close to a pure false-positive
-measurement — the detector inventing notes on empty staves. Precision, not
-recall, is now the weak metric on dense pages.
+Most of the over-detection was **one glyph counted twice**. Cells are padded 4
+staff-spaces each way so ledger notes are not sliced off; on a conductor's score
+those bands overlap and nothing arbitrated between them. On the Mahler page,
+staves 14 and 15 reported 24 and 29 noteheads and **16 were the same notehead**
+at IoU > 0.5. `_dedupe_cross_staff_detections` now keeps such a glyph on the
+staff it is nearest. Threshold chosen by a sweep over all three works —
+`DEDUPE_THRESHOLD.md`.
+
+  brahms   661 -> 400 notes,  F1 0.443 -> 0.548
+  beethoven 88 ->  80 notes,  F1 0.662 -> 0.695
+  mahler     54 ->  36 notes,  F1 0.079 -> 0.105
+
+Residual over-detection is real, not duplication: Brahms still reports 400 for
+337 and Mahler 36 for 22 on a page that is almost entirely rests — close to a
+pure false-positive measurement of the detector inventing notes on empty staves.
+Precision remains the weak metric on dense pages.
 
 Mahler's part count differs from truth (31 printed against 38 in the XML)
 because LilyPond suppresses its empty staves, so its part-aligned recall falls

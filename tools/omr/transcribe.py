@@ -1649,6 +1649,129 @@ def _measure_rhythm_sum_warning(
 
 
 # ---------------------------------------------------------------------------
+# One glyph, one staff
+# ---------------------------------------------------------------------------
+#
+# A measure cell is cut 4 staff-spaces above and below its staff
+# (`measure_extractor.PAD_ABOVE_STAFF_LINES`) so that ledger-line notes are not
+# sliced off. On a keyboard score, where staves sit far apart, those bands do
+# not meet. On a conductor's score they overlap, and NOTHING arbitrated between
+# them: the detector ran on both cells, found the same ink twice, and both
+# staves kept it.
+#
+# Measured on an engraved Mahler 5 page whose truth is 22 notes: staves 14 and
+# 15 reported 24 and 29 noteheads, and 16 of them were the SAME notehead at
+# IoU > 0.5 — counted once for each staff. The page is almost entirely rests, so
+# this was most of its false-positive mass.
+#
+# The rule is the obvious one: a glyph belongs to the staff it is nearest, by
+# distance from its centre to the staff's own five-line band. That keeps a
+# genuine ledger-line note on its own staff whenever the neighbouring staff is
+# further away, which is the case the padding exists for, and it only ever
+# REMOVES a duplicate — the surviving copy is untouched, so a page whose bands
+# never overlap is byte-identical.
+
+
+# Two boxes this far into each other are the same glyph seen from two staves,
+# not two glyphs that happen to touch. Swept over all three orchestral works at
+# 0.25/0.3/0.4/0.5 (benchmarks/omr-orchestral-e2e/DEDUPE_THRESHOLD.md): 0.3 is
+# best on Brahms, tied-best on Beethoven, near-best on Mahler, and is the
+# LOWEST value that costs no correctly-matched note on any of them — 0.25 drops
+# three on Brahms by starting to merge genuinely distinct neighbours.
+_CROSS_STAFF_DUPLICATE_IOU = 0.3
+
+
+def _bbox_center_y(det: dict[str, Any]) -> float:
+    x, y, w, h = det["bbox_page"]
+    return y + h / 2.0
+
+
+def _bbox_iou_xywh(a: list[int], b: list[int]) -> float:
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    x0, y0 = max(ax, bx), max(ay, by)
+    x1, y1 = min(ax + aw, bx + bw), min(ay + ah, by + bh)
+    if x1 <= x0 or y1 <= y0:
+        return 0.0
+    inter = (x1 - x0) * (y1 - y0)
+    union = aw * ah + bw * bh - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _distance_to_band(y: float, top: float, bottom: float) -> float:
+    """0 inside the staff's band, else the distance to its nearer edge."""
+    if y < top:
+        return top - y
+    if y > bottom:
+        return y - bottom
+    return 0.0
+
+
+def _dedupe_cross_staff_detections(
+    page: dict[str, Any],
+    bands: dict[int, tuple[int, int]],
+    *,
+    iou_threshold: float = _CROSS_STAFF_DUPLICATE_IOU,
+) -> int:
+    """Drop glyphs claimed by more than one staff. Returns how many went."""
+    entries: list[tuple[int, dict[str, Any], list[dict[str, Any]]]] = []
+    for sys_ in page.get("systems", []):
+        for staff in sys_.get("staves", []):
+            idx = staff.get("staff_index")
+            if idx not in bands:
+                continue
+            for measure in staff.get("measures", []):
+                for det in measure.get("detections", []):
+                    entries.append((idx, det, measure["detections"]))
+
+    # Bucket by vertical position so this stays linear-ish on a dense page
+    # instead of comparing every glyph with every other one.
+    buckets: dict[int, list[int]] = {}
+    BUCKET = 64
+    for i, (_idx, det, _lst) in enumerate(entries):
+        key = int(_bbox_center_y(det)) // BUCKET
+        for k in (key - 1, key, key + 1):
+            buckets.setdefault(k, []).append(i)
+
+    doomed: set[int] = set()
+    seen: set[tuple[int, int]] = set()
+    for idxs in buckets.values():
+        for pos_a in range(len(idxs)):
+            i = idxs[pos_a]
+            for pos_b in range(pos_a + 1, len(idxs)):
+                j = idxs[pos_b]
+                if i in doomed or j in doomed:
+                    continue
+                pair = (i, j) if i < j else (j, i)
+                if pair in seen:
+                    continue
+                seen.add(pair)
+                si, di, _ = entries[i]
+                sj, dj, _ = entries[j]
+                if si == sj or di.get("category") != dj.get("category"):
+                    continue
+                if _bbox_iou_xywh(di["bbox_page"], dj["bbox_page"]) <= iou_threshold:
+                    continue
+                # Same glyph, two staves. Keep it on the nearer one.
+                ti, bi = bands[si]
+                tj, bj = bands[sj]
+                loser = (
+                    i if _distance_to_band(_bbox_center_y(di), ti, bi)
+                    > _distance_to_band(_bbox_center_y(dj), tj, bj)
+                    else j
+                )
+                doomed.add(loser)
+
+    for i in sorted(doomed, reverse=True):
+        _idx, det, lst = entries[i]
+        try:
+            lst.remove(det)
+        except ValueError:  # already gone
+            pass
+    return len(doomed)
+
+
+# ---------------------------------------------------------------------------
 # Meter → rhythm feedback (the loop that was open)
 # ---------------------------------------------------------------------------
 #
@@ -2798,6 +2921,22 @@ def transcribe(
         # unless one length wins a strong plurality (see
         # rhythm.backfill_page_time_signatures), so a clean page whose meter
         # WAS detected — or a noisy page with no clear mode — is untouched.
+        # ── One glyph, one staff ──
+        # Runs before anything counts, sums or infers from the detections, so
+        # every downstream number sees each glyph once. Cells overlap by design
+        # (4 staff-spaces of padding each way) and on a conductor's score those
+        # bands meet. See _dedupe_cross_staff_detections.
+        _bands = {
+            st.staff_index: (st.top_y, st.bottom_y) for st in pws.staves
+        }
+        n_deduped = _dedupe_cross_staff_detections(page_dict, _bands)
+        if n_deduped:
+            page_dict["n_cross_staff_duplicates_removed"] = n_deduped
+            out["n_cross_staff_duplicates_removed"] = (
+                out.get("n_cross_staff_duplicates_removed", 0) + n_deduped
+            )
+            out["n_detections_total"] -= n_deduped
+
         # A dossier meter is KNOWN, so it is applied before inference runs and
         # inference is left with nothing to guess at. It also overrules a
         # DETECTED meter that disagrees — on a constant-meter work a detected
