@@ -121,7 +121,8 @@ End-to-end, with seeding already on:
 | work | bars | parts | measures | notes (omr/truth) | recall | precision | duration |
 |---|---:|---|---|---:|---:|---:|---:|
 | beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 80/81 | 0.691 | 0.700 | 0.857 |
-| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 400/337 | 0.605 | 0.510 | **0.485** |
+| brahms-sym1-mvt1 | 7 | 21/21 | **7/7** | 529/505 | 0.691 | 0.660 | 0.487 |
+| mahler-sym5-mvt1 | 8 | **38/38** | **8/8** | 29/24 | 0.250 | 0.207 | 0.167 |
 | mahler-sym5-mvt1 | 7 | 31/38 | **7/7** | 36/22 | 0.136 | 0.083 | 0.000 |
 
 Beethoven now reports **80 notes against a truth of 81** — the note count is
@@ -227,10 +228,12 @@ Note the module's other tuning comments assume a canonical line spacing of
 roughly 24–48 px. It is **100**. Re-derive rather than scale if these are
 retuned.
 
-Mahler's part count differs from truth (31 printed against 38 in the XML)
-because LilyPond suppresses its empty staves, so its part-aligned recall falls
-back to a concatenated alignment and should not be read as a recognition rate.
-Its note-count ratio is the number to watch there.
+**Paper is sized to the part count** — a4 up to 20 parts, a3 to 40, a2 beyond.
+Rendering a 38-part score on A4 leaves LilyPond about one staff-space between
+staves, which makes the page a single continuous ladder no detector can segment
+and which real engraving never produces. That artifact cost Mahler 7 of its 38
+staves and most of its score; see `STAFF_LADDER_PHASING.md`, which also records
+the wrong diagnosis it produced first.
 
 ## It also settled the DPI question
 

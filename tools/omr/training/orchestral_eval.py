@@ -82,6 +82,7 @@ def excerpt(work_id: str, first: int, last: int,
 
     out_dir.mkdir(parents=True, exist_ok=True)
     parsed = converter.parse(str(src))
+    n_parts = len(parsed.parts)
 
     # THE EXCERPT MUST FIT ON ONE PAGE, and that is not a cosmetic preference.
     # `export.to_musicxml` emits one <part> per (page, system, staff), so a part
@@ -106,9 +107,26 @@ def excerpt(work_id: str, first: int, last: int,
                        check=True, capture_output=True)
         src_ly = ly.read_text()
         src_ly = src_ly.replace("\\header {", "\\header {\n  tagline = ##f")
+        # PAPER MUST BE SIZED TO THE SCORE, and getting this wrong invalidates
+        # the whole measurement. Rendering a 38-part Mahler page on A4 leaves
+        # LilyPond ~1.0 staff-space between staves — the page becomes one
+        # continuous ladder of evenly spaced lines with no visible boundary
+        # between one staff and the next, which no staff detector can segment
+        # and which real engraving never does. Measured on that excerpt:
+        #
+        #     paper   staves found   ambiguous ladders   inter-staff gap
+        #     a4         31 / 38            5              1.0 spaces
+        #     a3         38 / 38            0              1.8 spaces
+        #     a2         38 / 38            0              4.3 spaces
+        #
+        # So the "staff phasing" failure that made Mahler look catastrophic was
+        # an artifact of this fixture, not of the pipeline. Scale the sheet with
+        # the part count instead.
+        paper = "a4" if n_parts <= 20 else ("a3" if n_parts <= 40 else "a2")
         # A conductor's score is engraved small; 16pt is where real orchestral
-        # prints sit and keeps eighteen staves on one page.
-        src_ly = "#(set-global-staff-size 16)\n" + src_ly
+        # prints sit.
+        src_ly = (f'#(set-default-paper-size "{paper}")\n'
+                  "#(set-global-staff-size 16)\n") + src_ly
         ly.write_text(src_ly)
         subprocess.run(["lilypond", "-s", "-o", work_id, f"{work_id}.ly"],
                        cwd=out_dir, check=True, capture_output=True)

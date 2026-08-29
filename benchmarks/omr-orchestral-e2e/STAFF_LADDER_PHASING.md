@@ -1,94 +1,76 @@
-# Staff grouping has no phase anchor, and on Mahler it picks the wrong one
+# Staff "phase" ambiguity was a fixture artifact — corrected
 
-## What this explains
+**This document previously argued that `_group_into_staves` has no phase anchor
+and picks the wrong one on Mahler. That diagnosis was wrong, and the commit
+carrying it (`f28f096`) overstated a pipeline bug that is really a bug in this
+benchmark.** The evidence and the correction are both below, because the way it
+went wrong is worth keeping.
 
-Mahler's numbers on this benchmark are far worse than the other two works
-(recall 0.136 against Beethoven's 0.691) and none of the fixes this session
-moved them at all. This is why.
+## What was observed
 
-Truth for the excerpt is 22 notes, all on the "Trompeten in B." staff. The
-pipeline reports 36 noteheads spread over staves 10, 14 and 15 — and *none* of
-them lie inside the band of the staff they were assigned to:
+On the Mahler excerpt, all 22 truth notes were correctly detected but landed
+inside *no* staff's band:
 
 ```
-staff 14: band 3262..3428   its noteheads sit at y 3431..3530   (BELOW the band)
-staff 15: band 3663..3828   its noteheads sit at y 3507..3582   (ABOVE the band)
+staff 14: band 3262..3428   its noteheads at y 3431..3530   (below the band)
+staff 15: band 3663..3828   its noteheads at y 3507..3582   (above the band)
 ```
 
-The notes are real and correctly detected. The **staff bands are shifted**, so
-every note lands in the padding of two neighbours and is claimed by both.
+The page presented long uniform ladders of evenly spaced lines — runs of 13, 17,
+41 and 29 — with no gap anywhere marking where one staff stopped and the next
+began. `_group_into_staves` slides a 5-peak window and takes the first uniform
+fit, so on such a ladder its phase is arbitrary. That much is true.
 
-## The cause: uniform ladders with no visible staff boundary
+## Why the conclusion was wrong
 
-Rendering the region and marking the detected staff-line rows shows two trumpet
-staves — an "F Trumpet" on bass clef and "Trompeten in B." on treble — set so
-tightly that **the gap between the two staves equals the line spacing inside
-them**. Lines run 3179, 3220, 3262, 3302, 3344, 3385, 3428, 3469, 3509, 3550 at
-a constant ~41 px. There is no gap marking where one staff stops.
+The ladders were not a property of orchestral engraving. They were a property of
+**this benchmark rendering a 38-part score onto A4**. LilyPond, out of room, set
+the staves about one staff-space apart — so the bottom line of one staff and the
+top line of the next are indistinguishable from two lines within a staff. Real
+engraving never does this; it uses a bigger sheet.
 
-The true grouping is `{3179 3220 3262 3302 3344}` and `{3385 3428 3469 3509
-3550}`. The grouper produced `{3056 … 3220}` and `{3262 … 3428}` — correct in
-*shape*, wrong in **phase**, off by one line, which shifts every band by 41 px
-and orphans the last three lines.
+Re-rendering the identical excerpt on larger paper:
 
-`_group_into_staves` slides a 5-peak window and accepts the first one whose
-gaps are uniform, then skips 5. On a uniform ladder every phase is equally
-uniform, so the phase is decided by wherever the ladder happens to start — an
-arbitrary choice, and here the wrong one.
+| paper | staves found | ambiguous ladders | inter-staff gap |
+|---|---:|---:|---|
+| a4 | 31 / 38 | 5 | **1.0 spaces** |
+| **a3** | **38 / 38** | **0** | 1.8 spaces |
+| a2 | 38 / 38 | 0 | 4.3 spaces |
 
-This is not rare on this page. Splitting the 169 detected line-rows into maximal
-uniform ladders:
+On A3 the pipeline finds every staff and there is no ambiguity left to resolve.
+No phase anchor was needed; the input was malformed.
 
-| lines | span | lines mod 5 |
-|---:|---|---:|
-| 13 | 1537..2031 | 3 |
-| 17 | 2040..2699 | 2 |
-| 13 | 3056..3550 | 3 |
-| 41 | 3663..5312 | 1 |
-| 29 | 5842..6996 | 4 |
+`excerpt()` in `orchestral_eval.py` now scales the sheet with the part count —
+a4 up to 20 parts, a3 to 40, a2 beyond.
 
-**Not one of the long ladders is a multiple of five.** 14 of 169 peaks end up
-ungrouped. Every one of those ladders spans several staves with no boundary a
-gap test can find, and each carries a phase the grouper is guessing at.
+## Effect on the benchmark
 
-And it tracks the benchmark almost exactly:
+| work | parts | recall | precision | duration |
+|---|---|---|---|---|
+| beethoven-sym5-mvt1 | 18/18 → 18/18 | 0.691 | 0.700 | 0.857 |
+| brahms-sym1-mvt1 | 21/21 → 21/21 | 0.605 → **0.691** | 0.510 → **0.660** | 0.485 → 0.487 |
+| mahler-sym5-mvt1 | 31/38 → **38/38** | 0.136 → **0.250** | 0.083 → **0.207** | 0.000 → **0.167** |
 
-| work | ambiguous ladders | ungrouped rows | recall |
-|---|---:|---:|---:|
-| beethoven-sym5-mvt1 | **0** | **0** | **0.691** |
-| brahms-sym1-mvt1 | 3 | 5 | 0.605 |
-| mahler-sym5-mvt1 | 5 | 14 | 0.136 |
+Beethoven is untouched — 18 parts still render to A4. Mahler's part count now
+matches its dossier, so the slot-level checks that had been abstaining all along
+finally run, and immediately flag two clef mismatches.
 
-Beethoven's page separates every staff with a real gap, so its phase is never in
-doubt — and it is the work this benchmark reads well. That correlation is the
-strongest argument that this is the dominant remaining error on dense pages,
-rather than anything in recognition.
+## What to take from it
 
-## Two things I had wrong earlier, corrected
+* **A benchmark can manufacture failure modes that do not exist.** Every number
+  measured on the A4 Mahler page was real, reproducible, and about nothing.
+* The tell was there to be read earlier: barline groups spanning a single staff
+  came out 170 px tall with **3 px** between consecutive groups. Staves three
+  pixels apart should have prompted "is this page even legible?" rather than a
+  hunt for a grouping bug.
+* `probe_staff_ladders.py` is kept. It is still the right instrument — it
+  measures whether a page's staves are separable at all, which is a genuine
+  precondition, and it is what showed the fixture was at fault once pointed at
+  the same excerpt on different paper.
 
-* **"Mahler page 0 genuinely has 31 staves, so staff detection was never
-  failing."** The *count* is plausible but the *bands* are misaligned by one
-  line in at least one ladder, which is worse than a miscount: it puts real
-  notes in the wrong staff's padding.
-* **"A staff line at ~3591 was missed."** There is no line there — the longest
-  continuous ink run at y=3591 is 40 px, against 4137 px for a real staff line
-  at y=3550. That ink is noteheads and a hairpin. Inserting a synthetic line
-  there *does* make the grouper produce the right staves, which is what made the
-  theory look right; it works by accident, by shifting the phase.
+## What is still open
 
-## What a fix needs
-
-A **phase anchor** — some feature that belongs to exactly one staff and can say
-where it starts. The obvious candidate is the clef: it is printed once per staff
-at a known vertical position within it, and `clef_geometry` already measures
-which line a clef is centred on. Anchoring each ladder's phase on the clefs
-found along it would replace a guess with a measurement.
-
-Do not fix this by tightening the peak detector or by inventing lines. The lines
-are all correctly detected; only their assignment into groups of five is wrong.
-
-Reproduce with:
-
-```bash
-python3 benchmarks/omr-orchestral-e2e/probe_staff_ladders.py
-```
+`_group_into_staves` genuinely has no phase anchor. On a real page whose staves
+are properly separated that never matters, and no such page has been observed to
+trip it. It stays a latent weakness, not a live bug, and should not be
+"fixed" without a real page that fails.

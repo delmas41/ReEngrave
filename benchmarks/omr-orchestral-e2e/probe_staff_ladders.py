@@ -27,6 +27,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+import cv2                                                  # noqa: E402
+import numpy as np                                           # noqa: E402
+
 from tools.omr.preprocessing import render_page          # noqa: E402
 from tools.omr.staff_detector import (                    # noqa: E402
     _candidate_staff_rows,
@@ -58,6 +61,54 @@ def ladders(peaks: list[int], tol: float = 0.25, max_gap: int = 70):
     return runs
 
 
+def barline_groups(page) -> list[tuple[int, int, int]]:
+    """(top, bottom, times_seen) for each repeated long vertical stroke.
+
+    A barline is drawn once per bracket GROUP, not once per staff, and it is
+    drawn identically at every measure — so the spans that recur across the page
+    are the group extents. That makes them the most reliable structural signal
+    available before staves are grouped, and nothing currently uses it.
+    """
+    from collections import Counter
+    ink = (page.binary < 128).astype(np.uint8)
+    vert = cv2.morphologyEx(
+        ink, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (1, 120))
+    )
+    n, _lab, stats, _c = cv2.connectedComponentsWithStats(vert, 8)
+    spans = Counter()
+    for i in range(1, n):
+        x, y, w, h, _a = stats[i]
+        if h < 120 or w > 25:
+            continue
+        spans[(int(y), int(y + h))] += 1
+    return [(t, b, c) for (t, b), c in spans.most_common() if c >= 3]
+
+
+def true_lines(page, y0: int, y1: int) -> list[int]:
+    """Full-width staff lines between y0 and y1, over the best column found.
+
+    Scanning several narrow columns and keeping the richest guards against a
+    column that happens to sit under a beam or a thick rest, which merges rows
+    and undercounts.
+    """
+    b = page.binary
+    best: list[int] = []
+    for x0 in range(700, max(701, page.width - 300), 100):
+        x1 = x0 + 60
+        col = (b[y0:y1, x0:x1] < 128).sum(axis=1)
+        rows = [y + y0 for y, v in enumerate(col) if v > 0.9 * (x1 - x0)]
+        groups: list[list[int]] = []
+        for y in rows:
+            if groups and y - groups[-1][-1] <= 3:
+                groups[-1].append(y)
+            else:
+                groups.append([y])
+        cents = [int(np.mean(g)) for g in groups if len(g) <= 7]
+        if len(cents) > len(best):
+            best = cents
+    return best
+
+
 def report(pdf: Path, page_index: int, dpi: int) -> None:
     page = render_page(pdf, page_index, dpi=dpi)
     peaks = [int(p) for p in _candidate_staff_rows(_ink_profile(page.binary),
@@ -80,6 +131,16 @@ def report(pdf: Path, page_index: int, dpi: int) -> None:
               f"spacing~{spacing}  len%5={len(run) % 5}{flag}")
     print(f"   {ambiguous} ambiguous ladder(s); "
           f"{len(staves)} staves reported by detect_staves")
+
+    groups = barline_groups(page)
+    if groups:
+        print("   barline groups (a barline spans a BRACKET GROUP, not a staff):")
+        for top, bot, seen in sorted(groups)[:12]:
+            lines = true_lines(page, top - 6, bot + 6)
+            inside = [ln for ln in lines if top - 4 <= ln <= bot + 4]
+            fits = "" if len(inside) % 5 == 0 else "   <-- not a whole number of 5-line staves"
+            print(f"     {top:>5d}..{bot:<5d} seen {seen:>2d}x  "
+                  f"{len(inside):>3d} full-width lines{fits}")
 
 
 def main(argv: list[str] | None = None) -> int:
