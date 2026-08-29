@@ -231,3 +231,94 @@ def test_explicit_accidentals_pair_to_the_notehead_on_their_right():
     far = _notehead("D5", (400, 5, 10, 10))
     got = _explicit_accidentals([acc, nh, far])
     assert got == {1: 1}
+
+
+# ── a part keeps its clef between systems ───────────────────────────────────
+
+
+class TestSlotClefContinuity:
+    """A staff that read no clef can borrow the one its own part read in
+    another system (`contextual._fill_defaulted_clefs`).
+
+    This is not the cross-system clef vote dropped in 2026-07. That one
+    majority-voted each role's FINAL clef across same-sized systems, and failed
+    two ways: same-sized systems are not the same instruments on a condensed
+    score, and the majority reading can be the wrong one. Both objections are
+    answered structurally here — parts come from slot ALIGNMENT rather than
+    equal staff counts, and a reading is never overruled, only a silence
+    filled. These tests hold that line.
+    """
+
+    @staticmethod
+    def _pages(sys0_staff, sys1_staff):
+        return [{
+            "page_index": 0,
+            "systems": [
+                {"system_index": 0, "staves": [sys0_staff]},
+                {"system_index": 1, "staves": [sys1_staff]},
+            ],
+        }]
+
+    SLOTS = {(0, 0, 0): 3, (0, 1, 0): 3}    # both staves are the same part
+
+    def test_a_defaulted_staff_takes_the_clef_its_part_read(self):
+        from tools.omr.contextual import _fill_defaulted_clefs
+
+        defaulted = _staff(["C4"], clef="treble")            # no clef_source
+        read = _staff(["C3"], clef="bass")
+        read["clef_source"] = "detector"
+        pages = self._pages(defaulted, read)
+        filled = _fill_defaulted_clefs(pages, self.SLOTS)
+        assert len(filled) == 1
+        assert defaulted["clef"] == "bass"
+        assert defaulted["clef_source"] == "slot_continuity"
+
+    def test_a_clef_that_was_read_is_never_overruled(self):
+        """The 'majority ≠ correct' objection, made structural: whatever the
+        other system says, a staff that was actually read keeps its reading."""
+        from tools.omr.contextual import _fill_defaulted_clefs
+
+        read_treble = _staff(["C4"], clef="treble")
+        read_treble["clef_source"] = "detector"
+        read_bass = _staff(["C3"], clef="bass")
+        read_bass["clef_source"] = "detector"
+        pages = self._pages(read_treble, read_bass)
+        assert _fill_defaulted_clefs(pages, self.SLOTS) == []
+        assert read_treble["clef"] == "treble"
+        assert read_bass["clef"] == "bass"
+
+    def test_disagreeing_readings_fill_nothing(self):
+        """Three staves of one part, two of them read and disagreeing: the
+        third stays on its default rather than following a coin flip."""
+        from tools.omr.contextual import _fill_defaulted_clefs
+
+        defaulted = _staff(["C4"], clef="treble")
+        read_a = _staff(["C3"], clef="bass")
+        read_a["clef_source"] = "detector"
+        read_b = _staff(["C4"], clef="alto")
+        read_b["clef_source"] = "detector"
+        pages = [{
+            "page_index": 0,
+            "systems": [
+                {"system_index": 0, "staves": [defaulted]},
+                {"system_index": 1, "staves": [read_a]},
+                {"system_index": 2, "staves": [read_b]},
+            ],
+        }]
+        slots = {(0, 0, 0): 3, (0, 1, 0): 3, (0, 2, 0): 3}
+        assert _fill_defaulted_clefs(pages, slots) == []
+        assert defaulted["clef"] == "treble"
+        assert "clef_source" not in defaulted
+
+    def test_an_unaligned_staff_borrows_nothing(self):
+        """Slot -1 is "this staff could not be placed". It is not a part, so it
+        has no other systems to borrow from."""
+        from tools.omr.contextual import _fill_defaulted_clefs
+
+        defaulted = _staff(["C4"], clef="treble")
+        read = _staff(["C3"], clef="bass")
+        read["clef_source"] = "detector"
+        pages = self._pages(defaulted, read)
+        slots = {(0, 0, 0): -1, (0, 1, 0): 3}
+        assert _fill_defaulted_clefs(pages, slots) == []
+        assert defaulted["clef"] == "treble"

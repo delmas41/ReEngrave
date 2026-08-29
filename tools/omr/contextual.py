@@ -54,6 +54,67 @@ def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
     return out
 
 
+def _fill_defaulted_clefs(pages, slot_by_staff) -> list[dict]:
+    """Give a staff that read no clef the clef its own part read elsewhere.
+
+    A part keeps its clef from system to system, and the pipeline already knows
+    which staves are the same part — that is what `slots` established. So a
+    staff carrying nothing but the positional default can borrow from a system
+    where the same part WAS read. Measured on the 52 hand-read staves of
+    `benchmarks/omr-key-signature/ground_truth.json`: seven such staves exist,
+    filling them fixes one and breaks none (Pastoral p.2, where the bassoon
+    reads bass in the second system and defaults to treble in the first).
+
+    This is deliberately not the cross-system clef vote that was tried and
+    dropped in 2026-07 (`docs/internal-consistency-checks.md`). That one
+    majority-voted each role's FINAL clef across same-sized systems, and it
+    failed two ways: "same-sized systems are the same instruments" is false on
+    condensed scores, and the majority reading can be the wrong one, so it
+    flagged correct staves. Both objections are answered here rather than
+    argued with — the parts come from slot ALIGNMENT rather than from equal
+    staff counts, and nothing that was read is ever overruled: a silence is
+    filled, and only when every reading of that part agrees.
+    """
+    read_by_slot: dict[int, set[str]] = {}
+    for page in pages:
+        for system in page.get("systems", []):
+            for staff in system.get("staves", []):
+                if not staff.get("clef_source") or not staff.get("clef"):
+                    continue
+                key = (page.get("page_index"), system.get("system_index"),
+                       staff.get("staff_index"))
+                slot = slot_by_staff.get(key)
+                if slot is None or slot < 0:
+                    continue
+                read_by_slot.setdefault(slot, set()).add(staff["clef"])
+
+    filled: list[dict] = []
+    for page in pages:
+        for system in page.get("systems", []):
+            for staff in system.get("staves", []):
+                if staff.get("clef_source"):
+                    continue
+                key = (page.get("page_index"), system.get("system_index"),
+                       staff.get("staff_index"))
+                slot = slot_by_staff.get(key)
+                if slot is None or slot < 0:
+                    continue
+                agreed = read_by_slot.get(slot)
+                if not agreed or len(agreed) != 1:
+                    continue
+                clef = next(iter(agreed))
+                if clef == staff.get("clef"):
+                    continue
+                filled.append({
+                    "page_index": key[0], "system_index": key[1],
+                    "staff_index": key[2], "slot": slot,
+                    "from_clef": staff.get("clef"), "to_clef": clef,
+                })
+                staff["clef"] = clef
+                staff["clef_source"] = "slot_continuity"
+    return filled
+
+
 def _read_clefs_by_slot(pages, slot_by_staff) -> dict[int, str]:
     """The clef each slot actually READS, by majority across its staves.
 
@@ -271,6 +332,12 @@ def apply_contextual_analysis(
         slot: inst for slot, inst in instrument_by_slot.items()
         if instrument_source.get(slot) != "score_order"
     }
+    # Fill defaulted clefs from the same part in another system BEFORE the
+    # instrument pass, so that pass sees the borrowed reading and leaves those
+    # staves alone — a clef read on the page outranks one deduced from an
+    # instrument's convention.
+    clefs_filled = _fill_defaulted_clefs(pages, slot_by_staff) if apply_clefs else []
+
     records = correct_clefs_from_instruments(
         pages, read_instruments, slot_by_staff, apply=apply_clefs)
 
@@ -287,6 +354,8 @@ def apply_contextual_analysis(
             1 for v in instrument_source.values() if v == "score_order_ambiguity"),
         proposals=records,
         clefs_applied=sum(1 for r in records if r["applied"]),
+        clefs_filled_from_slot=len(clefs_filled),
+        clef_fills=clefs_filled,
         noteheads_restated=sum(r.get("noteheads_restated", 0) for r in records),
     )
     return summary
