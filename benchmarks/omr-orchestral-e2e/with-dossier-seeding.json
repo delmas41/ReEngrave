@@ -1,0 +1,265 @@
+[
+  {
+    "work_id": "beethoven-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth": {
+      "parts": 18,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 81
+    },
+    "omr": {
+      "parts": 18,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 88
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 18
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 81,
+      "omr_notes": 88,
+      "pitch_matched": 56,
+      "pitch_recall": 0.691,
+      "pitch_precision": 0.636,
+      "duration_ok_on_matched": 48,
+      "duration_rate": 0.857
+    },
+    "rhythm_reconciliations": 3,
+    "dossier_warnings": {
+      "dossier_meter_disagreement": 6
+    },
+    "dossier_used": true
+  },
+  {
+    "work_id": "brahms-sym1-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth": {
+      "parts": 21,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 661
+    },
+    "omr": {
+      "parts": 21,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 492
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 21
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 661,
+      "omr_notes": 492,
+      "pitch_matched": 173,
+      "pitch_recall": 0.262,
+      "pitch_precision": 0.352,
+      "duration_ok_on_matched": 72,
+      "duration_rate": 0.416
+    },
+    "rhythm_reconciliations": 1,
+    "dossier_warnings": {},
+    "dossier_used": true
+  },
+  {
+    "work_id": "mahler-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth": {
+      "parts": 38,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 24
+    },
+    "omr": {
+      "parts": 31,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 46
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 31
+    },
+    "notes": {
+      "part_aligned": false,
+      "truth_notes": 24,
+      "omr_notes": 46,
+      "pitch_matched": 5,
+      "pitch_recall": 0.208,
+      "pitch_precision": 0.109,
+      "duration_ok_on_matched": 1,
+      "duration_rate": 0.2
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true
+  }
+]

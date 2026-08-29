@@ -255,9 +255,23 @@ from .rhythm import (
     resolve_rhythms_for_cell,
     backfill_page_time_signatures,
     measure_length_beats,
+    # The beam-level duration table and the dot arithmetic, so the meter→rhythm
+    # correction below re-derives a duration exactly the way rhythm.py did.
+    _BEAM_COUNT_DURATIONS,
+    _dot_multiplier,
+    _name_for_dots,
 )
 from .line_detection import detect_lines
 from .voicing import group_chords_in_measure, split_events_into_voices
+from .dossier import (
+    apply_meter,
+    slot_facts_for_page,
+    slot_facts_for_system,
+    check_total_measures,
+    resolve_dossier,
+    summarize as summarize_dossier_warnings,
+    verify_page,
+)
 
 
 # Default weights — Phase 3.3, F1 98.8% on the 25 verdict cells.
@@ -1133,6 +1147,9 @@ def _detections_for_cell(
     clef_reader_imgsz: int = 640,
     clef_reader_header_frac: float = 0.42,
     locate_c_clefs: bool = True,
+    forced_clef: str | None = None,
+    forced_fifths: int | None = None,
+    clef_overrides: list[dict[str, Any]] | None = None,
 ) -> tuple[
     list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None, str | None
 ]:
@@ -1160,6 +1177,8 @@ def _detections_for_cell(
     supplied a clef IN THIS CELL — "detector", "specialist", "cv_locator", or
     None when the clef was carried in rather than read here.
     """
+    if clef_overrides is None:
+        clef_overrides = []
     dets = detector.detect(
         cell,
         conf_threshold=conf_threshold,
@@ -1277,6 +1296,32 @@ def _detections_for_cell(
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
+
+    # ── Dossier override. The work's own written clef and key signature, when
+    #    the caller supplied a dossier AND the part→staff join was safe enough
+    #    to establish one (dossier.slot_facts_for_system decides that, not us).
+    #
+    #    It runs LAST, after every reader, because unlike them it is not an
+    #    opinion: it is what the page says, taken from the score. Every other
+    #    ordering here is "later reader wins where earlier ones were silent";
+    #    this one wins even where they spoke, because a reader that disagrees
+    #    with the work is wrong. Measured on an engraved Brahms 1 excerpt the
+    #    detector read a bass staff and a tenor staff as treble, and those two
+    #    clefs alone mis-pitched 98 of the page's notes.
+    #
+    #    What each reader said is still returned via `clef_source`, so an
+    #    override is visible rather than silent.
+    if forced_clef is not None and forced_clef != active_clef:
+        overridden_clef = active_clef if clef_source else None
+        active_clef = forced_clef
+        clef_source = "dossier"
+        if overridden_clef is not None:
+            clef_overrides.append({"read": overridden_clef, "used": forced_clef})
+    elif forced_clef is not None:
+        clef_source = clef_source or "dossier"
+
+    if forced_fifths is not None:
+        active_key_sig = alterations_for_fifths(forced_fifths)
 
     # ── Classical-CV line detection: stems + cleaner beams. The YOLO
     #    Phase 3.3 model misses stems entirely and emits beam bboxes
@@ -1455,6 +1500,11 @@ def _detections_for_cell(
             out_d["duration_beats"] = rinfo["duration_beats"]
             out_d["duration_type"] = rinfo["duration_type"]
             out_d["dots"] = rinfo["dots"]
+            # Only carried when the duration actually rests on beams, so the
+            # JSON stays terser for everything else. `_reconcile_measure_to_meter`
+            # needs it to know which durations are the fragile ones.
+            if rinfo.get("beam_levels"):
+                out_d["beam_levels"] = rinfo["beam_levels"]
         # Stem direction for noteheads (Phase 4h voice splitting).
         if id(d) in stem_direction_by_id:
             out_d["stem_direction"] = stem_direction_by_id[id(d)]
@@ -1663,6 +1713,191 @@ def _measure_rhythm_sum_warning(
         "expected_beats": round(expected_beats, 4),
         "actual_beats": round(actual_beats, 4),
     }
+
+
+# ---------------------------------------------------------------------------
+# Meter → rhythm feedback (the loop that was open)
+# ---------------------------------------------------------------------------
+#
+# Until now the meter was derived FROM the durations and then used only to
+# complain about them: `resolve_rhythms_for_cell` takes no time signature at
+# all, `backfill_page_time_signatures` votes a meter out of the durations the
+# pipeline already committed to, and `_annotate_column_rhythm_warnings` writes
+# a warning. A 4/4 bar summing to 4.53 beats was flagged and shipped, and
+# nothing ever re-read the note that made it 4.53.
+#
+# This closes that loop for the one duration input fragile enough to be worth
+# arbitrating: the BEAM LEVEL. A notehead's duration comes from counting beam
+# strokes clustered by y-position, so one extra or one missing cluster halves
+# or doubles it — and a half-or-double error in one beamed group is exactly
+# the kind of error a known bar length can pin down.
+#
+# It is deliberately narrow, because the repository's history is full of
+# plausible corrections that made things worse:
+#
+#   * It only ever RE-READS a beam level by ±1. It never adds, deletes or
+#     re-pitches a note, so it cannot paper over the over-detection thread.
+#   * It requires the corrected bar to land EXACTLY on the meter, within the
+#     same tolerance the warning uses.
+#   * It requires the answer to be UNIQUE. If two different groups could each
+#     be adjusted to make the sum work, we do not know which is right, so
+#     nothing is changed and the warning stands.
+#   * It runs on single-voice measures only. Deciding which voice a beam group
+#     belongs to is its own unsolved join, and orchestral staves — the case
+#     this is for — are overwhelmingly single-voice anyway.
+#
+# Every change is recorded on the measure as `rhythm_reconciliation`, so a run
+# can be audited for what the meter talked the pipeline out of.
+
+_BEAM_LEVEL_MIN, _BEAM_LEVEL_MAX = 1, 4
+
+
+def _det_x_center(det: dict[str, Any]) -> int:
+    """x-centre of a detection in cell-local coords.
+
+    `bbox` is [x, y, w, h] — not [x0, y0, x1, y1] — and this matches
+    `voicing._x_center` exactly, so beam grouping and chord grouping agree on
+    where a notehead sits. They have to: the correction below is scored against
+    a bar sum that voicing computed.
+    """
+    bbox = det.get("bbox", [0, 0, 0, 0])
+    return bbox[0] + bbox[2] // 2
+
+
+def _beam_groups(detections: list[dict[str, Any]]) -> list[list[dict[str, Any]]]:
+    """Cluster beamed noteheads into groups that plausibly share one beam.
+
+    A group is a run of noteheads carrying the same `beam_levels`, adjacent in
+    x with no differently-beamed note between them. That is what a beam group
+    looks like on the page, and it is the unit whose level is right or wrong
+    together.
+    """
+    beamed = [
+        d for d in detections
+        if d.get("category") == "notehead" and d.get("beam_levels")
+    ]
+    if not beamed:
+        return []
+    beamed.sort(key=_det_x_center)
+    groups: list[list[dict[str, Any]]] = [[beamed[0]]]
+    for d in beamed[1:]:
+        if d["beam_levels"] == groups[-1][-1]["beam_levels"]:
+            groups[-1].append(d)
+        else:
+            groups.append([d])
+    return groups
+
+
+def _duration_for_level(det: dict[str, Any], level: int) -> tuple[float, str] | None:
+    """What this notehead's duration would be at `level` beams, dots included."""
+    base = _BEAM_COUNT_DURATIONS.get(level)
+    if base is None:
+        return None
+    base_beats, base_type = base
+    n_dots = int(det.get("dots", 0) or 0)
+    return (
+        base_beats * _dot_multiplier(n_dots),
+        f"{_name_for_dots(n_dots)}{base_type}",
+    )
+
+
+def _reconcile_measure_to_meter(
+    measure: dict[str, Any],
+    *,
+    tolerance: float = _RHYTHM_SUM_TOLERANCE,
+) -> dict[str, Any] | None:
+    """Re-read one beam level so the bar sums to its meter. See above.
+
+    Mutates `measure` and returns a record of what changed, or None when
+    nothing could be decided (which is the common case, and the safe one).
+    """
+    ts = measure.get("time_signature")
+    if not ts:
+        return None
+    num, den = ts.get("numerator"), ts.get("denominator")
+    if not num or not den:
+        return None
+    expected = num * 4.0 / den
+
+    detections = measure.get("detections", [])
+    events = group_chords_in_measure(detections)
+    voices = split_events_into_voices(events)
+    if len(voices) != 1:
+        return None  # see the note above on the voice join
+    actual = sum(ev["duration_beats"] for ev in voices[0])
+    if abs(actual - expected) <= tolerance:
+        return None
+
+    groups = _beam_groups(detections)
+    if not groups:
+        return None
+
+    candidates: list[dict[str, Any]] = []
+    for gi, group in enumerate(groups):
+        level = int(group[0]["beam_levels"])
+        # A chord's noteheads share one stem and one duration, so the bar sum
+        # counts the group's duration once per EVENT, not once per notehead.
+        # Collapse by x so a chord is not counted twice.
+        by_x = {}
+        for d in group:
+            by_x.setdefault(_det_x_center(d), d)
+        distinct = list(by_x.values())
+        current = sum(float(d.get("duration_beats", 0.0)) for d in distinct)
+        for delta in (-1, 1):
+            new_level = level + delta
+            if not (_BEAM_LEVEL_MIN <= new_level <= _BEAM_LEVEL_MAX):
+                continue
+            replacement = 0.0
+            ok = True
+            for d in distinct:
+                nd = _duration_for_level(d, new_level)
+                if nd is None:
+                    ok = False
+                    break
+                replacement += nd[0]
+            if not ok:
+                continue
+            if abs((actual - current + replacement) - expected) <= tolerance:
+                candidates.append({
+                    "group_index": gi,
+                    "from_level": level,
+                    "to_level": new_level,
+                    "n_noteheads": len(group),
+                })
+
+    if len(candidates) != 1:
+        # Nothing to do, or more than one way to do it. Either way the meter
+        # has not identified a single note, so the measure is left as read and
+        # `_annotate_column_rhythm_warnings` still flags it.
+        return None
+
+    choice = candidates[0]
+    for d in groups[choice["group_index"]]:
+        nd = _duration_for_level(d, choice["to_level"])
+        if nd is None:
+            continue
+        d["duration_beats"], d["duration_type"] = round(nd[0], 4), nd[1]
+        d["beam_levels"] = choice["to_level"]
+
+    record = {
+        **choice,
+        "expected_beats": round(expected, 4),
+        "beats_before": round(actual, 4),
+        "meter_source": ts.get("source", "detected"),
+    }
+    measure["rhythm_reconciliation"] = record
+    return record
+
+
+def _reconcile_page_to_meter(page: dict[str, Any]) -> int:
+    """Run the meter→rhythm correction over every measure of a page."""
+    n = 0
+    for sys_ in page.get("systems", []):
+        for staff in sys_.get("staves", []):
+            for measure in staff.get("measures", []):
+                if _reconcile_measure_to_meter(measure) is not None:
+                    n += 1
+    return n
 
 
 # Ported verbatim from the dossier-verification track so the column rhythm
@@ -2190,6 +2425,8 @@ def transcribe(
     clef_reader_header_frac: float = 0.42,
     locate_c_clefs: bool = True,
     read_headers: bool = True,
+    dossier: dict[str, Any] | None = None,
+    dossier_seeding: bool = True,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -2375,6 +2612,17 @@ def transcribe(
         else:
             voted_fifths, voted_reasons = {}, {}
 
+        # Dossier slot facts for the whole page, used when per-system grouping
+        # is too fragmented to join (which is the normal case — see
+        # dossier.slot_facts_for_page). Consumed by a running top-to-bottom
+        # index across systems, which is the order the staves were detected in.
+        page_staff_total = sum(len(systems[k]) for k in systems)
+        page_slot_facts = (
+            slot_facts_for_page(page_staff_total, dossier)
+            if (dossier is not None and dossier_seeding) else None
+        )
+        page_slot_cursor = 0
+
         t_yolo = time.perf_counter()
         for sys_idx in sorted(systems.keys()):
             staff_keys = sorted(systems[sys_idx].keys())
@@ -2386,6 +2634,12 @@ def transcribe(
             # Clef continuity: this system may inherit per-role clefs from a
             # same-sized previous system, and builds its own role map as it goes.
             clef_continuity.start_system(len(staff_keys))
+            # Per-staff written clef + key from the dossier, or None when there
+            # is no dossier, seeding is off, or the part→staff join is unsafe.
+            system_slot_facts = (
+                slot_facts_for_system(len(staff_keys), dossier)
+                if (dossier is not None and dossier_seeding) else None
+            )
             for position_in_system, staff_idx in enumerate(staff_keys):
                 staff_cells = systems[sys_idx][staff_idx]
                 # Pick a starting clef for this staff. A clef detection in the
@@ -2400,6 +2654,19 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     clef_continuity.starting_clef(position_in_system, role_default),
                 )
+                # The work's own clef and key for this staff, when a dossier was
+                # given and its parts join 1:1 to this system's staves. None
+                # everywhere else, which leaves the readers in charge.
+                if system_slot_facts is not None:
+                    slot = system_slot_facts[position_in_system]
+                elif page_slot_facts is not None:
+                    slot = page_slot_facts[page_slot_cursor]
+                else:
+                    slot = None
+                page_slot_cursor += 1
+                forced_clef = slot["clef"] if slot else None
+                forced_fifths = slot["fifths"] if slot else None
+                staff_clef_overrides: list[dict[str, Any]] = []
                 # Seed from the located + reconciled reading when there is one.
                 # A keySharp / keyFlat the detector finds in the music replaces
                 # it, so this only decides staves the detector says nothing about
@@ -2472,6 +2739,9 @@ def transcribe(
                                 cell_idx == 0 and staff_idx in voted_fifths
                             ),
                             read_clef=(cell_idx == 0),
+                            forced_clef=forced_clef,
+                            forced_fifths=forced_fifths,
+                            clef_overrides=staff_clef_overrides,
                             clef_reader_conf=clef_reader_conf,
                             clef_reader_imgsz=clef_reader_imgsz,
                             clef_reader_header_frac=clef_reader_header_frac,
@@ -2516,6 +2786,11 @@ def transcribe(
                 # transposes every note on the staff.
                 if first_cell_clef_source is not None:
                     staff_dict["clef_source"] = first_cell_clef_source
+                # What the readers said where the dossier overruled them. Kept
+                # so a seeded run can still be audited for detector quality —
+                # seeding must not hide how well the page was actually read.
+                if staff_clef_overrides:
+                    staff_dict["clef_overridden_by_dossier"] = staff_clef_overrides[0]
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}
                 )
@@ -2595,7 +2870,30 @@ def transcribe(
         # unless one length wins a strong plurality (see
         # rhythm.backfill_page_time_signatures), so a clean page whose meter
         # WAS detected — or a noisy page with no clear mode — is untouched.
+        # A dossier meter is KNOWN, so it is applied before inference runs and
+        # inference is left with nothing to guess at. It also overrules a
+        # DETECTED meter that disagrees — on a constant-meter work a detected
+        # 7/24 is not a competing opinion, it is a misread digit — and reports
+        # every override it made. See dossier.apply_meter.
+        if dossier is not None:
+            meter_warnings = apply_meter(page_dict, dossier)
+            if meter_warnings:
+                out.setdefault("dossier_warnings", []).extend(meter_warnings)
+                page_dict.setdefault("dossier_warnings", []).extend(meter_warnings)
+
         backfill_page_time_signatures(page_dict)
+
+        # ── Meter → rhythm feedback ──
+        # Runs after the meter is settled (dossier, detected or inferred) and
+        # BEFORE the warning below, so a measure the meter can actually repair
+        # is repaired rather than merely flagged. Narrow and unique-answer-only
+        # by construction — see _reconcile_measure_to_meter.
+        n_reconciled = _reconcile_page_to_meter(page_dict)
+        if n_reconciled:
+            page_dict["n_rhythm_reconciliations"] = n_reconciled
+            out["n_rhythm_reconciliations"] = (
+                out.get("n_rhythm_reconciliations", 0) + n_reconciled
+            )
 
         # ── Rhythm-sum notation-math check (column-aggregated) ──
         # Runs here (not in the staff loop) so it sees the meters
@@ -2630,6 +2928,18 @@ def transcribe(
             _flag_key_signature_inconsistency(sys_d)
             _flag_clef_register_inversion(sys_d)
             _flag_time_signature_disagreement(sys_d)
+
+        # ── Dossier checks (external truth, when a dossier was supplied) ──
+        # The four checks above can only ask whether the page agrees with
+        # itself, which is why a page where every staff reads treble passes
+        # them. These compare it against what the work actually contains.
+        # See tools/omr/dossier.py for why most of them avoid a part→staff
+        # join rather than attempting one.
+        if dossier is not None:
+            dossier_warnings = verify_page(page_dict, dossier)
+            if dossier_warnings:
+                page_dict["dossier_warnings"] = dossier_warnings
+                out.setdefault("dossier_warnings", []).extend(dossier_warnings)
 
         out["pages"].append(page_dict)
         out["n_pages_processed"] += 1
@@ -2709,6 +3019,22 @@ def transcribe(
     out["n_rests_total"] = n_rests
     out["n_rests_with_duration_total"] = n_rests_with_duration
 
+    # Whole-run dossier check. Kept out of the per-page loop because it is the
+    # only check that needs every page: a partial run legitimately reads fewer
+    # measures than the work has, so only an OVER-count means anything.
+    if dossier is not None:
+        out["dossier"] = {
+            "work_id": dossier.get("work_id"),
+            "total_measures": dossier.get("total_measures"),
+            "n_parts": dossier.get("n_parts"),
+        }
+        run_warnings = check_total_measures(out, dossier)
+        if run_warnings:
+            out.setdefault("dossier_warnings", []).extend(run_warnings)
+        out["dossier_warning_summary"] = summarize_dossier_warnings(
+            out.get("dossier_warnings", [])
+        )
+
     out["runtime"]["total_s"] = round(time.perf_counter() - t_total, 2)
     out["runtime"]["phase1_s"] = round(out["runtime"]["phase1_s"], 2)
     out["runtime"]["yolo_s"] = round(out["runtime"]["yolo_s"], 2)
@@ -2761,6 +3087,22 @@ def main(argv: list[str] | None = None) -> int:
                          "seeds staves where the detector finds no key-signature "
                          "accidental, so turning it off cannot fix a wrong "
                          "detected signature — it only removes the fallback.")
+    ap.add_argument("--dossier", type=str, default=None,
+                    help="Known facts about this work to check the reading "
+                         "against — either a path to a dossier JSON or a bare "
+                         "work_id resolved under data/dossiers/ (e.g. "
+                         "'beethoven-sym5-mvt1'). Supplies the meter, and "
+                         "flags clefs, key signatures and measure counts the "
+                         "work does not contain. Build them from MusicXML with "
+                         "tools.omr.training.build_dossiers. See "
+                         "tools/omr/dossier.py.")
+    ap.add_argument("--no-dossier-seeding", action="store_true",
+                    help="With --dossier, CHECK the reading against the work "
+                         "but do not seed from it. By default a dossier also "
+                         "supplies each staff's written clef and key signature "
+                         "— the thing clef detection is worst at — but only "
+                         "where its parts join 1:1 to the system's staves. Use "
+                         "this to measure what the detector reads unaided.")
     ap.add_argument("--no-clef-locator", action="store_true",
                     help="Disable the classical-CV C-clef locator. It runs only "
                          "where no model read a clef, and only recognises C "
@@ -2784,7 +3126,14 @@ def main(argv: list[str] | None = None) -> int:
                     help="Disable agnostic NMS (default: enabled, collapses "
                          "overlapping boxes across classes)")
     ap.add_argument("--dpi", type=int, default=600,
-                    help="Source-page render DPI (default: 600)")
+                    help="Source-page render DPI (default: 600). Coupled to "
+                         "--imgsz, and the best pair DIFFERS BY TEXTURE: 300 "
+                         "wins on sparse authored fixtures, 600 wins on dense "
+                         "orchestral pages (Mahler recall 0.042 -> 0.208). The "
+                         "backend runs 300 for latency, so the two entry points "
+                         "genuinely differ. Do not 'unify' them without "
+                         "measuring BOTH families — see "
+                         "benchmarks/omr-dpi-imgsz-2026-08/RESULTS.md.")
     ap.add_argument("--overlays-dir", type=Path, default=None,
                     help="If set, write per-page overlay PNGs here")
     ap.add_argument("--quiet", action="store_true",
@@ -2821,9 +3170,22 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: no valid pages selected from {args.pages!r} (doc has {n_pages})")
         return 2
 
+    # Resolved before the run so a typo in --dossier fails immediately rather
+    # than after several minutes of inference.
+    dossier = resolve_dossier(args.dossier)
+    if args.dossier and dossier is None:
+        print(f"ERROR: no dossier found for {args.dossier!r}. Build one with "
+              f"python3 -m tools.omr.training.build_dossiers --only <work_id>")
+        return 2
+
     if not args.quiet:
         print(f"transcribe: {args.pdf.name} ({n_pages} pages, processing {len(pages)})")
         print(f"  weights:  {args.weights}")
+        if dossier is not None:
+            print(f"  dossier:  {dossier['work_id']} — "
+                  f"{dossier['n_parts']} parts, {dossier['total_measures']} "
+                  f"measures, meter {dossier['starting_meter']}, "
+                  f"clefs {dossier['clefs_used']}")
         if clef_weights:
             print(f"  clef:     {clef_weights} (header specialist, conf "
                   f"{args.clef_reader_conf}, imgsz {args.clef_reader_imgsz}, "
@@ -2846,6 +3208,8 @@ def main(argv: list[str] | None = None) -> int:
         clef_reader_header_frac=args.clef_reader_header_frac,
         locate_c_clefs=not args.no_clef_locator,
         read_headers=not args.no_header_reading,
+        dossier=dossier,
+        dossier_seeding=not args.no_dossier_seeding,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )
@@ -2871,6 +3235,15 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  runtime: phase1={result['runtime']['phase1_s']}s  "
                   f"yolo={result['runtime']['yolo_s']}s  "
                   f"total={result['runtime']['total_s']}s")
+            if result.get("n_rhythm_reconciliations"):
+                print(f"  meter->rhythm: "
+                      f"{result['n_rhythm_reconciliations']} measure(s) "
+                      f"re-read a beam level to match the meter")
+            if result.get("dossier_warning_summary"):
+                summary = result["dossier_warning_summary"]
+                print(f"  dossier: {sum(summary.values())} disagreement(s) — "
+                      + (", ".join(f"{k}={v}" for k, v in sorted(summary.items()))
+                         or "none"))
             # Per-page warning summary: measures + how many carry a
             # phase1_warning (Phase 1 likely fused/missed a barline) or a
             # rhythm_sum_warning (beat count doesn't match the time sig).

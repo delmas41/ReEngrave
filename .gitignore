@@ -68,6 +68,12 @@ omr-weights/
 # Rendered PNG outputs from benchmark runs — reproducible from PDFs
 # Keep verdicts, detection JSONs, reports, CSVs — exclude the heavy renders.
 benchmarks/*/cells/
+# Rendered orchestral fixtures: mechanically regenerated from the Gradus MXLs
+# by tools.omr.training.orchestral_eval. No human work in them, unlike the
+# labeled cells above. The dossiers under data/dossiers/ ARE committed, since
+# they depend on an external checkout that may move.
+benchmarks/omr-orchestral-e2e/fixtures/
+benchmarks/omr-end-to-end/fixtures/
 benchmarks/*/overlays/
 benchmarks/omr-phase1/*.png
 benchmarks/omr-phase1/*-cells/

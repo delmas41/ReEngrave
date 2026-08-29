@@ -149,6 +149,7 @@ ReEngrave/
 │       ├── key_signature_geometry.py  # slot-table fit: read the positions, don't count
 │       ├── key_signature_locator.py   # CV finder for the accidental run
 │       ├── key_signature_vote.py      # reconcile readings across staves + systems
+│       ├── dossier.py           # known facts per work + checks against them
 │       ├── rhythm.py            # duration parsing (Phase 4c)
 │       ├── voicing.py           # chord grouping, voice splitting
 │       ├── pitch_resolver.py    # notehead y → pitch + accidental
@@ -165,6 +166,9 @@ ReEngrave/
 │       │   ├── prepare_yolo_data.py
 │       │   ├── build_catalog_yaml.py
 │       │   ├── verdicts_to_yolo_labels.py
+│       │   ├── build_dossiers.py       # MusicXML -> data/dossiers/*.json
+│       │   ├── orchestral_eval.py      # Gradus MXL -> PDF -> OMR -> accuracy
+│       │   ├── end_to_end_eval.py      # authored fixtures -> note accuracy
 │       │   ├── eval_on_score_cells.py
 │       │   ├── download_dataset.py
 │       │   ├── merge_shards.py
@@ -177,7 +181,8 @@ ReEngrave/
 │   ├── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB — PRODUCTION
 │   └── deepscoresv2-yolov8l-phase-j-mix-30ep.pt    # from the collapsed catalog run — DO NOT USE
 ├── data/
-│   └── user-labeled/            # hand-labeled YOLO training data (v1, v2, …) + catalog.yaml
+│   ├── user-labeled/            # hand-labeled YOLO training data (v1, v2, …) + catalog.yaml
+│   └── dossiers/                # 97 generated per-work fact files (see "Dossiers")
 ├── docs/
 │   └── maestro-integration-plan.md  # theory-layer plan + M0–M4 results
 ├── benchmarks/
@@ -292,7 +297,117 @@ ReEngrave/
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
 | `OMR_IMGSZ`           | `512`   | YOLO inference image size. **Larger is NOT better** — ultralytics letterboxes to `imgsz²` regardless of cell size, so a big value buys anchors and false noteheads, not recall. Measured: `benchmarks/omr-imgsz-sweep-2026-08/findings.md` |
-| `OMR_DPI`             | `300`   | PDF rasterization DPI (600 in standalone CLI, 300 here for latency) |
+| `OMR_DPI`             | `300`   | PDF rasterization DPI (CLI default is **600** — they differ on purpose). **Coupled to `OMR_IMGSZ`, and the best pair depends on the music:** 300 wins on sparse authored fixtures (ensemble precision 0.684 → 0.915), 600 wins on dense orchestral pages (Mahler recall 0.042 → 0.208, duration 0.000 → 0.200). Unifying them in either direction regresses the other family. **Do not 'fix' the inconsistency without measuring both.** See `benchmarks/omr-dpi-imgsz-2026-08/RESULTS.md` |
+
+---
+
+## Dossiers — checking a reading against what the work actually is
+
+The five internal-consistency checks can only ask whether a page agrees with
+ITSELF, which is why a page where every staff reads treble passes all of them.
+A **dossier** supplies external truth: the meter, the measure count, and the
+written clef and key signature of every part.
+
+They are **generated from MusicXML**, not hand-typed — the Gradus score library
+(`~/Desktop/gradus-vercel/public/scores/`) holds ~97 orchestral movements, so
+the facts are exact rather than remembered.
+
+```bash
+# Build them (97 works, a few minutes) — writes data/dossiers/<work_id>.json
+python3 -m tools.omr.training.build_dossiers
+python3 -m tools.omr.training.build_dossiers --list
+
+# Use one during transcription
+python3 -m tools.omr.transcribe score.pdf --dossier beethoven-sym5-mvt1 --out out.json
+```
+
+**Everything is stored as WRITTEN pitch** — what is printed on the page, which
+is what the reader sees. A B-flat clarinet in a 3-flat movement is stored as
+`fifths: -1`. `docs/dossier-verification-plan.md` warned that a concert-pitch
+dossier makes every transposing staff false-flag; storing written facts removes
+the trap instead of compensating for it.
+
+**Two tiers of check, and the difference matters** (`tools/omr/dossier.py`):
+
+- *Alignment-free* — clef vocabulary, key vocabulary, clef distribution, meter.
+  These compare sets and distributions and need no part→staff join. Trustworthy.
+- *Slot-level* — per-staff clef and key. These need to know which staff is
+  which, and a printed score condenses (Fl 1+2 share a staff) and splits
+  (divisi), so Beethoven 5 has 18 parts and 22-staff pages. Forcing that join
+  measured **F1 0.064** (`benchmarks/omr-mxl-autolabel/FINDINGS.md`). So they
+  run ONLY when staff count equals part count, and abstain otherwise.
+
+**The meter is applied, not just checked.** On a constant-meter work the dossier
+meter is what the meter IS, so a detected meter that disagrees is a misread and
+is replaced — every override is still reported. Measured on an engraved
+Beethoven 5 excerpt the detector read 4/4, 4/24 and 7/24 across a 2/4 movement.
+
+**The dossier also SEEDS, not just checks.** With `--dossier` the pipeline takes
+each staff's written clef and key signature from the work, where the parts join
+1:1 to the staves (`--no-dossier-seeding` turns this off). Clef detection is the
+documented ceiling — 2% coverage on orchestral scans, and a fine-tune, ensemble
+voting and a CV locator have all failed to move it — so knowing the clef beats
+reading it. Measured on the orchestral benchmark: Beethoven recall .642 → .691,
+Brahms .206 → .253 (matched notes 136 → 167). Mahler is untouched because it
+detects 31 staves against 38 parts and the join correctly abstains.
+
+**System grouping is decided by CONNECTIVITY, not gap distance**
+(`staff_detector._gap_is_bridged`). Within one Brahms system the inter-staff
+gaps run 17–237 px and within one Beethoven system 130–345 px — both wider than
+the gaps BETWEEN systems on a piano page — and x-overlap is 1.00 for every pair,
+so no distance threshold can separate them. It used to report one 21-staff
+Brahms system as *twelve*. A barline runs a system's full height and the bracket
+encloses exactly it, so a column inked through the whole gap VETOES a gap-based
+break (veto only — it can merge an over-split page, never split a correct one).
+Brahms 12 → 1 system, Beethoven 4 → 1, and Beethoven's measure count went 14/8 →
+**8/8 exact**. The dossier join still falls back to page level
+(`slot_facts_for_page`) for pages where grouping is still imperfect.
+
+**Do not use dossiers to generate training labels.** The MXL→bounding-box path
+is closed: F1 0.064 on 76 hand-mapped cells, x-drift diagnosed as the cause.
+Measure-level alignment works; per-symbol placement does not.
+
+---
+
+## Meter → rhythm feedback
+
+Until 2026-08-28 the meter was derived FROM the durations and then used only to
+complain about them. `resolve_rhythms_for_cell` took no time signature,
+`backfill_page_time_signatures` voted a meter out of durations already
+committed to, and a 4/4 bar summing to 4.53 beats was flagged and shipped.
+
+`transcribe._reconcile_measure_to_meter` closes that loop for the one duration
+input fragile enough to be worth arbitrating: the **beam level**. Durations come
+from clustering beam y-positions, so one extra or missing cluster halves or
+doubles a note. Deliberately narrow:
+
+- only ever re-reads a beam level by ±1 — never adds, deletes or re-pitches a
+  note, so it cannot paper over the over-detection thread;
+- the corrected bar must land EXACTLY on the meter;
+- the answer must be UNIQUE, else nothing changes and the warning stands;
+- single-voice measures only.
+
+Every change is recorded as `rhythm_reconciliation` on the measure. On the
+Beethoven 5 opening it re-read three notes from sixteenths to eighths, taking
+the bar from 1.25 to the 2.0 that 2/4 requires — the right answer on the most
+famous bar in the repertoire.
+
+---
+
+## Orchestral end-to-end benchmark
+
+`benchmarks/omr-orchestral-e2e/` — renders an excerpt of a Gradus MXL back to
+PDF through LilyPond, so every note is known by construction, at eighteen
+staves. The first measurement of note accuracy on a conductor's page.
+
+```bash
+python3 -m tools.omr.training.orchestral_eval
+python3 -m tools.omr.training.orchestral_eval --works mahler-sym5-mvt1 --no-dossier
+```
+
+The input is engraved, not scanned, so a failure is a failure of recognition on
+dense music and cannot be blamed on print quality. It says nothing about scan
+robustness.
 
 ---
 
@@ -430,8 +545,8 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_CLEF_WEIGHTS` | Optional clef-**specialist** weights (CLI: `--clef-weights`); default off. Not general-purpose weights — see the OMR knobs table. |
 | `OMR_MAX_PAGES` | Max pages per OMR job (default 5) |
 | `OMR_CONF_THRESHOLD` | YOLO min confidence (default 0.25) |
-| `OMR_IMGSZ` | YOLO inference image size (default 1280) |
-| `OMR_DPI` | PDF rasterization DPI (default 300) |
+| `OMR_IMGSZ` | YOLO inference image size (default 512; larger is not better) |
+| `OMR_DPI` | PDF rasterization DPI (default 300; CLI uses 600 — see the knobs table) |
 | `MAESTRO_BRIDGE_ENABLED` | `true` → theory-layer enrichment (host-side only; default off) |
 | `MAESTRO_PITCH_RERANK_ENABLED` | `true` → M4 pitch re-rank + auto-correct (local engine; default off) |
 | `MAESTRO_PITCH_RERANK_THRESHOLD` | Min re-rank confidence to auto-correct (default 0.9) |

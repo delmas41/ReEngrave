@@ -193,10 +193,30 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
 
     # Sort by x first, then split by y (top digits = numerator, bottom = denom).
     digit_dets.sort(key=lambda pair: pair[0].x_canonical)
+
+    def _plausible(num: int, den: int) -> dict[str, Any] | None:
+        """Reject meters that are not meters.
+
+        Digits are concatenated positionally, so a run of spurious digit
+        detections produces arbitrarily large numbers rather than failing:
+        measured on an engraved Brahms 1 excerpt this emitted 686/868, 786/86
+        and 68/862, which the exporter then wrote into MusicXML as
+        `<beats>686</beats>`, making the file unparseable by music21 and by
+        notation software. Nothing downstream was in a position to notice,
+        because a meter is exactly the kind of fact the rest of the pipeline
+        trusts. A denominator must be a note value — a power of two — and no
+        repertoire meter has a numerator past the low thirties.
+        """
+        if den not in (1, 2, 4, 8, 16, 32, 64):
+            return None
+        if not (1 <= num <= 32):
+            return None
+        return {"numerator": num, "denominator": den, "raw": f"{num}/{den}"}
+
     if len(digit_dets) == 1:
         # One visible digit — guess it's the numerator.
         n = digit_dets[0][1]
-        return {"numerator": n, "denominator": 4, "raw": f"{n}/4"}
+        return _plausible(n, 4)
 
     # Cluster by x position. If all digits are at similar x, they're stacked
     # (single numerator+denominator). If x varies, we have multi-digit
@@ -213,9 +233,9 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
         try:
             num = int("".join(str(v) for _, v in top))
             den = int("".join(str(v) for _, v in bot))
-            return {"numerator": num, "denominator": den, "raw": f"{num}/{den}"}
         except ValueError:
             return None
+        return _plausible(num, den)
 
     # Multi-digit numerator and denominator: cluster digits into top row and
     # bottom row by y, then concatenate within each row by x.
@@ -233,9 +253,9 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
     try:
         num = int("".join(str(v) for _, v in top_row))
         den = int("".join(str(v) for _, v in bot_row))
-        return {"numerator": num, "denominator": den, "raw": f"{num}/{den}"}
     except ValueError:
         return None
+    return _plausible(num, den)
 
 
 # ---------------------------------------------------------------------------
@@ -921,6 +941,9 @@ def resolve_rhythms_for_cell(
         # Only black noteheads can shorten via beams / flags. Whole / half
         # noteheads can technically be beamed in modern notation but it's
         # vanishingly rare for engraved music; skip the refinement.
+        # Beam levels this notehead's duration rests on. Stays 0 for whole and
+        # half noteheads, which the beam refinement below never touches.
+        beam_levels = 0
         if base_type == "quarter":
             n_beam_levels = 0
             # Prefer stem-anchored beam-counting when stems are available.
@@ -955,6 +978,7 @@ def resolve_rhythms_for_cell(
                 refined = _BEAM_COUNT_DURATIONS.get(capped)
                 if refined is not None:
                     base_beats, base_type = refined
+                    beam_levels = capped
             else:
                 # No beam — look for a flag.
                 f = _flag_for_notehead(nh, flags, max_x_distance=max(
@@ -973,6 +997,14 @@ def resolve_rhythms_for_cell(
             "duration_beats": round(final_beats, 4),
             "duration_type": final_type,
             "dots": n_dots,
+            # How many beam levels this duration rests on. Recorded because it
+            # is the most fragile input to the number above — beam levels come
+            # from clustering y-positions, so one extra or missing cluster
+            # halves or doubles the duration — and because a later pass that
+            # knows the meter can arbitrate exactly that. 0 means the duration
+            # came from a flag or from the notehead class, neither of which the
+            # correction touches. See `transcribe._reconcile_measure_to_meter`.
+            "beam_levels": beam_levels,
         }
 
     # ── Rests ─────────────────────────────────────────────────────────────
