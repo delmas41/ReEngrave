@@ -36,7 +36,8 @@ class PageImage:
 
 @dataclass
 class Staff:
-    """One five-line staff on a page, in page-pixel coordinates.
+    """One staff on a page, in page-pixel coordinates — five lines, or the
+    single rule of a percussion part.
 
     `line_ys` is the staff as the rest of the pipeline models it: five ideal
     horizontal lines at integer rows. `line_thickness_px` and `line_wander_px`
@@ -61,6 +62,12 @@ class Staff:
     # when the lines were too faint or broken to trace.
     line_thickness_px: list[float] | None = None   # per line, top → bottom
     line_wander_px: float | None = None            # max departure from nominal
+    # The page's staff spacing, carried for a staff that has none of its own.
+    # A one-line percussion staff is a single printed rule: it has a position
+    # but no internal pitch, and everything downstream that sizes a window,
+    # a padding or a kernel does so in staff spaces. Without this the scale
+    # would fall back to one pixel and every such window would be wrong.
+    nominal_line_spacing_px: float | None = None
 
     @property
     def median_line_thickness_px(self) -> float | None:
@@ -85,9 +92,14 @@ class Staff:
 
     @property
     def line_spacing_px(self) -> float:
-        """Average spacing between adjacent staff lines."""
+        """Average spacing between adjacent staff lines.
+
+        A one-line staff has no adjacent lines, so it answers with the page's
+        spacing (`nominal_line_spacing_px`) — the scale it was detected
+        against — rather than with zero.
+        """
         if len(self.line_ys) < 2:
-            return 0.0
+            return float(self.nominal_line_spacing_px or 0.0)
         gaps = [self.line_ys[i + 1] - self.line_ys[i] for i in range(len(self.line_ys) - 1)]
         return sum(gaps) / len(gaps)
 

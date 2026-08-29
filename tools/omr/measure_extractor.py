@@ -219,10 +219,15 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     """
     bin_img = pws.page.binary
 
-    # Group staves by system
+    # Group staves by system. One-line percussion staves are left out of the
+    # vote on purpose: the vote is a fraction of the staves in the system, and
+    # a staff two spaces tall answers "there is a barline here" for any stem
+    # that crosses it, so it would both add noise and move the denominator for
+    # every real staff. Their own barlines come from the system they sit in.
     systems: dict[int, list[Staff]] = {}
     for s in pws.staves:
-        systems.setdefault(s.system_index, []).append(s)
+        if len(s.line_ys) >= 5:
+            systems.setdefault(s.system_index, []).append(s)
 
     pws.barlines = []
     x_tolerance = 12  # px: barlines on different staves may not align exactly
@@ -583,9 +588,15 @@ def extract_measures(
     cells: list[MeasureCell] = []
 
     # Group staves & barlines by system
+    # As in `detect_barlines`, one-line percussion staves are skipped. They are
+    # detected so that the staves below them keep their slots (see
+    # `staff_detector._single_line_staff_rows`); reading their CONTENT is a
+    # separate piece of work, because a cell is canonicalised by its staff's
+    # five-line span and a single rule has none.
     sys_staves: dict[int, list[Staff]] = {}
     for s in pws.staves:
-        sys_staves.setdefault(s.system_index, []).append(s)
+        if len(s.line_ys) >= 5:
+            sys_staves.setdefault(s.system_index, []).append(s)
     sys_barlines: dict[int, list[Barline]] = {}
     for bl in pws.barlines:
         sys_barlines.setdefault(bl.system_index, []).append(bl)

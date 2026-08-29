@@ -11,6 +11,8 @@ Algorithm:
      staves whose lines were too lightly printed to clear step 2's gates, and
      drop groups whose spacing says they are one line borrowed from each of
      several staves rather than one staff.
+  3c. Admit one-line percussion staves — a single printed rule between the
+     page's staves, which step 3 cannot see because it only accepts five.
   4. Group staves into systems: staves whose horizontal x-extent overlaps
      and whose vertical separation is small (typically < 3× line spacing)
      belong to the same system (e.g., piano grand staff = treble + bass).
@@ -63,6 +65,29 @@ STAFF_COMB_TOLERANCE = 0.25
 # `_reject_spacing_outliers`). Real size variation on a page (ossia staves,
 # a reduced cue staff) is always SMALLER than the main staves, never 60% larger.
 STAFF_SPACING_OUTLIER_FACTOR = 1.6
+
+# ─── One-line percussion staves (step 3c) ───────────────────────────────────
+# A single printed rule is admitted as a staff only if no other staff-line row
+# sits within this many staff spaces of it. Four spaces is the height of a
+# whole staff: any closer and the two rows could be lines of one FIVE-line
+# staff whose others were never detected, which is a far commoner page than a
+# percussion part. Precision matters more than recall here, because a staff
+# invented between two real ones corrupts slot identity exactly as a missing
+# one does — every staff below it shifts by one.
+SINGLE_LINE_CLEARANCE_SPACES = 4.0
+# The rule must also be a staff's worth of line: this fraction of the page's
+# median staff width, and overlapping the x-window the page's staves occupy.
+# A hairpin, a bracket edge or a fragment of text is shorter than this.
+SINGLE_LINE_MIN_WIDTH_FRAC = 0.5
+SINGLE_LINE_MIN_OVERLAP_FRAC = 0.6
+# ...and only if the rows where a five-line staff's OTHER lines would fall are
+# empty of line. This is the test that matters: on a pocket score at 300 DPI a
+# real staff can lose four of its five lines to the peak gates, and the
+# survivor is alone, full width, and between its neighbours — indistinguishable
+# from a percussion rule by every property of the row itself. The other four
+# lines are still PRINTED, though, whether or not the row pass saw them, so the
+# question is asked of the page rather than of the peak list.
+SINGLE_LINE_NEIGHBOUR_RUN_FRAC = 0.5
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -242,6 +267,138 @@ def _merge_staff_groups(
         out.append(g)
     out.sort(key=lambda g: g[0])
     return out
+
+
+# ─── Step 3c: one-line percussion staves ────────────────────────────────────
+
+
+def _longest_row_run(
+    binary: np.ndarray, y: int, spacing: float,
+    x_lo: int = 0, x_hi: int | None = None,
+) -> tuple[int, int, int]:
+    """The longest horizontal ink run on row `y`, bridging print dropouts of up
+    to one staff space. Returns (x_start, x_end, length); length 0 if no ink.
+
+    `_staff_x_extent` does the same thing for a whole staff, taking its gap
+    tolerance from the staff's own spacing. A single row has no spacing of its
+    own, so the page's is passed in.
+    """
+    h, w = binary.shape
+    if not (0 <= y < h):
+        return 0, 0, 0
+    x_hi = w if x_hi is None else min(w, x_hi)
+    x_lo = max(0, x_lo)
+    if x_hi - x_lo < 2:
+        return 0, 0, 0
+    band = binary[max(0, y - 1):min(h, y + 2), x_lo:x_hi].min(axis=0)
+    ink_x = np.flatnonzero(band == 0)
+    if ink_x.size == 0:
+        return 0, 0, 0
+    max_gap = max(1, int(round(STAFF_LINE_MAX_GAP_SPACES * spacing)))
+    breaks = np.flatnonzero(np.diff(ink_x) > max_gap + 1)
+    starts = np.concatenate(([0], breaks + 1))
+    ends = np.concatenate((breaks, [ink_x.size - 1]))
+    best = int(np.argmax(ink_x[ends] - ink_x[starts]))
+    x0 = int(ink_x[starts[best]]) + x_lo
+    x1 = int(ink_x[ends[best]]) + x_lo
+    return x0, x1, x1 - x0
+
+
+def _has_the_rest_of_a_staff(
+    binary: np.ndarray, y: int, spacing: float, x0: int, x1: int,
+) -> bool:
+    """Is there line where a five-line staff's other lines would be?
+
+    A lone inked row is ambiguous by itself: it is what a percussion staff
+    looks like, and equally what is left of a lightly printed five-line staff
+    after four of its lines failed the peak gates. Measured on Beethoven 5 at
+    300 DPI, that second case is the common one — a clarinet staff and a violin
+    staff both arrived as a single full-width row.
+
+    So look for the rest of the staff on the page. Whether the row pass saw
+    them or not, the other lines are printed, and printed lines are long: the
+    test is a run of line-like length at one or two staff spaces above or
+    below, over the candidate's own x-range.
+    """
+    width = x1 - x0
+    if width <= 0:
+        return False
+    for k in (-2, -1, 1, 2):
+        row = int(round(y + k * spacing))
+        _, _, run = _longest_row_run(binary, row, spacing, x0, x1 + 1)
+        if run >= SINGLE_LINE_NEIGHBOUR_RUN_FRAC * width:
+            return True
+    return False
+
+
+def _single_line_staff_rows(
+    binary: np.ndarray,
+    peaks: np.ndarray,
+    groups: list[list[int]],
+    spacing: float,
+) -> list[int]:
+    """Rows that are a one-line percussion staff rather than part of any five.
+
+    `_group_into_staves` accepts only five-peak windows, so a single-line
+    percussion staff produces no `Staff` at all — and every staff below it then
+    carries a `staff_index` one lower than its true slot. That is how a missing
+    rule becomes a wrong instrument, a wrong clef and wrong pitches for the
+    whole lower half of an orchestral system.
+
+    A one-line staff cannot be found the way the others are: it has no internal
+    spacing to calibrate against, and one inked row on its own is also what a
+    page border, a rehearsal rule and the single surviving line of a badly
+    printed five-line staff look like. What identifies it is the company it
+    keeps — a rule as long as the page's staves, standing between them, with
+    nothing else at staff-line pitch anywhere near it.
+
+    Candidates come from the STRICT peak pass, so each has already cleared the
+    length and prominence gates; this only decides which of the leftovers stand
+    alone. Returns the accepted rows, sorted.
+    """
+    if spacing <= 0 or not groups or len(peaks) == 0:
+        return []
+
+    # The x-window and width the page's own staves occupy, which a percussion
+    # rule shares — it is set to the same margins as everything above it.
+    extents = [_staff_x_extent(binary, g) for g in groups]
+    med_start = float(np.median([x0 for x0, _ in extents]))
+    med_end = float(np.median([x1 for _, x1 in extents]))
+    med_width = med_end - med_start
+    if med_width <= 0:
+        return []
+
+    accepted_lines = sorted(y for g in groups for y in g)
+    top, bottom = accepted_lines[0], accepted_lines[-1]
+    clearance = SINGLE_LINE_CLEARANCE_SPACES * spacing
+
+    # Only rows BETWEEN the first and last staff line on the page. A percussion
+    # staff sits inside the system with the rest of the parts; a page border, a
+    # title rule or a footer sits outside it, and this is what separates them
+    # without a threshold on any of their other properties.
+    candidates = [
+        int(y) for y in peaks
+        if top < int(y) < bottom
+        and min(abs(int(y) - a) for a in accepted_lines) >= clearance
+    ]
+
+    out: list[int] = []
+    for y in candidates:
+        # Two lone rows within a staff's height of each other are more likely
+        # two lines of one five-line staff than two percussion parts, so
+        # neither is admitted.
+        if any(other != y and abs(other - y) < clearance for other in candidates):
+            continue
+        x0, x1, width = _longest_row_run(binary, y, spacing)
+        if width < SINGLE_LINE_MIN_WIDTH_FRAC * med_width:
+            continue
+        overlap = min(x1, med_end) - max(x0, med_start)
+        if overlap < SINGLE_LINE_MIN_OVERLAP_FRAC * width:
+            continue
+        if _has_the_rest_of_a_staff(binary, y, spacing, x0, x1):
+            continue
+        out.append(y)
+    return sorted(out)
 
 
 # ─── Step 3: find horizontal extent of each staff ────────────────────────────
@@ -529,6 +686,12 @@ def detect_staves(page: PageImage) -> PageWithStaves:
         groups = _reject_spacing_outliers(groups, spacing)
         comb = _comb_match_staves(profile, page.width, spacing, reference_ink)
         groups = _merge_staff_groups(groups, comb)
+        # A percussion part is one rule, and the five-peak grouper cannot see
+        # it at all. Added last, so the page's own staves decide the spacing,
+        # the x-window and the vertical extent it is judged against.
+        for row in _single_line_staff_rows(page.binary, peaks, groups, spacing):
+            groups.append([row])
+        groups.sort(key=lambda g: g[0])
 
     staves: list[Staff] = []
     for idx, line_ys in enumerate(groups):
@@ -543,6 +706,7 @@ def detect_staves(page: PageImage) -> PageWithStaves:
             system_index=0,
             line_thickness_px=measured[0] if measured else None,
             line_wander_px=measured[1] if measured else None,
+            nominal_line_spacing_px=spacing if len(line_ys) < 2 else None,
         ))
 
     # Drop the "staves" that are paragraphs of body text (see

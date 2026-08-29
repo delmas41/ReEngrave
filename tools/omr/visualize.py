@@ -45,7 +45,7 @@ def draw_overlay(pws: PageWithStaves, cells=None, alpha: float = 0.6) -> np.ndar
         # Staff index label
         cv2.putText(
             bgr, f"s{s.staff_index} sys{s.system_index}",
-            (max(0, s.x_start - 110), s.line_ys[2]),
+            (max(0, s.x_start - 110), s.line_ys[len(s.line_ys) // 2]),
             cv2.FONT_HERSHEY_SIMPLEX, 0.9, COLOR_STAFF, 2,
         )
 
