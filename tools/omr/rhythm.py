@@ -581,6 +581,18 @@ def _deduplicate_beams(beams: list, line_spacing: float) -> list:
     Greedy: sort by confidence (descending), keep the first detection,
     drop any later beam whose center is within `line_spacing × 0.18` in
     y AND whose x-range overlaps the kept beam by ≥ 60%.
+
+    THE 0.18 IS DELIBERATELY BELOW the 0.26 top of the measured duplicate mode
+    (see BEAM_Y_CLUSTER_FACTOR), and raising it to match was tried and is worse.
+    Widening this to 0.35 took Brahms's duration accuracy from 0.485 back to
+    0.260 — undoing the entire gain from tuning the cluster boundary — while
+    leaving recall, precision and the matched set untouched.
+
+    Merging and dropping are not interchangeable. Clustering collapses fragments
+    into one LEVEL while every detection stays available to the end-window and
+    anchor logic; this function DELETES detections, and the greedy keep-highest-
+    confidence pass then discards real strokes whose partner happened to be
+    kept. Fragments are better merged late than removed early.
     """
     y_tol = max(3, int(round(line_spacing * 0.18)))
     sorted_beams = sorted(

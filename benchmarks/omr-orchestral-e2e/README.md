@@ -202,6 +202,27 @@ Brahms duration accuracy **0.262 → 0.485**. Beethoven gives up three notes at
 any value above 0.22 and does not get them back lower in the band, so that is a
 real if small cost, paid for many times over on the denser page.
 
+### Disproven: widening the deduplicator instead
+
+The obvious follow-on was to raise the *deduplicator's* tolerance to the same
+0.35, removing fragments outright rather than relying on clustering to merge
+them. It is **worse**, and not marginally:
+
+| | brahms duration | dur_ok | matched |
+|---|---:|---:|---:|
+| dedupe 0.18 (kept) | **0.485** | 99 | 204 |
+| dedupe 0.35 | 0.260 | 53 | 204 |
+
+That undoes the entire gain from the cluster boundary, while leaving recall,
+precision and the matched set identical — so it is purely a duration effect.
+
+**Merging and dropping are not interchangeable.** Clustering collapses fragments
+into one level while every detection stays available to the end-window and
+anchor logic. The deduplicator DELETES detections, and its greedy
+keep-highest-confidence pass then discards real strokes whose partner happened
+to be kept. Fragments are better merged late than removed early. Don't retry
+this.
+
 Note the module's other tuning comments assume a canonical line spacing of
 roughly 24–48 px. It is **100**. Re-derive rather than scale if these are
 retuned.
