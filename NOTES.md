@@ -18,7 +18,9 @@ handoff: four ranked threads with evidence, entry points and done-criteria.
    through the `imgsz` bug fixed on 2026-08-28.
 
 ⚠️ **Any measurement predating 2026-08-28 went through an `imgsz` reporting 2–4× the notes
-that exist.** Re-measure before building on one.
+that exist.** Re-measure before building on one. `imgsz` is now derived per cell — see
+`benchmarks/omr-detector-scale/RESULTS.md`, which also corrects the stated mechanism
+(ultralytics scales the longest side to `imgsz`; it does not letterbox to `imgsz²`).
 
 ---
 

@@ -5,7 +5,7 @@
     "judging both the residual over-count on the LilyPond reference sheet and",
     "the ~30% of stems that a raised height floor would have removed.",
     "",
-    "Counting rule given: one stem per note OR CHORD — three noteheads sharing",
+    "Counting rule given: one stem per note OR CHORD \u2014 three noteheads sharing",
     "one stem count once. Whole notes have none. Barlines, ledger lines and the",
     "vertical strokes of sharps, naturals and flats are NOT stems; that last",
     "exclusion is the whole point of the exercise.",
@@ -16,33 +16,215 @@
     "directly. Four are controls where the two settings agree.",
     "",
     "WHAT IT DECIDED. Neither height floor is right, and the failure is",
-    "asymmetric by score. The 2.8 floor is nearly exact on Boléro (|err| 1 over",
-    "4 cells) because there the surplus really was accidental strokes — but it",
+    "asymmetric by score. The 2.8 floor is nearly exact on Bol\u00e9ro (|err| 1 over",
+    "4 cells) because there the surplus really was accidental strokes \u2014 but it",
     "destroys keyboard music, where stems in beamed groups are legitimately",
     "short: one WTC cell holds 15 stems and the 2.8 floor finds 5. Height is the",
     "wrong discriminator. What separates them is that an accidental's strokes",
     "come in PAIRS and a stem is single; that rule takes summed |error| from 60",
-    "to 24 here, and the reference sheet from +7 to -1 on a truth of 48."
+    "to 24 here, and the reference sheet from +7 to -1 on a truth of 48.",
+    "",
+    "Each cell carries `bbox_page_px`, the page-pixel region it covered when it was labeled, and the scorer resolves cells by overlapping that box rather than by `cell_index`. The index is NOT stable: a Phase-1 change re-segments the page and renumbers everything. That happened \u2014 a merge changed La Mer p.25 from 9 systems to 3 and from 51 cells to 78, silently re-pointing five labels at different music and moving the stem error from 24 to 35 for a reason that had nothing to do with detection. `cell_index` is kept only as a record of how the cell was originally reached."
   ],
   "labeler": "sean",
   "date": "2026-08-28",
   "cells": [
-    {"n": 17, "score": "lamer-p25", "dpi": 300, "cell_index": 2, "stems": 7},
-    {"n": 18, "score": "bolero-p31", "dpi": 300, "cell_index": 12, "stems": 7},
-    {"n": 19, "score": "mahler-5-p11", "dpi": 300, "cell_index": 5, "stems": 5},
-    {"n": 20, "score": "wtc-p5", "dpi": 600, "cell_index": 19, "stems": 15},
-    {"n": 21, "score": "lamer-p25", "dpi": 300, "cell_index": 14, "stems": 7},
-    {"n": 22, "score": "bolero-p31", "dpi": 300, "cell_index": 14, "stems": 9},
-    {"n": 23, "score": "mahler-5-p11", "dpi": 300, "cell_index": 23, "stems": null,
-     "note": "labeler could not count it — the stems are cut off in the crop. Recorded as unsure and excluded from scoring rather than guessed."},
-    {"n": 24, "score": "lamer-p25", "dpi": 300, "cell_index": 7, "stems": 0},
-    {"n": 25, "score": "bolero-p31", "dpi": 300, "cell_index": 0, "stems": 7},
-    {"n": 26, "score": "wtc-p5", "dpi": 600, "cell_index": 3, "stems": 8},
-    {"n": 27, "score": "mahler-5-p11", "dpi": 300, "cell_index": 8, "stems": 3},
-    {"n": 28, "score": "bolero-p31", "dpi": 300, "cell_index": 19, "stems": 11},
-    {"n": 29, "score": "wtc-p5", "dpi": 600, "cell_index": 21, "stems": 9},
-    {"n": 30, "score": "lamer-p25", "dpi": 300, "cell_index": 8, "stems": 2},
-    {"n": 31, "score": "lamer-p25", "dpi": 300, "cell_index": 11, "stems": 4}
+    {
+      "n": 17,
+      "score": "lamer-p25",
+      "dpi": 300,
+      "cell_index": 2,
+      "stems": 7,
+      "bbox_page_px": [
+        878,
+        207,
+        2318,
+        360
+      ]
+    },
+    {
+      "n": 18,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 12,
+      "stems": 7,
+      "bbox_page_px": [
+        234,
+        447,
+        805,
+        609
+      ]
+    },
+    {
+      "n": 19,
+      "score": "mahler-5-p11",
+      "dpi": 300,
+      "cell_index": 5,
+      "stems": 5,
+      "bbox_page_px": [
+        616,
+        160,
+        911,
+        316
+      ]
+    },
+    {
+      "n": 20,
+      "score": "wtc-p5",
+      "dpi": 600,
+      "cell_index": 19,
+      "stems": 15,
+      "bbox_page_px": [
+        186,
+        4539,
+        2107,
+        4989
+      ]
+    },
+    {
+      "n": 21,
+      "score": "lamer-p25",
+      "dpi": 300,
+      "cell_index": 14,
+      "stems": 7,
+      "bbox_page_px": [
+        878,
+        769,
+        2318,
+        925
+      ]
+    },
+    {
+      "n": 22,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 14,
+      "stems": 9,
+      "bbox_page_px": [
+        1341,
+        447,
+        1806,
+        609
+      ]
+    },
+    {
+      "n": 23,
+      "score": "mahler-5-p11",
+      "dpi": 300,
+      "cell_index": 23,
+      "stems": null,
+      "note": "labeler could not count it \u2014 the stems are cut off in the crop. Recorded as unsure and excluded from scoring rather than guessed.",
+      "bbox_page_px": [
+        1120,
+        599,
+        2115,
+        749
+      ]
+    },
+    {
+      "n": 24,
+      "score": "lamer-p25",
+      "dpi": 300,
+      "cell_index": 7,
+      "stems": 0,
+      "bbox_page_px": [
+        260,
+        488,
+        878,
+        644
+      ]
+    },
+    {
+      "n": 25,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 0,
+      "stems": 7,
+      "bbox_page_px": [
+        234,
+        109,
+        805,
+        268
+      ]
+    },
+    {
+      "n": 26,
+      "score": "wtc-p5",
+      "dpi": 600,
+      "cell_index": 3,
+      "stems": 8,
+      "bbox_page_px": [
+        186,
+        763,
+        1755,
+        1210
+      ]
+    },
+    {
+      "n": 27,
+      "score": "mahler-5-p11",
+      "dpi": 300,
+      "cell_index": 8,
+      "stems": 3,
+      "bbox_page_px": [
+        253,
+        278,
+        616,
+        428
+      ]
+    },
+    {
+      "n": 28,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 19,
+      "stems": 11,
+      "bbox_page_px": [
+        805,
+        617,
+        1341,
+        779
+      ]
+    },
+    {
+      "n": 29,
+      "score": "wtc-p5",
+      "dpi": 600,
+      "cell_index": 21,
+      "stems": 9,
+      "bbox_page_px": [
+        3635,
+        4539,
+        4816,
+        4989
+      ]
+    },
+    {
+      "n": 30,
+      "score": "lamer-p25",
+      "dpi": 300,
+      "cell_index": 8,
+      "stems": 2,
+      "bbox_page_px": [
+        878,
+        488,
+        2318,
+        644
+      ]
+    },
+    {
+      "n": 31,
+      "score": "lamer-p25",
+      "dpi": 300,
+      "cell_index": 11,
+      "stems": 4,
+      "bbox_page_px": [
+        878,
+        629,
+        2318,
+        785
+      ]
+    }
   ],
   "scores": {
     "mahler-5-p11": "PDF Scores/Mahler_5_.pdf, page index 11",

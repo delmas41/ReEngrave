@@ -42,39 +42,37 @@ more about the fixture than the pipeline.
 
 ## Baseline
 
+Taken at **600 DPI**, the pipeline's own default, on the merged tree (main's
+clef / key-signature / staff work plus this branch's Phase-1 and Phase-4f work).
+
 | fixture | parts | measures | notes (omr/truth) | pitch recall | pitch precision | duration |
 |---|---|---|---|---|---|---|
-| melody | 1/1 | **9/6** | 32/24 | **0.292** | **0.219** | 0.286 |
-| keyboard | 2/2 | 4/4 | **111/27** | 0.593 | **0.144** | 0.438 |
-| ensemble | **1/4** | 4/4 | 47/45 | 0.711 | 0.681 | 0.906 |
+| melody | 1/1 | **12/6** | 61/24 | 0.375 | 0.148 | 0.889 |
+| keyboard | 2/2 | 4/4 | 45/27 | 0.407 | 0.244 | 0.364 |
+| ensemble | 4/4 | 4/4 | 103/45 | 0.400 | 0.175 | 0.167 |
 
-Pitch recall is the share of the true notes recovered; precision is the share of
-reported notes that are real. Notes are aligned per part by longest common
-subsequence over pitch names — deliberately generous, since it ignores where a
-note sits in the bar and asks only whether the sequence of pitches is right. A
-measure-aware alignment would score lower.
+Pitch recall is the share of true notes recovered; precision the share of
+reported notes that are real. Notes are aligned **per part** by longest common
+subsequence over pitch names — generous, in that it ignores where a note sits in
+the bar and asks only whether the sequence of pitches is right.
 
-## What it exposes
+### Two things that moved between runs, neither of them recognition
 
-**Single-staff scores over-segment.** `melody` reads 9 measures where there are
-6, and the overlay shows why: with one staff there is no cross-staff vote, so
-note stems are read as barlines. Mis-segmentation then cascades — the first cell
-collects 18 noteheads where the bar holds four. This is the worst fixture on
-every metric, and it is the *simplest* music on the page.
+The first baseline was taken at **300 DPI**, which was simply a mistake — that
+is not the pipeline's default, and DPI moves the numbers a long way and not in
+one direction: melody's duration rate 0.29 → 0.89, keyboard's precision
+0.14 → 0.33 but its recall 0.59 → 0.41. A benchmark run at a non-default
+setting measures a configuration nobody uses.
 
-**Noteheads are over-reported.** `keyboard` returns 111 notes for 27, a
-precision of 0.14 on a clean render. Whatever the mechanism, it is not a subtle
-accuracy loss.
-
-**Four staves came back as one part.** `ensemble` is read as a single part
-because each staff ended up with one measure — every internal barline was
-missed — which triggers the "fragmented row" merge in `export.to_musicxml`. In
-open score the barlines do not cross between staves, which is the same shape the
-clef branch found on Nottebohm.
-
-Interestingly `ensemble` is the *best* fixture on note accuracy (0.71 recall,
-0.91 duration) despite being the most complex. More staves means more corroborat-
-ing evidence, which is the opposite of the intuition that dense scores are harder.
+`ensemble` also **changed shape**. It used to come back as one part; on the
+merged tree it is 4 parts and 16 measures, because main's system-grouping work
+fixed the open-score barline problem that had collapsed it. That is a real
+improvement in structure — and it makes the note score STRICTER, because the
+alignment pairs part against part only when the two agree on how many parts
+exist, and falls back to one concatenated sequence when they do not. So
+`ensemble`'s earlier 0.711 recall and this run's 0.400 are not measuring the
+same thing. The comparison to trust from here is between runs where the
+structure columns match.
 
 ## What this does NOT establish
 

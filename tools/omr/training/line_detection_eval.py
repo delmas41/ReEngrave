@@ -115,6 +115,56 @@ def score_pdf(pdf: Path, dpi: int = 600) -> dict[str, Any]:
     }
 
 
+def _resolve_cells(cells, entry):
+    """Find the cell or cells covering the region this label was made on.
+
+    Resolved by overlap with the recorded page-pixel box, NOT by `cell_index`:
+    the index is not stable, because any Phase-1 change re-segments the page and
+    renumbers every cell. That is not hypothetical — a merge changed La Mer p.25
+    from 9 systems to 3 and from 51 cells to 78, which silently re-pointed five
+    labels at different music and moved the reported stem error from 24 to 35
+    for a reason that had nothing to do with detection.
+
+    Returns a LIST, because re-segmentation also splits: where the page is now
+    cut more finely, one labeled region covers several cells and the count to
+    compare against the label is their sum. A label is only abandoned when its
+    region cannot be covered at all.
+    """
+    want = entry.get("bbox_page_px")
+    if not want:
+        return [cells[entry["cell_index"]]]
+    wx0, wy0, wx1, wy1 = want
+    want_area = max(1, (wx1 - wx0) * (wy1 - wy0))
+
+    best, best_iou = None, 0.0
+    contained = []
+    for cell in cells:
+        x0, y0, x1, y1 = cell.bbox_page_px
+        ix = max(0, min(x1, wx1) - max(x0, wx0))
+        iy = max(0, min(y1, wy1) - max(y0, wy0))
+        inter = ix * iy
+        if not inter:
+            continue
+        cell_area = max(1, (x1 - x0) * (y1 - y0))
+        union = cell_area + want_area - inter
+        iou = inter / union if union else 0.0
+        if iou > best_iou:
+            best, best_iou = cell, iou
+        # Mostly inside the labeled region: a piece of what was one cell.
+        if inter / cell_area >= 0.8:
+            contained.append(cell)
+    if best_iou >= 0.5:
+        return [best]
+    covered = sum(
+        max(0, min(c.bbox_page_px[2], wx1) - max(c.bbox_page_px[0], wx0))
+        * max(0, min(c.bbox_page_px[3], wy1) - max(c.bbox_page_px[1], wy0))
+        for c in contained
+    )
+    if contained and covered / want_area >= 0.7:
+        return contained
+    return []
+
+
 def score_hand_labels(dpi_override: int | None = None) -> int:
     """Score beam detection against cells counted by eye on real scans.
 
@@ -142,15 +192,20 @@ def score_hand_labels(dpi_override: int | None = None) -> int:
         if key not in pages:
             page = render_page(pdf, page_index, dpi=dpi)
             pws = detect_barlines(detect_staves(page))
-            cells = extract_measures(pws)[:25]
+            cells = extract_measures(pws)
             remove_staff_lines(cells)
             pages[key] = cells
-        cell = pages[key][entry["cell_index"]]
-        got = len(detect_lines(cell)["beams"])
+        group = _resolve_cells(pages[key], entry)
+        if not group:
+            print(f"{entry['n']:>4} {entry['score']:>14} "
+                  f"{'-':>8} {'-':>9}  region no longer resolvable — excluded")
+            continue
+        got = sum(len(detect_lines(c)["beams"]) for c in group)
         total += abs(got - entry["beams"])
         mark = "OK" if got == entry["beams"] else f"{got - entry['beams']:+d}"
+        note = f"  ({len(group)} cells)" if len(group) > 1 else ""
         print(f"{entry['n']:>4} {entry['score']:>14} {dpi:>4} {entry['beams']:>8} "
-              f"{got:>9}  {mark}")
+              f"{got:>9}  {mark}{note}")
     print(f"summed absolute error: {total}")
     return total
 
@@ -183,14 +238,19 @@ def score_hand_stems() -> int:
         if key not in pages:
             page = render_page(pdf, page_index, dpi=entry["dpi"])
             pws = detect_barlines(detect_staves(page))
-            cells = extract_measures(pws)[:30]
+            cells = extract_measures(pws)
             remove_staff_lines(cells)
             pages[key] = cells
-        cell = pages[key][entry["cell_index"]]
-        got = len(detect_lines(cell)["stems"])
+        group = _resolve_cells(pages[key], entry)
+        if not group:
+            print(f"{entry['n']:>4} {entry['score']:>14} "
+                  f"{'-':>8} {'-':>9}  region no longer resolvable — excluded")
+            continue
+        got = sum(len(detect_lines(c)["stems"]) for c in group)
         total += abs(got - entry["stems"])
         mark = "OK" if got == entry["stems"] else f"{got - entry['stems']:+d}"
-        print(f"{entry['n']:>4} {entry['score']:>14} {entry['stems']:>8} {got:>9}  {mark}")
+        note = f"  ({len(group)} cells)" if len(group) > 1 else ""
+        print(f"{entry['n']:>4} {entry['score']:>14} {entry['stems']:>8} {got:>9}  {mark}{note}")
     print(f"summed absolute error: {total}")
     return total
 

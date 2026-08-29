@@ -158,8 +158,9 @@ work better without the lines. The YOLO detector is trained on cells
 1. Reads `MeasureCell.image` (canonical-size, BGR or grayscale).
 2. Runs the model with `agnostic_nms=True` (collapses overlapping
    semantically-similar boxes — e.g. `dynamicF` + `dynamicFF` on one
-   `ff` mark) and `imgsz=2048` (matches the production weights'
-   fine-tuning resolution).
+   `ff` mark) and an `imgsz` chosen per cell, so the model is shown a
+   staff space near the one it reads noteheads at. See "Inference
+   scale" below for why a fixed `imgsz` is the wrong knob here.
 3. Maps each box's class id back to a SMuFL glyph name + category.
 4. Returns `list[SymbolDetection]` in canonical-cell coordinates.
 
@@ -167,6 +168,58 @@ work better without the lines. The YOLO detector is trained on cells
 proportionally re-projects each box into source-page pixels using the
 cell's `bbox_page_px` rectangle, so consumers get both `bbox` (canonical)
 and `bbox_page` (page-pixel) per detection.
+
+### Inference scale — why `imgsz` is chosen per cell
+
+A detector does not see pixels, it sees a **staff space**. `imgsz` is only a
+pixel budget; what decides whether the model recognises a notehead is how large
+that notehead is once ultralytics has letterboxed the image to `imgsz`:
+
+```
+staff space shown  =  canonical staff space  ×  imgsz / longest side of cell
+```
+
+This matters here because the detector is fed **cells, not pages**, and Phase 1
+has already rescaled every cell so its staff span is `CANONICAL_STAFF_SPAN_PX`
+(400 px — a staff space of 100). Running such a cell at `imgsz=2048` enlarges it
+*again*, and the model is shown a staff space of 100–200 px. It was fine-tuned
+on DeepScoresV2 pages, where a staff space is a couple of dozen pixels. The old
+default of 2048 was chosen to "match the weights' fine-tuning resolution", which
+is true of a page and false of a canonical cell.
+
+Past roughly 25 px the failure is not a graceful loss of recall. The model stops
+finding noteheads and starts finding **fragments** of them — boxes a quarter of a
+notehead tall, stacked in columns up the vertical stroke of a clef or a time
+signature. A `4/4` reliably became a stack of nine "noteheads" on every staff.
+Measured on the authored fixtures in `benchmarks/omr-detector-scale/`, where the
+note count of all 30 measures is exact:
+
+| staff space shown | detected/true notes | measures exactly right | median box width |
+|---|---|---|---|
+| 8 – 22 | 0.88–0.89 | **24 / 30** | 1.27–1.30 spaces ✓ |
+| 26 | 0.96 | 17 / 30 | 1.27 |
+| 50 | 1.77 | 3 / 30 | 0.87 |
+| 100 – 150 (the old default) | 1.41–1.91 | 1–3 / 30 | 0.23–0.45 ✗ |
+
+So `imgsz` defaults to `None`, and `yolo_detector.imgsz_for_cell` sizes each cell
+to show the model `TARGET_STAFF_SPACE_PX` (16 — the middle of that plateau, with
+about a factor of two of margin either side, and where notehead confidence
+peaks). Pass `--imgsz N` to pin a value; `--imgsz 512` is the best fixed value
+measured and `--imgsz 2048` reproduces the old behaviour.
+
+A second session reached the same bug the same day from 161 hand-labeled
+orchestral cells and landed the constant 512 on main. The two sets of
+measurements agree; `benchmarks/omr-detector-scale/RESULTS.md` reconciles them
+and shows why a constant lands inside the plateau on wide header cells and past
+its edge on narrow interior cells of the same page.
+
+Two things worth knowing about the old number. The headline **F1 98.8%** was
+measured by `training/eval_on_score_cells.py`, which calls `detect()` without an
+`imgsz` and so ran at the wrapper's old default of **640**, not the 2048 the
+pipeline used — the quality figure and the production setting were never the
+same configuration. And the note in "Each reader gets the picture it can read"
+that the model finds *zero* key markers on a header crop "at any imgsz" was
+testing 640/1280/2048, all of which are far too large for a crop that narrow.
 
 ### Class space
 
@@ -660,6 +713,15 @@ letterboxed sliver as nothing it knows. Cropping to the header is what makes the
 CV locator work at all and what makes the detector go blind, so neither reader
 is given the other's picture.
 
+> **This diagnosis is now suspect** (2026-08-28). 640, 1280 and 2048 are all far
+> too large for a crop a few staff spaces wide — see "Inference scale" above —
+> so "at any imgsz" sampled three points on the wrong side of the cliff. The
+> *observation* stands; the *cause* may be scale rather than letterboxing, and
+> the split between the two readers is worth re-measuring now that the detector
+> is sized per cell. The layer's own scores are unchanged either way
+> (`benchmarks/omr-key-signature/RESULTS.md`), so nothing here has been altered
+> on the strength of the doubt.
+
 ### What it is measured at
 
 Two ground-truth pages, every signature read off the page by eye (Beethoven 5
@@ -789,8 +851,11 @@ options:
                         Pass this to reproduce pre-locator output exactly.
                         See "Clef location" above.
   --conf CONF           Detection confidence threshold (default: 0.25)
-  --imgsz IMGSZ         YOLO inference image size (default: 2048 — matches
-                        the production weights' fine-tuning resolution)
+  --imgsz IMGSZ         YOLO inference image size. Default: chosen per cell,
+                        so the model is shown a staff space it recognises
+                        noteheads at. A fixed size means a different staff
+                        space in every cell, because cells are already
+                        rescaled to a canonical staff span
   --iou IOU             NMS IoU threshold (default: 0.5)
   --no-agnostic-nms     Disable agnostic NMS
   --dpi DPI             Source-page render DPI (default: 600)
@@ -802,10 +867,11 @@ options:
 
 | Goal | Setting |
 |---|---|
-| Default — clean engraved scores | (defaults — `conf=0.25`, `imgsz=2048`, `iou=0.5`, agnostic NMS on) |
+| Default — clean engraved scores | (defaults — `conf=0.25`, per-cell `imgsz`, `iou=0.5`, agnostic NMS on) |
 | Higher recall (more, noisier detections) | `--conf 0.10` |
 | Cleaner output (fewer borderline calls) | `--conf 0.35` |
-| Faster on simple / low-density scores | `--imgsz 1280` or `--imgsz 640` |
+| Best fixed `imgsz` measured (if a rule is unwanted) | `--imgsz 512` — see benchmarks/omr-detector-scale/ |
+| Reproduce pre-2026-08-28 output exactly | `--imgsz 2048` (it over-counts notes ~2x) |
 | Lower-DPI scan (300 DPI source) | `--dpi 300` |
 | Debug / visual inspection | `--overlays-dir overlays/` then open the PNGs |
 

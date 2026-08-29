@@ -12,13 +12,27 @@ forward-looking part.
 ## The one thing to know before starting anything
 
 **Every measurement taken before 2026-08-28 went through a broken `imgsz`.** The CLI
-defaulted to 2048 and the backend to 1280; ultralytics letterboxes to `imgsz²` regardless
-of cell size, so both were buying anchors and false noteheads rather than recall. The
-pipeline was reporting **2–4× the notes that exist**. Now 512 everywhere.
+defaulted to 2048 and the backend to 1280, and the pipeline was reporting **2–4× the
+notes that exist**. `imgsz` is now derived **per cell** rather than fixed
+(`yolo_detector.imgsz_for_cell`); `--imgsz 512` is the best fixed value and
+`--imgsz 2048` reproduces the old behaviour.
 
 Fixing it moved end-to-end pitch precision on the `keyboard` fixture from **0.144 to
 1.000**, and improved every metric on all three fixtures
 (`benchmarks/omr-imgsz-sweep-2026-08/findings.md`).
+
+> **Correction to the mechanism.** This section previously said ultralytics
+> "letterboxes to `imgsz²` regardless of cell size, so both were buying anchors".
+> It does not: `predict` builds `LetterBox(imgsz, auto=rect)` and scales the
+> *longest side* to `imgsz`, padding only to a stride multiple — a 300×1200 cell at
+> `imgsz 512` is fed as 128×512. What the model is shown is
+> `canonical staff space × imgsz / longest side of cell`, so the right setting
+> depends on the cell. That is why the fix is a rule and not a number: a constant
+> lands inside the good band on wide header cells and past its edge on the narrow
+> interior cells of the same page. Measured in
+> `benchmarks/omr-detector-scale/RESULTS.md`, which reconciles the two independent
+> findings; the practical advice above is unchanged, and 512 remains far better
+> than 2048.
 
 So: any older number is suspect, including "100% pitch coverage" in
 `benchmarks/omr-real-world/README.md` — which measures *coverage*, not correctness — and
