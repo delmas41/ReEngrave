@@ -73,6 +73,17 @@ Output schema (JSON):
                       "flats":  0,          # count of flats (mutually exclusive)
                       "alterations": {"F": "#", "C": "#"}  # letter -> '#'|'b'
                   },
+                  "key_signature_read": True,  # whether the zeros above are a
+                                            # READING. False = nothing could
+                                            # read this staff's signature, and
+                                            # 0/0 is the empty default rather
+                                            # than a finding — the distinction
+                                            # a C minor page reporting "0
+                                            # sharps, 0 flats" on every staff
+                                            # depends on.
+                  "key_signature_unread_reason": "no clef was read on this staff…",
+                                            # OPTIONAL — present exactly when
+                                            # key_signature_read is False.
                   "clef_final": "bass",     # OPTIONAL — only if clef changed
                                             # mid-staff (rare)
                   "key_signature_final": {...},  # OPTIONAL — only if key changed
@@ -1002,11 +1013,14 @@ def _header_key_signatures(
     header_cells: dict[int, MeasureCell],
     clef_for_staff: dict[int, str | None],
     dets_for_staff: dict[int, tuple[list, MeasureCell]],
-) -> tuple[dict[int, int], dict[int, str]]:
+) -> tuple[dict[int, int], dict[int, str], dict[int, str]]:
     """Read and reconcile this page's key signatures.
 
     Returns `({staff_index: fifths}, {staff_index: reason})` for the staves the
-    vote is willing to speak for.
+    vote is willing to speak for, and `{staff_index: why}` for the staves it
+    could not — because "no signature was read here" and "the signature read
+    here is empty" are different statements, and only the first is honest about
+    a page nothing could be read on.
 
     Both readings feed the same vote, which is the point of doing it here. The
     DETECTOR's markers are used where it found any — its boxes are real glyphs,
@@ -1028,6 +1042,7 @@ def _header_key_signatures(
     the right failure, but it means the two features improve together.
     """
     candidates: list[StaffCandidate] = []
+    unread: dict[int, str] = {}
     for system_index in sorted({st.system_index for st in pws.staves}):
         staves = sorted(
             (st for st in pws.staves if st.system_index == system_index),
@@ -1037,6 +1052,13 @@ def _header_key_signatures(
             cell = header_cells.get(staff.staff_index)
             clef = clef_for_staff.get(staff.staff_index)
             read, source = None, ""
+            if not clef:
+                unread[staff.staff_index] = (
+                    "no clef was read on this staff, and the slot table a "
+                    "signature is fitted against is chosen by the clef"
+                )
+            elif cell is None:
+                unread[staff.staff_index] = "no header window was measured"
             if clef:
                 dets, dets_cell = dets_for_staff.get(staff.staff_index, ([], None))
                 if dets_cell is not None:
@@ -1046,6 +1068,11 @@ def _header_key_signatures(
                     located = locate_key_signature(cell, clef)
                     read = located.read if located else None
                     source = "cv_locator"
+            if clef and cell is not None and read is None:
+                unread[staff.staff_index] = (
+                    "neither the detector's markers nor the CV locator found "
+                    "key-signature accidentals in this staff's header"
+                )
             candidates.append(StaffCandidate(
                 staff_index=staff.staff_index,
                 system_index=system_index,
@@ -1059,13 +1086,20 @@ def _header_key_signatures(
     reasons: dict[int, str] = {}
     for staff_index, verdict in result.verdicts.items():
         if verdict.action == "unread":
+            unread.setdefault(
+                staff_index,
+                f"the cross-page vote did not speak for this staff: "
+                f"{verdict.reason}" if verdict.reason else
+                "the cross-page vote did not speak for this staff",
+            )
             continue
         # A rejected staff is recorded too, with fifths 0: the vote judged its
         # reading untrustworthy, and that judgement has to reach the measure
         # pass or the same reading simply reappears there.
         fifths[staff_index] = verdict.fifths or 0
         reasons[staff_index] = f"{verdict.action}: {verdict.reason}"
-    return fifths, reasons
+        unread.pop(staff_index, None)
+    return fifths, reasons, unread
 
 
 def _header_detections(
@@ -2613,11 +2647,16 @@ def transcribe(
                         if found is not None:
                             estimate = found.read.name
                     clef_estimate[staff_idx] = estimate
-            voted_fifths, voted_reasons = _header_key_signatures(
-                pws, header_cells, clef_estimate, header_dets
+            voted_fifths, voted_reasons, key_sig_unread_reasons = (
+                _header_key_signatures(
+                    pws, header_cells, clef_estimate, header_dets
+                )
             )
+            key_sig_default_unread = "no reader spoke for this staff"
         else:
             voted_fifths, voted_reasons = {}, {}
+            key_sig_unread_reasons = {}
+            key_sig_default_unread = "header reading is off (--no-header-reading)"
 
         # Dossier slot facts for the whole page, used when per-system grouping
         # is too fragmented to join (which is the normal case — see
@@ -2801,6 +2840,25 @@ def transcribe(
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}
                 )
+                # Whether that signature is a READING or a silence. Zero sharps
+                # and zero flats is the correct answer for a horn part in C and
+                # the only answer available for a staff nothing could read, and
+                # the two were indistinguishable in this output — which is how
+                # Beethoven 5 p.15, a C minor movement, came to report "0
+                # sharps / 0 flats" on all of its staves as though that were a
+                # finding. A staff counts as read when something produced its
+                # alterations, or when the cross-page vote spoke for it (even
+                # to reject a reading — that is still a judgement about this
+                # staff). Otherwise it is unread, and says why.
+                if first_cell_effective_key_sig or staff_idx in voted_fifths:
+                    staff_dict["key_signature_read"] = True
+                else:
+                    staff_dict["key_signature_read"] = False
+                    staff_dict["key_signature_unread_reason"] = (
+                        key_sig_unread_reasons.get(
+                            staff_idx, key_sig_default_unread
+                        )
+                    )
                 # Say where a key signature came from when it wasn't the
                 # detector, so a reader can tell a located-and-voted signature
                 # from a detected one without re-running the pipeline. Only
@@ -3265,6 +3323,16 @@ def main(argv: list[str] | None = None) -> int:
                       f"{len(page_measures)} measures, "
                       f"{n_phase1} phase1_warnings, "
                       f"{n_rhythm} rhythm_sum_warnings")
+                # Say out loud how much of the page's key signature is a
+                # reading. Silence here used to look exactly like C major.
+                staves_d = [st for sys_d in page_d["systems"]
+                            for st in sys_d["staves"]]
+                n_read = sum(1 for st in staves_d
+                             if st.get("key_signature_read"))
+                if staves_d and n_read < len(staves_d):
+                    print(f"    key signatures: read on {n_read}/{len(staves_d)}"
+                          f" staves; the rest report 0 sharps / 0 flats because"
+                          f" nothing read them")
     return 0
 
 

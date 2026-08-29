@@ -291,6 +291,15 @@ current production weights — see "Known limitations" below.
                   "A": "#", "E": "#", "B": "#"
                 }
               },
+              "key_signature_read": true,     // whether the field above is a
+                                              // READING. false = nothing could
+                                              // read this staff, and 0/0 is
+                                              // the empty default, not a
+                                              // finding. Read it before
+                                              // trusting a zero.
+              "key_signature_unread_reason": "no clef was read on this staff…",
+                                              // present exactly when
+                                              // key_signature_read is false
               "time_signature":  {"numerator": 4, "denominator": 4, "raw": "4/4"},
               "staff_geometry": {               // the five lines every reading
                                                 // above was MEASURED against —
@@ -740,6 +749,25 @@ The vote leaves no wrong answers on either page — including the clarinets, who
 one printed sharp against a page of flats cannot be told from a misread by any
 structural argument, and which therefore come back missed rather than
 asserted.
+
+### A zero is not always a reading
+
+Zero sharps and zero flats is the right answer for a horn part in C, and it is
+also the only answer available for a staff nothing could read. Those were the
+same output until 2026-08-28, which is how Beethoven 5 p.15 — a C minor
+movement printing three flats — came to report "0 sharps / 0 flats" on all 23
+staves as though that were a finding. **`key_signature_read` now says which it
+is**, and `key_signature_unread_reason` says why when it is false; the CLI
+prints a per-page line whenever any staff is unread. On that page it reads:
+
+```
+key signatures: read on 4/23 staves; the rest report 0 sharps / 0 flats
+because nothing read them
+```
+
+with the nineteen split into 8 staves whose clef was never read and 11 where
+the clef was read but neither reader found accidentals in the header. Those are
+different problems and now look different.
 
 **The reading only ever seeds a staff where the detector found no
 key-signature accidental at all** — the same "speaks only when the detector is

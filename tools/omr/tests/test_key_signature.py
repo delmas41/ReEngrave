@@ -130,3 +130,76 @@ class TestKeySignatureConsistency:
         w = _warns(_system([2, 2, 3, 1, 6]))
         assert w[4]["concert_key"] == "C major"
         assert w[4]["staff_fifths"] == 6
+
+
+# ─── Reading vs silence ───────────────────────────────────────────────────────
+
+
+class TestUnreadKeySignaturesSayWhy:
+    """"No signature was read here" and "the signature here is empty" are
+    different statements, and the output used to make only the second.
+
+    Zero sharps and zero flats is the correct answer for a horn part in C and
+    the only answer available for a staff nothing could read. Beethoven 5 p.15
+    — a C minor movement printing three flats on most of its staves — reported
+    "0 sharps / 0 flats" on all 23 of them, and nothing in the JSON said which
+    of the two it meant.
+    """
+
+    @staticmethod
+    def _pws(n_staves=2):
+        import numpy as np
+        from pathlib import Path
+        from tools.omr.types import PageImage, PageWithStaves, Staff
+
+        img = np.full((400, 1000), 255, np.uint8)
+        page = PageImage(pdf_path=Path("synthetic.pdf"), page_index=0, dpi=300,
+                         rgb=np.dstack([img] * 3), binary=img)
+        staves = [
+            Staff(page_index=0, staff_index=i,
+                  line_ys=[100 + 150 * i + 20 * k for k in range(5)],
+                  x_start=50, x_end=950, system_index=0)
+            for i in range(n_staves)
+        ]
+        return PageWithStaves(page=page, staves=staves)
+
+    def test_a_staff_with_no_clef_says_so(self):
+        from tools.omr.transcribe import _header_key_signatures
+
+        pws = self._pws()
+        fifths, _reasons, unread = _header_key_signatures(
+            pws, header_cells={}, clef_for_staff={0: None, 1: None},
+            dets_for_staff={},
+        )
+        assert fifths == {}
+        assert set(unread) == {0, 1}
+        assert "clef" in unread[0], (
+            "the reason must name the clef: the slot table a signature is "
+            "fitted against is chosen by it"
+        )
+
+    def test_a_staff_with_a_clef_but_no_window_says_so(self):
+        from tools.omr.transcribe import _header_key_signatures
+
+        pws = self._pws(1)
+        _fifths, _reasons, unread = _header_key_signatures(
+            pws, header_cells={}, clef_for_staff={0: "treble"},
+            dets_for_staff={},
+        )
+        assert 0 in unread
+        assert "window" in unread[0]
+
+    def test_every_unread_staff_gets_a_reason(self):
+        """Whatever the cause, a staff the vote cannot speak for must carry
+        one — an unexplained silence is what this whole distinction is for."""
+        from tools.omr.transcribe import _header_key_signatures
+
+        pws = self._pws(3)
+        fifths, _reasons, unread = _header_key_signatures(
+            pws, header_cells={}, clef_for_staff={0: None, 1: "treble"},
+            dets_for_staff={},
+        )
+        for staff_index in range(3):
+            assert staff_index in fifths or unread.get(staff_index), (
+                f"staff {staff_index} is neither read nor explained"
+            )
