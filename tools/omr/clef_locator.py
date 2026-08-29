@@ -123,35 +123,47 @@ class ClefLocatorConfig:
     # Above 0.4 the heading text starts fusing back on and coverage falls.
     # 0.3 is the middle of that window, as far from inventing clefs as from
     # losing them.
-    # Vertical counterpart of the x-gap, and the reason a clef in a
-    # 19th-century header is found at all. A staff header is a narrow column
-    # that also holds whatever is printed above and below the staff, and
-    # grouping ink by its x-gap alone strung the clef together with the
-    # movement heading, the rehearsal letter and the neighbouring staff into
-    # one column far too big to be a clef — 55% of all header cells, measured.
+    # Vertical counterpart of the x-gap. OFF by default — set it to 1.0 to
+    # turn it on — and the reason it is off is not that it doesn't work.
+    #
+    # What it does: a staff header is a narrow column that also holds whatever
+    # is printed above and below the staff, and grouping ink by its x-gap alone
+    # strings the clef together with the movement heading, the rehearsal letter
+    # and the neighbouring staff into one column far too big to be a clef —
+    # 55% of all header cells, measured. Requiring vertical proximity as well
+    # leaves the clef standing on its own, and it is worth a lot of coverage:
+    # Nottebohm 61 -> 72 located of 205 headers, Beethoven 5 27 -> 33 of 396,
+    # nothing else on either page changing.
     #
     # It applies ONLY to ink standing clear of the staff's own five lines (see
-    # `on_staff` in `header_ink.cluster_components`). That restriction is the
-    # whole safety argument, and it was learned the expensive way. Applied to
-    # everything, at a tolerance small enough to help, the rule takes a treble
-    # clef on an orchestral scan apart at the waist and reads the upper half as
-    # an alto clef: on twenty pages of Beethoven 5 that invented seventeen
-    # clefs where the page has none. Ink that touches the staff belongs to
-    # whatever glyph is printed on it, however the morphology broke it up, so
-    # it is never separated; a clef always touches the staff and a heading
-    # never does.
+    # `on_staff` in `header_ink.cluster_components`). Ink that touches the
+    # staff belongs to whatever glyph is printed there, however the morphology
+    # broke it up, and is never separated. Without that restriction the rule
+    # takes a scanned treble clef apart at the waist and reads the upper half
+    # as an alto clef — seventeen invented clefs over twenty pages of
+    # Beethoven 5. The tolerance is then bounded by two well-separated
+    # populations: a glyph's own internal gaps are under half a space (the G
+    # clef's tail detaches at 0.49), a heading stands 1.68 spaces clear at the
+    # median, and 1.0 sits between them.
     #
-    # The value is then bounded by what has to survive on each side, and both
-    # bounds are measured. Below it, a G clef comes apart: on a Beethoven 5
-    # scan the tail detaches from the body at 0.49 staff spaces, and a G clef's
-    # body alone is the size and shape of a C clef — at 0.6 that invented two
-    # clefs on twenty pages and at 0.8 one, where 1.0 invents none. Above it,
-    # the heading fuses back on and the coverage goes: Nottebohm's `located`
-    # falls from 59 at 1.0 to 56 at 1.25. The two populations are far apart —
-    # a glyph's internal gaps are under half a space, a heading's separation
-    # from the clef is 1.68 spaces at the median — so 1.0 is a gap, not a
-    # tightrope.
-    cluster_y_gap_spaces: float = 1.00
+    # Why it is off: of the 19 staves it adds across both books, 14 are right
+    # and **5 are bass clefs read as C clefs**. Every one of the five is the
+    # same pre-existing hole — `_has_f_clef_dots` is the only thing separating
+    # an F clef from a C clef, and on these prints the two dots merge into the
+    # clef's body under thresholding, so there is no pair to find. The extra
+    # coverage lands disproportionately on staves where that hole is open, and
+    # a wrong clef transposes every note on its staff while a missed one costs
+    # nothing that was not already lost. Nothing cheap closes it: symmetry does
+    # not separate the two populations (wrong reads 0.70-0.80 against correct
+    # reads from 0.701), nor does horizontal ink balance, nor the cluster's
+    # internal ink profile — all measured, all in
+    # benchmarks/omr-clef-geometry/RESULTS.md.
+    #
+    # So this is finished work waiting on a different fix. Turn it on when the
+    # F-clef veto can survive a merged dot pair, and re-run
+    # `check_clef_precision.py` — which grew its orchestral corpus for exactly
+    # this reason.
+    cluster_y_gap_spaces: float | None = None
     min_component_area_spaces: float = 0.02  # speck filter, in (staff space)²
     vertical_rule_max_width_spaces: float = 0.5   # thinner ⇒ a rule, not a glyph
     vertical_rule_min_height_spaces: float = 2.0
@@ -476,7 +488,10 @@ def locate_clef(
     clusters = _cluster_components(
         boxes,
         max_gap=config.cluster_gap_spaces * spacing,
-        max_y_gap=config.cluster_y_gap_spaces * spacing,
+        max_y_gap=(
+            None if config.cluster_y_gap_spaces is None
+            else config.cluster_y_gap_spaces * spacing
+        ),
         on_staff=(top_y, bottom_y),
     )
     if trace is not None:

@@ -11,12 +11,15 @@ it names.
 
 from __future__ import annotations
 
+import dataclasses
+
 import cv2
 import numpy as np
 import pytest
 
 from tools.omr.clef_locator import (
     ClefLocatorConfig,
+    DEFAULT_LOCATOR_CONFIG,
     _refine_symmetry_axis,
     locate_clef,
 )
@@ -120,8 +123,18 @@ def draw_g_clef(img: np.ndarray, x: int = 22) -> None:
 def draw_heading_above(img: np.ndarray, x: int = 24) -> None:
     """A movement heading printed above the staff, in the clef's own column —
     "Nr. 15.", a rehearsal letter, a marking. Real ink, well clear of the top
-    staff line, and the thing that used to fuse with the clef."""
-    cv2.rectangle(img, (x, 30), (x + 34, 62), 0, -1)
+    staff line, and the thing that used to fuse with the clef.
+
+    Drawn as letterforms rather than a solid block, for the same reason the G
+    clef is drawn as a stroke: `strip_horizontal_rules` erases ink belonging to
+    a run of 1.5 staff spaces or more, so a filled block of heading-sized text
+    is removed outright and cannot fuse with anything. Type has strokes, and
+    the strokes are what survives.
+    """
+    for dx in (0, 13, 26):
+        cv2.rectangle(img, (x + dx, 56), (x + dx + 7, 88), 0, -1)      # stems
+        cv2.rectangle(img, (x + dx - 2, 56), (x + dx + 9, 61), 0, -1)  # serifs
+        cv2.rectangle(img, (x + dx - 2, 83), (x + dx + 9, 88), 0, -1)
 
 
 def draw_split_g_clef(img: np.ndarray, x: int = 22) -> None:
@@ -202,32 +215,41 @@ class TestLocatesCClefs:
         assert found.symmetry > 0.9
 
 
-class TestReadsPastTheFurniture:
-    """What the header actually contains besides the clef."""
+class TestTheVerticalGroupingRule:
+    """Grouping header ink by proximity in BOTH axes, not just across.
 
-    def test_a_heading_above_the_staff_does_not_hide_the_clef(self):
-        # The single largest drain on clef coverage: the heading sits in the
-        # clef's own column, so grouping ink by its x-gap alone made one
-        # cluster six-plus staff spaces tall and the search gave up on it.
-        # Measured over 191 headers of 19th-century engraving, that was 55% of
-        # them.
+    Off by default — see `ClefLocatorConfig.cluster_y_gap_spaces` for the
+    measured reason, which is not that it fails to work. These tests pin what
+    it does when it is on, and that it is off.
+    """
+
+    ON = dataclasses.replace(DEFAULT_LOCATOR_CONFIG, cluster_y_gap_spaces=1.0)
+
+    def _heading_cell(self):
         img = blank_page()
         draw_c_clef(img, 3)
         draw_heading_above(img)
         draw_noteheads(img)
-        found = locate_clef(make_cell(img))
-        assert found is not None and found.read.name == "alto"
+        return make_cell(img)
 
-    def test_a_heading_below_the_staff_does_not_hide_the_clef(self):
-        img = blank_page()
-        draw_c_clef(img, 3)
-        cv2.rectangle(img, (24, 220), (58, 252), 0, -1)   # a page number
-        found = locate_clef(make_cell(img))
+    def test_it_is_off_by_default(self):
+        assert DEFAULT_LOCATOR_CONFIG.cluster_y_gap_spaces is None
+
+    def test_a_heading_above_the_staff_hides_the_clef_when_it_is_off(self):
+        # The default behaviour, and the thing the rule exists to fix: the
+        # heading and the clef are one column 5.5 staff spaces tall, which is
+        # bigger than any C clef, so the search stops on it.
+        assert locate_clef(self._heading_cell()) is None
+
+    def test_a_heading_above_the_staff_does_not_hide_the_clef_when_it_is_on(self):
+        # Measured over 191 headers of 19th-century engraving, that fusion was
+        # 55% of all header cells — the single largest drain on clef coverage.
+        found = locate_clef(self._heading_cell(), config=self.ON)
         assert found is not None and found.read.name == "alto"
 
     def test_ink_touching_the_staff_is_never_split_apart(self):
-        """The safety half of the rule above, and the reason it is restricted
-        to ink standing clear of the staff.
+        """The safety half of the rule, and the reason it is restricted to ink
+        standing clear of the staff.
 
         A glyph printed ON the staff arrives in pieces — the morphology severs
         its strokes where they cross a line — and those pieces must stay
@@ -239,7 +261,7 @@ class TestReadsPastTheFurniture:
         img = blank_page()
         draw_split_g_clef(img)
         draw_noteheads(img)
-        assert locate_clef(make_cell(img)) is None
+        assert locate_clef(make_cell(img), config=self.ON) is None
 
 
 # ─── declining to guess ─────────────────────────────────────────────────────
