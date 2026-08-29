@@ -4,6 +4,28 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
+## Clef accuracy, measured end to end (2026-08-29)
+
+The three threads above all ended by pointing at the clef. It turns out to be in
+much better shape than this repo's own notes say: **48/52 hand-read staves
+correct (92%)**, the detector supplying 39 of them at 95%. The "~23% coverage /
+every staff reads as treble" record is about the CV locator alone and predates
+the `imgsz` fix. Every remaining error is a non-treble clef read as treble.
+
+`benchmarks/omr-clef-geometry/eval_pipeline_clefs.py` is the harness;
+`PIPELINE_CLEF_RESULTS.md` has the numbers, the one fix that landed (a part
+keeps its clef between systems: 48/52 → 49/52), and two richer sources measured
+and rejected — score-order identity driving clef correction, and the dossier
+joined to condensed staves by alignment.
+
+**What is left is three staves**, and they are hard in a specific way: the page
+carries no evidence of the right answer in any form the pipeline can see, and
+the dossier that does know cannot be told which staff to put it on. That join —
+parts to condensed staves, with evidence independent of the clefs already read —
+is the next real lever.
+
+---
+
 ## ➡️ START HERE — ranked next steps (2026-08-28)
 
 **[docs/next-steps-omr-2026-08-28.md](docs/next-steps-omr-2026-08-28.md)** is the current
