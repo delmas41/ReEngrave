@@ -4,6 +4,24 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
+## ➡️ START HERE — ranked next steps (2026-08-28)
+
+**[docs/next-steps-omr-2026-08-28.md](docs/next-steps-omr-2026-08-28.md)** is the current
+handoff: four ranked threads with evidence, entry points and done-criteria.
+
+1. **One-line percussion staves are invisible** — small, unblocked, silently corrupts part
+   identity for every staff below one.
+2. **Key signature from the music** — Sean asked for this; Beethoven 5 p15 still reads
+   "no accidentals" for a C-minor movement. Check whether it is a *detection* failure first.
+3. **Score-order prior** — the principled fix for the `Tp.`/`Tr.` ambiguity hard-coded today.
+4. **Re-read July's "domain gap" conclusion** — its false-positive flood was measured
+   through the `imgsz` bug fixed on 2026-08-28.
+
+⚠️ **Any measurement predating 2026-08-28 went through an `imgsz` reporting 2–4× the notes
+that exist.** Re-measure before building on one.
+
+---
+
 ## 🧭 Contextual analysis roadmap (2026-08-28) — ACTIVE
 
 **Sean wants all of these; they are ordered here on purpose.** The framing: a human
