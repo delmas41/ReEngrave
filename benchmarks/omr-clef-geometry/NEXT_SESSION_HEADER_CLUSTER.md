@@ -1,25 +1,37 @@
 # Handoff — splitting the fused header cluster
 
-> **STATUS: partly done.** The fused cluster was not the brace and was not one
-> big object: in all 105 of them the tallest connected component was under two
-> staff spaces. It was small objects — the movement heading, the rehearsal
-> letter, the neighbouring staff — stacked by a grouping rule that only looked
-> sideways. Grouping header ink in both axes, for ink standing clear of the
-> staff only, took Nottebohm's `located` from 43 to 59 of 191 header cells and
-> Beethoven 5's from 12 to 14, with every precision check unchanged. Full
-> write-up in `RESULTS.md` under "The fused cluster, resolved", including five
-> dead ends, the false positive it did not fix, and the reason the first
-> version of it invented seventeen clefs on an orchestral scan.
+> **STATUS: cause found, fix written, held back on one blocker.**
 >
-> **The orchestral half is still where the problem lives**: Beethoven 5 has 170
-> of 371 header cells in this bucket at a median height of 6.9 staff spaces,
-> and those clusters really are tall rather than several things stacked. That
-> is what a next session should take — and it is a different cause, so measure
-> it before assuming otherwise.
+> The fused cluster was not the brace and was not one big object: in all 105 of
+> them the tallest connected component was under two staff spaces. It was small
+> objects — the movement heading, the rehearsal letter, the neighbouring
+> staff — stacked by a grouping rule that only looked sideways. Grouping header
+> ink in both axes, for ink standing clear of the staff only, is worth
+> Nottebohm 61 → 72 located of 205 header cells and Beethoven 5 27 → 33 of 396,
+> with nothing lost on either.
 >
-> Everything below is the original scoping, kept because its measurements are
-> still the record of how the bucket looked and because its list of dead ends
-> is still worth not repeating. Read it knowing the headline is settled.
+> It ships **off** (`ClefLocatorConfig.cluster_y_gap_spaces`). Of the 19 staves
+> it adds, 14 are right and 5 are bass clefs read as C clefs — every one of
+> them the same pre-existing hole, where `_has_f_clef_dots` cannot find a dot
+> pair because the dots have merged into the clef's body. Main's own reads are
+> wrong at about 8% on this material; these are wrong at 26%.
+>
+> **So the next lever on this bucket is the F-clef veto, not the clustering.**
+> Make it survive a merged or distorted dot pair and the coverage above is
+> waiting behind a config default. Note the dot-veto change already scoped on
+> `main` goes the OTHER way — it makes the veto fire less, to stop it eating
+> the reference sheet's tenor clef — so the two want opposite things and want
+> resolving together.
+>
+> Full write-up, five dead ends, and two ways the measurements were wrong
+> before they were right: `RESULTS.md` → "The fused cluster: diagnosed, fixed,
+> and held back". Measure with BOTH `probe_clef_rejection.py` (coverage) and
+> `check_clef_precision.py` (precision) — the latter grew an orchestral corpus
+> during this work because the other three all passed a change that read
+> seventeen treble clefs as alto clefs.
+>
+> Everything below is the original scoping, kept for its measurements and its
+> list of dead ends. Read it knowing the headline is settled.
 
 ---
 
