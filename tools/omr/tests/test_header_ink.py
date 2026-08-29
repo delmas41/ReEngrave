@@ -14,9 +14,11 @@ import numpy as np
 import pytest
 
 from tools.omr.header_ink import (
+    MAX_HEADER_LINE_SHIFT_SPACES,
     cluster_components,
     cluster_components_2d,
     erase_staff_lines,
+    refine_staff_lines_in_cell,
     trace_staff_line,
 )
 
@@ -199,3 +201,53 @@ class TestCluster2D:
         boxes = [(200, 100, 20, 40, 800), (10, 100, 20, 40, 800), (100, 100, 20, 40, 800)]
         merged = cluster_components_2d(boxes, max_gap=5)
         assert [m[0] for m in merged] == sorted(m[0] for m in merged)
+
+
+class TestRefineStaffLinesInCell:
+    """A header cell's staff lines must sit where the print has them.
+
+    `Staff.line_ys` is a model of the WHOLE staff: five ideal rows fitted across
+    its full width. The print wanders — `Staff.line_wander_px` exists because it
+    does — and the header sits at the extreme left end, furthest from where a
+    page-wide average is accurate. Measured on Beethoven 5 p.15 at 600 DPI, the
+    header cells are off by 0.12 staff spaces on average and 0.47 at worst,
+    and every staff whose key signature the pipeline managed to read is off by
+    less than 0.08. Key-signature slots are half a space apart.
+    """
+
+    @staticmethod
+    def _cell_with_lines_at(rows, declared):
+        import numpy as np
+        from tools.omr.types import MeasureCell
+
+        img = np.full((340, 420), 255, np.uint8)
+        for y in rows:
+            cv2.line(img, (0, y), (419, y), 0, 2)
+        return MeasureCell(
+            page_index=0, system_index=0, staff_index=0, measure_index=-1,
+            image=img, image_no_staff=None, bbox_page_px=(0, 0, 420, 340),
+            staff_line_ys_canonical=list(declared), upscale_factor=1.0,
+        )
+
+    def test_a_displaced_staff_is_found(self):
+        printed = [110, 130, 150, 170, 190]
+        declared = [100, 120, 140, 160, 180]      # 10px = half a staff space out
+        cell = self._cell_with_lines_at(printed, declared)
+        shift = refine_staff_lines_in_cell(cell)
+        assert shift == 10
+        assert cell.staff_line_ys_canonical == printed
+
+    def test_a_staff_already_right_is_left_alone(self):
+        printed = [100, 120, 140, 160, 180]
+        cell = self._cell_with_lines_at(printed, printed)
+        assert refine_staff_lines_in_cell(cell) == 0.0
+        assert cell.staff_line_ys_canonical == printed
+
+    def test_it_will_not_wander_further_than_a_staff_could(self):
+        """Beyond `MAX_HEADER_LINE_SHIFT_SPACES` the cell is not a displaced
+        staff, it is the wrong staff — so nothing moves that far."""
+        printed = [100, 120, 140, 160, 180]
+        declared = [180, 200, 220, 240, 260]   # four spaces out: another staff
+        cell = self._cell_with_lines_at(printed, declared)
+        shift = refine_staff_lines_in_cell(cell)
+        assert abs(shift) <= MAX_HEADER_LINE_SHIFT_SPACES * 20

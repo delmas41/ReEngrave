@@ -69,6 +69,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from .header_ink import refine_staff_lines_in_cell
 from .measure_extractor import _build_measure_cell
 from .staff_line_removal import remove_staff_lines_from_cell
 from .types import MeasureCell, PageWithStaves, Staff
@@ -370,6 +371,11 @@ def extract_header_cell(
     )
     if cell is None:
         return None
+    # Put the cell's staff lines where the print actually has them before
+    # anything measures against them — see `refine_staff_lines_in_cell`. Done
+    # BEFORE staff-line removal, which erases along these rows and so misses
+    # the line and eats the space beside it when they are off.
+    refine_staff_lines_in_cell(cell)
     remove_staff_lines_from_cell(cell)
     return cell
 
@@ -423,6 +429,9 @@ def header_cells_for_page(
         )
         if cell is None:
             continue
+        # Same two steps as `extract_header_cell`, in the same order: put the
+        # staff lines where the print has them, then erase along them.
+        refine_staff_lines_in_cell(cell)
         remove_staff_lines_from_cell(cell)
         out[staff.staff_index] = cell
     return out

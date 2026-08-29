@@ -2850,11 +2850,22 @@ def transcribe(
                 # alterations, or when the cross-page vote spoke for it (even
                 # to reject a reading — that is still a judgement about this
                 # staff). Otherwise it is unread, and says why.
-                if first_cell_effective_key_sig or staff_idx in voted_fifths:
+                # A staff the vote REJECTED is not a staff that was read. The
+                # vote records a rejection as fifths 0 so the measure pass does
+                # not simply re-read the same thing, and that zero is a
+                # judgement about a reading it did not trust — not a finding
+                # that the staff carries no accidentals. Counting it as read
+                # made Beethoven 5 p.15 report two staves as "0 sharps, 0
+                # flats, read" on a page printing one flat and three.
+                rejected = voted_reasons.get(staff_idx, "").startswith("rejected")
+                if first_cell_effective_key_sig or (
+                    staff_idx in voted_fifths and not rejected
+                ):
                     staff_dict["key_signature_read"] = True
                 else:
                     staff_dict["key_signature_read"] = False
                     staff_dict["key_signature_unread_reason"] = (
+                        voted_reasons.get(staff_idx) if rejected else
                         key_sig_unread_reasons.get(
                             staff_idx, key_sig_default_unread
                         )

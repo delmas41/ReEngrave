@@ -148,6 +148,77 @@ def ink_mask(
     return drop_flat_residue(mask, spacing, config)
 
 
+# How far the printed staff may sit from the rows the page-wide detection
+# assigned it, in staff spaces, at the LEFT END of the staff. Measured on
+# Beethoven 5 p.15: three staves are off by 0.36-0.47 spaces there, and every
+# staff whose key signature the pipeline managed to read is off by less than
+# 0.08. Half a space is the distance between a line and the space beside it, so
+# this is the difference between reading a signature and reading nothing.
+MAX_HEADER_LINE_SHIFT_SPACES = 0.6
+# The shift has to buy this much more line ink than staying put, so a cell whose
+# lines are already right is left alone rather than nudged onto a glyph.
+MIN_HEADER_SHIFT_GAIN = 1.05
+
+
+def refine_staff_lines_in_cell(cell: MeasureCell) -> float:
+    """Move a header cell's staff-line rows onto the lines actually printed in
+    it. Returns the shift applied, in canonical pixels.
+
+    `Staff.line_ys` are the rows the page-wide pass assigned, and they are a
+    model of the whole staff: five ideal rows fitted across its entire width.
+    The print does not oblige. A staff line wanders — `Staff.line_wander_px`
+    exists because it does — and the header sits at the extreme left end, the
+    furthest point from where a page-wide average is most accurate.
+
+    Everything a header reader does is measured against those rows: which line a
+    clef names, which slot an accidental stands in. Key-signature slots are half
+    a staff space apart, so a frame half a space out reads a signature that is
+    printed plainly as no signature at all.
+
+    One offset for all five lines, because that is what the error looks like
+    when measured (Beethoven 5 p.15 staff 7: +44, +44, +43, +44, +37 canonical
+    pixels against a 100px spacing) — the staff is displaced, not distorted.
+    """
+    ys = list(cell.staff_line_ys_canonical or [])
+    image = cell.image
+    if len(ys) < 2 or image is None or image.size == 0:
+        return 0.0
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
+    _, mask = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
+    height = mask.shape[0]
+    spacing = (max(ys) - min(ys)) / (len(ys) - 1)
+    if spacing <= 0:
+        return 0.0
+    row_ink = (mask > 0).sum(axis=1).astype(float)
+
+    def score(shift: int) -> float:
+        total = 0.0
+        for y in ys:
+            row = int(round(y)) + shift
+            lo, hi = max(0, row - 1), min(height, row + 2)
+            if lo < hi:
+                total += float(row_ink[lo:hi].sum())
+        return total
+
+    limit = int(round(MAX_HEADER_LINE_SHIFT_SPACES * spacing))
+    base = score(0)
+    best_shift, best_score = 0, base
+    for shift in range(-limit, limit + 1):
+        value = score(shift)
+        if value > best_score:
+            best_shift, best_score = shift, value
+    # A zero baseline is the STRONGEST case for moving, not a reason to bail:
+    # it means the rows the page assigned this staff carry no ink at all in the
+    # header. The gain test only applies where there was something to improve
+    # on.
+    if best_shift == 0 or best_score <= 0:
+        return 0.0
+    if base > 0 and best_score < base * MIN_HEADER_SHIFT_GAIN:
+        return 0.0
+    cell.staff_line_ys_canonical = [int(round(y)) + best_shift for y in ys]
+    return float(best_shift)
+
+
 def staff_metrics(cell: MeasureCell) -> tuple[float, float, float] | None:
     """(line_spacing, top_line_y, bottom_line_y) in canonical pixels, or None
     when the cell has no usable 5-line staff."""

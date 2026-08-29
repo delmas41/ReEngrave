@@ -253,15 +253,65 @@ being fitted are not the signature.
 nothing here: the work has 18 parts and the page has 23 staves, so the
 part→staff join abstains, as designed.
 
-### What this leaves
+### Following that up: two defects, and what is left after them
 
-The output no longer asserts C major on a C minor page — `key_signature_read`
-is false on the 19 unread staves, with the reason on each. The remaining work
-is **the locator's ink mask on degraded prints** (why a printed flat arrives as
-a 0.35-space fragment), or **a part→staff join that survives condensation**
-(18 parts, 23 staves). It is not a threshold, and it is not inference from the
-music: the printed signature is sitting in the window, legible to a human,
-unread by both readers.
+**The header cell's staff lines were not where the print has them.**
+`Staff.line_ys` is a model of the whole staff — five ideal rows fitted across
+its full width — and the header sits at the extreme left end, furthest from
+where a page-wide average is accurate. Measured on this page at 600 DPI, the
+header cells are off by **0.12 staff spaces on average and 0.47 at worst**, and
+the displacement is uniform per staff (staff 7: +44, +44, +43, +44, +37
+canonical pixels against a 100px spacing) — the staff is displaced, not
+distorted. Key-signature slots are half a space apart, so that is the
+difference between reading a signature and reading nothing. Every staff whose
+signature the pipeline did manage to read was off by less than 0.08 spaces.
+
+`header_ink.refine_staff_lines_in_cell` now finds the one shift that puts the
+rows on the printed lines: worst offset **47.4 → 14.0** canonical pixels, mean
+**12.3 → 5.9**.
+
+**A clef cut up by staff-line erasure is still a clef.** With the frame
+corrected, the flats are demonstrably in the mask and correctly placed — staff
+7's three sit at slot positions **3.91, 1.01, 4.96** against a treble table of
+**4, 1, 5**, in left-to-right order, each passing every component filter. They
+went unread because the run they belong to *begins inside the clef*: erasure
+breaks the clef into accidental-sized fragments, they join the run ahead of the
+signature, and the fit fails over a run that is half clef. Meanwhile the clef
+anchor itself fails, because no single fragment is the 3.6 spaces tall it wants.
+
+So the locator now also tries the **tail** of a run, on a much tighter residual
+(0.20 against the anchored path's), requiring the tail to fill the signature
+exactly. What stops that from undoing the anchor rule — which exists because
+margin ink was once read as one sharp — is that it demands ink at the head of
+the window taller than any accidental (2.0 spaces, chosen inside a 1.8–2.0
+plateau). The two anchor tests draw exactly the cases that must stay silent, no
+clef at all and a clef far into the bar, and both still do.
+
+Given the true clefs, system 0 of p.15 goes from 0 correct / 3 wrong to **3
+correct / 0 wrong**. End to end it is smaller, because the pipeline's own clefs
+are wrong on two of those staves: **clefs 15 → 16 read, and system 0 from 0
+correct / 1 wrong to 1 correct / 0 wrong**. The three ground-truth pages are
+unchanged (beet5-p2 10 correct, pastoral-p2 9, WTC p.17 10, none wrong).
+
+**A vote rejection is not a reading.** `key_signature_read` counted a staff the
+cross-page vote had *rejected* as read, because a rejection is recorded as
+fifths 0 so the measure pass does not re-read it. That reported two staves as
+"0 sharps, 0 flats, read" on a page printing one flat and three. Fixed; those
+staves now carry the vote's own reason.
+
+### What is left
+
+The printed signature is still unread on most staves of this page, and the two
+things standing in the way are now specific: **the clef** (a wrong clef picks
+the wrong slot table, and two of p.15's string staves read treble where they are
+alto and tenor), and **the detector's blindness to these flats** at any
+confidence. Inference from the music remains parked: the signature is in the
+window, legible, and the readers are close to it.
+
+*Correction: an earlier version of this session's notes said the orchestral
+ground-truth PDFs were no longer on this machine. They are — under
+`tools/omr/training/data/imslp/`, which a git worktree reaches through a
+symlink that was missing rather than a corpus that was gone.*
 
 Reproduce: `benchmarks/omr-key-signature/probe_header_windows.py` for the window,
 and the conf sweep above with `tools/omr/yolo_detector.py` over the staff-start

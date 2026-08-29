@@ -174,6 +174,27 @@ class KeySignatureLocatorConfig:
     # the rest are note ink from 6.8 spaces out.
     clef_anchor_max_start_spaces: float = 5.50
     clef_anchor_min_height_spaces: float = 1.80
+    # A run that begins INSIDE the clef can still end with the signature: on a
+    # degraded print the clef breaks into accidental-sized pieces, they join the
+    # run ahead of the real accidentals, and the fit then fails over a run that
+    # is half clef. So the tail of a run is tried too — but only on this much
+    # tighter residual, because a tail has no anchor behind it and nothing but
+    # the fit itself to say it is a signature. Measured on Beethoven 5 p.15 with
+    # the true clefs: at 0.30 the tails read 2 staves right and 1 wrong, at 0.20
+    # they read 3 right and 0 wrong.
+    tail_max_residual: float = 0.20
+    # ...and only where a clef plausibly stands, which is what stops the tail
+    # pass from undoing the anchor rule. The full anchor wants a single cluster
+    # 3.6 spaces tall; a clef cut up by staff-line erasure has no such cluster,
+    # but it does leave ink at the HEAD of the window taller than any
+    # accidental. Ink 2 spaces tall inside the anchor's own start limit is that
+    # evidence: a page with no clef at all, or with its clef far into the bar,
+    # has none, which is exactly what the two anchor tests draw.
+    #
+    # Swept on Beethoven 5 p.15 with the true clefs: 1.8 and 2.0 both read 3
+    # staves correctly, 2.2 reads 2 and 2.5 reads 1. 2.0 sits inside that
+    # plateau rather than on the edge of it.
+    tail_min_head_height_spaces: float = 2.0
 
 
 DEFAULT_LOCATOR_CONFIG = KeySignatureLocatorConfig()
@@ -358,14 +379,20 @@ def locate_key_signature(
     # and the instrument name are. Measured, that is where the locator read a
     # bass staff's margin ink as one sharp. So abstain instead: a signature
     # located without its clef is not located.
-    if not clef_found:
-        return None
-    glyphs = [g for g in glyphs if g[0] >= clef_right]
-    start_limit = clef_right + config.max_start_after_clef_spaces * spacing
-    if not glyphs or glyphs[0][0] > start_limit:
-        return None
+    # The anchored search: only glyphs standing after a located clef, and only
+    # when one was located. No clef means no anchor, and the "close behind the
+    # clef" rule is then unenforced rather than satisfied — which is how a bass
+    # staff's margin ink came to be read as one sharp. The tail pass below is
+    # the only thing that runs without an anchor, and it carries its own
+    # evidence that a clef is there.
+    anchored: list[tuple[int, int, int, int]] = []
+    if clef_found:
+        anchored = [g for g in glyphs if g[0] >= clef_right]
+        start_limit = clef_right + config.max_start_after_clef_spaces * spacing
+        if anchored and anchored[0][0] > start_limit:
+            anchored = []
 
-    for run in _candidate_runs(glyphs, spacing, config):
+    for run in _candidate_runs(anchored, spacing, config):
         run = run[: config.max_run_length]
         positions = _positions(run, top_y, spacing)
         sharp_fit = fit_key_signature(positions, clef, "#", fit_config)
@@ -392,7 +419,70 @@ def locate_key_signature(
             accidental=best.accidental,
             decided_by=decided_by,
         )
-    return None
+
+    head_height = 0.0
+    for x, y, w, h in clusters:
+        if x <= config.clef_anchor_max_start_spaces * spacing:
+            head_height = max(head_height, h / spacing)
+    if head_height < config.tail_min_head_height_spaces:
+        return None
+    return _read_run_tail(glyphs, clef, mask, top_y, spacing, config, fit_config)
+
+
+def _read_run_tail(
+    glyphs: list[tuple[int, int, int, int]],
+    clef: str,
+    mask: np.ndarray,
+    top_y: float,
+    spacing: float,
+    config: KeySignatureLocatorConfig,
+    fit_config: KeySignatureFitConfig,
+) -> LocatedKeySignature | None:
+    """The signature as the TAIL of a run that begins inside the clef.
+
+    On a degraded print the clef does not survive staff-line erasure as one
+    piece: it breaks into fragments the size of accidentals, which join the run
+    ahead of the real signature. The fit is then attempted over a run that is
+    half clef and fails — while the accidentals themselves sit in the mask,
+    correctly placed. Measured on Beethoven 5 p.15 staff 7, whose three flats
+    are found at slot positions 3.91, 1.01 and 4.96 against a treble table of
+    4, 1, 5, in left-to-right order, inside a seven-glyph run that starts with
+    four pieces of the clef.
+
+    A tail has no anchor behind it, so nothing but the fit says it is a
+    signature. Three things stand in for the anchor: the residual bound is much
+    tighter than the anchored path's, the run must fill the signature exactly
+    (`|fifths| == len(run)`, so no partial reading of a longer run), and the
+    longest tail wins. On the same page this reads 3 staves correctly and none
+    wrongly, where the anchored path reads none and gets 3 wrong.
+    """
+    best: tuple[int, float, object, tuple] | None = None
+    for run in _candidate_runs(glyphs, spacing, config):
+        run = run[: config.max_run_length]
+        for start in range(len(run)):
+            tail = run[start:]
+            if len(tail) < 2:
+                continue
+            positions = _positions(tail, top_y, spacing)
+            for accidental in ("b", "#"):
+                fit = fit_key_signature(positions, clef, accidental, fit_config)
+                if fit is None or fit.residual > config.tail_max_residual:
+                    continue
+                if abs(fit.fifths) != len(tail):
+                    continue
+                key = (len(tail), -fit.residual)
+                if best is None or key > (best[0], -best[1]):
+                    best = (len(tail), fit.residual, fit, tuple(tail))
+    if best is None:
+        return None
+    fit = best[2]
+    assert fit.accidental is not None
+    return LocatedKeySignature(
+        read=fit,
+        boxes=best[3],
+        accidental=fit.accidental,
+        decided_by="tail",
+    )
 
 
 def _overlaps_any(
