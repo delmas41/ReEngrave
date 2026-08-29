@@ -83,35 +83,58 @@ five-line span a single rule does not have, and a staff two spaces tall would vo
 
 ---
 
-## 2. Infer the key signature from the music — SEAN ASKED FOR THIS EXPLICITLY
+## 2. Key signatures — the cause was found, and it was neither of the two candidates
 
-**What.** Recover the key signature from the notes rather than from the header glyphs.
-Sean's framing: *"I can determine a key signature because of the clear repetition of a
-root note — it starts and ends on an A, so I look for no sharps and flats, or 3 sharps."*
+**Diagnosed 2026-08-28.** The thread asked whether this is a detection failure or a
+reading failure, and said to check before building an inference layer. It is **neither**.
 
-**Why it matters — the evidence is stark.** Beethoven 5 p15 reads `0 sharps / 0 flats` on
-**all 18 staves** of a C-minor movement, with **one** `keySharp` detection on the entire
-page. Boléro p10 reads five different signatures across 32 staves for a piece in C major,
-and the shipped consistency check (b) catches only one of them.
+**What was actually wrong.** The staff's left edge was lost, so the header was cropped
+out of every measure cell and nothing ever looked at it. `_staff_x_extent` read a fixed
+±2px band around the middle line's nominal row; a printed line is 3px thick and wanders
+2px on this material, so it left the band and the longest surviving run started hundreds
+of pixels in — past the clef, past the signature. Nine of the twelve staves in Beethoven
+5 p.15's first system began between x=274 and x=773 on a system whose staves all start
+at x≈172.
 
-**Where to start — and the important caveat.** This is most likely a *detection* failure,
-not a *reading* failure. Before building an inference layer, check whether the glyphs are
-being seen at all: `_detect_key_sig_from_cell` (`tools/omr/transcribe.py:624`) and the
-positional reader in `key_signature_geometry.py` / `key_signature_locator.py`. If the
-glyphs are invisible, the fix belongs with those readers.
+Fixed (`omr: read the staff line where it actually is`): three of five lines must carry
+ink within 0.35 staff spaces. Full measurement in
+`benchmarks/omr-phase1-baseline/RESULTS.md`, including the correction it forces on the
+earlier diagnosis — "28 runs with 11-space gaps" was a fact about the band width, not
+about the page; the same staff is 2 runs with a 0.3-space gap when read properly.
 
-If inference is still wanted after that, the signals worth trying, in order:
-- **Inline-accidental letter statistics aggregated over a page**, not a staff. A staff
-  showing repeated G♯s and nothing else is A minor; recurring inline B♭s against a
-  0-flat signature means the signature is missing flats.
-- **Cross-staff voting**, which check (b) already has the transposition machinery for.
-- **Tonal frame** (first/last notes, weighted pitch-class distribution).
+**Consequences already banked.** Beethoven 5 p.15 clefs went from **0 of 23 read** (the
+"19/19 DEFAULTED" this file reported) to **13 of 23**. Beethoven 5 p.10 now matches
+hand-read ground truth on staves, systems *and* bars, and the two `xfail` tests that
+recorded those gaps are retired.
 
-**Do NOT reuse per-staff Krumhansl-Schmuckler profile fitting.** It was measured and is
-noise: median margin between best and second-best signature **0.0000**, 62 of 80 staves
+**The other half of the thread is done too.** `key_signature_read` and
+`key_signature_unread_reason` now distinguish "the signature here is empty" from "nothing
+read this staff", which is what made a C minor page reporting 0/0 on every staff look
+like a wrong answer rather than a silence. p.15 now says: read on 4 of 23 staves.
+
+**What is left, and it is now sharply scoped.** Of the 19 unread staves on p.15:
+
+- **8 have no clef.** The reader abstains there on purpose — a signature fitted against a
+  guessed clef is a guess squared. This is the clef thread, not this one.
+- **11 have a clef, and neither the detector's markers nor the CV locator found
+  accidentals in the header.** The page plainly prints three flats on them. This is the
+  real remaining question, and it could not be seen until the window started containing
+  the header.
+
+Start there — on the header crop specifically, since that is where both readers are now
+looking and coming back empty. The inference ideas below stay parked; there is no case
+for guessing a signature from the music while the printed one is sitting unread in a
+window nobody can read.
+
+**Still true:** do NOT reuse per-staff Krumhansl-Schmuckler profile fitting. Measured and
+noise — median margin between best and second-best signature 0.0000, 62 of 80 staves
 under 0.01 (`benchmarks/omr-clef-key-fit-2026-08/findings.md`).
 
-**Done when.** Beethoven 5 p15 reads 3 flats, or abstains loudly instead of asserting 0.
+**Note on reproducing any of this:** the two orchestral ground-truth PDFs for
+`benchmarks/omr-key-signature/` (`beet5-p2`, `pastoral-p2`) are **no longer on this
+machine** — `tools/omr/training/data/imslp/` is empty. Only `wtc-p17` can still be
+scored, and it holds at 10/10. Anything measured on those two pages is currently
+unverifiable.
 
 ---
 
