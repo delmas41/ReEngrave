@@ -43,6 +43,7 @@ insertion rather than pretending the extra staff is a different instrument.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 from .instruments import Instrument, lookup
 
@@ -87,6 +88,21 @@ GAP_STAFF = -2.0
 # continuation the alignment slips by one at the horns and never recovers, and
 # 8 of 21 staves come out right; with it, 21 of 21.
 EXTEND_PENALTY = -0.3
+# The mirror of it: several consecutive PARTS printed on ONE staff. Off unless
+# the caller asks (`allow_merge`), because the layouts in this module are
+# already written one entry per printed STAFF — a Classical pair of flutes IS
+# one entry — so allowing it here would count the same convention twice. It is
+# for callers aligning against a WORK's parts, where condensation is the norm:
+# Beethoven 5 is written for 18 parts and printed 11 staves to a system.
+#
+# Two prices, and the difference is what makes the move usable. Condensation
+# almost always joins parts of the SAME instrument (Flauti, Oboi), so that is
+# cheap; joining different instruments is the "Violoncello e Basso" case, real
+# but rarer. Measured on Beethoven 5 p.2: with one price for both, the aligner
+# drops the second violin rather than condensing cello with bass, and the whole
+# string section slips by one.
+MERGE_SAME_PENALTY = -0.3
+MERGE_OTHER_PENALTY = -1.5
 
 # Confidence is NOT the score margin between the best two layouts. That was the
 # first design and it was wrong: measured on two hand-read pages, the natural
@@ -269,7 +285,10 @@ def align_to_layout(
     n_staves: int,
     labels: dict[int, str] | None = None,
     clefs: dict[int, str] | None = None,
-) -> tuple[float, list[str | None]]:
+    part_clefs: list[str | None] | None = None,
+    allow_merge: bool = False,
+    return_indices: bool = False,
+) -> tuple[float, list[str | None] | list[int | None]]:
     """Align `n_staves` observed staves against one layout.
 
     Needleman-Wunsch with three moves, and the third is the one that makes this
@@ -278,7 +297,15 @@ def align_to_layout(
     * **skip a part** — the instrument is absent from this page;
     * **skip a staff** — this staff has no part in the layout at all;
     * **continue a part** — this staff is another staff of the SAME part, which
-      is how two horns, a harp, or divided violins are printed.
+      is how two horns, a harp, or divided violins are printed;
+    * **merge parts** (`allow_merge`) — this staff carries SEVERAL consecutive
+      parts, which is how a printed score condenses Flauti 1 and 2 onto one
+      staff. See `MERGE_SAME_PENALTY`.
+
+    `part_clefs` overrides the clef expected of each part. A caller aligning
+    against a standard layout leaves it None and gets each instrument's own
+    convention; one aligning against a WORK passes the clefs that work actually
+    prints.
 
     Order is never violated, which is the whole content of the score-order
     prior. Returns `(total score, one part name or None per staff)`.
@@ -291,7 +318,8 @@ def align_to_layout(
 
     s_denom = max(1, m - 1)
     p_denom = max(1, n - 1)
-    part_clefs = [_default_clef(p) for p in layout.parts]
+    if part_clefs is None:
+        part_clefs = [_default_clef(p) for p in layout.parts]
 
     NEG = float("-inf")
     # dp[i][j]  — first i staves against first j parts, staff i free to be
@@ -319,10 +347,16 @@ def align_to_layout(
             )
             open_ = dp[i - 1][j - 1] + pair
             cont = ext[i - 1][j] + pair + EXTEND_PENALTY
-            if open_ >= cont:
-                ext[i][j], ext_back[i][j] = open_, "open"
+            if allow_merge and j >= 2:
+                same = layout.parts[j - 1] == layout.parts[j - 2]
+                merge = ext[i][j - 1] + pair + (
+                    MERGE_SAME_PENALTY if same else MERGE_OTHER_PENALTY)
             else:
-                ext[i][j], ext_back[i][j] = cont, "continue"
+                merge = float("-inf")
+            best_ext = max(open_, cont, merge)
+            ext[i][j] = best_ext
+            ext_back[i][j] = ("open" if best_ext == open_
+                              else "continue" if best_ext == cont else "merge")
 
             skip_part = dp[i][j - 1] + GAP_LAYOUT
             skip_staff = dp[i - 1][j] + GAP_STAFF
@@ -331,7 +365,7 @@ def align_to_layout(
             dp_back[i][j] = ("match" if best == ext[i][j]
                              else "skip_part" if best == skip_part else "skip_staff")
 
-    out: list[str | None] = [None] * m
+    out: list[Any] = [None] * m
     i, j = m, n
     while i > 0 or j > 0:
         if i == 0:
@@ -343,10 +377,15 @@ def align_to_layout(
         move = dp_back[i][j]
         if move == "match":
             # Walk back through however many staves this part absorbed.
+            # Walk back through however many staves this part absorbed, and
+            # however many parts this staff absorbed.
             while True:
-                out[i - 1] = layout.parts[j - 1]
-                if ext_back[i][j] == "continue":
+                out[i - 1] = (j - 1) if return_indices else layout.parts[j - 1]
+                step = ext_back[i][j]
+                if step == "continue":
                     i -= 1
+                elif step == "merge":
+                    j -= 1
                 else:
                     i -= 1
                     j -= 1
