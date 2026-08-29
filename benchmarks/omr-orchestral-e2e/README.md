@@ -120,8 +120,8 @@ End-to-end, with seeding already on:
 
 | work | bars | parts | measures | notes (omr/truth) | recall | precision | duration |
 |---|---:|---|---|---:|---:|---:|---:|
-| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 80/81 | 0.691 | 0.700 | 0.857 |
-| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 400/337 | 0.599 | 0.505 | 0.243 |
+| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 80/81 | 0.691 | 0.700 | **0.911** |
+| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 400/337 | 0.599 | 0.505 | 0.262 |
 | mahler-sym5-mvt1 | 7 | 31/38 | **7/7** | 36/22 | 0.136 | 0.083 | 0.000 |
 
 Beethoven now reports **80 notes against a truth of 81** — the note count is
@@ -146,6 +146,33 @@ Residual over-detection is real, not duplication: Brahms still reports 400 for
 337 and Mahler 36 for 22 on a page that is almost entirely rests — close to a
 pure false-positive measurement of the detector inventing notes on empty staves.
 Precision remains the weak metric on dense pages.
+
+### Durations: beams stack at one end, and the fallback did not know that
+
+Brahms's duration errors were almost all **too short by a power of two** —
+0.5 → 0.25, 0.5 → 0.125, 1.5 → 0.5 — which is beam levels being over-counted,
+each extra level halving the note.
+
+`rhythm.py` has two ways to count a notehead's beams. The stem-anchored one
+requires the beams to stack at one END of the stem and stays sane because of
+it. The no-stem fallback had no such rule and swept every beam in a window 5.5
+staff-spaces tall — 550 canonical px, taller than a whole staff. On this page
+183 noteheads went through the fallback:
+
+| fallback beam levels | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| before | 20 | 56 | 31 | 39 | 14 | 11 | 9 | 3 |
+| after | **151** | 22 | 5 | 5 | – | – | – | – |
+
+**An eight-beam note is a 1024th.** The counts were then capped at 4, so the
+page reported 29 sixty-fourth notes in a passage containing none. Applying the
+same one-end rule to the fallback removes every impossible depth and leaves a
+distribution that looks like music. Duration accuracy: Beethoven 0.857 →
+**0.911**, Brahms 0.243 → 0.262, with recall and precision untouched.
+
+Brahms's duration accuracy is still poor. The stem-anchored path also reports
+56 threes and 10 fours on that page, which the truth does not support, so the
+same over-counting is present there in milder form.
 
 Mahler's part count differs from truth (31 printed against 38 in the XML)
 because LilyPond suppresses its empty staves, so its part-aligned recall falls

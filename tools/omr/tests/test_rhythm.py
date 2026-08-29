@@ -308,3 +308,57 @@ class TestDeduplicateBeams:
 
     def test_empty_input_returns_empty(self):
         assert _deduplicate_beams([], line_spacing=50) == []
+
+
+# ── beams stack at one end of the stem ──────────────────────────────────────
+# The stem-anchored counter enforced this; the no-stem fallback did not, and
+# swept a window 5.5 staff-spaces tall into a single count. On an engraved
+# Brahms 1 page that produced beam levels of 5, 6, 7 and 8 — an eight-beam note
+# is a 1024th — which the cap then turned into sixty-fourths.
+
+class _FakeBeam:
+    def __init__(self, x, y, w=200, h=8):
+        self.x_canonical, self.y_canonical = x, y
+        self.width_canonical, self.height_canonical = w, h
+        self.confidence = 0.9
+        self.category = "structural"
+        self.smufl_name = "beam"
+
+
+class _FakeNotehead:
+    def __init__(self, x, y, w=30, h=24):
+        self.x_canonical, self.y_canonical = x, y
+        self.width_canonical, self.height_canonical = w, h
+
+
+def test_fallback_counts_one_beam_group_not_a_whole_window():
+    from tools.omr.rhythm import _beam_levels_for_notehead
+    spacing = 100.0
+    tol = spacing * 0.22
+    nh = _FakeNotehead(100, 500)
+    # A stem-up note: its two beams stack at the top of the stem. The strays
+    # sit BETWEEN the notehead and that group — beams of other voices printed
+    # nearby, which is what the tall window used to sweep in.
+    beams = [
+        _FakeBeam(50, 200), _FakeBeam(50, 225),      # the group: 2 levels
+        _FakeBeam(50, 320), _FakeBeam(50, 400),      # other groups, in-window
+    ]
+    levels = _beam_levels_for_notehead(
+        nh, beams, max_stem_distance=spacing * 5.5,
+        beam_y_cluster_tol=tol, x_tolerance=spacing * 0.6,
+    )
+    assert levels == 2, f"counted {levels}; only the end group should count"
+
+
+def test_fallback_never_reports_an_impossible_depth():
+    from tools.omr.rhythm import _beam_levels_for_notehead
+    spacing = 100.0
+    nh = _FakeNotehead(100, 500)
+    # Eight beams spread evenly through the window — the shape that produced
+    # levels of 8 before. Whatever is counted must be a real note value.
+    beams = [_FakeBeam(50, 150 + 60 * i) for i in range(8)]
+    levels = _beam_levels_for_notehead(
+        nh, beams, max_stem_distance=spacing * 5.5,
+        beam_y_cluster_tol=spacing * 0.22, x_tolerance=spacing * 0.6,
+    )
+    assert levels <= 4, f"{levels} beams is not a note value"

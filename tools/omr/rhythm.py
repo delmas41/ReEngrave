@@ -701,11 +701,33 @@ def _beam_levels_for_notehead(nh, beams, max_stem_distance: float,
         attached_ys.append(b_y_center)
     if not attached_ys:
         return 0
-    # Cluster ys: every contiguous run separated by < tol is one level.
+
+    # Beams stack at ONE end of the stem, within a few beam-thicknesses of
+    # each other — `_beams_attached_to_stem` enforces that and stays sane
+    # because of it. This fallback did not, and swept every beam in a window
+    # 5.5 staff-spaces tall (550 canonical px, taller than a whole staff) into
+    # one count. Measured on an engraved Brahms 1 page: 183 noteheads came
+    # through here reporting levels of 5, 6, 7 and 8. An eight-beam note is a
+    # 1024th; the deepest note in the repertoire is a 64th. The counts were
+    # then capped at 4, so the page reported 29 sixty-fourth notes in a passage
+    # that contains none, each one an eighth or a quarter cut to a sixteenth of
+    # its length.
+    #
+    # So apply the same physical rule: keep only the beams grouped at the end
+    # FARTHEST from the notehead — the free end of the stem, where beams
+    # actually attach — and count levels within that group alone.
     attached_ys.sort()
+    if abs(attached_ys[0] - nh_y_center) >= abs(attached_ys[-1] - nh_y_center):
+        anchor = attached_ys[0]        # beams above → stem points up
+    else:
+        anchor = attached_ys[-1]       # beams below → stem points down
+    end_window = beam_y_cluster_tol * 4.0
+    grouped = [y for y in attached_ys if abs(y - anchor) <= end_window]
+
+    # Cluster ys: every contiguous run separated by < tol is one level.
     levels = 1
-    for i in range(1, len(attached_ys)):
-        if attached_ys[i] - attached_ys[i - 1] > beam_y_cluster_tol:
+    for i in range(1, len(grouped)):
+        if grouped[i] - grouped[i - 1] > beam_y_cluster_tol:
             levels += 1
     return levels
 

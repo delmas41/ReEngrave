@@ -66,8 +66,8 @@
       "pitch_matched": 56,
       "pitch_recall": 0.691,
       "pitch_precision": 0.7,
-      "duration_ok_on_matched": 48,
-      "duration_rate": 0.857
+      "duration_ok_on_matched": 51,
+      "duration_rate": 0.911
     },
     "rhythm_reconciliations": 3,
     "dossier_warnings": {
@@ -148,8 +148,8 @@
       "pitch_matched": 202,
       "pitch_recall": 0.599,
       "pitch_precision": 0.505,
-      "duration_ok_on_matched": 49,
-      "duration_rate": 0.243
+      "duration_ok_on_matched": 53,
+      "duration_rate": 0.262
     },
     "rhythm_reconciliations": 2,
     "dossier_warnings": {},
