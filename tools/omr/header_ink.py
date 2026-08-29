@@ -21,6 +21,7 @@ from dataclasses import dataclass
 
 import cv2
 import numpy as np
+from scipy.ndimage import median_filter
 
 from .types import MeasureCell
 
@@ -331,6 +332,92 @@ def _run_extent(window: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, np.nd
     return top, bottom
 
 
+def _line_runs(
+    mask: np.ndarray, nominal_y: float, spacing: float, search_spaces: float
+):
+    """The vertical ink run through each column at the height of one staff
+    line: `(top, bottom, live, lo, width)`, or None when too few columns carry
+    ink to be tracing a line at all.
+
+    Shared by `trace_staff_line`, which turns the runs into a path to erase
+    along, and `measure_staff_line`, which turns them into a description of how
+    the line is printed. Both need exactly this much and neither should compute
+    it twice — the two must agree on which columns are the line, or a thickness
+    and a path measured a moment apart would describe different ink.
+    """
+    height, width = mask.shape
+    lo = int(max(0, nominal_y - search_spaces * spacing))
+    hi = int(min(height, nominal_y + search_spaces * spacing + 1))
+    if hi - lo < 2:
+        return None
+    window = mask[lo:hi] > 0
+    rows = _nearest_ink_row(window, int(round(nominal_y)) - lo)
+    top, bottom = _run_extent(window, rows)
+    live = rows >= 0
+    if live.sum() < max(3, width // 10):
+        return None
+    return top, bottom, live, lo, width
+
+
+# How far above the measured thickness a column's ink run may reach and still
+# count as the bare line. A notehead or stem sitting on the line makes a run
+# many times taller — but `_run_extent` stops at the search window, so some
+# arrive CLIPPED to a plausible-looking height, which is why the half-a-staff-
+# space bound used for thickness is too loose to also decide position.
+LINE_ONLY_HEIGHT_MULT = 2.0
+
+# Wander is reported at this quantile rather than as a maximum. Over the few
+# thousand columns of a staff, a maximum is guaranteed to find the single worst
+# artifact: where the printed line drops out, the nearest ink can be a beam or
+# a slur passing a third of a staff space away, and that column is thin enough
+# to pass every height test while being the wrong ink entirely. Measured on
+# Bach WTC p.1, whose lines are straight to within half a pixel, the maximum
+# reports 13.5 px and this quantile reports 0.5. A line that genuinely bends
+# bends across many columns, so the quantile still sees it: on synthetic lines
+# bowed by 3 px and 6 px it returns 3.00 and 6.00.
+WANDER_QUANTILE = 99.0
+
+
+def measure_staff_line(
+    mask: np.ndarray, nominal_y: float, spacing: float, search_spaces: float = 0.35
+) -> tuple[float, float] | None:
+    """Describe how one staff line is actually printed: `(thickness, wander)`
+    in pixels, or None when the line cannot be traced.
+
+    `thickness` is how much ink the line occupies — the median run height over
+    columns no taller than half a staff space, the same robust estimate
+    `trace_staff_line` erases by. `wander` is how far the line departs from
+    `nominal_y`, the single row the rest of the pipeline models it as.
+
+    Together they say what modelling this staff as five straight rows costs.
+    On a modern engraving the answer is nearly nothing. On the 19th-century
+    prints this pipeline exists for it is not: lines run 0.15–0.31 staff spaces
+    thick against roughly 0.08 for a modern one, and a removal band sized for
+    the modern case leaves most of an old line behind, in pieces, which is the
+    difference between a staff that comes off cleanly and one that arrives as
+    a single connected mass.
+    """
+    runs = _line_runs(mask, nominal_y, spacing, search_spaces)
+    if runs is None:
+        return None
+    top, bottom, live, lo, _width = runs
+
+    heights = (bottom - top + 1).astype(float)
+    measurable = live & (heights <= 0.5 * spacing)
+    if not measurable.any():
+        return None
+    thickness = float(np.median(heights[measurable]))
+
+    # Position needs the tighter bound: thickness survives contamination by
+    # taking a median, a departure-from-nominal figure cannot.
+    line_only = live & (heights <= max(2.0, thickness * LINE_ONLY_HEIGHT_MULT))
+    if not line_only.any():
+        return None
+    centres = (top[line_only] + bottom[line_only]) / 2.0 + lo
+    wander = float(np.percentile(np.abs(centres - nominal_y), WANDER_QUANTILE))
+    return thickness, wander
+
+
 def trace_staff_line(
     mask: np.ndarray, nominal_y: float, spacing: float, search_spaces: float = 0.35
 ) -> tuple[np.ndarray, float] | None:
@@ -345,18 +432,10 @@ def trace_staff_line(
     taller run, and including those would inflate the estimate and erase the
     glyph along with the line.
     """
-    height, width = mask.shape
-    lo = int(max(0, nominal_y - search_spaces * spacing))
-    hi = int(min(height, nominal_y + search_spaces * spacing + 1))
-    if hi - lo < 2:
+    traced = _line_runs(mask, nominal_y, spacing, search_spaces)
+    if traced is None:
         return None
-    window = mask[lo:hi] > 0
-    rows = _nearest_ink_row(window, int(round(nominal_y)) - lo)
-    top, bottom = _run_extent(window, rows)
-
-    live = rows >= 0
-    if live.sum() < max(3, width // 10):
-        return None
+    top, bottom, live, lo, width = traced
     centres = np.full(width, np.nan)
     centres[live] = (top[live] + bottom[live]) / 2.0 + lo
     runs = (bottom - top + 1).astype(float)
@@ -365,11 +444,16 @@ def trace_staff_line(
 
     # Fill the blank columns from their neighbours and take a running median, so
     # a few speckled columns can't kink the path.
+    #
+    # `median_filter` with an odd window and edge handling is exactly the
+    # centre-padded rolling median this used to spell out as a comprehension,
+    # and returns bit-identical values — but in C, ~120× faster at page width.
+    # That difference is what makes tracing every line of every staff on a page
+    # affordable rather than a tripling of Phase 1.
     xs = np.arange(width)
     filled = np.interp(xs, xs[live], centres[live])
     k = max(3, int(round(0.5 * spacing)) | 1)
-    padded = np.pad(filled, k // 2, mode="edge")
-    smoothed = np.array([np.median(padded[i : i + k]) for i in range(width)])
+    smoothed = median_filter(filled, size=k, mode="nearest")
     return smoothed, thickness
 
 
