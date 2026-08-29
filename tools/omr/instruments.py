@@ -132,8 +132,13 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # "Tr." is Trombe (trumpets) and "Tp." on the staff below it is Timpani —
     # measured on Beethoven 1 (imslp-00074 p40), whose system reads
     # Fl / Ob / Cl / Fag / Cor / Tr / Tp. "Tpt." remains the unambiguous English
-    # trumpet abbreviation. A score-order prior (NOTES.md #3) would settle this
-    # from position rather than by convention; until then this is the safer read.
+    # trumpet abbreviation.
+    #
+    # The score-order prior now settles this properly, from where the staff
+    # SITS rather than from which convention is commoner: see
+    # AMBIGUOUS_ALIASES below and `score_layouts.resolve_ambiguous_label`. This
+    # table still has to name one instrument, and names the reading that is
+    # right when the prior has no opinion.
     Instrument("Trumpet", "brass", "treble", (52, 84), None, 2,
                aliases=("trumpet", "trumpets", "tromba", "trombe", "trompete", "trompeten",
                         "trompette", "trompettes", "tr", "tpt", "clarino", "clarini")),
@@ -191,6 +196,35 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         "contrebasse", "kontrabass", "kontrabasse", "basse", "bassi",
                         "basso", "cb", "kb", "ctb", "db")),
 )
+
+# Aliases one lexicon cannot settle, and what they could be, most-likely first.
+# `Tp.` is Timpani in the German and Italian tradition and Trumpet in the
+# English one; the alias table has to pick one, and picks the commoner reading
+# for this corpus. POSITION settles it properly — a staff below the trumpets is
+# the timpani — which is what `score_layouts.resolve_ambiguous_label` does with
+# the reading a caller has already made. Keep the first entry equal to whichever
+# instrument actually carries the alias above, so nothing changes when the
+# score-order prior has no opinion.
+AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
+    "tp": ("Timpani", "Trumpet"),
+    # "Cor." is Corno (horn) everywhere in the German/Italian tradition, and
+    # "Cor" is French for horn too — but a French score's "Cor Anglais" is
+    # caught by its own longer alias, so this one is listed for the rarer case
+    # of a bare "Cor." on a French wind score meaning cornet.
+    "cor": ("Horn", "Trumpet"),
+}
+
+
+def candidates_for_alias(alias: str) -> tuple["Instrument", ...]:
+    """Every instrument an ambiguous alias could mean, most-likely first.
+
+    Empty for an alias that is not ambiguous — the caller then has nothing to
+    resolve and keeps the lexicon's answer.
+    """
+    names = AMBIGUOUS_ALIASES.get(alias, ())
+    by_name = {inst.name: inst for inst in INSTRUMENTS}
+    return tuple(by_name[n] for n in names if n in by_name)
+
 
 _STRIP_TOKENS = re.compile(
     r"\b(?:i{1,3}v?|iv|vi{0,3}|[0-9]+|solo|soli|tutti|con|e|und|and|a|due|zu|"

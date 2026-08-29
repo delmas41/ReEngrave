@@ -35,8 +35,9 @@ from pathlib import Path
 from typing import Any
 
 from .clef_correction import correct_clefs_from_instruments
-from .instruments import Instrument, lookup
+from .instruments import Instrument, candidates_for_alias, lookup
 from .preprocessing import render_page
+from .score_layouts import fit_layouts, resolve_ambiguous_label
 from .slots import Slot, assign_slots, labels_by_staff
 from .staff_detector import detect_staves
 from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
@@ -51,6 +52,75 @@ def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
         if match is not None:
             out[slot.index] = match.instrument
     return out
+
+
+def _read_clefs_by_slot(pages, slot_by_staff) -> dict[int, str]:
+    """The clef each slot actually READS, by majority across its staves.
+
+    Only clefs a reader produced count (`clef_source` present). A staff carrying
+    the positional default would otherwise vote "treble" for every part on the
+    page, which is exactly the failure the key-signature reader abstains around:
+    a guess fed into a prior comes back out looking like evidence.
+    """
+    votes: dict[int, dict[str, int]] = {}
+    for page in pages:
+        for system in page.get("systems", []):
+            for staff in system.get("staves", []):
+                if not staff.get("clef_source"):
+                    continue
+                clef = staff.get("clef")
+                if not clef:
+                    continue
+                key = (page.get("page_index"), system.get("system_index"),
+                       staff.get("staff_index"))
+                slot = slot_by_staff.get(key)
+                if slot is None or slot < 0:
+                    continue
+                votes.setdefault(slot, {})
+                votes[slot][clef] = votes[slot].get(clef, 0) + 1
+    return {
+        slot: max(tally.items(), key=lambda kv: kv[1])[0]
+        for slot, tally in votes.items()
+    }
+
+
+def _resolve_ambiguous_labels(
+    reference, staff_labels_per_page, slot_by_staff, page_indices, staved,
+    fit, instrument_by_slot, instrument_source,
+) -> None:
+    """Let position settle the labels a lexicon cannot.
+
+    `Tp.` is Timpani in the German and Italian tradition and Trumpet in the
+    English one. `instruments.py` has to pick one for its alias table and picks
+    the commoner reading for this corpus, with the page it was measured on named
+    in a comment. Here the page itself answers: the layout fit knows what sits
+    at that position, and a staff below the trumpets is the timpani.
+
+    Only ever chooses among the candidates the alias already allows, and only
+    when the fit names that slot — so a page the prior cannot read keeps exactly
+    the reading it had.
+    """
+    for page_index, pws, staff_labels in zip(page_indices, staved, staff_labels_per_page):
+        for label in staff_labels:
+            candidates = candidates_for_alias(label.alias)
+            if len(candidates) < 2:
+                continue
+            key = (page_index, next(
+                (s.system_index for s in pws.staves
+                 if s.staff_index == label.staff_index), 0), label.staff_index)
+            slot = slot_by_staff.get(key)
+            if slot is None or slot < 0:
+                continue
+            chosen = resolve_ambiguous_label(slot, candidates, fit)
+            if chosen is None:
+                continue
+            current = instrument_by_slot.get(slot)
+            instrument_by_slot[slot] = chosen
+            for s in reference:
+                if s.index == slot:
+                    s.instrument = chosen.name
+            if current is None or current.name != chosen.name:
+                instrument_source[slot] = "score_order_ambiguity"
 
 
 def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
@@ -107,18 +177,28 @@ def apply_contextual_analysis(
         return summary
 
     page_indices = [p.get("page_index") for p in pages]
-    if not vision_fallback and not any(has_text_layer(pdf_path, i) for i in page_indices):
-        summary["reason"] = "no text layer — instrument identity unavailable"
-        return summary
+    # No text layer used to end the analysis here: with no labels there was no
+    # instrument identity, and everything downstream of identity was
+    # unavailable. Score order supplies a second source — instruments appear in
+    # family order and never out of it, so position alone says a good deal —
+    # and it needs no text at all. The run continues, and `score_layouts`
+    # decides for itself whether the page says enough to name anything.
+    unlabelled = (
+        not vision_fallback
+        and not any(has_text_layer(pdf_path, i) for i in page_indices)
+    )
 
     budget = [vision_system_budget]
     staved, labels = [], []
+    staff_labels_per_page = []
     for page_index in page_indices:
         pws = detect_staves(render_page(pdf_path, page_index, dpi=dpi))
         staved.append(pws)
-        labels.append(labels_by_staff(_labels_for_page(
+        read = [] if unlabelled else _labels_for_page(
             pws, pdf_path, page_index,
-            vision_fallback=vision_fallback, budget=budget)))
+            vision_fallback=vision_fallback, budget=budget)
+        staff_labels_per_page.append(read)
+        labels.append(labels_by_staff(read))
 
     reference = assign_slots(staved, labels)
     if not reference:
@@ -131,6 +211,32 @@ def apply_contextual_analysis(
         for staff in pws.staves:
             slot_by_staff[(page_index, staff.system_index, staff.staff_index)] = \
                 staff.slot_index
+
+    # ── The score-order prior ────────────────────────────────────────────────
+    # Fitted to the REFERENCE rather than to a page, because instrumentation is
+    # a property of the work: one fit then reaches every system through the
+    # slots. It is given whatever is already known — the labels that resolved,
+    # and the clefs that were actually READ — and fills in only what is missing.
+    clef_by_slot = _read_clefs_by_slot(pages, slot_by_staff)
+    fit = fit_layouts(
+        len(reference),
+        labels={s.index: s.instrument for s in reference if s.instrument},
+        clefs=clef_by_slot,
+    )
+    instrument_source: dict[int, str] = {i: "label" for i in instrument_by_slot}
+    if fit is not None:
+        for slot in reference:
+            proposed = fit.instrument_for(slot.index)
+            if proposed is None:
+                continue
+            if slot.index not in instrument_by_slot:
+                match = lookup(proposed)
+                if match is not None:
+                    instrument_by_slot[slot.index] = match.instrument
+                    instrument_source[slot.index] = "score_order"
+        _resolve_ambiguous_labels(
+            reference, staff_labels_per_page, slot_by_staff, page_indices,
+            staved, fit, instrument_by_slot, instrument_source)
 
     # Write identity onto the staff dicts so downstream consumers (export, the
     # consistency checks, the review UI) can see what part a staff is.
@@ -147,17 +253,38 @@ def apply_contextual_analysis(
                 if instrument is not None:
                     staff["instrument"] = instrument.name
                     staff["instrument_family"] = instrument.family
+                    # Where the name came from. A reader has to be able to tell
+                    # a name that was PRINTED on the page from one deduced from
+                    # where the staff sits.
+                    staff["instrument_source"] = instrument_source.get(slot, "label")
                     if instrument.unpitched:
                         staff["unpitched"] = True
 
+    # Clef correction runs on identity that was READ, never on identity the
+    # score-order prior deduced. The prior is a hypothesis about where a staff
+    # sits, and it inherits the clef problem it would then be used to fix: on
+    # Beethoven 5 p.15 two string staves whose clefs are misread as treble come
+    # out of the prior as violins, and letting that rewrite their clefs would
+    # close the loop on its own mistake. So the deduction is written into the
+    # JSON, where a reader can see it and judge it, and stops there.
+    read_instruments = {
+        slot: inst for slot, inst in instrument_by_slot.items()
+        if instrument_source.get(slot) != "score_order"
+    }
     records = correct_clefs_from_instruments(
-        pages, instrument_by_slot, slot_by_staff, apply=apply_clefs)
+        pages, read_instruments, slot_by_staff, apply=apply_clefs)
 
     summary.update(
         available=True,
         reference=[{"slot": s.index, "group": s.group_index,
                     "instrument": s.instrument} for s in reference],
         labelled_staves=sum(len(l) for l in labels),
+        layout=(fit.layout.name if fit else None),
+        layout_named_slots=(fit.n_named if fit else 0),
+        instruments_from_score_order=sum(
+            1 for v in instrument_source.values() if v == "score_order"),
+        ambiguous_labels_resolved=sum(
+            1 for v in instrument_source.values() if v == "score_order_ambiguity"),
         proposals=records,
         clefs_applied=sum(1 for r in records if r["applied"]),
         noteheads_restated=sum(r.get("noteheads_restated", 0) for r in records),

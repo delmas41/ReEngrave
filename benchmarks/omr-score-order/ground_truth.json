@@ -1,0 +1,52 @@
+{
+ "_about": [
+  "Hand-read instrumentation for the pages the score-order prior was measured",
+  "on. Every part below was read off a render of the page's LEFT MARGIN, part by",
+  "part (Claude, 2026-08-28); the renders are committed beside the Phase-1",
+  "baseline evidence. It is not pipeline output, and it is the part of this",
+  "benchmark that cannot be regenerated.",
+  "",
+  "`parts` is one canonical instrument name per STAFF, top to bottom — so a",
+  "divided violin section contributes several Violin entries, and a harp on two",
+  "staves contributes two Harps. That is what the prior has to reproduce."
+ ],
+ "pages": [
+  {
+   "id": "beet5-p15-sys0",
+   "work": "Beethoven, Symphony No. 5 — first movement",
+   "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+   "page_index": 14,
+   "dpi": 300,
+   "system_index": 0,
+   "tradition": "classical-condensed",
+   "parts": ["Flute", "Oboe", "Clarinet", "Bassoon", "Horn", "Trumpet", "Timpani",
+             "Violin", "Violin", "Viola", "Cello", "Contrabass"],
+   "notes": [
+    "A German pocket score with no text layer, which is why it is here: before",
+    "the prior this page had no instrument identity at all.",
+    "The margin reads Fl. Ob. Cl. Fag. Cor. Tr. Tp. — the Tp./Tr. pair the",
+    "ambiguous-alias case is about."
+   ]
+  },
+  {
+   "id": "lamer-p25",
+   "work": "Debussy, La Mer (orchestral score), printed p.168",
+   "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf",
+   "page_index": 25,
+   "dpi": 300,
+   "system_index": 0,
+   "tradition": "french-large",
+   "parts": ["Flute", "Piccolo", "Oboe", "English horn", "Clarinet", "Bassoon",
+             "Horn", "Horn", "Trumpet", "Tuba", "Timpani", "Percussion",
+             "Harp", "Harp", "Violin", "Violin", "Violin", "Violin",
+             "Viola", "Cello", "Contrabass"],
+   "notes": [
+    "21 staves for 17 parts: two horns, a harp on two staves, and both violin",
+    "sections divided. The piccolo (Pte Fl.) is printed BELOW the flute, which",
+    "is the French convention and not the German one — the two traditions are",
+    "what the prior has to tell apart.",
+    "The twelfth staff is Cymbales, on a single line."
+   ]
+  }
+ ]
+}
