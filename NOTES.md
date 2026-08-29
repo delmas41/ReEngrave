@@ -9,11 +9,21 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 **[docs/next-steps-omr-2026-08-28.md](docs/next-steps-omr-2026-08-28.md)** is the current
 handoff: four ranked threads with evidence, entry points and done-criteria.
 
-1. **One-line percussion staves are invisible** — small, unblocked, silently corrupts part
-   identity for every staff below one.
-2. **Key signature from the music** — Sean asked for this; Beethoven 5 p15 still reads
-   "no accidentals" for a C-minor movement. Check whether it is a *detection* failure first.
-3. **Score-order prior** — the principled fix for the `Tp.`/`Tr.` ambiguity hard-coded today.
+1. ~~**One-line percussion staves are invisible**~~ — **DONE 2026-08-28.** A percussion
+   part printed as one rule is now a staff, so the staves below it keep their slots
+   (La Mer p.25: 20 staves reported on a 21-part page). `benchmarks/omr-phase1-baseline/`.
+2. **Key signature** — the cause was found 2026-08-28 and it was neither detection nor
+   reading: the staff's left edge was lost, so the header was cropped out of every cell.
+   Fixed; clefs on Beethoven 5 p.15 went 0/23 -> 13/23 and the reader started firing.
+   What is left is sharply scoped — 11 staves where the clef IS read and neither reader
+   finds accidentals in the header, and the detector is blind to those flats at conf
+   0.25, 0.10 and 0.05 alike. `benchmarks/omr-key-signature/RESULTS.md`. Inference from
+   the music stays parked while the printed signature sits unread.
+3. ~~**Score-order prior**~~ — **DONE 2026-08-28.** `tools/omr/score_layouts.py`:
+   ten standard layouts, monotone alignment, a continuation move for parts printed
+   on several staves. An unlabelled orchestral page (Beethoven 5 p.15, no text
+   layer) now names 10 of 12 staves, 8 correctly, where it had no identity at all.
+   `Tp.` is settled from position. `benchmarks/omr-score-order/RESULTS.md`.
 4. ~~**Re-read July's "domain gap" conclusion**~~ — **DONE 2026-08-28, and it did not
    survive.** The flood, the invisible meters and the mostly-treble clefs were all
    artefacts of `imgsz 2048`: same pages, same weights, same confidence, Boléro p.1

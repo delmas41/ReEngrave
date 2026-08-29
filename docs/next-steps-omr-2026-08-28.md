@@ -138,29 +138,45 @@ unverifiable.
 
 ---
 
-## 3. Score-order prior — the principled fix for something hard-coded today
+## 3. Score-order prior — DONE, 2026-08-28
 
-**What.** Score order is **monotone** — instruments never appear out of family order — so
-"which instrumentation is this?" is a dynamic-programming alignment of the observed
-staves against a small library of standard layouts, not a classification.
+**Shipped** as `tools/omr/score_layouts.py`: a library of ten standard layouts and a
+monotone alignment of a system's staves against them, with gaps on both sides and a
+*continuation* move so one part can take several staves (two horns, a harp, divided
+violins).
 
-**Why it matters.** Today a real ambiguity was resolved by convention rather than
-evidence: `Tp.` was resolving to Trumpet on a staff sitting directly below `Tr.`. The
-page reads Fl / Ob / Cl / Fag / **Cor / Tr / Tp** — Horns, Trumpets, **Timpani**. It was
-fixed by moving the `tp` alias to Timpani
-(`tools/omr/tests/test_instruments.py:107::test_tp_is_timpani_not_trumpet`), which is
-right for the German/Italian editions in the corpus and wrong for an English score using
-`Tp.` for trumpet. Position would settle it properly.
+**What it buys.** Beethoven 5 p.15 — a scan with no text layer, where contextual
+analysis used to stop at "no text layer — instrument identity unavailable" — now names
+10 of 12 staves, 8 correctly: the whole wind and brass section, the timpani, and the
+first violins. Measured against hand-read instrumentation on two pages
+(`benchmarks/omr-score-order/`): **23 named and 23 right** with correct clefs, **12
+named and 11 right** by position alone.
 
-**Where to start.** `tools/omr/slots.py` already does monotone alignment against a
-reference layout, and `Staff.group_index` already carries the bracket grouping from
-`system_grouping.py`. The missing piece is a library of standard layouts (Classical
-pairs / Romantic / large late-Romantic / string quartet / piano / lead sheet) to align
-against when no labels are available.
+**`Tp.` is settled.** `instruments.AMBIGUOUS_ALIASES` declares the ambiguity and the
+prior reads the answer off the position — timpani below the trumpets, trumpet where the
+trumpets are, no opinion where it cannot see. The alias table is unchanged, so a page
+the prior cannot read keeps the reading it had.
 
-**Done when.** An unlabelled orchestral system gets a plausible instrument assignment
-from position and bracket structure alone, and `Tp.` after `Tr.` resolves to Timpani
-without the alias hack.
+**Two things the measurement forced, worth carrying forward.**
+
+- *Confidence is agreement, not margin.* The natural score margin between neighbouring
+  traditions is ~0.05 per staff, on pages read perfectly — so a margin threshold rejects
+  good answers. What separates a confident staff from a doubtful one is whether the
+  plausible layouts agree about **that staff**. The strings at the bottom are the same
+  in every tradition; the middle of the woodwind is where traditions differ.
+- *Clefs choose the tradition.* Position alone picks the German large-orchestra layout
+  for La Mer; the true clefs pick the French one, which is right. A bassoon in bass clef
+  and a viola in alto are the anchors.
+
+**What it must not do, and does not.** Identity deduced from position does not drive
+clef correction. The two errors on Beethoven 5 p.15 are a viola and a cello whose clefs
+are misread as treble and which the prior therefore reads as violins; letting it rewrite
+those clefs would close the loop on its own mistake. It is written into the JSON as
+`instrument_source: "score_order"` and stops there.
+
+**Still open here.** The library is ten European layouts, and the prior inherits the
+clef problem — which is now, after threads 2 and 4, the single thing most of this
+project's remaining accuracy is waiting on.
 
 ---
 
