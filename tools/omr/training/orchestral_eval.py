@@ -34,6 +34,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import fitz
 from music21 import converter
 
 from tools.omr.dossier import find_dossier, summarize
@@ -63,8 +64,13 @@ DEFAULT_WORKS = (
 )
 
 
-def excerpt(work_id: str, first: int, last: int, out_dir: Path) -> tuple[Path, Path]:
-    """Write `<work>.musicxml` (the truth) and `<work>.pdf` (the input)."""
+def excerpt(work_id: str, first: int, last: int,
+            out_dir: Path) -> tuple[Path, Path, int]:
+    """Write `<work>.musicxml` (the truth) and `<work>.pdf` (the input).
+
+    Returns `(truth_xml, pdf, last_measure_used)` — see the page-fitting note
+    inside.
+    """
     src = None
     for suffix in (".mxl", ".musicxml"):
         candidate = SCORE_DIR / f"{work_id}{suffix}"
@@ -75,27 +81,49 @@ def excerpt(work_id: str, first: int, last: int, out_dir: Path) -> tuple[Path, P
         raise FileNotFoundError(f"no score for {work_id} under {SCORE_DIR}")
 
     out_dir.mkdir(parents=True, exist_ok=True)
-    score = converter.parse(str(src)).measures(first, last)
-    xml = out_dir / f"{work_id}.musicxml"
-    score.write("musicxml", fp=str(xml))
+    parsed = converter.parse(str(src))
 
-    ly = out_dir / f"{work_id}.ly"
-    subprocess.run(["musicxml2ly", "-o", str(ly), str(xml)],
-                   check=True, capture_output=True)
-    src_ly = ly.read_text()
-    src_ly = src_ly.replace("\\header {", "\\header {\n  tagline = ##f")
-    # A conductor's score is engraved small; 16pt is where real orchestral
-    # prints sit and keeps eighteen staves on one page.
-    src_ly = "#(set-global-staff-size 16)\n" + src_ly
-    ly.write_text(src_ly)
-    subprocess.run(["lilypond", "-s", "-o", work_id, f"{work_id}.ly"],
-                   cwd=out_dir, check=True, capture_output=True)
-    return xml, out_dir / f"{work_id}.pdf"
+    # THE EXCERPT MUST FIT ON ONE PAGE, and that is not a cosmetic preference.
+    # `export.to_musicxml` emits one <part> per (page, system, staff), so a part
+    # is NOT continuous across a page break: transcribing three pages of a
+    # 21-staff score yields 63 parts, not 21 parts three times as long. Scoring
+    # a multi-page render therefore measures the exporter's page handling rather
+    # than recognition, and scoring only page 0 against the FULL excerpt's truth
+    # silently caps recall at the fraction of the music that landed on it —
+    # which is what an 8-measure Brahms excerpt spanning 3 pages was doing.
+    #
+    # So shrink the range until LilyPond gives back a single page, and take the
+    # truth from exactly that range. The number of measures actually used is
+    # returned so the report can say what was measured.
+    last_used = last
+    while last_used >= first:
+        score = parsed.measures(first, last_used)
+        xml = out_dir / f"{work_id}.musicxml"
+        score.write("musicxml", fp=str(xml))
+
+        ly = out_dir / f"{work_id}.ly"
+        subprocess.run(["musicxml2ly", "-o", str(ly), str(xml)],
+                       check=True, capture_output=True)
+        src_ly = ly.read_text()
+        src_ly = src_ly.replace("\\header {", "\\header {\n  tagline = ##f")
+        # A conductor's score is engraved small; 16pt is where real orchestral
+        # prints sit and keeps eighteen staves on one page.
+        src_ly = "#(set-global-staff-size 16)\n" + src_ly
+        ly.write_text(src_ly)
+        subprocess.run(["lilypond", "-s", "-o", work_id, f"{work_id}.ly"],
+                       cwd=out_dir, check=True, capture_output=True)
+        pdf = out_dir / f"{work_id}.pdf"
+        with fitz.open(pdf) as doc:
+            n_pages = doc.page_count
+        if n_pages == 1 or last_used == first:
+            return xml, pdf, last_used
+        last_used -= 1
+    raise RuntimeError(f"{work_id}: could not fit any excerpt on one page")
 
 
 def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
              weights: str, dpi: int | None, use_dossier: bool) -> dict[str, Any]:
-    truth_xml, pdf = excerpt(work_id, first, last, work_dir)
+    truth_xml, pdf, last_used = excerpt(work_id, first, last, work_dir)
     dossier = find_dossier(work_id) if use_dossier else None
 
     # dpi=None takes `transcribe`'s default rather than restating it here.
@@ -112,7 +140,7 @@ def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
 
     return {
         "work_id": work_id,
-        "measures": [first, last],
+        "measures": [first, last_used],
         "truth": truth_struct,
         "omr": omr_struct,
         "detected": {
@@ -143,8 +171,8 @@ def main(argv: list[str] | None = None) -> int:
     first, _, last = args.measures.partition("-")
     first, last = int(first), int(last or first)
 
-    header = (f"{'work':22s} {'parts':>11s} {'measures':>10s} {'notes':>12s} "
-              f"{'recall':>7s} {'prec':>6s} {'dur':>6s}  dossier")
+    header = (f"{'work':22s} {'bars':>5s} {'parts':>11s} {'measures':>10s} "
+              f"{'notes':>12s} {'recall':>7s} {'prec':>6s} {'dur':>6s}  dossier")
     print(header)
     results = []
     for work_id in args.works:
@@ -159,7 +187,8 @@ def main(argv: list[str] | None = None) -> int:
         results.append(r)
         n = r["notes"]
         flags = r["dossier_warnings"]
-        print(f"{work_id:22s} "
+        used = r["measures"][1] - r["measures"][0] + 1
+        print(f"{work_id:22s} {used:>5d} "
               f"{r['omr']['parts']:>5d}/{r['truth']['parts']:<5d} "
               f"{r['omr']['measures']:>4d}/{r['truth']['measures']:<5d} "
               f"{n['omr_notes']:>5d}/{n['truth_notes']:<6d} "

@@ -118,15 +118,25 @@ is untouched — WTC p.5 still reports its 5 grand-staff systems.
 
 End-to-end, with seeding already on:
 
-| work | measures | recall | precision | duration |
-|---|---|---|---|---|
-| beethoven-sym5-mvt1 | 14/8 → **8/8** | 0.691 | 0.602 → **0.636** | 0.750 → **0.857** |
-| brahms-sym1-mvt1 | 9/8 → 4/8 | 0.253 → 0.262 | 0.337 → **0.352** | 0.377 → **0.416** |
-| mahler-sym5-mvt1 | 4/8 | unchanged | unchanged | unchanged |
+| work | bars | parts | measures | notes (omr/truth) | recall | precision | duration |
+|---|---:|---|---|---:|---:|---:|---:|
+| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 88/81 | 0.691 | 0.636 | 0.857 |
+| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 661/337 | 0.656 | 0.334 | 0.285 |
+| mahler-sym5-mvt1 | 7 | 31/38 | **7/7** | 54/22 | 0.136 | 0.056 | 0.000 |
 
-Beethoven is now structurally exact — 18 parts of 18, 8 measures of 8. Brahms
-moved from over-counting measures to under-counting them, which is not fixed,
-only different; its note metrics improved anyway.
+**Every measure count is now exact**, on all three works — that is what the
+grouping fix bought. Structure is solved on this benchmark.
+
+What is left is **over-detection**: Brahms reports 661 notes where 337 exist and
+Mahler 54 where 22 do. Mahler's page is almost entirely rests (the movement
+opens with a solo trumpet), so 54-for-22 is close to a pure false-positive
+measurement — the detector inventing notes on empty staves. Precision, not
+recall, is now the weak metric on dense pages.
+
+Mahler's part count differs from truth (31 printed against 38 in the XML)
+because LilyPond suppresses its empty staves, so its part-aligned recall falls
+back to a concatenated alignment and should not be read as a recognition rate.
+Its note-count ratio is the number to watch there.
 
 ## It also settled the DPI question
 
@@ -138,6 +148,28 @@ numbers and the mechanism in `benchmarks/omr-dpi-imgsz-2026-08/RESULTS.md`.
 
 That is the specific value of this benchmark: the authored fixtures alone would
 have recommended a change that quietly wrecks the case the project exists for.
+
+## A measurement bug of my own, and what it hid
+
+The first version of this harness rendered an 8-measure excerpt and transcribed
+**page 0**. Brahms's 8 measures render to THREE pages and Mahler's to two, so it
+was scoring one page's output against the whole excerpt's truth and capping
+recall at whatever fraction of the music happened to land on page 1.
+
+  brahms-sym1-mvt1 recall  0.262 (as reported)  ->  0.656 (measuring one page
+  against that page's truth)
+
+Transcribing all the pages instead is not the fix: `export.to_musicxml` emits
+one `<part>` per (page, system, staff), so **a part is not continuous across a
+page break** — three pages of a 21-staff score come back as 63 parts, not 21
+parts three times as long. That is a real limitation worth knowing about for
+multi-page scores; here it means a page-recognition benchmark must stay on one
+page. `excerpt()` now shrinks the measure range until LilyPond returns a single
+page, and reports how many bars it actually used.
+
+It also corrected a claim about Mahler. Its page 0 carries **31 staves and that
+is correct** — LilyPond suppresses empty staves on the first system, and the
+movement opens with a solo trumpet. Staff detection was never failing there.
 
 ## Limits worth stating
 
