@@ -558,6 +558,11 @@ def _build_measure_cell(
         bbox_page_px=(x0, y0, x1, y1),
         staff_line_ys_canonical=up_ys,
         upscale_factor=scale,
+        staff_line_thickness_canonical=(
+            round(staff.median_line_thickness_px * scale, 3)
+            if staff.median_line_thickness_px is not None
+            else None
+        ),
     )
     # Stash binary on the cell as a side-channel attribute for the
     # staff-line-removal step. (Not part of MeasureCell's formal schema —

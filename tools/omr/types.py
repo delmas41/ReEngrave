@@ -36,7 +36,18 @@ class PageImage:
 
 @dataclass
 class Staff:
-    """One five-line staff on a page, in page-pixel coordinates."""
+    """One five-line staff on a page, in page-pixel coordinates.
+
+    `line_ys` is the staff as the rest of the pipeline models it: five ideal
+    horizontal lines at integer rows. `line_thickness_px` and `line_wander_px`
+    record how far the printed staff departs from that model — how much ink
+    each line actually occupies, and how far it strays from its nominal row.
+    Both are measurements of what staff-line REMOVAL destroys, kept because
+    the erased image can no longer answer either question, and because on the
+    prints that matter the departure is large: a line 0.3 staff spaces thick
+    is not a line, it is a band, and treating it as a row is what leaves most
+    of the staff behind.
+    """
 
     page_index: int
     staff_index: int            # 0-based within the page
@@ -46,6 +57,18 @@ class Staff:
     system_index: int = 0       # which system this staff belongs to (group of staves played together)
     group_index: int = 0        # bracket group within the system (winds | brass | strings) — see system_grouping.py
     slot_index: int = -1        # stable part identity across systems/pages, -1 = unassigned — see slots.py
+    # Measured, not assumed — see staff_detector.measure_line_geometry. None
+    # when the lines were too faint or broken to trace.
+    line_thickness_px: list[float] | None = None   # per line, top → bottom
+    line_wander_px: float | None = None            # max departure from nominal
+
+    @property
+    def median_line_thickness_px(self) -> float | None:
+        """One number for how heavily this staff is printed, or None if the
+        lines were never traced."""
+        if not self.line_thickness_px:
+            return None
+        return float(sorted(self.line_thickness_px)[len(self.line_thickness_px) // 2])
 
     @property
     def top_y(self) -> int:
@@ -111,6 +134,10 @@ class MeasureCell:
     bbox_page_px: tuple[int, int, int, int]  # (x0, y0, x1, y1) in original page pixels
     staff_line_ys_canonical: list[int]       # staff line y-coords in CANONICAL image
     upscale_factor: float       # canonical_h / page_h_of_cell
+    # How thick the printed staff lines are, in THIS cell's canonical pixels —
+    # i.e. how much ink `image_no_staff` had to remove per line. None when the
+    # staff's lines were never traced. See Staff.line_thickness_px.
+    staff_line_thickness_canonical: float | None = None
 
     @property
     def width(self) -> int:
