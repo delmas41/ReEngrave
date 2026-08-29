@@ -205,3 +205,71 @@ on purpose. Over-erasing them would shred the glyphs.
 Tests: 17 new units on synthetic cells (`test_staff_line_removal.py`) covering
 each printed thickness from 2 to 30px, a wandering line, a crossing stem, a
 notehead on a line, and a beam lying along one.
+
+---
+
+# One-line percussion staves — a staff the grouper could not see
+
+**2026-08-28.** `_group_into_staves` accepts only five-peak windows, so a
+percussion part printed as a single rule produced **no `Staff` at all**. The
+cost is not the missing percussion part. It is that every staff below it
+carried a `staff_index` one lower than its true slot, and slot identity is what
+feeds instrument, transposition and expected clef — so one missing rule makes
+the lower half of an orchestral system read as the wrong instruments.
+
+La Mer p.25 (`evidence/lamer-p25-margin-21-staves.png`) is the case in the
+corpus. Counted off the margin: 21 parts in one system, the twelfth being
+**Cymbales** on a single line (`evidence/lamer-p25-cymbales-staff.png`). The
+detector reported 20, so both harp staves, four divided violin staves, violas,
+celli and basses — nine parts — were each one slot too high.
+
+## What identifies a one-line staff
+
+Not anything about the row itself. A percussion rule is a long inked row
+between the page's staves, and so is the single surviving line of a five-line
+staff printed too lightly for the peak gates. **On Beethoven 5 at 300 DPI that
+second case is the common one**: the first version of this rule fired on 4 of
+10 sampled Beethoven pages, a score with no one-line parts at all, and the
+firings were a clarinet staff (`evidence/beet5-p8-clarinet-false-positive.png`)
+and a first-violin staff (`evidence/mahler-p26-first-violin-false-positive.png`).
+
+Four conditions, each answering a different way of being wrong:
+
+| condition | what it refuses |
+|---|---|
+| between the page's first and last staff line | page borders, title and footer rules |
+| ≥ 4 staff spaces clear of any other staff-line row | two lines of one staff, read as two percussion parts |
+| run ≥ half the page's median staff width, overlapping their x-window | hairpins, bracket edges, fragments of text |
+| **no line-length run one or two spaces above or below** | the survivor of a lightly printed five-line staff |
+
+The fourth is the one that carries the rule, and it works by asking the *page*
+rather than the peak list: whether or not the row pass saw the other four
+lines, they are printed, and printed lines are long.
+
+## Measured
+
+47 pages sampled across five scores (every sixth page, 300 DPI):
+
+| | before the neighbour veto | after |
+|---|---|---|
+| pages firing | 13 | **9** |
+| Beethoven 5 (no one-line parts) | 4 of 10 pages | **0** |
+| WTC, Boléro | 0 | 0 |
+
+All 14 remaining firings are on La Mer and Mahler 5. Twelve were rendered and
+read: Cymb., Trg., Becken, Gr. Tr., Kl. Tr. — every one a labelled percussion
+part (`evidence/one-line-staves-confirmed.png`). No false positive survived
+inspection.
+
+Corpus effect (`phase1_layout_eval`, 12 pages): **one page moves** — La Mer
+p.25, 20 → 21 staves, matching the hand count. The other eleven are unchanged.
+
+## What this does NOT do
+
+A one-line staff is detected, given the page's spacing so that everything
+sizing a window in staff spaces still works, and **skipped by barline detection
+and cell extraction**. Its content is not read. The cell pipeline canonicalises
+by a staff's five-line span, which a single rule does not have; and the barline
+vote is a fraction of the staves in a system, so a staff two spaces tall would
+answer "barline" for any stem crossing it and move the denominator for every
+real staff. Reading percussion is separate work. The slots are the fix.

@@ -82,6 +82,10 @@ def probe_page(pdf: Path, page_index: int, dpi: int) -> dict[str, Any]:
     return {
         "page_px": [page.width, page.height],
         "n_staves": len(pws.staves),
+        # One-line percussion staves, reported separately because they are the
+        # one kind of staff whose absence is INVISIBLE in the total: a page
+        # that misses one still looks like a page of n staves.
+        "n_single_line_staves": sum(1 for s in pws.staves if len(s.line_ys) == 1),
         "n_systems": len(by_sys),
         "staves_per_system": [len(by_sys[i]) for i in sorted(by_sys)],
         "measures_per_system": [len(measures[i]) for i in sorted(measures)],
@@ -116,14 +120,19 @@ def main() -> None:
             f"per_sys={r['staves_per_system']} measures={r['measures_per_system']} "
             f"cells={r['n_cells']:4d}"
         )
+        if r["n_single_line_staves"]:
+            line += f"  1-line={r['n_single_line_staves']}"
         if r["spacing_outlier_staves"]:
             line += f"  PHANTOM?{r['spacing_outlier_staves']}"
         if key in gt:
             g = gt[key]
             ok_s = r["staves_per_system"] == g["staves_per_system"]
-            ok_m = r["measures_per_system"] == g["measures_per_system"]
             line += f"  GT staves:{'OK' if ok_s else 'FAIL ' + str(g['staves_per_system'])}"
-            line += f" bars:{'OK' if ok_m else 'FAIL ' + str(g['measures_per_system'])}"
+            # A page may be recorded for its staff layout alone; a null here
+            # means "not hand-counted", which must not read as a failure.
+            if g.get("measures_per_system") is not None:
+                ok_m = r["measures_per_system"] == g["measures_per_system"]
+                line += f" bars:{'OK' if ok_m else 'FAIL ' + str(g['measures_per_system'])}"
         print(line)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -138,11 +147,11 @@ def main() -> None:
             p = prior.get(key)
             if not p:
                 continue
-            for field in ("n_staves", "n_systems", "staves_per_system",
-                          "measures_per_system", "n_cells"):
-                if p[field] != r[field]:
+            for field in ("n_staves", "n_single_line_staves", "n_systems",
+                          "staves_per_system", "measures_per_system", "n_cells"):
+                if p.get(field) != r[field]:
                     moved = True
-                    print(f"  {key:15s} {field}: {p[field]} -> {r[field]}")
+                    print(f"  {key:15s} {field}: {p.get(field)} -> {r[field]}")
         if not moved:
             print("  (no change)")
 

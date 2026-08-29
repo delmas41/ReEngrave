@@ -48,6 +48,8 @@ BEETHOVEN5 = SCORE_DIR / "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf
 # source here for open score (four voices, full vocal clef set) and for the
 # body-text-as-staff filter.
 NOTTEBOHM = Path("/Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf")
+# The corpus's only ONE-LINE staff: Cymbales, twelfth of 21 parts.
+LAMER = SCORE_DIR / "PDF Scores" / "IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf"
 
 GROUND_TRUTH = json.loads(
     (Path(__file__).resolve().parents[3] / "benchmarks" / "omr-phase1-baseline"
@@ -431,3 +433,51 @@ class TestDropCloseOutliers:
         xs = [0, 100, 110, 250]
         out = _drop_close_outliers(xs)
         assert out == xs
+
+
+# ─── La Mer p.25 — a one-line percussion staff among 21 parts ────────────────
+
+
+class TestLaMerPage25:
+    """PDF page index 25 (printed p.168) at 300 DPI: one 21-staff system whose
+    twelfth part, Cymbales, is printed as a SINGLE rule.
+
+    Ground truth read off the page's left margin part by part
+    (`benchmarks/omr-phase1-baseline/ground-truth.json`, evidence/ alongside).
+    The page is here for what a missed one-line staff COSTS: the detector used
+    to report 20 staves, so everything from the harp down — both harp staves,
+    four divided violin staves, violas, celli and basses — carried a
+    staff_index one lower than its true slot, and slot identity is what feeds
+    instrument, transposition and expected clef.
+    """
+
+    GT = GROUND_TRUTH["lamer-p25"]
+
+    @pytest.fixture(scope="class")
+    def staves(self):
+        _require(LAMER)
+        return detect_staves(render_page(LAMER, 25, dpi=300)).staves
+
+    def test_staff_count(self, staves):
+        assert len(staves) == self.GT["n_staves"]
+
+    def test_one_staff_is_a_single_rule(self, staves):
+        singles = [s for s in staves if len(s.line_ys) == 1]
+        assert len(singles) == self.GT["n_single_line_staves"]
+        assert [s.staff_index for s in singles] == self.GT["single_line_staff_indices"]
+
+    def test_the_single_rule_carries_the_pages_spacing(self, staves):
+        """It has no spacing of its own, and everything downstream sizes its
+        windows in staff spaces, so it answers with the page's."""
+        perc = [s for s in staves if len(s.line_ys) == 1][0]
+        five_line = [s.line_spacing_px for s in staves if len(s.line_ys) == 5]
+        page_spacing = sorted(five_line)[len(five_line) // 2]
+        assert perc.line_spacing_px == pytest.approx(page_spacing, rel=0.05)
+
+    def test_the_staves_below_it_keep_their_slots(self, staves):
+        """The harp is the thirteenth part on the page, so it must be
+        staff_index 12 — one more than the cymbal rule above it."""
+        perc = [s for s in staves if len(s.line_ys) == 1][0]
+        below = [s for s in staves if s.top_y > perc.top_y]
+        assert below[0].staff_index == perc.staff_index + 1
+        assert len(below) == 9, "harp x2, violins x4, violas, celli, basses"

@@ -199,10 +199,10 @@ def test_detect_staves_uses_connectivity_grouping():
     assert {s.system_index for s in pws.staves} == {0}
 
 
-def test_detect_staves_misses_a_single_line_percussion_staff():
-    """Documents a known limitation feeding contextual analysis item #1:
-    `_group_into_staves` only accepts five-peak windows, so a one-line
-    percussion staff is invisible — and every staff below it then carries a
+def test_detect_staves_finds_a_single_line_percussion_staff():
+    """A one-line percussion staff is a staff, and the staves below it depend
+    on it being counted: `_group_into_staves` accepts only five-peak windows,
+    so before this the rule was invisible and every staff under it carried a
     staff_index one lower than its true slot."""
     img = _blank()
     _draw_staff(img, 100)
@@ -211,5 +211,102 @@ def test_detect_staves_misses_a_single_line_percussion_staff():
     _draw_staff(img, 560)
     pws = detect_staves(_page(img))
     tops = sorted(s.top_y for s in pws.staves)
-    assert len(pws.staves) == 3, "the one-line staff is not detected"
-    assert 420 not in tops
+    assert len(pws.staves) == 4
+    assert 420 in tops
+    # It sits in its own slot, in page order, and the staff below it is the
+    # fourth — which is the whole point of detecting it.
+    perc = [s for s in pws.staves if s.top_y == 420][0]
+    assert perc.staff_index == 2
+    assert [s for s in pws.staves if s.top_y == 560][0].staff_index == 3
+    # It has no spacing of its own, so it carries the page's.
+    assert len(perc.line_ys) == 1
+    assert perc.line_spacing_px == pytest.approx(LINE_SPACING, abs=1.0)
+
+
+def test_a_lone_rule_outside_the_staves_is_not_a_staff():
+    """A page border, a title rule or a footer is one long inked row too. What
+    separates a percussion staff from them is that it stands BETWEEN the
+    page's staves, not outside them."""
+    img = _blank()
+    img[60:62, X0:X1] = 0            # rule above all the music
+    _draw_staff(img, 200)
+    _draw_staff(img, 360)
+    img[900:902, X0:X1] = 0          # rule below all the music
+    pws = detect_staves(_page(img))
+    assert len(pws.staves) == 2
+    assert sorted(s.top_y for s in pws.staves) == [200, 360]
+
+
+def test_two_surviving_lines_of_one_staff_are_not_two_percussion_staves():
+    """The dangerous confusion: a five-line staff printed too lightly to group
+    can leave one or two of its lines behind, and those look exactly like a
+    percussion rule. Rows within a staff's height of each other are therefore
+    both refused."""
+    img = _blank()
+    _draw_staff(img, 100)
+    _draw_staff(img, 700)
+    # Two lines of a would-be staff between them, one staff space apart.
+    img[400:402, X0:X1] = 0
+    img[400 + LINE_SPACING:402 + LINE_SPACING, X0:X1] = 0
+    pws = detect_staves(_page(img))
+    assert len(pws.staves) == 2, "neither stray line may become a staff"
+
+
+def test_the_rest_of_a_staff_is_looked_for_on_the_page():
+    """The veto that carries this rule, tested directly.
+
+    A lone inked row is what a percussion staff looks like AND what is left of
+    a five-line staff whose other lines failed the peak gates — measured on
+    Beethoven 5 at 300 DPI, where a clarinet staff and a first-violin staff
+    both arrived as one full-width row. The lines are still printed, so the
+    question is asked of the page.
+    """
+    from tools.omr.staff_detector import _has_the_rest_of_a_staff
+
+    img = _blank()
+    ys = _draw_staff(img, 400)
+    assert _has_the_rest_of_a_staff(img, ys[2], LINE_SPACING, X0, X1) is True
+
+    lone = _blank()
+    lone[400:402, X0:X1] = 0
+    assert _has_the_rest_of_a_staff(lone, 400, LINE_SPACING, X0, X1) is False
+
+
+def test_a_lone_line_of_a_printed_staff_is_not_a_percussion_staff():
+    """End to end: a staff printed too faintly for four of its five lines to
+    clear the peak gates must not have its survivor promoted to a staff of its
+    own. The faint lines here are one pixel of grey, below the ink threshold
+    the row pass works on, but still visibly line."""
+    img = _blank()
+    _draw_staff(img, 100)
+    _draw_staff(img, 900)
+    # A staff at 500 whose middle line is fully printed and whose other four
+    # arrive as 4px dashes — a third of the ink the row pass demands, so it
+    # never sees them, but unmistakably line to anything that looks at the
+    # page. Checked by mutation: with the veto disabled this fixture reports a
+    # one-line staff at y=524.
+    for i in range(5):
+        y = 500 + LINE_SPACING * i
+        if i == 2:
+            img[y:y + 2, X0:X1] = 0
+        else:
+            for x in range(X0, X1, 16):
+                img[y:y + 1, x:x + 4] = 0
+    pws = detect_staves(_page(img))
+    assert [len(s.line_ys) for s in pws.staves] == [5, 5], (
+        "the survivor of a five-line staff was promoted to a staff of its own"
+    )
+
+
+def test_a_short_rule_between_staves_is_not_a_staff():
+    """A percussion rule is as long as the page's staves. A hairpin, a bracket
+    edge or a fragment of text is not."""
+    img = _blank()
+    _draw_staff(img, 100)
+    _draw_staff(img, 700)
+    # 460px against a 1000px staff: long enough to clear the peak pass's own
+    # length gate (35% of the page), so it is this rule's width test that has
+    # to refuse it.
+    img[400:402, X0:X0 + 460] = 0
+    pws = detect_staves(_page(img))
+    assert len(pws.staves) == 2
