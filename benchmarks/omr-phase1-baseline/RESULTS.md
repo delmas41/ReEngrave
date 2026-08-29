@@ -273,3 +273,82 @@ by a staff's five-line span, which a single rule does not have; and the barline
 vote is a fraction of the staves in a system, so a staff two spaces tall would
 answer "barline" for any stem crossing it and move the denominator for every
 real staff. Reading percussion is separate work. The slots are the fix.
+
+---
+
+# The staff's left edge — the line was never broken
+
+**2026-08-28.** The section above ends with "What this does NOT fix": Beethoven
+5 p.10 grouping as [1, 10, 11] because `_staff_x_extent` returned a fragment,
+and a note that a one-staff-space bridge had been simulated and would not close
+gaps of eleven spaces. That diagnosis was wrong, and wrong in an instructive
+way.
+
+`_staff_x_extent` sliced a **fixed ±2px band** around the middle line's nominal
+row and took the longest bridged run in it. A printed staff line is neither one
+pixel thick nor straight: Beethoven 5 p.15 measures 3px of thickness and 2px of
+wander at 300 DPI, on a spacing of 8. So the line leaves the band and comes
+back, and what the reader sees is a row of fragments.
+
+The same staff, measured two ways:
+
+| staff 0, beet5 p.10 @ 600 DPI | contiguous runs | largest gap |
+|---|---|---|
+| middle line, ±2px band | 28 | 175px = **11.1 spaces** |
+| 3 of 5 lines, ±0.35-space band | **2** | 4px = **0.3 spaces** |
+
+The ink was there the whole time. "28 runs with eleven-space gaps" was a fact
+about the band width, not about the page — a measurement taken through a broken
+reader describes the reader.
+
+## The rule
+
+A column belongs to the staff when **three of its five lines** carry ink within
+**0.35 staff spaces** of their nominal rows. Both numbers were chosen by
+measurement, not taste:
+
+- **The band.** It has to cover thickness plus wander and stay well inside the
+  one-space gap to the next line. Values from 0.25 to 0.5 spaces were tried;
+  0.25 is too tight on the faintest staves, 0.35 and 0.5 give the same answers.
+- **The vote.** Two of five is *worse than the old behaviour*: an instrument
+  name in the margin crosses two line rows, so the left edge walks into it —
+  x=127 inside "Fag." against a true edge of 172. Three of five refuses that
+  and still survives two lines dropping out.
+
+## Measured
+
+Staves agreeing with their system's left edge, to within 1.5 staff spaces:
+
+| page | before | after |
+|---|---|---|
+| beet5-p15 system 0 | 3 / 12 (spread 600px) | **12 / 12** (spread 10px) |
+| beet5-p10 system 1 | 3 / 10 (spread 1376px) | **10 / 10** (spread 3px) |
+| beet5-p10 system 2 | 1 / 11 | **11 / 11** (spread 1px) |
+| bolero-p31 | 1 / 29 | **29 / 29** |
+| wtc-p5 (clean engraving) | 2 / 2 per system | unchanged, ≤4px movement |
+
+Corpus (`phase1_layout_eval`, 12 pages) — three Beethoven pages move, every
+other page is untouched:
+
+| page | before → after |
+|---|---|
+| beet5-p10 | systems [1,10,11] → **[11,11]**, bars [7,13,15] → **[14,15]**, cells 302 → 319 |
+| beet5-p2 | systems [11,10,1] → **[11,11]**, bars [12,15,11] → [16,15], cells 293 → 341 |
+| beet5-p8 | bars [15,19] → [22,19], cells 344 → 407 |
+
+beet5-p10 now agrees with hand-read ground truth on staves, systems **and**
+bars — the last of the three ground-truth pages to do so. The two `xfail`
+tests that recorded this gap are retired.
+
+## Why it matters beyond layout
+
+The left edge is where the first measure cell starts, so everything to the left
+of it — clef, key signature, often the opening notes — was cropped out of every
+cell. On Beethoven 5 p.15 the clef went from **read on 0 of 23 staves** (the
+"19/19 DEFAULTED" in the 2026-08-28 handoff) to **13 of 23 read by the
+detector**, and the key-signature layer, which abstains where the clef is only
+a positional default, began to fire. That is the real state of the key-signature
+thread: it was not blind, it was looking at a window that did not contain the
+header.
+
+WTC p.17 stays at 10/10 in `benchmarks/omr-key-signature/eval_key_signatures.py`.

@@ -32,7 +32,7 @@ backend/uploads/
 backend/exports/
 
 # ML model weights (kept locally, never committed — large binary blobs)
-omr-weights/
+omr-weights
 *.pt
 *.pth
 *.onnx
@@ -67,7 +67,10 @@ runs/
 tools/omr/training/data
 # Shared OMR weights directory mounted into the backend container
 # (lives at repo root so all worktrees can share one weights file)
-omr-weights/
+# No trailing slash, for the same reason as tools/omr/training/data above: a
+# worktree reaches the weights through a SYMLINK at this path, and a symlink is
+# not a directory, so a pattern ending in / does not match it.
+omr-weights
 
 # Rendered PNG outputs from benchmark runs — reproducible from PDFs
 # Keep verdicts, detection JSONs, reports, CSVs — exclude the heavy renders.

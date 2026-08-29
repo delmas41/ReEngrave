@@ -41,6 +41,15 @@ PEAK_PROMINENCE_FRAC = 0.30      # peak must be 30% of (max - min) profile range
 GROUP_LINE_SPACING_TOLERANCE = 0.30  # ±30% gap variation within a 5-line group
 MAX_SYSTEM_GAP_FACTOR = 6.0      # fallback if auto-bipartition fails
 STAFF_LINE_MAX_GAP_SPACES = 1.0  # a break this wide is still the same staff line
+# How far above and below its nominal row a printed staff line is looked for,
+# in staff spaces. It has to cover the line's own thickness plus how far it
+# wanders — measured at 3px and 2px on Beethoven 5 p.15 at 300 DPI, against a
+# spacing of 8 — and stay well inside the one-space gap to the next line.
+STAFF_LINE_BAND_SPACES = 0.35
+# How many of a staff's five lines must carry ink in a column for it to count
+# as part of the staff. Two is not enough: an instrument name in the margin
+# crosses two line rows and drags the left edge into it.
+STAFF_EXTENT_MIN_LINES = 3
 SYSTEM_BREAK_GAP_FACTOR = 2.5    # gap this many × the typical within-system gap = a break
 MAX_LINE_INK_RUNS_PER_SPACE = 1.7  # above this the "lines" are rows of text, not staff lines
 
@@ -404,46 +413,70 @@ def _single_line_staff_rows(
 # ─── Step 3: find horizontal extent of each staff ────────────────────────────
 
 
-def _staff_x_extent(binary: np.ndarray, line_ys: list[int]) -> tuple[int, int]:
+def _staff_x_extent(
+    binary: np.ndarray, line_ys: list[int], spacing_hint: float | None = None,
+) -> tuple[int, int]:
     """Find the left/right edges of the staff lines themselves.
 
-    The staff line row in the binary image is a long horizontal black run — but
-    on a real scan it is not an UNBROKEN one. Printed lines drop out, scans
-    lose ink, and the line arrives as a dashed sequence. Taking the longest
-    strictly-contiguous run therefore returns whichever fragment happens to be
-    longest, not the line, and the staff's left edge lands wherever the first
-    break was.
+    Two things make this harder than reading one row of the image.
 
-    That edge is where the first measure cell starts, so the damage is
-    concrete: everything to the left of it — clef, key signature, often the
-    opening notes — is cropped out of every cell and cannot be read by anything
-    downstream. Measured on a Bach page the offset is 1.2 staff spaces (enough
-    to lose the first measure's start); on a 19th-century engraving it reaches
-    46 staff spaces, well past the clef and into the middle of the music.
+    **The line is dashed.** Printed lines drop out and scans lose ink, so the
+    longest strictly-contiguous run is whichever fragment happens to be
+    longest, not the line. Breaks up to `STAFF_LINE_MAX_GAP_SPACES` of a staff
+    space are therefore bridged — far wider than any printing dropout, far
+    narrower than the gap between two staves set side by side on one row, which
+    is the case the tolerance must not merge.
 
-    So bridge breaks up to `STAFF_LINE_MAX_GAP_SPACES` of a staff space. That
-    is far wider than any printing dropout and far narrower than the gap
-    between two separate staves set side by side on one row, which is the case
-    the tolerance must not merge.
+    **The line is not straight, and it is not one pixel thick.** This is what
+    the version before 2026-08-28 got wrong. It read a fixed ±2px band around
+    the MIDDLE line's nominal row, and on a wide orchestral page the print
+    wanders further than that: Beethoven 5 p.15 measures 3px of line thickness
+    and 2px of wander at 300 DPI, so the middle line leaves the band and comes
+    back, and the longest surviving run starts hundreds of pixels in — past the
+    clef, past the key signature, sometimes past the first notes. Nine of the
+    twelve staves in that page's first system started between x=274 and x=773
+    on a system whose staves all begin at x≈172, and the header layer above
+    this cannot read a clef that was never in the window.
+
+    So the band scales with the staff (`STAFF_LINE_BAND_SPACES`, still well
+    inside the one-space gap to the neighbouring line), and all five lines
+    vote: a column belongs to the staff when `STAFF_EXTENT_MIN_LINES` of them
+    carry ink there. Dropouts are independent per line, so the vote survives
+    what any single line does — while still refusing the margin, where a
+    two-line vote follows the instrument name (measured: x=127 into "Fag.",
+    against a true edge of 172).
+
+    Measured over five pages: Beethoven 5 p.15 system 0 goes from 3 of 12
+    staves agreeing on the system's left edge to 12 of 12, p.10 from 3 of 10
+    and 1 of 11 to all of both, Boléro p.31 from 1 of 29 to 29 of 29. WTC p.5,
+    a clean modern engraving that was already right, moves by at most 4px.
+
+    `spacing_hint` supplies the page's staff spacing for a staff that has no
+    spacing of its own — a one-line percussion rule.
     """
     h, w = binary.shape
-    # Use the middle line as the reference for x-extent
-    mid_y = line_ys[len(line_ys) // 2]
-    # Look in a ±2 px neighborhood to be robust to sub-pixel position
-    y0 = max(0, mid_y - 2)
-    y1 = min(h, mid_y + 3)
-    band = binary[y0:y1].min(axis=0)  # ink anywhere in band → ink pixel
+    if len(line_ys) >= 2:
+        spacing = (max(line_ys) - min(line_ys)) / (len(line_ys) - 1)
+    else:
+        spacing = float(spacing_hint or 0.0)
 
-    ink_x = np.flatnonzero(band == 0)
+    band = max(1, int(round(STAFF_LINE_BAND_SPACES * spacing))) if spacing > 0 else 2
+    votes = np.zeros(w, dtype=np.int16)
+    for y in line_ys:
+        y0 = max(0, int(y) - band)
+        y1 = min(h, int(y) + band + 1)
+        if y1 <= y0:
+            continue
+        votes += (binary[y0:y1] == 0).any(axis=0)
+
+    # A staff with fewer than five detected lines cannot spare any of them.
+    need = min(STAFF_EXTENT_MIN_LINES, len(line_ys))
+    ink_x = np.flatnonzero(votes >= need)
     if ink_x.size == 0:
         return 0, w - 1
 
     # Gap tolerance in pixels, from this staff's own line spacing, so the rule
     # holds at any DPI or engraving size.
-    if len(line_ys) >= 2:
-        spacing = (max(line_ys) - min(line_ys)) / (len(line_ys) - 1)
-    else:
-        spacing = 0.0
     max_gap = max(1, int(round(STAFF_LINE_MAX_GAP_SPACES * spacing)))
 
     # Split the ink into runs, allowing gaps of up to `max_gap` blank pixels.
@@ -695,7 +728,7 @@ def detect_staves(page: PageImage) -> PageWithStaves:
 
     staves: list[Staff] = []
     for idx, line_ys in enumerate(groups):
-        x_start, x_end = _staff_x_extent(page.binary, line_ys)
+        x_start, x_end = _staff_x_extent(page.binary, line_ys, spacing)
         measured = measure_line_geometry(page.binary, line_ys, x_start, x_end)
         staves.append(Staff(
             page_index=page.page_index,

@@ -197,46 +197,27 @@ class TestBeethoven5Page10:
             f"that group is one line borrowed from each of several staves"
         )
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "REGRESSION FROM A MERGE, not from either side alone: this branch "
-            "passes it standalone, and main passes its own suite, but "
-            "main + this branch reads Beethoven 5 p.10 as 7+13+15 bars instead "
-            "of 14+15. The connectivity grouping in system_grouping.py is NOT "
-            "the cause — swapping it for the old gap heuristic on the merged "
-            "tree gives an identical [1,10,11]/[7,13,15]. The likely cause is "
-            "main's 46ca8c6 (staff x-extent + system edges), which moves the "
-            "x extents that barline detection windows on, compounding the "
-            "staff-0 split already covered by the xfail below. When this "
-            "starts passing, that interaction has been resolved — update it "
-            "rather than removing it."
-        ),
-    )
     def test_measures_per_system_are_read_correctly(self, out):
-        """Bar counts per system, ignoring how the staves were grouped.
+        """Bar counts per system: 14 and 15.
 
-        Asserted as a sorted multiset because the system SPLIT (see xfail
-        below) changes how bars are attributed without changing how many the
-        page has.
+        This was xfail from 2026-08-28, reading 7+13+15 — bars misattributed
+        across a system that had been split in three. Both this and the split
+        below had the same cause, and both were fixed by `_staff_x_extent`
+        reading the staff with a scaled band and a five-line vote instead of a
+        fixed ±2px band on the middle line.
         """
         counts = sorted(out["measures_per_system"], reverse=True)[:2]
         assert counts == sorted(self.GT["measures_per_system"], reverse=True)
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "KNOWN GAP: staff 0 splits into its own system because "
-            "_staff_x_extent returns the longest contiguous ink run, and on "
-            "these lightly printed staves that is a fragment (staff 0 reads "
-            "x=353..1379, staff 1 x=1715..2633 — no overlap, so _assign_systems "
-            "breaks). See known_gaps in ground-truth.json. Being fixed on "
-            "branch claude/clef-recognition-improvement-ab75f6; when this test "
-            "starts passing, that fix has landed — update it rather than "
-            "removing it."
-        ),
-    )
     def test_system_grouping(self, out):
+        """Two systems of eleven.
+
+        Also xfail from 2026-08-28: staff 0 used to split into a system of its
+        own, because it read x=353..1379 while staff 1 read x=1715..2633 —
+        two fragments of two lightly printed lines, with no overlap between
+        them, so the grouping had no reason to believe they were one system.
+        The staves now agree on their left edge to within 3px.
+        """
         assert out["n_systems"] == self.GT["n_systems"]
         assert out["staves_per_system"] == self.GT["staves_per_system"]
 

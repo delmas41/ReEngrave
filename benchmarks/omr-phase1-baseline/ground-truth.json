@@ -92,11 +92,12 @@
  "known_gaps": [
   {
    "page": "beet5-p10",
-   "symptom": "systems read as [1, 10, 11] instead of [11, 11]",
-   "cause": "staff_detector._staff_x_extent returns the longest CONTIGUOUS ink run on the middle line. On these lightly printed staves that run is a fragment: staff 0 reads x=353..1379 while staff 1 reads x=1715..2633, so they do not overlap and _assign_systems splits them on its x_overlap_frac <= 0.5 rule.",
-   "measured": "staff 0's middle line spans 276..2633 (the full staff) but in 28 runs, 13 of whose gaps exceed one staff space; the largest is 175px = 11 staff spaces.",
-   "owner": "branch claude/clef-recognition-improvement-ab75f6 is rewriting _staff_x_extent (commit 46ca8c6) with a one-staff-space bridge. Simulated here: a one-space bridge does NOT close these gaps and the split remains. That branch needs a far more generous bridge for faint prints, and this measurement is the input for it.",
-   "not_fixed_here": "to avoid a second, conflicting rewrite of a function that branch is actively changing"
+   "status": "CLOSED 2026-08-28",
+   "symptom": "systems read as [1, 10, 11] instead of [11, 11], and bars as [7, 13, 15] instead of [14, 15]",
+   "cause_as_first_diagnosed": "staff_detector._staff_x_extent returns the longest CONTIGUOUS ink run on the middle line, and on these lightly printed staves that run is a fragment. Measured then: staff 0's middle line spans 276..2633 in 28 runs, largest gap 175px = 11 staff spaces. The prescription was a far more generous BRIDGE.",
+   "actual_cause": "The bridge was never the problem. The 28 runs were an artefact of the measurement: the reader sliced a fixed 2px band around the line's nominal row, and the printed line wanders further than that, so it left the band and came back. Re-measured with a band scaled to the staff (0.35 spaces) and a 3-of-5 line vote, the SAME staff is 2 runs with a largest gap of 0.3 spaces. The ink was there all along.",
+   "fix": "staff_detector._staff_x_extent reads all five lines with a scaled band and a 3-of-5 column vote. beet5-p10 now matches this file on staves, systems and bars; the two xfail tests in test_pipeline.py that recorded the gap are retired.",
+   "lesson": "A measurement taken through a broken reader describes the reader, not the page. '28 runs with 11-space gaps' was a fact about the band width."
   }
  ]
 }
