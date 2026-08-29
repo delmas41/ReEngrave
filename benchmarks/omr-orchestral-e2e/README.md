@@ -87,19 +87,46 @@ Mahler is unchanged because it detects 31 staves against 38 parts, so the join
 is unsafe and seeding correctly abstains — which is the behaviour that makes
 this safe to leave on.
 
-### It exposed system grouping as the real blocker
+### It exposed system grouping as the real blocker — since fixed
 
 Seeding did nothing at first. The per-system join could never match, because
 **Phase 1 reports one musical system of 21 Brahms staves as TWELVE systems** of
 1–5 staves each; Beethoven's 18 staves come back as 4 systems. The counts are
 right, the grouping is not.
 
-A page-level join (page staff total == part count) works around it — a
-conductor's page normally carries one system — and that is what produced the
-numbers above. But the fragmentation is worth fixing on its own: it is the kind
-of structural error that moves every note after it. Note that
-`claude/reengraver-contextual-analysis-29cdd5` carries an unmerged system
-grouping improvement measured at 43% → 86%.
+A page-level join (page staff total == part count) worked around it. The
+fragmentation itself is now fixed at source.
+
+**Gap distance cannot separate these cases and never could.** Within ONE Brahms
+system the inter-staff gaps run 17–237 px, and within one Beethoven system
+130–345 px — both wider than the gaps BETWEEN systems on a piano page. Every
+adjacent pair on both pages also had x-overlap 1.00, so that rule is silent
+here too. No threshold on distance can work.
+
+What defines a system is what CONNECTS it: barlines run its full height, and
+the bracket encloses exactly it, and neither crosses a break. `_gap_is_bridged`
+in `staff_detector.py` asks for one column inked through the whole gap, scanned
+across the full page width so the bracket in the margin counts. It VETOES a
+gap-based break and never creates one, so a page that grouped correctly before
+is untouched — WTC p.5 still reports its 5 grand-staff systems.
+
+| | before | after |
+|---|---|---|
+| brahms-sym1-mvt1 (21 staves) | 12 systems of 1–5 | **1 system of 21** |
+| beethoven-sym5-mvt1 (18 staves) | 4 systems | **1 system of 18** |
+| mahler-sym5-mvt1 (31 staves) | 4 systems | **1 system of 31** |
+
+End-to-end, with seeding already on:
+
+| work | measures | recall | precision | duration |
+|---|---|---|---|---|
+| beethoven-sym5-mvt1 | 14/8 → **8/8** | 0.691 | 0.602 → **0.636** | 0.750 → **0.857** |
+| brahms-sym1-mvt1 | 9/8 → 4/8 | 0.253 → 0.262 | 0.337 → **0.352** | 0.377 → **0.416** |
+| mahler-sym5-mvt1 | 4/8 | unchanged | unchanged | unchanged |
+
+Beethoven is now structurally exact — 18 parts of 18, 8 measures of 8. Brahms
+moved from over-counting measures to under-counting them, which is not fixed,
+only different; its note metrics improved anyway.
 
 ## It also settled the DPI question
 

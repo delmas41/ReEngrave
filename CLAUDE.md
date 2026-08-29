@@ -351,12 +351,17 @@ reading it. Measured on the orchestral benchmark: Beethoven recall .642 → .691
 Brahms .206 → .253 (matched notes 136 → 167). Mahler is untouched because it
 detects 31 staves against 38 parts and the join correctly abstains.
 
-**Caveat: system grouping is fragmented, so the join is made at PAGE level.**
-Phase 1 reports one 21-staff Brahms system as *twelve* systems of 1–5 staves, so
-a per-system join can never match. `slot_facts_for_page` falls back to page
-staff total == part count. Worth fixing at source —
-`claude/reengraver-contextual-analysis-29cdd5` has an unmerged 43% → 86%
-improvement.
+**System grouping is decided by CONNECTIVITY, not gap distance**
+(`staff_detector._gap_is_bridged`). Within one Brahms system the inter-staff
+gaps run 17–237 px and within one Beethoven system 130–345 px — both wider than
+the gaps BETWEEN systems on a piano page — and x-overlap is 1.00 for every pair,
+so no distance threshold can separate them. It used to report one 21-staff
+Brahms system as *twelve*. A barline runs a system's full height and the bracket
+encloses exactly it, so a column inked through the whole gap VETOES a gap-based
+break (veto only — it can merge an over-split page, never split a correct one).
+Brahms 12 → 1 system, Beethoven 4 → 1, and Beethoven's measure count went 14/8 →
+**8/8 exact**. The dossier join still falls back to page level
+(`slot_facts_for_page`) for pages where grouping is still imperfect.
 
 **Do not use dossiers to generate training labels.** The MXL→bounding-box path
 is closed: F1 0.064 on 76 hand-mapped cells, x-drift diagnosed as the cause.

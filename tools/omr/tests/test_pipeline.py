@@ -30,10 +30,6 @@ from tools.omr.staff_line_removal import remove_staff_lines
 SCORE_DIR = Path("/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus")
 WTC = SCORE_DIR / "PDF Scores" / "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf"
 BEETHOVEN5 = SCORE_DIR / "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf"
-# Nottebohm's Beethovens Studien — a 19th-century monograph, mostly prose with
-# open-score counterpoint examples set into it. A layout class neither score
-# above covers, and the one where Phase 1 is weakest.
-NOTTEBOHM = Path("/Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf")
 
 
 def _require(path: Path):
@@ -177,114 +173,22 @@ class TestBeethoven5Page10:
         assert max(widths) >= 1900, f"widest cell only {max(widths)}px — under-upscaled"
 
 
-# ─── Nottebohm — open score on a mostly-prose page ────────────────────────────
+# ─── The staff filter must not touch real music ───────────────────────────────
 
 
-class TestNottebohmPage46:
-    """PDF page 46 (printed p.31) of Nottebohm's Beethovens Studien.
+class TestStaffFilterLeavesMusicAlone:
+    """The guard that matters for the corpus: a real score must be unaffected
+    by the row-projection filter that rejects prose.
 
-    Three exercises (Nr. 20, 21, 22), each an open score of four staves — one
-    voice per staff, in the full vocal clef set. This layout class is absent
-    from the two scores above and is where Phase 1 has historically been
-    weakest, in two ways it is worth guarding against:
-
-      * staff lines here are dashed enough that taking the longest CONTIGUOUS
-        run put the cell's left edge up to 46 staff spaces past the clef;
-      * open-score barlines stop at each staff instead of running through the
-        gaps between them, so a connectivity filter tuned on orchestral scores
-        discards every one of them. When that happened, this page collapsed
-        from 88 cells to 12 — one measure per staff, no structure at all.
-
-    The counts below are the ones that can be stated with certainty: Sean read
-    the layout off the page, and it is plainly three groups of four. The
-    per-measure count is NOT asserted exactly — the engraving is too fine to
-    count reliably at the resolution available, and guessing it would repeat
-    the mistake this file's other expectations used to make. A floor is enough
-    to catch the collapse, which is the regression that actually happened.
+    The prose side of this used to be covered by pages of Nottebohm's
+    Beethovens Studien, a 19th-century monograph. Those tests are gone —
+    a textbook is not the input this project targets — so the filter's
+    behaviour ON PROSE is no longer regression-tested. `_line_ink_runs_per_space`
+    in staff_detector.py still implements it, and the reasoning is recorded
+    there; only the assertion went.
     """
-
-    @pytest.fixture(scope="class")
-    def pipeline_output(self):
-        _require(NOTTEBOHM)
-        page = render_page(NOTTEBOHM, 46, dpi=300)
-        pws = detect_staves(page)
-        pws = detect_barlines(pws)
-        cells = extract_measures(pws)
-        return page, pws, cells
-
-    def test_staff_count(self, pipeline_output):
-        _, pws, _ = pipeline_output
-        assert len(pws.staves) == 12, "three exercises of four staves each"
-
-    def test_system_count(self, pipeline_output):
-        _, pws, _ = pipeline_output
-        n_systems = 1 + max(s.system_index for s in pws.staves)
-        assert n_systems == 3, "Nr. 20, Nr. 21, Nr. 22"
-
-    def test_each_system_has_four_staves(self, pipeline_output):
-        _, pws, _ = pipeline_output
-        sizes = [0, 0, 0]
-        for staff in pws.staves:
-            sizes[staff.system_index] += 1
-        assert sizes == [4, 4, 4]
-
-    def test_measures_are_segmented_at_all(self, pipeline_output):
-        _, _, cells = pipeline_output
-        # The floor that matters: 12 cells means one measure per staff, i.e.
-        # barline detection produced nothing and each system became a single
-        # cell. Anything in that region is the collapse, not a near miss.
-        per_staff: dict[tuple[int, int], int] = {}
-        for c in cells:
-            per_staff[(c.system_index, c.staff_index)] = (
-                per_staff.get((c.system_index, c.staff_index), 0) + 1
-            )
-        assert min(per_staff.values()) >= 4, (
-            f"a staff segmented into {min(per_staff.values())} measures — "
-            "open-score barlines are being discarded again"
-        )
-        assert len(cells) >= 60, f"only {len(cells)} cells for 12 staves"
-
-
-class TestBodyTextIsNotAStaff:
-    """Paragraphs of body text must not be detected as staves.
-
-    The row-projection detector finds staves by looking for rows carrying a lot
-    of ink, and a row of justified prose carries a lot of ink — enough to clear
-    the line-length threshold — while five consecutive text baselines are
-    evenly enough spaced to pass the 5-line grouping. Before this was filtered,
-    a paragraph became a "staff" with a clef and measures of its own: 147 of
-    1522 "staves" over 156 pages of this book.
-
-    Nottebohm is a monograph, so it supplies both cases cleanly — pages of
-    unbroken prose, and pages where a music example sits inside the prose.
-    The page contents below were checked by eye.
-    """
-
-    @pytest.mark.parametrize("page_index", [23, 24, 27])
-    def test_a_page_of_pure_prose_yields_no_staves(self, page_index):
-        _require(NOTTEBOHM)
-        pws = detect_staves(render_page(NOTTEBOHM, page_index, dpi=300))
-        assert pws.staves == [], (
-            f"p{page_index} is unbroken prose but produced "
-            f"{len(pws.staves)} staves"
-        )
-
-    @pytest.mark.parametrize(
-        "page_index,n_music_staves",
-        [
-            (25, 8),   # prose with one eight-staff example set into it
-            (29, 2),   # prose with one two-staff example
-            (90, 6),   # several short fragments among the prose
-        ],
-    )
-    def test_prose_pages_keep_only_their_music(self, page_index, n_music_staves):
-        _require(NOTTEBOHM)
-        pws = detect_staves(render_page(NOTTEBOHM, page_index, dpi=300))
-        assert len(pws.staves) == n_music_staves
 
     def test_the_filter_does_not_touch_a_page_of_pure_music(self):
-        # The guard that matters for everything else in the corpus: a real
-        # score must be unaffected. WTC p.5 is ten staves and stays ten.
         _require(WTC)
         pws = detect_staves(render_page(WTC, 5, dpi=600))
         assert len(pws.staves) == 10

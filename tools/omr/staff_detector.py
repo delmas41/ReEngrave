@@ -179,7 +179,50 @@ def _bipartition_threshold(values: list[float]) -> float | None:
     return (c1 + c2) / 2
 
 
-def _assign_systems(staves: list[Staff]) -> list[Staff]:
+# A gap counts as bridged when some column is this solidly inked through the
+# whole of it. A barline or a system bracket is a continuous vertical stroke, so
+# it approaches 1.0; a slur or a beam crossing the gap is nearly horizontal and
+# contributes almost nothing to any single column.
+_BRIDGE_INK_FRACTION = 0.8
+
+
+def _gap_is_bridged(binary: np.ndarray, prev: Staff, cur: Staff) -> bool:
+    """Is there a continuous vertical stroke crossing the gap between two staves?
+
+    This is the question the gap heuristics below are really trying to answer,
+    and cannot. Measured on engraved orchestral excerpts, the gaps WITHIN one
+    Brahms system run 17–237 px and within one Beethoven system 130–345 px —
+    both wider than the gaps BETWEEN systems on a piano page. No threshold on
+    distance separates those cases, which is why one 21-staff Brahms system was
+    being reported as twelve systems and an 18-staff Beethoven system as four.
+    Every pair on both pages also had x-overlap 1.00, so that rule is silent
+    here too.
+
+    What actually defines a system is what connects it: barlines run the full
+    height of a system, and the bracket encloses exactly it. Neither crosses a
+    system break. So the scan covers the full page width — the bracket sits in
+    the margin, left of any staff's ink — and asks for one column inked through
+    the entire gap.
+    """
+    gap_top = prev.bottom_y + 1
+    gap_bot = cur.top_y
+    if gap_bot <= gap_top:
+        return True  # touching staves — no gap to bridge
+    h, w = binary.shape
+    gap_top = max(0, gap_top)
+    gap_bot = min(h, gap_bot)
+    if gap_top >= gap_bot:
+        return True
+    strip = binary[gap_top:gap_bot, 0:w]
+    if strip.size == 0:
+        return False
+    # Binarized convention: 0 = ink, 255 = paper.
+    col_ink_fraction = (strip < 128).mean(axis=0)
+    return bool(col_ink_fraction.max() >= _BRIDGE_INK_FRACTION)
+
+
+def _assign_systems(staves: list[Staff],
+                    binary: np.ndarray | None = None) -> list[Staff]:
     """A 'system' is a group of staves that are read together (e.g. grand
     staff, full orchestral score). Algorithm:
 
@@ -254,6 +297,13 @@ def _assign_systems(staves: list[Staff]) -> list[Staff]:
             or gap >= quartile_threshold
             or x_overlap_frac <= 0.5
         )
+        # A continuous vertical stroke through the gap VETOES the break: a
+        # barline or bracket crossing it means these staves are read together,
+        # whatever the distance says. Veto only — this can merge systems the
+        # gap rules over-split, never split one they accepted — so a page that
+        # groups correctly today is unchanged. See _gap_is_bridged.
+        if is_break and binary is not None and _gap_is_bridged(binary, prev, cur):
+            is_break = False
         if is_break:
             current_system += 1
         cur.system_index = current_system
@@ -331,7 +381,7 @@ def detect_staves(page: PageImage) -> PageWithStaves:
     for idx, st in enumerate(staves):
         st.staff_index = idx
 
-    staves = _assign_systems(staves)
+    staves = _assign_systems(staves, page.binary)
     return PageWithStaves(page=page, staves=staves)
 
 
