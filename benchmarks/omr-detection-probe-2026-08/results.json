@@ -1,0 +1,40 @@
+{
+  "bolero-p1": {
+    "printed_meter": "3/4",
+    "0.25": {
+      "noteheads": 141,
+      "time_sig_real": 36,
+      "time_sig_edge": 0,
+      "clef_dets": 24,
+      "staves_with_clef_read": 24,
+      "staves": 24
+    },
+    "0.1": {
+      "noteheads": 142,
+      "time_sig_real": 36,
+      "time_sig_edge": 0,
+      "clef_dets": 24,
+      "staves_with_clef_read": 24,
+      "staves": 24
+    }
+  },
+  "mahler5-p1": {
+    "printed_meter": "2/4",
+    "0.25": {
+      "noteheads": 96,
+      "time_sig_real": 7,
+      "time_sig_edge": 7,
+      "clef_dets": 19,
+      "staves_with_clef_read": 14,
+      "staves": 17
+    },
+    "0.1": {
+      "noteheads": 158,
+      "time_sig_real": 9,
+      "time_sig_edge": 12,
+      "clef_dets": 20,
+      "staves_with_clef_read": 15,
+      "staves": 17
+    }
+  }
+}
