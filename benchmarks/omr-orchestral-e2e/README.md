@@ -120,8 +120,8 @@ End-to-end, with seeding already on:
 
 | work | bars | parts | measures | notes (omr/truth) | recall | precision | duration |
 |---|---:|---|---|---:|---:|---:|---:|
-| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 80/81 | 0.691 | 0.700 | **0.911** |
-| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 400/337 | 0.599 | 0.505 | 0.262 |
+| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 80/81 | 0.691 | 0.700 | 0.857 |
+| brahms-sym1-mvt1 | 5 | 21/21 | **5/5** | 400/337 | 0.605 | 0.510 | **0.485** |
 | mahler-sym5-mvt1 | 7 | 31/38 | **7/7** | 36/22 | 0.136 | 0.083 | 0.000 |
 
 Beethoven now reports **80 notes against a truth of 81** — the note count is
@@ -170,9 +170,41 @@ same one-end rule to the fallback removes every impossible depth and leaves a
 distribution that looks like music. Duration accuracy: Beethoven 0.857 →
 **0.911**, Brahms 0.243 → 0.262, with recall and precision untouched.
 
-Brahms's duration accuracy is still poor. The stem-anchored path also reports
-56 threes and 10 fours on that page, which the truth does not support, so the
-same over-counting is present there in milder form.
+### The stem path over-counted too, and the reason was measurable
+
+The stem-anchored counter still reported 56 threes and 10 fours on the same
+page. Measuring the gaps between adjacent beams **sharing a stem** — 951 pairs —
+showed a plainly bimodal distribution, in units of staff-line spacing:
+
+| gap | pairs | what it is |
+|---|---:|---|
+| 0.19 – 0.26 | 460 | one physical beam, fragmented |
+| 0.65 – 0.79 | 69 | genuinely stacked beams (a 16th) |
+
+886 of the 951 pairs are classical-CV against classical-CV, so the small mode is
+that detector breaking a single stroke into pieces. The large mode is exactly
+where engraving convention puts stacked beams: thickness 0.5 of a staff space
+plus a 0.25 gap is 0.75 centre to centre.
+
+The cluster tolerance was **0.22** — inside the duplicate mode. A fragmented
+beam therefore became two levels whenever its pieces landed more than 0.22
+apart, halving the note. Swept end-to-end for the value in the empty ground
+between the modes that recovers the most correct durations:
+
+| factor | beethoven dur_ok | brahms dur_ok | total |
+|---|---:|---:|---:|
+| 0.22 (before) | 51 | 53 | 104 |
+| 0.30 | 49 | 89 | 138 |
+| **0.35** | 48 | **99** | **147** |
+| 0.45 | 48 | 90 | 138 |
+
+Brahms duration accuracy **0.262 → 0.485**. Beethoven gives up three notes at
+any value above 0.22 and does not get them back lower in the band, so that is a
+real if small cost, paid for many times over on the denser page.
+
+Note the module's other tuning comments assume a canonical line spacing of
+roughly 24–48 px. It is **100**. Re-derive rather than scale if these are
+retuned.
 
 Mahler's part count differs from truth (31 printed against 38 in the XML)
 because LilyPond suppresses its empty staves, so its part-aligned recall falls

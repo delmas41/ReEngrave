@@ -66,10 +66,10 @@
       "pitch_matched": 56,
       "pitch_recall": 0.691,
       "pitch_precision": 0.7,
-      "duration_ok_on_matched": 51,
-      "duration_rate": 0.911
+      "duration_ok_on_matched": 48,
+      "duration_rate": 0.857
     },
-    "rhythm_reconciliations": 3,
+    "rhythm_reconciliations": 0,
     "dossier_warnings": {
       "dossier_meter_disagreement": 6
     },
@@ -145,11 +145,11 @@
       "part_aligned": true,
       "truth_notes": 337,
       "omr_notes": 400,
-      "pitch_matched": 202,
-      "pitch_recall": 0.599,
-      "pitch_precision": 0.505,
-      "duration_ok_on_matched": 53,
-      "duration_rate": 0.262
+      "pitch_matched": 204,
+      "pitch_recall": 0.605,
+      "pitch_precision": 0.51,
+      "duration_ok_on_matched": 99,
+      "duration_rate": 0.485
     },
     "rhythm_reconciliations": 2,
     "dossier_warnings": {},

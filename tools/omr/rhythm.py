@@ -84,6 +84,41 @@ _FLAG_DURATIONS: dict[str, tuple[float, str]] = {
     "flag128thdown": (0.03125, "hundred_twenty_eighth"),
 }
 
+# How far apart two beam detections must be before they count as separate
+# LEVELS rather than two readings of one stroke.
+#
+# Measured, not guessed. Over 951 pairs of adjacent beams sharing a stem on an
+# engraved Brahms 1 page, the gaps are plainly bimodal in units of staff-line
+# spacing:
+#
+#     0.19 - 0.26   460 pairs   one physical beam, fragmented
+#     0.65 - 0.79    69 pairs   genuinely stacked beams (a 16th)
+#
+# and 886 of the 951 pairs are classical-CV against classical-CV, so the small
+# mode is that detector breaking a single stroke into pieces. The large mode is
+# exactly where engraving convention puts stacked beams: thickness 0.5 of a
+# staff space plus a 0.25 gap is 0.75 centre to centre.
+#
+# The old value, 0.22, sat INSIDE the duplicate mode — so a fragmented beam
+# became two levels whenever its pieces landed more than 0.22 apart, halving the
+# note. Anything in the empty ground between the modes merges every fragment and
+# still separates real stacking; swept end-to-end for the value inside it that
+# recovers the most correct durations (notes right, out of the matched set):
+#
+#     factor   beethoven   brahms   total
+#     0.22        51         53      104     <- before
+#     0.30        49         89      138
+#     0.35        48         99      147     <- chosen
+#     0.45        48         90      138
+#
+# Beethoven gives up three notes at any value above 0.22 and does not get them
+# back lower down the band, so this is a real if small cost, paid for many times
+# over on the denser page.
+#
+# The surrounding comments in this module assume a canonical line spacing of
+# roughly 24-48 px. It is 100. Re-derive, do not scale, if these are retuned.
+BEAM_Y_CLUSTER_FACTOR = 0.35
+
 # Beam-count → (duration_beats, duration_type).  beams_count=1 means the
 # notehead is connected to ONE level of beams → 8th. 2 levels → 16th, etc.
 _BEAM_COUNT_DURATIONS: dict[int, tuple[float, str]] = {
@@ -845,7 +880,7 @@ def resolve_rhythms_for_cell(
     # px apart center-to-center at canonical resolution. So we want a
     # tolerance just under that:  0.22 × line_spacing ≈ 10–11 px keeps
     # near-duplicates merged but separates stacked-beam levels.
-    beam_y_cluster_tol = line_spacing * 0.22
+    beam_y_cluster_tol = line_spacing * BEAM_Y_CLUSTER_FACTOR
 
     noteheads: list = []
     rests_raw: list = []
