@@ -7,6 +7,15 @@ Each says what it is, why it matters, where to start, and what would count as do
 **Read `PROJECT_STATUS.md` first for the current state.** This file is only the
 forward-looking part.
 
+> **Progress, 2026-08-28 (later the same day).** Thread 1 is **done** — see below.
+> Before it, three branches carrying finished, measured work were merged to `main`,
+> because two of them were about to change the ground the remaining threads stand on:
+> the **dossier layer** (external truth from the Gradus MusicXML, seeding clef and key
+> per staff — Beethoven 5 R .642→.691, Brahms 1 R .206→.253), the **per-cell `imgsz`
+> rule** with the mechanism correction below, and the **clef header-cluster** work
+> (measured, shipped off by default). PR #4 also merged, so that bullet is gone.
+> Threads 2, 3 and 4 are still open and are still ranked as written.
+
 ---
 
 ## The one thing to know before starting anything
@@ -40,30 +49,37 @@ the July probe's false-positive flood. Re-measure before building on one.
 
 ---
 
-## 1. One-line percussion staves are invisible — SMALL, UNBLOCKED, DO FIRST
+## 1. One-line percussion staves — DONE, 2026-08-28
 
-**What.** `_group_into_staves` (`tools/omr/staff_detector.py:101`) accepts only windows of
-five evenly-spaced peaks, so a single-line percussion staff produces **no `Staff` at
-all**. Every staff below it then carries a `staff_index` one lower than its true slot.
+**What it was.** `_group_into_staves` accepted only five-peak windows, so a percussion
+part printed as a single rule produced **no `Staff` at all**, and every staff below it
+carried a `staff_index` one lower than its true slot.
 
-**Why it matters.** It silently corrupts part identity for the whole lower half of an
-orchestral system — which now feeds slots, transposition, expected clef and register. A
-wrong slot means a wrong instrument means a wrong clef means wrong pitches.
+**What it cost, measured.** La Mer p.25 has 21 parts in one system, the twelfth being
+Cymbales on one rule. The detector reported 20, so both harp staves, four divided violin
+staves, violas, celli and basses — nine parts — were each read as their neighbour.
 
-**Proof already written:**
-`tools/omr/tests/test_system_grouping.py:202::test_detect_staves_misses_a_single_line_percussion_staff`
-draws three five-line staves plus one one-line staff and asserts the detector returns 3.
+**What was not obvious.** Nothing about the row identifies a percussion staff: it is a
+long inked row between the page's staves, and so is the single surviving line of a
+five-line staff printed too lightly for the peak gates. That second case turned out to
+be the **commoner** one — the first version of the rule fired on 4 of 10 sampled
+Beethoven 5 pages, a score with no one-line parts, finding a clarinet staff and a
+first-violin staff. The condition that carries the rule therefore asks the *page*, not
+the peak list: is there a line-length run one or two staff spaces above or below? The
+other four lines are printed whether or not the row pass saw them.
 
-**Where to start.** The five-peak rule itself. A one-line staff has no spacing to
-calibrate against, so it cannot be found the same way; the likely route is a second pass
-that looks for long horizontal rules *between* detected staves, at the page's own staff
-pitch, and admits them as single-line staves.
+Over 47 pages of five scores it now fires 14 times, all on La Mer and Mahler 5; twelve
+were rendered and read (Cymb., Trg., Becken, Gr. Tr., Kl. Tr.) and every one is a
+labelled percussion part. On the 12-page Phase-1 corpus exactly one page moves.
 
-**Done when.** The synthetic test asserts 4 staves, a real percussion page keeps its
-slots aligned, and no regression on `test_pipeline.py`'s Phase-1 fixtures.
+**Where it lives.** `staff_detector._single_line_staff_rows`, evidence and the full
+measurement in `benchmarks/omr-phase1-baseline/RESULTS.md`, ground truth for La Mer p.25
+in `ground-truth.json`, regression in `test_pipeline.py::TestLaMerPage25`.
 
-**Note.** The old reason for deferring this — "Phase 1 has no regression baseline" — is
-retired. `benchmarks/omr-phase1-baseline/ground-truth.json` exists now.
+**What it deliberately does not do.** Percussion CONTENT is not read: one-line staves are
+skipped by barline detection and cell extraction, because a cell is canonicalised by a
+five-line span a single rule does not have, and a staff two spaces tall would vote
+"barline" for every stem crossing it. The slots were the fix.
 
 ---
 
@@ -161,8 +177,11 @@ confirms or qualifies its conclusion.
 - **Host `anthropic` SDK is 0.28.0 against a 0.116.0 pin.** The July upgrade only reached
   the Docker container. Structured outputs fail on the host; the margin-label pilot works
   around it with a venv.
-- **PR #4 is open** on `claude/omr-info-retention-erasure-c26534` with its session
-  stopped — work sitting in review with nobody driving it.
+- **The merge queue is empty as of 2026-08-28.** `reengraved-score-evaluation`,
+  `recognition-over-detection` and `omr-clef-fusion-fix` are all on `main`, and PR #4 is
+  merged. Note for next time: the dossier branch had drifted 41 commits behind and its
+  merge needed three conflicts resolved by hand. Finished work costs more the longer it
+  sits.
 
 ---
 
