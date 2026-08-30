@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-08-29 (clef accuracy measured end to end; the July label batches landed)
+**Last updated:** 2026-08-30 (a Phase-1 crash fixed; three ideas measured and three of them held back)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -26,6 +26,8 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 - **August — the header layer.** Clef *reading* is now measured rather than classified (alto/tenor/soprano are the same glyph on different lines, so no classifier can separate them), and key signatures are read by fitting accidental POSITIONS to the slot table for (clef, N) and reconciling across the page.
 - **August — contextual analysis, and the over-detection bug it turned up.** The pipeline now knows *which staff is which instrument*: systems from vertical connectivity (43% → 86%), instrument identity from the PDF text layer and, for scans, from a margin reader, and stable part slots across systems and pages. Re-running the whole-pipeline validation for the first time since May then exposed the single largest accuracy bug in the project — `imgsz` was set so high the detector was reporting 2–4× the notes that exist. Fixing it took end-to-end pitch precision from **0.144 to 1.000** on the keyboard fixture.
 - **August 29 — external truth, and an orchestral benchmark to prove it on.** The pipeline can now be given a **dossier**: the meter, measure count and per-part written clef and key signature of the work it is reading, generated from MusicXML rather than hand-authored (`tools/omr/dossier.py`, 97 orchestral movements in `data/dossiers/`). It both CHECKS a reading and SEEDS it — clef detection has resisted a fine-tune, ensemble voting and a CV locator, and none of that matters if the clef is simply known. Alongside it, `benchmarks/omr-orchestral-e2e/` renders a Gradus MusicXML excerpt back to PDF, so every note on a conductor's page is known by construction — the first note-level accuracy measurement on orchestral texture. On it, Beethoven 5 now reads **recall 1.000, precision 0.988, duration 1.000**, and Mahler 5 reports 24 notes against a truth of 24. Four defects were found and fixed by that benchmark alone: overlapping measure cells letting two staves each keep the same notehead, a beam counter with no upper bound (it reported eight-beam notes — a 1024th), a beam cluster tolerance sitting inside the duplicate mode, and a meter parser that wrote `<beats>686</beats>` into MusicXML.
+
+- **August 30 — a crash, a diagnosis, and three ideas that did not survive contact.** A probe written for an unrelated feature found that `resegment_fused_measures` never got the one-line-staff filter its two sibling functions have, so a percussion staff of span 0 asked OpenCV for a 1x0 kernel: **3 of 13 pages carrying a one-line staff could not be transcribed at all**, La Mer p.25 among them — the very page that support was validated on. Separately, the key-signature "blindness" on Beethoven 5 p.15 turned out to be a **class-role mismatch**: the detector finds the flats at conf 0.25 and labels them `accidentalFlat`, and every key-signature reader consumes only `keyFlat`. Three fixes were then implemented, measured, and **not shipped** — majority-steered re-segmentation (inert on all 27 systems of the corpus), accidental-role recovery (−1 on the only ground truth), and a foot-of-system anchor for the dossier join (50/52 → 44/52). The measurements are the deliverable; see the benchmarks below.
 
 ---
 
@@ -146,6 +148,25 @@ some of that.
   confidently-read clef.
 
 Benchmarks: `benchmarks/omr-system-grouping-2026-08/`, `benchmarks/omr-margin-labels-2026-08/`.
+
+### Measured and held back (2026-08-29 → 30)
+
+Three plausible improvements were built and rejected on evidence. They are
+recorded because the reasoning is reusable, and because two of them were
+proposed inside this repository's own handoff notes.
+
+| idea | result | why it failed |
+|---|---|---|
+| **Majority-steered re-segmentation** (`benchmarks/omr-majority-steering-2026-08/`) | shipped **inert** | 27 systems across 12 real pages, **0** with a staff disagreeing from its system's majority. The conservative pass has already done the work; there is no shortfall left to steer. |
+| **Accidental-role key recovery** (`benchmarks/omr-keysig-blindspot-2026-08/`) | **not shipped**, −1 | Routing `accidentalFlat` into the key readers takes beet5-p2 from 10 correct to 9. The accidental set is noisier than the marker set, and it displaced a better CV-locator reading. |
+| **Foot-of-system anchor** (`benchmarks/omr-margin-labels-2026-08/`) | **not shipped**, −6 | 50/52 → 44/52; the dossier went from supplying 1 clef at 100% to 11 at 27%. "The strings at the bottom are the same in every tradition" is about which *instruments* are there, not how many *staves* they occupy — divisi and condensation are the actual unknown. |
+
+Two related ceilings were also measured. The **margin-label lever is closed**: the
+vision reader scores 5 of 5 on what the Pastoral prints, and that edition labels
+winds and horns on every page and never a string, so no better reader can obtain
+the label the dossier join needs. And the **one-line-staff audit** established the
+rule that anything which *measures* such a staff must skip it while anything that
+*counts* it must not.
 
 ### Dossiers and the orchestral benchmark (2026-08-29)
 
