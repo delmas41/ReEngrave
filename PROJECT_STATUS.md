@@ -182,6 +182,14 @@ python3 -m tools.omr.training.orchestral_eval           # note accuracy on a con
 | brahms-sym1-mvt1 | 21/21 | 7/7 | 508/505 | 0.717 | 0.713 | 0.865 |
 | mahler-sym5-mvt1 | 38/38 | 8/8 | **24/24** | 0.917 | 0.917 | 0.318 |
 
+**Read that table with its caption.** These are **LilyPond-ENGRAVED** renders of
+8, 7 and 8 bars from each movement's opening, with the work's parts on their own
+staves 1:1 — 81, 505 and 24 truth notes. They measure recognition on clean
+engraving, and **nothing in this repository measures note accuracy on a real
+SCAN**. The 1.000 is not comparable to the corpus sweep's `beet5` row (19% clefs,
+79% defaulted): that row is a different PDF — a scanned pocket score at 600 DPI —
+and the two have been mistaken for each other.
+
 Facts are stored as **written** pitch, so a transposing staff needs no
 correction. Slot-level checks abstain unless the parts join the page's staves;
 forcing that join measured F1 0.064 and must not be retried. The MusicXML feeds

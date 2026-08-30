@@ -86,9 +86,21 @@ fallback can then be applied only where the signature is genuinely unknown rathe
 than everywhere it is absent. The order is therefore:
 
 1. **Let the reader confirm an empty signature** where the clef is known and the
-   header window was measured. Output pitches do not change; `key_signature_read`
-   becomes true where it should be, and the honest count of unknown staves drops
-   from 1740 to something much smaller.
+   header window was measured, so `key_signature_read` becomes true where it
+   should be and the honest count of unknown staves drops from 1740.
+
+   > ⚠️ **The safety claim originally written here — "output pitches do not
+   > change" — is FALSE, and was measured false on 2026-08-30.**
+   > `transcribe.py:2926` passes
+   > `skip_key_sig_detection=(cell_idx == 0 and staff_idx in voted_fifths)`, so
+   > changing *membership* of `voted_fifths` changes which staves run the
+   > in-measure key reader — and the two readers are not equivalent
+   > (`_key_sig_read_from_dets` abstains where `_detect_key_sig_from_cell`
+   > falls back to counting). Implemented as written, on La Mer p.12 it costs
+   > **5 key signatures and 27 of 140 altered notes** on a single 14-staff page.
+   > The trace that stopped at `alterations_for_fifths(seeded_fifths or 0)`
+   > missed a second consumer sixty lines below. Anyone building this must start
+   > from that gate, not from the seeding line.
 2. **Then the majority fallback**, applied only to what is left, with the
    instrument transposition (`default_fifths_offset`) so it does not print the
    majority's signature on a transposing part.
