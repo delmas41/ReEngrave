@@ -82,6 +82,38 @@ carries real risk — the same file records that an unanchored join walks into t
 strings and gets three staves wrong. It wants its own measurement against the
 52-staff hand-read set before it goes anywhere near `main`.
 
+### It was tried the same day, and it is DISPROVEN
+
+Implemented as written above — the last slot treated as an implicit anchor when
+the alignment reaches the foot (the last slot taking the last part), so
+everything between the final label and the bottom becomes trusted.
+
+| | clefs |
+|---|---:|
+| baseline | **50/52** |
+| with the foot anchor | **44/52** |
+
+The dossier went from supplying 1 clef at 100% to supplying **11 at 27%**. It is
+worse than the thing it was meant to fix, and `test_slots_past_the_last_label_are_not_anchored`
+— already in the suite — fails on it, which is the previous session's guard
+doing exactly its job.
+
+**Why the reasoning was wrong.** "The strings at the bottom are the same in every
+tradition" is about WHICH INSTRUMENTS are there, not about how many staves they
+occupy. Divisi and condensation mean the part→staff mapping in the string section
+is precisely what is uncertain, and reaching the foot says nothing about the
+condensation decisions above it. The endpoint was never the unknown.
+
+A tighter variant — anchor the tail only when it is 1:1, as many parts left as
+slots left, which is the only shape that forecloses condensation — restores
+50/52 exactly, because it never fires on these pages. Their tails are never 1:1.
+That is the honest ceiling of this idea: wrong when it acts, inert when it is
+safe. Not shipped, in either form.
+
+So the last two clef staves need something other than labels and other than the
+join. They are unblocked by neither, and this file should not be read as
+proposing the foot anchor any more.
+
 ## Reproducing, and the SDK workaround
 
 `staff_labels_vision` uses `output_config` (structured outputs), which needs
