@@ -72,6 +72,38 @@ more pixels, more anchors and more detections — FP/cell rising ~6× for a 10×
 
 **This changes the fix.** It is not a cell-relative rule; it is a smaller constant.
 
+> ### Correction (2026-08-28) — the letterbox claim, and what it changes
+>
+> **Ultralytics does not letterbox to `imgsz × imgsz` here.** `predictor.pre_transform`
+> builds `LetterBox(imgsz, auto=rect)`, and for a single image `rect` is true, so it
+> scales the **longest side** to `imgsz` and pads only to a stride multiple: a 300×1200
+> cell at `imgsz 512` is fed as 128×512, not 512×512. Forcing the square path changes
+> only the padding — content is still scaled by `imgsz / longest side`. So what the model
+> is shown is `canonical staff space × imgsz / longest side of cell`, a property of the
+> cell.
+>
+> **The size-band evidence above is real but cannot separate the two hypotheses.** A
+> canonical cell is 12 staff spaces tall (4 for the staff, 4 padding either side), so its
+> height is pinned near 1200 px whatever the music. Every cell narrower than that has
+> `longest side = 1200` and is therefore shown `imgsz / 12`, with width not entering at
+> all — which is most measure cells. Where the bands *do* separate them, the numbers here
+> lean the other way: the **≥1500 px band has the lowest FP rate at every `imgsz`**
+> (8.8 / 20.7 / 45.2 against 12.7 / 32.4 / 60.0). Those are the width-dominant cells,
+> shown a smaller staff space.
+>
+> **The direction of this document is right and its measurements stand** — 2048 really is
+> far too large, and 512 really is much better. What changes is that the fix is a rule
+> rather than a number: a constant lands inside the good band on wide header cells and
+> past its edge on the narrow interior cells of the same page. Head-to-head at the
+> pipeline's own 600 DPI, per-cell beats 512 on every fixture and every metric (ensemble
+> 45 notes against 57, precision 0.956 against 0.684). Nor is a *smaller* constant the
+> answer: on WTC cells the width cap squeezes the canonical staff space to 19, where
+> `imgsz 256` loses half the noteheads that 512 and per-cell both find — there is an
+> absolute-resolution floor as well as a scale ceiling.
+>
+> Landed as `yolo_detector.imgsz_for_cell`. Full reconciliation, with the letterbox
+> shapes measured directly: `../omr-detector-scale/RESULTS.md`.
+
 ## Confirmation on authored ground truth
 
 The hand-labeled cells understate precision by design (see the caveat below), so the

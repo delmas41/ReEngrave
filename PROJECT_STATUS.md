@@ -200,11 +200,27 @@ Audit 2026-08-28 (contextual-analysis branch merged since).  Branches holding co
 
 
 - **Detection was massively over-reporting until 2026-08-28.** `imgsz` defaulted to 2048
-  in the CLI and 1280 in the backend; ultralytics letterboxes to `imgsz²` regardless of
-  cell size, so both were simply buying anchors and false noteheads. Now 512 everywhere.
+  in the CLI and 1280 in the backend, and both were far too large. `imgsz` is now derived
+  **per cell** (`yolo_detector.imgsz_for_cell`, targeting a shown staff space of 16 px);
+  `--imgsz 512` is the best fixed value and `--imgsz 2048` reproduces the old behaviour.
   Anything measured before that date — notehead counts, "100% pitch coverage", the
   July confidence probe's false-positive flood — was measured through this and may need
-  re-reading. `benchmarks/omr-imgsz-sweep-2026-08/findings.md`.
+  re-reading. `benchmarks/omr-imgsz-sweep-2026-08/findings.md` and
+  `benchmarks/omr-detector-scale/RESULTS.md`.
+
+  The mechanism is *not* that "ultralytics letterboxes to `imgsz²` regardless of cell
+  size" — an early account that this document repeated. `predict` builds
+  `LetterBox(imgsz, auto=rect)` and scales the **longest side** to `imgsz`, padding only
+  to a stride multiple, so what the model is shown is
+  `canonical staff space × imgsz / longest side of cell`. That depends on the cell, which
+  is why the fix is a rule rather than a number: a constant lands inside the good band on
+  wide header cells and past its edge on the narrow interior cells of the same page.
+- **The F1 98.8% was never measured at a setting the pipeline used.**
+  `training/eval_on_score_cells.py` calls `detect()` without an `imgsz`, so it ran at the
+  wrapper's old default of **640** while the pipeline ran 2048. It now inherits the
+  per-cell rule, so re-running it would produce a comparable number for the first time —
+  but the quoted 98.8% still refers to the old 640 run, and is repeated unqualified
+  elsewhere in this file.
 - **Instrument identity needs a text layer or a paid vision call.** 18/65 corpus PDFs
   have a text layer; the rest need `vision_fallback=True`.
 - **One-line percussion staves are invisible.** `_group_into_staves` accepts only
