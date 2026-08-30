@@ -104,7 +104,15 @@ some of that.
 - **`instruments.py` + `staff_labels.py`** — instrument identity from the PDF's text
   layer, free. 18/65 IMSLP score PDFs have one; **79% of labelled staves resolve**. The
   lexicon maps a printed label to instrument, family, default clef, written range and
-  transposition (`fifths_offset = -fifths(key_name)`).
+  transposition (`fifths_offset = -fifths(key_name)`). Scored against the `<part-list>`
+  of 111 orchestral works in the Gradus MusicXML library — what engravers actually
+  wrote, with no OCR in between — it reads **99% of 2,345 real part names**, and 95 of
+  105 symphonic works come out in score order
+  (`benchmarks/omr-score-order-2026-08/`). Monotone order turns out to be a sharper
+  test of a lexicon than coverage, because a misread label usually still READS: `Basso`
+  resolved cleanly and resolved *wrong*, and only the order showed it. The 10 that
+  remain are real layout variation — voices printed below the strings, Tchaikovsky's
+  banda — and are deliberately not encoded.
 - **`staff_labels_vision.py`** — the same for scans, reading the margin with Claude.
   Opt-in (`vision_fallback=True`), because it costs money — about a cent per system, and
   bounded per *work* rather than per page since slots propagate one reading. Validated
