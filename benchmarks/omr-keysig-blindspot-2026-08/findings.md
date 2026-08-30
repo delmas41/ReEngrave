@@ -100,6 +100,69 @@ It also generalises: any DSv2 class pair that encodes a *role* rather than a
 *shape* has the same failure mode, and the pipeline's own positional readers are
 better placed to assign the role than the detector is.
 
+## It was implemented, measured, and NOT shipped
+
+The obvious next step — route `_signature_accidentals` into
+`_key_sig_read_from_dets` and `_detect_key_sig_from_cell` when no key-role
+marker is found — was written, with every constraint above plus two more added
+in response to what the measurement showed: a stricter fit for the accidental
+path (`max_outliers=0`, since an accidental carries no assertion of role and
+deserves no licence for a stray), and a rule that an accidental-derived fit may
+only assert a POSITIVE signature, since concluding "no signature" from two or
+more accidentals actually on the page is incoherent.
+
+Against the only pages with per-staff ground truth:
+
+| page | before | after |
+|---|---:|---:|
+| beet5-p2 | **10** correct | **9** correct |
+| pastoral-p2 | 9 correct | 9 correct |
+| wtc-p17 | 10 correct | 10 correct |
+
+**Net −1 on the ground truth, against an unverifiable +4 on a page that has
+none.** Not shipped. `tools/omr/transcribe.py` is unchanged.
+
+### The mechanism, which is the useful part
+
+One staff moved. Beethoven 5 p.2 staff 11 read a correct 3 flats before and
+nothing after, and the pipeline says exactly why:
+
+```
+rejected: 5 flats differs from the system's 3 flats on too little evidence
+```
+
+The accidental path read **5** flats where there are 3 — the header cell
+contains inline accidentals as well as the signature, and the first-notehead
+x-cut does not exclude all of them. The cross-page vote then correctly rejected
+the outlier, **and the rejection zeroes the staff rather than reverting it to
+the reading it already had.**
+
+So the failure needs two things, and both are worth naming separately:
+
+1. **The accidental set is noisier than the marker set**, which is the whole
+   reason the two classes exist. The x-cut is necessary and not sufficient.
+2. **The vote is an amplifier, and its rejection path is lossy.** A staff whose
+   new reading is rejected ends at zero, not at its previous correct value. That
+   is a bug in its own right, independent of this work, and it is what converted
+   one bad reading into one lost staff.
+
+This is the same shape as `claude/omr-clef-tenor-fixture`, which is also correct
+in isolation and also held back: there too a gained reading opened a gate on
+staves the key-signature reader misreads, and the page's modal reference moved
+against the one correct answer.
+
+### What would make it shippable
+
+- **Fix the lossy rejection first.** A rejected reading should fall back, not
+  zero. That is a small, self-contained change with its own ground truth, and
+  until it lands any weak-evidence source is playing with a loaded gun.
+- **Keep weak readings out of the vote.** They should be able to speak for their
+  own staff and not for the page. `_key_sig_read_from_dets` feeds the vote by
+  design, so this needs a separate channel rather than a flag.
+- **Get per-staff ground truth for a page where it helps.** Every measured gain
+  here is on beet5 p.15, which has none, and written signatures differ per
+  transposing part so the concert key cannot stand in for one.
+
 ## Method note, the fourth time
 
 This is the fourth confident conclusion in two days that described the
