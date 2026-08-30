@@ -104,3 +104,61 @@ def test_none_image_is_safe():
     object.__setattr__(cell, "image", None)
     clef, ts = _read(_FakeReader([_det("clef", "clefF", 100, 40)]), cell)
     assert clef is None and ts is None
+
+
+# ── DPI re-render (Blocker 1 fix) — default-off, guarded ───────────────────
+#
+# `_read_staff_header` gained `pdf_path` / `page_dpi` kwargs so it can
+# re-render the header window straight from the PDF at a fixed reference DPI
+# (see `_rerender_header_at_reference_dpi`'s docstring in transcribe.py for
+# why). None of the tests above pass them, and they still pass unchanged —
+# that IS the no-clef-weights / no-caller-support invariant: the specialist's
+# input is untouched unless a caller opts in with both a path and a DPI. The
+# tests here pin the guard conditions directly.
+
+from tools.omr.transcribe import _rerender_header_at_reference_dpi  # noqa: E402
+
+
+def test_rerender_is_a_noop_without_pdf_path():
+    cell = _cell()
+    assert _rerender_header_at_reference_dpi(
+        cell, pdf_path=None, page_dpi=600,
+    ) is None
+
+
+def test_rerender_is_a_noop_without_page_dpi():
+    cell = _cell()
+    assert _rerender_header_at_reference_dpi(
+        cell, pdf_path="some/score.pdf", page_dpi=None,
+    ) is None
+
+
+def test_rerender_is_a_noop_at_or_below_the_reference_dpi():
+    cell = _cell()
+    # dpi 300 is the reference itself (see HEADER_SPECIALIST_REFERENCE_DPI) —
+    # nothing to normalize toward, so this is a no-op, same as a lower dpi.
+    assert _rerender_header_at_reference_dpi(
+        cell, pdf_path="some/score.pdf", page_dpi=300,
+    ) is None
+    assert _rerender_header_at_reference_dpi(
+        cell, pdf_path="some/score.pdf", page_dpi=150,
+    ) is None
+
+
+def test_rerender_is_a_noop_with_no_image():
+    cell = _cell()
+    object.__setattr__(cell, "image", None)
+    assert _rerender_header_at_reference_dpi(
+        cell, pdf_path="some/score.pdf", page_dpi=600,
+    ) is None
+
+
+def test_rerender_is_a_noop_on_a_nonexistent_pdf():
+    # Guard conditions all pass (dpi 600 > reference, real image) so this
+    # actually reaches the fitz.open() call — which must fail closed, not
+    # raise, since a texture fix for one opt-in reader is never a reason to
+    # break a transcription.
+    cell = _cell()
+    assert _rerender_header_at_reference_dpi(
+        cell, pdf_path="/nonexistent/path/does-not-exist.pdf", page_dpi=600,
+    ) is None

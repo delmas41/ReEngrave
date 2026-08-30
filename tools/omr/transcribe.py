@@ -927,6 +927,113 @@ def parse_pages(spec: str, n_pages: int) -> list[int]:
     return [p for p in out if 0 <= p < n_pages]
 
 
+# ---------------------------------------------------------------------------
+# Header-crop DPI normalization for the clef specialist
+# ---------------------------------------------------------------------------
+#
+# `_build_measure_cell` already rescales every cell -- header crops included --
+# to a FIXED canonical staff span (measure_extractor.CANONICAL_STAFF_SPAN_PX)
+# regardless of source DPI, so the SCALE the specialist is shown never varies
+# with the page's render DPI: measured identical (40.0 canonical px of "shown"
+# staff space per `yolo_detector.imgsz_for_cell`'s own formula) at dpi 300 and
+# dpi 600 on the same staff. That rules out imgsz as the cause.
+#
+# What DOES vary is TEXTURE. The raw crop's pixel resolution is proportional
+# to render DPI, so the upscale factor needed to reach the fixed canonical
+# span is inversely proportional to it (measured: 12.9x at dpi 300, 6.45x at
+# dpi 600 on the same staff -- exactly 2x apart, matching the 2x DPI gap).
+# `cv2.INTER_CUBIC` at a large upscale factor from a low-res source smooths
+# heavily; the same target size reached with half the upscale factor from an
+# already-higher-res source stays sharp and aliased. Measured Laplacian-
+# variance sharpness of the identical clef glyph: 2.61 (dpi 300) vs 36.56
+# (dpi 600) -- ~14x. The specialist's own tuning scripts (tune_header_reader.py,
+# clef_ground_truth_eval.py) all default to dpi=300, so that heavily-smoothed
+# texture is the only regime the checkpoint has ever been tuned against.
+#
+# Measured end to end on Beethoven 5 p.48 (17 staves, deepscoresv2-yolov8l-
+# clef-ft-boxfix-2026-07-13.pt): dpi 300 -> 17/17 clef-category detections;
+# dpi 600 via the normal page-render-then-canonical-upscale path -> 0/17, at
+# any confidence down to 0.05 -- the checkpoint finds no clef-shaped ink at
+# all there, not just low-confidence ones. A post-hoc blur of the already-
+# rendered dpi-600 raster does NOT recover it (tried: 2x INTER_AREA down /
+# INTER_CUBIC back up -- 0 recovered on 6 staves): MuPDF's own resampling at
+# render time produces a different antialiasing signature than filtering an
+# already-hard-edged raster after the fact.
+#
+# Fix: re-render the SAME header window straight from the PDF at the
+# reference DPI -- a fresh MuPDF rasterization of that one small region, not
+# a resample of the already-rendered full-page raster -- then run the
+# ordinary canonical upscale on THAT. Recovers all 17/17 detections on the
+# same page (conf >= 0.10, median clef confidence ~0.7).
+
+HEADER_SPECIALIST_REFERENCE_DPI = 300
+
+
+def _rerender_header_at_reference_dpi(
+    cell: MeasureCell,
+    *,
+    pdf_path: Path | str | None,
+    page_dpi: int | None,
+    reference_dpi: int = HEADER_SPECIALIST_REFERENCE_DPI,
+) -> MeasureCell | None:
+    """Re-render `cell`'s page region straight from the PDF at `reference_dpi`
+    and re-run the canonical upscale on it, for the clef SPECIALIST only.
+
+    Returns None (caller falls back to `cell` unchanged) when there is
+    nothing to fix (`page_dpi` already at or below the reference, or no PDF
+    to go back to) or the re-render fails for any reason -- this is a texture
+    correction for one opt-in reader, never a reason to break a transcription.
+    Never mutates `cell`; `key_signature_locator` / `clef_locator` and every
+    other consumer of the same header cell keep seeing the original image.
+    """
+    if pdf_path is None or page_dpi is None or page_dpi <= reference_dpi:
+        return None
+    if cell.image is None or cell.upscale_factor <= 0:
+        return None
+    x0, y0, x1, y1 = cell.bbox_page_px
+    if x1 <= x0 or y1 <= y0:
+        return None
+    try:
+        import fitz  # PyMuPDF
+        import numpy as np
+
+        from .measure_extractor import _upscale_to_canonical, CANONICAL_STAFF_SPAN_PX
+
+        pt_scale = 72.0 / page_dpi
+        rect = fitz.Rect(x0 * pt_scale, y0 * pt_scale, x1 * pt_scale, y1 * pt_scale)
+        doc = fitz.open(str(pdf_path))
+        try:
+            pix = doc[cell.page_index].get_pixmap(
+                dpi=reference_dpi, clip=rect, alpha=False,
+            )
+        finally:
+            doc.close()
+        if pix.width <= 0 or pix.height <= 0:
+            return None
+        raw = np.frombuffer(pix.samples, dtype=np.uint8).reshape(
+            pix.height, pix.width, pix.n,
+        )
+        if pix.n == 4:
+            raw = raw[:, :, :3]
+        elif pix.n == 1:
+            raw = np.repeat(raw, 3, axis=2)
+        # The raw (pre-canonical) staff span this cell was built from, scaled
+        # to what it would be at `reference_dpi` -- CANONICAL_STAFF_SPAN_PX /
+        # upscale_factor recovers it exactly, since `_upscale_to_canonical`'s
+        # own `scale` is CANONICAL_STAFF_SPAN_PX / staff_span_px.
+        raw_span_at_page_dpi = CANONICAL_STAFF_SPAN_PX / cell.upscale_factor
+        raw_span_at_reference = raw_span_at_page_dpi * (reference_dpi / page_dpi)
+        up_rgb, scale, _ = _upscale_to_canonical(
+            np.ascontiguousarray(raw), raw_span_at_reference, [],
+            max(raw.shape[1] * 20, CANONICAL_STAFF_SPAN_PX * 20),
+        )
+    except Exception:
+        return None
+    return dataclasses.replace(
+        cell, image=up_rgb, image_no_staff=None, upscale_factor=scale,
+    )
+
+
 def _read_staff_header(
     clef_reader,
     cell: MeasureCell,
@@ -936,6 +1043,8 @@ def _read_staff_header(
     header_frac: float,
     iou_threshold: float,
     agnostic_nms: bool,
+    pdf_path: Path | str | None = None,
+    page_dpi: int | None = None,
 ) -> tuple[str | None, dict[str, Any] | None]:
     """Run the clef/header specialist on the LEFT `header_frac` of a staff-start
     cell — the region holding the clef, key signature, and time signature — and
@@ -958,9 +1067,19 @@ def _read_staff_header(
     # cut into the key signature. Only a full measure cell needs the fraction.
     if cell.measure_index == HEADER_MEASURE_INDEX:
         header_frac = 1.0
-    hw = max(1, int(round(cell.width * header_frac)))
+    # DPI-normalize BEFORE the header_frac crop, from the full window, so the
+    # crop fraction still means "the left 42% of the header" either way. See
+    # `_rerender_header_at_reference_dpi` for why: past `reference_dpi` this
+    # checkpoint stops recognising the sharper canonical texture a smaller
+    # cubic-upscale factor produces, not just less confidently -- it finds no
+    # clef-shaped ink at all. None (unset pdf_path/page_dpi, or page_dpi at or
+    # below the reference) leaves `cell` untouched.
+    source_cell = _rerender_header_at_reference_dpi(
+        cell, pdf_path=pdf_path, page_dpi=page_dpi,
+    ) or cell
+    hw = max(1, int(round(source_cell.width * header_frac)))
     header_cell = dataclasses.replace(
-        cell, image=cell.image[:, :hw], image_no_staff=None
+        source_cell, image=source_cell.image[:, :hw], image_no_staff=None
     )
     dets = clef_reader.detect(
         header_cell,
@@ -1185,6 +1304,8 @@ def _detections_for_cell(
     forced_clef: str | None = None,
     forced_fifths: int | None = None,
     clef_overrides: list[dict[str, Any]] | None = None,
+    pdf_path: Path | str | None = None,
+    page_dpi: int | None = None,
 ) -> tuple[
     list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None, str | None
 ]:
@@ -1291,6 +1412,8 @@ def _detections_for_cell(
             header_frac=clef_reader_header_frac,
             iou_threshold=iou_threshold,
             agnostic_nms=agnostic_nms,
+            pdf_path=pdf_path,
+            page_dpi=page_dpi,
         )
         if spec_clef is not None:
             active_clef = spec_clef
@@ -2934,6 +3057,8 @@ def transcribe(
                             clef_reader_imgsz=clef_reader_imgsz,
                             clef_reader_header_frac=clef_reader_header_frac,
                             locate_c_clefs=locate_c_clefs,
+                            pdf_path=pdf_path,
+                            page_dpi=dpi,
                         )
                     )
                     if cell_idx == 0:
