@@ -1,0 +1,92 @@
+{
+  "cell_id": "beet5-p56-sys1-s9-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T08:16:59+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefCAlto",
+      "human_category": "clef",
+      "bbox": {
+        "x": 81,
+        "y": 278,
+        "w": 249,
+        "h": 363
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 403,
+        "y": 182,
+        "w": 159,
+        "h": 127
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 856,
+        "y": 193,
+        "w": 159,
+        "h": 104
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1420,
+        "y": 138,
+        "w": 158,
+        "h": 133
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1698,
+        "y": 326,
+        "w": 164,
+        "h": 116
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 599,
+        "y": 317,
+        "w": 184,
+        "h": 285
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1072,
+        "y": 326,
+        "w": 177,
+        "h": 278
+      },
+      "notes": ""
+    }
+  ]
+}

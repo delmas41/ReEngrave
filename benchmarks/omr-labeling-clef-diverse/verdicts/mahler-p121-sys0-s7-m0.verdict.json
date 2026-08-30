@@ -1,0 +1,56 @@
+{
+  "cell_id": "mahler-p121-sys0-s7-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T08:24:28+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefCAlto",
+      "human_category": "clef",
+      "bbox": {
+        "x": 57,
+        "y": 319,
+        "w": 286,
+        "h": 407
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 344,
+        "y": 289,
+        "w": 124,
+        "h": 245
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 459,
+        "y": 418,
+        "w": 123,
+        "h": 228
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1225,
+        "y": 442,
+        "w": 184,
+        "h": 103
+      },
+      "notes": ""
+    }
+  ]
+}

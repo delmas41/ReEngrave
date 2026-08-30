@@ -1,0 +1,80 @@
+{
+  "cell_id": "lamer-p26-sys2-s9-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T07:46:58+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 64,
+        "y": 184,
+        "w": 144,
+        "h": 197
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 245,
+        "y": 192,
+        "w": 68,
+        "h": 125
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 208,
+        "y": 252,
+        "w": 55,
+        "h": 131
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 460,
+        "y": 479,
+        "w": 98,
+        "h": 74
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 400,
+        "y": 416,
+        "w": 55,
+        "h": 129
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 247,
+        "y": 529,
+        "w": 226,
+        "h": 57
+      },
+      "notes": ""
+    }
+  ]
+}

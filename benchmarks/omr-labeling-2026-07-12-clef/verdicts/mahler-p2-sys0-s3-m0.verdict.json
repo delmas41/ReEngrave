@@ -1,0 +1,104 @@
+{
+  "cell_id": "mahler-p2-sys0-s3-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T00:50:15+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 61,
+        "y": 441,
+        "w": 312,
+        "h": 398
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 424,
+        "y": 425,
+        "w": 142,
+        "h": 324
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 570,
+        "y": 558,
+        "w": 119,
+        "h": 355
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 682,
+        "y": 372,
+        "w": 143,
+        "h": 339
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 820,
+        "y": 527,
+        "w": 136,
+        "h": 322
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "timeSig2",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 990,
+        "y": 493,
+        "w": 187,
+        "h": 193
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "timeSig2",
+      "human_category": "time_sig",
+      "bbox": {
+        "x": 990,
+        "y": 690,
+        "w": 189,
+        "h": 197
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1400,
+        "y": 463,
+        "w": 153,
+        "h": 365
+      },
+      "notes": ""
+    }
+  ]
+}

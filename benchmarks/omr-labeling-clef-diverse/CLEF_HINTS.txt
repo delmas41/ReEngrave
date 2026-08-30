@@ -1,0 +1,16 @@
+Clef-diversity labeling batch — one m0 (clef-bearing) cell per staff.
+Label EVERY symbol in each cell (clef + key-sig accidentals + time-sig
+digits + rests/notes). Prioritize the RARE clefs: cClefAlto (viola),
+cClefTenor (cello/bassoon high), unpitchedPercussionClef1 (perc), and
+the *Change classes (mid-bar). Skip redundant treble/bass repeats.
+keySharp/keyFlat/keyNatural for key-sig accidentals; accidental* for
+note accidentals.
+
+Per-page LEGATO clef reads (hints only — trust your eyes):
+  bolero p30: 28 clef cells
+  bolero p37: 30 clef cells
+  lamer p25: 20 clef cells
+  lamer p55: 16 clef cells
+  beet5 p35: 21 clef cells
+  beet5 p55: 17 clef cells
+  mahler p120: 19 clef cells

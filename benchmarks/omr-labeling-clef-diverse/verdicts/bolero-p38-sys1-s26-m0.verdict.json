@@ -1,0 +1,248 @@
+{
+  "cell_id": "bolero-p38-sys1-s26-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T07:45:09+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefCAlto",
+      "human_category": "clef",
+      "bbox": {
+        "x": 22,
+        "y": 204,
+        "w": 192,
+        "h": 255
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 341,
+        "y": 291,
+        "w": 66,
+        "h": 76
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 398,
+        "y": 271,
+        "w": 70,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 606,
+        "y": 298,
+        "w": 68,
+        "h": 59
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 665,
+        "y": 276,
+        "w": 70,
+        "h": 59
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 742,
+        "y": 297,
+        "w": 67,
+        "h": 66
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 797,
+        "y": 271,
+        "w": 70,
+        "h": 77
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 877,
+        "y": 302,
+        "w": 66,
+        "h": 63
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 930,
+        "y": 271,
+        "w": 76,
+        "h": 68
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1004,
+        "y": 298,
+        "w": 66,
+        "h": 61
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1065,
+        "y": 271,
+        "w": 75,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1254,
+        "y": 300,
+        "w": 68,
+        "h": 63
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1309,
+        "y": 271,
+        "w": 74,
+        "h": 72
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1391,
+        "y": 297,
+        "w": 68,
+        "h": 62
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1444,
+        "y": 269,
+        "w": 79,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1523,
+        "y": 298,
+        "w": 65,
+        "h": 61
+      },
+      "notes": ""
+    },
+    {
+      "id": "H16",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1578,
+        "y": 274,
+        "w": 70,
+        "h": 72
+      },
+      "notes": ""
+    },
+    {
+      "id": "H17",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1731,
+        "y": 320,
+        "w": 61,
+        "h": 67
+      },
+      "notes": ""
+    },
+    {
+      "id": "H18",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1877,
+        "y": 319,
+        "w": 94,
+        "h": 70
+      },
+      "notes": ""
+    },
+    {
+      "id": "H19",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1661,
+        "y": 260,
+        "w": 59,
+        "h": 134
+      },
+      "notes": ""
+    }
+  ]
+}

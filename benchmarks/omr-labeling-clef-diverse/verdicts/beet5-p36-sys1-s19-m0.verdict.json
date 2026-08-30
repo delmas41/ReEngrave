@@ -1,0 +1,68 @@
+{
+  "cell_id": "beet5-p36-sys1-s19-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T08:11:02+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefCAlto",
+      "human_category": "clef",
+      "bbox": {
+        "x": 69,
+        "y": 422,
+        "w": 348,
+        "h": 563
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 437,
+        "y": 557,
+        "w": 142,
+        "h": 293
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 550,
+        "y": 424,
+        "w": 150,
+        "h": 276
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 698,
+        "y": 609,
+        "w": 132,
+        "h": 288
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1130,
+        "y": 576,
+        "w": 248,
+        "h": 122
+      },
+      "notes": ""
+    }
+  ]
+}

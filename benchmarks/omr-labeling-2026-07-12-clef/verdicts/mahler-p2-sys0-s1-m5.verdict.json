@@ -1,0 +1,20 @@
+{
+  "cell_id": "mahler-p2-sys0-s1-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-07-13T00:40:22+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 747,
+        "y": 573,
+        "w": 186,
+        "h": 131
+      },
+      "notes": ""
+    }
+  ]
+}
