@@ -795,7 +795,19 @@ def resegment_fused_measures(
 
     result: list[MeasureCell] = []
     for sys_idx, staff_groups in by_system.items():
-        staves = sorted(pws.staves_in_system(sys_idx), key=lambda s: s.staff_index)
+        # One-line percussion staves are excluded here for the same reason
+        # `detect_barlines` and `extract_measures` exclude them: a staff with no
+        # five-line span answers "there is a barline here" for any stem that
+        # crosses it. It is also a hard error rather than merely noise —
+        # `_detect_barlines_in_window` sizes its morphological kernel from the
+        # staff span, and a span of 0 makes that kernel 1x0, which OpenCV
+        # rejects outright. Before this filter, transcribing La Mer p.25 —
+        # the very page the one-line-staff support was validated on — raised
+        # cv2.error from Phase 1.
+        staves = sorted(
+            (s for s in pws.staves_in_system(sys_idx) if len(s.line_ys) >= 5),
+            key=lambda s: s.staff_index,
+        )
         if not staves:
             for staff_cells in staff_groups.values():
                 result.extend(staff_cells)

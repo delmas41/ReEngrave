@@ -318,3 +318,38 @@ class TestTrailingTail:
     def test_single_measure_page_is_unaffected(self):
         got = self._boundaries([100, 1100])
         assert got == [(100, 1100)]
+
+
+# ─── One-line percussion staves must not reach the barline scanner ───────────
+
+
+class TestOneLineStaffIsExcludedFromResegmentation:
+    """A percussion part printed as a single rule has no five-line span.
+
+    `detect_barlines` and `extract_measures` both exclude such staves, because
+    a staff two spaces tall votes "barline" for every stem that crosses it.
+    `resegment_fused_measures` did not, and there the omission was not merely
+    noise: `_detect_barlines_in_window` sizes its morphological kernel from the
+    staff span, so a span of 0 asks OpenCV for a 1x0 kernel and it raises.
+
+    La Mer p.25 is the page the one-line-staff support was validated on. Its
+    regression test covers staff detection and stops short of transcription, so
+    the page could not be read end to end until this guard was added."""
+
+    def _system_with_a_one_line_staff(self):
+        staves = _make_staves()
+        # A single rule between the two real staves: one line_y, so
+        # top_y == bottom_y and the span is 0.
+        staves.append(Staff(page_index=0, staff_index=2, line_ys=[210],
+                            x_start=50, x_end=850, system_index=0))
+        return staves
+
+    def test_zero_span_staff_does_not_raise(self):
+        page = _make_page()
+        _draw_barline(page.binary, 430)
+        pws = PageWithStaves(page=page, staves=self._system_with_a_one_line_staff(),
+                             barlines=[])
+        cells = _measure_cells(_make_staves(), BOUNDARIES)  # cells for the 5-line staves
+
+        out = resegment_fused_measures(pws, cells, max_cell_width=TEST_MAX_CELL_WIDTH)
+        assert out, "a one-line staff in the system must not break Phase 1"
