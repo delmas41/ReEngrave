@@ -1394,41 +1394,24 @@ def _detections_for_cell(
     if new_time_sig is not None:
         active_time_sig = new_time_sig
 
-    # ── Decoupled staff-header specialist (clef + time-sig override). The
-    #    production detector under-detects clefs on real orchestral scans (9%
-    #    detection, 0% type → the "all-treble disease") and time-sig digits
-    #    (mostly null). A model fine-tuned on real staff cells reads them well
-    #    but collapses dense-notehead detection, so it can't be the main
-    #    detector. Using ONLY its clef + time-sig read of the staff-START header
-    #    crop (where they're printed) gets those wins with zero cost to notehead
-    #    detection. Runs after the production header passes (so it wins) and
-    #    before the pitch pass (so the corrected clef anchors every pitch). See
-    #    benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. ──
-    if read_clef and clef_reader is not None:
-        spec_clef, spec_time_sig = _read_staff_header(
-            clef_reader, header_cell if header_cell is not None else cell,
-            conf=clef_reader_conf,
-            imgsz=clef_reader_imgsz,
-            header_frac=clef_reader_header_frac,
-            iou_threshold=iou_threshold,
-            agnostic_nms=agnostic_nms,
-            pdf_path=pdf_path,
-            page_dpi=page_dpi,
-        )
-        if spec_clef is not None:
-            active_clef = spec_clef
-            clef_source = "specialist"
-        if spec_time_sig is not None:
-            active_time_sig = spec_time_sig
-
-    # ── Classical-CV C-clef locator (last resort). Both models above read a
-    #    clef by appearance, so both go blind on engravings whose glyphs aren't
-    #    in their training distribution — on 19th-century C-clef counterpoint
-    #    prints they find no clef at all, at any confidence, and every staff
-    #    silently defaults to treble. Shape-based location doesn't depend on
-    #    the font. It runs ONLY when nothing else produced a clef for this
-    #    staff, and only identifies C clefs, so it can add a reading where
-    #    there was none but can never overturn one. See tools/omr/clef_locator.py.
+    # ── Classical-CV C-clef locator. Both the production detector and the
+    #    (optional) specialist below read a clef by appearance, so both go
+    #    blind on engravings whose glyphs aren't in their training
+    #    distribution — on 19th-century C-clef counterpoint prints they find
+    #    no clef at all, at any confidence, and every staff silently defaults
+    #    to treble. Shape-based location doesn't depend on the font, and it
+    #    ONLY identifies C clefs — never treble or bass — so where it fires it
+    #    is the more specific evidence: `clef_geometry` measures which line
+    #    the clef names rather than classifying it, and that measurement does
+    #    not depend on a training distribution the way a model label does.
+    #    Runs BEFORE the specialist for exactly that reason: it must get a
+    #    chance to speak for its narrow domain before a broader-but-fuzzier
+    #    appearance model can claim the staff. It still runs only when nothing
+    #    ABOVE it (the production detector) already produced a clef, so it
+    #    remains "add a reading where there was none" with respect to the
+    #    detector — it can only ever ADD a reading, never overturn one, EXCEPT
+    #    the specialist's below, which is now the one thing it outranks. See
+    #    tools/omr/clef_locator.py.
     if read_clef and locate_c_clefs and clef_source is None:
         # Hand the locator the noteheads the detector is already sure about, so
         # it can't nominate a notehead stack as a clef.
@@ -1454,6 +1437,47 @@ def _detections_for_cell(
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
+
+    # ── Decoupled staff-header specialist (clef + time-sig override). The
+    #    production detector under-detects clefs on real orchestral scans (9%
+    #    detection, 0% type → the "all-treble disease") and time-sig digits
+    #    (mostly null). A model fine-tuned on real staff cells reads them well
+    #    but collapses dense-notehead detection, so it can't be the main
+    #    detector. Using ONLY its clef + time-sig read of the staff-START header
+    #    crop (where they're printed) gets those wins with zero cost to notehead
+    #    detection. Runs after the production header pass and the CV locator, so
+    #    it can improve on the detector's guess but NOT the locator's — the
+    #    locator only speaks for C clefs and abstains otherwise, so a staff it
+    #    claimed is the one case where a model label should not get the last
+    #    word. Measured end to end on Beethoven 5, IMSLP score imslp-575951,
+    #    page_index 68 (dpi 600): staves 4 and 5 both read as a C clef by the
+    #    locator ("tenor") and, wired to run first, flipped by the specialist
+    #    to an incorrect "bass" — the old ordering (specialist unconditional,
+    #    locator gated on `clef_source is None`) can never recover from that,
+    #    since the locator never gets to run once the specialist has already
+    #    spoken. With the locator running first, as here, both staves read
+    #    "tenor" from `cv_locator` instead. Runs before the pitch pass either
+    #    way (so the corrected clef anchors every pitch). See
+    #    benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. ──
+    if read_clef and clef_reader is not None:
+        spec_clef, spec_time_sig = _read_staff_header(
+            clef_reader, header_cell if header_cell is not None else cell,
+            conf=clef_reader_conf,
+            imgsz=clef_reader_imgsz,
+            header_frac=clef_reader_header_frac,
+            iou_threshold=iou_threshold,
+            agnostic_nms=agnostic_nms,
+            pdf_path=pdf_path,
+            page_dpi=page_dpi,
+        )
+        # Clef and time-sig precedence are independent: the locator has no
+        # opinion on meter, so its claim on the clef doesn't block the
+        # specialist's time-sig read.
+        if spec_clef is not None and clef_source != "cv_locator":
+            active_clef = spec_clef
+            clef_source = "specialist"
+        if spec_time_sig is not None:
+            active_time_sig = spec_time_sig
 
     # ── Dossier override. The work's own written clef and key signature, when
     #    the caller supplied a dossier AND the part→staff join was safe enough
