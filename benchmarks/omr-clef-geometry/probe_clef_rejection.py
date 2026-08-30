@@ -15,11 +15,13 @@ positives is the one trade this layer refuses. Always run both.
     python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py \
         --pdf /Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf
 
-The branch names below mirror the `return None` / `continue` sites in
-`locate_clef` one for one. If that function grows a new exit, this needs the
-matching arm or cells will be miscounted as something else — the probe
-duplicates the walk rather than instrumenting it in place, so that the
-production path carries no measurement code.
+The branch names come from `locate_clef` itself, via its optional `trace`
+out-parameter. This script used to re-walk the decision tree in a copy, which
+kept measurement code out of the production path but meant every new exit in
+`locate_clef` had to be mirrored here or cells would be miscounted as something
+else — and the first change after it was written added two. The trace costs one
+dict write on a path that is already doing connected-components analysis, and
+it cannot drift.
 """
 
 from __future__ import annotations
@@ -32,18 +34,11 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
-import cv2  # noqa: E402
 import numpy as np  # noqa: E402
 
-from tools.omr.clef_geometry import DEFAULT_CONFIG as GEOMETRY, resolve_clef  # noqa: E402
 from tools.omr.clef_locator import (  # noqa: E402
     DEFAULT_LOCATOR_CONFIG as CFG,
-    _analysis_scale,
-    _cluster_components,
-    _has_f_clef_dots,
-    _ink_mask,
-    _refine_symmetry_axis,
-    _staff_metrics,
+    locate_clef,
 )
 from tools.omr.measure_extractor import detect_barlines  # noqa: E402
 from tools.omr.preprocessing import render_page  # noqa: E402
@@ -52,72 +47,33 @@ from tools.omr.staff_header import header_cells_for_page  # noqa: E402
 from tools.omr.types import MeasureCell  # noqa: E402
 
 
+# `locate_clef` names its exits tersely; these are the names this report has
+# always used, kept so figures from older runs stay comparable.
+BRANCH_NAMES = {
+    "no_staff_metrics": "no staff metrics",
+    "no_mask": "no ink mask",
+    "no_clusters": "no clusters",
+    "only_debris": "only debris",
+    "too_far_right": "too far in",
+    "too_big": "cluster too big",
+    "asymmetric": "not symmetric",
+    "f_clef_dots": "F-clef dot veto",
+    "ambiguous_snap": "ambiguous line snap",
+}
+
+
 def classify(cell: MeasureCell) -> tuple[str, tuple[float, float] | None]:
     """The branch this cell dies on, and the (w, h) in staff spaces of the
     cluster that killed it where there is one."""
-    metrics = _staff_metrics(cell)
-    if metrics is None:
-        return "no staff metrics", None
-    spacing, top_y, bottom_y = metrics
-    mask = _ink_mask(cell, spacing, CFG)
-    if mask is None:
-        return "no ink mask", None
-
-    scale = _analysis_scale(spacing, CFG)
-    spacing *= scale
-    top_y *= scale
-    bottom_y *= scale
-    staff_line_ys = [y * scale for y in sorted(cell.staff_line_ys_canonical)]
-
-    hw = max(1, int(round(mask.shape[1] * CFG.header_frac)))
-    strip = mask[:, :hw]
-    n, _labels, stats, _cent = cv2.connectedComponentsWithStats(strip, connectivity=8)
-
-    min_area = CFG.min_component_area_spaces * spacing * spacing
-    band_margin = CFG.staff_band_spaces * spacing
-    band_top, band_bottom = top_y - band_margin, bottom_y + band_margin
-    boxes = []
-    for i in range(1, n):
-        if int(stats[i, cv2.CC_STAT_AREA]) < min_area:
-            continue
-        y_i = int(stats[i, cv2.CC_STAT_TOP])
-        h_i = int(stats[i, cv2.CC_STAT_HEIGHT])
-        if not (band_top <= y_i + h_i / 2.0 <= band_bottom):
-            continue
-        boxes.append((
-            int(stats[i, cv2.CC_STAT_LEFT]), y_i,
-            int(stats[i, cv2.CC_STAT_WIDTH]), h_i, int(stats[i, cv2.CC_STAT_AREA]),
-        ))
-    if not boxes:
-        return "no clusters", None
-
-    saw_any = False
-    for bbox in _cluster_components(boxes, max_gap=CFG.cluster_gap_spaces * spacing):
-        x, y, w, h = bbox
-        w_sp, h_sp = w / spacing, h / spacing
-        saw_any = True
-        if x / spacing > CFG.max_start_spaces:
-            return "too far in", (w_sp, h_sp)
-        ink = int(np.count_nonzero(strip[y : y + h, x : x + w]))
-        if w * h == 0 or ink / float(w * h) < CFG.min_ink_fraction:
-            continue
-        if h_sp > CFG.max_height_spaces or w_sp > CFG.max_width_spaces:
-            return "cluster too big", (w_sp, h_sp)
-        if w_sp < CFG.min_width_spaces or h_sp < CFG.min_height_spaces:
-            continue
-        axis_y, symmetry = _refine_symmetry_axis(
-            strip, bbox, max_shift=CFG.axis_refine_spaces * spacing
-        )
-        if symmetry < CFG.min_symmetry:
-            return "not symmetric", (w_sp, h_sp)
-        if _has_f_clef_dots(strip, bbox, spacing, CFG):
-            return "F-clef dot veto", (w_sp, h_sp)
-        read = resolve_clef("cClefAlto", anchor_y=axis_y,
-                            staff_line_ys=staff_line_ys, config=GEOMETRY)
-        if read is None or read.source != "geometry":
-            return "ambiguous line snap", (w_sp, h_sp)
-        return f"located ({read.name})", (w_sp, h_sp)
-    return ("only debris" if saw_any else "no clusters"), None
+    trace: dict = {}
+    found = locate_clef(cell, trace=trace)
+    size = None
+    if trace.get("w_spaces") is not None and trace.get("h_spaces") is not None:
+        size = (trace["w_spaces"], trace["h_spaces"])
+    if found is not None:
+        return f"located ({found.read.name})", size
+    reason = trace.get("reason", "unknown")
+    return BRANCH_NAMES.get(reason, reason), size
 
 
 def main() -> int:

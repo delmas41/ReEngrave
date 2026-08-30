@@ -206,3 +206,113 @@ One caveat is recorded in `ground_truth.json` itself: Beethoven 6 ordinal 5
 (Violino I) is read as one flat, but the flat is hard to make out at that
 staff's print quality. It is marked `uncertain` in the file rather than silently
 asserted.
+
+---
+
+## Beethoven 5 p.15 — why a C minor page read as C major
+
+**2026-08-28.** The 2026-08-28 handoff reported this page as the evidence that
+key-signature reading was broken: `0 sharps / 0 flats` on every staff of a
+movement that prints three flats on most of them. Four separate things were
+happening, and only the first was in the key-signature layer's control.
+
+**1. The header was not in the window.** `_staff_x_extent` lost the staff's left
+edge (see `benchmarks/omr-phase1-baseline/RESULTS.md`), so the clef and the
+signature were cropped out of every measure cell. Nine of the twelve staves in
+system 0 started between x=274 and x=773 on a system whose staves all begin at
+x≈172. Fixed. Every header window on the page now holds its clef and its flats
+— checked by rendering all 23 of them.
+
+**2. Clefs followed immediately.** 0 of 23 read → **13 of 23** by the detector
+in the pipeline, and 16 of 23 counting the detector's raw output on staff-start
+cells. The key-signature reader abstains where the clef is only a positional
+default, so this alone moved it from silent to speaking on 4 staves.
+
+**3. The detector is blind to these flats, and it is not a threshold.** Running
+the production weights over the 23 staff-start cells at 600 DPI:
+
+| conf | key markers found | staff-start cells with one | clefs found |
+|---|---|---|---|
+| 0.25 | 3 | 2 / 23 | 16 |
+| 0.10 | 3 | 2 / 23 | 21 |
+| 0.05 | **3** | **2 / 23** | 28 |
+
+Lowering the threshold by a factor of five adds **no** key markers while adding
+75% more clefs. The cells are fine and the model simply does not fire on these
+glyphs — a domain gap for this class on this print, measured on the current
+tree with a correct window and the per-cell `imgsz`.
+
+**4. The CV locator fragments them.** On s2 — a treble staff printing three
+flats, plainly visible in its window — the locator finds exactly one
+accidental-sized cluster after the clef, 0.35 staff spaces wide against a
+flat's 0.7–0.9. The rest is either fused into the oversized cluster the clef
+anchors on, or split below the size floor. That is why the fits fail: the runs
+being fitted are not the signature.
+
+**And the dossier cannot stand in.** `--dossier beethoven-sym5-mvt1` changes
+nothing here: the work has 18 parts and the page has 23 staves, so the
+part→staff join abstains, as designed.
+
+### Following that up: two defects, and what is left after them
+
+**The header cell's staff lines were not where the print has them.**
+`Staff.line_ys` is a model of the whole staff — five ideal rows fitted across
+its full width — and the header sits at the extreme left end, furthest from
+where a page-wide average is accurate. Measured on this page at 600 DPI, the
+header cells are off by **0.12 staff spaces on average and 0.47 at worst**, and
+the displacement is uniform per staff (staff 7: +44, +44, +43, +44, +37
+canonical pixels against a 100px spacing) — the staff is displaced, not
+distorted. Key-signature slots are half a space apart, so that is the
+difference between reading a signature and reading nothing. Every staff whose
+signature the pipeline did manage to read was off by less than 0.08 spaces.
+
+`header_ink.refine_staff_lines_in_cell` now finds the one shift that puts the
+rows on the printed lines: worst offset **47.4 → 14.0** canonical pixels, mean
+**12.3 → 5.9**.
+
+**A clef cut up by staff-line erasure is still a clef.** With the frame
+corrected, the flats are demonstrably in the mask and correctly placed — staff
+7's three sit at slot positions **3.91, 1.01, 4.96** against a treble table of
+**4, 1, 5**, in left-to-right order, each passing every component filter. They
+went unread because the run they belong to *begins inside the clef*: erasure
+breaks the clef into accidental-sized fragments, they join the run ahead of the
+signature, and the fit fails over a run that is half clef. Meanwhile the clef
+anchor itself fails, because no single fragment is the 3.6 spaces tall it wants.
+
+So the locator now also tries the **tail** of a run, on a much tighter residual
+(0.20 against the anchored path's), requiring the tail to fill the signature
+exactly. What stops that from undoing the anchor rule — which exists because
+margin ink was once read as one sharp — is that it demands ink at the head of
+the window taller than any accidental (2.0 spaces, chosen inside a 1.8–2.0
+plateau). The two anchor tests draw exactly the cases that must stay silent, no
+clef at all and a clef far into the bar, and both still do.
+
+Given the true clefs, system 0 of p.15 goes from 0 correct / 3 wrong to **3
+correct / 0 wrong**. End to end it is smaller, because the pipeline's own clefs
+are wrong on two of those staves: **clefs 15 → 16 read, and system 0 from 0
+correct / 1 wrong to 1 correct / 0 wrong**. The three ground-truth pages are
+unchanged (beet5-p2 10 correct, pastoral-p2 9, WTC p.17 10, none wrong).
+
+**A vote rejection is not a reading.** `key_signature_read` counted a staff the
+cross-page vote had *rejected* as read, because a rejection is recorded as
+fifths 0 so the measure pass does not re-read it. That reported two staves as
+"0 sharps, 0 flats, read" on a page printing one flat and three. Fixed; those
+staves now carry the vote's own reason.
+
+### What is left
+
+The printed signature is still unread on most staves of this page, and the two
+things standing in the way are now specific: **the clef** (a wrong clef picks
+the wrong slot table, and two of p.15's string staves read treble where they are
+alto and tenor), and **the detector's blindness to these flats** at any
+confidence. Inference from the music remains parked: the signature is in the
+window, legible, and the readers are close to it.
+
+*Correction: an earlier version of this session's notes said the orchestral
+ground-truth PDFs were no longer on this machine. They are — under
+`tools/omr/training/data/imslp/`, which a git worktree reaches through a
+symlink that was missing rather than a corpus that was gone.*
+
+Reproduce: `benchmarks/omr-key-signature/probe_header_windows.py` for the window,
+and the conf sweep above with `tools/omr/yolo_detector.py` over the staff-start
+cells of PDF page 14 of IMSLP984073 at 600 DPI.

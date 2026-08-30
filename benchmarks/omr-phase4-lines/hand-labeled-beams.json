@@ -1,0 +1,249 @@
+{
+  "_comment": [
+    "Beam counts read off REAL scanned cells by eye (Sean, 2026-08-28). The",
+    "LilyPond reference sheet gives exact truth on clean engraving; this gives",
+    "truth on the degraded, dense material the reference sheet cannot imitate.",
+    "Six cells only \u2014 small on purpose \u2014 chosen to span the risk, including two",
+    "where the detector reports zero, which is where a recall loss would hide.",
+    "",
+    "Counting rule given: count beam BARS. Two eighths joined = 1; a group of",
+    "four sixteenths (primary + secondary) = 2. Slurs, ties, ledger lines and",
+    "tuplet brackets are NOT beams \u2014 a tuplet bracket is a bracket, and counting",
+    "it would corrupt the duration inference that reads beam counts.",
+    "",
+    "The predictions were withheld until after the counts were given.",
+    "",
+    "What this established: the earlier collapse from 249 beams to 19 on Mahler",
+    "was PRECISION, not lost recall \u2014 both zero-cells are confirmed zero. It",
+    "also found a residual false-positive class the synthetic sheet could not:",
+    "ledger lines readmitted because the vertical strokes of sharps and naturals",
+    "were being counted as the two stems a beam needs.",
+    "",
+    "Second batch (cells 7-16, same day): four Bol\u00e9ro, three Beethoven 5, two La Mer, one Mahler \u2014 weighted toward the scores the first batch under-covered, and added specifically to test whether the 2.8-space stem-anchor floor generalised beyond the six cells it was chosen on. Result: 6 of 10 exact and ZERO under-counts, so recall holds; every remaining error is an over-count.",
+    "Stem counts were requested for this batch but not supplied, so there is still no stem ground truth on a real score.",
+    "Cell 9 was corrected from 2 to 4 after review at 900 DPI (two 16th groups, each with a primary and a secondary bar). Bars-vs-groups is the one place this counting rule is easy to slip on, and it is worth stating explicitly when asking for more labels.",
+    "",
+    "Each cell carries `bbox_page_px`, the page-pixel region it covered when it was labeled, and the scorer resolves cells by overlapping that box rather than by `cell_index`. The index is NOT stable: a Phase-1 change re-segments the page and renumbers everything. That happened \u2014 a merge changed La Mer p.25 from 9 systems to 3 and from 51 cells to 78, silently re-pointing five labels at different music and moving the stem error from 24 to 35 for a reason that had nothing to do with detection. `cell_index` is kept only as a record of how the cell was originally reached."
+  ],
+  "labeler": "sean",
+  "date": "2026-08-28",
+  "cells": [
+    {
+      "n": 1,
+      "score": "mahler-5-p11",
+      "dpi": 300,
+      "cell_index": 19,
+      "beams": 0,
+      "bbox_page_px": [
+        1120,
+        481,
+        2115,
+        631
+      ]
+    },
+    {
+      "n": 2,
+      "score": "mahler-5-p11",
+      "dpi": 300,
+      "cell_index": 4,
+      "beams": 0,
+      "bbox_page_px": [
+        253,
+        160,
+        616,
+        316
+      ]
+    },
+    {
+      "n": 3,
+      "score": "mahler-5-p11",
+      "dpi": 300,
+      "cell_index": 5,
+      "beams": 0,
+      "bbox_page_px": [
+        616,
+        160,
+        911,
+        316
+      ]
+    },
+    {
+      "n": 4,
+      "score": "wtc-p5",
+      "dpi": 600,
+      "cell_index": 2,
+      "beams": 12,
+      "bbox_page_px": [
+        3216,
+        268,
+        4816,
+        715
+      ]
+    },
+    {
+      "n": 5,
+      "score": "wtc-p5",
+      "dpi": 600,
+      "cell_index": 7,
+      "beams": 14,
+      "note": "labeler excluded a few beams belonging to the measure below that intrude on this crop, so the true count for the full cell region may be slightly higher",
+      "bbox_page_px": [
+        2521,
+        1523,
+        4816,
+        1967
+      ]
+    },
+    {
+      "n": 6,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 7,
+      "beams": 6,
+      "bbox_page_px": [
+        805,
+        277,
+        1341,
+        439
+      ]
+    },
+    {
+      "n": 7,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 19,
+      "beams": 6,
+      "bbox_page_px": [
+        805,
+        617,
+        1341,
+        779
+      ]
+    },
+    {
+      "n": 8,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 24,
+      "beams": 2,
+      "bbox_page_px": [
+        234,
+        787,
+        805,
+        949
+      ]
+    },
+    {
+      "n": 9,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 11,
+      "beams": 4,
+      "note": "first given as 2 and corrected to 4 on review at 900 DPI: the cell holds two 16th groups, each carrying a primary AND a secondary bar. Recorded because it is the counting rule's one genuine ambiguity \u2014 bars, not groups.",
+      "bbox_page_px": [
+        2790,
+        277,
+        3330,
+        439
+      ]
+    },
+    {
+      "n": 10,
+      "score": "bolero-p31",
+      "dpi": 300,
+      "cell_index": 3,
+      "beams": 0,
+      "bbox_page_px": [
+        1806,
+        109,
+        2332,
+        268
+      ]
+    },
+    {
+      "n": 11,
+      "score": "beet5-p10",
+      "dpi": 600,
+      "cell_index": 7,
+      "beams": 0,
+      "bbox_page_px": [
+        355,
+        496,
+        653,
+        685
+      ]
+    },
+    {
+      "n": 12,
+      "score": "beet5-p10",
+      "dpi": 600,
+      "cell_index": 21,
+      "beams": 0,
+      "bbox_page_px": [
+        355,
+        647,
+        653,
+        836
+      ]
+    },
+    {
+      "n": 13,
+      "score": "beet5-p10",
+      "dpi": 600,
+      "cell_index": 17,
+      "beams": 0,
+      "bbox_page_px": [
+        2049,
+        496,
+        2188,
+        685
+      ]
+    },
+    {
+      "n": 14,
+      "score": "lamer-p25",
+      "dpi": 300,
+      "cell_index": 10,
+      "beams": 2,
+      "bbox_page_px": [
+        260,
+        629,
+        878,
+        785
+      ]
+    },
+    {
+      "n": 15,
+      "score": "lamer-p25",
+      "dpi": 300,
+      "cell_index": 1,
+      "beams": 0,
+      "bbox_page_px": [
+        260,
+        207,
+        878,
+        360
+      ]
+    },
+    {
+      "n": 16,
+      "score": "mahler-5-p11",
+      "dpi": 300,
+      "cell_index": 12,
+      "beams": 0,
+      "bbox_page_px": [
+        253,
+        396,
+        616,
+        543
+      ]
+    }
+  ],
+  "scores": {
+    "mahler-5-p11": "PDF Scores/Mahler_5_.pdf, page index 11",
+    "wtc-p5": "PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf, page index 5",
+    "bolero-p31": "PDF Scores/IMSLP421137-PMLP03667-Ravel_Bolero.pdf, page index 31",
+    "beet5-p10": "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf, page index 10",
+    "lamer-p25": "PDF Scores/IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf, page index 25"
+  }
+}

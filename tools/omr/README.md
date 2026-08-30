@@ -158,8 +158,9 @@ work better without the lines. The YOLO detector is trained on cells
 1. Reads `MeasureCell.image` (canonical-size, BGR or grayscale).
 2. Runs the model with `agnostic_nms=True` (collapses overlapping
    semantically-similar boxes — e.g. `dynamicF` + `dynamicFF` on one
-   `ff` mark) and `imgsz=2048` (matches the production weights'
-   fine-tuning resolution).
+   `ff` mark) and an `imgsz` chosen per cell, so the model is shown a
+   staff space near the one it reads noteheads at. See "Inference
+   scale" below for why a fixed `imgsz` is the wrong knob here.
 3. Maps each box's class id back to a SMuFL glyph name + category.
 4. Returns `list[SymbolDetection]` in canonical-cell coordinates.
 
@@ -167,6 +168,58 @@ work better without the lines. The YOLO detector is trained on cells
 proportionally re-projects each box into source-page pixels using the
 cell's `bbox_page_px` rectangle, so consumers get both `bbox` (canonical)
 and `bbox_page` (page-pixel) per detection.
+
+### Inference scale — why `imgsz` is chosen per cell
+
+A detector does not see pixels, it sees a **staff space**. `imgsz` is only a
+pixel budget; what decides whether the model recognises a notehead is how large
+that notehead is once ultralytics has letterboxed the image to `imgsz`:
+
+```
+staff space shown  =  canonical staff space  ×  imgsz / longest side of cell
+```
+
+This matters here because the detector is fed **cells, not pages**, and Phase 1
+has already rescaled every cell so its staff span is `CANONICAL_STAFF_SPAN_PX`
+(400 px — a staff space of 100). Running such a cell at `imgsz=2048` enlarges it
+*again*, and the model is shown a staff space of 100–200 px. It was fine-tuned
+on DeepScoresV2 pages, where a staff space is a couple of dozen pixels. The old
+default of 2048 was chosen to "match the weights' fine-tuning resolution", which
+is true of a page and false of a canonical cell.
+
+Past roughly 25 px the failure is not a graceful loss of recall. The model stops
+finding noteheads and starts finding **fragments** of them — boxes a quarter of a
+notehead tall, stacked in columns up the vertical stroke of a clef or a time
+signature. A `4/4` reliably became a stack of nine "noteheads" on every staff.
+Measured on the authored fixtures in `benchmarks/omr-detector-scale/`, where the
+note count of all 30 measures is exact:
+
+| staff space shown | detected/true notes | measures exactly right | median box width |
+|---|---|---|---|
+| 8 – 22 | 0.88–0.89 | **24 / 30** | 1.27–1.30 spaces ✓ |
+| 26 | 0.96 | 17 / 30 | 1.27 |
+| 50 | 1.77 | 3 / 30 | 0.87 |
+| 100 – 150 (the old default) | 1.41–1.91 | 1–3 / 30 | 0.23–0.45 ✗ |
+
+So `imgsz` defaults to `None`, and `yolo_detector.imgsz_for_cell` sizes each cell
+to show the model `TARGET_STAFF_SPACE_PX` (16 — the middle of that plateau, with
+about a factor of two of margin either side, and where notehead confidence
+peaks). Pass `--imgsz N` to pin a value; `--imgsz 512` is the best fixed value
+measured and `--imgsz 2048` reproduces the old behaviour.
+
+A second session reached the same bug the same day from 161 hand-labeled
+orchestral cells and landed the constant 512 on main. The two sets of
+measurements agree; `benchmarks/omr-detector-scale/RESULTS.md` reconciles them
+and shows why a constant lands inside the plateau on wide header cells and past
+its edge on narrow interior cells of the same page.
+
+Two things worth knowing about the old number. The headline **F1 98.8%** was
+measured by `training/eval_on_score_cells.py`, which calls `detect()` without an
+`imgsz` and so ran at the wrapper's old default of **640**, not the 2048 the
+pipeline used — the quality figure and the production setting were never the
+same configuration. And the note in "Each reader gets the picture it can read"
+that the model finds *zero* key markers on a header crop "at any imgsz" was
+testing 640/1280/2048, all of which are far too large for a crop that narrow.
 
 ### Class space
 
@@ -238,12 +291,40 @@ current production weights — see "Known limitations" below.
                   "A": "#", "E": "#", "B": "#"
                 }
               },
+              "key_signature_read": true,     // whether the field above is a
+                                              // READING. false = nothing could
+                                              // read this staff, and 0/0 is
+                                              // the empty default, not a
+                                              // finding. Read it before
+                                              // trusting a zero.
+              "key_signature_unread_reason": "no clef was read on this staff…",
+                                              // present exactly when
+                                              // key_signature_read is false
               "time_signature":  {"numerator": 4, "denominator": 4, "raw": "4/4"},
+              "staff_geometry": {               // the five lines every reading
+                                                // above was MEASURED against —
+                                                // see "The staff frame" below.
+                                                // null when this staff was not
+                                                // read as a clean 5-line staff.
+                "line_ys_page":    [268, 291, 314, 337, 360],  // top → bottom
+                "line_spacing_px": 23.0,        // mean gap
+                "x_start":         186,
+                "x_end":           1755,
+                // What the five ideal rows above COST — measured, and null
+                // when the lines were too faint or broken to trace.
+                "line_thickness_px": [4.0, 5.0, 4.0, 5.0, 4.0],  // ink per line
+                "line_wander_px":    1.5        // departure from nominal
+              },
               "n_measures":      4,
               "measures": [
                 {
                   "measure_index":   0,
                   "bbox_page_px":    [186, 268, 1755, 715],
+                  "staff_line_ys_canonical": [100, 200, 300, 400, 500],
+                                                 // the same five lines in THIS
+                                                 // cell's canonical frame — the
+                                                 // one detections[].bbox is in
+                  "upscale_factor":  2.13,       // canonical px per page px
                   "clef":            "treble",   // active clef at this measure
                   "key_signature":   { ... },    // active key sig at this measure
                   "time_signature":  { ... },    // active time sig at this measure
@@ -288,9 +369,58 @@ current production weights — see "Known limitations" below.
 | `detections[].bbox` | Canonical cell coords (px) | Cropping the symbol out of `MeasureCell.image` |
 | `detections[].bbox_page` | Source-page pixels at `dpi` | Drawing on the source PDF / overlaying back |
 | `measures[].bbox_page_px` | Source-page pixels at `dpi` | Cropping the whole measure from the PDF |
+| `staves[].staff_geometry` | Source-page pixels at `dpi` | Placing anything on the staff in the page frame |
+| `measures[].staff_line_ys_canonical` | Canonical cell coords (px) | Placing a `detections[].bbox` on the staff |
 
 All page-pixel boxes are `[x, y, w, h]` (top-left + size), at the `dpi`
 the page was rendered at (default 600 — same as a 600 DPI bitmap).
+
+### The staff frame
+
+This pipeline is a sequence of erasures — binarize, deskew, crop, rescale,
+remove the staff lines — and every one of them is safe only because what it
+destroys is written down somewhere else. `MeasureCell` keeps the original
+image beside the staff-line-removed one, and carries the staff's five lines
+along with it, which is why `clef_geometry` can separate an alto clef from a
+tenor (the same drawing, one line apart) without looking at a single pixel of
+the erased image: it reads `cell.staff_line_ys_canonical`, not the picture.
+
+Every geometric reading here works that way — the clef's named line, a
+notehead's line-or-space, a key signature's slot positions are all
+measurements against those five lines. So the lines are emitted too. Without
+them the JSON carried the *answers* but not the frame they were measured in,
+and nothing downstream could check a clef against the staff it sits on,
+re-derive a pitch from a box, or repeat a snap.
+
+Two blocks, because there are two frames and each cell is scaled
+independently — the staff-level page geometry does **not** describe a cell's
+canonical coordinates:
+
+```python
+staff  = sys_["staves"][0]
+meas   = staff["measures"][0]
+geom   = staff["staff_geometry"]          # page frame, or None if abstained
+lines  = meas["staff_line_ys_canonical"]  # canonical frame — same 5 lines
+scale  = meas["upscale_factor"]           # canonical px per page px
+
+# The two are interconvertible through the measure's own bbox:
+y0 = meas["bbox_page_px"][1]
+assert [round((y - y0) * scale) for y in geom["line_ys_page"]] == lines
+
+# Re-derive a pitch the way pitch_resolver did, from the JSON alone:
+half = ((lines[-1] - lines[0]) / 4.0) / 2.0
+for det in meas["detections"]:
+    if det["category"] == "notehead":
+        x, y, w, h = det["bbox"]
+        position = round(((y + h // 2) - lines[0]) / half)   # half-steps down
+        # → feed `position` + meas["clef"] to pitch_resolver._pitch_from_position
+```
+
+`staff_geometry` is `null` — present, but null — on a staff that was not read
+as a clean five-line staff, following the same abstain-when-blind rule as the
+geometric readers: the line numbering the clef and slot tables are defined on
+only means something on five lines. A **missing** key means the file predates
+this block.
 
 ### Time-signature inference (back-fill)
 
@@ -592,6 +722,15 @@ letterboxed sliver as nothing it knows. Cropping to the header is what makes the
 CV locator work at all and what makes the detector go blind, so neither reader
 is given the other's picture.
 
+> **This diagnosis is now suspect** (2026-08-28). 640, 1280 and 2048 are all far
+> too large for a crop a few staff spaces wide — see "Inference scale" above —
+> so "at any imgsz" sampled three points on the wrong side of the cliff. The
+> *observation* stands; the *cause* may be scale rather than letterboxing, and
+> the split between the two readers is worth re-measuring now that the detector
+> is sized per cell. The layer's own scores are unchanged either way
+> (`benchmarks/omr-key-signature/RESULTS.md`), so nothing here has been altered
+> on the strength of the doubt.
+
 ### What it is measured at
 
 Two ground-truth pages, every signature read off the page by eye (Beethoven 5
@@ -610,6 +749,25 @@ The vote leaves no wrong answers on either page — including the clarinets, who
 one printed sharp against a page of flats cannot be told from a misread by any
 structural argument, and which therefore come back missed rather than
 asserted.
+
+### A zero is not always a reading
+
+Zero sharps and zero flats is the right answer for a horn part in C, and it is
+also the only answer available for a staff nothing could read. Those were the
+same output until 2026-08-28, which is how Beethoven 5 p.15 — a C minor
+movement printing three flats — came to report "0 sharps / 0 flats" on all 23
+staves as though that were a finding. **`key_signature_read` now says which it
+is**, and `key_signature_unread_reason` says why when it is false; the CLI
+prints a per-page line whenever any staff is unread. On that page it reads:
+
+```
+key signatures: read on 4/23 staves; the rest report 0 sharps / 0 flats
+because nothing read them
+```
+
+with the nineteen split into 8 staves whose clef was never read and 11 where
+the clef was read but neither reader found accidentals in the header. Those are
+different problems and now look different.
 
 **The reading only ever seeds a staff where the detector found no
 key-signature accidental at all** — the same "speaks only when the detector is
@@ -721,8 +879,11 @@ options:
                         Pass this to reproduce pre-locator output exactly.
                         See "Clef location" above.
   --conf CONF           Detection confidence threshold (default: 0.25)
-  --imgsz IMGSZ         YOLO inference image size (default: 2048 — matches
-                        the production weights' fine-tuning resolution)
+  --imgsz IMGSZ         YOLO inference image size. Default: chosen per cell,
+                        so the model is shown a staff space it recognises
+                        noteheads at. A fixed size means a different staff
+                        space in every cell, because cells are already
+                        rescaled to a canonical staff span
   --iou IOU             NMS IoU threshold (default: 0.5)
   --no-agnostic-nms     Disable agnostic NMS
   --dpi DPI             Source-page render DPI (default: 600)
@@ -734,10 +895,11 @@ options:
 
 | Goal | Setting |
 |---|---|
-| Default — clean engraved scores | (defaults — `conf=0.25`, `imgsz=2048`, `iou=0.5`, agnostic NMS on) |
+| Default — clean engraved scores | (defaults — `conf=0.25`, per-cell `imgsz`, `iou=0.5`, agnostic NMS on) |
 | Higher recall (more, noisier detections) | `--conf 0.10` |
 | Cleaner output (fewer borderline calls) | `--conf 0.35` |
-| Faster on simple / low-density scores | `--imgsz 1280` or `--imgsz 640` |
+| Best fixed `imgsz` measured (if a rule is unwanted) | `--imgsz 512` — see benchmarks/omr-detector-scale/ |
+| Reproduce pre-2026-08-28 output exactly | `--imgsz 2048` (it over-counts notes ~2x) |
 | Lower-DPI scan (300 DPI source) | `--dpi 300` |
 | Debug / visual inspection | `--overlays-dir overlays/` then open the PNGs |
 

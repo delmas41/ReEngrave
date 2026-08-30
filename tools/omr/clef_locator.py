@@ -90,7 +90,10 @@ class ClefLocatorConfig:
     # bound here would cost real viola and trombone clefs. The load-bearing
     # rule is "stop at the first glyph-sized cluster", below.
     max_start_spaces: float = 6.0
-    min_width_spaces: float = 0.55  # narrower ⇒ barline / bracket / stem
+    # Narrower than this and it is a barline, a bracket or a stem, not a clef —
+    # and, crucially, not worth STOPPING the search for either (see the width
+    # test in locate_clef).
+    min_width_spaces: float = 0.55
     max_width_spaces: float = 4.5
     # A C clef spans about 4 spaces in modern fonts and about 3 in the older
     # narrow engravings; the ceiling is what keeps a G clef (≈7) out.
@@ -103,6 +106,64 @@ class ClefLocatorConfig:
     axis_refine_spaces: float = 0.35
     min_ink_fraction: float = 0.10  # of the cluster's bbox — rejects stray rules
     cluster_gap_spaces: float = 0.6  # x-gap that still counts as one glyph
+    # Vertical counterpart of the above, and the reason a clef in a 19th-century
+    # header is found at all. A staff header is a narrow column that also holds
+    # whatever is printed above and below the staff, and grouping ink by its
+    # x-gap alone strung the clef together with the movement heading, the
+    # rehearsal letter and the neighbouring staff into one column far too big
+    # to be a clef — 55% of all header cells, measured. Requiring vertical
+    # proximity as well leaves the clef standing on its own.
+    #
+    # The value is bounded on both sides by measurement, and the lower bound is
+    # the dangerous one. Stripping the staff lines cuts a glyph's vertical
+    # strokes at every line it crosses, so one glyph arrives as pieces about a
+    # line-thickness apart; below 0.2 those pieces separate, and a piece of a
+    # TREBLE clef is the size and shape of a C clef — braced piano music in all
+    # fifteen keys produces 11-15 invented C clefs at 0.15 and none at 0.2.
+    # Above 0.4 the heading text starts fusing back on and coverage falls.
+    # 0.3 is the middle of that window, as far from inventing clefs as from
+    # losing them.
+    # Vertical counterpart of the x-gap. OFF by default — set it to 1.0 to
+    # turn it on — and the reason it is off is not that it doesn't work.
+    #
+    # What it does: a staff header is a narrow column that also holds whatever
+    # is printed above and below the staff, and grouping ink by its x-gap alone
+    # strings the clef together with the movement heading, the rehearsal letter
+    # and the neighbouring staff into one column far too big to be a clef —
+    # 55% of all header cells, measured. Requiring vertical proximity as well
+    # leaves the clef standing on its own, and it is worth a lot of coverage:
+    # Nottebohm 61 -> 72 located of 205 headers, Beethoven 5 27 -> 33 of 396,
+    # nothing else on either page changing.
+    #
+    # It applies ONLY to ink standing clear of the staff's own five lines (see
+    # `on_staff` in `header_ink.cluster_components`). Ink that touches the
+    # staff belongs to whatever glyph is printed there, however the morphology
+    # broke it up, and is never separated. Without that restriction the rule
+    # takes a scanned treble clef apart at the waist and reads the upper half
+    # as an alto clef — seventeen invented clefs over twenty pages of
+    # Beethoven 5. The tolerance is then bounded by two well-separated
+    # populations: a glyph's own internal gaps are under half a space (the G
+    # clef's tail detaches at 0.49), a heading stands 1.68 spaces clear at the
+    # median, and 1.0 sits between them.
+    #
+    # Why it is off: of the 19 staves it adds across both books, 14 are right
+    # and **5 are bass clefs read as C clefs**. Every one of the five is the
+    # same pre-existing hole — `_has_f_clef_dots` is the only thing separating
+    # an F clef from a C clef, and on these prints the two dots merge into the
+    # clef's body under thresholding, so there is no pair to find. The extra
+    # coverage lands disproportionately on staves where that hole is open, and
+    # a wrong clef transposes every note on its staff while a missed one costs
+    # nothing that was not already lost. Nothing cheap closes it: symmetry does
+    # not separate the two populations (wrong reads 0.70-0.80 against correct
+    # reads from 0.701), nor does horizontal ink balance, nor the cluster's
+    # internal ink profile — all measured, all in
+    # benchmarks/omr-clef-geometry/RESULTS.md.
+    #
+    # So this is finished work waiting on a different fix. Turn it on when the
+    # F-clef veto can survive a merged dot pair, and re-run
+    # `check_clef_precision.py` — which grew its orchestral corpus for exactly
+    # this reason.
+    cluster_y_gap_spaces: float | None = None
     min_component_area_spaces: float = 0.02  # speck filter, in (staff space)²
     vertical_rule_max_width_spaces: float = 0.5   # thinner ⇒ a rule, not a glyph
     vertical_rule_min_height_spaces: float = 2.0
@@ -336,6 +397,7 @@ def locate_clef(
     occupied_boxes: list[tuple[int, int, int, int]] | None = None,
     config: ClefLocatorConfig = DEFAULT_LOCATOR_CONFIG,
     geometry: ClefGeometryConfig = DEFAULT_CONFIG,
+    trace: dict | None = None,
 ) -> LocatedClef | None:
     """Locate a C clef at the start of `cell` and name it, or return None.
 
@@ -349,13 +411,27 @@ def locate_clef(
     first cluster is then real notation, and a stacked chord in particular is
     tall, glyph-sized and vertically symmetric enough to pass for a C clef.
     Reusing the detector's own output costs nothing and settles it.
+
+    `trace`, when given, is filled with why this call came out the way it did —
+    the branch that ended it and the geometry of the cluster that ended it, in
+    staff spaces. It exists so the coverage measurements in
+    `benchmarks/omr-clef-geometry/` are taken from the code that ships rather
+    than from a copy of it, which is how the fused-cluster share was first
+    mis-attributed to width.
     """
+    def _note(reason: str, **fields) -> None:
+        if trace is not None:
+            trace["reason"] = reason
+            trace.update(fields)
+
     metrics = _staff_metrics(cell)
     if metrics is None:
+        _note("no_staff_metrics")
         return None
     spacing, top_y, bottom_y = metrics
     mask = _ink_mask(cell, spacing, config)
     if mask is None:
+        _note("no_mask")
         return None
     # Everything below is measured in ANALYSIS space — the cell resized so its
     # staff spacing is `analysis_spacing_px`. Convert the inputs into it, and
@@ -409,14 +485,33 @@ def locate_clef(
             )
         )
 
-    for bbox in _cluster_components(
-        boxes, max_gap=config.cluster_gap_spaces * spacing
-    ):
+    clusters = _cluster_components(
+        boxes,
+        max_gap=config.cluster_gap_spaces * spacing,
+        max_y_gap=(
+            None if config.cluster_y_gap_spaces is None
+            else config.cluster_y_gap_spaces * spacing
+        ),
+        on_staff=(top_y, bottom_y),
+    )
+    if trace is not None:
+        trace["spacing_px"] = round(spacing, 2)
+        trace["clusters"] = [
+            {"x": round(cx / spacing, 2), "y": round(cy / spacing, 2),
+             "w": round(cw / spacing, 2), "h": round(ch / spacing, 2)}
+            for cx, cy, cw, ch in clusters
+        ]
+    if not clusters:
+        _note("no_clusters")
+        return None
+
+    for bbox in clusters:
         x, y, w, h = bbox
         w_sp, h_sp = w / spacing, h / spacing
         if x / spacing > config.max_start_spaces:
             # Too far in to be a clef, and everything further right is further
             # still — whatever is at the head of this staff, we didn't find it.
+            _note("too_far_right", start_spaces=round(x / spacing, 2))
             return None
         ink = int(np.count_nonzero(strip[y : y + h, x : x + w]))
         if w * h == 0 or ink / float(w * h) < config.min_ink_fraction:
@@ -430,6 +525,15 @@ def locate_clef(
             # clef and stopped, and the real C clef 1.5 spaces to its right —
             # 2.3 x 3.2 spaces, textbook — was never looked at.
             continue
+        if w_sp < config.min_width_spaces:
+            # Narrower than any clef, whatever its height — so it cannot be the
+            # G or F clef the size test below is meant to stop for. Same
+            # reasoning as the ink test above, and the same failure without it:
+            # a 0.55 x 6.5-space rule remnant at the very left of the header
+            # read as "bigger than any C clef", stopped the search, and the
+            # textbook 2.1 x 2.9-space clef two spaces to its right was never
+            # looked at.
+            continue
         if h_sp > config.max_height_spaces or w_sp > config.max_width_spaces:
             # Glyph-sized but bigger than any C clef — overwhelmingly a G clef,
             # which is exactly two-thirds of all clefs. STOP here rather than
@@ -439,13 +543,21 @@ def locate_clef(
             # symmetric — would be read as the staff's clef instead. A real
             # clef is solid enough to clear the ink test above, so it still
             # stops here.
+            _note(
+                "too_big",
+                w_spaces=round(w_sp, 2),
+                h_spaces=round(h_sp, 2),
+                too_tall=h_sp > config.max_height_spaces,
+                too_wide=w_sp > config.max_width_spaces,
+            )
             return None
-        if w_sp < config.min_width_spaces or h_sp < config.min_height_spaces:
+        if h_sp < config.min_height_spaces:
             continue  # debris: a fragment, a speck, a rule that survived
 
         if _overlaps_any(bbox, occupied_boxes):
             # The head of this staff is a notehead or a rest, so the clef is
             # not in this cell at all. Stop, exactly as for a G clef.
+            _note("occupied", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2))
             return None
 
         # Measure symmetry about the axis the ink actually balances on, searched
@@ -465,8 +577,12 @@ def locate_clef(
             # Not a C clef. Stop rather than look further right: whatever sits
             # at the head of the staff is what the clef would have been, and
             # scanning on would only find noteheads to misread.
+            _note("asymmetric", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
+                  symmetry=round(symmetry, 3))
             return None
         if _has_f_clef_dots(strip, bbox, spacing, config):
+            _note("f_clef_dots", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
+                  symmetry=round(symmetry, 3))
             return None  # an F clef wearing a C clef's proportions
 
         # Hand the measurement to the same resolver the detector path uses, so
@@ -480,8 +596,12 @@ def locate_clef(
             config=geometry,
         )
         if read is None or read.source != "geometry":
+            _note("ambiguous_snap", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
+                  symmetry=round(symmetry, 3))
             return None  # the snap was ambiguous — abstain
         # Report the box in the cell's own coordinates, not analysis space.
+        _note("located", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
+              symmetry=round(symmetry, 3), clef=read.name)
         inv = 1.0 / scale if scale else 1.0
         return LocatedClef(
             read=read,
@@ -489,4 +609,5 @@ def locate_clef(
             symmetry=round(symmetry, 4),
         )
 
+    _note("only_debris")
     return None

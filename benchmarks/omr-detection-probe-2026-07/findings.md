@@ -1,5 +1,16 @@
 # Detection-confidence probe — is the orchestral OMR gap a threshold problem? (2026-07-11)
 
+> ⚠️ **SUPERSEDED 2026-08-28.** The numbers below were measured at `imgsz 2048`,
+> and the central ones are artefacts of it. Re-measured on the same pages with
+> the same weights and confidence, changing only `imgsz`: Boléro p.1 goes from
+> 0 time-signature digits and 13 clefs to **36 digits and 24/24 clefs**, Mahler
+> 5 p.1 from 0 and 1 to **7 and 18**, and the "false-positive flood" runs the
+> other way — 705 noteheads to 14. That includes the part the 2026-08-28 handoff
+> called not in doubt. See `benchmarks/omr-detection-probe-2026-08/findings.md`.
+> What survives is a class-specific gap: key-signature flats on Beethoven 5 p.15
+> are undetected at conf 0.25, 0.10 and 0.05 alike.
+
+
 **Question.** The time-signature + clef work on branch
 `claude/omr-time-signature-inference-e547f1` kept safely abstaining on dense
 orchestral pages because the detector barely *sees* the inputs. Before investing

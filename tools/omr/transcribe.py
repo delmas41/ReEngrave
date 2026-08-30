@@ -73,6 +73,17 @@ Output schema (JSON):
                       "flats":  0,          # count of flats (mutually exclusive)
                       "alterations": {"F": "#", "C": "#"}  # letter -> '#'|'b'
                   },
+                  "key_signature_read": True,  # whether the zeros above are a
+                                            # READING. False = nothing could
+                                            # read this staff's signature, and
+                                            # 0/0 is the empty default rather
+                                            # than a finding — the distinction
+                                            # a C minor page reporting "0
+                                            # sharps, 0 flats" on every staff
+                                            # depends on.
+                  "key_signature_unread_reason": "no clef was read on this staff…",
+                                            # OPTIONAL — present exactly when
+                                            # key_signature_read is False.
                   "clef_final": "bass",     # OPTIONAL — only if clef changed
                                             # mid-staff (rare)
                   "key_signature_final": {...},  # OPTIONAL — only if key changed
@@ -143,10 +154,34 @@ Output schema (JSON):
                   },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
+                  "staff_geometry": {       # the five lines every geometric
+                                            # reading above was measured
+                                            # against. null when the staff was
+                                            # not read as a clean 5-line staff.
+                      "line_ys_page": [268, 291, 314, 337, 360],  # top → bottom
+                      "line_spacing_px": 23.0,
+                      "x_start": 186, "x_end": 1755,
+                      # What those five ideal rows cost. Both are measured
+                      # (staff_detector.measure_line_geometry) and both are
+                      # null when the lines were too faint to trace.
+                      "line_thickness_px": [4.0, 5.0, 4.0, 5.0, 4.0],
+                                            # ink per line — what staff-line
+                                            # removal has to erase
+                      "line_wander_px": 1.5 # how far the printed line strays
+                                            # from its nominal row
+                  },
                   "measures": [
                     {
                       "measure_index": 0,
                       "bbox_page_px": [x0, y0, x1, y1],
+                      "staff_line_ys_canonical": [100, 200, 300, 400, 500],
+                                            # the same five lines in THIS
+                                            # cell's canonical frame — the one
+                                            # detections[].bbox is in. Cells
+                                            # are scaled independently, so the
+                                            # staff-level page geometry does
+                                            # not describe this frame.
+                      "upscale_factor": 2.13,   # canonical px per page px
                       "clef": "treble",     # active clef AT this measure
                       "key_signature": {...},  # active key sig at this measure
                       "time_signature": {...},  # active time sig at this measure
@@ -209,7 +244,8 @@ from .staff_detector import detect_staves
 from .measure_extractor import detect_barlines, extract_measures, resegment_fused_measures
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell, PageWithStaves, Staff
-from .pitch_resolver import pitch_for_notehead, pitch_candidates_for_notehead
+from .pitch_resolver import (pitch_candidates_for_notehead, pitch_for_notehead,
+                             pitch_to_midi)
 from .clef_geometry import clef_name_from_class, resolve_clef_for_detection
 from .clef_locator import locate_clef
 from .key_signature_geometry import (
@@ -833,6 +869,48 @@ def _key_sig_summary(alterations: dict[str, str]) -> dict[str, Any]:
     }
 
 
+def _staff_geometry(staff: Staff | None) -> dict[str, Any] | None:
+    """The staff's own five lines, in page pixels, for the output JSON.
+
+    Every geometric reading in this pipeline is a measurement against these
+    lines: which line a clef names (`clef_geometry`), which line or space a
+    notehead sits on (`pitch_resolver`), where a key signature's accidentals
+    fall in the slot table (`key_signature_geometry`). The *readings* were
+    emitted; the frame they were measured in was not, so nothing downstream
+    could check a clef against the staff it sits on, re-derive a pitch from a
+    box, or repeat any snap — the geometry lived only for the length of the
+    run. This block is that frame, written down.
+
+    Returns None for a staff without a clean 5-line reading, matching the
+    abstain-when-blind rule the geometric readers themselves follow: the
+    line-numbering the clef table and the slot tables are defined on only
+    means anything on five lines.
+    """
+    if staff is None or len(staff.line_ys) != 5:
+        return None
+    geom: dict[str, Any] = {
+        "line_ys_page": [int(y) for y in staff.line_ys],
+        "line_spacing_px": round(float(staff.line_spacing_px), 3),
+        "x_start": int(staff.x_start),
+        "x_end": int(staff.x_end),
+    }
+    # What the five ideal rows above cost: how much ink each printed line
+    # actually occupies, and how far it strays from its row. Both are
+    # measurements of what staff-line removal erases (`measure_line_geometry`);
+    # null when the lines were too faint or broken to trace.
+    geom["line_thickness_px"] = (
+        [round(float(t), 3) for t in staff.line_thickness_px]
+        if staff.line_thickness_px
+        else None
+    )
+    geom["line_wander_px"] = (
+        round(float(staff.line_wander_px), 3)
+        if staff.line_wander_px is not None
+        else None
+    )
+    return geom
+
+
 def parse_pages(spec: str, n_pages: int) -> list[int]:
     """Accept '0,4,9' or '0-4' or '' (default all)."""
     if not spec:
@@ -853,7 +931,7 @@ def _read_staff_header(
     cell: MeasureCell,
     *,
     conf: float,
-    imgsz: int,
+    imgsz: int | None,
     header_frac: float,
     iou_threshold: float,
     agnostic_nms: bool,
@@ -935,11 +1013,14 @@ def _header_key_signatures(
     header_cells: dict[int, MeasureCell],
     clef_for_staff: dict[int, str | None],
     dets_for_staff: dict[int, tuple[list, MeasureCell]],
-) -> tuple[dict[int, int], dict[int, str]]:
+) -> tuple[dict[int, int], dict[int, str], dict[int, str]]:
     """Read and reconcile this page's key signatures.
 
     Returns `({staff_index: fifths}, {staff_index: reason})` for the staves the
-    vote is willing to speak for.
+    vote is willing to speak for, and `{staff_index: why}` for the staves it
+    could not — because "no signature was read here" and "the signature read
+    here is empty" are different statements, and only the first is honest about
+    a page nothing could be read on.
 
     Both readings feed the same vote, which is the point of doing it here. The
     DETECTOR's markers are used where it found any — its boxes are real glyphs,
@@ -961,6 +1042,7 @@ def _header_key_signatures(
     the right failure, but it means the two features improve together.
     """
     candidates: list[StaffCandidate] = []
+    unread: dict[int, str] = {}
     for system_index in sorted({st.system_index for st in pws.staves}):
         staves = sorted(
             (st for st in pws.staves if st.system_index == system_index),
@@ -970,6 +1052,13 @@ def _header_key_signatures(
             cell = header_cells.get(staff.staff_index)
             clef = clef_for_staff.get(staff.staff_index)
             read, source = None, ""
+            if not clef:
+                unread[staff.staff_index] = (
+                    "no clef was read on this staff, and the slot table a "
+                    "signature is fitted against is chosen by the clef"
+                )
+            elif cell is None:
+                unread[staff.staff_index] = "no header window was measured"
             if clef:
                 dets, dets_cell = dets_for_staff.get(staff.staff_index, ([], None))
                 if dets_cell is not None:
@@ -979,6 +1068,11 @@ def _header_key_signatures(
                     located = locate_key_signature(cell, clef)
                     read = located.read if located else None
                     source = "cv_locator"
+            if clef and cell is not None and read is None:
+                unread[staff.staff_index] = (
+                    "neither the detector's markers nor the CV locator found "
+                    "key-signature accidentals in this staff's header"
+                )
             candidates.append(StaffCandidate(
                 staff_index=staff.staff_index,
                 system_index=system_index,
@@ -992,13 +1086,20 @@ def _header_key_signatures(
     reasons: dict[int, str] = {}
     for staff_index, verdict in result.verdicts.items():
         if verdict.action == "unread":
+            unread.setdefault(
+                staff_index,
+                f"the cross-page vote did not speak for this staff: "
+                f"{verdict.reason}" if verdict.reason else
+                "the cross-page vote did not speak for this staff",
+            )
             continue
         # A rejected staff is recorded too, with fifths 0: the vote judged its
         # reading untrustworthy, and that judgement has to reach the measure
         # pass or the same reading simply reappears there.
         fifths[staff_index] = verdict.fifths or 0
         reasons[staff_index] = f"{verdict.action}: {verdict.reason}"
-    return fifths, reasons
+        unread.pop(staff_index, None)
+    return fifths, reasons, unread
 
 
 def _header_detections(
@@ -1006,7 +1107,7 @@ def _header_detections(
     header_cell: MeasureCell,
     *,
     conf_threshold: float,
-    imgsz: int,
+    imgsz: int | None,
     iou_threshold: float,
     agnostic_nms: bool,
 ):
@@ -1066,7 +1167,7 @@ def _detections_for_cell(
     cell: MeasureCell,
     *,
     conf_threshold: float,
-    imgsz: int,
+    imgsz: int | None,
     iou_threshold: float,
     agnostic_nms: bool,
     active_clef: str | None,
@@ -2341,19 +2442,9 @@ _CLEF_INVERSION_GAP = 12     # semitones (an octave) of p25/p75 separation to fl
 
 def _pitch_to_midi(pitch: str | None) -> int | None:
     """Convert a pitch string ('F#3', 'Bb5', 'C4') to a MIDI number (C4 = 60),
-    or None if unparseable. Accepts any run of #/b accidentals after the letter."""
-    if not pitch or pitch[0] not in _NOTE_SEMITONE:
-        return None
-    semitone = _NOTE_SEMITONE[pitch[0]]
-    i = 1
-    while i < len(pitch) and pitch[i] in "#b":
-        semitone += 1 if pitch[i] == "#" else -1
-        i += 1
-    try:
-        octave = int(pitch[i:])
-    except ValueError:
-        return None
-    return 12 * (octave + 1) + semitone
+    or None if unparseable. Thin alias — the implementation lives in
+    pitch_resolver so the clef-correction pass shares exactly this parse."""
+    return pitch_to_midi(pitch)
 
 
 def _staff_notehead_midis(staff: dict[str, Any]) -> list[int]:
@@ -2481,7 +2572,7 @@ def transcribe(
     pages: list[int],
     weights: str,
     conf_threshold: float = 0.25,
-    imgsz: int = 512,
+    imgsz: int | None = None,
     iou_threshold: float = 0.5,
     agnostic_nms: bool = True,
     dpi: int = 600,
@@ -2501,6 +2592,13 @@ def transcribe(
     The defaults match what the Phase 3.3 evaluation used (conf=0.25,
     agnostic_nms=True). Lower conf_threshold (e.g. 0.10) for higher recall
     at the cost of more false positives.
+
+    `imgsz=None` (the default) lets the detector pick an inference size per
+    cell, so the model is shown a staff space near the one it recognises
+    noteheads at. A fixed value is the wrong knob for cell-based inference:
+    the cells have already been rescaled to a canonical staff span, so one
+    `imgsz` means a different staff space in every cell. See
+    `yolo_detector.imgsz_for_cell`.
 
     Everything needed to read a staff's header — its clef and key signature —
     is on by default and needs no extra files: `read_headers` measures each
@@ -2672,11 +2770,16 @@ def transcribe(
                         if found is not None:
                             estimate = found.read.name
                     clef_estimate[staff_idx] = estimate
-            voted_fifths, voted_reasons = _header_key_signatures(
-                pws, header_cells, clef_estimate, header_dets
+            voted_fifths, voted_reasons, key_sig_unread_reasons = (
+                _header_key_signatures(
+                    pws, header_cells, clef_estimate, header_dets
+                )
             )
+            key_sig_default_unread = "no reader spoke for this staff"
         else:
             voted_fifths, voted_reasons = {}, {}
+            key_sig_unread_reasons = {}
+            key_sig_default_unread = "header reading is off (--no-header-reading)"
 
         # Dossier slot facts for the whole page, used when per-system grouping
         # is too fragmented to join (which is the normal case — see
@@ -2746,6 +2849,9 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     None,  # default: unknown — only set when detected
                 )
+                staff_obj = next(
+                    (st for st in pws.staves if st.staff_index == staff_idx), None
+                )
                 staff_dict: dict[str, Any] = {
                     "staff_index": staff_idx,
                     # clef + key_signature + time_signature get filled in
@@ -2755,6 +2861,8 @@ def transcribe(
                     "clef": None,
                     "key_signature": None,
                     "time_signature": None,
+                    # The lines every reading above was measured against.
+                    "staff_geometry": _staff_geometry(staff_obj),
                     "n_measures": len(staff_cells),
                     "measures": [],
                 }
@@ -2762,14 +2870,15 @@ def transcribe(
                 # staff-start measure cell actually misses it — see
                 # `_header_cell_beats_measure_cell`.
                 header_cell_for_clef = None
-                if read_headers and staff_cells:
-                    staff_obj = next(
-                        (st for st in pws.staves if st.staff_index == staff_idx), None
-                    )
-                    if staff_obj is not None and _header_cell_beats_measure_cell(
+                if (
+                    read_headers
+                    and staff_cells
+                    and staff_obj is not None
+                    and _header_cell_beats_measure_cell(
                         header_windows.get(staff_idx), staff_obj, staff_cells[0]
-                    ):
-                        header_cell_for_clef = header_cells.get(staff_idx)
+                    )
+                ):
+                    header_cell_for_clef = header_cells.get(staff_idx)
 
                 first_cell_effective_clef: str | None = None
                 first_cell_clef_source: str | None = None
@@ -2818,6 +2927,15 @@ def transcribe(
                     staff_dict["measures"].append({
                         "measure_index": cell.measure_index,
                         "bbox_page_px": list(cell.bbox_page_px),
+                        # The staff lines in THIS cell's canonical frame — the
+                        # frame `detections[].bbox` is in. Each cell is scaled
+                        # independently, so the staff-level page geometry does
+                        # not describe it; without these a canonical box cannot
+                        # be placed on the staff at all.
+                        "staff_line_ys_canonical": [
+                            int(y) for y in cell.staff_line_ys_canonical
+                        ],
+                        "upscale_factor": round(float(cell.upscale_factor), 6),
                         "clef": active_clef,
                         "key_signature": _key_sig_summary(active_key_sig),
                         "time_signature": dict(active_time_sig) if active_time_sig else None,
@@ -2845,6 +2963,36 @@ def transcribe(
                 staff_dict["key_signature"] = _key_sig_summary(
                     first_cell_effective_key_sig or {}
                 )
+                # Whether that signature is a READING or a silence. Zero sharps
+                # and zero flats is the correct answer for a horn part in C and
+                # the only answer available for a staff nothing could read, and
+                # the two were indistinguishable in this output — which is how
+                # Beethoven 5 p.15, a C minor movement, came to report "0
+                # sharps / 0 flats" on all of its staves as though that were a
+                # finding. A staff counts as read when something produced its
+                # alterations, or when the cross-page vote spoke for it (even
+                # to reject a reading — that is still a judgement about this
+                # staff). Otherwise it is unread, and says why.
+                # A staff the vote REJECTED is not a staff that was read. The
+                # vote records a rejection as fifths 0 so the measure pass does
+                # not simply re-read the same thing, and that zero is a
+                # judgement about a reading it did not trust — not a finding
+                # that the staff carries no accidentals. Counting it as read
+                # made Beethoven 5 p.15 report two staves as "0 sharps, 0
+                # flats, read" on a page printing one flat and three.
+                rejected = voted_reasons.get(staff_idx, "").startswith("rejected")
+                if first_cell_effective_key_sig or (
+                    staff_idx in voted_fifths and not rejected
+                ):
+                    staff_dict["key_signature_read"] = True
+                else:
+                    staff_dict["key_signature_read"] = False
+                    staff_dict["key_signature_unread_reason"] = (
+                        voted_reasons.get(staff_idx) if rejected else
+                        key_sig_unread_reasons.get(
+                            staff_idx, key_sig_default_unread
+                        )
+                    )
                 # Say where a key signature came from when it wasn't the
                 # detector, so a reader can tell a located-and-voted signature
                 # from a detected one without re-running the pipeline. Only
@@ -3178,15 +3326,12 @@ def main(argv: list[str] | None = None) -> int:
                          "exactly. See tools/omr/clef_locator.py.")
     ap.add_argument("--conf", type=float, default=0.25,
                     help="Detection confidence threshold (default: 0.25)")
-    # 512 rather than 2048: measured on the end-to-end fixtures
-    # (benchmarks/omr-imgsz-sweep-2026-08/findings.md), where the keyboard
-    # fixture's pitch precision goes 0.144 -> 1.000 and duration 0.0 -> 1.000.
-    # ultralytics letterboxes to imgsz^2 regardless of cell size, so a large
-    # value is simply more anchors and more false noteheads; recall does not
-    # improve to pay for it.
-    ap.add_argument("--imgsz", type=int, default=512,
-                    help="YOLO inference image size (default: 2048 — matches "
-                         "the production weights' fine-tuning resolution)")
+    ap.add_argument("--imgsz", type=int, default=None,
+                    help="YOLO inference image size. Default: chosen per cell, "
+                         "so the model is shown a staff space it recognises "
+                         "noteheads at. --imgsz 512 is the best fixed value "
+                         "measured; --imgsz 2048 reproduces pre-2026-08-28 "
+                         "output. See benchmarks/omr-detector-scale/")
     ap.add_argument("--iou", type=float, default=0.5,
                     help="NMS IoU threshold (default: 0.5)")
     ap.add_argument("--no-agnostic-nms", action="store_true",
@@ -3258,7 +3403,8 @@ def main(argv: list[str] | None = None) -> int:
                   f"{args.clef_reader_conf}, imgsz {args.clef_reader_imgsz}, "
                   f"frac {args.clef_reader_header_frac})")
         print(f"  conf:     {args.conf}, iou: {args.iou}, "
-              f"agnostic_nms: {not args.no_agnostic_nms}, imgsz: {args.imgsz}")
+              f"agnostic_nms: {not args.no_agnostic_nms}, "
+              f"imgsz: {args.imgsz if args.imgsz else 'per-cell'}")
 
     result = transcribe(
         pdf_path=args.pdf,
@@ -3327,6 +3473,16 @@ def main(argv: list[str] | None = None) -> int:
                       f"{len(page_measures)} measures, "
                       f"{n_phase1} phase1_warnings, "
                       f"{n_rhythm} rhythm_sum_warnings")
+                # Say out loud how much of the page's key signature is a
+                # reading. Silence here used to look exactly like C major.
+                staves_d = [st for sys_d in page_d["systems"]
+                            for st in sys_d["staves"]]
+                n_read = sum(1 for st in staves_d
+                             if st.get("key_signature_read"))
+                if staves_d and n_read < len(staves_d):
+                    print(f"    key signatures: read on {n_read}/{len(staves_d)}"
+                          f" staves; the rest report 0 sharps / 0 flats because"
+                          f" nothing read them")
     return 0
 
 

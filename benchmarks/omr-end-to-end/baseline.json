@@ -1,0 +1,106 @@
+{
+  "melody": {
+    "truth": {
+      "parts": 1,
+      "measures": 6,
+      "measures_per_part": [
+        6
+      ],
+      "notes": 24
+    },
+    "omr": {
+      "parts": 1,
+      "measures": 12,
+      "measures_per_part": [
+        12
+      ],
+      "notes": 61
+    },
+    "detected": {
+      "staves": 1,
+      "systems": 1
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 24,
+      "omr_notes": 61,
+      "pitch_matched": 9,
+      "pitch_recall": 0.375,
+      "pitch_precision": 0.148,
+      "duration_ok_on_matched": 8,
+      "duration_rate": 0.889
+    }
+  },
+  "keyboard": {
+    "truth": {
+      "parts": 2,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4
+      ],
+      "notes": 27
+    },
+    "omr": {
+      "parts": 2,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4
+      ],
+      "notes": 45
+    },
+    "detected": {
+      "staves": 2,
+      "systems": 1
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 27,
+      "omr_notes": 45,
+      "pitch_matched": 11,
+      "pitch_recall": 0.407,
+      "pitch_precision": 0.244,
+      "duration_ok_on_matched": 4,
+      "duration_rate": 0.364
+    }
+  },
+  "ensemble": {
+    "truth": {
+      "parts": 4,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 45
+    },
+    "omr": {
+      "parts": 4,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 103
+    },
+    "detected": {
+      "staves": 4,
+      "systems": 1
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 45,
+      "omr_notes": 103,
+      "pitch_matched": 18,
+      "pitch_recall": 0.4,
+      "pitch_precision": 0.175,
+      "duration_ok_on_matched": 3,
+      "duration_rate": 0.167
+    }
+  }
+}

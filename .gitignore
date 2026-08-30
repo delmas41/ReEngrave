@@ -32,7 +32,7 @@ backend/uploads/
 backend/exports/
 
 # ML model weights (kept locally, never committed — large binary blobs)
-omr-weights/
+omr-weights
 *.pt
 *.pth
 *.onnx
@@ -60,10 +60,17 @@ yolov8m.pt
 # Trained model directories from ultralytics
 runs/
 # DeepScoresV2 dataset (downloaded; many GB)
-tools/omr/training/data/
+# No trailing slash: with one this matches only a DIRECTORY, and a symlink
+# left at this path (to reach the dataset from a git worktree) is not a
+# directory — so `git add -A` tracked it, and merging that into the main
+# checkout replaced the real dataset with a symlink to itself.
+tools/omr/training/data
 # Shared OMR weights directory mounted into the backend container
 # (lives at repo root so all worktrees can share one weights file)
-omr-weights/
+# No trailing slash, for the same reason as tools/omr/training/data above: a
+# worktree reaches the weights through a SYMLINK at this path, and a symlink is
+# not a directory, so a pattern ending in / does not match it.
+omr-weights
 
 # Rendered PNG outputs from benchmark runs — reproducible from PDFs
 # Keep verdicts, detection JSONs, reports, CSVs — exclude the heavy renders.
@@ -94,6 +101,10 @@ benchmarks/**/overlays-*/
 
 # Page-context thumbnails for the labeling UI — rendered from PDFs on demand
 benchmarks/*/page-thumbnails/
+# LilyPond output for the clef corpora — the .ly files are the source, and
+# `lilypond` rebuilds these in a second (see check_clef_precision.py).
+benchmarks/omr-clef-geometry/*.pdf
+benchmarks/omr-clef-geometry/*.ps
 
 # Transcribe output kept beside a benchmark run. Regenerable from the PDF and
 # the weights, and enormous: eleven of these reached main in the 2026-08-28

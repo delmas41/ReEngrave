@@ -1,0 +1,14 @@
+{
+  "movement_pages": [
+    7,
+    22
+  ],
+  "pages_processed": 2,
+  "cells_total": 252,
+  "cells_with_xml_match": 252,
+  "labels_total": 1225,
+  "homography_failures": 0,
+  "dropped_classes": {
+    "barline": 252
+  }
+}

@@ -162,3 +162,45 @@ class TestClefAnchor:
         for i, pos in enumerate(TREBLE_FLAT_POS):
             _draw_flat(img, 300 + i * 22, pos)
         assert locate_key_signature(_cell(img), "treble") is None
+
+
+class TestFragmentedClef:
+    """A clef cut up by staff-line erasure is still a clef.
+
+    On a degraded print the clef does not survive erasure in one piece: it
+    breaks into accidental-sized fragments, they join the run ahead of the real
+    signature, and the fit then fails over a run that is half clef. Measured on
+    Beethoven 5 p.15 staff 7, whose three flats sit at slot positions 3.91, 1.01
+    and 4.96 against a treble table of 4, 1, 5 — correctly placed, correctly
+    ordered, and unread.
+
+    The tail pass reads them. What keeps it from undoing the anchor rule is the
+    evidence it demands: ink at the HEAD of the window taller than any
+    accidental. `TestClefAnchor` above draws the two cases that must stay
+    silent — no clef at all, and a clef far into the bar — and they do.
+    """
+
+    @staticmethod
+    def _fragmented_clef(img):
+        """A clef in three pieces, none tall enough to anchor on its own, the
+        tallest still taller than an accidental."""
+        cv2.rectangle(img, (CLEF_X, 70), (CLEF_X + CLEF_W, 112), 0, -1)
+        cv2.rectangle(img, (CLEF_X, 118), (CLEF_X + CLEF_W, 134), 0, -1)
+        cv2.rectangle(img, (CLEF_X, 140), (CLEF_X + CLEF_W, 156), 0, -1)
+
+    def test_a_signature_after_a_fragmented_clef_is_read(self):
+        img = _blank()
+        self._fragmented_clef(img)
+        for i, pos in enumerate(TREBLE_FLAT_POS):
+            _draw_flat(img, 90 + i * 26, pos)
+        found = locate_key_signature(_cell(img), "treble")
+        assert found is not None, "three flats, correctly placed, after a clef"
+        assert found.read.fifths == -3
+
+    def test_the_head_must_still_carry_something_clef_tall(self):
+        """The same three flats with no clef at all stay unread — this is
+        `TestClefAnchor`'s rule, restated against the tail path."""
+        img = _blank()
+        for i, pos in enumerate(TREBLE_FLAT_POS):
+            _draw_flat(img, 90 + i * 26, pos)
+        assert locate_key_signature(_cell(img), "treble") is None

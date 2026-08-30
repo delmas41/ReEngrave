@@ -170,6 +170,12 @@ def main() -> None:
     # direction (melody's duration rate 0.29 -> 0.89, keyboard's precision
     # 0.14 -> 0.33 but its recall 0.59 -> 0.41), so a benchmark run at a
     # non-default setting measures a configuration nobody uses.
+    # Both left as None so the harness tracks the pipeline's own defaults
+    # rather than silently pinning an old value — restating them is how the
+    # benchmark and the pipeline came to run different configurations
+    # (benchmarks/omr-dpi-imgsz-2026-08/RESULTS.md). Detection is highly
+    # sensitive to imgsz, which is now derived per cell:
+    # benchmarks/omr-detector-scale/RESULTS.md.
     ap.add_argument("--dpi", type=int, default=None,
                     help="override the pipeline default")
     ap.add_argument("--imgsz", type=int, default=None,

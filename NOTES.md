@@ -4,6 +4,398 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
+## Clef accuracy, measured end to end (2026-08-29)
+
+The three threads above all ended by pointing at the clef. It turns out to be in
+much better shape than this repo's own notes say: **48/52 hand-read staves
+correct (92%)**, the detector supplying 39 of them at 95%. The "~23% coverage /
+every staff reads as treble" record is about the CV locator alone and predates
+the `imgsz` fix. Every remaining error is a non-treble clef read as treble.
+
+`benchmarks/omr-clef-geometry/eval_pipeline_clefs.py` is the harness;
+`PIPELINE_CLEF_RESULTS.md` has the numbers, the one fix that landed (a part
+keeps its clef between systems: 48/52 → 49/52), and two richer sources measured
+and rejected — score-order identity driving clef correction, and the dossier
+joined to condensed staves by alignment.
+
+**What is left is three staves**, and they are hard in a specific way: the page
+carries no evidence of the right answer in any form the pipeline can see, and
+the dossier that does know cannot be told which staff to put it on. That join —
+parts to condensed staves, with evidence independent of the clefs already read —
+is the next real lever.
+
+---
+
+## ➡️ START HERE — ranked next steps (2026-08-28)
+
+**[docs/next-steps-omr-2026-08-28.md](docs/next-steps-omr-2026-08-28.md)** is the current
+handoff: four ranked threads with evidence, entry points and done-criteria.
+
+1. ~~**One-line percussion staves are invisible**~~ — **DONE 2026-08-28.** A percussion
+   part printed as one rule is now a staff, so the staves below it keep their slots
+   (La Mer p.25: 20 staves reported on a 21-part page). `benchmarks/omr-phase1-baseline/`.
+2. **Key signature** — the cause was found 2026-08-28 and it was neither detection nor
+   reading: the staff's left edge was lost, so the header was cropped out of every cell.
+   Fixed; clefs on Beethoven 5 p.15 went 0/23 -> 13/23 and the reader started firing.
+   What is left is sharply scoped — 11 staves where the clef IS read and neither reader
+   finds accidentals in the header, and the detector is blind to those flats at conf
+   0.25, 0.10 and 0.05 alike. `benchmarks/omr-key-signature/RESULTS.md`. Inference from
+   the music stays parked while the printed signature sits unread.
+3. ~~**Score-order prior**~~ — **DONE 2026-08-28.** `tools/omr/score_layouts.py`:
+   ten standard layouts, monotone alignment, a continuation move for parts printed
+   on several staves. An unlabelled orchestral page (Beethoven 5 p.15, no text
+   layer) now names 10 of 12 staves, 8 correctly, where it had no identity at all.
+   `Tp.` is settled from position. `benchmarks/omr-score-order/RESULTS.md`.
+4. ~~**Re-read July's "domain gap" conclusion**~~ — **DONE 2026-08-28, and it did not
+   survive.** The flood, the invisible meters and the mostly-treble clefs were all
+   artefacts of `imgsz 2048`: same pages, same weights, same confidence, Boléro p.1
+   goes from 0 time-signature digits and 13 clefs to 36 digits and 24/24 clefs.
+   `benchmarks/omr-detection-probe-2026-08/findings.md`. A class-specific gap remains
+   real — key-signature flats on Beethoven 5 p.15 are undetected at any threshold.
+
+⚠️ **Any measurement predating 2026-08-28 went through an `imgsz` reporting 2–4× the notes
+that exist.** Re-measure before building on one. `imgsz` is now derived per cell — see
+`benchmarks/omr-detector-scale/RESULTS.md`, which also corrects the stated mechanism
+(ultralytics scales the longest side to `imgsz`; it does not letterbox to `imgsz²`).
+
+---
+
+## 🧭 Contextual analysis roadmap (2026-08-28) — ACTIVE
+
+**Sean wants all of these; they are ordered here on purpose.** The framing: a human
+reading a large score deduces most of it from context — which staves are concert vs
+transposing, what instrument order and groupings to expect, and once the key is known,
+what the accidentals must mean. ReEngrave currently deduces none of that. Every page
+re-derives clef and key from scratch, and the exporter names parts
+`Page0-System1-merged` (`tools/omr/export.py:716`) because **there is no persistent
+part identity anywhere in the pipeline.**
+
+The four human deductions and where they stand:
+
+| Human deduction | Repo status |
+|---|---|
+| *this staff is Clarinet in B♭* | nothing — no instrument identity at all |
+| *…so it transposes, expects treble, lives in this range* | transposition math exists (`transcribe.py:1450`) but has nothing to attach it to; it guesses offsets |
+| *staves run winds→brass→perc→strings in these groups* | bracket gaps are used only to split systems (`staff_detector.py:194`); the grouping is then discarded |
+| *key is X, so these accidentals mean Y* | M4 re-rank does this, but off one global detected key, not per-staff |
+
+### #1 — Persistent staff/part identity ("slots") — **IN PROGRESS**
+
+**Step 1 DONE (2026-08-28): system grouping rebuilt on vertical connectivity.**
+`tools/omr/system_grouping.py` + wired into `staff_detector.detect_staves`. Slots are
+assigned per system, so correct systems are a hard prerequisite — and the gap-size
+heuristic was badly wrong on exactly the scores that matter. Full writeup:
+[benchmarks/omr-system-grouping-2026-08/findings.md](benchmarks/omr-system-grouping-2026-08/findings.md).
+
+Measured on 14 pages (Beethoven 9 + Beethoven 5 p10 at 300 and 600 dpi), against
+ground truth read off the **left brackets**:
+
+| | gap heuristic | connectivity |
+|---|--:|--:|
+| system count correct | **6/14 (43%)** | **12/14 (86%)** |
+| spurious single-staff "systems" | **19** | **0** |
+
+The cause is named in the old code's own comment: its MAD rule deliberately split at
+"a clearly-bigger-than-normal gap between bracketed sub-systems (winds vs brass vs
+strings)" — but those blocks are *inside* one system. Signal used instead: **a system
+break is a gap that no vertical ink crosses** (barlines and the bracket run through a
+system; nothing crosses between two), the same fact
+`measure_extractor._intersystem_connectivity` already uses one level downstream.
+
+**Bonus: this also recovers the instrument-family grouping** as `Staff.group_index`.
+Bridging counts are trimodal — `0` = system break, `~4-25` = bracket-group boundary
+(only the bracket crosses), `~35-95` = inside a group. Visually verified on Beethoven 9
+p70: two systems, each grouped **4 woodwinds | 2 horns | 5 strings**. That is direct
+input to #3, and it means the old detector was finding the right *groups* and
+mislabelling them as systems.
+
+Remaining failures (2/14) are **merges** — a real break that something crosses. The old
+heuristic fails the opposite way, shredding one system into as many as 12.
+
+**Method warning, worth remembering.** Two attempts at ground truth were wrong before
+the bracket crop settled it, and both produced confident numbers: a ground-truth-free
+proxy ("instrumentation is constant, so staves-per-system should cluster tightly")
+rewards merging everything into one system; and counting systems off a whole-page
+thumbnail mislabels single 13-staff systems as 2, because at that scale the
+brass-to-strings gap looks like a system break. Render the left margin and count
+brackets.
+
+Traps found, each costing a measurement, all documented in the module: `Staff.x_start`
+is unusable as a scan window (p60 staff 3 reports 885 against ~275 for its neighbours);
+the window must reach *past* the staff extent to see the bracket and the closing
+barline; and coverage needs vertical gap-closing or it is resolution-sensitive
+(B5 p10 grouped as 2 systems at 300 dpi and 4 at 600).
+
+**RE-MEASURED after merging `recognition-improvement-next` (2026-08-28).** That branch's
+comb pass recovers lightly printed staves the ink gates dropped — its headline is that
+**Beethoven 5 p10 has 22 staves, not the 18 asserted for months**, because five wind
+staves were losing all but one line each and the survivors were grouped into one
+phantom. Every number below was re-run on the merged tree:
+
+| | before merge | after |
+|---|--:|--:|
+| system-count accuracy | 12/14 (86%) | **12/14 (86%)** |
+| slot label purity | 93/101 (92%) | **57/57 (100%)** |
+| slots with no disagreement | 4/12 | **8/8** |
+| staves assigned a slot | 191/207 | **198/217** |
+
+Beethoven 5 p10 at 300 dpi now groups as `[11, 11]` where it read `[11, 7]` before the
+recovered staves existed.
+
+The merge also caught a half-built guard: `_looks_merged` spots a concatenation by
+seeing an instrument repeat, so it is **blind without labels**, and staff recovery raised
+the median system size until the size cap stopped excluding the one page connectivity
+merges. The reference came out as 24 unlabelled slots. Fixed with the label-free half —
+a merged "system" is a **one-off** while a real full system **recurs**, because the
+orchestra is the same on every page.
+
+**Step 2 DONE (2026-08-28): stable slot ids.** `tools/omr/slots.py` +
+`Staff.slot_index`. Index matching does not work, because **a system omits the staves
+of instruments tacet through it** (Beethoven 9 p65 carries systems of 7 and 11 staves
+on one page — the same orchestra, four parts resting). Score order is monotone, so
+this is a **sequence alignment**, not a matching problem: each system aligns against a
+reference layout by DP, deletions allowed on the reference side, reordering
+disallowed. Driven by, in descending strength, instrument labels (a label *conflict*
+is the only hard constraint available), bracket group, then relative position.
+
+Reference layout recovered on Beethoven 9 — exactly the real orchestra:
+
+    Flute, Oboe, Clarinet, Bassoon | Horn, Horn, Trumpet, Trumpet | 5 strings
+
+Measured over 12 pages / 207 staves (`benchmarks/omr-system-grouping-2026-08/eval_slots.py`):
+**191/207 staves assigned a slot; label purity 92% (93/101)** — of every (slot, label)
+observation, the fraction agreeing with that slot's modal instrument. No hand
+labelling needed: the labels come from the text layer, and the question is only
+whether the alignment keeps them consistent.
+
+**One bad system boundary poisons the whole document**, so guard the reference. The
+first run built it from p25 — one of the two pages `system_grouping` merges — and got
+a 24-slot reference listing Flute..Trumpet *twice*, after which 20 of 24 slots had an
+unstable bracket group. Fixed by rejecting a candidate whose label sequence repeats an
+instrument non-adjacently (`_looks_merged`, the precise guard) plus a permissive size
+cap for documents with no labels at all. Note the cap must stay permissive — an
+earlier 1.5x-of-median cap threw away the genuine full system whenever most systems
+were condensed.
+
+Remaining: 16 unassigned staves, all on the two merged pages (a 24- or 18-staff
+"system" cannot fit 13 slots), and 8 single-observation label disagreements
+concentrated in one misaligned system.
+
+**VERIFIED 2026-08-28 — single-line percussion staves are invisible.**
+`_group_into_staves` only accepts five-peak evenly-spaced windows, so a one-line
+percussion staff produces no `Staff` at all. Synthetic proof + consequence in
+`tools/omr/tests/test_system_grouping.py::test_detect_staves_misses_a_single_line_percussion_staff`:
+on a page of 3 five-line staves plus one 1-line staff, the detector returns 3, and
+**every staff below the missing one carries a `staff_index` one lower than its true
+slot**. Not yet fixed — fixing it means relaxing the 5-peak rule without regressing
+staff detection. Track as a slot-numbering hazard for Step 2. (The old "Phase 1 has
+no regression baseline" objection is retired — main's 9509990 / e6a4110 corrected
+the Phase-1 expectations against the pages themselves.)
+
+### #1 (original framing) — why slots are the keystone
+Assign every staff a stable part id across all systems and pages. Signals available
+today: y-order, staves-per-system, bracket/brace topology at the left edge
+(`system_left_edge()` in `staff_header.py` on branch
+`claude/key-signature-recognition-57ec0a` already measures where the bracket ends and
+the staff begins), inter-staff spacing, header-window ink signature.
+
+Hard case — **condensed systems**: page 4 has 11 staves, page 5 has 8 because the
+winds are tacet, so index 3 is now a different instrument. Naive index-matching breaks
+exactly here; this is where a human stops counting and reads the labels (#2b).
+
+Unlocks: clef continuity across page breaks instead of the silent treble default
+(`transcribe.py:519`); the dossier plan's `slot→staff` join without hand input;
+per-instrument range priors; **and it is the absolute register anchor that #4 turned
+out to require.**
+
+### #4c — Clef from the instrument's written range — **SHIPPED 2026-08-28**
+`tools/omr/clef_correction.py` + `tools/omr/contextual.py`. The retry of the #4
+negative, now that #1 supplies the **absolute register anchor** every earlier
+mechanism was missing. A clef hypothesis is a constant diatonic shift of the staff's
+pitches (`pitch_resolver.clef_diatonic_shift`), so this is a post-pass over built page
+dicts — no image, no re-detection.
+
+Range fit alone is not decisive: a bassoon staff fits bass 1.00 and tenor 0.95 (both
+real bassoon clefs), a viola fits alto 1.00 and treble 0.98. So the **instrument's own
+default clef leads and the range vetoes it** — the same reasoning a reader uses
+("violas read alto, unless what I see says otherwise"). That is sound exactly where
+this may act, because it only applies where no reader read the clef, and there the
+clef in effect is a positional guess carrying no evidence.
+
+**Complementary with the clef-geometry layer, not overlapping.** Measured on
+Beethoven 4 p59 after merging main: main's readers supplied 5 of 11 staves
+(`clef_source=detector`), all correct; 6 stayed DEFAULTED to treble. This pass fixed 3
+of those 6 — Bassoon→bass (fit 0.06→1.00), Viola→alto, Contrabass→bass — restating 84
+noteheads, and touched nothing main had read.
+
+**The integration trap, worth remembering:** the gate must consult
+`staff["clef_source"]`, NOT a scan for a `category == "clef"` detection. `clef_locator`
+/ `clef_geometry` read a clef by shape and by which staff line it sits on and emit **no
+clef detection at all**, so a detection scan calls such a staff "silent" and this pass
+would overwrite a confidently-read clef.
+
+Limit: instrument identity comes from the text layer, so this is a no-op on the ~72% of
+the corpus without one. That is the argument for finishing #2.
+
+### #2 — Margin reading (instrument names) — **DONE 2026-08-28**
+Both halves shipped.
+
+**Text layer (free).** `tools/omr/staff_labels.py` + `instruments.py`. 18/65 IMSLP PDFs
+carry an OCR text layer; on those it resolves **79%** of labelled staves (70%
+high-confidence). The lexicon maps a printed label to instrument, family, default clef,
+written range and transposition (`fifths_offset = -fifths(key_name)`).
+
+**Vision (paid, opt-in).** `tools/omr/staff_labels_vision.py`, wired as
+`contextual.apply_contextual_analysis(vision_fallback=True)`. Covers the other 72%.
+Measured against the text layer as free ground truth
+([benchmarks/omr-margin-labels-2026-08/findings.md](benchmarks/omr-margin-labels-2026-08/findings.md)):
+8 systems / 76 staves / **$0.087** → **25 agree, 0 disagree, 30 recovered, 0 missed**,
+21 correctly-silent unlabelled staves. **100% agreement where both resolve.**
+
+Cost is bounded by design: identity is a property of the SCORE, and slots propagate one
+reading across every system and page, so `vision_system_budget` (default 3) means a few
+cents per work rather than per page.
+
+Three design points worth keeping: one call per **system** (the running order makes a
+smudged entry legible from its neighbours); the crop carries a **gutter of staff
+indices** so the answer keys to our numbering instead of to order, which breaks whenever
+strings go unlabelled; and the prompt demands **null** for an unlabelled staff, because
+an invented instrument propagates into a wrong clef and wrong pitches.
+
+Does **not** contradict the July VLM NO-GO — that measured symbol *counting* on degraded
+cells (89.7% vs a 95% bar). Reading printed words in a clean margin is a different task,
+which is why it got its own measurement.
+
+**Still bounded by staff detection.** On Beethoven 4 p59 the crop shows a `Cor. (Es)`
+label with no staff tick beside it — the detector missed that staff. Latent signal, not
+yet used: *more labels than numbered staves is evidence of a missed staff.*
+
+### #2 (original framing) — why margin reading matters
+No OCR anywhere in the project (`backend/requirements.txt` has none). Two paths:
+- **PDFs with a text layer — MEASURED 2026-08-28: 18/65 (28%) of the IMSLP corpus.**
+  PyMuPDF is already imported (`preprocessing.py:18`) and used only to rasterize.
+  `page.get_text()` returns the instrument abbreviations directly — sampled pages gave
+  `Fl. / Ob. / Cl. / Fag. / Cor. / Tr. / Timp. / Vl. / Vla. / Vc. / Cb.`, and one gave a
+  full instrumentation list: `2 Flauti / 2 Oboi / 2 Clarinetti in C / 2 Fagotti /
+  2 Corni in C / 2 Trombe in C / Timpani in C.G / Violino I`. These are OCR'd text
+  layers over scans (surrounding music glyphs come out as garbage), but the *labels*
+  are clean. With bboxes they join to staves by y-position. **Free instrument identity
+  on ~a quarter of the corpus** — do this before any OCR/VLM work.
+- **Scans**: crop left of `system_left_edge` → OCR or a VLM call.
+
+Then fuzzy-match a multilingual instrument lexicon (Flauti/Flöten/Fl., Clarinetti in
+B, Corni in F, Vcl., Kb.) → canonical instrument → **transposition + expected clef +
+range in one lookup**. That single join delivers three of the four deductions.
+
+Caveat: `benchmarks/vlm-vqa-pilot-2026-07` found Claude tops out at 89.7% *counting
+symbols in degraded crops*. Reading a printed word in a clean margin is an easier and
+different task — but that is an assumption, not a result. The pilot harness is
+reusable to test it for ~$1.
+
+### #3 — Score-order prior as constrained alignment
+Score order is **monotone** — instruments never appear out of family order. So "which
+instrumentation is this?" is a dynamic-programming alignment of the observed staves
+against a small library of standard layouts (Classical pairs / Romantic / large late
+Romantic / string quartet / piano / lead sheet), **not** free classification. Cheap,
+deterministic, and it fuses every weak signal at once: bracket groups, staff count,
+margin text, detected clefs, observed register, key-signature offsets.
+
+This is a better shape for the parked SmartScore ensemble idea above: vote on
+**instrument identity**, from which clef falls out as a consequence, instead of voting
+on clef directly.
+
+### #4 — Key from the music — ⛔ **the clef half is DISPROVEN (2026-08-28)**
+Sean's heuristic: *"I can determine a key signature because of the clear repetition of
+a root note — it starts and ends on an A, so I look for no sharps and flats, or 3
+sharps."* Proposed use: turn key-fit into a **clef** diagnostic (a tonal estimate built
+on a wrong clef is confidently wrong).
+
+**Measured and killed.** See `benchmarks/omr-clef-key-fit-2026-08/findings.md`. Four
+mechanisms, none beating the trivial always-treble baseline (68.7%): per-staff KS key
+fit is noise (median best-vs-2nd margin **0.0000**, 62/80 staves under 0.01);
+accidental letters show no circle-of-fifths concentration under any clef hypothesis;
+register-ordering scores **56.7%** (12 points *below* baseline); consensus-key fit
+scores **exactly** baseline (46/67 both).
+
+Root cause, now confirmed with numbers on real data rather than asserted: **a staff's
+note geometry is clef-invariant.** Changing the clef relabels every note by the same
+interval and preserves every interval between notes, so contour, interval content and
+key-profile statistics all move with the hypothesis and cannot discriminate it. This
+is exactly what `docs/dossier-verification-plan.md` §2 already claimed.
+
+**So #4 is blocked on #1, not independent of it** — the absolute register anchor every
+mechanism was missing is precisely what instrument identity supplies.
+
+Two retry conditions:
+- **Key-signature glyph positions** genuinely *are* clef-dependent (F# sits on the top
+  line in treble, the fourth line in bass), but `main` stores only *counts* —
+  `_detect_key_sig_from_cell` counts `keySharp`/`keyFlat` and discards positions
+  (`transcribe.py:590`). Positional reading exists on branch
+  `claude/key-signature-recognition-57ec0a`. **Retry there, not on main.**
+- Notehead + accidental recall on dense orchestral pages improving enough that the
+  tonal statistics stop being noise.
+
+Still open and untouched by this result: using key context to *interpret accidentals*
+once the key is known from elsewhere (that is M4's existing job, just fed a per-staff
+key instead of a global one), and inferring the **key signature** itself — Beethoven 5
+reads `0 sharps / 0 flats` on all 18 staves when it is in C minor.
+
+### #4b — Infer the KEY SIGNATURE from the music — **OPEN, wanted (Sean, 2026-08-28)**
+Untouched by the #4 negative, which killed only the *clef* half. Sean's heuristic:
+*"the clear repetition of a root note — it starts and ends on an A, so I look for no
+sharps and flats, or 3 sharps."*
+
+Live evidence that this is a real, unflagged error class:
+- **beethoven-5 p15 reads `0 sharps / 0 flats` on all 18 staves** — the movement is in
+  C minor (3 flats), and there are 33 inline flat detections on the page.
+- **ravel-bolero p10 reads five different signatures across 32 staves** (0,1,2,4,5
+  sharps) for a piece in C major. The shipped check (b) catches only **1** of them.
+
+Why it is a different problem from #4, and more tractable: the key signature is a
+*global* property corroborated by many staves at once, so cross-staff voting applies
+(check (b) already has the transposition machinery), whereas the clef is per-staff and
+clef-invariant in the geometry. Candidate signals: inline-accidental letter statistics
+aggregated over a whole page rather than one staff; a flat:sharp ratio far from
+balanced implying the signature is missing accidentals; tonal frame of the lowest
+staff. **Do not reuse per-staff KS profile fitting — measured as noise (#4).**
+
+Prerequisite worth checking first: whether the failure is *reading* the signature or
+*detecting* the glyphs at all (beethoven-5 has 1 `keySharp` detection on the whole
+page, so it is likely detection, in which case the fix belongs with the positional
+key-signature reader on `claude/key-signature-recognition-57ec0a`).
+
+### #5 — Auto-populate the dossier
+`docs/dossier-verification-plan.md` requires hand-input facts. #1–#3 make it
+self-populating: derive the instrumentation from the score, ask Sean only to
+confirm/correct — the same model-proposes / human-adjudicates loop as the annotate UI.
+Plus title-page text → work lookup → measure counts and key plan (the parked GKB item).
+
+### Training-side note — can YOLO be trained on context? Mostly no.
+The pipeline feeds YOLO **canonical cells**: each measure sliced out and rescaled so
+staff span is constant. That normalization buys scale invariance and 98.8% F1 and it
+**destroys exactly the context in question** — margin label, neighbouring staves, page
+position, everything before this bar. A per-cell detector cannot learn what it never
+sees. Three fine-tune campaigns already failed (catalog training collapse; ScoreAug
+worse than clean control; clef fine-tune cratering dense-page noteheads 2506 → 114).
+
+What is *not* dead:
+1. **A separate small model on a different input** — a header/margin reader trained on
+   crops that actually contain context. Never touches production weights, so it
+   structurally cannot cause forgetting. The clef-ft post-mortem already named this.
+2. **Contextual re-scoring with the detector frozen** — everything below conf 0.25 is
+   currently discarded and only the argmax class survives. Keep the pre-NMS candidates
+   and let the contextual layer re-rank. M4 does this for pitch; extending to *class*
+   is the same trick at zero training risk.
+3. **End-to-end sequence models as a second opinion** (LEGATO / oemer / homr) — they
+   read clef and meter contextually by construction. Host-side, not a replacement.
+
+### Structural bugs noticed while surveying
+- ~~five-line-only staff detection~~ — **VERIFIED, see #1 above.**
+- Nothing excludes unpitched/percussion staves from the key and pitch checks
+  (still unverified).
+
+---
+
 ## ⏰ REVISIT — ensemble recognition for clef + detail prediction (2026-07-10)
 
 > **PARTLY OVERTAKEN (2026-08-27).** The clef half of this turned out not to need

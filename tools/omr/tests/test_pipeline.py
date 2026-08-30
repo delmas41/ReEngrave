@@ -1,11 +1,24 @@
-"""Phase 1 regression tests.
+"""Phase 1 regression tests — staff detection, barlines, measure extraction.
 
-These assert structural counts on pages whose ground truth has been
-visually verified. Any change to the pipeline that breaks one of these is
-a regression that the author needs to consciously accept.
+These assert structural counts on pages whose layout is HAND-VERIFIED and
+recorded in `benchmarks/omr-phase1-baseline/ground-truth.json`. Any change to
+Phase 1 that breaks one of them is a regression the author needs to consciously
+accept.
 
-Marked `omr_smoke` so they can be skipped in fast CI loops and run as a
-slower verification step:
+Read the ground-truth file before changing a number here. The previous version
+of this module asserted counts that had been eyeballed and never checked, and
+two of them were wrong in the direction that hides bugs:
+
+  * It asserted 18 staves on Beethoven 5 p.10, which has 22. Five lightly
+    printed wind staves were losing all but one line each to the ink gates, and
+    the five survivors were being grouped into ONE phantom staff — so the page
+    reported 18, the assertion passed, and every note on those five staves was
+    invisible to the rest of the pipeline.
+  * It asserted 3 bars in WTC p.6 system 2, which has 2. The extra "bar" came
+    from a false barline where two stems align, and the measure that fell after
+    it was being silently dropped from the page.
+
+Marked `omr_smoke` so they can be skipped in fast CI loops:
 
     pytest tools/omr/tests/                              # run smoke tests
     pytest tools/omr/tests/ -k 'wtc'                      # one piece
@@ -14,9 +27,10 @@ slower verification step:
 
 from __future__ import annotations
 
-import os
+import json
 from pathlib import Path
 
+import numpy as np
 import pytest
 
 from tools.omr.preprocessing import render_page
@@ -30,11 +44,46 @@ from tools.omr.staff_line_removal import remove_staff_lines
 SCORE_DIR = Path("/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus")
 WTC = SCORE_DIR / "PDF Scores" / "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf"
 BEETHOVEN5 = SCORE_DIR / "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf"
+# A monograph: prose pages, and music examples set into prose. It is the only
+# source here for open score (four voices, full vocal clef set) and for the
+# body-text-as-staff filter.
+NOTTEBOHM = Path("/Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf")
+# The corpus's only ONE-LINE staff: Cymbales, twelfth of 21 parts.
+LAMER = SCORE_DIR / "PDF Scores" / "IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf"
+
+GROUND_TRUTH = json.loads(
+    (Path(__file__).resolve().parents[3] / "benchmarks" / "omr-phase1-baseline"
+     / "ground-truth.json").read_text()
+)["pages"]
 
 
 def _require(path: Path):
     if not path.exists():
         pytest.skip(f"test PDF not present: {path}")
+
+
+def _layout(pdf: Path, page_index: int, dpi: int = 600):
+    """Run Phase 1 and reduce it to the counts the ground truth records."""
+    page = render_page(pdf, page_index, dpi=dpi)
+    pws = detect_staves(page)
+    pws = detect_barlines(pws)
+    cells = extract_measures(pws)
+    per_system: dict[int, set] = {}
+    for c in cells:
+        per_system.setdefault(c.system_index, set()).add(c.measure_index)
+    staves_per_system: dict[int, int] = {}
+    for s in pws.staves:
+        staves_per_system[s.system_index] = staves_per_system.get(s.system_index, 0) + 1
+    return {
+        "page": page,
+        "pws": pws,
+        "cells": cells,
+        "n_staves": len(pws.staves),
+        "n_systems": len(staves_per_system),
+        "staves_per_system": [staves_per_system[i] for i in sorted(staves_per_system)],
+        "measures_per_system": [len(per_system[i]) for i in sorted(per_system)],
+        "n_cells": len(cells),
+    }
 
 
 pytestmark = pytest.mark.omr_smoke
@@ -44,95 +93,165 @@ pytestmark = pytest.mark.omr_smoke
 
 
 class TestWTCPage5:
-    """Page 5 of WTC Book 1 (rendered at 600 DPI), printed page 6.
+    """PDF page index 5 (printed page 6) of WTC Book 1 at 600 DPI.
 
-    Layout: 5 grand-staff systems (10 staves total) with **3+2+3+3+3**
-    measures — 14 in all, so 28 cells.
-
-    Counted off the page barline by barline (2026-08-28). The second system
-    has ONE internal barline and the fifth has TWO; earlier revisions of this
-    file asserted 3+3+3+3+4, which the page does not support. If these numbers
-    start failing again, re-count before changing them: they are ground truth,
-    not a record of what the pipeline happened to produce.
+    Ground truth: 5 grand-staff systems, 3+2+3+3+3 bars. Note the 2 — system 2
+    really does hold two bars, and an ink probe independent of the detector
+    agrees (`benchmarks/omr-phase1-baseline/ground-truth.json`).
     """
 
-    @pytest.fixture(scope="class")
-    def pipeline_output(self):
-        _require(WTC)
-        page = render_page(WTC, 5, dpi=600)
-        pws = detect_staves(page)
-        pws = detect_barlines(pws)
-        cells = extract_measures(pws)
-        remove_staff_lines(cells)
-        return page, pws, cells
+    GT = GROUND_TRUTH["wtc-p5"]
 
-    def test_render_size(self, pipeline_output):
-        page, _, _ = pipeline_output
+    @pytest.fixture(scope="class")
+    def out(self):
+        _require(WTC)
+        layout = _layout(WTC, 5)
+        remove_staff_lines(layout["cells"])
+        return layout
+
+    def test_render_size(self, out):
+        page = out["page"]
         assert (page.width, page.height) == (5100, 6600), "600 DPI letter-page render"
 
-    def test_staff_count(self, pipeline_output):
-        _, pws, _ = pipeline_output
-        assert len(pws.staves) == 10, "5 grand-staff systems × 2 = 10 staves"
+    def test_staff_count(self, out):
+        assert out["n_staves"] == self.GT["n_staves"]
 
-    def test_system_count(self, pipeline_output):
-        _, pws, _ = pipeline_output
-        n_systems = 1 + max(s.system_index for s in pws.staves)
-        assert n_systems == 5, "should detect 5 systems (grand-staff pairs)"
+    def test_system_count(self, out):
+        assert out["n_systems"] == self.GT["n_systems"]
 
-    def test_each_system_has_two_staves(self, pipeline_output):
-        _, pws, _ = pipeline_output
-        sizes = [0] * 5
-        for s in pws.staves:
-            sizes[s.system_index] += 1
-        assert sizes == [2, 2, 2, 2, 2]
+    def test_staves_per_system(self, out):
+        assert out["staves_per_system"] == self.GT["staves_per_system"]
 
-    def test_measures_per_system(self, pipeline_output):
-        _, _, cells = pipeline_output
-        per_sys: dict[int, set[int]] = {}
-        for c in cells:
-            per_sys.setdefault(c.system_index, set()).add(c.measure_index)
-        counts = [len(per_sys[i]) for i in sorted(per_sys.keys())]
-        assert counts == [3, 2, 3, 3, 3], "counted off the page: 3+2+3+3+3 measures"
+    def test_measures_per_system(self, out):
+        assert out["measures_per_system"] == self.GT["measures_per_system"]
 
-    def test_total_cells(self, pipeline_output):
-        _, _, cells = pipeline_output
-        # 2 staves/system × (3+2+3+3+3 measures) = 28 cells
-        assert len(cells) == 28
+    def test_total_cells(self, out):
+        assert out["n_cells"] == self.GT["n_cells"]
 
-    def test_cell_canonical_size(self, pipeline_output):
-        _, _, cells = pipeline_output
-        # Every cell should be ≤ 2048 wide (canonical max)
-        for c in cells:
+    def test_no_page_content_is_dropped_after_the_last_barline(self, out):
+        """Every system's last cell must reach its staff's right edge.
+
+        This is the invariant the WTC system-2 bug broke: a false barline near
+        the end of a system made the real final measure look like the blank
+        strip after a final barline, and it was discarded. Absorbing the tail
+        instead of dropping it is what keeps this true.
+        """
+        by_staff: dict[tuple[int, int], list] = {}
+        for c in out["cells"]:
+            by_staff.setdefault((c.system_index, c.staff_index), []).append(c)
+        for (sys_i, staff_i), cells in by_staff.items():
+            last = max(cells, key=lambda c: c.measure_index)
+            staff = next(s for s in out["pws"].staves if s.staff_index == staff_i)
+            assert last.bbox_page_px[2] >= staff.x_end - 2, (
+                f"system {sys_i} staff {staff_i}: last cell ends at "
+                f"{last.bbox_page_px[2]} but the staff runs to {staff.x_end} — "
+                f"page content after the final detected barline was dropped"
+            )
+
+    def test_cell_canonical_size(self, out):
+        for c in out["cells"]:
             assert c.width <= 2048
             assert c.height > 200, f"cell too small: {c.width}x{c.height}"
 
-    def test_staff_line_removal_present(self, pipeline_output):
-        _, _, cells = pipeline_output
-        for c in cells:
+    def test_staff_line_removal_present(self, out):
+        for c in out["cells"]:
             assert c.image_no_staff is not None
             assert c.image_no_staff.shape == c.image.shape[:2]
 
 
-# ─── Beethoven 5 — orchestral score (16+ staves per page) ─────────────────────
+# ─── Beethoven 5 — pocket orchestral score, lightly printed wind staves ───────
 
 
 class TestBeethoven5Page10:
-    """Page 10 of Beethoven 5 score (m274 area). Orchestral, ~18 instruments.
+    """PDF page index 10 of the Beethoven 5 pocket score (m274 / m288).
 
-    Layout: 2 systems (top and bottom), 18 staves total, holding measures
-    **274-302: 14 in the first system and 15 in the second**.
+    Ground truth (Sean, 2026-08-28): two systems of 11 staves, 14 and 15 bars.
+    This is the page whose five wind staves were collapsing into one phantom.
+    """
 
-    That is not an estimate. This edition prints measure numbers, and they
-    settle it without counting barlines on a dense orchestral page: p.10 opens
-    at 274, its second system at 288, and p.11 opens at 303. So 288-274 = 14
-    and 303-288 = 15. An earlier revision of this file bounded the counts to
-    5-10 per system, which this page cannot satisfy.
+    GT = GROUND_TRUTH["beet5-p10"]
+
+    @pytest.fixture(scope="class")
+    def out(self):
+        _require(BEETHOVEN5)
+        return _layout(BEETHOVEN5, 10)
+
+    def test_staff_count(self, out):
+        assert out["n_staves"] == self.GT["n_staves"], (
+            "22 staves: 2 systems x 11. Reading 18 here is the phantom-staff "
+            "bug — five wind staves collapsed into one group of 142px spacing."
+        )
+
+    def test_no_phantom_staves(self, out):
+        """No staff's line spacing may stand far above the page's.
+
+        A phantom is built from one line of each of several staves, so its
+        spacing is a MULTIPLE of the real spacing — that is what makes it
+        detectable without knowing the right answer, and it holds on any page.
+        """
+        spacings = [float(s.line_spacing_px) for s in out["pws"].staves]
+        median = float(np.median(spacings))
+        worst = max(spacings)
+        assert worst <= median * 1.6, (
+            f"staff spacing {worst:.1f} against a page median of {median:.1f} — "
+            f"that group is one line borrowed from each of several staves"
+        )
+
+    def test_measures_per_system_are_read_correctly(self, out):
+        """Bar counts per system: 14 and 15.
+
+        This was xfail from 2026-08-28, reading 7+13+15 — bars misattributed
+        across a system that had been split in three. Both this and the split
+        below had the same cause, and both were fixed by `_staff_x_extent`
+        reading the staff with a scaled band and a five-line vote instead of a
+        fixed ±2px band on the middle line.
+        """
+        counts = sorted(out["measures_per_system"], reverse=True)[:2]
+        assert counts == sorted(self.GT["measures_per_system"], reverse=True)
+
+    def test_system_grouping(self, out):
+        """Two systems of eleven.
+
+        Also xfail from 2026-08-28: staff 0 used to split into a system of its
+        own, because it read x=353..1379 while staff 1 read x=1715..2633 —
+        two fragments of two lightly printed lines, with no overlap between
+        them, so the grouping had no reason to believe they were one system.
+        The staves now agree on their left edge to within 3px.
+        """
+        assert out["n_systems"] == self.GT["n_systems"]
+        assert out["staves_per_system"] == self.GT["staves_per_system"]
+
+
+# ─── Nottebohm — open score on a mostly-prose page ────────────────────────────
+
+
+class TestNottebohmPage46:
+    """PDF page 46 (printed p.31) of Nottebohm's Beethovens Studien.
+
+    Three exercises (Nr. 20, 21, 22), each an open score of four staves — one
+    voice per staff, in the full vocal clef set. This layout class is absent
+    from the two scores above and is where Phase 1 has historically been
+    weakest, in two ways it is worth guarding against:
+
+      * staff lines here are dashed enough that taking the longest CONTIGUOUS
+        run put the cell's left edge up to 46 staff spaces past the clef;
+      * open-score barlines stop at each staff instead of running through the
+        gaps between them, so a connectivity filter tuned on orchestral scores
+        discards every one of them. When that happened, this page collapsed
+        from 88 cells to 12 — one measure per staff, no structure at all.
+
+    The counts below are the ones that can be stated with certainty: Sean read
+    the layout off the page, and it is plainly three groups of four. The
+    per-measure count is NOT asserted exactly — the engraving is too fine to
+    count reliably at the resolution available, and guessing it would repeat
+    the mistake this file's other expectations used to make. A floor is enough
+    to catch the collapse, which is the regression that actually happened.
     """
 
     @pytest.fixture(scope="class")
     def pipeline_output(self):
-        _require(BEETHOVEN5)
-        page = render_page(BEETHOVEN5, 10, dpi=600)
+        _require(NOTTEBOHM)
+        page = render_page(NOTTEBOHM, 46, dpi=300)
         pws = detect_staves(page)
         pws = detect_barlines(pws)
         cells = extract_measures(pws)
@@ -140,55 +259,99 @@ class TestBeethoven5Page10:
 
     def test_staff_count(self, pipeline_output):
         _, pws, _ = pipeline_output
-        assert len(pws.staves) == 18, "Beethoven 5 page 10 has 18 staves"
+        assert len(pws.staves) == 12, "three exercises of four staves each"
 
     def test_system_count(self, pipeline_output):
         _, pws, _ = pipeline_output
         n_systems = 1 + max(s.system_index for s in pws.staves)
-        assert n_systems == 2, "two-systems-per-page layout"
+        assert n_systems == 3, "Nr. 20, Nr. 21, Nr. 22"
 
-    def test_measure_counts_reasonable(self, pipeline_output):
+    def test_each_system_has_four_staves(self, pipeline_output):
+        _, pws, _ = pipeline_output
+        sizes = [0, 0, 0]
+        for staff in pws.staves:
+            sizes[staff.system_index] += 1
+        assert sizes == [4, 4, 4]
+
+    def test_measures_are_segmented_at_all(self, pipeline_output):
         _, _, cells = pipeline_output
-        per_sys: dict[int, set[int]] = {}
+        # The floor that matters: 12 cells means one measure per staff, i.e.
+        # barline detection produced nothing and each system became a single
+        # cell. Anything in that region is the collapse, not a near miss.
+        per_staff: dict[tuple[int, int], int] = {}
         for c in cells:
-            per_sys.setdefault(c.system_index, set()).add(c.measure_index)
-        counts = [len(per_sys[i]) for i in sorted(per_sys.keys())]
-        # From the printed measure numbers (274 / 288 / 303 — see the class
-        # docstring): 14 then 15. Asserted exactly, because the page states
-        # the answer; a drift of even one measure here is a real regression.
-        assert counts == [14, 15], f"measures 274-302 split 14 + 15, got {counts}"
-
-    def test_cell_quality(self, pipeline_output):
-        _, _, cells = pipeline_output
-        assert len(cells) > 0
-        widths = [c.width for c in cells]
-        # Cells are upscaled toward a 2048px ceiling and clamped there. This
-        # used to assert max(widths) == 2048 exactly, which tests whether the
-        # page's widest measure happens to OVERFLOW the ceiling — an accident
-        # of engraving, not a property of the pipeline. On this page the widest
-        # comes to 2012 and the assertion failed while nothing was wrong.
-        # What is worth pinning: nothing exceeds the ceiling, and the widest
-        # cell is being upscaled close to it rather than left small.
-        assert max(widths) <= 2048, "canonical width ceiling"
-        assert max(widths) >= 1900, f"widest cell only {max(widths)}px — under-upscaled"
+            per_staff[(c.system_index, c.staff_index)] = (
+                per_staff.get((c.system_index, c.staff_index), 0) + 1
+            )
+        assert min(per_staff.values()) >= 4, (
+            f"a staff segmented into {min(per_staff.values())} measures — "
+            "open-score barlines are being discarded again"
+        )
+        assert len(cells) >= 60, f"only {len(cells)} cells for 12 staves"
 
 
-# ─── The staff filter must not touch real music ───────────────────────────────
+class TestBodyTextIsNotAStaff:
+    """Paragraphs of body text must not be detected as staves.
 
+    The row-projection detector finds staves by looking for rows carrying a lot
+    of ink, and a row of justified prose carries a lot of ink — enough to clear
+    the line-length threshold — while five consecutive text baselines are
+    evenly enough spaced to pass the 5-line grouping. Before this was filtered,
+    a paragraph became a "staff" with a clef and measures of its own: 147 of
+    1522 "staves" over 156 pages of this book.
 
-class TestStaffFilterLeavesMusicAlone:
-    """The guard that matters for the corpus: a real score must be unaffected
-    by the row-projection filter that rejects prose.
-
-    The prose side of this used to be covered by pages of Nottebohm's
-    Beethovens Studien, a 19th-century monograph. Those tests are gone —
-    a textbook is not the input this project targets — so the filter's
-    behaviour ON PROSE is no longer regression-tested. `_line_ink_runs_per_space`
-    in staff_detector.py still implements it, and the reasoning is recorded
-    there; only the assertion went.
+    Nottebohm is a monograph, so it supplies both cases cleanly — pages of
+    unbroken prose, and pages where a music example sits inside the prose.
+    The page contents below were checked by eye.
     """
 
+    @pytest.mark.parametrize("page_index", [23, 24, 27])
+    def test_a_page_of_pure_prose_yields_no_staves(self, page_index):
+        _require(NOTTEBOHM)
+        pws = detect_staves(render_page(NOTTEBOHM, page_index, dpi=300))
+        assert pws.staves == [], (
+            f"p{page_index} is unbroken prose but produced "
+            f"{len(pws.staves)} staves"
+        )
+
+    @pytest.mark.parametrize(
+        "page_index,n_music_staves",
+        [
+            (25, 8),   # prose with one eight-staff example set into it
+            (29, 2),   # prose with one two-staff example
+        ],
+    )
+    def test_prose_pages_keep_only_their_music(self, page_index, n_music_staves):
+        _require(NOTTEBOHM)
+        pws = detect_staves(render_page(NOTTEBOHM, page_index, dpi=300))
+        assert len(pws.staves) == n_music_staves
+
+    def test_a_dense_example_page_keeps_all_of_its_music(self):
+        """p.90 carries a lot of music among the prose, so it is the case where
+        the text filter could plausibly over-reach.
+
+        This asserted exactly 6 and was WRONG — the page was rendered and
+        counted (2026-08-28) and holds about thirteen music staves: an incipit,
+        three small fragments, and four grand-staff systems with short
+        fragments between them. The detector now finds 11 of them, every one
+        with a staff-like ink signature (0.03-0.16 ink runs per space against a
+        1.7 text threshold), because the comb pass recovers lightly printed
+        staves the strict pass drops.
+
+        Asserted as a floor rather than a count: the true number was read off a
+        render, but which of the small fragments the detector reaches is a
+        moving target, and pinning it would re-make the mistake this file's
+        expectations used to make.
+        """
+        _require(NOTTEBOHM)
+        pws = detect_staves(render_page(NOTTEBOHM, 90, dpi=300))
+        assert len(pws.staves) >= 10, (
+            f"only {len(pws.staves)} staves on a page holding about thirteen"
+        )
+
     def test_the_filter_does_not_touch_a_page_of_pure_music(self):
+        # The guard that matters for everything else in the corpus: a real
+        # score must be unaffected. WTC p.5 is ten staves and stays ten.
         _require(WTC)
         pws = detect_staves(render_page(WTC, 5, dpi=600))
         assert len(pws.staves) == 10
@@ -251,3 +414,51 @@ class TestDropCloseOutliers:
         xs = [0, 100, 110, 250]
         out = _drop_close_outliers(xs)
         assert out == xs
+
+
+# ─── La Mer p.25 — a one-line percussion staff among 21 parts ────────────────
+
+
+class TestLaMerPage25:
+    """PDF page index 25 (printed p.168) at 300 DPI: one 21-staff system whose
+    twelfth part, Cymbales, is printed as a SINGLE rule.
+
+    Ground truth read off the page's left margin part by part
+    (`benchmarks/omr-phase1-baseline/ground-truth.json`, evidence/ alongside).
+    The page is here for what a missed one-line staff COSTS: the detector used
+    to report 20 staves, so everything from the harp down — both harp staves,
+    four divided violin staves, violas, celli and basses — carried a
+    staff_index one lower than its true slot, and slot identity is what feeds
+    instrument, transposition and expected clef.
+    """
+
+    GT = GROUND_TRUTH["lamer-p25"]
+
+    @pytest.fixture(scope="class")
+    def staves(self):
+        _require(LAMER)
+        return detect_staves(render_page(LAMER, 25, dpi=300)).staves
+
+    def test_staff_count(self, staves):
+        assert len(staves) == self.GT["n_staves"]
+
+    def test_one_staff_is_a_single_rule(self, staves):
+        singles = [s for s in staves if len(s.line_ys) == 1]
+        assert len(singles) == self.GT["n_single_line_staves"]
+        assert [s.staff_index for s in singles] == self.GT["single_line_staff_indices"]
+
+    def test_the_single_rule_carries_the_pages_spacing(self, staves):
+        """It has no spacing of its own, and everything downstream sizes its
+        windows in staff spaces, so it answers with the page's."""
+        perc = [s for s in staves if len(s.line_ys) == 1][0]
+        five_line = [s.line_spacing_px for s in staves if len(s.line_ys) == 5]
+        page_spacing = sorted(five_line)[len(five_line) // 2]
+        assert perc.line_spacing_px == pytest.approx(page_spacing, rel=0.05)
+
+    def test_the_staves_below_it_keep_their_slots(self, staves):
+        """The harp is the thirteenth part on the page, so it must be
+        staff_index 12 — one more than the cymbal rule above it."""
+        perc = [s for s in staves if len(s.line_ys) == 1][0]
+        below = [s for s in staves if s.top_y > perc.top_y]
+        assert below[0].staff_index == perc.staff_index + 1
+        assert len(below) == 9, "harp x2, violins x4, violas, celli, basses"

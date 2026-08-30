@@ -376,3 +376,75 @@ def test_a_page_whose_bands_never_overlap_is_unchanged():
     assert _dedupe_cross_staff_detections(pg, {0: (0, 100), 1: (300, 400)}) == 0
     after = [s["measures"][0]["detections"] for s in pg["systems"][0]["staves"]]
     assert before == after
+# ── joining a work's parts to a condensed page ──────────────────────────────
+
+
+class TestJoinPartsToSlots:
+    """A work lists parts; a page prints staves, and condenses.
+
+    `slot_facts_for_system` needs the two counts to agree, which they rarely do
+    — Beethoven 5 is written for 18 parts and printed 11 staves to a system, so
+    the dossier stays silent on every page of it. `join_parts_to_slots` aligns
+    them instead, on the margin labels and never on the clefs, since clefs are
+    what the join exists to supply.
+    """
+
+    @staticmethod
+    def _work(names, clefs=None):
+        clefs = clefs or ["treble"] * len(names)
+        return {
+            "work_id": "test-work",
+            "parts": [{"name": n, "written_clef": c, "written_fifths": 0}
+                      for n, c in zip(names, clefs)],
+        }
+
+    def test_a_condensed_pair_is_one_staff(self):
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(["Flute 1", "Flute 2", "Oboe 1", "Oboe 2"])
+        facts = join_parts_to_slots(2, work, {0: "Flute", 1: "Oboe"})
+        assert [f["part"] for f in facts] == ["Flute 1", "Oboe 1"]
+
+    def test_an_unlabelled_staff_between_anchors_is_still_placed(self):
+        """The case this earns its keep on: Beethoven 5's bassoon staff carries
+        no label, and is pinned by the clarinets above and the horns below."""
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(
+            ["Clarinet 1", "Clarinet 2", "Bassoon 1", "Bassoon 2", "Horn 1", "Horn 2"],
+            ["treble", "treble", "bass", "bass", "treble", "treble"])
+        facts = join_parts_to_slots(3, work, {0: "Clarinet", 2: "Horn"})
+        assert facts[1]["part"] == "Bassoon 1"
+        assert facts[1]["clef"] == "bass"
+        assert facts[1]["anchored"] is True
+
+    def test_it_condenses_rather_than_dropping_a_part(self):
+        """Five string parts on four staves: the cellos and basses share the
+        bottom one. Pricing a same-instrument merge cheaply and a
+        different-instrument merge dearer is what settles this — with one price
+        for both, the aligner drops the second violin instead."""
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(
+            ["Violin 1", "Violin 2", "Viola", "Violoncello", "Contrabass"],
+            ["treble", "treble", "alto", "bass", "bass"])
+        facts = join_parts_to_slots(4, work, {0: "Violin", 2: "Viola"})
+        assert [f["part"] for f in facts][:3] == ["Violin 1", "Violin 2", "Viola"]
+        assert facts[3]["clef"] == "bass"
+
+    def test_slots_past_the_last_label_are_not_anchored(self):
+        """Between labels the alignment cannot slip; past them it is guessing,
+        and on the two ground-truth pages that is exactly where it goes wrong —
+        the string section, which carries no labels at all."""
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(["Flute 1", "Oboe 1", "Violin 1", "Viola"])
+        facts = join_parts_to_slots(4, work, {0: "Flute", 1: "Oboe"})
+        assert [f["anchored"] for f in facts] == [True, True, False, False]
+
+    def test_no_labels_anchors_nothing(self):
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(["Flute 1", "Oboe 1"])
+        facts = join_parts_to_slots(2, work, {})
+        assert all(not f["anchored"] for f in facts if f)

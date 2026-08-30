@@ -1,0 +1,39 @@
+{
+  "source": "Beethoven, Symphony No. 5 — IMSLP 575951, 300 dpi",
+  "pdf": "tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+  "provided_by": "read off the rendered header crops by eye, 2026-08-28",
+  "why_this_exists": [
+    "A scanned ORCHESTRAL score, which the other two precision corpora are not:",
+    "the hand-read Nottebohm page is vocal-clef counterpoint and the piano and",
+    "reference sheets are clean LilyPond engraving. A change that grouped header",
+    "ink vertically passed all three and still took treble clefs apart at the",
+    "waist here, reading seventeen of them as alto clefs. A thick scanned G clef",
+    "fragments in ways a clean engraving never does, so nothing else catches it.",
+    "",
+    "This is a SPOT CHECK, not ground truth for the page. The staves listed are",
+    "the ones some version of the locator has read, checked by eye afterwards —",
+    "so it can catch a regression on them and says nothing about the rest. It is",
+    "not a coverage measurement; `probe_clef_rejection.py` is."
+  ],
+  "staves": [
+    {"page": 2,  "staff": 16, "c_clef": true,  "note": "viola"},
+    {"page": 6,  "staff": 8,  "c_clef": false, "note": "treble — read as alto by the unrestricted vertical rule"},
+    {"page": 6,  "staff": 9,  "c_clef": true},
+    {"page": 16, "staff": 2,  "c_clef": false, "note": "treble — read as mezzosoprano by the unrestricted vertical rule"},
+    {"page": 16, "staff": 9,  "c_clef": true,  "note": "narrow box, aspect 0.32 — a gate at 0.42 rejects this real clef"},
+    {"page": 16, "staff": 15, "c_clef": true},
+    {"page": 20, "staff": 7,  "c_clef": false, "pre_existing": true,
+     "note": "treble, read as soprano — main does this too, so it is the baseline rather than a regression"},
+    {"page": 20, "staff": 9,  "c_clef": true,  "note": "narrow box, aspect 0.22"},
+    {"page": 26, "staff": 9,  "c_clef": true,  "note": "height 4.55 — a cap at 4.5 rejects this real clef"},
+    {"page": 30, "staff": 15, "c_clef": true},
+    {"page": 36, "staff": 13, "c_clef": true},
+    {"page": 36, "staff": 17, "c_clef": true},
+    {"page": 36, "staff": 21, "c_clef": true},
+    {"page": 40, "staff": 3,  "c_clef": true,
+     "note": "a real viola clef the current tolerance misses; it is read at 0.6 and lost at 1.0, which is part of what 1.0 costs"},
+    {"page": 40, "staff": 10, "c_clef": true},
+    {"page": 40, "staff": 13, "c_clef": true},
+    {"page": 40, "staff": 17, "c_clef": true}
+  ]
+}

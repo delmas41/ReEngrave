@@ -1,0 +1,103 @@
+{
+ "_comment": [
+  "Hand-verified Phase-1 layout truth. Every number here was read off the",
+  "printed page by a human, NOT copied from pipeline output \u2014 that is the",
+  "whole point. The previous baseline in test_pipeline.py was written from an",
+  "eyeballed layout that was never checked, and two of its numbers were wrong",
+  "in the direction that HID bugs: it asserted 18 staves on a 22-staff page,",
+  "which a phantom staff satisfied, and 3 bars in a 2-bar system.",
+  "",
+  "Verified by Sean 2026-08-28 (beethoven-5 p.10, both systems; wtc p.6",
+  "system 2) and by an independent ink probe that scores columns of near-",
+  "solid ink across each staff's full 5-line span (wtc p.6, all systems).",
+  "The probe is deliberately not the detector: it shares no thresholds with",
+  "measure_extractor, so agreement between them is evidence, not tautology."
+ ],
+ "pages": {
+  "wtc-p5": {
+   "source": "IMSLP932182 Well-Tempered Clavier I, PDF page index 5 (printed p.6), 600 DPI",
+   "verified_by": "ink probe (all systems) + Sean (system 2)",
+   "n_staves": 10,
+   "n_systems": 5,
+   "staves_per_system": [
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "measures_per_system": [
+    3,
+    2,
+    3,
+    3,
+    3
+   ],
+   "n_cells": 28,
+   "notes": [
+    "System 2 has TWO bars, not three. The detector finds a third barline at",
+    "x=4476 where two stems align across the staves; no ink crosses the gap",
+    "between the staves there."
+   ]
+  },
+  "beet5-p10": {
+   "source": "IMSLP984073 Beethoven 5, PDF page index 10 (m274/m288), 600 DPI",
+   "verified_by": "Sean 2026-08-28",
+   "n_staves": 22,
+   "n_systems": 2,
+   "staves_per_system": [
+    11,
+    11
+   ],
+   "measures_per_system": [
+    14,
+    15
+   ],
+   "n_cells": null,
+   "notes": [
+    "A pocket score: 15.8px line spacing at 600 DPI. The wind staves are",
+    "printed lightly enough that their lines break into ~25 runs with gaps",
+    "up to 11 staff spaces, which is why they were missed entirely and why",
+    "their x-extents are still wrong (see known_gaps)."
+   ]
+  },
+  "lamer-p25": {
+   "source": "IMSLP15420 Debussy, La Mer (orch. score), PDF page index 25 (printed p.168), 300 DPI",
+   "verified_by": "left-margin render, read part by part (Claude, 2026-08-28) \u2014 evidence/lamer-p25-margin-21-staves.png",
+   "n_staves": 21,
+   "n_systems": 1,
+   "staves_per_system": [
+    21
+   ],
+   "measures_per_system": null,
+   "n_cells": null,
+   "n_single_line_staves": 1,
+   "single_line_staff_indices": [
+    11
+   ],
+   "notes": [
+    "Counted off the margin: Gdes Fl., Pte Fl., Htb, Cor A., Cl., Bons,",
+    "Cors x2, Tromp., Tuba, Timb., Cymb., Harpe x2, 1res Vons Div. x2,",
+    "2ds Vons Div. x2, Altos, Celli, C.B. \u2014 21 staves in one system.",
+    "The twelfth is Cymbales, printed as a SINGLE rule. Before one-line",
+    "staves were detected the page reported 20, and every staff from the",
+    "harp down carried a staff_index one lower than its true slot \u2014 the",
+    "harm is not the missing percussion part, it is the nine parts under",
+    "it being mistaken for their neighbours.",
+    "Measures are not hand-counted here; the page is recorded for its",
+    "staff layout."
+   ]
+  }
+ },
+ "known_gaps": [
+  {
+   "page": "beet5-p10",
+   "status": "CLOSED 2026-08-28",
+   "symptom": "systems read as [1, 10, 11] instead of [11, 11], and bars as [7, 13, 15] instead of [14, 15]",
+   "cause_as_first_diagnosed": "staff_detector._staff_x_extent returns the longest CONTIGUOUS ink run on the middle line, and on these lightly printed staves that run is a fragment. Measured then: staff 0's middle line spans 276..2633 in 28 runs, largest gap 175px = 11 staff spaces. The prescription was a far more generous BRIDGE.",
+   "actual_cause": "The bridge was never the problem. The 28 runs were an artefact of the measurement: the reader sliced a fixed 2px band around the line's nominal row, and the printed line wanders further than that, so it left the band and came back. Re-measured with a band scaled to the staff (0.35 spaces) and a 3-of-5 line vote, the SAME staff is 2 runs with a largest gap of 0.3 spaces. The ink was there all along.",
+   "fix": "staff_detector._staff_x_extent reads all five lines with a scaled band and a 3-of-5 column vote. beet5-p10 now matches this file on staves, systems and bars; the two xfail tests in test_pipeline.py that recorded the gap are retired.",
+   "lesson": "A measurement taken through a broken reader describes the reader, not the page. '28 runs with 11-space gaps' was a fact about the band width."
+  }
+ ]
+}

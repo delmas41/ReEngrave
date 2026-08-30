@@ -219,10 +219,15 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     """
     bin_img = pws.page.binary
 
-    # Group staves by system
+    # Group staves by system. One-line percussion staves are left out of the
+    # vote on purpose: the vote is a fraction of the staves in the system, and
+    # a staff two spaces tall answers "there is a barline here" for any stem
+    # that crosses it, so it would both add noise and move the denominator for
+    # every real staff. Their own barlines come from the system they sit in.
     systems: dict[int, list[Staff]] = {}
     for s in pws.staves:
-        systems.setdefault(s.system_index, []).append(s)
+        if len(s.line_ys) >= 5:
+            systems.setdefault(s.system_index, []).append(s)
 
     pws.barlines = []
     x_tolerance = 12  # px: barlines on different staves may not align exactly
@@ -447,18 +452,31 @@ def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[
     for x in xs:
         boundaries.append((prev, x))
         prev = x
-    # Trailing tail: from final barline to x_hi. Often this is just the
-    # narrow strip between the score's final barline and the end of the
-    # staff lines — NOT a real empty measure. Drop it when it's <20% of
-    # the median measure width AND there's at least one real measure
-    # already; otherwise keep it (it's the only measure).
+    # Trailing tail: from the final barline to x_hi. A tail much narrower than
+    # a real measure is usually the strip between the score's final barline and
+    # the end of the staff lines, which holds nothing and is not a measure.
+    #
+    # It is not, however, safe to DISCARD it. Doing so assumes the last
+    # detected barline is the last real one, and when a spurious barline is
+    # detected near the end of a system — two stems that happen to align across
+    # the staves will do it — everything after it is silently deleted from the
+    # page. Measured on WTC p.6 system 2: a false barline at x=4476 (no ink
+    # crosses the staves there; the notes on either side merely line up) made
+    # the last 340px its tail, and the notes standing in it never reached the
+    # detector. The measure COUNT was right, so nothing downstream could tell.
+    #
+    # So absorb the tail into the last measure instead. When the assumption
+    # holds, the cost is a sliver of blank paper on one cell; when it does not,
+    # the music is still there.
     widths = [x1 - x0 for (x0, x1) in boundaries]
     tail_width = x_hi - prev
     if boundaries and widths:
         median_w = sorted(widths)[len(widths) // 2]
         if tail_width >= median_w * 0.20:
             boundaries.append((prev, x_hi))
-        # else: skip the tail — it's an artifact between final barline + staff edge
+        else:
+            last_start, _ = boundaries[-1]
+            boundaries[-1] = (last_start, x_hi)
     else:
         boundaries.append((prev, x_hi))
     return boundaries
@@ -545,6 +563,11 @@ def _build_measure_cell(
         bbox_page_px=(x0, y0, x1, y1),
         staff_line_ys_canonical=up_ys,
         upscale_factor=scale,
+        staff_line_thickness_canonical=(
+            round(staff.median_line_thickness_px * scale, 3)
+            if staff.median_line_thickness_px is not None
+            else None
+        ),
     )
     # Stash binary on the cell as a side-channel attribute for the
     # staff-line-removal step. (Not part of MeasureCell's formal schema —
@@ -565,9 +588,15 @@ def extract_measures(
     cells: list[MeasureCell] = []
 
     # Group staves & barlines by system
+    # As in `detect_barlines`, one-line percussion staves are skipped. They are
+    # detected so that the staves below them keep their slots (see
+    # `staff_detector._single_line_staff_rows`); reading their CONTENT is a
+    # separate piece of work, because a cell is canonicalised by its staff's
+    # five-line span and a single rule has none.
     sys_staves: dict[int, list[Staff]] = {}
     for s in pws.staves:
-        sys_staves.setdefault(s.system_index, []).append(s)
+        if len(s.line_ys) >= 5:
+            sys_staves.setdefault(s.system_index, []).append(s)
     sys_barlines: dict[int, list[Barline]] = {}
     for bl in pws.barlines:
         sys_barlines.setdefault(bl.system_index, []).append(bl)
