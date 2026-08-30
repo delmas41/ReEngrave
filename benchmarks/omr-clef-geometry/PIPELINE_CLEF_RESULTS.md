@@ -179,6 +179,15 @@ page says otherwise — the score-order prior calls it a violin for the same
 reason — and the dossier knows it is a viola but cannot be trusted there,
 because that page carries only two labels and both sit above the strings.
 
+> ⚠️ **The "more labels" lever is CLOSED — measured 2026-08-30.** The vision
+> reader was run on this page and scored 5 of 5 on the labels that are printed,
+> correctly returning nothing for staves 5-9, which carry none. The margin crop is
+> committed as evidence. This edition labels winds and horns on every page and
+> never a string, so no better reader can obtain a label below the strings at any
+> price. What the evidence points at instead is the foot of the system as an
+> implicit anchor, since every tradition in `score_layouts.py` ends the same way.
+> `benchmarks/omr-margin-labels-2026-08/VISION_CEILING_2026-08-30.md`.
+
 The lever for it is more labels, not a better join: `staff_labels` reads what
 the text layer offers, and `contextual`'s `vision_fallback=True` reads the
 margin with Claude for about a cent per system. One more label anywhere below

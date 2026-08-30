@@ -40,8 +40,14 @@ other than where they started.
    reading: the staff's left edge was lost, so the header was cropped out of every cell.
    Fixed; clefs on Beethoven 5 p.15 went 0/23 -> 13/23 and the reader started firing.
    What is left is sharply scoped — 11 staves where the clef IS read and neither reader
-   finds accidentals in the header, and the detector is blind to those flats at conf
-   0.25, 0.10 and 0.05 alike. `benchmarks/omr-key-signature/RESULTS.md`. Inference from
+   finds accidentals in the header. ⚠️ **The "detector is blind to those flats"
+   half is WRONG — corrected 2026-08-29.** It detects them and labels them
+   `accidentalFlat` instead of `keyFlat`, and every key-signature reader consumes
+   only the `key*` classes, so a correctly-read signature is discarded on a
+   technicality of class naming. Routing them in was implemented, measured, and
+   NOT shipped: it costs beet5-p2 10 correct -> 9, because the accidental set is
+   noisier and the vote's rejection path zeroes a staff instead of reverting it.
+   `benchmarks/omr-keysig-blindspot-2026-08/`. `benchmarks/omr-key-signature/RESULTS.md`. Inference from
    the music stays parked while the printed signature sits unread.
 3. ~~**Score-order prior**~~ — **DONE 2026-08-28.** `tools/omr/score_layouts.py`:
    ten standard layouts, monotone alignment, a continuation move for parts printed

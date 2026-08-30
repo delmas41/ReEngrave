@@ -214,6 +214,16 @@ wall: Beethoven 5 p.15's key-signature flats are undetected at conf 0.25, 0.10 *
 0.05** alike, with the per-cell `imgsz` already in effect. That one is real, and it is
 now the sharpest open detection question in the project.
 
+> ⚠️ **Superseded 2026-08-29 — this was the fourth measurement to describe the
+> instrument rather than the page.** The flats are NOT undetected. At conf 0.25
+> the detector finds three of them in staff 0's header and labels them
+> `accidentalFlat` rather than `keyFlat`; the key-signature path consumes only
+> the `key*` classes, so they are discarded before anything positional runs. It
+> is a class-ROLE mismatch, not blindness, and the role is contextual — the
+> worst thing to ask a per-cell detector for. See
+> `benchmarks/omr-keysig-blindspot-2026-08/findings.md`, which also records the
+> fix being implemented, measured at −1 on the only ground truth, and held back.
+
 Full measurement and a committed re-run script (July's was scratch):
 `benchmarks/omr-detection-probe-2026-08/`. The July file carries a supersession banner,
 and `docs/internal-consistency-checks.md` — which rests on the old conclusion — is
