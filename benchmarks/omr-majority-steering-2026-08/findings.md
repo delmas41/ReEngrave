@@ -111,3 +111,42 @@ Two lessons worth keeping:
 2. **A probe written to measure feature A is a cheap way to find bug B.** This
    one ran Phase 1 over twelve pages with no detection, took seconds, and the
    feature it was built for turned out to be the less valuable half of the work.
+
+### The audit that lesson 1 asks for
+
+Rather than leave it as a moral, every consumer of `Staff` was checked against a
+real one-line staff (La Mer p.25 staff 11: `line_ys=[1841]`, span 0), and the
+blast radius was measured over 22 pages of La Mer and Mahler 5 — the two
+benchmark scores that have one-line parts.
+
+| | |
+|---|---:|
+| pages swept | 22 |
+| pages carrying a one-line staff | **13** |
+| of those, crashing on `main` before the fix | **3** |
+| crashes after the fix | **0** |
+
+La Mer p.25 and p.30, and Mahler 5 p.5. The crash needs a one-line staff **and**
+a cell wide enough to trigger the barline scan, which is why it is 3 of 13 rather
+than all 13 — and why it went unnoticed. One-line staves are much commoner than
+the original write-up implies ("14 times over 47 pages"): they are on **13 of 22
+consecutive pages** of these two scores.
+
+The other consumers are safe, and for different reasons worth recording:
+
+- `detect_barlines`, `extract_measures` — filter on `len(line_ys) >= 5` already.
+- `_cell_scale` — guards `staff_span_px <= 0` and returns early, so the
+  canonicalization path was never at risk.
+- `header_windows_for_page` / `header_cells_for_page` — **do** build a window and
+  a cell for a one-line staff. That is harmless rather than correct: the cell
+  carries `staff_line_ys_canonical=[52]`, one entry, so `clef_geometry`'s
+  `len(...) != 5` guard abstains, and no fabricated five-line geometry reaches
+  any reader. Verified across all 13 pages: **zero** header cells faking five
+  lines. It costs one wasted detector call per one-line staff and produces no
+  wrong answer, so it is left alone.
+- `slots.py`, `contextual.py`, `staff_labels*` — include one-line staves
+  deliberately. That is the entire point of the August work: the staff must exist
+  so the staves below it keep their slot.
+
+So the shape of the rule is: **anything that MEASURES a one-line staff must skip
+it; anything that COUNTS it must not.**
