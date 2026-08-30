@@ -28,8 +28,10 @@ is the next real lever.
 
 ## ➡️ START HERE — ranked next steps (2026-08-28)
 
-**[docs/next-steps-omr-2026-08-28.md](docs/next-steps-omr-2026-08-28.md)** is the current
-handoff: four ranked threads with evidence, entry points and done-criteria.
+**[docs/next-steps-omr-2026-08-29.md](docs/next-steps-omr-2026-08-29.md)** is the current
+handoff. The four threads below are all CLOSED — the 2026-08-28 file is kept because how
+each turned out is more useful than how it was posed; three of the four ended somewhere
+other than where they started.
 
 1. ~~**One-line percussion staves are invisible**~~ — **DONE 2026-08-28.** A percussion
    part printed as one rule is now a staff, so the staves below it keep their slots
