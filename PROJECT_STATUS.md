@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-08-28 (OMR header layer — clefs and key signatures)
+**Last updated:** 2026-08-29 (clef accuracy measured end to end; the July label batches landed)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -88,6 +88,24 @@ On by default in `transcribe`; `--no-header-reading` turns it off. No extra weig
 - **Clefs are read by geometry** (`clef_geometry.py`) — which staff line the glyph is centred on. Exact rather than probabilistic, and it is the only thing that can separate alto from tenor from soprano. A classical-CV locator (`clef_locator.py`) finds C clefs the detector cannot see at any confidence.
 - **Key signatures are read by position** (`key_signature_geometry.py`) and reconciled across staves and systems (`key_signature_vote.py`). Both the detector's markers and the locator's clusters go through the same vote.
 
+**End-to-end clef accuracy is 96%, and the detector does most of the work.**
+Measured on 52 hand-read staves across three pages
+(`benchmarks/omr-clef-geometry/eval_pipeline_clefs.py`, re-run on the merged tree
+2026-08-29):
+
+| pipeline | correct | notes |
+|---|---:|---|
+| readers only | 48/52 (92%) | detector 37/39, positional default 9/11, CV locator 2/2 |
+| `--contextual` | 49/52 (94%) | a part keeps its clef between systems (`slot_continuity`) |
+| `--contextual --dossier` | **50/52 (96%)** | the work's parts joined to the page on the margin LABELS, never on the clefs |
+
+This is the number that matters downstream — a staff carries its clef into every
+pitch on it and into which slot table its key signature is fitted. It is far
+better than the CV-locator coverage figures quoted elsewhere in this repo, which
+are about that one reader and predate the `imgsz` fix. **Every remaining error is
+a non-treble clef read as treble**, and the last two are the same Pastoral viola,
+on a page carrying no label below the strings to anchor the dossier join.
+
 Measured, given a correct clef, on 42 hand-read orchestral staves: **18 correct / 0 wrong / 16 missed / 8 correct abstentions**. End to end on a clean engraving (Bach WTC p.17) 10/10. End to end on degraded orchestral prints it is far lower — 2 staves of 20 on Beethoven 6 p.2, none on Beethoven 5 p.2 — because a staff whose clef is only the positional default is skipped by design. **Key signatures inherit the clef problem, and clef coverage is the ceiling on both.**
 
 ### Contextual analysis — which staff is which instrument (`tools/omr/`)
@@ -161,6 +179,19 @@ staves and manufactures a failure mode that does not exist
 |---|---|---|
 | `v1-2026-05-18-orchestral` | 60 | Beet 5 + Mahler 5 orchestral cells; cleaned 2026-06 to remove structural-element boxes (staff/stem/beam → background) |
 | `v2-2026-06-08-beet5` | 37 | Beethoven 5 pp. 45–75; heavy FP-drop batch (480 FPs dropped, 37 FNs added) |
+| `v3-2026-06-09-mahler5` | 35 | Mahler 5, draw-from-scratch |
+| `v4-2026-06-10-la-mer` | 29 | Debussy *La Mer*, draw-from-scratch |
+| `v5-2026-07-12-clef` | 15 | Phase-0 clef batch — Mahler, 15 clefs incl. 3 alto + 2 tenor |
+| `v6-2026-07-13-clef-diverse` | 47 | Cross-score clef diversity — 10 alto, 10 tenor, 14 bass, 13 treble |
+
+v5 and v6 sat on `clef-phase0-eval` as the only copy until 2026-08-29. **v6's
+label images were symlinks into a gitignored `cells/` directory** — one `git
+clean` from being labels with no images; they are real PNGs now.
+
+`catalog.yaml` still unions v1–v4 only, deliberately. Adding 62 clef-heavy cells
+narrows the density prior, and that is precisely what collapsed dense-page
+noteheads 2506 → 114 in the clef fine-tune. Preserving labels and training on
+them are separate decisions.
 
 ---
 
@@ -180,19 +211,31 @@ The branch also carries **post-experiment OMR improvements that may still be val
 
 ## Unmerged work on branches
 
-Audit 2026-08-28 (contextual-analysis branch merged since).  Branches holding commits absent from main; these are the ones worth a decision. Anything not listed is an archive of a concluded experiment.
+Audit **2026-08-29**, verified with `git cherry` and by comparing file contents —
+not by commit count, which lies here. Several branches listed as unmerged in the
+2026-08-28 audit had in fact landed; their commits differ only because they were
+squashed or re-merged. Anything not listed is an archive of a concluded experiment.
 
-| Branch | Commits | What it has | Disposition |
-|---|---|---|---|
-| `claude/omr-clef-tenor-fixture` | 1 | **The F-clef dot veto fires on C clefs.** Fixes the engraved reference sheet 4/5 → 5/5 and orchestral clef precision 1/2 → 3/4, with Bach still at 0 false positives. | **Deliberately held back.** Correct in isolation; makes shipped key signatures worse, because the clefs it gains open the key-sig gate on staves the key-sig reader misreads. Reasons in `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`. Ship once the viola misread is fixed. |
-| `claude/omr-info-retention-erasure-c26534` | 13 | Information retention through the erasure/removal stages | Unreviewed |
-| `claude/recognition-improvement-next-2f1709` | 10 | Follow-on recognition work | Unreviewed |
-| `claude/omr-dossier-verification-layer-eaf6d0` | 4 | Dossier-guided verification, slice 1 (meter back-fill + column notation-math) | Active WIP; the reconciliation recipe against main is written up in `docs/internal-consistency-checks.md` but not executed |
-| `claude/interesting-curran-3ca1b7` | 43 | Catalog experiment Phases A–L (concluded, do not retrain from it) **plus** 2026-05-25 `line_detection` improvements | Keep as the experiment's archive; the `line_detection` commits are still worth a cherry-pick review. Its label-EMITTER half is validated prior art for MXL-guided auto-labeling. |
-| `clef-phase0-eval` / `claude/scoreaug-fair-test-a2928e` / `claude/training-domain-augmentation-a29baf` | 15 / 2 / 3 | The two **disproven** training experiments and their audit tooling | Archives. Do not deploy their weights; do not retry the recipes. |
-| `claude/magical-bhabha` | 1 (March) | **Real MusicXML measure-level patching in `export_module`** — the #1 web-app TODO | Pre-consolidation code; evaluate against current `export_module` |
-| `claude/peaceful-kapitsa` | 1 (March) | SQLite-backed persistent job queue replacing FastAPI `BackgroundTasks` | Same: pre-consolidation; evaluate or discard |
-| `claude/quizzical-bell` | 1 (April) | The parked `/engrave` skill (Claude Vision-only OMR) | Superseded; safe to delete |
+| Branch | State | Disposition |
+|---|---|---|
+| `claude/reengraved-score-evaluation-cd4c92` | **Landed** | The paper-size fix and the beam-dedup corrections are on `main`. |
+| `claude/omr-score-order-prior` | **Landed** | Every file identical to `main`; the lexicon work arrived as `9711138`. Branch is stale metadata. |
+| `claude/omr-info-retention-erasure-c26534` | **Landed** | Nothing unlanded. |
+| `claude/recognition-improvement-next-2f1709` | **Landed** | Nothing unlanded. |
+| `clef-phase0-eval` | **Labels landed 2026-08-29** | v5, v6, three labeling batches (79 verdicts) and the audit tooling are on `main`. Its code half was redundant, its docs conflict with two months of newer files, and its weights stay unused. The branch is now an archive. |
+| `claude/omr-clef-tenor-fixture` | **Deliberately held back** | The F-clef dot veto fires on C clefs; the fix takes the engraved reference sheet 4/5 → 5/5 and orchestral clef precision 1/2 → 3/4. But the clefs it gains open the key-signature gate on staves the key-sig reader misreads, taking Beethoven 6 p.2 from 2 correct/0 wrong to 0/2 — for no clef gain in the output, since the header clef only picks a slot table. The commit message says so itself. Ship once the viola misread is fixed; reasons in `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`. |
+| `claude/omr-dossier-verification-layer-eaf6d0` | **The one open decision** | 4 commits, July. A *parallel* dossier implementation: hand-typed `tools/omr/dossiers/*.json` where `main` generates `data/dossiers/` from the Gradus MusicXML. Slice 1 (meter back-fill + column notation-math) is superseded, but **Phase 2/3 and dossier-steered re-segmentation — acting on a known bar count — have no equivalent on `main`**, whose `resegment_fused_measures` is driven by cross-staff consistency instead. Worth an assessment, not a merge: it has drifted seven weeks and uses a different data model. |
+| `claude/interesting-curran-3ca1b7` | Archive + one live thread | Catalog experiment Phases A–L (concluded; do not retrain from it) **plus** 2026-05-25 `line_detection` improvements still worth a cherry-pick review. Its label-EMITTER half is validated prior art for MXL-guided auto-labeling. |
+| `claude/scoreaug-fair-test-a2928e`, `claude/training-domain-augmentation-a29baf` | Archives | The two **disproven** training experiments. Do not deploy their weights; do not retry the recipes. |
+| `claude/magical-bhabha` | 1 commit (March) | **Real MusicXML measure-level patching in `export_module`** — the #1 web-app TODO. Pre-consolidation code; evaluate against current `export_module`. |
+| `claude/peaceful-kapitsa` | 1 commit (March) | SQLite-backed persistent job queue replacing FastAPI `BackgroundTasks`. Same: pre-consolidation; evaluate or discard. |
+| `claude/quizzical-bell` | 1 commit (April) | The parked `/engrave` skill (Claude Vision-only OMR). Superseded; safe to delete. |
+
+**Method note.** `git merge-tree <base> <a> <b>` — the deprecated three-argument
+form — reports no conflict on trees that plainly conflict. It said `clef-phase0-eval`
+merged cleanly; `git merge-tree --write-tree main clef-phase0-eval` correctly
+reports conflicts in `CLAUDE.md`, `tools/omr/README.md` and `transcribe.py`. Use
+the two-argument form, and check its exit code.
 
 ---
 
@@ -287,8 +330,8 @@ Immediate, in dependency order — the first two unlock the third:
 
 Also open:
 
-4. **Finish the 2026-06-10 labeling batch** (21/36 verdicts done), then convert the finished 06-09 + 06-10 batches → `v3` via `verdicts_to_yolo_labels` + rebuild the catalog. Note the retrain can no longer silently re-trigger the Phase 3.4 head-reset collapse (nc=208 cap + `train_yolo.py` guard).
-5. **Decide the fate of the unmerged branches** (table above) — especially `claude/reengraver-contextual-analysis-29cdd5` (25 commits, shipped results) and the two March web-app implementations.
+4. **Decide whether v5/v6 enter the training catalog.** Six label versions are now on `main` (223 cells) but `catalog.yaml` unions only v1–v4. Adding the 62 clef cells is a *training* decision with a known hazard — it narrows the density prior, which is what collapsed dense-page noteheads 2506 → 114 — so it wants a measured run behind `wtc_forgetting_eval.py`, not a rebuild. The retrain can no longer silently re-trigger the Phase 3.4 head-reset collapse (nc=208 cap + `train_yolo.py` guard).
+5. **Assess `claude/omr-dossier-verification-layer-eaf6d0`** — the last branch with capability `main` lacks (dossier-steered re-segmentation on a known bar count). Then the two March web-app implementations: measure-level MusicXML patching and the persistent job queue.
 
 Parked (carried from NOTES.md — see there for full context):
 
