@@ -20,6 +20,8 @@ Public surface:
 
 from __future__ import annotations
 
+from collections import Counter
+
 import cv2
 import numpy as np
 
@@ -685,6 +687,14 @@ RESEGMENT_WIDTH_WARN_FACTOR = 2.0
 # emit a piece that's still an implausible-width outlier.
 RESEGMENT_MIN_PIECE_FRAC = 0.5
 RESEGMENT_MAX_PIECE_FRAC = 1.75
+# STEERED mode only (a system's true bar count is known and the conservative pass
+# left it SHORT): a lower width threshold, so a fused pair of narrowish bars
+# (below the 2x flag) is still reconsidered. The upper-width
+# guard (MAX_PIECE_FRAC) is dropped under steering — the known count overrides
+# the "still an outlier" heuristic — but the sliver floor (MIN_PIECE_FRAC) is
+# always kept, and a genuine internal barline (ink) is still required. Bounded:
+# never split past the known count.
+RESEGMENT_STEER_WIDTH_FACTOR = 1.5
 
 
 def _find_internal_barline_candidates(
@@ -762,10 +772,98 @@ def _find_internal_barline_candidates(
     return deduped
 
 
+def majority_bars_by_system(
+    cells: list[MeasureCell],
+    *,
+    min_staves: int = 2,
+) -> dict[int, int]:
+    """Per system, the bar count held by a strict majority of its staves.
+
+    Every staff in a system is printed against the same barlines, so its staves
+    should agree on how many bars the system has. When they do not, the majority
+    is the count and a short staff has a fused pair somewhere. That is the same
+    reasoning `transcribe._flag_measure_count_inconsistency` uses to FLAG the
+    disagreement after detection; computing it here, straight off the cells, is
+    what lets `resegment_fused_measures` ACT on it instead — and it needs nothing
+    but cell counts, so it runs before a single symbol has been detected.
+
+    Deliberately narrow, because the output steers a split:
+
+    - **Strict majority required.** `mode_k * 2 > total` means the modal group
+      holds MORE than half the staves, so the modal count is the unique mode and
+      the deviating staves are unambiguously the minority. A 2-2 or 3-3 split
+      abstains — there is no basis to call either side wrong.
+    - **Systems below `min_staves` abstain.** One staff has no sibling to be
+      checked against, and asserting a count from it is circular.
+    - **Only the majority is reported**, never a per-staff target, so the caller
+      cannot be steered toward a count no staff actually read.
+
+    A system that abstains is simply absent from the result, which
+    `resegment_fused_measures` reads as "no expectation here".
+    """
+    per_staff: Counter[tuple[int, int]] = Counter()
+    for c in cells:
+        per_staff[(c.system_index, c.staff_index)] += 1
+
+    by_system: dict[int, list[int]] = {}
+    for (sys_idx, _staff_idx), n in per_staff.items():
+        by_system.setdefault(sys_idx, []).append(n)
+
+    out: dict[int, int] = {}
+    for sys_idx, counts in by_system.items():
+        total = len(counts)
+        if total < min_staves:
+            continue
+        mode_value, mode_k = Counter(counts).most_common(1)[0]
+        if mode_k * 2 <= total:
+            continue  # no strict majority -> abstain
+        out[sys_idx] = mode_value
+    return out
+
+
+def _select_steered_splits(
+    candidate_cells: list[tuple[int, int, int, list[int]]],
+    shortfall: int,
+    median_w: float,
+    *,
+    min_piece_frac: float = RESEGMENT_MIN_PIECE_FRAC,
+) -> dict[int, list[int]]:
+    """Pick steered splits to fill a `shortfall` of bars in a system.
+
+    `candidate_cells` are the un-split, wide-enough cells
+    `(measure_index, x0, x1, barline_candidates)` in WIDEST-first order. A cell's
+    split adds `len(candidates)` bars. A split is accepted only when it is backed
+    by genuine barline candidates, no resulting piece is a sliver
+    (< `min_piece_frac` x median — the false-barline guard, always kept), and it
+    does NOT overshoot the shortfall. The upper-width guard is deliberately
+    absent: the known count overrides "this piece is still an outlier". Pure (no
+    image) so it's unit-testable. Returns `{measure_index: [x0, ...cands, x1]}`.
+    """
+    out: dict[int, list[int]] = {}
+    remaining = shortfall
+    for measure_index, x0, x1, candidates in candidate_cells:
+        if remaining <= 0:
+            break
+        if not candidates:
+            continue
+        added = len(candidates)
+        if added > remaining:
+            continue  # would split past the known count -> skip (never overshoot)
+        boundaries = [x0] + list(candidates) + [x1]
+        pieces = [boundaries[i + 1] - boundaries[i] for i in range(len(boundaries) - 1)]
+        if any(p < median_w * min_piece_frac for p in pieces):
+            continue  # a resulting piece would be a sliver -> reject (false barline)
+        out[measure_index] = boundaries
+        remaining -= added
+    return out
+
+
 def resegment_fused_measures(
     pws: PageWithStaves,
     cells: list[MeasureCell],
     max_cell_width: int = MAX_CELL_WIDTH_PX,
+    *,
+    expected_bars_by_system: dict[int, int] | None = None,
 ) -> list[MeasureCell]:
     """Local re-segmentation pass over cells `extract_measures` already
     produced: split cells that are >2x-median-width outliers back into
@@ -779,6 +877,17 @@ def resegment_fused_measures(
     measure_index renumbered 0..N-1 afterward (barline x-positions are
     shared across a system's staves, so a flagged cell at measure_index m
     implies every staff in that system needs the same split at m).
+
+    `expected_bars_by_system` (steered mode) maps system_index -> the known bar
+    count; a system the conservative pass left SHORT is re-examined with relaxed
+    width gates (`_select_steered_splits`), still requiring genuine barline ink
+    and rejecting slivers, bounded so it never over-splits. Omitted (the default)
+    ⇒ conservative behaviour, byte-identical to today.
+
+    `majority_bars_by_system` is the intended source of that mapping: the count
+    the system's own staves agree on. An external count (a dossier, a human)
+    fits the same parameter, but note that a dossier generated from MusicXML
+    describes the engraver's page breaks, not the scan being read.
     """
     if not cells:
         return cells
@@ -847,6 +956,38 @@ def resegment_fused_measures(
                 # still an implausible-width outlier) -- reject the WHOLE
                 # split and keep the cell as Phase 1 produced it. Never
                 # emit a partial/best-effort split.
+
+        # Steered relaxation: if this system's bar count is known and the
+        # conservative pass left it SHORT, reconsider the
+        # wide-ish un-split cells with relaxed gates — lower width threshold, the
+        # upper-width guard dropped — but still requiring a genuine internal
+        # barline (ink) and rejecting slivers, bounded so we never split past the
+        # known count. Inert when `expected_bars_by_system` is None or has no
+        # entry for this system, so an abstaining system is byte-identical.
+        if expected_bars_by_system is not None and median_w > 0:
+            expected = expected_bars_by_system.get(sys_idx)
+            if expected is not None:
+                conservative_bars = len(rep_cells) + sum(
+                    len(b) - 2 for b in split_boundaries.values()
+                )
+                shortfall = expected - conservative_bars
+                if shortfall > 0:
+                    steer_min_w = median_w * RESEGMENT_STEER_WIDTH_FACTOR
+                    wide_unsplit = sorted(
+                        (c for c in rep_cells
+                         if c.measure_index not in split_boundaries
+                         and (c.bbox_page_px[2] - c.bbox_page_px[0]) > steer_min_w),
+                        key=lambda c: c.bbox_page_px[2] - c.bbox_page_px[0],
+                        reverse=True,
+                    )
+                    candidate_cells = []
+                    for c in wide_unsplit:
+                        x0, _, x1, _ = c.bbox_page_px
+                        cand = _find_internal_barline_candidates(bin_img, staves, x0, x1)
+                        candidate_cells.append((c.measure_index, x0, x1, cand))
+                    split_boundaries.update(
+                        _select_steered_splits(candidate_cells, shortfall, median_w)
+                    )
 
         if not split_boundaries:
             # Nothing splittable in this system -- pass every cell through

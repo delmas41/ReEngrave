@@ -241,7 +241,8 @@ from typing import Any
 
 from .preprocessing import render_page
 from .staff_detector import detect_staves
-from .measure_extractor import detect_barlines, extract_measures, resegment_fused_measures
+from .measure_extractor import (detect_barlines, extract_measures,
+                                majority_bars_by_system, resegment_fused_measures)
 from .staff_line_removal import remove_staff_lines
 from .types import MeasureCell, PageWithStaves, Staff
 from .pitch_resolver import (pitch_candidates_for_notehead, pitch_for_notehead,
@@ -2678,7 +2679,25 @@ def transcribe(
         # flagged as a >2x-median-width outlier below, if a genuine
         # internal barline can be found inside it. Conservative by
         # construction — see measure_extractor.resegment_fused_measures.
-        cells = resegment_fused_measures(pws, cells)
+        # Then steer that pass with the system's OWN majority bar count. Every
+        # staff in a system is printed against the same barlines, so when one
+        # staff reads fewer bars than the rest, the majority is the count and
+        # that staff has a fused pair. The conservative pass only splits cells
+        # wide enough to be flagged outright; steering re-examines the narrower
+        # ones on the short staves, still refusing to split without genuine
+        # barline ink and never past the majority.
+        #
+        # The count comes from the page, not from a dossier. That was the other
+        # option and it is the wrong one: a dossier here is generated from
+        # MusicXML, whose page and system breaks describe the ENGRAVER'S
+        # edition, not the scan being read — the right bar counts for the wrong
+        # page. The page's own staves are the only witnesses to how THIS print
+        # is barred, and they are available on every page rather than on the
+        # ~97 works a dossier exists for.
+        cells = resegment_fused_measures(
+            pws, cells,
+            expected_bars_by_system=majority_bars_by_system(cells),
+        )
         remove_staff_lines(cells)
 
         # The staff-header pass. Header cells are cheap (one crop per staff) and

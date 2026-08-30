@@ -40,6 +40,8 @@ import pytest
 from tools.omr.measure_extractor import (
     BARLINE_MIN_DISTANCE_PX,
     _find_internal_barline_candidates,
+    _select_steered_splits,
+    majority_bars_by_system,
     resegment_fused_measures,
 )
 from tools.omr.types import MeasureCell, PageImage, PageWithStaves, Staff
@@ -318,6 +320,210 @@ class TestTrailingTail:
     def test_single_measure_page_is_unaffected(self):
         got = self._boundaries([100, 1100])
         assert got == [(100, 1100)]
+# ─── Steered re-segmentation ────────────────────────────────────────
+
+
+class TestSelectSteeredSplits:
+    """The pure accept/reject decision (no image)."""
+
+    def test_fills_shortfall_in_given_order(self):
+        cc = [(1, 250, 610, [430]), (3, 700, 1100, [900])]  # median 200
+        assert _select_steered_splits(cc, 1, 200) == {1: [250, 430, 610]}
+        assert _select_steered_splits(cc, 2, 200) == {
+            1: [250, 430, 610], 3: [700, 900, 1100]}
+
+    def test_zero_or_negative_shortfall_is_noop(self):
+        assert _select_steered_splits([(1, 250, 610, [430])], 0, 200) == {}
+        assert _select_steered_splits([(1, 250, 610, [430])], -2, 200) == {}
+
+    def test_no_candidates_skipped(self):
+        assert _select_steered_splits([(1, 250, 610, [])], 1, 200) == {}
+
+    def test_sliver_rejected(self):
+        # barline @280 in [250,610] -> pieces [30, 330]; 30 < 0.5*200 -> sliver
+        assert _select_steered_splits([(1, 250, 610, [280])], 1, 200) == {}
+
+    def test_never_overshoots(self):
+        # a cell with 2 candidates but only 1 bar short -> skip it entirely
+        assert _select_steered_splits([(1, 250, 850, [400, 650])], 1, 200) == {}
+        # ...but accepted when the shortfall can absorb both
+        assert _select_steered_splits([(1, 250, 850, [400, 650])], 2, 200) == {
+            1: [250, 400, 650, 850]}
+
+
+# Boundaries with a sub-2x fused cell (360px, median 200 -> 1.8x): the
+# conservative pass ignores it (< 2x), but a known bar count can steer a split.
+_SUB2X_BOUNDARIES = [(50, 250), (250, 610), (610, 810)]  # widths 200, 360, 200
+
+
+class TestSteeredResegmentation:
+    def test_sub_2x_cell_split_only_when_steered(self):
+        page = _make_page()
+        _draw_barline(page.binary, 430)  # genuine barline mid the 360px cell
+        staves = _make_staves()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+
+        # No expected count: conservative ignores the 1.8x cell -> stays fused.
+        out0 = resegment_fused_measures(
+            pws, _measure_cells(staves, _SUB2X_BOUNDARIES),
+            max_cell_width=TEST_MAX_CELL_WIDTH)
+        assert len(out0) == 6
+        assert _staff_measure_widths(out0, 0) == [200, 200, 360]
+
+        # Dossier says 4 bars -> steer the split.
+        out = resegment_fused_measures(
+            pws, _measure_cells(staves, _SUB2X_BOUNDARIES),
+            max_cell_width=TEST_MAX_CELL_WIDTH,
+            expected_bars_by_system={0: 4})
+        assert len(out) == 8
+        assert _staff_measure_widths(out, 0) == [180, 180, 200, 200]
+
+    def test_never_fabricates_a_barline(self):
+        # Blank cell (no ink), the expected count demands 4 bars -> steering must NOT split.
+        page = _make_page()  # blank
+        staves = _make_staves()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+        out = resegment_fused_measures(
+            pws, _measure_cells(staves, _SUB2X_BOUNDARIES),
+            max_cell_width=TEST_MAX_CELL_WIDTH,
+            expected_bars_by_system={0: 4})
+        assert len(out) == 6, "no barline ink -> no split, even when told to find one"
+
+    def test_relaxes_upper_width_guard_under_steering(self):
+        # A >2x cell whose split the conservative gate rejects (one piece 1.9x >
+        # MAX_PIECE_FRAC 1.75x); steering drops that upper guard.
+        boundaries = [(50, 250), (250, 750), (750, 950)]  # widths 200, 500, 200
+        page = _make_page()
+        _draw_barline(page.binary, 370)  # pieces [120, 380]; 380 = 1.9x median
+        staves = _make_staves()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+
+        out0 = resegment_fused_measures(
+            pws, _measure_cells(staves, boundaries), max_cell_width=TEST_MAX_CELL_WIDTH)
+        assert len(out0) == 6, "conservative rejects the too-wide-piece split"
+
+        out = resegment_fused_measures(
+            pws, _measure_cells(staves, boundaries),
+            max_cell_width=TEST_MAX_CELL_WIDTH, expected_bars_by_system={0: 4})
+        assert len(out) == 8, "steering accepts it (sliver floor still applies)"
+
+    def test_inert_when_count_already_met(self):
+        # A genuine barline exists, but the expected count is already satisfied ->
+        # steering does nothing (respects the known count).
+        page = _make_page()
+        _draw_barline(page.binary, 430)
+        staves = _make_staves()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+        out = resegment_fused_measures(
+            pws, _measure_cells(staves, _SUB2X_BOUNDARIES),
+            max_cell_width=TEST_MAX_CELL_WIDTH, expected_bars_by_system={0: 3})
+        assert len(out) == 6, "count met -> no steered split"
+
+
+# ─── The system's own majority bar count (majority_bars_by_system) ────────────
+
+
+def _cells_for_counts(counts: dict[tuple[int, int], int]) -> list[MeasureCell]:
+    """Cells for `{(system_index, staff_index): n_measures}`. Only the index
+    fields matter here — majority_bars_by_system counts cells, nothing else."""
+    cells = []
+    for (sys_idx, staff_idx), n in counts.items():
+        for m_idx in range(n):
+            cells.append(MeasureCell(
+                page_index=0,
+                system_index=sys_idx,
+                staff_index=staff_idx,
+                measure_index=m_idx,
+                image=np.zeros((10, 10, 3), dtype=np.uint8),
+                image_no_staff=None,
+                bbox_page_px=(50 + 100 * m_idx, 0, 150 + 100 * m_idx, 90),
+                staff_line_ys_canonical=[0, 20, 40, 60, 80],
+                upscale_factor=1.0,
+            ))
+    return cells
+
+
+class TestMajorityBarsBySystem:
+    """The count a system's staves agree on, computed off the cells alone —
+    before any symbol is detected. It steers re-segmentation, so it abstains
+    wherever the page gives no unambiguous answer."""
+
+    def test_unanimous_system(self):
+        cells = _cells_for_counts({(0, 0): 4, (0, 1): 4, (0, 2): 4})
+        assert majority_bars_by_system(cells) == {0: 4}
+
+    def test_one_short_staff_yields_the_majority(self):
+        # The case the whole feature exists for: three staves read 4 bars and
+        # one reads 3, so the fourth has a fused pair.
+        cells = _cells_for_counts({(0, 0): 4, (0, 1): 4, (0, 2): 4, (0, 3): 3})
+        assert majority_bars_by_system(cells) == {0: 4}
+
+    def test_tie_abstains(self):
+        # 2-2 gives no basis to call either side the anomaly.
+        cells = _cells_for_counts({(0, 0): 4, (0, 1): 4, (0, 2): 3, (0, 3): 3})
+        assert majority_bars_by_system(cells) == {}
+
+    def test_bare_plurality_abstains(self):
+        # Modal count held by 1 of 3 staves is not a strict majority.
+        cells = _cells_for_counts({(0, 0): 2, (0, 1): 3, (0, 2): 4})
+        assert majority_bars_by_system(cells) == {}
+
+    def test_single_staff_system_abstains(self):
+        # Nothing to cross-check against; asserting a count from one staff is
+        # circular — it would only ever confirm what that staff already read.
+        assert majority_bars_by_system(_cells_for_counts({(0, 0): 5})) == {}
+
+    def test_systems_are_independent(self):
+        cells = _cells_for_counts({
+            (0, 0): 4, (0, 1): 4,          # system 0 agrees
+            (1, 0): 6, (1, 1): 6, (1, 2): 5,  # system 1: majority 6
+            (2, 0): 3, (2, 1): 2,          # system 2: tie -> absent
+        })
+        assert majority_bars_by_system(cells) == {0: 4, 1: 6}
+
+    def test_empty_input(self):
+        assert majority_bars_by_system([]) == {}
+
+
+class TestMajoritySteeringIsSafeOnRestingStaves:
+    """The one hazard of steering from the page's own majority rather than an
+    external count: it runs BEFORE detection, so it cannot use the note-content
+    test that separates a fused pair of real bars from a condensed
+    multi-measure rest — the dominant orchestral false positive, and the reason
+    `_flag_measure_count_inconsistency` down-weights that case to "low".
+
+    What protects it is that a multi-measure rest carries no internal barline,
+    and steering never splits without barline ink. This pins that end to end:
+    majority computed from the cells, fed straight to re-segmentation."""
+
+    def test_resting_staff_is_not_split_to_meet_the_majority(self):
+        # A blank page: no barline ink anywhere.
+        page = _make_page()
+        staves = _make_staves()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+        cells = _measure_cells(staves, _SUB2X_BOUNDARIES)
+
+        # Both staves read 3 here, so make the majority DEMAND more than the
+        # page can honestly supply and confirm nothing is fabricated.
+        out = resegment_fused_measures(
+            pws, cells, max_cell_width=TEST_MAX_CELL_WIDTH,
+            expected_bars_by_system={0: 5})
+        assert len(out) == len(cells), "no ink -> no split, whatever the count says"
+        assert _staff_measure_widths(out, 0) == _staff_measure_widths(cells, 0)
+
+    def test_majority_feeds_resegmentation_without_fabricating(self):
+        page = _make_page()
+        staves = _make_staves()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+        cells = _measure_cells(staves, _SUB2X_BOUNDARIES)
+
+        expected = majority_bars_by_system(cells)
+        assert expected == {0: 3}, "both staves read 3 -> that is the majority"
+
+        out = resegment_fused_measures(
+            pws, cells, max_cell_width=TEST_MAX_CELL_WIDTH,
+            expected_bars_by_system=expected)
+        assert len(out) == len(cells), "count already met -> steering inert"
 
 
 # ─── One-line percussion staves must not reach the barline scanner ───────────
@@ -332,13 +538,13 @@ class TestOneLineStaffIsExcludedFromResegmentation:
     noise: `_detect_barlines_in_window` sizes its morphological kernel from the
     staff span, so a span of 0 asks OpenCV for a 1x0 kernel and it raises.
 
-    La Mer p.25 is the page the one-line-staff support was validated on. Its
-    regression test covers staff detection and stops short of transcription, so
-    the page could not be read end to end until this guard was added."""
+    Found by the majority-steering probe on La Mer p.25 — the very page the
+    one-line-staff support was validated on, which could not be transcribed at
+    all until this guard was added."""
 
     def _system_with_a_one_line_staff(self):
         staves = _make_staves()
-        # A single rule between the two real staves: one line_y, so
+        # A single rule sitting between the two real staves: one line_y, so
         # top_y == bottom_y and the span is 0.
         staves.append(Staff(page_index=0, staff_index=2, line_ys=[210],
                             x_start=50, x_end=850, system_index=0))
@@ -347,9 +553,25 @@ class TestOneLineStaffIsExcludedFromResegmentation:
     def test_zero_span_staff_does_not_raise(self):
         page = _make_page()
         _draw_barline(page.binary, 430)
-        pws = PageWithStaves(page=page, staves=self._system_with_a_one_line_staff(),
-                             barlines=[])
-        cells = _measure_cells(_make_staves(), BOUNDARIES)  # cells for the 5-line staves
+        staves = self._system_with_a_one_line_staff()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+        cells = _measure_cells(_make_staves(), BOUNDARIES)  # cells for the 5-line staves only
 
         out = resegment_fused_measures(pws, cells, max_cell_width=TEST_MAX_CELL_WIDTH)
         assert out, "a one-line staff in the system must not break Phase 1"
+
+    def test_zero_span_staff_does_not_raise_when_steered(self):
+        page = _make_page()
+        _draw_barline(page.binary, 430)
+        staves = self._system_with_a_one_line_staff()
+        pws = PageWithStaves(page=page, staves=staves, barlines=[])
+        cells = _measure_cells(_make_staves(), _SUB2X_BOUNDARIES)
+
+        # The majority here is 3 and both staves read 3, so steering would be
+        # inert and would never reach the barline scanner. Demand 4 to force the
+        # steered branch to run.
+        assert majority_bars_by_system(cells) == {0: 3}
+        out = resegment_fused_measures(
+            pws, cells, max_cell_width=TEST_MAX_CELL_WIDTH,
+            expected_bars_by_system={0: 4})
+        assert out, "the steered path must be guarded too"
