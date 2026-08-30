@@ -34,14 +34,20 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
 from tools.omr.contextual import apply_contextual_analysis  # noqa: E402
+from tools.omr.dossier import resolve_dossier  # noqa: E402
 from tools.omr.transcribe import transcribe  # noqa: E402
 
 TRUTH = REPO / "benchmarks" / "omr-key-signature" / "ground_truth.json"
 WEIGHTS = REPO / "omr-weights" / "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
 
 
+# The work each ground-truth page comes from, for --dossier. Only pages whose
+# work has a generated dossier can be scored that way.
+WORKS = {"beet5-p2": "beethoven-sym5-mvt1", "pastoral-p2": "beethoven-sym6-mvt1"}
+
+
 def score_page(page: dict, weights: Path, dpi: int | None,
-               contextual: bool = False) -> list[dict]:
+               contextual: bool = False, use_dossier: bool = False) -> list[dict]:
     pdf = Path(page["pdf"])
     if not pdf.is_absolute():
         pdf = REPO / pdf
@@ -55,10 +61,15 @@ def score_page(page: dict, weights: Path, dpi: int | None,
     if contextual:
         # The pass that proposes a clef from the instrument's own convention,
         # vetoed by the staff's register — and only where nothing read a clef.
+        dossier = (resolve_dossier(WORKS[page["id"]])
+                   if use_dossier and page["id"] in WORKS else None)
         summary = apply_contextual_analysis(
-            result, pdf_path=pdf, dpi=dpi or page["dpi"], apply_clefs=True)
+            result, pdf_path=pdf, dpi=dpi or page["dpi"], apply_clefs=True,
+            dossier=dossier)
         print(f"  {page['id']}: contextual — {summary.get('labelled_staves')} labels, "
-              f"{summary.get('clefs_applied')} clef corrections applied")
+              f"{summary.get('clefs_applied')} instrument corrections, "
+              f"{summary.get('clefs_filled_from_slot')} filled from another system, "
+              f"{summary.get('clefs_from_dossier')} from the dossier")
     truth = {s["ordinal"]: s["clef"] for s in page["staves"]}
     rows = []
     for page_d in result["pages"]:
@@ -90,6 +101,8 @@ def main() -> int:
     ap.add_argument("--dpi", type=int, help="override each page's own DPI")
     ap.add_argument("--weights", type=Path, default=WEIGHTS)
     ap.add_argument("--out", type=Path, help="write the per-staff rows as JSON")
+    ap.add_argument("--dossier", action="store_true",
+                    help="let the work's own parts supply clefs where the join is anchored")
     ap.add_argument("--contextual", action="store_true",
                     help="run contextual analysis (instrument identity -> clef) first")
     args = ap.parse_args()
@@ -99,7 +112,8 @@ def main() -> int:
 
     rows: list[dict] = []
     for page in json.loads(TRUTH.read_text())["pages"]:
-        rows.extend(score_page(page, args.weights, args.dpi, args.contextual))
+        rows.extend(score_page(page, args.weights, args.dpi,
+                               args.contextual or args.dossier, args.dossier))
     if not rows:
         print("no pages scored")
         return 1

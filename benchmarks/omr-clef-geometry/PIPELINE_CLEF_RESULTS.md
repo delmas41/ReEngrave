@@ -80,6 +80,35 @@ default for a wrong correction at no net gain. The register veto inside
 `propose_clef` did not catch it. The gate stays: identity deduced from position
 still does not drive clef correction.
 
+## The same join does NOT work for key signatures
+
+The join returns each part's `written_fifths` as well as its clef, and thread 2
+of the handoff ended by naming this join as the blocker for the dossier seeding
+key signatures. It was measured on the same 42 staves, filling only staves whose
+signature nothing read, only where the join is anchored:
+
+    fix 5, break 4
+
+Barely positive, and the breaks are systematic rather than noisy:
+
+| staff | dossier | printed on this page |
+|---|---|---|
+| C Trumpet | 3 flats | none |
+| C, G Timpani | 3 flats | none |
+| Bb Clarinet | 1 flat | 1 flat ✓ |
+| Oboe | 1 flat | 1 flat ✓ |
+
+The dossier is right about the WORK and wrong about this PRINTING. Whether
+natural brass and timpani carry a key signature is an editorial convention that
+varies between editions — the Gradus MusicXML gives them one, this
+19th-century engraving does not — while the transposing woodwinds, where the
+written signature genuinely differs from concert pitch and the reader most needs
+help, come out right.
+
+So the join supplies clefs and not key signatures. A clef is a property of the
+part; a natural-brass key signature is a property of the edition, and the
+dossier is not a dossier of this edition.
+
 ## What is left
 
 Three errors, all non-treble read as treble, and only one kind now:
@@ -96,31 +125,61 @@ Three errors, all non-treble read as treble, and only one kind now:
 Both are cases where the page itself does not carry the answer in any form the
 pipeline can already see.
 
-## Measured and rejected: the dossier as a clef source on these pages
+## The dossier, once its parts can be joined to the page
 
 The dossier records each part's `written_clef`, so it knows the answer to all
-three. It cannot deliver it. `--dossier` changes nothing here (beet5-p2 21/22
-and pastoral-p2 17/20 with and without), because slot-level facts are gated on
-the part count matching the staff count — and a printed score condenses, 18
-parts reaching a page as 11 staves.
+three remaining errors. Delivering it took three attempts, and the first two
+are worth keeping because they say what the join actually needs.
 
-Joining them by ALIGNMENT instead was tried, reusing the monotone aligner from
-`score_layouts` with the work's own parts and clefs:
+**Attempt 1 — the existing gate.** `--dossier` changes nothing here (beet5-p2
+21/22, pastoral-p2 17/20, with and without), because slot-level facts require
+part count == staff count and a printed score condenses: 18 parts reach a page
+as 11 staves.
 
-| join | aligned clefs correct | filling defaults would |
-|---|---|---|
-| alignment, gaps + continuation | 32 / 42 | fix 0, break 1 |
-| ...plus a condensation move (several parts on one staff) | 35 / 42 | fix 0, break 1 |
+**Attempt 2 — align on clefs and position.** Reusing the monotone aligner with
+the work's parts: 32/42 staves joined correctly, and adding a condensation move
+(several parts on one staff) took it to 35/42 — but filling defaults from it
+would fix 0 and break 1. The reason is circular: the evidence for deciding
+which parts condense was position and **the clefs already read**, which is what
+is wrong on the staves that matter.
 
-The condensation move is what a printed score actually does, and adding it
-helped in aggregate — but it made Beethoven 5's first system *worse* (11/11 →
-9/11) and neither version gets the staves that matter right. The reason is
-circular in a way no tuning fixes: the only evidence available for deciding
-which parts condense onto which staff is position and **the clefs already
-read** — which is precisely what is wrong on those staves. The dossier knows
-the clef but cannot be told which staff to put it on.
+**Attempt 3 — align on the margin LABELS, never the clefs.** This is the join
+(`dossier.join_parts_to_slots`). Three things make it work:
 
-That experiment was reverted rather than left in place: unused machinery that
-looks endorsed is worse than none. Making the dossier usable here needs a join
-with independent evidence — the margin instrument names are the obvious one,
-and `staff_labels` already reads them where there is a text layer.
+- **Labels as the evidence.** Independent of the clefs it exists to supply, so
+  it cannot be circular. Labels are read per staff and joined through *slots*,
+  so a name read in one system reaches every system of the page.
+- **Condensation priced by instrument.** A merge of two parts with the same
+  name (Flauti 1 and 2) is cheap; joining different instruments — the
+  "Violoncello e Basso" case — is dearer but allowed. With one price for both,
+  the aligner drops the second violin rather than condensing cello with bass,
+  and the whole string section slips by one: 17/42 against 28/42.
+- **Trust only between anchors.** A slot with a labelled slot above *and* below
+  is pinned on both sides and cannot slip. Past the last label the join is
+  guessing — and measurably so: on these two pages it is right on **7 of 7 wind
+  staves, including an unlabelled bassoon**, and wrong on the string section,
+  which carries no labels at all.
+
+Anchored, the join may do what nothing else in this module does: **overrule a
+clef that was read**. That licence comes from what a dossier is — not another
+reader with an opinion, but the score. It is confined to anchored slots
+precisely because the licence is dangerous: unanchored, the same join walks into
+the strings and gets three staves wrong.
+
+Measured: **49/52 → 50/52 (96%)**. One clef applied, on Beethoven 5 p.2's
+bassoon, which the detector had read as treble. Nothing else moved. What the
+reader said is kept on the staff as `clef_overridden_by_dossier`, so seeding can
+never hide how well the page was read.
+
+## What is left
+
+Two staves, and they are the same staff: the Pastoral viola, alto in both
+systems, read treble in one and defaulted treble in the other. Nothing on the
+page says otherwise — the score-order prior calls it a violin for the same
+reason — and the dossier knows it is a viola but cannot be trusted there,
+because that page carries only two labels and both sit above the strings.
+
+The lever for it is more labels, not a better join: `staff_labels` reads what
+the text layer offers, and `contextual`'s `vision_fallback=True` reads the
+margin with Claude for about a cent per system. One more label anywhere below
+the strings would anchor the whole section.

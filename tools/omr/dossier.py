@@ -385,6 +385,77 @@ def check_slot_alignment(page: dict[str, Any],
 
 # ── seeding: the dossier as an INPUT, not only a judge ──────────────────────
 
+def join_parts_to_slots(
+    n_slots: int,
+    dossier: dict[str, Any],
+    labels: dict[int, str] | None = None,
+) -> list[dict[str, Any] | None]:
+    """Join this work's PARTS to a page's SLOTS, and say where to trust it.
+
+    `slot_facts_for_system` requires part count == staff count, which is right
+    for slot-level checking but silent on the pages that need the dossier most:
+    a printed score condenses, so Beethoven 5's 18 parts reach a page as 11
+    staves and the gate never opens.
+
+    Score order is monotone, so the join is an alignment — the same one
+    `score_layouts` runs against a standard layout, with gaps on both sides, a
+    continuation move for a part printed on several staves, and a condensation
+    move for several parts printed on one.
+
+    **The evidence is the margin labels, deliberately, and never the clefs.**
+    Clefs are what this join exists to supply, and scoring the join on them
+    would be circular exactly where it matters. Labels come from `staff_labels`
+    via slots, so a name read in one system reaches every system of the page.
+
+    Each entry carries `anchored`: whether that slot lies BETWEEN two labelled
+    slots. Measured on Beethoven 5 p.2 and the Pastoral p.2, the join is right
+    on 7 of 7 wind staves — including an unlabelled bassoon, pinned by the
+    clarinets above and the horns below — and wrong on the string section,
+    where there are no labels at all and nothing says whether the fifth string
+    part is dropped or condensed onto the fourth staff. Between anchors the
+    alignment has no room to slip; past the last one it is guessing.
+    """
+    from .score_layouts import ScoreLayout, align_to_layout
+    from .instruments import lookup
+
+    parts = dossier.get("parts") or []
+    if not parts or n_slots <= 0:
+        return [None] * max(0, n_slots)
+
+    def canonical(name: str | None) -> str:
+        match = lookup(name or "")
+        return match.instrument.name if match else (name or "")
+
+    # Canonical names on both sides, so "Bb Clarinet" from the work and
+    # "Clarinetti" from the margin are the same instrument to the aligner.
+    names = tuple(canonical(p.get("name")) for p in parts)
+    layout = ScoreLayout(name=dossier.get("work_id", "dossier"), parts=names)
+    _score, assignment = align_to_layout(
+        layout, n_slots,
+        labels={i: canonical(v) for i, v in (labels or {}).items()},
+        part_clefs=[p.get("written_clef") for p in parts],
+        allow_merge=True,
+        # Indices, not names: this work's parts repeat their names — "Violin 1"
+        # and "Violin 2" are one instrument and two parts — and only the index
+        # says which slot got which.
+        return_indices=True,
+    )
+
+    anchored: set[int] = set()
+    if labels:
+        anchored = set(range(min(labels), max(labels) + 1))
+
+    out: list[dict[str, Any] | None] = []
+    for slot, index in enumerate(assignment):
+        part = parts[index] if index is not None and 0 <= index < len(parts) else None
+        out.append(
+            {"clef": part.get("written_clef"), "fifths": part.get("written_fifths"),
+             "part": part.get("name"), "anchored": slot in anchored}
+            if part else None
+        )
+    return out
+
+
 def slot_facts_for_system(n_staves: int,
                           dossier: dict[str, Any]) -> list[dict[str, Any]] | None:
     """Per-staff written clef and key signature, or None when the join is unsafe.

@@ -35,6 +35,7 @@ from pathlib import Path
 from typing import Any
 
 from .clef_correction import correct_clefs_from_instruments
+from .dossier import join_parts_to_slots
 from .instruments import Instrument, candidates_for_alias, lookup
 from .preprocessing import render_page
 from .score_layouts import fit_layouts, resolve_ambiguous_label
@@ -52,6 +53,52 @@ def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
         if match is not None:
             out[slot.index] = match.instrument
     return out
+
+
+def _apply_dossier_clefs(pages, slot_by_staff, reference, labels_by_slot,
+                        dossier) -> list[dict]:
+    """Give each staff the clef its part carries IN THE SCORE, where the join
+    can be trusted.
+
+    Unlike everything else here the dossier is not another reader: it is the
+    work. So this may overrule a clef that WAS read — which nothing else in this
+    module does — and that licence is exactly why it is confined to slots the
+    part-join is anchored on, meaning a labelled slot above and below. Measured
+    on the two orchestral ground-truth pages, that fixes a bassoon the detector
+    read as treble and changes nothing else; unanchored, the same join walks
+    into the string section and gets three staves wrong.
+
+    What the readers said is kept on the staff as `clef_overridden_by_dossier`,
+    so seeding can never hide how well the page was actually read.
+    """
+    facts = join_parts_to_slots(len(reference), dossier, labels_by_slot)
+    applied: list[dict] = []
+    for page in pages:
+        for system in page.get("systems", []):
+            for staff in system.get("staves", []):
+                key = (page.get("page_index"), system.get("system_index"),
+                       staff.get("staff_index"))
+                slot = slot_by_staff.get(key)
+                if slot is None or not (0 <= slot < len(facts)):
+                    continue
+                fact = facts[slot]
+                if not fact or not fact.get("anchored") or not fact.get("clef"):
+                    continue
+                if staff.get("clef") == fact["clef"]:
+                    continue
+                applied.append({
+                    "page_index": key[0], "system_index": key[1],
+                    "staff_index": key[2], "slot": slot, "part": fact["part"],
+                    "from_clef": staff.get("clef"), "to_clef": fact["clef"],
+                    "was_read": bool(staff.get("clef_source")),
+                })
+                if staff.get("clef_source"):
+                    staff["clef_overridden_by_dossier"] = {
+                        "clef": staff.get("clef"), "source": staff.get("clef_source"),
+                    }
+                staff["clef"] = fact["clef"]
+                staff["clef_source"] = "dossier"
+    return applied
 
 
 def _fill_defaulted_clefs(pages, slot_by_staff) -> list[dict]:
@@ -214,6 +261,7 @@ def apply_contextual_analysis(
     pdf_path: str | Path | None = None,
     dpi: int | None = None,
     apply_clefs: bool = True,
+    dossier: dict[str, Any] | None = None,
     vision_fallback: bool = False,
     vision_system_budget: int = 3,
 ) -> dict[str, Any]:
@@ -338,6 +386,18 @@ def apply_contextual_analysis(
     # instrument's convention.
     clefs_filled = _fill_defaulted_clefs(pages, slot_by_staff) if apply_clefs else []
 
+    # The work itself, where one was supplied and the part-join is anchored.
+    labels_by_slot: dict[int, str] = {}
+    for page_index, pws, page_labels in zip(page_indices, staved, labels):
+        for staff in pws.staves:
+            name = page_labels.get(staff.staff_index)
+            if name and staff.slot_index >= 0:
+                labels_by_slot.setdefault(staff.slot_index, name)
+    dossier_clefs = (
+        _apply_dossier_clefs(pages, slot_by_staff, reference, labels_by_slot, dossier)
+        if (dossier and apply_clefs) else []
+    )
+
     records = correct_clefs_from_instruments(
         pages, read_instruments, slot_by_staff, apply=apply_clefs)
 
@@ -356,6 +416,8 @@ def apply_contextual_analysis(
         clefs_applied=sum(1 for r in records if r["applied"]),
         clefs_filled_from_slot=len(clefs_filled),
         clef_fills=clefs_filled,
+        clefs_from_dossier=len(dossier_clefs),
+        dossier_clefs=dossier_clefs,
         noteheads_restated=sum(r.get("noteheads_restated", 0) for r in records),
     )
     return summary
