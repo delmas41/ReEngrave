@@ -2931,10 +2931,43 @@ def transcribe(
                         detected = _clef_from_dets(header_dets[staff_idx][0])
                         if detected is not None:
                             estimate = detected
+                    estimate_from_locator = False
                     if estimate is None and locate_c_clefs and hc is not None:
                         found = locate_clef(hc)
                         if found is not None:
                             estimate = found.read.name
+                            estimate_from_locator = True
+                    # The specialist's read of this same header crop, on the
+                    # same terms as the measure-loop pass below: it can
+                    # improve on the production detector's guess (or the lack
+                    # of one) but not on a locator finding, which is the more
+                    # specific evidence for the C clefs it recognises. Before
+                    # this, the specialist's clef never reached here at all —
+                    # `clef_estimate` was built from only the detector and the
+                    # locator, so a staff whose key signature it would have
+                    # unblocked stayed unread regardless of what the specialist
+                    # found later in the measure loop. Measured with
+                    # `benchmarks/omr-key-signature/eval_key_signatures.py`
+                    # (OMR_CLEF_WEIGHTS=deepscoresv2-yolov8l-clef-ft-boxfix-
+                    # 2026-07-13.pt): pastoral-p2 end-to-end key signatures the
+                    # vote could speak for 10/20 -> 12/20 staves (2 more
+                    # correct, 0 new wrong); beet5-p2 and wtc-p17 unchanged —
+                    # this only ever adds a clef where the detector and locator
+                    # were both silent, so it cannot make an already-read page
+                    # worse.
+                    if clef_reader is not None and hc is not None and not estimate_from_locator:
+                        spec_clef, _ = _read_staff_header(
+                            clef_reader, hc,
+                            conf=clef_reader_conf,
+                            imgsz=clef_reader_imgsz,
+                            header_frac=clef_reader_header_frac,
+                            iou_threshold=iou_threshold,
+                            agnostic_nms=agnostic_nms,
+                            pdf_path=pdf_path,
+                            page_dpi=dpi,
+                        )
+                        if spec_clef is not None:
+                            estimate = spec_clef
                     clef_estimate[staff_idx] = estimate
             voted_fifths, voted_reasons, key_sig_unread_reasons = (
                 _header_key_signatures(
