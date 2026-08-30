@@ -1,0 +1,7 @@
+# The cached pipeline run for each page, and the MusicXML score.py exports from
+# it. Both are regenerable in about half a minute with the production weights,
+# and the repo's root .gitignore already rules that benchmarks/**/*.omr.json is
+# a dump rather than a record: "Commit the REPORT that cites the numbers, not
+# the dump it read them from." The report is README.md.
+*
+!.gitignore
