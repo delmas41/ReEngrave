@@ -196,6 +196,28 @@ def summarize() -> None:
     for k, v in warn.most_common():
         print(f"   {v:>6}  {k}")
 
+    # PER SCORE, and this is the part to read. Aggregates over a mixed corpus
+    # hide the one distinction that has repeatedly misled this project: a
+    # keyboard page and a conductor's page are different problems, and a number
+    # pooled over both describes neither. Three of the four conclusions
+    # corrected this week were pooled numbers.
+    print(f"\n{'score':<14} {'pages':>5} {'staves':>7} {'clef det':>9} "
+          f"{'clef dflt':>10} {'keysig read':>12}")
+    print("-" * 62)
+    by_score: dict[str, list] = {}
+    for r in ok:
+        by_score.setdefault(r["score"], []).append(r)
+    for score, rs in sorted(by_score.items()):
+        st = sum(r.get("staves", 0) for r in rs)
+        if not st:
+            print(f"{score:<14} {len(rs):>5} {0:>7}   (no staves detected)")
+            continue
+        det = sum(r.get("clef_sources", {}).get("detector", 0) for r in rs)
+        dflt = sum(r.get("clef_sources", {}).get("defaulted", 0) for r in rs)
+        ks = sum(r.get("key_signatures_read", 0) for r in rs)
+        print(f"{score:<14} {len(rs):>5} {st:>7} {100*det/st:>8.0f}% "
+              f"{100*dflt/st:>9.0f}% {100*ks/st:>11.0f}%")
+
     print(f"\nnoteheads: {sum(r.get('noteheads', 0) for r in ok)}   "
           f"measures: {sum(r.get('measures', 0) for r in ok)}   "
           f"total runtime: {sum(r.get('seconds', 0) for r in ok)/3600:.2f} h")
