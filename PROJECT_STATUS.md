@@ -25,6 +25,7 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 - **August — a trusted Phase-1 baseline.** Layout had no regression baseline at all, which had blocked several fixes. Now: a hand-verified ground-truth fixture, a corpus probe, and xfails for known gaps. That unblocked real bugs — phantom staves, music deleted after a false barline, staff-line removal being a no-op on thick-line prints, body text detected as staves.
 - **August — the header layer.** Clef *reading* is now measured rather than classified (alto/tenor/soprano are the same glyph on different lines, so no classifier can separate them), and key signatures are read by fitting accidental POSITIONS to the slot table for (clef, N) and reconciling across the page.
 - **August — contextual analysis, and the over-detection bug it turned up.** The pipeline now knows *which staff is which instrument*: systems from vertical connectivity (43% → 86%), instrument identity from the PDF text layer and, for scans, from a margin reader, and stable part slots across systems and pages. Re-running the whole-pipeline validation for the first time since May then exposed the single largest accuracy bug in the project — `imgsz` was set so high the detector was reporting 2–4× the notes that exist. Fixing it took end-to-end pitch precision from **0.144 to 1.000** on the keyboard fixture.
+- **August 29 — external truth, and an orchestral benchmark to prove it on.** The pipeline can now be given a **dossier**: the meter, measure count and per-part written clef and key signature of the work it is reading, generated from MusicXML rather than hand-authored (`tools/omr/dossier.py`, 97 orchestral movements in `data/dossiers/`). It both CHECKS a reading and SEEDS it — clef detection has resisted a fine-tune, ensemble voting and a CV locator, and none of that matters if the clef is simply known. Alongside it, `benchmarks/omr-orchestral-e2e/` renders a Gradus MusicXML excerpt back to PDF, so every note on a conductor's page is known by construction — the first note-level accuracy measurement on orchestral texture. On it, Beethoven 5 now reads **recall 1.000, precision 0.988, duration 1.000**, and Mahler 5 reports 24 notes against a truth of 24. Four defects were found and fixed by that benchmark alone: overlapping measure cells letting two staves each keep the same notehead, a beam counter with no upper bound (it reported eight-beam notes — a 1024th), a beam cluster tolerance sitting inside the duplicate mode, and a meter parser that wrote `<beats>686</beats>` into MusicXML.
 
 ---
 
@@ -119,6 +120,32 @@ some of that.
   confidently-read clef.
 
 Benchmarks: `benchmarks/omr-system-grouping-2026-08/`, `benchmarks/omr-margin-labels-2026-08/`.
+
+### Dossiers and the orchestral benchmark (2026-08-29)
+
+```bash
+python3 -m tools.omr.training.build_dossiers            # 97 works -> data/dossiers/
+python3 -m tools.omr.transcribe score.pdf --dossier beethoven-sym5-mvt1
+python3 -m tools.omr.training.orchestral_eval           # note accuracy on a conductor's page
+```
+
+| work | parts | measures | notes (omr/truth) | recall | precision | duration |
+|---|---|---|---:|---:|---:|---:|
+| beethoven-sym5-mvt1 | 18/18 | 8/8 | 82/81 | **1.000** | **0.988** | **1.000** |
+| brahms-sym1-mvt1 | 21/21 | 7/7 | 508/505 | 0.717 | 0.713 | 0.865 |
+| mahler-sym5-mvt1 | 38/38 | 8/8 | **24/24** | 0.917 | 0.917 | 0.318 |
+
+Facts are stored as **written** pitch, so a transposing staff needs no
+correction. Slot-level checks abstain unless the parts join the page's staves;
+forcing that join measured F1 0.064 and must not be retried. The MusicXML feeds
+verification and benchmarking, **not** label generation.
+
+Two cautions carried out of that work. The benchmark's paper size must scale
+with the part count — rendering 38 parts on A4 leaves ~1 staff-space between
+staves and manufactures a failure mode that does not exist
+(`STAFF_LADDER_PHASING.md` records the wrong diagnosis it produced). And
+`rhythm.py`'s tuning comments assume a canonical line spacing of 24–48 px; it is
+**100**, so re-derive rather than scale when touching those constants.
 
 ### Hand-labeled training data (`data/user-labeled/`)
 

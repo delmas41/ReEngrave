@@ -120,10 +120,13 @@ End-to-end, with seeding already on:
 
 | work | bars | parts | measures | notes (omr/truth) | recall | precision | duration |
 |---|---:|---|---|---:|---:|---:|---:|
-| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 80/81 | 0.691 | 0.700 | 0.857 |
-| brahms-sym1-mvt1 | 7 | 21/21 | **7/7** | 529/505 | 0.691 | 0.660 | 0.487 |
-| mahler-sym5-mvt1 | 8 | **38/38** | **8/8** | 29/24 | 0.250 | 0.207 | 0.167 |
-| mahler-sym5-mvt1 | 7 | 31/38 | **7/7** | 36/22 | 0.136 | 0.083 | 0.000 |
+| beethoven-sym5-mvt1 | 8 | 18/18 | **8/8** | 82/81 | **1.000** | **0.988** | **1.000** |
+| brahms-sym1-mvt1 | 7 | 21/21 | **7/7** | 508/505 | 0.717 | 0.713 | 0.865 |
+| mahler-sym5-mvt1 | 8 | **38/38** | **8/8** | **24/24** | 0.917 | 0.917 | 0.318 |
+
+Measured 2026-08-29 on the merged tree. Beethoven is now essentially exact —
+every part, every measure, 82 notes against 81, and every duration right.
+Mahler reports 24 notes against a truth of 24.
 
 Beethoven now reports **80 notes against a truth of 81** — the note count is
 essentially exact, where before deduplication it reported 88.

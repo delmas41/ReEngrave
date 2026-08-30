@@ -53,7 +53,7 @@
         8,
         8
       ],
-      "notes": 80
+      "notes": 82
     },
     "detected": {
       "systems": 1,
@@ -62,16 +62,16 @@
     "notes": {
       "part_aligned": true,
       "truth_notes": 81,
-      "omr_notes": 80,
-      "pitch_matched": 56,
-      "pitch_recall": 0.691,
-      "pitch_precision": 0.7,
-      "duration_ok_on_matched": 48,
-      "duration_rate": 0.857
+      "omr_notes": 82,
+      "pitch_matched": 81,
+      "pitch_recall": 1.0,
+      "pitch_precision": 0.988,
+      "duration_ok_on_matched": 81,
+      "duration_rate": 1.0
     },
     "rhythm_reconciliations": 0,
     "dossier_warnings": {
-      "dossier_meter_disagreement": 6
+      "dossier_meter_disagreement": 3
     },
     "dossier_used": true
   },
@@ -135,7 +135,7 @@
         7,
         7
       ],
-      "notes": 529
+      "notes": 508
     },
     "detected": {
       "systems": 1,
@@ -144,14 +144,14 @@
     "notes": {
       "part_aligned": true,
       "truth_notes": 505,
-      "omr_notes": 529,
-      "pitch_matched": 349,
-      "pitch_recall": 0.691,
-      "pitch_precision": 0.66,
-      "duration_ok_on_matched": 170,
-      "duration_rate": 0.487
+      "omr_notes": 508,
+      "pitch_matched": 362,
+      "pitch_recall": 0.717,
+      "pitch_precision": 0.713,
+      "duration_ok_on_matched": 313,
+      "duration_rate": 0.865
     },
-    "rhythm_reconciliations": 0,
+    "rhythm_reconciliations": 3,
     "dossier_warnings": {},
     "dossier_used": true
   },
@@ -249,7 +249,7 @@
         8,
         8
       ],
-      "notes": 29
+      "notes": 24
     },
     "detected": {
       "systems": 1,
@@ -258,12 +258,12 @@
     "notes": {
       "part_aligned": true,
       "truth_notes": 24,
-      "omr_notes": 29,
-      "pitch_matched": 6,
-      "pitch_recall": 0.25,
-      "pitch_precision": 0.207,
-      "duration_ok_on_matched": 1,
-      "duration_rate": 0.167
+      "omr_notes": 24,
+      "pitch_matched": 22,
+      "pitch_recall": 0.917,
+      "pitch_precision": 0.917,
+      "duration_ok_on_matched": 7,
+      "duration_rate": 0.318
     },
     "rhythm_reconciliations": 0,
     "dossier_warnings": {
