@@ -85,3 +85,38 @@ not before them.
 The one thing that should NOT be done is to widen the defaulting. If the majority
 fallback also cannot speak, the honest output is an absent key signature, not a
 confident C.
+
+### The machinery exists, and so does the trap
+
+Checked before proposing it. `VoteResult.reference_written_by_system` already
+holds each system's modal **written** signature, and
+`key_signature_vote.consistent_written_set(reference)` already carries check
+(b)'s circle-of-fifths logic. Nothing new has to be computed.
+
+**But the reference is a WRITTEN signature, and a naive fallback would apply it
+to transposing parts unchanged.** On this page that trade is close to a wash:
+
+| ground-truth parts on beet5 p.2 | count |
+|---|---:|
+| 3 flats — flutes, oboes, bassoons, both violins, viola, cello/bass | 7 |
+| 1 flat — clarinets in B♭ | 1 |
+| **none — Corni, Trombe, Timpani** | **3** |
+
+The modal written signature is 3 flats. Assigning it to every unread staff fixes
+the unread members of the first group and **breaks all three of the second**,
+which print no signature and are the staves the C-major default happens to get
+right. A fallback that gains six staves and loses three has not obviously gained
+anything, and this is exactly the shape of the three ideas already rejected this
+week.
+
+What makes it more than a wash is the transposition, and that is available:
+`instruments.lookup` carries `default_fifths_offset` per instrument (clarinet 2,
+horn 1), and contextual analysis supplies the identity — from the text layer, the
+margin reader, or the score-order prior. Written = concert + offset, so a staff
+whose instrument is known can take the concert key from the majority and print
+its own correct signature rather than the majority's.
+
+So the fix is really two: the fallback, and the transposition that stops it
+being a wash. Build it against `eval_key_signatures.py` on all three
+ground-truth pages, and check the horns and trumpets specifically — they are the
+staves it can most easily make worse.
