@@ -38,12 +38,46 @@ from tools.omr.dossier import resolve_dossier  # noqa: E402
 from tools.omr.transcribe import transcribe  # noqa: E402
 
 TRUTH = REPO / "benchmarks" / "omr-key-signature" / "ground_truth.json"
+# A fourth page, kept beside the join benchmark rather than folded into the file
+# above, and deliberately: several other benchmarks read that file, and moving
+# its page count would silently move their denominators too. Its clefs are
+# hand-read from the print (see `how_the_clefs_were_read` in it).
+EXTRA = (REPO / "benchmarks" / "omr-part-staff-join-2026-08"
+         / "ground-truth-beet5-p48.json")
 WEIGHTS = REPO / "omr-weights" / "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
 
+# The three pages this benchmark has always carried. Their subtotal is reported
+# separately so the historical number stays directly comparable across sessions.
+BASE_PAGES = ("beet5-p2", "pastoral-p2", "wtc-p17")
 
 # The work each ground-truth page comes from, for --dossier. Only pages whose
 # work has a generated dossier can be scored that way.
-WORKS = {"beet5-p2": "beethoven-sym5-mvt1", "pastoral-p2": "beethoven-sym6-mvt1"}
+WORKS = {"beet5-p2": "beethoven-sym5-mvt1", "pastoral-p2": "beethoven-sym6-mvt1",
+         "beet5-p48": "beethoven-sym5-mvt4"}
+
+
+def extra_pages() -> list[dict]:
+    """The join benchmark's page, in this benchmark's own page schema.
+
+    It is the page where the part-staff join has something to prove: 23 parts on
+    17 staves, printed out of the part list's order, and three of its staves are
+    the alto, tenor and bass trombones that no detector reads.
+    """
+    if not EXTRA.exists():
+        return []
+    g = json.loads(EXTRA.read_text())
+    if not all("clef" in slot for slot in g["slots"]):
+        return []
+    return [{
+        "id": g["id"],
+        "work": g.get("_about", ""),
+        "pdf": g["pdf"],
+        "page_index": g["page_index"],
+        "dpi": g["dpi"],
+        "n_systems": 1,
+        "staves": [{"ordinal": slot["slot"], "instrument": slot["instrument"],
+                    "clef": slot["clef"], "fifths": 0} for slot in g["slots"]],
+    }]
 
 
 def score_page(page: dict, weights: Path, dpi: int | None,
@@ -111,7 +145,7 @@ def main() -> int:
         return 1
 
     rows: list[dict] = []
-    for page in json.loads(TRUTH.read_text())["pages"]:
+    for page in json.loads(TRUTH.read_text())["pages"] + extra_pages():
         rows.extend(score_page(page, args.weights, args.dpi,
                                args.contextual or args.dossier, args.dossier))
     if not rows:
@@ -128,6 +162,17 @@ def main() -> int:
     correct = sum(1 for r in rows if r["got"] == r["want"])
     print(f"\n{total} staves with hand-read clefs")
     print(f"  correct overall: {correct}/{total} = {correct / total:.0%}")
+
+    print(f"\n  {'page':12s} {'staves':>7} {'correct':>8} {'accuracy':>9}")
+    for page_id in dict.fromkeys(r["page"] for r in rows):
+        pr = [r for r in rows if r["page"] == page_id]
+        ok = sum(1 for r in pr if r["got"] == r["want"])
+        print(f"  {page_id:12s} {len(pr):7d} {ok:8d} {ok / len(pr):9.0%}")
+    base = [r for r in rows if r["page"] in BASE_PAGES]
+    if base and len(base) != total:
+        ok = sum(1 for r in base if r["got"] == r["want"])
+        print(f"  {'(base 3)':12s} {len(base):7d} {ok:8d} {ok / len(base):9.0%}"
+              f"   <- the historical number")
     print(f"\n  {'source':12s} {'staves':>7} {'correct':>8} {'accuracy':>9}")
     for source, c in sorted(by_source.items(), key=lambda kv: -kv[1]["n"]):
         print(f"  {source:12s} {c['n']:7d} {c['ok']:8d} {c['ok'] / c['n']:9.0%}")

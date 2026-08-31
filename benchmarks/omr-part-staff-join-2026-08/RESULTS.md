@@ -317,6 +317,9 @@ All four held, and none moved.
 
 ## What this does NOT show
 
+*(Superseded by the section below — p.48's clefs have since been hand-read, and
+the downstream measurement is there.)*
+
 p.48 has part-to-staff ground truth but no hand-read CLEFS, so the gain is
 measured at the join and not yet downstream of it. The clef benchmark's two
 pages are the ones that do not move here — beet5-p2 and the Pastoral both sit at
@@ -330,3 +333,119 @@ makes the counting constraint local WHERE THERE ARE PINS; on the string section
 of these two editions there are none, because the strings are never labelled
 (`benchmarks/omr-margin-labels-2026-08/VISION_CEILING_2026-08-30.md`). That is
 the same starved-for-evidence finding as the first pass, unchanged.
+
+
+---
+
+# Downstream: p.48's clefs, hand-read — 2026-08-30 (third pass)
+
+The gain above was measured AT the join. This closes it: all 17 of p.48's clefs
+are now hand-read from the print, so what the join is worth can be measured
+where it actually matters — on the clef each staff ends up with.
+
+```bash
+python3 benchmarks/omr-clef-geometry/eval_pipeline_clefs.py --contextual --dossier
+python3 benchmarks/omr-part-staff-join-2026-08/eval_clefs_with_labels.py
+```
+
+The clefs live in `ground-truth-beet5-p48.json` beside the part assignment, and
+NOT in `benchmarks/omr-key-signature/ground_truth.json` — five other benchmarks
+read that file, and adding a page to it would move their denominators silently.
+`eval_pipeline_clefs.py` picks the extra page up and reports the original three
+pages as a subtotal, so **50/52 stays directly comparable across sessions**.
+
+## How they were read
+
+Hand-read from the page at 600 dpi, glyph by glyph, and **not** taken from the
+dossier — the dossier is the thing being measured, and seeding truth from it
+would be circular. Clef TYPE (G/F/C) was read visually. Which line a C clef
+names was **measured**, because alto and tenor are the same glyph one line apart
+and that is the entire difficulty: the glyph's ink centre against the staff's own
+five detected lines puts staff 9 at line 3.25 and staff 10 at line 4.30, a clean
+one-line separation. Visually the same — staff 9's clef fits inside the staff
+(waist on the middle line, ALTO), staff 10's rides above the top line (waist on
+the 4th, TENOR), and the viola measures with staff 9. All six F clefs are bass;
+no baritone. The page carries no key signature anywhere: the finale is C major
+and every transposing part is in C.
+
+As a cross-check — not a source — the dossier generated from the Gradus MusicXML
+gives the same clef on all 17 staves. The two are independent, a modern digital
+edition against this 19th-century print, so the agreement is worth something.
+
+## The result, and it is not what the join predicted
+
+**In production p.48 scores 8/17, and the join has nothing to do with it.**
+
+```
+beet5-p48: contextual — 0 labels, 0 from the dossier
+```
+
+**Zero labels.** This edition (IMSLP984073) has **no text layer at all** — zero
+characters on every page, where the other Beethoven 5 edition carries OCR text
+and yields 9 labels on p.2. So `read_staff_labels` returns nothing, the join
+never sees a label, nothing pins, the dossier abstains, and every clef falls to
+the detector or the positional default. The chain breaks one step before the
+work of the last two passes begins.
+
+That is a failure of label ACQUISITION, and it is its own thread
+(`benchmarks/omr-margin-labels-2026-08/VISION_CEILING_2026-08-30.md`); there is
+a Claude Vision fallback for exactly this case, which this benchmark does not
+spend credits on.
+
+## So: what is waiting behind the label reader
+
+`eval_clefs_with_labels.py` hands the join the labels the page PRINTS — only
+those, so the five string staves stay unlabelled exactly as the engraving leaves
+them — and holds everything else fixed.
+
+| p.48, labels supplied | clefs correct |
+|---|---:|
+| no dossier | 12/17 |
+| dossier, **pinning off** | 12/17 |
+| **dossier, pinning on** | **14/17** |
+| *(production today: 0 labels)* | *8/17* |
+
+**On this page the dossier layer is worth nothing without pinning.** 12/17 either
+way — because without pins the join cannot reach the trombones at all, and the
+two slots it does reach it fills wrongly:
+
+```
+pins OFF   slot  9 Trombone  want=alto   got=alto   (dossier)
+           slot 10 Trombone  want=tenor  got=alto   (dossier)   <- the extend
+           slot 11 Trombone  want=bass   got=alto   (dossier)   <- degeneracy
+           slot  8 Timpani   want=bass   got=bass   (default)   <- not reached
+```
+
+With pins, six clefs come from the dossier and all six are right — the two
+bassoons, the timpani, and **the alto, tenor and bass trombones**. Those three
+are the readings no detector supplies and the whole reason the dossier exists;
+the sentence "it costs exactly the parts that matter most" now has its
+counterpart on the other side.
+
+The three remaining errors are slots 14, 15 and 16 — viola, cello and bass, all
+reading treble by default. They sit below the last printed label, so they are
+outside `anchored` and the dossier correctly declines to speak for them. That is
+the same starved-of-evidence ceiling as every pass before: these editions never
+label the strings.
+
+## Guards
+
+* `pytest tools/omr/tests -q` — 1055 passed.
+* `eval_pipeline_clefs --contextual --dossier` — the three original pages
+  **unchanged at 50/52** (reported as `(base 3)`), overall 58/69 with p.48
+  included. Without `--dossier` the same three score 49/52, so the dossier is
+  still worth its one staff there.
+* `eval_score_order` — byte-identical (11/12, 5/10, 23/23), and
+  `eval_key_signatures` unchanged: the shared ground-truth file was not touched.
+
+## What this still does not show
+
+One page, one edition. And the headline number a future session will see from
+`eval_pipeline_clefs` is **8/17 on p.48**, which is honest — that IS what the
+pipeline does on this scan today. The 14/17 is a ceiling measured with the labels
+handed over, and it only becomes real when the margin-label thread delivers them
+on a page with no text layer.
+
+The ranking that comes out of this is therefore not the one the join work
+implied. Pinning is done and is worth +2 clefs here. What now gates the dossier
+layer on scanned orchestral pages is **reading the margin at all**.
