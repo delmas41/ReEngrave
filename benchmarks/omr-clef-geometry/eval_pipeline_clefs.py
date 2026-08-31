@@ -105,6 +105,12 @@ def score_page(page: dict, weights: Path, dpi: int | None,
               f"{summary.get('clefs_applied')} instrument corrections, "
               f"{summary.get('clefs_filled_from_slot')} filled from another system, "
               f"{summary.get('clefs_from_dossier')} from the dossier")
+        # Read off the page and then dropped, because nothing in the lexicon
+        # matched. Printed because it is otherwise invisible — the page just
+        # behaves as though those staves carry no label.
+        if summary.get("unresolved_labels"):
+            print(f"  {page['id']}: UNRESOLVED labels (lexicon gaps): "
+                  + ", ".join(repr(t) for t in summary["unresolved_labels"]))
     truth = {s["ordinal"]: s["clef"] for s in page["staves"]}
     rows = []
     for page_d in result["pages"]:

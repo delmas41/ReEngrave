@@ -201,3 +201,34 @@ class TestPartialTextLayerStillAsksTheMarginReader:
 
     def test_no_labels_at_all_is_not_covered(self):
         assert self._covered(10, 0) is False
+
+
+class TestUnresolvedLabelsAreReported:
+    """A label the lexicon cannot match must not vanish quietly.
+
+    It produces no label, which is indistinguishable from a staff that carries
+    none — and the two want opposite responses. One is the engraving telling you
+    nothing; the other is a missing alias, with the string you need sitting right
+    there. Mahler 5 p.4 lost eight labels this way in silence
+    (`benchmarks/omr-part-staff-join-2026-08/RESULTS.md`).
+    """
+
+    def test_a_label_that_matches_nothing_is_not_silently_matched(self):
+        from tools.omr.instruments import lookup
+        from tools.omr.staff_labels import StaffLabel
+
+        hit = lookup("Zzyzx.")
+        assert hit is None, "the premise: this resolves to nothing"
+        lab = StaffLabel(staff_index=0, text="Zzyzx.", instrument=None,
+                         fifths_offset=0, y_center_px=0.0)
+        assert lab.matched is False
+        assert lab.text == "Zzyzx.", "and the text survives, to be reported"
+
+    def test_the_summary_carries_the_unmatched_text(self):
+        """`apply_contextual_analysis` reports `unresolved_labels`, which is what
+        turns 'this page looks unlabelled' into 'add these to instruments.py'."""
+        import inspect
+        from tools.omr import contextual
+        src = inspect.getsource(contextual.apply_contextual_analysis)
+        assert "unresolved_labels=unresolved" in src
+        assert "NOT MATCHED by the lexicon" in src

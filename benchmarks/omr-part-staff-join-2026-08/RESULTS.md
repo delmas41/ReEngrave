@@ -978,3 +978,18 @@ The join and the margin reader both travelled to a new tradition without
 complaint; **the lexicon did not**, and it failed silently — a label that
 resolves to nothing looks exactly like a staff with no label, which is the same
 class of quiet failure as the stale SDK three passes ago.
+
+### ...and that silence is now fixed, which matters more than the eight aliases
+
+Adding aliases is whack-a-mole; the defect was that nobody could tell it was
+being played. `apply_contextual_analysis` now reports `unresolved_labels` — every
+string that was READ off the page and then dropped because nothing in the lexicon
+matched — logs them at WARNING, and `eval_pipeline_clefs` prints them:
+
+```
+  mahler-p4: UNRESOLVED labels (lexicon gaps): 'A-Klar.', 'B-Tromp.', 'Contraf.', ...
+```
+
+That is the whole list of strings to add, handed over rather than hunted for. The
+next tradition will still fail; it will not fail quietly. (`low_confidence_labels`
+covers the other way a read label gets dropped.)

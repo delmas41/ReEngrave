@@ -530,8 +530,35 @@ def apply_contextual_analysis(
     records = correct_clefs_from_instruments(
         pages, read_instruments, slot_by_staff, apply=apply_clefs)
 
+    # Labels that were READ off the page and then dropped. This is reported
+    # because the failure is otherwise invisible: a label the lexicon cannot
+    # match produces no label, which is indistinguishable from a staff that
+    # carries no label at all — and the two want opposite responses. One is the
+    # engraving telling you nothing; the other is an alias missing from
+    # `instruments.py`, with the text you need sitting right there.
+    #
+    # Measured on Mahler 5 p.4: the margin reader returned seventeen labels, all
+    # seventeen correct, and eight of them fell out here in silence. Nothing in
+    # the pipeline said so — the page simply behaved like a sparsely labelled
+    # one. See `benchmarks/omr-part-staff-join-2026-08/RESULTS.md`.
+    unresolved = sorted({lab.text.strip() for page_labels in staff_labels_per_page
+                         for lab in page_labels
+                         if not lab.matched and lab.text.strip()})
+    low_confidence = sorted({lab.text.strip() for page_labels in staff_labels_per_page
+                             for lab in page_labels
+                             if lab.matched and lab.staff_index not in
+                             {k for l in labels for k in l}})
+    if unresolved:
+        logger.warning(
+            "%d margin label(s) read but NOT MATCHED by the lexicon, so they were "
+            "dropped and this page will behave as if unlabelled there: %s — "
+            "these are the strings to add to tools/omr/instruments.py",
+            len(unresolved), ", ".join(repr(t) for t in unresolved))
+
     summary.update(
         available=True,
+        unresolved_labels=unresolved,
+        low_confidence_labels=low_confidence,
         reference=[{"slot": s.index, "group": s.group_index,
                     "instrument": s.instrument} for s in reference],
         labelled_staves=sum(len(l) for l in labels),
