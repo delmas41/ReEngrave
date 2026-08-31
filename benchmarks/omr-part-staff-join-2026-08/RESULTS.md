@@ -449,3 +449,109 @@ on a page with no text layer.
 The ranking that comes out of this is therefore not the one the join work
 implied. Pinning is done and is worth +2 clefs here. What now gates the dossier
 layer on scanned orchestral pages is **reading the margin at all**.
+
+*(Run in the next section — the margin reader clears it.)*
+
+---
+
+# The margin reader clears it — 2026-08-30 (fourth pass)
+
+The gate named above is open. One call to `staff_labels_vision` on p.48's single
+system reads **all twelve printed labels correctly and returns nothing for the
+five unlabelled string staves**, and the page goes **8/17 → 14/17** — the same
+number the hand-read labels reach. On this page the reader is at ceiling.
+
+```bash
+python3 benchmarks/omr-part-staff-join-2026-08/eval_clefs_with_labels.py --vision
+```
+
+The read is cached in `evidence/p48-vision-labels.json` beside the crop it was
+given, so the number is reproducible without spending credits again.
+
+| p.48, end to end | clefs |
+|---|---:|
+| production today — no text layer, fallback not enabled | **8/17** |
+| vision labels, pinning **off** | 12/17 |
+| **vision labels, pinning on** | **14/17** |
+| printed labels (the ceiling), pinning on | 14/17 |
+
+The last two rows being equal is the finding: nothing is lost between what the
+page prints and what the reader recovers. Pinning is worth the same +2 on the
+real labels as on the hand-read ones, and for the same reason — without it slots
+10 and 11 both come back "Alto Trombone" and the timpani is never reached.
+
+## What it read
+
+| staff | printed | read |
+|---:|---|---|
+| 0-8 | Fl. pic. / Fl. / Ob. / Cl. / Fag. / C. Fag. / Cor. / Tr. / Timp. | all nine, exactly |
+| 9-11 | Tr. Alt. / Tr Ten. / Tr. Bas. | all three, exactly |
+| 12-16 | *(nothing printed)* | **nothing returned** |
+
+12 of 12 printed, 5 of 5 correct abstentions. Compare the Pastoral, where the
+same reader was also at ceiling but the ceiling was 5 labels of 10
+(`benchmarks/omr-margin-labels-2026-08/VISION_CEILING_2026-08-30.md`): this page
+labels every wind and brass staff down to the bass trombone, which is exactly
+where the dossier needed an anchor.
+
+**It out-read the hand reading on two labels.** The ground truth here said
+`Fl. Pic.` and `Tr. Ten.`; the page prints `Fl. pic.` with a lower-case p and
+`Tr Ten.` with no stop after Tr. Checked against the print at 5x and the ground
+truth is corrected. Nothing downstream moves — `normalize_label` folds case and
+punctuation away — but it is worth recording which reader was right.
+
+**And it lands on the lexicon fix from the first pass.** `Fl. pic.`, `C. Fag.`,
+`Tr. Alt.` and `Tr Ten.` are precisely the four abbreviations that resolved to
+the wrong instrument before, and `Tr. Bas.` is the one now marked ambiguous so it
+cannot pin. Without that fix these twelve labels would have been read perfectly
+off the page and then thrown away by the lexicon.
+
+## The reason it had never run here: a stale SDK, failing silently
+
+The first attempt returned zero labels. Not a reading failure — the call never
+happened:
+
+```
+TypeError: create() got an unexpected keyword argument 'output_config'
+```
+
+Structured outputs need `anthropic>=0.116`, which `backend/requirements.txt`
+pins **for the container**. This module also runs host-side, outside it, and the
+host carries **0.28.0**. The measurement above was taken with a current SDK in a
+throwaway venv; **the host still needs upgrading before the production path can
+work.**
+
+It was logged at `warning` and swallowed, so a broken dependency and a margin
+with nothing printed on it produced the identical observation: zero labels. On a
+page whose whole question is "are there labels here?", that is the worst possible
+place to be quiet. Now it is an ERROR naming the exception type and the systems
+that failed:
+
+```
+ERROR margin label read FAILED on system 0 (TypeError: create() got an
+      unexpected keyword argument 'output_config') — 0 labels here means the
+      reader did not run, not that the margin is empty
+ERROR margin label read: 1 of 1 systems FAILED; the 0 labels returned are from
+      the systems that ran
+```
+
+The per-system catch stays: one bad page must not kill a batch.
+
+## Where the last three staves go
+
+Slots 14, 15 and 16 — viola, cello, bass — still read treble by default. They sit
+below the last printed label, so they are outside `anchored` and the dossier
+declines to speak for them. That is the same ceiling every pass has hit, and the
+margin reader cannot lift it, because it already reported correctly that there is
+nothing printed beside those staves. Lifting it needs a different anchor than a
+label: the foot of the system, which was measured at 50/52 → 44/52 and rejected.
+
+## Cost
+
+One API call, one system, `claude-opus-5`. About a cent.
+
+## Guards
+
+1055 tests. The clef benchmark, `eval_score_order` and `eval_key_signatures` are
+untouched by this pass — `--vision` is a separate harness and the production
+default still reads 0 labels on this scan until the host SDK is current.

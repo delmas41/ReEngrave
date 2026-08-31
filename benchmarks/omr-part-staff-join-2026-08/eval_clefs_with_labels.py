@@ -16,8 +16,15 @@ leaves them, so the answer is a real ceiling and not an oracle in disguise.
 It separates three things that the single 8/17 conflates:
 
     python3 benchmarks/omr-part-staff-join-2026-08/eval_clefs_with_labels.py
+    python3 ... eval_clefs_with_labels.py --vision       # the REAL end-to-end number
     python3 ... eval_clefs_with_labels.py --no-pins      # what pinning is worth
     python3 ... eval_clefs_with_labels.py --no-dossier   # what the dossier is worth
+
+`--vision` replays one cached margin read (`evidence/p48-vision-labels.json`,
+model claude-opus-5, one call for the page's single system). That read is the
+production path, so `--vision` is what the pipeline would actually score once
+the fallback is reachable; the default arm is the ceiling if every printed label
+arrived perfectly. On this page they are the same, which is the point.
 """
 from __future__ import annotations
 
@@ -30,6 +37,10 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
 GROUND_TRUTH = Path(__file__).resolve().parent / "ground-truth-beet5-p48.json"
+# One margin read by `staff_labels_vision`, cached so this is reproducible
+# without spending credits. The crop it was given is beside it.
+VISION_LABELS = (Path(__file__).resolve().parent / "evidence"
+                 / "p48-vision-labels.json")
 WEIGHTS = REPO / "omr-weights" / "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
 
 
@@ -39,6 +50,10 @@ def main() -> int:
                     help="disable label pinning, holding everything else fixed")
     ap.add_argument("--no-dossier", action="store_true",
                     help="do not let the work supply clefs at all")
+    ap.add_argument("--vision", action="store_true",
+                    help="use the labels the MARGIN READER actually returned "
+                         "(evidence/p48-vision-labels.json) instead of the "
+                         "printed ones — this is the real end-to-end number")
     ap.add_argument("--weights", type=Path, default=WEIGHTS)
     args = ap.parse_args()
     if not args.weights.exists():
@@ -56,7 +71,11 @@ def main() -> int:
         score_layouts.label_pins = lambda *a, **k: []
 
     truth = json.loads(GROUND_TRUTH.read_text())
-    printed = {s["slot"]: s["label"] for s in truth["slots"] if s["label"]}
+    if args.vision:
+        cached = json.loads(VISION_LABELS.read_text())["labels_by_staff_ordinal"]
+        printed = {int(k): v for k, v in cached.items()}
+    else:
+        printed = {s["slot"]: s["label"] for s in truth["slots"] if s["label"]}
 
     def supplied(pws, pdf_path, page_index, **kw):
         """The labels this page prints, on the staves that print them."""
@@ -95,7 +114,8 @@ def main() -> int:
             for ordinal, staff in enumerate(system["staves"]):
                 rows.append((ordinal, want[ordinal], staff.get("clef"),
                              staff.get("clef_source") or "default"))
-    arm = ("pins OFF" if args.no_pins else "pins on") + \
+    arm = ("vision labels" if args.vision else "printed labels") + \
+          (", pins OFF" if args.no_pins else ", pins on") + \
           (", NO dossier" if args.no_dossier else ", dossier")
     ok = sum(1 for _, w, g, _ in rows if w == g)
     print(f"\ncontextual — {summary.get('labelled_staves')} labels, "

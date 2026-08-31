@@ -33,6 +33,17 @@ system, so the label count and the staff count disagree.
 the schema allows it; a model that invents a plausible instrument for an
 unlabelled staff is worse than one that abstains, because a wrong instrument
 propagates through slots into a wrong clef and wrong pitches.
+
+## Requires a current SDK, on the HOST
+
+Structured outputs (`output_config.format`) need `anthropic>=0.116`, which is
+what `backend/requirements.txt` pins for the container. This module also runs
+host-side, outside that container, and an old host SDK raises
+`TypeError: create() got an unexpected keyword argument 'output_config'` —
+measured on a host carrying 0.28.0. That failure is caught per system so one bad
+page cannot kill a batch, but it is logged at ERROR precisely because zero
+labels from a broken dependency and zero labels from an unlabelled margin are
+otherwise the same observation.
 """
 
 from __future__ import annotations
@@ -263,6 +274,7 @@ def read_staff_labels_vision(pws: PageWithStaves, *, client=None,
         by_system.setdefault(staff.system_index, []).append(staff)
 
     out: list[StaffLabel] = []
+    failures = 0
     for _sys_index, staves in sorted(by_system.items()):
         crop = build_margin_crop(pws, staves)
         if crop is None:
@@ -270,7 +282,16 @@ def read_staff_labels_vision(pws: PageWithStaves, *, client=None,
         try:
             texts = read_system_labels(crop, client=client, model=model)
         except Exception as exc:                      # noqa: BLE001
-            logger.warning("margin label read failed: %s", exc)
+            # ERROR, not warning, and naming the exception type: a read that
+            # could not RUN returns the same empty result as a margin with
+            # nothing printed on it, and those two want opposite responses.
+            # `output_config` unexpected-keyword here means the host's anthropic
+            # SDK predates structured outputs — see the module docstring.
+            logger.error("margin label read FAILED on system %s (%s: %s) — "
+                         "0 labels here means the reader did not run, not that "
+                         "the margin is empty",
+                         _sys_index, type(exc).__name__, exc)
+            failures += 1
             continue
         for staff in staves:
             text = texts.get(staff.staff_index)
@@ -287,4 +308,8 @@ def read_staff_labels_vision(pws: PageWithStaves, *, client=None,
                 confidence=hit.confidence if hit else "none",
                 alias=hit.alias if hit else "",
             ))
+    if failures:
+        logger.error("margin label read: %d of %d systems FAILED; the %d labels "
+                     "returned are from the systems that ran",
+                     failures, len(by_system), len(out))
     return out

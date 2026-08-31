@@ -15,7 +15,7 @@
   "slots": [
     {
       "slot": 0,
-      "label": "Fl. Pic.",
+      "label": "Fl. pic.",
       "instrument": "Piccolo",
       "clef": "treble",
       "parts": [
@@ -111,7 +111,7 @@
     },
     {
       "slot": 10,
-      "label": "Tr. Ten.",
+      "label": "Tr Ten.",
       "instrument": "Trombone",
       "clef": "tenor",
       "parts": [
@@ -181,5 +181,6 @@
     "No staff carries a key signature: the finale is C major and every transposing part is in C, so written fifths are 0 across the page. Nothing is printed between any clef and the first note.",
     "CROSS-CHECK, not source: the dossier generated from the Gradus MusicXML gives the same clef for all 17 staves. The two are independent \u2014 a modern digital edition and this 19th-century print \u2014 so the agreement is worth something, but the reading above stands on the image."
   ],
-  "why_the_clefs_matter_here": "Staves 9, 10 and 11 are the alto, tenor and bass trombones \u2014 the readings no detector supplies (benchmarks/omr-clef-geometry/) and the ones the part-staff join could not deliver before pinning. This page is where the join's gain can be measured DOWNSTREAM rather than at the join."
+  "why_the_clefs_matter_here": "Staves 9, 10 and 11 are the alto, tenor and bass trombones \u2014 the readings no detector supplies (benchmarks/omr-clef-geometry/) and the ones the part-staff join could not deliver before pinning. This page is where the join's gain can be measured DOWNSTREAM rather than at the join.",
+  "a_correction_2026_08_30": "Slots 0 and 10 originally read 'Fl. Pic.' and 'Tr. Ten.'. The page prints 'Fl. pic.' (lower-case p) and 'Tr Ten.' (no stop after Tr) \u2014 checked against the print at 5x, see evidence/. The margin reader transcribed both more faithfully than this hand read did. Nothing downstream moves, because `normalize_label` folds case and punctuation away, but ground truth should be what is on the paper."
 }
