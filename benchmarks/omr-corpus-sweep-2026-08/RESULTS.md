@@ -89,6 +89,15 @@ than everywhere it is absent. The order is therefore:
    header window was measured, so `key_signature_read` becomes true where it
    should be and the honest count of unknown staves drops from 1740.
 
+   > ⛔ **RETRACTED 2026-08-30, measured.** This cannot be done from the header.
+   > "No accidental-shaped ink" holds on 18 of 29 Boléro staves correctly AND on
+   > 6 of 22 Beethoven 5 p.15 staves, which print three flats — so the rule
+   > asserts a confident C major on 27% of a three-flat page. The page-level
+   > share does not separate either (bolero p18 35%, beet5 p36 35%). The
+   > empty-versus-blind distinction has to come from outside the page — the
+   > dossier knows a horn in C prints none. See
+   > `benchmarks/omr-unknown-keysig-2026-08/findings.md`.
+
    > ⚠️ **The safety claim originally written here — "output pitches do not
    > change" — is FALSE, and was measured false on 2026-08-30.**
    > `transcribe.py:2926` passes
