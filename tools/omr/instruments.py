@@ -99,8 +99,16 @@ class Instrument:
 # punctuation and part numbers removed), so "Flöten" -> "floten", "Fl." -> "fl".
 INSTRUMENTS: tuple[Instrument, ...] = (
     # ── woodwind ───────────────────────────────────────────────────────────
+    # "fl pic" beside "fl picc": Beethoven 5's fourth movement prints "Fl. Pic."
+    # and the one-c spelling missed, so the staff read as a FLUTE — which is not
+    # a near-miss but a different part, and on a page whose flutes are on the
+    # next staff down it displaces every wind below it. It is flauto piccolo,
+    # the Italian name for the instrument, not a flute-and-piccolo shared staff:
+    # benchmarks/omr-part-staff-join-2026-08/ground-truth-beet5-p48.json shows
+    # the merge count only closes under that reading.
     Instrument("Piccolo", "woodwind", "treble", (74, 108), 12, 0,
-               aliases=("piccolo", "picc", "ottavino", "kleine flote", "petite flute", "fl picc")),
+               aliases=("piccolo", "picc", "ottavino", "kleine flote", "petite flute",
+                        "fl picc", "fl pic")),
     Instrument("Flute", "woodwind", "treble", (59, 96), 0, 0,
                aliases=("flute", "flutes", "flauto", "flauti", "flote", "floten", "fl", "fla", "fl gr")),
     Instrument("Oboe", "woodwind", "treble", (58, 91), 0, 0,
@@ -122,7 +130,10 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Contrabassoon", "woodwind", "bass", (22, 60), -12, 0,
                aliases=("contrabassoon", "double bassoon", "contrafagotto",
                         "contrafagotte", "kontrafagott", "contrebasson",
-                        "cfag", "kfag")),
+                        # "c fag" as printed, beside the closed-up "cfag":
+                        # normalization keeps the space, so "C. Fag." missed and
+                        # the contrabassoon read as a BASSOON.
+                        "cfag", "kfag", "c fag")),
     Instrument("Saxophone", "woodwind", "treble", (49, 89), None, 3,
                aliases=("saxophone", "saxophon", "sax", "sassofono")),
     # Boulanger scores one; without it "Bass Sarrusophone" resolves on the word
@@ -147,9 +158,16 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Trumpet", "brass", "treble", (52, 84), None, 2,
                aliases=("trumpet", "trumpets", "tromba", "trombe", "trompete", "trompeten",
                         "trompette", "trompettes", "tr", "tpt", "clarino", "clarini")),
+    # The qualified "Tr." forms. Bare "Tr." is Trombe in this tradition (above),
+    # and the alias index is longest-first, so without these Beethoven 5's
+    # "Tr. Alt." and "Tr. Ten." fall through to the VOICES — alto and tenor —
+    # and "Tr. Bas." to the trumpets. There is no tromba alta or tromba tenore
+    # in the repertoire, so those two are the trombone outright; "Tr. Bas." is
+    # left ambiguous below, because tromba bassa is real.
     Instrument("Trombone", "brass", "bass", (34, 72), 0, 0,
                aliases=("trombone", "trombones", "trombono", "tromboni", "posaune",
-                        "posaunen", "trb", "tbn", "pos")),
+                        "posaunen", "trb", "tbn", "pos",
+                        "tr alt", "tr ten", "tr bas")),
     # "tenor tuba" before the voice aliases can reach it: the alias index is
     # longest-first, so without it "Tenor Tuba in B-flat" resolves to the VOICE
     # Tenor and takes Holst's Planets out of score order on all eight movements.
@@ -241,6 +259,12 @@ AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
     "basse": ("Bass voice", "Contrabass"),
     "bass": ("Bass voice", "Contrabass"),
     "bassi": ("Contrabass", "Bass voice"),
+    # "Tr. Bas." is Trombone basso in the Italian tradition and Tromba bassa —
+    # the bass trumpet Wagner and Strauss write for — in the German. The lexicon
+    # reads it as the trombone, which is much the commoner, and listing it here
+    # says the reading is not certain enough to PIN a staff on
+    # (`dossier.join_parts_to_slots`). Position settles it, as it does for `Tp.`.
+    "tr bas": ("Trombone", "Trumpet"),
 }
 
 

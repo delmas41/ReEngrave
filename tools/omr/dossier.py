@@ -407,6 +407,15 @@ def join_parts_to_slots(
     would be circular exactly where it matters. Labels come from `staff_labels`
     via slots, so a name read in one system reaches every system of the page.
 
+    A label does more than score a pair. Where it resolves unambiguously it PINS
+    its part, and the alignment runs only on the spans between pins — because the
+    monotone path is right about score order and wrong about a particular
+    engraving, and it is the margin that knows which. Beethoven 5 p.48 prints the
+    timpani above the trombones where the part list has them below, and without
+    pinning the three trombone staves are unreachable: 12 of 17 staves, against
+    17 of 17 with. See `score_layouts.align_to_layout_pinned` and
+    `benchmarks/omr-part-staff-join-2026-08/RESULTS.md`.
+
     Each entry carries `anchored`: whether that slot lies BETWEEN two labelled
     slots. Measured on Beethoven 5 p.2 and the Pastoral p.2, the join is right
     on 7 of 7 wind staves — including an unlabelled bassoon, pinned by the
@@ -415,8 +424,8 @@ def join_parts_to_slots(
     part is dropped or condensed onto the fourth staff. Between anchors the
     alignment has no room to slip; past the last one it is guessing.
     """
-    from .score_layouts import ScoreLayout, align_to_layout
-    from .instruments import lookup
+    from .score_layouts import ScoreLayout, align_to_layout_pinned
+    from .instruments import AMBIGUOUS_ALIASES, lookup, normalize_label
 
     parts = dossier.get("parts") or []
     if not parts or n_slots <= 0:
@@ -430,16 +439,23 @@ def join_parts_to_slots(
     # "Clarinetti" from the margin are the same instrument to the aligner.
     names = tuple(canonical(p.get("name")) for p in parts)
     layout = ScoreLayout(name=dossier.get("work_id", "dossier"), parts=names)
-    _score, assignment = align_to_layout(
+    # Which labels may PIN. An ambiguous alias may not: `Tp.` is Timpani or
+    # Trumpet and `Basso` is a voice or the contrabasses, and POSITION is what
+    # settles those — which is the one thing a pin takes off the table. The raw
+    # text is the only place that judgement can be made, because canonicalising
+    # has already picked a reading by the time the aligner sees it.
+    pinnable = {i for i, v in (labels or {}).items()
+                if normalize_label(v or "") not in AMBIGUOUS_ALIASES}
+    assignment, _pins = align_to_layout_pinned(
         layout, n_slots,
         labels={i: canonical(v) for i, v in (labels or {}).items()},
         part_clefs=[p.get("written_clef") for p in parts],
         allow_merge=True,
-        # Indices, not names: this work's parts repeat their names — "Violin 1"
-        # and "Violin 2" are one instrument and two parts — and only the index
-        # says which slot got which.
-        return_indices=True,
+        pinnable=pinnable,
     )
+    # The assignment is part INDICES, not names: this work's parts repeat their
+    # names — "Violin 1" and "Violin 2" are one instrument and two parts — and
+    # only the index says which slot got which.
 
     anchored: set[int] = set()
     if labels:

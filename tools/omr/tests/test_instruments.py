@@ -261,3 +261,37 @@ def test_size_qualified_instruments_are_unaffected():
                             ("Tenor Trombone 1", "Trombone"),
                             ("Bass Drums", "Percussion")):
         assert lookup(label).instrument.name == expected, label
+
+
+def test_the_qualified_italian_abbreviations_beethoven_5_prints():
+    """Beethoven 5's fourth movement, from its own margin — and every one of
+    these read as a DIFFERENT instrument before, not merely as nothing.
+
+    The trombone forms are the ones that cost: bare "Tr." is Trombe in this
+    tradition, so the alias index (longest first) sent "Tr. Alt." and "Tr. Ten."
+    to the VOICES and "Tr. Bas." to the trumpets, and those three staves carry
+    the alto, tenor and bass clefs the dossier exists to supply.
+    """
+    for label, expected in (("Fl. Pic.", "Piccolo"), ("Fl./Pic.", "Piccolo"),
+                            ("C. Fag.", "Contrabassoon"), ("C.Fag.", "Contrabassoon"),
+                            ("Tr. Alt.", "Trombone"), ("Tr. Ten.", "Trombone"),
+                            ("Tr. Bas.", "Trombone")):
+        assert lookup(label).instrument.name == expected, label
+    # Bare "Tr." is untouched: it is still the trumpets.
+    assert lookup("Tr.").instrument.name == "Trumpet"
+
+
+def test_tromba_bassa_is_why_tr_bas_stays_ambiguous():
+    """"Tr. Bas." is Trombone basso in the Italian tradition and Tromba bassa —
+    the bass trumpet — in the German. The lexicon answers with the commoner
+    reading, and listing it as ambiguous is what stops a staff being PINNED on
+    it (`dossier.join_parts_to_slots`)."""
+    from tools.omr.instruments import (AMBIGUOUS_ALIASES, candidates_for_alias,
+                                       normalize_label)
+    assert normalize_label("Tr. Bas.") == "tr bas"
+    assert "tr bas" in AMBIGUOUS_ALIASES
+    names = [i.name for i in candidates_for_alias("tr bas")]
+    assert names == ["Trombone", "Trumpet"], "lexicon's own answer stays first"
+    # The unqualified forms are NOT ambiguous — there is no tromba alta.
+    assert "tr alt" not in AMBIGUOUS_ALIASES
+    assert "tr ten" not in AMBIGUOUS_ALIASES

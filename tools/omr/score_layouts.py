@@ -43,6 +43,7 @@ insertion rather than pretending the extra staff is a different instrument.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from collections.abc import Sequence
 from typing import Any
 
 from .instruments import Instrument, lookup
@@ -314,6 +315,8 @@ def align_to_layout(
     part_clefs: list[str | None] | None = None,
     allow_merge: bool = False,
     return_indices: bool = False,
+    staff_positions: list[float] | None = None,
+    part_positions: list[float] | None = None,
 ) -> tuple[float, list[str | None] | list[int | None]]:
     """Align `n_staves` observed staves against one layout.
 
@@ -333,6 +336,12 @@ def align_to_layout(
     convention; one aligning against a WORK passes the clefs that work actually
     prints.
 
+    `staff_positions` and `part_positions` override where each staff and part
+    sits on its axis, normally 0 to 1 across whatever was passed in. A caller
+    solving a SLICE of a page must pass the positions the whole page gives them
+    — see `align_to_layout_pinned`, where renormalising within a span moves the
+    two sides relative to each other and flips merges that are already close.
+
     Order is never violated, which is the whole content of the score-order
     prior. Returns `(total score, one part name or None per staff)`.
     """
@@ -344,6 +353,10 @@ def align_to_layout(
 
     s_denom = max(1, m - 1)
     p_denom = max(1, n - 1)
+    if staff_positions is None:
+        staff_positions = [i / s_denom for i in range(m)]
+    if part_positions is None:
+        part_positions = [j / p_denom for j in range(n)]
     if part_clefs is None:
         part_clefs = [_default_clef(p) for p in layout.parts]
 
@@ -368,8 +381,8 @@ def align_to_layout(
     for i in range(1, m + 1):
         for j in range(1, n + 1):
             pair = _pair_score(
-                labels.get(i - 1), clefs.get(i - 1), (i - 1) / s_denom,
-                layout.parts[j - 1], (j - 1) / p_denom, part_clefs[j - 1],
+                labels.get(i - 1), clefs.get(i - 1), staff_positions[i - 1],
+                layout.parts[j - 1], part_positions[j - 1], part_clefs[j - 1],
             )
             open_ = dp[i - 1][j - 1] + pair
             cont = ext[i - 1][j] + pair + EXTEND_PENALTY
@@ -512,3 +525,201 @@ def resolve_ambiguous_label(
         if candidate.name == proposed:
             return candidate
     return None
+
+
+# ── Pinning: the labels know the PRINT's order ──────────────────────────────
+# `align_to_layout` is monotone, and monotone is right about score order — the
+# families never swap. It is NOT right about a particular engraving. Beethoven 5
+# p.48 prints `Timp.` above the three trombones; the work's part list has the
+# trombones first, which is the standard order, and this edition is the one that
+# deviates (editions commonly do). Having consumed Timpani the aligner cannot go
+# back, so the trombone staves come back empty — and they carry the alto, tenor
+# and bass clefs the dossier exists to supply, the ones no detector reads.
+#
+# What knows the print's order is the margin labels. So a labelled staff may PIN
+# its part: the alignment then runs only on the spans BETWEEN pins, and two pins
+# may sit in either order, which is exactly the transposition the monotone path
+# forbids.
+#
+# **A pin fixes a boundary; it does not consume a run.** That distinction was
+# measured, not assumed. Pinning a labelled staff to its instrument's whole run
+# of parts costs the Pastoral a staff: `Violino I` labels ONE staff, and a run
+# pin hands it both violin parts, so the unlabelled second-violin staff below
+# has to start at the viola and the rest of the section shifts down. A label
+# says where an instrument BEGINS. How many staves it takes, and whether it
+# condenses, is what the alignment is for, so the pinned part is only the FIRST
+# of its run and the span that follows decides the rest.
+#
+# A pin is a hard constraint, so it is only taken where the evidence is
+# unambiguous, and four things withdraw one:
+#
+#   * an ambiguous alias — `Tp.` is Timpani or Trumpet and `Basso` is a voice or
+#     the contrabasses (`instruments.AMBIGUOUS_ALIASES`). POSITION settles those,
+#     and a pin is the one move that takes position off the table;
+#   * a name the work prints in two separate places, so the run is not unique;
+#   * the same name claimed by two separated blocks of staves, which is a
+#     contradiction rather than evidence — it is what a misread does. Beethoven 5
+#     p.48 prints `Tr.` for the trumpets and `Tr. Bas.` for the bass trombone,
+#     and the lexicon reads both as Trumpet; neither pins, and the alignment goes
+#     back to weighing them, which is what it is for;
+#   * a clef — never. Supplying clefs is what the join exists to do, and pinning
+#     on them would be circular exactly where it matters.
+
+
+def unique_part_runs(parts: Sequence[str]) -> dict[str, tuple[int, int]]:
+    """Canonical name -> its one maximal run of consecutive parts.
+
+    A name the work prints in TWO places is left out: "which run did the label
+    mean?" has no answer, and a pin may not guess. Runs are maximal and
+    consecutive because that is how a part list writes an instrument — Flute 1
+    then Flute 2, Alto then Tenor then Bass Trombone.
+    """
+    runs: dict[str, list[tuple[int, int]]] = {}
+    i = 0
+    while i < len(parts):
+        j = i
+        while j + 1 < len(parts) and parts[j + 1] == parts[i]:
+            j += 1
+        runs.setdefault(parts[i], []).append((i, j))
+        i = j + 1
+    return {name: found[0] for name, found in runs.items() if len(found) == 1}
+
+
+def label_pins(
+    n_staves: int,
+    labels: dict[int, str],
+    parts: Sequence[str],
+    pinnable: set[int] | None = None,
+) -> list[tuple[int, int]]:
+    """Which staves pin to which part: `(slot, part index)`, in slot order.
+
+    Only the FIRST staff of a run of consecutive same-named staves pins, to the
+    FIRST part of that instrument's run — the three staves labelled `Tr. Alt.`,
+    `Tr. Ten.` and `Tr. Bas.` say "the trombones start here", and the span that
+    follows distributes them. Consecutive matters: an unlabelled staff between
+    two same-named ones breaks the run rather than being assumed to belong to it.
+
+    `pinnable` is the staves whose label was unambiguous enough to constrain on;
+    the caller owns that judgement because only it still has the raw text.
+    """
+    runs = unique_part_runs(parts)
+    allowed = set(range(n_staves)) if pinnable is None else set(pinnable)
+
+    blocks: list[tuple[int, str]] = []
+    i = 0
+    while i < n_staves:
+        name = labels.get(i)
+        if name is None or i not in allowed or name not in runs:
+            i += 1
+            continue
+        j = i
+        while j + 1 < n_staves and (j + 1) in allowed and labels.get(j + 1) == name:
+            j += 1
+        blocks.append((i, name))
+        i = j + 1
+
+    claimed: dict[str, int] = {}
+    for _, name in blocks:
+        claimed[name] = claimed.get(name, 0) + 1
+    return [(slot, runs[name][0]) for slot, name in blocks if claimed[name] == 1]
+
+
+def align_to_layout_pinned(
+    layout: ScoreLayout,
+    n_staves: int,
+    labels: dict[int, str] | None = None,
+    clefs: dict[int, str] | None = None,
+    part_clefs: list[str | None] | None = None,
+    allow_merge: bool = False,
+    pinnable: set[int] | None = None,
+) -> tuple[list[int | None], list[tuple[int, int]]]:
+    """`align_to_layout`, with labelled staves held to their part.
+
+    Falls straight through to the unpinned alignment when nothing pins, so a page
+    with no labels — or none the lexicon can resolve — behaves exactly as before.
+
+    Each pin opens a span running to the next pinned staff, and drawing on the
+    parts from its own forward until the next part some OTHER pin has spoken for.
+    That last clause is what carries the transposition: on Beethoven 5 p.48 the
+    Timpani pin takes part 17 and stops at 18, while the trombone pin below it
+    takes 14 and stops at 17 — so the three staves the monotone path could not
+    reach are simply the span of the pin that names them.
+    """
+    labels = labels or {}
+    clefs = clefs or {}
+    if part_clefs is None:
+        part_clefs = [_default_clef(p) for p in layout.parts]
+
+    pins = label_pins(n_staves, labels, layout.parts, pinnable)
+    if not pins:
+        _score, assignment = align_to_layout(
+            layout, n_staves, labels, clefs, part_clefs, allow_merge,
+            return_indices=True,
+        )
+        return list(assignment), []
+
+    out: list[int | None] = [None] * n_staves
+    # Positions are the PAGE's, not the span's. A span is a slice of both
+    # sequences, and renormalising it would stretch that slice back over the full
+    # 0..1 range — moving the two sides relative to each other and deciding
+    # merges on an axis the page never had. Measured on Beethoven 5 p.2 and the
+    # Pastoral, where the local axis makes condensing Violin 2 with the viola
+    # look no worse than the cello-and-bass staff the engraving actually prints,
+    # and both pages lose a staff.
+    s_axis = [i / max(1, n_staves - 1) for i in range(n_staves)]
+    p_axis = [j / max(1, layout.size - 1) for j in range(layout.size)]
+
+    def solve(slot_lo: int, slot_hi: int, pool: list[int]) -> None:
+        if slot_lo > slot_hi or not pool:
+            return
+        sub = ScoreLayout(layout.name, tuple(layout.parts[p] for p in pool))
+        _score, assignment = align_to_layout(
+            sub, slot_hi - slot_lo + 1,
+            {k - slot_lo: v for k, v in labels.items() if slot_lo <= k <= slot_hi},
+            {k - slot_lo: v for k, v in clefs.items() if slot_lo <= k <= slot_hi},
+            [part_clefs[p] for p in pool],
+            # Condensation is what a page does when it has MORE parts than
+            # staves, and between two pins both counts are known — which is the
+            # one place that global fact becomes local. Leaving merge on where
+            # the span does not need it is not neutral: a merge is rewarded with
+            # another full pair score, so on a span whose parts all share one
+            # name — the three trombones, the two violins — every label matches
+            # every part and the DP condenses them all onto one staff rather
+            # than reading them 1:1. Measured on Beethoven 5 p.48: with merge
+            # left on, the three trombone staves the pins finally reach all come
+            # back "Alto Trombone".
+            allow_merge and len(pool) > slot_hi - slot_lo + 1,
+            return_indices=True,
+            staff_positions=s_axis[slot_lo:slot_hi + 1],
+            part_positions=[p_axis[p] for p in pool],
+        )
+        for offset, index in enumerate(assignment):
+            if index is not None:
+                out[slot_lo + offset] = pool[index]
+
+    # Every pin opens a span of staves, running to the next pinned staff. The
+    # leading span, above the first pin, has no part of its own.
+    spans: list[tuple[int, int, int, list[int]]] = [(0, pins[0][0] - 1, -1, [])]
+    for (slot, part), (next_slot, _) in zip(pins, pins[1:] + [(n_staves, 0)]):
+        spans.append((slot, next_slot - 1, part, [part]))
+
+    # Now the parts no pin holds. Each goes to the LAST span, in STAFF order,
+    # whose own part lies above it — and that is the whole content of the
+    # transposition. Score order RESUMES after one: on Beethoven 5 p.48 the
+    # timpani are printed above the trombones, so the timpani pin sits on an
+    # earlier staff while holding a later part, and the strings below belong to
+    # the staves below — the trombone span — not to the displaced pin that
+    # happens to hold the numerically nearest part. Taking the nearest part
+    # instead strands all five string staves with nothing to read.
+    anchored = {part for _, part in pins}
+    for q in range(layout.size):
+        if q in anchored:
+            continue
+        home = max((i for i, (_, _, part, _) in enumerate(spans) if part < q),
+                   default=0)
+        spans[home][3].append(q)
+
+    for slot_lo, slot_hi, _part, pool in spans:
+        solve(slot_lo, slot_hi, sorted(pool))
+
+    return out, pins
