@@ -4,6 +4,41 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
+## A whole scan, start to finish, with nothing helping it (2026-08-31)
+
+Every accuracy number here was measured one element at a time, or on pages this
+project rendered itself from the truth it then scored against. So the obvious
+question had never been asked: hand the pipeline a scan and see what comes out.
+
+`benchmarks/omr-first-run-2026-08/` does it — Beethoven 5 page 1 of the IMSLP
+scan, defaults, **no dossier**, scored against the Gradus reference, with the
+page's 17 measures established independently of the pipeline.
+
+**The components are far better than their composition.** Layout is perfect —
+113 staves and 11 systems across six pages, all exact, including four pages
+where the staff count changes between the two systems. Clefs 10/12. Three
+quarters of noteheads on the right line (`step` recall 0.742). And the engraved
+result is still not a transcription of Beethoven 5:
+
+- **meter never read** → the exporter writes 4/4 onto a 2/4 page;
+- **4 of 17 barlines missed** — one at the front, three consecutive at the back;
+- **key signatures read on 2 of 12 staves** (29% over six pages), which is the
+  whole distance between `step` recall 0.742 and exact-pitch recall 0.579;
+- **duration recall 0.340**, half the notes that are correctly located;
+- 24 of 170 emitted notes sit on staves that print nothing but rests.
+
+Two things this reframes. **OMR-NED is not yet a tracking number for scans**:
+0.8706 here against 0.3164 on rendered pages, and 66% of the edits are
+whole-measure/whole-staff inserts — the export's one-part-per-(page, system,
+staff) model against an edition that condenses 18 parts onto 12 staves. And
+**the dossier cannot engage**: eleven systems, eleven abstentions, because real
+editions condense and suppress tacet staves, so the staff set changes *within a
+page*. The join has to be per-system before external truth can help a real scan.
+
+Ranked next steps at the end of `benchmarks/omr-first-run-2026-08/FINDINGS.md`.
+
+---
+
 ## Clef accuracy, measured end to end (2026-08-29)
 
 The three threads above all ended by pointing at the clef. It turns out to be in
