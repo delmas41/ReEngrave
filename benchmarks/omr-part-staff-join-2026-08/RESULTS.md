@@ -626,3 +626,78 @@ fallback are complementary, and the Pastoral is the page that needs both.
 And p.48 still reports **8/17** from the standard benchmark, because the
 production path reads no labels on that scan at all. The 17/17 is what it scores
 once the labels arrive.
+
+
+---
+
+# The fallback, switched on for real — 2026-08-30 (sixth pass)
+
+Host SDK upgraded to `anthropic` 0.125 (from 0.28), so the margin reader runs on
+the host and not only in a throwaway venv. `eval_pipeline_clefs` now takes
+`--vision-labels`, which costs credits — up to three systems a page, about a cent
+each.
+
+```bash
+python3 benchmarks/omr-clef-geometry/eval_pipeline_clefs.py --contextual --dossier --vision-labels
+```
+
+| corpus | without | **with `--vision-labels`** |
+|---|---:|---:|
+| overall (69 staves) | 58/69 | **67/69 = 97%** |
+| beet5-p48 | 8/17 | **17/17** |
+| base 3 | 50/52 | 50/52 |
+
+**p.48 is 17 of 17 in the production harness**, not in an oracle arm — a whole
+conductor's page, every clef, read from its own printed margin. The dossier now
+supplies 10 staves across the corpus and is right on all 10. The only two errors
+left in 69 staves are the Pastoral viola, in both its systems.
+
+## Two things this turned up, and neither is comfortable
+
+### 1. The rejected tail rule is no longer worse. It is better.
+
+`TAIL_RULE=all` — trust everything below the last label — is recorded elsewhere
+in this project as costing 50/52 → 44/52. **It does not reproduce.** Measured now:
+
+| arm | base 3 | beet5-p48 (no vision labels) |
+|---|---:|---:|
+| `none` | 50/52 | 8/17 |
+| **`exact` (shipped)** | 50/52 | 8/17 |
+| `all` | **52/52** | 8/17 |
+
+`all` fixes the Pastoral viola and takes the base corpus to perfect. Whatever the
+earlier measurement was of, it is not what this flag does today — the pinning work
+changed the join underneath it.
+
+**It is still not shipped, and the reason matters.** On Beethoven 5 p.2 the tail
+join is measurably WRONG — 4 of 5 — and `all` gets away with it only because the
+part it picks there (Contrabass instead of the cello-and-bass staff) happens to
+carry the same clef. A rule that is right because two wrong answers share an
+answer is not a rule that has been tested. `exact` trusts only where there is
+provably no freedom, and the benchmark cannot currently tell the two apart.
+
+The honest resolution is not to pick by score. It is to ask whether the
+uncertainty changes the ANSWER: re-run the join with the tail perturbed by one
+part and supply the clef only if it does not move. That tests the thing actually
+being relied on, and it would license the Pastoral (whose tail is right) without
+licensing beet5-p2's (whose tail is wrong). Not built.
+
+### 2. The fallback never fires on a page with a partial text layer
+
+The Pastoral reads **4 labels** with `--vision-labels` on — the same 4 as without
+it. The margin reader is never consulted, because the fallback is all-or-nothing:
+
+```python
+if labels or not vision_fallback or budget[0] <= 0:
+    return labels          # <- any text-layer label at all, and we stop here
+```
+
+`VISION_CEILING_2026-08-30.md` measured that reader recovering **10** labels on
+that exact page, all correct, where the text layer finds 4. Those 6 extra labels
+are the ones that would carry the join down to the strings — and with 10 labels
+the Pastoral's tail is 5 staves against exactly 5 free parts, so `exact` would
+license it and the viola would be fixed **by better evidence rather than by a
+looser trust rule.**
+
+That is the next change, and it is the right one to make before touching the tail
+rule again.

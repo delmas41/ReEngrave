@@ -81,7 +81,8 @@ def extra_pages() -> list[dict]:
 
 
 def score_page(page: dict, weights: Path, dpi: int | None,
-               contextual: bool = False, use_dossier: bool = False) -> list[dict]:
+               contextual: bool = False, use_dossier: bool = False,
+               vision_labels: bool = False) -> list[dict]:
     pdf = Path(page["pdf"])
     if not pdf.is_absolute():
         pdf = REPO / pdf
@@ -99,7 +100,7 @@ def score_page(page: dict, weights: Path, dpi: int | None,
                    if use_dossier and page["id"] in WORKS else None)
         summary = apply_contextual_analysis(
             result, pdf_path=pdf, dpi=dpi or page["dpi"], apply_clefs=True,
-            dossier=dossier)
+            dossier=dossier, vision_fallback=vision_labels)
         print(f"  {page['id']}: contextual — {summary.get('labelled_staves')} labels, "
               f"{summary.get('clefs_applied')} instrument corrections, "
               f"{summary.get('clefs_filled_from_slot')} filled from another system, "
@@ -139,6 +140,10 @@ def main() -> int:
                     help="let the work's own parts supply clefs where the join is anchored")
     ap.add_argument("--contextual", action="store_true",
                     help="run contextual analysis (instrument identity -> clef) first")
+    ap.add_argument("--vision-labels", action="store_true",
+                    help="COSTS API CREDITS. Read the margin with Claude where the "
+                         "text layer yields nothing — up to 3 systems per page "
+                         "(`vision_system_budget`), about a cent each.")
     args = ap.parse_args()
     if not args.weights.exists():
         print(f"no weights at {args.weights}", file=sys.stderr)
@@ -147,7 +152,8 @@ def main() -> int:
     rows: list[dict] = []
     for page in json.loads(TRUTH.read_text())["pages"] + extra_pages():
         rows.extend(score_page(page, args.weights, args.dpi,
-                               args.contextual or args.dossier, args.dossier))
+                               args.contextual or args.dossier, args.dossier,
+                               args.vision_labels))
     if not rows:
         print("no pages scored")
         return 1
