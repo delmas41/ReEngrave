@@ -246,6 +246,36 @@ class ClefLocatorConfig:
     # clef on the bottom line reaches about two spaces below it; anything
     # centred further out belongs to the neighbouring staff.
     staff_band_spaces: float = 2.2
+    # A clef is printed ON the staff. A cluster that ends before the staff's
+    # own five lines begin is standing in the margin, so whatever it is, it is
+    # not this staff's clef — and it is skipped rather than stopped for, on
+    # exactly the reasoning the ink-fraction and minimum-width tests already
+    # use: a cluster is only worth STOPPING for if it could be the clef, and
+    # the real one is further right.
+    #
+    # This exists because a second edition showed a false-positive family the
+    # first could not. Edition Peters prints the stacked instrument numbers
+    # (1/2, 1/2/3) and the brace's curl to the LEFT of the system's bracket,
+    # close enough to fall inside the header window — and a column of two or
+    # three numerals is glyph-sized and vertically symmetric, because a column
+    # of numerals is. No shape gate can refuse them; they really are symmetric.
+    # Their POSITION is what gives them away. Twenty-four of the forty-one
+    # false positives on `mahler5-clef-sweep.json` are that family, and none
+    # appear in `beethoven5-clef-sweep.json` at all.
+    #
+    # `probe_false_positive_geometry.py` measured the ceiling before this was
+    # written: 27 of Mahler's 40 removed for 2 of its 64 real clefs, and
+    # exactly neutral on Beethoven, whose false positives are all real clefs
+    # misread in the place a clef belongs. Set False to measure the other arm.
+    require_cluster_on_staff: bool = True
+    # How the staff's left edge is found: the leftmost horizontal run at least
+    # this many spaces long. Length is what identifies a staff line, and the
+    # bound is not cosmetic — at analysis scale a bold serif's crossbar clears
+    # a 1.5-space horizontal opening, so the instrument name and the numerals
+    # themselves leave "horizontal" fragments at the very left of the window.
+    # Taking the leftmost horizontal ink instead reported that EVERY staff
+    # begins at column 0, and the rule did nothing.
+    staff_line_min_length_spaces: float = 4.0
 
 
 DEFAULT_LOCATOR_CONFIG = ClefLocatorConfig()
@@ -306,6 +336,49 @@ def _ink_mask(
     mask = _strip_vertical_rules(mask, spacing, config)
     mask = _strip_horizontal_rules(mask, spacing)
     return _drop_flat_residue(mask, spacing, config)
+
+
+def _staff_left_column(
+    cell: MeasureCell, spacing: float, config: ClefLocatorConfig
+) -> int | None:
+    """The column where this staff's printed lines begin, in ANALYSIS space,
+    or None when they cannot be found.
+
+    Deliberately measured on `cell.image` and not on the staff-line-removed
+    variant `_ink_mask` prefers: here the lines ARE the measurement. On the
+    prints this locator exists for the removal leaves most of them behind
+    anyway, but relying on that would make the answer depend on how well an
+    upstream step worked.
+
+    A staff line is identified by LENGTH — it is the one horizontal that runs
+    the width of the cell. See `staff_line_min_length_spaces` for what happens
+    when it is identified by position instead.
+    """
+    img = cell.image
+    if img is None or img.size == 0:
+        return None
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if img.ndim == 3 else img
+    # The same resize `_ink_mask` performs, so the column it returns is
+    # directly comparable with a cluster's bbox.
+    scale = _analysis_scale(spacing, config)
+    if scale < 1.0:
+        gray = cv2.resize(
+            gray,
+            (max(1, int(round(gray.shape[1] * scale))),
+             max(1, int(round(gray.shape[0] * scale)))),
+            interpolation=cv2.INTER_AREA,
+        )
+        spacing = spacing * scale
+    _, mask = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
+    k = max(3, int(round(1.5 * spacing)))
+    horiz = cv2.morphologyEx(
+        mask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (k, 1))
+    )
+    n, _labels, stats, _c = cv2.connectedComponentsWithStats(horiz, connectivity=8)
+    long_enough = config.staff_line_min_length_spaces * spacing
+    lefts = [int(stats[i, cv2.CC_STAT_LEFT]) for i in range(1, n)
+             if stats[i, cv2.CC_STAT_WIDTH] >= long_enough]
+    return min(lefts) if lefts else None
 
 
 def _refine_symmetry_axis(
@@ -557,9 +630,24 @@ def locate_clef(
         _note("no_clusters")
         return None
 
+    # Where the staff itself starts, for the margin test below. Measured once
+    # per cell rather than per cluster, and only when the test is on.
+    staff_left = (
+        _staff_left_column(cell, metrics[0], config)
+        if config.require_cluster_on_staff else None
+    )
+    skipped_off_staff = 0
+
     for bbox in clusters:
         x, y, w, h = bbox
         w_sp, h_sp = w / spacing, h / spacing
+        if staff_left is not None and x + w <= staff_left:
+            # In the margin, before the staff's lines begin — the instrument
+            # numbers, the brace's curl, the part name. Not this staff's clef,
+            # and not worth stopping for either: the clef is further right,
+            # behind the bracket. See `require_cluster_on_staff`.
+            skipped_off_staff += 1
+            continue
         if x / spacing > config.max_start_spaces:
             # Too far in to be a clef, and everything further right is further
             # still — whatever is at the head of this staff, we didn't find it.
@@ -666,5 +754,11 @@ def locate_clef(
             symmetry=round(symmetry, 4),
         )
 
+    if skipped_off_staff:
+        # Reported apart from `only_debris` because the cause is different and
+        # the remedy would be too: there WAS glyph-sized ink in this header,
+        # standing in the margin rather than on the staff.
+        _note("off_staff_only", skipped_off_staff=skipped_off_staff)
+        return None
     _note("only_debris")
     return None

@@ -11,7 +11,9 @@ import types
 
 import pytest
 
-from tools.omr import contextual, staff_labels_surya
+from tools.omr import contextual, staff_labels_surya, staff_labels_tesseract
+from tools.omr.assist import Assist
+from tools.omr.instruments import lookup
 from tools.omr.staff_labels import StaffLabel
 from tools.omr.staff_labels_vision import GUTTER_PX, MAX_EDGE_PX, build_margin_crop
 
@@ -66,15 +68,21 @@ def test_tick_positions_scale_with_a_downsized_crop():
 # ── the fallthrough order ───────────────────────────────────────────────────
 
 def _label(idx, text="Fl."):
-    return StaffLabel(staff_index=idx, text=text, instrument=None,
-                      fifths_offset=0, y_center_px=float(idx * 100))
+    # A MATCHED label: the ladder's gates count labels the lexicon can turn into
+    # a part, because an unresolved one reaches the join as nothing at all.
+    hit = lookup(text)
+    return StaffLabel(staff_index=idx, text=text,
+                      instrument=hit.instrument if hit else None,
+                      fifths_offset=0, y_center_px=float(idx * 100),
+                      confidence=hit.confidence if hit else "none")
 
 
 @pytest.fixture
 def chain(monkeypatch):
     """Record which readers ran, with each one's output controllable."""
     calls: list[str] = []
-    state = {"text": [], "surya": [], "vision": [], "surya_available": True}
+    state = {"text": [], "surya": [], "tesseract": [], "vision": [],
+             "surya_available": True, "tesseract_available": False}
 
     def fake_text(pws):
         calls.append("text")
@@ -92,6 +100,17 @@ def chain(monkeypatch):
     monkeypatch.setattr(staff_labels_surya, "available",
                         lambda: state["surya_available"])
     monkeypatch.setattr(staff_labels_surya, "read_staff_labels_surya", fake_surya)
+
+    def fake_tesseract(pws, **kw):
+        calls.append("tesseract")
+        return state["tesseract"]
+
+    # Off unless a test asks for it, so the ladder's other rungs are tested
+    # without a real Tesseract on the machine changing the answer.
+    monkeypatch.setattr(staff_labels_tesseract, "available",
+                        lambda: state["tesseract_available"])
+    monkeypatch.setattr(staff_labels_tesseract, "read_staff_labels_tesseract",
+                        fake_tesseract)
     import tools.omr.staff_labels_vision as slv
     monkeypatch.setattr(slv, "read_staff_labels_vision", fake_vision)
     return calls, state
@@ -101,7 +120,8 @@ def _run(budget=3, vision=True, surya=True):
     pws = types.SimpleNamespace(staves=[_FakeStaff(0, 0, 40)])
     return contextual._labels_for_page(
         pws, __import__("pathlib").Path("x.pdf"), 0,
-        vision_fallback=vision, budget=[budget], surya_fallback=surya)
+        assist=Assist("vision" if vision else "none"),
+        budget=[budget], surya_fallback=surya)
 
 
 def test_text_layer_wins_and_nothing_else_runs(chain):
@@ -164,7 +184,7 @@ def test_surya_does_not_consume_the_paid_budget(chain):
     budget = [3]
     pws = types.SimpleNamespace(staves=[_FakeStaff(0, 0, 40)])
     contextual._labels_for_page(pws, __import__("pathlib").Path("x.pdf"), 0,
-                                vision_fallback=True, budget=budget)
+                                assist=Assist("vision"), budget=budget)
     assert budget == [3], "a free read spent the paid budget"
 
 
@@ -233,7 +253,7 @@ def test_apply_contextual_rejects_a_mismatched_staved_list():
                         {"page_index": 1, "systems": []}]}
     with pytest.raises(ValueError, match="staved has 1 pages, result has 2"):
         apply_contextual_analysis(
-            result,
+            result, assist=Assist('none'),
             pdf_path=pathlib.Path(__file__),   # exists, so the early-out is skipped
             staved=[object()],
         )
@@ -244,6 +264,7 @@ def test_apply_contextual_reports_a_missing_pdf_rather_than_raising():
 
     summary = apply_contextual_analysis(
         {"pages": [{"page_index": 0, "systems": []}]},
+        assist=Assist("none"),
         pdf_path="/nonexistent/score.pdf",
     )
     assert summary["available"] is False

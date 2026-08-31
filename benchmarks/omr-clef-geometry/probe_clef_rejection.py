@@ -60,6 +60,7 @@ BRANCH_NAMES = {
     "f_clef_dots": "F-clef dot veto",
     "ambiguous_snap": "ambiguous line snap",
     "mezzosoprano_symmetry": "mezzosoprano, under-evidenced",
+    "off_staff_only": "margin ink only, before the staff",
 }
 
 

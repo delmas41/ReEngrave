@@ -511,12 +511,18 @@ def apply_contextual_analysis(
     # page with no text layer is only "unlabelled" when nothing can read the
     # margin. `available()` is checked rather than assumed so a machine without
     # the venv takes the old path exactly as before.
-    can_read_margin = vision_fallback
+    # Is there ANY reader for the margin? Whoever `assist` names, plus the two
+    # free ones where they are installed. Only if none of them can run does a
+    # page with no text layer have nothing to hope for.
+    can_read_margin = assist.mode != "none"
     if not can_read_margin and surya_fallback:
         from . import staff_labels_surya
         can_read_margin = staff_labels_surya.available()
+    if not can_read_margin and ocr_fallback:
+        from . import staff_labels_tesseract
+        can_read_margin = staff_labels_tesseract.available()
     unlabelled = (
-        assist.mode == "none" and not can_read_margin
+        not can_read_margin
         and not any(has_text_layer(pdf_path, i) for i in page_indices)
     )
 
