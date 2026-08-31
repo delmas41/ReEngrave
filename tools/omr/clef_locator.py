@@ -123,8 +123,7 @@ class ClefLocatorConfig:
     # Above 0.4 the heading text starts fusing back on and coverage falls.
     # 0.3 is the middle of that window, as far from inventing clefs as from
     # losing them.
-    # Vertical counterpart of the x-gap. OFF by default — set it to 1.0 to
-    # turn it on — and the reason it is off is not that it doesn't work.
+    # Vertical counterpart of the x-gap.
     #
     # What it does: a staff header is a narrow column that also holds whatever
     # is printed above and below the staff, and grouping ink by its x-gap alone

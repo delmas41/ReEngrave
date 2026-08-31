@@ -294,13 +294,18 @@ def _well_covered(labels: list[StaffLabel], pws) -> bool:
 
 
 def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
-                     vision_fallback: bool, budget: list[int],
+                     assist, budget: list[int],
                      surya_fallback: bool = True,
                      ocr_fallback: bool = True,
-                     tiers: list[int] | None = None) -> list[StaffLabel]:
+                     tiers: list[int] | None = None,
+                     review_dir: Path | None = None) -> list[StaffLabel]:
     """Instrument labels, cheapest reader first.
 
-        PDF text layer  ->  Surya 2  ->  Tesseract  ->  Claude (paid)
+        PDF text layer  ->  Surya 2  ->  Tesseract  ->  whoever `assist` names
+
+    The three free rungs run unconditionally; where they leave a system thinly
+    covered, `assist` says who settles it — a person, the vision model, or
+    nobody.
 
     TWO free margin readers, not one, and they are not redundant: they need
     different things installed. Surya wants a Python 3.10 venv and llama.cpp and
@@ -330,7 +335,7 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     check; the gap is reach, not correctness. See
     `benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md`.
     """
-    tiers = tiers if tiers is not None else [0, 0, 0, 0]
+    tiers = tiers if tiers is not None else [0, 0, 0, 0, 0]
     # Tier 1, free and instant: the PDF's own text layer.
     labels = read_staff_labels(pws)
     # NOT `if labels` — a PARTIAL text layer must not stop the ladder. A scanned
@@ -385,13 +390,31 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
             if added:
                 labels = labels + added
                 tiers[2] += len(added)
-            if _well_covered(labels, pws):
-                return labels
 
-    if not vision_fallback or budget[0] <= 0:
+    if assist.mode == "none" or _well_covered(labels, pws):
         return labels
 
-    # Tier 3, about a cent a system: the margin read by Claude.
+    # Tier 3a, free but not cheap: ask the person who chose to be asked. Only
+    # the staves a trigger fired on, and the machine's reading is the default,
+    # so the common case is a keypress.
+    if assist.mode == "human":
+        from .staff_labels_human import read_staff_labels_human
+        answered = read_staff_labels_human(
+            pws, labels, assist, page_index=page_index,
+            out_dir=Path(review_dir or ".omr-review"))
+        if answered:
+            already = {lab.staff_index for lab in labels}
+            labels = labels + [a for a in answered if a.staff_index not in already]
+            tiers[4] += len(answered)
+        # A human may have handed the rest over mid-question; fall through so
+        # the new mode takes effect on this page rather than the next.
+        if assist.mode != "vision":
+            return labels
+
+    if budget[0] <= 0:
+        return labels
+
+    # Tier 3b, about a cent a system: the margin read by Claude.
     from .staff_labels_vision import read_staff_labels_vision
     n_systems = len({s.system_index for s in pws.staves})
     budget[0] -= n_systems
@@ -428,11 +451,12 @@ def apply_contextual_analysis(
     dpi: int | None = None,
     apply_clefs: bool = True,
     dossier: dict[str, Any] | None = None,
-    vision_fallback: bool = False,
+    assist: "Assist | None" = None,
     vision_system_budget: int = 3,
     surya_fallback: bool = True,
     ocr_fallback: bool = True,
     staved: list[Any] | None = None,
+    review_dir: Path | None = None,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
     detector never read.
@@ -442,13 +466,27 @@ def apply_contextual_analysis(
     `clef_proposal`. Returns counts plus the reference layout, so a caller can
     report what was inferred.
 
-    Labels come from up to four tiers — the PDF text layer, then Surya, then
-    Tesseract, then
-    margin (`ocr_fallback`, free and on by default), then the vision read
-    (`vision_fallback`, about a cent per system and off by default). The summary
-    reports `label_tiers`, because which tier answered changes how much the
-    labels can be trusted and it should never have to be guessed.
+    Labels come from up to five readers. The three free ones always run — the
+    PDF text layer, then Surya, then Tesseract. Where they leave a system thinly
+    covered, `assist` says who settles it: a person, the vision model, or nobody.
+
+    **`assist` is required and has no default.** The two that cost something
+    spend different things — a cent a system, or somebody's attention — and
+    choosing one silently would spend one of them without asking. Pass
+    `Assist("none")` to say explicitly that neither should be spent.
+
+    The summary reports `label_tiers` and `assist`, because which reader answered
+    changes how far the labels can be trusted and should never have to be
+    guessed.
     """
+    from .assist import Assist
+
+    if assist is None:
+        raise TypeError(
+            "apply_contextual_analysis() needs an `assist`: who resolves the "
+            "margin where the free readers fall short. There is deliberately no "
+            "default — pass Assist('human'), Assist('vision'), or Assist('none') "
+            "to say that neither should be spent. See tools/omr/assist.py.")
     summary: dict[str, Any] = {
         "available": False, "reason": None, "reference": [],
         "labelled_staves": 0, "proposals": [], "clefs_applied": 0,
@@ -478,11 +516,14 @@ def apply_contextual_analysis(
         from . import staff_labels_surya
         can_read_margin = staff_labels_surya.available()
     unlabelled = (
-        not can_read_margin
+        assist.mode == "none" and not can_read_margin
         and not any(has_text_layer(pdf_path, i) for i in page_indices)
     )
 
     budget = [vision_system_budget]
+    # Labels credited to each reader, page set wide:
+    # [text layer, Surya, Tesseract, vision, human].
+    tiers = [0, 0, 0, 0, 0]
     labels = []
     staff_labels_per_page = []
 
@@ -503,9 +544,9 @@ def apply_contextual_analysis(
     for page_index, pws in zip(page_indices, staved):
         read = [] if unlabelled else _labels_for_page(
             pws, pdf_path, page_index,
-            vision_fallback=vision_fallback, budget=budget,
+            assist=assist, budget=budget,
             surya_fallback=surya_fallback, ocr_fallback=ocr_fallback,
-            tiers=tiers)
+            tiers=tiers, review_dir=review_dir)
         staff_labels_per_page.append(read)
         labels.append(labels_by_staff(read))
 
@@ -629,7 +670,9 @@ def apply_contextual_analysis(
     summary.update(
         available=True,
         label_tiers={"text_layer": tiers[0], "surya": tiers[1],
-                     "tesseract": tiers[2], "vision": tiers[3]},
+                     "tesseract": tiers[2], "vision": tiers[3],
+                     "human": tiers[4]},
+        assist=assist.summary,
         unresolved_labels=unresolved,
         low_confidence_labels=low_confidence,
         reference=[{"slot": s.index, "group": s.group_index,

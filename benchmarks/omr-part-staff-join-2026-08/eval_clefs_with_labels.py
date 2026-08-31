@@ -61,6 +61,7 @@ def main() -> int:
         return 1
 
     import tools.omr.contextual as ctx
+    from tools.omr.assist import Assist
     from tools.omr.dossier import resolve_dossier
     from tools.omr.instruments import lookup
     from tools.omr.staff_labels import StaffLabel
@@ -104,8 +105,11 @@ def main() -> int:
     result = transcribe(pdf_path=pdf, pages=[truth["page_index"]],
                         weights=str(args.weights), dpi=truth["dpi"])
     dossier = None if args.no_dossier else resolve_dossier(truth["work_id"])
+    # The labels are supplied by this harness, so no tier is consulted: 'none'
+    # is the honest mode and states that nothing is spent.
     summary = ctx.apply_contextual_analysis(
-        result, pdf_path=pdf, dpi=truth["dpi"], apply_clefs=True, dossier=dossier)
+        result, pdf_path=pdf, dpi=truth["dpi"], apply_clefs=True, dossier=dossier,
+        assist=Assist("none"))
 
     want = [s["clef"] for s in truth["slots"]]
     rows = []
