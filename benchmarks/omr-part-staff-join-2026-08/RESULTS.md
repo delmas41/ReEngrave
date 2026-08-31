@@ -797,3 +797,98 @@ the one `exact` declines to answer.
 Four pages, 69 staves, three works, all Beethoven or Bach. It means the layer is
 sound on what has been hand-read, not that clefs are solved. The next honest move
 is more pages and other editions — which is where the misfires will be.
+
+
+---
+
+# The merge budget, rejected a second time — 2026-08-30 (eighth pass)
+
+**The conventional cello-and-bass pair is not shipped. Again.** It fixes the page
+it was designed for and breaks a different one, and the argument for why it would
+be safe this time was wrong in a way worth writing down.
+
+## Why it looked right
+
+Beethoven 5 p.2 needs two condensations below the trumpets and makes two — but
+it pairs the **viola** with the cello rather than the cello with the bass. Both
+are ordinary cross-instrument merges at one price, so the choice falls to the
+position term:
+
+```
+correct pairing (Vc+Cb on the last staff): position cost 0.0765
+chosen  pairing (Vla+Vc on staff 9):       position cost 0.0588
+-> the wrong one wins by 0.0176
+```
+
+That is not a threshold to tune. It is a fact the aligner does not have:
+"Violoncello e Basso" is a printed convention and "Viola e Violoncello" is not.
+Naming `(Cello, Contrabass)` as a cheaper conventional pair takes p.2 from
+**10/11 to 11/11**, with the Pastoral apparently unmoved at 9/10.
+
+## Why it was wrong
+
+The pair was rejected in an earlier session (the Pastoral 9/10 → 7/10) because
+"a cheap cross-instrument merge lets the aligner condense whenever it is short of
+staves rather than only where the engraving does." The argument for reopening it
+was that the ground had moved: merging is now offered only inside a span that is
+genuinely short of staves, so the price can no longer run loose.
+
+**That argument is wrong, and precisely how is the thing to keep:**
+
+> The span bounds HOW MANY condensations happen. It does not bound WHICH.
+
+The Pastoral's last span needs exactly one condensation. The cheap pair moves it
+from the horns to the cello and bass; the horns then stretch across two staves to
+keep the count, and every string staff below shifts by one.
+
+| Pastoral p.2 | join | clefs |
+|---|---:|---:|
+| without the pair | 10/10 | 20/20 |
+| **with it** | **5/10** | **16/20** |
+
+And because the tail is now anchored, those wrong parts go straight into the
+clefs. The corpus went **69/69 → 65/69**.
+
+## How it nearly shipped, which is the more useful failure
+
+`eval_join`'s realistic arm supplies **six** labels. The pipeline's margin reader
+returns **five**. The sixth is `Violino I` — and it pins the string section,
+concealing the entire failure. In the six-label arm the change scored a clean
+10/10 on the Pastoral; under the pipeline's own conditions it scores 5/10.
+
+The harness was measuring a condition the pipeline never sees, and it was the
+harness that said ship. A fifth arm — **AS THE PIPELINE READS IT (5 labels)** —
+now covers the real one, on every page:
+
+| page | no labels | perfect | as printed | **as the pipeline reads it** |
+|---|---:|---:|---:|---:|
+| beet5-p48 | 8/17 | 17/17 | 17/17 | — *(labels are the print's own)* |
+| beet5-p2 | 10/11 | 11/11 | 10/11 | **10/11** |
+| pastoral-p2 | 4/10 | 9/10 | 10/10 | **10/10** |
+
+## One fix kept from the attempt
+
+The Pastoral's bottom staff is hand-read `Basso`, which the lexicon reads as the
+bass VOICE; the join answers `Contrabass`, and the harness counted that wrong.
+That is a measurement artifact — `Basso` is in `AMBIGUOUS_ALIASES` precisely
+because it is both — and it has been reported as a join error since this harness
+was written. The comparison now accepts any reading the alias allows, which is
+why the Pastoral reads 10/10 above rather than 9/10.
+
+## So the merge budget is still open
+
+Which parts share a staff remains a fact about the PAGE. A price is a fact about
+the WORK, and no price has yet been found that can express it. Two attempts have
+now failed the same way, from opposite directions, and the second failed *after*
+an explicit argument that the first no longer applied.
+
+What is left costs **one staff on one page** — beet5-p2's bottom staff, whose
+clef is right anyway because cello and contrabass are both bass. It is the
+cheapest open item in this file, and the two rejections are worth more than
+closing it would have been.
+
+## Guards
+
+1061 tests. Clef corpus back to **69/69** with `--vision-labels` (base 3 52/52,
+p.48 17/17), free path 58/69 with base 3 at 50/52. `eval_score_order`
+byte-identical. `eval_join` gains an arm and loses none.

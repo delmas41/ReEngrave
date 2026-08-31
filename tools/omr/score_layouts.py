@@ -127,6 +127,38 @@ MERGE_OTHER_PENALTY = -1.5
 # short of staves rather than only where the engraving does. Which parts share a
 # staff is a fact about the page, and a flat price cannot express it.
 NEVER_CONDENSED: frozenset[str] = frozenset({"Violin"})
+# The other half of that fact is a trap, and it has now been measured twice.
+#
+# "Violoncello e Basso" IS a printed convention, and Beethoven 5 p.2 needs it:
+# the page makes its two condensations below the trumpets but pairs the VIOLA
+# with the cello, and since both are ordinary cross-instrument merges at one
+# price the choice falls to the position term, where the wrong pairing wins by
+# 0.018. So naming (Cello, Contrabass) as a cheaper conventional pair looks
+# exactly right, and it takes p.2 from 10 of 11 to 11 of 11.
+#
+# It was rejected in an earlier session (the Pastoral 9/10 -> 7/10) and rejected
+# AGAIN here, after a specific argument that the ground had moved: merging is now
+# offered only inside a span short of staves (`align_to_layout_pinned`), so the
+# reasoning went, the price can no longer run loose. That argument is wrong, and
+# the way it is wrong is the thing to remember:
+#
+#   **The span bounds HOW MANY condensations happen. It does not bound WHICH.**
+#
+# The Pastoral's last span needs exactly one, and the cheap pair moves it from
+# the horns to the cello and bass. The horns then have to stretch across two
+# staves to keep the count, and every string staff below shifts by one: measured
+# under the pipeline's own label conditions, 10 of 10 -> 5 of 10, and because the
+# tail is now anchored those wrong parts reach the clefs — the clef corpus went
+# 69/69 -> 65/69, the Pastoral 20/20 -> 16/20.
+#
+# It hid from `eval_join` because that harness's realistic arm supplies SIX
+# labels and the pipeline reads FIVE; the sixth is `Violino I`, which pins the
+# strings and conceals the whole failure. A fifth arm now covers the real
+# condition.
+#
+# Which parts share a staff remains a fact about the PAGE. A price is a fact
+# about the WORK, and no price has yet been found that can express it.
+
 
 
 
