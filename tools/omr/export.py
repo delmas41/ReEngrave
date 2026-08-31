@@ -824,7 +824,14 @@ def to_musicxml(result: dict[str, Any]) -> str:
             for staff_idx_in_sys, staff in enumerate(staves):
                 part_idx += 1
                 part_id = f"P{part_idx}"
-                part_name = (
+                # Prefer the instrument the contextual pass named. Until it was
+                # wired into `transcribe` nothing here HAD a name to use, so
+                # every part came out as its own grid reference — the complaint
+                # CLAUDE.md records under "no persistent part identity". A staff
+                # the pass could not name still falls back to the coordinates,
+                # so a run with `--no-contextual` is byte-identical to before.
+                instrument = staff.get("instrument")
+                part_name = instrument if instrument else (
                     f"Staff p{page['page_index']}-s{sys_idx}-"
                     f"{staff_idx_in_sys}"
                 )

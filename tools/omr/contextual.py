@@ -321,6 +321,7 @@ def apply_contextual_analysis(
     vision_fallback: bool = False,
     vision_system_budget: int = 3,
     surya_fallback: bool = True,
+    staved: list[Any] | None = None,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
     detector never read.
@@ -364,11 +365,24 @@ def apply_contextual_analysis(
     )
 
     budget = [vision_system_budget]
-    staved, labels = [], []
+    labels = []
     staff_labels_per_page = []
-    for page_index in page_indices:
-        pws = detect_staves(render_page(pdf_path, page_index, dpi=dpi))
-        staved.append(pws)
+
+    # `transcribe` already rendered and detected every page, so it passes its
+    # own `pws` list rather than paying for phase 1 twice. That is also a
+    # CORRECTNESS point, not only a speed one: re-detecting could hand this pass
+    # a different set of staves from the ones already written into `result`, and
+    # the slot indices would then be attached to the wrong staves.
+    if staved is not None:
+        if len(staved) != len(page_indices):
+            raise ValueError(
+                f"staved has {len(staved)} pages, result has {len(page_indices)}"
+            )
+    else:
+        staved = [detect_staves(render_page(pdf_path, i, dpi=dpi))
+                  for i in page_indices]
+
+    for page_index, pws in zip(page_indices, staved):
         read = [] if unlabelled else _labels_for_page(
             pws, pdf_path, page_index,
             vision_fallback=vision_fallback, budget=budget,

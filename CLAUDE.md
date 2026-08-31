@@ -411,6 +411,35 @@ robustness.
 
 ---
 
+## Contextual analysis — part identity, in the pipeline
+
+`transcribe()` runs a **contextual post-pass** by default (`--no-contextual` to
+skip). It names each staff's part, assigns stable slots across systems, fills in
+clefs the detector never read, and writes a `contextual` block into the result.
+
+Until 2026-08-31 `apply_contextual_analysis` was reachable only from benchmarks,
+so the clef figures quoted below (48/52 → 49/52 → 50/52) described a path no
+transcription ever took. Wiring it in is what makes them true of the output.
+
+It is a **post-pass over the built page dicts** — a clef hypothesis is arithmetic
+on already-resolved pitches — so nothing about detection, rhythm or segmentation
+changes, and a score where it finds nothing serialises unchanged. A failure is
+recorded in `contextual.reason` rather than raised: a transcription that
+succeeded is never lost to an optional enrichment.
+
+**The exporter now names parts by instrument.** A Beethoven 5 page with no text
+layer exports as `Flute / Oboe / Clarinet / Bassoon / Horn / Trumpet / Timpani /
+Violin / Viola / Cello` instead of `Staff p47-s0-N`. Staves it cannot name keep
+the old coordinate form, so `--no-contextual` output is unchanged.
+
+⏱️ **Cost.** It re-uses `transcribe`'s own staves rather than re-running phase 1,
+so the pass itself is cheap — but the Surya rung spawns llama.cpp and loads a
+650M model on first use, about 20 s per run. Measured on a 1-page job:
+`contextual_s` 21.4 of 44.0 s total. It amortises over a multi-page job, and is
+absent entirely where `.venv-surya` is not installed (including the container).
+
+---
+
 ## Instrument identity — three readers, cheapest first
 
 `contextual._labels_for_page` runs them in order and only pays when the free

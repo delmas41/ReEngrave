@@ -217,10 +217,21 @@ that exist.** Re-measure before building on one. `imgsz` is now derived per cell
 **Sean wants all of these; they are ordered here on purpose.** The framing: a human
 reading a large score deduces most of it from context — which staves are concert vs
 transposing, what instrument order and groupings to expect, and once the key is known,
-what the accidentals must mean. ReEngrave currently deduces none of that. Every page
-re-derives clef and key from scratch, and the exporter names parts
-`Page0-System1-merged` (`tools/omr/export.py:716`) because **there is no persistent
-part identity anywhere in the pipeline.**
+what the accidentals must mean.
+
+> ✅ **2026-08-31: the pass is now IN the pipeline.** Until then
+> `apply_contextual_analysis` was reachable only from benchmarks, so everything
+> below — and the clef numbers this repo quotes — described a path no
+> transcription ever took. `transcribe(contextual=True)` is the default,
+> `--no-contextual` opts out, and the result carries a `contextual` block.
+> The exporter now names parts by instrument, so a Beethoven 5 page with **no
+> text layer** exports as `Flute / Oboe / Clarinet / Bassoon / Horn / Trumpet /
+> Timpani / Violin / Viola / Cello` instead of `Staff p47-s0-N`. The paragraph
+> below is kept because the framing still holds for what is left.
+
+Every page re-derives clef and key from scratch, and the exporter used to name
+parts `Page0-System1-merged` (`tools/omr/export.py`) because **there was no
+persistent part identity anywhere in the pipeline.**
 
 The four human deductions and where they stand:
 

@@ -217,3 +217,34 @@ def test_reads_a_real_margin_crop():
     # accuracy claim is the bake-off's job, not a unit test's.
     assert read[0], "surya returned nothing for a clean synthetic margin"
     assert set(read[0]) <= {0, 1, 2}
+
+
+# ── the seam transcribe uses ────────────────────────────────────────────────
+
+def test_apply_contextual_rejects_a_mismatched_staved_list():
+    """`transcribe` hands its OWN detected pages in rather than paying for
+    phase 1 twice. If that list ever disagreed with the result's pages, slot
+    indices would be attached to the wrong staves — so it fails loudly."""
+    import pathlib
+
+    from tools.omr.contextual import apply_contextual_analysis
+
+    result = {"pages": [{"page_index": 0, "systems": []},
+                        {"page_index": 1, "systems": []}]}
+    with pytest.raises(ValueError, match="staved has 1 pages, result has 2"):
+        apply_contextual_analysis(
+            result,
+            pdf_path=pathlib.Path(__file__),   # exists, so the early-out is skipped
+            staved=[object()],
+        )
+
+
+def test_apply_contextual_reports_a_missing_pdf_rather_than_raising():
+    from tools.omr.contextual import apply_contextual_analysis
+
+    summary = apply_contextual_analysis(
+        {"pages": [{"page_index": 0, "systems": []}]},
+        pdf_path="/nonexistent/score.pdf",
+    )
+    assert summary["available"] is False
+    assert "unavailable" in summary["reason"]
