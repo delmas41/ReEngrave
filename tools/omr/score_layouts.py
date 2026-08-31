@@ -103,6 +103,32 @@ EXTEND_PENALTY = -0.3
 # string section slips by one.
 MERGE_SAME_PENALTY = -0.3
 MERGE_OTHER_PENALTY = -1.5
+# The mirror of MERGE_SAME_PENALTY, and the actual bug it was hiding. That price
+# is cheap because numbered parts of one instrument share a staff — Flauti 1 and
+# 2, Oboi 1 and 2. That is true of the winds and the brass and FALSE of the
+# violins: first and second violins are separate desks and take separate staves
+# in every tradition in `LAYOUTS` below.
+#
+# It bites because canonicalisation collapses "Violin 1" and "Violin 2" to one
+# name, so the aligner sees a cheap same-name pair where the score has none.
+# Measured on Beethoven 5 p.2 — 18 parts printed on 11 staves, so 7 merges are
+# required, and the work offers exactly 7 same-name merges ONLY IF the violins
+# count. The aligner duly condenses the two violin sections onto one staff, and
+# every string slot below shifts by one: Violino II reads as Viola, Viola as
+# Violoncello, the cello-and-bass staff as Contrabass. Excluding the violins
+# takes that page from 8 of 11 slots correct to 10, with the Pastoral unchanged.
+#
+# Naming the cello-and-bass condensation as a cheap PAIR was tried at the same
+# time — it is the obvious partner to this, since "Violoncello e Basso" is a
+# printed convention — and it is NOT here because it was measured and lost:
+# alone it takes Beethoven 5 p.2 to 9 of 11 and the Pastoral DOWN from 9 to 7,
+# because a cheap cross-instrument merge lets the aligner condense whenever it is
+# short of staves rather than only where the engraving does. Which parts share a
+# staff is a fact about the page, and a flat price cannot express it.
+NEVER_CONDENSED: frozenset[str] = frozenset({"Violin"})
+
+
+
 
 # Confidence is NOT the score margin between the best two layouts. That was the
 # first design and it was wrong: measured on two hand-read pages, the natural
@@ -348,7 +374,8 @@ def align_to_layout(
             open_ = dp[i - 1][j - 1] + pair
             cont = ext[i - 1][j] + pair + EXTEND_PENALTY
             if allow_merge and j >= 2:
-                same = layout.parts[j - 1] == layout.parts[j - 2]
+                same = (layout.parts[j - 1] == layout.parts[j - 2]
+                        and layout.parts[j - 1] not in NEVER_CONDENSED)
                 merge = ext[i][j - 1] + pair + (
                     MERGE_SAME_PENALTY if same else MERGE_OTHER_PENALTY)
             else:

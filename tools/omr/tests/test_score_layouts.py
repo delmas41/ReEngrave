@@ -148,3 +148,47 @@ class TestAmbiguousLabels:
         fit = fit_layouts(len(CLASSICAL), clefs=_true_clefs(CLASSICAL))
         assert fit is not None
         assert resolve_ambiguous_label(0, candidates_for_alias("tp"), fit) is None
+
+
+# ─── Violins are not a condensable pair ─────────────────────────────────────
+
+
+class TestViolinsDoNotCondense:
+    """`MERGE_SAME_PENALTY` is cheap because numbered parts of one instrument
+    share a staff — Flauti 1 and 2. Canonicalisation collapses "Violin 1" and
+    "Violin 2" to one name, so without `NEVER_CONDENSED` the aligner sees a
+    cheap same-name pair where every orchestral tradition prints two staves.
+
+    Measured on Beethoven 5 p.2 (18 parts, 11 staves, 7 merges required): the
+    work offers exactly 7 same-name merges only if the violins count, so the
+    aligner condensed the two violin sections and every string slot below
+    shifted by one. 8 of 11 slots correct before, 10 after.
+    """
+
+    def _align(self, parts, n_slots, labels=None):
+        from tools.omr.score_layouts import ScoreLayout, align_to_layout
+        layout = ScoreLayout(name="work", parts=tuple(parts))
+        _score, assignment = align_to_layout(
+            layout, n_slots, labels=labels or {}, allow_merge=True,
+            return_indices=True,
+        )
+        return assignment
+
+    def test_two_violins_take_two_staves_when_the_count_allows(self):
+        # Four parts, four staves: nothing forces a merge, so nothing merges.
+        parts = ["Violin", "Violin", "Viola", "Cello"]
+        assert self._align(parts, 4) == [0, 1, 2, 3]
+
+    def test_a_forced_merge_does_not_fall_on_the_violins(self):
+        # Five parts, four staves: exactly one merge is required. The flutes are
+        # a genuine condensable pair; the violins are not, so the merge must
+        # land on the flutes and every string keeps its own slot.
+        parts = ["Flute", "Flute", "Violin", "Violin", "Viola"]
+        assignment = self._align(parts, 4)
+        assert assignment[0] == 0, "the flute pair should share the first staff"
+        # Violin 1 (index 2), Violin 2 (index 3) and Viola (4) each keep a slot.
+        assert assignment[1:] == [2, 3, 4]
+
+    def test_violin_is_the_only_name_excluded(self):
+        from tools.omr.score_layouts import NEVER_CONDENSED
+        assert NEVER_CONDENSED == frozenset({"Violin"})
