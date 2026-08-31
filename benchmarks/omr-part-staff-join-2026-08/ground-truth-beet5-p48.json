@@ -8,7 +8,7 @@
   "why_this_assignment_is_determined": [
     "23 parts on 17 staves requires exactly 6 merges.",
     "The work offers exactly 6 conventional same-instrument pairs: Flute 1+2, Oboe 1+2, Clarinet 1+2, Bassoon 1+2, Horn 1+2, Trumpet 1+2. Six required, six available, so every other staff is 1:1 and the assignment has no freedom left.",
-    "Staff 0 reads 'Fl. Pic.' \u2014 flauto piccolo, the Italian name for the piccolo, NOT a flute-and-piccolo shared staff. That is what makes staff 1 'Fl.' the Flauti pair, and it is the only reading under which the merge count closes.",
+    "Staff 0 reads 'Fl. Pic.' — flauto piccolo, the Italian name for the piccolo, NOT a flute-and-piccolo shared staff. That is what makes staff 1 'Fl.' the Flauti pair, and it is the only reading under which the merge count closes.",
     "Contrabassoon, Timpani and the three trombones are each labelled and each take one staff."
   ],
   "known_complication": "THE PAGE AND THE PART LIST DISAGREE ABOUT ORDER. The print puts Timp. at slot 8 and the three trombones at 9-11; the MusicXML part list puts Alto/Tenor/Bass Trombone at indices 14-16 and Timpani at 17. `align_to_layout` is a monotone alignment and cannot express a transposition, so this page is a test of what an order inversion costs, not only of the merge budget.",
@@ -174,13 +174,14 @@
     }
   ],
   "how_the_clefs_were_read": [
-    "Hand-read from the page itself at 600 dpi, glyph by glyph, NOT taken from the dossier \u2014 the dossier is what this page exists to measure, and seeding truth from it would be circular.",
+    "Hand-read from the page itself at 600 dpi, glyph by glyph, NOT taken from the dossier — the dossier is what this page exists to measure, and seeding truth from it would be circular.",
     "Clef TYPE (G / F / C) was read visually from the printed glyph.",
-    "Which line a C clef names was MEASURED, not eyed, because alto and tenor are the same glyph one line apart and that is the whole difficulty: the glyph's ink centre was compared against the staff's own five detected lines. Staff 9 sits at line 3.25 and staff 10 at line 4.30 \u2014 a clean one-line separation. Visually the same thing: staff 9's clef fits inside the staff (waist on the middle line, ALTO) and staff 10's rides above the top line (waist on the 4th, TENOR). Staff 14, the viola, measures with staff 9.",
-    "All six F clefs carry the blob and dots on the 4th line \u2014 bass throughout, no baritone.",
+    "Which line a C clef names was MEASURED, not eyed, because alto and tenor are the same glyph one line apart and that is the whole difficulty: the glyph's ink centre was compared against the staff's own five detected lines. Staff 9 sits at line 3.25 and staff 10 at line 4.30 — a clean one-line separation. Visually the same thing: staff 9's clef fits inside the staff (waist on the middle line, ALTO) and staff 10's rides above the top line (waist on the 4th, TENOR). Staff 14, the viola, measures with staff 9.",
+    "All six F clefs carry the blob and dots on the 4th line — bass throughout, no baritone.",
     "No staff carries a key signature: the finale is C major and every transposing part is in C, so written fifths are 0 across the page. Nothing is printed between any clef and the first note.",
-    "CROSS-CHECK, not source: the dossier generated from the Gradus MusicXML gives the same clef for all 17 staves. The two are independent \u2014 a modern digital edition and this 19th-century print \u2014 so the agreement is worth something, but the reading above stands on the image."
+    "CROSS-CHECK, not source: the dossier generated from the Gradus MusicXML gives the same clef for all 17 staves. The two are independent — a modern digital edition and this 19th-century print — so the agreement is worth something, but the reading above stands on the image."
   ],
-  "why_the_clefs_matter_here": "Staves 9, 10 and 11 are the alto, tenor and bass trombones \u2014 the readings no detector supplies (benchmarks/omr-clef-geometry/) and the ones the part-staff join could not deliver before pinning. This page is where the join's gain can be measured DOWNSTREAM rather than at the join.",
-  "a_correction_2026_08_30": "Slots 0 and 10 originally read 'Fl. Pic.' and 'Tr. Ten.'. The page prints 'Fl. pic.' (lower-case p) and 'Tr Ten.' (no stop after Tr) \u2014 checked against the print at 5x, see evidence/. The margin reader transcribed both more faithfully than this hand read did. Nothing downstream moves, because `normalize_label` folds case and punctuation away, but ground truth should be what is on the paper."
+  "why_the_clefs_matter_here": "Staves 9, 10 and 11 are the alto, tenor and bass trombones — the readings no detector supplies (benchmarks/omr-clef-geometry/) and the ones the part-staff join could not deliver before pinning. This page is where the join's gain can be measured DOWNSTREAM rather than at the join.",
+  "a_correction_2026_08_30": "Slots 0 and 10 originally read 'Fl. Pic.' and 'Tr. Ten.'. The page prints 'Fl. pic.' (lower-case p) and 'Tr Ten.' (no stop after Tr) — checked against the print at 5x, see evidence/. The margin reader transcribed both more faithfully than this hand read did. Nothing downstream moves, because `normalize_label` folds case and punctuation away, but ground truth should be what is on the paper.",
+  "see_also": "A SECOND, INDEPENDENT hand reading of this page's clefs already existed at benchmarks/omr-clef-geometry/ground-truth-beet5-p48.json, read in an earlier session off a 600-dpi render with the staff lines marked. The two were compared after the fact and agree on ALL SEVENTEEN clefs, which is worth more than either alone. They are kept separate because they answer different questions — that file is clefs per staff for the clef harnesses, this one is the part-to-staff join — but check for the other before re-reading the page a third time."
 }

@@ -6,22 +6,91 @@
   "dpi": 600,
   "method": "Read off a 600-dpi render of the page's clef column with the detected staff lines marked, staff by staff. Treble and bass were read from the glyph alone. The three C clefs were read as C clefs from the glyph, and WHICH C clef was corroborated by the printed margin label — 'Tr. Alt.' alto, 'Tr. Ten.' tenor, and the third is the viola by its position in the string group. Labels are independent evidence of the clef, which is why the dossier join in this repo is also anchored on labels and never on clefs.",
   "staves": [
-    {"staff_index": 0,  "label": "Fl./Pic.", "clef": "treble"},
-    {"staff_index": 1,  "label": "Fl.",      "clef": "treble"},
-    {"staff_index": 2,  "label": "Ob.",      "clef": "treble"},
-    {"staff_index": 3,  "label": "Cl.",      "clef": "treble"},
-    {"staff_index": 4,  "label": "Fag.",     "clef": "bass"},
-    {"staff_index": 5,  "label": "C.Fag.",   "clef": "bass"},
-    {"staff_index": 6,  "label": "Cor.",     "clef": "treble"},
-    {"staff_index": 7,  "label": "Tr.",      "clef": "treble"},
-    {"staff_index": 8,  "label": "Timp.",    "clef": "bass"},
-    {"staff_index": 9,  "label": "Tr.Alt.",  "clef": "alto"},
-    {"staff_index": 10, "label": "Tr.Ten.",  "clef": "tenor"},
-    {"staff_index": 11, "label": "Tr.Bas.",  "clef": "bass"},
-    {"staff_index": 12, "label": "Violino I",  "clef": "treble"},
-    {"staff_index": 13, "label": "Violino II", "clef": "treble"},
-    {"staff_index": 14, "label": "Viola",      "clef": "alto"},
-    {"staff_index": 15, "label": "Violoncello", "clef": "bass"},
-    {"staff_index": 16, "label": "Basso",       "clef": "bass"}
-  ]
+    {
+      "staff_index": 0,
+      "label": "Fl./Pic.",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 1,
+      "label": "Fl.",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 2,
+      "label": "Ob.",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 3,
+      "label": "Cl.",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 4,
+      "label": "Fag.",
+      "clef": "bass"
+    },
+    {
+      "staff_index": 5,
+      "label": "C.Fag.",
+      "clef": "bass"
+    },
+    {
+      "staff_index": 6,
+      "label": "Cor.",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 7,
+      "label": "Tr.",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 8,
+      "label": "Timp.",
+      "clef": "bass"
+    },
+    {
+      "staff_index": 9,
+      "label": "Tr.Alt.",
+      "clef": "alto"
+    },
+    {
+      "staff_index": 10,
+      "label": "Tr.Ten.",
+      "clef": "tenor"
+    },
+    {
+      "staff_index": 11,
+      "label": "Tr.Bas.",
+      "clef": "bass"
+    },
+    {
+      "staff_index": 12,
+      "label": "Violino I",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 13,
+      "label": "Violino II",
+      "clef": "treble"
+    },
+    {
+      "staff_index": 14,
+      "label": "Viola",
+      "clef": "alto"
+    },
+    {
+      "staff_index": 15,
+      "label": "Violoncello",
+      "clef": "bass"
+    },
+    {
+      "staff_index": 16,
+      "label": "Basso",
+      "clef": "bass"
+    }
+  ],
+  "see_also": "benchmarks/omr-part-staff-join-2026-08/ground-truth-beet5-p48.json is an independent hand reading of the same page, made later and without reference to this one; the two agree on all seventeen clefs. It also carries the part-to-staff join and the margin labels as printed."
 }
