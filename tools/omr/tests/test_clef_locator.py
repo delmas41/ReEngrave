@@ -426,3 +426,59 @@ class TestConfig:
         assert found is not None
         strict = ClefLocatorConfig(min_symmetry=found.symmetry + 0.001)
         assert locate_clef(cell, config=strict) is None
+
+
+class TestTheDotVetoCanSeeTheDots:
+    """The veto was being asked to find the dots in pixels it had never been shown.
+
+    `benchmarks/omr-clef-geometry/RESULTS.md` — "the veto could not see the
+    dots". Two crops stood between it and the evidence: it was handed the
+    `header_frac` STRIP rather than the full mask, and it looked only INSIDE the
+    candidate's own box. An F clef's dots are to the right of its body, so on
+    Beethoven 5 p.54 staff 8 both sat past the strip's edge and the veto could
+    not have fired whatever its thresholds were.
+    """
+
+    def test_it_searches_past_the_candidate_box(self):
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG
+        assert DEFAULT_LOCATOR_CONFIG.dot_search_right_spaces > 0, (
+            "the dots belong to the glyph but need not belong to the candidate")
+
+    def test_dots_just_right_of_the_body_are_found(self):
+        """A body, and two dots beyond its right edge — where the search window
+        reaches but the candidate box does not."""
+        import numpy as np
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG, _has_f_clef_dots
+
+        spacing = 22.0
+        mask = np.zeros((int(6 * spacing), int(8 * spacing)), np.uint8)
+        # body: 2 spaces wide, 3 tall, starting one space in
+        bx, by = int(spacing), int(spacing)
+        bw, bh = int(2 * spacing), int(3 * spacing)
+        mask[by:by + bh, bx:bx + bw] = 255
+        # two dots, half a space PAST the body's right edge, one space apart
+        r = int(0.18 * spacing)
+        for cy in (by + int(1.0 * spacing), by + int(2.0 * spacing)):
+            cx = bx + bw + int(0.4 * spacing)
+            mask[cy - r:cy + r, cx - r:cx + r] = 255
+        assert _has_f_clef_dots(mask, (bx, by, bw, bh), spacing,
+                                DEFAULT_LOCATOR_CONFIG) is True
+
+    def test_the_right_fraction_is_measured_against_the_body(self):
+        """Widening the search must not move the line the `right of the body`
+        test is measured against, or a dot on the body's LEFT would start
+        passing as the window grew."""
+        import numpy as np
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG, _has_f_clef_dots
+
+        spacing = 22.0
+        mask = np.zeros((int(6 * spacing), int(8 * spacing)), np.uint8)
+        bx, by = int(spacing), int(spacing)
+        bw, bh = int(2 * spacing), int(3 * spacing)
+        r = int(0.18 * spacing)
+        # a pair on the LEFT of the body — never an F clef's dots
+        for cy in (by + int(1.0 * spacing), by + int(2.0 * spacing)):
+            cx = bx + int(0.15 * spacing)
+            mask[cy - r:cy + r, cx - r:cx + r] = 255
+        assert _has_f_clef_dots(mask, (bx, by, bw, bh), spacing,
+                                DEFAULT_LOCATOR_CONFIG) is False

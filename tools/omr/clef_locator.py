@@ -182,12 +182,38 @@ class ClefLocatorConfig:
     # because they straddle the line the clef names. See _has_f_clef_dots.
     dot_min_size_spaces: float = 0.22
     dot_max_size_spaces: float = 0.75
+    # A worn dot is not round: the staff-line stripper leaves a stub where the
+    # line ran under it and the dot inherits it, so the pair on Beethoven 5
+    # p.54 staff 8 measures 0.59 x 0.86 and 0.64 x 1.00 — widths still exactly
+    # dot-sized, heights half again too big. Loosening the HEIGHT bound alone
+    # (to ~1.15, with a matching-widths test to pay for it) does veto that F
+    # clef, and it was measured and NOT shipped: it costs two real orchestral C
+    # clefs and one Nottebohm cell, while its benefit appears in no corpus,
+    # because none contains a bass clef read as a C clef. See RESULTS.md —
+    # "the veto could not see the dots". The corpus is the next step, not the
+    # threshold.
+    dot_max_height_spaces: float = 0.75
     dot_min_aspect: float = 0.65
     dot_max_aspect: float = 1.5
+    dot_pair_max_width_diff_spaces: float | None = None
     dot_right_fraction: float = 0.55   # dots sit right of the glyph's middle
     dot_max_dx_spaces: float = 0.30
     dot_min_dy_spaces: float = 0.60
     dot_max_dy_spaces: float = 1.50
+    # How far PAST the candidate's own box to look for those dots.
+    #
+    # They are part of the glyph but they are not always part of the candidate:
+    # what bounds a candidate is the clustering and the `header_frac` strip, and
+    # neither knows about F clefs. Measured on Beethoven 5 p.54 staff 8 — a bass
+    # clef read as an alto clef — the body ends exactly at the strip's right
+    # edge and both dots sit beyond it, so the veto was being asked to find them
+    # in pixels it had never been shown. Nothing was merged and no threshold was
+    # wrong; the evidence was simply outside the frame.
+    #
+    # 1.5 spaces reaches the dots of every F clef in the corpora and stops well
+    # short of the first notehead. The search also runs on the FULL mask rather
+    # than the header strip, for the same reason.
+    dot_search_right_spaces: float = 1.5
     # Staff spacing, in pixels, that the shape analysis is done at. Cells
     # arrive at whatever scale their measure width happened to force — a
     # narrow measure is upscaled far more than a wide one — and morphology is
@@ -346,8 +372,13 @@ def _has_f_clef_dots(
     even though it costs nothing on C clefs.
     """
     x, y, w, h = bbox
-    sub = mask[y : y + h, x : x + w]
-    if sub.size == 0 or w <= 0:
+    if w <= 0:
+        return False
+    # Look across the body AND a little way past it: the dots belong to the
+    # glyph but need not belong to the candidate — see `dot_search_right_spaces`.
+    right = min(mask.shape[1], x + w + int(round(config.dot_search_right_spaces * spacing)))
+    sub = mask[y : y + h, x:right]
+    if sub.size == 0:
         return False
     n, _labels, stats, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
     dots: list[tuple[float, float]] = []
@@ -356,22 +387,27 @@ def _has_f_clef_dots(
         bh = stats[i, cv2.CC_STAT_HEIGHT] / spacing
         if not (config.dot_min_size_spaces <= bw <= config.dot_max_size_spaces):
             continue
-        if not (config.dot_min_size_spaces <= bh <= config.dot_max_size_spaces):
+        if not (config.dot_min_size_spaces <= bh <= config.dot_max_height_spaces):
             continue
         aspect = bw / max(bh, 1e-6)
         if not (config.dot_min_aspect <= aspect <= config.dot_max_aspect):
             continue
         cx = stats[i, cv2.CC_STAT_LEFT] + stats[i, cv2.CC_STAT_WIDTH] / 2.0
+        # Right of the BODY's middle, not of the widened search window — the
+        # test is about where the dots sit on the glyph, and widening the window
+        # must not quietly move the line it is measured against.
         if cx / w < config.dot_right_fraction:
             continue
-        dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0))
+        dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0, bw))
     for i in range(len(dots)):
         for j in range(i + 1, len(dots)):
             dx = abs(dots[i][0] - dots[j][0]) / spacing
             dy = abs(dots[i][1] - dots[j][1]) / spacing
-            if dx <= config.dot_max_dx_spaces and (
-                config.dot_min_dy_spaces <= dy <= config.dot_max_dy_spaces
-            ):
+            dw = abs(dots[i][2] - dots[j][2])
+            if (dx <= config.dot_max_dx_spaces
+                    and config.dot_min_dy_spaces <= dy <= config.dot_max_dy_spaces
+                    and (config.dot_pair_max_width_diff_spaces is None
+                         or dw <= config.dot_pair_max_width_diff_spaces)):
                 return True
     return False
 
@@ -579,7 +615,7 @@ def locate_clef(
             _note("asymmetric", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
                   symmetry=round(symmetry, 3))
             return None
-        if _has_f_clef_dots(strip, bbox, spacing, config):
+        if _has_f_clef_dots(mask, bbox, spacing, config):
             _note("f_clef_dots", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
                   symmetry=round(symmetry, 3))
             return None  # an F clef wearing a C clef's proportions

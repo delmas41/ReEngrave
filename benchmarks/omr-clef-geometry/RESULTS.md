@@ -587,3 +587,98 @@ The locator abstains on Mahler 5 p.11 — ink-heavy headers, no glyph-sized
 cluster it will commit to. The decoupled `--clef-weights` specialist remains the
 better route there, and the two compose: the specialist runs first, the locator
 only where it stayed silent.
+
+
+---
+
+## The veto could not see the dots (2026-08-31)
+
+**The recorded diagnosis was wrong, and being wrong about it is why five sessions
+of threshold work went nowhere.** `_has_f_clef_dots` was not failing because the
+dots had merged into the clef's body. It was failing because it had never been
+shown them.
+
+Two crops stood between the veto and its evidence, and neither was a decision
+about F clefs:
+
+* `locate_clef` searches `mask[:, :hw]` — the left `header_frac` (0.30) of the
+  cell — to keep note ink from becoming a candidate. That strip is about
+  candidate SELECTION. It was then passed to the veto as if it were the page.
+* `_has_f_clef_dots` looked only *inside* the candidate's own bounding box.
+
+An F clef's dots sit to the RIGHT of its body. So on a clef whose body ends near
+the strip's edge, the dots fall outside both crops, and no threshold anywhere
+could have found them.
+
+### The case that shows it
+
+Beethoven 5 p.54 staff 8, an unmistakable bass clef, read as **alto**. Its header
+window is 16.3 staff spaces wide and contains the dots plainly. The mask the veto
+received was 106 px of a 352 px cell, and the candidate box ended at pixel 106 —
+flush against the edge. The dots were four pixels past it.
+
+Traced with the crops removed, the dots appear immediately, correctly paired,
+0.59 × 0.86 and 0.64 × 1.00 spaces, one space apart, aligned in x, right of the
+body — and are then rejected on **height**, against a 0.75-space ceiling.
+
+Note what that says: the widths are exactly dot-sized. The corruption is
+**vertical**, and it is the staff-line stripper leaving a stub where the line ran
+under each dot.
+
+### What shipped: the structural fix, which is neutral
+
+The veto now gets the full mask and searches `dot_search_right_spaces` (1.5)
+past the candidate's right edge, with the "right of the middle" test still
+measured against the BODY so widening the window cannot move it.
+
+Measured, and it is exactly neutral on every corpus:
+
+| | located (Nottebohm, 206 cells) | orchestral misses | reference | FP |
+|---|---:|---:|---:|---:|
+| before | 69 | 6 | 5/5 | 0 |
+| **after** | **69** | **6** | **5/5** | **0** |
+
+One cell moves from the dot-veto branch to `ambiguous line snap`; nothing is
+gained or lost. It is landed because it is a correctness fix — the veto can now
+see what it is meant to judge — and because no threshold work on this veto means
+anything until it can.
+
+### What did NOT ship, and why
+
+Loosening the height ceiling to 1.15 spaces (paid for by requiring the two dots
+to have matching widths) **does** veto the p.54 bass clef. It also costs:
+
+| arm | located | orchestral misses |
+|---|---:|---:|
+| baseline | 69 | 6 |
+| clustering ON, veto as-is | 77 | 5 |
+| **loosened veto** | 68 | **8** |
+| clustering ON + loosened veto | 76 | **7** |
+
+Two real orchestral C clefs and one Nottebohm cell, in both clustering states.
+
+**And its benefit appears in no corpus at all.** The thing it fixes — a bass clef
+read as a C clef — is not in the reference sheet, not in the piano set, not in
+the orchestral spot check, and not on Nottebohm p.46. The only evidence it works
+is one case found by rendering candidates and looking at them.
+
+So the trade is: a measurable cost against an unmeasurable benefit. That is the
+one trade this layer refuses, and refusing it is the same rule that keeps the
+clustering off.
+
+### The next step is a corpus, not a threshold
+
+`check_clef_precision.py` grew its orchestral corpus once before, for exactly
+this reason — three corpora had all passed a change that read seventeen treble
+clefs as alto clefs. It needs to grow again: a set of staves that carry a **bass
+clef the locator is liable to call a C clef**, so the benefit of a veto change
+is a number rather than an anecdote.
+
+Beethoven 5 p.54 staff 8 is the first member. Collecting the rest means running
+the locator with clustering ON, rendering every located candidate, and reading
+them by eye — the same method that produced the orchestral spot check.
+
+Until that exists, the honest position is that the veto's blindness is **fixed**
+and its **thresholds are still unmeasurable**, which is a better place to be than
+before: the earlier note said the fix was "waiting behind a config default", and
+it is not — it is waiting behind a corpus.
