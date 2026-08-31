@@ -1,3 +1,12 @@
+> **SUPERSEDED (2026-08-31)** — its headline, that the coverage is "waiting
+> behind a config default" blocked on the F-clef veto, is wrong twice over.
+> The veto was not failing on merged dots; it was handed the wrong pixels
+> and could not see the dots at all. And the coverage was not waiting on a
+> threshold but on a CORPUS — with one built, the clustering costs a single
+> false positive and is ready to ship. See `NEXT_SESSION_CLEF_2026-08-31.md`
+> and the last three sections of `RESULTS.md`. Kept for its measurements and
+> its list of dead ends, which stand.
+
 # Handoff — splitting the fused header cluster
 
 > **STATUS: cause found, fix written, held back on one blocker.**
