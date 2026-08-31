@@ -4,6 +4,58 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
+## 👁️ WATCH: LEGATO 2 weights (checked 2026-08-31 — not out, but its segmenter IS)
+
+[arXiv:2607.05769](https://arxiv.org/abs/2607.05769), July 2026. Reads
+**system by system** instead of whole-page, which is the axis dense conductor's
+pages fail on, and halves OMR-NED against LEGATO 1 on multi-staff music (camera
+string quartets 58.2 → 31.6). The paper says code and weights come "upon
+publication" — **not released yet.** The socket already exists: the LEGATO 1
+bridge on `claude/clef-time-signature-weights-6d6e38`
+(`oemer_second_opinion.py --engine legato`), where LEGATO 1's clef-presence beat
+the pipeline on both hand-verified Mahler pages while its meter was unreliable.
+
+**Check on:** `huggingface.co/api/models/guangyangmusic/<name>` and
+`github.com/guang-yng/legato`. As of 2026-08-31 the account holds `legato`
+(0.1B, MIT), `legato-small`, and two from 2026-02-13 that postdate the July
+research round:
+
+- **`legato-1.5`** — 0.9B, nine times the LEGATO 1 the bridge was measured
+  against. **Gated `manual`**, so it needs an access request before it can even
+  be tried.
+- **`legato-1.5-YOLO`** — ungated, one 52 MB file, and it is **the LEGATO 2
+  system segmenter**: a single-class `system` detector, 25.9M params, matching
+  the paper's "YOLOv8m, ~26M". Its own checkpoint reports P 0.997 / R 1.000 /
+  mAP50-95 0.928.
+
+**Measured here already, 6 pages of Beethoven 5 and 6 (300 dpi):**
+
+| page | ReEngrave systems | staves | LEGATO systems |
+|---|--:|--:|--:|
+| B5 p10 | 2 | 20 | 2 |
+| B5 p40 | 3 | 19 | 3 |
+| B5 p59 | 1 | 17 | 1 |
+| B6 p10 | 3 | 21 | 3 |
+| B6 p40 | 2 | 18 | 2 |
+| B6 p59 | 2 | 24 | 2 |
+
+**Six for six.** So it is not a gain on these pages — it is independent
+corroboration that the connectivity rebuild (`system_grouping.py`, 43% → 86%)
+got the right answer, from a model trained on 1,024 annotated pages by people
+who had never seen this repo. The use is as a **tiebreaker on the pages
+connectivity still merges** (2 of 14), and as a cheap check when a new edition
+looks wrong — not as a replacement.
+
+⚠️ **It is AGPL-3.0**, inherited from ultralytics, and stated in the checkpoint
+itself. Fine for personal and host-side use; a problem the day ReEngrave is
+served to other people through the Stripe gate. Do not wire it into the backend
+image without deciding that question first.
+
+The checkpoint's pickle was checked before loading — 23 imports, all
+torch/ultralytics detection classes, nothing that executes.
+
+---
+
 ## Clef accuracy, measured end to end (2026-08-29)
 
 The three threads above all ended by pointing at the clef. It turns out to be in
