@@ -37,6 +37,20 @@ def canon(name):
     m=lookup(name or "")
     return m.instrument.name if m else (name or "")
 
+# The condensed page, whose ground truth lives beside this script.
+EXTRA = ROOT/"benchmarks/omr-part-staff-join-2026-08/ground-truth-beet5-p48.json"
+if EXTRA.exists():
+    g=json.load(open(EXTRA))
+    d=json.load(open(ROOT/f"data/dossiers/{g['work_id']}.json"))
+    slots=g["slots"]; n=len(slots)
+    print(f"\n=== {g['id']}: {len(d['parts'])} parts -> {n} staves (6 merges required) ===")
+    for arm,lab in (("NO labels",None),
+                    ("PERFECT labels (every staff)",{s_["slot"]:s_["instrument"] for s_ in slots}),
+                    ("REALISTIC (as printed)",{s_["slot"]:s_["label"] for s_ in slots if s_["label"]})):
+        facts=join_parts_to_slots(n,d,lab)
+        ok=sum(1 for s_,f in zip(slots,facts) if f and f["part"]==s_["parts"][0])
+        print(f"  {arm:<36} {ok}/{n} correct")
+
 for page in GT["pages"]:
     pid=page["id"]
     if pid not in WORK: continue

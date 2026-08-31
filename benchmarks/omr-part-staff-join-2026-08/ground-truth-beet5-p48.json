@@ -1,0 +1,34 @@
+{
+  "_about": "Part-to-staff ground truth for a heavily condensed page: Beethoven 5 fourth movement, 23 parts printed on 17 staves, so six merges. Hand-read from the page's own margin labels, which name every staff down to the trombones; the five string staves carry no label and are identified by score position, which is unambiguous here because the arithmetic closes exactly (see below).",
+  "id": "beet5-p48",
+  "work_id": "beethoven-sym5-mvt4",
+  "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+  "page_index": 48,
+  "dpi": 600,
+  "why_this_assignment_is_determined": [
+    "23 parts on 17 staves requires exactly 6 merges.",
+    "The work offers exactly 6 conventional same-instrument pairs: Flute 1+2, Oboe 1+2, Clarinet 1+2, Bassoon 1+2, Horn 1+2, Trumpet 1+2. Six required, six available, so every other staff is 1:1 and the assignment has no freedom left.",
+    "Staff 0 reads 'Fl. Pic.' — flauto piccolo, the Italian name for the piccolo, NOT a flute-and-piccolo shared staff. That is what makes staff 1 'Fl.' the Flauti pair, and it is the only reading under which the merge count closes.",
+    "Contrabassoon, Timpani and the three trombones are each labelled and each take one staff."
+  ],
+  "known_complication": "THE PAGE AND THE PART LIST DISAGREE ABOUT ORDER. The print puts Timp. at slot 8 and the three trombones at 9-11; the MusicXML part list puts Alto/Tenor/Bass Trombone at indices 14-16 and Timpani at 17. `align_to_layout` is a monotone alignment and cannot express a transposition, so this page is a test of what an order inversion costs, not only of the merge budget.",
+  "slots": [
+    {"slot": 0,  "label": "Fl. Pic.", "instrument": "Piccolo",       "parts": ["Piccolo"]},
+    {"slot": 1,  "label": "Fl.",      "instrument": "Flute",         "parts": ["Flute 1", "Flute 2"]},
+    {"slot": 2,  "label": "Ob.",      "instrument": "Oboe",          "parts": ["Oboe 1", "Oboe 2"]},
+    {"slot": 3,  "label": "Cl.",      "instrument": "Clarinet",      "parts": ["C Clarinet 1", "C Clarinet 2"]},
+    {"slot": 4,  "label": "Fag.",     "instrument": "Bassoon",       "parts": ["Bassoon 1", "Bassoon 2"]},
+    {"slot": 5,  "label": "C. Fag.",  "instrument": "Contrabassoon", "parts": ["Contrabassoon"]},
+    {"slot": 6,  "label": "Cor.",     "instrument": "Horn",          "parts": ["C Horn 1", "C Horn 2"]},
+    {"slot": 7,  "label": "Tr.",      "instrument": "Trumpet",       "parts": ["C Trumpet 1", "C Trumpet 2"]},
+    {"slot": 8,  "label": "Timp.",    "instrument": "Timpani",       "parts": ["C, G Timpani"]},
+    {"slot": 9,  "label": "Tr. Alt.", "instrument": "Trombone",      "parts": ["Alto Trombone"]},
+    {"slot": 10, "label": "Tr. Ten.", "instrument": "Trombone",      "parts": ["Tenor Trombone"]},
+    {"slot": 11, "label": "Tr. Bas.", "instrument": "Trombone",      "parts": ["Bass Trombone"]},
+    {"slot": 12, "label": null,       "instrument": "Violin",        "parts": ["Violin 1"]},
+    {"slot": 13, "label": null,       "instrument": "Violin",        "parts": ["Violin 2"]},
+    {"slot": 14, "label": null,       "instrument": "Viola",         "parts": ["Viola"]},
+    {"slot": 15, "label": null,       "instrument": "Cello",         "parts": ["Violoncello"]},
+    {"slot": 16, "label": null,       "instrument": "Contrabass",    "parts": ["Contrabass"]}
+  ]
+}
