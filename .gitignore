@@ -123,3 +123,6 @@ data/user-labeled/*/labels_pre_cleanup/
 
 # ultralytics label caches (written next to labels/ during training)
 labels.cache
+
+# musicdiff/OMR-NED lives in its own venv (needs Python >= 3.10; host is 3.9)
+.venv-omrned/

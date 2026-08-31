@@ -159,6 +159,11 @@ def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
     return {
         "work_id": work_id,
         "measures": [first, last_used],
+        # Kept so `--omr-ned` can score the pair after every work has run: the
+        # pooled OMR-NED is only meaningful over the whole set, so it cannot be
+        # computed here one work at a time.
+        "truth_xml": str(truth_xml),
+        "omr_xml": str(omr_xml),
         "truth": truth_struct,
         "omr": omr_struct,
         "detected": {
@@ -184,6 +189,15 @@ def main(argv: list[str] | None = None) -> int:
                     help="run without the dossier, to measure what it adds")
     ap.add_argument("--work-dir", type=Path, default=BENCH_DIR / "fixtures")
     ap.add_argument("--out", type=Path, default=None)
+    ap.add_argument("--omr-ned", action="store_true",
+                    help="also score each pair with OMR-NED, the Sheet Music "
+                         "Benchmark metric, so the result is comparable to "
+                         "published numbers (needs `python3 -m tools.omr.omr_ned "
+                         "--bootstrap` once)")
+    ap.add_argument("--omr-ned-detail", default="AllObjects",
+                    help="musicdiff DetailLevel; NotesAndRests restricts the "
+                         "score to pitch and rhythm, which is the closest "
+                         "comparison to the note recall reported above")
     args = ap.parse_args(argv)
 
     first, _, last = args.measures.partition("-")
@@ -214,6 +228,22 @@ def main(argv: list[str] | None = None) -> int:
               f"{n['duration_rate']:>6.3f}  "
               + (", ".join(f"{k.replace('dossier_', '')}={v}"
                            for k, v in sorted(flags.items())) or "clean"))
+
+    if args.omr_ned and results:
+        # Imported here so the benchmark still runs with no musicdiff venv.
+        from tools.omr import omr_ned as omr_ned_mod
+
+        pairs = [(r["work_id"], r["omr_xml"], r["truth_xml"]) for r in results]
+        try:
+            scored = omr_ned_mod.score_batch(pairs, detail=args.omr_ned_detail)
+        except omr_ned_mod.OmrNedError as exc:
+            print(f"\nOMR-NED unavailable: {exc}", file=sys.stderr)
+        else:
+            by_name = {p["name"]: p for p in scored.get("pairs", [])}
+            for r in results:
+                r["omr_ned"] = by_name.get(r["work_id"])
+            print()
+            print(omr_ned_mod.format_report(scored))
 
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)

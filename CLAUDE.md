@@ -411,6 +411,38 @@ robustness.
 
 ---
 
+## OMR-NED — the metric other people also report
+
+Every other number in this repo is bespoke and therefore incomparable to
+published work. OMR-NED (*Sheet Music Benchmark*, ISMIR 2025, arXiv:2506.10488)
+is the standard: `(insertions + deletions) / (symbols_pred + symbols_truth)`
+over musical symbols, **lower is better**, computed by `musicdiff` 5.2.
+
+```bash
+python3 -m tools.omr.omr_ned --bootstrap                 # once — builds .venv-omrned
+python3 -m tools.omr.training.orchestral_eval --omr-ned  # scores the whole benchmark
+python3 -m tools.omr.omr_ned pred.musicxml truth.musicxml
+```
+
+musicdiff needs Python ≥ 3.10 + music21 ≥ 9.9.1 and the host is 3.9, so it runs
+out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
+`maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
+that venv and must never import from `tools.*`.
+
+Baseline on the engraved orchestral benchmark: **pooled 0.3164** (Mahler 0.0785,
+Beethoven 0.1958, Brahms 0.4664). Full reading, and the three findings it
+surfaced that note recall is blind to, in
+[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md).
+
+**Two traps when reading it.** (1) The metric is SYMMETRIC — swapping prediction
+and truth does not change the score, it only changes which file is parsed
+strictly, which is why `score_pair` is keyword-only. (2) A large `entire measure
+insert/delete` bucket is amplified, not necessarily severe: a measure differing
+only by a fermata is charged delete-whole-bar + insert-whole-bar. Open the op
+list before believing it.
+
+---
+
 ## Local OMR CLI (`tools/omr/`)
 
 In parallel with the web app, you can run the OMR pipeline standalone — no Docker, no DB, no auth. Useful from another Claude session, a notebook, or a one-off script.
