@@ -973,3 +973,90 @@ cell — and the misread median moves from −1.00 to +0.90, which is the differ
 between "this idea does nothing" and "this idea reaches two thirds of them".
 The lesson is the one this file keeps recording: when a geometric probe reports
 that a property holds for everything, suspect the operator before the data.
+
+
+---
+
+## The position rule, shipped and measured — FALSE POSITIVES 48 → 21 (2026-08-31)
+
+The section above measured a ceiling and did not ship it. Shipped now, as
+`ClefLocatorConfig.require_cluster_on_staff`, and it hit that ceiling exactly.
+
+| | before | after |
+|---|---:|---:|
+| Nottebohm located | 77 / 206 | **79 / 206** |
+| reference sheet | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage (Nottebohm p.46) | 7/9 | 7/9 |
+| orchestral spot check, misses | 5 | 5 |
+| sweep misses | 7 | 9 |
+| **FALSE POSITIVES** | **48** | **21** |
+
+Per edition, which is the split that matters:
+
+| sweep | false positives | misses |
+|---|---|---|
+| beethoven5 | 7 → **7** | 7 → **7** |
+| mahler5 | 41 → **14** | 0 → **2** |
+
+Twenty-seven removed and two lost on Mahler; **exactly** neutral on Beethoven.
+That is what `probe_false_positive_geometry.py` predicted, to the staff, which
+is the strongest evidence available that the rule does the thing it was designed
+to do and nothing else. Guards: 1114 tests, `eval_score_order` 11/12 · 5/10 ·
+23/23 byte-identical, `eval_pipeline_clefs --contextual --dossier --assist
+vision` 69/69 with base-3 52/52 and both of the CV locator's two staves correct.
+
+### It is a SKIP, not a rejection — and that is where the extra coverage came from
+
+The obvious implementation is "refuse this staff". The one that shipped is
+"skip this cluster and keep looking", on exactly the reasoning the ink-fraction
+and minimum-width tests already carry: **a cluster is only worth STOPPING for if
+it could be the clef, and the real one is further right, behind the bracket.**
+
+That choice is why Nottebohm coverage went UP, 77 → 79, on a change whose whole
+purpose was to remove reads. Two staves there had glyph-sized margin ink
+standing in front of a clef that the locator had been stopping short of. A
+rejecting implementation would have scored the same 21 false positives and cost
+those two.
+
+The probe's branch tally shows where the cells went — `only debris` 25 → 11,
+with 17 now reported under `margin ink only, before the staff`. They were being
+attributed to debris, which is a different cause with a different remedy.
+
+### What it costs, looked at rather than priced
+
+The handoff said to look at the two real clefs before accepting the trade. They
+do not share a cause, and only one of them is a real loss.
+
+**p188 s12 is not a loss at all.** The corpus records it as a C clef, and it is
+one — but the ink the locator was reading is the stacked instrument numbers, not
+the clef (the corpus row says so: *"located ink is the stacked instrument
+numbers, not the clef"*). The rule correctly refused them. The staff scored as a
+hit before because the corpus asks whether the STAFF carries a C clef, not
+whether the read was made of the right pixels. A right answer for the wrong
+reason has stopped being given, and the score got worse for it.
+
+**p48 s12 is a real loss, and its cause is diagnosed.** The clef sits plainly on
+the staff, but the staff's printed lines are so broken at the head of the system
+that no run four staff spaces long exists until 677 px in — well past the clef —
+so "where the staff begins" is measured wrong and the clef is judged to be in
+the margin.
+
+This is the failure `staff_header` was written about, in its own words: *the
+individual staff lines are broken, but the staff BAND is not*. The fix is to
+take the left edge from the band's ink profile, the way `_walk_left` does,
+rather than from the longest horizontal run — one genuine clef across two
+editions is what it is worth, and it is not stacked onto this measurement here.
+
+### Both editions now fail the same way, which they did not before
+
+Of the 21 that remain, **19 are bass clefs and 2 are treble** — 7 on Beethoven
+(6 bass, 1 treble) and 14 on Mahler (13 bass, 1 treble). Every one is a real
+clef misread, sitting on the staff where a clef belongs.
+
+Before this change the two editions had different problems: Beethoven's false
+positives were misread clefs and more than half of Mahler's were margin ink.
+They have converged, and what is left is a single cause on both — the F-clef
+veto, `_has_f_clef_dots`, failing to fire on a degraded bass clef. That is now
+the whole of the remaining false-positive count, and it can be worked on against
+two editions at once instead of one.

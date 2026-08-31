@@ -1,4 +1,4 @@
-# Handoff — the clef locator's false positives are a POSITION problem
+# Handoff — the clef locator's remaining false positives are all bass clefs
 
 > Written at the end of the 2026-08-31 session, which executed
 > `NEXT_SESSION_CLEF_2026-08-31.md` in full. Everything below is measured and
@@ -19,75 +19,51 @@ The LilyPond corpora are gitignored and built once:
 `cd benchmarks/omr-clef-geometry && lilypond reference-clefs.ly
 piano-false-positives.ly` — the "fatal error" it ends on is harmless.
 
-**Current baseline, shipped config (clustering ON):**
+**Current baseline, shipped config (clustering ON, position rule ON):**
 
 ```
-77 of 206 located (37.4%)
-reference 5/5 exact | coverage 7/9 | orchestral misses 5 | sweep misses 7
-                                                        | FALSE POSITIVES 48
-                                       (7 Beethoven + 41 Mahler)
+79 of 206 located (38.3%)
+reference 5/5 exact | coverage 7/9 | orchestral misses 5 | sweep misses 9
+                                                        | FALSE POSITIVES 21
+                                       (7 Beethoven + 14 Mahler)
 ```
 
-Plus: `pytest tools/omr/tests` — 1095 passed when this was written, with 9
-failures in `test_staff_labels_surya.py` that are not clef work and were being
-repaired by another session at the time; see the last section.
+Plus: `pytest tools/omr/tests` — **1114 passed, 0 failed**.
 `benchmarks/omr-score-order/eval_score_order.py` 11/12, 5/10, 23/23.
 `eval_pipeline_clefs.py --contextual --dossier --assist vision` 69/69, base-3
 52/52, about a cent.
 
 ---
 
-## The job: refuse a cluster that ends before the staff begins
+## SHIPPED — the position rule, and what it left behind
 
-**Measured ceiling, on both editions** — `probe_false_positive_geometry.py`,
-which reports how far each located cluster's right edge sits from the first
-column of the staff's own printed lines, in staff spaces:
+`ClefLocatorConfig.require_cluster_on_staff`, measured on both editions:
+**FALSE POSITIVES 48 → 21** (Mahler 41 → 14, Beethoven 7 → 7, exactly neutral),
+for 2 Mahler misses, and Nottebohm coverage went UP 77 → 79 — it SKIPS the
+margin cluster rather than rejecting the staff, so the clef behind it is still
+found. Guards all held. Full write-up in the last section of `RESULTS.md`.
 
-| corpus | removes | costs |
-|---|---:|---:|
-| mahler5-clef-sweep | **27 of 40** false positives | **2 of 64** real clefs |
-| beethoven5-clef-sweep | 0 of 6 | 0 of 59 |
+### The next job, in order
 
-Neutral on Beethoven for a reason worth understanding rather than working
-around: every Beethoven false positive is a real clef misread, sitting on the
-staff where a clef belongs. The rule is aimed at a family Beethoven does not
-contain — Edition Peters prints the stacked instrument numbers (`1/2`, `1/2/3`)
-and the brace's curl to the LEFT of the system's bracket, close enough to fall
-inside the header window, and a column of numerals is glyph-sized and
-vertically symmetric, so the leftmost-glyph-sized-cluster rule takes them.
-
-**Why this and not a symmetry threshold.** The previous handoff's lead was a
-tenor symmetry floor. It separates the two populations cleanly on Beethoven
-(gap +0.015) and is impossible on Mahler (overlap 0.137) — real tenor clefs run
-down to 0.708 there and tenor misreads reach 0.845. Refused with numbers; see
-`clef_symmetry_populations.py` and `RESULTS.md`. Shape cannot separate a numeral
-stack from a C clef, because the numeral stack really is symmetric. Position
-can.
-
-### What it has to clear before it ships
-
-1. **Nottebohm coverage must not fall.** 77/206 today. There the clef sits at
-   the staff start, so the rule ought to be free — but that is the prediction,
-   not the measurement, and this area has a long record of predictions like it.
-2. **reference 5/5 and piano 0.** Non-negotiable.
-3. **Both sweeps.** The Mahler number should improve and Beethoven's should not
-   move; anything else means the rule is doing something other than what the
-   probe measured.
-4. **The 2 real clefs it costs.** Look at them before accepting the trade — if
-   they share a cause (a staff whose lines are traced short, say) the rule may
-   be fixable rather than merely priced.
-
-### The measurement trap it already fell into once
-
-The probe's first version took the staff's left edge to be the leftmost
-horizontal ink and concluded every staff begins at column 0. At canonical scale
-a bold serif's crossbar clears a 1.5-space horizontal opening, so the instrument
-name and the numerals leave "horizontal" fragments at the far left. Keeping only
-components at least four staff spaces wide fixed it, and the misread median
-moved from −1.00 to +0.90. **When a geometric probe says a property holds for
-everything, suspect the operator before the data.**
-
----
+1. **The F-clef veto, against two editions at once.** All 21 remaining false
+   positives are real clefs misread on the staff — **19 bass, 2 treble**. Both
+   editions now fail the same single way, which they did not before this
+   change: `_has_f_clef_dots` not firing on a degraded bass clef. Its frame bug
+   is already fixed and its thresholds were loosened, measured (3 saved, 27 real
+   clefs lost) and refused. So this needs a different idea, not a threshold —
+   and for the first time it can be judged on two printers' ink at once.
+2. **The staff's left edge should come from the BAND, not from a long run.**
+   The one genuine clef the position rule costs is p48 s12, where the printed
+   lines are so broken at the head of the system that no run four staff spaces
+   long exists until 677 px in — past the clef — so the clef is judged to be in
+   the margin. `staff_header` was written about exactly this: the individual
+   lines are broken but the band is not. Take the edge from the band ink
+   profile the way `_walk_left` does. Worth one clef across two editions, so do
+   it when touching this code anyway rather than as its own errand.
+3. **A third edition.** Two editions have now each shown a false-positive family
+   the other could not. `sweep_located_clefs.py` builds the corpus and
+   `check_clef_precision.py` picks it up with no code change; the cost is an
+   afternoon of reading glyphs. Pick a different publisher again.
 
 ## Standing rules in this area, none of them optional
 
@@ -102,27 +78,22 @@ everything, suspect the operator before the data.**
 * **Read a sweep's MISS column with care.** At the moment of building, its
   misses are zero by construction.
 
-## Not clefs, and moving while this was written: the label ladder
+## Not clefs, but you will see it: one stale call in `transcribe`
 
-A rebase during the 2026-08-31 session replayed the Surya commit (`937bd2e`,
-"labels: wire Surya in as the free tier") on top of the rename that made
-`assist` a required argument (`3c33a32`, "human and vision are both tiers now"),
-and the conflict resolution kept the old parameter name in three places:
-`contextual.py` (`can_read_margin = vision_fallback`, a NameError on every
-call), `transcribe.py:3523` (still passes `vision_fallback=` to
-`apply_contextual_analysis`, so the contextual pass inside `transcribe` raises
-TypeError and is silently caught — "contextual analysis failed"), and nine tests
-in `test_staff_labels_surya.py` calling `_labels_for_page(...,
-vision_fallback=...)`.
+A rebase during the 2026-08-31 session replayed the Surya commit (`937bd2e`) on
+top of the rename that made `assist` a required argument (`3c33a32`), and the
+conflict resolution kept the old parameter name in three places. Two were
+repaired by the session that owns that code (`contextual.py` and
+`test_staff_labels_surya.py` — the suite is green again). One remains:
 
-**Another session was actively repairing this while the clef work was being
-committed** — `contextual.py` and the tests both changed under it. None of it is
-touched by the clef commits, and the state above may already be stale: check it
-rather than trusting this paragraph. It is recorded only so that a
-"contextual analysis failed: TypeError" line in a benchmark run, or a red
-`test_staff_labels_surya.py`, is recognised as that and not as clef work.
+* `tools/omr/transcribe.py:3523` still passes `vision_fallback=` to
+  `apply_contextual_analysis`, so the contextual pass *inside* `transcribe`
+  raises TypeError and is silently caught. You will see
+  `contextual analysis failed: TypeError` in benchmark output. It is not clef
+  work, and mapping the boolean `--contextual-vision` flag onto a tri-state
+  that deliberately has no default is a design call belonging to that thread.
 
-The clef benchmarks are unaffected either way: `check_clef_precision.py`,
+The clef benchmarks are unaffected: `check_clef_precision.py`,
 `probe_clef_rejection.py`, `clef_symmetry_populations.py` and
 `probe_false_positive_geometry.py` all run Phase 1 plus the locator and never
 touch the label ladder, and `eval_pipeline_clefs.py` performs its own contextual

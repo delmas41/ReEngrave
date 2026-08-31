@@ -264,6 +264,69 @@ class TestTheVerticalGroupingRule:
         assert locate_clef(make_cell(img)) is None
 
 
+# ─── the margin is not the staff ────────────────────────────────────────────
+
+
+class TestInkBeforeTheStaffBegins:
+    """A clef is printed ON the staff, so glyph-sized ink standing in the
+    margin is skipped rather than stopped for.
+
+    The case is Edition Peters, which prints the stacked instrument numbers
+    (1/2, 1/2/3) to the left of the system's bracket, close enough to fall
+    inside the header window. A column of numerals is glyph-sized AND
+    vertically symmetric — no shape gate can refuse it, because it really is
+    symmetric — so what gives it away is where it stands. Twenty-four of the
+    forty-one false positives on `mahler5-clef-sweep.json` are that family.
+    """
+
+    OFF = dataclasses.replace(DEFAULT_LOCATOR_CONFIG,
+                              require_cluster_on_staff=False)
+    # Where the staff's own lines begin. Everything here has to fit inside the
+    # `header_frac` strip the locator searches (30% of the cell), which is what
+    # a real header window gives it: the margin ink at its left, the clef a few
+    # spaces in, and room to spare.
+    STAFF_X0 = 70
+
+    def _margin_and_clef(self, with_clef: bool):
+        """A page whose staff starts at STAFF_X0, with a symmetric numeral
+        stack in the margin before it."""
+        img = np.full((CELL_H, CELL_W), 255, dtype=np.uint8)
+        for y in STAFF_LINES:
+            cv2.line(img, (self.STAFF_X0, y), (CELL_W - 1, y), 0, 2)
+        # The bracket, at the staff's left edge.
+        cv2.rectangle(img, (self.STAFF_X0 - 8, 100), (self.STAFF_X0 - 3, 180), 0, -1)
+        # Two numerals stacked in the margin: glyph-sized, and symmetric about
+        # the gap between them, which is what makes them dangerous.
+        for dy in (-16, 16):
+            cv2.rectangle(img, (16, line_y(3) + dy - 9), (34, line_y(3) + dy + 9), 0, -1)
+        if with_clef:
+            draw_c_clef(img, 3, x=self.STAFF_X0 + 6)
+        draw_noteheads(img)
+        return make_cell(img)
+
+    def test_the_margin_stack_does_not_become_the_clef(self):
+        # Without the rule the numerals are the leftmost glyph-sized cluster,
+        # so they are what the locator reads.
+        assert locate_clef(self._margin_and_clef(with_clef=False),
+                           config=self.OFF) is not None
+        # With it, a staff whose only glyph-sized header ink is in the margin
+        # reads nothing, which is the right answer.
+        assert locate_clef(self._margin_and_clef(with_clef=False)) is None
+
+    def test_the_clef_behind_the_stack_is_still_found(self):
+        # SKIPPED, not stopped for — the same reasoning the ink-fraction and
+        # minimum-width tests already use. If this returned None the rule would
+        # buy its precision by throwing the clef away too.
+        found = locate_clef(self._margin_and_clef(with_clef=True))
+        assert found is not None and found.read.line == 3
+
+    def test_the_branch_is_reported_apart_from_debris(self):
+        trace: dict = {}
+        locate_clef(self._margin_and_clef(with_clef=False), trace=trace)
+        assert trace["reason"] == "off_staff_only"
+        assert trace["skipped_off_staff"] >= 1
+
+
 # ─── declining to guess ─────────────────────────────────────────────────────
 
 
@@ -303,8 +366,13 @@ class TestAbstains:
         # Proves the dots are doing the rejecting, not the body's shape.
         img = blank_page()
         draw_f_clef(img, 4)
-        # Erase the dots.
-        cv2.rectangle(img, (48, 0), (70, CELL_H), 255, -1)
+        # Erase the dots, and ONLY the dots. This used to be a white column
+        # through the whole cell, which also severed all five staff lines and
+        # so moved where the staff appears to begin — nothing a print does,
+        # but enough to trip the margin test (`require_cluster_on_staff`).
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):
+            cv2.circle(img, (22 + 34, cy + dy), 7, 255, -1)
         found = locate_clef(make_cell(img))
         assert found is not None and found.read.line == 4
 
