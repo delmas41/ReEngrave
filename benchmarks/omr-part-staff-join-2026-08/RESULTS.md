@@ -892,3 +892,89 @@ closing it would have been.
 1061 tests. Clef corpus back to **69/69** with `--vision-labels` (base 3 52/52,
 p.48 17/17), free path 58/69 with base 3 at 50/52. `eval_score_order`
 byte-identical. `eval_join` gains an arm and loses none.
+
+
+---
+
+# Breadth: a German score, and eight lexicon failures on one page — 2026-08-30 (ninth pass)
+
+Everything above is Beethoven. **Mahler 5** is the first score of a different
+language and tradition to go through this layer, and the first page found eight
+lexicon failures at once — two of them the same shape as the `Tr. Bas.` bug that
+started this session.
+
+Page 4 of the first movement: 21 staves detected against a 38-part work, no text
+layer, so the margin reader is the only source of labels.
+
+## The reader was perfect. The lexicon was not.
+
+Seventeen labels, **all seventeen exactly what the print says** — verified
+against the crop at 2× (`evidence/mahler-p4-system0-margin.png`). The failures
+were entirely downstream of it:
+
+| printed | was | now |
+|---|---|---|
+| `A-Klar.` | *(nothing)* | Clarinet |
+| `Contraf.` | *(nothing)* | Contrabassoon |
+| `B-Tromp.` | *(nothing)* | Trumpet |
+| `Erste Viol.` / `Zweite Viol.` | *(nothing)* | Violin |
+| `Vcelle. get.` | *(nothing)* | Cello |
+| **`Gr. Tr.`** | **Trumpet** | **Percussion** *(it is the bass drum — and it PINNED)* |
+| **`Kl. Tr.`** | **Clarinet** | **Percussion** *(it is the snare)* |
+
+`Gr. Tr.` reading as a trumpet on the strength of the two-letter `tr` is exactly
+`Tr. Bas.` again, and this one was confident enough to pin a staff to the trumpet
+part — a hard constraint, from a drum.
+
+## Two causes, and the first is general
+
+**The hyphen was being kept.** `normalize_label` strips `.,;:_/\|()[]{}*°º` and
+left `-` alone, so `A-Klar.` folded to `a-klar` — and the alias index matches on
+word boundaries, so `kl` followed by `a` never fires. German scores build
+abbreviations with hyphens constantly (`A-Klar.`, `B-Tromp.`, `Es-Klar.`,
+`Tromp. in B`), and every one of them was reading as nothing at all. The hyphen
+is a separator, and now normalises to a space.
+
+That fix reaches beyond Mahler: the corpus already contained `B-Klar.`,
+`Tromp.`, `Tromp. in B` and `Tromp. in F`, all previously unresolved.
+
+**The rest are missing aliases**: `klar`, `contraf`, `tromp`, `vcelle`, a bare
+`viol`, and `gr tr` / `kl tr` for the drums. `geteilt` joins `div` in the
+strip-list. A bare `viol` is safe because the index matches on word boundaries —
+it cannot fire inside `violen`, `viola` or `violoncelle`, and there is a test
+saying so.
+
+## What it does to the page
+
+| Mahler 5 p.4 | before | after |
+|---|---:|---:|
+| labels the lexicon resolves | 9/17 | **17/17** |
+| staves the join assigns | 12/21 | **21/21** |
+| staves anchored | 12 | **21** |
+
+And the assignment reads correctly down the page — including the four percussion
+staves, which all canonicalise to one name and are separated only by position:
+Becken, Grosse Trommel, Kleine Trommel, Tamtam, in order.
+
+**This is a consistency result, not a scored one.** There is no hand-read clef
+ground truth for this page, so what is verified is the labels (against the print)
+and that the join assigns every staff coherently. The two known imperfections are
+both clef-invariant: `B-Tromp.` pins to the trumpet RUN and so lands on the F
+trumpet rather than the B-flat one, because canonicalisation drops the key; and
+the two violin staves both take the dossier's stray bare `Violin` part rather
+than Erste/Zweite Violinen.
+
+## Guards
+
+1064 tests (+3). Corpus diff over all 97 dossiers and every benchmark label: **5
+of 547 names changed, all corrections.** Clef corpus **69/69** with
+`--vision-labels` (base 3 52/52, p.48 17/17), free path 58/69 / 50/52,
+`eval_join` unchanged on all four arms of all three pages, `eval_score_order`
+byte-identical.
+
+## What breadth found, in one sentence
+
+The join and the margin reader both travelled to a new tradition without
+complaint; **the lexicon did not**, and it failed silently — a label that
+resolves to nothing looks exactly like a staff with no label, which is the same
+class of quiet failure as the stale SDK three passes ago.
