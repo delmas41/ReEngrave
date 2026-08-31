@@ -701,3 +701,99 @@ looser trust rule.**
 
 That is the next change, and it is the right one to make before touching the tail
 rule again.
+
+
+---
+
+# 69 of 69 — 2026-08-30 (seventh pass)
+
+**Every staff in the corpus reads its correct clef.** Base 3 at 52/52, p.48 at
+17/17, and the Pastoral viola — the error every pass since the clef benchmark
+began has left standing — is gone.
+
+```bash
+python3 benchmarks/omr-clef-geometry/eval_pipeline_clefs.py --contextual --dossier --vision-labels
+```
+
+| corpus | free path | **with `--vision-labels`** |
+|---|---:|---:|
+| overall (69 staves) | 58/69 | **69/69 = 100%** |
+| base 3 | 50/52 | **52/52** |
+| beet5-p48 | 8/17 | **17/17** |
+
+The dossier supplies 12 staves and is right on all 12. The free path is
+unchanged — both changes below are inert without labels, so nothing regressed.
+
+It took two fixes, and the first was a bug in the rule shipped one pass earlier.
+
+## The exact-tail rule was counting wrong
+
+`_determined_tail` asks whether the staves below the last label are exactly as
+many as the parts left over. It counted the leftovers from the assignment — and
+**the assignment cannot express a condensed staff.** A staff carrying two parts
+gets one index, the lower, so the second looks unconsumed.
+
+The Pastoral is exactly that shape: five labelled wind staves carrying ten parts,
+two to a staff. Counting from the assignment left five horn-and-friends parts
+looking available, so the five string staves read as five staves chasing six
+parts, the count did not close, and the tail stayed gated — **with the join
+already 10 of 10 correct on that page, viola included.** The rule was rejecting
+an answer it had.
+
+`align_to_layout` now fills an optional `absorbed` map, `{staff: every part it
+took}`, and the tail rule counts from that. The information was being computed
+and thrown away in the traceback.
+
+## The margin reader never fired on a partial text layer
+
+The second fix, and the more general one:
+
+```python
+if labels or not vision_fallback or budget[0] <= 0:
+    return labels          # <- any text-layer label at all, and we stop here
+```
+
+All-or-nothing. A scanned score's OCR layer is routinely *patchy* rather than
+absent, and that is the case this skipped. The Pastoral got 4 labels of 10 staves
+and never asked the reader, which `VISION_CEILING_2026-08-30.md` had already
+measured recovering all 10.
+
+Now `_well_covered` requires the text layer to name 75% of the widest system
+before the margin is left alone, and where it does not, both are read and the
+larger set wins. The margin reader abstains on unlabelled staves, so more labels
+from it is more evidence rather than more guessing; if it returns fewer, or
+fails, the text layer stands.
+
+Measured effect on labels: Pastoral **4 → 10**, Beethoven 5 p.2 **9 → 14**.
+
+Those six extra Pastoral labels are what close its tail: the last label moves
+from staff 3 to staff 4, and below it sit five staves against exactly five
+remaining parts. The viola is then supplied by the dossier — **by better
+evidence, not by a looser trust rule**, which is what the previous pass said the
+right fix would be.
+
+## And the rejected tail rule stays rejected
+
+`TAIL_RULE=all` also reaches 52/52, and the last pass recorded why that is not a
+reason to ship it: on Beethoven 5 p.2 the tail join is wrong (4 of 5) and `all`
+survives only because the part it picks carries the same clef as the right one.
+That page's tail still has slack, `exact` still gates it, and it is still the row
+where the two rules differ. Nothing about reaching 100% changes that — the
+corpus simply cannot currently distinguish them, and the one page that could is
+the one `exact` declines to answer.
+
+## Guards
+
+* `pytest tools/omr/tests -q` — **1061 passed** (+5: two for `absorbed` and the
+  condensed tail, three for the coverage gate).
+* free-path clef benchmark — 58/69, base 3 at 50/52, unchanged.
+* `eval_join` — beet5-p48 17/17 as printed, beet5-p2 10/11, pastoral 9/10, all
+  unchanged; beet5-p2's slack tail confirmed still gated.
+* `eval_score_order` byte-identical (11/12, 5/10, 23/23); `eval_key_signatures`
+  unchanged.
+
+## What 100% does and does not mean
+
+Four pages, 69 staves, three works, all Beethoven or Bach. It means the layer is
+sound on what has been hand-read, not that clefs are solved. The next honest move
+is more pages and other editions — which is where the misfires will be.

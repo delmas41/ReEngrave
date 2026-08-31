@@ -165,3 +165,39 @@ def test_no_staves_returns_empty(labelled_pdf):
     path, _labels = labelled_pdf
     pws = PageWithStaves(page=render_page(path, 0, dpi=DPI), staves=[])
     assert read_staff_labels(pws) == []
+
+
+class TestPartialTextLayerStillAsksTheMarginReader:
+    """A patchy OCR layer used to suppress the margin reader exactly as a
+    complete one did — any label at all and it stopped.
+
+    That is the case that matters most, because a scanned score's text layer is
+    routinely partial rather than absent. Measured on the Pastoral: 4 staves of
+    10 from the text layer, 10 of 10 from the margin
+    (`benchmarks/omr-margin-labels-2026-08/VISION_CEILING_2026-08-30.md`), and
+    the six it adds are what carry the part-join down past the winds.
+    """
+
+    def _covered(self, n_staves: int, labelled: int) -> bool:
+        from types import SimpleNamespace
+        from tools.omr.contextual import _well_covered
+        from tools.omr.instruments import lookup
+
+        # `_well_covered` reads only system_index and staff_index off a staff,
+        # so stubs keep this test off the Staff constructor.
+        pws = SimpleNamespace(staves=[SimpleNamespace(staff_index=i, system_index=0)
+                                      for i in range(n_staves)])
+        flute = lookup("Fl.").instrument
+        labels = [SimpleNamespace(staff_index=i, matched=True, instrument=flute)
+                  for i in range(labelled)]
+        return _well_covered(labels, pws)
+
+    def test_a_thin_text_layer_is_not_enough(self):
+        assert self._covered(10, 4) is False, "4 of 10 must still ask the margin"
+
+    def test_a_nearly_complete_text_layer_stands_alone(self):
+        assert self._covered(10, 10) is True
+        assert self._covered(10, 8) is True
+
+    def test_no_labels_at_all_is_not_covered(self):
+        assert self._covered(10, 0) is False

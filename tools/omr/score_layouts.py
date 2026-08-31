@@ -317,6 +317,7 @@ def align_to_layout(
     return_indices: bool = False,
     staff_positions: list[float] | None = None,
     part_positions: list[float] | None = None,
+    absorbed: dict[int, list[int]] | None = None,
 ) -> tuple[float, list[str | None] | list[int | None]]:
     """Align `n_staves` observed staves against one layout.
 
@@ -335,6 +336,14 @@ def align_to_layout(
     against a standard layout leaves it None and gets each instrument's own
     convention; one aligning against a WORK passes the clefs that work actually
     prints.
+
+    `absorbed`, when given, is filled with `{staff: [every part it took]}`. The
+    returned assignment cannot carry that — a staff that condenses two parts gets
+    ONE index, the lower — so the other part looks unassigned to any caller
+    counting what is left. That is not cosmetic: `dossier._determined_tail` asks
+    exactly that question, and without this the Pastoral's second horn reads as
+    still available, and its five string staves look like five staves chasing six
+    parts when the count in fact closes.
 
     `staff_positions` and `part_positions` override where each staff and part
     sits on its axis, normally 0 to 1 across whatever was passed in. A caller
@@ -421,6 +430,8 @@ def align_to_layout(
             # however many parts this staff absorbed.
             while True:
                 out[i - 1] = (j - 1) if return_indices else layout.parts[j - 1]
+                if absorbed is not None:
+                    absorbed.setdefault(i - 1, []).append(j - 1)
                 step = ext_back[i][j]
                 if step == "continue":
                     i -= 1
@@ -632,6 +643,7 @@ def align_to_layout_pinned(
     part_clefs: list[str | None] | None = None,
     allow_merge: bool = False,
     pinnable: set[int] | None = None,
+    absorbed: dict[int, list[int]] | None = None,
 ) -> tuple[list[int | None], list[tuple[int, int]]]:
     """`align_to_layout`, with labelled staves held to their part.
 
@@ -654,7 +666,7 @@ def align_to_layout_pinned(
     if not pins:
         _score, assignment = align_to_layout(
             layout, n_staves, labels, clefs, part_clefs, allow_merge,
-            return_indices=True,
+            return_indices=True, absorbed=absorbed,
         )
         return list(assignment), []
 
@@ -673,6 +685,7 @@ def align_to_layout_pinned(
         if slot_lo > slot_hi or not pool:
             return
         sub = ScoreLayout(layout.name, tuple(layout.parts[p] for p in pool))
+        sub_absorbed: dict[int, list[int]] = {}
         _score, assignment = align_to_layout(
             sub, slot_hi - slot_lo + 1,
             {k - slot_lo: v for k, v in labels.items() if slot_lo <= k <= slot_hi},
@@ -692,10 +705,15 @@ def align_to_layout_pinned(
             return_indices=True,
             staff_positions=s_axis[slot_lo:slot_hi + 1],
             part_positions=[p_axis[p] for p in pool],
+            absorbed=sub_absorbed,
         )
         for offset, index in enumerate(assignment):
             if index is not None:
                 out[slot_lo + offset] = pool[index]
+        if absorbed is not None:
+            for offset, taken in sub_absorbed.items():
+                absorbed.setdefault(slot_lo + offset, []).extend(
+                    pool[t] for t in taken)
 
     # Every pin opens a span of staves, running to the next pinned staff. The
     # leading span, above the first pin, has no part of its own.

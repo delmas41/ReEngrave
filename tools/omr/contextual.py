@@ -254,6 +254,36 @@ def _resolve_ambiguous_labels(
                 instrument_source[slot] = "score_order_ambiguity"
 
 
+# What fraction of a system's staves the text layer must name before the margin
+# reader is left alone. A PARTIAL text layer used to short-circuit the fallback
+# exactly as a complete one did — any label at all and it stopped — which is the
+# case that matters most, because a scanned score's OCR layer is routinely
+# patchy rather than absent. Measured on the Pastoral: the text layer names 4
+# staves of 10 and the margin reader names 10 of 10, all correct
+# (`benchmarks/omr-margin-labels-2026-08/VISION_CEILING_2026-08-30.md`), and the
+# six it adds are the ones that carry the part-join down past the winds.
+LABEL_COVERAGE_OK = 0.75
+
+
+def _well_covered(labels: list[StaffLabel], pws) -> bool:
+    """Has the text layer named enough of the largest system to stand alone?"""
+    if not labels:
+        return False
+    by_system: dict[int, int] = {}
+    for staff in pws.staves:
+        by_system[staff.system_index] = by_system.get(staff.system_index, 0) + 1
+    widest = max(by_system.values(), default=0)
+    if not widest:
+        return True
+    named = {lab.staff_index for lab in labels if lab.matched}
+    best = 0
+    for system_index in by_system:
+        hits = sum(1 for s in pws.staves
+                   if s.system_index == system_index and s.staff_index in named)
+        best = max(best, hits)
+    return best >= LABEL_COVERAGE_OK * widest
+
+
 def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
                      vision_fallback: bool, budget: list[int],
                      surya_fallback: bool = True) -> list[StaffLabel]:
@@ -282,7 +312,13 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     `benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md`.
     """
     labels = read_staff_labels(pws)
-    if labels:
+    # NOT `if labels` — a PARTIAL text layer must not stop the ladder. A scanned
+    # score's OCR layer is routinely patchy rather than absent, and that is the
+    # case that matters: the Pastoral names 4 staves of 10 from its text layer,
+    # so any-label-at-all kept the free margin readers from ever being asked,
+    # and the four it names are all winds. Measured, reading the margin there
+    # takes the page from 18 of 20 clefs to 20 of 20.
+    if _well_covered(labels, pws):
         return labels
 
     if surya_fallback:
@@ -291,24 +327,36 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
         # venv, so the free rung costs nothing to leave switched on.
         if staff_labels_surya.available():
             try:
-                labels = staff_labels_surya.read_staff_labels_surya(pws)
+                read = staff_labels_surya.read_staff_labels_surya(pws)
             except Exception as exc:                      # noqa: BLE001
                 logger.warning("surya label fallback failed on page %s: %s",
                                page_index, exc)
             else:
-                if labels:
+                # Keep whichever read more. Surya used to run only where the
+                # text layer was silent, so replacing wholesale was safe; now
+                # that it also runs on a partly-covered page, replacing could
+                # throw away labels the text layer had.
+                if len(read) > len(labels):
+                    labels = read
+                if _well_covered(labels, pws):
                     return labels
 
     if not vision_fallback or budget[0] <= 0:
-        return []
+        return labels
     from .staff_labels_vision import read_staff_labels_vision
     n_systems = len({s.system_index for s in pws.staves})
     budget[0] -= n_systems
     try:
-        return read_staff_labels_vision(pws)
+        read = read_staff_labels_vision(pws)
     except Exception as exc:                              # noqa: BLE001
         logger.warning("vision label fallback failed on page %s: %s", page_index, exc)
-        return []
+        return labels
+    # Keep whichever read more. The margin reader is a whole-system read and
+    # self-consistent, and it abstains on staves that carry no label — so more
+    # labels from it is more evidence, not more guessing. If it comes back
+    # thinner than the text layer (or empty, because it failed), the text layer
+    # stands.
+    return read if len(read) > len(labels) else labels
 
 
 def apply_contextual_analysis(

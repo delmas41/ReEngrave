@@ -509,3 +509,48 @@ class TestJoinPinsOnUnambiguousLabelsOnly:
             "the whole label is NOT the thing to test — this is the gap")
         # And a full name that happens to carry numbers stays pinnable.
         assert lookup("Corni 1. 2.").alias not in AMBIGUOUS_ALIASES
+
+
+class TestTailCountingSeesCondensedStaves:
+    """The exact-tail rule is a COUNT, so it has to count condensed parts.
+
+    `benchmarks/omr-part-staff-join-2026-08/RESULTS.md` — the Pastoral is the
+    case: five labelled wind staves carry ten parts, two to a staff, leaving
+    exactly five parts for the five string staves. Counting from the assignment
+    alone misses the second of every pair, so the tail reads as five staves
+    chasing six parts and stays gated with the viola unread.
+    """
+
+    def _work(self, names, clefs):
+        return {"work_id": "toy", "parts": [
+            {"name": n, "written_clef": c, "written_fifths": 0}
+            for n, c in zip(names, clefs)]}
+
+    def test_a_condensed_staff_reports_every_part_it_took(self):
+        from tools.omr.score_layouts import ScoreLayout, align_to_layout
+        layout = ScoreLayout("w", ("Flute", "Flute", "Viola"))
+        absorbed: dict[int, list[int]] = {}
+        _score, out = align_to_layout(layout, 2, {0: "Flute", 1: "Viola"},
+                                      allow_merge=True, return_indices=True,
+                                      absorbed=absorbed)
+        # The assignment can only name one part for the condensed staff...
+        assert out == [0, 2]
+        # ...while `absorbed` names both, which is what the count needs.
+        assert sorted(absorbed[0]) == [0, 1]
+        assert absorbed[1] == [2]
+
+    def test_the_tail_below_a_condensation_still_closes(self):
+        """The Pastoral, reduced: two wind pairs on two labelled staves, then
+        three unlabelled string staves for exactly three remaining parts."""
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(
+            ["Flute 1", "Flute 2", "F Horn 1", "F Horn 2",
+             "Violin 1", "Viola", "Violoncello"],
+            ["treble", "treble", "treble", "treble", "treble", "alto", "bass"])
+        facts = join_parts_to_slots(5, work, {0: "Flute", 1: "Horn"})
+        assert [f["part"] for f in facts] == [
+            "Flute 1", "F Horn 1", "Violin 1", "Viola", "Violoncello"]
+        assert all(f["anchored"] for f in facts), \
+            "the three staves below the last label have exactly three parts left"
+        assert facts[3]["clef"] == "alto", "and that is what supplies the viola"

@@ -456,12 +456,14 @@ def join_parts_to_slots(
         return match is not None and match.alias not in AMBIGUOUS_ALIASES
 
     pinnable = {i for i, v in (labels or {}).items() if unambiguous(v)}
+    absorbed: dict[int, list[int]] = {}
     assignment, _pins = align_to_layout_pinned(
         layout, n_slots,
         labels={i: canonical(v) for i, v in (labels or {}).items()},
         part_clefs=[p.get("written_clef") for p in parts],
         allow_merge=True,
         pinnable=pinnable,
+        absorbed=absorbed,
     )
     # The assignment is part INDICES, not names: this work's parts repeat their
     # names — "Violin 1" and "Violin 2" are one instrument and two parts — and
@@ -471,7 +473,7 @@ def join_parts_to_slots(
     if labels:
         last = max(labels)
         anchored = set(range(min(labels), last + 1))
-        anchored |= _determined_tail(assignment, last, n_slots, len(parts))
+        anchored |= _determined_tail(absorbed, last, n_slots, len(parts))
 
     out: list[dict[str, Any] | None] = []
     for slot, index in enumerate(assignment):
@@ -491,7 +493,7 @@ def join_parts_to_slots(
 TAIL_RULE = os.environ.get("OMR_TAIL_RULE", "exact")   # "none" | "exact" | "all"
 
 
-def _determined_tail(assignment: list[int | None], last_label: int,
+def _determined_tail(absorbed: dict[int, list[int]], last_label: int,
                      n_slots: int, n_parts: int) -> set[int]:
     """The staves below the last label, when the arithmetic leaves them no freedom.
 
@@ -510,14 +512,23 @@ def _determined_tail(assignment: list[int | None], last_label: int,
     11 of 11 staves (Beethoven 5 p.48's seven, the Pastoral's four), and
     Beethoven 5 p.2 — whose tail has five staves for seven parts, so two merges
     are free to land anywhere — is right on four of five and stays gated.
+
+    `absorbed` rather than the assignment, because the count is the whole rule
+    and the assignment cannot express a condensed staff: it reports one part per
+    staff, so the second of a pair looks unconsumed and every tail below a
+    condensation is reported as having one more part available than it has.
     """
     tail = list(range(last_label + 1, n_slots))
     if not tail or TAIL_RULE == "none":
         return set()
     if TAIL_RULE == "all":
         return set(tail)
-    used = {assignment[i] for i in range(last_label + 1)
-            if assignment[i] is not None}
+    # Every part the staves above the tail actually took — including the ones a
+    # CONDENSED staff absorbed, which the assignment alone does not report. The
+    # Pastoral is the case: its horn staff takes both horn parts, and counting
+    # from the assignment leaves the second one looking available.
+    used = {part for slot, taken in absorbed.items() if slot <= last_label
+            for part in taken}
     if not used:
         return set()
     free = [p for p in range(max(used) + 1, n_parts) if p not in used]
