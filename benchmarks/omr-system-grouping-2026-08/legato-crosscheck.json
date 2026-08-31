@@ -1,0 +1,1639 @@
+[
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 20,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      9
+    ],
+    "legato_sizes": [
+      11,
+      9
+    ],
+    "boxes": [
+      {
+        "y0": 99.23252868652344,
+        "y1": 1457.72802734375,
+        "x0": 155.4419708251953,
+        "x1": 2507.489501953125,
+        "conf": 0.9463348984718323
+      },
+      {
+        "y0": 1482.7779541015625,
+        "y1": 3357.31787109375,
+        "x0": 147.10276794433594,
+        "x1": 2518.873779296875,
+        "conf": 0.9456246495246887
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 20,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      9
+    ],
+    "legato_sizes": [
+      11,
+      9
+    ],
+    "boxes": [
+      {
+        "y0": 97.2787857055664,
+        "y1": 1774.7938232421875,
+        "x0": 153.313720703125,
+        "x1": 2513.205322265625,
+        "conf": 0.9492976069450378
+      },
+      {
+        "y0": 1748.666259765625,
+        "y1": 3381.013916015625,
+        "x0": 165.43031311035156,
+        "x1": 2516.41552734375,
+        "conf": 0.9528578519821167
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "page_index": 30,
+    "verdict": "agree",
+    "staves": 19,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      12,
+      7
+    ],
+    "legato_sizes": [
+      12,
+      7
+    ],
+    "boxes": [
+      {
+        "y0": 99.85494232177734,
+        "y1": 1365.34375,
+        "x0": 170.990234375,
+        "x1": 2524.861083984375,
+        "conf": 0.9472988843917847
+      },
+      {
+        "y0": 1288.1864013671875,
+        "y1": 3372.492919921875,
+        "x0": 148.056884765625,
+        "x1": 2532.90087890625,
+        "conf": 0.950668454170227
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "page_index": 40,
+    "verdict": "agree",
+    "staves": 19,
+    "our_systems": 3,
+    "legato_systems": 3,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      7,
+      7,
+      5
+    ],
+    "legato_sizes": [
+      7,
+      7,
+      5
+    ],
+    "boxes": [
+      {
+        "y0": 99.90335083007812,
+        "y1": 902.4901733398438,
+        "x0": 200.3587646484375,
+        "x1": 2507.5234375,
+        "conf": 0.939209520816803
+      },
+      {
+        "y0": 881.3772583007812,
+        "y1": 2122.26513671875,
+        "x0": 178.72242736816406,
+        "x1": 2511.484130859375,
+        "conf": 0.9528679251670837
+      },
+      {
+        "y0": 2115.615966796875,
+        "y1": 3279.73291015625,
+        "x0": 181.28993225097656,
+        "x1": 2532.388671875,
+        "conf": 0.9447688460350037
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "page_index": 50,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 68.35258483886719,
+        "y1": 3335.596923828125,
+        "x0": 128.9251251220703,
+        "x1": 2549.8642578125,
+        "conf": 0.9602887630462646
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "page_index": 59,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 96.53287506103516,
+        "y1": 3334.12255859375,
+        "x0": 133.80349731445312,
+        "x1": 2545.646240234375,
+        "conf": 0.9624419212341309
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+    "page_index": 70,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 56.63974380493164,
+        "y1": 3286.228515625,
+        "x0": 127.45393371582031,
+        "x1": 2553.33349609375,
+        "conf": 0.9689728021621704
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 21,
+    "our_systems": 3,
+    "legato_systems": 3,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      9,
+      7,
+      5
+    ],
+    "legato_sizes": [
+      9,
+      7,
+      5
+    ],
+    "boxes": [
+      {
+        "y0": 79.4753189086914,
+        "y1": 1082.8731689453125,
+        "x0": 201.3159942626953,
+        "x1": 2508.535400390625,
+        "conf": 0.9465338587760925
+      },
+      {
+        "y0": 1084.699951171875,
+        "y1": 2526.811279296875,
+        "x0": 163.29974365234375,
+        "x1": 2516.643310546875,
+        "conf": 0.9508809447288513
+      },
+      {
+        "y0": 2534.540283203125,
+        "y1": 3351.62890625,
+        "x0": 213.33193969726562,
+        "x1": 2532.0791015625,
+        "conf": 0.9334524869918823
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 20,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      10,
+      10
+    ],
+    "legato_sizes": [
+      10,
+      10
+    ],
+    "boxes": [
+      {
+        "y0": 112.99278259277344,
+        "y1": 1783.89990234375,
+        "x0": 144.52554321289062,
+        "x1": 2542.368408203125,
+        "conf": 0.9416161775588989
+      },
+      {
+        "y0": 1735.2076416015625,
+        "y1": 3370.41357421875,
+        "x0": 158.88204956054688,
+        "x1": 2529.5244140625,
+        "conf": 0.9479913711547852
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "page_index": 30,
+    "verdict": "agree",
+    "staves": 20,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      10,
+      10
+    ],
+    "legato_sizes": [
+      10,
+      10
+    ],
+    "boxes": [
+      {
+        "y0": 110.95365142822266,
+        "y1": 1780.0406494140625,
+        "x0": 143.0413055419922,
+        "x1": 2528.23291015625,
+        "conf": 0.9513162970542908
+      },
+      {
+        "y0": 1732.127685546875,
+        "y1": 3399.004150390625,
+        "x0": 163.8955841064453,
+        "x1": 2534.747314453125,
+        "conf": 0.9531563520431519
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "page_index": 40,
+    "verdict": "agree",
+    "staves": 18,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      9,
+      9
+    ],
+    "legato_sizes": [
+      9,
+      9
+    ],
+    "boxes": [
+      {
+        "y0": 100.23782348632812,
+        "y1": 1790.4990234375,
+        "x0": 172.64218139648438,
+        "x1": 2515.644287109375,
+        "conf": 0.9412633776664734
+      },
+      {
+        "y0": 1811.783935546875,
+        "y1": 3379.205810546875,
+        "x0": 184.97872924804688,
+        "x1": 2529.25634765625,
+        "conf": 0.9373746514320374
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "page_index": 50,
+    "verdict": "agree",
+    "staves": 21,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      10
+    ],
+    "legato_sizes": [
+      11,
+      10
+    ],
+    "boxes": [
+      {
+        "y0": 104.78841400146484,
+        "y1": 1831.719482421875,
+        "x0": 148.35675048828125,
+        "x1": 2546.451171875,
+        "conf": 0.9407393932342529
+      },
+      {
+        "y0": 1811.538330078125,
+        "y1": 3319.633544921875,
+        "x0": 160.45921325683594,
+        "x1": 2536.677734375,
+        "conf": 0.9399483799934387
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "page_index": 59,
+    "verdict": "agree",
+    "staves": 24,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      12,
+      12
+    ],
+    "legato_sizes": [
+      12,
+      12
+    ],
+    "boxes": [
+      {
+        "y0": 103.26033782958984,
+        "y1": 1737.72021484375,
+        "x0": 156.2306671142578,
+        "x1": 2531.669677734375,
+        "conf": 0.936875581741333
+      },
+      {
+        "y0": 1687.2911376953125,
+        "y1": 3351.9404296875,
+        "x0": 155.2286834716797,
+        "x1": 2525.119384765625,
+        "conf": 0.9380453824996948
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+    "page_index": 70,
+    "verdict": "agree",
+    "staves": 24,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      12,
+      12
+    ],
+    "legato_sizes": [
+      12,
+      12
+    ],
+    "boxes": [
+      {
+        "y0": 77.85711669921875,
+        "y1": 1823.7904052734375,
+        "x0": 156.5006103515625,
+        "x1": 2519.634765625,
+        "conf": 0.9390073418617249
+      },
+      {
+        "y0": 1781.431884765625,
+        "y1": 3396.390869140625,
+        "x0": 166.3638916015625,
+        "x1": 2526.97705078125,
+        "conf": 0.9488577842712402
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 5,
+    "verdict": "agree",
+    "staves": 16,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      9,
+      7
+    ],
+    "legato_sizes": [
+      9,
+      7
+    ],
+    "boxes": [
+      {
+        "y0": 157.8055877685547,
+        "y1": 1029.1573486328125,
+        "x0": 116.84521484375,
+        "x1": 1325.85595703125,
+        "conf": 0.9434048533439636
+      },
+      {
+        "y0": 1104.7655029296875,
+        "y1": 1831.50341796875,
+        "x0": 123.24662780761719,
+        "x1": 1330.3177490234375,
+        "conf": 0.9449551701545715
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 22,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      11
+    ],
+    "legato_sizes": [
+      11,
+      11
+    ],
+    "boxes": [
+      {
+        "y0": 136.91038513183594,
+        "y1": 992.2025756835938,
+        "x0": 104.70356750488281,
+        "x1": 1327.3758544921875,
+        "conf": 0.9398978352546692
+      },
+      {
+        "y0": 972.8721923828125,
+        "y1": 1852.187255859375,
+        "x0": 104.46365356445312,
+        "x1": 1335.650390625,
+        "conf": 0.9433655142784119
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 15,
+    "verdict": "agree",
+    "staves": 19,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      8
+    ],
+    "legato_sizes": [
+      11,
+      8
+    ],
+    "boxes": [
+      {
+        "y0": 118.75836944580078,
+        "y1": 1034.9326171875,
+        "x0": 111.64083862304688,
+        "x1": 1328.97412109375,
+        "conf": 0.9395398497581482
+      },
+      {
+        "y0": 1032.735107421875,
+        "y1": 1844.650390625,
+        "x0": 112.71391296386719,
+        "x1": 1331.6572265625,
+        "conf": 0.9385389089584351
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 14,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      8,
+      6
+    ],
+    "legato_sizes": [
+      8,
+      6
+    ],
+    "boxes": [
+      {
+        "y0": 152.16061401367188,
+        "y1": 1008.59716796875,
+        "x0": 107.82132720947266,
+        "x1": 1330.343994140625,
+        "conf": 0.9516270756721497
+      },
+      {
+        "y0": 997.4146118164062,
+        "y1": 1822.9454345703125,
+        "x0": 118.37885284423828,
+        "x1": 1347.123046875,
+        "conf": 0.9431297183036804
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 25,
+    "verdict": "agree",
+    "staves": 19,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      8
+    ],
+    "legato_sizes": [
+      11,
+      8
+    ],
+    "boxes": [
+      {
+        "y0": 131.7062530517578,
+        "y1": 863.000732421875,
+        "x0": 114.91427612304688,
+        "x1": 1326.7132568359375,
+        "conf": 0.9452993273735046
+      },
+      {
+        "y0": 845.3416137695312,
+        "y1": 1827.38330078125,
+        "x0": 109.26534271240234,
+        "x1": 1326.37109375,
+        "conf": 0.9559786915779114
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 30,
+    "verdict": "agree",
+    "staves": 19,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      12,
+      7
+    ],
+    "legato_sizes": [
+      12,
+      7
+    ],
+    "boxes": [
+      {
+        "y0": 134.65960693359375,
+        "y1": 1094.5426025390625,
+        "x0": 102.3442611694336,
+        "x1": 1346.226318359375,
+        "conf": 0.9523835778236389
+      },
+      {
+        "y0": 1068.0269775390625,
+        "y1": 1840.5849609375,
+        "x0": 109.49827575683594,
+        "x1": 1331.537353515625,
+        "conf": 0.9518808722496033
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 35,
+    "verdict": "agree",
+    "staves": 21,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      10
+    ],
+    "legato_sizes": [
+      11,
+      10
+    ],
+    "boxes": [
+      {
+        "y0": 143.1293182373047,
+        "y1": 1063.908447265625,
+        "x0": 110.72026824951172,
+        "x1": 1333.956787109375,
+        "conf": 0.9394128322601318
+      },
+      {
+        "y0": 1042.11572265625,
+        "y1": 1832.6474609375,
+        "x0": 118.7969970703125,
+        "x1": 1334.84130859375,
+        "conf": 0.9410054087638855
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 40,
+    "verdict": "we_merge",
+    "staves": 21,
+    "our_systems": 1,
+    "legato_systems": 3,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      21
+    ],
+    "legato_sizes": [
+      7,
+      7,
+      7
+    ],
+    "boxes": [
+      {
+        "y0": 157.0545654296875,
+        "y1": 709.5702514648438,
+        "x0": 126.29975891113281,
+        "x1": 1325.5892333984375,
+        "conf": 0.9411547183990479
+      },
+      {
+        "y0": 682.998779296875,
+        "y1": 1278.2081298828125,
+        "x0": 118.92357635498047,
+        "x1": 1326.7877197265625,
+        "conf": 0.947507917881012
+      },
+      {
+        "y0": 1251.53857421875,
+        "y1": 1828.744140625,
+        "x0": 121.75849914550781,
+        "x1": 1330.86572265625,
+        "conf": 0.9452775120735168
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 45,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 117.69969177246094,
+        "y1": 1832.669189453125,
+        "x0": 94.9197769165039,
+        "x1": 1334.2392578125,
+        "conf": 0.9663574695587158
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 50,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 133.677978515625,
+        "y1": 1832.4271240234375,
+        "x0": 84.8320541381836,
+        "x1": 1355.6884765625,
+        "conf": 0.9705172777175903
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 55,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 108.46513366699219,
+        "y1": 1825.723876953125,
+        "x0": 97.42778015136719,
+        "x1": 1348.593994140625,
+        "conf": 0.9705971479415894
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 60,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 141.88491821289062,
+        "y1": 1829.722412109375,
+        "x0": 90.1141586303711,
+        "x1": 1343.838134765625,
+        "conf": 0.9696418046951294
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 65,
+    "verdict": "agree",
+    "staves": 16,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      16
+    ],
+    "legato_sizes": [
+      16
+    ],
+    "boxes": [
+      {
+        "y0": 113.99253845214844,
+        "y1": 1827.3402099609375,
+        "x0": 96.95783996582031,
+        "x1": 1333.5877685546875,
+        "conf": 0.9633533358573914
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 70,
+    "verdict": "agree",
+    "staves": 16,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      16
+    ],
+    "legato_sizes": [
+      16
+    ],
+    "boxes": [
+      {
+        "y0": 126.87154388427734,
+        "y1": 1835.0501708984375,
+        "x0": 84.12786865234375,
+        "x1": 1345.4283447265625,
+        "conf": 0.9661386609077454
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 75,
+    "verdict": "agree",
+    "staves": 17,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      17
+    ],
+    "legato_sizes": [
+      17
+    ],
+    "boxes": [
+      {
+        "y0": 130.14352416992188,
+        "y1": 1832.71337890625,
+        "x0": 93.90205383300781,
+        "x1": 1346.3150634765625,
+        "conf": 0.9614757895469666
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Haendel_Messiah_lead-sheet.pdf",
+    "page_index": 2,
+    "verdict": "agree",
+    "staves": 16,
+    "our_systems": 4,
+    "legato_systems": 4,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "legato_sizes": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "boxes": [
+      {
+        "y0": 454.1310729980469,
+        "y1": 1157.8759765625,
+        "x0": 133.10711669921875,
+        "x1": 2395.738525390625,
+        "conf": 0.925406277179718
+      },
+      {
+        "y0": 1156.32861328125,
+        "y1": 1877.5626220703125,
+        "x0": 91.4049301147461,
+        "x1": 2391.079833984375,
+        "conf": 0.9333306550979614
+      },
+      {
+        "y0": 1910.57568359375,
+        "y1": 2665.259521484375,
+        "x0": 88.9996566772461,
+        "x1": 2378.103515625,
+        "conf": 0.9304288625717163
+      },
+      {
+        "y0": 2667.434326171875,
+        "y1": 3378.584716796875,
+        "x0": 90.57792663574219,
+        "x1": 2390.046630859375,
+        "conf": 0.9292687177658081
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Haendel_Messiah_lead-sheet.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 15,
+    "our_systems": 3,
+    "legato_systems": 3,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      5,
+      5,
+      5
+    ],
+    "legato_sizes": [
+      5,
+      5,
+      5
+    ],
+    "boxes": [
+      {
+        "y0": 33.667869567871094,
+        "y1": 1063.6690673828125,
+        "x0": 72.9843978881836,
+        "x1": 2401.911376953125,
+        "conf": 0.938380777835846
+      },
+      {
+        "y0": 1170.173583984375,
+        "y1": 2228.922119140625,
+        "x0": 77.40740203857422,
+        "x1": 2391.312255859375,
+        "conf": 0.9408759474754333
+      },
+      {
+        "y0": 2330.30419921875,
+        "y1": 3373.267333984375,
+        "x0": 73.58953094482422,
+        "x1": 2393.108642578125,
+        "conf": 0.9557698965072632
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Haendel_Messiah_lead-sheet.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 16,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      8,
+      8
+    ],
+    "legato_sizes": [
+      8,
+      8
+    ],
+    "boxes": [
+      {
+        "y0": 63.16779327392578,
+        "y1": 1660.3724365234375,
+        "x0": 61.46440505981445,
+        "x1": 2388.713134765625,
+        "conf": 0.9337958097457886
+      },
+      {
+        "y0": 1765.3260498046875,
+        "y1": 3373.4990234375,
+        "x0": 64.65974426269531,
+        "x1": 2400.594970703125,
+        "conf": 0.9377759099006653
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Haendel_Messiah_reduction.pdf",
+    "page_index": 2,
+    "verdict": "agree",
+    "staves": 12,
+    "our_systems": 6,
+    "legato_systems": 6,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "legato_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "boxes": [
+      {
+        "y0": 329.6670837402344,
+        "y1": 718.3792724609375,
+        "x0": 224.55299377441406,
+        "x1": 2398.627197265625,
+        "conf": 0.8844534754753113
+      },
+      {
+        "y0": 831.8203735351562,
+        "y1": 1255.34130859375,
+        "x0": 105.88875579833984,
+        "x1": 2385.472900390625,
+        "conf": 0.8866309523582458
+      },
+      {
+        "y0": 1324.1044921875,
+        "y1": 1782.1337890625,
+        "x0": 98.22437286376953,
+        "x1": 2389.277587890625,
+        "conf": 0.8807715177536011
+      },
+      {
+        "y0": 1863.4573974609375,
+        "y1": 2313.642822265625,
+        "x0": 94.60027313232422,
+        "x1": 2396.7392578125,
+        "conf": 0.8689709305763245
+      },
+      {
+        "y0": 2398.55029296875,
+        "y1": 2836.469970703125,
+        "x0": 97.63931274414062,
+        "x1": 2392.810546875,
+        "conf": 0.8847611546516418
+      },
+      {
+        "y0": 2911.79736328125,
+        "y1": 3367.845458984375,
+        "x0": 100.15271759033203,
+        "x1": 2391.116943359375,
+        "conf": 0.8984178900718689
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Haendel_Messiah_reduction.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 15,
+    "our_systems": 5,
+    "legato_systems": 5,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "legato_sizes": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "boxes": [
+      {
+        "y0": 67.51719665527344,
+        "y1": 721.9893188476562,
+        "x0": 84.91708374023438,
+        "x1": 2393.221923828125,
+        "conf": 0.9068285226821899
+      },
+      {
+        "y0": 738.547607421875,
+        "y1": 1351.492919921875,
+        "x0": 84.66523742675781,
+        "x1": 2393.918701171875,
+        "conf": 0.9232383370399475
+      },
+      {
+        "y0": 1374.196044921875,
+        "y1": 2031.8111572265625,
+        "x0": 88.99724578857422,
+        "x1": 2395.6484375,
+        "conf": 0.9203789234161377
+      },
+      {
+        "y0": 2039.497314453125,
+        "y1": 2704.47412109375,
+        "x0": 85.93009948730469,
+        "x1": 2385.76953125,
+        "conf": 0.9180740714073181
+      },
+      {
+        "y0": 2725.802001953125,
+        "y1": 3361.66552734375,
+        "x0": 85.96382141113281,
+        "x1": 2390.16015625,
+        "conf": 0.9201574325561523
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Haendel_Messiah_reduction.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 12,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      6,
+      6
+    ],
+    "legato_sizes": [
+      6,
+      6
+    ],
+    "boxes": [
+      {
+        "y0": 83.72528839111328,
+        "y1": 1435.1004638671875,
+        "x0": 80.39452362060547,
+        "x1": 2385.12548828125,
+        "conf": 0.9484996795654297
+      },
+      {
+        "y0": 1864.61376953125,
+        "y1": 3282.996337890625,
+        "x0": 77.57012176513672,
+        "x1": 2384.20166015625,
+        "conf": 0.9534962177276611
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf",
+    "page_index": 2,
+    "verdict": "agree",
+    "staves": 20,
+    "our_systems": 2,
+    "legato_systems": 2,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      11,
+      9
+    ],
+    "legato_sizes": [
+      11,
+      9
+    ],
+    "boxes": [
+      {
+        "y0": 123.50619506835938,
+        "y1": 1895.016357421875,
+        "x0": 199.76470947265625,
+        "x1": 2670.313720703125,
+        "conf": 0.9436400532722473
+      },
+      {
+        "y0": 1938.00341796875,
+        "y1": 3369.221435546875,
+        "x0": 217.47930908203125,
+        "x1": 2678.097412109375,
+        "conf": 0.9540647864341736
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 18,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      18
+    ],
+    "legato_sizes": [
+      18
+    ],
+    "boxes": [
+      {
+        "y0": 96.85025787353516,
+        "y1": 3304.384765625,
+        "x0": 103.35526275634766,
+        "x1": 2646.77197265625,
+        "conf": 0.9666790962219238
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 16,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      16
+    ],
+    "legato_sizes": [
+      16
+    ],
+    "boxes": [
+      {
+        "y0": 132.3688201904297,
+        "y1": 3251.930419921875,
+        "x0": 153.91543579101562,
+        "x1": 2661.380126953125,
+        "conf": 0.9624145030975342
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP421137-PMLP03667-Ravel_Bolero.pdf",
+    "page_index": 2,
+    "verdict": "agree",
+    "staves": 27,
+    "our_systems": 4,
+    "legato_systems": 4,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      7,
+      7,
+      7,
+      6
+    ],
+    "legato_sizes": [
+      7,
+      7,
+      7,
+      6
+    ],
+    "boxes": [
+      {
+        "y0": 37.229923248291016,
+        "y1": 1151.1971435546875,
+        "x0": 90.04680633544922,
+        "x1": 3427.18017578125,
+        "conf": 0.9291730523109436
+      },
+      {
+        "y0": 1136.6575927734375,
+        "y1": 2408.500732421875,
+        "x0": 92.3764419555664,
+        "x1": 3424.010986328125,
+        "conf": 0.935016930103302
+      },
+      {
+        "y0": 2406.59326171875,
+        "y1": 3645.26171875,
+        "x0": 89.46317291259766,
+        "x1": 3427.17529296875,
+        "conf": 0.923784077167511
+      },
+      {
+        "y0": 3645.051025390625,
+        "y1": 4885.30908203125,
+        "x0": 83.85804748535156,
+        "x1": 3431.452392578125,
+        "conf": 0.9261918067932129
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP421137-PMLP03667-Ravel_Bolero.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 32,
+    "our_systems": 2,
+    "legato_systems": 3,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      16,
+      16
+    ],
+    "legato_sizes": [
+      16,
+      16
+    ],
+    "boxes": [
+      {
+        "y0": 32.52760696411133,
+        "y1": 2501.36962890625,
+        "x0": 73.9642105102539,
+        "x1": 3426.1904296875,
+        "conf": 0.6347954273223877
+      },
+      {
+        "y0": 53.49183654785156,
+        "y1": 4869.28076171875,
+        "x0": 76.15228271484375,
+        "x1": 3423.029296875,
+        "conf": 0.8764119148254395
+      },
+      {
+        "y0": 2408.788818359375,
+        "y1": 4902.84130859375,
+        "x0": 72.7681655883789,
+        "x1": 3426.940673828125,
+        "conf": 0.4179142117500305
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP421137-PMLP03667-Ravel_Bolero.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 19,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      19
+    ],
+    "legato_sizes": [
+      19
+    ],
+    "boxes": [
+      {
+        "y0": 0.0,
+        "y1": 4567.72998046875,
+        "x0": 48.74551773071289,
+        "x1": 3452.140869140625,
+        "conf": 0.9597343802452087
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
+    "page_index": 2,
+    "verdict": "agree",
+    "staves": 12,
+    "our_systems": 6,
+    "legato_systems": 6,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "legato_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "boxes": [
+      {
+        "y0": 178.5444793701172,
+        "y1": 687.0361938476562,
+        "x0": 239.34893798828125,
+        "x1": 2483.372802734375,
+        "conf": 0.917168378829956
+      },
+      {
+        "y0": 692.7731323242188,
+        "y1": 1187.0213623046875,
+        "x0": 66.34794616699219,
+        "x1": 2478.442138671875,
+        "conf": 0.9193664789199829
+      },
+      {
+        "y0": 1151.506103515625,
+        "y1": 1667.2567138671875,
+        "x0": 67.0602035522461,
+        "x1": 2479.748046875,
+        "conf": 0.9056872129440308
+      },
+      {
+        "y0": 1659.740966796875,
+        "y1": 2139.18505859375,
+        "x0": 61.79443359375,
+        "x1": 2484.4248046875,
+        "conf": 0.9074264168739319
+      },
+      {
+        "y0": 2142.13525390625,
+        "y1": 2625.294921875,
+        "x0": 62.29167938232422,
+        "x1": 2477.92626953125,
+        "conf": 0.9061477184295654
+      },
+      {
+        "y0": 2654.398193359375,
+        "y1": 3094.95947265625,
+        "x0": 63.17060852050781,
+        "x1": 2473.126220703125,
+        "conf": 0.8905103206634521
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 10,
+    "our_systems": 5,
+    "legato_systems": 5,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "legato_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "boxes": [
+      {
+        "y0": 196.8496551513672,
+        "y1": 660.8416137695312,
+        "x0": 246.0321807861328,
+        "x1": 2482.30908203125,
+        "conf": 0.90853351354599
+      },
+      {
+        "y0": 787.62255859375,
+        "y1": 1268.5030517578125,
+        "x0": 70.42586517333984,
+        "x1": 2472.426513671875,
+        "conf": 0.8716654181480408
+      },
+      {
+        "y0": 1384.035888671875,
+        "y1": 1890.29736328125,
+        "x0": 64.66058349609375,
+        "x1": 2478.615966796875,
+        "conf": 0.887567400932312
+      },
+      {
+        "y0": 1989.5557861328125,
+        "y1": 2497.440185546875,
+        "x0": 64.97982788085938,
+        "x1": 2479.0986328125,
+        "conf": 0.8899428248405457
+      },
+      {
+        "y0": 2596.793212890625,
+        "y1": 3102.87646484375,
+        "x0": 63.803306579589844,
+        "x1": 2483.81591796875,
+        "conf": 0.8660792708396912
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 10,
+    "our_systems": 5,
+    "legato_systems": 5,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "legato_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "boxes": [
+      {
+        "y0": 86.42721557617188,
+        "y1": 595.229736328125,
+        "x0": 68.55999755859375,
+        "x1": 2478.51416015625,
+        "conf": 0.8775907158851624
+      },
+      {
+        "y0": 697.6231079101562,
+        "y1": 1215.134033203125,
+        "x0": 65.84642028808594,
+        "x1": 2474.866943359375,
+        "conf": 0.8956817984580994
+      },
+      {
+        "y0": 1333.6497802734375,
+        "y1": 1904.829833984375,
+        "x0": 66.91140747070312,
+        "x1": 2471.18701171875,
+        "conf": 0.9018272757530212
+      },
+      {
+        "y0": 1952.947998046875,
+        "y1": 2481.8427734375,
+        "x0": 61.423828125,
+        "x1": 2479.666259765625,
+        "conf": 0.8889646530151367
+      },
+      {
+        "y0": 2569.3642578125,
+        "y1": 3103.605224609375,
+        "x0": 62.205322265625,
+        "x1": 2479.6103515625,
+        "conf": 0.8907699584960938
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Mahler_5_.pdf",
+    "page_index": 2,
+    "verdict": "agree",
+    "staves": 15,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      15
+    ],
+    "legato_sizes": [
+      15
+    ],
+    "boxes": [
+      {
+        "y0": 21.96034812927246,
+        "y1": 2705.4697265625,
+        "x0": 41.9472770690918,
+        "x1": 2151.550048828125,
+        "conf": 0.9619820713996887
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Mahler_5_.pdf",
+    "page_index": 10,
+    "verdict": "agree",
+    "staves": 18,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      18
+    ],
+    "legato_sizes": [
+      18
+    ],
+    "boxes": [
+      {
+        "y0": 50.55939483642578,
+        "y1": 2812.972412109375,
+        "x0": 46.466407775878906,
+        "x1": 2147.010986328125,
+        "conf": 0.9627640843391418
+      }
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Mahler_5_.pdf",
+    "page_index": 20,
+    "verdict": "agree",
+    "staves": 16,
+    "our_systems": 1,
+    "legato_systems": 1,
+    "staves_legato_missed": 0,
+    "our_sizes": [
+      16
+    ],
+    "legato_sizes": [
+      16
+    ],
+    "boxes": [
+      {
+        "y0": 16.824899673461914,
+        "y1": 2772.515380859375,
+        "x0": 46.701045989990234,
+        "x1": 2142.6494140625,
+        "conf": 0.9685696959495544
+      }
+    ]
+  }
+]

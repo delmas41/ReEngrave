@@ -4,6 +4,40 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
+## ➡️ NEXT: the system-break rule is zero-tolerance (found 2026-08-31)
+
+LEGATO's system detector, used as a **miner** over 47 pages, flagged exactly one
+disagreement — and it is a real bug. Beethoven 5 (IMSLP984073) **p40 is three
+systems of seven staves and we read one of twenty-one.** Adjudicated by looking:
+three brackets, three measure numbers (229/243/256), labels restarting at each.
+
+Cause is one line in `system_grouping.assign_systems`:
+
+```python
+elif bridging[i] == 0:
+    system += 1
+```
+
+A break must be bridged **exactly zero**. On p40 the two true breaks are bridged
+3 and 11, so neither fires. On the pages where we agree the break is bridged 0
+exactly — the rule works whenever nothing crosses and fails silently the moment
+a measure number or a margin label does.
+
+Neither signal separates the cases alone (bridging 11 at a true break vs 11–14
+at bracket-group boundaries; gap size was what connectivity replaced). The PAIR
+does on these four pages — a large gap that is *nearly* unbridged — but that is
+one edition, and **`eval_grouping.py`'s 12-page ground truth is Beethoven 9,
+which is not in the local corpus**, so the change cannot be regression-tested
+here. Restore B9 first, add p40 as a free GT case (truth 3, the set's first
+MERGE), widen the crosscheck, and only then relax the threshold.
+
+Full writeup + evidence:
+[LEGATO_CROSSCHECK_2026-08-31.md](benchmarks/omr-system-grouping-2026-08/LEGATO_CROSSCHECK_2026-08-31.md).
+Note LEGATO's raw box count is NOT a system count — it returned 3 overlapping
+boxes for a 2-system Boléro page — so compare partitions, not counts.
+
+---
+
 ## ➡️ NEXT: the lexicon reads `Tr. Alt.` as a VOICE (found 2026-08-31)
 
 Wiring Surya in as the free margin reader put labels on a page that had none —
