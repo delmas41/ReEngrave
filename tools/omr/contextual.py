@@ -265,6 +265,15 @@ def _resolve_ambiguous_labels(
 LABEL_COVERAGE_OK = 0.75
 
 
+def _usable(labels: list[StaffLabel]) -> int:
+    """How many of these labels the lexicon can actually turn into a part.
+
+    The only count worth comparing two readers on: an unresolved label reaches
+    the join as nothing, so it must not let a worse read tie a better one.
+    """
+    return sum(1 for lab in labels if lab.matched)
+
+
 def _well_covered(labels: list[StaffLabel], pws) -> bool:
     """Has the text layer named enough of the largest system to stand alone?"""
     if not labels:
@@ -286,8 +295,18 @@ def _well_covered(labels: list[StaffLabel], pws) -> bool:
 
 def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
                      vision_fallback: bool, budget: list[int],
-                     surya_fallback: bool = True) -> list[StaffLabel]:
+                     surya_fallback: bool = True,
+                     ocr_fallback: bool = True,
+                     tiers: list[int] | None = None) -> list[StaffLabel]:
     """Instrument labels, cheapest reader first.
+
+        PDF text layer  ->  Surya 2  ->  Tesseract  ->  Claude (paid)
+
+    TWO free margin readers, not one, and they are not redundant: they need
+    different things installed. Surya wants a Python 3.10 venv and llama.cpp and
+    reads better; Tesseract wants a brew binary and is everywhere. Each rung
+    calls `available()` first, so a machine with neither falls straight through
+    to the paid reader and a machine with either never pays.
 
         PDF text layer  ->  Surya 2 (local)  ->  Claude (paid)
 
@@ -311,6 +330,8 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     check; the gap is reach, not correctness. See
     `benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md`.
     """
+    tiers = tiers if tiers is not None else [0, 0, 0, 0]
+    # Tier 1, free and instant: the PDF's own text layer.
     labels = read_staff_labels(pws)
     # NOT `if labels` — a PARTIAL text layer must not stop the ladder. A scanned
     # score's OCR layer is routinely patchy rather than absent, and that is the
@@ -318,6 +339,7 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     # so any-label-at-all kept the free margin readers from ever being asked,
     # and the four it names are all winds. Measured, reading the margin there
     # takes the page from 18 of 20 clefs to 20 of 20.
+    tiers[0] += len(labels)
     if _well_covered(labels, pws):
         return labels
 
@@ -337,12 +359,39 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
                 # that it also runs on a partly-covered page, replacing could
                 # throw away labels the text layer had.
                 if len(read) > len(labels):
+                    tiers[0] = 0
+                    tiers[1] += len(read)
                     labels = read
                 if _well_covered(labels, pws):
                     return labels
 
+    # And the second free rung, below Surya because it reads less well but is
+    # far likelier to be installed. Measured at 26 of 29 labels on two
+    # hand-verified pages against the vision reader's 29, and 11 of 12 on a page
+    # whose text layer gives NOTHING
+    # (`benchmarks/omr-margin-labels-2026-08/TESSERACT_2026-08-31.md`).
+    #
+    # ADDITIVE ONLY. It is the least accurate reader here and the one most
+    # likely to return a plausible wrong word — one of its 29 was `Ki.Tr.` for
+    # `Kl.Tr.`, which resolves to Trumpet — so it fills staves that carry no
+    # label yet and never overwrites one that does.
+    if ocr_fallback:
+        from . import staff_labels_tesseract
+        if staff_labels_tesseract.available():
+            already = {lab.staff_index for lab in labels}
+            added = [lab for lab in
+                     staff_labels_tesseract.read_staff_labels_tesseract(pws)
+                     if lab.staff_index not in already]
+            if added:
+                labels = labels + added
+                tiers[2] += len(added)
+            if _well_covered(labels, pws):
+                return labels
+
     if not vision_fallback or budget[0] <= 0:
         return labels
+
+    # Tier 3, about a cent a system: the margin read by Claude.
     from .staff_labels_vision import read_staff_labels_vision
     n_systems = len({s.system_index for s in pws.staves})
     budget[0] -= n_systems
@@ -353,10 +402,23 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
         return labels
     # Keep whichever read more. The margin reader is a whole-system read and
     # self-consistent, and it abstains on staves that carry no label — so more
-    # labels from it is more evidence, not more guessing. If it comes back
-    # thinner than the text layer (or empty, because it failed), the text layer
-    # stands.
-    return read if len(read) > len(labels) else labels
+    # labels from it is more evidence, not more guessing. Unlike tier 2 it MAY
+    # override, because it is the most accurate of the three. If it comes back
+    # thinner than what we have (or empty, because it failed), that stands.
+    # Compare USABLE labels, not raw ones. A label the lexicon cannot resolve is
+    # not evidence — it reaches the join as nothing at all — so counting it lets
+    # a worse read tie a better one. Beethoven 5 p.48 is exactly that: the OCR
+    # tier and the vision reader both return twelve labels, but OCR's ninth is
+    # `A.` for `Tr. Alt.` and resolves to nothing, while the vision reader's
+    # resolves to the trombones. Comparing raw counts kept the OCR read and cost
+    # three clefs; comparing matched counts keeps the right one.
+    if _usable(read) > _usable(labels):
+        # The vision read replaces what the cheap tiers found, so the credit
+        # does too — otherwise the summary would name tiers that were overruled.
+        tiers[0] = tiers[1] = tiers[2] = 0
+        tiers[3] += len(read)
+        return read
+    return labels
 
 
 def apply_contextual_analysis(
@@ -369,6 +431,7 @@ def apply_contextual_analysis(
     vision_fallback: bool = False,
     vision_system_budget: int = 3,
     surya_fallback: bool = True,
+    ocr_fallback: bool = True,
     staved: list[Any] | None = None,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
@@ -378,6 +441,13 @@ def apply_contextual_analysis(
     `slot_index` / `instrument`, and any staff whose clef is questioned gains
     `clef_proposal`. Returns counts plus the reference layout, so a caller can
     report what was inferred.
+
+    Labels come from up to four tiers — the PDF text layer, then Surya, then
+    Tesseract, then
+    margin (`ocr_fallback`, free and on by default), then the vision read
+    (`vision_fallback`, about a cent per system and off by default). The summary
+    reports `label_tiers`, because which tier answered changes how much the
+    labels can be trusted and it should never have to be guessed.
     """
     summary: dict[str, Any] = {
         "available": False, "reason": None, "reference": [],
@@ -434,7 +504,8 @@ def apply_contextual_analysis(
         read = [] if unlabelled else _labels_for_page(
             pws, pdf_path, page_index,
             vision_fallback=vision_fallback, budget=budget,
-            surya_fallback=surya_fallback)
+            surya_fallback=surya_fallback, ocr_fallback=ocr_fallback,
+            tiers=tiers)
         staff_labels_per_page.append(read)
         labels.append(labels_by_staff(read))
 
@@ -557,6 +628,8 @@ def apply_contextual_analysis(
 
     summary.update(
         available=True,
+        label_tiers={"text_layer": tiers[0], "surya": tiers[1],
+                     "tesseract": tiers[2], "vision": tiers[3]},
         unresolved_labels=unresolved,
         low_confidence_labels=low_confidence,
         reference=[{"slot": s.index, "group": s.group_index,

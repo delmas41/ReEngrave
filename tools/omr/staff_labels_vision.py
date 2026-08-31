@@ -159,12 +159,18 @@ def _spacing(staves: list[Staff]) -> float:
     return (sum(vals) / len(vals)) if vals else 10.0
 
 
-def build_margin_crop(pws: PageWithStaves, staves: list[Staff]) -> MarginCrop | None:
-    """Crop the margin beside `staves` and annotate it with their indices."""
-    from PIL import Image, ImageDraw
+def margin_strip(pws: PageWithStaves, staves: list[Staff]):
+    """The bare margin beside `staves`: `(PIL image, y offset into the page)`.
+
+    Split out from `build_margin_crop` so that every reader of the margin — the
+    vision model, the OCR tier, and the benchmark that compares them — is
+    provably looking at the same pixels. The annotated crop below is this strip
+    plus a gutter; nothing else differs.
+    """
+    from PIL import Image
 
     if not staves:
-        return None
+        return None, 0
     page = pws.page
     height, width = page.binary.shape
     spacing = _spacing(staves)
@@ -177,9 +183,17 @@ def build_margin_crop(pws: PageWithStaves, staves: list[Staff]) -> MarginCrop | 
     y0 = max(0, min(s.top_y for s in staves) - int(2 * spacing))
     y1 = min(height, max(s.bottom_y for s in staves) + int(2 * spacing))
     if x1 <= x0 or y1 <= y0:
-        return None
+        return None, 0
+    return Image.fromarray(page.rgb[y0:y1, x0:x1]).convert("RGB"), y0
 
-    strip = Image.fromarray(page.rgb[y0:y1, x0:x1]).convert("RGB")
+
+def build_margin_crop(pws: PageWithStaves, staves: list[Staff]) -> MarginCrop | None:
+    """Crop the margin beside `staves` and annotate it with their indices."""
+    from PIL import Image, ImageDraw
+
+    strip, y0 = margin_strip(pws, staves)
+    if strip is None:
+        return None
     canvas = Image.new("RGB", (strip.width + GUTTER_PX, strip.height), (255, 255, 255))
     canvas.paste(strip, (GUTTER_PX, 0))
 

@@ -104,7 +104,8 @@ def score_page(page: dict, weights: Path, dpi: int | None,
         print(f"  {page['id']}: contextual — {summary.get('labelled_staves')} labels, "
               f"{summary.get('clefs_applied')} instrument corrections, "
               f"{summary.get('clefs_filled_from_slot')} filled from another system, "
-              f"{summary.get('clefs_from_dossier')} from the dossier")
+              f"{summary.get('clefs_from_dossier')} from the dossier"
+              f"  tiers={summary.get('label_tiers')}")
         # Read off the page and then dropped, because nothing in the lexicon
         # matched. Printed because it is otherwise invisible — the page just
         # behaves as though those staves carry no label.

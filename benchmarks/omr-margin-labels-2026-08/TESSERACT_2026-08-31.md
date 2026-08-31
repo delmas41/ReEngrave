@@ -107,7 +107,29 @@ neighbours'. But tier 2 is free and would carry most pages most of the way, and
 a cheap disagreement test between tiers 2 and 3 would be a better spend than
 calling tier 3 on everything.
 
-Not built — this is a measurement, and the tiering is what it argues for.
+**Built.** `tools/omr/staff_labels_tesseract.py`, wired into
+`contextual._labels_for_page` as the middle tier, on by default
+(`ocr_fallback=True`) and additive only — it fills staves the text layer left
+unlabelled and never overwrites one it already has, because it is the least
+accurate of the three and the one most likely to return a plausible wrong word.
+
+| clef corpus (69 staves) | before | after |
+|---|---:|---:|
+| **free path** (no credits) | 58/69, base-3 50/52 | **66/69, base-3 52/52** |
+| with `--vision-labels` | 69/69 | **69/69** |
+| systems sent to the API | 4 pages' worth | **one** |
+
+The free path now reaches on its own what previously needed paying for on three
+of the four pages, and the paid tier is called for **a single system in the whole
+corpus** — p.48, the page whose trombones OCR mangles. `label_tiers` in the
+summary reports which tier answered, so it is never a guess.
+
+One bug this shook out, worth keeping: the tiers were compared by RAW label
+count, and on p.48 OCR and vision both return twelve. OCR's ninth is `A.` for
+`Tr. Alt.` and resolves to nothing; vision's resolves to the trombones. A raw
+count made them tie, the cheaper one won, and three clefs went with it.
+`_usable()` compares labels the lexicon can actually turn into a part — the only
+count worth comparing readers on.
 
 ## Caveats
 
