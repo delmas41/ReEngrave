@@ -37,19 +37,36 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=10, help="max systems to crop")
     ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", default=str(Path(__file__).parent / "crops"))
+    ap.add_argument("--corpus", default=CORPUS)
+    ap.add_argument("--pages", default=",".join(str(p) for p in PAGES),
+                    help="comma-separated page indices")
+    ap.add_argument("--margin-spacings", type=float, default=None,
+                    help="override staff_labels_vision.MARGIN_SPACINGS — how far "
+                         "left of the staves to crop, in staff-line spacings. The "
+                         "default 14.0 CLIPS the first letters of spelled-out "
+                         "names ('Clarinetti' -> 'arinetti'), which a vision "
+                         "model repairs from context and an OCR engine cannot; "
+                         "see SURYA_BAKEOFF_2026-08-31.md")
     args = ap.parse_args()
+
+    if args.margin_spacings is not None:
+        import tools.omr.staff_labels_vision as slv
+        slv.MARGIN_SPACINGS = args.margin_spacings
+
+    corpus = args.corpus
+    pages = [int(p) for p in args.pages.split(",") if p.strip()]
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     manifest = []
 
-    pdfs = [p for w in sorted(os.listdir(CORPUS))
-            for p in sorted(glob.glob(f"{CORPUS}/{w}/pdfs/*/score.pdf"))]
+    pdfs = [p for w in sorted(os.listdir(corpus))
+            for p in sorted(glob.glob(f"{corpus}/{w}/pdfs/*/score.pdf"))]
 
     for pdf in pdfs:
         if len(manifest) >= args.limit:
             break
-        for page_index in PAGES:
+        for page_index in pages:
             if len(manifest) >= args.limit:
                 break
             if not has_text_layer(pdf, page_index):

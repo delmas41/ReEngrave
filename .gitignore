@@ -126,3 +126,6 @@ labels.cache
 
 # musicdiff/OMR-NED lives in its own venv (needs Python >= 3.10; host is 3.9)
 .venv-omrned/
+
+# Surya 2 margin-label reader (Python >= 3.10 + llama.cpp)
+.venv-surya/

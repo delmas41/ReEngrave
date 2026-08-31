@@ -55,10 +55,25 @@ logger = logging.getLogger(__name__)
 DEFAULT_MODEL = "claude-opus-5"
 
 # How far left of the staves to crop, in staff-line spacings. Instrument names
-# sit between the page edge and the bracket; 14 spacings clears the longest
-# spelled-out names ("Violoncello e Contrabasso") without pulling in the
-# facing page's gutter on a two-up scan.
-MARGIN_SPACINGS = 14.0
+# sit between the page edge and the bracket.
+#
+# 14.0 was the original guess and it DID NOT clear the longest spelled-out names,
+# despite the comment that used to say so. Measured 2026-08-31 on 12 systems of
+# Beethoven 5 and 6 (`benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md`): at
+# 14 the crop cuts through the first letters — "Clarinetti" arrives as
+# "arinetti", "Timpani in C.G" as "ani in C.G", "Viola" as "Fola". Claude repairs
+# those from context and so the damage was invisible while it was the only
+# reader; an OCR engine transcribes them faithfully and the lexicon rejects them.
+#
+# Worse, the narrow crop provoked REPETITION: on 2 of 12 systems Surya emitted
+# one label seven times over, 20 surplus lines in all, which the row assignment
+# then spread across staves that carry no label at all. At 20.0 that is zero.
+#
+# 20.0 rather than 26.0 because the two measured identically, so 20 is the
+# smaller change that gets the whole benefit. Claude scored 36/0/19 at both 14
+# and 20 — byte-identical tallies — so this is free for the paid reader and
+# worth 91% -> 94% agreement for the free one.
+MARGIN_SPACINGS = 20.0
 # ...and how far INTO the staves, for scores that print the name tight against
 # the bracket.
 OVERLAP_SPACINGS = 1.0
