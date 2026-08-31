@@ -229,7 +229,11 @@ def main() -> None:
     ap.add_argument("--max-per-score", type=int, default=40)
     ap.add_argument("--only", nargs="*", default=None)
     ap.add_argument("--summarize", action="store_true")
+    ap.add_argument("--out", default=None,
+                    help="write to a different jsonl (for an A/B arm, e.g. specialist on)")
     args = ap.parse_args()
+    if args.out:
+        globals()["OUT"] = Path(args.out)
     if args.summarize:
         summarize()
     else:
