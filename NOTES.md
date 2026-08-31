@@ -26,6 +26,22 @@ is the next real lever.
 
 ---
 
+## ➡️ NEXT: pin the labelled slots in the part-to-staff join (2026-08-30)
+
+The join is measured for the first time (`benchmarks/omr-part-staff-join-2026-08/`)
+and its biggest failure is **structural, not evidence-starvation**: the part list
+and the print can disagree about ORDER, and `align_to_layout` is monotone so it
+cannot recover. On Beethoven 5 p.48 the page prints Timp. then the three trombones
+while the part list has the trombones first — the trombones become unreachable and
+return `None`, costing exactly the alto/tenor/bass clefs the dossier exists to
+supply. Perfect labels do not fix it (13/17).
+
+The route: **the margin labels know the PRINT's order.** A labelled slot should PIN
+its part, and the aligner should run only between pins, which permits the
+transposition a monotone path forbids. That is a different use of labels from
+today's, where they score pairs and mark trust but never constrain the assignment.
+Prompt and acceptance criteria in `docs/next-join-pinning-2026-08-30.md`.
+
 ## ➡️ START HERE — ranked next steps (2026-08-28)
 
 **[docs/next-steps-omr-2026-08-29.md](docs/next-steps-omr-2026-08-29.md)** is the current

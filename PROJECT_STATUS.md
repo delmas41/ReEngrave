@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-08-30 (a Phase-1 crash fixed; three ideas measured and three of them held back)
+**Last updated:** 2026-08-30 (three recognition fixes shipped; the part-to-staff join measured for the first time)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -148,6 +148,47 @@ some of that.
   confidently-read clef.
 
 Benchmarks: `benchmarks/omr-system-grouping-2026-08/`, `benchmarks/omr-margin-labels-2026-08/`.
+
+### Shipped 2026-08-30 — three recognition fixes, each measured
+
+| change | measured |
+|---|---|
+| **Clef specialist wired and gap-filling** (`transcribe.py`) | Blind staves — where the positional default answers *treble* every time — **31% → 19% corpus-wide**, 420 of 1043 rescued over 3359 staves; **168 key signatures** newly read downstream. Per score: pastoral 45→10%, beet5 79→25%, lamer 59→27%. Four wiring defects fixed first, of which the DPI one was a **texture** bug, not scale: the canonical upscale factor is inversely proportional to render DPI, leaving the same glyph ~14× apart in sharpness. It fills gaps only — never overwrites a reader that spoke. |
+| **Barline dedup by height** (`measure_extractor.py`) | Phase 1 loses **~1 measure in 15** on dense orchestral scans (Beethoven 5: 101 of 1572 missing; Pastoral: 91 of 1336). One cause fixed: the dedup kept the *leftmost* of two candidates within 60px, so a full-height note stem beat the real barline. A/B over 56 pages: **3 gained, 0 lost**, each verified by cropping the page. |
+| **Violins are not a condensable pair** (`score_layouts.py`) | Canonicalisation collapsed "Violin 1"/"Violin 2" into a cheap same-name merge, so the aligner condensed the two violin sections and every string slot shifted. Beethoven 5 p.2: **8/11 → 10/11 slots**. |
+
+### Clef ground truth now covers the pages that are broken
+
+The 52-staff set (`eval_pipeline_clefs.py`) is all pages where the detector already
+works, so a gap-filler measures **+0** there by construction — which is why the
+specialist looked worthless for months. `eval_blind_page_clefs.py` is the
+complement: two pages, two editions, where the shipped pipeline reads **no clef at
+all**. Baseline **17/32**, specialist **25/32**; on Beethoven 5 p.48 alone 8/17 →
+16/17, including both the alto and tenor trombone. **A benchmark can select
+against the thing being tested.**
+
+### The part-to-staff join, measured for the first time (2026-08-30)
+
+`dossier.join_parts_to_slots` gates every slot-level dossier fact and had only ever
+been judged through the clefs it supplies. `benchmarks/omr-part-staff-join-2026-08/`
+scores it directly against hand-read instrument-per-staff on three pages.
+
+| page | no labels | perfect labels | as printed |
+|---|---:|---:|---:|
+| beet5-p2 (18 parts → 11 staves) | 10/11 | 11/11 | 10/11 |
+| pastoral-p2 (15 → 10) | 3/10 | 9/10 | 9/10 |
+| beet5-p48 (23 → 17) | 8/17 | **13/17** | 12/17 |
+
+On the first two the algorithm is **sound and starved** — perfect labels make it
+almost exact, and the missing evidence is the string section no edition labels. On
+p.48 perfect labels do **not** rescue it, and that is the finding: three of four
+errors are structural. The page prints `Timp.` then the trombones; the part list
+has trombones *before* timpani. `align_to_layout` is **monotone**, so having
+consumed Timpani it cannot go back and the trombones return `None` — costing
+exactly the alto, tenor and bass clefs the dossier exists to supply.
+
+Ranked: **order inversion** (structural, 3 of 17) → merge budget (1 of 11) →
+singleton parts beside a conventional pair (2 of 17).
 
 ### Measured and held back (2026-08-29 → 30)
 
