@@ -1,5 +1,7 @@
-> **SUPERSEDED (2026-08-31)** — its headline, that the coverage is "waiting
-> behind a config default" blocked on the F-clef veto, is wrong twice over.
+> **SUPERSEDED (2026-08-31)** — the clustering it describes is now ON by
+> default, measured against a corpus that could see both of its sides. Its
+> headline, that the coverage is "waiting behind a config default" blocked on
+> the F-clef veto, is wrong twice over.
 > The veto was not failing on merged dots; it was handed the wrong pixels
 > and could not see the dots at all. And the coverage was not waiting on a
 > threshold but on a CORPUS — with one built, the clustering costs a single

@@ -796,3 +796,180 @@ false-positive RATE is roughly flat (6/69 against 7/77) rather than worse. It is
 still not switched on here, because that is a deliberate decision to take against
 these numbers rather than a side effect of a veto fix, but the case for it is now
 a real one.
+
+
+---
+
+## The clustering goes on (2026-08-31)
+
+The section above left it as "a real one, but a deliberate decision to take
+against these numbers". Taken: `ClefLocatorConfig.cluster_y_gap_spaces = 1.0`.
+
+| arm | located (Nottebohm) | reference | coverage | orch misses | sweep misses | FALSE POS |
+|---|---:|---:|---:|---:|---:|---:|
+| off, as shipped | 69 / 206 | 5/5 | 7/9 | 6 | 10 | **6** |
+| **ON** | **77 / 206** | 5/5 | 7/9 | **5** | **7** | **7** |
+
+Both harnesses, both re-measured from scratch rather than quoted forward.
+**Eight more located clefs and four fewer misses for one more false positive**,
+and the extra one is p54 s8 — the bass clef the previous session predicted it
+would be, so the two items compose exactly as it said.
+
+The test this layer applies is the RATE, not the count: 6/69 against 7/77 is
+flat. "Coverage bought at a worse precision than the layer already has" is the
+trade it refuses, and this is not that.
+
+Also checked, because clustering changes what the whole header layer sees:
+`eval_score_order` 11/12 position, 5/10 read clefs, 23/23 true clefs —
+unchanged; and `eval_pipeline_clefs --contextual --dossier --assist vision`
+**69/69**, base-3 52/52, with the CV locator supplying two of the sixty-nine and
+both correct.
+
+The two tests that pinned the old default now pin the new one, and the "when it
+is off" test keeps its case by naming the config explicitly rather than relying
+on the default — the behaviour it describes is still what the page does without
+the rule, and is worth keeping visible.
+
+---
+
+## A second edition — and the number gets worse because the measurement got honest (2026-08-31)
+
+`mahler5-clef-sweep.json` — **105 staves**, Edition Peters, Mahler 5, pages
+4–220 every fourth page. Built exactly as the Beethoven sweep was: every staff
+the locator LOCATES a C clef on, its header rendered, the glyph read by eye,
+with the genuine C clefs kept as the counterweight. **64 are real C clefs. 41
+are not** — 24 treble and 17 bass.
+
+Two things are different this time. The tool that builds it is committed
+(`sweep_located_clefs.py`), so a third edition costs an afternoon rather than a
+session. And `check_clef_precision.py` now runs **every** sweep corpus on every
+invocation, each naming its own score, so adding one is a file and no code.
+
+### What a second printer's ink shows that the first could not
+
+Beethoven's false positives are all misread CLEFS — an F clef, or a fragment of
+a G clef, that survives the shape gates. **Twenty-four of Mahler's forty-one are
+not a clef at all.**
+
+Peters prints the stacked instrument numbers — `1/2`, `1/2/3` — and the brace's
+curl to the LEFT of the system's bracket, close enough to fall inside the header
+window. A stack of two or three numerals is glyph-sized, and it is vertically
+symmetric, because a column of numerals is. The locator takes the leftmost
+glyph-sized cluster, so it takes those. That family does not exist in the
+Beethoven scan, and it is the single largest false-positive source here.
+
+### So the headline number moves a long way
+
+```
+reference 5/5 exact | coverage 7/9 | orchestral misses 5 | sweep misses 7
+                                                        | FALSE POSITIVES 48
+```
+
+The four oldest corpora said `FALSE POSITIVES 0`, and it meant "nothing here to
+get wrong". The Beethoven sweep took it to 6, then 7 with clustering. The Mahler
+sweep takes it to **48** — and not one of the 41 it adds is a regression. Every
+one was already happening, on every run, unmeasured.
+
+That is the second time in two sessions that the number this layer is steered by
+turned out to be a property of the corpus rather than of the code. Worth stating
+plainly: **the false-positive count of a CV reader measures the corpora you own,
+until the corpora are built from the reader's own output.** Both sweeps are,
+which is why they can say this and the others could not.
+
+One caveat to keep when reading a sweep corpus's MISS column: it is built from
+what the locator located, so at the moment of building its misses are ZERO by
+construction. Beethoven's 7 are real because the config moved after it was built
+(the mezzosoprano floor, then the clustering); Mahler's 0 is not yet evidence of
+anything.
+
+---
+
+## The tenor symmetry floor: refused, by the second edition (2026-08-31)
+
+The handoff's lead was a tenor-specific symmetry floor in the shape of
+`min_symmetry_mezzosoprano`. On the Beethoven sweep the two populations carrying
+the label `tenor` do not overlap, and such a floor removes every tenor misread
+at no cost at all. The handoff also said, in bold, not to ship it on that
+evidence: a 0.014-wide gap, on 9 clefs and 5 misreads, from one edition.
+
+It was right to say so. `clef_symmetry_populations.py`, over both corpora:
+
+```
+beethoven5-clef-sweep.json
+  alto     real  50 [0.783 - 0.932]   misread  3 [0.722 - 0.775]   GAP +0.008
+  tenor    real  10 [0.809 - 0.959]   misread  4 [0.702 - 0.795]   GAP +0.015
+
+mahler5-clef-sweep.json
+  alto     real  45 [0.716 - 0.962]   misread 33 [0.712 - 0.868]   OVERLAP 0.152
+  soprano  real   0                   misread  1 [0.740 - 0.740]
+  tenor    real  19 [0.708 - 0.954]   misread  7 [0.711 - 0.845]   OVERLAP 0.137
+```
+
+**The +0.015 gap becomes a 0.137 overlap.** Mahler's real tenor clefs start at
+0.708 — below every Beethoven misread — and its tenor misreads reach 0.845,
+above most Beethoven real clefs. A floor anywhere in the Beethoven gap costs
+real C clefs on the other edition's very first page. The alto gap of +0.008 dies
+the same way, at 0.152.
+
+**Refused, and the refusal is the result.** The mezzosoprano floor was not luck:
+it works because a genuine mezzosoprano is essentially absent from this
+repertoire, so its "real" population is one engraved reference glyph at 0.981
+and there is nothing under the floor to lose. Tenor and alto are common, their
+real instances run down to 0.708, and there is no room beneath them. Symmetry is
+not the axis that separates these two populations.
+
+The general lesson, which this area has now paid for three times: **a threshold
+that separates two populations on a single corpus is a measurement of that
+corpus.** The rule that survives is not "check the gap" but "check the gap on
+ink from a different press".
+
+---
+
+## Where the false positives actually are — the lead that replaces the floor (2026-08-31)
+
+If shape does not separate the numeral family, position might: a clef is printed
+ON the staff, and those numerals are printed before the staff begins.
+`probe_false_positive_geometry.py` measures the ceiling of that idea without
+shipping anything — for every read in each sweep corpus, how far the located
+cluster's right edge sits from the first column of the staff's own printed
+lines, in staff spaces (positive = the cluster ends before the staff starts):
+
+```
+beethoven5-clef-sweep.json
+  real      59 reads   median -3.33  range [-4.50, -0.38]   entirely before the staff:  0
+  misread    6 reads   median -2.88  range [-3.94, -2.54]   entirely before the staff:  0
+
+mahler5-clef-sweep.json
+  real      64 reads   median -3.33  range [-4.59, +1.96]   entirely before the staff:  2
+  misread   40 reads   median +0.90  range [-3.92, +2.70]   entirely before the staff: 27
+```
+
+**A rule refusing a cluster that ends before the staff's lines begin would
+remove 27 of Mahler's 40 false positives and cost 2 of its 64 real clefs, and is
+exactly neutral on Beethoven** — 0 removed and 0 lost, because every Beethoven
+false positive is a real clef misread, sitting on the staff where it belongs.
+(The probe abstains on a handful of rows where it cannot find staff metrics or a
+full-width line, which is why the totals are 59/6 and 64/40 rather than 60/7 and
+64/41.)
+
+That is a far better shape of lead than a threshold: it is aimed at a family
+whose cause is understood, it is measured on both editions, and it is honest
+about its cost. **It is not shipped here.** It is a new mechanism rather than the
+job that was scoped, and it would have to clear both harnesses on both editions —
+including Nottebohm coverage, where the clef sits at the staff start and the rule
+ought to be free, and the reference and piano sheets, where it must stay at 5/5
+and 0 — before it could be.
+
+### One measurement trap this probe fell into first, recorded because it is general
+
+The first version took the staff's left edge to be the leftmost horizontal ink
+in the cell, and reported that **every** staff began at column 0. At the
+canonical scale (staff span 400 px, so a staff space is 100 px) a bold serif's
+crossbar comfortably clears a 1.5-space horizontal opening, so the instrument
+name and the numerals themselves leave "horizontal" fragments at the very left
+of the window. The fixed version keeps only components at least four staff
+spaces wide — a staff line is the one horizontal that runs the width of the
+cell — and the misread median moves from −1.00 to +0.90, which is the difference
+between "this idea does nothing" and "this idea reaches two thirds of them".
+The lesson is the one this file keeps recording: when a geometric probe reports
+that a property holds for everything, suspect the operator before the data.

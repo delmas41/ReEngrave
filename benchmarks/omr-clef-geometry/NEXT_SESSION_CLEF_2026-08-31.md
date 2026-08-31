@@ -1,3 +1,20 @@
+> **EXECUTED (2026-08-31, later the same day).** All three jobs are done and
+> the results are in the last four sections of `RESULTS.md`.
+>
+> 1. **Clustering is ON.** Reproduced exactly: 69 → 77 located, false positives
+>    6 → 7, and the extra one is p54 s8 as predicted.
+> 2. **The tenor floor is REFUSED.** Item 3 was built first, as instructed, and
+>    the gap does not survive it — +0.015 on Beethoven becomes an overlap of
+>    0.137 on Mahler. The replacement lead is POSITION, not shape, and it is
+>    measured: see the last section of `RESULTS.md` and
+>    `NEXT_SESSION_CLEF_2026-09-01.md`.
+> 3. **`mahler5-clef-sweep.json` exists** — 105 staves, 64 real C clefs, 41 not
+>    — and `check_clef_precision.py` now runs every edition's sweep on every
+>    invocation. The reported FALSE POSITIVES went 7 → 48 by adding it, with no
+>    regression: they were always happening.
+>
+> Kept as written, because its warnings were right and are worth re-reading.
+
 # Handoff — three clef jobs, in this order
 
 > Written at the end of the 2026-08-31 session. Everything below is measured, and
