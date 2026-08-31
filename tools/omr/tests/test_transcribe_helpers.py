@@ -24,10 +24,35 @@ from tools.omr.transcribe import (
     _key_sig_summary,
     _measure_rhythm_sum_warning,
     _parse_diatonic_pitch,
+    _resolve_clef_weights,
     _staff_geometry,
     _stem_direction,
 )
 from tools.omr.types import Staff
+
+
+class TestResolveClefWeights:
+    """`transcribe()`'s OMR_CLEF_WEIGHTS fallback (Blocker 4). An explicit
+    argument always wins; None falls back to the environment, matching what
+    `main()` already does for the CLI — this is what makes it reachable from
+    a direct caller like backend/modules/local_omr.py, which never passes
+    `clef_weights` at all."""
+
+    def test_explicit_argument_wins_over_env(self, monkeypatch):
+        monkeypatch.setenv("OMR_CLEF_WEIGHTS", "/env/weights.pt")
+        assert _resolve_clef_weights("/explicit/weights.pt") == "/explicit/weights.pt"
+
+    def test_falls_back_to_env_when_not_given(self, monkeypatch):
+        monkeypatch.setenv("OMR_CLEF_WEIGHTS", "/env/weights.pt")
+        assert _resolve_clef_weights(None) == "/env/weights.pt"
+
+    def test_none_when_neither_is_set(self, monkeypatch):
+        monkeypatch.delenv("OMR_CLEF_WEIGHTS", raising=False)
+        assert _resolve_clef_weights(None) is None
+
+    def test_empty_env_value_is_treated_as_unset(self, monkeypatch):
+        monkeypatch.setenv("OMR_CLEF_WEIGHTS", "")
+        assert _resolve_clef_weights(None) is None
 
 
 @dataclass

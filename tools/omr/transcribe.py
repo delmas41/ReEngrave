@@ -2714,6 +2714,24 @@ def _flag_time_signature_disagreement(system: dict[str, Any]) -> None:
         }
 
 
+def _resolve_clef_weights(clef_weights: str | None) -> str | None:
+    """`clef_weights` if given, else the `OMR_CLEF_WEIGHTS` environment
+    variable, else None.
+
+    `main()` already does this same resolution for the CLI (so `--clef-weights`
+    wins over the env var, and it can print what was picked up before the run
+    starts). This is what makes it work for a caller that invokes `transcribe()`
+    directly instead — `backend/modules/local_omr.py` never passes
+    `clef_weights` at all, the same way it never passes most of the other
+    OMR_* knobs it resolves from the environment itself; this closes that one
+    remaining gap by having `transcribe()` resolve it, matching what
+    CLAUDE.md's env-var table already documents as a backend knob.
+    """
+    if clef_weights is not None:
+        return clef_weights
+    return os.environ.get("OMR_CLEF_WEIGHTS") or None
+
+
 def transcribe(
     *,
     pdf_path: Path,
@@ -2755,10 +2773,20 @@ def transcribe(
     OPTIONAL second detector that reads clefs better on some material; the
     pipeline is complete without it, and passing a path that isn't a
     clef-trained checkpoint makes clefs worse, not better.
+
+    `clef_weights=None` (the default) falls back to the `OMR_CLEF_WEIGHTS`
+    environment variable, same as the CLI — this is what lets a caller that
+    invokes `transcribe()` directly (`backend/modules/local_omr.py`, which
+    never passes `clef_weights`) still pick it up, matching how every other
+    OMR_* knob in that module already works. Pass `clef_weights` explicitly to
+    override the environment either way (including `clef_weights=""` to force
+    it off regardless of what's set).
     """
     # Lazy-import the YOLO wrapper so this module imports cheaply when the
     # caller doesn't actually need OMR (e.g. when listing pages).
     from .yolo_detector import YoloDetector
+
+    clef_weights = _resolve_clef_weights(clef_weights)
 
     detector = YoloDetector(weights, device="auto")
     # Optional decoupled clef specialist (see _detections_for_cell). Loaded
