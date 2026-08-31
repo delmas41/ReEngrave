@@ -73,6 +73,8 @@ def _detect_barlines_in_window(
     x0: int,
     x1: int,
     min_height_frac: float = BARLINE_MIN_HEIGHT_FRAC,
+    *,
+    prefer: str = "leftmost",
 ) -> list[int]:
     """Find columns in [x0, x1) where this staff has a vertical barline,
     using morphological vertical opening + connected-component shape
@@ -122,7 +124,7 @@ def _detect_barlines_in_window(
     vertical = cv2.morphologyEx(ink, cv2.MORPH_OPEN, kernel)
 
     n_labels, labels, stats, _ = cv2.connectedComponentsWithStats(vertical, connectivity=8)
-    barline_xs: list[int] = []
+    found: list[tuple[int, int]] = []          # (x_centre, height)
     for i in range(1, n_labels):
         x_l, y_l, w_l, h_l, area = stats[i]
         if h_l < min_height:
@@ -132,13 +134,55 @@ def _detect_barlines_in_window(
         if h_l / max(w_l, 1) < 8.0:
             continue           # not skinny enough
         x_center = x0 + x_l + w_l // 2
-        barline_xs.append(int(x_center))
-    barline_xs.sort()
-    deduped: list[int] = []
-    for x in barline_xs:
-        if not deduped or x - deduped[-1] >= BARLINE_MIN_DISTANCE_PX:
-            deduped.append(x)
-    return deduped
+        found.append((int(x_center), int(h_l)))
+    found.sort()
+    return _dedup_barline_candidates(found, prefer=prefer)
+
+
+def _dedup_barline_candidates(
+    found: list[tuple[int, int]],
+    *,
+    prefer: str = "leftmost",
+) -> list[int]:
+    """Thin a staff's barline candidates to one per `BARLINE_MIN_DISTANCE_PX`.
+
+    Two columns closer together than a bar can be are not two barlines, so one
+    of them goes. WHICH one matters more than it looks.
+
+    `prefer="leftmost"` is the original rule and is what the whole-page pass
+    keeps: it is cheap, and over a full staff the surviving candidates are
+    thinned consistently.
+
+    `prefer="tallest"` exists because the leftmost rule loses a real barline to
+    a note stem. Measured on Beethoven 5 p.2 system 0: the final beat before
+    the barline at x~1710 carries a full-height stem 27-35px to its LEFT on
+    four of the six staves that see the barline, and that stem independently
+    clears every filter the barline clears (81-100% of staff span against the
+    barline's 98-100%). Keeping the leftmost throws the barline away and keeps
+    the stem, so only 2 of 6 real votes reach the caller's vote gate, one short
+    of its floor. Height is the discriminator the shape test already computes
+    and then discards: a barline spans the staff, a stem usually stops short.
+
+    The window is ANCHORED on the candidate that opens it rather than sliding
+    with each one kept. A sliding anchor lets a dense stem-and-ornament region
+    chain transitively into one wide group whose representative is a mean, not
+    a barline — measured as x=1697 against a true x~1707-1711, and a silently
+    wrong candidate is worse than the empty result it replaces.
+    """
+    out: list[int] = []
+    i = 0
+    while i < len(found):
+        j = i
+        while (j + 1 < len(found)
+               and found[j + 1][0] - found[i][0] < BARLINE_MIN_DISTANCE_PX):
+            j += 1
+        group = found[i:j + 1]
+        if prefer == "tallest":
+            out.append(max(group, key=lambda c: (c[1], -c[0]))[0])
+        else:
+            out.append(group[0][0])
+        i = j + 1
+    return out
 
 
 def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
@@ -733,7 +777,13 @@ def _find_internal_barline_candidates(
     all_xs: list[int] = []
     for staff in staves:
         all_xs.extend(
-            _detect_barlines_in_window(bin_img, staff, x0, x1, RESEGMENT_MIN_HEIGHT_FRAC)
+            _detect_barlines_in_window(
+                bin_img, staff, x0, x1, RESEGMENT_MIN_HEIGHT_FRAC,
+                # Inside a fused cell a competing note stem is the norm, not the
+                # exception, so height decides — see _dedup_barline_candidates.
+                # The whole-page pass keeps the leftmost rule unchanged.
+                prefer="tallest",
+            )
         )
     if not all_xs:
         return []
