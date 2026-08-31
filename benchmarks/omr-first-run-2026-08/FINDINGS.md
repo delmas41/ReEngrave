@@ -109,11 +109,20 @@ genuinely carry none (Corni, Trombe, Timpani), giving a flattering 4/12.
 
 The cost is measurable, and it is the gap between the two note metrics below.
 
-## Time signature: not read at all
+## Time signature: reported, and wrong — ✅ FIXED 2026-08-31
 
-The page reports `null`, so the exporter writes **4/4 onto a 2/4 page** — after
-a `2` and a `4` are printed on all twelve staves. The dossier's meter override
-exists but only fires when a dossier is supplied.
+The page did not report `null`. It reported common time, on all twelve staves,
+`source: detected_propagated, votes: 3` — and the exporter duly wrote **4/4 onto
+a 2/4 page** after a `2` and a `4` are printed on every one of them. The three
+votes came from `timeSig4` boxes fired on **barline** fragments in the middles of
+bars 6 to 12, each turned into 4/4 by the single-digit guess.
+
+Fixed in `benchmarks/omr-timesig-2026-08/` — a header meter reader
+(`tools/omr/time_signature_locator.py`) that reads the meter by its geometry and
+votes across the system, plus a guard that stops one misread bar rewriting the
+rest of its staff. The page now emits **2/4**, and its LilyPond bar-check
+failures fall 154 → 104. The numbers below are from the run before that fix,
+except where a row says otherwise.
 
 ## Notes: 159 reference pitches, 170 emitted
 
@@ -238,8 +247,9 @@ Key signatures read across the six pages: 2/12, 6/22, 9/19, 6/22, 2/16, 8/22 —
 
 ## Ranked from this page
 
-1. **Read the meter.** `null` → the exporter writes 4/4 on a 2/4 page. The
-   digits are printed on all twelve staves. Cheapest large win here.
+1. ~~**Read the meter.**~~ **DONE 2026-08-31** — `benchmarks/omr-timesig-2026-08/`.
+   4 correct and 0 wrong over a corpus that is half pages printing no meter;
+   duration recall 0.340 → 0.352, bar-check failures 154 → 104.
 2. **The four barlines.** Column-ink counting on any all-rest staff finds all 17;
    the pipeline finds 14. One miss at the front and three consecutive at the
    back, in a system whose middle is exact.

@@ -116,10 +116,18 @@ def score(truth: Counter, got: Counter) -> dict:
 
 
 def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--stem", default="beet5-p1",
+                    help="basename under out/ to score (default: beet5-p1)")
+    args = ap.parse_args()
+    omr_xml = BENCH / "out" / f"{args.stem}.omr.musicxml"
+    omr_json = BENCH / "out" / f"{args.stem}.omr.json"
+
     truth_score = converter.parse(str(TRUTH_MXL))
-    omr_score = converter.parse(str(OMR_XML))
+    omr_score = converter.parse(str(omr_xml))
     omr_parts = list(omr_score.parts)
-    raw = json.loads(OMR_JSON.read_text())
+    raw = json.loads(omr_json.read_text())
     omr_staves = raw["pages"][0]["systems"][0]["staves"]
 
     if len(omr_parts) != len(STAVES):
@@ -194,7 +202,7 @@ def main() -> None:
         "pooled": pooled,
         "per_staff": rows,
     }
-    out = BENCH / "beet5-p1-firstrun.json"
+    out = BENCH / f"{args.stem}-firstrun.json"
     out.write_text(json.dumps(report, indent=2) + "\n")
 
     print(f"{'staff':<17}{'clef':>16}{'key':>10}"

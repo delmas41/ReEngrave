@@ -461,10 +461,27 @@ def infer_page_time_signature(page: dict[str, Any], **kwargs: Any) -> dict[str, 
 # propagated 3/4 correctly). Distinctive `C` / cut-`C` glyphs are always
 # propagatable. Two gates still guard it: >=3 measures back the winner AND it
 # is >=66% of the propagatable detections (so scattered stray reads can't win).
-_PROPAGATE_MIN_COUNT = 3        # min measures backing the winning meter
+_PROPAGATE_MIN_COUNT = 2        # min STAVES backing the winning meter
 _PROPAGATE_MIN_FRACTION = 0.66  # winner's share of propagatable detections
 _PROPAGATABLE_RAWS = frozenset({"C", "C|"})  # common / cut-common glyphs
 _VALID_DENOMINATORS = frozenset({1, 2, 4, 8, 16})  # power-of-two beat units
+
+#: Share of a system's staves that must carry the same mid-staff meter before
+#: it is believed to be a meter CHANGE rather than a misread.
+_PROPAGATE_MIN_CHANGE_FRACTION = 0.5
+
+#: ...and the share of a PAGE's staves that must open in the same meter before
+#: it is propagated to the staves that read none. A meter is printed on every
+#: staff, so a reading on a handful of them is a misread, however much those
+#: few agree with each other.
+_PROPAGATE_MIN_STAFF_FRACTION = 0.5
+
+#: `source` values that mark a genuine reading of the page rather than a value
+#: this module back-filled. `time_signature_locator` reads the header crop and
+#: votes across the system, so its answer is evidence in exactly the way a
+#: detection is; anything else with a `source` is derived and must not vote for
+#: itself, or `backfill_page_time_signatures` stops being idempotent.
+_READING_SOURCES = frozenset({"header_reader"})
 
 
 def _is_propagatable_meter(ts: dict[str, Any]) -> bool:
@@ -486,30 +503,50 @@ def _dominant_detected_meter(
     *,
     min_count: int = _PROPAGATE_MIN_COUNT,
     min_fraction: float = _PROPAGATE_MIN_FRACTION,
+    min_staff_fraction: float = _PROPAGATE_MIN_STAFF_FRACTION,
 ) -> dict[str, Any] | None:
     """The dominant *detected* meter safe to propagate across a page — a
     propagatable meter (`_is_propagatable_meter`: common/cut-common glyph or a
     plausible digit meter) read on `min_count`+ measures with no plausible
-    dissent. Counts only genuine detections (dicts with no `source` key) so it
-    ignores meters this module already back-filled, keeping
-    `backfill_page_time_signatures` idempotent. Returns a meter dict tagged
-    `source="detected_propagated"`, or None."""
+    dissent. Counts genuine READINGS — detections (no `source`) and the header
+    reader's (`_READING_SOURCES`) — and ignores meters this module back-filled,
+    keeping `backfill_page_time_signatures` idempotent. Returns a meter dict
+    tagged `source="detected_propagated"`, or None.
+
+    **One vote per STAFF, not per measure.** A meter, once read, is carried onto
+    every later measure of its staff, so counting measures counts one reading
+    many times: on page 3 of the Beethoven 5 scan a single `timeSig4` box at
+    confidence 0.42, on one staff of nineteen, was carried through eighteen bars
+    and arrived here as eighteen unanimous votes for common time, which it then
+    propagated across a 2/4 page. A staff is the unit that actually witnesses a
+    meter, and `min_count` counts staves.
+
+    A meter is also printed on every staff of a system, so the winner must be
+    read on `min_staff_fraction` of the page's staves as well — two spurious
+    readings that happen to agree are unanimous among themselves.
+
+    Assumes `drop_uncorroborated_meter_changes` has already run over the page —
+    it is what keeps a misread in the MIDDLE of a staff from voting at all."""
     votes: Counter[tuple[int, int]] = Counter()
+    n_staves = 0
     for system in page.get("systems", []):
         for staff in system.get("staves", []):
+            n_staves += 1
             for measure in staff.get("measures", []):
                 ts = measure.get("time_signature")
-                if not ts or ts.get("source"):  # skip nulls + back-filled
+                if not ts or (ts.get("source") and ts["source"] not in _READING_SOURCES):
                     continue
                 if not _is_propagatable_meter(ts):
                     continue
-                num, den = ts.get("numerator"), ts.get("denominator")
-                votes[(num, den)] += 1
+                # The meter this staff opens in — its one vote.
+                votes[(ts.get("numerator"), ts.get("denominator"))] += 1
+                break
     if not votes:
         return None
     (num, den), count = votes.most_common(1)[0]
     total = sum(votes.values())
-    if count < min_count or count / total < min_fraction:
+    needed = max(min_count, int(round(min_staff_fraction * n_staves)))
+    if count < needed or count / total < min_fraction:
         return None
     raw = "C" if (num, den) == (4, 4) else "C|" if (num, den) == (2, 2) else f"{num}/{den}"
     return {
@@ -520,6 +557,79 @@ def _dominant_detected_meter(
         "votes": count,
         "voters": total,
     }
+
+
+def drop_uncorroborated_meter_changes(
+    page: dict[str, Any],
+    *,
+    min_fraction: float = _PROPAGATE_MIN_CHANGE_FRACTION,
+) -> int:
+    """Undo mid-staff meter CHANGES that only one staff saw. Returns how many
+    measures were reverted; mutates `page`.
+
+    A time signature is printed at the start of a staff, or where the meter
+    changes — and a change is a system-wide event, printed on every staff of
+    the system at the same bar. A change that appears on one staff in the
+    middle of a system is therefore not a meter, it is ink that resembled one.
+
+    It matters because a meter, once read, is carried forward onto every later
+    measure of the staff, so a single false reading rewrites the rest of the
+    staff and then votes for itself as many times as there are bars left. On
+    Beethoven 5 page 1 — a 2/4 page — five `timeSig4` boxes fired on BARLINE
+    fragments in bars 6 to 12, each became 4/4 through the single-digit guess
+    in `parse_time_signature`, and the page went out as common time on all
+    twelve staves. Nothing downstream was placed to doubt it, because a meter is
+    exactly the kind of fact the rest of the pipeline takes on trust.
+
+    Reverting means restoring the meter that was in effect before the change,
+    which is the meter the staff started the system with. A change corroborated
+    on `min_fraction` of the system's staves at the same measure index is left
+    alone, so a genuine mid-movement meter change still survives.
+    """
+    reverted = 0
+    for system in page.get("systems", []):
+        staves = system.get("staves", [])
+        if not staves:
+            continue
+        # Where each staff's meter changes, and to what.
+        changes: list[tuple[dict, int, tuple[int, int]]] = []
+        for staff in staves:
+            previous: tuple[int, int] | None = None
+            for measure in staff.get("measures", []):
+                ts = measure.get("time_signature")
+                current = (ts.get("numerator"), ts.get("denominator")) if ts else None
+                index = measure.get("measure_index") or 0
+                if current is not None and previous is not None and current != previous:
+                    changes.append((staff, index, current))
+                if current is not None:
+                    previous = current
+        if not changes:
+            continue
+        witnesses: Counter[tuple[int, tuple[int, int]]] = Counter()
+        for _staff, index, meter in changes:
+            witnesses[(index, meter)] += 1
+        needed = max(2, int(round(min_fraction * len(staves))))
+        for staff, index, meter in changes:
+            if witnesses[(index, meter)] >= needed:
+                continue
+            measures = staff.get("measures", [])
+            before = None
+            for measure in measures:
+                if (measure.get("measure_index") or 0) >= index:
+                    break
+                if measure.get("time_signature"):
+                    before = measure["time_signature"]
+            for measure in measures:
+                if (measure.get("measure_index") or 0) < index:
+                    continue
+                ts = measure.get("time_signature")
+                if not ts:
+                    continue
+                if (ts.get("numerator"), ts.get("denominator")) != meter:
+                    break  # a later change takes over; leave it to its own test
+                measure["time_signature"] = dict(before) if before else None
+                reverted += 1
+    return reverted
 
 
 def backfill_page_time_signatures(page: dict[str, Any], **kwargs: Any) -> dict[str, Any] | None:
@@ -536,7 +646,14 @@ def backfill_page_time_signatures(page: dict[str, Any], **kwargs: Any) -> dict[s
          resolution is corrupted but the meter WAS read on some measures.
       2. **Beat-sum inference** (`infer_page_time_signature`) as the fallback
          when detection gave nothing usable.
+
+    Uncorroborated mid-staff meter changes are undone first
+    (`drop_uncorroborated_meter_changes`); without that, one misread bar votes
+    once for every bar after it.
     """
+    dropped = drop_uncorroborated_meter_changes(page)
+    if dropped:
+        page["uncorroborated_meter_changes_reverted"] = dropped
     meter = _dominant_detected_meter(page)
     if meter is None:
         meter = infer_page_time_signature(page, **kwargs)

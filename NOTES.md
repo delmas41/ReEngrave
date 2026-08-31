@@ -20,7 +20,10 @@ where the staff count changes between the two systems. Clefs 10/12. Three
 quarters of noteheads on the right line (`step` recall 0.742). And the engraved
 result is still not a transcription of Beethoven 5:
 
-- **meter never read** → the exporter writes 4/4 onto a 2/4 page;
+- ~~**meter never read**~~ — worse than that, and now **FIXED 2026-08-31**: the
+  page reported common time on all twelve staves, propagated from barline
+  fragments read as the digit 4. A header meter reader plus a corroboration
+  guard take it to 2/4. See `benchmarks/omr-timesig-2026-08/FINDINGS.md`;
 - **4 of 17 barlines missed** — one at the front, three consecutive at the back;
 - **key signatures read on 2 of 12 staves** (29% over six pages), which is the
   whole distance between `step` recall 0.742 and exact-pitch recall 0.579;

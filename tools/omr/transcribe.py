@@ -262,6 +262,7 @@ from .staff_header import (
     header_cells_for_page,
     header_windows_for_page,
 )
+from .time_signature_locator import read_system_time_signatures
 from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
@@ -3014,10 +3015,22 @@ def transcribe(
                 )
             )
             key_sig_default_unread = "no reader spoke for this staff"
+            # The meter, read from the same header crops and voted across each
+            # system's staves. The detector cannot supply this on a real scan —
+            # on Beethoven 5 p.1 it finds no time-signature digit in any header
+            # and the five it does fire are barline fragments mid-bar, which
+            # `_dominant_detected_meter` then propagates as common time over a
+            # 2/4 page. See tools/omr/time_signature_locator.py.
+            header_meters = read_system_time_signatures(
+                header_cells,
+                {sys_idx: sorted(systems[sys_idx].keys())
+                 for sys_idx in sorted(systems.keys())},
+            )
         else:
             voted_fifths, voted_reasons = {}, {}
             key_sig_unread_reasons = {}
             key_sig_default_unread = "header reading is off (--no-header-reading)"
+            header_meters = {}
 
         # Dossier slot facts for the whole page, used when per-system grouping
         # is too fragmented to join (which is the normal case — see
@@ -3083,9 +3096,17 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     alterations_for_fifths(seeded_fifths or 0),
                 )
+                # A meter carried over from the previous system, else the one
+                # the header reader voted for THIS system, else unknown. The
+                # carry-over comes first because a system that prints no time
+                # signature is still in the meter the last one established, and
+                # the reader abstains on those systems rather than contradicting
+                # it. A seed is a SEED: any meter the detector reads in the
+                # music replaces it, the same rule the clef locator and the
+                # key-signature vote follow.
                 active_time_sig = active_time_sig_by_staff.get(
                     (p, sys_idx, staff_idx),
-                    None,  # default: unknown — only set when detected
+                    dict(header_meters[sys_idx]) if sys_idx in header_meters else None,
                 )
                 staff_obj = next(
                     (st for st in pws.staves if st.staff_index == staff_idx), None
