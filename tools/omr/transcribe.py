@@ -1470,10 +1470,21 @@ def _detections_for_cell(
             pdf_path=pdf_path,
             page_dpi=page_dpi,
         )
+        # GAP-FILL ONLY. The specialist supplies a clef where no other reader
+        # spoke, and never overwrites one that did. Measured over 179 pages of
+        # the corpus sweep (benchmarks/omr-corpus-sweep-2026-08/, two arms):
+        # allowed to overwrite, it takes 90% of WTC staves and 83% of
+        # handel-red's from a detector that was already reading 100% of their
+        # clefs, and on the 52-staff hand-read set it scores 96% against that
+        # detector's 97% — so every one of those substitutions is a slightly
+        # losing trade made for nothing. All of its value is in the gaps:
+        # staves blind before/after are beet5 79%->25%, lamer 59%->27%, and
+        # 30%->19% corpus-wide, none of which requires overwriting anybody.
+        #
         # Clef and time-sig precedence are independent: the locator has no
-        # opinion on meter, so its claim on the clef doesn't block the
-        # specialist's time-sig read.
-        if spec_clef is not None and clef_source != "cv_locator":
+        # opinion on meter, so another reader's claim on the clef doesn't block
+        # the specialist's time-sig read.
+        if spec_clef is not None and clef_source is None:
             active_clef = spec_clef
             clef_source = "specialist"
         if spec_time_sig is not None:

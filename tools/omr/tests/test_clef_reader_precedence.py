@@ -118,3 +118,74 @@ def test_locator_and_specialist_agreeing_still_reports_the_locator(monkeypatch):
     )
     assert active_clef == "alto"
     assert clef_source == "cv_locator"
+
+
+# ─── The specialist must not overwrite a reader that already spoke ──────────
+
+
+class _FakeDetectorWithClef:
+    """Production detector that DOES read a clef, so `clef_source` is set to
+    "detector" before the specialist block runs."""
+
+    def __init__(self, smufl):
+        self.smufl = smufl
+
+    def detect(self, cell, **kwargs):
+        # y places the glyph on the middle line, which clef_geometry reads as
+        # the ordinary treble/bass position for its family.
+        return [_det("clef", self.smufl, x=20, y=180, w=60, h=140)]
+
+
+def _cell_with_lines(width=800, height=400):
+    cell = _cell(width, height)
+    return MeasureCell(
+        page_index=cell.page_index, system_index=cell.system_index,
+        staff_index=cell.staff_index, measure_index=cell.measure_index,
+        image=cell.image, image_no_staff=None, bbox_page_px=cell.bbox_page_px,
+        staff_line_ys_canonical=[150, 200, 250, 300, 350],
+        upscale_factor=1.0,
+    )
+
+
+def _run_with_detector(monkeypatch, *, detector_smufl: str, specialist_smufl: str):
+    monkeypatch.setattr(transcribe_mod, "locate_clef", lambda cell, **kw: None)
+    _, active_clef, _, _, clef_source = _detections_for_cell(
+        _FakeDetectorWithClef(detector_smufl),
+        _cell_with_lines(),
+        conf_threshold=0.25, imgsz=None, iou_threshold=0.5, agnostic_nms=True,
+        active_clef=None, active_key_sig={}, active_time_sig=None,
+        clef_reader=_FakeSpecialist(specialist_smufl),
+        header_cell=None, read_clef=True, locate_c_clefs=True,
+    )
+    return active_clef, clef_source
+
+
+def test_specialist_does_not_overwrite_the_detector(monkeypatch):
+    """GAP-FILL ONLY, and this is the case with the most staves behind it.
+
+    Measured over 179 pages of the corpus sweep, a specialist allowed to
+    overwrite takes 90% of WTC's staves and 83% of handel-red's away from a
+    detector that was already reading 100% of their clefs — and on the
+    52-staff hand-read set it scores 96% against that detector's 97%. Every
+    one of those substitutions is a slightly losing trade for no gain, because
+    all of the specialist's value is in staves nobody read at all.
+    """
+    active_clef, clef_source = _run_with_detector(
+        monkeypatch, detector_smufl="clefG", specialist_smufl="clefF",
+    )
+    assert clef_source == "detector", "the specialist must not displace the detector"
+    assert active_clef == "treble"
+
+
+def test_specialist_fills_the_gap_when_the_detector_is_silent(monkeypatch):
+    """The other half of the rule: where nothing else read a clef, it applies.
+
+    This is the population the specialist exists for — 30% of staves
+    corpus-wide, 79% on Beethoven 5, where the positional default answers
+    "treble" every time (benchmarks/omr-clef-geometry/eval_blind_page_clefs.py).
+    """
+    active_clef, clef_source = _run(
+        monkeypatch, located_clef=None, specialist_smufl="clefF",
+    )
+    assert clef_source == "specialist"
+    assert active_clef == "bass"
