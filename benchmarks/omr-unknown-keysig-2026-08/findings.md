@@ -120,3 +120,84 @@ So the fix is really two: the fallback, and the transposition that stops it
 being a wash. Build it against `eval_key_signatures.py` on all three
 ground-truth pages, and check the horns and trumpets specifically — they are the
 staves it can most easily make worse.
+
+---
+
+# "Confirm the empty signature first" — measured, and it does not work
+
+**2026-08-30, later.** `benchmarks/omr-corpus-sweep-2026-08/RESULTS.md` proposed a
+two-step repair and called step 1 the missing prerequisite:
+
+> 1. **Let the reader confirm an empty signature** where the clef is known and the
+>    header window was measured. [...] 2. **Then the majority fallback**, applied
+>    only to what is left.
+
+The reasoning was that Boléro is in C major with every clef read, yet 116 of its
+149 staves report "neither reader found key-signature accidentals" — the pipeline
+being right without knowing it. If a reader could ASSERT the empty signature, the
+majority fallback could then be confined to staves that are genuinely unknown, and
+would stop overwriting the horns and timpani that legitimately print nothing.
+
+**Step 1 cannot be done from the evidence available.** Measured two ways.
+
+## Staff level: no accidental-shaped ink
+
+The only candidate signal is whether the header crop contains any accidental-shaped
+glyph at all — `key*` or `accidental*` — since the class-role finding above shows
+the detector reads a printed flat as `accidentalFlat` rather than `keyFlat`. So
+"no ink of either class" ought to mean "nothing is printed here".
+
+| page | true signature | staves with NO header accidental ink |
+|---|---|---:|
+| bolero p31 | C major | 18 of 29 |
+| beet5 p15 | **three flats** | **6 of 22** |
+
+Those 6 are the failure. Beethoven 5 p.15 prints three flats on every staff, and on
+six of them neither reader finds anything at all — so asserting "confirmed C major"
+there would be a **confident wrong answer on 27% of the page**. That is precisely
+the error the August read/unread work was written to remove, re-introduced by the
+thing meant to build on it.
+
+A blind staff and an empty staff are indistinguishable in the header crop, because
+what makes a staff blind is that its ink was not detected.
+
+## Page level: the share of inked staves
+
+If a single staff cannot be judged, the page might: a page full of signatures should
+have most of its headers inked, a page in C major few. It does not separate.
+
+| page | true key | staves with header accidental ink |
+|---|---|---:|
+| bolero p5 | C major | 15% |
+| bolero p18 | C major | **35%** |
+| bolero p31 | C major | 38% |
+| **beet5 p36** | **three flats** | **35%** |
+| lamer p24 | signed | 56% |
+| beet5 p24 | three flats | 64% |
+| lamer p60 | signed | 71% |
+| beet5 p15 | three flats | 73% |
+
+A three-flat page and a C-major page land on the same number, 35%. Any threshold
+that admits Boléro p18 admits Beethoven 5 p36. The distributions overlap in the
+middle, which is where the pages that need help live.
+
+## What this means for the C-major problem
+
+The 1740 staves exported as C major without evidence are unchanged, and the route
+proposed for them is closed. **Step 1 is retracted; do not build it.**
+
+What survives is the diagnosis, and it now points somewhere specific. The reason
+the majority fallback is trapped is that it cannot tell a genuinely-empty staff from
+a blind one, and this measurement says the page cannot tell it either. So the
+distinction has to come from OUTSIDE the page:
+
+* **The dossier** already knows each part's written key signature, including that a
+  horn in C prints none. That is exactly the missing bit, and it is external truth
+  rather than another inference from ink the detector already failed to read. It is
+  gated behind the part-to-staff join, which is the honest obstacle and a known one.
+* **Instrument identity plus the concert key** is circular here — the concert key is
+  what the majority fallback was going to supply.
+
+The lesson is the same one this file already carries in another form: when a reader
+reports nothing, that is a fact about the reader. Trying to promote it into a fact
+about the page needs evidence from somewhere the reader is not.
