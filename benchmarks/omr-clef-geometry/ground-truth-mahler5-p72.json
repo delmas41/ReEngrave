@@ -1,0 +1,25 @@
+{
+  "_about": "Second blind page, deliberately a DIFFERENT edition and publisher from beet5-p48 (Edition Peters, Mahler 5), because edition overfit is the clef specialist's biggest risk and a second Beethoven page would not test it. The shipped pipeline reads no clef on any of these 15 staves.",
+  "id": "mahler5-p72",
+  "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Mahler_5_.pdf",
+  "page_index": 72,
+  "dpi": 300,
+  "method": "Read off a render of the clef column with detected staff lines marked and numbered 1-5. Treble and bass from the glyph. The three C clefs were resolved by WHICH LINE the glyph's waist sits on, read against the numbered lines at 600 dpi: Fagotti line 4 (tenor), Violen line 3 (alto), Violoncelle line 4 (tenor). Each is also the conventional clef for that instrument, which corroborates but was not the basis.",
+  "staves": [
+    {"staff_index": 0,  "label": "Floeten",      "clef": "treble"},
+    {"staff_index": 1,  "label": "Hoboen",       "clef": "treble"},
+    {"staff_index": 2,  "label": "B-Klar.",      "clef": "treble"},
+    {"staff_index": 3,  "label": "Fagotti",      "clef": "tenor"},
+    {"staff_index": 4,  "label": "Contrafagott", "clef": "bass"},
+    {"staff_index": 5,  "label": "F-Hoerner 1.3.5", "clef": "treble"},
+    {"staff_index": 6,  "label": "F-Hoerner 2.4.6", "clef": "treble"},
+    {"staff_index": 7,  "label": "Tromp. in F",  "clef": "treble"},
+    {"staff_index": 8,  "label": "Tromp. in B",  "clef": "treble"},
+    {"staff_index": 9,  "label": "Posaunen 1",   "clef": "bass"},
+    {"staff_index": 10, "label": "Erste Violine", "clef": "treble"},
+    {"staff_index": 11, "label": "Zweite Violine", "clef": "treble"},
+    {"staff_index": 12, "label": "Violen",       "clef": "alto"},
+    {"staff_index": 13, "label": "Violoncelle",  "clef": "tenor"},
+    {"staff_index": 14, "label": "Baesse",       "clef": "bass"}
+  ]
+}
