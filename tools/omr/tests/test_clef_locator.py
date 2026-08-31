@@ -218,12 +218,12 @@ class TestLocatesCClefs:
 class TestTheVerticalGroupingRule:
     """Grouping header ink by proximity in BOTH axes, not just across.
 
-    Off by default — see `ClefLocatorConfig.cluster_y_gap_spaces` for the
-    measured reason, which is not that it fails to work. These tests pin what
-    it does when it is on, and that it is off.
+    ON by default since it was measured against a corpus that could see both
+    of its sides — see `ClefLocatorConfig.cluster_y_gap_spaces`. These tests
+    pin what it does, what the page looked like without it, and that it is on.
     """
 
-    ON = dataclasses.replace(DEFAULT_LOCATOR_CONFIG, cluster_y_gap_spaces=1.0)
+    OFF = dataclasses.replace(DEFAULT_LOCATOR_CONFIG, cluster_y_gap_spaces=None)
 
     def _heading_cell(self):
         img = blank_page()
@@ -232,19 +232,19 @@ class TestTheVerticalGroupingRule:
         draw_noteheads(img)
         return make_cell(img)
 
-    def test_it_is_off_by_default(self):
-        assert DEFAULT_LOCATOR_CONFIG.cluster_y_gap_spaces is None
+    def test_it_is_on_by_default(self):
+        assert DEFAULT_LOCATOR_CONFIG.cluster_y_gap_spaces == 1.0
 
     def test_a_heading_above_the_staff_hides_the_clef_when_it_is_off(self):
-        # The default behaviour, and the thing the rule exists to fix: the
+        # What the layer did before, and the thing the rule exists to fix: the
         # heading and the clef are one column 5.5 staff spaces tall, which is
         # bigger than any C clef, so the search stops on it.
-        assert locate_clef(self._heading_cell()) is None
+        assert locate_clef(self._heading_cell(), config=self.OFF) is None
 
-    def test_a_heading_above_the_staff_does_not_hide_the_clef_when_it_is_on(self):
+    def test_a_heading_above_the_staff_does_not_hide_the_clef(self):
         # Measured over 191 headers of 19th-century engraving, that fusion was
         # 55% of all header cells — the single largest drain on clef coverage.
-        found = locate_clef(self._heading_cell(), config=self.ON)
+        found = locate_clef(self._heading_cell())
         assert found is not None and found.read.name == "alto"
 
     def test_ink_touching_the_staff_is_never_split_apart(self):
@@ -261,7 +261,7 @@ class TestTheVerticalGroupingRule:
         img = blank_page()
         draw_split_g_clef(img)
         draw_noteheads(img)
-        assert locate_clef(make_cell(img), config=self.ON) is None
+        assert locate_clef(make_cell(img)) is None
 
 
 # ─── declining to guess ─────────────────────────────────────────────────────

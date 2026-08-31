@@ -163,24 +163,23 @@ class ClefLocatorConfig:
     # clef's tail detaches at 0.49), a heading stands 1.68 spaces clear at the
     # median, and 1.0 sits between them.
     #
-    # Why it is off: of the 19 staves it adds across both books, 14 are right
-    # and **5 are bass clefs read as C clefs**. Every one of the five is the
-    # same pre-existing hole — `_has_f_clef_dots` is the only thing separating
-    # an F clef from a C clef, and on these prints the two dots merge into the
-    # clef's body under thresholding, so there is no pair to find. The extra
-    # coverage lands disproportionately on staves where that hole is open, and
-    # a wrong clef transposes every note on its staff while a missed one costs
-    # nothing that was not already lost. Nothing cheap closes it: symmetry does
-    # not separate the two populations (wrong reads 0.70-0.80 against correct
-    # reads from 0.701), nor does horizontal ink balance, nor the cluster's
-    # internal ink profile — all measured, all in
-    # benchmarks/omr-clef-geometry/RESULTS.md.
+    # It was held back for two sessions on the strength of "14 staves right and
+    # 5 wrong", a count taken when no corpus could see either number — the four
+    # corpora of the day contained no bass clef the locator was liable to
+    # misread, so they reported FALSE POSITIVES 0 whatever it did. Measured
+    # against `beethoven5-clef-sweep.json`, which is built from the locator's
+    # own reads and therefore cannot have that blind spot:
     #
-    # So this is finished work waiting on a different fix. Turn it on when the
-    # F-clef veto can survive a merged dot pair, and re-run
-    # `check_clef_precision.py` — which grew its orchestral corpus for exactly
-    # this reason.
-    cluster_y_gap_spaces: float | None = None
+    #     arm            located   orch misses   sweep misses   FALSE POS
+    #     off                 69             6             10           6
+    #     ON (this)           77             5              7           7
+    #
+    # Eight more located clefs and four fewer misses for ONE more false
+    # positive. The RATE is what this layer trades on — 6/69 against 7/77, flat
+    # — and "coverage bought at a worse precision than the layer already has"
+    # is the trade it refuses; this is not that. Nottebohm coverage 69 -> 77 of
+    # 206 headers, reference 5/5 and piano 0 unchanged.
+    cluster_y_gap_spaces: float | None = 1.0
     min_component_area_spaces: float = 0.02  # speck filter, in (staff space)²
     vertical_rule_max_width_spaces: float = 0.5   # thinner ⇒ a rule, not a glyph
     vertical_rule_min_height_spaces: float = 2.0
