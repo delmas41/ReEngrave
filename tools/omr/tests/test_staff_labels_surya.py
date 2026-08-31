@@ -248,3 +248,66 @@ def test_apply_contextual_reports_a_missing_pdf_rather_than_raising():
     )
     assert summary["available"] is False
     assert "unavailable" in summary["reason"]
+
+
+# ── persistent server lifecycle ─────────────────────────────────────────────
+
+class TestResidentServer:
+    """Sentinel handling. Pure filesystem and PID logic, so it needs no venv.
+
+    The sentinel outlives a crash — llama.cpp dying does not clean up after
+    itself — so a stale file must never be reported as a running server, or
+    every later run attaches to a port with nothing behind it.
+    """
+
+    @staticmethod
+    def _sentinel(monkeypatch, tmp_path, payload):
+        path = tmp_path / "llamacpp_server.json"
+        if payload is not None:
+            path.write_text(__import__("json").dumps(payload))
+        monkeypatch.setattr(staff_labels_surya, "SENTINEL", path)
+        return path
+
+    def test_no_sentinel_means_no_server(self, monkeypatch, tmp_path):
+        self._sentinel(monkeypatch, tmp_path, None)
+        assert staff_labels_surya.resident_server() is None
+
+    def test_live_pid_is_reported(self, monkeypatch, tmp_path):
+        import os
+        self._sentinel(monkeypatch, tmp_path,
+                       {"port": 1234, "pid": os.getpid()})
+        info = staff_labels_surya.resident_server()
+        assert info is not None and info["port"] == 1234
+
+    def test_stale_pid_is_not_a_running_server(self, monkeypatch, tmp_path):
+        # PID 2**22 is above any real pid on macOS/Linux defaults.
+        self._sentinel(monkeypatch, tmp_path, {"port": 1234, "pid": 2 ** 22})
+        assert staff_labels_surya.resident_server() is None
+
+    def test_corrupt_sentinel_is_not_a_crash(self, monkeypatch, tmp_path):
+        path = tmp_path / "llamacpp_server.json"
+        path.write_text("{ not json")
+        monkeypatch.setattr(staff_labels_surya, "SENTINEL", path)
+        assert staff_labels_surya.resident_server() is None
+
+    def test_stop_clears_a_stale_sentinel_and_reports_nothing_ran(
+            self, monkeypatch, tmp_path):
+        path = self._sentinel(monkeypatch, tmp_path,
+                              {"port": 1234, "pid": 2 ** 22})
+        assert staff_labels_surya.stop_server() is False
+        assert not path.exists(), "a stale sentinel must not survive --stop"
+
+    def test_stop_with_no_sentinel_is_not_an_error(self, monkeypatch, tmp_path):
+        self._sentinel(monkeypatch, tmp_path, None)
+        assert staff_labels_surya.stop_server() is False
+
+
+def test_keep_alive_is_off_unless_asked(monkeypatch):
+    """A 1.7 GB resident process must never appear because a default said so."""
+    monkeypatch.delenv("OMR_SURYA_KEEP_ALIVE", raising=False)
+    import importlib
+    reloaded = importlib.reload(staff_labels_surya)
+    try:
+        assert reloaded.KEEP_ALIVE is False
+    finally:
+        importlib.reload(staff_labels_surya)

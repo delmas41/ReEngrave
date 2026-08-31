@@ -46,6 +46,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -67,6 +68,28 @@ REQUIREMENT = "surya-ocr>=0.22"
 #: Generous because the FIRST call pays for spawning llama.cpp and loading a
 #: 650M GGUF — about 70 s — while each system after it takes ~1.5 s.
 DEFAULT_TIMEOUT_S = float(os.environ.get("OMR_SURYA_TIMEOUT_S", "900"))
+
+#: Keep the llama.cpp server alive between runs. OFF by default because the
+#: resident process holds ~1.7 GB and appearing unbidden on someone's machine is
+#: not a decision a library gets to make. Measured on a 17-staff page, three
+#: consecutive reads:
+#:
+#:     off (spawn + load + kill each time)   17.5s   15.9s   15.8s
+#:     on  (server survives, next run attaches) 5.9s    4.7s    4.7s
+#:
+#: Surya implements the persistence itself — a sentinel file plus a health probe
+#: (`surya.inference.backends.spawn.attach_or_spawn`) — so this is a flag, not a
+#: server we have to write. The residue at 4.7 s is the worker's own torch
+#: import, which only a long-lived PYTHON process would remove.
+KEEP_ALIVE = os.environ.get("OMR_SURYA_KEEP_ALIVE", "").lower() in ("1", "true", "yes")
+
+#: Where Surya records the running server. Read directly rather than through
+#: surya's private `_sentinel_path`, because `--stop` has to work from the
+#: host's 3.9 where surya is not importable.
+SENTINEL = Path(os.environ.get(
+    "OMR_SURYA_SENTINEL",
+    os.path.expanduser("~/.cache/datalab/surya/llamacpp_server.json"),
+))
 
 
 class SuryaLabelError(RuntimeError):
@@ -125,8 +148,42 @@ def bootstrap(*, force: bool = False) -> Path:
     return python
 
 
+def resident_server() -> dict | None:
+    """The keep-alive server Surya has running, or None.
+
+    The sentinel outlives a crash, so a live PID is checked rather than trusted.
+    """
+    try:
+        info = json.loads(SENTINEL.read_text())
+        pid = int(info["pid"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    try:
+        os.kill(pid, 0)          # signal 0 = "does this process exist"
+    except OSError:
+        return None
+    return info
+
+
+def stop_server() -> bool:
+    """Stop the resident server and clear its sentinel. True if one was running."""
+    import signal
+
+    info = resident_server()
+    if info is None:
+        SENTINEL.unlink(missing_ok=True)
+        return False
+    try:
+        os.kill(int(info["pid"]), signal.SIGTERM)
+    except OSError as exc:
+        raise SuryaLabelError(f"could not stop pid {info['pid']}: {exc}") from exc
+    SENTINEL.unlink(missing_ok=True)
+    return True
+
+
 def read_crops_surya(crops: list[MarginCrop], *,
-                     timeout_s: float | None = None) -> list[dict[int, str]]:
+                     timeout_s: float | None = None,
+                     keep_alive: bool | None = None) -> list[dict[int, str]]:
     """`{staff_index: printed label}` per crop, in one subprocess.
 
     One process for every crop on the page on purpose: the model load dominates
@@ -142,10 +199,13 @@ def read_crops_surya(crops: list[MarginCrop], *,
     } for crop in crops]}
 
     python = interpreter()
+    env = dict(os.environ)
+    if KEEP_ALIVE if keep_alive is None else keep_alive:
+        env["SURYA_INFERENCE_KEEP_ALIVE"] = "true"
     try:
         proc = subprocess.run(
             [str(python), str(_WORKER)],
-            input=json.dumps(job), capture_output=True, text=True,
+            input=json.dumps(job), capture_output=True, text=True, env=env,
             timeout=timeout_s if timeout_s is not None else DEFAULT_TIMEOUT_S,
         )
     except subprocess.TimeoutExpired as exc:
@@ -178,7 +238,8 @@ def read_crops_surya(crops: list[MarginCrop], *,
 
 
 def read_staff_labels_surya(pws: PageWithStaves, *,
-                            timeout_s: float | None = None) -> list[StaffLabel]:
+                            timeout_s: float | None = None,
+                            keep_alive: bool | None = None) -> list[StaffLabel]:
     """Instrument labels for a page, read from the margin with Surya.
 
     Same return shape as `staff_labels.read_staff_labels` and
@@ -200,7 +261,8 @@ def read_staff_labels_surya(pws: PageWithStaves, *,
     if not crops:
         return []
 
-    per_crop = read_crops_surya(crops, timeout_s=timeout_s)
+    per_crop = read_crops_surya(crops, timeout_s=timeout_s,
+                                keep_alive=keep_alive)
 
     out: list[StaffLabel] = []
     for staves, texts in zip(staves_for_crop, per_crop):
@@ -232,17 +294,56 @@ def main(argv: list[str] | None = None) -> int:
                     help="with --bootstrap, rebuild an existing venv")
     ap.add_argument("--check", action="store_true",
                     help="report whether the free reader is usable here")
+    ap.add_argument("--serve", action="store_true",
+                    help="start a persistent llama.cpp server and warm it, so "
+                         "later runs skip the ~11s spawn-and-load. Holds about "
+                         "1.7 GB until --stop.")
+    ap.add_argument("--stop", action="store_true",
+                    help="stop the persistent server started by --serve")
     args = ap.parse_args(argv)
 
     if args.bootstrap:
         print(f"surya venv ready: {bootstrap(force=args.force)}")
         return 0
+
+    if args.stop:
+        print("stopped the persistent server" if stop_server()
+              else "no persistent server was running")
+        return 0
+
+    if args.serve:
+        # Warming it here rather than telling the user to run a transcription
+        # means --serve leaves the model LOADED, not merely the process up.
+        from PIL import Image
+        import io as _io
+
+        buf = _io.BytesIO()
+        Image.new("RGB", (240, 400), (255, 255, 255)).save(buf, format="PNG")
+        warm = MarginCrop(png=buf.getvalue(), staff_indices=[0],
+                          tick_ys=(200.0,), gutter_px=0)
+        read_crops_surya([warm], keep_alive=True)
+        info = resident_server()
+        if info is None:
+            print("server did not stay up — check `llama-server` is installed",
+                  file=sys.stderr)
+            return 1
+        print(f"persistent server on port {info['port']} (pid {info['pid']})")
+        print("set OMR_SURYA_KEEP_ALIVE=1 so runs attach to it instead of "
+              "spawning their own; `--stop` when done.")
+        return 0
+
     if args.check:
         ok = available()
         print(f"surya interpreter: {'yes' if ok else 'NO'}")
         print(f"llama.cpp backend: {'yes' if shutil.which('llama-server') else 'NO'}")
+        info = resident_server()
+        print(f"persistent server: "
+              + (f"yes, port {info['port']} (pid {info['pid']})" if info else "no"))
+        print(f"keep-alive default: {'on' if KEEP_ALIVE else 'off'} "
+              "(OMR_SURYA_KEEP_ALIVE)")
         return 0 if ok else 1
-    ap.error("give --bootstrap or --check")
+
+    ap.error("give --bootstrap, --check, --serve or --stop")
     return 2
 
 

@@ -432,11 +432,34 @@ layer exports as `Flute / Oboe / Clarinet / Bassoon / Horn / Trumpet / Timpani /
 Violin / Viola / Cello` instead of `Staff p47-s0-N`. Staves it cannot name keep
 the old coordinate form, so `--no-contextual` output is unchanged.
 
-⏱️ **Cost.** It re-uses `transcribe`'s own staves rather than re-running phase 1,
-so the pass itself is cheap — but the Surya rung spawns llama.cpp and loads a
-650M model on first use, about 20 s per run. Measured on a 1-page job:
-`contextual_s` 21.4 of 44.0 s total. It amortises over a multi-page job, and is
-absent entirely where `.venv-surya` is not installed (including the container).
+⏱️ **Cost, and how to remove most of it.** The pass re-uses `transcribe`'s own
+staves rather than re-running phase 1, so it is cheap in itself — but the Surya
+rung spawns llama.cpp and loads a 650M model, and by default kills it again on
+exit, paying that on *every* run.
+
+**Surya implements the persistence itself** (sentinel file + health probe), so
+this is a flag rather than a server anyone has to write:
+
+```bash
+python3 -m tools.omr.staff_labels_surya --serve    # start it, model loaded
+export OMR_SURYA_KEEP_ALIVE=1                      # runs attach instead of spawning
+python3 -m tools.omr.staff_labels_surya --check    # is one up?
+python3 -m tools.omr.staff_labels_surya --stop     # give the 1.7 GB back
+```
+
+Measured on a 17-staff page, identical output either way (9 labels):
+
+| | contextual_s | whole transcribe |
+|---|--:|--:|
+| spawn-and-kill (default) | 21.4 s | 44.0 s |
+| **resident server** | **6.9 s** | **30.6 s** |
+
+**Off by default** — the resident process holds ~1.7 GB, and that should not
+appear on someone's machine because a default said so. The 6.9 s residue is the
+worker's own `torch` import; only a long-lived *Python* process would remove it,
+which is a much bigger lift for the remaining few seconds.
+
+Absent entirely where `.venv-surya` is not installed, including the container.
 
 ---
 
