@@ -20,9 +20,14 @@ That is what this does, and the honesty of it rests on three rules:
   marked wrong for it.
 
   THE MEASURE WINDOW IS ESTABLISHED INDEPENDENTLY. Beethoven 5 page 1 is
-  measures 1-17: counted as full-height ink columns on the Flauti staff (a
-  staff of whole-bar rests, so the only full-height ink is a barline), and
-  confirmed by the reference, where every wind part's first note is m.18.
+  measures 1-16, counted by `probe_page_measures.py` as full-height ink columns
+  on five staves that rest for the whole page, all five agreeing. It was
+  reported as 17 until 2026-08-31: the probe counted the TIME SIGNATURE, whose
+  digits align into a column six pixels wide — exactly a barline's width — and
+  all five staves agreed because all five print the same time signature.
+  Agreement across staves cannot catch an error every staff shares. What
+  separates them is that a barline continues past the staff into the gap and a
+  time signature stops at the staff lines.
 
 WHAT THE COMPARISON IS. Pitches are compared as MULTISETS per printed staff,
 not as sequences. A printed staff can carry two reference parts (Flauti is
@@ -57,9 +62,9 @@ TRUTH_MXL = Path(
 OMR_XML = BENCH / "out" / "beet5-p1.omr.musicxml"
 OMR_JSON = BENCH / "out" / "beet5-p1.omr.json"
 
-#: Page 1 of IMSLP984073 carries measures 1-17. See the module docstring for how
-#: that was established without asking the pipeline.
-FIRST_MEASURE, LAST_MEASURE = 1, 17
+#: Page 1 of IMSLP984073 carries measures 1-16. See the module docstring for how
+#: that was established without asking the pipeline, and for how it was wrong.
+FIRST_MEASURE, LAST_MEASURE = 1, 16
 
 #: The printed page's twelve staves, each naming the reference parts it carries.
 #: Six of the twelve are condensed pairs, which is why the join is written out

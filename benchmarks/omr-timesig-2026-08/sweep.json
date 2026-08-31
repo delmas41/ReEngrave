@@ -110,10 +110,22 @@
         "per_staff": [
           null,
           null,
+          {
+            "staff": 13,
+            "raw": "C",
+            "score": 0.545
+          },
           null,
-          null,
-          null,
-          null,
+          {
+            "staff": 15,
+            "raw": "C",
+            "score": 0.577
+          },
+          {
+            "staff": 16,
+            "raw": "C",
+            "score": 0.515
+          },
           null,
           null,
           null,
@@ -159,7 +171,11 @@
             "score": 0.509
           },
           null,
-          null,
+          {
+            "staff": 8,
+            "raw": "C",
+            "score": 0.516
+          },
           null,
           null
         ]
@@ -199,7 +215,11 @@
           null,
           null,
           null,
-          null,
+          {
+            "staff": 6,
+            "raw": "C",
+            "score": 0.51
+          },
           null,
           null,
           null,
@@ -212,13 +232,21 @@
         "meter": null,
         "per_staff": [
           null,
+          {
+            "staff": 12,
+            "raw": "C",
+            "score": 0.522
+          },
           null,
           null,
           null,
           null,
           null,
-          null,
-          null,
+          {
+            "staff": 18,
+            "raw": "C",
+            "score": 0.542
+          },
           null,
           null,
           null
@@ -285,13 +313,25 @@
         "n_staves": 10,
         "meter": null,
         "per_staff": [
+          {
+            "staff": 0,
+            "raw": "C",
+            "score": 0.527
+          },
           null,
           null,
           null,
           null,
-          null,
-          null,
-          null,
+          {
+            "staff": 5,
+            "raw": "C",
+            "score": 0.519
+          },
+          {
+            "staff": 6,
+            "raw": "C",
+            "score": 0.554
+          },
           null,
           null,
           null
@@ -302,8 +342,16 @@
         "n_staves": 12,
         "meter": null,
         "per_staff": [
-          null,
-          null,
+          {
+            "staff": 10,
+            "raw": "C",
+            "score": 0.529
+          },
+          {
+            "staff": 11,
+            "raw": "C",
+            "score": 0.501
+          },
           null,
           null,
           null,
@@ -773,35 +821,139 @@
       {
         "system": 0,
         "n_staves": 27,
-        "meter": null,
+        "meter": {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "source": "header_reader",
+          "votes": 24,
+          "voters": 27,
+          "median_score": 0.7588
+        },
         "per_staff": [
+          {
+            "staff": 0,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 1,
+            "raw": "C",
+            "score": 0.759
+          },
+          {
+            "staff": 2,
+            "raw": "C",
+            "score": 0.759
+          },
+          {
+            "staff": 3,
+            "raw": "C",
+            "score": 0.759
+          },
+          {
+            "staff": 4,
+            "raw": "C",
+            "score": 0.762
+          },
+          {
+            "staff": 5,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 6,
+            "raw": "C",
+            "score": 0.757
+          },
+          {
+            "staff": 7,
+            "raw": "C",
+            "score": 0.757
+          },
+          {
+            "staff": 8,
+            "raw": "C",
+            "score": 0.763
+          },
+          null,
+          {
+            "staff": 10,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 11,
+            "raw": "C",
+            "score": 0.757
+          },
+          {
+            "staff": 12,
+            "raw": "C",
+            "score": 0.763
+          },
+          {
+            "staff": 13,
+            "raw": "C",
+            "score": 0.759
+          },
+          {
+            "staff": 14,
+            "raw": "C",
+            "score": 0.759
+          },
+          {
+            "staff": 15,
+            "raw": "C",
+            "score": 0.757
+          },
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
+          {
+            "staff": 18,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 19,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 20,
+            "raw": "C",
+            "score": 0.757
+          },
+          {
+            "staff": 21,
+            "raw": "C",
+            "score": 0.759
+          },
+          {
+            "staff": 22,
+            "raw": "C",
+            "score": 0.757
+          },
+          {
+            "staff": 23,
+            "raw": "C",
+            "score": 0.762
+          },
+          {
+            "staff": 24,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 25,
+            "raw": "C",
+            "score": 0.757
+          },
+          {
+            "staff": 26,
+            "raw": "C",
+            "score": 0.75
+          }
         ]
       }
     ]
@@ -815,18 +967,298 @@
       {
         "system": 0,
         "n_staves": 12,
+        "meter": {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "source": "header_reader",
+          "votes": 12,
+          "voters": 12,
+          "median_score": 0.7607
+        },
+        "per_staff": [
+          {
+            "staff": 0,
+            "raw": "C",
+            "score": 0.763
+          },
+          {
+            "staff": 1,
+            "raw": "C",
+            "score": 0.76
+          },
+          {
+            "staff": 2,
+            "raw": "C",
+            "score": 0.76
+          },
+          {
+            "staff": 3,
+            "raw": "C",
+            "score": 0.757
+          },
+          {
+            "staff": 4,
+            "raw": "C",
+            "score": 0.773
+          },
+          {
+            "staff": 5,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 6,
+            "raw": "C",
+            "score": 0.759
+          },
+          {
+            "staff": 7,
+            "raw": "C",
+            "score": 0.76
+          },
+          {
+            "staff": 8,
+            "raw": "C",
+            "score": 0.766
+          },
+          {
+            "staff": 9,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 10,
+            "raw": "C",
+            "score": 0.761
+          },
+          {
+            "staff": 11,
+            "raw": "C",
+            "score": 0.761
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case": "bach-wtc",
+    "expected": [
+      "C"
+    ],
+    "systems": [
+      {
+        "system": 0,
+        "n_staves": 11,
+        "meter": {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "source": "header_reader",
+          "votes": 10,
+          "voters": 11,
+          "median_score": 0.7458
+        },
+        "per_staff": [
+          {
+            "staff": 0,
+            "raw": "C",
+            "score": 0.746
+          },
+          {
+            "staff": 1,
+            "raw": "C",
+            "score": 0.747
+          },
+          {
+            "staff": 2,
+            "raw": "C",
+            "score": 0.745
+          },
+          {
+            "staff": 3,
+            "raw": "C",
+            "score": 0.732
+          },
+          {
+            "staff": 4,
+            "raw": "C",
+            "score": 0.748
+          },
+          {
+            "staff": 5,
+            "raw": "C",
+            "score": 0.735
+          },
+          null,
+          {
+            "staff": 7,
+            "raw": "C",
+            "score": 0.744
+          },
+          {
+            "staff": 8,
+            "raw": "C",
+            "score": 0.746
+          },
+          {
+            "staff": 9,
+            "raw": "C",
+            "score": 0.755
+          },
+          {
+            "staff": 10,
+            "raw": "C",
+            "score": 0.732
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case": "wtc-book-p2",
+    "expected": [
+      "C",
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "systems": [
+      {
+        "system": 0,
+        "n_staves": 2,
+        "meter": {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "source": "header_reader",
+          "votes": 2,
+          "voters": 2,
+          "median_score": 0.7574
+        },
+        "per_staff": [
+          {
+            "staff": 0,
+            "raw": "C",
+            "score": 0.741
+          },
+          {
+            "staff": 1,
+            "raw": "C",
+            "score": 0.757
+          }
+        ]
+      },
+      {
+        "system": 1,
+        "n_staves": 2,
         "meter": null,
         "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 2,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 3,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 4,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 5,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      }
+    ]
+  },
+  {
+    "case": "wtc-book-p3",
+    "expected": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "systems": [
+      {
+        "system": 0,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 1,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 2,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 3,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 4,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
+          null
+        ]
+      },
+      {
+        "system": 5,
+        "n_staves": 2,
+        "meter": null,
+        "per_staff": [
           null,
           null
         ]

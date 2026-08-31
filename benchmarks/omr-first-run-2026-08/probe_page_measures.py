@@ -6,13 +6,21 @@ from the ink.
 
 THE TRICK IS THE CHOICE OF STAFF. On a staff carrying notes, stems and beams are
 full-height ink too, so a column test finds far more than barlines. On a staff of
-whole-bar RESTS the only full-height ink is a barline — a whole rest is a short
-thick horizontal hanging off the fourth line and never spans the staff. So the
-count is exact on a tacet staff and unreliable everywhere else.
+whole-bar RESTS almost the only full-height ink is a barline — a whole rest is a
+short thick horizontal hanging off the fourth line and never spans the staff. So
+the count is exact on a tacet staff and unreliable everywhere else.
 
-Beethoven 5 page 1 has five such staves — Flauti, Oboi, Corni, Trombe, Timpani —
-and all five return 17, which is the check: five independent staves agreeing is
-not a threshold that happened to work once.
+⚠️ ALMOST. **A time signature is full-height ink too** — numerator across the
+upper two spaces, denominator across the lower two — and the first version of
+this counted it as a barline, making Beethoven 5 page 1 seventeen measures when
+it is sixteen. Five staves agreed on the wrong answer, because all five print
+the same time signature: agreement across staves cannot catch an error every
+staff shares. It is separated by WIDTH — a barline is about a fifth of a staff
+space wide and a digit more than a whole one — which is what
+`MAX_BARLINE_WIDTH_SPACES` is for.
+
+Beethoven 5 page 1 has five tacet staves — Flauti, Oboi, Corni, Trombe, Timpani
+— and all five return 16.
 
     python3 benchmarks/omr-first-run-2026-08/probe_page_measures.py
 
@@ -55,6 +63,20 @@ DARK_FRACTION = 0.92
 #: other; collapse the pair so the first measure is not counted twice.
 BRACKET_MERGE_PX = 25
 
+#: How far beyond the staff to look for the column continuing, and how much of
+#: that strip must be inked. A barline is drawn THROUGH the gap to the next
+#: staff of its bracketed group; a time signature stops at the staff lines.
+#: EITHER side counts, because a barline stops at a group boundary: Timpani is
+#: the bottom staff of its bracket here, so looking only below it found one
+#: barline out of seventeen. Measured on this page:
+#: every real barline scores 1.00 and the time signature 0.05, so the threshold
+#: is not doing delicate work.
+#:
+#: Width cannot make this distinction and was tried first: the 2/4's digits
+#: align into a column six pixels wide, exactly a barline's width.
+BELOW_STAFF_PX = 22
+BELOW_STAFF_MIN_INK = 0.5
+
 
 def columns(page: np.ndarray, y0: int, y1: int) -> list[int]:
     dark = (page[y0:y1 + 1, :] < 128).mean(axis=0) > DARK_FRACTION
@@ -64,7 +86,18 @@ def columns(page: np.ndarray, y0: int, y1: int) -> list[int]:
             runs[-1].append(x)
         else:
             runs.append([x])
-    centres = [int(np.mean(r)) for r in runs]
+    # Keep only the columns that carry on past the staff — see BELOW_STAFF_PX.
+    above = page[max(0, y0 - 3 - BELOW_STAFF_PX):max(0, y0 - 3), :] < 128
+    below = page[y1 + 3:y1 + 3 + BELOW_STAFF_PX, :] < 128
+    kept = []
+    for run in runs:
+        reach = 0.0
+        for strip in (above[:, run[0]:run[-1] + 1], below[:, run[0]:run[-1] + 1]):
+            if strip.size:
+                reach = max(reach, float(strip.mean(axis=0).max()))
+        if reach >= BELOW_STAFF_MIN_INK:
+            kept.append(run)
+    centres = [int(np.mean(r)) for r in kept]
     if len(centres) > 1 and centres[1] - centres[0] < BRACKET_MERGE_PX:
         centres = centres[1:]
     return centres

@@ -67,34 +67,74 @@ better on any metric that only counts answers, so the negatives are the test
 that matters.
 
 ```
-beet5-scan-p1      sys0  OK       want=2/4   got=2/4   votes=11/12  median 0.55
-beet5-scan-p2..p6  (10 systems)   want=None  got=None          — silent
-e2e-beethoven      sys0  OK       want=2/4   got=2/4   votes=18/18  median 0.76
-e2e-brahms         sys0  OK       want=6/8   got=6/8   votes=19/21  median 0.78
-e2e-mahler         sys0  OK       want=2/2   got=2/2   votes=38/38  median 0.69
-ravel-bolero       sys0  silent-C want=C     got=None
-handel-reduction   sys0  silent-C want=C     got=None
+beet5-scan-p1      sys0  OK   want=2/4  got=2/4  votes=11/12  median 0.55
+beet5-scan-p2..p6  (10 systems)  want=None  got=None       — silent
+e2e-beethoven      sys0  OK   want=2/4  got=2/4  votes=18/18  median 0.76
+e2e-brahms         sys0  OK   want=6/8  got=6/8  votes=19/21  median 0.78
+e2e-mahler         sys0  OK   want=2/2  got=2/2  votes=38/38  median 0.69
+ravel-bolero       sys0  OK   want=C    got=C    votes=24/27  median 0.76
+handel-reduction   sys0  OK   want=C    got=C    votes=12/12  median 0.76
+bach-wtc           sys0  OK   want=C    got=C    votes=10/11  median 0.75
+wtc-book-p2        sys0  OK   want=C    got=C    votes=2/2    median 0.76
+wtc-book-p2        sys1..5       want=None  got=None       — silent
+wtc-book-p3        (6 systems)   want=None  got=None       — silent
 
-correct 4   wrong 0   missed 0   correct silences 12
+correct 8   wrong 0   missed 0   correct silences 21
 ```
 
-Four readings, **zero wrong**, twelve correct abstentions — across a 600 dpi
-scan of 19th-century type and pages engraved by LilyPond in a different font
-from the templates.
+Eight readings, **zero wrong**, twenty-one correct abstentions — across a 600
+dpi scan of 19th-century type, a third-party engraved PDF, and pages set by
+LilyPond in a different font from the templates.
+
+## Common time, added 2026-08-31, and the one withheld with it
+
+The first version read every meter written as digits and none of the two written
+as a letter, which is most of the repertoire. `timeSigCommon` and
+`timeSigCutCommon` were added to `symbol_library/builder.py` and the library
+rebuilt — every pre-existing template came back byte-identical, which is the
+check that mattered, since the clef and key-signature readers share it.
+
+A letter meter is one glyph two spaces tall centred on the middle line, so it is
+padded into the same four-space box and the search stays one-dimensional. `C`
+turned out to be the strongest reading in the corpus: five common-time pages at
+0.745 to 0.761, against 0.50 to 0.62 for the scanned digit meters.
+
+**Cut common was measured and withheld.** A C with a stroke through it
+correlates with any vertical ink crossing any rounded blob, and with it enabled
+the sweep read a meter on **seven systems that print none** — Beethoven 5 scan
+pages 4 and 5, and four systems of WTC I Prelude 1 — at 0.51 to 0.56, over a
+threshold of 0.50:
+
+```
+beet5-scan-p4  sys0  WRONG  want=None  got=C|  votes=7/11  0.5314
+beet5-scan-p5  sys0  WRONG  want=None  got=C|  votes=5/9   0.5109
+wtc-book-p3    sys0  WRONG  want=None  got=C|  votes=2/2   0.5554
+```
+
+No page in the corpus prints a real cut-C, so there was no evidence for what a
+true one scores and no basis for a threshold between them. 2/2 spelled in digits
+is still read — the Mahler fixture, 38 staves of 38. The glyph stays in the
+library, so restoring it is one line plus the corpus page that would justify it.
 
 ### End to end on the page that started it
+
+All figures against the corrected 16-measure window — the page was scored
+against 17 until the ground-truth probe was found to be counting the time
+signature itself as a barline (`../omr-first-run-2026-08/BARLINES.md`).
 
 | | before | after |
 |---|---|---|
 | meter emitted | `C` (4/4) | **`2/4`** |
 | staves carrying it | 12, from `detected_propagated` | 12, from `header_reader` |
 | LilyPond bar-check failures | 154 | **104** |
-| duration recall (mm.1–17) | 0.340 | **0.352** |
-| pitch recall | 0.579 | 0.579 (unchanged, as expected) |
+| pitch recall | 0.612 | 0.612 (unchanged, as expected) |
 
-The duration gain is small and real: `_reconcile_measure_to_meter` re-reads a
-beam level to make a bar land exactly on the meter, and it had been given the
-wrong meter to land on.
+The bar-check figure is the one that moved: a third of the failures were bars
+measured against the wrong meter. Duration recall was unchanged at 0.360 on this
+page once the window was corrected — `_reconcile_measure_to_meter` re-reads a
+beam level to make a bar land exactly on the meter, and giving it the right
+meter to land on helped less here than the earlier mis-scored comparison
+suggested.
 
 ### Six pages, which is where the second defect showed itself
 

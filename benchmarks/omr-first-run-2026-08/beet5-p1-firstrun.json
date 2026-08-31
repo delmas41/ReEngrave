@@ -3,7 +3,7 @@
   "page_index": 1,
   "measures_window": [
     1,
-    17
+    16
   ],
   "dossier": null,
   "structure": {
@@ -11,7 +11,7 @@
     "systems_omr": 1,
     "staves_truth": 12,
     "staves_omr": 12,
-    "measures_truth": 17,
+    "measures_truth": 16,
     "measures_omr": 13
   },
   "clef_accuracy": "10/12",
@@ -19,25 +19,25 @@
   "key_signatures_actually_read": 2,
   "pooled": {
     "exact": {
-      "truth": 159,
+      "truth": 147,
       "omr": 170,
-      "matched": 92,
-      "recall": 0.5786,
-      "precision": 0.5412
+      "matched": 90,
+      "recall": 0.6122,
+      "precision": 0.5294
     },
     "step": {
-      "truth": 159,
+      "truth": 147,
       "omr": 170,
-      "matched": 118,
-      "recall": 0.7421,
-      "precision": 0.6941
+      "matched": 115,
+      "recall": 0.7823,
+      "precision": 0.6765
     },
     "with_duration": {
-      "truth": 159,
+      "truth": 147,
       "omr": 170,
-      "matched": 54,
-      "recall": 0.3396,
-      "precision": 0.3176
+      "matched": 53,
+      "recall": 0.3605,
+      "precision": 0.3118
     }
   },
   "per_staff": [
@@ -148,21 +148,21 @@
       "key_read": false,
       "key_ok": false,
       "exact": {
-        "truth": 22,
+        "truth": 20,
         "omr": 22,
         "matched": 8,
-        "recall": 0.3636,
+        "recall": 0.4,
         "precision": 0.3636
       },
       "step": {
-        "truth": 22,
+        "truth": 20,
         "omr": 22,
         "matched": 8,
-        "recall": 0.3636,
+        "recall": 0.4,
         "precision": 0.3636
       },
       "with_duration": {
-        "truth": 22,
+        "truth": 20,
         "omr": 22,
         "matched": 0,
         "recall": 0.0,
@@ -276,24 +276,24 @@
       "key_read": false,
       "key_ok": false,
       "exact": {
-        "truth": 28,
+        "truth": 27,
         "omr": 23,
         "matched": 14,
-        "recall": 0.5,
+        "recall": 0.5185,
         "precision": 0.6087
       },
       "step": {
-        "truth": 28,
+        "truth": 27,
         "omr": 23,
         "matched": 19,
-        "recall": 0.6786,
+        "recall": 0.7037,
         "precision": 0.8261
       },
       "with_duration": {
-        "truth": 28,
+        "truth": 27,
         "omr": 23,
         "matched": 12,
-        "recall": 0.4286,
+        "recall": 0.4444,
         "precision": 0.5217
       }
     },
@@ -308,25 +308,25 @@
       "key_read": false,
       "key_ok": false,
       "exact": {
-        "truth": 32,
+        "truth": 28,
         "omr": 29,
-        "matched": 17,
-        "recall": 0.5312,
-        "precision": 0.5862
+        "matched": 16,
+        "recall": 0.5714,
+        "precision": 0.5517
       },
       "step": {
-        "truth": 32,
+        "truth": 28,
         "omr": 29,
-        "matched": 22,
-        "recall": 0.6875,
-        "precision": 0.7586
+        "matched": 21,
+        "recall": 0.75,
+        "precision": 0.7241
       },
       "with_duration": {
-        "truth": 32,
+        "truth": 28,
         "omr": 29,
-        "matched": 15,
-        "recall": 0.4688,
-        "precision": 0.5172
+        "matched": 14,
+        "recall": 0.5,
+        "precision": 0.4828
       }
     },
     {
@@ -340,25 +340,25 @@
       "key_read": false,
       "key_ok": false,
       "exact": {
-        "truth": 30,
-        "omr": 30,
-        "matched": 3,
-        "recall": 0.1,
-        "precision": 0.1
-      },
-      "step": {
-        "truth": 30,
-        "omr": 30,
-        "matched": 7,
-        "recall": 0.2333,
-        "precision": 0.2333
-      },
-      "with_duration": {
-        "truth": 30,
+        "truth": 26,
         "omr": 30,
         "matched": 2,
-        "recall": 0.0667,
+        "recall": 0.0769,
         "precision": 0.0667
+      },
+      "step": {
+        "truth": 26,
+        "omr": 30,
+        "matched": 6,
+        "recall": 0.2308,
+        "precision": 0.2
+      },
+      "with_duration": {
+        "truth": 26,
+        "omr": 30,
+        "matched": 1,
+        "recall": 0.0385,
+        "precision": 0.0333
       }
     },
     {
@@ -372,24 +372,24 @@
       "key_read": true,
       "key_ok": true,
       "exact": {
-        "truth": 20,
+        "truth": 19,
         "omr": 21,
         "matched": 12,
-        "recall": 0.6,
+        "recall": 0.6316,
         "precision": 0.5714
       },
       "step": {
-        "truth": 20,
+        "truth": 19,
         "omr": 21,
         "matched": 13,
-        "recall": 0.65,
+        "recall": 0.6842,
         "precision": 0.619
       },
       "with_duration": {
-        "truth": 20,
+        "truth": 19,
         "omr": 21,
         "matched": 9,
-        "recall": 0.45,
+        "recall": 0.4737,
         "precision": 0.4286
       }
     },

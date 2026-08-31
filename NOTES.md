@@ -12,22 +12,26 @@ question had never been asked: hand the pipeline a scan and see what comes out.
 
 `benchmarks/omr-first-run-2026-08/` does it — Beethoven 5 page 1 of the IMSLP
 scan, defaults, **no dossier**, scored against the Gradus reference, with the
-page's 17 measures established independently of the pipeline.
+page's 16 measures established independently of the pipeline.
 
 **The components are far better than their composition.** Layout is perfect —
 113 staves and 11 systems across six pages, all exact, including four pages
 where the staff count changes between the two systems. Clefs 10/12. Three
-quarters of noteheads on the right line (`step` recall 0.742). And the engraved
+quarters of noteheads on the right line (`step` recall 0.782). And the engraved
 result is still not a transcription of Beethoven 5:
 
 - ~~**meter never read**~~ — worse than that, and now **FIXED 2026-08-31**: the
   page reported common time on all twelve staves, propagated from barline
   fragments read as the digit 4. A header meter reader plus a corroboration
   guard take it to 2/4. See `benchmarks/omr-timesig-2026-08/FINDINGS.md`;
-- **4 of 17 barlines missed** — one at the front, three consecutive at the back;
+- ~~**4 of 17 barlines missed**~~ — three of sixteen, and **FIXED 2026-08-31**:
+  the scan is warped and the connectivity probe assumed barlines are vertical.
+  17/17 with 0 false. The fourth "miss" was an error in the benchmark's own
+  ground truth, which counted the time signature as a barline;
 - **key signatures read on 2 of 12 staves** (29% over six pages), which is the
-  whole distance between `step` recall 0.742 and exact-pitch recall 0.579;
-- **duration recall 0.340**, half the notes that are correctly located;
+  whole distance between `step` recall 0.782 and exact-pitch recall 0.612 —
+  now the largest remaining gap on the page;
+- **duration recall 0.360**, half the notes that are correctly located;
 - 24 of 170 emitted notes sit on staves that print nothing but rests.
 
 Two things this reframes. **OMR-NED is not yet a tracking number for scans**:

@@ -63,6 +63,12 @@ BARLINE_MIN_HEIGHT_FRAC = 0.80
 BARLINE_MAX_WIDTH_LINESPACINGS = 0.7  # stems are typically ~0.3 line-spacing wide
 BARLINE_MIN_DISTANCE_PX = 60      # neighbouring barlines must be ≥60px apart
 
+# How much of the weakest band of a column must be ink before it counts as
+# spanning the system (`_spans_system`). Measured over four braced piano systems
+# of WTC I: every real interior barline 1.00, every stem 0.52 or below. The gap
+# is wide enough that this is a description, not a tuned threshold.
+SPAN_MIN_INK = 0.9
+
 
 # ─── Barline detection ───────────────────────────────────────────────────────
 
@@ -200,11 +206,110 @@ def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
     )
 
 
+def _barline_x_at(
+    x_by_staff: dict[int, int] | None, staves: list[Staff], y: float, fallback: int
+) -> int:
+    """Where this barline is expected to cross height `y`.
+
+    A barline is a straight line across the system. On a flat scan it is also a
+    VERTICAL one, and everything here used to assume the two are the same thing.
+    They are not: on the IMSLP Beethoven 5 the paper is warped, and one barline's
+    x drifts monotonically by up to 40 px between the top staff and the bottom —
+    more than three times the clustering tolerance. A probe dropped straight down
+    from the top of the line lands beside it by the third gap.
+
+    So the line is fitted to the staves that actually observed it and evaluated
+    at `y`. Fewer than two observations leaves nothing to fit a slope to, and the
+    caller's single column stands.
+
+    The fit is Theil-Sen — the median of the pairwise slopes — and not least
+    squares, because some of the observations are not the barline. A note stem
+    that happens to sit near the column joins the cluster and votes for it, and
+    two such among nine dragged the fitted line far enough off that a real
+    barline still scored 0.36 with the slope modelled. The median ignores them.
+    """
+    if not x_by_staff or len(x_by_staff) < 2:
+        return fallback
+    centres = {s.staff_index: (s.top_y + s.bottom_y) / 2.0 for s in staves}
+    points = [(centres[i], float(x)) for i, x in x_by_staff.items() if i in centres]
+    if len(points) < 2:
+        return fallback
+    slopes = [
+        (x_b - x_a) / (y_b - y_a)
+        for i, (y_a, x_a) in enumerate(points)
+        for (y_b, x_b) in points[i + 1:]
+        if abs(y_b - y_a) >= 1.0
+    ]
+    if not slopes:
+        return fallback
+    slope = float(np.median(slopes))
+    intercept = float(np.median([x - slope * y_i for y_i, x in points]))
+    return int(round(slope * y + intercept))
+
+
+def _spans_system(
+    bin_img: np.ndarray,
+    staves: list[Staff],
+    x_col: int,
+    *,
+    x_by_staff: dict[int, int] | None = None,
+    bands: int = 8,
+    half_width: int = 4,
+) -> float:
+    """Ink fraction of the WEAKEST band of a column drawn down the whole system.
+
+    Stricter than `_intersystem_connectivity`, which asks only whether the gaps
+    between staves are inked. A long stem in a fugue can cross a gap — WTC I
+    page 6 has one at x=3018 that scores 1.00 connectivity and is not a barline
+    — but nothing except a barline is inked from the top of the top staff to the
+    bottom of the bottom one. Measured over four braced piano systems of WTC I:
+    every real interior barline 1.00, every stem and every false candidate 0.52
+    or below. Not a threshold that needs tuning.
+
+    The band-by-band minimum is what makes it a SPAN test rather than a coverage
+    one: a column half-inked over its whole length would average the same as a
+    barline broken in the middle, and only one of those is a barline. Each band
+    is probed at the x the line is expected to cross it, so a leaning barline
+    still reads as continuous.
+    """
+    ordered = sorted(staves, key=lambda s: s.top_y)
+    top, bottom = ordered[0].top_y, ordered[-1].bottom_y
+    if bottom <= top:
+        return 0.0
+    height, width = bin_img.shape
+    step = (bottom - top) / float(bands)
+    weakest = 1.0
+    for i in range(bands):
+        y0 = max(0, int(round(top + i * step)))
+        y1 = min(height, int(round(top + (i + 1) * step)))
+        if y1 <= y0:
+            continue
+        x_here = _barline_x_at(x_by_staff, staves, (y0 + y1) / 2.0, x_col)
+        x0 = max(0, x_here - half_width)
+        x1 = min(width, x_here + half_width + 1)
+        if x1 <= x0:
+            return 0.0
+        strip = bin_img[y0:y1, x0:x1] < 128
+        if strip.size == 0:
+            return 0.0
+        weakest = min(weakest, float(strip.mean(axis=0).max()))
+    return weakest
+
+
 def _intersystem_connectivity(
-    bin_img: np.ndarray, staves: list[Staff], x_col: int, x_tolerance: int = 5
+    bin_img: np.ndarray,
+    staves: list[Staff],
+    x_col: int,
+    x_tolerance: int = 5,
+    *,
+    x_by_staff: dict[int, int] | None = None,
 ) -> float:
     """Fraction of inter-staff gaps in this system that have continuous
-    vertical ink at column `x_col` (within ±`x_tolerance` px).
+    ink where this barline runs (within ±`x_tolerance` px).
+
+    `x_by_staff` gives the x each staff observed the line at; with it the probe
+    follows the line's slope rather than dropping a vertical column. Without it
+    the behaviour is the old vertical probe.
 
     A real barline is drawn THROUGH the whitespace between staves — it
     connects the top staff to the bottom staff visually. A false-positive
@@ -238,8 +343,11 @@ def _intersystem_connectivity(
         if gap_bot <= gap_top:
             n_connected += 1  # adjacent staves, no actual gap
             continue
-        x0 = max(0, x_col - x_tolerance)
-        x1 = min(w, x_col + x_tolerance + 1)
+        x_here = _barline_x_at(
+            x_by_staff, staves, (gap_top + gap_bot) / 2.0, x_col
+        )
+        x0 = max(0, x_here - x_tolerance)
+        x1 = min(w, x_here + x_tolerance + 1)
         gap_top_c = max(0, gap_top)
         gap_bot_c = min(h, gap_bot)
         if gap_top_c >= gap_bot_c or x0 >= x1:
@@ -279,22 +387,39 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     x_tolerance = 12  # px: barlines on different staves may not align exactly
 
     for sys_idx, staves in systems.items():
-        # Gather candidate x positions across all staves
-        all_xs: list[int] = []
+        # Gather candidate x positions across all staves, keeping WHICH staff
+        # saw each one: that is what lets the connectivity probe follow a
+        # barline that leans (see `_barline_x_at`).
+        observations: list[tuple[int, int]] = []
         for staff in staves:
-            all_xs.extend(_detect_barlines_per_staff(bin_img, staff))
-        if not all_xs:
+            for x in _detect_barlines_per_staff(bin_img, staff):
+                observations.append((x, staff.staff_index))
+        if not observations:
             continue
-        all_xs.sort()
+        observations.sort()
 
         # Cluster close x's together (within x_tolerance) and count how many
         # staves in the system voted for each cluster.
         clusters: list[list[int]] = []
-        for x in all_xs:
+        cluster_obs: list[list[tuple[int, int]]] = []
+        for x, staff_index in observations:
             if clusters and x - clusters[-1][-1] <= x_tolerance:
                 clusters[-1].append(x)
+                cluster_obs[-1].append((x, staff_index))
             else:
                 clusters.append([x])
+                cluster_obs.append([(x, staff_index)])
+
+        def _x_by_staff(index: int) -> dict[int, int]:
+            """One x per staff for this cluster, nearest the cluster's mean
+            where a staff fired twice."""
+            members = cluster_obs[index]
+            mean = sum(x for x, _ in members) / len(members)
+            best: dict[int, int] = {}
+            for x, staff_index in members:
+                if staff_index not in best or abs(x - mean) < abs(best[staff_index] - mean):
+                    best[staff_index] = x
+            return best
 
         n_staves = len(staves)
         # Vote threshold: real barlines are drawn across the SYSTEM but
@@ -360,25 +485,49 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         # open score and the votes stand alone. Either way the answer comes
         # from the page in hand.
         vote_passed = [
-            (int(round(sum(c) / len(c))), len(c)) for c in clusters
+            (int(round(sum(c) / len(c))), i) for i, c in enumerate(clusters)
             if len(c) >= min_votes
         ]
         connectivity_of = {
-            x: _intersystem_connectivity(bin_img, staves, x)
-            for x, _ in vote_passed
-        } if n_staves >= 3 else {}
+            x: _intersystem_connectivity(
+                bin_img, staves, x, x_by_staff=_x_by_staff(i)
+            )
+            for x, i in vote_passed
+        } if n_staves >= 2 else {}
         n_connected = sum(1 for v in connectivity_of.values() if v >= 0.4)
         barlines_cross_gaps = (
             len(vote_passed) < 2 or n_connected * 2 >= len(vote_passed)
         )
 
         accepted: list[int] = []
-        for cluster in clusters:
+        for cluster_index, cluster in enumerate(clusters):
             x_mean = int(round(sum(cluster) / len(cluster)))
             n_votes = len(cluster)
             if n_staves < 3:
-                # Vote-only rule; connectivity isn't meaningful here.
+                # Small systems keep the vote-only acceptance, and gain a
+                # rescue on top of it. The vote — both staves must agree — is
+                # right when both can see, and on a page where one hand plays
+                # continuously the busy staff stops seeing: on WTC I Prelude 1
+                # page 4 the left hand reads all four barlines of every system
+                # while the right hand, thick with sixteenths, reads none of
+                # them and thirty-one of its own stems instead, and five systems
+                # of three bars each came out as ONE bar.
+                #
+                # The rescue tests the span, not the gap. A fugue's long stem
+                # can cross the brace gap and score full connectivity (WTC I
+                # p.6 has one), but only a barline is inked from the top of the
+                # upper staff to the bottom of the lower.
+                #
+                # Acceptance stays vote-FIRST: a system's opening rule often
+                # does not span the brace either (the brace is drawn separately)
+                # and letting the span test veto costs every system its first
+                # barline — measured, four per system down to three.
                 if n_votes >= min_votes:
+                    accepted.append(x_mean)
+                    continue
+                if n_votes >= 1 and _spans_system(
+                    bin_img, staves, x_mean, x_by_staff=_x_by_staff(cluster_index)
+                ) >= SPAN_MIN_INK:
                     accepted.append(x_mean)
                 continue
             if not barlines_cross_gaps:
@@ -388,13 +537,26 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 continue
             connectivity = connectivity_of.get(x_mean)
             if connectivity is None:
-                connectivity = _intersystem_connectivity(bin_img, staves, x_mean)
+                connectivity = _intersystem_connectivity(
+                    bin_img, staves, x_mean, x_by_staff=_x_by_staff(cluster_index)
+                )
             # Prong A: vote-pass + connectivity sanity check.
             if n_votes >= min_votes and connectivity >= 0.4:
                 accepted.append(x_mean)
                 continue
             # Prong B: rescue sparse real barlines via strong connectivity.
-            if connectivity >= 0.7 and n_votes >= max(3, int(0.3 * n_staves)):
+            #
+            # A braced piano system needs its own floor. Requiring both staves
+            # to vote is right when both can see, and on a page where one hand
+            # plays continuously the busy staff stops seeing: on WTC I Prelude 1
+            # page 2 the left hand reads all four barlines of every system and
+            # the right hand, thick with sixteenths, reads none of them and
+            # thirty-one of its own stems instead — so five systems of three
+            # bars each came out as one bar. The brace gap tells those apart
+            # exactly: every real barline there scores 1.00 across it and every
+            # stem 0.00, because a stem stops at its own staff.
+            rescue_min_votes = 1 if n_staves <= 2 else max(3, int(0.3 * n_staves))
+            if connectivity >= 0.7 and n_votes >= rescue_min_votes:
                 accepted.append(x_mean)
         accepted.sort()
         # Second pass: outlier-small-gap rejection. Real measure widths

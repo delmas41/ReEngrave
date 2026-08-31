@@ -8,9 +8,11 @@ import pytest
 from tools.omr.rhythm import drop_uncorroborated_meter_changes
 from tools.omr.time_signature_locator import (
     DEFAULT_LOCATOR_CONFIG,
+    DEFAULT_METERS,
     LocatedTimeSignature,
     TimeSignatureLocatorConfig,
     _digit_templates,
+    _letter_templates,
     _meter_templates,
     locate_time_signature,
     vote_system_time_signature,
@@ -47,6 +49,17 @@ def _paste_meter(img: np.ndarray, numerator: str, denominator: str, x: int) -> N
         region[:] = np.minimum(region, 255 - scaled)
 
 
+def _paste_letter(img: np.ndarray, smufl_name: str, x: int) -> None:
+    """Draw a letter-form meter: one glyph two spaces tall, centred on the staff."""
+    glyph = _letter_templates(DEFAULT_LOCATOR_CONFIG.template_em_px)[smufl_name]
+    height = 2 * SPACING
+    scaled = cv2.resize(glyph, (int(glyph.shape[1] * height / glyph.shape[0]), height),
+                        interpolation=cv2.INTER_AREA)
+    y0 = STAFF_LINES[1]
+    region = img[y0:y0 + height, x:x + scaled.shape[1]]
+    region[:] = np.minimum(region, 255 - scaled)
+
+
 def _cell(img: np.ndarray) -> MeasureCell:
     return MeasureCell(
         page_index=0, system_index=0, staff_index=0, measure_index=-1,
@@ -60,13 +73,13 @@ def _cell(img: np.ndarray) -> MeasureCell:
 class TestTemplates:
     def test_composite_is_four_staff_spaces_tall(self):
         em = DEFAULT_LOCATOR_CONFIG.template_em_px
-        for _meter, template in _meter_templates(em, ((2, 4), (12, 8))):
+        for _meter, template in _meter_templates(em, ((2, 4, "2/4"), (12, 8, "12/8"))):
             assert template.shape[0] == round(4 * em / 4)
 
     def test_two_digit_numerator_is_wider_than_one(self):
         em = DEFAULT_LOCATOR_CONFIG.template_em_px
-        built = dict(_meter_templates(em, ((2, 4), (12, 8))))
-        assert built[(12, 8)].shape[1] > built[(2, 4)].shape[1]
+        built = dict(_meter_templates(em, ((2, 4, "2/4"), (12, 8, "12/8"))))
+        assert built[(12, 8, "12/8")].shape[1] > built[(2, 4, "2/4")].shape[1]
 
     def test_digits_are_not_clipped_by_the_stack(self):
         # Bravura's digits overshoot two staff spaces by a pixel or two. Building
@@ -76,7 +89,7 @@ class TestTemplates:
         # why this is a test and not a comment.
         em = DEFAULT_LOCATOR_CONFIG.template_em_px
         digits = _digit_templates(em)
-        template = dict(_meter_templates(em, ((2, 4),)))[(2, 4)]
+        template = dict(_meter_templates(em, ((2, 4, "2/4"),)))[(2, 4, "2/4")]
         expected = digits["2"].sum() + digits["4"].sum()
         scale = (template.shape[0] / 2) / digits["2"].shape[0]
         assert template.sum() > 0.75 * expected * scale ** 2
@@ -104,6 +117,19 @@ class TestReadsAMeter:
         assert read is not None
         assert abs(read.x_canonical - 310) <= SPACING
 
+    def test_finds_common_time(self):
+        img = _blank()
+        _paste_letter(img, "timeSigCommon", x=200)
+        read = locate_time_signature(_cell(img))
+        assert read is not None
+        assert (read.numerator, read.denominator, read.raw) == (4, 4, "C")
+
+    def test_cut_common_is_not_searched_for(self):
+        # Built, measured, withheld: it read a meter on seven systems printing
+        # none. Its glyph is still in the library, so this guards the decision
+        # rather than the absence of a template.
+        assert all(raw != "C|" for _n, _d, raw in DEFAULT_METERS)
+
     def test_empty_staff_reads_nothing(self):
         read = locate_time_signature(_cell(_blank()))
         assert read is None
@@ -118,8 +144,9 @@ class TestReadsAMeter:
 
 
 class TestVote:
-    def _read(self, numerator, denominator, score=0.6):
-        return LocatedTimeSignature(numerator, denominator, score, 100)
+    def _read(self, numerator, denominator, score=0.6, raw=None):
+        return LocatedTimeSignature(numerator, denominator, score, 100,
+                                    raw or f"{numerator}/{denominator}")
 
     def test_agreement_carries_the_system(self):
         reads = [self._read(2, 4) for _ in range(8)] + [None, None]

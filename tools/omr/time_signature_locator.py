@@ -63,17 +63,26 @@ pages where the whole system sits below the bar, and one staff drifting over it
 cannot carry a page. The vote is the mechanism; the threshold only decides who
 gets to vote.
 
+## Common time, and the one that was withheld
+
+`C` is read, as a single glyph two spaces tall centred on the middle line,
+padded into the same four-space box so the search stays one-dimensional. It is
+easily the strongest reading in the corpus — five common-time pages at 0.745 to
+0.761, against 0.50 to 0.62 for the scanned digit meters.
+
+**Cut common is not**, though its template was built at the same time and sits
+in the symbol library. A C with a stroke through it correlates with any vertical
+ink crossing any rounded blob, and it claimed a meter on seven systems that
+print none — two pages of the Beethoven scan and four systems of a Bach prelude
+— at 0.51 to 0.56, over a threshold of 0.50. No page in the corpus prints a real
+cut-C, so there was nothing to measure the other side of that against. 2/2 is
+still read where it is spelled in digits, which is how the Mahler fixture prints
+it. See `DEFAULT_METERS`.
+
 ## What it does not read
 
-`timeSigCommon` and `timeSigCutCommon` — the C and ¢ glyphs — are not in the
-symbol library, so a common-time page gets no reading here and abstains. That
-is not a gap in coverage the way it looks: the detector reads those two glyphs
-well (they are distinctive, and unlike the digits they are not confusable with
-a barline), and `rhythm.parse_time_signature` already has a path for them. This
-reader exists for the case the detector cannot do.
-
-It also reads only the FIRST meter of a system. A mid-system meter change is
-not looked for, and will keep whatever the detector says about it.
+Only the FIRST meter of a system. A mid-system meter change is not looked for,
+and will keep whatever the detector says about it.
 """
 from __future__ import annotations
 
@@ -89,16 +98,37 @@ from tools.omr.header_ink import staff_metrics
 from tools.omr.symbol_library.loader import SymbolLibrary
 from tools.omr.types import MeasureCell
 
-#: Meters worth searching for. Every one is a real repertoire meter and the
-#: denominators are all note values; adding implausible pairs costs accuracy
-#: rather than coverage, because a wrong template that happens to fit some ink
-#: is a wrong ANSWER, where a missing template is only an abstention.
-DEFAULT_METERS: tuple[tuple[int, int], ...] = (
-    (2, 2), (3, 2), (4, 2),
-    (2, 4), (3, 4), (4, 4), (5, 4), (6, 4), (7, 4), (9, 4), (12, 4),
-    (3, 8), (5, 8), (6, 8), (7, 8), (9, 8), (12, 8),
-    (6, 16), (9, 16), (12, 16),
+#: Meters worth searching for, as `(numerator, denominator, raw)`. Every one is
+#: a real repertoire meter and the denominators are all note values; adding
+#: implausible pairs costs accuracy rather than coverage, because a wrong
+#: template that happens to fit some ink is a wrong ANSWER, where a missing
+#: template is only an abstention.
+#:
+#: `C` is the letter form of 4/4, kept distinct from the digit spelling because
+#: `raw` should say what the page prints.
+#:
+#: **Cut common is deliberately absent.** Its template was built and measured
+#: alongside C on 2026-08-31 and withheld: a C with a stroke through it
+#: correlates with any vertical ink crossing any rounded blob, and it read a
+#: meter on seven systems that print none — Beethoven 5 scan pages 4 and 5, and
+#: four systems of WTC I Prelude 1 — at 0.51 to 0.56, over a threshold of 0.50.
+#: No page in the corpus prints a real cut-C, so there was no evidence for what
+#: a true one scores and no way to separate them. 2/2 spelled as digits is read
+#: (`e2e-mahler`, 38 staves of 38); ¢ abstains. The glyph is in the symbol
+#: library, so restoring it is one line plus the corpus page that justifies it.
+DEFAULT_METERS: tuple[tuple[int, int, str], ...] = (
+    (2, 2, "2/2"), (3, 2, "3/2"), (4, 2, "4/2"),
+    (2, 4, "2/4"), (3, 4, "3/4"), (4, 4, "4/4"), (5, 4, "5/4"), (6, 4, "6/4"),
+    (7, 4, "7/4"), (9, 4, "9/4"), (12, 4, "12/4"),
+    (3, 8, "3/8"), (5, 8, "5/8"), (6, 8, "6/8"), (7, 8, "7/8"), (9, 8, "9/8"),
+    (12, 8, "12/8"),
+    (6, 16, "6/16"), (9, 16, "9/16"), (12, 16, "12/16"),
+    (4, 4, "C"),
 )
+
+#: `raw` values that are drawn as one glyph centred on the staff rather than as
+#: two stacked rows of digits, and the SMuFL name of that glyph.
+LETTER_METERS = {"C": "timeSigCommon", "C|": "timeSigCutCommon"}
 
 
 @dataclass(frozen=True)
@@ -139,10 +169,9 @@ class LocatedTimeSignature:
     #: Left edge of the match, in the header cell's canonical pixels. Used by
     #: the vote only for reporting; agreement is on the meter, not the place.
     x_canonical: int
-
-    @property
-    def raw(self) -> str:
-        return f"{self.numerator}/{self.denominator}"
+    #: What the page prints: "3/4", or "C"/"C|" for the letter forms. Part of
+    #: the vote's key, so a page cannot average a C and a 4/4 into one answer.
+    raw: str = ""
 
     def as_dict(self, source: str = "header_reader") -> dict[str, object]:
         return {
@@ -167,6 +196,18 @@ def _digit_templates(em_px: int) -> dict[str, np.ndarray]:
     }
 
 
+@lru_cache(maxsize=4)
+def _letter_templates(em_px: int) -> dict[str, np.ndarray]:
+    """Ink-positive rasters for the C and cut-C glyphs, keyed by SMuFL name."""
+    library = SymbolLibrary.load()
+    wanted = set(LETTER_METERS.values())
+    return {
+        entry.smufl_name: (255 - entry.load_image()).astype(np.uint8)
+        for entry in library.entries
+        if entry.smufl_name in wanted and entry.size_px == em_px
+    }
+
+
 def _row(digits: dict[str, np.ndarray], text: str) -> np.ndarray:
     """Lay out a multi-digit number left to right, vertically centred."""
     glyphs = [digits[c] for c in text]
@@ -182,33 +223,47 @@ def _row(digits: dict[str, np.ndarray], text: str) -> np.ndarray:
 
 @lru_cache(maxsize=8)
 def _meter_templates(
-    em_px: int, meters: tuple[tuple[int, int], ...]
-) -> tuple[tuple[tuple[int, int], np.ndarray], ...]:
-    """One stacked template per meter, exactly four staff spaces tall.
+    em_px: int, meters: tuple[tuple[int, int, str], ...]
+) -> tuple[tuple[tuple[int, int, str], np.ndarray], ...]:
+    """One template per meter, exactly four staff spaces tall.
 
-    Bravura's digits overshoot two staff spaces by a pixel or two, so the
-    composite is assembled at the glyphs' natural size and then resized to the
-    four-space box. Assembling it directly into a 4x`space` box instead clips
-    the taller digits, which is how this was first written and why `timeSig2`
-    lost its foot.
+    Digit meters are the numerator's row stacked over the denominator's. The
+    letter forms are a single glyph two spaces tall, centred on the staff's
+    middle line — so it is padded into the same four-space box, which keeps the
+    search one-dimensional for both kinds.
+
+    Bravura's digits overshoot two staff spaces by a pixel or two, so a stack is
+    assembled at the glyphs' natural size and then resized to the four-space box.
+    Assembling it directly into a 4x`space` box instead clips the taller digits,
+    which is how this was first written and why `timeSig2` lost its foot.
     """
     digits = _digit_templates(em_px)
+    letters = _letter_templates(em_px)
     space = em_px / 4.0
+    target_h = int(round(4 * space))
     out = []
-    for numerator, denominator in meters:
-        top = _row(digits, str(numerator))
-        bottom = _row(digits, str(denominator))
-        width = max(top.shape[1], bottom.shape[1])
-        half = max(top.shape[0], bottom.shape[0])
-        stacked = np.zeros((half * 2, width), np.uint8)
-        for glyphs, y0 in ((top, 0), (bottom, half)):
-            y = y0 + (half - glyphs.shape[0]) // 2
-            x = (width - glyphs.shape[1]) // 2
-            stacked[y:y + glyphs.shape[0], x:x + glyphs.shape[1]] = glyphs
-        target_h = int(round(4 * space))
+    for numerator, denominator, raw in meters:
+        if raw in LETTER_METERS:
+            glyph = letters.get(LETTER_METERS[raw])
+            if glyph is None:
+                continue  # library predates the letter forms; abstain on them
+            stacked = np.zeros((glyph.shape[0] * 2, glyph.shape[1]), np.uint8)
+            y = (stacked.shape[0] - glyph.shape[0]) // 2
+            stacked[y:y + glyph.shape[0], :] = glyph
+            width = glyph.shape[1]
+        else:
+            top = _row(digits, str(numerator))
+            bottom = _row(digits, str(denominator))
+            width = max(top.shape[1], bottom.shape[1])
+            half = max(top.shape[0], bottom.shape[0])
+            stacked = np.zeros((half * 2, width), np.uint8)
+            for glyphs, y0 in ((top, 0), (bottom, half)):
+                y = y0 + (half - glyphs.shape[0]) // 2
+                x = (width - glyphs.shape[1]) // 2
+                stacked[y:y + glyphs.shape[0], x:x + glyphs.shape[1]] = glyphs
         target_w = max(2, int(round(width * target_h / stacked.shape[0])))
         out.append((
-            (numerator, denominator),
+            (numerator, denominator, raw),
             cv2.resize(stacked, (target_w, target_h), interpolation=cv2.INTER_AREA),
         ))
     return tuple(out)
@@ -261,7 +316,7 @@ def locate_time_signature(
         return None
 
     best: LocatedTimeSignature | None = None
-    for (numerator, denominator), template in _meter_templates(
+    for (numerator, denominator, raw), template in _meter_templates(
         config.template_em_px, tuple(config.meters)
     ):
         if template.shape[0] > strip.shape[0] or template.shape[1] > strip.shape[1]:
@@ -274,6 +329,7 @@ def locate_time_signature(
                 denominator=denominator,
                 score=float(score),
                 x_canonical=int(round(location[0] / scale)),
+                raw=raw,
             )
     if best is None or best.score < floor:
         return None
@@ -299,25 +355,25 @@ def vote_system_time_signature(
     total = len(reads) if n_staves is None else n_staves
     if total <= 0:
         return None
-    votes: Counter[tuple[int, int]] = Counter(
-        (r.numerator, r.denominator) for r in reads if r is not None
+    votes: Counter[tuple[int, int, str]] = Counter(
+        (r.numerator, r.denominator, r.raw) for r in reads if r is not None
     )
     if not votes:
         return None
     ranked = votes.most_common()
-    (numerator, denominator), count = ranked[0]
+    (numerator, denominator, raw), count = ranked[0]
     if len(ranked) > 1 and ranked[1][1] == count:
         return None  # a tie is not a reading
     needed = max(config.min_staves, int(round(config.min_staff_fraction * total)))
     if count < needed:
         return None
-    winners = [r for r in reads
-               if r is not None and (r.numerator, r.denominator) == (numerator, denominator)]
+    winners = [r for r in reads if r is not None
+               and (r.numerator, r.denominator, r.raw) == (numerator, denominator, raw)]
     scores = sorted(r.score for r in winners)
     return {
         "numerator": numerator,
         "denominator": denominator,
-        "raw": f"{numerator}/{denominator}",
+        "raw": raw,
         "source": "header_reader",
         "votes": count,
         "voters": total,

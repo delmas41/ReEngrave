@@ -60,13 +60,22 @@ CASES = [
     ("e2e-beethoven", FIXTURES / "beethoven-sym5-mvt1.pdf", 0, ["2/4"]),
     ("e2e-brahms", FIXTURES / "brahms-sym1-mvt1.pdf", 0, ["6/8"]),
     ("e2e-mahler", FIXTURES / "mahler-sym5-mvt1.pdf", 0, ["2/2"]),
-    # Both of these print the common-time C, which the symbol library has no
-    # template for. The expected result is an ABSTENTION, not a reading — and
-    # they earn their place by proving it is one. Labelling them 3/4 and 4/4
-    # from memory of the works, as this file first did, scored the correct
-    # abstention as a miss; the pages say C.
+    # Both print the common-time C. They were expected abstentions until
+    # 2026-08-31, when the C and cut-C glyphs were added to the symbol library;
+    # they are now expected READINGS, and they keep their note that labelling
+    # them 3/4 and 4/4 from memory of the works — as this file first did —
+    # scored a correct abstention as a miss. The page says C.
     ("ravel-bolero", PHASE4 / "ravel-bolero.pdf", 0, ["C"]),
     ("handel-reduction", PHASE4 / "handel-reduction.pdf", 0, ["C"]),
+    ("bach-wtc", PHASE4 / "bach-wtc.pdf", 0, ["C"]),
+    # WTC I Prelude 1, a real third-party PDF: page 2 prints C, page 3 (the
+    # same prelude continued) prints nothing.
+    ("wtc-book-p2", GRADUS / "PDF Scores" /
+     "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf", 2,
+     ["C", None, None, None, None, None]),
+    ("wtc-book-p3", GRADUS / "PDF Scores" /
+     "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf", 3,
+     [None, None, None, None, None, None]),
 ]
 
 
@@ -117,15 +126,7 @@ def main() -> None:
         for i, system in enumerate(systems):
             want = expected[i] if i < len(expected) else None
             got = system["meter"]["raw"] if system["meter"] else None
-            if want == "C":
-                # No common-time template exists, so silence is the right
-                # answer and any reading is a false one.
-                verdict = "silent-C" if got is None else "WRONG   "
-                if got is None:
-                    correct_silence += 1
-                else:
-                    wrong += 1
-            elif want is None and got is None:
+            if want is None and got is None:
                 verdict, correct_silence = "silent  ", correct_silence + 1
             elif want is not None and got == want:
                 verdict, right = "OK      ", right + 1

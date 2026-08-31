@@ -24,7 +24,10 @@
     f'4 r1 |
     d''4 c''4 |
     r1 |
-    r1 r4 r1 r4 r1 r4 r1 |
+    r1 |
+    r1 |
+    r1 |
+    c''4 |
   }
   \new Staff {
     \clef treble
@@ -42,7 +45,10 @@
     r1 |
     r1 |
     r1 |
-    r1 r4 r1 r1.. r1 |
+    r1 |
+    r1 |
+    r1.. |
+    r1 |
   }
   \new Staff {
     \clef treble
@@ -63,7 +69,10 @@
       r1 |
       r1 |
       r1 |
-      r4 r1 r4 r1 r4 r1 r1 |
+      r1 |
+      r1 |
+      r1 |
+      r1 |
       }
       \new Voice {
       \voiceTwo
@@ -79,7 +88,10 @@
       r1 |
       r1 |
       r1 |
-      r4 r1 r4 r1 r4 r1 r1 |
+      r1 |
+      r1 |
+      r1 |
+      r1 |
       }
     >>
   }
@@ -102,7 +114,10 @@
       <d f f>4 d'8 |
       r2 |
       r4 |
-      b8 r4 b8 d'8 <a b>8 <b a>8 |
+      r2 |
+      r2 |
+      c'8 |
+      a4 |
       }
       \new Voice {
       \voiceTwo
@@ -118,7 +133,10 @@
       <e' c'>8 |
       r2 |
       r4 |
-      r4 c'8 |
+      r2 |
+      r2 |
+      d'8 |
+      b2 |
       }
     >>
   }
@@ -138,7 +156,10 @@
     r1 |
     r1 |
     r1 |
-    r1 r4 r1 r1 r1 |
+    r1 |
+    r1 |
+    r1 |
+    r1 |
   }
   \new Staff {
     \clef treble
@@ -156,7 +177,10 @@
     r1 |
     r1 |
     r1 |
-    <f''' g''' a' c''>4 r1 r1 r4 r1 c''4 |
+    r1 |
+    r1 |
+    r4 r1 |
+    r1 |
   }
   \new Staff {
     \clef treble
@@ -174,7 +198,10 @@
     <e'' e' a'>8 r1 |
     r1 |
     r1 |
-    r1 r4 r1 r1 r1 |
+    r1 |
+    r1 |
+    r1 |
+    c''4 |
   }
   \new Staff {
     \clef treble
@@ -192,7 +219,10 @@
     r1 d''4 |
     r1 |
     f''8 <f'' f''>8 f''8 |
-    d''8 g''8 a''8 <f'' g''>8 e''2 d''8 g''8 g''8 f''8 |
+    e''2 |
+    d''8 g''8 g''8 <f'' g''>8 |
+    e''2 |
+    d''8 g''8 g''8 f''8 |
   }
   \new Staff {
     \clef treble
@@ -210,7 +240,10 @@
     e'8 <g' g'>8 g'8 g'8 |
     r2 |
     r2 |
-    a'2 r4 r8 r4 g'8 e'8 <d' e'>8 f'8 g'8 |
+    r2 |
+    r2 |
+    g'8 e'8 d'8 |
+    r2 |
   }
   \new Staff {
     \clef treble
@@ -231,7 +264,10 @@
       f''8 r4 |
       g''8 g''8 |
       <g'' e'' f''>4 |
-      d''8 <d'' e''>8 d''8 e''8 f''8 |
+      r2 |
+      c''1 |
+      <d'' d''>8 <d'' e''>8 <d'' d''>8 |
+      e''8 |
       }
       \new Voice {
       \voiceTwo
@@ -247,7 +283,10 @@
       f''8 r4 |
       g''8 g''8 |
       <g'' e'' f''>4 |
-      d''8 <d'' e''>8 d''8 e''8 f''8 |
+      r2 |
+      c''1 |
+      <d'' d''>8 <d'' e''>8 <d'' d''>8 |
+      e''8 |
       }
     >>
   }
@@ -267,7 +306,10 @@
     r4 |
     c'2 |
     r2 |
-    bes2 c'2 b2 |
+    r2 |
+    r2 |
+    r4 |
+    r2 |
   }
   \new Staff {
     \clef bass
@@ -288,7 +330,10 @@
       r1 |
       r1 |
       r1 |
-      r1 r1 r4 r1 r1 |
+      r1 r4 |
+      r1 |
+      r1 |
+      r1 |
       }
       \new Voice {
       \voiceTwo
@@ -304,7 +349,10 @@
       r1 |
       r1 |
       r1 |
-      r1 r1 r4 r1 r1 |
+      r1 r4 |
+      r1 |
+      r1 |
+      r1 |
       }
     >>
   }

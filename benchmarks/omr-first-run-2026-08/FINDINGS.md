@@ -13,8 +13,14 @@ The short version: **the parts of the pipeline that have been measured are in
 decent shape, and the parts that have never been measured are what make the
 output unusable.** Layout is exact, clefs are 10/12, and three quarters of the
 noteheads land on the right line — and the final engraved page is still not a
-transcription of Beethoven 5, because the meter was never read, four barlines
+transcription of Beethoven 5, because the meter was read wrong, three barlines
 were missed, and ten of twelve key signatures were never found.
+
+**Two of those three are fixed since**, on 2026-08-31 — the meter
+(`../omr-timesig-2026-08/`) and the barlines ([BARLINES.md](BARLINES.md)) — and
+the correction that mattered most was to this file's own ground truth. The
+sections below are the original run, with the numbers restated against the
+corrected 16-measure window; each fixed section says so.
 
 ---
 
@@ -31,7 +37,7 @@ python3 benchmarks/omr-first-run-2026-08/eval_first_run.py
 ```
 
 Input: a 600 dpi bitonal scan (2897×3813), page 1 of the movement — twelve
-staves, one system, seventeen measures. 18.0 s of pipeline time.
+staves, one system, sixteen measures. 18.0 s of pipeline time.
 
 Truth: `beethoven-sym5-mvt1.mxl` from the Gradus library — 18 parts, 502
 measures, written pitch.
@@ -45,11 +51,16 @@ key. A second run *with* the dossier is reported at the bottom, separately.
 Two things had to be known independently: how many measures the page holds, and
 what clef and key signature each staff actually prints.
 
-*Measures.* On a staff of whole-bar rests the only full-height ink is a barline,
-so counting columns that are dark across the whole staff height counts measures
+*Measures.* On a staff of whole-bar rests almost the only full-height ink is a
+barline, so counting columns dark across the whole staff height counts measures
 (`probe_page_measures.py`). Five such staves — Flauti, Oboi, Corni, Trombe,
-Timpani — **each independently give 17**. The reference then confirms it from the
-other side: every one of those instruments' first note is m.18.
+Timpani — **each independently give 16**.
+
+⚠️ They each independently gave **17** first, and were believed, because five
+staves agreeing looked like a check. It is not one when the error is shared: a
+TIME SIGNATURE is full-height ink too, and all five print the same one. The
+probe now also requires the column to continue past the staff into the gap,
+which a barline does and a time signature does not — 1.00 against 0.05.
 
 A cross-staff variant of the same probe — a column dark in ≥8 of the 12 staves —
 returns 12, because where the strings play thickly the barline meets noteheads
@@ -75,19 +86,22 @@ Twelve staves spanning a 1900 px vertical gap, bracketed into one system, on a
 scan with broken staff lines. The connectivity-veto grouping work holds up on a
 page it has never seen.
 
-## Measures: 13 of 17
+## Measures: 13 of 16 — ✅ FIXED 2026-08-31
 
-Four barlines missed, and *which* four is the useful part. Comparing the
-overlay's detected barlines against the true columns on the Flauti staff:
+Three barlines missed, all three consecutive at the right-hand end of the
+system, fusing four bars into one. Everything else was exact.
 
-```
-true    664  833 1000 1069 1200 1266 1336 1462 1585 1712 1782 1906 2048 2166 2232 2354 2469 2608
-OMR     665   ✗  1000 1070 1201 1266 1336 1463 1586 1712 1782 1906 2040 2157   ✗    ✗    ✗  2600
-```
+⚠️ **This section said "four missed, of seventeen measures" and both numbers
+were wrong.** The ground-truth probe counted the page's TIME SIGNATURE as a
+barline — its digits align into a column six pixels wide, exactly a barline's
+width — so the page was credited with a bar it does not have, and the pipeline
+blamed for a miss at x=833 that was not a barline to miss. All five tacet staves
+agreed on the wrong answer, because all five print the same time signature.
 
-One miss at the front, three consecutive at the back. The front one fuses m.1
-and m.2 — the four-note motif and its fermata become one bar. The back three
-fuse mm.14–17 into a single measure. Everything in between is exact.
+Now **17 of 17 barlines, 0 false, 16 measures of 16**. The cause of the three
+real misses was that the scan is warped and the connectivity probe assumed
+barlines are vertical. Full account in
+[BARLINES.md](BARLINES.md), including what the fix cost in note recall.
 
 ## Clefs: 10 of 12
 
@@ -124,7 +138,7 @@ rest of its staff. The page now emits **2/4**, and its LilyPond bar-check
 failures fall 154 → 104. The numbers below are from the run before that fix,
 except where a row says otherwise.
 
-## Notes: 159 reference pitches, 170 emitted
+## Notes: 147 reference pitches, 170 emitted
 
 Pitches are compared as multisets per printed staff, because six of the twelve
 staves carry two reference parts each (Flauti is Flute 1 + Flute 2) and the
@@ -132,16 +146,16 @@ reading order of two condensed parts on one staff is genuinely ambiguous.
 
 | | recall | precision |
 |---|---|---|
-| exact pitch (`E-4` ≠ `E4`) | **0.579** | 0.541 |
-| letter + octave, accidental discarded | **0.742** | 0.694 |
-| pitch **and** duration | **0.340** | 0.318 |
+| exact pitch (`E-4` ≠ `E4`) | **0.612** | 0.529 |
+| letter + octave, accidental discarded | **0.782** | 0.677 |
+| pitch **and** duration | **0.360** | 0.312 |
 
 Three things fall straight out of those rows:
 
-1. **16 points sit in the accidentals.** The pipeline puts three quarters of the
+1. **17 points sit in the accidentals.** The pipeline puts three quarters of the
    noteheads on the right line and then spells them wrong, which is exactly what
    ten unread key signatures do to a page in three flats.
-2. **Duration is the weakest link by a distance** — 0.340 against 0.742 for
+2. **Duration is the weakest link by a distance** — 0.360 against 0.782 for
    position. Half of the correctly-located notes carry the wrong value.
 3. **24 of the 170 emitted notes are on staves that print nothing but rests**
    — Trombe 11, Flauti 5, Corni 4, Timpani 4. Four staves that are silent for
@@ -151,7 +165,7 @@ Per-staff detail is in `beet5-p1-firstrun.json`.
 
 ## OMR-NED: 0.8706 — and two thirds of it is structure
 
-Against the reference trimmed to mm.1–17. The harness is not on this branch —
+Against the reference trimmed to mm.1–16. The harness is not on this branch —
 it lives on `claude/tech-advances-tools-review-4a43f9`, unmerged, so reproducing
 this row means borrowing it and building its venv:
 
@@ -159,7 +173,7 @@ this row means borrowing it and building its venv:
 git checkout claude/tech-advances-tools-review-4a43f9 -- \
     tools/omr/omr_ned.py tools/omr/_omrned_worker.py
 python3 -m tools.omr.omr_ned --bootstrap
-python3 -m tools.omr.omr_ned out/beet5-p1.omr.musicxml truth/beet5-mm1-17.musicxml
+python3 -m tools.omr.omr_ned out/beet5-p1.omr.musicxml truth/beet5-mm1-16.musicxml
 ```
 
 ```
@@ -173,7 +187,7 @@ python3 -m tools.omr.omr_ned out/beet5-p1.omr.musicxml truth/beet5-mm1-17.musicx
 For scale, this repo's own rendered-page baseline is **0.3164 pooled**. Almost
 none of the difference is note reading. 66% of the edits are whole-measure and
 whole-staff inserts: the reference has 18 parts and the printed edition
-condenses them onto 12 staves, and 13 measures were emitted where 17 exist.
+condenses them onto 12 staves, and 13 measures were emitted where 16 exist.
 
 **So OMR-NED is not yet a usable tracking number for scans.** It is measuring
 the export's part model against the edition's engraving decisions. It becomes
@@ -250,12 +264,12 @@ Key signatures read across the six pages: 2/12, 6/22, 9/19, 6/22, 2/16, 8/22 —
 1. ~~**Read the meter.**~~ **DONE 2026-08-31** — `benchmarks/omr-timesig-2026-08/`.
    4 correct and 0 wrong over a corpus that is half pages printing no meter;
    duration recall 0.340 → 0.352, bar-check failures 154 → 104.
-2. **The four barlines.** Column-ink counting on any all-rest staff finds all 17;
-   the pipeline finds 14. One miss at the front and three consecutive at the
-   back, in a system whose middle is exact.
+2. ~~**The four barlines.**~~ **DONE 2026-08-31** — three, not four, and the
+   fourth was an error in this file's ground truth. 17/17 with 0 false;
+   [BARLINES.md](BARLINES.md).
 3. **Key-signature coverage, 2/12.** Already a live thread; this page prices it
    at 16 points of exact-pitch recall.
-4. **Durations at 0.340.** The largest single gap between "found the notehead"
+4. **Durations at 0.360.** The largest single gap between "found the notehead"
    and "wrote the right note", and much less studied than pitch.
 5. **Stitch the export.** One part per (page, system, staff) makes every
    whole-score metric — OMR-NED included — measure the wrong thing.
