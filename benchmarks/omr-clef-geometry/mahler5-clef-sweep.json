@@ -1,0 +1,783 @@
+{
+ "source": "Mahler, Symphony No. 5 \u2014 Edition Peters, 300 dpi",
+ "pdf": "~/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Mahler_5_.pdf",
+ "provided_by": "read off rendered header crops by eye, 2026-08-31",
+ "why_this_exists": [
+  "The SECOND edition, and the check on every threshold tuned on the first.",
+  "beethoven5-clef-sweep.json is one scanned Beethoven 5, and a threshold fit",
+  "to one printer's ink is the failure this area keeps repeating. This is a",
+  "different publisher, a different engraver and a different century of",
+  "printing, chosen for that reason \u2014 the same reason",
+  "ground-truth-mahler5-p72.json was made.",
+  "",
+  "Method (tools: benchmarks/omr-clef-geometry/sweep_located_clefs.py): run",
+  "the locator with clustering ON over pages 4-220 every 4th page, take every",
+  "staff it LOCATES a C clef on, render the head of that staff, and read the",
+  "glyph by eye. 105 located reads over 1015 header cells on 55 pages. Every",
+  "one was read at 2.2x in montages, and the 45 read from a small tile first",
+  "were re-read enlarged before being recorded.",
+  "",
+  "Forty-one of the 105 are not C clefs \u2014 24 treble and 17 bass \u2014 and they are",
+  "what a veto change exists to remove. The remaining 64 are genuine C clefs",
+  "and are here as the counterweight: a veto that fired on everything would",
+  "score perfectly without them.",
+  "",
+  "WHAT THIS EDITION ADDS THAT BEETHOVEN COULD NOT SHOW. Beethoven's false",
+  "positives are all misread CLEFS. Twenty-four of the forty-one here are not",
+  "a clef at all: Peters prints the stacked instrument numbers (1/2, 1/2/3) to",
+  "the LEFT of the bracket, close enough to the staff to enter the header",
+  "window, and a stack of two or three numerals is glyph-sized and vertically",
+  "symmetric. That family is invisible in Beethoven and is the single largest",
+  "false-positive source here.",
+  "",
+  "AND IT KILLS THE TENOR FLOOR. On Beethoven the real tenor clefs (0.809 -",
+  "0.959) and the tenor misreads (0.702 - 0.795) do not overlap, which looked",
+  "like a clean symmetry threshold. Here the real tenor clefs run from 0.708",
+  "and the tenor misreads reach 0.845 \u2014 the populations sit on top of each",
+  "other. See the write-up in RESULTS.md."
+ ],
+ "counts": {
+  "located": 105,
+  "c_clefs": 64,
+  "not_c_clefs": 41,
+  "treble": 24,
+  "bass": 17
+ },
+ "staves": [
+  {
+   "page": 4,
+   "staff": 0,
+   "c_clef": false,
+   "symmetry": 0.7652,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 4,
+   "staff": 1,
+   "c_clef": false,
+   "symmetry": 0.7948,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 4,
+   "staff": 5,
+   "c_clef": false,
+   "symmetry": 0.8356,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 4,
+   "staff": 6,
+   "c_clef": false,
+   "symmetry": 0.8673,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 8,
+   "staff": 0,
+   "c_clef": false,
+   "symmetry": 0.7129,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 8,
+   "staff": 1,
+   "c_clef": false,
+   "symmetry": 0.7293,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 8,
+   "staff": 14,
+   "c_clef": true,
+   "symmetry": 0.7187,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 12,
+   "staff": 14,
+   "c_clef": true,
+   "symmetry": 0.7609,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 12,
+   "staff": 15,
+   "c_clef": true,
+   "symmetry": 0.7414,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 16,
+   "staff": 5,
+   "c_clef": true,
+   "symmetry": 0.8661,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 16,
+   "staff": 17,
+   "c_clef": true,
+   "symmetry": 0.8567,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 20,
+   "staff": 8,
+   "c_clef": true,
+   "symmetry": 0.9267,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 20,
+   "staff": 13,
+   "c_clef": true,
+   "symmetry": 0.7985,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 32,
+   "staff": 6,
+   "c_clef": true,
+   "symmetry": 0.8696,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 36,
+   "staff": 16,
+   "c_clef": true,
+   "symmetry": 0.862,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 36,
+   "staff": 17,
+   "c_clef": true,
+   "symmetry": 0.774,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 40,
+   "staff": 9,
+   "c_clef": false,
+   "symmetry": 0.8215,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 40,
+   "staff": 20,
+   "c_clef": true,
+   "symmetry": 0.9618,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 40,
+   "staff": 21,
+   "c_clef": true,
+   "symmetry": 0.8288,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 48,
+   "staff": 7,
+   "c_clef": true,
+   "symmetry": 0.7581,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 48,
+   "staff": 12,
+   "c_clef": true,
+   "symmetry": 0.7157,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 52,
+   "staff": 16,
+   "c_clef": true,
+   "symmetry": 0.7749,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 56,
+   "staff": 16,
+   "c_clef": true,
+   "symmetry": 0.7829,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 60,
+   "staff": 1,
+   "c_clef": false,
+   "symmetry": 0.8449,
+   "note": "treble (G clef) \u2014 read as tenor"
+  },
+  {
+   "page": 60,
+   "staff": 15,
+   "c_clef": true,
+   "symmetry": 0.7449,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 68,
+   "staff": 14,
+   "c_clef": false,
+   "symmetry": 0.7371,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 68,
+   "staff": 17,
+   "c_clef": true,
+   "symmetry": 0.8607,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 72,
+   "staff": 3,
+   "c_clef": true,
+   "symmetry": 0.7176,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 72,
+   "staff": 13,
+   "c_clef": true,
+   "symmetry": 0.7575,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 76,
+   "staff": 7,
+   "c_clef": true,
+   "symmetry": 0.8309,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 76,
+   "staff": 18,
+   "c_clef": true,
+   "symmetry": 0.7957,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 80,
+   "staff": 15,
+   "c_clef": true,
+   "symmetry": 0.7828,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 88,
+   "staff": 17,
+   "c_clef": true,
+   "symmetry": 0.8373,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 92,
+   "staff": 0,
+   "c_clef": false,
+   "symmetry": 0.7858,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 92,
+   "staff": 2,
+   "c_clef": false,
+   "symmetry": 0.8178,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 92,
+   "staff": 9,
+   "c_clef": false,
+   "symmetry": 0.7455,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 96,
+   "staff": 3,
+   "c_clef": true,
+   "symmetry": 0.8309,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 96,
+   "staff": 9,
+   "c_clef": true,
+   "symmetry": 0.7075,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 96,
+   "staff": 14,
+   "c_clef": true,
+   "symmetry": 0.7421,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 104,
+   "staff": 15,
+   "c_clef": true,
+   "symmetry": 0.7577,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 104,
+   "staff": 16,
+   "c_clef": false,
+   "symmetry": 0.7553,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 108,
+   "staff": 9,
+   "c_clef": true,
+   "symmetry": 0.8716,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 108,
+   "staff": 16,
+   "c_clef": false,
+   "symmetry": 0.7179,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 112,
+   "staff": 12,
+   "c_clef": true,
+   "symmetry": 0.7804,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 112,
+   "staff": 13,
+   "c_clef": false,
+   "symmetry": 0.7106,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 116,
+   "staff": 1,
+   "c_clef": false,
+   "symmetry": 0.7775,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 116,
+   "staff": 9,
+   "c_clef": true,
+   "symmetry": 0.8015,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 116,
+   "staff": 19,
+   "c_clef": true,
+   "symmetry": 0.8368,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 120,
+   "staff": 7,
+   "c_clef": true,
+   "symmetry": 0.8123,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 120,
+   "staff": 16,
+   "c_clef": true,
+   "symmetry": 0.811,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 124,
+   "staff": 13,
+   "c_clef": true,
+   "symmetry": 0.8044,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 128,
+   "staff": 6,
+   "c_clef": false,
+   "symmetry": 0.754,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 128,
+   "staff": 9,
+   "c_clef": true,
+   "symmetry": 0.9218,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 128,
+   "staff": 14,
+   "c_clef": true,
+   "symmetry": 0.8155,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 128,
+   "staff": 16,
+   "c_clef": false,
+   "symmetry": 0.7283,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 128,
+   "staff": 20,
+   "c_clef": true,
+   "symmetry": 0.7708,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 132,
+   "staff": 0,
+   "c_clef": false,
+   "symmetry": 0.8316,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 132,
+   "staff": 11,
+   "c_clef": false,
+   "symmetry": 0.7115,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 132,
+   "staff": 16,
+   "c_clef": true,
+   "symmetry": 0.8268,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 136,
+   "staff": 19,
+   "c_clef": false,
+   "symmetry": 0.7236,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 140,
+   "staff": 12,
+   "c_clef": true,
+   "symmetry": 0.9565,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 140,
+   "staff": 13,
+   "c_clef": true,
+   "symmetry": 0.9541,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 140,
+   "staff": 18,
+   "c_clef": false,
+   "symmetry": 0.8299,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 144,
+   "staff": 2,
+   "c_clef": false,
+   "symmetry": 0.7823,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 148,
+   "staff": 2,
+   "c_clef": true,
+   "symmetry": 0.8187,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 152,
+   "staff": 0,
+   "c_clef": false,
+   "symmetry": 0.7914,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 152,
+   "staff": 3,
+   "c_clef": false,
+   "symmetry": 0.736,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 156,
+   "staff": 12,
+   "c_clef": true,
+   "symmetry": 0.7374,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 160,
+   "staff": 10,
+   "c_clef": false,
+   "symmetry": 0.8676,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 160,
+   "staff": 11,
+   "c_clef": false,
+   "symmetry": 0.8399,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 164,
+   "staff": 2,
+   "c_clef": false,
+   "symmetry": 0.8009,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 164,
+   "staff": 8,
+   "c_clef": false,
+   "symmetry": 0.8028,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 168,
+   "staff": 7,
+   "c_clef": false,
+   "symmetry": 0.8003,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 168,
+   "staff": 11,
+   "c_clef": true,
+   "symmetry": 0.8073,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 168,
+   "staff": 27,
+   "c_clef": true,
+   "symmetry": 0.9172,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 172,
+   "staff": 1,
+   "c_clef": false,
+   "symmetry": 0.8278,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 172,
+   "staff": 11,
+   "c_clef": true,
+   "symmetry": 0.7624,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 172,
+   "staff": 17,
+   "c_clef": true,
+   "symmetry": 0.8382,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 176,
+   "staff": 2,
+   "c_clef": true,
+   "symmetry": 0.7443,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 176,
+   "staff": 8,
+   "c_clef": true,
+   "symmetry": 0.9115,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 176,
+   "staff": 9,
+   "c_clef": false,
+   "symmetry": 0.823,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 176,
+   "staff": 13,
+   "c_clef": false,
+   "symmetry": 0.751,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 176,
+   "staff": 16,
+   "c_clef": true,
+   "symmetry": 0.8203,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 180,
+   "staff": 5,
+   "c_clef": false,
+   "symmetry": 0.7341,
+   "note": "treble (G clef) \u2014 read as tenor"
+  },
+  {
+   "page": 180,
+   "staff": 12,
+   "c_clef": false,
+   "symmetry": 0.7616,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 184,
+   "staff": 7,
+   "c_clef": true,
+   "symmetry": 0.9299,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 184,
+   "staff": 9,
+   "c_clef": false,
+   "symmetry": 0.7402,
+   "note": "BASS (F clef) \u2014 read as soprano"
+  },
+  {
+   "page": 184,
+   "staff": 17,
+   "c_clef": true,
+   "symmetry": 0.8129,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 188,
+   "staff": 0,
+   "c_clef": false,
+   "symmetry": 0.8082,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 188,
+   "staff": 2,
+   "c_clef": false,
+   "symmetry": 0.8103,
+   "note": "treble (G clef) \u2014 read as tenor"
+  },
+  {
+   "page": 188,
+   "staff": 12,
+   "c_clef": true,
+   "symmetry": 0.7083,
+   "note": "C clef \u2014 read as tenor; located ink is the stacked instrument numbers, not the clef"
+  },
+  {
+   "page": 192,
+   "staff": 4,
+   "c_clef": false,
+   "symmetry": 0.7651,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 192,
+   "staff": 19,
+   "c_clef": true,
+   "symmetry": 0.8843,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 196,
+   "staff": 10,
+   "c_clef": true,
+   "symmetry": 0.8652,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 196,
+   "staff": 11,
+   "c_clef": true,
+   "symmetry": 0.816,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 196,
+   "staff": 17,
+   "c_clef": true,
+   "symmetry": 0.9135,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 200,
+   "staff": 7,
+   "c_clef": true,
+   "symmetry": 0.8977,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 204,
+   "staff": 3,
+   "c_clef": true,
+   "symmetry": 0.7233,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 204,
+   "staff": 9,
+   "c_clef": true,
+   "symmetry": 0.7355,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 204,
+   "staff": 15,
+   "c_clef": true,
+   "symmetry": 0.8672,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 208,
+   "staff": 10,
+   "c_clef": true,
+   "symmetry": 0.8766,
+   "note": "C clef \u2014 read as alto"
+  },
+  {
+   "page": 208,
+   "staff": 11,
+   "c_clef": true,
+   "symmetry": 0.8943,
+   "note": "C clef \u2014 read as tenor"
+  },
+  {
+   "page": 212,
+   "staff": 0,
+   "c_clef": false,
+   "symmetry": 0.8015,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 212,
+   "staff": 2,
+   "c_clef": false,
+   "symmetry": 0.7364,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 212,
+   "staff": 14,
+   "c_clef": true,
+   "symmetry": 0.8304,
+   "note": "C clef \u2014 read as alto"
+  }
+ ]
+}

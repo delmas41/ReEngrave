@@ -26,13 +26,28 @@ Three checks, in decreasing order of how much they should be trusted:
              never does. Skipped when the score, which lives in a gitignored
              data directory, is not present.
 
-  sweep      `beethoven5-clef-sweep.json` — 91 staves of the same scan, being
-             every staff the locator LOCATES a C clef on over pages 2-80 with
-             clustering on, read by eye. Twenty-four of them are not C clefs
-             (seventeen bass, seven treble) and are the reads a veto change
-             exists to remove. Before this corpus the COST of a veto change was
-             measurable on the four below and its BENEFIT was an anecdote, which
-             is why every change to the F-clef veto stalled.
+  sweep      one per EDITION, and both run every time. Each is every staff the
+             locator LOCATES a C clef on across a page range, read by eye, with
+             the genuine C clefs kept as the counterweight. Before these the
+             COST of a veto change was measurable on the corpora below and its
+             BENEFIT was an anecdote, which is why every change to the F-clef
+             veto stalled.
+
+               beethoven5-clef-sweep.json  91 staves, IMSLP 575951, pages 2-80.
+                                           24 are not C clefs (17 bass, 7 treble).
+               mahler5-clef-sweep.json     105 staves, Edition Peters, pages
+                                           4-220. 41 are not C clefs (17 bass,
+                                           24 treble) — and the 24 are a family
+                                           Beethoven cannot show at all: Peters
+                                           prints the stacked instrument numbers
+                                           left of the bracket, and a stack of
+                                           numerals is glyph-sized and symmetric.
+
+             The second edition is not redundancy. A tenor symmetry floor looked
+             clean on Beethoven alone (real 0.809-0.959 against misreads
+             0.702-0.795) and is impossible on Mahler (real from 0.708, misreads
+             to 0.845). Never tune a clef threshold on one edition; see
+             `clef_symmetry_populations.py`.
 
   coverage   the hand-read Nottebohm page. Real material, real engraving, but
              twelve staves — too small to steer by on its own, which is what
@@ -137,6 +152,16 @@ def check_piano(pdf: Path, dpis: tuple[int, ...]) -> tuple[int, int]:
     return staves, wrong
 
 
+def resolve_pdf(spec: dict, fallback: Path) -> Path:
+    """The score a spec is about. Sweep corpora name their own PDF, because
+    they are per-edition; the older specs do not and use the caller's."""
+    raw = spec.get("pdf")
+    if not raw:
+        return fallback
+    path = Path(raw).expanduser()
+    return path if path.is_absolute() else (REPO / path)
+
+
 def check_orchestral(pdf: Path, spec_path: Path, dpi: int,
                      title: str = "orchestral spot check") -> tuple[int, int, int]:
     spec = json.loads(spec_path.read_text())
@@ -204,15 +229,18 @@ def main() -> int:
                     / "beethoven-symphony-5/pdfs/imslp-575951/score.pdf")
     ap.add_argument("--orchestral-spec", type=Path,
                     default=HERE / "beethoven5-clef-spot-check.json")
-    # The corpus the F-clef veto had been missing: every staff the locator
-    # LOCATES a C clef on across pages 2-80 with clustering on, read by eye.
-    # Seventeen are bass clefs and seven are treble — the reads a veto change
-    # is supposed to remove, and which appear in none of the other four.
-    ap.add_argument("--sweep-spec", type=Path,
-                    default=HERE / "beethoven5-clef-sweep.json")
+    # The corpora the F-clef veto had been missing — one per EDITION, and both
+    # run by default. Each names its own score, so a third edition is one more
+    # file and no code. See the module docstring for what each contains and for
+    # why one of them is not enough.
+    ap.add_argument("--sweep-spec", type=Path, action="append",
+                    help="sweep corpus JSON; repeatable. Each names its own "
+                         "score. Default: every edition.")
     ap.add_argument("--reference-dpi", type=int, default=600)
     ap.add_argument("--dpi", type=int, default=300)
     args = ap.parse_args()
+    sweep_specs = args.sweep_spec or [HERE / "beethoven5-clef-sweep.json",
+                                      HERE / "mahler5-clef-sweep.json"]
 
     missing = [p for p in (args.reference, args.piano) if not p.exists()]
     if missing:
@@ -228,12 +256,22 @@ def main() -> int:
     if args.orchestral.exists():
         _f, orch_missed, orch_wrong = check_orchestral(
             args.orchestral, args.orchestral_spec, args.dpi)
-        _sf, sweep_missed, sweep_wrong = check_orchestral(
-            args.orchestral, args.sweep_spec, args.dpi,
-            title="orchestral sweep — 24 staves that must be DECLINED")
     else:
         print(f"\norchestral spot check — skipped, no score at {args.orchestral}")
-        orch_missed = orch_wrong = sweep_missed = sweep_wrong = 0
+        orch_missed = orch_wrong = 0
+    sweep_missed = sweep_wrong = 0
+    for spec_path in sweep_specs:
+        spec = json.loads(spec_path.read_text())
+        pdf = resolve_pdf(spec, args.orchestral)
+        n_bad = sum(1 for row in spec["staves"] if not row["c_clef"])
+        if not pdf.exists():
+            print(f"\n{spec_path.name} — skipped, no score at {pdf}")
+            continue
+        _sf, missed, wrong = check_orchestral(
+            pdf, spec_path, args.dpi,
+            title=f"sweep {spec_path.stem} — {n_bad} staves that must be DECLINED")
+        sweep_missed += missed
+        sweep_wrong += wrong
     if args.nottebohm.exists():
         right, cov_wrong, n_c = check_coverage(args.nottebohm, args.truth, args.dpi)
     else:
