@@ -1,0 +1,512 @@
+{
+ "source": "Beethoven, Symphony No. 5 \u2014 IMSLP 575951, 300 dpi",
+ "pdf": "tools/omr/training/data/imslp/beethoven-symphony-5/pdfs/imslp-575951/score.pdf",
+ "provided_by": "read off rendered header crops by eye, 2026-08-31",
+ "why_this_exists": [
+  "The F-clef dot veto had no corpus. Every change to it was being judged on",
+  "coverage and on three corpora that contain no bass clef the locator is",
+  "liable to call a C clef \u2014 so the COST of a veto change was measurable and",
+  "its BENEFIT was an anecdote. That is the trade this layer refuses, and it",
+  "is why the held-back clustering (ClefLocatorConfig.cluster_y_gap_spaces)",
+  "and every threshold change stalled: the harnesses could not see the thing",
+  "they were being held back for.",
+  "",
+  "Method: run the locator with clustering ON over pages 2-80 of the score,",
+  "take every staff it LOCATES a C clef on, render the header crop, and read",
+  "the glyph by eye. 101 located reads; 92 not already in the spot check.",
+  "",
+  "Seventeen of them are bass clefs and seven are treble clefs. Those are the",
+  "twenty-four the veto exists to catch, and none of them appeared in any",
+  "corpus before this file. The rest are genuine C clefs and are here as the",
+  "counterweight: a veto that fires on everything would score perfectly",
+  "without them.",
+  "",
+  "One staff was excluded rather than guessed at (p66 s10, crop too tight to",
+  "read). Reading a glyph wrong here is worse than omitting it.",
+  "",
+  "Every 'mezzosoprano' read in the sweep was a misread G clef \u2014 7 of 7. That",
+  "is a pattern worth its own look, and it is recorded here rather than acted",
+  "on."
+ ],
+ "staves": [
+  {
+   "page": 2,
+   "staff": 3,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 6,
+   "staff": 17,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 14,
+   "staff": 6,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 30,
+   "staff": 13,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 32,
+   "staff": 3,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 34,
+   "staff": 16,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 36,
+   "staff": 5,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 44,
+   "staff": 8,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as mezzosoprano"
+  },
+  {
+   "page": 44,
+   "staff": 11,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 50,
+   "staff": 8,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 54,
+   "staff": 8,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 56,
+   "staff": 16,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 58,
+   "staff": 4,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as tenor"
+  },
+  {
+   "page": 58,
+   "staff": 8,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 66,
+   "staff": 8,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 68,
+   "staff": 4,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 68,
+   "staff": 11,
+   "c_clef": false,
+   "note": "BASS (F clef) \u2014 read as alto"
+  },
+  {
+   "page": 38,
+   "staff": 16,
+   "c_clef": false,
+   "note": "treble (G clef) \u2014 read as mezzosoprano"
+  },
+  {
+   "page": 50,
+   "staff": 0,
+   "c_clef": false,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 58,
+   "staff": 0,
+   "c_clef": false,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 60,
+   "staff": 0,
+   "c_clef": false,
+   "note": "treble (G clef) \u2014 read as alto"
+  },
+  {
+   "page": 70,
+   "staff": 7,
+   "c_clef": false,
+   "note": "treble (G clef) \u2014 read as mezzosoprano"
+  },
+  {
+   "page": 72,
+   "staff": 6,
+   "c_clef": false,
+   "note": "treble (G clef) \u2014 read as mezzosoprano"
+  },
+  {
+   "page": 74,
+   "staff": 13,
+   "c_clef": false,
+   "note": "treble (G clef) \u2014 read as mezzosoprano"
+  },
+  {
+   "page": 2,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 2,
+   "staff": 17,
+   "c_clef": true
+  },
+  {
+   "page": 4,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 6,
+   "staff": 6,
+   "c_clef": true
+  },
+  {
+   "page": 6,
+   "staff": 20,
+   "c_clef": true
+  },
+  {
+   "page": 8,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 8,
+   "staff": 20,
+   "c_clef": true
+  },
+  {
+   "page": 10,
+   "staff": 7,
+   "c_clef": true
+  },
+  {
+   "page": 10,
+   "staff": 12,
+   "c_clef": true
+  },
+  {
+   "page": 10,
+   "staff": 17,
+   "c_clef": true
+  },
+  {
+   "page": 12,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 12,
+   "staff": 20,
+   "c_clef": true
+  },
+  {
+   "page": 14,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 14,
+   "staff": 20,
+   "c_clef": true
+  },
+  {
+   "page": 16,
+   "staff": 18,
+   "c_clef": true
+  },
+  {
+   "page": 18,
+   "staff": 8,
+   "c_clef": true
+  },
+  {
+   "page": 18,
+   "staff": 17,
+   "c_clef": true
+  },
+  {
+   "page": 22,
+   "staff": 6,
+   "c_clef": true
+  },
+  {
+   "page": 22,
+   "staff": 18,
+   "c_clef": true
+  },
+  {
+   "page": 24,
+   "staff": 17,
+   "c_clef": true
+  },
+  {
+   "page": 26,
+   "staff": 5,
+   "c_clef": true
+  },
+  {
+   "page": 26,
+   "staff": 13,
+   "c_clef": true
+  },
+  {
+   "page": 28,
+   "staff": 17,
+   "c_clef": true
+  },
+  {
+   "page": 30,
+   "staff": 4,
+   "c_clef": true
+  },
+  {
+   "page": 30,
+   "staff": 16,
+   "c_clef": true
+  },
+  {
+   "page": 32,
+   "staff": 16,
+   "c_clef": true
+  },
+  {
+   "page": 34,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 36,
+   "staff": 8,
+   "c_clef": true
+  },
+  {
+   "page": 38,
+   "staff": 2,
+   "c_clef": true
+  },
+  {
+   "page": 38,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 38,
+   "staff": 17,
+   "c_clef": true
+  },
+  {
+   "page": 42,
+   "staff": 3,
+   "c_clef": true
+  },
+  {
+   "page": 42,
+   "staff": 13,
+   "c_clef": true
+  },
+  {
+   "page": 46,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 46,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 46,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 48,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 50,
+   "staff": 4,
+   "c_clef": true
+  },
+  {
+   "page": 50,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 52,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 52,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 52,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 54,
+   "staff": 4,
+   "c_clef": true
+  },
+  {
+   "page": 54,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 54,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 56,
+   "staff": 7,
+   "c_clef": true
+  },
+  {
+   "page": 58,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 58,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 62,
+   "staff": 4,
+   "c_clef": true
+  },
+  {
+   "page": 62,
+   "staff": 11,
+   "c_clef": true
+  },
+  {
+   "page": 64,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 64,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 68,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 70,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 70,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 70,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 72,
+   "staff": 15,
+   "c_clef": true
+  },
+  {
+   "page": 74,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 74,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 74,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 76,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 76,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 76,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 78,
+   "staff": 9,
+   "c_clef": true
+  },
+  {
+   "page": 78,
+   "staff": 10,
+   "c_clef": true
+  },
+  {
+   "page": 78,
+   "staff": 14,
+   "c_clef": true
+  },
+  {
+   "page": 80,
+   "staff": 9,
+   "c_clef": true
+  }
+ ]
+}

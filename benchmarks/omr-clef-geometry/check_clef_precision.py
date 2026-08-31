@@ -26,6 +26,14 @@ Three checks, in decreasing order of how much they should be trusted:
              never does. Skipped when the score, which lives in a gitignored
              data directory, is not present.
 
+  sweep      `beethoven5-clef-sweep.json` — 91 staves of the same scan, being
+             every staff the locator LOCATES a C clef on over pages 2-80 with
+             clustering on, read by eye. Twenty-four of them are not C clefs
+             (seventeen bass, seven treble) and are the reads a veto change
+             exists to remove. Before this corpus the COST of a veto change was
+             measurable on the four below and its BENEFIT was an anecdote, which
+             is why every change to the F-clef veto stalled.
+
   coverage   the hand-read Nottebohm page. Real material, real engraving, but
              twelve staves — too small to steer by on its own, which is what
              the probe is for.
@@ -129,9 +137,10 @@ def check_piano(pdf: Path, dpis: tuple[int, ...]) -> tuple[int, int]:
     return staves, wrong
 
 
-def check_orchestral(pdf: Path, spec_path: Path, dpi: int) -> tuple[int, int, int]:
+def check_orchestral(pdf: Path, spec_path: Path, dpi: int,
+                     title: str = "orchestral spot check") -> tuple[int, int, int]:
     spec = json.loads(spec_path.read_text())
-    print(f"\norchestral spot check ({pdf.name}) — {spec['source']}")
+    print(f"\n{title} ({pdf.name}) — {spec['source']}")
     by_page: dict[int, list[dict]] = {}
     for row in spec["staves"]:
         by_page.setdefault(row["page"], []).append(row)
@@ -195,6 +204,12 @@ def main() -> int:
                     / "beethoven-symphony-5/pdfs/imslp-575951/score.pdf")
     ap.add_argument("--orchestral-spec", type=Path,
                     default=HERE / "beethoven5-clef-spot-check.json")
+    # The corpus the F-clef veto had been missing: every staff the locator
+    # LOCATES a C clef on across pages 2-80 with clustering on, read by eye.
+    # Seventeen are bass clefs and seven are treble — the reads a veto change
+    # is supposed to remove, and which appear in none of the other four.
+    ap.add_argument("--sweep-spec", type=Path,
+                    default=HERE / "beethoven5-clef-sweep.json")
     ap.add_argument("--reference-dpi", type=int, default=600)
     ap.add_argument("--dpi", type=int, default=300)
     args = ap.parse_args()
@@ -213,18 +228,22 @@ def main() -> int:
     if args.orchestral.exists():
         _f, orch_missed, orch_wrong = check_orchestral(
             args.orchestral, args.orchestral_spec, args.dpi)
+        _sf, sweep_missed, sweep_wrong = check_orchestral(
+            args.orchestral, args.sweep_spec, args.dpi,
+            title="orchestral sweep — 24 staves that must be DECLINED")
     else:
         print(f"\norchestral spot check — skipped, no score at {args.orchestral}")
-        orch_missed = orch_wrong = 0
+        orch_missed = orch_wrong = sweep_missed = sweep_wrong = 0
     if args.nottebohm.exists():
         right, cov_wrong, n_c = check_coverage(args.nottebohm, args.truth, args.dpi)
     else:
         print(f"\ncoverage — skipped, no PDF at {args.nottebohm}")
         right, cov_wrong, n_c = 0, 0, 0
 
-    total_wrong = ref_wrong + piano_wrong + cov_wrong + orch_wrong
+    total_wrong = ref_wrong + piano_wrong + cov_wrong + orch_wrong + sweep_wrong
     print(f"\nreference {exact}/5 exact | coverage {right}/{n_c} | "
-          f"orchestral misses {orch_missed} | FALSE POSITIVES {total_wrong}")
+          f"orchestral misses {orch_missed} | sweep misses {sweep_missed} | "
+          f"FALSE POSITIVES {total_wrong}")
     print("Report these separately. A missed clef costs nothing that was not "
           "already lost;\na wrong one transposes every note on its staff.")
     return 1 if (total_wrong or exact < 5) else 0

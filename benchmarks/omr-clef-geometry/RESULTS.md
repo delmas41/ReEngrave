@@ -682,3 +682,69 @@ Until that exists, the honest position is that the veto's blindness is **fixed**
 and its **thresholds are still unmeasurable**, which is a better place to be than
 before: the earlier note said the fix was "waiting behind a config default", and
 it is not — it is waiting behind a corpus.
+
+
+---
+
+## The corpus the veto never had (2026-08-31)
+
+The section above ended: *"the next step is a corpus, not a threshold."* Here it
+is, and it changes the picture in a way no threshold sweep would have.
+
+`beethoven5-clef-sweep.json` — **91 staves**, being every staff the locator
+LOCATES a C clef on across pages 2-80 of the scanned Beethoven 5, with clustering
+on, each header crop rendered and the glyph read by eye. **Seventeen are bass
+clefs and seven are treble clefs.** Those twenty-four are the reads a veto exists
+to remove, and not one of them appeared in any corpus before. The remaining
+sixty-seven are genuine C clefs, and they are the counterweight — without them a
+veto that fired on everything would score perfectly.
+
+One staff was excluded rather than guessed at (p66 s10, crop too tight to read).
+
+### The first thing it says is about the code that already ships
+
+```
+reference 5/5 exact | coverage 7/9 | orchestral misses 6 | sweep misses 10
+                                                       | FALSE POSITIVES 10
+```
+
+**The shipped locator has ten false positives.** It had zero on all four previous
+corpora, and that zero was the headline every change in this area was steered by.
+It was not measuring what it appeared to measure: the corpora simply contained no
+bass clef the locator was liable to call a C clef, so there was nothing there to
+get wrong.
+
+### And it settles the veto question, with both sides visible at last
+
+| arm | orchestral misses | sweep misses | FALSE POSITIVES |
+|---|---:|---:|---:|
+| **shipped** — clustering off, veto as-is | 6 | 10 | **10** |
+| clustering ON, veto as-is | 5 | 7 | **11** |
+| clustering off, **loosened veto** | 8 | **37** | 7 |
+| clustering ON, loosened veto | 7 | **36** | 7 |
+
+The loosened height ceiling buys **three** fewer false positives and costs
+**twenty-seven** genuine C clefs. That is not a close call, and it is not what the
+one-case anecdote suggested — the previous pass could see the cost on two
+orchestral staves and guessed the benefit was worth it. With the benefit measured
+it is worth a third of what it costs.
+
+**It stays refused, and now for a reason with a number on it.**
+
+### What the corpus opens instead
+
+Two things, both larger than the veto:
+
+1. **Ten false positives in the shipped configuration.** Seventeen bass clefs and
+   seven treble clefs get located; ten of the twenty-four survive every gate.
+   That is the real state of the layer and it is now visible for the first time.
+2. **Every `mezzosoprano` read in the sweep was a misread G clef — 7 of 7.** A
+   read that is never right on this material is a much cheaper thing to act on
+   than a threshold, and it is recorded rather than acted on because acting on it
+   is a separate change with its own measurement.
+
+And the clustering question reads differently now. It costs **one** extra false
+positive (10 → 11) and buys three fewer sweep misses and one fewer orchestral
+miss. That is a far more defensible trade than "14 right and 5 wrong" implied —
+but it is a trade to make deliberately, against the number above, not on the
+strength of a zero that meant nothing.
