@@ -425,7 +425,7 @@ def join_parts_to_slots(
     alignment has no room to slip; past the last one it is guessing.
     """
     from .score_layouts import ScoreLayout, align_to_layout_pinned
-    from .instruments import AMBIGUOUS_ALIASES, lookup, normalize_label
+    from .instruments import AMBIGUOUS_ALIASES, lookup
 
     parts = dossier.get("parts") or []
     if not parts or n_slots <= 0:
@@ -444,8 +444,17 @@ def join_parts_to_slots(
     # settles those — which is the one thing a pin takes off the table. The raw
     # text is the only place that judgement can be made, because canonicalising
     # has already picked a reading by the time the aligner sees it.
-    pinnable = {i for i, v in (labels or {}).items()
-                if normalize_label(v or "") not in AMBIGUOUS_ALIASES}
+    #
+    # It is the ALIAS that matched that must be tested, not the label. A margin
+    # reads "Cor. 1. 2." as often as "Cor.", and the two are the same ambiguity;
+    # testing the whole label lets the numbered form through and pins a staff on
+    # a reading the lexicon itself will not commit to. "Corni 1. 2." is left
+    # pinnable, because `corni` is not ambiguous — only the abbreviation is.
+    def unambiguous(text: str | None) -> bool:
+        match = lookup(text or "")
+        return match is not None and match.alias not in AMBIGUOUS_ALIASES
+
+    pinnable = {i for i, v in (labels or {}).items() if unambiguous(v)}
     assignment, _pins = align_to_layout_pinned(
         layout, n_slots,
         labels={i: canonical(v) for i, v in (labels or {}).items()},

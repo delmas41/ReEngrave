@@ -448,3 +448,41 @@ class TestJoinPartsToSlots:
         work = self._work(["Flute 1", "Oboe 1"])
         facts = join_parts_to_slots(2, work, {})
         assert all(not f["anchored"] for f in facts if f)
+
+
+class TestJoinPinsOnUnambiguousLabelsOnly:
+    """A pin is a hard constraint, so an ambiguous label must not make one.
+
+    `benchmarks/omr-part-staff-join-2026-08/RESULTS.md`.
+    """
+
+    WORK = {"work_id": "toy", "parts": [
+        {"name": "Trumpet 1", "written_clef": "treble"},
+        {"name": "Trombone 1", "written_clef": "alto"},
+        {"name": "Trombone 2", "written_clef": "tenor"},
+        {"name": "Timpani", "written_clef": "bass"},
+    ]}
+
+    def _join(self, labels):
+        from tools.omr.dossier import join_parts_to_slots
+        return [f["part"] if f else None
+                for f in join_parts_to_slots(4, self.WORK, labels)]
+
+    def test_the_printed_order_beats_the_part_list(self):
+        # Timpani printed ABOVE the trombones, as Beethoven 5 p.48 prints them.
+        # A monotone alignment cannot go back for the trombones once it has
+        # taken the timpani; pinning reaches all four.
+        assert self._join({0: "Tr.", 1: "Timp.", 2: "Tromboni", 3: "Tromboni"}) == [
+            "Trumpet 1", "Timpani", "Trombone 1", "Trombone 2"]
+
+    def test_an_ambiguous_alias_is_tested_after_the_part_numbers(self):
+        # "Cor." is Horn or Trumpet and must not pin. A margin prints the
+        # numbered form as often as the bare one, and testing the whole label
+        # rather than the alias that matched lets "Cor. 1. 2." through.
+        from tools.omr.instruments import AMBIGUOUS_ALIASES, lookup, normalize_label
+        for label in ("Cor.", "Cor. 1. 2."):
+            assert lookup(label).alias in AMBIGUOUS_ALIASES, label
+        assert normalize_label("Cor. 1. 2.") not in AMBIGUOUS_ALIASES, (
+            "the whole label is NOT the thing to test — this is the gap")
+        # And a full name that happens to carry numbers stays pinnable.
+        assert lookup("Corni 1. 2.").alias not in AMBIGUOUS_ALIASES

@@ -239,7 +239,11 @@ A pin is a hard constraint, so it is only taken on unambiguous evidence.
 * **An ambiguous alias.** `Tp.` is Timpani or Trumpet, `Basso` is a voice or the
   contrabasses. POSITION settles those, and a pin is the one move that takes
   position off the table. p.48's `Cor.` is in this class and does not pin; the
-  span reads it correctly anyway.
+  span reads it correctly anyway. It is the **alias that matched** that is
+  tested, not the label — a margin prints `Cor. 1. 2.` as often as `Cor.` and
+  the two are the same ambiguity, so testing the whole label would let the
+  numbered form through and pin on a reading the lexicon will not commit to.
+  `Corni 1. 2.` stays pinnable: only the abbreviation is ambiguous.
 * **A name the work prints in two places**, so the run is not unique.
 * **The same name claimed by two separated blocks of staves.** That is a
   contradiction, not evidence — and it is what a misread produces. Before the
@@ -293,8 +297,8 @@ p.48 delivers all three.
 
 All four held, and none moved.
 
-* `python3 -m pytest tools/omr/tests -q` — **1053 passed** (1043 before, plus 10
-  new: 8 for pinning, 2 for the lexicon).
+* `python3 -m pytest tools/omr/tests -q` — **1055 passed** (1043 before, plus 12
+  new: 8 for pinning, 2 for the lexicon, 2 for the join's pin gate).
 * `benchmarks/omr-score-order/eval_score_order.py` — byte-identical: position
   11/12, read clefs 5/10, true clefs 23/23. That path aligns against standard
   layouts with `allow_merge=False` and does not call the pinned entry point.
