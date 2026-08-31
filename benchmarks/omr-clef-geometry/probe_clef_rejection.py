@@ -59,6 +59,7 @@ BRANCH_NAMES = {
     "asymmetric": "not symmetric",
     "f_clef_dots": "F-clef dot veto",
     "ambiguous_snap": "ambiguous line snap",
+    "mezzosoprano_symmetry": "mezzosoprano, under-evidenced",
 }
 
 

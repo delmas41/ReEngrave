@@ -738,13 +738,61 @@ Two things, both larger than the veto:
 1. **Ten false positives in the shipped configuration.** Seventeen bass clefs and
    seven treble clefs get located; ten of the twenty-four survive every gate.
    That is the real state of the layer and it is now visible for the first time.
-2. **Every `mezzosoprano` read in the sweep was a misread G clef — 7 of 7.** A
-   read that is never right on this material is a much cheaper thing to act on
-   than a threshold, and it is recorded rather than acted on because acting on it
-   is a separate change with its own measurement.
+2. **Every `mezzosoprano` read in the sweep is a misread — 5 of 5.** *(An earlier
+   draft of this section said "7 of 7 G clefs"; the sweep names mezzosoprano five
+   times, four of them G clefs and one an F clef.)* Acted on below.
 
 And the clustering question reads differently now. It costs **one** extra false
 positive (10 → 11) and buys three fewer sweep misses and one fewer orchestral
 miss. That is a far more defensible trade than "14 right and 5 wrong" implied —
 but it is a trade to make deliberately, against the number above, not on the
 strength of a zero that meant nothing.
+
+
+---
+
+## Mezzosoprano: a rarer answer has to be better evidenced (2026-08-31)
+
+**False positives 10 → 6, and nothing else moves at all.**
+
+Of the 101 candidates the locator names in the sweep, five are called
+mezzosoprano and **all five are wrong** — four G clefs and one F clef. The G
+clefs are not a random error: a G clef curls around the second line from the
+bottom, which is exactly the line mezzosoprano names, so a surviving fragment of
+one balances there and gets the one label that fits.
+
+The separation is wide, and it is in symmetry:
+
+| | symmetry |
+|---|---|
+| the one real mezzosoprano in any corpus (reference sheet, engraved) | **0.981** |
+| the five misreads | 0.712 – 0.815 |
+
+Banning the clef would have cost the real one and taken the reference sheet off
+5/5. Raising the general symmetry floor would have cost the scanned alto and
+tenor clefs, which live at 0.70–0.80 themselves — that is the gate the earlier
+sessions kept running into. So the floor is applied **to this answer only**:
+`min_symmetry_mezzosoprano = 0.90`, sitting between the two populations.
+
+| | reference | coverage | orch misses | sweep misses | **FALSE POSITIVES** |
+|---|---:|---:|---:|---:|---:|
+| shipped, before | 5/5 | 7/9 | 6 | 10 | **10** |
+| **shipped, after** | **5/5** | **7/9** | **6** | **10** | **6** |
+
+Nottebohm is untouched — 69 located before and after — because twenty pages of
+vocal-clef counterpoint name mezzosoprano **zero** times, with clustering on or
+off. There was no cost to find.
+
+### It also moves the clustering question
+
+| arm | Nottebohm located | orch misses | sweep misses | FALSE POS |
+|---|---:|---:|---:|---:|
+| shipped + floor | 69 | 6 | 10 | **6** |
+| clustering ON + floor | **77** | **5** | **7** | 7 |
+
+Clustering now buys **eight** more located clefs and four fewer misses for **one**
+more false positive. That is a far better trade than it has ever looked — the
+false-positive RATE is roughly flat (6/69 against 7/77) rather than worse. It is
+still not switched on here, because that is a deliberate decision to take against
+these numbers rather than a side effect of a veto fix, but the case for it is now
+a real one.

@@ -482,3 +482,27 @@ class TestTheDotVetoCanSeeTheDots:
             mask[cy - r:cy + r, cx - r:cx + r] = 255
         assert _has_f_clef_dots(mask, (bx, by, bw, bh), spacing,
                                 DEFAULT_LOCATOR_CONFIG) is False
+
+
+class TestMezzosopranoMustBeBetterEvidenced:
+    """A rarer answer has to be better evidenced.
+
+    Mezzosoprano is the rarest of the five C clefs by a long way. Over 101
+    located candidates on a scanned Beethoven 5 it is named five times and is
+    wrong all five — four G clefs whose surviving fragment balances about line 2,
+    which is the line a G clef curls around, and one F clef. The one real
+    mezzosoprano in any corpus scores 0.981; the five misreads score 0.712-0.815.
+    See `benchmarks/omr-clef-geometry/beethoven5-clef-sweep.json`.
+    """
+
+    def test_the_floor_is_above_every_measured_misread_and_below_the_real_one(self):
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG as C
+        assert 0.815 < C.min_symmetry_mezzosoprano < 0.981, (
+            "the five misreads top out at 0.815 and the reference sheet's real "
+            "mezzosoprano scores 0.981 — the floor has to sit between them")
+
+    def test_it_is_stricter_than_the_general_floor_and_only_for_this_clef(self):
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG as C
+        assert C.min_symmetry_mezzosoprano > C.min_symmetry, (
+            "asking MORE of the rare answer is the whole idea; a general raise "
+            "would cost the scanned alto and tenor clefs, which score 0.70-0.80")

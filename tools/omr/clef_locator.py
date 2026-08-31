@@ -100,6 +100,24 @@ class ClefLocatorConfig:
     min_height_spaces: float = 2.2
     max_height_spaces: float = 5.0
     min_symmetry: float = 0.70      # the C-clef signature — see _refine_symmetry_axis
+    # A rarer answer has to be better evidenced, and mezzosoprano is the rarest
+    # of the five C clefs by a long way — essentially absent from the orchestral
+    # and keyboard repertoire this reads. Measured over 101 located candidates on
+    # a scanned Beethoven 5 (`beethoven5-clef-sweep.json`), it is named five
+    # times and is WRONG ALL FIVE: four are G clefs whose surviving fragment
+    # balances about line 2 — which is the line a G clef curls around, so the
+    # misread is not random — and one is an F clef.
+    #
+    # The separation is wide and it is in symmetry. The one real mezzosoprano in
+    # any corpus, engraved by LilyPond on the reference sheet, scores 0.981; the
+    # five misreads score 0.712 to 0.815, all under the general 0.70 floor's
+    # nearest neighbours. So the answer is not to ban the clef — that would cost
+    # the real one — but to ask more of it than of the others.
+    #
+    # Nottebohm, twenty pages of vocal-clef counterpoint, names mezzosoprano
+    # ZERO times with clustering on or off, so this floor cannot cost it
+    # anything.
+    min_symmetry_mezzosoprano: float = 0.90
     # How far the measured axis of symmetry may sit from the box centre. Big
     # enough to undo a stray fragment's pull, small enough that it can never
     # reach the next staff line (half a space would be the tipping point).
@@ -634,6 +652,11 @@ def locate_clef(
             _note("ambiguous_snap", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
                   symmetry=round(symmetry, 3))
             return None  # the snap was ambiguous — abstain
+        if (read.name == "mezzosoprano"
+                and symmetry < config.min_symmetry_mezzosoprano):
+            _note("mezzosoprano_symmetry", w_spaces=round(w_sp, 2),
+                  h_spaces=round(h_sp, 2), symmetry=round(symmetry, 3))
+            return None  # see `min_symmetry_mezzosoprano`
         # Report the box in the cell's own coordinates, not analysis space.
         _note("located", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
               symmetry=round(symmetry, 3), clef=read.name)
