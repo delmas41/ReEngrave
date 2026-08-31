@@ -432,15 +432,38 @@ class TestJoinPartsToSlots:
         assert [f["part"] for f in facts][:3] == ["Violin 1", "Violin 2", "Viola"]
         assert facts[3]["clef"] == "bass"
 
-    def test_slots_past_the_last_label_are_not_anchored(self):
+    def test_a_tail_with_slack_is_not_anchored(self):
         """Between labels the alignment cannot slip; past them it is guessing,
-        and on the two ground-truth pages that is exactly where it goes wrong —
-        the string section, which carries no labels at all."""
+        and on the ground-truth pages that is exactly where it goes wrong — the
+        string section, which carries no labels at all.
+
+        Two staves below the last label and THREE parts left for them: one part
+        has to be dropped or condensed, and nothing says which. That is a real
+        guess and stays gated.
+        """
         from tools.omr.dossier import join_parts_to_slots
 
-        work = self._work(["Flute 1", "Oboe 1", "Violin 1", "Viola"])
+        work = self._work(["Flute 1", "Oboe 1", "Violin 1", "Viola", "Cello"])
         facts = join_parts_to_slots(4, work, {0: "Flute", 1: "Oboe"})
         assert [f["anchored"] for f in facts] == [True, True, False, False]
+
+    def test_a_tail_whose_count_closes_exactly_IS_anchored(self):
+        """...but "past the last label" is not one thing.
+
+        Two staves below the last label and exactly TWO parts left for them. A
+        monotone alignment has one option: it cannot merge, extend or skip
+        without leaving a staff empty. There is nothing left to get wrong, so
+        the tail is trusted — which is what takes Beethoven 5 p.48 from 14 of 17
+        clefs to 17 of 17. Trusting the tail UNCONDITIONALLY is the different,
+        rejected rule (50/52 -> 44/52); see `dossier._determined_tail`.
+        """
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(["Flute 1", "Oboe 1", "Violin 1", "Viola"],
+                          ["treble", "treble", "treble", "alto"])
+        facts = join_parts_to_slots(4, work, {0: "Flute", 1: "Oboe"})
+        assert [f["anchored"] for f in facts] == [True, True, True, True]
+        assert facts[3]["part"] == "Viola" and facts[3]["clef"] == "alto"
 
     def test_no_labels_anchors_nothing(self):
         from tools.omr.dossier import join_parts_to_slots

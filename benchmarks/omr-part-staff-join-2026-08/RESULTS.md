@@ -555,3 +555,74 @@ One API call, one system, `claude-opus-5`. About a cent.
 1055 tests. The clef benchmark, `eval_score_order` and `eval_key_signatures` are
 untouched by this pass — `--vision` is a separate harness and the production
 default still reads 0 labels on this scan until the host SDK is current.
+
+
+---
+
+# The tail that has no freedom left — 2026-08-30 (fifth pass)
+
+**Beethoven 5 p.48 now reads 17 of 17 clefs end to end, from its own printed
+margin.** The three staves the last pass left — viola, cello, bass — sit below
+the last label, and the rule that released them is a counting one.
+
+```bash
+python3 benchmarks/omr-part-staff-join-2026-08/eval_clefs_with_labels.py --vision
+OMR_TAIL_RULE=none|exact|all   # to compare the three arms
+```
+
+| p.48, vision labels | clefs |
+|---|---:|
+| `TAIL_RULE=none` (previous behaviour) | 14/17 |
+| **`TAIL_RULE=exact` (shipped)** | **17/17** |
+| `TAIL_RULE=all` | 17/17 |
+
+## Why the tail was gated, and why that was too blunt
+
+`anchored` has always stopped at the last label, because past it the alignment is
+guessing — and trusting it to the foot of the system was measured and rejected at
+50/52 → 44/52.
+
+But "guessing" is not one thing. **Count what is left.** If the staves below the
+last label are exactly as many as the parts still unassigned above them, a
+monotone alignment has *one* option: it cannot merge, extend, or skip a part
+without leaving a staff empty. There is nothing left to get wrong. Where the
+count has slack, the guess is real and the gate should hold.
+
+This is the same local-counting argument that already licensed the merge gate
+inside a span — pins make both counts known — applied one step further.
+
+The three ground-truth pages split cleanly on it:
+
+| page | tail below the last label | join correct on the tail |
+|---|---|---:|
+| beet5-p48 | 7 staves vs **7** free parts — **exact** | **7/7** |
+| pastoral-p2 | 4 staves vs **4** free parts — **exact** | **4/4** |
+| beet5-p2 | 5 staves vs 7 free parts — *slack* | 4/5 |
+
+11 of 11 on the exact tails; the slack one is the page that gets it wrong, and it
+stays gated. The rejected rule and this one differ on exactly that row.
+
+## Guards
+
+* `pytest tools/omr/tests -q` — **1056 passed**. One existing test changed
+  meaning and was rewritten rather than deleted: it asserted that everything past
+  the last label is unanchored, using a 4-part work on 4 staves — which is an
+  *exact* tail, so the old assertion was the conservative answer, not the correct
+  one. It is now two tests, one per side of the distinction.
+* `eval_pipeline_clefs --contextual --dossier` — **base 3 unchanged at 50/52**,
+  with beet5-p2 22/22, pastoral-p2 18/20, wtc-p17 10/10. The new rule is neutral
+  there: the Pastoral's production run reads only 4 labels from its text layer, so
+  its tail is larger than the 4-label arm above and does not close exactly.
+* `eval_score_order`, `eval_key_signatures` — untouched.
+
+## What it does not do
+
+It does not fix the Pastoral viola, the base corpus's remaining error. That page
+gets 4 labels from its text layer in production, not the 6 the join benchmark
+supplies, and with 4 the tail no longer closes. The margin reader recovers 10
+labels there (`VISION_CEILING_2026-08-30.md`) — so this rule and the vision
+fallback are complementary, and the Pastoral is the page that needs both.
+
+And p.48 still reports **8/17** from the standard benchmark, because the
+production path reads no labels on that scan at all. The 17/17 is what it scores
+once the labels arrive.

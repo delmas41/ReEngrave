@@ -28,6 +28,7 @@ that agrees with its dossier produces an empty list, so a clean run is unchanged
 from __future__ import annotations
 
 import json
+import os
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -468,7 +469,9 @@ def join_parts_to_slots(
 
     anchored: set[int] = set()
     if labels:
-        anchored = set(range(min(labels), max(labels) + 1))
+        last = max(labels)
+        anchored = set(range(min(labels), last + 1))
+        anchored |= _determined_tail(assignment, last, n_slots, len(parts))
 
     out: list[dict[str, Any] | None] = []
     for slot, index in enumerate(assignment):
@@ -479,6 +482,46 @@ def join_parts_to_slots(
             if part else None
         )
     return out
+
+
+# Whether the staves BELOW the last label may be trusted too. Off by default is
+# not an option here — the question is which rule, and there are three, two of
+# which have been measured and lost.
+# `OMR_TAIL_RULE` overrides it, so the arms can be compared without editing.
+TAIL_RULE = os.environ.get("OMR_TAIL_RULE", "exact")   # "none" | "exact" | "all"
+
+
+def _determined_tail(assignment: list[int | None], last_label: int,
+                     n_slots: int, n_parts: int) -> set[int]:
+    """The staves below the last label, when the arithmetic leaves them no freedom.
+
+    Past the last label the alignment is guessing, which is why `anchored` has
+    always stopped there — and why the obvious fix of trusting to the foot of the
+    system was measured and rejected at 50/52 -> 44/52.
+
+    But "guessing" is not one thing. Count what is left: if the staves below the
+    last label are exactly as many as the parts still unassigned above them, a
+    monotone alignment has **one** option. It cannot merge (that would leave a
+    staff empty), extend (same), or skip a part (same). There is nothing left to
+    get wrong, and the earlier rejection was of trusting the tail
+    UNCONDITIONALLY — where the count has slack, the guess is real.
+
+    Measured on the three ground-truth pages: the two exact tails are right on
+    11 of 11 staves (Beethoven 5 p.48's seven, the Pastoral's four), and
+    Beethoven 5 p.2 — whose tail has five staves for seven parts, so two merges
+    are free to land anywhere — is right on four of five and stays gated.
+    """
+    tail = list(range(last_label + 1, n_slots))
+    if not tail or TAIL_RULE == "none":
+        return set()
+    if TAIL_RULE == "all":
+        return set(tail)
+    used = {assignment[i] for i in range(last_label + 1)
+            if assignment[i] is not None}
+    if not used:
+        return set()
+    free = [p for p in range(max(used) + 1, n_parts) if p not in used]
+    return set(tail) if len(tail) == len(free) else set()
 
 
 def slot_facts_for_system(n_staves: int,
