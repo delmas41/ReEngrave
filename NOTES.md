@@ -4,6 +4,48 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ---
 
+## ➡️ NEXT: the lexicon reads `Tr. Alt.` as a VOICE (found 2026-08-31)
+
+Wiring Surya in as the free margin reader put labels on a page that had none —
+Beethoven 5 (IMSLP984073) p.48, no text layer, 0 labels before, **12 after, in
+16 s, free**. Three of the twelve then resolve to the WRONG instrument, at high
+confidence:
+
+| printed | `instruments.lookup` | should be |
+|---|---|---|
+| `Tr. Alt.` | **Alto** (a voice), alias `alt`, conf **high** | Trombone alto |
+| `Tr. Ten.` | **Tenor** (a voice), alias `ten`, conf **high** | Trombone tenore |
+| `Tr. Bas.` | **Trumpet**, alias `tr`, conf medium | Trombone basso |
+
+**This is the lexicon, not the reader** — `lookup()` returns those for the
+strings whoever produced them, so the paid reader gets the same answers. It is
+[[project_part_staff_join_pinning]]'s "the LEXICON is what doesn't travel",
+turning up in a new edition.
+
+Two causes, and the second is the interesting one:
+
+- `Tr.` is Tromba **and** Tromboni in Italian editions, which is what
+  `AMBIGUOUS_ALIASES` exists for; `tr` is currently unambiguous and wrong.
+- `instruments` already has the right mechanism for the other half —
+  `_prefer_instrument_over_voice` plus `VOICE_QUALIFIERS` — but the set holds
+  the SPELLED-OUT `alto`/`tenor`/`bass`, so an abbreviated `Alt.`/`Ten.` never
+  reaches it and a voice wins at high confidence.
+
+Do NOT just add `alt`/`ten`/`bas` to `VOICE_QUALIFIERS`: preferring the
+instrument then yields **Trumpet**, which is wrong differently. The `Tr.`
+ambiguity has to be resolved first, and on more than this one edition — the
+standing rule from the clef work is that a lexicon change passing on one corpus
+means nothing.
+
+**Blast radius is bounded, which is why the free reader still ships on.**
+`clef_correction` applies a proposal only where the detector read NO clef
+(`do_apply = apply and not detected`) and only when the notehead fit improves,
+and every proposal is reported whether applied or not. A wrong instrument is
+still worse than none, so this is worth fixing before leaning on identity
+harder.
+
+---
+
 ## 👁️ WATCH: LEGATO 2 weights (checked 2026-08-31 — not out, but its segmenter IS)
 
 [arXiv:2607.05769](https://arxiv.org/abs/2607.05769), July 2026. Reads

@@ -411,6 +411,41 @@ robustness.
 
 ---
 
+## Instrument identity — three readers, cheapest first
+
+`contextual._labels_for_page` runs them in order and only pays when the free
+ones come back empty:
+
+| reader | cost | needs |
+|---|---|---|
+| `staff_labels.read_staff_labels` — PDF text layer | free | a text layer (18 of 65 IMSLP PDFs) |
+| `staff_labels_surya.read_staff_labels_surya` — Surya 2, local | **free** | `.venv-surya` + `brew install llama.cpp` |
+| `staff_labels_vision.read_staff_labels_vision` — Claude | ~1¢/system | `ANTHROPIC_API_KEY`; **off by default** |
+
+```bash
+python3 -m tools.omr.staff_labels_surya --bootstrap   # once
+brew install llama.cpp
+python3 -m tools.omr.staff_labels_surya --check
+```
+
+`surya_fallback=True` is the default and **self-disables when the venv is
+absent**, so a machine that never bootstrapped it behaves exactly as before.
+Surya spends no `vision_system_budget` — it costs nothing. Measured on the same
+crops and the same free ground truth: Surya and Claude both score **zero
+disagreements** against the text layer, and Surya resolves 89% of the staves
+Claude does. It is not a worse reader; what it gives up is reach, because Claude
+repairs a damaged label from the running order and an OCR engine transcribes what
+is printed. See
+[SURYA_BAKEOFF_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md).
+
+⚠️ **A newly-readable page can surface lexicon bugs that were dormant.** Beethoven 5
+p.48 went 0 → 12 labels, and three resolve to the wrong instrument (`Tr. Alt.` →
+*Alto*, a voice, at high confidence). That is `instruments.lookup`, not the
+reader — the paid reader gets the same answers. See NOTES.md → "the lexicon reads
+`Tr. Alt.` as a VOICE".
+
+---
+
 ## OMR-NED — the metric other people also report
 
 Every other number in this repo is bespoke and therefore incomparable to

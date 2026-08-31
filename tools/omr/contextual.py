@@ -13,12 +13,27 @@ a clef hypothesis is pure arithmetic on already-resolved pitches
 detection, rhythm or segmentation changes, and a score where it finds nothing is
 serialised unchanged.
 
-Instrument identity comes from the PDF's text layer where there is one (18 of 65
-IMSLP score PDFs). For the rest, `vision_fallback=True` reads the margin with
-Claude instead — measured at 100% agreement with the text layer where both
-resolve, plus 30 staves recovered that the text layer's OCR had garbled
-(`benchmarks/omr-margin-labels-2026-08/`). It is **off by default** because it
-costs money; roughly $0.01 per system read.
+Instrument identity comes from three readers tried cheapest first — the PDF's
+text layer, then Surya 2 locally, then Claude:
+
+    read_staff_labels          text layer   free      18 of 65 IMSLP PDFs have one
+    read_staff_labels_surya    Surya 2      free      needs .venv-surya + llama.cpp
+    read_staff_labels_vision   Claude       ~1c/sys   off by default
+
+Each runs only where the one above came back empty. Both free rungs are on by
+default; `surya_fallback` self-disables when the venv is absent, so leaving it
+switched on costs a machine that never built it nothing at all.
+
+Measured on the same crops and the same free ground truth
+(`benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md`): Surya and
+Claude both scored ZERO disagreements against the text layer, and Surya resolved
+89% of the staves Claude did. So the free rung is not a worse reader — on
+everything the truth can check it is exactly as accurate, and what it gives up is
+reach: Claude repairs a damaged label from the running order, Surya transcribes
+what is printed.
+
+`vision_fallback=True` is still **off by default** because it costs money;
+roughly $0.01 per system read.
 
 That cost is small because identity is a property of the SCORE, not of each
 page. Slots propagate one reading across every system and page, so
@@ -31,6 +46,7 @@ slots, no proposals.
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -42,6 +58,13 @@ from .score_layouts import fit_layouts, resolve_ambiguous_label
 from .slots import Slot, assign_slots, labels_by_staff
 from .staff_detector import detect_staves
 from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
+
+# Both margin readers log and degrade when they fail rather than taking the
+# whole contextual pass down with them. This was referenced before it existed:
+# a failing vision call raised NameError out of its own `except` clause, so the
+# fallback that was written to be optional was fatal instead. Never exercised
+# because nothing had made the reader fail.
+logger = logging.getLogger(__name__)
 
 
 def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
@@ -232,19 +255,52 @@ def _resolve_ambiguous_labels(
 
 
 def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
-                     vision_fallback: bool, budget: list[int]) -> list[StaffLabel]:
-    """Text-layer labels, falling back to the vision reader when there are none.
+                     vision_fallback: bool, budget: list[int],
+                     surya_fallback: bool = True) -> list[StaffLabel]:
+    """Instrument labels, cheapest reader first.
 
-    `budget` is a one-element list of systems still allowed to be read, mutated
-    in place. It exists because instrument identity is a property of the SCORE,
-    not of each page: slots propagate one reading across every system and page,
-    so a handful of calls covers a whole work. Scores also label their first
-    system most fully and abbreviate or omit later — so reading early systems
-    buys the most, and reading all of them buys almost nothing extra.
+        PDF text layer  ->  Surya 2 (local)  ->  Claude (paid)
+
+    Each rung runs only where the one above came back empty. The two free rungs
+    are tried unconditionally; the paid one is still gated on `vision_fallback`
+    and on `budget`.
+
+    `budget` is a one-element list of systems still allowed to be read by the
+    PAID reader, mutated in place. It exists because instrument identity is a
+    property of the SCORE, not of each page: slots propagate one reading across
+    every system and page, so a handful of calls covers a whole work. Scores
+    also label their first system most fully and abbreviate or omit later — so
+    reading early systems buys the most, and reading all of them buys almost
+    nothing extra. Surya takes no budget because it costs nothing.
+
+    WHY SURYA IS ALL-OR-NOTHING PER PAGE rather than topping up the staves it
+    missed. Its shortfall is not whole systems returning nothing — it is the odd
+    staff whose printed label the lexicon rejects, and asking Claude about a page
+    Surya has already largely read would spend the budget on pages that need it
+    least. Measured, Surya and Claude disagree on nothing the ground truth can
+    check; the gap is reach, not correctness. See
+    `benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md`.
     """
     labels = read_staff_labels(pws)
-    if labels or not vision_fallback or budget[0] <= 0:
+    if labels:
         return labels
+
+    if surya_fallback:
+        from . import staff_labels_surya
+        # `available()` keeps this silent on a machine that never built the
+        # venv, so the free rung costs nothing to leave switched on.
+        if staff_labels_surya.available():
+            try:
+                labels = staff_labels_surya.read_staff_labels_surya(pws)
+            except Exception as exc:                      # noqa: BLE001
+                logger.warning("surya label fallback failed on page %s: %s",
+                               page_index, exc)
+            else:
+                if labels:
+                    return labels
+
+    if not vision_fallback or budget[0] <= 0:
+        return []
     from .staff_labels_vision import read_staff_labels_vision
     n_systems = len({s.system_index for s in pws.staves})
     budget[0] -= n_systems
@@ -264,6 +320,7 @@ def apply_contextual_analysis(
     dossier: dict[str, Any] | None = None,
     vision_fallback: bool = False,
     vision_system_budget: int = 3,
+    surya_fallback: bool = True,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
     detector never read.
@@ -292,8 +349,17 @@ def apply_contextual_analysis(
     # family order and never out of it, so position alone says a good deal —
     # and it needs no text at all. The run continues, and `score_layouts`
     # decides for itself whether the page says enough to name anything.
+    #
+    # Surya counts as a reader here for the same reason the paid one does: a
+    # page with no text layer is only "unlabelled" when nothing can read the
+    # margin. `available()` is checked rather than assumed so a machine without
+    # the venv takes the old path exactly as before.
+    can_read_margin = vision_fallback
+    if not can_read_margin and surya_fallback:
+        from . import staff_labels_surya
+        can_read_margin = staff_labels_surya.available()
     unlabelled = (
-        not vision_fallback
+        not can_read_margin
         and not any(has_text_layer(pdf_path, i) for i in page_indices)
     )
 
@@ -305,7 +371,8 @@ def apply_contextual_analysis(
         staved.append(pws)
         read = [] if unlabelled else _labels_for_page(
             pws, pdf_path, page_index,
-            vision_fallback=vision_fallback, budget=budget)
+            vision_fallback=vision_fallback, budget=budget,
+            surya_fallback=surya_fallback)
         staff_labels_per_page.append(read)
         labels.append(labels_by_staff(read))
 
