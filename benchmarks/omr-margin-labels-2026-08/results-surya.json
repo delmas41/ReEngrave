@@ -1,0 +1,387 @@
+[
+  {
+    "png": "beethoven-symphony-1_imslp-00074_p40_s0.png",
+    "labels": {
+      "0": "Fl.",
+      "1": "Ob.",
+      "2": "Cl.",
+      "3": "Fag.",
+      "4": "Cor.",
+      "5": "Tr.",
+      "6": "Tp."
+    },
+    "truth": {},
+    "diagnostics": {
+      "gutter_px": 70,
+      "ticks_found": 11,
+      "staves_expected": 11,
+      "ocr_lines": 7,
+      "seconds": 2.96,
+      "raw_lines": [
+        "Fl.",
+        "Ob.",
+        "Cl.",
+        "Fag.",
+        "Cor.",
+        "Tr.",
+        "Tp."
+      ]
+    }
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-00074_p40_s1.png",
+    "labels": {
+      "11": "Fl.",
+      "12": "Ob.",
+      "13": "Cl.",
+      "14": "Fag."
+    },
+    "truth": {},
+    "diagnostics": {
+      "gutter_px": 70,
+      "ticks_found": 8,
+      "staves_expected": 8,
+      "ocr_lines": 4,
+      "seconds": 0.95,
+      "raw_lines": [
+        "Fl.",
+        "Ob.",
+        "Cl.",
+        "Fag."
+      ]
+    }
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-13842_p40_s0.png",
+    "labels": {
+      "1": "Ob.",
+      "2": "Cl.",
+      "3": "Fg.",
+      "4": "Cor. (F)",
+      "5": "Tr. (O)",
+      "6": "Timp.",
+      "7": "Vl. }",
+      "9": "Vla.",
+      "10": "Vc. e B."
+    },
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "4": {
+        "text": ".",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "5": {
+        "text": "Tr (0)",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Tim p.",
+        "instrument": "Timpani",
+        "confidence": "high"
+      },
+      "9": {
+        "text": "V la.",
+        "instrument": "Viola",
+        "confidence": "high"
+      },
+      "10": {
+        "text": "V e. e B.",
+        "instrument": null,
+        "confidence": "none"
+      }
+    },
+    "diagnostics": {
+      "gutter_px": 45,
+      "ticks_found": 11,
+      "staves_expected": 11,
+      "ocr_lines": 9,
+      "seconds": 1.7,
+      "raw_lines": [
+        "Ob.",
+        "Cl.",
+        "Fg.",
+        "Cor. (F)",
+        "Tr. (O)",
+        "Timp.",
+        "Vl. }",
+        "Vla.",
+        "Vc. e B."
+      ]
+    }
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-13842_p59_s0.png",
+    "labels": {
+      "0": "Flauti",
+      "1": "Oboi",
+      "2": "arinetti in C",
+      "3": "Fagotti",
+      "4": "Corni in C",
+      "5": "bombe in C",
+      "6": "ani in C.G",
+      "7": "I Violino",
+      "8": "II",
+      "9": "Fola",
+      "10": "concello trabasso"
+    },
+    "truth": {
+      "10": {
+        "text": "e",
+        "instrument": null,
+        "confidence": "none"
+      }
+    },
+    "diagnostics": {
+      "gutter_px": 61,
+      "ticks_found": 11,
+      "staves_expected": 11,
+      "ocr_lines": 12,
+      "seconds": 2.47,
+      "raw_lines": [
+        "Flauti",
+        "Oboi",
+        "arinetti in C",
+        "Fagotti",
+        "Corni in C",
+        "bombe in C",
+        "ani in C.G",
+        "I",
+        "Violino",
+        "II",
+        "Fola",
+        "concello trabasso"
+      ]
+    }
+  },
+  {
+    "png": "beethoven-symphony-1_imslp-13842_p59_s1.png",
+    "labels": {
+      "12": "Vl.",
+      "13": "Vla.",
+      "14": "Vc. e B."
+    },
+    "truth": {
+      "12": {
+        "text": "VI-~",
+        "instrument": "Violin",
+        "confidence": "low"
+      },
+      "13": {
+        "text": "V}a.",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "14": {
+        "text": "vc. eB-",
+        "instrument": "Cello",
+        "confidence": "medium"
+      }
+    },
+    "diagnostics": {
+      "gutter_px": 70,
+      "ticks_found": 4,
+      "staves_expected": 4,
+      "ocr_lines": 3,
+      "seconds": 0.6,
+      "raw_lines": [
+        "Vl.",
+        "Vla.",
+        "Vc. e B."
+      ]
+    }
+  },
+  {
+    "png": "beethoven-symphony-2_imslp-503997_p40_s0.png",
+    "labels": {
+      "0": "Fl.",
+      "1": "Ob.",
+      "2": "Cl.",
+      "3": "Fag.",
+      "4": "Cor.",
+      "5": "Tr.",
+      "6": "Tp."
+    },
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "OL.",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Fag",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "5": {
+        "text": "Tr.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Tp.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      }
+    },
+    "diagnostics": {
+      "gutter_px": 67,
+      "ticks_found": 11,
+      "staves_expected": 11,
+      "ocr_lines": 7,
+      "seconds": 1.34,
+      "raw_lines": [
+        "Fl.",
+        "Ob.",
+        "Cl.",
+        "Fag.",
+        "Cor.",
+        "Tr.",
+        "Tp."
+      ]
+    }
+  },
+  {
+    "png": "beethoven-symphony-2_imslp-503997_p40_s1.png",
+    "labels": {
+      "11": "Fl.",
+      "12": "Ob.",
+      "13": "Cl.",
+      "14": "Fag.",
+      "15": "Cor.",
+      "19": "11"
+    },
+    "truth": {
+      "11": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "12": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "13": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "15": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    },
+    "diagnostics": {
+      "gutter_px": 70,
+      "ticks_found": 9,
+      "staves_expected": 9,
+      "ocr_lines": 6,
+      "seconds": 1.03,
+      "raw_lines": [
+        "Fl.",
+        "Ob.",
+        "Cl.",
+        "Fag.",
+        "Cor.",
+        "11"
+      ]
+    }
+  },
+  {
+    "png": "beethoven-symphony-2_imslp-503997_p59_s0.png",
+    "labels": {
+      "0": "Fl.",
+      "1": "Ob.",
+      "2": "Cl.",
+      "3": "Fag.",
+      "4": "Cor.",
+      "5": "Tr.",
+      "6": "Tp."
+    },
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Fag.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "5": {
+        "text": "Tr.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Tp.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      }
+    },
+    "diagnostics": {
+      "gutter_px": 70,
+      "ticks_found": 11,
+      "staves_expected": 11,
+      "ocr_lines": 7,
+      "seconds": 1.31,
+      "raw_lines": [
+        "Fl.",
+        "Ob.",
+        "Cl.",
+        "Fag.",
+        "Cor.",
+        "Tr.",
+        "Tp."
+      ]
+    }
+  }
+]

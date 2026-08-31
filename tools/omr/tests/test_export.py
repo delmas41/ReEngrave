@@ -406,3 +406,40 @@ class TestToMusicXML:
         # Verify the C4 notehead made it through with step=C, octave=4
         assert "<step>C</step>" in out
         assert "<octave>4</octave>" in out
+
+
+class TestPartNaming:
+    """The exporter names a part by its instrument once one is known.
+
+    Before the contextual pass was wired into `transcribe` nothing here HAD a
+    name to use, so every part came out as its own grid reference — the
+    "no persistent part identity" complaint. A staff the pass could not name
+    must still fall back, so `--no-contextual` output is unchanged.
+    """
+
+    @staticmethod
+    def _result(staff_extra):
+        result = _tiny_result_empty_measure({"beats": 4, "beat_type": 4})
+        result["pages"][0]["systems"][0]["staves"][0].update(staff_extra)
+        return result
+
+    def test_named_part_uses_the_instrument(self):
+        xml = to_musicxml(self._result({"instrument": "Clarinet"}))
+        assert "<part-name>Clarinet</part-name>" in xml
+        assert "Staff p0-s0-0" not in xml
+
+    def test_unnamed_part_keeps_the_coordinate_form(self):
+        xml = to_musicxml(self._result({}))
+        assert "<part-name>Staff p0-s0-0</part-name>" in xml
+
+    def test_null_instrument_is_not_an_empty_name(self):
+        """`instrument` is present-but-None on a staff the pass could not
+        identify, which must not produce <part-name></part-name>."""
+        xml = to_musicxml(self._result({"instrument": None}))
+        assert "<part-name>Staff p0-s0-0</part-name>" in xml
+        assert "<part-name></part-name>" not in xml
+
+    def test_instrument_name_is_xml_escaped(self):
+        xml = to_musicxml(self._result({"instrument": 'Horn & "Tuba"'}))
+        assert "&amp;" in xml
+        assert '<part-name>Horn & "Tuba"</part-name>' not in xml

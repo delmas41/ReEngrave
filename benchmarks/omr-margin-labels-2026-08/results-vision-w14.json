@@ -1,0 +1,345 @@
+[
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p10_s0.png",
+    "vision": {
+      "0": "Fl.",
+      "1": "Ob.",
+      "2": "Fag.",
+      "3": "Cor.",
+      "4": "Tp."
+    },
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Oh.",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "3": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Tp.",
+        "instrument": "Timpani",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p10_s1.png",
+    "vision": {
+      "9": "Fl.",
+      "10": "Ob.",
+      "11": "Cl.",
+      "12": "Fag.",
+      "13": "Cor.",
+      "14": "Tp."
+    },
+    "truth": {
+      "9": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "10": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "11": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "12": {
+        "text": "Fag-.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "13": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "14": {
+        "text": "Tp.",
+        "instrument": "Timpani",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p40_s0.png",
+    "vision": {
+      "0": "Fag."
+    },
+    "truth": {
+      "0": {
+        "text": ") fag.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": ")",
+        "instrument": null,
+        "confidence": "none"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p40_s1.png",
+    "vision": {
+      "5": "Ob.",
+      "6": "Fag.",
+      "7": "Cor."
+    },
+    "truth": {
+      "5": {
+        "text": "I Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "7": {
+        "text": "('or.",
+        "instrument": null,
+        "confidence": "none"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p40_s2.png",
+    "vision": {
+      "12": "Ob.",
+      "13": "Fag.",
+      "14": "Cor."
+    },
+    "truth": {
+      "12": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "14": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p59_s0.png",
+    "vision": {
+      "0": "Fl. pic.",
+      "1": "Fl.",
+      "2": "Ob.",
+      "3": "Cl.",
+      "4": "Fag.",
+      "5": "C. Fag.",
+      "6": "Cor.",
+      "7": "Tr.",
+      "8": "Tp.",
+      "9": "Tr. Alt.",
+      "10": "Tr. Ten.",
+      "11": "Tr. Bas."
+    },
+    "truth": {
+      "0": {
+        "text": "pie, F).",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "1": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Ob",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Fag",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "5": {
+        "text": "Fag c.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Cor",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "7": {
+        "text": "Tr.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "8": {
+        "text": "Tp",
+        "instrument": "Timpani",
+        "confidence": "high"
+      },
+      "9": {
+        "text": "Tr. Alt.",
+        "instrument": "Alto",
+        "confidence": "high"
+      },
+      "10": {
+        "text": "Tr. Ten",
+        "instrument": "Tenor",
+        "confidence": "high"
+      },
+      "11": {
+        "text": "Tr. Bas",
+        "instrument": "Trumpet",
+        "confidence": "medium"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p10_s0.png",
+    "vision": {
+      "0": "Fag.",
+      "1": "Cor."
+    },
+    "truth": {
+      "0": {
+        "text": ")",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "1": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p10_s1.png",
+    "vision": {
+      "7": "Fl.",
+      "8": "Ob.",
+      "9": "Cl.",
+      "10": "Fag.",
+      "11": "Cor."
+    },
+    "truth": {
+      "7": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "8": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "9": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "11": {
+        "text": "Cor",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p10_s2.png",
+    "vision": {
+      "16": "Cor."
+    },
+    "truth": {
+      "16": {
+        "text": "Cor:",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p40_s0.png",
+    "vision": {
+      "0": "Fl.",
+      "1": "Ob.",
+      "2": "Cl.",
+      "3": "Fag.",
+      "4": "Cor."
+    },
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Ob",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Fag.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Cor",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p40_s1.png",
+    "vision": {
+      "9": "Fl.",
+      "10": "Ob.",
+      "11": "Cl.",
+      "12": "Fag.",
+      "13": "Cor."
+    },
+    "truth": {
+      "9": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p59_s0.png",
+    "vision": {
+      "0": "Fl.",
+      "1": "Ob.",
+      "2": "Cl.",
+      "3": "Fag.",
+      "4": "Cor.",
+      "5": "Tr.",
+      "6": "Tb."
+    },
+    "truth": {}
+  }
+]

@@ -2761,6 +2761,8 @@ def transcribe(
     read_headers: bool = True,
     dossier: dict[str, Any] | None = None,
     dossier_seeding: bool = True,
+    contextual: bool = True,
+    contextual_vision_fallback: bool = False,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -2855,10 +2857,15 @@ def transcribe(
     clef_continuity = _ClefContinuity()
 
     t_total = time.perf_counter()
+    # Kept for the contextual post-pass, which needs the SAME staves that go
+    # into the result — re-detecting them there would risk attaching slot
+    # indices to a different set. Bounded by OMR_MAX_PAGES (5 by default).
+    staved_pages: list[Any] = []
     for p in pages:
         t_phase1 = time.perf_counter()
         page = render_page(pdf_path, p, dpi=dpi)
         pws = detect_staves(page)
+        staved_pages.append(pws)
         pws = detect_barlines(pws)
         cells = extract_measures(pws)
         # Phase 1i: locally re-split any cell that's already going to be
@@ -3490,6 +3497,42 @@ def transcribe(
             out.get("dossier_warnings", [])
         )
 
+    # ── Contextual post-pass ────────────────────────────────────────────────
+    #
+    # Part identity, and the clefs that follow from it. This lived outside the
+    # pipeline until 2026-08-31 — `apply_contextual_analysis` was reachable only
+    # from benchmarks, so the clef numbers this repo quotes (48/52 -> 49/52 with
+    # continuity, 50/52 with a dossier) described a path no transcription ever
+    # took. Wiring it in is what makes those numbers true of the output.
+    #
+    # It is a POST-PASS over the built page dicts: a clef hypothesis is
+    # arithmetic on already-resolved pitches, so nothing about detection, rhythm
+    # or segmentation changes, and a score where it finds nothing serialises
+    # unchanged. It runs last for that reason, and its failure is recorded
+    # rather than raised — a transcription that succeeded must not be lost
+    # because an optional enrichment could not run.
+    if contextual:
+        t_ctx = time.perf_counter()
+        try:
+            from .contextual import apply_contextual_analysis
+            out["contextual"] = apply_contextual_analysis(
+                out,
+                pdf_path=pdf_path,
+                dpi=dpi,
+                dossier=dossier,
+                vision_fallback=contextual_vision_fallback,
+                staved=staved_pages,
+            )
+        except Exception as exc:                              # noqa: BLE001
+            out["contextual"] = {
+                "available": False,
+                "reason": f"{type(exc).__name__}: {exc}",
+            }
+            if progress:
+                print(f"  contextual analysis failed: {type(exc).__name__}: {exc}",
+                      flush=True)
+        out["runtime"]["contextual_s"] = round(time.perf_counter() - t_ctx, 2)
+
     out["runtime"]["total_s"] = round(time.perf_counter() - t_total, 2)
     out["runtime"]["phase1_s"] = round(out["runtime"]["phase1_s"], 2)
     out["runtime"]["yolo_s"] = round(out["runtime"]["yolo_s"], 2)
@@ -3551,6 +3594,20 @@ def main(argv: list[str] | None = None) -> int:
                          "work does not contain. Build them from MusicXML with "
                          "tools.omr.training.build_dossiers. See "
                          "tools/omr/dossier.py.")
+    ap.add_argument("--no-contextual", action="store_true",
+                    help="Skip the contextual post-pass. By default the run "
+                         "names each staff's part (text layer, then Surya "
+                         "locally where .venv-surya exists), assigns stable "
+                         "slots across systems, and fills in clefs the detector "
+                         "never read — reported under `contextual` in the JSON. "
+                         "It is a post-pass over resolved pitches: nothing "
+                         "about detection, rhythm or segmentation changes.")
+    ap.add_argument("--contextual-vision", action="store_true",
+                    help="Let the contextual pass fall back to reading the "
+                         "margin with Claude when the text layer and Surya both "
+                         "come back empty. COSTS MONEY (~$0.01 per system, "
+                         "capped at 3 systems per work) and needs "
+                         "ANTHROPIC_API_KEY.")
     ap.add_argument("--no-dossier-seeding", action="store_true",
                     help="With --dossier, CHECK the reading against the work "
                          "but do not seed from it. By default a dossier also "
@@ -3663,6 +3720,8 @@ def main(argv: list[str] | None = None) -> int:
         read_headers=not args.no_header_reading,
         dossier=dossier,
         dossier_seeding=not args.no_dossier_seeding,
+        contextual=not args.no_contextual,
+        contextual_vision_fallback=args.contextual_vision,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )

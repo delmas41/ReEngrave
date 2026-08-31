@@ -411,6 +411,102 @@ robustness.
 
 ---
 
+## Contextual analysis — part identity, in the pipeline
+
+`transcribe()` runs a **contextual post-pass** by default (`--no-contextual` to
+skip). It names each staff's part, assigns stable slots across systems, fills in
+clefs the detector never read, and writes a `contextual` block into the result.
+
+Until 2026-08-31 `apply_contextual_analysis` was reachable only from benchmarks,
+so the clef figures quoted below (48/52 → 49/52 → 50/52) described a path no
+transcription ever took. Wiring it in is what makes them true of the output.
+
+It is a **post-pass over the built page dicts** — a clef hypothesis is arithmetic
+on already-resolved pitches — so nothing about detection, rhythm or segmentation
+changes, and a score where it finds nothing serialises unchanged. A failure is
+recorded in `contextual.reason` rather than raised: a transcription that
+succeeded is never lost to an optional enrichment.
+
+**The exporter now names parts by instrument.** A Beethoven 5 page with no text
+layer exports as `Flute / Oboe / Clarinet / Bassoon / Horn / Trumpet / Timpani /
+Violin / Viola / Cello` instead of `Staff p47-s0-N`. Staves it cannot name keep
+the old coordinate form, so `--no-contextual` output is unchanged.
+
+⏱️ **Cost.** It re-uses `transcribe`'s own staves rather than re-running phase 1,
+so the pass itself is cheap — but the Surya rung spawns llama.cpp and loads a
+650M model on first use, about 20 s per run. Measured on a 1-page job:
+`contextual_s` 21.4 of 44.0 s total. It amortises over a multi-page job, and is
+absent entirely where `.venv-surya` is not installed (including the container).
+
+---
+
+## Instrument identity — three readers, cheapest first
+
+`contextual._labels_for_page` runs them in order and only pays when the free
+ones come back empty:
+
+| reader | cost | needs |
+|---|---|---|
+| `staff_labels.read_staff_labels` — PDF text layer | free | a text layer (18 of 65 IMSLP PDFs) |
+| `staff_labels_surya.read_staff_labels_surya` — Surya 2, local | **free** | `.venv-surya` + `brew install llama.cpp` |
+| `staff_labels_vision.read_staff_labels_vision` — Claude | ~1¢/system | `ANTHROPIC_API_KEY`; **off by default** |
+
+```bash
+python3 -m tools.omr.staff_labels_surya --bootstrap   # once
+brew install llama.cpp
+python3 -m tools.omr.staff_labels_surya --check
+```
+
+`surya_fallback=True` is the default and **self-disables when the venv is
+absent**, so a machine that never bootstrapped it behaves exactly as before.
+Surya spends no `vision_system_budget` — it costs nothing. Measured on the same
+crops and the same free ground truth: Surya and Claude both score **zero
+disagreements** against the text layer, and Surya resolves 89% of the staves
+Claude does. It is not a worse reader; what it gives up is reach, because Claude
+repairs a damaged label from the running order and an OCR engine transcribes what
+is printed. See
+[SURYA_BAKEOFF_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md).
+
+⚠️ **A newly-readable page can surface lexicon bugs that were dormant.** Beethoven 5
+p.48 went 0 → 12 labels, and three resolve to the wrong instrument (`Tr. Alt.` →
+*Alto*, a voice, at high confidence). That is `instruments.lookup`, not the
+reader — the paid reader gets the same answers. See NOTES.md → "the lexicon reads
+`Tr. Alt.` as a VOICE".
+
+---
+
+## OMR-NED — the metric other people also report
+
+Every other number in this repo is bespoke and therefore incomparable to
+published work. OMR-NED (*Sheet Music Benchmark*, ISMIR 2025, arXiv:2506.10488)
+is the standard: `(insertions + deletions) / (symbols_pred + symbols_truth)`
+over musical symbols, **lower is better**, computed by `musicdiff` 5.2.
+
+```bash
+python3 -m tools.omr.omr_ned --bootstrap                 # once — builds .venv-omrned
+python3 -m tools.omr.training.orchestral_eval --omr-ned  # scores the whole benchmark
+python3 -m tools.omr.omr_ned pred.musicxml truth.musicxml
+```
+
+musicdiff needs Python ≥ 3.10 + music21 ≥ 9.9.1 and the host is 3.9, so it runs
+out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
+`maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
+that venv and must never import from `tools.*`.
+
+Baseline on the engraved orchestral benchmark: **pooled 0.3164** (Mahler 0.0785,
+Beethoven 0.1958, Brahms 0.4664). Full reading, and the three findings it
+surfaced that note recall is blind to, in
+[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md).
+
+**Two traps when reading it.** (1) The metric is SYMMETRIC — swapping prediction
+and truth does not change the score, it only changes which file is parsed
+strictly, which is why `score_pair` is keyword-only. (2) A large `entire measure
+insert/delete` bucket is amplified, not necessarily severe: a measure differing
+only by a fermata is charged delete-whole-bar + insert-whole-bar. Open the op
+list before believing it.
+
+---
+
 ## Local OMR CLI (`tools/omr/`)
 
 In parallel with the web app, you can run the OMR pipeline standalone — no Docker, no DB, no auth. Useful from another Claude session, a notebook, or a one-off script.
