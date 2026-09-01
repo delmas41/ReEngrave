@@ -1,0 +1,31 @@
+{
+  "cell_id": "beet5-p2-sys0-s6-m15",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 760,
+      "y": 819,
+      "w": 66,
+      "h": 19,
+      "x_center": 793,
+      "y_center": 828,
+      "confidence": 0.6172313094139099,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "brace",
+      "category": "structural",
+      "x": 863,
+      "y": 133,
+      "w": 124,
+      "h": 1062,
+      "x_center": 925,
+      "y_center": 664,
+      "confidence": 0.5922459959983826,
+      "pitch": null
+    }
+  ]
+}

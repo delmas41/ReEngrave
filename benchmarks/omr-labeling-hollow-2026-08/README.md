@@ -47,6 +47,27 @@ signature of an undetected half note. **It is a place to look, not a claim** —
 label what the cell shows, and if the bar is short because a rest went undetected
 then that is what to box.
 
+## What is in it
+
+48 cells, selected by shortfall from four scanned pages:
+
+| source | cells |
+|---|---|
+| Beethoven 5 (IMSLP984073) p.2 | 14 |
+| Beethoven 5 p.4 | 12 |
+| Beethoven 5 p.6 | 12 |
+| Ravel Boléro (IMSLP421137) p.2 | 10 |
+
+262 pre-labels, a median of 5 per cell — black noteheads, beams, whole rests,
+flags. **Zero hollow noteheads among them**, which is the whole point: the model
+boxes everything it can see and the hollow heads are what it cannot.
+
+Boléro p.4 contributed nothing: no bar there is short enough to qualify, which
+is the selector declining to pad the batch rather than a failure. Mahler 5 and
+La Mer were in the plan and dropped for time — their pages are large enough that
+the selection pass alone runs for tens of minutes, and adding them is another
+run of the same command.
+
 ## Labelling this batch
 
 ```bash
