@@ -1060,3 +1060,105 @@ They have converged, and what is left is a single cause on both — the F-clef
 veto, `_has_f_clef_dots`, failing to fire on a degraded bass clef. That is now
 the whole of the remaining false-positive count, and it can be worked on against
 two editions at once instead of one.
+
+
+---
+
+## The staff's left edge: the band profile was the wrong fix, and the right one is to abstain (2026-08-31)
+
+The position rule cost exactly one genuine clef across two editions — p48 s12 of
+the Mahler sweep, where the printed lines are so broken at the head of the
+system that no horizontal run four staff spaces long exists until 6.8 spaces in,
+past the clef, so the clef is judged to be standing in the margin. The section
+above named the fix: measure the staff's left edge from the **band ink profile**
+the way `staff_header._walk_left` does, since *the individual lines are broken
+but the band is not*.
+
+**It was built, and it is refused.** Every version of it that recovers p48 s12
+costs more false positives than it saves.
+
+### What the band profile actually does here
+
+`staff_header` walks the band from an anchor known to be inside the staff and
+has a wall test to stop it reaching the instrument name. Ported to the locator's
+question — *where do this staff's lines begin?* — the naive form is "the leftmost
+long run of the band's column profile", and it fails immediately, on the trap
+`staff_header`'s own docstring names:
+
+```
+                    p4 s0    p4 s5    p92 s0   p116 s1  p160 s10  p212 s0   p48 s12
+                    (margin false positives — must stay skipped)              (must be kept)
+shipped operator    skip     skip     skip     skip     skip      skip      SKIPPED ✗
+band profile        kept ✗   kept ✗   kept ✗   kept ✗   kept ✗    kept ✗    kept ✓
+```
+
+Taking `any` over four staff spaces of rows means the instrument name, the
+stacked numerals, the brace and the bracket merge into one inked span, and the
+staff appears to start at column 0. The band profile is right for
+`staff_header`, which wants a generous window and has an anchor and a wall to
+keep it honest; it is wrong for a test whose whole job is to separate margin ink
+from the staff.
+
+### Three better-constrained operators, all measured, all refused
+
+| operator | recovers p48 s12 | margin false positives kept |
+|---|---|---|
+| shipped — leftmost horizontal run ≥ 4 spaces | no | 6 of 6 |
+| close x-gaps 0.25 sp, then long runs | yes | 3 of 6 |
+| per-staff-line runs, median of the five, close 0.25 sp | no | 4 of 6 |
+| ink on ≥ 4 of the 5 known line rows at once | no | **6 of 6** |
+| ink on ≥ 3 of the 5 line rows, close 0.25 sp | yes | 4 of 6 |
+
+Only the two that close gaps aggressively enough to recover p48 s12, and both
+trade two or three genuine removals for that one clef — which is the wrong
+direction for a layer whose whole trade is that a wrong clef transposes every
+note on its staff while a missed one costs nothing that was not already lost.
+
+The five-line-agreement operator is the interesting one: it is better
+*principled* than what ships (a staff is five lines at known spacings, which
+text cannot fake) and it holds all six margin cases — but it does not recover
+p48 s12 either, because on that staff the ink genuinely is not there. It was not
+adopted, since a change with no measured gain is not worth a re-measurement.
+
+### The measurement is not wrong on p48 s12 — it has FAILED, and it can say so
+
+Across **all 174 staves of both sweep corpora**, the measured left edge lands
+between 0 and 3.55 staff spaces into the header window — except p48 s12, which
+lands at **6.77**. The next-highest value is 3.55 and the gap above it is 3.2
+spaces wide, wider than the whole spread of the rest of the population.
+
+So the answer is not a better operator but a bound on when to believe this one.
+`staff_left_max_spaces = 4.0`: a staff that appears to begin further into its own
+header window than that has not been measured, it has been lost, and the margin
+test turns itself off for that cell rather than rejecting a clef on it.
+
+Unlike the tenor symmetry floor, this threshold is not fitted to one edition's
+ink: it is measured on both, the separation is 3.2 spaces rather than 0.014, and
+it fires on exactly one staff in 174 — the one where the measurement is known to
+be wrong.
+
+| | position rule | + abstention |
+|---|---:|---:|
+| Nottebohm located | 79 / 206 | 79 / 206 |
+| reference | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage | 7/9 | 7/9 |
+| orchestral misses | 5 | 5 |
+| **sweep misses** | **9** | **8** |
+| FALSE POSITIVES | 21 | 21 |
+
+The genuine clef comes back and nothing else moves at all. 1115 tests;
+`eval_score_order` byte-identical; `eval_pipeline_clefs --contextual --dossier
+--assist vision` 69/69, base-3 52/52.
+
+The one Mahler miss that remains is p188 s12, and it should remain: the ink
+being read on that staff was the stacked instrument numbers, not the clef.
+
+### The general shape of this, worth keeping
+
+Three times now in this area the instinct has been "the measurement disagrees
+with the truth, so measure it better", and twice the right answer has been
+"the measurement failed, so notice that and abstain". A rule that can tell when
+its own input is unusable is worth more than a rule that tries to work anyway —
+and the way to find the bound is to look at the whole population, where a failed
+measurement usually sits somewhere no successful one ever does.

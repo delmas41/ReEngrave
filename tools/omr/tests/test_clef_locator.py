@@ -320,6 +320,25 @@ class TestInkBeforeTheStaffBegins:
         found = locate_clef(self._margin_and_clef(with_clef=True))
         assert found is not None and found.read.line == 3
 
+    def test_it_abstains_when_the_staff_cannot_be_found(self):
+        """A staff whose lines are too broken to follow is a FAILED
+        measurement, not a staff that begins late — so the margin test turns
+        itself off rather than rejecting a clef on it.
+
+        This is what the rule's one genuine cost looked like: on p48 s12 of the
+        Mahler sweep no run four spaces long exists until 6.8 spaces into the
+        header window, past the clef, so the clef was judged to be in the
+        margin. Over all 174 staves of both sweep corpora every other one lands
+        between 0 and 3.55.
+        """
+        img = self._margin_and_clef(with_clef=True)
+        # Erase the staff lines left of the clef, as a worn plate does — the
+        # clef still sits on the staff, but nothing left of it says so.
+        for y in STAFF_LINES:
+            cv2.line(img.image, (0, y), (200, y), 255, 4)
+        found = locate_clef(img)
+        assert found is not None and found.read.line == 3
+
     def test_the_branch_is_reported_apart_from_debris(self):
         trace: dict = {}
         locate_clef(self._margin_and_clef(with_clef=False), trace=trace)

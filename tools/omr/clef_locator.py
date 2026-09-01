@@ -276,6 +276,32 @@ class ClefLocatorConfig:
     # Taking the leftmost horizontal ink instead reported that EVERY staff
     # begins at column 0, and the rule did nothing.
     staff_line_min_length_spaces: float = 4.0
+    # How far into its own header window a staff may appear to begin before
+    # the measurement is disbelieved and the margin test abstains.
+    #
+    # It exists because the one genuine clef this rule cost was p48 s12 of the
+    # Mahler sweep, where the printed lines are so broken at the head of the
+    # system that no run four spaces long exists until 6.8 spaces in — past
+    # the clef — so the clef was judged to be in the margin. The window is
+    # biased left by half a space plus the bracket and the instrument name; a
+    # staff that seems to start further in than THAT has not been measured, it
+    # has been lost.
+    #
+    # Measured over all 174 staves of both sweep corpora: every one of them
+    # lands between 0 and 3.55 spaces except p48 s12, which lands at 6.77.
+    # The next-highest value is 3.55 and the gap above it is 3.2 spaces wide —
+    # wider than the whole spread of the rest of the population — so unlike
+    # the tenor symmetry floor this bound is not fitted to one edition's ink.
+    # It abstains on exactly one staff in two editions, and that staff is
+    # precisely the one where the measurement is known to be wrong.
+    #
+    # The alternative was to fix the OPERATOR — measure the staff's left edge
+    # from the band ink profile the way `staff_header._walk_left` does, so a
+    # broken line is bridged. That was built and measured, and every version
+    # of it that recovered p48 s12 cost more false positives than it saved:
+    # the ink that lets you follow a broken staff line is the same ink that
+    # lets an instrument name look like one. See RESULTS.md.
+    staff_left_max_spaces: float = 4.0
 
 
 DEFAULT_LOCATOR_CONFIG = ClefLocatorConfig()
@@ -378,7 +404,17 @@ def _staff_left_column(
     long_enough = config.staff_line_min_length_spaces * spacing
     lefts = [int(stats[i, cv2.CC_STAT_LEFT]) for i in range(1, n)
              if stats[i, cv2.CC_STAT_WIDTH] >= long_enough]
-    return min(lefts) if lefts else None
+    if not lefts:
+        return None
+    left = min(lefts)
+    if left > config.staff_left_max_spaces * spacing:
+        # Further in than any staff plausibly starts inside its own header
+        # window: the lines are too broken to be followed, and this is a
+        # failed measurement rather than a staff that begins late. Abstain —
+        # the margin test is off for this cell — instead of rejecting a clef
+        # on it. See `staff_left_max_spaces`.
+        return None
+    return left
 
 
 def _refine_symmetry_axis(

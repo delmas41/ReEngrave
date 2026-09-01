@@ -23,12 +23,12 @@ piano-false-positives.ly` — the "fatal error" it ends on is harmless.
 
 ```
 79 of 206 located (38.3%)
-reference 5/5 exact | coverage 7/9 | orchestral misses 5 | sweep misses 9
+reference 5/5 exact | coverage 7/9 | orchestral misses 5 | sweep misses 8
                                                         | FALSE POSITIVES 21
                                        (7 Beethoven + 14 Mahler)
 ```
 
-Plus: `pytest tools/omr/tests` — **1114 passed, 0 failed**.
+Plus: `pytest tools/omr/tests` — **1115 passed, 0 failed**.
 `benchmarks/omr-score-order/eval_score_order.py` 11/12, 5/10, 23/23.
 `eval_pipeline_clefs.py --contextual --dossier --assist vision` 69/69, base-3
 52/52, about a cent.
@@ -39,9 +39,13 @@ Plus: `pytest tools/omr/tests` — **1114 passed, 0 failed**.
 
 `ClefLocatorConfig.require_cluster_on_staff`, measured on both editions:
 **FALSE POSITIVES 48 → 21** (Mahler 41 → 14, Beethoven 7 → 7, exactly neutral),
-for 2 Mahler misses, and Nottebohm coverage went UP 77 → 79 — it SKIPS the
-margin cluster rather than rejecting the staff, so the clef behind it is still
-found. Guards all held. Full write-up in the last section of `RESULTS.md`.
+and Nottebohm coverage went UP 77 → 79 — it SKIPS the margin cluster rather than
+rejecting the staff, so the clef behind it is still found. The one genuine clef
+it cost was then recovered by `staff_left_max_spaces`, which abstains where the
+staff's left edge cannot be measured (sweep misses 9 → 8, nothing else moving).
+Measuring that edge from the BAND profile instead was built and refused — it
+swallows the instrument name. Guards all held. Both write-ups are the last two
+sections of `RESULTS.md`.
 
 ### The next job, in order
 
@@ -52,15 +56,7 @@ found. Guards all held. Full write-up in the last section of `RESULTS.md`.
    is already fixed and its thresholds were loosened, measured (3 saved, 27 real
    clefs lost) and refused. So this needs a different idea, not a threshold —
    and for the first time it can be judged on two printers' ink at once.
-2. **The staff's left edge should come from the BAND, not from a long run.**
-   The one genuine clef the position rule costs is p48 s12, where the printed
-   lines are so broken at the head of the system that no run four staff spaces
-   long exists until 677 px in — past the clef — so the clef is judged to be in
-   the margin. `staff_header` was written about exactly this: the individual
-   lines are broken but the band is not. Take the edge from the band ink
-   profile the way `_walk_left` does. Worth one clef across two editions, so do
-   it when touching this code anyway rather than as its own errand.
-3. **A third edition.** Two editions have now each shown a false-positive family
+2. **A third edition.** Two editions have now each shown a false-positive family
    the other could not. `sweep_located_clefs.py` builds the corpus and
    `check_clef_precision.py` picks it up with no code change; the cost is an
    afternoon of reading glyphs. Pick a different publisher again.
@@ -77,6 +73,13 @@ found. Guards all held. Full write-up in the last section of `RESULTS.md`.
   names its own PDF. A third edition is an afternoon and no code.
 * **Read a sweep's MISS column with care.** At the moment of building, its
   misses are zero by construction.
+* **When a measurement disagrees with the truth, ask whether it FAILED before
+  trying to make it better.** Twice now the answer has been a bound that lets
+  the rule notice its own input is unusable and abstain, not a cleverer
+  operator — and the way to find the bound is to look at the whole population,
+  where a failed measurement usually sits somewhere no successful one ever
+  does (`staff_left_max_spaces`: 173 of 174 staves under 3.55 spaces, the
+  failure at 6.77).
 
 ## Not clefs, but you will see it: one stale call in `transcribe`
 
