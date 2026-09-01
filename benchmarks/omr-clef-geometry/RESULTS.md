@@ -2000,3 +2000,67 @@ would not be fixed by an instrument's default clef, because a modern lexicon
 gives Soprano and Tenor the treble clef, not the C clefs this 19th-century
 edition prints. Identity is worth roughly twelve of the seventeen, not all of
 them.
+
+
+---
+
+## Surya installed — and on this corpus it is net zero (2026-09-01)
+
+The free rung of the label ladder has never run in any measurement in this
+project. Installed and measured.
+
+Setup took nothing that was not already here: llama.cpp was on the machine, and
+so was `python3.14` — the earlier report that no Python ≥ 3.10 was on PATH came
+from a malformed shell loop of mine, not from the machine. `python3 -m
+tools.omr.staff_labels_surya --bootstrap` builds `.venv-surya` (gitignored) and
+`available()` flips to True.
+
+**It works, and it is quick.** On beet5-p48, the page whose text layer yields
+nothing, it reads 12 labels in 7.6 s and every one resolves — including
+`'Fl. fl. pic.' -> Piccolo`, which is right: the join ground truth records slot 0
+as Piccolo, labelled `Fl. pic.` So the doubling that looks like a misread is the
+engraving.
+
+**End to end it changes nothing.**
+
+| page | free (before) | free + Surya | `--assist vision` |
+|---|---:|---:|---:|
+| beet5-p48 | 14/17 | **15/17** | **17/17** |
+| beet9-p60 | 19/24 | **18/24** | 19/24 |
+| beet9-p30 | 9/13 | 9/13 | **10/13** |
+| all others | — | unchanged | unchanged |
+| **total** | **145/166** | **145/166** | **149/166** |
+
+One staff gained on beet5-p48, one lost on beet9-p60, and the paid reader's four
+staves are still unclaimed.
+
+### What it did change is worth keeping
+
+The dossier goes from **9 right of 12 answered** to **9 of 9** — Surya's labels
+make the part-staff join ABSTAIN on the three staves it used to answer wrongly,
+rather than fixing them. That is the trade this project asks for everywhere
+else, and it comes free.
+
+Against that, beet9-p60 loses a staff: with Surya's labels the page applies two
+instrument corrections and one of them is wrong, introducing a `treble -> bass`.
+The gap-fill rule contains a bad name only where a clef was READ; on a defaulted
+staff a wrong name becomes a wrong clef.
+
+### Why it does not reach the paid reader's four staves
+
+Three different reasons, none of them "Surya is worse at reading":
+
+* **beet9-p120 and wtc-p17** — no tier returns a label at all, Surya included.
+  There is nothing in the margin these readers can find.
+* **beet9-p30 and beet6-p20 and bolero-p12** — the text layer answers first, so
+  Surya never runs. On beet9-p30 the paid reader nonetheless does better, which
+  says the ladder's `_usable()` comparison is worth a look: a reader that is
+  invoked only when the one above it returns nothing cannot improve on a text
+  layer that returns something poor.
+* **lamer-p50** — Tesseract wins the tier race with 19 reads that resolve to 4
+  labels, and Surya is not consulted.
+
+So the honest summary is that installing it was right — it is free, fast,
+correct where it reads, and it improved the dossier's precision — and that the
+label gap this project measured is not closed by it. The remaining four staves
+sit behind the ladder's ORDER, not behind any one reader's accuracy.
