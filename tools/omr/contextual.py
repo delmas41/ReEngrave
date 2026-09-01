@@ -359,11 +359,22 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
                 logger.warning("surya label fallback failed on page %s: %s",
                                page_index, exc)
             else:
-                # Keep whichever read more. Surya used to run only where the
-                # text layer was silent, so replacing wholesale was safe; now
-                # that it also runs on a partly-covered page, replacing could
-                # throw away labels the text layer had.
-                if len(read) > len(labels):
+                # Keep whichever read more — counting USABLE labels, for the
+                # reason the paid rung below already states: a label the
+                # lexicon cannot resolve reaches the join as nothing, so
+                # counting it lets a worse read tie or beat a better one. This
+                # rung compared RAW counts until 2026-09-01 while the rung
+                # below compared usable ones, and the inconsistency cost a
+                # page: Beethoven 9 p.30's text layer returns 8 labels of which
+                # 6 resolve, Surya returns 7 of which 7 resolve, and `8 > 7`
+                # kept the worse read.
+                #
+                # Surya used to run only where the text layer was silent, so
+                # replacing wholesale was safe; now that it also runs on a
+                # partly-covered page, replacing could throw away labels the
+                # text layer had — which is why this is a comparison and not an
+                # override.
+                if _usable(read) > _usable(labels):
                     tiers[0] = 0
                     tiers[1] += len(read)
                     labels = read

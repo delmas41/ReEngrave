@@ -2064,3 +2064,67 @@ So the honest summary is that installing it was right — it is free, fast,
 correct where it reads, and it improved the dossier's precision — and that the
 label gap this project measured is not closed by it. The remaining four staves
 sit behind the ladder's ORDER, not behind any one reader's accuracy.
+
+
+---
+
+## The ladder's order: one bug fixed, and one regression found and NOT explained (2026-09-01)
+
+### Fixed: the free rungs compared raw label counts, the paid rung compared usable ones
+
+`_labels_for_page` keeps whichever reader "read more". At the paid rung that
+comparison is `_usable(read) > _usable(labels)`, with a measured rationale in the
+comment beside it — a label the lexicon cannot resolve reaches the join as
+nothing, so counting it lets a worse read tie a better one, and Beethoven 5 p.48
+cost three clefs to that exact confusion. One rung up, the Surya-vs-text-layer
+comparison still used raw `len()`.
+
+Beethoven 9 p.30 is the same failure in the other place: its text layer returns
+**8 labels of which 6 resolve**, Surya returns **7 of which 7 resolve**, and
+`8 > 7` kept the worse read. Comparing usable labels at both rungs takes that
+page from 9/13 to **10/13** and the free path from 145 to **146/166**. 1108
+tests.
+
+### Found, reproducible, and unexplained: Surya's presence costs three staves
+
+| | Surya installed | Surya disabled |
+|---|---:|---:|
+| `--assist vision`, 166 staves | **146** | **149** |
+| beet5-p48 | 15/17 | **17/17** |
+| dossier | 9 answered, 9 right | **12 answered, 12 right** |
+| instrument corrections | 2 | 0 |
+
+The control is exact: rename `.venv-surya`, change nothing else, re-run. 149.
+Rename it back, 146.
+
+**And it is not the labels.** Surya and the vision reader were dumped side by
+side on that page and agree on all twelve: same staves, same text, same resolved
+instrument, same confidence, same `fifths_offset`, same `y_center_px` to the
+pixel. One alias string differs — `'fl pic'` against `'fl picc'` — and neither
+is in `AMBIGUOUS_ALIASES`, so neither is treated specially by the join.
+
+What changes downstream is that the dossier fills six staves instead of nine,
+which leaves three defaulted, on two of which an instrument correction then fires
+and gets one wrong. But the reason identical labels produce different dossier
+fills is **not identified**, and I could not find it: the label list, the layout
+fit's inputs and the slot assignment all look the same from outside.
+
+**So the state to be aware of:** the best number this corpus has produced is 149,
+and it needs Surya absent. With Surya present the free path is 146 and the paid
+path is also 146 — paying buys nothing, because the paid reader is not consulted
+on the page where it would help.
+
+The `_usable` fix is sound on its own terms and stays: it is +1 on the free path
+and it makes two rungs agree about what counting means. The Surya regression is
+separate, older than that fix, and open. Until it is understood, `.venv-surya`
+is the switch — and a machine that never bootstrapped it is unaffected, which is
+most of them.
+
+### Where to start on it
+
+`apply_contextual_analysis`'s summary is the thread: "12 labels, 0 instrument
+corrections, 9 from the dossier" against "12 labels, 2 instrument corrections, 6
+from the dossier". Instrument identity and the dossier join both read from the
+same labels, so something between `labels` and `_apply_dossier_clefs` is
+carrying more than the label fields — the ordering of the list, or which reader
+the tier bookkeeping credits, are the two candidates worth checking first.
