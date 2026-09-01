@@ -118,6 +118,44 @@ set doing its job.
 but a future combined rule could use it as the cheap first filter and spend a
 more expensive test only on the candidates it admits.
 
+## Attempt 5 — instrument-label continuity (semantic, not typographic)
+
+The idea that motivated it: labels RESTART at a system. That is a fact about the
+music rather than about the engraving, so it should be immune to the mechanism
+that killed attempts 1-4. Labels come from the production chain (text layer on
+B9 and Boléro, Surya on the other 8 pages).
+
+Four formulations, all against the 23-page set:
+
+| rule | TP | FN | FP |
+|---|--:|--:|--:|
+| any instrument repeats | 10 | 5 | 58 |
+| repeats, resetting at each predicted break | 10 | 5 | 21 |
+| score-order RANK decreases (rank from the repo's own `LAYOUTS`) | 12 | 3 | 10 |
+| rank-decrease **AND** bracket-reach 0 | 12 | 3 | **5** |
+
+The shipped rule makes **3 page-level errors** on the same 23 pages. The best of
+these makes 8. Rejected.
+
+Four reasons it does not get there, all visible in the data:
+
+- **Labels are sparse exactly where help is needed.** La Mer p2 carries 2 labels
+  across 20 staves, Mahler p20 carries 1 across 16. A rule that needs labels
+  cannot decide the pages that have none.
+- **Localization is off by one** whenever the new system's top staff is
+  unlabelled: B9 p25 predicts 12 for a true break at 11, Boléro p10 predicts 17
+  for 16. Worse, intersecting with bracket-reach then DISCARDS those, which is
+  why the combined rule's FP drop costs it nothing in FN but loses the two hits
+  it had — the errors just move.
+- **The canonical rank is itself edition-dependent.** Averaging the repo's ten
+  layouts puts Violin (0.58) ahead of Timpani (0.67) and Percussion (0.83), so
+  every Mahler page running Trombone → Tuba → Pauken → Gr.Tr. → Erste Viol.
+  reads as a rank decrease and invents a break. Same failure shape as before,
+  in a different coordinate system.
+- **Doing it properly is circular.** `align_to_layout` would pick the right
+  layout per page instead of averaging, but it is monotone and operates per
+  SYSTEM — it needs the systems this rule is trying to find.
+
 ## Why none of them travel — the mechanism
 
 **In orchestral engraving, barlines are deliberately broken between instrument

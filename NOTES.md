@@ -48,7 +48,25 @@ better than us here but is NOT an oracle — p25 is the standing counter-example
 and a page LEGATO agrees with is not thereby correct. Measure the fix against
 `eval_grouping.py`, never against the miner.
 
-❌ **FOUR FIXES TRIED 2026-08-31, ALL REJECTED** — attempt 4 is the bracket,
+❌ **FIVE FIXES TRIED 2026-08-31, ALL REJECTED.** Attempt 5 was
+instrument-label continuity — semantic rather than typographic, so it should
+have been immune to the engraving-convention problem. Best variant (score-order
+rank decrease AND bracket-reach 0) scores TP=12 FN=3 **FP=5** against the
+shipped rule's **3 page-level errors** on the same 23 pages. It fails because
+labels are sparse where they are needed (La Mer p2: 2 labels / 20 staves;
+Mahler p20: 1 / 16), because localization is off by one whenever the new
+system's top staff is unlabelled, because the canonical rank averaged over the
+repo's layouts puts Violin ahead of Timpani and so invents breaks on every
+Mahler page — and because doing it properly with `align_to_layout` is circular,
+that being monotone and per-SYSTEM.
+
+**Recommendation: stop.** Five attempts across two families (ink in the gap;
+labels beside it) all land well short of a rule that is already at 20/23, and
+all three of its failures are the same narrow case — two systems printed so
+close that their brackets nearly touch. Spend the effort elsewhere unless that
+case starts costing real output.
+
+The first four: — attempt 4 is the bracket,
 retried against the WIDER set: perfect recall (all 15 true breaks read 0) but
 `min(non-break) = 0` in **all 32 configurations** swept, because a system bracket
 is a thin curved engraving rather than a printed rule and whether it clears an
