@@ -2068,7 +2068,7 @@ sit behind the ladder's ORDER, not behind any one reader's accuracy.
 
 ---
 
-## The ladder's order: one bug fixed, and one regression found and NOT explained (2026-09-01)
+## The ladder's order: two bugs fixed, one mechanism still open (2026-09-01)
 
 ### Fixed: the free rungs compared raw label counts, the paid rung compared usable ones
 
@@ -2128,3 +2128,62 @@ from the dossier". Instrument identity and the dossier join both read from the
 same labels, so something between `labels` and `_apply_dossier_clefs` is
 carrying more than the label fields — the ordering of the list, or which reader
 the tier bookkeeping credits, are the two candidates worth checking first.
+
+
+---
+
+## The Surya regression is FIXED — a tie now goes to the better reader (2026-09-01)
+
+The section above left this open: installing Surya cost three staves on the paid
+path, 149 to 146, and the labels looked identical. Fixed, and the fix is one
+character.
+
+`_labels_for_page`'s paid rung kept its own read only on `_usable(read) >
+_usable(labels)`. On Beethoven 5 p.48 both readers return twelve usable labels,
+`12 > 12` is false, and the cheaper read was kept. **A tie now goes to this
+rung** — `read and _usable(read) >= _usable(labels)` — because a count cannot
+see that one of the labels it is counting is wrong, so where counts cannot
+separate two readers the ladder's own accuracy ordering must. The paid call has
+already been made and paid for by the time that line runs, so the tie costs
+nothing; testing `read` keeps an empty read (a reader that failed) from ever
+winning.
+
+| | `--assist none` | `--assist vision` |
+|---|---:|---:|
+| Surya absent | 145 | 149 |
+| Surya present, `>` | 146 | **146** |
+| **Surya present, `>=`** | **146** | **149** |
+
+Verified independently on both arms: beet5-p48 back to 17/17 with the dossier at
+12/12, beet9-p60 to 19/24, 1108 tests. And a second thing it fixes, which was
+invisible before: with Surya installed the paid reader was being **called on
+every page and used on one**. `--assist vision` was buying nothing anywhere it
+mattered.
+
+### So Surya should be kept
+
+* `--assist vision`: **exactly neutral** (149 either way) — worth keeping as the
+  free rung for a machine with no API budget.
+* `--assist none`: **+1** (146 against 145).
+* Both of the reasons to remove it — three staves on the paid path, and the
+  wasted budget — are gone.
+
+### What is NOT established, and a correction to make
+
+The previous section asserted "**it is not the labels** … they agree on all
+twelve". That was over-stated, and it is what sent the first investigation to
+list order and tier bookkeeping. Something about Surya's twelve does behave
+differently from the paid reader's twelve.
+
+A subagent reported the cause as Surya misreading staff 10's `Tr. Ten.` as
+`Tr. Teq.` → Trumpet, which would poison `label_pins` and unanchor the
+trombones. **That does not reproduce here** — four direct runs, warm and cold
+llama.cpp server, and a capture inside the ladder's own call all return
+`Tr. Ten.` → Trombone at high confidence, alias `tr ten`.
+
+The one difference that does survive checking is staff 0: Surya reads
+`'Fl. fl. pic.'` where the paid reader reads `'Fl. picc.'`. Both resolve to
+Piccolo at high confidence, and neither alias is in `AMBIGUOUS_ALIASES` — so if
+that is the cause, something downstream is reading the RAW TEXT rather than the
+resolved label. That is the thread to pull. The fix does not depend on which end
+it is, which is why it shipped and the mechanism is still written down as open.

@@ -446,7 +446,42 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     # `A.` for `Tr. Alt.` and resolves to nothing, while the vision reader's
     # resolves to the trombones. Comparing raw counts kept the OCR read and cost
     # three clefs; comparing matched counts keeps the right one.
-    if _usable(read) > _usable(labels):
+    #
+    # A TIE GOES TO THIS RUNG, not to whichever cheap reader ran first. A count
+    # cannot see that one of the labels it is counting is WRONG, so where the
+    # counts cannot separate two readers the ladder's own accuracy ordering
+    # must — and this is the rung it ranks highest. The call has already been
+    # made and paid for by the time we get here, so preferring it costs nothing.
+    # An EMPTY read is still not a tie: a reader that returned nothing because
+    # it failed must never win the page, which is why `read` is tested and not
+    # only its count.
+    #
+    # Measured on the ten-page hand-read corpus, `--contextual --dossier
+    # --wide`, with `.venv-surya` renamed as the control:
+    #
+    #                          --assist none   --assist vision
+    #     Surya absent               145             149
+    #     Surya present, `>`         146             146
+    #     Surya present, `>=`        146             149
+    #
+    # Before this, installing the free reader COST three staves on the paid
+    # path and silently wasted the whole vision budget: the paid read was made
+    # on every page and used on one. Beethoven 5 p.48 is where it shows —
+    # twelve usable labels from either reader, `12 > 12` false, the cheaper one
+    # kept, and the dossier join then anchors six staves instead of nine.
+    #
+    # WHAT IS NOT ESTABLISHED, recorded so nobody re-derives a wrong answer:
+    # WHICH label makes the two twelves behave differently. A subagent reported
+    # Surya misreading staff 10's `Tr. Ten.` as `Tr. Teq.` -> Trumpet, and that
+    # does NOT reproduce here — four direct runs, warm and cold llama.cpp
+    # server, and a capture inside the ladder's own call all return `Tr. Ten.`
+    # -> Trombone at high confidence. The one difference that does survive
+    # checking is staff 0: Surya reads `'Fl. fl. pic.'` where the paid reader
+    # reads `'Fl. picc.'`. Both resolve to Piccolo at high confidence and
+    # neither alias is in AMBIGUOUS_ALIASES, so if that is the cause, something
+    # downstream is reading the RAW TEXT and not the resolved label. That is the
+    # thread to pull; the fix above does not depend on which end it is.
+    if read and _usable(read) >= _usable(labels):
         # The vision read replaces what the cheap tiers found, so the credit
         # does too — otherwise the summary would name tiers that were overruled.
         tiers[0] = tiers[1] = tiers[2] = 0

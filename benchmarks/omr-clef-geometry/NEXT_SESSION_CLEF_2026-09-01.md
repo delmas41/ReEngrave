@@ -68,17 +68,19 @@ coverage corpora cannot regress by construction.
 The four-item leverage list was worked through and two items are dead. Read
 `RESULTS.md`'s last three sections before starting anything here.
 
-0. **OPEN AND IMPORTANT: Surya's presence costs three staves, and nobody knows
-   why.** `--assist vision` scores **149/166 with `.venv-surya` renamed away**
-   and **146 with it present** — an exact control, nothing else changed. The
-   labels are not the cause: Surya and the vision reader agree on all twelve of
-   beet5-p48's, field for field including `y_center_px`. Downstream the dossier
-   fills 6 staves instead of 9. Start from `apply_contextual_analysis`'s summary
-   ("12 labels, 0 corrections, 9 from the dossier" vs "12 labels, 2 corrections,
-   6 from the dossier") and look at what reaches `_apply_dossier_clefs` besides
-   the label fields — list ORDER and the tier bookkeeping are the two candidates.
-   **Until this is understood, 149 is the best this corpus has produced and it
-   needs Surya absent.**
+0. **DONE: the Surya regression is fixed.** A tie at the paid label rung now
+   goes to the paid rung (`read and _usable(read) >= _usable(labels)`), because
+   a count cannot see that one of the labels it counts is wrong. `--assist
+   vision` is back to **149/166** with Surya installed, `--assist none` is
+   **146**, and the paid reader is no longer called on every page and used on
+   one. **KEEP SURYA.**
+
+   Still open, and small: WHICH of Surya's twelve labels on beet5-p48 makes the
+   two twelves behave differently. The reported cause (`Tr. Teq.` at staff 10)
+   does not reproduce. The live candidate is staff 0's raw TEXT —
+   `'Fl. fl. pic.'` against `'Fl. picc.'`, both resolving to Piccolo — which
+   would mean something downstream reads the text rather than the resolved
+   label. Worth an hour, not a day.
 
 0b. **DONE: Surya is installed** (`--bootstrap`, `.venv-surya`, gitignored;
    re-run it in any other checkout). Free, ~7.6 s a page, correct where it
