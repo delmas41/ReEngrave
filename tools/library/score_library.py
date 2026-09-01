@@ -192,6 +192,26 @@ _WORK_KEY = re.compile(
 )
 
 
+#: A trailing thematic-catalogue number is metadata about the work, not part of
+#: its name, and only one side of the library tends to carry it — IMSLP titles
+#: "The Planets, Op.32" where the MusicXML header says "The Planets".
+_TRAILING_CATALOGUE = re.compile(
+    r"[,\s]+(?:op|opus|k|kv|bwv|hwv|wab|hob|rv|d|m|cd|s|th|jb|woo|anh)\.?\s*"
+    r"[0-9ivx]+[a-z]?(?:\s*[-/]\s*[0-9]+[a-z]?)*\s*$",
+    re.I,
+)
+
+#: Stripping the catalogue off a bare genre name would merge every one of a
+#: composer's nocturnes into a single work, so those keep their number.
+_BARE_GENRE = {
+    "symphony", "concerto", "sonata", "quartet", "quintet", "sextet", "trio",
+    "overture", "suite", "mass", "requiem", "rhapsody", "serenade", "nocturne",
+    "prelude", "fugue", "etude", "ballade", "impromptu", "waltz", "mazurka",
+    "polonaise", "variations", "scherzo", "fantasia", "fantasy", "romance",
+    "intermezzo", "capriccio", "toccata", "march", "song", "lieder",
+}
+
+
 def work_key(title: str) -> str:
     """A title stripped to what identifies the WORK, for joining across sources.
 
@@ -204,6 +224,9 @@ def work_key(title: str) -> str:
     title = normalize_work_title(title)
     m = _WORK_KEY.search(title)
     if not m:
+        stripped = _TRAILING_CATALOGUE.sub("", title).strip(" ,-")
+        if stripped and slug(stripped) not in _BARE_GENRE:
+            return slug(stripped)
         return slug(title)
     qualifier, genre, number = m.groups()
     return slug(" ".join(p for p in (qualifier, genre, number) if p))
