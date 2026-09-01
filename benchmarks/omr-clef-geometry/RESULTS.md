@@ -1856,3 +1856,84 @@ the truth string exactly, so a correct C-clef reading of such a staff scored as
 WRONG — beet9-p120 s13 was being read `tenor`, correctly, and counted as an
 error. Fixed: a `c-clef` row is answered by any C clef, which is as precise as
 the truth is.
+
+
+---
+
+## Items 2, 3 and 4 — and where the clef layer's errors actually come from (2026-09-01)
+
+Working the leverage list to the end. Two of the three remaining items are dead,
+and finishing them points at something none of the four named.
+
+**Every error, by the reader that produced it** (`eval_pipeline_clefs --wide
+--out`, 21 wrong of 166):
+
+```
+  17  default    — the positional guess, always "treble"
+   2  detector   — beet9-p60 s9 and s22, altos read as treble
+   3  dossier    — beet5-p48, the trombone join (alto->bass, tenor->alto, bass->alto)
+```
+
+### Item 2, `slot_continuity`: dead, and for a structural reason
+
+The lead was that beet9-p60 is two systems of twelve reported as one of
+twenty-four, which disables the pass. Both halves of that turn out not to
+matter.
+
+The boundary is invisible to connectivity, not marginally but inverted:
+`gap_bridging_counts` scores the true system break at **324 bridged columns**,
+against a within-system median around 120 and a minimum of 46. The systems are
+printed 77 px apart where within-system gaps run 40–120 px, so distance cannot
+separate them either — which `system_grouping` already documents.
+
+But fixing it would gain nothing, and that is the useful part. **The same slot
+fails in every system it appears in.** beet9-p60's viola reads treble from the
+detector in BOTH systems; beet6-p20's viola defaults to treble in both, on a
+page whose grouping is already correct. `slot_continuity` propagates a reading
+from one system to another, and there is never a good one to propagate: the same
+part in the same edition prints the same glyph, so a reader that fails it once
+fails it twice. **The failures are correlated across systems by construction.**
+It covers one staff of 166 because that is nearly all there is for it to do.
+
+### Item 3, the dossier: not under-covered so much as wrong
+
+It supplies 12 staves and gets 9 right. The three it gets wrong are consecutive
+on beet5-p48 — `alto->bass`, `tenor->alto`, `bass->alto` — which is the
+part-staff join slipping across the trombones on the page that has 23 parts on
+17 staves. Widening dossier coverage before fixing that would spread a known
+misalignment further. This is the join problem, already documented at length in
+`benchmarks/omr-part-staff-join-2026-08/`, arriving from a new direction.
+
+### Item 4, the CV locator: confirmed lowest, at three staves
+
+Three of 166, all correct. Nothing to add to yesterday's conclusion.
+
+### What the list was missing
+
+Seventeen of the twenty-one errors are the positional default, and every one is
+a bass or C-clef staff called treble. The machinery to do better exists and
+works: `clef_correction.correct_clefs_from_instruments` proposes the
+instrument's own default clef wherever no clef was READ, vetoed by whether the
+staff's register fits. It applied **zero** corrections across all ten pages.
+
+Not because it is broken — because it is starved. On beet6-p20 the text layer
+labels five staves, `Fl. Ob. Cl. Fag. Cor.`, and stops; the engraving does not
+label the strings at all, and the score-order prior does not name them either,
+so slots 5–9 carry no instrument and the pass has nothing to reason from. Supply
+the names by hand and it fires immediately:
+
+```
+  staff 7  slot 7  Viola  treble -> alto  fit 1.00  n=57  APPLIED
+```
+
+That is one of that page's two errors, fixed by naming a slot rather than by
+reading a glyph. Note also what did NOT happen: the same experiment named slot 6
+"Timpani" — wrong, it is Violin II — and proposed `treble -> bass` with
+`applied: False`, because the detector had actually read that staff. The
+gap-fill-only rule contained a bad name, which is the property that makes this
+safe to push on.
+
+**So the biggest remaining lever in the clef layer is instrument identity, not
+clef reading.** `eval_score_order` measures exactly that and reports the prior
+naming 12 of 33 staves at 0.92 precision — abstaining on two thirds. Every staff
+it could name safely is a staff whose clef stops being a guess.
