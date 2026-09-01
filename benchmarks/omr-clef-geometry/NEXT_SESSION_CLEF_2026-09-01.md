@@ -60,22 +60,28 @@ coverage corpora cannot regress by construction.
 
 ### The next job, in order
 
-1. **The five Mahler staves with no dot-width components at all.** Of the 13
-   false positives left, 11 are bass clefs, and five of those have no pair of
-   dot-sized components anywhere in the search window — the dots are not
-   misshapen, they are ABSENT from the mask. Either they merged into the clef
-   body before the component pass or they fall outside the 1.5-space window
-   (`dot_search_right_spaces`). Look at the pixels before theorising; that is
-   what this veto has punished twice. `probe_f_clef_dots.py --per-staff` names
-   them.
-2. **The other eight are turned away on aspect or height** even by the loose
-   tier. Cheaper to judge now than before: the sweep table in `RESULTS.md`
-   shows the cost column staying at zero out to aspect 3.0 and height 1.40, so
-   there may be room — but re-measure rather than extrapolating off that table,
-   which was taken with the old `require_cluster_on_staff` population.
-3. **The two treble false positives are out of reach of any dot rule.** A G clef
+1. **DO NOT re-open the five staves with no dots in the window.** Four ideas
+   were built and measured and all four are refused — the merged-pair
+   signature (109 of 123 real C clefs carry one), a harder staff-line strip
+   (zero effect at any dilation), a bigger search window (zero effect at any
+   padding), and a proportion floor on the candidate (real clefs run narrower
+   than the misreads). The dots are on the page and not in the mask, so the
+   only route left is a reader that goes back to the grayscale print rather
+   than the shared ink mask — a real piece of work with a ceiling of four false
+   positives. Full write-up in `RESULTS.md`; do not spend the afternoon again.
+2. **A DECISION, not a bug: a single-dot veto.** No pair required — it removes
+   8 of the 13 false positives and costs 16 of the 123 real clefs. Far better
+   than chance (the population is 13:123) and far worse than everything shipped
+   on 2026-08-31, all of which cost zero. Taking it is a choice about how much
+   coverage this reader should spend on precision. It is left open on purpose.
+3. **The other shape cases** are turned away on aspect or height even by the
+   loose tier. The sweep table in `RESULTS.md` shows the cost column staying at
+   zero out to aspect 3.0 and height 1.40, so there may be a little room — but
+   re-measure rather than extrapolating off that table, which was taken on a
+   different survivor population.
+4. **The two treble false positives are out of reach of any dot rule.** A G clef
    has no dots. They need a different veto or nothing.
-4. **A third edition.** Two editions have now each shown a false-positive family
+5. **A third edition.** Two editions have now each shown a false-positive family
    the other could not. `sweep_located_clefs.py` builds the corpus and
    `check_clef_precision.py` picks it up with no code change; the cost is an
    afternoon of reading glyphs. Pick a different publisher again.
@@ -92,6 +98,10 @@ coverage corpora cannot regress by construction.
   names its own PDF. A third edition is an afternoon and no code.
 * **Read a sweep's MISS column with care.** At the moment of building, its
   misses are zero by construction.
+* **A published measurement of a GLYPH does not transfer to a measurement of a
+  CANDIDATE.** Real C clefs measure 0.50–1.26 wide-over-tall as whole glyphs and
+  0.15–0.70 as the clusters that survive the morphology. This file has made that
+  mistake twice; check which population a number came from before reusing it.
 * **Reach for POSITION before shape.** Three times now the separating property
   has turned out to be where the ink stands, not what it looks like: the margin
   numerals (glyph-sized and genuinely symmetric — no shape gate could refuse

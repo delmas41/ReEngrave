@@ -1265,3 +1265,98 @@ mask, which means either they merged into the clef body before the search or
 they fall outside the 1.5-space window. That is a different question from this
 one and wants the same treatment — look at the pixels first, and check the
 answer on both editions.
+
+
+---
+
+## The five with no dots in the window: four ideas, four refusals (2026-08-31)
+
+The previous section left five survivors whose search window holds no pair of
+dot-width components at all — the dots absent from the mask rather than
+misshapen. **They are not reachable from here, and this is what that cost to
+establish.** Nothing was shipped.
+
+First, what they are. On the print, three of them plainly have dots
+(mahler p104 s16, p176 s9, p184 s9); p140 s18's candidate is a 0.73 × 3.68-space
+sliver; p4 s6 is a G clef, which has no dots and never will.
+
+### 1. The merged pair — refused, and not close
+
+The visible signature in the mask is a single dot-width vertical bar where the
+pair should be: two dots joined by the F line between them, which is exactly
+where an unremoved line would run. On p104 s16 it measures 0.45 × 1.50 spaces.
+
+Swept over both editions and both populations — a component of dot width,
+height in a window around the pair's span, standing at or beyond a given
+fraction of the body:
+
+| dots at | height window | false positives removed | **real C clefs lost** |
+|---|---|---:|---:|
+| ≥ 0.55 w | 1.0 – 2.2 | 8 | **109** |
+| ≥ 0.55 w | 1.4 – 1.8 | 2 | **41** |
+| ≥ 1.00 w | 1.0 – 1.8 | 1 | **40** |
+| ≥ 1.00 w | 1.4 – 1.8 | 1 | **31** |
+
+**109 of the 123 real C clefs carry such a component.** A dot-width, one-to-two
+space vertical mark near a clef is not rare, it is the single most ordinary
+thing in a header: a key-signature accidental's stem, a C clef's own stroke
+fragment, a barline remnant. There is no threshold region worth a second look.
+
+### 2. Stripping the staff lines harder — no effect whatsoever
+
+The obvious upstream cause was that Mahler's lines are thick (measured 5.0–5.7
+analysis px against `strip_horizontal_rules`' fixed 3-px dilation), leaving
+residue that bridges the dots. Rebuilding the mask with dilations of 3, 5, 7 and
+9 px changes the dot count on all four bass staves by **zero**. The theory is
+wrong, and the measured `staff_line_thickness_canonical` the cell already
+carries would not have helped.
+
+### 3. A bigger search window — also nothing
+
+The window is bounded vertically by the candidate's own box, so a dot sitting
+just outside it would be invisible. Padding vertically by 0.5, 1.0 and 1.5
+spaces and rightward to 2.5 spaces recovers **no pair on any of the four**.
+p176 s9 and p184 s9 have exactly one dot at every window size; p104 s16 and
+p140 s18 have none. The second dot does not exist as a separate component
+anywhere in the mask.
+
+### 4. A proportion floor on the CANDIDATE — refused, and instructive
+
+p140 s18's candidate is 0.73 × 3.68 spaces, a width-over-height of 0.20, and
+`test_clef_locator` records that real C clefs measure 0.50–1.26 across 74
+hand-checked Nottebohm glyphs. That looked like a free rejection.
+
+It is not, and the reason is worth keeping: **that range was measured on whole
+clefs, and a candidate is often a fragment of one.** Over the two sweep corpora
+the real C clef candidates run down to **0.15** — narrower than every misread
+except p140 s18 itself:
+
+```
+real C clefs, smallest ratios   0.15  0.17  0.17  0.19  0.19  0.21
+misread candidates, smallest    0.20  0.38  0.41  0.46  0.51  0.54
+```
+
+A floor at 0.20 costs five real clefs to remove one. A published measurement of
+a glyph does not transfer to a measurement of whatever survived the morphology,
+and this file has now made that mistake twice.
+
+### What is actually left, and the judgement call in it
+
+A veto on a **single** clear dot — no pair required — removes 8 of the 13 false
+positives and costs 16 of the 123 real clefs. That is far better than chance
+(the surviving population is 13:123) and far worse than anything else shipped
+today, all of which cost zero.
+
+It is deliberately **not taken here**, for two reasons. It does not answer the
+question this section asked — it reaches only 2 of the 5, because the other 3
+have no clean dot either. And it changes what the layer is: every rule shipped
+today was free, and a 1-removed-for-2-lost trade is a decision about how much
+coverage this reader should spend on precision, which is worth making
+deliberately rather than as the tail of a bug hunt.
+
+### Where the dots have actually gone
+
+They are on the page and not in the mask, at any dilation and any window. So the
+only route left to them is a reader that goes back to the grayscale print
+instead of the shared ink mask — a real piece of work whose ceiling is four
+false positives out of thirteen. Worth knowing before anyone starts.
