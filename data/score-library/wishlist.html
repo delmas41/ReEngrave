@@ -1,0 +1,354 @@
+<title>Orchestral Wantlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --paper:#FBFAF7; --surface:#FFFFFF; --ink:#16171B; --grey:#4A4E57;
+  --mute:#767A83; --rule:#D8D6CF; --rule-soft:#E9E7E1;
+  --accent:#2C4A7C; --accent-soft:#E7ECF4; --brass:#8A6A2F;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#131417; --surface:#1A1C20; --ink:#E9E7E1; --grey:#B2B6BF;
+    --mute:#868B95; --rule:#31343B; --rule-soft:#25282E;
+    --accent:#8FB0DE; --accent-soft:#1E2530; --brass:#C9A45E;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#131417; --surface:#1A1C20; --ink:#E9E7E1; --grey:#B2B6BF;
+  --mute:#868B95; --rule:#31343B; --rule-soft:#25282E;
+  --accent:#8FB0DE; --accent-soft:#1E2530; --brass:#C9A45E;
+}
+*,*::before,*::after { box-sizing:border-box; }
+body {
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:1080px; margin:0 auto; padding:clamp(2rem,5vw,4.5rem) clamp(1.1rem,4vw,2.5rem) 5rem; }
+.lede { max-width:66ch; display:flex; flex-direction:column; gap:1.05rem; }
+.eyebrow {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--mute); margin:0;
+}
+h1 {
+  font-family:Spectral,Georgia,"Times New Roman",serif; font-weight:600;
+  font-size:clamp(2.1rem,5.2vw,3.1rem); line-height:1.1; letter-spacing:-.015em;
+  margin:0; text-wrap:balance;
+}
+.lede p { margin:0; color:var(--grey); }
+.lede a { color:var(--accent); }
+code {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.86em;
+  background:var(--accent-soft); padding:.1em .36em; border-radius:2px;
+}
+pre {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.83rem;
+  background:var(--surface); border:1px solid var(--rule); border-left:2px solid var(--accent);
+  padding:.85rem 1rem; overflow-x:auto; margin:0; line-height:1.5;
+}
+pre code { background:none; padding:0; }
+.stats {
+  display:flex; flex-wrap:wrap; gap:0; margin:2.75rem 0 0;
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+}
+.stat { padding:1rem 1.75rem 1rem 0; margin-right:1.75rem; border-right:1px solid var(--rule-soft); }
+.stat:last-child { border-right:0; }
+.stat b {
+  display:block; font-family:Spectral,Georgia,serif; font-size:1.75rem;
+  font-weight:600; line-height:1; font-variant-numeric:tabular-nums;
+}
+.stat span {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.68rem;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--mute);
+}
+.tier { margin-top:4rem; }
+.th { display:flex; align-items:baseline; gap:.9rem; border-bottom:2px solid var(--ink); padding-bottom:.55rem; }
+.tn {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.7rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--mute); white-space:nowrap;
+}
+.t1 .tn { color:var(--brass); }
+.th h2 {
+  font-family:Spectral,Georgia,serif; font-weight:600; font-size:clamp(1.15rem,2.6vw,1.5rem);
+  margin:0; flex:1; line-height:1.2; text-wrap:balance;
+}
+.tc {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.9rem;
+  color:var(--mute); font-variant-numeric:tabular-nums;
+}
+.blurb { max-width:66ch; color:var(--grey); font-size:.94rem; margin:.9rem 0 0; }
+h3 {
+  font-family:"IBM Plex Sans",sans-serif; font-size:.74rem; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--mute);
+  margin:2.25rem 0 .5rem;
+}
+.tw { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:.9rem; }
+thead th {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:400; font-size:.66rem;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--mute);
+  text-align:left; padding:.4rem .8rem .4rem 0; border-bottom:1px solid var(--rule);
+  white-space:nowrap;
+}
+tbody td { padding:.5rem .8rem .5rem 0; border-bottom:1px solid var(--rule-soft); vertical-align:baseline; }
+tbody tr:last-child td { border-bottom:1px solid var(--rule); }
+.w { font-weight:500; min-width:13rem; }
+.f a {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.83rem;
+  color:var(--accent); text-decoration:none; border-bottom:1px solid transparent; white-space:nowrap;
+}
+.f a:hover, .f a:focus-visible { border-bottom-color:var(--accent); }
+.n { text-align:right; font-family:"IBM Plex Mono",ui-monospace,monospace;
+      font-variant-numeric:tabular-nums; color:var(--grey); white-space:nowrap; }
+.ps, .pt {
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.7rem;
+  letter-spacing:.06em; white-space:nowrap;
+}
+.ps { color:var(--ink); }
+.pt { color:var(--mute); }
+.p { color:var(--grey); font-size:.85rem; min-width:15rem; }
+.foot { margin-top:4.5rem; padding-top:1.5rem; border-top:1px solid var(--rule); max-width:66ch;
+         display:flex; flex-direction:column; gap:1.1rem; }
+.foot h2 { font-family:Spectral,Georgia,serif; font-size:1.15rem; font-weight:600; margin:0; }
+.foot p { margin:0; color:var(--grey); font-size:.94rem; }
+a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+@media (max-width:640px) {
+  .p { display:none; } thead th:last-child { display:none; }
+  .stat { padding-right:1.1rem; margin-right:1.1rem; }
+}
+</style>
+
+<div class="wrap">
+  <header class="lede">
+    <p class="eyebrow">ReEngrave · central score library</p>
+    <h1>Orchestral scores worth pulling from IMSLP</h1>
+    <p>Every work below was checked against IMSLP's own file listing, and the edition named is
+    the one ranked best <em>for optical music recognition</em> — which is not the same as best
+    to play from. A real 19th-century engraving beats a modern typeset, because the engraving is
+    the problem this pipeline exists to read. A named publisher beats an anonymous upload. And an
+    edition series already in the library beats one that isn't: same engraver, same conventions,
+    so a difference between two scores is the music rather than the print.</p>
+    <p>IMSLP gates file downloads behind a JavaScript redirect, so open these links in a browser
+    where you're signed in — <code>curl</code> gets the gate, not the score. Afterwards the whole
+    folder goes in with one command:</p>
+    <pre><code>python3 -m tools.library.ingest imslp ~/Downloads/IMSLP*.pdf</code></pre>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>103</b><span>editions listed</span></div>
+    <div class="stat"><b>13</b><span>with exact ground truth</span></div>
+    <div class="stat"><b>103</b><span>real engravings</span></div>
+    <div class="stat"><b>9,012</b><span>pages of music</span></div>
+  </div>
+
+  <section class="tier t1"><div class="th"><span class="tn">Tier 1</span><h2>Exact ground truth already on hand</h2><span class="tc">13</span></div><p class="blurb">These works have a <em>dossier</em> in <code>data/dossiers/</code> — the meter, the measure count, and the written clef and key signature of every part, generated from MusicXML rather than remembered. A PDF turns each one into a measurable benchmark pair the moment it lands. Download these first.</p><h3>Beethoven</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.1</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/74">IMSLP74</a></td><td class="n">43</td><td><span class="ps">scan</span></td><td class="p">Henry Litolff&#x27;s Verlag, Braunschweig, 1870, plate 2765</td></tr>
+<tr><td class="w">Symphony No.2</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/503997">IMSLP503997</a></td><td class="n">61</td><td><span class="ps">scan</span></td><td class="p">Henry Litolff&#x27;s Verlag, Braunschweig, 1870, plate 2766</td></tr>
+<tr><td class="w">Symphony No.3 &#x27;Eroica&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/504077">IMSLP504077</a></td><td class="n">89</td><td><span class="ps">scan</span></td><td class="p">Henry Litolff&#x27;s Verlag, Braunschweig, 1870, plate 2767</td></tr>
+<tr><td class="w">Symphony No.4</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/504078">IMSLP504078</a></td><td class="n">73</td><td><span class="ps">scan</span></td><td class="p">Henry Litolff&#x27;s Verlag, Braunschweig, 1870, plate 2768</td></tr>
+<tr><td class="w">Symphony No.7</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/504084">IMSLP504084</a></td><td class="n">89</td><td><span class="ps">scan</span></td><td class="p">Henry Litolff&#x27;s Verlag, Braunschweig, 1870, plate 2771</td></tr>
+<tr><td class="w">Symphony No.8</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/504091">IMSLP504091</a></td><td class="n">63</td><td><span class="ps">scan</span></td><td class="p">Henry Litolff&#x27;s Verlag, Braunschweig, 1870, plate 2772</td></tr>
+</tbody></table></div><h3>Brahms</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.2</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/23103">IMSLP23103</a></td><td class="n">73</td><td><span class="ps">scan</span></td><td class="p">N. Simrock, Berlin, 1878, plate 8028</td></tr>
+<tr><td class="w">Symphony No.3</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/317593">IMSLP317593</a></td><td class="n">86</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Brahms Sämtliche Werke)</td></tr>
+<tr><td class="w">Symphony No.4</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/317596">IMSLP317596</a></td><td class="n">99</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Brahms Sämtliche Werke)</td></tr>
+</tbody></table></div><h3>Bruckner</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.5</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/518282">IMSLP518282</a></td><td class="n">180</td><td><span class="ps">scan</span></td><td class="p">BrucknerAGA, 1935</td></tr>
+</tbody></table></div><h3>Holst</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">The Planets</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1014401">IMSLP1014401</a></td><td class="n">190</td><td><span class="ps">scan</span></td><td class="p">Goodwin &amp; Tabb, London, 1921</td></tr>
+</tbody></table></div><h3>Mozart</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.40</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/984555">IMSLP984555</a></td><td class="n">49</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), VIII: Symphonien, Bd.3, No.40, 1880</td></tr>
+</tbody></table></div><h3>Tchaikovsky</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.4</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/377460">IMSLP377460</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">P. Jurgenson, Moscow, plate 3376</td></tr>
+</tbody></table></div></section><section class="tier t2"><div class="th"><span class="tn">Tier 2</span><h2>Reference encoding on hand, no edition</h2><span class="tc">1</span></div><p class="blurb">Ground truth exists in <code>library/reference/</code> but no dossier. Still supports note-level comparison, just not per-part clef and key checking.</p><h3>Tchaikovsky</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">1812 Overture</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/23744">IMSLP23744</a></td><td class="n">73</td><td><span class="ps">scan</span></td><td class="p">P. Jurgenson, Moscow, 1882, plate 4592</td></tr>
+</tbody></table></div></section><section class="tier t3"><div class="th"><span class="tn">Tier 3</span><h2>Canonical repertoire, no ground truth held</h2><span class="tc">85</span></div><p class="blurb">Standard concert repertoire. Valuable as OMR input and as scan-robustness material, but accuracy on these can only be judged by eye until a reference encoding exists.</p><h3>Beach</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Gaelic Symphony</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/27125">IMSLP27125</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">Arthur P. Schmidt, Boston, 1897, plate S. 436</td></tr>
+</tbody></table></div><h3>Beethoven</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Coriolan Overture</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/50270">IMSLP50270</a></td><td class="n">62</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Egmont Overture</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/807970">IMSLP807970</a></td><td class="n">82</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, plate PB 4</td></tr>
+</tbody></table></div><h3>Berlioz</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Harold en Italie</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/515587">IMSLP515587</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">Ernst Eulenburg, Leipzig, 1899, plate E.E. 3623</td></tr>
+<tr><td class="w">Le Carnaval romain</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/11357">IMSLP11357</a></td><td class="n">45</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Symphonie fantastique</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/522307">IMSLP522307</a></td><td class="n">160</td><td><span class="ps">scan</span></td><td class="p">NewBerliozEdition, 1971</td></tr>
+</tbody></table></div><h3>Bizet</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">L&#x27;Arlesienne Suite No.1</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/61758">IMSLP61758</a></td><td class="n">54</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, plate 25133</td></tr>
+</tbody></table></div><h3>Borodin</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.2</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/197128">IMSLP197128</a></td><td class="n">156</td><td><span class="ps">scan</span></td><td class="p">V. Bessel &amp; Co., St. Petersburg, 1888, plate 671</td></tr>
+</tbody></table></div><h3>Brahms</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Academic Festival Overture</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/28983">IMSLP28983</a></td><td class="n">69</td><td><span class="ps">scan</span></td><td class="p">N. Simrock, Berlin, 1881, plate 8187</td></tr>
+<tr><td class="w">Variations on a Theme by Haydn</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/23074">IMSLP23074</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">N. Simrock, Berlin, 1874, plate 7395</td></tr>
+<tr><td class="w">Violin Concerto</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/107060">IMSLP107060</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">N. Simrock, Berlin, 1879, plate 8133</td></tr>
+</tbody></table></div><h3>Bruckner</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.4 &#x27;Romantic&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/30700">IMSLP30700</a></td><td class="n">231</td><td><span class="ps">scan</span></td><td class="p">Ernst Eulenburg, Leipzig, plate E.E. 3636</td></tr>
+<tr><td class="w">Symphony No.7</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/30703">IMSLP30703</a></td><td class="n">167</td><td><span class="ps">scan</span></td><td class="p">Ernst Eulenburg, Leipzig, 1926, plate E.E. 3637</td></tr>
+<tr><td class="w">Symphony No.8</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/30702">IMSLP30702</a></td><td class="n">223</td><td><span class="ps">scan</span></td><td class="p">&#x27;&#x27;Co-issue with Universal Edition (Philharmonia series)&#x27;&#x27;</td></tr>
+<tr><td class="w">Symphony No.9</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/562469">IMSLP562469</a></td><td class="n">193</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+</tbody></table></div><h3>Chaminade</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Concertino for Flute</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/57545">IMSLP57545</a></td><td class="n">46</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+</tbody></table></div><h3>Coleridge-Taylor</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Ballade in A minor</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/860015">IMSLP860015</a></td><td class="n">63</td><td><span class="ps">scan</span></td><td class="p">Novello, London</td></tr>
+</tbody></table></div><h3>Debussy</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Nocturnes</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/410848">IMSLP410848</a></td><td class="n">85</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Prelude a l&#x27;apres-midi d&#x27;un faune</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1036699">IMSLP1036699</a></td><td class="n">41</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+</tbody></table></div><h3>Dvorak</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Cello Concerto</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/8476">IMSLP8476</a></td><td class="n">76</td><td><span class="ps">scan</span></td><td class="p">N. Simrock, Berlin, 1896, plate 10548</td></tr>
+<tr><td class="w">Symphony No.7</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/649931">IMSLP649931</a></td><td class="n">136</td><td><span class="ps">scan</span></td><td class="p">N. Simrock, Berlin, 1885, plate 8604</td></tr>
+<tr><td class="w">Symphony No.8</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/405841">IMSLP405841</a></td><td class="n">182</td><td><span class="ps">scan</span></td><td class="p">Novello, Ewer &amp; Co., London, 1892, plate 9231</td></tr>
+</tbody></table></div><h3>Elgar</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Cello Concerto</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/22192">IMSLP22192</a></td><td class="n">104</td><td><span class="ps">scan</span></td><td class="p">Novello &amp; Co., London, 1921, plate 14737</td></tr>
+<tr><td class="w">Enigma Variations</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/23792">IMSLP23792</a></td><td class="n">128</td><td><span class="ps">scan</span></td><td class="p">Novello &amp; Co., London, 1899</td></tr>
+<tr><td class="w">Symphony No.1</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/56155">IMSLP56155</a></td><td class="n">172</td><td><span class="ps">scan</span></td><td class="p">Novello &amp; Co., London, 1908</td></tr>
+</tbody></table></div><h3>Franck</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony in D minor</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/95003">IMSLP95003</a></td><td class="n">152</td><td><span class="ps">scan</span></td><td class="p">Hamelle, Paris, 1890, plate J. 3059 H</td></tr>
+</tbody></table></div><h3>Grieg</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Peer Gynt Suite No.1</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/912194">IMSLP912194</a></td><td class="n">44</td><td><span class="ps">scan</span></td><td class="p">Edition Peters, Leipzig, 1888, plate 7188</td></tr>
+</tbody></table></div><h3>Haydn</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.100 &#x27;Military&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/546542">IMSLP546542</a></td><td class="n">101</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1857, plate 9507</td></tr>
+<tr><td class="w">Symphony No.101 &#x27;Clock&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/546548">IMSLP546548</a></td><td class="n">73</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1855, plate 8874</td></tr>
+<tr><td class="w">Symphony No.103 &#x27;Drumroll&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/546607">IMSLP546607</a></td><td class="n">59</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1854, plate 8871</td></tr>
+<tr><td class="w">Symphony No.104 &#x27;London&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/546608">IMSLP546608</a></td><td class="n">57</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1854, plate 8872</td></tr>
+<tr><td class="w">Symphony No.94 &#x27;Surprise&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/546546">IMSLP546546</a></td><td class="n">54</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1855, plate 8876</td></tr>
+</tbody></table></div><h3>Mahler</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.1</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/271005">IMSLP271005</a></td><td class="n">206</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Symphony No.2 &#x27;Resurrection&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/211806">IMSLP211806</a></td><td class="n">211</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Symphony No.4</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/70999">IMSLP70999</a></td><td class="n">127</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Symphony No.6</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/514284">IMSLP514284</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Symphony No.9</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/353450">IMSLP353450</a></td><td class="n">180</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+</tbody></table></div><h3>Mendelssohn</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">A Midsummer Night&#x27;s Dream Overture</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1014261">IMSLP1014261</a></td><td class="n">174</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Symphony No.3 &#x27;Scottish&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/514187">IMSLP514187</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1842, plate 6823</td></tr>
+<tr><td class="w">Symphony No.4 &#x27;Italian&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/20286">IMSLP20286</a></td><td class="n">70</td><td><span class="ps">scan</span></td><td class="p">MendelssohnComplete, 1877</td></tr>
+<tr><td class="w">Violin Concerto</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/761698">IMSLP761698</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, plate P.B. 480</td></tr>
+</tbody></table></div><h3>Mozart</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Overture to Le nozze di Figaro</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/515701">IMSLP515701</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), V, Bd.8, No.17, 1879</td></tr>
+<tr><td class="w">Requiem</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/848267">IMSLP848267</a></td><td class="n">61</td><td><span class="ps">scan</span></td><td class="p">Bärenreiter (Neue Mozart-Ausgabe), I, 1965</td></tr>
+<tr><td class="w">Symphony No.25</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/849180">IMSLP849180</a></td><td class="n">20</td><td><span class="ps">scan</span></td><td class="p">Bärenreiter (Neue Mozart-Ausgabe), IV, 1960</td></tr>
+<tr><td class="w">Symphony No.29</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1015165">IMSLP1015165</a></td><td class="n">24</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), VIII, Bd.2, No.29, 1880</td></tr>
+<tr><td class="w">Symphony No.31 &#x27;Paris&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1015171">IMSLP1015171</a></td><td class="n">40</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), VIII: Symphonien, Bd.2, No.31, 1880</td></tr>
+<tr><td class="w">Symphony No.35 &#x27;Haffner&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/849414">IMSLP849414</a></td><td class="n">52</td><td><span class="ps">scan</span></td><td class="p">Bärenreiter (Neue Mozart-Ausgabe), IV, 1970</td></tr>
+<tr><td class="w">Symphony No.36 &#x27;Linz&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/979001">IMSLP979001</a></td><td class="n">44</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), VIII, Bd.3, No.36, 1880</td></tr>
+<tr><td class="w">Symphony No.38 &#x27;Prague&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/984553">IMSLP984553</a></td><td class="n">40</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), VIII, Bd.3, No.38, 1880</td></tr>
+<tr><td class="w">Symphony No.39</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/984554">IMSLP984554</a></td><td class="n">44</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), VIII, Bd.3, No.39, 1880</td></tr>
+</tbody></table></div><h3>Mussorgsky</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Pictures at an Exhibition (orch. Ravel)</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/272845">IMSLP272845</a></td><td class="n">48</td><td><span class="ps">scan</span></td><td class="p">Augener, London, 1914, plate 14816</td></tr>
+</tbody></table></div><h3>Nielsen</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.4 &#x27;Inextinguishable&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/214811">IMSLP214811</a></td><td class="n">120</td><td><span class="ps">scan</span></td><td class="p">Wilhelm Hansen, Leipzig, 1916, plate 16557</td></tr>
+</tbody></table></div><h3>Prokofiev</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.1 &#x27;Classical&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/5981">IMSLP5981</a></td><td class="n">97</td><td><span class="ps">scan</span></td><td class="p">Editions Russes de Musique, Paris, 1925, plate R.M.V. 419</td></tr>
+</tbody></table></div><h3>R. Strauss</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Also sprach Zarathustra</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/8190">IMSLP8190</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">Ernst Eulenburg, Leipzig, 1920, plate E.E. 3506</td></tr>
+<tr><td class="w">Don Juan</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1035516">IMSLP1035516</a></td><td class="n">131</td><td><span class="ps">scan</span></td><td class="p">Ernest Eulenburg, London, plate E. E. 3499}} {{Urtext</td></tr>
+<tr><td class="w">Don Quixote</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/18787">IMSLP18787</a></td><td class="n">94</td><td><span class="ps">scan</span></td><td class="p">Jos. Aibl Verlag, Munich, 1898, plate R. 2885</td></tr>
+<tr><td class="w">Ein Heldenleben</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/19168">IMSLP19168</a></td><td class="n">139</td><td><span class="ps">scan</span></td><td class="p">F.E.C. Leuckart, Leipzig, 1899, plate F.E.C.L. 5200</td></tr>
+<tr><td class="w">Tod und Verklarung</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/18779">IMSLP18779</a></td><td class="n">90</td><td><span class="ps">scan</span></td><td class="p">Josesph Aibl, Munich, 1891, plate 2676</td></tr>
+</tbody></table></div><h3>Ravel</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Daphnis et Chloe Suite No.2</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/952691">IMSLP952691</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Rapsodie espagnole</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/134638">IMSLP134638</a></td><td class="n">94</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+</tbody></table></div><h3>Rimsky-Korsakov</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Capriccio espagnol</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/875678">IMSLP875678</a></td><td class="n">95</td><td><span class="ps">scan</span></td><td class="p">M.P. Belaieff, Leipzig, plate 3220</td></tr>
+<tr><td class="w">Scheherazade</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1010338">IMSLP1010338</a></td><td class="n">257</td><td><span class="ps">scan</span></td><td class="p">Ernst Eulenburg, Leipzig, plate 2957*</td></tr>
+</tbody></table></div><h3>Rossini</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">William Tell Overture</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/33461">IMSLP33461</a></td><td class="n">51</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+</tbody></table></div><h3>Saint-Saens</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Danse macabre</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/21204">IMSLP21204</a></td><td class="n">52</td><td><span class="ps">scan</span></td><td class="p">Durand, Schoenewerk et Cie., Paris, 1875, plate D. S. &amp; Cie. 2140</td></tr>
+<tr><td class="w">Symphony No.3 &#x27;Organ&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/113413">IMSLP113413</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">Durand &amp; Schoenewerk, Paris, 1886, plate D.S. 3700</td></tr>
+</tbody></table></div><h3>Schubert</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.5</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/515582">IMSLP515582</a></td><td class="n">48</td><td><span class="ps">scan</span></td><td class="p">SchubertComplete, I, 1885</td></tr>
+<tr><td class="w">Symphony No.8 &#x27;Unfinished&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1017902">IMSLP1017902</a></td><td class="n">36</td><td><span class="ps">scan</span></td><td class="p">&#x27;&#x27;Breitkopf &amp; Härtel&#x27;s Partitur-Bibliothek&#x27;&#x27; (Part B. 154)|Publisher Information=</td></tr>
+<tr><td class="w">Symphony No.9 &#x27;Great&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/933640">IMSLP933640</a></td><td class="n">140</td><td><span class="ps">scan</span></td><td class="p">&#x27;&#x27;Breitkopf &amp; Härtels Partitur-Bibliothek&#x27;&#x27;, No.5208</td></tr>
+</tbody></table></div><h3>Schumann</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.1 &#x27;Spring&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/902951">IMSLP902951</a></td><td class="n">156</td><td><span class="ps">scan</span></td><td class="p">&#x27;&#x27;Breitkopf &amp; Härtels Partitur-Bibliothek&#x27;&#x27;, No.5261</td></tr>
+<tr><td class="w">Symphony No.3 &#x27;Rhenish&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/13086">IMSLP13086</a></td><td class="n">93</td><td><span class="ps">scan</span></td><td class="p">C.F. Peters, Leipzig, 1887, plate [[Edition Peters/Plate Numbers</td></tr>
+<tr><td class="w">Symphony No.4</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/283015">IMSLP283015</a></td><td class="n">91</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1891, plate Part.B. 159</td></tr>
+</tbody></table></div><h3>Sibelius</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Finlandia</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/15894">IMSLP15894</a></td><td class="n">24</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, 1905, plate Part.B. 1781</td></tr>
+<tr><td class="w">Symphony No.2</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/15919">IMSLP15919</a></td><td class="n">143</td><td><span class="ps">scan</span></td><td class="p">(Breitkopf und Härtel from 1905)</td></tr>
+<tr><td class="w">Symphony No.5</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/15922">IMSLP15922</a></td><td class="n">134</td><td><span class="ps">scan</span></td><td class="p">Wilhelm Hansen, Copenhagen, 1921, plate 17539</td></tr>
+<tr><td class="w">Violin Concerto</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/15936">IMSLP15936</a></td><td class="n">65</td><td><span class="ps">scan</span></td><td class="p">Schlesinger (Lienau), Berlin, 1905, plate S. 9336</td></tr>
+</tbody></table></div><h3>Smetana</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Vltava (The Moldau)</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/983879">IMSLP983879</a></td><td class="n">—</td><td><span class="ps">scan</span></td><td class="p">P2, Eulenburg</td></tr>
+</tbody></table></div><h3>Stravinsky</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Petrushka</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/472771">IMSLP472771</a></td><td class="n">151</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">The Firebird Suite</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1021655">IMSLP1021655</a></td><td class="n">180</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+</tbody></table></div><h3>Tchaikovsky</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Romeo and Juliet</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/333131">IMSLP333131</a></td><td class="n">111</td><td><span class="ps">scan</span></td><td class="p">Ed. Bote &amp; G. Bock, Berlin, 1881, plate 9325</td></tr>
+<tr><td class="w">Serenade for Strings</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/380582">IMSLP380582</a></td><td class="n">66</td><td><span class="ps">scan</span></td><td class="p">—</td></tr>
+<tr><td class="w">Symphony No.5</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/504184">IMSLP504184</a></td><td class="n">164</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel, Leipzig, 1930, plate 30388/Part.B. 3347</td></tr>
+<tr><td class="w">The Nutcracker Suite</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/231707">IMSLP231707</a></td><td class="n">120</td><td><span class="ps">scan</span></td><td class="p">P. Jurgenson, Moscow, 1892, plate 17668</td></tr>
+</tbody></table></div><h3>Vaughan Williams</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Fantasia on a Theme by Thomas Tallis</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/23450">IMSLP23450</a></td><td class="n">19</td><td><span class="ps">scan</span></td><td class="p">Goodwin &amp; Tabb, London, 1921</td></tr>
+</tbody></table></div><h3>Wagner</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Die Meistersinger Prelude</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/1018335">IMSLP1018335</a></td><td class="n">40</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig</td></tr>
+</tbody></table></div><h3>Weber</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Der Freischutz Overture</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/218184">IMSLP218184</a></td><td class="n">41</td><td><span class="ps">scan</span></td><td class="p">Breitkopf und Härtel, Leipzig, plate Part. B. 1688</td></tr>
+</tbody></table></div></section><section class="tier t4"><div class="th"><span class="tn">Tier 4</span><h2>Already in the library</h2><span class="tc">4</span></div><p class="blurb">Listed for completeness. The ingest deduplicates by SHA-256, so re-downloading these changes nothing.</p><h3>Brahms</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.1</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/317803">IMSLP317803</a></td><td class="n">86</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Brahms Sämtliche Werke)</td></tr>
+</tbody></table></div><h3>Dvorak</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.9 &#x27;New World&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/405834">IMSLP405834</a></td><td class="n">80</td><td><span class="ps">scan</span></td><td class="p">N. Simrock, Berlin, 1894, plate 10139</td></tr>
+</tbody></table></div><h3>Mozart</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.41 &#x27;Jupiter&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/984556">IMSLP984556</a></td><td class="n">56</td><td><span class="ps">scan</span></td><td class="p">Breitkopf &amp; Härtel (Mozart&#x27;s Werke), VIII: Symphonien, Bd.3, No.41, 1880</td></tr>
+</tbody></table></div><h3>Tchaikovsky</h3><div class="tw"><table>
+<thead><tr><th>Work</th><th>File</th><th class=n>Pages</th><th>Print</th><th>Publisher</th></tr></thead><tbody>
+<tr><td class="w">Symphony No.6 &#x27;Pathetique&#x27;</td><td class="f"><a href="https://imslp.org/wiki/Special:ReverseLookup/922722">IMSLP922722</a></td><td class="n">224</td><td><span class="ps">scan</span></td><td class="p">Eulenburg, Leipzig, plate 3892</td></tr>
+</tbody></table></div></section>
+
+  <div class="foot">
+    <h2>Three that got away</h2>
+    <p>Beethoven's <em>Leonore</em> Overture No. 3, Ravel's <em>Ma mère l'Oye</em>, and Lili
+    Boulanger's <em>D'un matin de printemps</em> are filed under titles that neither the guessed
+    name nor the search fallback matched. They exist — find them by hand and add them the same way.</p>
+    <h2>On reading the page counts</h2>
+    <p>Page count identifies an edition as much as the publisher does. Beethoven's third runs
+    89 pages in the Litolff and 176 in the Eulenburg, and neither is wrong. A count far outside
+    the band for a work usually means a complete-works volume or a single movement rather than
+    a full score — worth a look before downloading.</p>
+  </div>
+</div>

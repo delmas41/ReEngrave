@@ -29,7 +29,7 @@ import time
 import urllib.parse
 
 from tools.library import score_library as lib
-from tools.library.imslp_meta import page_files
+from tools.library.imslp_meta import _get, page_files
 
 # (composer surname, work label, IMSLP page title)
 WORKS: list[tuple[str, str, str]] = [
@@ -164,6 +164,28 @@ GOOD_PUBLISHER = re.compile(
 )
 
 
+def search_title(query: str, composer: str) -> str:
+    """Ask IMSLP for the real page title when a guessed one 404s.
+
+    Page titles carry the catalogue number in whatever form the wiki settled on
+    ("Coriolan Overture, Op.62" is actually filed under a different name), and
+    guessing them from the work list gets a tenth of them wrong.  Search once,
+    prefer a hit whose title names the composer.
+    """
+    url = ("https://imslp.org/api.php?action=query&list=search&format=json&srlimit=10&srsearch="
+           + urllib.parse.quote(f"{query} {composer}"))
+    try:
+        _, body = _get(url)
+        hits = json.loads(body)["query"]["search"]
+    except Exception:  # noqa: BLE001
+        return ""
+    surname = composer.split()[-1].lower()
+    for hit in hits:
+        if surname in hit["title"].lower():
+            return hit["title"]
+    return hits[0]["title"] if hits else ""
+
+
 def candidates_for(title: str) -> list[dict]:
     """Full scores on a work page, with publisher and scan type attached."""
     out = []
@@ -244,6 +266,8 @@ def main() -> int:
     ap.add_argument("--delay", type=float, default=4.0)
     ap.add_argument("--include-held", action="store_true")
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--retry", metavar="WISHLIST",
+                    help="retry only the unresolved works in an existing wishlist, merge, write back")
     args = ap.parse_args()
 
     catalog = lib.load_catalog()
@@ -251,17 +275,37 @@ def main() -> int:
     held = {e.get("imslp_id") for e in catalog.get("entries", []) if e.get("imslp_id")}
     held_works = {e["work_id"] for e in catalog.get("entries", []) if e.get("kind") == "edition"}
 
-    rows = []
+    previous: dict[str, dict] = {}
     works = WORKS[: args.limit] if args.limit else WORKS
+    if args.retry:
+        with open(args.retry) as fh:
+            previous = {f"{r['composer']}|{r['work']}": r for r in json.load(fh)["works"]}
+        works = [w for w in works if not previous.get(f"{w[0]}|{w[1]}", {}).get("imslp_id")]
+        print(f"retrying {len(works)} unresolved of {len(previous)}\n")
+
+    rows = []
     for i, (composer, label, title) in enumerate(works):
         if i:
             time.sleep(args.delay)
+        candidates: list[dict] = []
         try:
             candidates = candidates_for(title)
-        except Exception as exc:  # noqa: BLE001
-            print(f"  ! {label}: {exc}", file=sys.stderr)
+        except Exception:  # noqa: BLE001 - a guessed title that 404s is expected
+            pass
+        if not candidates:
+            found = search_title(label, composer)
+            if found and found != title:
+                time.sleep(args.delay)
+                try:
+                    candidates = candidates_for(found)
+                    if candidates:
+                        title = found
+                except Exception as exc:  # noqa: BLE001
+                    print(f"  ! {label}: {exc}", file=sys.stderr)
+        if not candidates:
             rows.append({"composer": composer, "work": label, "page_title": title,
-                         "error": str(exc)})
+                         "error": "no full score found"})
+            print(f"  {composer:16.16s} {label:38.38s} -- not found", flush=True)
             continue
 
         familiar = familiar_pub.get(lib.slug(composer, maxlen=30), set())
@@ -296,6 +340,10 @@ def main() -> int:
               f"IMSLP{row.get('imslp_id','?'):<9} {str(row.get('pages','?')):>4}pp  "
               f"{row.get('publisher','')[:44]:44.44s} {mark}", flush=True)
 
+    if args.retry:
+        for row in rows:
+            previous[f"{row['composer']}|{row['work']}"] = row
+        rows = list(previous.values())
     with open(args.out, "w") as fh:
         json.dump({"works": rows}, fh, indent=2, ensure_ascii=False)
     ok = [r for r in rows if r.get("imslp_id")]
