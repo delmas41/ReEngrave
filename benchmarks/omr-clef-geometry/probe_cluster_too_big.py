@@ -104,13 +104,14 @@ def main() -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--per-staff", action="store_true")
-    ap.add_argument("--no-single-dot", action="store_true",
-                    help="turn `dot_single_clear_is_enough` off, to see what "
-                         "that veto costs against hand-read truth")
+    ap.add_argument("--single-dot", action="store_true",
+                    help="turn `dot_single_clear_is_enough` ON — the arm that "
+                         "was taken and then reverted, kept reproducible "
+                         "because this corpus is what reverted it")
     args = ap.parse_args()
     config = DEFAULT_LOCATOR_CONFIG
-    if args.no_single_dot:
-        config = dataclasses.replace(config, dot_single_clear_is_enough=False)
+    if args.single_dot:
+        config = dataclasses.replace(config, dot_single_clear_is_enough=True)
 
     # branch -> {"C": n, "not C": n}
     table: dict[str, Counter] = defaultdict(Counter)

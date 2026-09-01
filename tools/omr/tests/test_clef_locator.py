@@ -406,15 +406,16 @@ class TestAbstains:
         draw_noteheads(img)
         assert locate_clef(make_cell(img)) is None
 
-    def test_one_dot_standing_clear_is_enough(self):
-        """The partner is often lost to the morphology on a worn print — on
-        four staves of the Mahler sweep it does not survive as a separate
-        component at any dilation or search window — so one dot clear of the
-        body vetoes on its own.
+    def test_one_dot_alone_does_not_veto(self):
+        """A single dot is NOT enough, and the arm where it is stays
+        reproducible.
 
-        Deliberately a TRADE and not a free win: it removes 8 of the 13
-        remaining false positives across both editions and declines 16 of the
-        123 real C clefs. See `dot_single_clear_is_enough`.
+        `dot_single_clear_is_enough` was taken and reverted the same day: the
+        sweep corpora made it look like 8 false positives for 16 declined
+        clefs, and the wider hand-read corpus measured 5 real C clefs lost for
+        1 false positive avoided. A sweep corpus is built from the candidates
+        the locator FIRES on, so it oversamples the staves where it produces
+        something and cannot price a rule's cost in the wild.
         """
         img = blank_page()
         draw_f_clef(img, 4)
@@ -429,7 +430,12 @@ class TestAbstains:
         # 1.79 of the body's width.
         cv2.circle(img, (22 + 46, cy + SPACING // 2), 5, 0, -1)
         draw_noteheads(img)
-        assert locate_clef(make_cell(img)) is None
+        cell = make_cell(img)
+        found = locate_clef(cell)
+        assert found is not None, "one dot must not veto — see the docstring"
+        on = dataclasses.replace(DEFAULT_LOCATOR_CONFIG,
+                                 dot_single_clear_is_enough=True)
+        assert locate_clef(cell, config=on) is None, "the arm still works"
 
     def test_the_loose_reading_does_not_reach_inside_the_body(self):
         """The half that makes it safe. The same worn pair, printed ON the

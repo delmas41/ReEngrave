@@ -1681,3 +1681,40 @@ not free either.
 
 `no_clusters` (3 C clefs) and `asymmetric` (3) are now the joint second-largest
 losses after the dot veto, and neither has ever been looked at.
+
+
+---
+
+## The single-dot veto is reverted (2026-08-31)
+
+Sean's call, on the evidence the widened corpus produced. `dot_single_clear_is_
+enough = False`.
+
+| | veto on | **reverted** |
+|---|---:|---:|
+| C clefs located (hand-read, 24) | 8 | **13** |
+| false positives on those pages | 0 | 1 |
+| orchestral coverage probe, located | 58 / 720 | **68 / 720** |
+| sweep misses | 24 | **8** |
+| FALSE POSITIVES (sweeps) | 5 | **13** |
+| `eval_score_order`, read clefs | 3 / 8 | **5 / 10** |
+| `eval_pipeline_clefs` | 69/69 | **69/69** |
+| reference / piano | 5/5 / 0 | 5/5 / 0 |
+| tests | 1107 | 1107 |
+
+Five real C clefs back for one false positive on the unbiased corpus; the
+`eval_score_order` movement reverses exactly, which is the confirmation that it
+was this rule and nothing else.
+
+The mechanism stays behind the flag, because the arm is worth being able to
+reproduce — `probe_cluster_too_big.py --single-dot` turns it on — and because
+the comment beside it is now the clearest statement in this file of the trap it
+fell into.
+
+**The trap, once more, because it is the transferable part.** The sweep corpora
+are built from the candidates the locator FIRES on. That makes them the right
+instrument for "how often is a read wrong" and a systematically misleading one
+for "what does this rule cost", because the staves where the locator produces
+nothing are exactly the ones they omit. Both corpora were carefully built and
+honestly read; the sweep simply cannot see the population the question is about.
+Ask which staves a corpus contains before trusting what it says about a change.
