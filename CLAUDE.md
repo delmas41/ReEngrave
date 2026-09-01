@@ -595,6 +595,43 @@ measured at all.
 
 ---
 
+## The cell's own edge is not a notehead
+
+A measure cell is the staff plus four staff spaces of air
+(`measure_extractor.PAD_ABOVE_STAFF_LINES`), and on a conductor's page four
+spaces reaches into whatever the staff next door printed. The crop slices it,
+and **a wide flat sliver of ink is exactly the shape of a hollow notehead.**
+
+On the engraved Brahms 1 benchmark page, whose truth contains no whole note at
+all, that produced seven `noteheadWholeInSpace` — two of them the bowl of the
+**g** in the word *legato*, one the lower bowl of the **8** of a 6/8 printed on
+the staff above, and four real noteheads belonging to the staff above or below.
+`transcribe._drop_clipped_notehead_fragments` takes them out at detection time,
+worth pooled 0.2449 → **0.2314** (Brahms 1416 → 1317 edits) — ten detections and
+99 edits, because a bar that differs by one spurious note is charged as a whole
+bar inserted plus a whole bar deleted.
+
+**The discriminator is the one dimension a notehead cannot vary in:** it is a
+staff space tall, because that is what a notehead is. Measured over the three
+benchmark works (`benchmarks/omr-ned-2026-08/probe_edge_fragments.py`), interior
+noteheads run 0.61–1.12 spaces with none below 0.60, the fragments 0.29–0.56,
+and the notes a crop merely grazes 0.77–0.99 — a note the boundary barely
+reaches is still almost all there. Restricted to detections that TOUCH an edge,
+which is the mechanism; a short notehead in the middle of a cell is a different
+problem and this has no opinion on it.
+
+⚠️ **Do not fix a clipped note by growing the pad.** Measured at
+`PAD_*_STAFF_LINES = 5`: Brahms 0.3420 → **0.3732** (+128 edits), cross-staff
+duplicates removed 135 → 390. A taller crop makes more contested glyphs, and
+`_dedupe_cross_staff_detections` resolves a contest by distance to the nearer
+five-line band — which for a note in a gap the engraver opened *for* it is the
+wrong staff. Brahms's C Horn 2 is the worked example: its `C3` sits 4.5 spaces
+below a treble staff, four pixels past its own cell, and at pad 5 the note goes
+to Eb Horn 3 by 19 px while C Horn 2 stays empty. See the DIAGNOSED section of
+`benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md`.
+
+---
+
 ## Orchestral end-to-end benchmark
 
 `benchmarks/omr-orchestral-e2e/` — renders an excerpt of a Gradus MXL back to

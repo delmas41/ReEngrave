@@ -80,6 +80,34 @@ What it found, ranked, replaces the rest of this list at the top:
   both staves — so it is the pair ordering reaching the veto inconsistently.
 - **A spurious whole note on Beethoven's Flute 1 m1**, older than any of this
   work and never attributed.
+- ~~**Seven spurious whole noteheads**~~ — **DONE**, pooled 0.2449 → **0.2314**,
+  Brahms 0.3657 → **0.3420** (1416 → 1317 edits), Beethoven and Mahler unchanged
+  to the edit, authored fixtures untouched because the rule never fires on them.
+  Not a header misread, which is what the attribution report had guessed from
+  three of the seven landing in bar 1: they are ink from the staff next door
+  that the cell crop sliced, and a wide flat sliver is the shape of a hollow
+  notehead. Two of them are the bowl of the **g** in *legato*. A notehead is a
+  staff space tall and these are 0.29-0.56, against 0.77-0.99 for the notes a
+  crop merely grazes — `transcribe._drop_clipped_notehead_fragments`, measured
+  by `benchmarks/omr-ned-2026-08/probe_edge_fragments.py`.
+- **Cross-staff attribution of ledger notes — NEW, and now the top item.** With
+  Violin 1 placed correctly its highest notes (`A6`, `B♭6`) sit in the gap
+  ABOVE its own cell and INSIDE the Timpani's, and export as `A♭1`/`B♭1` on a
+  timpani: +59 edits on that part. `_dedupe_cross_staff_detections` awards a
+  contested glyph to the nearer five-line band, and LilyPond opened that gap
+  *for* those notes, so nearness is the wrong rule. Raising
+  `PAD_ABOVE_STAFF_LINES` does not fix it — the note then lands in both cells
+  and the same distance rule still picks the timpani. Needs the ledger lines
+  (299 detected on that page) or the stem.
+  **Carry this into that work: C Horn 2 needs BOTH halves and neither alone.**
+  Its 7 bars (50 edits) are dropped because its `C3` — treble clef, 4.5 spaces
+  below the bottom line — begins four pixels past its own cell, so the crop
+  holds its ledger lines and not the note. Attribution can only choose between
+  cells that hold a glyph, and today no cell holds this one. Growing the crop
+  first was measured and REJECTED on its own: at pad 5 Brahms goes 0.3420 →
+  **0.3732** (+128 edits), C Horn 2 is still empty, Eb Horn 3 gains the note in
+  all seven bars, and page-wide dedupe removals go 135 → 390. Full geometry in
+  the attribution report's DIAGNOSED section.
 - **Beam level ±1 and lost dots** — the rest of the 452-edit rhythm bucket.
   `_reconcile_measure_to_meter` declines correctly because it can move a beam
   and not a dot.
