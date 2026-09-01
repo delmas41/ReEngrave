@@ -221,13 +221,28 @@ def test_reads_a_real_margin_crop():
 
 # ── the seam transcribe uses ────────────────────────────────────────────────
 
-def test_apply_contextual_rejects_a_mismatched_staved_list():
+def test_apply_contextual_rejects_a_mismatched_staved_list(monkeypatch):
     """`transcribe` hands its OWN detected pages in rather than paying for
     phase 1 twice. If that list ever disagreed with the result's pages, slot
-    indices would be attached to the wrong staves — so it fails loudly."""
+    indices would be attached to the wrong staves — so it fails loudly.
+
+    The guard is pure argument checking, so it must fire before any page is
+    opened, and therefore on every machine. It once sat AFTER the margin-reader
+    check, which made this test read the host instead of the code: with
+    `.venv-surya` present `available()` short-circuited the `and` and the guard
+    was reached, and without it `has_text_layer` opened the non-PDF path below
+    and raised a PyMuPDF file error first. Both readers are pinned here — the
+    venv is declared absent, which is the path that broke, and `has_text_layer`
+    fails the test outright if the guard ever falls behind it again.
+    """
     import pathlib
 
     from tools.omr.contextual import apply_contextual_analysis
+
+    monkeypatch.setattr(staff_labels_surya, "available", lambda: False)
+    monkeypatch.setattr(
+        contextual, "has_text_layer",
+        lambda *a, **k: pytest.fail("arguments validated after opening the PDF"))
 
     result = {"pages": [{"page_index": 0, "systems": []},
                         {"page_index": 1, "systems": []}]}

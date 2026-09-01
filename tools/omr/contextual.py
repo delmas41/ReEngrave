@@ -344,6 +344,25 @@ def apply_contextual_analysis(
         return summary
 
     page_indices = [p.get("page_index") for p in pages]
+
+    # `transcribe` already rendered and detected every page, so it passes its
+    # own `pws` list rather than paying for phase 1 twice. That is also a
+    # CORRECTNESS point, not only a speed one: re-detecting could hand this pass
+    # a different set of staves from the ones already written into `result`, and
+    # the slot indices would then be attached to the wrong staves.
+    #
+    # The check runs FIRST, before any reader is consulted or any page is
+    # opened, because it is pure argument checking and depends on nothing else.
+    # It used to sit below the `unlabelled` computation, where it was only
+    # reachable on the paths that survived that I/O: on a machine with no
+    # `.venv-surya`, `has_text_layer` opened the file first and a caller who had
+    # passed a mismatched list got a PyMuPDF file error instead of the mismatch
+    # that actually caused it.
+    if staved is not None and len(staved) != len(page_indices):
+        raise ValueError(
+            f"staved has {len(staved)} pages, result has {len(page_indices)}"
+        )
+
     # No text layer used to end the analysis here: with no labels there was no
     # instrument identity, and everything downstream of identity was
     # unavailable. Score order supplies a second source — instruments appear in
@@ -368,17 +387,7 @@ def apply_contextual_analysis(
     labels = []
     staff_labels_per_page = []
 
-    # `transcribe` already rendered and detected every page, so it passes its
-    # own `pws` list rather than paying for phase 1 twice. That is also a
-    # CORRECTNESS point, not only a speed one: re-detecting could hand this pass
-    # a different set of staves from the ones already written into `result`, and
-    # the slot indices would then be attached to the wrong staves.
-    if staved is not None:
-        if len(staved) != len(page_indices):
-            raise ValueError(
-                f"staved has {len(staved)} pages, result has {len(page_indices)}"
-            )
-    else:
+    if staved is None:
         staved = [detect_staves(render_page(pdf_path, i, dpi=dpi))
                   for i in page_indices]
 

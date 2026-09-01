@@ -151,6 +151,23 @@ def test_has_text_layer(labelled_pdf, tmp_path):
     assert not has_text_layer(p, 0, min_chars=10)
 
 
+def test_has_text_layer_raises_on_a_path_that_is_not_a_pdf(tmp_path):
+    """A page past the end of the document is a legitimate "no text"; a file
+    that is not a document at all is a caller bug, and stays an exception.
+
+    Answering False there would be worse than raising: margin reading would
+    silently do nothing on a corrupt or mistyped input, and the run would look
+    like a score with no instrument names rather than a file that could not be
+    opened. Nothing is lost by raising — the one caller,
+    `apply_contextual_analysis`, is wrapped by `transcribe`, which records the
+    failure in `contextual.reason` and keeps the transcription.
+    """
+    p = tmp_path / "not-really.pdf"
+    p.write_text("this is not a PDF")
+    with pytest.raises(fitz.FileDataError):
+        has_text_layer(p, 0)
+
+
 def test_no_text_layer_returns_empty(tmp_path, labelled_pdf):
     _path, labels = labelled_pdf
     blank = fitz.open()
