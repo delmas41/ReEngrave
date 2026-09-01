@@ -101,12 +101,13 @@
   },
   {
    "page": "mahler5-p10 (Mahler_5_.pdf page index 10, Edition Peters, 300 DPI)",
-   "status": "OPEN 2026-08-31",
-   "symptom": "20 staves on the page, 19 detected. Gr.Tr. is now found; Kl.Tr. is not.",
+   "status": "CLOSED 2026-08-31",
+   "symptom": "20 staves on the page, 18 detected \u2014 neither Gr.Tr. nor Kl.Tr.",
    "verified_by": "Sean-style margin read 2026-08-31 \u2014 both parts carry a printed label and a single printed rule with noteheads on it, between Pauken and Erste Viol.",
    "first_cause_FIXED": "Three lone rows were candidates \u2014 the Gr.Tr. rule (1857 px), the wavy trill line printed between the parts (1410 px) and the Kl.Tr. rule (1858 px). The clearance rule rejects every row in a tight cluster, so the trill took both real rules with it. Fixed by dropping cluster members far shorter than the longest before clearance is applied (SINGLE_LINE_CLUSTER_WIDTH_FRAC).",
-   "remaining_cause": "Kl.Tr. is then refused by _has_the_rest_of_a_staff: the Erste Viol. staff begins 75 px below it, so the rows where Kl.Tr.'s other four lines would fall are NOT empty \u2014 they are the violin staff's lines. That gate exists for a real reason (a pocket score can lose four of five lines and the survivor is indistinguishable from a rule), so it was left alone rather than weakened for one page.",
-   "next": "The gate asks whether ink exists where the other four lines would be. It does not ask whether that ink belongs to a staff ALREADY DETECTED. Excluding rows claimed by an accepted staff would separate the two cases without loosening anything \u2014 measure on lamer-p25 and bolero-p5/p31, which are the pages this feature currently gets right."
+   "cause_as_first_diagnosed": "Reported here as two separate problems, the second of which was WRONG: 'Kl.Tr. is refused by _has_the_rest_of_a_staff because the Erste Viol. staff begins 75 px below it.' The violin staff is not involved. Probing the gate showed it fires on k=-2, row 1743, run 1410 against a 929 threshold \u2014 which is the trill line AGAIN, two staff spaces above Kl.Tr.",
+   "actual_cause": "One piece of ink, charged twice. The wavy trill line printed between the two percussion parts (row 1744, run 1410) first made the clearance rule reject the whole cluster, and then \u2014 once dropped as an interloper \u2014 reappeared in _has_the_rest_of_a_staff as evidence of a five-line staff under Kl.Tr. Fixed in two steps: interlopers are dropped from the cluster before clearance (SINGLE_LINE_CLUSTER_WIDTH_FRAC), and the rows so dropped are then passed to _has_the_rest_of_a_staff as `ignore_rows`, because a row already judged not to be a printed rule is not evidence of a staff.",
+   "verified": "Mahler p10 now 20 staves with 2 one-line staves. Nine pages across Mahler, La Mer and Bol\u00e9ro all match hand-read counts; the phase-1 set is unchanged by the second step and lamer-p25 still matches its GT."
   }
  ]
 }

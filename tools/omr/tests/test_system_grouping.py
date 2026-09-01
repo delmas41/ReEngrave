@@ -249,6 +249,36 @@ def test_two_percussion_rules_survive_a_shorter_line_between_them():
     assert len(pws.staves) == 5
 
 
+def test_an_interloper_is_not_charged_twice():
+    """The same stray ink must not reject a rule via a second gate.
+
+    An interloper dropped from the cluster used to come straight back as "the
+    rest of a five-line staff" — `_has_the_rest_of_a_staff` probes one and two
+    staff spaces out and does not care what it finds. Mahler 5 p10: the trill
+    line at row 1743 is dropped as an interloper, then reappears two spacings
+    above Kl.Tr. (run 1410 against a 929 threshold) and rejects it, so the page
+    stopped at 19 staves of 20. Here the interloper sits EXACTLY two spacings
+    above the lower rule, which is the position that triggered it.
+    """
+    img = _blank()
+    _draw_staff(img, 100)
+    _draw_staff(img, 260)
+    rule_a = 420
+    rule_b = rule_a + 2 * LINE_SPACING + 26      # clear of the interloper itself
+    interloper = rule_b - 2 * LINE_SPACING       # exactly where the gate probes
+    img[rule_a:rule_a + 2, X0:X1] = 0
+    img[interloper:interloper + 2, X0:X0 + (X1 - X0) * 3 // 4] = 0
+    img[rule_b:rule_b + 2, X0:X1] = 0
+    _draw_staff(img, 640)
+    pws = detect_staves(_page(img))
+
+    tops = sorted(s.top_y for s in pws.staves)
+    assert rule_a in tops, "upper percussion rule lost"
+    assert rule_b in tops, "lower rule rejected by the interloper via the staff gate"
+    assert interloper not in tops
+    assert len(pws.staves) == 5
+
+
 def test_a_cluster_of_equal_length_rules_is_still_rejected():
     """The interloper filter must not weaken the rule it guards. Two rows of
     the SAME length close together really are more likely two lines of one

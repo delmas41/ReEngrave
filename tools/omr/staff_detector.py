@@ -23,6 +23,8 @@ Public surface:
 
 from __future__ import annotations
 
+from typing import Sequence
+
 import numpy as np
 from scipy.signal import find_peaks
 
@@ -336,6 +338,7 @@ def _longest_row_run(
 
 def _has_the_rest_of_a_staff(
     binary: np.ndarray, y: int, spacing: float, x0: int, x1: int,
+    ignore_rows: Sequence[int] = (),
 ) -> bool:
     """Is there line where a five-line staff's other lines would be?
 
@@ -349,12 +352,30 @@ def _has_the_rest_of_a_staff(
     them or not, the other lines are printed, and printed lines are long: the
     test is a run of line-like length at one or two staff spaces above or
     below, over the candidate's own x-range.
+
+    `ignore_rows` are rows the caller has ALREADY judged not to be printed
+    rules — the short interlopers `_single_line_staff_rows` drops. Without this
+    the same piece of ink is charged twice: on Mahler 5 p10 the wavy trill line
+    printed between Gr.Tr. and Kl.Tr. is dropped as an interloper, and then
+    reappears here as "the rest of a staff" two spacings above Kl.Tr. (row 1743,
+    run 1410 against a 929 threshold) and rejects it. A row that is not
+    line-like enough to be a staff on its own is not evidence of one.
+
+    The exclusion is deliberately narrow — only rows this page's own clustering
+    already rejected, never a general tolerance — so the broken-five-line-staff
+    case the gate exists for is untouched: those survivors are full width, so
+    they are never dropped as interlopers in the first place.
     """
     width = x1 - x0
     if width <= 0:
         return False
+    # Tolerance for matching a probe row to an ignored one: the probe lands on
+    # `round(y + k * spacing)`, which need not be the exact peak row.
+    tol = max(2, int(round(spacing * 0.25)))
     for k in (-2, -1, 1, 2):
         row = int(round(y + k * spacing))
+        if any(abs(row - int(skip)) <= tol for skip in ignore_rows):
+            continue
         _, _, run = _longest_row_run(binary, row, spacing, x0, x1 + 1)
         if run >= SINGLE_LINE_NEIGHBOUR_RUN_FRAC * width:
             return True
@@ -418,9 +439,11 @@ def _single_line_staff_rows(
     # genuine rules on either side of it along with it.
     runs = {y: _longest_row_run(binary, y, spacing)[2] for y in candidates}
     longest = max(runs.values(), default=0)
+    interlopers: list[int] = []
     if longest > 0:
-        candidates = [y for y in candidates
-                      if runs[y] >= SINGLE_LINE_CLUSTER_WIDTH_FRAC * longest]
+        keep = SINGLE_LINE_CLUSTER_WIDTH_FRAC * longest
+        interlopers = [y for y in candidates if runs[y] < keep]
+        candidates = [y for y in candidates if runs[y] >= keep]
 
     out: list[int] = []
     for y in candidates:
@@ -435,7 +458,7 @@ def _single_line_staff_rows(
         overlap = min(x1, med_end) - max(x0, med_start)
         if overlap < SINGLE_LINE_MIN_OVERLAP_FRAC * width:
             continue
-        if _has_the_rest_of_a_staff(binary, y, spacing, x0, x1):
+        if _has_the_rest_of_a_staff(binary, y, spacing, x0, x1, interlopers):
             continue
         out.append(y)
     return sorted(out)

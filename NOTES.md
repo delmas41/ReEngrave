@@ -257,10 +257,15 @@ other than where they started.
    `Tamb.` rule in every system. Candidates far shorter than the longest in their
    cluster are now dropped first (`SINGLE_LINE_CLUSTER_WIDTH_FRAC`). Boléro p5 26 → 29
    staves, p31 29 → 30, p2 27 → 31, p10 32 → 34, p20 19 → 20; La Mer p25 unchanged and
-   still matching hand-verified truth. **Still open:** Mahler p10 recovers Gr.Tr. but
-   not Kl.Tr., which `_has_the_rest_of_a_staff` refuses because the violin staff 75 px
-   below supplies the lines its missing four would occupy — recorded with a proposed
-   route in `ground-truth.json` → `known_gaps`.
+   still matching hand-verified truth.
+   **The same ink was then charged a second time**, and that is closed too: once
+   dropped as an interloper, the trill reappeared in `_has_the_rest_of_a_staff` as
+   evidence of a five-line staff two spacings under Kl.Tr. (row 1743, run 1410 against
+   a 929 threshold) and rejected it. Rows already judged not to be printed rules are
+   now passed in as `ignore_rows`. **Mahler p10 is 20/20.** Nine pages across Mahler,
+   La Mer and Boléro all match hand-read counts; the phase-1 set is untouched by this
+   second step. (An earlier note here blamed the violin staff 75 px below — wrong; the
+   gate never probes that far. Corrected in `ground-truth.json` → `known_gaps`.)
 2. **Key signature** — the cause was found 2026-08-28 and it was neither detection nor
    reading: the staff's left edge was lost, so the header was cropped out of every cell.
    Fixed; clefs on Beethoven 5 p.15 went 0/23 -> 13/23 and the reader started firing.
