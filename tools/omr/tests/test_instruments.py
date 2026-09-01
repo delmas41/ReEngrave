@@ -261,3 +261,90 @@ def test_size_qualified_instruments_are_unaffected():
                             ("Tenor Trombone 1", "Trombone"),
                             ("Bass Drums", "Percussion")):
         assert lookup(label).instrument.name == expected, label
+
+
+def test_tr_plus_a_register_is_a_trombone_not_a_voice_and_not_a_trumpet():
+    """`Tr.` is Trombe AND Tromboni, and Beethoven 5 (IMSLP984073) p.47 prints
+    both: `Tr.` over the trumpets and `Tr. Alt. / Tr. Ten. / Tr. Bas.` over the
+    three trombones four staves below. Before this, the first two resolved to
+    singers at HIGH confidence (`alt` and `ten` beat `tr` on length) and the
+    third to a second Trumpet.
+
+    The same convention is in the text layer of a different edition
+    (imslp-575951 p.59), which is what makes it a printing convention rather
+    than one scan's quirk."""
+    for label in ("Tr. Alt.", "Tr. Ten.", "Tr. Bas.",
+                  "Tr. Alto", "Tr. Tenore", "Tr. Basso",
+                  "Tr. Ten", "Tr. Bas", "Tr Alt", "Tr. Bass.",
+                  "Tr. Alt. I", "Tr. Alt. e Ten."):
+        m = lookup(label)
+        assert m is not None, label
+        assert m.instrument.name == "Trombone", f"{label!r} -> {m.instrument.name}"
+
+
+def test_a_bare_tr_is_still_the_trumpets():
+    """The other half, and the one this fix could easily have broken: only a
+    REGISTER qualifier moves `Tr.` to the trombones. A trumpet section is scored
+    by number and key, and those readings must not move."""
+    for label in ("Tr.", "Tr", "Tr. I", "Tr. II", "Trombe in C", "Tr. Es"):
+        assert lookup(label).instrument.name == "Trumpet", label
+
+
+def test_tr_b_is_a_trumpet_in_b_flat_not_a_bass_trombone():
+    """Deliberately NOT an alias: "Tr. B." is a trumpet in B-flat far more often
+    than a bass trombone — the same trap as "Cl. B." — so the register aliases
+    stop at the spelled-out `bas` / `bass` / `basso`."""
+    assert lookup("Tr. B.").instrument.name == "Trumpet"
+    assert lookup("Tr. B").instrument.name == "Trumpet"
+
+
+def test_a_bass_trumpet_keeps_its_own_noun():
+    """"Tromba bassa" carries the trumpet noun, so it never reaches the `tr …`
+    register aliases and stays a trumpet."""
+    assert lookup("Tromba bassa").instrument.name == "Trumpet"
+
+
+def test_abbreviated_register_words_do_not_beat_an_instrument_noun():
+    """`_prefer_instrument_over_voice` was reachable only from the SPELLED-OUT
+    register words, so an abbreviated `Alt.` / `Ten.` put a flute and a clarinet
+    among the singers at high confidence."""
+    for label, expected in (("Fl. Alt.", "Flute"),
+                            ("Cl. Alt.", "Clarinet"),
+                            ("Sax. Ten.", "Saxophone"),
+                            ("Trb. Alt.", "Trombone"),
+                            ("Trb. Tenore", "Trombone"),
+                            ("Tbn. Basso", "Trombone"),
+                            ("Pos. Alt.", "Trombone")):
+        m = lookup(label)
+        assert m is not None, label
+        assert m.instrument.name == expected, f"{label!r} -> {m.instrument.name}"
+
+
+def test_an_abbreviated_voice_alone_is_still_a_voice():
+    """The half a wider qualifier set can break: a chorale's `Alt.` is an alto.
+    The rule only fires when the label names something else on a DIFFERENT
+    word."""
+    for label, expected in (("Alt.", "Alto"), ("Ten.", "Tenor"),
+                            ("Sopr.", "Soprano"), ("Tenore", "Tenor"),
+                            ("Contralto", "Alto")):
+        assert lookup(label).instrument.name == expected, label
+
+
+def test_voice_qualifiers_are_derived_so_no_spelling_is_left_out():
+    """The hand-listed set WAS the bug: it held `alto` and `tenor` and not the
+    `alt` and `ten` real scores print. Deriving it from the voice aliases means
+    a new register spelling cannot be added to one and forgotten in the other.
+
+    `Chorus` is excluded — "Coro" names an ensemble, never a register."""
+    from tools.omr.instruments import VOICE_QUALIFIERS
+
+    for inst in INSTRUMENTS:
+        if inst.family != "voice":
+            continue
+        for alias in inst.aliases:
+            if inst.name == "Chorus":
+                assert alias not in VOICE_QUALIFIERS, alias
+            else:
+                assert alias in VOICE_QUALIFIERS, alias
+    assert {"alt", "ten", "sopr", "tenore"} <= VOICE_QUALIFIERS
+    assert lookup("Coro").instrument.name == "Chorus"

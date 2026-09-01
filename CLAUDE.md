@@ -490,11 +490,27 @@ repairs a damaged label from the running order and an OCR engine transcribes wha
 is printed. See
 [SURYA_BAKEOFF_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md).
 
-⚠️ **A newly-readable page can surface lexicon bugs that were dormant.** Beethoven 5
-p.48 went 0 → 12 labels, and three resolve to the wrong instrument (`Tr. Alt.` →
-*Alto*, a voice, at high confidence). That is `instruments.lookup`, not the
-reader — the paid reader gets the same answers. See NOTES.md → "the lexicon reads
-`Tr. Alt.` as a VOICE".
+⚠️ **A newly-readable page can surface lexicon bugs that were dormant, and the
+lexicon is reader-independent.** Beethoven 5 p.48 went 0 → 12 labels and three
+resolved to the wrong instrument — `Tr. Alt.` → *Alto*, a singer, at high
+confidence — because `instruments.lookup` said so, which means the paid reader
+returned the same answer for the same printed string.
+
+Fixed 2026-08-31 (`instruments.py`). `Tr.` is Trombe **and** Tromboni, and
+Beethoven 5 p.47 prints both — `Tr.` over the trumpets, `Tr. Alt. / Tr. Ten. /
+Tr. Bas.` over the trombones four staves below. What separates them is the part
+name beside the abbreviation: **a trombone section is scored by REGISTER and a
+trumpet section by number and key** (`Tr. I`, `Trombe in C`), so Trombone gains
+`tr alt` / `tr ten` / `tr bas` (and spellings), which outrank the bare `tr`.
+`Tr. B.` is deliberately NOT among them — that is a trumpet in B-flat, the same
+trap as `Cl. B.`.
+
+The other half was a mechanism gap: `VOICE_QUALIFIERS` is what stops a size word
+beating an instrument noun, and it was HAND-LISTED with the spelled-out `alto`
+and `tenor`, so an abbreviated `Alt.` never reached it. It is now **derived** from
+the voice instruments' own aliases, which also fixes `Fl. Alt.`, `Cl. Alt.` and
+`Trb. Tenore`. Validated on 1380 margin labels across 10 editions —
+[LEXICON_TR_ALT_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/LEXICON_TR_ALT_2026-08-31.md).
 
 ---
 

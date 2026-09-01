@@ -80,45 +80,53 @@ boxes for a 2-system Boléro page — so compare partitions, not counts.
 
 ---
 
-## ➡️ NEXT: the lexicon reads `Tr. Alt.` as a VOICE (found 2026-08-31)
+## ~~the lexicon reads `Tr. Alt.` as a VOICE~~ — DONE (2026-08-31)
 
 Wiring Surya in as the free margin reader put labels on a page that had none —
 Beethoven 5 (IMSLP984073) p.48, no text layer, 0 labels before, **12 after, in
-16 s, free**. Three of the twelve then resolve to the WRONG instrument, at high
+16 s, free**. Three of the twelve then resolved to the WRONG instrument, at high
 confidence:
 
-| printed | `instruments.lookup` | should be |
+| printed | was | is now |
 |---|---|---|
-| `Tr. Alt.` | **Alto** (a voice), alias `alt`, conf **high** | Trombone alto |
-| `Tr. Ten.` | **Tenor** (a voice), alias `ten`, conf **high** | Trombone tenore |
-| `Tr. Bas.` | **Trumpet**, alias `tr`, conf medium | Trombone basso |
+| `Tr. Alt.` | **Alto** (a voice), alias `alt`, conf **high** | Trombone |
+| `Tr. Ten.` | **Tenor** (a voice), alias `ten`, conf **high** | Trombone |
+| `Tr. Bas.` | **Trumpet**, alias `tr`, conf medium | Trombone |
 
-**This is the lexicon, not the reader** — `lookup()` returns those for the
-strings whoever produced them, so the paid reader gets the same answers. It is
-[[project_part_staff_join_pinning]]'s "the LEXICON is what doesn't travel",
-turning up in a new edition.
+**The page settles the ambiguity the lexicon could not.** `Tr.` is Tromba AND
+Tromboni, and p.47 of that very edition prints both at once — `Tr.` over the
+trumpets, `Timp.` below it, then `Tr. Alt. / Tr. Ten. / Tr. Bas.` over the three
+trombones of the finale. So the abbreviation cannot separate them and the part
+name beside it can: **a trombone section is scored by REGISTER and a trumpet
+section by number and key** (`Tr. I`, `Trombe in C`), never the other way round.
+A second, independent edition proves it for free — imslp-575951 p.59 carries a
+text layer and prints exactly the same six labels, so this is the publishers'
+convention rather than one scan's quirk. Trombone therefore gains `tr alt` /
+`tr ten` / `tr bas` and spellings, which outrank the bare `tr`. NOT `tr b`:
+that is a trumpet in B-flat, the same trap as `Cl. B.`.
 
-Two causes, and the second is the interesting one:
+**The second cause was the interesting one, and the fix is structural.**
+`_prefer_instrument_over_voice` + `VOICE_QUALIFIERS` already existed for the
+voice half, but the set was HAND-LISTED and held the spelled-out `alto` and
+`tenor`, so an abbreviated `Alt.` / `Ten.` never reached it. It is now DERIVED
+from the voice instruments' own aliases — a register word that can win the alias
+index is by construction an alias of a voice — which closes the whole family at
+once instead of one spelling at a time, and also fixes `Fl. Alt.` -> Flute,
+`Cl. Alt.` -> Clarinet, `Trb. Tenore` -> Trombone.
 
-- `Tr.` is Tromba **and** Tromboni in Italian editions, which is what
-  `AMBIGUOUS_ALIASES` exists for; `tr` is currently unambiguous and wrong.
-- `instruments` already has the right mechanism for the other half —
-  `_prefer_instrument_over_voice` plus `VOICE_QUALIFIERS` — but the set holds
-  the SPELLED-OUT `alto`/`tenor`/`bass`, so an abbreviated `Alt.`/`Ten.` never
-  reaches it and a voice wins at high confidence.
+Validated per the standing lexicon rule on **1380 margin labels from 10 editions**
+(and 5507 part-name strings from 124 Gradus works, which move not at all): every
+single changed resolution is a `Tr.`+register string moving to Trombone.
+Beethoven 5 IMSLP984073 pp.47-49 export **11/17 -> 15/17** correct part names.
+[LEXICON_TR_ALT_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/LEXICON_TR_ALT_2026-08-31.md).
 
-Do NOT just add `alt`/`ten`/`bas` to `VOICE_QUALIFIERS`: preferring the
-instrument then yields **Trumpet**, which is wrong differently. The `Tr.`
-ambiguity has to be resolved first, and on more than this one edition — the
-standing rule from the clef work is that a lexicon change passing on one corpus
-means nothing.
-
-**Blast radius is bounded, which is why the free reader still ships on.**
-`clef_correction` applies a proposal only where the detector read NO clef
-(`do_apply = apply and not detected`) and only when the notehead fit improves,
-and every proposal is reported whether applied or not. A wrong instrument is
-still worse than none, so this is worth fixing before leaning on identity
-harder.
+**Still open, found while measuring** (each is its own lexicon gap, none is this
+bug): `Gr. Tr.` (Grosse Trommel, a bass drum) reads *Trumpet* and `Kl. Tr.`
+(Kleine Trommel) reads *Clarinet*; `Altos` (French for violas, in Boléro) and
+`Tromp.`, `Trbni.`, `Tbni.`, `Trbe.` resolve to nothing. And the score-order
+LAYOUTS have no entry that puts the timpani between the trumpets and the
+trombones, which is how this edition prints it — visible only when the page's
+own `Timp.` is lost to OCR.
 
 ---
 

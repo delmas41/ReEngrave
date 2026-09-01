@@ -147,9 +147,24 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Trumpet", "brass", "treble", (52, 84), None, 2,
                aliases=("trumpet", "trumpets", "tromba", "trombe", "trompete", "trompeten",
                         "trompette", "trompettes", "tr", "tpt", "clarino", "clarini")),
+    # `Tr.` is Trombe AND Tromboni, and one page prints both: Beethoven 5
+    # (IMSLP984073) p.47 reads `Tr.` over the trumpets and, four staves below,
+    # `Tr. Alt. / Tr. Ten. / Tr. Bas.` over the three trombones of the finale.
+    # So the abbreviation cannot separate them and the part name beside it can:
+    # a trombone section is scored by REGISTER and a trumpet section by number
+    # and key ("Tr. I", "Trombe in C"), never the other way round. These aliases
+    # are longer than the bare `tr`, so a register-qualified `Tr.` reads as the
+    # trombone it is while a bare one keeps the Trumpet the table names above.
+    #
+    # NOT "tr b": on a real score "Tr. B." is a trumpet in B-flat far more often
+    # than a bass trombone, the same trap as "Cl. B." above. A bass TRUMPET does
+    # exist (Wagner, Strauss) but prints "Tromba bassa" / "Basstrompete", which
+    # carries its own noun and never reaches these.
     Instrument("Trombone", "brass", "bass", (34, 72), 0, 0,
                aliases=("trombone", "trombones", "trombono", "tromboni", "posaune",
-                        "posaunen", "trb", "tbn", "pos")),
+                        "posaunen", "trb", "tbn", "pos",
+                        "tr alt", "tr alto", "tr ten", "tr tenor", "tr tenore",
+                        "tr bas", "tr bass", "tr basso")),
     # "tenor tuba" before the voice aliases can reach it: the alias index is
     # longest-first, so without it "Tenor Tuba in B-flat" resolves to the VOICE
     # Tenor and takes Holst's Planets out of score order on all eight movements.
@@ -355,10 +370,23 @@ def _search(candidate: str, folded: bool) -> tuple[str, Instrument] | None:
 # They stay in the voice aliases, because alone they really do name a voice: a
 # chorale's "Bass" is a bass. What settles it is whether the label names
 # anything else — see `_prefer_instrument_over_voice`.
-VOICE_QUALIFIERS = frozenset({
-    "soprano", "alto", "tenor", "bass", "basso", "basse", "bassi",
-    "bariton", "baritone", "mezzo",
-})
+#
+# DERIVED from the voice instruments' own aliases rather than hand-listed,
+# because the hand-listed set WAS the bug: it held the spelled-out `alto` and
+# `tenor` and not the abbreviated `alt` and `ten` that Italian and German scores
+# actually print, so `Fl. Alt.` and `Cl. Alt.` resolved to a singer at high
+# confidence. Any register word that can win the alias index is by construction
+# an alias of a voice, so deriving the set closes the whole family at once
+# instead of one spelling at a time.
+#
+# `Chorus` is excluded: "Coro" / "Chor" name an ensemble, never a register, and
+# a label that says both ("Coro. Corni") should keep the chorus.
+VOICE_QUALIFIERS = frozenset(
+    alias
+    for inst in INSTRUMENTS
+    if inst.family == "voice" and inst.name != "Chorus"
+    for alias in inst.aliases
+)
 
 
 def _all_matches(text: str) -> list["Match"]:
