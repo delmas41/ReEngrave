@@ -40,18 +40,30 @@ tools/omr/export.py` returned 0 while `beam_levels` sat on 271 noteheads.
 
 ## Ranked next steps
 
-### 1. Attribute `wrong note` — now 44% of the budget, and unexplained
+### 1. Attribute `wrong note` — DONE 2026-09-01, and the answer is SYSTEMATIC
 
-The single largest category, 808 pooled edits. One cause is already known and
-fixed (the Brahms contrabass staff, 42 of that page's 65 wrong pitches). **What
-remains has not been attributed at all.** Do for the residue what
-`BRAHMS_ATTRIBUTION_2026-09-01.md` did for the page: align each part, bucket the
-pitch deltas, and see whether the rest is systematic or scattered. The method is
-in that file and takes about twenty minutes.
+`benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md`. The part of
+the budget that disagrees in no pattern at all is **59 edits, 3.3%**; nothing in
+it argues for detector work. Two things this step corrected on its way:
+`wrong note` is `noteins`/`notedel` and NOT wrong pitches (`wrong pitch` is a
+separate musicdiff category and is zero here), and aligning on pitch names — the
+method in `BRAHMS_ATTRIBUTION_2026-09-01.md` — cannot see a uniformly transposed
+part at all.
 
-Expect the answer to decide everything after it. If the residue is systematic,
-it is another cheap fix; if it is scattered, it is the first thing this session
-found that genuinely argues for detector work.
+What it found, ranked, replaces the rest of this list at the top:
+
+- **Tuplets detected and never consumed** — `tuplet3` and `tupletBracket` sit in
+  Mahler's JSON while `grep -ci tuplet` is 0 across `export.py`, `rhythm.py`,
+  `transcribe.py`. Worth 87 of Mahler's 154 edits. The fifth instance of the
+  beams/dots/dynamics shape.
+- **Brahms Violin 1's staff window is two spaces high** — 263 edits, the largest
+  single part in the benchmark. Row COVERAGE separates its two impostor lines
+  (0.44, 0.49) from real ones (1.00); the existing step-3d rule gates on
+  thickness ratio, which is 1.8 here against a 2.5 threshold, and slides by one
+  spacing where this needs two. Do not lower the threshold.
+- **Beam level ±1 and lost dots** — the rest of the 452-edit rhythm bucket.
+  `_reconcile_measure_to_meter` declines correctly because it can move a beam
+  and not a dot.
 
 ### 2. Slurs that can span measures
 

@@ -183,3 +183,27 @@ they are very unequally sized:
 
 Nothing here argues for detector retraining, which is where "28% of notes are
 wrong" would normally point.
+
+## CORRECTED 2026-09-01 — the reading of `wrong note` above is wrong
+
+Two claims in this file do not survive being checked against musicdiff's own
+taxonomy and against a stronger alignment. Both are left in place, because the
+reasoning that produced them is instructive, but neither should be quoted.
+
+**"we emit about the RIGHT NUMBER of notes and get their pitch wrong."** The
+opposite. musicdiff maps `noteins`/`notedel` to `wrong note` and
+`pitchnameedit` to a separate `wrong pitch` category, which is ZERO on all
+three works. Balanced `notedel`/`noteins` means the aligner DECLINED TO PAIR
+those notes — usually because the duration differs — so one misread rhythm
+costs about eight edits and files them under `wrong note`.
+
+**The alignment method has a blind spot on the worst case there is.** Matching
+pitch NAMES with `difflib` finds no matching block in a uniformly transposed
+part, so such a part reports zero wrong pitches and shows up as every note
+inserted and every note deleted. Brahms Violin 1 — 35 of its 39 notes four
+staff positions low, its five-line window two spaces high — scored 4 replaced
+notes by this method and was not noticed.
+
+`WRONG_NOTE_ATTRIBUTION_2026-09-01.md` redoes the attribution by measure and
+index instead, over all three works, and `attribute_wrong_notes.py` is that
+method as a tool.
