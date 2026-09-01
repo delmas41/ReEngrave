@@ -2,6 +2,11 @@
 
 Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean at the start of a ReEngrave session.
 
+➡️ **START HERE: [docs/next-steps-omr-2026-09-01.md](docs/next-steps-omr-2026-09-01.md)**
+— accuracy is measurable against an outside standard now (pooled OMR-NED
+**0.2595**, down from 0.3164), the four things it pointed at first are fixed,
+and the ranked residue plus the closed dead ends are in that file.
+
 ---
 
 ## ➡️ NEXT: the system-break rule is zero-tolerance (found 2026-08-31)
