@@ -656,8 +656,16 @@ concluded experiment.
 **The 2026-09-01 merge queue.** Five branches were integrated on
 `integrate/land-2026-09-01` (74 commits ahead of the previous `main`), in this order:
 `part-alignment-label-pins` → `omr-score-order-prior` → `omr-info-retention-erasure` →
-`imslp-scores-central-library` → `pdf-mxl-pipeline-test`. Their content is described
-throughout this document. Two notes for whoever audits it next:
+`imslp-scores-central-library` → `pdf-mxl-pipeline-test`, then `main` merged back in to
+pick up the cross-staff fix. Their content is described throughout this document.
+
+⚠️ **As written, the integration branch had not yet been promoted to `main`** — `main`
+was at `81446a0`, holding the cross-staff fix but none of the queue, with the promotion
+pending a final benchmark run. This document was written against the integrated tree, so
+if `git log main` does not show these five branches, that promotion is the missing step
+rather than anything being wrong here.
+
+Two notes for whoever audits it next:
 
 - `claude/omr-info-retention-erasure-c26534` contributed **nothing new** — both of its
   real commits are patch-identical to commits already on `main` (`git cherry` marks both
@@ -875,7 +883,9 @@ cross-staff fixes, and it has no entry for tuplets at all. The current figure is
 11. **LEGATO 2 weights.** The paper's weights are still "upon publication", but its
     **system segmenter is out** (`legato-1.5-YOLO`, ungated, 52 MB, 25.9M params) and
     scored **six for six** against our own grouping — independent corroboration rather
-    than a gain. `legato-1.5` (0.9B) is gated and needs Sean's access request.
+    than a gain. **`legato-1.5` (0.9B): the access request was submitted on Hugging Face
+    on 2026-09-01 and is awaiting the author's review** — so this item is now waiting on
+    someone else, not on us. NOTES.md still describes the request as un-submitted.
     ⚠️ **AGPL-3.0**, inherited from ultralytics: fine host-side, a problem the day this
     is served to other people through the Stripe gate.
 12. **Run `probe_surya_determinism.py`.** Committed deliberately unrun on the tip of the
