@@ -662,8 +662,8 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Current on the engraved orchestral benchmark: **pooled 0.2449** (Mahler 0.0455,
-Beethoven 0.1714, Brahms 0.3657), from an opening baseline of 0.3164. Full
+Current on the engraved orchestral benchmark: **pooled 0.2263** (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.3302), from an opening baseline of 0.3164. Full
 reading, and the findings it surfaced that note recall is blind to, in
 [benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md)
 and
@@ -993,6 +993,44 @@ finishing one:** with Violin 1 placed correctly its highest notes fall in the
 gap above its own cell and inside the Timpani's, and are awarded to the timpani
 by `_dedupe_cross_staff_detections`, which resolves a contested glyph by
 distance to the nearer band. See the attribution report.
+
+**Which staff a contested glyph belongs to is decided by CONTEXT, not by
+distance** (`transcribe._dedupe_cross_staff_detections`). A measure cell is cut
+with padding above and below so ledger notes are not sliced off, and on a
+conductor's page those bands overlap, so the same ink is detected once per
+staff. The old rule kept the copy on the NEARER five-line band — which is wrong
+for exactly the case the padding exists for, because an engraver opens the gap
+above a staff *for* its ledger notes and they then sit nearer the staff above.
+Measured on Brahms: Violin 1's `A6`/`B♭6` exported as `A♭1`/`B♭1` on a timpani
+while Violin 1's bars 3 and 4 came out empty. Three kinds of evidence now
+apply, in the order a reader uses them:
+
+1. **The ledger ladder** — about the glyph. A ledger note is joined to its staff
+   by an unbroken run of ledger lines; the violin's cells carry three rungs per
+   note-column at its own ledger positions and there is not one rung between
+   those notes and the timpani. COMPLETENESS BEFORE COUNT — an unbroken ladder
+   outranks a broken one however long, because a gap is what you see when the
+   rungs belong to something else lying in the way.
+2. **The instrument's written range** — about the part. Two Beethoven bassoon
+   staves contested one notehead and distance kept `A♭1`, MIDI 32, below the
+   bassoon's `instruments.written_range` of (34, 72), discarding a C4 inside it.
+   The staff's instrument comes from the DOSSIER (the contextual pass names
+   parts only after this runs), on its usual terms — staff count must equal part
+   count, else it abstains. A veto on the IMPOSSIBLE, never on the unlikely.
+3. **Distance**, unchanged, as the tie-break — and with neither ledger lines nor
+   a dossier it is still the whole rule, so those pages are byte-identical.
+
+⚠️ **The cell pad is 4 spaces or 6, never in between** (`measure_extractor`).
+The arbitration is useless if the note is not in its own staff's cell at all, so
+the pad GROWS where the neighbouring staff is more than 6 spaces away. It must
+not grow otherwise: cell height is coupled to `OMR_IMGSZ`, so it moves
+DETECTIONS and not just crops. Measured — a flat 6 costs Mahler and Beethoven
+(+20, +59) whose staves sit 1.7 and 3.4 apart; bounding it by the gap instead
+starves Mahler's cells of their own stems (duration rate 0.864 → 0.455); and a
+marginal 4.0 → 4.6 growth costs the authored `ensemble` fixture three notes of
+45. Two rewrites were measured and rejected: one-winner-per-cluster scores worse
+(IoU overlap is not transitive, so it chains distinct glyphs together), and
+applying strong verdicts before weak ones changes nothing measurable.
 
 **Body text is no longer detected as staves** (fixed 2026-08-28). Row ink-count alone passed the line-length test on justified paragraphs; `staff_detector` now also requires the lines to be *continuous strokes* rather than rows of glyphs (`_line_ink_runs_per_space`). Music tops out at 1.39 runs per staff-space, text starts at 2.02. All music-only scores byte-identical.
 
