@@ -24,19 +24,34 @@ The LilyPond corpora are gitignored and built once:
 `cd benchmarks/omr-clef-geometry && lilypond reference-clefs.ly
 piano-false-positives.ly` — the "fatal error" it ends on is harmless.
 
-**Current baseline, shipped config (clustering ON, position rule ON):**
+**Current baseline** (2026-09-01, everything below re-measured after the
+single-dot veto was reverted — do not quote figures from before that):
 
 ```
-58 of 720 located (8.1%)  — Beethoven 5 + Mahler 5, 39 pages
-reference 5/5 exact | orchestral misses 7 | sweep misses 24
-                                          | FALSE POSITIVES 5
-                                            (1 Beethoven + 4 Mahler)
+THE NUMBER TO STEER BY — end-to-end clef accuracy on ten hand-read
+orchestral pages, 166 staves:
+
+    eval_pipeline_clefs.py --contextual --dossier --wide --assist vision
+        149 / 166  (90%)          <- best
+    eval_pipeline_clefs.py --contextual --dossier --wide --assist none
+        146 / 166  (88%)          <- free path, no API spend
+    (base 3) 52/52 in both. The base-3 subtotal is three easy pages that
+    saturated years ago; report it for continuity, steer by the 166.
+
+THE CV LOCATOR, which supplies 3 of those 166 staves:
+
+    probe_clef_rejection.py      68 of 720 located, Beethoven 5 + Mahler 5
+    check_clef_precision.py      reference 5/5 exact | orchestral misses 5
+                                 | sweep misses 8 | FALSE POSITIVES 13
+
+    pytest tools/omr/tests                     1108 passed
+    benchmarks/omr-score-order/eval_score_order.py   11/12, 5/10, 23/23
 ```
 
-Plus: `pytest tools/omr/tests` — **1107 passed, 0 failed**.
-`benchmarks/omr-score-order/eval_score_order.py` 11/12, **3/8**, 23/23.
-`eval_pipeline_clefs.py --contextual --dossier --assist vision` 69/69, base-3
-52/52, about a cent.
+`--assist vision` costs a few cents a run; `--wide` needs
+`orchestral-clef-truth.json`, and the API key lives in `backend/.env`. Surya is
+installed here (`.venv-surya`, gitignored) — re-run
+`python3 -m tools.omr.staff_labels_surya --bootstrap` in any other checkout.
 
 ---
 
