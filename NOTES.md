@@ -178,6 +178,38 @@ own `Timp.` is lost to OCR.
 
 ---
 
+## ➡️ NEXT: Brahms is four problems, not one (attributed 2026-09-01)
+
+Brahms carries **1768 of the 2140 pooled OMR-NED edits — 83%** — so the
+orchestral headline is essentially a Brahms number. Attributed in
+[BRAHMS_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/BRAHMS_ATTRIBUTION_2026-09-01.md);
+unlike Beethoven (recall 1.000, all notation) this is genuine recognition
+failure — recall 0.717 — but NOT the kind that argues for retraining.
+
+**One misaligned staff produces two thirds of the pitch errors.** 65 notes are
+replaced page-wide; **42 of them are part 20 alone** and **41 are exactly −4
+semitones**. Part 20 is the Contrabass: truth 42 × `C3`, we read `A♭2`. Its
+five-line window is fitted one space too high — the top "line" is a BEAM —
+so every note lands a space low and the C-minor key signature flattens the A.
+
+    line_ys_page      [9287, 9327, 9368, 9408, 9451]
+    line_thickness_px [18.0,  5.0,  5.0,  5.0,  5.0]
+
+**The detector for it is already in the JSON.** Line thickness is 4–5 px on 19
+of 21 staves; the outliers are staff 20 (18 px, 3.6× median) and staff 8
+(20 px, 4.0×), and no other staff exceeds 1.8×. A thickness outlier means the
+comb locked onto something that is not a staff line. Evidence rendering:
+`benchmarks/omr-ned-2026-08/brahms-staff20.png`.
+
+The other three, in order of cheapness: **82 spurious augmentation dots**
+(`dotdel` 82 vs `dotins` 16 — over-detection on an engraved page, 103 edits);
+**whole-measure charges** (569 edits, 32%, but the pairs differ by one note plus
+a missing slur — the same amplification as Beethoven's fermatas, so it should
+mostly collapse when the others are fixed); and **slurs/directions never
+exported** (124 + 70 edits, shared with Beethoven).
+
+---
+
 ## 👁️ WATCH: LEGATO 2 weights (checked 2026-08-31 — not out, but its segmenter IS)
 
 [arXiv:2607.05769](https://arxiv.org/abs/2607.05769), July 2026. Reads
