@@ -107,9 +107,19 @@ narrow enough that a rule can score 14/14 on it and still be badly wrong.
 
 ## What the next attempt should have
 
-- **Ground truth from more than two editions.** Every signal here separates
-  perfectly on B9+B5. That is the trap, not the finding. Hand-read system counts
-  for a few Mahler / La Mer / Boléro pages would be worth more than another idea.
+- ✅ **DONE — ground truth from more than two editions.** Eight pages of Mahler 5,
+  La Mer and Boléro were hand-read off the left margin and added to
+  `eval_grouping.py`, chosen as the pages the rejected rule over-split so the
+  next idea fails fast rather than scoring 14/14 and shipping. The set is now
+  **23 cases across 5 editions**, and connectivity scores **20/23 (87%)** on it —
+  the three failures still the known merges. Any candidate rule must hold all
+  eight of these AND fix the three, which attempt 1 provably could not.
+
+| score | page | staves | systems |
+|---|--:|--:|--:|
+| Mahler 5 | 2 / 10 / 20 | 15 / 18 / 16 | 1 / 1 / 1 |
+| La Mer | 2 / 20 | 20 / 16 | 2 / 1 |
+| Boléro | 2 / 10 / 20 | 27 / 32 / 19 | 4 / 2 / 1 |
 - **The 54-page cross-check as the regression gate**, since it is the only thing
   that caught attempt 1. Run it before believing `eval_grouping.py`.
 - A signal that does not assume barline continuity across group gaps. The

@@ -61,10 +61,28 @@ so "what crosses this gap" is a property of the edition's convention, not of
 whether a system ends. B9 and B5 happen to run barlines across group gaps, which
 is why every signal looked perfect on them.
 
-**Do not try another signal against this ground truth.** Any rule can score
-14/14 on two editions. What is needed first is hand-read system counts for a few
-Mahler / La Mer / Boléro pages, and the 54-page cross-check used as the
-regression gate — it is the only thing that caught the failure.
+✅ **GROUND TRUTH WIDENED 2026-08-31 — 14 pages / 2 editions → 23 / 5.** Eight
+pages hand-read off the left margin, chosen as the ones the rejected rule
+over-split, so the next attempt fails fast instead of passing 14/14 and shipping:
+
+| score | page | staves | systems | how it reads |
+|---|--:|--:|--:|---|
+| Mahler 5 | 2 | 15 | 1 | one bracket Fag.→Bässe, m.9 |
+| Mahler 5 | 10 | 18 | 1 | Hoboen→Bässe, m.78 |
+| Mahler 5 | 20 | 16 | 1 | Flöten→Bässe, m.171 |
+| La Mer | 2 | 20 | 2 | two brackets, sub-brackets on the strings |
+| La Mer | 20 | 16 | 1 | one outer bracket, 4 sub-groups |
+| Boléro | 2 | 27 | 4 | m. 14 / 21 / 27 / 33 |
+| Boléro | 10 | 32 | 2 | m.153 and m.159 |
+| Boléro | 20 | 19 | 1 | m.219, Ptes Fl.→C.B. |
+
+All eight pass today: **connectivity 20/23 (87%)**, the three failures still the
+known merges (B9 p25, B9 p60, B5 p40). Run `eval_grouping.py` AND the 54-page
+cross-check; the latter is what caught the rejected rule.
+
+⚠️ **Boléro p10 is a SECOND recorded LEGATO error** — it reports 3 systems on a
+page that plainly has 2, via three overlapping boxes. With B9 p25 that is two
+misses; the miner is a triage tool, not an oracle.
 
 ⚠️ Found in passing and NOT resolved: **`gap_bridging_counts` does not implement
 its own docstring.** The prose says the band runs "from the top line of the upper

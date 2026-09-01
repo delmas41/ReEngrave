@@ -41,7 +41,35 @@ CASES = [(B9, page, 300, truth) for page, truth in (
     (50, 1), (55, 2), (60, 2), (65, 2), (70, 2), (75, 2),
 )]
 if _B5:
-    CASES += [(_B5[0], 10, 300, 2), (_B5[0], 10, 600, 2)]
+    CASES += [(_B5[0], 10, 300, 2), (_B5[0], 10, 600, 2),
+              # Adjudicated 2026-08-31 from the left margin: three brackets,
+              # measure numbers 229/243/256, instrument labels restarting at
+              # each. The set's first MERGE case — LEGATO's cross-check found it.
+              (_B5[0], 40, 300, 3)]
+
+# Beethoven is not a corpus. A rule fitted to B9+B5 scored 14/14 here and then
+# over-split TWELVE pages on everything else, because orchestral engraving
+# breaks barlines between instrument families and those two editions happen not
+# to — see RULE_FIX_ATTEMPT_2026-08-31.md. These eight pages were hand-read the
+# same way (left-margin crop, count the brackets) to widen the set past one
+# publisher. All eight currently pass; they exist to stop the NEXT idea.
+_SCORES = "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores"
+_WIDER = [
+    ("Mahler_5_.pdf", 2, 1),    # 15 staves, one bracket Fag.->Bässe, m.9
+    ("Mahler_5_.pdf", 10, 1),   # 18 staves, Hoboen->Bässe, m.78
+    ("Mahler_5_.pdf", 20, 1),   # 16 staves, Flöten->Bässe, m.171
+    ("IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf", 2, 2),
+    ("IMSLP15420-Debussy_-_La_Mer_(orch._score).pdf", 20, 1),   # 16 staves, one system
+    ("IMSLP421137-PMLP03667-Ravel_Bolero.pdf", 2, 4),   # m. 14/21/27/33
+    # 32 staves, m.153 and m.159. LEGATO says 3 here and is WRONG — it returns
+    # three overlapping boxes on this page. Second recorded miner error, after B9 p25.
+    ("IMSLP421137-PMLP03667-Ravel_Bolero.pdf", 10, 2),
+    ("IMSLP421137-PMLP03667-Ravel_Bolero.pdf", 20, 1),  # 19 staves, m.219
+]
+for _name, _page, _truth in _WIDER:
+    _path = f"{_SCORES}/{_name}"
+    if glob.glob(_path):
+        CASES.append((_path, _page, 300, _truth))
 
 
 def main() -> int:
