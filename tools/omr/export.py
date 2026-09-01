@@ -679,6 +679,132 @@ def _mxl_voice_events(
     return lines, total_dur
 
 
+def _staff_measures_xml(
+    staff: dict[str, Any],
+    divisions: int,
+    start_number: int,
+    state: dict[str, Any],
+) -> list[str]:
+    """One staff's measures as `<measure>` blocks.
+
+    `state` carries the clef, key and time last written, and whether the
+    `<divisions>` have been emitted yet, so that a part stitched from several
+    systems restates an attribute only where it actually CHANGES — which is what
+    MusicXML means by an attribute — instead of once per system. Pass a fresh
+    dict for a part that begins here.
+    """
+    clef = staff.get("clef")
+    key_sig = staff.get("key_signature")
+    time_sig = staff.get("time_signature")
+    out: list[str] = []
+    for m_idx, measure in enumerate(staff.get("measures", [])):
+        m_clef = measure.get("clef") or clef
+        m_key = measure.get("key_signature") or key_sig
+        m_time = measure.get("time_signature") or time_sig
+
+        attrs_clef = m_clef if (m_clef != state.get("clef")) else None
+        attrs_key = m_key if (m_key != state.get("key")) else None
+        attrs_time = m_time if (m_time != state.get("time")) else None
+        include_divisions = not state.get("divisions_written")
+        has_attrs = include_divisions or attrs_clef or attrs_key or attrs_time
+
+        inner = []
+        if has_attrs:
+            inner.append(_mxl_attributes_block(
+                attrs_clef, attrs_key, attrs_time, divisions,
+                "      ", include_divisions,
+            ))
+        state["clef"] = m_clef
+        state["key"] = m_key
+        state["time"] = m_time
+        state["divisions_written"] = True
+
+        events = group_chords_in_measure(measure.get("detections", []))
+        voices = split_events_into_voices(events)
+
+        if not events:
+            r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
+            inner.append(_mxl_note(
+                None, "", r_type, r_dots, r_beats, divisions,
+                is_chord=False, is_rest=True, indent="      ", voice=1,
+            ))
+        elif len(voices) == 1:
+            v1_lines, _ = _mxl_voice_events(
+                voices[0], voice=1, divisions=divisions, indent="      ",
+            )
+            inner.extend(v1_lines)
+        else:
+            v1_lines, v1_dur = _mxl_voice_events(
+                voices[0], voice=1, divisions=divisions, indent="      ",
+            )
+            inner.extend(v1_lines)
+            if v1_dur > 0:
+                inner.append(
+                    "      <backup>\n"
+                    f"        <duration>{v1_dur}</duration>\n"
+                    "      </backup>"
+                )
+            v2_lines, _ = _mxl_voice_events(
+                voices[1], voice=2, divisions=divisions, indent="      ",
+            )
+            inner.extend(v2_lines)
+
+        out.append(
+            f"    <measure number=\"{start_number + m_idx}\">\n"
+            + "\n".join(inner)
+            + "\n    </measure>"
+        )
+    return out
+
+
+def _is_fragmented_row(staves: list[dict[str, Any]]) -> bool:
+    """The layout detector sometimes splits one melodic line into many
+    "staves" of a single measure each (vertically-stacked single-line music).
+    Emitting those as parallel parts would be wrong; they are one part."""
+    return (
+        len(staves) > 2
+        and all(len(s.get("measures", [])) == 1 for s in staves)
+    )
+
+
+def _stitch_slots(result: dict[str, Any]) -> list[list[dict[str, Any]]] | None:
+    """Group every system's staves into continuous parts, or return None.
+
+    A part is not a staff on a system, it is the same staff on every system of
+    the piece — and until this existed the exporter emitted one `<part>` per
+    (page, system, staff), so a two-page piano prelude came out as twenty-four
+    parts rather than two, and `orchestral_eval` had to keep its excerpts down
+    to a single page to stay scoreable at all.
+
+    The join is by ORDINAL: the second staff of one system is the second staff
+    of the next. That is only sound while every system agrees on how many
+    staves it has, so this returns None the moment they do not — which is a
+    real case, not a corner one. Printed orchestral scores suppress tacet
+    staves, and on the Beethoven 5 scan the two systems of a single page hold
+    11 and 8. Joining those by position would silently graft the horn's music
+    onto the trumpet's, so the exporter keeps its old per-system parts there and
+    the caller can see it did from the part names.
+    """
+    systems = [
+        system
+        for page in result.get("pages", [])
+        for system in page.get("systems", [])
+        if system.get("staves")
+    ]
+    if not systems:
+        return None
+    sizes = {len(system["staves"]) for system in systems}
+    if len(sizes) != 1:
+        return None
+    if any(_is_fragmented_row(system["staves"]) for system in systems):
+        return None
+    slots: list[list[dict[str, Any]]] = [[] for _ in range(sizes.pop())]
+    for system in systems:
+        for ordinal, staff in enumerate(system["staves"]):
+            slots[ordinal].append(staff)
+    return slots
+
+
 def to_musicxml(result: dict[str, Any]) -> str:
     """Serialize a transcribe.py result to a MusicXML score-partwise XML
     string. One <part> per (page, system, position-within-system) staff.
@@ -702,6 +828,52 @@ def to_musicxml(result: dict[str, Any]) -> str:
     pg_number = 0  # part-group number — increment per piano pair
     global_measure_num = 0  # cumulative measure counter across systems on every page
 
+    # Stitched path: one part per SLOT, carrying that slot's staff from every
+    # system of the piece. See `_stitch_slots` for when this is not safe.
+    slots = _stitch_slots(result)
+    if slots is not None:
+        systems = [
+            system
+            for page in result.get("pages", [])
+            for system in page.get("systems", [])
+            if system.get("staves")
+        ]
+        is_piano = len(slots) == 2
+        if is_piano:
+            part_list.append(
+                "  <part-group type=\"start\" number=\"1\">\n"
+                "    <group-symbol>brace</group-symbol>\n"
+                "    <group-barline>yes</group-barline>\n"
+                "  </part-group>"
+            )
+        # Where each system's measures begin, so numbering runs on through the
+        # piece rather than restarting per system.
+        starts: list[int] = []
+        running = 1
+        for system in systems:
+            starts.append(running)
+            running += max(len(s.get("measures", [])) for s in system["staves"])
+        for ordinal, slot in enumerate(slots):
+            part_idx += 1
+            part_id = f"P{part_idx}"
+            part_list.append(
+                f"  <score-part id=\"{part_id}\">\n"
+                f"    <part-name>{_xml_escape(f'Staff {ordinal}')}</part-name>\n"
+                f"  </score-part>"
+            )
+            state: dict[str, Any] = {}
+            measures_xml: list[str] = []
+            for staff, start in zip(slot, starts):
+                measures_xml += _staff_measures_xml(staff, divisions, start, state)
+            parts_xml.append(
+                f"  <part id=\"{part_id}\">\n"
+                + "\n".join(measures_xml)
+                + "\n  </part>"
+            )
+        if is_piano:
+            part_list.append("  <part-group type=\"stop\" number=\"1\"/>")
+        return _score_partwise(result, part_list, parts_xml)
+
     for page in result.get("pages", []):
         for sys_idx, sys_ in enumerate(page.get("systems", [])):
             staves = sys_.get("staves", [])
@@ -714,11 +886,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
             # When that happens, MusicXML semantics would emit those as
             # parallel parts — which is wrong. Merge them into a single
             # part with sequential measure numbers.
-            is_fragmented_row = (
-                not is_piano
-                and len(staves) > 2
-                and all(len(s.get("measures", [])) == 1 for s in staves)
-            )
+            is_fragmented_row = not is_piano and _is_fragmented_row(staves)
 
             if is_fragmented_row:
                 part_idx += 1
@@ -834,74 +1002,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     f"  </score-part>"
                 )
 
-                clef = staff.get("clef")
-                key_sig = staff.get("key_signature")
-                time_sig = staff.get("time_signature")
-
-                measures_xml = []
-                last_clef = None
-                last_key_sig = None
-                last_time_sig = None
-                for m_idx, measure in enumerate(staff.get("measures", [])):
-                    m_clef = measure.get("clef") or clef
-                    m_key = measure.get("key_signature") or key_sig
-                    m_time = measure.get("time_signature") or time_sig
-
-                    attrs_clef = m_clef if (m_clef != last_clef) else None
-                    attrs_key = m_key if (m_key != last_key_sig) else None
-                    attrs_time = m_time if (m_time != last_time_sig) else None
-                    include_divisions = (m_idx == 0)
-                    has_attrs = (
-                        include_divisions or attrs_clef or attrs_key or attrs_time
-                    )
-
-                    inner = []
-                    if has_attrs:
-                        inner.append(_mxl_attributes_block(
-                            attrs_clef, attrs_key, attrs_time, divisions,
-                            "      ", include_divisions,
-                        ))
-                    last_clef = m_clef
-                    last_key_sig = m_key
-                    last_time_sig = m_time
-
-                    events = group_chords_in_measure(measure.get("detections", []))
-                    voices = split_events_into_voices(events)
-
-                    if not events:
-                        r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
-                        inner.append(_mxl_note(
-                            None, "", r_type, r_dots, r_beats, divisions,
-                            is_chord=False, is_rest=True,
-                            indent="      ", voice=1,
-                        ))
-                    elif len(voices) == 1:
-                        v1_lines, _ = _mxl_voice_events(
-                            voices[0], voice=1, divisions=divisions, indent="      ",
-                        )
-                        inner.extend(v1_lines)
-                    else:
-                        v1_lines, v1_dur = _mxl_voice_events(
-                            voices[0], voice=1, divisions=divisions, indent="      ",
-                        )
-                        inner.extend(v1_lines)
-                        if v1_dur > 0:
-                            inner.append(
-                                "      <backup>\n"
-                                f"        <duration>{v1_dur}</duration>\n"
-                                "      </backup>"
-                            )
-                        v2_lines, _ = _mxl_voice_events(
-                            voices[1], voice=2, divisions=divisions, indent="      ",
-                        )
-                        inner.extend(v2_lines)
-
-                    measure_number_attr = sys_start_num + m_idx
-                    measures_xml.append(
-                        f"    <measure number=\"{measure_number_attr}\">\n"
-                        + "\n".join(inner)
-                        + "\n    </measure>"
-                    )
+                measures_xml = _staff_measures_xml(
+                    staff, divisions, sys_start_num, {},
+                )
 
                 parts_xml.append(
                     f"  <part id=\"{part_id}\">\n"
@@ -916,6 +1019,12 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 )
             global_measure_num += sys_max_measures
 
+    return _score_partwise(result, part_list, parts_xml)
+
+
+def _score_partwise(
+    result: dict[str, Any], part_list: list[str], parts_xml: list[str]
+) -> str:
     src = result.get("source_pdf") or "OMR transcription"
     work_title = Path(src).name if src else "OMR transcription"
 

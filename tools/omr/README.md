@@ -422,6 +422,23 @@ geometric readers: the line numbering the clef and slot tables are defined on
 only means something on five lines. A **missing** key means the file predates
 this block.
 
+### One part per staff, not per system (`export._stitch_slots`)
+
+`to_musicxml` used to emit one `<part>` per (page, system, staff), so a part was
+never continuous — two pages of a piano prelude came out as 24 parts of 3 bars.
+Staves are now joined by ORDINAL across every system and page into one part
+each, with measure numbers running on through the piece and an attribute written
+only where it changes.
+
+The join **refuses** when the systems disagree about how many staves they hold:
+printed orchestral scores suppress tacet staves, so joining by position would
+graft one instrument's music onto another. There the old per-system parts stand,
+and the part names say so. A fragmented row keeps its own existing path.
+
+Measured on WTC I Fugue 1 (`benchmarks/omr-first-run-2026-08/EXPORT_PARTS.md`):
+20 parts of 3 measures become 2 of 27, OMR-NED 0.9819 → 0.8668, and the dominant
+edit changes from `entire measure insert/delete` to `wrong note`.
+
 ### Reading key signatures by template (`key_signature_template.py`)
 
 `key_signature_locator` finds accidentals by clustering the header's ink into

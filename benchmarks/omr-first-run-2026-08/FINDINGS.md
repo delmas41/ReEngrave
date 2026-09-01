@@ -285,8 +285,10 @@ Key signatures read across the six pages: 2/12, 6/22, 9/19, 6/22, 2/16, 8/22 —
    control has duration recall equal to pitch recall. Needs a labeling batch,
    not another heuristic; four are recorded as failed in
    [DURATIONS.md](DURATIONS.md).
-5. **Stitch the export.** One part per (page, system, staff) makes every
-   whole-score metric — OMR-NED included — measure the wrong thing.
+5. ~~**Stitch the export.**~~ **DONE 2026-08-31** — staves join by ordinal
+   across systems and pages, refusing where the systems disagree about their
+   height. WTC I Fugue 1: 20 parts → 2, OMR-NED 0.9819 → 0.8668, and the
+   dominant error becomes `wrong note`. [EXPORT_PARTS.md](EXPORT_PARTS.md).
 6. **Join parts to staves per SYSTEM, not per page.** Six pages, eleven systems,
    eleven abstentions — and two pages whose two systems print different
    instruments, where a page-level join has no correct answer to give.

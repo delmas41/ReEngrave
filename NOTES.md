@@ -40,6 +40,12 @@ result is still not a transcription of Beethoven 5:
   `benchmarks/omr-first-run-2026-08/DURATIONS.md`;
 - 24 of 170 emitted notes sit on staves that print nothing but rests.
 
+**The export part model is fixed (2026-08-31)** — `to_musicxml` joins staves
+across systems and pages by ordinal, refusing where the systems disagree about
+their height. WTC I Fugue 1: 20 parts of 3 bars → 2 parts of 27, OMR-NED 0.9819
+→ 0.8668, dominant error `entire measure insert/delete` → `wrong note`. This
+also lifts the one-page cap `orchestral_eval` put on its excerpts.
+
 Two things this reframes. **OMR-NED is not yet a tracking number for scans**:
 0.8706 here against 0.3164 on rendered pages, and 66% of the edits are
 whole-measure/whole-staff inserts — the export's one-part-per-(page, system,
