@@ -88,6 +88,36 @@ breaks land at 555 and 808. **Whether the docstring should be corrected or the
 code brought up to it is now an open question** — but the documented version is
 not the fix, so nothing was changed.
 
+## Attempt 4 — the bracket, against the WIDER ground truth
+
+Retried after the set was widened to 23 pages / 5 editions, on the one direction
+attempts 1-3 left open: **the bracket is the single element that genuinely spans
+a whole system and stops at its end**, so isolating it should sidestep the
+barline-continuity problem entirely. Measured in a zone anchored on the staves'
+left edge, band running through both staves, so barlines never enter it.
+
+**Perfect recall, no precision.** All 15 true breaks read 0 — but so do many
+within-system gaps, and `min(non-break) = 0` in **every one of 32 configurations**
+(zone left edge 2/3/5/8 spacings × right edge 0.5/2.0 × band through-staves or
+gap-only × ink fraction 0.6/0.8). Zone width made no difference at all.
+
+Not an anchor problem: `x_start` is tight on the offending pages (B9 p50 spans
+278-307 about a median of 290; B5 p47 142-175 about 172). There is simply no
+continuously-inked column in the bracket zone at some within-system boundaries —
+a system bracket is a thin, curved, tapered engraving, not a printed rule, and
+whether it clears an ink-fraction test over a tall band is *itself* an edition
+property. Same mechanism as attempts 1-3, one layer down.
+
+**What the wider ground truth bought:** this died in one measurement, before any
+production change and before the 54-page cross-check. Attempt 1 needed an
+implementation, a 14/14 score and a regression sweep to be caught. That is the
+set doing its job.
+
+**Worth keeping from it:** bracket-zone reach of 0 is a NECESSARY condition —
+15/15 true breaks satisfy it and it never misses one. It is not sufficient alone,
+but a future combined rule could use it as the cheap first filter and spend a
+more expensive test only on the candidates it admits.
+
 ## Why none of them travel — the mechanism
 
 **In orchestral engraving, barlines are deliberately broken between instrument

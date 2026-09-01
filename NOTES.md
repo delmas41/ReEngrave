@@ -48,7 +48,17 @@ better than us here but is NOT an oracle — p25 is the standing counter-example
 and a page LEGATO agrees with is not thereby correct. Measure the fix against
 `eval_grouping.py`, never against the miner.
 
-❌ **THREE FIXES TRIED 2026-08-31, ALL REJECTED** —
+❌ **FOUR FIXES TRIED 2026-08-31, ALL REJECTED** — attempt 4 is the bracket,
+retried against the WIDER set: perfect recall (all 15 true breaks read 0) but
+`min(non-break) = 0` in **all 32 configurations** swept, because a system bracket
+is a thin curved engraving rather than a printed rule and whether it clears an
+ink test is itself an edition property. It died in ONE measurement, before any
+code change — attempt 1 needed an implementation, a 14/14 score and a regression
+sweep to be caught, so the wider set is already paying for itself. Keep one thing
+from it: bracket-reach 0 is a NECESSARY condition (15/15, never misses), so it is
+a cheap first filter for a future combined rule, just not sufficient alone.
+
+The first three: —
 [RULE_FIX_ATTEMPT_2026-08-31.md](benchmarks/omr-system-grouping-2026-08/RULE_FIX_ATTEMPT_2026-08-31.md).
 Rightmost-reach-over-the-window separated 262 boundaries with ZERO overlap and
 took `eval_grouping.py` to **14/14** — then over-split **12 pages** on the five
