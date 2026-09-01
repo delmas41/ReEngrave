@@ -1,0 +1,18 @@
+{
+  "cell_id": "beet5-p2-sys0-s3-m14",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "brace",
+      "category": "structural",
+      "x": 312,
+      "y": 0,
+      "w": 47,
+      "h": 325,
+      "x_center": 335,
+      "y_center": 162,
+      "confidence": 0.2698077857494354,
+      "pitch": null
+    }
+  ]
+}

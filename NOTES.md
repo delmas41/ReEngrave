@@ -282,6 +282,60 @@ torch/ultralytics detection classes, nothing that executes.
 
 ---
 
+## A whole scan, start to finish, with nothing helping it (2026-08-31)
+
+Every accuracy number here was measured one element at a time, or on pages this
+project rendered itself from the truth it then scored against. So the obvious
+question had never been asked: hand the pipeline a scan and see what comes out.
+
+`benchmarks/omr-first-run-2026-08/` does it — Beethoven 5 page 1 of the IMSLP
+scan, defaults, **no dossier**, scored against the Gradus reference, with the
+page's 16 measures established independently of the pipeline.
+
+**The components are far better than their composition.** Layout is perfect —
+113 staves and 11 systems across six pages, all exact, including four pages
+where the staff count changes between the two systems. Clefs 10/12. Three
+quarters of noteheads on the right line (`step` recall 0.782). And the engraved
+result is still not a transcription of Beethoven 5:
+
+- ~~**meter never read**~~ — worse than that, and now **FIXED 2026-08-31**: the
+  page reported common time on all twelve staves, propagated from barline
+  fragments read as the digit 4. A header meter reader plus a corroboration
+  guard take it to 2/4. See `benchmarks/omr-timesig-2026-08/FINDINGS.md`;
+- ~~**4 of 17 barlines missed**~~ — three of sixteen, and **FIXED 2026-08-31**:
+  the scan is warped and the connectivity probe assumed barlines are vertical.
+  17/17 with 0 false. The fourth "miss" was an error in the benchmark's own
+  ground truth, which counted the time signature as a barline;
+- ~~**key signatures read on 2 of 12 staves**~~ — **IMPROVED 2026-08-31** to
+  7/12 correct with 0 wrong (39% of staves over six pages), by matching the
+  Bravura outlines instead of reassembling ink into components. The accidental
+  gap halves. See `benchmarks/omr-first-run-2026-08/KEY_SIGNATURES.md`;
+- **duration recall 0.360** — DIAGNOSED 2026-08-31 and not a rhythm bug: the
+  page prints 68 half notes and the output has 8, because the scan's
+  binarization closes the notehead's counter and the detector never sees a
+  hollow head. Engraved control: 31 hollow found against 30 real, and duration
+  recall equal to pitch recall at 0.926. Four fixes measured, none shippable —
+  `benchmarks/omr-first-run-2026-08/DURATIONS.md`;
+- 24 of 170 emitted notes sit on staves that print nothing but rests.
+
+**The export part model is fixed (2026-08-31)** — `to_musicxml` joins staves
+across systems and pages by ordinal, refusing where the systems disagree about
+their height. WTC I Fugue 1: 20 parts of 3 bars → 2 parts of 27, OMR-NED 0.9819
+→ 0.8668, dominant error `entire measure insert/delete` → `wrong note`. This
+also lifts the one-page cap `orchestral_eval` put on its excerpts.
+
+Two things this reframes. **OMR-NED is not yet a tracking number for scans**:
+0.8706 here against 0.3164 on rendered pages, and 66% of the edits are
+whole-measure/whole-staff inserts — the export's one-part-per-(page, system,
+staff) model against an edition that condenses 18 parts onto 12 staves. And
+**the dossier cannot engage**: eleven systems, eleven abstentions, because real
+editions condense and suppress tacet staves, so the staff set changes *within a
+page*. The join has to be per-system before external truth can help a real scan.
+
+Ranked next steps at the end of `benchmarks/omr-first-run-2026-08/FINDINGS.md`.
+
+---
+
 ## Clef accuracy, measured end to end (2026-08-29)
 
 The three threads above all ended by pointing at the clef. It turns out to be in

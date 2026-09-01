@@ -6,7 +6,7 @@
     96,
     120
   ],
-  "n_entries": 108,
+  "n_entries": 114,
   "skipped": [],
   "entries": [
     {
@@ -1926,6 +1926,126 @@
         -7.809057448881906,
         -5.459100819558656,
         -8.227123918770417
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSigCommon",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSigCommon_72.npy",
+      "shape": [
+        36,
+        31
+      ],
+      "hu_moments": [
+        0.43738441327777206,
+        2.3943533683793334,
+        3.0704661958799497,
+        2.7888337860920958,
+        -5.786900508629166,
+        -3.9961683318396206,
+        6.002590709915889
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSigCommon",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSigCommon_96.npy",
+      "shape": [
+        48,
+        41
+      ],
+      "hu_moments": [
+        0.4271369593944697,
+        2.3095240701722846,
+        2.926954324240746,
+        2.7458753205897426,
+        -5.623312191708702,
+        -3.9096078989475287,
+        5.964346847390726
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSigCommon",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSigCommon_120.npy",
+      "shape": [
+        60,
+        51
+      ],
+      "hu_moments": [
+        0.41523661997448963,
+        2.2483035512106335,
+        2.8335349563931613,
+        2.680870218406345,
+        -5.476554815639358,
+        -3.811405166325315,
+        5.8327780182657305
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSigCutCommon",
+      "category": "time_sig_digit",
+      "size_px": 72,
+      "image_path": "templates/timeSigCutCommon_72.npy",
+      "shape": [
+        52,
+        30
+      ],
+      "hu_moments": [
+        0.5218045642155278,
+        1.9277472478968782,
+        3.337086397404724,
+        3.2761829317369022,
+        -6.789008321533576,
+        -4.516285229972225,
+        6.689058192180233
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSigCutCommon",
+      "category": "time_sig_digit",
+      "size_px": 96,
+      "image_path": "templates/timeSigCutCommon_96.npy",
+      "shape": [
+        70,
+        40
+      ],
+      "hu_moments": [
+        0.490928774059309,
+        1.8880498924362832,
+        3.1690211429870243,
+        3.154041269106586,
+        -6.54792597502262,
+        -4.314759747044702,
+        6.406789498071973
+      ],
+      "variant_id": null
+    },
+    {
+      "smufl_name": "timeSigCutCommon",
+      "category": "time_sig_digit",
+      "size_px": 120,
+      "image_path": "templates/timeSigCutCommon_120.npy",
+      "shape": [
+        87,
+        50
+      ],
+      "hu_moments": [
+        0.4936200492466639,
+        1.900183826391399,
+        3.1442721644099225,
+        3.140882975644949,
+        -6.506948678523136,
+        -4.360395807318859,
+        6.379453815688293
       ],
       "variant_id": null
     },

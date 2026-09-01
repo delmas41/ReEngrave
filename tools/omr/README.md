@@ -422,19 +422,103 @@ geometric readers: the line numbering the clef and slot tables are defined on
 only means something on five lines. A **missing** key means the file predates
 this block.
 
+### One part per staff, not per system (`export._stitch_slots`)
+
+`to_musicxml` used to emit one `<part>` per (page, system, staff), so a part was
+never continuous — two pages of a piano prelude came out as 24 parts of 3 bars.
+Staves are now joined by ORDINAL across every system and page into one part
+each, with measure numbers running on through the piece and an attribute written
+only where it changes.
+
+The join **refuses** when the systems disagree about how many staves they hold:
+printed orchestral scores suppress tacet staves, so joining by position would
+graft one instrument's music onto another. There the old per-system parts stand,
+and the part names say so. A fragmented row keeps its own existing path.
+
+Measured on WTC I Fugue 1 (`benchmarks/omr-first-run-2026-08/EXPORT_PARTS.md`):
+20 parts of 3 measures become 2 of 27, OMR-NED 0.9819 → 0.8668, and the dominant
+edit changes from `entire measure insert/delete` to `wrong note`.
+
+### Reading key signatures by template (`key_signature_template.py`)
+
+`key_signature_locator` finds accidentals by clustering the header's ink into
+connected components and keeping the accidental-sized ones. On a scan whose
+staff-line removal leaves every glyph in pieces, nothing accidental-sized
+survives: given the correct clef for every staff of Beethoven 5 p.1 it reads 2
+of 12, on a page where eight of the ten it misses print three flats legibly.
+
+This module slides the Bravura `accidentalFlat` / `accidentalSharp` templates
+instead — a shattered glyph still correlates with its own outline. Bounded on
+both sides, because unbounded a flat's outline correlates with a G clef nearly
+as well as with a flat: the search runs between the **clef** (matched by its own
+template, chosen by the clef the caller supplies) and the **meter**
+(`locate_time_signature`). Positions are taken from the ink centroid inside each
+matched box, not the box centre, and handed to the same
+`key_signature_geometry.fit_key_signature` the locator uses.
+
+Two restrictions, both load-bearing and both measured on WTC I p.17:
+
+* **It never infers.** A fit that recovers a slot nothing was seen at is
+  discarded. Recovery is right for a reader that only under-counts; this one can
+  over-count, and inference turned five matches into seven sharps.
+* **It never carries across systems** (`StaffCandidate.can_carry`). The vote
+  resolves a part by taking the reading with the most accidentals, which assumes
+  under-counting; one spurious fifth sharp was otherwise carried onto every
+  treble staff of five systems.
+
+It speaks only where the detector and the locator both found nothing, and — for
+staves carrying only the positional default clef — at a weight too small to
+assert a departure from the system's modal signature, so the vote may keep such
+a reading only where it agrees. Measured in
+`benchmarks/omr-first-run-2026-08/KEY_SIGNATURES.md`.
+
+### Reading the meter from the header (`time_signature_locator.py`)
+
+The primary source of a page's meter, and the one that works on scans. The
+detector supplies nothing here — on page 1 of the IMSLP Beethoven 5 it finds
+zero time-signature digits in any staff's header, on a page that prints `2` over
+`4` on all twelve — so the meter is read the way the clef and key signature are,
+by geometry.
+
+A time signature's placement is rigid: the numerator fills the upper two staff
+spaces and the denominator the lower two, centred on each other. Its vertical
+position is therefore known before the search, and the search is
+one-dimensional. A composite template per candidate meter — assembled from the
+Bravura `timeSig0-9` glyphs in `symbol_library/`, scaled so four staff spaces of
+template match four of page — is slid along the header window in x, and the best
+normalised cross-correlation wins. Per-staff readings are then **voted across
+the system** (`vote_system_time_signature`), because a meter is printed on every
+staff of it: a meter must be read on at least half the staves before it is
+believed, which is what makes a bare NCC threshold safe.
+
+Runs with the rest of the header pass, so `--no-header-reading` turns it off.
+Common time is **not** read — `timeSigCommon`/`timeSigCutCommon` have no
+templates, so those pages abstain and fall through to the detector, which reads
+those two glyphs well. Measured in `benchmarks/omr-timesig-2026-08/FINDINGS.md`,
+including two discriminators that were tried and rejected for moving with the
+printing rather than the answer.
+
 ### Time-signature inference (back-fill)
 
-DSv2 misclassifies time-sig digit glyphs, so `parse_time_signature` returns
-`null` on most measures. After a page is built, `rhythm.backfill_page_time_signatures`
-decides a page meter and back-fills it onto the measures/staves whose detection
-failed. This feeds the per-measure `rhythm_sum_warning` check and the LilyPond
-/ MusicXML exporters (which otherwise hardcode 4/4). Two methods, most-reliable
-first:
+Where no meter was read, `rhythm.backfill_page_time_signatures` decides a page
+meter and back-fills it onto the measures/staves that have none. This feeds the
+per-measure `rhythm_sum_warning` check and the LilyPond / MusicXML exporters
+(which otherwise hardcode 4/4). It first calls
+`drop_uncorroborated_meter_changes` (below), then tries two methods,
+most-reliable first:
 
-1. **Propagate a dominant DETECTED meter.** When a propagatable meter — a
+1. **Propagate a dominant meter read on the page.** A propagatable meter — a
    `C`/cut-`C` glyph, or a plausible digit meter (numerator 2-16, denominator a
-   power of two) — is read on ≥3 measures with no plausible dissent, it's
-   propagated across the page. Digit-stack meters used to be excluded because
+   power of two) — read on ≥`_PROPAGATE_MIN_COUNT` **staves** and on at least
+   half of the page's staves, with no plausible dissent, is propagated across
+   the page. Header-reader meters count here alongside detections; anything
+   this module back-filled itself does not, which is what keeps the pass
+   idempotent. ⚠️ **The unit is the staff, and that is load-bearing.** A meter
+   is carried onto every later measure of its staff, so counting measures
+   counts one reading many times: on Beethoven 5 scan p.3, one `timeSig4` at
+   confidence 0.42 on one staff of nineteen arrived as eighteen unanimous votes
+   and propagated common time over a 2/4 page. Digit-stack meters used to be
+   excluded entirely because
    the detector misreads the stacked instrument-grouping numbers left of the
    clefs ("Flöten 1 2 3 4") as a time signature; now that the left-edge filter
    (below) drops those at the source, plausible digit meters aggregate safely
@@ -451,6 +535,25 @@ first:
    page no instrument fills the whole bar, so per-column-max UNDER-counts
    (Boléro p.1, a real 3/4, had most columns at ~2.0 and a 0.6 gate inferred a
    wrong 2/4). Near-consensus abstains on a mere plurality; it's a last resort.
+
+**The meter carries across pages.** A time signature is printed at the start of
+a movement, so a page that reads none is not in no meter — it is in the last one.
+`transcribe` carries it forward, tagged `source="carried_from_previous_page"`.
+Before this, page 2 of a 2/4 movement had no meter and the exporters fell back
+to 4/4; the Beethoven 5 scan now reads 2/4 on all six of its first pages instead
+of on page 1 alone.
+
+**Uncorroborated meter changes are undone first.**
+`rhythm.drop_uncorroborated_meter_changes` reverts a mid-staff meter CHANGE that
+only one staff saw, restoring the meter in effect before it. A time signature is
+printed at the start of a staff or where the meter changes, and a change is a
+system-wide event printed on every staff at the same bar — so a change appearing
+mid-system on one staff alone is ink that resembled a digit, not a meter. Without
+this, one misread bar rewrote the rest of its staff and then voted for itself
+once per remaining bar: five barline fragments read as `timeSig4` are how
+Beethoven 5 p.1 came to report common time. A change corroborated on half the
+system's staves is left alone, so a real mid-movement change survives. The page
+dict records `"uncorroborated_meter_changes_reverted"` when any fire.
 
 **Left-edge misread filter.** `parse_time_signature` rejects any time-sig glyph
 whose left edge sits within `_TIMESIG_MIN_X_CANONICAL` (16) canonical px of the
