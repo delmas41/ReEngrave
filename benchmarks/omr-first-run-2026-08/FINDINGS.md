@@ -114,7 +114,7 @@ Both errors are the documented failure mode — a non-treble clef read as treble
 and the Viola one is expensive: its `step` recall is 0.23 against 0.65–0.78 for
 the other string staves, because every pitch on the staff is displaced.
 
-## Key signatures: read on 2 of 12
+## Key signatures: read on 2 of 12 — ✅ IMPROVED 2026-08-31
 
 Only Flauti and Violoncello were read at all. Violoncello got 3 flats — correct.
 Flauti got **1 flat where the page prints 3**. The other ten staves report zero
@@ -122,6 +122,15 @@ because nothing read them, which is accidentally right for the three that
 genuinely carry none (Corni, Trombe, Timpani), giving a flattering 4/12.
 
 The cost is measurable, and it is the gap between the two note metrics below.
+
+Now **7/12 correct, 4 genuinely read, 0 wrong values** — and the accidental gap
+those numbers cause halves, exact-pitch recall 0.571 to 0.619 against an
+unchanged step recall. A template reader
+(`tools/omr/key_signature_template.py`) matches the Bravura outlines instead of
+reassembling ink into components, which is what the locator cannot do on a scan
+whose staff-line removal leaves every glyph in pieces. Full account, including
+two rules that had to be found by breaking WTC p.17, in
+[KEY_SIGNATURES.md](KEY_SIGNATURES.md).
 
 ## Time signature: reported, and wrong — ✅ FIXED 2026-08-31
 
@@ -267,8 +276,9 @@ Key signatures read across the six pages: 2/12, 6/22, 9/19, 6/22, 2/16, 8/22 —
 2. ~~**The four barlines.**~~ **DONE 2026-08-31** — three, not four, and the
    fourth was an error in this file's ground truth. 17/17 with 0 false;
    [BARLINES.md](BARLINES.md).
-3. **Key-signature coverage, 2/12.** Already a live thread; this page prices it
-   at 16 points of exact-pitch recall.
+3. ~~**Key-signature coverage, 2/12.**~~ **IMPROVED 2026-08-31** — 7/12 correct,
+   0 wrong, and the accidental gap halved. Five staves still abstain;
+   [KEY_SIGNATURES.md](KEY_SIGNATURES.md) prices what is left.
 4. **Durations at 0.360.** The largest single gap between "found the notehead"
    and "wrote the right note", and much less studied than pitch.
 5. **Stitch the export.** One part per (page, system, staff) makes every

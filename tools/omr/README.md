@@ -422,6 +422,39 @@ geometric readers: the line numbering the clef and slot tables are defined on
 only means something on five lines. A **missing** key means the file predates
 this block.
 
+### Reading key signatures by template (`key_signature_template.py`)
+
+`key_signature_locator` finds accidentals by clustering the header's ink into
+connected components and keeping the accidental-sized ones. On a scan whose
+staff-line removal leaves every glyph in pieces, nothing accidental-sized
+survives: given the correct clef for every staff of Beethoven 5 p.1 it reads 2
+of 12, on a page where eight of the ten it misses print three flats legibly.
+
+This module slides the Bravura `accidentalFlat` / `accidentalSharp` templates
+instead — a shattered glyph still correlates with its own outline. Bounded on
+both sides, because unbounded a flat's outline correlates with a G clef nearly
+as well as with a flat: the search runs between the **clef** (matched by its own
+template, chosen by the clef the caller supplies) and the **meter**
+(`locate_time_signature`). Positions are taken from the ink centroid inside each
+matched box, not the box centre, and handed to the same
+`key_signature_geometry.fit_key_signature` the locator uses.
+
+Two restrictions, both load-bearing and both measured on WTC I p.17:
+
+* **It never infers.** A fit that recovers a slot nothing was seen at is
+  discarded. Recovery is right for a reader that only under-counts; this one can
+  over-count, and inference turned five matches into seven sharps.
+* **It never carries across systems** (`StaffCandidate.can_carry`). The vote
+  resolves a part by taking the reading with the most accidentals, which assumes
+  under-counting; one spurious fifth sharp was otherwise carried onto every
+  treble staff of five systems.
+
+It speaks only where the detector and the locator both found nothing, and — for
+staves carrying only the positional default clef — at a weight too small to
+assert a departure from the system's modal signature, so the vote may keep such
+a reading only where it agrees. Measured in
+`benchmarks/omr-first-run-2026-08/KEY_SIGNATURES.md`.
+
 ### Reading the meter from the header (`time_signature_locator.py`)
 
 The primary source of a page's meter, and the one that works on scans. The

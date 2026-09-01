@@ -28,9 +28,10 @@ result is still not a transcription of Beethoven 5:
   the scan is warped and the connectivity probe assumed barlines are vertical.
   17/17 with 0 false. The fourth "miss" was an error in the benchmark's own
   ground truth, which counted the time signature as a barline;
-- **key signatures read on 2 of 12 staves** (29% over six pages), which is the
-  whole distance between `step` recall 0.782 and exact-pitch recall 0.612 —
-  now the largest remaining gap on the page;
+- ~~**key signatures read on 2 of 12 staves**~~ — **IMPROVED 2026-08-31** to
+  7/12 correct with 0 wrong (39% of staves over six pages), by matching the
+  Bravura outlines instead of reassembling ink into components. The accidental
+  gap halves. See `benchmarks/omr-first-run-2026-08/KEY_SIGNATURES.md`;
 - **duration recall 0.360**, half the notes that are correctly located;
 - 24 of 170 emitted notes sit on staves that print nothing but rests.
 
