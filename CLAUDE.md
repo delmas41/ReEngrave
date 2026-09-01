@@ -308,11 +308,21 @@ Every score the project uses lives in one place with its provenance attached:
 [`data/score-library/catalog.json`](data/score-library/catalog.json). Full
 conventions: [`data/score-library/README.md`](data/score-library/README.md).
 
-Before this, the same score existed under four names in four trees —
-`tools/omr/training/data/imslp/`, `~/Desktop/gradus-vercel/public/scores/`, and
-two copies of `~/Documents/Gradus-Assets/Scores/`. Importing all of them yielded
-**1745 unique reference files out of 4167+ candidates**; the rest were recorded
-as extra origins on files already held.
+**235 editions and 1745 reference encodings**, 6.4 GB, 27 works pairing a PDF
+with ground truth. Before this, the same score existed under four names in four
+trees — `tools/omr/training/data/imslp/`,
+`~/Desktop/gradus-vercel/public/scores/`, and two copies of
+`~/Documents/Gradus-Assets/Scores/`. Importing all of them yielded **1745 unique
+reference files out of 4167+ candidates**; the rest were recorded as extra
+origins on files already held.
+
+The edition half was built from a ranked wantlist
+([`data/score-library/wishlist.md`](data/score-library/wishlist.md)) that scores
+every full score on a work's IMSLP page **for OMR rather than for playing**: a
+real engraving beats a modern typeset, a named publisher beats an anonymous
+upload, and an edition series already held beats one that is not. That last
+bonus picked the Litolff 1870 series for the whole Beethoven cycle unprompted —
+consecutive plates 2765-2773.
 
 ```
 library/editions/<composer>/<work>/<composer>--<work>--<edition>--<source>.pdf
@@ -342,7 +352,17 @@ inside a git worktree, so one machine keeps one store.
 that `curl` cannot pass, so a logged-in browser has to resolve
 `Special:ImagefromIndex/<id>` to its direct file URL; the wiki pages and the
 MediaWiki API are open, which is where all provenance comes from. **Do not try to
-defeat the gate** — pace the requests instead.
+defeat the gate** — pace the requests instead. Practical recipe: drive 3-5 Chrome
+tabs, read the resolved URLs out of the tab list, then fetch them with a delay
+(`FETCH_DELAY`, 12s used for the bulk runs). Nothing tripped a rate limit across
+~230 downloads.
+
+⚠️ **Five ways this silently installed the WRONG file** — case-sensitive
+filenames, redirect stubs blanking all provenance, slashes in titles, regional
+mirrors (`imslp.eu`, `petruccimusiclibrary.ca`) serving HTML, and non-atomic
+writes. Each is described with its symptom in
+[`data/score-library/README.md`](data/score-library/README.md); read that before
+changing the provenance path.
 
 ⚠️ **Never trust an embedded composer or movement field.** The Mahler 5 export
 repeats "I. Trauermarsch" as the movement title of *every* movement; one

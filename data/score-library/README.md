@@ -86,7 +86,45 @@ Which file on a work page an id refers to is read from the **rendered page**
 (`<div id="IMSLP19118">` names its own `File:`), not guessed from the wikitext —
 guessing picked a 2016 typeset for a 2006 upload of Mozart's first symphony.
 
-## Two things that will bite
+## Five things that will bite
+
+Each of these put a WRONG file in the library rather than merely a missing one,
+which is the failure mode to watch for: the ranking still runs, still produces a
+confident pick, and nothing looks broken.
+
+**Filenames are case-sensitive after the first letter.** Berlioz's *Symphonie
+fantastique* page carries both `Berlioz Symphonie Fantastique.pdf` and
+`berlioz symphonie fantastique.pdf` — the autograph manuscript and the 1900
+collected edition. A lowercasing match key collapsed them onto one entry and the
+manuscript won. `_name_key` normalises spaces/underscores and the leading capital
+only.
+
+**`action=parse` returns the redirect STUB, not the target.** A guessed title
+that happens to be a redirect yields no file blocks at all, so publisher, editor,
+scan type and copyright are silently absent while the rendered page still lists
+the files. Eighteen works were ranked on nothing; Mahler 1 got a manuscript
+because the field that would have rejected it was invisible. `wikitext()` passes
+`redirects=1` and follows `#REDIRECT` itself.
+
+**IMSLP titles contain slashes.** `Symphony No.25 in G minor, K.183/173dB`
+splits to `173dB (Mozart, Wolfgang Amadeus)` if you take the last path segment.
+Every Mozart work with an alternate K number lost its provenance that way.
+`page_for` strips the `/wiki/` prefix instead.
+
+**Regional mirrors serve HTML, not PDFs.** `imslp.eu` and
+`petruccimusiclibrary.ca` answer a non-interactive request with a landing page.
+Twenty-six works across two rounds fell through to the next-best edition on their
+page; all found a US-hosted substitute. `fetch.sh` rejects any non-PDF response
+outright rather than storing markup as a score.
+
+**Writes must be atomic.** Two overlapping `ingest` runs left a zero-byte sidecar
+that took down the entire catalog rebuild. Sidecar and catalog writes go via a
+temp file with cleanup on failure, one unreadable sidecar no longer aborts the
+rebuild, and PDF metadata is sanitised — a Peters scan carries a NUL and an
+unpaired surrogate in its title that `json` serialises and `utf-8` then refuses,
+failing *after* the file is already copied in.
+
+## Two more things that will bite
 
 **Don't trust an embedded composer field.** The Mahler 5 export repeats
 "I. Trauermarsch" as the movement title of *every* movement, one collection wrote

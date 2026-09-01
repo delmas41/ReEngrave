@@ -710,6 +710,30 @@ Also: the first measurement pass labelled p.25 and p.29 as "text" when both
 contain music examples, which made the separation look marginal. Check page
 contents by eye before trusting a distribution built from them.
 
+## Score library — eleven works still to find (2026-09-01)
+
+The central library holds 235 editions and 1745 reference encodings, but eleven
+works on the wantlist never resolved: `build_wishlist` guesses an IMSLP page
+title and falls back to the search API, and for these neither matched. They are
+not absent from IMSLP — they are filed under names the guess missed.
+
+    Beethoven   Leonore Overture No.3        Ravel        Ma mere l'Oye
+    Vivaldi     The Four Seasons             Boulanger    D'un matin de printemps
+    Brahms      Double Concerto Op.102       Boulanger    D'un soir triste
+    Rimsky      Russian Easter Overture      Coleridge-Taylor  Hiawatha's Wedding Feast
+    Janacek     Sinfonietta                  Saint-Georges     Symphonie concertante
+    R. Strauss  Sinfonia Domestica
+
+Find each id by hand, then `python3 -m tools.library.ingest imslp <file>` — the
+ingest does the rest. The full list, with what IS held, is
+`data/score-library/wishlist.md`.
+
+Four editions carry no publisher because they were imported from local files
+rather than IMSLP (two Handel *Messiah*, Kirchhoff, the unidentified Mahler 5
+scan); `ingest set` can correct them if the edition is ever identified.
+
+---
+
 ## YOLO training via symphony MusicXML × multiple IMSLP editions (2026-05-23)
 
 **OUTCOME (2026-05-25): EXECUTED AND CONCLUDED — training part failed.** This idea was carried out as Phases A–L on branch `claude/interesting-curran-3ca1b7` (43 commits, never merged). The catalog/label-generation half worked (65/65 IMSLP editions aligned, 154k labels across 26 movements), but every training attempt on those labels collapsed the model (Phases H, I, J, K, L — including after fixing a ~50px x-offset and remapping class IDs to DSv2-free slots). Verdict: catalog-augmented YOLO training is a dead end with this recipe; structure stays with classical CV, symbol improvement comes from hand-labeling. Full story: PROJECT_STATUS.md → "The catalog-training experiment". The publisher/era research question below remains open but is no longer hooked to an active pipeline.
