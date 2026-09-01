@@ -181,6 +181,24 @@ def score_page(page: dict, weights: Path, dpi: int | None,
     return rows
 
 
+C_CLEFS = {"soprano", "mezzosoprano", "alto", "tenor", "baritone"}
+
+
+def scores(row: dict) -> bool:
+    """Whether a reading counts as correct.
+
+    `orchestral-clef-truth.json` records `c-clef` where the glyph is certainly
+    a C clef but the line it names could not be read off the print. Any C clef
+    answers such a row as well as the truth is precise; matching the string
+    exactly would score a correct reading as wrong, which it did once before
+    this existed.
+    """
+    want, got = row["want"], row["got"]
+    if want == "c-clef":
+        return got in C_CLEFS
+    return got == want
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, help="override each page's own DPI")
@@ -220,28 +238,28 @@ def main() -> int:
     for r in rows:
         c = by_source.setdefault(r["source"], Counter())
         c["n"] += 1
-        c["ok"] += 1 if r["got"] == r["want"] else 0
+        c["ok"] += 1 if scores(r) else 0
 
     total = len(rows)
-    correct = sum(1 for r in rows if r["got"] == r["want"])
+    correct = sum(1 for r in rows if scores(r))
     print(f"\n{total} staves with hand-read clefs")
     print(f"  correct overall: {correct}/{total} = {correct / total:.0%}")
 
     print(f"\n  {'page':12s} {'staves':>7} {'correct':>8} {'accuracy':>9}")
     for page_id in dict.fromkeys(r["page"] for r in rows):
         pr = [r for r in rows if r["page"] == page_id]
-        ok = sum(1 for r in pr if r["got"] == r["want"])
+        ok = sum(1 for r in pr if scores(r))
         print(f"  {page_id:12s} {len(pr):7d} {ok:8d} {ok / len(pr):9.0%}")
     base = [r for r in rows if r["page"] in BASE_PAGES]
     if base and len(base) != total:
-        ok = sum(1 for r in base if r["got"] == r["want"])
+        ok = sum(1 for r in base if scores(r))
         print(f"  {'(base 3)':12s} {len(base):7d} {ok:8d} {ok / len(base):9.0%}"
               f"   <- the historical number")
     print(f"\n  {'source':12s} {'staves':>7} {'correct':>8} {'accuracy':>9}")
     for source, c in sorted(by_source.items(), key=lambda kv: -kv[1]["n"]):
         print(f"  {source:12s} {c['n']:7d} {c['ok']:8d} {c['ok'] / c['n']:9.0%}")
 
-    wrong = [r for r in rows if r["got"] != r["want"]]
+    wrong = [r for r in rows if not scores(r)]
     if wrong:
         print(f"\n  the {len(wrong)} wrong readings, by (want -> got):")
         for (want, got), n in Counter((r["want"], r["got"]) for r in wrong).most_common():

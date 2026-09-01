@@ -1794,3 +1794,65 @@ pages could have shown that.
 sessions. It is not wrong, and it has not moved. It simply describes three easy
 pages, and every hard page added since scores between 62% and 90%. Keep
 reporting it for continuity, but steer by the 166.
+
+
+---
+
+## Item 1, the detector's reach: mostly a model problem, with one free read in it (2026-09-01)
+
+"Get the detector to fire more often" was the largest measured lever. The first
+question is whether it needs a better model, and `probe_detector_reach.py`
+answers it by running the production detector on both crops of every staff in
+the hand-read corpus, at the pipeline's own per-cell `imgsz`.
+
+```
+113 staves        measure cell   header crop
+  no clef in either       45
+  both agree              29
+  measure only            30
+  header only              8
+```
+
+**On 45 of 113 staves neither crop yields a clef at all.** That is not a framing
+problem and no fallback reaches it: the model does not see these glyphs. Item 1
+is a training question, and the project's record on that is three negative
+results already (catalog training, domain augmentation, the clef fine-tune).
+
+### The free part
+
+Of the 45 the measure cell misses, the header crop reads 8 — **and all 8 are
+right.** It contradicts a measure-cell reading on zero staves, because it is
+never consulted where there is one.
+
+That is now shipped as a gap-fill, running after the CV locator so nothing loses
+precedence, and reading the header crop wherever the measure cell produced no
+clef. Note the header cell is supplied on every staff now:
+`_header_cell_beats_measure_cell` decides something narrower — whether the
+locator and the specialist should read the header INSTEAD of the measure cell —
+and half of these eight sit on staves that gate leaves alone.
+
+This does not contradict the WTC p.17 measurement that pointed
+`_header_detections` at the measure cell in the first place. The header crop is
+worse for this model on average; it is not worse everywhere, and where the
+measure cell yields nothing there is nothing to lose.
+
+| | before | after |
+|---|---:|---:|
+| end-to-end, 166 staves | 144 (87%) | **145 (87%)** |
+| `default` staves | 53 at 68% | **41 at 61%** |
+| `detector_header` staves | — | **12 at 100%** |
+| tests | 1107 | 1107 |
+
+**Twelve staves move from guessing to reading, and one of them changes the
+answer.** The other eleven were trebles the positional default would have got
+right for the wrong reason — worth having as evidence rather than luck, but
+honest accounting says this bought one staff.
+
+### A scoring bug this shook out
+
+`orchestral-clef-truth.json` records `c-clef` where the glyph is certainly a C
+clef but its line could not be read off the print. `eval_pipeline_clefs` matched
+the truth string exactly, so a correct C-clef reading of such a staff scored as
+WRONG — beet9-p120 s13 was being read `tenor`, correctly, and counted as an
+error. Fixed: a `c-clef` row is answered by any C clef, which is as precise as
+the truth is.

@@ -1295,6 +1295,7 @@ def _detections_for_cell(
     active_time_sig: dict[str, Any] | None,
     clef_reader=None,  # optional secondary YoloDetector — staff-header specialist
     header_cell: MeasureCell | None = None,
+    prefer_header: bool = False,
     skip_key_sig_detection: bool = False,
     read_clef: bool = False,
     clef_reader_conf: float = 0.30,
@@ -1428,15 +1429,55 @@ def _detections_for_cell(
             for d in dets
             if d.category == "notehead"
         ]
+        # `prefer_header`, not merely `header_cell is not None`: the header
+        # cell is now supplied on every staff so the detector fallback below
+        # can use it, and only `_header_cell_beats_measure_cell` decides
+        # whether a reader should look there INSTEAD of the measure cell.
+        use_header = prefer_header and header_cell is not None
         located = locate_clef(
-            header_cell if header_cell is not None else cell,
+            header_cell if use_header else cell,
             # The detector's boxes belong to the measure cell's frame; they only
             # describe the header cell when it IS the measure cell.
-            occupied_boxes=occupied if header_cell is None else None,
+            occupied_boxes=None if use_header else occupied,
         )
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
+
+    # ── The production detector, a second time, on the measured header crop.
+    #
+    #    GAP-FILL ONLY, and it runs after the locator so neither of them loses
+    #    precedence. The detector reads the MEASURE cell above and that stays
+    #    the primary reading — on WTC p.17 the header crop is strictly worse
+    #    for this model, which is why `_header_detections` is pointed at the
+    #    measure cell and why this is a fallback rather than a switch.
+    #
+    #    But a crop that is worse on average is not worse everywhere, and where
+    #    the measure cell yields NOTHING there is nothing to lose. Measured
+    #    over the 113 staves of the hand-read orchestral corpus
+    #    (`probe_detector_reach.py`): the measure cell reads no clef on 45 of
+    #    them, the header crop reads one on 8 of those 45, and **all 8 are
+    #    right** — seven trebles and one C clef the positional default would
+    #    have called treble. It contradicts a measure-cell reading on zero
+    #    staves, because it is never consulted when there is one.
+    #
+    #    Note the header cell is supplied here whatever
+    #    `_header_cell_beats_measure_cell` decided: that gate chooses which
+    #    crop the locator and specialist READ INSTEAD of the measure cell, and
+    #    half of these eight sit on staves it leaves alone.
+    if read_clef and clef_source is None and header_cell is not None:
+        header_clef = _clef_from_dets(
+            detector.detect(
+                header_cell,
+                conf_threshold=conf_threshold,
+                imgsz=imgsz,
+                iou_threshold=iou_threshold,
+                agnostic_nms=agnostic_nms,
+            )
+        )
+        if header_clef is not None:
+            active_clef = header_clef
+            clef_source = "detector_header"
 
     # ── Decoupled staff-header specialist (clef + time-sig override). The
     #    production detector under-detects clefs on real orchestral scans (9%
@@ -1461,7 +1502,8 @@ def _detections_for_cell(
     #    benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. ──
     if read_clef and clef_reader is not None:
         spec_clef, spec_time_sig = _read_staff_header(
-            clef_reader, header_cell if header_cell is not None else cell,
+            clef_reader,
+            header_cell if (prefer_header and header_cell is not None) else cell,
             conf=clef_reader_conf,
             imgsz=clef_reader_imgsz,
             header_frac=clef_reader_header_frac,
@@ -3114,16 +3156,22 @@ def transcribe(
                 # Point the clef readers at the measured header only where the
                 # staff-start measure cell actually misses it — see
                 # `_header_cell_beats_measure_cell`.
-                header_cell_for_clef = None
-                if (
+                # The header cell is supplied on EVERY staff, because the
+                # detector's gap-fill pass reads it wherever the measure cell
+                # yielded no clef. The gate decides something narrower: whether
+                # the locator and the specialist should look there INSTEAD of
+                # the measure cell.
+                header_cell_for_clef = (
+                    header_cells.get(staff_idx) if read_headers else None
+                )
+                prefer_header_cell = bool(
                     read_headers
                     and staff_cells
                     and staff_obj is not None
                     and _header_cell_beats_measure_cell(
                         header_windows.get(staff_idx), staff_obj, staff_cells[0]
                     )
-                ):
-                    header_cell_for_clef = header_cells.get(staff_idx)
+                )
 
                 first_cell_effective_clef: str | None = None
                 first_cell_clef_source: str | None = None
@@ -3149,6 +3197,7 @@ def transcribe(
                             active_time_sig=active_time_sig,
                             clef_reader=clef_reader,
                             header_cell=header_cell_for_clef,
+                            prefer_header=prefer_header_cell,
                             skip_key_sig_detection=(
                                 cell_idx == 0 and staff_idx in voted_fifths
                             ),
