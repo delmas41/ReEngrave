@@ -4,6 +4,60 @@
 > `NEXT_SESSION_CLEF_2026-08-31.md` in full. Everything below is measured and
 > reproducible from the harnesses named in it.
 
+## Start here — three self-contained jobs, one session each
+
+This work is meant to be picked up by a FRESH session per item; they are
+independent and each is small enough to finish. Paste one of these as the
+opening message, with this file's path.
+
+> **JOB A — is Surya a fixed function of its input?** Two careful readings of the
+> same margin crop (Beethoven 5 p.48, staff 10) came back different and each
+> internally consistent — `Tr. Teq.` from a reader driving full ten-page
+> benchmarks, `Tr. Ten.` from single-page reads against an idle server. The one
+> variable that differed was LOAD, and Surya spawns llama.cpp with `--parallel 8`.
+> `benchmarks/omr-margin-labels-2026-08/probe_surya_determinism.py` is written
+> for exactly this and HAS NEVER BEEN RUN — read it first, it replays cached job
+> bytes so the input is frozen. If the answer is "not deterministic", say so
+> loudly: `SURYA_BAKEOFF_2026-08-31.md` and every free-path number in this file
+> were measured by reading Surya in isolation, and a reader whose decode depends
+> on what else is in the batch cannot be priced that way. Take this one FIRST —
+> the other two rest on measurements it could undermine.
+
+> **JOB B — which label makes two twelves behave differently?** On beet5-p48
+> Surya and the paid vision reader each return 12 usable labels, but Surya's
+> produce 6 dossier fills and vision's 9. The tie is already resolved in the paid
+> reader's favour (shipped), so this is about the cause, not the symptom. The one
+> difference that survives checking is staff 0: Surya reads `'Fl. fl. pic.'`,
+> vision reads `'Fl. picc.'`, both resolving to Piccolo at high confidence with
+> neither alias in `AMBIGUOUS_ALIASES`. If that is it, something downstream reads
+> the RAW TEXT rather than the resolved label — start at `score_layouts.label_pins`
+> and `dossier.join_parts_to_slots`. An hour, not a day. A previously reported
+> cause (`Tr. Teq.` at staff 10) did NOT reproduce; see Job A.
+
+> **JOB C — the positional default, which is the largest error class.** Seventeen
+> of the ~20 remaining end-to-end errors are a bass or C-clef staff called treble
+> because nothing read a clef. `clef_correction.correct_clefs_from_instruments`
+> already turns an instrument name into a clef — gap-fill only, vetoed by register
+> fit — and it is STARVED OF NAMES, not broken: naming beet6-p20's slot 7 "Viola"
+> by hand makes it fire correctly at once. `eval_score_order` says the score-order
+> prior names 12 of 33 staves at 0.92 precision, abstaining on two thirds.
+> Widening that safely is the biggest measured lever left. Ceiling, stated
+> honestly: identity is worth roughly twelve of the seventeen — beet9-p120 is a
+> choral page where a modern lexicon answers "treble" for Soprano and Tenor staves
+> that actually print C clefs.
+
+**DO NOT START** on the detector's 45-of-113 blind staves (a training problem
+with three negative results already: catalog training, domain augmentation, the
+clef fine-tune) without a genuinely new idea, and do not re-open the five "no
+dots in the window" staves — four approaches measured and refused, in
+`RESULTS.md`.
+
+**Environment**, all host-side: weights in `omr-weights/`, the API key for
+`--assist vision` in `backend/.env`, and Surya at `.venv-surya` (gitignored —
+`python3 -m tools.omr.staff_labels_surya --bootstrap` in a fresh checkout).
+
+---
+
 ## Run all of it, every time
 
 ```bash
