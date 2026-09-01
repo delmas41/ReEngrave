@@ -1937,3 +1937,66 @@ safe to push on.
 clef reading.** `eval_score_order` measures exactly that and reports the prior
 naming 12 of 33 staves at 0.92 precision — abstaining on two thirds. Every staff
 it could name safely is a staff whose clef stops being a guess.
+
+
+---
+
+## Instrument identity is worth four staves and fixes the dossier outright (2026-09-01)
+
+The previous section said the biggest lever left is instrument identity rather
+than clef reading, and that `correct_clefs_from_instruments` is starved of names
+rather than broken. Measured, by giving it names.
+
+Nothing in the reasoning path needed changing — a check worth recording, because
+the obvious suspicion was that a defaulted clef was feeding the layout prior and
+coming back as evidence. It is not: `contextual._read_clefs_by_slot` already
+filters on `clef_source`, and its docstring says exactly why ("a guess fed into a
+prior comes back out looking like evidence"). The design is sound; the input is
+thin.
+
+So the experiment is the label ladder. `eval_pipeline_clefs --wide` with the
+free readers only, against the same run with the paid margin reader allowed:
+
+| | `--assist none` | `--assist vision` |
+|---|---:|---:|
+| **end-to-end, 166 staves** | 145 (87%) | **149 (90%)** |
+| beet5-p48 | 14/17 (82%) | **17/17 (100%)** |
+| beet9-p30 | 9/13 (69%) | **10/13 (77%)** |
+| `dossier` source | 12 staves, **9 right** | 12 staves, **12 right** |
+| instrument corrections applied | 0 | **4** |
+
+**The dossier's three wrong clefs were a label problem.** Yesterday's reading —
+"the dossier is wrong where it fires, and that is the part-staff join slipping
+across the trombones" — was right about the mechanism and wrong about the cause.
+The join slips because the page's labels are missing, not because the join logic
+is at fault: beet5-p48's text layer yields nothing and Tesseract nothing usable,
+the vision reader returns twelve labels, and the join then lands 12 of 12.
+
+And `correct_clefs_from_instruments` fires for the first time — four
+corrections, on the three pages where the extra labels arrived.
+
+### So the blocker is label COVERAGE on scanned pages, and one free rung is missing
+
+The tier counts tell the story. On the pages that gain, the text layer returns
+**zero** labels and Tesseract returns none the lexicon can resolve; the vision
+reader returns 8 to 15. On the pages that do not gain (beet6-p20, bolero-p12)
+the text layer already supplied everything.
+
+`surya` reports **0 on every page of the corpus, because it is not installed** —
+`staff_labels_surya.available()` is False on this machine. It is the free rung
+between the text layer and the paid reader, it was built and wired for exactly
+this case, and it has never run in any measurement recorded here. Installing it
+is the cheapest available experiment on the largest remaining error class, and
+until it runs the "free path" numbers in this file describe a ladder with a rung
+missing.
+
+### What identity cannot reach
+
+Of the seventeen errors left, seven are `bass -> treble`, five `alto -> treble`
+and five `c-clef -> treble`, and beet9-p120 holds seven of them by itself — the
+choral finale, where **no tier returns a label at all**, vision included. Worth
+separating from the rest: even with perfect identity those five choral C clefs
+would not be fixed by an instrument's default clef, because a modern lexicon
+gives Soprano and Tenor the treble clef, not the C clefs this 19th-century
+edition prints. Identity is worth roughly twelve of the seventeen, not all of
+them.
