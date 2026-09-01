@@ -610,43 +610,32 @@ def cmd_reorganize(dry_run: bool) -> int:
             continue
 
         dest = _unique_dest(dest, claimed)
-
-        entry = ScoreEntry(
-            kind="reference",
-            path=str(dest.relative_to(lib.library_root())),
-            work_id=work_id,
-            composer=composer,
-            composer_slug=lib.slug(surname, maxlen=30),
-            title=title,
-            source=source,
-            sha256=digest,
-            bytes=src.stat().st_size,
-            variant=variant,
-            movement=movement,
-            catalogue=_catalogue_from(meta.get("work_number", ""), title, src.stem),
-            original_filename=src.name,
-            origin_path=str(src),
-            dossier_prefix=DOSSIER_PREFIXES.get(work_id, ""),
-            added=today(),
-            composer_source="embedded" if meta.get("composer") else "path",
-            raw={k: v for k, v in meta.items() if v},
-        )
-
-        _place(src, dest, dry_run=dry_run)
-        if not dry_run:
-            lib.write_sidecar(dest, entry)
         claimed.add(dest)
-        seen[digest] = dest
-        added += 1
 
-    print(f"MusicXML: {added} added, {skipped} duplicates of files already held, "
-          f"{rejected} non-MusicXML files ignored")
+        data.update(updates)
+        data["path"] = str(dest.relative_to(lib.library_root()))
+        data = {k: v for k, v in data.items() if v not in ("", None, {}, [])}
+
+        if moved < 25:
+            print(f"  {path.relative_to(lib.library_root())}\n    -> {data['path']}")
+        if not dry_run:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            path.rename(dest)
+            side.unlink(missing_ok=True)
+            lib.write_json_atomic(lib.sidecar_path(dest), data)
+        moved += 1
+
+    # Empty composer folders left behind by the moves.
+    if not dry_run:
+        for d in sorted(lib.library_root().rglob("*"), reverse=True):
+            if d.is_dir() and not any(d.iterdir()):
+                d.rmdir()
+    if moved > 25:
+        print(f"  ... and {moved - 25} more")
+    print(f"\n{moved} moved, {unchanged} already correct"
+          + (f", {renamed_only} metadata refreshed" if renamed_only else ""))
     return 0
 
-
-# --------------------------------------------------------------------------
-# plain PDFs
-# --------------------------------------------------------------------------
 
 
 def ingest_pdf(paths: list[Path], *, composer: str, work: str, edition: str,
@@ -734,6 +723,11 @@ def cmd_refresh(dry_run: bool, delay: float) -> int:
             continue
         publisher = fm.get("publisher_information", "")
         before = data.get("publisher", "")
+        # The edition slug is DERIVED from the publisher, so a provenance fix that
+        # leaves it alone ships a file still named "unknown-edition". reorganize
+        # renames from this field, so update it here and let that pass move it.
+        if publisher:
+            data["variant"] = lib.edition_slug_from_publisher(publisher)
         data.update({
             "publisher": publisher,
             "publisher_year": _year_from(publisher),

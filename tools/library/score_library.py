@@ -196,7 +196,7 @@ _WORK_KEY = re.compile(
 #: its name, and only one side of the library tends to carry it — IMSLP titles
 #: "The Planets, Op.32" where the MusicXML header says "The Planets".
 _TRAILING_CATALOGUE = re.compile(
-    r"[,\s]+(?:op|opus|k|kv|bwv|hwv|wab|hob|rv|d|m|cd|s|th|jb|woo|anh)\.?\s*"
+    r"[,\s]+(?:op|opus|k|kv|bwv|hwv|wab|hob|rv|d|m|cd|s|th|jb|woo|anh|h|l|b|sz)\.?\s*"
     r"[0-9ivx]+[a-z]?(?:\s*[-/]\s*[0-9]+[a-z]?)*\s*$",
     re.I,
 )
@@ -355,6 +355,24 @@ class ScoreEntry:
         return {k: v for k, v in d.items() if v not in ("", None, {}, [])}
 
 
+def clean_text(value):
+    """Strip what cannot survive a round trip to a UTF-8 JSON file.
+
+    PDF metadata is arbitrary bytes as far as the format is concerned: one Peters
+    scan carries a NUL and an unpaired surrogate in its title, which ``json``
+    will happily serialise and then ``write_text`` refuses to encode — the write
+    fails after the file has already been copied into the store.
+    """
+    if isinstance(value, str):
+        cleaned = value.encode("utf-8", "replace").decode("utf-8", "replace")
+        return "".join(ch for ch in cleaned if ch == "\n" or ch >= " ").strip()
+    if isinstance(value, dict):
+        return {k: clean_text(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [clean_text(v) for v in value]
+    return value
+
+
 def sha256_of(path: Path, *, chunk: int = 1 << 20) -> str:
     h = hashlib.sha256()
     with path.open("rb") as fh:
@@ -367,10 +385,25 @@ def sidecar_path(file_path: Path) -> Path:
     return file_path.with_suffix(".json")
 
 
-def write_sidecar(file_path: Path, entry: ScoreEntry) -> Path:
-    target = sidecar_path(file_path)
-    target.write_text(json.dumps(entry.to_dict(), indent=2, ensure_ascii=False) + "\n")
+def write_json_atomic(target: Path, data: dict) -> Path:
+    """Write via a temp file and rename.
+
+    Two ingest runs overlapping left a zero-byte sidecar, which then broke the
+    whole catalog rebuild — one truncated file taking down the index is a bad
+    trade for a write that can be made atomic in three lines.
+    """
+    tmp = target.with_suffix(target.suffix + ".tmp")
+    try:
+        tmp.write_text(json.dumps(clean_text(data), indent=2, ensure_ascii=False) + "\n")
+        tmp.replace(target)
+    except Exception:
+        tmp.unlink(missing_ok=True)   # never leave a half-written stub behind
+        raise
     return target
+
+
+def write_sidecar(file_path: Path, entry: ScoreEntry) -> Path:
+    return write_json_atomic(sidecar_path(file_path), entry.to_dict())
 
 
 # --------------------------------------------------------------------------
@@ -440,7 +473,7 @@ def pdf_facts(path: Path) -> dict:
             pages = doc.page_count
             probe = min(6, pages)
             chars = sum(len(doc[i].get_text().strip()) for i in range(probe))
-            meta = {k: v for k, v in (doc.metadata or {}).items() if v}
+            meta = clean_text({k: v for k, v in (doc.metadata or {}).items() if v})
     except Exception:  # noqa: BLE001 - a corrupt PDF must not abort a whole import
         return {}
     return {
@@ -484,8 +517,7 @@ def save_catalog(catalog: dict, path: Path | None = None) -> Path:
         key=lambda e: (e.get("kind", ""), e.get("composer_slug", ""), e.get("path", "")),
     )
     catalog["count"] = len(catalog["entries"])
-    target.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
-    return target
+    return write_json_atomic(target, catalog)
 
 
 #: Absolute paths into somebody's home directory describe THIS machine, not the
@@ -512,18 +544,25 @@ def rebuild_catalog(path: Path | None = None) -> dict:
     """
     entries: list[dict] = []
     orphans: list[str] = []
+    unreadable: list[str] = []
     root = library_root()
     for file_path in iter_store_files(root):
         side = sidecar_path(file_path)
         if not side.exists():
             orphans.append(str(file_path.relative_to(root)))
             continue
-        entry = json.loads(side.read_text())
+        try:
+            entry = json.loads(side.read_text())
+        except json.JSONDecodeError:
+            unreadable.append(str(file_path.relative_to(root)))
+            continue
         entry["path"] = str(file_path.relative_to(root))
         entries.append(_catalog_view(entry))
     catalog = {"entries": entries}
     if orphans:
         catalog["unregistered"] = sorted(orphans)
+    if unreadable:
+        catalog["unreadable_sidecars"] = sorted(unreadable)
     return save_catalog(catalog, path) and load_catalog(path)
 
 

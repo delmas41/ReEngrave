@@ -47,7 +47,13 @@ def page_for(imslp_id: str) -> tuple[str, str]:
     """ReverseLookup 302s to the work page.  Returns (page title, page HTML)."""
     final, body = _get(f"https://imslp.org/wiki/Special:ReverseLookup/{imslp_id}")
     path = urllib.parse.urlparse(final).path
-    return urllib.parse.unquote(path.rsplit("/", 1)[-1]).replace("_", " "), body
+    # Strip the "/wiki/" prefix rather than splitting on the last slash: IMSLP
+    # titles contain slashes ("Symphony No.25 in G minor, K.183/173dB"), and
+    # rsplit turned that one into "173dB (Mozart, Wolfgang Amadeus)" — a title
+    # the API cannot parse, so every such work silently lost its provenance.
+    if path.startswith("/wiki/"):
+        path = path[len("/wiki/"):]
+    return urllib.parse.unquote(path).replace("_", " "), body
 
 
 def file_name_for(imslp_id: str, html: str) -> dict:
@@ -79,20 +85,41 @@ def file_name_for(imslp_id: str, html: str) -> dict:
     return out
 
 
-def wikitext(title: str) -> str:
+def wikitext(title: str, *, _depth: int = 0) -> str:
+    """Wikitext of a page, following redirects.
+
+    ``action=parse`` returns the REDIRECT STUB rather than the target, so a
+    guessed title that happens to be a redirect yields "#REDIRECT [[...]]" and
+    no file blocks at all — every publisher, editor, scan type and copyright
+    field silently absent while the rendered HTML (which does follow the
+    redirect) still lists the files.  That combination is worse than an error:
+    the ranking runs on HTML-only data and looks like it worked.
+    """
     url = (
         "https://imslp.org/api.php?action=parse&page="
         + urllib.parse.quote(title)
-        + "&prop=wikitext&format=json"
+        + "&prop=wikitext&redirects=1&format=json"
     )
     _, body = _get(url)
-    return json.loads(body)["parse"]["wikitext"]["*"]
+    text = json.loads(body)["parse"]["wikitext"]["*"]
+    m = re.match(r"\s*#REDIRECT\s*\[\[([^\]]+)\]\]", text, re.I)
+    if m and _depth < 3:
+        return wikitext(m.group(1).strip(), _depth=_depth + 1)
+    return text
 
 
 def _name_key(name: str) -> str:
-    """Compare filenames across renderings: MediaWiki shows spaces where the
-    wikitext has underscores, and capitalises the first letter."""
-    return re.sub(r"[\s_]+", "_", (name or "").strip()).lower()
+    """Compare filenames across renderings without merging distinct files.
+
+    MediaWiki shows spaces where the wikitext has underscores and capitalises
+    the first letter, so those two differences must be normalised — but the rest
+    of a filename is CASE-SENSITIVE, and lowercasing it collapsed
+    "Berlioz Symphonie Fantastique.pdf" onto "berlioz symphonie fantastique.pdf".
+    Both exist on the same page, one an autograph manuscript and one the
+    collected edition, and the manuscript won.
+    """
+    name = re.sub(r"[\s_]+", "_", (name or "").strip())
+    return name[:1].upper() + name[1:] if name else ""
 
 
 #: IMSLP names its standard editions with a template instead of free text.  Only
@@ -112,7 +139,7 @@ KNOWN_EDITIONS = {
 def _named_edition(name: str, args: list[str]) -> str:
     label = KNOWN_EDITIONS.get(name.lower(), name)
     # Editors write "VIII:<br>Symphonien" inside template args; a tag is not text.
-    args = [re.sub(r"\s+", " ", re.sub(r"</?[^>]+>", " ", a)).strip() for a in args]
+    args = [re.sub(r"\s+", " ", re.sub(r"</?[^>]+>", " ", _strip_links(a))).strip() for a in args]
     year = next((a for a in args if re.fullmatch(r"1[5-9]\d{2}|20\d{2}", a)), "")
     volume = next((a for a in args if a and a != year and not a[:1].isdigit()), "")
     parts = [label]
@@ -121,6 +148,12 @@ def _named_edition(name: str, args: list[str]) -> str:
     if year:
         parts.append(year)
     return ", ".join(parts)
+
+
+def _strip_links(text: str) -> str:
+    """"[[Edition Peters/Plate Numbers|7188]]" -> "7188"."""
+    text = re.sub(r"\[\[[^|\]]*\|([^\]]*)\]\]", r"\1", text)
+    return re.sub(r"\[\[([^\]]*)\]\]", r"\1", text)
 
 
 def _publisher_template(body: str) -> str:
@@ -134,7 +167,7 @@ def _publisher_template(body: str) -> str:
     # A nested template ({{HMB|1870|176}} as the date-of-publication reference)
     # carries its own pipes; splitting through it shifts every later field and
     # turned a year into a plate number.  Collapse nested braces first.
-    flat = re.sub(r"\{\{[^{}]*\}\}", "<ref>", body)
+    flat = re.sub(r"\{\{[^{}]*\}\}", "<ref>", _strip_links(body))
     while "{{" in flat:
         reduced = re.sub(r"\{\{[^{}]*\}\}", "<ref>", flat)
         if reduced == flat:
