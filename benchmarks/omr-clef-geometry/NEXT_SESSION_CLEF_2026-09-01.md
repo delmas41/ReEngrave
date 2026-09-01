@@ -7,13 +7,18 @@
 ## Run all of it, every time
 
 ```bash
-# from the repo root — coverage
-python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py \
-    --pdf ~/Downloads/Nottebohm-Beethovens-Studien-1873.pdf
+# from the repo root — coverage, over the orchestral scores the sweeps name
+python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py
 # precision: reference + piano + spot check + BOTH sweep editions
-python3 benchmarks/omr-clef-geometry/check_clef_precision.py \
-    --nottebohm ~/Downloads/Nottebohm-Beethovens-Studien-1873.pdf
+python3 benchmarks/omr-clef-geometry/check_clef_precision.py
 ```
+
+**ORCHESTRAL SCORES ONLY.** Nottebohm is out of every harness and every test, on
+Sean's instruction — for the second time; it had crept back in as the headline
+coverage figure. This project processes orchestral scores, and a book of
+19th-century vocal-clef counterpoint is not that. Do not reintroduce it, and do
+not quote its numbers: coverage on it read 37.4% where the orchestral truth is
+8.1%.
 
 The LilyPond corpora are gitignored and built once:
 `cd benchmarks/omr-clef-geometry && lilypond reference-clefs.ly
@@ -22,13 +27,13 @@ piano-false-positives.ly` — the "fatal error" it ends on is harmless.
 **Current baseline, shipped config (clustering ON, position rule ON):**
 
 ```
-77 of 206 located (37.4%)
-reference 5/5 exact | coverage 7/9 | orchestral misses 7 | sweep misses 24
-                                                        | FALSE POSITIVES 5
-                                       (1 Beethoven + 4 Mahler)
+58 of 720 located (8.1%)  — Beethoven 5 + Mahler 5, 39 pages
+reference 5/5 exact | orchestral misses 7 | sweep misses 24
+                                          | FALSE POSITIVES 5
+                                            (1 Beethoven + 4 Mahler)
 ```
 
-Plus: `pytest tools/omr/tests` — **1118 passed, 0 failed**.
+Plus: `pytest tools/omr/tests` — **1107 passed, 0 failed**.
 `benchmarks/omr-score-order/eval_score_order.py` 11/12, **3/8**, 23/23.
 `eval_pipeline_clefs.py --contextual --dossier --assist vision` 69/69, base-3
 52/52, about a cent.
@@ -83,7 +88,11 @@ coverage corpora cannot regress by construction.
    different survivor population.
 4. **The two treble false positives are out of reach of any dot rule.** A G clef
    has no dots. They need a different veto or nothing.
-5. **A third edition.** Two editions have now each shown a false-positive family
+5. **The fused cluster is HALF the orchestral problem** — 52.9% of header cells
+   against Nottebohm's 16.5%, at a median height of 7.5 staff spaces against
+   5.9. It is the largest single drain on orchestral coverage by a wide margin
+   and nothing today touched it.
+6. **A third edition.** Two editions have now each shown a false-positive family
    the other could not. `sweep_located_clefs.py` builds the corpus and
    `check_clef_precision.py` picks it up with no code change; the cost is an
    afternoon of reading glyphs. Pick a different publisher again.

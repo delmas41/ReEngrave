@@ -12,8 +12,14 @@ RIGHT. That is deliberate: precision is `clef_ground_truth_eval.py`'s job and
 the two must be reported separately, because buying coverage with false
 positives is the one trade this layer refuses. Always run both.
 
-    python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py \
-        --pdf /Users/seanjohnson/Downloads/Nottebohm-Beethovens-Studien-1873.pdf
+    python3 benchmarks/omr-clef-geometry/probe_clef_rejection.py
+
+It reads ORCHESTRAL SCORES and nothing else, by default both sweep editions.
+It used to be pointed at a 19th-century book of vocal-clef counterpoint, whose
+archaic ladder clefs are not the repertoire this project processes; steering a
+reader by coverage on material nobody wants read is how a threshold ends up
+tuned for the wrong century. Pass `--pdf` to add a score, which replaces the
+defaults.
 
 The branch names come from `locate_clef` itself, via its optional `trace`
 out-parameter. This script used to re-walk the decision tree in a copy, which
@@ -27,6 +33,7 @@ it cannot drift.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from collections import Counter
 from pathlib import Path
@@ -64,6 +71,23 @@ BRANCH_NAMES = {
 }
 
 
+def orchestral_scores() -> list[Path]:
+    """The scores the sweep corpora are built from — the material this reader
+    is actually for. Each sweep JSON names its own PDF, so adding an edition
+    adds it here too."""
+    out: list[Path] = []
+    for name in ("beethoven5-clef-sweep.json", "mahler5-clef-sweep.json"):
+        spec_path = Path(__file__).resolve().parent / name
+        if not spec_path.exists():
+            continue
+        raw = json.loads(spec_path.read_text()).get("pdf")
+        if not raw:
+            continue
+        path = Path(raw).expanduser()
+        out.append(path if path.is_absolute() else REPO / path)
+    return out
+
+
 def classify(cell: MeasureCell) -> tuple[str, tuple[float, float] | None]:
     """The branch this cell dies on, and the (w, h) in staff spaces of the
     cluster that killed it where there is one."""
@@ -82,24 +106,37 @@ def main() -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    ap.add_argument("--pdf", required=True)
-    ap.add_argument("--first", type=int, default=20)
-    ap.add_argument("--last", type=int, default=248)
-    ap.add_argument("--every", type=int, default=12)
+    ap.add_argument("--pdf", action="append", type=Path,
+                    help="score to probe; repeatable. Default: every "
+                         "orchestral score the sweep corpora name.")
+    ap.add_argument("--first", type=int, default=2)
+    ap.add_argument("--last", type=int, default=220)
+    ap.add_argument("--every", type=int, default=8)
     ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--per-cell", action="store_true",
                     help="one line per header cell, for diffing two commits")
     args = ap.parse_args()
 
-    pdf = Path(args.pdf)
-    if not pdf.exists():
-        print(f"no PDF at {pdf}", file=sys.stderr)
+    pdfs = args.pdf or orchestral_scores()
+    pdfs = [p for p in pdfs if p.exists()]
+    if not pdfs:
+        print("no orchestral score found to probe", file=sys.stderr)
         return 1
 
     tally: Counter[str] = Counter()
     too_big: list[tuple[float, float]] = []
     pages = 0
-    for page_index in range(args.first, args.last + 1, args.every):
+    names = ", ".join(p.name for p in pdfs)
+    # Clamp to each score's own length — the page range is shared across
+    # scores of different sizes, and walking off the end of the shorter one
+    # produced seventeen IndexError lines that said nothing.
+    import fitz
+    todo: list[tuple[Path, int]] = []
+    for pdf in pdfs:
+        n_pages = fitz.open(str(pdf)).page_count
+        todo += [(pdf, i) for i in range(args.first, min(args.last, n_pages - 1) + 1,
+                                         args.every)]
+    for pdf, page_index in todo:
         try:
             rendered = render_page(pdf, page_index, dpi=args.dpi)
             pws = detect_barlines(detect_staves(rendered))
@@ -124,7 +161,7 @@ def main() -> int:
         print("no header cells measured", file=sys.stderr)
         return 1
 
-    print(f"\n{total} header cells over {pages} pages of {pdf.name}\n")
+    print(f"\n{total} header cells over {pages} pages of {names}\n")
     for reason, count in tally.most_common():
         print(f"  {count:>4}  {100.0 * count / total:>5.1f}%  {reason}")
 

@@ -1419,14 +1419,31 @@ one up and got it right. Downstream of the locator there is redundancy, so a
 declined clef frequently costs nothing at all by the time the pipeline has
 finished.
 
-`eval_score_order` did move, and against us: its *read clefs* arm went from 10
-named / 5 correct (precision 0.50) to **8 named / 3 correct (precision 0.38)**.
-Both clefs it lost were correct ones. That arm is two pages and thirty-three
-staves, so it is a small and noisy sample — but it is the one place where the
-surviving reads got *less* accurate rather than more, which is the opposite of
-what a precision veto is supposed to do, and it should not be buried. The
-`position` and `true clefs` arms are untouched, as they must be: they never
-consult the locator.
+`eval_score_order` did move: its *read clefs* arm went from 10 named / 5 correct
+(precision 0.50) to **8 named / 3 correct (precision 0.38)**.
+
+**An earlier draft of this section called that "the one place where the
+surviving reads got less accurate", and that was wrong.** La Mer's contribution
+is byte-identical before and after (8 named, 3 correct). The whole movement is
+Beethoven 5 p.15, which went from 2 named / 2 correct to 0 / 0 — so the total
+precision fell because a page that was contributing two-for-two dropped out of
+the mix, not because any surviving read got worse.
+
+What the veto actually did on that page, staff by staff:
+
+| ordinal | part | before | after | |
+|---|---|---|---|---|
+| 3 | Bassoon | tenor | tenor | correct, kept |
+| 6 | Timpani | alto | alto | **wrong, kept** — timpani is a bass clef |
+| 8 | Violin | soprano | — | **wrong, removed** |
+| 9 | Viola | alto | — | **right, removed** |
+
+One correct clef lost and one incorrect clef removed, which is the same trade
+this rule makes everywhere else, at this page's scale. The score-order prior
+then named nothing at all because it had two clefs of evidence instead of four —
+a coverage effect on a two-page, thirty-three-staff benchmark. The `position`
+and `true clefs` arms are untouched, as they must be: they never consult the
+locator.
 
 1118 tests.
 
@@ -1434,3 +1451,66 @@ consult the locator.
 
 Three bass clefs and the two treble. The G clefs are out of a dot veto's reach
 by construction, and were never going to be anything else.
+
+
+---
+
+## Nottebohm is out of the harnesses, and the orchestral numbers are much worse (2026-08-31)
+
+Sean's instruction, and it is the second time he has given it — `Nottebohm tests
+removed per Sean` is already recorded against the 2026-08-29 dossier work, and
+it crept back in as this file's headline coverage figure. **This project
+processes orchestral scores. Nottebohm's *Beethovens Studien* is a 19th-century
+monograph of vocal-clef counterpoint in archaic ladder clefs, and steering a
+reader by how well it reads material nobody wants read is how a threshold ends
+up tuned for the wrong century.**
+
+Removed: the hand-read `coverage` corpus from `check_clef_precision.py`, its
+ground-truth file, and the two Nottebohm classes from `test_pipeline.py`
+(`TestNottebohmPage46`, `TestBodyTextIsNotAStaff` — 1118 tests to 1107).
+`probe_clef_rejection.py` no longer takes a book as its subject: it now reads
+the scores the sweep corpora name, so adding an edition adds it to coverage too.
+
+Kept, and deliberately: the engraved reference sheet and the braced-piano sheet.
+Neither is repertoire. One has answers known by construction and is the only
+certain ground truth here; the other contains no C clef at all, so any read is a
+false positive. They are sanity checks, not a claim about what gets processed.
+
+### What that does to the headline
+
+```
+                     Nottebohm            orchestral
+located              77 / 206  (37.4%)    58 / 720  (8.1%)
+```
+
+**The number this layer has been steered by all along was more than four times
+the real one.** On 39 pages of Beethoven 5 and Mahler 5 the locator reaches a
+clef on one header in twelve. And the failure profile is not the same shape
+either:
+
+| branch | Nottebohm | orchestral |
+|---|---:|---:|
+| cluster too big | 16.5% | **52.9%** |
+| not symmetric | 13.1% | 13.9% |
+| only debris | 5.3% | 8.8% |
+| **located** | **37.4%** | **8.1%** |
+| no clusters | 2.9% | 6.2% |
+| no staff metrics | 0.5% | 2.9% |
+
+The fused-cluster branch is not a third of the problem on orchestral scores, it
+is *half of it* — and the clusters are much bigger, a median height of 7.5 staff
+spaces against Nottebohm's 5.9, with a maximum of 12.0 against 7.5. Two failure
+modes barely visible on the book (`no clusters`, `no staff metrics`) are real
+here.
+
+None of the decisions taken today rest on this: every one was measured on the
+two orchestral sweep corpora, and Nottebohm appeared only as a cost. But the
+coverage headline was Nottebohm's, and it was flattering.
+
+### The orchestral-only baseline
+
+```
+58 of 720 located (8.1%) — Beethoven 5 + Mahler 5, 39 pages
+reference 5/5 exact | orchestral misses 7 | sweep misses 24 | FALSE POSITIVES 5
+1107 tests
+```

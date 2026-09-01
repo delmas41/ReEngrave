@@ -49,15 +49,20 @@ Three checks, in decreasing order of how much they should be trusted:
              to 0.845). Never tune a clef threshold on one edition; see
              `clef_symmetry_populations.py`.
 
-  coverage   the hand-read Nottebohm page. Real material, real engraving, but
-             twelve staves — too small to steer by on its own, which is what
-             the probe is for.
+ORCHESTRAL SCORES ONLY. A hand-read page of Nottebohm's *Beethovens Studien*
+used to sit here as a `coverage` check, and it is gone: 19th-century vocal-clef
+counterpoint is not the repertoire this project processes, and steering a reader
+by how well it reads material nobody wants read is how a threshold ends up tuned
+for the wrong century. The reference sheet and the piano corpus stay — neither
+is repertoire, both are pure sanity checks: one has answers known by
+construction, the other contains no C clef at all, so any read is a false
+positive.
 
 Both LilyPond sources have to be built first:
 
     cd benchmarks/omr-clef-geometry
     lilypond reference-clefs.ly piano-false-positives.ly
-    python3 check_clef_precision.py --nottebohm /path/to/Nottebohm-...pdf
+    python3 check_clef_precision.py
 
 The reference sheet is read at 600 dpi, the pipeline CLI's default. At 300 the
 engraved tenor clef's wings shrink until the F-clef dot veto mistakes them for
@@ -194,36 +199,12 @@ def check_orchestral(pdf: Path, spec_path: Path, dpi: int,
     return found, missed, wrong
 
 
-def check_coverage(pdf: Path, truth_path: Path, dpi: int) -> tuple[int, int, int]:
-    truth = json.loads(truth_path.read_text())
-    print(f"\ncoverage ({pdf.name} page {truth['pdf_page_index']}) — hand-read truth")
-    rows = read_page(pdf, truth["pdf_page_index"], dpi)
-    expected = truth["clefs"]
-    n_c = sum(1 for e in expected if e["clef"] in C_CLEFS)
-    right = wrong = 0
-    for i, want in enumerate(expected):
-        got = rows[i][1] if i < len(rows) else None
-        if got is None:
-            continue
-        if got == want["clef"]:
-            right += 1
-        else:
-            wrong += 1
-            print(f"    FALSE POSITIVE  staff {i}: read {got}, truth {want['clef']}")
-    print(f"  {right}/{n_c} C clefs located   false positives {wrong}")
-    return right, wrong, n_c
-
-
 def main() -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--reference", type=Path, default=HERE / "reference-clefs.pdf")
     ap.add_argument("--piano", type=Path, default=HERE / "piano-false-positives.pdf")
-    ap.add_argument("--nottebohm", type=Path,
-                    default=Path.home() / "Downloads"
-                    / "Nottebohm-Beethovens-Studien-1873.pdf")
-    ap.add_argument("--truth", type=Path, default=HERE / "nottebohm-p46-ground-truth.json")
     ap.add_argument("--orchestral", type=Path,
                     default=REPO / "tools/omr/training/data/imslp"
                     / "beethoven-symphony-5/pdfs/imslp-575951/score.pdf")
@@ -272,16 +253,9 @@ def main() -> int:
             title=f"sweep {spec_path.stem} — {n_bad} staves that must be DECLINED")
         sweep_missed += missed
         sweep_wrong += wrong
-    if args.nottebohm.exists():
-        right, cov_wrong, n_c = check_coverage(args.nottebohm, args.truth, args.dpi)
-    else:
-        print(f"\ncoverage — skipped, no PDF at {args.nottebohm}")
-        right, cov_wrong, n_c = 0, 0, 0
-
-    total_wrong = ref_wrong + piano_wrong + cov_wrong + orch_wrong + sweep_wrong
-    print(f"\nreference {exact}/5 exact | coverage {right}/{n_c} | "
-          f"orchestral misses {orch_missed} | sweep misses {sweep_missed} | "
-          f"FALSE POSITIVES {total_wrong}")
+    total_wrong = ref_wrong + piano_wrong + orch_wrong + sweep_wrong
+    print(f"\nreference {exact}/5 exact | orchestral misses {orch_missed} | "
+          f"sweep misses {sweep_missed} | FALSE POSITIVES {total_wrong}")
     print("Report these separately. A missed clef costs nothing that was not "
           "already lost;\na wrong one transposes every note on its staff.")
     return 1 if (total_wrong or exact < 5) else 0
