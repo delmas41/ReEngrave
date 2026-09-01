@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Mahler5",
+    "page": 9,
+    "dpi": 338,
+    "n_staves": 17,
+    "n_systems": 1,
+    "window": [
+      197,
+      2441
+    ],
+    "medx": 255
+  },
+  {
+    "name": "Mahler5",
+    "page": 10,
+    "dpi": 338,
+    "n_staves": 20,
+    "n_systems": 1,
+    "window": [
+      203,
+      2442
+    ],
+    "medx": 261
+  },
+  {
+    "name": "LaMer",
+    "page": 1,
+    "dpi": 276,
+    "n_staves": 19,
+    "n_systems": 2,
+    "window": [
+      139,
+      2331
+    ],
+    "medx": 192
+  },
+  {
+    "name": "LaMer",
+    "page": 2,
+    "dpi": 276,
+    "n_staves": 20,
+    "n_systems": 2,
+    "window": [
+      306,
+      2485
+    ],
+    "medx": 359
+  }
+]

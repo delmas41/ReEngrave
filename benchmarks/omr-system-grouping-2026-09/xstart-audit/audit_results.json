@@ -1,0 +1,242 @@
+[
+  {
+    "label": "ONE_SYS",
+    "dpi": 186,
+    "spacing": 12.75,
+    "n_staves": 8,
+    "n_systems": 1,
+    "systems": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "window": [
+      152,
+      1471
+    ],
+    "med_xstart": 203,
+    "sysbar_x": 219,
+    "bridging": [
+      29,
+      29,
+      2,
+      8,
+      2,
+      29,
+      29
+    ]
+  },
+  {
+    "label": "ONE_SYS",
+    "dpi": 143,
+    "spacing": 10.0,
+    "n_staves": 8,
+    "n_systems": 1,
+    "systems": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "window": [
+      116,
+      1131
+    ],
+    "med_xstart": 156,
+    "sysbar_x": 168,
+    "bridging": [
+      21,
+      21,
+      2,
+      7,
+      2,
+      21,
+      21
+    ]
+  },
+  {
+    "label": "ONE_SYS",
+    "dpi": 107,
+    "spacing": 7.5,
+    "n_staves": 8,
+    "n_systems": 1,
+    "systems": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "window": [
+      86,
+      847
+    ],
+    "med_xstart": 116,
+    "sysbar_x": 126,
+    "bridging": [
+      17,
+      17,
+      1,
+      5,
+      1,
+      17,
+      17
+    ]
+  },
+  {
+    "label": "TWO_SYS",
+    "dpi": 143,
+    "spacing": 10.0,
+    "n_staves": 16,
+    "n_systems": 2,
+    "systems": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "window": [
+      76,
+      1131
+    ],
+    "med_xstart": 116,
+    "sysbar_x": null,
+    "bridging": [
+      11,
+      11,
+      2,
+      7,
+      2,
+      11,
+      11,
+      0,
+      18,
+      18,
+      2,
+      7,
+      2,
+      18,
+      18
+    ]
+  },
+  {
+    "label": "TWO_SYS",
+    "dpi": 186,
+    "spacing": 12.75,
+    "n_staves": 16,
+    "n_systems": 2,
+    "systems": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "window": [
+      100,
+      1471
+    ],
+    "med_xstart": 151,
+    "sysbar_x": null,
+    "bridging": [
+      14,
+      14,
+      2,
+      8,
+      2,
+      14,
+      14,
+      0,
+      23,
+      23,
+      3,
+      9,
+      3,
+      23,
+      23
+    ]
+  },
+  {
+    "label": "TWO_SYS",
+    "dpi": 107,
+    "spacing": 7.5,
+    "n_staves": 16,
+    "n_systems": 2,
+    "systems": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "window": [
+      56,
+      847
+    ],
+    "med_xstart": 86,
+    "sysbar_x": null,
+    "bridging": [
+      9,
+      9,
+      1,
+      5,
+      1,
+      10,
+      9,
+      0,
+      13,
+      13,
+      1,
+      5,
+      1,
+      13,
+      13
+    ]
+  }
+]

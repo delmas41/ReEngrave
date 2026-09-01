@@ -99,6 +99,11 @@ benchmarks/**/*-backup/
 benchmarks/**/*-old/
 benchmarks/**/overlays-*/
 
+# Adjudication crop / overlay PNGs — rendered from the source PDFs on demand
+# (system-grouping benchmark, Sep 2026). Keep the markdown, scripts, jsonl and
+# ground truth; the crops are heavy (~180 MB) and reproducible.
+benchmarks/**/crops/
+benchmarks/omr-system-grouping-2026-09/pilot/*.png
 # Page-context thumbnails for the labeling UI — rendered from PDFs on demand
 benchmarks/*/page-thumbnails/
 # LilyPond output for the clef corpora — the .ly files are the source, and
