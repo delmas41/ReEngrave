@@ -189,8 +189,12 @@ failure — recall 0.717 — but NOT the kind that argues for retraining.
 ✅ **The misaligned staff is FIXED** (`staff_detector` step 3d). Pooled OMR-NED
 **0.3045 → 0.2716**, Brahms **0.4486 → 0.3899**, and the whole-measure bucket
 collapsed 705 → 482 on its own — most of that 32% was one misplaced staff being
-charged by the bar. Still open: 82 spurious augmentation dots, and slurs and
-directions never exported.
+charged by the bar. ✅ **The augmentation dots are FIXED too** — and they were not spurious. The
+dots are detected correctly and COUNTED TWICE on export: `_duration_to_lily_xml`
+summed `duration_type` ("dotted_quarter") with the `dots` field (1), on a stated
+assumption that only one is ever set. Brahms `wrong dot` **103 → 18**, pooled
+**0.2716 → 0.2624**. An existing test had asserted the wrong behaviour and was
+corrected in place. Still open: slurs and directions are never exported.
 
 **One misaligned staff produced two thirds of the pitch errors.** 65 notes are
 replaced page-wide; **42 of them are part 20 alone** and **41 are exactly −4

@@ -115,8 +115,30 @@ was one misplaced staff being charged by the bar, not 40 broken measures.
 That is the amplification this file warned about, confirmed by removing its
 cause rather than by arguing about it.
 
-Still open: finding 3 (82 spurious augmentation dots) and finding 4 (slurs and
-directions never exported). `wrong flag/beam` rose 141 -> 163, which is expected
+## FIXED 2026-09-01 — finding 3, and it was not what this file said
+
+Finding 3 called it "82 augmentation dots we invent". It is not over-detection
+at all — the dots are detected correctly and **counted twice on the way out**.
+`_duration_to_lily_xml` summed two sources on a stated assumption that
+"transcribe.py only sets ONE source", which stopped being true:
+`rhythm._name_for_dots` builds `duration_type` FROM the dot count, so a
+single-dotted quarter arrives as BOTH `dotted_quarter` and `dots=1`.
+
+    pred [D6]4**   gt [D6]4*        x82
+
+The count LOOKED like under-dotting — 108 dotted notes against the truth's 126 —
+which is exactly why it read as a detection problem. It is neither: one fact,
+counted twice. `max` instead of `+`.
+
+An existing test asserted the wrong behaviour (`assert dots == 2  # 1 from
+prefix + 1 from arg`), so the bug was locked in. Corrected in place rather than
+deleted, with the reason, because the assertion looked deliberate.
+
+    brahms `wrong dot`   103 -> 18
+    pooled OMR-NED       0.2716 -> 0.2624      edits 1908 -> 1819
+    brahms               0.3899 -> 0.3764
+
+Still open: finding 4 (slurs and directions never exported). `wrong flag/beam` rose 141 -> 163, which is expected
 — with the staff placed right, more notes align and their beam differences
 become visible rather than being hidden inside whole-measure charges.
 

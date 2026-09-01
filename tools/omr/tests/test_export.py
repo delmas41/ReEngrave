@@ -137,10 +137,15 @@ class TestDurationToLilyXml:
         assert xml == "quarter"
         assert dots == 1
 
-    def test_dotted_prefix_with_extra_dots(self):
-        # Both the prefix dot AND the explicit dot count should accumulate.
+    def test_dotted_prefix_and_dot_count_do_not_accumulate(self):
+        # This test used to assert 2, "1 from prefix + 1 from arg", encoding
+        # the exporter's stated assumption that transcribe sets only one of the
+        # two. It does not: `rhythm._name_for_dots` builds `duration_type` FROM
+        # the dot count, so a single-dotted quarter arrives as BOTH
+        # "dotted_quarter" and dots=1, and summing wrote `4**` where the truth
+        # has `4*` — 82 of Brahms's OMR-NED edits. See TestDotCounting.
         lily, xml, dots = _duration_to_lily_xml("dotted_quarter", 1)
-        assert dots == 2  # 1 from prefix + 1 from arg
+        assert dots == 1
 
 
 # ─── Empty-measure padding — time-signature-aware full-measure rests ──────
@@ -553,3 +558,47 @@ class TestBeamAnnotation:
         assert xml.count("<beam") == 2
         assert '<beam number="1">begin</beam>' in xml
         assert '<beam number="1">end</beam>' in xml
+
+
+class TestDotCounting:
+    """`duration_type` and `dots` are the same fact, not two to add up.
+
+    `rhythm._name_for_dots` builds `duration_type` FROM the dot count, so a
+    dotted quarter arrives as both `dotted_quarter` and `dots=1`. Summing them
+    wrote a double-dotted quarter for every single-dotted one — 82 of Brahms's
+    OMR-NED edits, each `pred [D6]4** | gt [D6]4*`.
+    """
+
+    def test_both_sources_agreeing_yields_one_dot(self):
+        assert _duration_to_lily_xml("dotted_quarter", 1)[2] == 1
+
+    def test_type_alone_still_counts(self):
+        assert _duration_to_lily_xml("dotted_quarter", 0)[2] == 1
+
+    def test_dots_field_alone_still_counts(self):
+        """The Vision OMR path and older JSON set `dots` with a plain type."""
+        assert _duration_to_lily_xml("quarter", 1)[2] == 1
+
+    def test_double_dots_survive(self):
+        assert _duration_to_lily_xml("2dotted_quarter", 2)[2] == 2
+        assert _duration_to_lily_xml("2dotted_quarter", 0)[2] == 2
+        assert _duration_to_lily_xml("quarter", 2)[2] == 2
+
+    def test_undotted_stays_undotted(self):
+        assert _duration_to_lily_xml("quarter", 0)[2] == 0
+
+    def test_the_base_type_is_unaffected(self):
+        assert _duration_to_lily_xml("dotted_quarter", 1)[1] == "quarter"
+        assert _duration_to_lily_xml("dotted_eighth", 1)[1] == "eighth"
+
+    def test_a_dotted_note_exports_exactly_one_dot(self):
+        result = _tiny_result_empty_measure({"beats": 6, "beat_type": 8})
+        staff = result["pages"][0]["systems"][0]["staves"][0]
+        staff["measures"][0]["detections"] = [
+            {"category": "notehead", "class": "noteheadBlack", "pitch": "D5",
+             "duration_type": "dotted_quarter", "duration_beats": 1.5,
+             "dots": 1, "bbox": [10, 10, 10, 10],
+             "bbox_page": [10, 10, 10, 10], "confidence": 0.9},
+        ]
+        xml = to_musicxml(result)
+        assert xml.count("<dot/>") == 1, "a single-dotted note wrote two dots"

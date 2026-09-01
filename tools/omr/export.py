@@ -92,12 +92,25 @@ def _strip_dotted(duration_type: str) -> tuple[str, int]:
 def _duration_to_lily_xml(duration_type: str, dots: int) -> tuple[str, str, int]:
     """Return (lily_suffix, musicxml_type, total_dots).
 
-    `dots` here is the augmentation dot count we stored on the event.
-    If the duration_type happens to also start with "dotted_" we add
-    those too — but in practice transcribe.py only sets ONE source.
+    THE TWO SOURCES ARE THE SAME FACT, NOT TWO FACTS TO ADD UP. This used to
+    sum them, on a stated assumption that "in practice transcribe.py only sets
+    ONE source". That assumption stopped being true: `rhythm._name_for_dots`
+    builds `duration_type` FROM the dot count, so a dotted quarter arrives as
+    `duration_type="dotted_quarter"` AND `dots=1`, and summing wrote a
+    DOUBLE-dotted quarter for every single-dotted one.
+
+    Measured on the engraved Brahms 1 fixture: 197 `<dot/>` elements against
+    the truth's 116, and 82 of musicdiff's edits were exactly this —
+    `pred [D6]4** | gt [D6]4*`, an extra dot on a note that was already right.
+    The count LOOKED like under-dotting (108 dotted notes against 126) which is
+    why it read as a detection problem for a while; it is neither, it is one
+    fact counted twice.
+
+    `max` rather than either source alone, because the Vision OMR path and older
+    JSON can populate `dots` with a plain `duration_type`.
     """
     base, prefix_dots = _strip_dotted(duration_type)
-    total_dots = dots + prefix_dots
+    total_dots = max(dots, prefix_dots)
     lily_base, xml_base = _DURATION_TABLE.get(base, ("4", "quarter"))
     return lily_base, xml_base, total_dots
 

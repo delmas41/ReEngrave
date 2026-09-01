@@ -45,8 +45,13 @@ excerpts, production weights, dossier on:
 >
 > **Then the Brahms staff misfit** (`BRAHMS_ATTRIBUTION_2026-09-01.md`), which
 > took the pooled score to **0.2716 / 1908 edits** and Brahms to **0.3899**.
-> Session total: **0.3164 -> 0.2716**, both fixes found by this metric and
-> invisible to every other number the repo reports.
+> **Then the doubled augmentation dots** — same file, same shape: two sources of
+> one fact, summed. **0.2716 -> 0.2624 / 1819 edits**, Brahms `wrong dot`
+> 103 -> 18.
+>
+> Session total: **0.3164 -> 0.2624**, all three fixes found by this metric and
+> invisible to every other number the repo reports. Two of the three were
+> EXPORT bugs on data the pipeline had already computed correctly.
 
 Pooled, not averaged — one edit-sum over one symbol-sum, the way the paper
 defines it, so the dense score counts for more.
