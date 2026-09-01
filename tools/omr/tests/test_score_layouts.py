@@ -192,3 +192,96 @@ class TestViolinsDoNotCondense:
     def test_violin_is_the_only_name_excluded(self):
         from tools.omr.score_layouts import NEVER_CONDENSED
         assert NEVER_CONDENSED == frozenset({"Violin"})
+
+
+class TestLabelPins:
+    """A labelled staff pins its part, so the print's order can beat the list's.
+
+    `benchmarks/omr-part-staff-join-2026-08/` — Beethoven 5 p.48 prints `Timp.`
+    above the three trombones and the work's part list has the trombones first.
+    """
+
+    # The p.48 shape, reduced to what matters: the timpani part comes AFTER the
+    # trombones in the list and BEFORE them on the page.
+    PARTS = ("Trumpet", "Trombone", "Trombone", "Trombone", "Timpani", "Violin")
+    #          0           1           2           3           4         5
+
+    def test_runs_are_maximal_and_consecutive(self):
+        from tools.omr.score_layouts import unique_part_runs
+        runs = unique_part_runs(self.PARTS)
+        assert runs["Trombone"] == (1, 3)
+        assert runs["Timpani"] == (4, 4)
+
+    def test_a_name_printed_twice_has_no_run_to_pin_to(self):
+        from tools.omr.score_layouts import unique_part_runs
+        runs = unique_part_runs(("Flute", "Oboe", "Flute"))
+        assert "Flute" not in runs, "two separated runs cannot resolve a label"
+        assert runs["Oboe"] == (1, 1)
+
+    def test_only_the_first_staff_of_a_block_pins(self):
+        # Three staves all naming the trombones say where the trombones BEGIN.
+        # How many staves they take is the alignment's job, not the label's.
+        from tools.omr.score_layouts import label_pins
+        labels = {0: "Trombone", 1: "Trombone", 2: "Trombone"}
+        assert label_pins(3, labels, self.PARTS) == [(0, 1)]
+
+    def test_an_ambiguous_label_never_pins(self):
+        # `Tp.` is Timpani or Trumpet and only POSITION settles it — which is
+        # the one thing a pin takes off the table.
+        from tools.omr.score_layouts import label_pins
+        labels = {0: "Trumpet", 2: "Timpani"}
+        assert label_pins(3, labels, self.PARTS) == [(0, 0), (2, 4)]
+        assert label_pins(3, labels, self.PARTS, pinnable={0}) == [(0, 0)]
+
+    def test_one_name_claimed_by_two_separated_blocks_pins_neither(self):
+        # What a misread looks like: p.48 prints `Tr.` for the trumpets and
+        # `Tr. Bas.` for the bass trombone, and a lexicon that reads both as
+        # Trumpet has produced a contradiction, not evidence.
+        from tools.omr.score_layouts import label_pins
+        labels = {0: "Trumpet", 3: "Trumpet"}
+        assert label_pins(4, labels, self.PARTS) == []
+
+    def test_no_pins_leaves_the_alignment_exactly_as_it_was(self):
+        from tools.omr.score_layouts import (ScoreLayout, align_to_layout,
+                                             align_to_layout_pinned)
+        layout = ScoreLayout(name="work", parts=self.PARTS)
+        _score, plain = align_to_layout(layout, 4, allow_merge=True,
+                                        return_indices=True)
+        pinned, pins = align_to_layout_pinned(layout, 4, allow_merge=True)
+        assert pins == []
+        assert pinned == list(plain)
+
+    def test_the_transposition_the_monotone_path_cannot_express(self):
+        from tools.omr.score_layouts import (ScoreLayout, align_to_layout,
+                                             align_to_layout_pinned)
+        layout = ScoreLayout(name="work", parts=self.PARTS)
+        # As PRINTED: trumpet, timpani, then the three trombones, then violins.
+        labels = {0: "Trumpet", 1: "Timpani",
+                  2: "Trombone", 3: "Trombone", 4: "Trombone"}
+
+        # Monotone: having consumed the timpani at part 4 it cannot go back to
+        # the trombones at 1-3, so the staves that carry them come back empty.
+        _score, plain = align_to_layout(layout, 6, labels=labels,
+                                        allow_merge=True, return_indices=True)
+        assert plain[1] != 4 or None in plain[2:5]
+
+        pinned, pins = align_to_layout_pinned(layout, 6, labels=labels,
+                                              allow_merge=True)
+        assert (1, 4) in pins and (2, 1) in pins
+        # Every staff reads its own part, in the order the page prints them.
+        assert pinned == [0, 4, 1, 2, 3, 5]
+
+    def test_a_span_needing_no_condensation_does_not_condense(self):
+        # Between two pins both counts are known, which is where the global
+        # merge budget becomes local. Three staves and three trombone parts
+        # need no merge — and a merge is rewarded with another full pair score,
+        # so leaving it available reads all three staves as the alto trombone.
+        from tools.omr.score_layouts import ScoreLayout, align_to_layout_pinned
+        # No timpani here: an unpinned part between two pins genuinely has to go
+        # somewhere, and that is the merge budget rather than this.
+        layout = ScoreLayout(name="work", parts=("Trumpet", "Trombone",
+                                                 "Trombone", "Trombone", "Violin"))
+        labels = {0: "Trumpet", 1: "Trombone", 4: "Violin"}
+        pinned, _pins = align_to_layout_pinned(layout, 5, labels=labels,
+                                               allow_merge=True)
+        assert pinned == [0, 1, 2, 3, 4]

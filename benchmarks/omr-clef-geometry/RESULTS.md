@@ -587,3 +587,1615 @@ The locator abstains on Mahler 5 p.11 — ink-heavy headers, no glyph-sized
 cluster it will commit to. The decoupled `--clef-weights` specialist remains the
 better route there, and the two compose: the specialist runs first, the locator
 only where it stayed silent.
+
+
+---
+
+## The veto could not see the dots (2026-08-31)
+
+**The recorded diagnosis was wrong, and being wrong about it is why five sessions
+of threshold work went nowhere.** `_has_f_clef_dots` was not failing because the
+dots had merged into the clef's body. It was failing because it had never been
+shown them.
+
+Two crops stood between the veto and its evidence, and neither was a decision
+about F clefs:
+
+* `locate_clef` searches `mask[:, :hw]` — the left `header_frac` (0.30) of the
+  cell — to keep note ink from becoming a candidate. That strip is about
+  candidate SELECTION. It was then passed to the veto as if it were the page.
+* `_has_f_clef_dots` looked only *inside* the candidate's own bounding box.
+
+An F clef's dots sit to the RIGHT of its body. So on a clef whose body ends near
+the strip's edge, the dots fall outside both crops, and no threshold anywhere
+could have found them.
+
+### The case that shows it
+
+Beethoven 5 p.54 staff 8, an unmistakable bass clef, read as **alto**. Its header
+window is 16.3 staff spaces wide and contains the dots plainly. The mask the veto
+received was 106 px of a 352 px cell, and the candidate box ended at pixel 106 —
+flush against the edge. The dots were four pixels past it.
+
+Traced with the crops removed, the dots appear immediately, correctly paired,
+0.59 × 0.86 and 0.64 × 1.00 spaces, one space apart, aligned in x, right of the
+body — and are then rejected on **height**, against a 0.75-space ceiling.
+
+Note what that says: the widths are exactly dot-sized. The corruption is
+**vertical**, and it is the staff-line stripper leaving a stub where the line ran
+under each dot.
+
+### What shipped: the structural fix, which is neutral
+
+The veto now gets the full mask and searches `dot_search_right_spaces` (1.5)
+past the candidate's right edge, with the "right of the middle" test still
+measured against the BODY so widening the window cannot move it.
+
+Measured, and it is exactly neutral on every corpus:
+
+| | located (Nottebohm, 206 cells) | orchestral misses | reference | FP |
+|---|---:|---:|---:|---:|
+| before | 69 | 6 | 5/5 | 0 |
+| **after** | **69** | **6** | **5/5** | **0** |
+
+One cell moves from the dot-veto branch to `ambiguous line snap`; nothing is
+gained or lost. It is landed because it is a correctness fix — the veto can now
+see what it is meant to judge — and because no threshold work on this veto means
+anything until it can.
+
+### What did NOT ship, and why
+
+Loosening the height ceiling to 1.15 spaces (paid for by requiring the two dots
+to have matching widths) **does** veto the p.54 bass clef. It also costs:
+
+| arm | located | orchestral misses |
+|---|---:|---:|
+| baseline | 69 | 6 |
+| clustering ON, veto as-is | 77 | 5 |
+| **loosened veto** | 68 | **8** |
+| clustering ON + loosened veto | 76 | **7** |
+
+Two real orchestral C clefs and one Nottebohm cell, in both clustering states.
+
+**And its benefit appears in no corpus at all.** The thing it fixes — a bass clef
+read as a C clef — is not in the reference sheet, not in the piano set, not in
+the orchestral spot check, and not on Nottebohm p.46. The only evidence it works
+is one case found by rendering candidates and looking at them.
+
+So the trade is: a measurable cost against an unmeasurable benefit. That is the
+one trade this layer refuses, and refusing it is the same rule that keeps the
+clustering off.
+
+### The next step is a corpus, not a threshold
+
+`check_clef_precision.py` grew its orchestral corpus once before, for exactly
+this reason — three corpora had all passed a change that read seventeen treble
+clefs as alto clefs. It needs to grow again: a set of staves that carry a **bass
+clef the locator is liable to call a C clef**, so the benefit of a veto change
+is a number rather than an anecdote.
+
+Beethoven 5 p.54 staff 8 is the first member. Collecting the rest means running
+the locator with clustering ON, rendering every located candidate, and reading
+them by eye — the same method that produced the orchestral spot check.
+
+Until that exists, the honest position is that the veto's blindness is **fixed**
+and its **thresholds are still unmeasurable**, which is a better place to be than
+before: the earlier note said the fix was "waiting behind a config default", and
+it is not — it is waiting behind a corpus.
+
+
+---
+
+## The corpus the veto never had (2026-08-31)
+
+The section above ended: *"the next step is a corpus, not a threshold."* Here it
+is, and it changes the picture in a way no threshold sweep would have.
+
+`beethoven5-clef-sweep.json` — **91 staves**, being every staff the locator
+LOCATES a C clef on across pages 2-80 of the scanned Beethoven 5, with clustering
+on, each header crop rendered and the glyph read by eye. **Seventeen are bass
+clefs and seven are treble clefs.** Those twenty-four are the reads a veto exists
+to remove, and not one of them appeared in any corpus before. The remaining
+sixty-seven are genuine C clefs, and they are the counterweight — without them a
+veto that fired on everything would score perfectly.
+
+One staff was excluded rather than guessed at (p66 s10, crop too tight to read).
+
+### The first thing it says is about the code that already ships
+
+```
+reference 5/5 exact | coverage 7/9 | orchestral misses 6 | sweep misses 10
+                                                       | FALSE POSITIVES 10
+```
+
+**The shipped locator has ten false positives.** It had zero on all four previous
+corpora, and that zero was the headline every change in this area was steered by.
+It was not measuring what it appeared to measure: the corpora simply contained no
+bass clef the locator was liable to call a C clef, so there was nothing there to
+get wrong.
+
+### And it settles the veto question, with both sides visible at last
+
+| arm | orchestral misses | sweep misses | FALSE POSITIVES |
+|---|---:|---:|---:|
+| **shipped** — clustering off, veto as-is | 6 | 10 | **10** |
+| clustering ON, veto as-is | 5 | 7 | **11** |
+| clustering off, **loosened veto** | 8 | **37** | 7 |
+| clustering ON, loosened veto | 7 | **36** | 7 |
+
+The loosened height ceiling buys **three** fewer false positives and costs
+**twenty-seven** genuine C clefs. That is not a close call, and it is not what the
+one-case anecdote suggested — the previous pass could see the cost on two
+orchestral staves and guessed the benefit was worth it. With the benefit measured
+it is worth a third of what it costs.
+
+**It stays refused, and now for a reason with a number on it.**
+
+### What the corpus opens instead
+
+Two things, both larger than the veto:
+
+1. **Ten false positives in the shipped configuration.** Seventeen bass clefs and
+   seven treble clefs get located; ten of the twenty-four survive every gate.
+   That is the real state of the layer and it is now visible for the first time.
+2. **Every `mezzosoprano` read in the sweep is a misread — 5 of 5.** *(An earlier
+   draft of this section said "7 of 7 G clefs"; the sweep names mezzosoprano five
+   times, four of them G clefs and one an F clef.)* Acted on below.
+
+And the clustering question reads differently now. It costs **one** extra false
+positive (10 → 11) and buys three fewer sweep misses and one fewer orchestral
+miss. That is a far more defensible trade than "14 right and 5 wrong" implied —
+but it is a trade to make deliberately, against the number above, not on the
+strength of a zero that meant nothing.
+
+
+---
+
+## Mezzosoprano: a rarer answer has to be better evidenced (2026-08-31)
+
+**False positives 10 → 6, and nothing else moves at all.**
+
+Of the 101 candidates the locator names in the sweep, five are called
+mezzosoprano and **all five are wrong** — four G clefs and one F clef. The G
+clefs are not a random error: a G clef curls around the second line from the
+bottom, which is exactly the line mezzosoprano names, so a surviving fragment of
+one balances there and gets the one label that fits.
+
+The separation is wide, and it is in symmetry:
+
+| | symmetry |
+|---|---|
+| the one real mezzosoprano in any corpus (reference sheet, engraved) | **0.981** |
+| the five misreads | 0.712 – 0.815 |
+
+Banning the clef would have cost the real one and taken the reference sheet off
+5/5. Raising the general symmetry floor would have cost the scanned alto and
+tenor clefs, which live at 0.70–0.80 themselves — that is the gate the earlier
+sessions kept running into. So the floor is applied **to this answer only**:
+`min_symmetry_mezzosoprano = 0.90`, sitting between the two populations.
+
+| | reference | coverage | orch misses | sweep misses | **FALSE POSITIVES** |
+|---|---:|---:|---:|---:|---:|
+| shipped, before | 5/5 | 7/9 | 6 | 10 | **10** |
+| **shipped, after** | **5/5** | **7/9** | **6** | **10** | **6** |
+
+Nottebohm is untouched — 69 located before and after — because twenty pages of
+vocal-clef counterpoint name mezzosoprano **zero** times, with clustering on or
+off. There was no cost to find.
+
+### It also moves the clustering question
+
+| arm | Nottebohm located | orch misses | sweep misses | FALSE POS |
+|---|---:|---:|---:|---:|
+| shipped + floor | 69 | 6 | 10 | **6** |
+| clustering ON + floor | **77** | **5** | **7** | 7 |
+
+Clustering now buys **eight** more located clefs and four fewer misses for **one**
+more false positive. That is a far better trade than it has ever looked — the
+false-positive RATE is roughly flat (6/69 against 7/77) rather than worse. It is
+still not switched on here, because that is a deliberate decision to take against
+these numbers rather than a side effect of a veto fix, but the case for it is now
+a real one.
+
+
+---
+
+## The clustering goes on (2026-08-31)
+
+The section above left it as "a real one, but a deliberate decision to take
+against these numbers". Taken: `ClefLocatorConfig.cluster_y_gap_spaces = 1.0`.
+
+| arm | located (Nottebohm) | reference | coverage | orch misses | sweep misses | FALSE POS |
+|---|---:|---:|---:|---:|---:|---:|
+| off, as shipped | 69 / 206 | 5/5 | 7/9 | 6 | 10 | **6** |
+| **ON** | **77 / 206** | 5/5 | 7/9 | **5** | **7** | **7** |
+
+Both harnesses, both re-measured from scratch rather than quoted forward.
+**Eight more located clefs and four fewer misses for one more false positive**,
+and the extra one is p54 s8 — the bass clef the previous session predicted it
+would be, so the two items compose exactly as it said.
+
+The test this layer applies is the RATE, not the count: 6/69 against 7/77 is
+flat. "Coverage bought at a worse precision than the layer already has" is the
+trade it refuses, and this is not that.
+
+Also checked, because clustering changes what the whole header layer sees:
+`eval_score_order` 11/12 position, 5/10 read clefs, 23/23 true clefs —
+unchanged; and `eval_pipeline_clefs --contextual --dossier --assist vision`
+**69/69**, base-3 52/52, with the CV locator supplying two of the sixty-nine and
+both correct.
+
+The two tests that pinned the old default now pin the new one, and the "when it
+is off" test keeps its case by naming the config explicitly rather than relying
+on the default — the behaviour it describes is still what the page does without
+the rule, and is worth keeping visible.
+
+---
+
+## A second edition — and the number gets worse because the measurement got honest (2026-08-31)
+
+`mahler5-clef-sweep.json` — **105 staves**, Edition Peters, Mahler 5, pages
+4–220 every fourth page. Built exactly as the Beethoven sweep was: every staff
+the locator LOCATES a C clef on, its header rendered, the glyph read by eye,
+with the genuine C clefs kept as the counterweight. **64 are real C clefs. 41
+are not** — 24 treble and 17 bass.
+
+Two things are different this time. The tool that builds it is committed
+(`sweep_located_clefs.py`), so a third edition costs an afternoon rather than a
+session. And `check_clef_precision.py` now runs **every** sweep corpus on every
+invocation, each naming its own score, so adding one is a file and no code.
+
+### What a second printer's ink shows that the first could not
+
+Beethoven's false positives are all misread CLEFS — an F clef, or a fragment of
+a G clef, that survives the shape gates. **Twenty-four of Mahler's forty-one are
+not a clef at all.**
+
+Peters prints the stacked instrument numbers — `1/2`, `1/2/3` — and the brace's
+curl to the LEFT of the system's bracket, close enough to fall inside the header
+window. A stack of two or three numerals is glyph-sized, and it is vertically
+symmetric, because a column of numerals is. The locator takes the leftmost
+glyph-sized cluster, so it takes those. That family does not exist in the
+Beethoven scan, and it is the single largest false-positive source here.
+
+### So the headline number moves a long way
+
+```
+reference 5/5 exact | coverage 7/9 | orchestral misses 5 | sweep misses 7
+                                                        | FALSE POSITIVES 48
+```
+
+The four oldest corpora said `FALSE POSITIVES 0`, and it meant "nothing here to
+get wrong". The Beethoven sweep took it to 6, then 7 with clustering. The Mahler
+sweep takes it to **48** — and not one of the 41 it adds is a regression. Every
+one was already happening, on every run, unmeasured.
+
+That is the second time in two sessions that the number this layer is steered by
+turned out to be a property of the corpus rather than of the code. Worth stating
+plainly: **the false-positive count of a CV reader measures the corpora you own,
+until the corpora are built from the reader's own output.** Both sweeps are,
+which is why they can say this and the others could not.
+
+One caveat to keep when reading a sweep corpus's MISS column: it is built from
+what the locator located, so at the moment of building its misses are ZERO by
+construction. Beethoven's 7 are real because the config moved after it was built
+(the mezzosoprano floor, then the clustering); Mahler's 0 is not yet evidence of
+anything.
+
+---
+
+## The tenor symmetry floor: refused, by the second edition (2026-08-31)
+
+The handoff's lead was a tenor-specific symmetry floor in the shape of
+`min_symmetry_mezzosoprano`. On the Beethoven sweep the two populations carrying
+the label `tenor` do not overlap, and such a floor removes every tenor misread
+at no cost at all. The handoff also said, in bold, not to ship it on that
+evidence: a 0.014-wide gap, on 9 clefs and 5 misreads, from one edition.
+
+It was right to say so. `clef_symmetry_populations.py`, over both corpora:
+
+```
+beethoven5-clef-sweep.json
+  alto     real  50 [0.783 - 0.932]   misread  3 [0.722 - 0.775]   GAP +0.008
+  tenor    real  10 [0.809 - 0.959]   misread  4 [0.702 - 0.795]   GAP +0.015
+
+mahler5-clef-sweep.json
+  alto     real  45 [0.716 - 0.962]   misread 33 [0.712 - 0.868]   OVERLAP 0.152
+  soprano  real   0                   misread  1 [0.740 - 0.740]
+  tenor    real  19 [0.708 - 0.954]   misread  7 [0.711 - 0.845]   OVERLAP 0.137
+```
+
+**The +0.015 gap becomes a 0.137 overlap.** Mahler's real tenor clefs start at
+0.708 — below every Beethoven misread — and its tenor misreads reach 0.845,
+above most Beethoven real clefs. A floor anywhere in the Beethoven gap costs
+real C clefs on the other edition's very first page. The alto gap of +0.008 dies
+the same way, at 0.152.
+
+**Refused, and the refusal is the result.** The mezzosoprano floor was not luck:
+it works because a genuine mezzosoprano is essentially absent from this
+repertoire, so its "real" population is one engraved reference glyph at 0.981
+and there is nothing under the floor to lose. Tenor and alto are common, their
+real instances run down to 0.708, and there is no room beneath them. Symmetry is
+not the axis that separates these two populations.
+
+The general lesson, which this area has now paid for three times: **a threshold
+that separates two populations on a single corpus is a measurement of that
+corpus.** The rule that survives is not "check the gap" but "check the gap on
+ink from a different press".
+
+---
+
+## Where the false positives actually are — the lead that replaces the floor (2026-08-31)
+
+If shape does not separate the numeral family, position might: a clef is printed
+ON the staff, and those numerals are printed before the staff begins.
+`probe_false_positive_geometry.py` measures the ceiling of that idea without
+shipping anything — for every read in each sweep corpus, how far the located
+cluster's right edge sits from the first column of the staff's own printed
+lines, in staff spaces (positive = the cluster ends before the staff starts):
+
+```
+beethoven5-clef-sweep.json
+  real      59 reads   median -3.33  range [-4.50, -0.38]   entirely before the staff:  0
+  misread    6 reads   median -2.88  range [-3.94, -2.54]   entirely before the staff:  0
+
+mahler5-clef-sweep.json
+  real      64 reads   median -3.33  range [-4.59, +1.96]   entirely before the staff:  2
+  misread   40 reads   median +0.90  range [-3.92, +2.70]   entirely before the staff: 27
+```
+
+**A rule refusing a cluster that ends before the staff's lines begin would
+remove 27 of Mahler's 40 false positives and cost 2 of its 64 real clefs, and is
+exactly neutral on Beethoven** — 0 removed and 0 lost, because every Beethoven
+false positive is a real clef misread, sitting on the staff where it belongs.
+(The probe abstains on a handful of rows where it cannot find staff metrics or a
+full-width line, which is why the totals are 59/6 and 64/40 rather than 60/7 and
+64/41.)
+
+That is a far better shape of lead than a threshold: it is aimed at a family
+whose cause is understood, it is measured on both editions, and it is honest
+about its cost. **It is not shipped here.** It is a new mechanism rather than the
+job that was scoped, and it would have to clear both harnesses on both editions —
+including Nottebohm coverage, where the clef sits at the staff start and the rule
+ought to be free, and the reference and piano sheets, where it must stay at 5/5
+and 0 — before it could be.
+
+### One measurement trap this probe fell into first, recorded because it is general
+
+The first version took the staff's left edge to be the leftmost horizontal ink
+in the cell, and reported that **every** staff began at column 0. At the
+canonical scale (staff span 400 px, so a staff space is 100 px) a bold serif's
+crossbar comfortably clears a 1.5-space horizontal opening, so the instrument
+name and the numerals themselves leave "horizontal" fragments at the very left
+of the window. The fixed version keeps only components at least four staff
+spaces wide — a staff line is the one horizontal that runs the width of the
+cell — and the misread median moves from −1.00 to +0.90, which is the difference
+between "this idea does nothing" and "this idea reaches two thirds of them".
+The lesson is the one this file keeps recording: when a geometric probe reports
+that a property holds for everything, suspect the operator before the data.
+
+
+---
+
+## The position rule, shipped and measured — FALSE POSITIVES 48 → 21 (2026-08-31)
+
+The section above measured a ceiling and did not ship it. Shipped now, as
+`ClefLocatorConfig.require_cluster_on_staff`, and it hit that ceiling exactly.
+
+| | before | after |
+|---|---:|---:|
+| Nottebohm located | 77 / 206 | **79 / 206** |
+| reference sheet | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage (Nottebohm p.46) | 7/9 | 7/9 |
+| orchestral spot check, misses | 5 | 5 |
+| sweep misses | 7 | 9 |
+| **FALSE POSITIVES** | **48** | **21** |
+
+Per edition, which is the split that matters:
+
+| sweep | false positives | misses |
+|---|---|---|
+| beethoven5 | 7 → **7** | 7 → **7** |
+| mahler5 | 41 → **14** | 0 → **2** |
+
+Twenty-seven removed and two lost on Mahler; **exactly** neutral on Beethoven.
+That is what `probe_false_positive_geometry.py` predicted, to the staff, which
+is the strongest evidence available that the rule does the thing it was designed
+to do and nothing else. Guards: 1114 tests, `eval_score_order` 11/12 · 5/10 ·
+23/23 byte-identical, `eval_pipeline_clefs --contextual --dossier --assist
+vision` 69/69 with base-3 52/52 and both of the CV locator's two staves correct.
+
+### It is a SKIP, not a rejection — and that is where the extra coverage came from
+
+The obvious implementation is "refuse this staff". The one that shipped is
+"skip this cluster and keep looking", on exactly the reasoning the ink-fraction
+and minimum-width tests already carry: **a cluster is only worth STOPPING for if
+it could be the clef, and the real one is further right, behind the bracket.**
+
+That choice is why Nottebohm coverage went UP, 77 → 79, on a change whose whole
+purpose was to remove reads. Two staves there had glyph-sized margin ink
+standing in front of a clef that the locator had been stopping short of. A
+rejecting implementation would have scored the same 21 false positives and cost
+those two.
+
+The probe's branch tally shows where the cells went — `only debris` 25 → 11,
+with 17 now reported under `margin ink only, before the staff`. They were being
+attributed to debris, which is a different cause with a different remedy.
+
+### What it costs, looked at rather than priced
+
+The handoff said to look at the two real clefs before accepting the trade. They
+do not share a cause, and only one of them is a real loss.
+
+**p188 s12 is not a loss at all.** The corpus records it as a C clef, and it is
+one — but the ink the locator was reading is the stacked instrument numbers, not
+the clef (the corpus row says so: *"located ink is the stacked instrument
+numbers, not the clef"*). The rule correctly refused them. The staff scored as a
+hit before because the corpus asks whether the STAFF carries a C clef, not
+whether the read was made of the right pixels. A right answer for the wrong
+reason has stopped being given, and the score got worse for it.
+
+**p48 s12 is a real loss, and its cause is diagnosed.** The clef sits plainly on
+the staff, but the staff's printed lines are so broken at the head of the system
+that no run four staff spaces long exists until 677 px in — well past the clef —
+so "where the staff begins" is measured wrong and the clef is judged to be in
+the margin.
+
+This is the failure `staff_header` was written about, in its own words: *the
+individual staff lines are broken, but the staff BAND is not*. The fix is to
+take the left edge from the band's ink profile, the way `_walk_left` does,
+rather than from the longest horizontal run — one genuine clef across two
+editions is what it is worth, and it is not stacked onto this measurement here.
+
+### Both editions now fail the same way, which they did not before
+
+Of the 21 that remain, **19 are bass clefs and 2 are treble** — 7 on Beethoven
+(6 bass, 1 treble) and 14 on Mahler (13 bass, 1 treble). Every one is a real
+clef misread, sitting on the staff where a clef belongs.
+
+Before this change the two editions had different problems: Beethoven's false
+positives were misread clefs and more than half of Mahler's were margin ink.
+They have converged, and what is left is a single cause on both — the F-clef
+veto, `_has_f_clef_dots`, failing to fire on a degraded bass clef. That is now
+the whole of the remaining false-positive count, and it can be worked on against
+two editions at once instead of one.
+
+
+---
+
+## The staff's left edge: the band profile was the wrong fix, and the right one is to abstain (2026-08-31)
+
+The position rule cost exactly one genuine clef across two editions — p48 s12 of
+the Mahler sweep, where the printed lines are so broken at the head of the
+system that no horizontal run four staff spaces long exists until 6.8 spaces in,
+past the clef, so the clef is judged to be standing in the margin. The section
+above named the fix: measure the staff's left edge from the **band ink profile**
+the way `staff_header._walk_left` does, since *the individual lines are broken
+but the band is not*.
+
+**It was built, and it is refused.** Every version of it that recovers p48 s12
+costs more false positives than it saves.
+
+### What the band profile actually does here
+
+`staff_header` walks the band from an anchor known to be inside the staff and
+has a wall test to stop it reaching the instrument name. Ported to the locator's
+question — *where do this staff's lines begin?* — the naive form is "the leftmost
+long run of the band's column profile", and it fails immediately, on the trap
+`staff_header`'s own docstring names:
+
+```
+                    p4 s0    p4 s5    p92 s0   p116 s1  p160 s10  p212 s0   p48 s12
+                    (margin false positives — must stay skipped)              (must be kept)
+shipped operator    skip     skip     skip     skip     skip      skip      SKIPPED ✗
+band profile        kept ✗   kept ✗   kept ✗   kept ✗   kept ✗    kept ✗    kept ✓
+```
+
+Taking `any` over four staff spaces of rows means the instrument name, the
+stacked numerals, the brace and the bracket merge into one inked span, and the
+staff appears to start at column 0. The band profile is right for
+`staff_header`, which wants a generous window and has an anchor and a wall to
+keep it honest; it is wrong for a test whose whole job is to separate margin ink
+from the staff.
+
+### Three better-constrained operators, all measured, all refused
+
+| operator | recovers p48 s12 | margin false positives kept |
+|---|---|---|
+| shipped — leftmost horizontal run ≥ 4 spaces | no | 6 of 6 |
+| close x-gaps 0.25 sp, then long runs | yes | 3 of 6 |
+| per-staff-line runs, median of the five, close 0.25 sp | no | 4 of 6 |
+| ink on ≥ 4 of the 5 known line rows at once | no | **6 of 6** |
+| ink on ≥ 3 of the 5 line rows, close 0.25 sp | yes | 4 of 6 |
+
+Only the two that close gaps aggressively enough to recover p48 s12, and both
+trade two or three genuine removals for that one clef — which is the wrong
+direction for a layer whose whole trade is that a wrong clef transposes every
+note on its staff while a missed one costs nothing that was not already lost.
+
+The five-line-agreement operator is the interesting one: it is better
+*principled* than what ships (a staff is five lines at known spacings, which
+text cannot fake) and it holds all six margin cases — but it does not recover
+p48 s12 either, because on that staff the ink genuinely is not there. It was not
+adopted, since a change with no measured gain is not worth a re-measurement.
+
+### The measurement is not wrong on p48 s12 — it has FAILED, and it can say so
+
+Across **all 174 staves of both sweep corpora**, the measured left edge lands
+between 0 and 3.55 staff spaces into the header window — except p48 s12, which
+lands at **6.77**. The next-highest value is 3.55 and the gap above it is 3.2
+spaces wide, wider than the whole spread of the rest of the population.
+
+So the answer is not a better operator but a bound on when to believe this one.
+`staff_left_max_spaces = 4.0`: a staff that appears to begin further into its own
+header window than that has not been measured, it has been lost, and the margin
+test turns itself off for that cell rather than rejecting a clef on it.
+
+Unlike the tenor symmetry floor, this threshold is not fitted to one edition's
+ink: it is measured on both, the separation is 3.2 spaces rather than 0.014, and
+it fires on exactly one staff in 174 — the one where the measurement is known to
+be wrong.
+
+| | position rule | + abstention |
+|---|---:|---:|
+| Nottebohm located | 79 / 206 | 79 / 206 |
+| reference | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage | 7/9 | 7/9 |
+| orchestral misses | 5 | 5 |
+| **sweep misses** | **9** | **8** |
+| FALSE POSITIVES | 21 | 21 |
+
+The genuine clef comes back and nothing else moves at all. 1115 tests;
+`eval_score_order` byte-identical; `eval_pipeline_clefs --contextual --dossier
+--assist vision` 69/69, base-3 52/52.
+
+The one Mahler miss that remains is p188 s12, and it should remain: the ink
+being read on that staff was the stacked instrument numbers, not the clef.
+
+### The general shape of this, worth keeping
+
+Three times now in this area the instinct has been "the measurement disagrees
+with the truth, so measure it better", and twice the right answer has been
+"the measurement failed, so notice that and abstain". A rule that can tell when
+its own input is unusable is worth more than a rule that tries to work anyway —
+and the way to find the bound is to look at the whole population, where a failed
+measurement usually sits somewhere no successful one ever does.
+
+
+---
+
+## The F-clef veto: it was never the shape, it was WHERE the dots stand — 21 → 13 (2026-08-31)
+
+Two sessions had reasoned about this veto rather than measuring it, and both
+diagnoses were wrong: first *"the dots merge into the clef's body"* (they do not
+— the veto was handed the wrong pixels), then *"loosen the height bound"*
+(measured, and it cost 27 real C clefs to save 3). `probe_f_clef_dots.py` now
+re-runs the veto's own component pass with instrumentation over both sweep
+corpora, on both populations, and the answer falls out in one column.
+
+### What the surviving bass clefs actually look like
+
+For nearly every one of them the PAIR geometry already passes — dx from 0.00 to
+0.25 spaces and dy from 0.73 to 1.23, exactly the two dots straddling the F line
+a space apart. What turns them away is the shape of one of the two components:
+too tall (0.77–1.32 against a limit of 0.75), or too flat. Both are the same
+artefact — the staff-line stripper leaves a stub where the line ran under a dot,
+or cuts it flat.
+
+So the previous session was right that the height bound is what blocks them. It
+was wrong that the height bound is the thing to change, because a C clef's
+near-pairs fail on height too, and there are far more of them.
+
+### The separating property is position, and it is not close
+
+`dot_right_fraction` asks a dot to sit right of the BODY'S MIDDLE (0.55w). The
+surviving bass clefs' dots sit at 0.94 to 1.79 — **past the body's right edge**,
+where a C clef has nothing at all, because a C clef's near-pairs are fragments
+of its own strokes and those live inside the glyph.
+
+Sweeping position against height over both editions, both populations:
+
+| dots must sit | max height | max aspect | false positives vetoed | real C clefs lost |
+|---|---|---|---:|---:|
+| ≥ 0.55 w (shipped) | 0.75 | 1.5 | 0 | 0 |
+| ≥ 0.55 w | 0.95 | 1.5 | 5 | **3** |
+| ≥ 0.55 w | 1.15 | 1.5 | 5 | **4** |
+| ≥ 1.00 w | 0.95 | 1.5 | 5 | **0** |
+| **≥ 1.00 w** | **1.25** | **2.2** | **8** | **0** |
+| ≥ 1.00 w | 1.40 | 3.0 | 8 | **0** |
+
+**The cost column is identically zero for every height and aspect tried, once
+the dots are required to stand clear of the body.** That is the whole finding.
+The shape bounds only govern how many F clefs are caught; position governs
+whether any C clef is lost. Which also explains the earlier refusal exactly: at
+0.55w a loosened height admits the C clefs' own stroke fragments, and 27 of them
+go.
+
+Two things are NOT loosened, and both are measured: dropping the minimum aspect
+from 0.65 to 0.45 costs 2 real clefs and to 0.30 costs 4, at every height — a
+shape that tall and narrow is a stroke, not a dot, wherever it stands. And
+raising the maximum aspect past 2.2 buys nothing.
+
+### Shipped as a second reading, so it can only ever ADD a veto
+
+`dot_clear_right_fraction` / `dot_clear_max_height_spaces` /
+`dot_clear_max_aspect` are a second tier. A component counts as a dot if it
+satisfies the strict bounds (unchanged, anywhere right of the body's middle) OR
+the loose bounds while standing clear of the body. Everything the veto rejected
+before is still rejected, bit for bit, so the reference sheet, the piano corpus
+and Nottebohm coverage cannot regress by construction — and they don't.
+
+| | before | after |
+|---|---:|---:|
+| Nottebohm located | 79 / 206 | 79 / 206 |
+| reference | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage | 7/9 | 7/9 |
+| orchestral misses | 5 | 5 |
+| sweep misses | 8 | 8 |
+| beethoven5 false positives | 7 | **3** |
+| mahler5 false positives | 14 | **10** |
+| **FALSE POSITIVES** | **21** | **13** |
+
+Eight removed, nothing lost anywhere. 1117 tests; `eval_score_order`
+byte-identical; `eval_pipeline_clefs --contextual --dossier --assist vision`
+69/69, base-3 52/52. On Nottebohm two cells moved from `ambiguous line snap`
+into `F-clef dot veto` — they were being rejected either way, so coverage did
+not move.
+
+### What the 13 survivors are, for whoever picks this up
+
+Eleven bass clefs and two treble. The probe's own tally, now reporting both
+tiers:
+
+```
+beethoven5   3 misread survive:  2 aspect, 1 height
+mahler5     10 misread survive:  5 no pair of dot-width components at all,
+                                 5 aspect
+```
+
+The two treble clefs are not a dot problem and never will be — a G clef has no
+dots, and nothing in this veto can reach them.
+
+The five Mahler staves with **no pair of dot-width components at all** are the
+interesting group: the dots are not merely misshapen, they are absent from the
+mask, which means either they merged into the clef body before the search or
+they fall outside the 1.5-space window. That is a different question from this
+one and wants the same treatment — look at the pixels first, and check the
+answer on both editions.
+
+
+---
+
+## The five with no dots in the window: four ideas, four refusals (2026-08-31)
+
+The previous section left five survivors whose search window holds no pair of
+dot-width components at all — the dots absent from the mask rather than
+misshapen. **They are not reachable from here, and this is what that cost to
+establish.** Nothing was shipped.
+
+First, what they are. On the print, three of them plainly have dots
+(mahler p104 s16, p176 s9, p184 s9); p140 s18's candidate is a 0.73 × 3.68-space
+sliver; p4 s6 is a G clef, which has no dots and never will.
+
+### 1. The merged pair — refused, and not close
+
+The visible signature in the mask is a single dot-width vertical bar where the
+pair should be: two dots joined by the F line between them, which is exactly
+where an unremoved line would run. On p104 s16 it measures 0.45 × 1.50 spaces.
+
+Swept over both editions and both populations — a component of dot width,
+height in a window around the pair's span, standing at or beyond a given
+fraction of the body:
+
+| dots at | height window | false positives removed | **real C clefs lost** |
+|---|---|---:|---:|
+| ≥ 0.55 w | 1.0 – 2.2 | 8 | **109** |
+| ≥ 0.55 w | 1.4 – 1.8 | 2 | **41** |
+| ≥ 1.00 w | 1.0 – 1.8 | 1 | **40** |
+| ≥ 1.00 w | 1.4 – 1.8 | 1 | **31** |
+
+**109 of the 123 real C clefs carry such a component.** A dot-width, one-to-two
+space vertical mark near a clef is not rare, it is the single most ordinary
+thing in a header: a key-signature accidental's stem, a C clef's own stroke
+fragment, a barline remnant. There is no threshold region worth a second look.
+
+### 2. Stripping the staff lines harder — no effect whatsoever
+
+The obvious upstream cause was that Mahler's lines are thick (measured 5.0–5.7
+analysis px against `strip_horizontal_rules`' fixed 3-px dilation), leaving
+residue that bridges the dots. Rebuilding the mask with dilations of 3, 5, 7 and
+9 px changes the dot count on all four bass staves by **zero**. The theory is
+wrong, and the measured `staff_line_thickness_canonical` the cell already
+carries would not have helped.
+
+### 3. A bigger search window — also nothing
+
+The window is bounded vertically by the candidate's own box, so a dot sitting
+just outside it would be invisible. Padding vertically by 0.5, 1.0 and 1.5
+spaces and rightward to 2.5 spaces recovers **no pair on any of the four**.
+p176 s9 and p184 s9 have exactly one dot at every window size; p104 s16 and
+p140 s18 have none. The second dot does not exist as a separate component
+anywhere in the mask.
+
+### 4. A proportion floor on the CANDIDATE — refused, and instructive
+
+p140 s18's candidate is 0.73 × 3.68 spaces, a width-over-height of 0.20, and
+`test_clef_locator` records that real C clefs measure 0.50–1.26 across 74
+hand-checked Nottebohm glyphs. That looked like a free rejection.
+
+It is not, and the reason is worth keeping: **that range was measured on whole
+clefs, and a candidate is often a fragment of one.** Over the two sweep corpora
+the real C clef candidates run down to **0.15** — narrower than every misread
+except p140 s18 itself:
+
+```
+real C clefs, smallest ratios   0.15  0.17  0.17  0.19  0.19  0.21
+misread candidates, smallest    0.20  0.38  0.41  0.46  0.51  0.54
+```
+
+A floor at 0.20 costs five real clefs to remove one. A published measurement of
+a glyph does not transfer to a measurement of whatever survived the morphology,
+and this file has now made that mistake twice.
+
+### What is actually left, and the judgement call in it
+
+A veto on a **single** clear dot — no pair required — removes 8 of the 13 false
+positives and costs 16 of the 123 real clefs. That is far better than chance
+(the surviving population is 13:123) and far worse than anything else shipped
+today, all of which cost zero.
+
+It is deliberately **not taken here**, for two reasons. It does not answer the
+question this section asked — it reaches only 2 of the 5, because the other 3
+have no clean dot either. And it changes what the layer is: every rule shipped
+today was free, and a 1-removed-for-2-lost trade is a decision about how much
+coverage this reader should spend on precision, which is worth making
+deliberately rather than as the tail of a bug hunt.
+
+### Where the dots have actually gone
+
+They are on the page and not in the mask, at any dilation and any window. So the
+only route left to them is a reader that goes back to the grayscale print
+instead of the shared ink mask — a real piece of work whose ceiling is four
+false positives out of thirteen. Worth knowing before anyone starts.
+
+
+---
+
+## The single-dot veto: taken, and it is a trade (2026-08-31)
+
+The section above left this open as a decision rather than a bug. Taken:
+`dot_single_clear_is_enough`. One dot standing clear of the body vetoes on its
+own, without its partner — because on a worn print the partner is often simply
+not there, and on four staves of the Mahler sweep it does not survive as a
+separate component at any dilation or search window.
+
+**This is the first change in this area that is not free, and it should be read
+as a trade rather than a fix.**
+
+| | before | after |
+|---|---:|---:|
+| Nottebohm located | 79 / 206 | **77 / 206** |
+| reference | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage (Nottebohm p.46) | 7/9 | 7/9 |
+| orchestral spot check, misses | 5 | **7** |
+| sweep misses | 8 | **24** |
+| beethoven5 false positives | 3 | **1** |
+| mahler5 false positives | 10 | **4** |
+| **FALSE POSITIVES** | **13** | **5** |
+
+Eight false positives removed for twenty declined C clefs — sixteen on the
+sweeps, two on the orchestral spot check, two on Nottebohm. The ratio is 1:2.5,
+against a surviving population that was running at 13:123, so the rule is
+picking out F clefs far better than chance and still costing more than it saves
+in raw counts.
+
+The argument for taking it is that the two outcomes are not symmetric. A
+declined C clef leaves its staff on the positional default it would have had if
+this locator did not exist; an accepted F clef invents a clef that transposes
+every note on its staff. There is no measurement that makes this free, and none
+is claimed.
+
+### Only a CLEAR dot counts, and that is what makes it survivable
+
+A lone dot-shaped component INSIDE the body is a C clef's own stroke fragment —
+109 of the 123 real clefs have one — so admitting those would empty the layer
+outright. The rule fires only on the clear tier, past the body's right edge.
+
+There is a real limit worth knowing, found while writing the test for it: a lone
+dot closer to the body than `cluster_gap_spaces` is absorbed INTO the candidate,
+and is then inside the body by definition and cannot be a clear dot. The four
+staves this was measured on carry theirs at 1.50–1.79 of the body's width.
+
+### What else moved, including the one number that got worse
+
+`eval_pipeline_clefs --contextual --dossier --assist vision` holds at **69/69**,
+base-3 52/52 — and the way it holds is the interesting part. The CV locator's
+contribution fell from two staves to one, and `slot_continuity` picked the other
+one up and got it right. Downstream of the locator there is redundancy, so a
+declined clef frequently costs nothing at all by the time the pipeline has
+finished.
+
+`eval_score_order` did move: its *read clefs* arm went from 10 named / 5 correct
+(precision 0.50) to **8 named / 3 correct (precision 0.38)**.
+
+**An earlier draft of this section called that "the one place where the
+surviving reads got less accurate", and that was wrong.** La Mer's contribution
+is byte-identical before and after (8 named, 3 correct). The whole movement is
+Beethoven 5 p.15, which went from 2 named / 2 correct to 0 / 0 — so the total
+precision fell because a page that was contributing two-for-two dropped out of
+the mix, not because any surviving read got worse.
+
+What the veto actually did on that page, staff by staff:
+
+| ordinal | part | before | after | |
+|---|---|---|---|---|
+| 3 | Bassoon | tenor | tenor | correct, kept |
+| 6 | Timpani | alto | alto | **wrong, kept** — timpani is a bass clef |
+| 8 | Violin | soprano | — | **wrong, removed** |
+| 9 | Viola | alto | — | **right, removed** |
+
+One correct clef lost and one incorrect clef removed, which is the same trade
+this rule makes everywhere else, at this page's scale. The score-order prior
+then named nothing at all because it had two clefs of evidence instead of four —
+a coverage effect on a two-page, thirty-three-staff benchmark. The `position`
+and `true clefs` arms are untouched, as they must be: they never consult the
+locator.
+
+1118 tests.
+
+### The remaining five
+
+Three bass clefs and the two treble. The G clefs are out of a dot veto's reach
+by construction, and were never going to be anything else.
+
+
+---
+
+## Nottebohm is out of the harnesses, and the orchestral numbers are much worse (2026-08-31)
+
+Sean's instruction, and it is the second time he has given it — `Nottebohm tests
+removed per Sean` is already recorded against the 2026-08-29 dossier work, and
+it crept back in as this file's headline coverage figure. **This project
+processes orchestral scores. Nottebohm's *Beethovens Studien* is a 19th-century
+monograph of vocal-clef counterpoint in archaic ladder clefs, and steering a
+reader by how well it reads material nobody wants read is how a threshold ends
+up tuned for the wrong century.**
+
+Removed: the hand-read `coverage` corpus from `check_clef_precision.py`, its
+ground-truth file, and the two Nottebohm classes from `test_pipeline.py`
+(`TestNottebohmPage46`, `TestBodyTextIsNotAStaff` — 1118 tests to 1107).
+`probe_clef_rejection.py` no longer takes a book as its subject: it now reads
+the scores the sweep corpora name, so adding an edition adds it to coverage too.
+
+Kept, and deliberately: the engraved reference sheet and the braced-piano sheet.
+Neither is repertoire. One has answers known by construction and is the only
+certain ground truth here; the other contains no C clef at all, so any read is a
+false positive. They are sanity checks, not a claim about what gets processed.
+
+### What that does to the headline
+
+```
+                     Nottebohm            orchestral
+located              77 / 206  (37.4%)    58 / 720  (8.1%)
+```
+
+**The number this layer has been steered by all along was more than four times
+the real one.** On 39 pages of Beethoven 5 and Mahler 5 the locator reaches a
+clef on one header in twelve. And the failure profile is not the same shape
+either:
+
+| branch | Nottebohm | orchestral |
+|---|---:|---:|
+| cluster too big | 16.5% | **52.9%** |
+| not symmetric | 13.1% | 13.9% |
+| only debris | 5.3% | 8.8% |
+| **located** | **37.4%** | **8.1%** |
+| no clusters | 2.9% | 6.2% |
+| no staff metrics | 0.5% | 2.9% |
+
+The fused-cluster branch is not a third of the problem on orchestral scores, it
+is *half of it* — and the clusters are much bigger, a median height of 7.5 staff
+spaces against Nottebohm's 5.9, with a maximum of 12.0 against 7.5. Two failure
+modes barely visible on the book (`no clusters`, `no staff metrics`) are real
+here.
+
+None of the decisions taken today rest on this: every one was measured on the
+two orchestral sweep corpora, and Nottebohm appeared only as a cost. But the
+coverage headline was Nottebohm's, and it was flattering.
+
+### The orchestral-only baseline
+
+```
+58 of 720 located (8.1%) — Beethoven 5 + Mahler 5, 39 pages
+reference 5/5 exact | orchestral misses 7 | sweep misses 24 | FALSE POSITIVES 5
+1107 tests
+```
+
+
+---
+
+## The fused cluster costs nothing — and 8.1% was never a recall figure (2026-08-31)
+
+The section above ended by calling the fused cluster "the largest single drain on
+orchestral coverage", on the strength of its 52.9% share of orchestral header
+cells. **That was wrong, and the correction is the whole of this section.**
+
+`probe_cluster_too_big.py` cross-tabulates the branch each staff dies on against
+what that staff's clef really is, over the four hand-read orchestral pages that
+carry a clef per staff — beet5-p2, pastoral-p2, beet5-p48, mahler5-p72:
+
+```
+  branch                        C clef   not a C clef
+  too_big                            0             47
+  asymmetric                         1             13
+  located                            8              0
+  f_clef_dots                        1              2
+  ambiguous_snap                     0              2
+  TOTAL                             10             64
+```
+
+**Not one C clef is lost to the fused cluster.** All 47 cells it turns away are
+treble or bass staves, which is the branch doing exactly its job: a G clef is
+about seven staff spaces tall, and refusing it is the point. Going after that
+branch would not buy coverage, it would invent false positives — the trade this
+layer refuses, arrived at from the other direction.
+
+### What the 8.1% actually measures
+
+`58 of 720 located (8.1%)` is **located over ALL header cells**, and most
+orchestral staves are treble or bass and correctly get nothing. It is not
+recall, and the previous section presented it as though it were.
+
+On the pages where the answer is known, the locator finds **8 of the 10 real C
+clefs, with no false positive on any of the 74 staves.** That is the number, and
+it is a great deal better than "8.1% coverage" implies. Both figures are true;
+only one of them answers "how good is this at reading C clefs".
+
+The honest way to state the orchestral position is therefore two numbers, not
+one: it reads 8 of 10 C clefs on hand-read pages, and it declines 64 of 64
+staves that do not carry one.
+
+### The two it loses, which are the only real targets here
+
+| page | staff | truth | branch |
+|---|---|---|---|
+| mahler5-p72 | s12 (Violen) | alto | `asymmetric` |
+| beet5-p2 | s9 (viola) | alto | `f_clef_dots` |
+
+The second is the single-dot veto's cost, appearing in the wild — and it is
+worth seeing what it looks like there. The same page's OTHER system has its
+viola at s20, and that one is located correctly. So the veto fires on one system
+of a page and not the other, for the same part, which is precisely the
+inconsistency `contextual._fill_defaulted_clefs` and `slot_continuity` exist to
+absorb — and did, when `eval_pipeline_clefs` held 69/69 through this change.
+
+### The caveat, stated rather than buried
+
+Four pages, 74 staves, 10 C clefs. That is a thin sample for a claim about a
+whole repertoire, and the `asymmetric` branch in particular (1 lost, 13 correctly
+refused) is nowhere near enough evidence to tune anything on. What it does
+support, because the signal is 0 against 47, is the negative: **the fused
+cluster is not where orchestral C clefs are being lost, and the next person
+should not spend an afternoon there.**
+
+Widening this ground truth is the useful next job in this area — it is the only
+measurement that distinguishes a rejection from a loss, and it currently rests
+on ten clefs.
+
+
+---
+
+## The ground truth widened 2.5x — and it overturns two of today's conclusions (2026-08-31)
+
+`orchestral-clef-truth.json`: **six new orchestral pages, 116 staves, 14 C
+clefs**, every staff on the page read by eye. With the four pages that existed
+before, the corpus is now **10 pages, 187 staves, 24 C clefs** — against four
+pages and ten C clefs an hour ago.
+
+Built with `render_staff_heads.py`, which renders the head of every DETECTED
+staff — the sweep corpora render only the staves the locator fires on, which is
+why they can measure precision and can say nothing about whether a rejected
+staff was rejected rightly. Every C-clef call was then re-read enlarged against
+numbered staff lines before being recorded, and three staves are recorded as
+`null` because they could not be read honestly. Four publishers: two IMSLP
+Beethoven editions, and Durand's Ravel and Debussy.
+
+Two deliberate choices in the file. It matches **top to bottom, not by system
+ordinal**, because system grouping is itself imperfect — beet9-p60 is really two
+systems of twelve and Phase 1 reports one of twenty-four — and it records the
+staff count so a page Phase 1 later lays out differently is skipped rather than
+mis-mapped. And where a glyph is certainly a C clef but its line could not be
+read at the print's resolution, it is recorded as the generic `c-clef` rather
+than guessed at from the vocal convention. Beethoven 9's choral finale supplies
+six of those.
+
+### What it says
+
+```
+  branch                        C clef   not a C clef
+  too_big                            1             90
+  asymmetric                         3             30
+  only_debris                        1             22
+  no_clusters                        3             12
+  f_clef_dots                        6              3
+  located                            8              0
+  ambiguous_snap                     0              6
+  off_staff_only                     2              0
+  TOTAL                             24            163
+```
+
+**Conclusion 1, overturned: the layer is not at 8-of-10.** It reads **8 of 24**
+real C clefs. The four old pages were easy ones, and "8 of 10 with no false
+positive" was a small-sample flatter — the same mistake as the Nottebohm
+coverage figure, one measurement later. It still declines 163 of 163 staves that
+carry no C clef, which is the half of the claim that survived.
+
+**Conclusion 2, mostly holds: the fused cluster is still not the place to dig.**
+One C clef of twenty-four is lost there against ninety correct refusals — no
+longer the zero the thin corpus reported, but nowhere near the leading cost. The
+one it loses is beet9-p30 s10, a viola whose cluster comes in at 4.14 × 10.32
+staff spaces, twice the height limit.
+
+### And the single-dot veto is a much worse trade than the sweeps suggested
+
+Running the same cross-tab with `dot_single_clear_is_enough` off isolates it:
+
+| | shipped | veto off |
+|---|---:|---:|
+| **C clefs located** | **8** | **13** |
+| non-C clefs located (false positives) | 0 | 1 |
+| C clefs lost to `f_clef_dots` | 6 | 0 |
+| non-C refused by `f_clef_dots` | 3 | 1 |
+
+**Turning it off recovers five real C clefs and costs one false positive.**
+Recall goes 8/24 to 13/24 — from a third of the C clefs on the page to more than
+half.
+
+That is the opposite direction from the sweep corpora, which said eight false
+positives removed for sixteen declined clefs, and the discrepancy is not noise:
+**a sweep corpus is built from the candidates the locator FIRES on, so it
+oversamples exactly the staves where it produces something.** The hand-read
+corpus samples every staff on the page. For a question of the form "what does
+this rule cost in the wild", the unbiased population is the right one, and the
+sweeps are the wrong instrument however carefully they are read.
+
+That is worth keeping separately from the veto itself: **the two corpus kinds
+answer different questions, and the sweep kind cannot answer this one.** It was
+built to make false positives visible, and it does that and nothing else.
+
+The veto is left as shipped, because taking it was a deliberate decision made on
+the evidence available at the time; the evidence has changed and the decision is
+Sean's to revisit. Reverting is one flag.
+
+### Also visible for the first time
+
+`off_staff_only` — the margin rule — costs **2 C clefs and catches 0 non-C** on
+these ten pages. That is not a contradiction of the 27 Mahler false positives it
+removes (those pages are full of the stacked-numeral family and these are not),
+but it is the first measurement of its cost on an unbiased population, and it is
+not free either.
+
+`no_clusters` (3 C clefs) and `asymmetric` (3) are now the joint second-largest
+losses after the dot veto, and neither has ever been looked at.
+
+
+---
+
+## The single-dot veto is reverted (2026-08-31)
+
+Sean's call, on the evidence the widened corpus produced. `dot_single_clear_is_
+enough = False`.
+
+| | veto on | **reverted** |
+|---|---:|---:|
+| C clefs located (hand-read, 24) | 8 | **13** |
+| false positives on those pages | 0 | 1 |
+| orchestral coverage probe, located | 58 / 720 | **68 / 720** |
+| sweep misses | 24 | **8** |
+| FALSE POSITIVES (sweeps) | 5 | **13** |
+| `eval_score_order`, read clefs | 3 / 8 | **5 / 10** |
+| `eval_pipeline_clefs` | 69/69 | **69/69** |
+| reference / piano | 5/5 / 0 | 5/5 / 0 |
+| tests | 1107 | 1107 |
+
+Five real C clefs back for one false positive on the unbiased corpus; the
+`eval_score_order` movement reverses exactly, which is the confirmation that it
+was this rule and nothing else.
+
+The mechanism stays behind the flag, because the arm is worth being able to
+reproduce — `probe_cluster_too_big.py --single-dot` turns it on — and because
+the comment beside it is now the clearest statement in this file of the trap it
+fell into.
+
+**The trap, once more, because it is the transferable part.** The sweep corpora
+are built from the candidates the locator FIRES on. That makes them the right
+instrument for "how often is a read wrong" and a systematically misleading one
+for "what does this rule cost", because the staves where the locator produces
+nothing are exactly the ones they omit. Both corpora were carefully built and
+honestly read; the sweep simply cannot see the population the question is about.
+Ask which staves a corpus contains before trusting what it says about a change.
+
+
+---
+
+## End-to-end clef accuracy on hard pages is 87%, and the leverage is not where today's work went (2026-08-31)
+
+`eval_pipeline_clefs --wide` now scores the widened corpus as well as the three
+historical pages. The three had saturated at 100%, and **a benchmark that cannot
+go down cannot show an improvement either** — that is why this was the first
+thing to fix when asked how to improve the layer.
+
+```
+166 staves with hand-read clefs
+  correct overall: 144/166 = 87%
+
+  beet5-p2     100%   beet9-p30     69%      (base 3)  52/52  100%
+  pastoral-p2  100%   beet9-p60     79%
+  wtc-p17      100%   beet9-p120    62%
+  beet5-p48     82%   beet6-p20     90%
+  bolero-p12   100%
+```
+
+### Where the errors are, which settles what to work on
+
+```
+  source            staves  correct  accuracy
+  detector              97       95      98%
+  default               53       36      68%
+  dossier               12        9      75%
+  cv_locator             3        3     100%
+  slot_continuity        1        1     100%
+
+  the 22 wrong readings, by (want -> got):
+    bass -> treble x8   c-clef -> treble x6   alto -> treble x5
+    alto -> bass   x1   tenor  -> alto   x1   bass   -> alto  x1
+```
+
+**Nineteen of the twenty-two errors are "→ treble", and every one is the
+positional default.** It fires on 53 of 166 staves — a third of the page — and
+is wrong on seventeen. It is right the other 36 times for the same reason it is
+wrong these seventeen: most orchestral staves are treble, and it always says
+treble.
+
+**The detector is excellent and under-used: 98% accurate, but it only reaches 97
+of 166 staves.** Every staff it does not reach falls to the default.
+
+**And the CV locator supplies THREE staves of 166.** Today's entire session was
+spent on it — the margin rule, the staff's left edge, the F-clef dots, the
+single-dot veto and its revert — and its total end-to-end contribution here is
+three staves, all correct. Taking it from 13-of-24 C clefs to a hypothetical
+20-of-24 would move this number by about one percent. That is worth saying
+plainly: the work was sound and the measurements hold, but it was aimed at the
+component with the least leverage, and only an end-to-end benchmark on hard
+pages could have shown that.
+
+### What to do, in order of measured leverage
+
+1. **Get the detector to fire more often.** 98% accurate on the 97 staves it
+   reaches; the other 69 fall to a coin-flip-with-a-bias. This is a model and
+   training question, not a CV one.
+2. **Make `slot_continuity` work.** It covers ONE staff of 166 today, and it is
+   the cheapest possible fill: a part read correctly in one system supplies its
+   own clef in another. beet9-p60 is exactly the case — two systems of twelve,
+   every part appearing twice — and Phase 1 reports it as one system of
+   twenty-four, which disables the pass on the page that would benefit most.
+   **Fixing system grouping there is a clef fix disguised as a layout fix.**
+3. **Widen dossier coverage** (12 staves, 75%). It needs the part-staff join,
+   which needs margin labels.
+4. **The CV locator, last.** Three staves.
+
+### A note on what the base-3 number was worth
+
+`(base 3) 52/52 100%` has been the headline for this benchmark across several
+sessions. It is not wrong, and it has not moved. It simply describes three easy
+pages, and every hard page added since scores between 62% and 90%. Keep
+reporting it for continuity, but steer by the 166.
+
+
+---
+
+## Item 1, the detector's reach: mostly a model problem, with one free read in it (2026-09-01)
+
+"Get the detector to fire more often" was the largest measured lever. The first
+question is whether it needs a better model, and `probe_detector_reach.py`
+answers it by running the production detector on both crops of every staff in
+the hand-read corpus, at the pipeline's own per-cell `imgsz`.
+
+```
+113 staves        measure cell   header crop
+  no clef in either       45
+  both agree              29
+  measure only            30
+  header only              8
+```
+
+**On 45 of 113 staves neither crop yields a clef at all.** That is not a framing
+problem and no fallback reaches it: the model does not see these glyphs. Item 1
+is a training question, and the project's record on that is three negative
+results already (catalog training, domain augmentation, the clef fine-tune).
+
+### The free part
+
+Of the 45 the measure cell misses, the header crop reads 8 — **and all 8 are
+right.** It contradicts a measure-cell reading on zero staves, because it is
+never consulted where there is one.
+
+That is now shipped as a gap-fill, running after the CV locator so nothing loses
+precedence, and reading the header crop wherever the measure cell produced no
+clef. Note the header cell is supplied on every staff now:
+`_header_cell_beats_measure_cell` decides something narrower — whether the
+locator and the specialist should read the header INSTEAD of the measure cell —
+and half of these eight sit on staves that gate leaves alone.
+
+This does not contradict the WTC p.17 measurement that pointed
+`_header_detections` at the measure cell in the first place. The header crop is
+worse for this model on average; it is not worse everywhere, and where the
+measure cell yields nothing there is nothing to lose.
+
+| | before | after |
+|---|---:|---:|
+| end-to-end, 166 staves | 144 (87%) | **145 (87%)** |
+| `default` staves | 53 at 68% | **41 at 61%** |
+| `detector_header` staves | — | **12 at 100%** |
+| tests | 1107 | 1107 |
+
+**Twelve staves move from guessing to reading, and one of them changes the
+answer.** The other eleven were trebles the positional default would have got
+right for the wrong reason — worth having as evidence rather than luck, but
+honest accounting says this bought one staff.
+
+### A scoring bug this shook out
+
+`orchestral-clef-truth.json` records `c-clef` where the glyph is certainly a C
+clef but its line could not be read off the print. `eval_pipeline_clefs` matched
+the truth string exactly, so a correct C-clef reading of such a staff scored as
+WRONG — beet9-p120 s13 was being read `tenor`, correctly, and counted as an
+error. Fixed: a `c-clef` row is answered by any C clef, which is as precise as
+the truth is.
+
+
+---
+
+## Items 2, 3 and 4 — and where the clef layer's errors actually come from (2026-09-01)
+
+Working the leverage list to the end. Two of the three remaining items are dead,
+and finishing them points at something none of the four named.
+
+**Every error, by the reader that produced it** (`eval_pipeline_clefs --wide
+--out`, 21 wrong of 166):
+
+```
+  17  default    — the positional guess, always "treble"
+   2  detector   — beet9-p60 s9 and s22, altos read as treble
+   3  dossier    — beet5-p48, the trombone join (alto->bass, tenor->alto, bass->alto)
+```
+
+### Item 2, `slot_continuity`: dead, and for a structural reason
+
+The lead was that beet9-p60 is two systems of twelve reported as one of
+twenty-four, which disables the pass. Both halves of that turn out not to
+matter.
+
+The boundary is invisible to connectivity, not marginally but inverted:
+`gap_bridging_counts` scores the true system break at **324 bridged columns**,
+against a within-system median around 120 and a minimum of 46. The systems are
+printed 77 px apart where within-system gaps run 40–120 px, so distance cannot
+separate them either — which `system_grouping` already documents.
+
+But fixing it would gain nothing, and that is the useful part. **The same slot
+fails in every system it appears in.** beet9-p60's viola reads treble from the
+detector in BOTH systems; beet6-p20's viola defaults to treble in both, on a
+page whose grouping is already correct. `slot_continuity` propagates a reading
+from one system to another, and there is never a good one to propagate: the same
+part in the same edition prints the same glyph, so a reader that fails it once
+fails it twice. **The failures are correlated across systems by construction.**
+It covers one staff of 166 because that is nearly all there is for it to do.
+
+### Item 3, the dossier: not under-covered so much as wrong
+
+It supplies 12 staves and gets 9 right. The three it gets wrong are consecutive
+on beet5-p48 — `alto->bass`, `tenor->alto`, `bass->alto` — which is the
+part-staff join slipping across the trombones on the page that has 23 parts on
+17 staves. Widening dossier coverage before fixing that would spread a known
+misalignment further. This is the join problem, already documented at length in
+`benchmarks/omr-part-staff-join-2026-08/`, arriving from a new direction.
+
+### Item 4, the CV locator: confirmed lowest, at three staves
+
+Three of 166, all correct. Nothing to add to yesterday's conclusion.
+
+### What the list was missing
+
+Seventeen of the twenty-one errors are the positional default, and every one is
+a bass or C-clef staff called treble. The machinery to do better exists and
+works: `clef_correction.correct_clefs_from_instruments` proposes the
+instrument's own default clef wherever no clef was READ, vetoed by whether the
+staff's register fits. It applied **zero** corrections across all ten pages.
+
+Not because it is broken — because it is starved. On beet6-p20 the text layer
+labels five staves, `Fl. Ob. Cl. Fag. Cor.`, and stops; the engraving does not
+label the strings at all, and the score-order prior does not name them either,
+so slots 5–9 carry no instrument and the pass has nothing to reason from. Supply
+the names by hand and it fires immediately:
+
+```
+  staff 7  slot 7  Viola  treble -> alto  fit 1.00  n=57  APPLIED
+```
+
+That is one of that page's two errors, fixed by naming a slot rather than by
+reading a glyph. Note also what did NOT happen: the same experiment named slot 6
+"Timpani" — wrong, it is Violin II — and proposed `treble -> bass` with
+`applied: False`, because the detector had actually read that staff. The
+gap-fill-only rule contained a bad name, which is the property that makes this
+safe to push on.
+
+**So the biggest remaining lever in the clef layer is instrument identity, not
+clef reading.** `eval_score_order` measures exactly that and reports the prior
+naming 12 of 33 staves at 0.92 precision — abstaining on two thirds. Every staff
+it could name safely is a staff whose clef stops being a guess.
+
+
+---
+
+## Instrument identity is worth four staves and fixes the dossier outright (2026-09-01)
+
+The previous section said the biggest lever left is instrument identity rather
+than clef reading, and that `correct_clefs_from_instruments` is starved of names
+rather than broken. Measured, by giving it names.
+
+Nothing in the reasoning path needed changing — a check worth recording, because
+the obvious suspicion was that a defaulted clef was feeding the layout prior and
+coming back as evidence. It is not: `contextual._read_clefs_by_slot` already
+filters on `clef_source`, and its docstring says exactly why ("a guess fed into a
+prior comes back out looking like evidence"). The design is sound; the input is
+thin.
+
+So the experiment is the label ladder. `eval_pipeline_clefs --wide` with the
+free readers only, against the same run with the paid margin reader allowed:
+
+| | `--assist none` | `--assist vision` |
+|---|---:|---:|
+| **end-to-end, 166 staves** | 145 (87%) | **149 (90%)** |
+| beet5-p48 | 14/17 (82%) | **17/17 (100%)** |
+| beet9-p30 | 9/13 (69%) | **10/13 (77%)** |
+| `dossier` source | 12 staves, **9 right** | 12 staves, **12 right** |
+| instrument corrections applied | 0 | **4** |
+
+**The dossier's three wrong clefs were a label problem.** Yesterday's reading —
+"the dossier is wrong where it fires, and that is the part-staff join slipping
+across the trombones" — was right about the mechanism and wrong about the cause.
+The join slips because the page's labels are missing, not because the join logic
+is at fault: beet5-p48's text layer yields nothing and Tesseract nothing usable,
+the vision reader returns twelve labels, and the join then lands 12 of 12.
+
+And `correct_clefs_from_instruments` fires for the first time — four
+corrections, on the three pages where the extra labels arrived.
+
+### So the blocker is label COVERAGE on scanned pages, and one free rung is missing
+
+The tier counts tell the story. On the pages that gain, the text layer returns
+**zero** labels and Tesseract returns none the lexicon can resolve; the vision
+reader returns 8 to 15. On the pages that do not gain (beet6-p20, bolero-p12)
+the text layer already supplied everything.
+
+`surya` reports **0 on every page of the corpus, because it is not installed** —
+`staff_labels_surya.available()` is False on this machine. It is the free rung
+between the text layer and the paid reader, it was built and wired for exactly
+this case, and it has never run in any measurement recorded here. Installing it
+is the cheapest available experiment on the largest remaining error class, and
+until it runs the "free path" numbers in this file describe a ladder with a rung
+missing.
+
+### What identity cannot reach
+
+Of the seventeen errors left, seven are `bass -> treble`, five `alto -> treble`
+and five `c-clef -> treble`, and beet9-p120 holds seven of them by itself — the
+choral finale, where **no tier returns a label at all**, vision included. Worth
+separating from the rest: even with perfect identity those five choral C clefs
+would not be fixed by an instrument's default clef, because a modern lexicon
+gives Soprano and Tenor the treble clef, not the C clefs this 19th-century
+edition prints. Identity is worth roughly twelve of the seventeen, not all of
+them.
+
+
+---
+
+## Surya installed — and on this corpus it is net zero (2026-09-01)
+
+The free rung of the label ladder has never run in any measurement in this
+project. Installed and measured.
+
+Setup took nothing that was not already here: llama.cpp was on the machine, and
+so was `python3.14` — the earlier report that no Python ≥ 3.10 was on PATH came
+from a malformed shell loop of mine, not from the machine. `python3 -m
+tools.omr.staff_labels_surya --bootstrap` builds `.venv-surya` (gitignored) and
+`available()` flips to True.
+
+**It works, and it is quick.** On beet5-p48, the page whose text layer yields
+nothing, it reads 12 labels in 7.6 s and every one resolves — including
+`'Fl. fl. pic.' -> Piccolo`, which is right: the join ground truth records slot 0
+as Piccolo, labelled `Fl. pic.` So the doubling that looks like a misread is the
+engraving.
+
+**End to end it changes nothing.**
+
+| page | free (before) | free + Surya | `--assist vision` |
+|---|---:|---:|---:|
+| beet5-p48 | 14/17 | **15/17** | **17/17** |
+| beet9-p60 | 19/24 | **18/24** | 19/24 |
+| beet9-p30 | 9/13 | 9/13 | **10/13** |
+| all others | — | unchanged | unchanged |
+| **total** | **145/166** | **145/166** | **149/166** |
+
+One staff gained on beet5-p48, one lost on beet9-p60, and the paid reader's four
+staves are still unclaimed.
+
+### What it did change is worth keeping
+
+The dossier goes from **9 right of 12 answered** to **9 of 9** — Surya's labels
+make the part-staff join ABSTAIN on the three staves it used to answer wrongly,
+rather than fixing them. That is the trade this project asks for everywhere
+else, and it comes free.
+
+Against that, beet9-p60 loses a staff: with Surya's labels the page applies two
+instrument corrections and one of them is wrong, introducing a `treble -> bass`.
+The gap-fill rule contains a bad name only where a clef was READ; on a defaulted
+staff a wrong name becomes a wrong clef.
+
+### Why it does not reach the paid reader's four staves
+
+Three different reasons, none of them "Surya is worse at reading":
+
+* **beet9-p120 and wtc-p17** — no tier returns a label at all, Surya included.
+  There is nothing in the margin these readers can find.
+* **beet9-p30 and beet6-p20 and bolero-p12** — the text layer answers first, so
+  Surya never runs. On beet9-p30 the paid reader nonetheless does better, which
+  says the ladder's `_usable()` comparison is worth a look: a reader that is
+  invoked only when the one above it returns nothing cannot improve on a text
+  layer that returns something poor.
+* **lamer-p50** — Tesseract wins the tier race with 19 reads that resolve to 4
+  labels, and Surya is not consulted.
+
+So the honest summary is that installing it was right — it is free, fast,
+correct where it reads, and it improved the dossier's precision — and that the
+label gap this project measured is not closed by it. The remaining four staves
+sit behind the ladder's ORDER, not behind any one reader's accuracy.
+
+
+---
+
+## The ladder's order: two bugs fixed, one mechanism still open (2026-09-01)
+
+### Fixed: the free rungs compared raw label counts, the paid rung compared usable ones
+
+`_labels_for_page` keeps whichever reader "read more". At the paid rung that
+comparison is `_usable(read) > _usable(labels)`, with a measured rationale in the
+comment beside it — a label the lexicon cannot resolve reaches the join as
+nothing, so counting it lets a worse read tie a better one, and Beethoven 5 p.48
+cost three clefs to that exact confusion. One rung up, the Surya-vs-text-layer
+comparison still used raw `len()`.
+
+Beethoven 9 p.30 is the same failure in the other place: its text layer returns
+**8 labels of which 6 resolve**, Surya returns **7 of which 7 resolve**, and
+`8 > 7` kept the worse read. Comparing usable labels at both rungs takes that
+page from 9/13 to **10/13** and the free path from 145 to **146/166**. 1108
+tests.
+
+### Found, reproducible, and unexplained: Surya's presence costs three staves
+
+| | Surya installed | Surya disabled |
+|---|---:|---:|
+| `--assist vision`, 166 staves | **146** | **149** |
+| beet5-p48 | 15/17 | **17/17** |
+| dossier | 9 answered, 9 right | **12 answered, 12 right** |
+| instrument corrections | 2 | 0 |
+
+The control is exact: rename `.venv-surya`, change nothing else, re-run. 149.
+Rename it back, 146.
+
+**And it is not the labels.** Surya and the vision reader were dumped side by
+side on that page and agree on all twelve: same staves, same text, same resolved
+instrument, same confidence, same `fifths_offset`, same `y_center_px` to the
+pixel. One alias string differs — `'fl pic'` against `'fl picc'` — and neither
+is in `AMBIGUOUS_ALIASES`, so neither is treated specially by the join.
+
+What changes downstream is that the dossier fills six staves instead of nine,
+which leaves three defaulted, on two of which an instrument correction then fires
+and gets one wrong. But the reason identical labels produce different dossier
+fills is **not identified**, and I could not find it: the label list, the layout
+fit's inputs and the slot assignment all look the same from outside.
+
+**So the state to be aware of:** the best number this corpus has produced is 149,
+and it needs Surya absent. With Surya present the free path is 146 and the paid
+path is also 146 — paying buys nothing, because the paid reader is not consulted
+on the page where it would help.
+
+The `_usable` fix is sound on its own terms and stays: it is +1 on the free path
+and it makes two rungs agree about what counting means. The Surya regression is
+separate, older than that fix, and open. Until it is understood, `.venv-surya`
+is the switch — and a machine that never bootstrapped it is unaffected, which is
+most of them.
+
+### Where to start on it
+
+`apply_contextual_analysis`'s summary is the thread: "12 labels, 0 instrument
+corrections, 9 from the dossier" against "12 labels, 2 instrument corrections, 6
+from the dossier". Instrument identity and the dossier join both read from the
+same labels, so something between `labels` and `_apply_dossier_clefs` is
+carrying more than the label fields — the ordering of the list, or which reader
+the tier bookkeeping credits, are the two candidates worth checking first.
+
+
+---
+
+## The Surya regression is FIXED — a tie now goes to the better reader (2026-09-01)
+
+The section above left this open: installing Surya cost three staves on the paid
+path, 149 to 146, and the labels looked identical. Fixed, and the fix is one
+character.
+
+`_labels_for_page`'s paid rung kept its own read only on `_usable(read) >
+_usable(labels)`. On Beethoven 5 p.48 both readers return twelve usable labels,
+`12 > 12` is false, and the cheaper read was kept. **A tie now goes to this
+rung** — `read and _usable(read) >= _usable(labels)` — because a count cannot
+see that one of the labels it is counting is wrong, so where counts cannot
+separate two readers the ladder's own accuracy ordering must. The paid call has
+already been made and paid for by the time that line runs, so the tie costs
+nothing; testing `read` keeps an empty read (a reader that failed) from ever
+winning.
+
+| | `--assist none` | `--assist vision` |
+|---|---:|---:|
+| Surya absent | 145 | 149 |
+| Surya present, `>` | 146 | **146** |
+| **Surya present, `>=`** | **146** | **149** |
+
+Verified independently on both arms: beet5-p48 back to 17/17 with the dossier at
+12/12, beet9-p60 to 19/24, 1108 tests. And a second thing it fixes, which was
+invisible before: with Surya installed the paid reader was being **called on
+every page and used on one**. `--assist vision` was buying nothing anywhere it
+mattered.
+
+### So Surya should be kept
+
+* `--assist vision`: **exactly neutral** (149 either way) — worth keeping as the
+  free rung for a machine with no API budget.
+* `--assist none`: **+1** (146 against 145).
+* Both of the reasons to remove it — three staves on the paid path, and the
+  wasted budget — are gone.
+
+### What is NOT established, and a correction to make
+
+The previous section asserted "**it is not the labels** … they agree on all
+twelve". That was over-stated, and it is what sent the first investigation to
+list order and tier bookkeeping. Something about Surya's twelve does behave
+differently from the paid reader's twelve.
+
+A subagent reported the cause as Surya misreading staff 10's `Tr. Ten.` as
+`Tr. Teq.` → Trumpet, which would poison `label_pins` and unanchor the
+trombones. **That does not reproduce here** — four direct runs, warm and cold
+llama.cpp server, and a capture inside the ladder's own call all return
+`Tr. Ten.` → Trombone at high confidence, alias `tr ten`.
+
+The one difference that does survive checking is staff 0: Surya reads
+`'Fl. fl. pic.'` where the paid reader reads `'Fl. picc.'`. Both resolve to
+Piccolo at high confidence, and neither alias is in `AMBIGUOUS_ALIASES` — so if
+that is the cause, something downstream is reading the RAW TEXT rather than the
+resolved label. That is the thread to pull. The fix does not depend on which end
+it is, which is why it shipped and the mechanism is still written down as open.
+
+**A hypothesis that would reconcile the two observations, and is worth testing
+first.** The llama.cpp server Surya spawns runs `--parallel 8` with a large
+context, so requests are batched. The subagent was reading margins while driving
+full ten-page benchmark runs; the checks here were single-page reads against an
+otherwise idle server. If batching or concurrency perturbs the decode, Surya's
+output is not a fixed function of its input — which would explain one reader
+seeing `Tr. Teq.` consistently and another seeing `Tr. Ten.` consistently, and
+would matter far more than this one label: a reader whose answer depends on what
+else is in flight cannot be measured by a benchmark that reads it in isolation.
+Test it by reading the same page repeatedly under concurrent load before
+spending time on the staff-0 text.

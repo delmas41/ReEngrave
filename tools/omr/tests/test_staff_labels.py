@@ -182,3 +182,70 @@ def test_no_staves_returns_empty(labelled_pdf):
     path, _labels = labelled_pdf
     pws = PageWithStaves(page=render_page(path, 0, dpi=DPI), staves=[])
     assert read_staff_labels(pws) == []
+
+
+class TestPartialTextLayerStillAsksTheMarginReader:
+    """A patchy OCR layer used to suppress the margin reader exactly as a
+    complete one did — any label at all and it stopped.
+
+    That is the case that matters most, because a scanned score's text layer is
+    routinely partial rather than absent. Measured on the Pastoral: 4 staves of
+    10 from the text layer, 10 of 10 from the margin
+    (`benchmarks/omr-margin-labels-2026-08/VISION_CEILING_2026-08-30.md`), and
+    the six it adds are what carry the part-join down past the winds.
+    """
+
+    def _covered(self, n_staves: int, labelled: int) -> bool:
+        from types import SimpleNamespace
+        from tools.omr.contextual import _well_covered
+        from tools.omr.instruments import lookup
+
+        # `_well_covered` reads only system_index and staff_index off a staff,
+        # so stubs keep this test off the Staff constructor.
+        pws = SimpleNamespace(staves=[SimpleNamespace(staff_index=i, system_index=0)
+                                      for i in range(n_staves)])
+        flute = lookup("Fl.").instrument
+        labels = [SimpleNamespace(staff_index=i, matched=True, instrument=flute)
+                  for i in range(labelled)]
+        return _well_covered(labels, pws)
+
+    def test_a_thin_text_layer_is_not_enough(self):
+        assert self._covered(10, 4) is False, "4 of 10 must still ask the margin"
+
+    def test_a_nearly_complete_text_layer_stands_alone(self):
+        assert self._covered(10, 10) is True
+        assert self._covered(10, 8) is True
+
+    def test_no_labels_at_all_is_not_covered(self):
+        assert self._covered(10, 0) is False
+
+
+class TestUnresolvedLabelsAreReported:
+    """A label the lexicon cannot match must not vanish quietly.
+
+    It produces no label, which is indistinguishable from a staff that carries
+    none — and the two want opposite responses. One is the engraving telling you
+    nothing; the other is a missing alias, with the string you need sitting right
+    there. Mahler 5 p.4 lost eight labels this way in silence
+    (`benchmarks/omr-part-staff-join-2026-08/RESULTS.md`).
+    """
+
+    def test_a_label_that_matches_nothing_is_not_silently_matched(self):
+        from tools.omr.instruments import lookup
+        from tools.omr.staff_labels import StaffLabel
+
+        hit = lookup("Zzyzx.")
+        assert hit is None, "the premise: this resolves to nothing"
+        lab = StaffLabel(staff_index=0, text="Zzyzx.", instrument=None,
+                         fifths_offset=0, y_center_px=0.0)
+        assert lab.matched is False
+        assert lab.text == "Zzyzx.", "and the text survives, to be reported"
+
+    def test_the_summary_carries_the_unmatched_text(self):
+        """`apply_contextual_analysis` reports `unresolved_labels`, which is what
+        turns 'this page looks unlabelled' into 'add these to instruments.py'."""
+        import inspect
+        from tools.omr import contextual
+        src = inspect.getsource(contextual.apply_contextual_analysis)
+        assert "unresolved_labels=unresolved" in src
+        assert "NOT MATCHED by the lexicon" in src
