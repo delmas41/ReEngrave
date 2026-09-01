@@ -381,6 +381,45 @@ class TestAbstains:
         draw_noteheads(img)
         assert locate_clef(make_cell(img)) is None
 
+    def test_worn_dots_standing_clear_of_the_body_still_veto(self):
+        """The second reading of the same two dots: more position, less shape.
+
+        A worn dot is not round — the staff-line stripper leaves a stub where
+        the line ran under it, and the pair on Beethoven 5 p.54 staff 8
+        measures 0.86 and 1.00 tall against widths of 0.59 and 0.64, well past
+        the strict height bound. Loosening that bound WHERE THE DOTS STAND is
+        what the corpora refused; loosening it only where they stand clear of
+        the body costs no C clef on either edition, because a C clef has no ink
+        out there. See `dot_clear_right_fraction`.
+        """
+        img = blank_page()
+        draw_f_clef(img, 4)
+        # Give each dot the staff-line stub a worn print leaves on it, taking
+        # it past `dot_max_height_spaces` but not past `dot_clear_...`.
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):
+            # 0.6 x 0.9 spaces — the proportions the worn pair on p.54 s8
+            # actually measures, not a sliver: a stub makes a dot taller, and
+            # a shape this narrow is refused by `dot_clear_min_aspect` however
+            # it stands (which is itself measured — see that field).
+            cv2.rectangle(img, (22 + 28, cy + dy - 9), (22 + 40, cy + dy + 9), 0, -1)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img)) is None
+
+    def test_the_loose_reading_does_not_reach_inside_the_body(self):
+        """The half that makes it safe. The same worn pair, printed ON the
+        glyph instead of clear of it, is NOT dots — a C clef's near-pairs are
+        fragments of its own strokes, and admitting them is exactly what cost
+        27 real clefs when the height bound was loosened on its own."""
+        img = blank_page()
+        draw_c_clef(img, 4)
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):   # inside the clef's own width
+            cv2.rectangle(img, (22 + 12, cy + dy - 9), (22 + 18, cy + dy + 9), 0, -1)
+        draw_noteheads(img)
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.line == 4
+
     def test_the_same_body_without_dots_is_read_as_a_c_clef(self):
         # Proves the dots are doing the rejecting, not the body's shape.
         img = blank_page()

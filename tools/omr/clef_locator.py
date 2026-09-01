@@ -214,6 +214,44 @@ class ClefLocatorConfig:
     dot_max_aspect: float = 1.5
     dot_pair_max_width_diff_spaces: float | None = None
     dot_right_fraction: float = 0.55   # dots sit right of the glyph's middle
+    # A SECOND, looser reading of the same two dots, admitted only where they
+    # stand clear of the body — past its right edge rather than merely right of
+    # its middle. Everything the strict bounds above accept is still accepted
+    # exactly as before, so this can only ever ADD a veto.
+    #
+    # This is what the earlier height loosening got wrong, and the corpora now
+    # say so in one line. Loosening the height alone, at the old 0.55 position,
+    # vetoes 5 misreads and costs 3 real C clefs; requiring the same dots to sit
+    # past the body's right edge costs **zero** real clefs at EVERY height and
+    # aspect tried, on both editions:
+    #
+    #     position    height   aspect      false pos. vetoed   real clefs lost
+    #     >= 0.55w      0.95    <= 1.5              5                 3
+    #     >= 0.55w      1.15    <= 1.5              5                 4
+    #     >= 1.00w      0.95    <= 1.5              5                 0
+    #     >= 1.00w      1.15    <= 2.2              8                 0
+    #     >= 1.00w      1.40    <= 3.0              8                 0
+    #
+    # The reason is structural rather than lucky. A C clef's near-pair is made
+    # of fragments of its OWN strokes, which live inside the glyph; an F clef's
+    # dots are printed clear of it. Position separates the two populations
+    # completely, which is why the cost column is identically zero across the
+    # whole grid — so the shape bounds below only govern how many F clefs are
+    # caught, never how many C clefs are lost, and being generous with them
+    # risks a missed veto rather than a wrong one.
+    #
+    # The height reaches 1.25 because a worn dot is not round: the staff-line
+    # stripper leaves a stub where the line ran under it, and the pair on
+    # Beethoven 5 p.54 staff 8 measures 0.86 and 1.00 tall against widths of
+    # 0.59 and 0.64. The aspect reaches 2.2 for the mirror case, a dot the
+    # stripper has cut flat. Both sit inside a plateau rather than at its edge.
+    dot_clear_right_fraction: float = 1.0
+    dot_clear_max_height_spaces: float = 1.25
+    dot_clear_max_aspect: float = 2.2
+    # NOT loosened, and measured: dropping `dot_min_aspect` from 0.65 to 0.45
+    # costs 2 real C clefs and to 0.30 costs 4, at every height. A shape that
+    # tall and narrow is a stroke, not a dot, wherever it stands.
+    dot_clear_min_aspect: float = 0.65
     dot_max_dx_spaces: float = 0.30
     dot_min_dy_spaces: float = 0.60
     dot_max_dy_spaces: float = 1.50
@@ -513,16 +551,30 @@ def _has_f_clef_dots(
         bh = stats[i, cv2.CC_STAT_HEIGHT] / spacing
         if not (config.dot_min_size_spaces <= bw <= config.dot_max_size_spaces):
             continue
-        if not (config.dot_min_size_spaces <= bh <= config.dot_max_height_spaces):
-            continue
         aspect = bw / max(bh, 1e-6)
-        if not (config.dot_min_aspect <= aspect <= config.dot_max_aspect):
-            continue
         cx = stats[i, cv2.CC_STAT_LEFT] + stats[i, cv2.CC_STAT_WIDTH] / 2.0
-        # Right of the BODY's middle, not of the widened search window — the
-        # test is about where the dots sit on the glyph, and widening the window
-        # must not quietly move the line it is measured against.
-        if cx / w < config.dot_right_fraction:
+        # Two readings of the same dot, and a component only has to satisfy one.
+        #
+        # The strict one is unchanged, and is measured against the BODY's
+        # middle rather than the widened search window — the test is about
+        # where the dots sit on the glyph, and widening the window must not
+        # quietly move the line it is measured against.
+        #
+        # The loose one asks for more position and less shape: a dot standing
+        # clear of the body, past its right edge, may be as worn as the
+        # staff-line stripper leaves it. A C clef has no ink out there, so
+        # nothing is risked; see `dot_clear_right_fraction`.
+        strict = (
+            config.dot_min_size_spaces <= bh <= config.dot_max_height_spaces
+            and config.dot_min_aspect <= aspect <= config.dot_max_aspect
+            and cx / w >= config.dot_right_fraction
+        )
+        clear = (
+            config.dot_min_size_spaces <= bh <= config.dot_clear_max_height_spaces
+            and config.dot_clear_min_aspect <= aspect <= config.dot_clear_max_aspect
+            and cx / w >= config.dot_clear_right_fraction
+        )
+        if not (strict or clear):
             continue
         dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0, bw))
     for i in range(len(dots)):

@@ -1162,3 +1162,106 @@ with the truth, so measure it better", and twice the right answer has been
 its own input is unusable is worth more than a rule that tries to work anyway —
 and the way to find the bound is to look at the whole population, where a failed
 measurement usually sits somewhere no successful one ever does.
+
+
+---
+
+## The F-clef veto: it was never the shape, it was WHERE the dots stand — 21 → 13 (2026-08-31)
+
+Two sessions had reasoned about this veto rather than measuring it, and both
+diagnoses were wrong: first *"the dots merge into the clef's body"* (they do not
+— the veto was handed the wrong pixels), then *"loosen the height bound"*
+(measured, and it cost 27 real C clefs to save 3). `probe_f_clef_dots.py` now
+re-runs the veto's own component pass with instrumentation over both sweep
+corpora, on both populations, and the answer falls out in one column.
+
+### What the surviving bass clefs actually look like
+
+For nearly every one of them the PAIR geometry already passes — dx from 0.00 to
+0.25 spaces and dy from 0.73 to 1.23, exactly the two dots straddling the F line
+a space apart. What turns them away is the shape of one of the two components:
+too tall (0.77–1.32 against a limit of 0.75), or too flat. Both are the same
+artefact — the staff-line stripper leaves a stub where the line ran under a dot,
+or cuts it flat.
+
+So the previous session was right that the height bound is what blocks them. It
+was wrong that the height bound is the thing to change, because a C clef's
+near-pairs fail on height too, and there are far more of them.
+
+### The separating property is position, and it is not close
+
+`dot_right_fraction` asks a dot to sit right of the BODY'S MIDDLE (0.55w). The
+surviving bass clefs' dots sit at 0.94 to 1.79 — **past the body's right edge**,
+where a C clef has nothing at all, because a C clef's near-pairs are fragments
+of its own strokes and those live inside the glyph.
+
+Sweeping position against height over both editions, both populations:
+
+| dots must sit | max height | max aspect | false positives vetoed | real C clefs lost |
+|---|---|---|---:|---:|
+| ≥ 0.55 w (shipped) | 0.75 | 1.5 | 0 | 0 |
+| ≥ 0.55 w | 0.95 | 1.5 | 5 | **3** |
+| ≥ 0.55 w | 1.15 | 1.5 | 5 | **4** |
+| ≥ 1.00 w | 0.95 | 1.5 | 5 | **0** |
+| **≥ 1.00 w** | **1.25** | **2.2** | **8** | **0** |
+| ≥ 1.00 w | 1.40 | 3.0 | 8 | **0** |
+
+**The cost column is identically zero for every height and aspect tried, once
+the dots are required to stand clear of the body.** That is the whole finding.
+The shape bounds only govern how many F clefs are caught; position governs
+whether any C clef is lost. Which also explains the earlier refusal exactly: at
+0.55w a loosened height admits the C clefs' own stroke fragments, and 27 of them
+go.
+
+Two things are NOT loosened, and both are measured: dropping the minimum aspect
+from 0.65 to 0.45 costs 2 real clefs and to 0.30 costs 4, at every height — a
+shape that tall and narrow is a stroke, not a dot, wherever it stands. And
+raising the maximum aspect past 2.2 buys nothing.
+
+### Shipped as a second reading, so it can only ever ADD a veto
+
+`dot_clear_right_fraction` / `dot_clear_max_height_spaces` /
+`dot_clear_max_aspect` are a second tier. A component counts as a dot if it
+satisfies the strict bounds (unchanged, anywhere right of the body's middle) OR
+the loose bounds while standing clear of the body. Everything the veto rejected
+before is still rejected, bit for bit, so the reference sheet, the piano corpus
+and Nottebohm coverage cannot regress by construction — and they don't.
+
+| | before | after |
+|---|---:|---:|
+| Nottebohm located | 79 / 206 | 79 / 206 |
+| reference | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage | 7/9 | 7/9 |
+| orchestral misses | 5 | 5 |
+| sweep misses | 8 | 8 |
+| beethoven5 false positives | 7 | **3** |
+| mahler5 false positives | 14 | **10** |
+| **FALSE POSITIVES** | **21** | **13** |
+
+Eight removed, nothing lost anywhere. 1117 tests; `eval_score_order`
+byte-identical; `eval_pipeline_clefs --contextual --dossier --assist vision`
+69/69, base-3 52/52. On Nottebohm two cells moved from `ambiguous line snap`
+into `F-clef dot veto` — they were being rejected either way, so coverage did
+not move.
+
+### What the 13 survivors are, for whoever picks this up
+
+Eleven bass clefs and two treble. The probe's own tally, now reporting both
+tiers:
+
+```
+beethoven5   3 misread survive:  2 aspect, 1 height
+mahler5     10 misread survive:  5 no pair of dot-width components at all,
+                                 5 aspect
+```
+
+The two treble clefs are not a dot problem and never will be — a G clef has no
+dots, and nothing in this veto can reach them.
+
+The five Mahler staves with **no pair of dot-width components at all** are the
+interesting group: the dots are not merely misshapen, they are absent from the
+mask, which means either they merged into the clef body before the search or
+they fall outside the 1.5-space window. That is a different question from this
+one and wants the same treatment — look at the pixels first, and check the
+answer on both editions.
