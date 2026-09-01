@@ -68,6 +68,16 @@ coverage corpora cannot regress by construction.
 The four-item leverage list was worked through and two items are dead. Read
 `RESULTS.md`'s last three sections before starting anything here.
 
+0. **INSTALL SURYA. It is a free rung of the label ladder and it has never
+   run.** `staff_labels_surya.available()` is False on this machine, so every
+   "free path" number recorded in this project describes a ladder with a rung
+   missing. Labels are now measured to be the binding constraint on clef
+   accuracy — `--assist vision` is worth +4 staves end-to-end and takes the
+   dossier from 9/12 to 12/12 — and Surya sits exactly between the text layer
+   (which returns nothing on scanned pages) and the reader that costs money.
+   `git submodule update --init` / the venv setup in `staff_labels_surya.py`.
+   Cheapest experiment available on the largest remaining error class.
+
 1. **INSTRUMENT IDENTITY, which is where the errors actually are.** Seventeen of
    the twenty-one end-to-end clef errors are the positional default calling a
    bass or C-clef staff treble. `correct_clefs_from_instruments` already turns
@@ -78,10 +88,9 @@ The four-item leverage list was worked through and two items are dead. Read
    names 12 of 33 staves at 0.92 precision, abstaining on two thirds. Every
    staff it can safely name is a staff whose clef stops being a guess. **This is
    the whole game now.**
-2. **The part-staff join, because the dossier is WRONG where it fires.** 12
-   staves, 9 right; the three wrong are consecutive on beet5-p48 and are the
-   join slipping across the trombones. Do not widen dossier coverage before
-   fixing it — that spreads a known misalignment.
+2. **The part-staff join is NOT broken — it was starved.** The three wrong
+   dossier clefs on beet5-p48 are 12/12 correct once the vision reader supplies
+   that page's labels. Read this as an instance of item 0, not a separate job.
 3. **The detector's blind 45 staves of 113**, where neither the measure cell nor
    the header crop yields a clef. A training question, and the project has three
    negative results on it already (catalog, domain augmentation, clef
