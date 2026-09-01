@@ -1718,3 +1718,79 @@ for "what does this rule cost", because the staves where the locator produces
 nothing are exactly the ones they omit. Both corpora were carefully built and
 honestly read; the sweep simply cannot see the population the question is about.
 Ask which staves a corpus contains before trusting what it says about a change.
+
+
+---
+
+## End-to-end clef accuracy on hard pages is 87%, and the leverage is not where today's work went (2026-08-31)
+
+`eval_pipeline_clefs --wide` now scores the widened corpus as well as the three
+historical pages. The three had saturated at 100%, and **a benchmark that cannot
+go down cannot show an improvement either** — that is why this was the first
+thing to fix when asked how to improve the layer.
+
+```
+166 staves with hand-read clefs
+  correct overall: 144/166 = 87%
+
+  beet5-p2     100%   beet9-p30     69%      (base 3)  52/52  100%
+  pastoral-p2  100%   beet9-p60     79%
+  wtc-p17      100%   beet9-p120    62%
+  beet5-p48     82%   beet6-p20     90%
+  bolero-p12   100%
+```
+
+### Where the errors are, which settles what to work on
+
+```
+  source            staves  correct  accuracy
+  detector              97       95      98%
+  default               53       36      68%
+  dossier               12        9      75%
+  cv_locator             3        3     100%
+  slot_continuity        1        1     100%
+
+  the 22 wrong readings, by (want -> got):
+    bass -> treble x8   c-clef -> treble x6   alto -> treble x5
+    alto -> bass   x1   tenor  -> alto   x1   bass   -> alto  x1
+```
+
+**Nineteen of the twenty-two errors are "→ treble", and every one is the
+positional default.** It fires on 53 of 166 staves — a third of the page — and
+is wrong on seventeen. It is right the other 36 times for the same reason it is
+wrong these seventeen: most orchestral staves are treble, and it always says
+treble.
+
+**The detector is excellent and under-used: 98% accurate, but it only reaches 97
+of 166 staves.** Every staff it does not reach falls to the default.
+
+**And the CV locator supplies THREE staves of 166.** Today's entire session was
+spent on it — the margin rule, the staff's left edge, the F-clef dots, the
+single-dot veto and its revert — and its total end-to-end contribution here is
+three staves, all correct. Taking it from 13-of-24 C clefs to a hypothetical
+20-of-24 would move this number by about one percent. That is worth saying
+plainly: the work was sound and the measurements hold, but it was aimed at the
+component with the least leverage, and only an end-to-end benchmark on hard
+pages could have shown that.
+
+### What to do, in order of measured leverage
+
+1. **Get the detector to fire more often.** 98% accurate on the 97 staves it
+   reaches; the other 69 fall to a coin-flip-with-a-bias. This is a model and
+   training question, not a CV one.
+2. **Make `slot_continuity` work.** It covers ONE staff of 166 today, and it is
+   the cheapest possible fill: a part read correctly in one system supplies its
+   own clef in another. beet9-p60 is exactly the case — two systems of twelve,
+   every part appearing twice — and Phase 1 reports it as one system of
+   twenty-four, which disables the pass on the page that would benefit most.
+   **Fixing system grouping there is a clef fix disguised as a layout fix.**
+3. **Widen dossier coverage** (12 staves, 75%). It needs the part-staff join,
+   which needs margin labels.
+4. **The CV locator, last.** Three staves.
+
+### A note on what the base-3 number was worth
+
+`(base 3) 52/52 100%` has been the headline for this benchmark across several
+sessions. It is not wrong, and it has not moved. It simply describes three easy
+pages, and every hard page added since scores between 62% and 90%. Keep
+reporting it for continuity, but steer by the 166.

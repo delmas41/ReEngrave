@@ -57,6 +57,33 @@ WORKS = {"beet5-p2": "beethoven-sym5-mvt1", "pastoral-p2": "beethoven-sym6-mvt1"
          "beet5-p48": "beethoven-sym5-mvt4"}
 
 
+def wide_pages() -> list[dict]:
+    """The widened hand-read corpus, in this benchmark's page schema.
+
+    It is matched TOP TO BOTTOM across the whole page rather than by ordinal
+    within a system, because system grouping is itself imperfect — the file
+    carries `n_staves` so a page the pipeline lays out differently is skipped
+    rather than mis-scored. `flat` marks that.
+
+    It exists here because the three historical pages had saturated at 100%,
+    and a benchmark that cannot go down cannot show an improvement either.
+    """
+    path = (REPO / "benchmarks" / "omr-clef-geometry"
+            / "orchestral-clef-truth.json")
+    if not path.exists():
+        return []
+    out = []
+    for page in json.loads(path.read_text())["pages"]:
+        out.append({
+            "id": page["id"], "work": page.get("work", ""), "pdf": page["pdf"],
+            "page_index": page["page_index"], "dpi": page.get("dpi", 300),
+            "flat": True, "n_staves": page["n_staves"],
+            "staves": [{"ordinal": i, "instrument": None, "clef": c, "fifths": 0}
+                       for i, c in enumerate(page["clefs"])],
+        })
+    return out
+
+
 def extra_pages() -> list[dict]:
     """The join benchmark's page, in this benchmark's own page schema.
 
@@ -84,7 +111,7 @@ def extra_pages() -> list[dict]:
 def score_page(page: dict, weights: Path, dpi: int | None,
                contextual: bool = False, use_dossier: bool = False,
                assist=None) -> list[dict]:
-    pdf = Path(page["pdf"])
+    pdf = Path(page["pdf"]).expanduser()
     if not pdf.is_absolute():
         pdf = REPO / pdf
     if not pdf.exists():
@@ -115,6 +142,21 @@ def score_page(page: dict, weights: Path, dpi: int | None,
                   + ", ".join(repr(t) for t in summary["unresolved_labels"]))
     truth = {s["ordinal"]: s["clef"] for s in page["staves"]}
     rows = []
+    if page.get("flat"):
+        # One flat sequence over the whole page, guarded on the staff count.
+        ordered = [st for page_d in result["pages"]
+                   for system in page_d["systems"] for st in system["staves"]]
+        if len(ordered) != page["n_staves"]:
+            print(f"  {page['id']}: {len(ordered)} staves against "
+                  f"{page['n_staves']} in ground truth — skipped")
+            return []
+        for ordinal, staff in enumerate(ordered):
+            if truth[ordinal] is None:
+                continue      # could not be read by eye; not evidence
+            rows.append({"page": page["id"], "system": None, "ordinal": ordinal,
+                         "want": truth[ordinal], "got": staff.get("clef"),
+                         "source": staff.get("clef_source") or "default"})
+        return rows
     for page_d in result["pages"]:
         for system in page_d["systems"]:
             staves = system["staves"]
@@ -148,6 +190,10 @@ def main() -> int:
                     help="let the work's own parts supply clefs where the join is anchored")
     ap.add_argument("--contextual", action="store_true",
                     help="run contextual analysis (instrument identity -> clef) first")
+    ap.add_argument("--wide", action="store_true",
+                    help="also score the widened hand-read corpus "
+                         "(orchestral-clef-truth.json) — six harder pages the "
+                         "historical three cannot show movement on")
     # Who settles the margin where the free tiers fall short. No default, on
     # purpose — see tools/omr/assist.py. A benchmark is non-interactive, so it
     # must state the mode rather than be asked.
@@ -159,7 +205,10 @@ def main() -> int:
         return 1
 
     rows: list[dict] = []
-    for page in json.loads(TRUTH.read_text())["pages"] + extra_pages():
+    pages = json.loads(TRUTH.read_text())["pages"] + extra_pages()
+    if args.wide:
+        pages += wide_pages()
+    for page in pages:
         rows.extend(score_page(page, args.weights, args.dpi,
                                args.contextual or args.dossier, args.dossier,
                                assist))
