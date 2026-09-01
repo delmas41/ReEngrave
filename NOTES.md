@@ -32,7 +32,12 @@ result is still not a transcription of Beethoven 5:
   7/12 correct with 0 wrong (39% of staves over six pages), by matching the
   Bravura outlines instead of reassembling ink into components. The accidental
   gap halves. See `benchmarks/omr-first-run-2026-08/KEY_SIGNATURES.md`;
-- **duration recall 0.360**, half the notes that are correctly located;
+- **duration recall 0.360** — DIAGNOSED 2026-08-31 and not a rhythm bug: the
+  page prints 68 half notes and the output has 8, because the scan's
+  binarization closes the notehead's counter and the detector never sees a
+  hollow head. Engraved control: 31 hollow found against 30 real, and duration
+  recall equal to pitch recall at 0.926. Four fixes measured, none shippable —
+  `benchmarks/omr-first-run-2026-08/DURATIONS.md`;
 - 24 of 170 emitted notes sit on staves that print nothing but rests.
 
 Two things this reframes. **OMR-NED is not yet a tracking number for scans**:

@@ -279,8 +279,12 @@ Key signatures read across the six pages: 2/12, 6/22, 9/19, 6/22, 2/16, 8/22 —
 3. ~~**Key-signature coverage, 2/12.**~~ **IMPROVED 2026-08-31** — 7/12 correct,
    0 wrong, and the accidental gap halved. Five staves still abstain;
    [KEY_SIGNATURES.md](KEY_SIGNATURES.md) prices what is left.
-4. **Durations at 0.360.** The largest single gap between "found the notehead"
-   and "wrote the right note", and much less studied than pitch.
+4. **Durations at 0.381** — **DIAGNOSED 2026-08-31, not fixed.** Not a rhythm
+   bug: the page's 68 half notes arrive as 8, because the scan closes the
+   notehead's counter and the detector never sees a hollow head. The engraved
+   control has duration recall equal to pitch recall. Needs a labeling batch,
+   not another heuristic; four are recorded as failed in
+   [DURATIONS.md](DURATIONS.md).
 5. **Stitch the export.** One part per (page, system, staff) makes every
    whole-score metric — OMR-NED included — measure the wrong thing.
 6. **Join parts to staves per SYSTEM, not per page.** Six pages, eleven systems,
