@@ -71,7 +71,7 @@ def _run(monkeypatch, *, located_clef: str | None, specialist_smufl: str):
         located = SimpleNamespace(read=SimpleNamespace(name=located_clef))
         monkeypatch.setattr(transcribe_mod, "locate_clef", lambda cell, **kw: located)
 
-    _, active_clef, _, _, clef_source = _detections_for_cell(
+    _, active_clef, _, _, clef_source, _ = _detections_for_cell(
         _FakeDetector(),
         _cell(),
         conf_threshold=0.25,
@@ -149,7 +149,7 @@ def _cell_with_lines(width=800, height=400):
 
 def _run_with_detector(monkeypatch, *, detector_smufl: str, specialist_smufl: str):
     monkeypatch.setattr(transcribe_mod, "locate_clef", lambda cell, **kw: None)
-    _, active_clef, _, _, clef_source = _detections_for_cell(
+    _, active_clef, _, _, clef_source, _ = _detections_for_cell(
         _FakeDetectorWithClef(detector_smufl),
         _cell_with_lines(),
         conf_threshold=0.25, imgsz=None, iou_threshold=0.5, agnostic_nms=True,
