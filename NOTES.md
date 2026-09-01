@@ -48,6 +48,31 @@ better than us here but is NOT an oracle — p25 is the standing counter-example
 and a page LEGATO agrees with is not thereby correct. Measure the fix against
 `eval_grouping.py`, never against the miner.
 
+❌ **THREE FIXES TRIED 2026-08-31, ALL REJECTED** —
+[RULE_FIX_ATTEMPT_2026-08-31.md](benchmarks/omr-system-grouping-2026-08/RULE_FIX_ATTEMPT_2026-08-31.md).
+Rightmost-reach-over-the-window separated 262 boundaries with ZERO overlap and
+took `eval_grouping.py` to **14/14** — then over-split **12 pages** on the five
+scores outside the two Beethoven editions it was measured on (La Mer 1 → 16
+systems). Reach against the staves' own right end failed identically. The band
+this module's docstring specifies does not separate at all.
+
+**Mechanism: orchestral engraving breaks barlines between instrument families**,
+so "what crosses this gap" is a property of the edition's convention, not of
+whether a system ends. B9 and B5 happen to run barlines across group gaps, which
+is why every signal looked perfect on them.
+
+**Do not try another signal against this ground truth.** Any rule can score
+14/14 on two editions. What is needed first is hand-read system counts for a few
+Mahler / La Mer / Boléro pages, and the 54-page cross-check used as the
+regression gate — it is the only thing that caught the failure.
+
+⚠️ Found in passing and NOT resolved: **`gap_bridging_counts` does not implement
+its own docstring.** The prose says the band runs "from the top line of the upper
+staff to the bottom line of the lower staff" and argues the gap-only version
+fails on exactly B9 p25; the code measures the gap only. Implementing the
+documented version does not fix anything either, so it is unclear whether the
+code or the comment is wrong.
+
 Full writeup + evidence:
 [LEGATO_CROSSCHECK_2026-08-31.md](benchmarks/omr-system-grouping-2026-08/LEGATO_CROSSCHECK_2026-08-31.md).
 Note LEGATO's raw box count is NOT a system count — it returned 3 overlapping
