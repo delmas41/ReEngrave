@@ -2909,6 +2909,8 @@ def transcribe(
     active_clef_by_staff: dict[tuple[int, int, int], str | None] = {}
     active_key_sig_by_staff: dict[tuple[int, int, int], dict[str, str]] = {}
     active_time_sig_by_staff: dict[tuple[int, int, int], dict[str, Any] | None] = {}
+    #: The meter in effect, carried onto pages that print none.
+    carried_meter: dict[str, Any] | None = None
 
     # Clef CONTINUITY (Task-2 clef-stability pass). The last EFFECTIVE clef
     # seen at each staff ROLE (vertical position within its system), carried
@@ -3425,7 +3427,28 @@ def transcribe(
                 out.setdefault("dossier_warnings", []).extend(meter_warnings)
                 page_dict.setdefault("dossier_warnings", []).extend(meter_warnings)
 
-        backfill_page_time_signatures(page_dict)
+        page_meter = backfill_page_time_signatures(page_dict)
+        # A meter, once printed, is in effect until it changes — that is what a
+        # time signature MEANS, and it is printed at the start of a movement and
+        # nowhere else. Everything above works a page at a time, so page 2 of a
+        # 2/4 movement had no meter at all and the exporter fell back to 4/4 on
+        # it. Carry the last page's meter onto a page that read none, tagged so
+        # it is never mistaken for something this page said.
+        if page_meter is None and carried_meter is not None:
+            for system in page_dict.get("systems", []):
+                for staff in system.get("staves", []):
+                    if not staff.get("time_signature"):
+                        staff["time_signature"] = dict(carried_meter)
+                    for measure in staff.get("measures", []):
+                        if not measure.get("time_signature"):
+                            measure["time_signature"] = dict(carried_meter)
+            page_dict["inferred_time_signature"] = dict(carried_meter)
+        elif page_meter is not None:
+            carried_meter = {
+                **{k: v for k, v in page_meter.items()
+                   if k in ("numerator", "denominator", "raw")},
+                "source": "carried_from_previous_page",
+            }
 
         # ── Meter → rhythm feedback ──
         # Runs after the meter is settled (dossier, detected or inferred) and

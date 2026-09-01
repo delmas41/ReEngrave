@@ -536,6 +536,13 @@ most-reliable first:
    (Boléro p.1, a real 3/4, had most columns at ~2.0 and a 0.6 gate inferred a
    wrong 2/4). Near-consensus abstains on a mere plurality; it's a last resort.
 
+**The meter carries across pages.** A time signature is printed at the start of
+a movement, so a page that reads none is not in no meter — it is in the last one.
+`transcribe` carries it forward, tagged `source="carried_from_previous_page"`.
+Before this, page 2 of a 2/4 movement had no meter and the exporters fell back
+to 4/4; the Beethoven 5 scan now reads 2/4 on all six of its first pages instead
+of on page 1 alone.
+
 **Uncorroborated meter changes are undone first.**
 `rhythm.drop_uncorroborated_meter_changes` reverts a mid-staff meter CHANGE that
 only one staff saw, restoring the meter in effect before it. A time signature is
