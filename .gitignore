@@ -129,3 +129,8 @@ labels.cache
 
 # Surya 2 margin-label reader (Python >= 3.10 + llama.cpp)
 .venv-surya/
+
+# Central score library — the PDF/MusicXML store is machine-local (650 MB).
+# Its catalog (data/score-library/catalog.json) IS committed; see that README.
+# Anchored: an unanchored "library/" also swallows tools/library, the code.
+/library/
