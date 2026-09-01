@@ -12,6 +12,9 @@ import pytest
 
 from tools.omr.rhythm import (
     _BEAM_COUNT_DURATIONS,
+    _beamed_groups,
+    _tuplet_digit,
+    _tuplet_groups,
     _FLAG_DURATIONS,
     _NOTEHEAD_INTRINSIC,
     _REST_DURATIONS,
@@ -362,3 +365,149 @@ def test_fallback_never_reports_an_impossible_depth():
         beam_y_cluster_tol=spacing * 0.22, x_tolerance=spacing * 0.6,
     )
     assert levels <= 4, f"{levels} beams is not a note value"
+
+
+# ─── Tuplets ────────────────────────────────────────────────────────────────
+
+
+class TestTupletDigit:
+    @pytest.mark.parametrize("name, expected", [
+        ("tuplet3", 3),
+        ("tuplet6", 6),
+        ("tupletBracket", None),
+        ("noteheadBlackInSpace", None),
+        ("", None),
+    ])
+    def test_digit(self, name, expected):
+        assert _tuplet_digit(name) == expected
+
+
+class TestBeamedGroups:
+    """The beam box gives a group its extent, and it has to be PADDED.
+
+    A beam box bounds the beam INK, which starts at the first stem. With stems
+    up the first notehead's centre sits a notehead's width to the left of it,
+    so an unpadded test drops the first note of every stem-up group — measured
+    on Mahler's first triplet: box x 1659-1957 against centres 1621/1770/1918.
+    """
+
+    #: The real geometry, from Mahler 5 measure 1: noteheads ~79px wide with
+    #: centres 1621/1770/1918, beam ink starting at 1659. The first notehead's
+    #: RIGHT edge is where its stem is, and that is where the beam begins.
+    WIDTH = 79
+
+    @classmethod
+    def _heads(cls, *xs):
+        return [FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                        x_canonical=x - cls.WIDTH // 2,
+                        width_canonical=cls.WIDTH) for x in xs]
+
+    def test_first_note_left_of_the_beam_ink_is_still_in_the_group(self):
+        heads = self._heads(1621, 1770, 1918)
+        beam = FakeDet(smufl_name="beam", category="structural",
+                       x_canonical=1659, width_canonical=298)
+        groups = _beamed_groups(heads, [beam], pad=self.WIDTH)
+        assert len(groups) == 1
+        assert len(groups[0]) == 3
+
+    def test_unpadded_would_lose_it(self):
+        heads = self._heads(1621, 1770, 1918)
+        beam = FakeDet(smufl_name="beam", category="structural",
+                       x_canonical=1659, width_canonical=298)
+        assert len(_beamed_groups(heads, [beam], pad=0)[0]) == 2
+
+    def test_two_beat_groups_stay_two_groups(self):
+        """Adjacency would merge these; the boxes are why it does not."""
+        heads = self._heads(100, 200, 300, 900, 1000, 1100)
+        beams = [
+            FakeDet(smufl_name="beam", category="structural",
+                    x_canonical=140, width_canonical=200),
+            FakeDet(smufl_name="beam", category="structural",
+                    x_canonical=940, width_canonical=200),
+        ]
+        groups = _beamed_groups(heads, beams, pad=self.WIDTH)
+        assert [len(g) for g in groups] == [3, 3]
+
+    def test_a_lone_beamed_note_is_not_a_group(self):
+        heads = self._heads(100)
+        beam = FakeDet(smufl_name="beam", category="structural",
+                       x_canonical=140, width_canonical=20)
+        assert _beamed_groups(heads, [beam], pad=self.WIDTH) == []
+
+
+class TestTupletGroups:
+    """Which beamed groups a tuplet marker actually claims."""
+
+    @staticmethod
+    def _setup(marker_dets, xs=(100, 160, 220), levels=1):
+        heads = [FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                         x_canonical=x - 15, width_canonical=30) for x in xs]
+        beams = [FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=xs[0] + 5,
+                         width_canonical=xs[-1] - xs[0] + 10)]
+        out = {id(h): {"duration_beats": 0.5, "duration_type": "eighth",
+                       "dots": 0, "beam_levels": levels} for h in heads}
+        dets = heads + beams + list(marker_dets)
+        return heads, out, dets, beams
+
+    @staticmethod
+    def _digit(x, n=3):
+        return FakeDet(smufl_name=f"tuplet{n}", category="structural",
+                       x_canonical=x, width_canonical=20)
+
+    @staticmethod
+    def _bracket(x, w):
+        return FakeDet(smufl_name="tupletBracket", category="structural",
+                       x_canonical=x, width_canonical=w)
+
+    def test_digit_over_the_group_claims_it(self):
+        heads, out, dets, beams = self._setup([self._digit(150)])
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1
+        members, actual, normal = claimed[0]
+        assert (actual, normal) == (3, 2)
+        assert len(members) == 3
+
+    def test_no_marker_means_no_tuplet(self):
+        heads, out, dets, beams = self._setup([])
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_digit_that_disagrees_with_the_group_size_abstains(self):
+        """A '3' over four beamed notes is a triplet plus something else, and
+        which note is outside it is not knowable from the box."""
+        heads, out, dets, beams = self._setup(
+            [self._digit(150)], xs=(100, 160, 220, 280))
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_unmeasured_digits_abstain(self):
+        heads, out, dets, beams = self._setup(
+            [self._digit(150, n=5)], xs=(100, 140, 180, 220, 260))
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_wide_bracket_enclosing_one_group_is_read_as_a_triplet(self):
+        """Detected brackets are far wider than the notes they cover — one
+        measured at 1846px over a 478px group — so the test is CONTAINMENT of
+        the group by the bracket, not the bracket's centre."""
+        heads, out, dets, beams = self._setup([self._bracket(0, 900)])
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1
+        assert claimed[0][1:] == (3, 2)
+
+    def test_bracket_covering_two_groups_cannot_say_which(self):
+        heads = [FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                         x_canonical=x - 15, width_canonical=30)
+                 for x in (100, 160, 220, 600, 660, 720)]
+        beams = [FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=105, width_canonical=120),
+                 FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=605, width_canonical=120)]
+        out = {id(h): {"duration_beats": 0.5, "duration_type": "eighth",
+                       "dots": 0, "beam_levels": 1} for h in heads}
+        dets = heads + beams + [self._bracket(0, 900)]
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_unbeamed_notes_are_never_claimed(self):
+        heads, out, dets, beams = self._setup([self._digit(150)], levels=0)
+        for rec in out.values():
+            rec["beam_levels"] = 0
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []

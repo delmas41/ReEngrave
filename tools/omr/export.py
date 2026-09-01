@@ -323,6 +323,30 @@ def _lily_event(event: dict[str, Any]) -> str:
     return f"<{' '.join(pitches)}>{lily_suffix}{dot_str}{tie_suffix}"
 
 
+def _lily_measure(events: list[dict[str, Any]]) -> str:
+    """One measure of events as LilyPond, with tuplet runs wrapped.
+
+    `\\tuplet 3/2 { c8 c8 c8 }` — the notes keep their WRITTEN value (`8`),
+    which is what `_lily_event` already emits, and the wrapper supplies the
+    ratio. Defined here rather than inside `_lily_event` because a tuplet is a
+    property of a RUN of events and `_lily_event` renders one.
+    """
+    runs = {first: (last, ratio) for first, last, ratio in _tuplet_runs(events)}
+    out: list[str] = []
+    i = 0
+    while i < len(events):
+        run = runs.get(i)
+        if run is None:
+            out.append(_lily_event(events[i]))
+            i += 1
+            continue
+        last, ratio = run
+        inner = " ".join(_lily_event(ev) for ev in events[i:last + 1])
+        out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
+        i = last + 1
+    return " ".join(out)
+
+
 def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     """Render one OMR staff as a LilyPond `\\new Staff { ... }` block.
 
@@ -374,11 +398,11 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             v2_events = voices[1] if len(voices) >= 2 else voices[0] if voices else []
             empty_rest = _lily_measure_rest(m_time)
             v1_lines.append(
-                f"{indent}    " + " ".join(_lily_event(ev) for ev in v1_events)
+                f"{indent}    " + _lily_measure(v1_events)
                 + " |" if v1_events else f"{indent}    {empty_rest} |"
             )
             v2_lines.append(
-                f"{indent}    " + " ".join(_lily_event(ev) for ev in v2_events)
+                f"{indent}    " + _lily_measure(v2_events)
                 + " |" if v2_events else f"{indent}    {empty_rest} |"
             )
         lines.append(f"{indent}  <<")
@@ -395,8 +419,7 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             if not events:
                 lines.append(f"{indent}  {_lily_measure_rest(m_time)} |")
                 continue
-            rendered = " ".join(_lily_event(ev) for ev in events)
-            lines.append(f"{indent}  {rendered} |")
+            lines.append(f"{indent}  {_lily_measure(events)} |")
 
     lines.append(f"{indent}}}")
     return "\n".join(lines)
@@ -506,13 +529,28 @@ def _lcm(a: int, b: int) -> int:
     return a * b // _gcd(a, b)
 
 
+#: Any denominator past this is noise rather than a note value, and letting
+#: one through would blow `divisions` up for the whole score.
+_MAX_DURATION_DENOMINATOR = 64
+
+
 def _compute_divisions(result: dict[str, Any]) -> int:
     """Choose a `divisions` value (durations per quarter note) that makes
     every event's duration a whole-number multiple of 1/divisions.
 
-    We assume the shortest duration we see is 1/64th (1/16 quarter), so
-    divisions=16 covers most music. If we detect 128th notes (1/32 quarter)
-    we go to 32. Always at least 4 (sixteenth-note resolution).
+    LCM, NOT MAX, and that is what tuplets need. The old version searched a
+    power-of-two ladder and took the largest, which cannot represent a third:
+    a triplet eighth is 1/3 of a quarter, `max(16, 12)` is 16, and 16 thirds
+    is not an integer, so every triplet would be rounded to the wrong
+    `<duration>`. Taking the LCM of each duration's own denominator is exact.
+
+    **Output is unchanged for music without tuplets.** Every plain note value
+    has a power-of-two denominator, and the LCM of a set of powers of two is
+    their maximum — the same number the old ladder returned.
+
+    Durations arrive as floats (`round(beats, 6)`), so the denominator comes
+    from `Fraction.limit_denominator` rather than from a tolerance comparison:
+    0.333333 is 1/3 and no float tolerance small enough to be safe would say so.
     """
     divisions = 4
     for page in result.get("pages", []):
@@ -521,13 +559,11 @@ def _compute_divisions(result: dict[str, Any]) -> int:
                 for measure in staff.get("measures", []):
                     for det in measure.get("detections", []):
                         beats = det.get("duration_beats")
-                        if beats is None:
+                        if beats is None or beats <= 0:
                             continue
-                        # Find the smallest D such that beats * D is an int
-                        for D in (4, 8, 16, 32, 64, 128):
-                            if abs(beats * D - round(beats * D)) < 1e-6:
-                                divisions = max(divisions, D)
-                                break
+                        denom = Fraction(beats).limit_denominator(
+                            _MAX_DURATION_DENOMINATOR).denominator
+                        divisions = _lcm(divisions, denom)
     return divisions
 
 
@@ -603,7 +639,9 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               tied_to_next: bool = False,
               tied_from_prev: bool = False,
               beam_states: dict[int, str] | None = None,
-              slur_states: list[tuple[int, str]] | None = None) -> str:
+              slur_states: list[tuple[int, str]] | None = None,
+              time_modification: dict[str, int] | None = None,
+              tuplet_state: str | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -636,6 +674,17 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     lines.append(f"{indent}  <type>{xml_type}</type>")
     for _ in range(dots):
         lines.append(f"{indent}  <dot/>")
+    # <time-modification> sits after <dot> and before <beam>, per the MusicXML
+    # DTD's element order. It carries the tuplet RATIO; the <tuplet> in
+    # <notations> below is the bracket that draws it, and a reader needs the
+    # ratio even where no bracket is printed.
+    if time_modification:
+        lines.append(f"{indent}  <time-modification>")
+        lines.append(f"{indent}    <actual-notes>"
+                     f"{time_modification['actual']}</actual-notes>")
+        lines.append(f"{indent}    <normal-notes>"
+                     f"{time_modification['normal']}</normal-notes>")
+        lines.append(f"{indent}  </time-modification>")
     # <beam> sits after <type>/<dot> and before <notations>, per the MusicXML
     # DTD's element order. Levels ascend, 1 being the primary beam.
     for level in sorted(beam_states or {}):
@@ -649,6 +698,9 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
         notations.append(f'{indent}    <tied type="start"/>')
     for number, kind in (slur_states or []):
         notations.append(f'{indent}    <slur number="{number}" type="{kind}"/>')
+    # <tuplet> follows <slur> in the <notations> content model.
+    if tuplet_state:
+        notations.append(f'{indent}    <tuplet type="{tuplet_state}" number="1"/>')
     if notations:
         lines.append(f"{indent}  <notations>")
         lines.extend(notations)
@@ -878,6 +930,44 @@ def annotate_slurs(events: list[dict[str, Any]],
         events[under[-1]].setdefault("slur_states", []).append((number, "stop"))
 
 
+def _event_tuplet(event: dict[str, Any]) -> tuple[dict[str, int], int] | None:
+    """`({"actual": 3, "normal": 2}, group_id)` for a tuplet event, else None.
+
+    Read off the event's FIRST notehead, the same way `annotate_beams` reads
+    `beam_levels`, so nothing in `voicing` has to learn about tuplets. A rest
+    never carries one — see the note in `rhythm.resolve_rhythms_for_cell`.
+    """
+    heads = event.get("noteheads") or []
+    if not heads:
+        return None
+    ratio = heads[0].get("tuplet")
+    if not ratio:
+        return None
+    return ratio, int(heads[0].get("tuplet_group") or 0)
+
+
+def _tuplet_runs(events: list[dict[str, Any]]) -> list[tuple[int, int, dict[str, int]]]:
+    """Maximal runs of consecutive events sharing one tuplet group.
+
+    Consecutive matters: two triplets in a row are two brackets, and a run
+    broken by a plain note is two runs even inside one group id.
+    """
+    runs: list[tuple[int, int, dict[str, int]]] = []
+    start = None
+    current: tuple[dict[str, int], int] | None = None
+    for i, event in enumerate(events):
+        info = _event_tuplet(event)
+        key = info[1] if info else None
+        prev_key = current[1] if current else None
+        if key is None or key != prev_key:
+            if current is not None and start is not None:
+                runs.append((start, i - 1, current[0]))
+            start, current = (i, info) if info else (None, None)
+    if current is not None and start is not None:
+        runs.append((start, len(events) - 1, current[0]))
+    return runs
+
+
 def _mxl_voice_events(
     events: list[dict[str, Any]],
     voice: int,
@@ -896,10 +986,16 @@ def _mxl_voice_events(
     """
     lines: list[str] = []
     total_dur = 0
+    # Tuplet bracket ends, by event index, so `type="start"`/`"stop"` land on
+    # the run's outer notes rather than on every note in it.
+    tuplet_state_at: dict[int, str] = {}
+    for first, last, _ratio in _tuplet_runs(events):
+        tuplet_state_at[first] = "start"
+        tuplet_state_at[last] = "stop"
     # `<direction>` carries no duration, so it applies where it SITS in the
     # element order — emitted before the first event at or past its x.
     pending = sorted(directions or [])
-    for event in events:
+    for event_index, event in enumerate(events):
         event_x = event.get("x_position")
         while pending and (event_x is None or pending[0][0] <= event_x):
             lines.append(_mxl_direction(pending.pop(0)[1], indent))
@@ -908,6 +1004,9 @@ def _mxl_voice_events(
         )
         beats = event["duration_beats"]
         dur_units = max(1, int(round(beats * divisions)))
+        tuplet_info = _event_tuplet(event)
+        time_modification = tuplet_info[0] if tuplet_info else None
+        tuplet_state = tuplet_state_at.get(event_index)
         tied_to_next = bool(event.get("tied_to_next"))
         tied_from_prev = bool(event.get("tied_from_prev"))
         if event["kind"] == "rest":
@@ -928,6 +1027,10 @@ def _mxl_voice_events(
                     # A chord is beamed and slurred once, through its first note.
                     beam_states=(beam_states if ni == 0 else None),
                     slur_states=(event.get("slur_states") if ni == 0 else None),
+                    # The ratio applies to every chord member — it is what the
+                    # note is worth — but the bracket is drawn once.
+                    time_modification=time_modification,
+                    tuplet_state=(tuplet_state if ni == 0 else None),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.

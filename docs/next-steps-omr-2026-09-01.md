@@ -11,7 +11,7 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.2595** on the engraved orchestral benchmark (Mahler 0.0826,
+**Pooled OMR-NED 0.2489** on the engraved orchestral benchmark (Mahler 0.0455,
 Beethoven 0.1714, Brahms 0.3730), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
@@ -52,10 +52,12 @@ part at all.
 
 What it found, ranked, replaces the rest of this list at the top:
 
-- **Tuplets detected and never consumed** — `tuplet3` and `tupletBracket` sit in
-  Mahler's JSON while `grep -ci tuplet` is 0 across `export.py`, `rhythm.py`,
-  `transcribe.py`. Worth 87 of Mahler's 154 edits. The fifth instance of the
-  beams/dots/dynamics shape.
+- ~~**Tuplets detected and never consumed**~~ — **DONE**, pooled
+  0.2595 → **0.2489**, Mahler 0.0826 → **0.0455** (154 → 86 edits), Beethoven
+  and Brahms unchanged to the edit, phase-1 layout unchanged, authored fixtures
+  identical. The fifth instance of the beams/dots/dynamics shape, and it was
+  export-and-resolution again: the detections were in the JSON and nothing read
+  them. See the FIXED section of the attribution report.
 - **Brahms Violin 1's staff window is two spaces high** — 263 edits, the largest
   single part in the benchmark. Row COVERAGE separates its two impostor lines
   (0.44, 0.49) from real ones (1.00); the existing step-3d rule gates on

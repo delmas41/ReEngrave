@@ -832,6 +832,139 @@ def _pair_dots_to_targets(dots, targets) -> dict[int, int]:
     return result
 
 
+# ---------------------------------------------------------------------------
+# Tuplets
+# ---------------------------------------------------------------------------
+#
+# A triplet's noteheads are ORDINARY eighths on the page — the printed note
+# value is right and the bracket says three of them occupy two's worth of
+# time. So nothing here re-reads a duration; it multiplies one that was
+# already correct, which is why this sits after the beam/flag resolution
+# rather than inside it.
+#
+# Measured cost of not doing it: on the engraved Mahler 5 benchmark ALL 15 of
+# the wrong durations were `1/3 -> 1/2`, one triplet figure read straight five
+# times over, and that is 87 of the work's 154 OMR-NED edits — 57% of its whole
+# budget. The detections were already in the JSON (`tuplet3`, `tupletBracket`)
+# and no module in the pipeline contained the string "tuplet".
+# See benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md.
+
+#: Only the triplet ships. `tuplet5`/`tuplet6`/`tuplet7` are in the DSv2 class
+#: space and would each need their own normal-count convention (a 6 is 6-in-4
+#: in simple time and 6-in-4 or 6-in-3 depending on how the engraver counts),
+#: and none of them occurs in anything measured here. Reading a digit we have
+#: not measured is how a correct bar becomes a wrong one, so they abstain.
+_TUPLET_NORMAL_FOR: dict[int, int] = {3: 2}
+
+
+def _tuplet_digit(class_name: str) -> int | None:
+    """The number painted on a tuplet bracket: `tuplet3` -> 3. Else None."""
+    norm = _normalize_class(class_name)
+    if not norm.startswith("tuplet"):
+        return None
+    tail = norm[len("tuplet"):]
+    return int(tail) if tail.isdigit() else None
+
+
+def _x_span(d) -> tuple[float, float]:
+    return (float(d.x_canonical), float(d.x_canonical + d.width_canonical))
+
+
+def _x_centre(d) -> float:
+    return float(d.x_canonical) + d.width_canonical / 2.0
+
+
+def _beamed_groups(beamed_noteheads: list, beams: list, pad: float) -> list[list]:
+    """Split beamed noteheads into the groups the beam boxes say they form.
+
+    GROUPING BY ADJACENCY WOULD BE WRONG, for the reason `export.annotate_beams`
+    already records: two beat-groups in one bar sit next to each other and would
+    merge into a single run. The beam box gives the extent.
+
+    The box is PADDED, because it bounds the beam INK and a beam starts at the
+    first stem — with stems up, the first notehead's centre sits a notehead's
+    width to the left of it. Unpadded, every stem-up group loses its first note:
+    measured on Mahler's first triplet, beam box x 1659-1957 against noteheads
+    centred 1621, 1770, 1918.
+    """
+    groups: list[list] = []
+    for beam in beams:
+        lo, hi = _x_span(beam)
+        members = [nh for nh in beamed_noteheads if lo - pad <= _x_centre(nh) <= hi + pad]
+        if len(members) >= 2:
+            groups.append(sorted(members, key=_x_centre))
+    return groups
+
+
+def _tuplet_groups(noteheads: list, out: dict, dets, beams: list,
+                   nh_width: float) -> list[tuple[list, int, int]]:
+    """Beamed groups that a tuplet marker claims, as `(members, actual, normal)`.
+
+    TWO KINDS OF MARKER, READ DIFFERENTLY, because they sit differently on the
+    page. The DIGIT is printed over the middle of the group, so its centre must
+    fall inside the group's span. The BRACKET encloses the group, so the group's
+    span must fall inside the bracket's — the detected brackets are much wider
+    than the notes they cover (one measured at 1846px against a 478px group),
+    and testing the bracket's centre instead rejects every one of them.
+
+    A bracket alone carries NO number. It is accepted only for a group of
+    exactly three, which is the only reading available for an unnumbered
+    bracket, and only when it covers exactly one group in the cell — a wide box
+    over two groups cannot say which one it means.
+    """
+    beamed = [nh for nh in noteheads if (out.get(id(nh)) or {}).get("beam_levels", 0) >= 1]
+    if not beamed:
+        return []
+    groups = _beamed_groups(beamed, beams, pad=nh_width)
+    if not groups:
+        return []
+
+    digits: list[tuple[float, int]] = []
+    brackets: list[tuple[float, float]] = []
+    for d in dets:
+        if getattr(d, "category", "") != "structural":
+            continue
+        norm = _normalize_class(getattr(d, "smufl_name", ""))
+        if norm == "tupletbracket":
+            brackets.append(_x_span(d))
+            continue
+        digit = _tuplet_digit(getattr(d, "smufl_name", ""))
+        if digit is not None:
+            digits.append((_x_centre(d), digit))
+    if not digits and not brackets:
+        return []
+
+    claimed: list[tuple[list, int, int]] = []
+    for members in groups:
+        lo = _x_centre(members[0])
+        hi = _x_centre(members[-1])
+        actual = None
+        for centre, digit in digits:
+            if lo - nh_width <= centre <= hi + nh_width:
+                actual = digit
+                break
+        if actual is None:
+            enclosing = [b for b in brackets if b[0] <= lo and hi <= b[1]]
+            if len(enclosing) == 1 and len(members) == 3 and sum(
+                1 for g in groups
+                if enclosing[0][0] <= _x_centre(g[0])
+                and _x_centre(g[-1]) <= enclosing[0][1]
+            ) == 1:
+                actual = 3
+        if actual is None:
+            continue
+        normal = _TUPLET_NORMAL_FOR.get(actual)
+        # The group must have as many notes as the digit claims. A triplet
+        # written as quarter-plus-eighth is real and is NOT handled: it would
+        # need the group's written length rather than its count, and nothing
+        # measured here contains one. Abstaining leaves it exactly as wrong as
+        # it is today; guessing could make a correct group wrong.
+        if normal is None or len(members) != actual:
+            continue
+        claimed.append((members, actual, normal))
+    return claimed
+
+
 def _dot_multiplier(n_dots: int) -> float:
     """1 dot → 1.5×, 2 dots → 1.75×, etc."""
     mult = 1.0
@@ -1090,5 +1223,24 @@ def resolve_rhythms_for_cell(
             "duration_type": final_type,
             "dots": n_dots,
         }
+
+    # ── Tuplets ───────────────────────────────────────────────────────────
+    # Applied LAST, and to `duration_beats` only: `duration_type` stays the
+    # written value ("eighth"), which is what MusicXML's <type> and LilyPond's
+    # `8` both want inside a tuplet. Rests inside a tuplet group are not
+    # scaled — pairing a rest to a beam group needs a signal the beam box does
+    # not carry, and a wrongly-scaled rest would corrupt the bar's length.
+    for group_id, (members, actual, normal) in enumerate(
+            _tuplet_groups(noteheads, out, dets, beams, nh_avg_w), start=1):
+        for nh in members:
+            rec = out.get(id(nh))
+            if rec is None:
+                continue
+            rec["duration_beats"] = round(
+                rec["duration_beats"] * normal / actual, 6)
+            rec["tuplet"] = {"actual": actual, "normal": normal}
+            # Group id so the exporters can put `type="start"`/`"stop"` on the
+            # right notes without re-deriving the grouping from x positions.
+            rec["tuplet_group"] = group_id
 
     return out

@@ -248,3 +248,57 @@ And the thing that is NOT on the list: nothing here is a case for retraining
 the detector. The notes are being found. What happens to them afterwards —
 their durations, the window they are measured against, whether they survive
 deduplication, whether they reach the exporter — is where the budget goes.
+
+---
+
+## FIXED 2026-09-01 — tuplets, the first of the three
+
+Pooled **0.2595 → 0.2489**, 1811 edits → 1743. Every one of the 68 came from
+Mahler, exactly where this file said they were:
+
+| | before | after |
+|---|--:|--:|
+| pooled OMR-NED | 0.2595 | **0.2489** |
+| mahler | 0.0826 (154 edits) | **0.0455 (86)** |
+| mahler duration rate | 0.318 | **0.864** |
+| mahler `wrong note` | 81 | 16 |
+| mahler `wrong tuplet` | 10 | 2 |
+| beethoven | 0.1714 (213) | 0.1714 (213) |
+| brahms | 0.3730 (1444) | 0.3730 (1444) |
+
+Beethoven and Brahms are unchanged to the edit — neither page carries a tuplet
+marker. Phase-1 layout: **no change** on all 12 pages. The authored end-to-end
+fixtures: identical to three decimal places on all three (stash-and-rerun, not
+a stored snapshot). Tests 1116 → 1152.
+
+**It was an export-and-resolution gap, not a detection one, as predicted.** The
+`tuplet3` and `tupletBracket` detections were already sitting in the JSON. What
+was missing was anything that read them: the pipeline did not contain the string
+"tuplet" outside the detector's class map.
+
+Three things the implementation turned on, all of which would have been easy to
+get wrong:
+
+1. **The written note value is already correct.** A triplet eighth is printed as
+   an eighth. Only `duration_beats` is scaled, by 2/3; `duration_type` stays
+   `eighth`, which is what `<type>` and LilyPond's `8` both want. Nothing is
+   re-read.
+2. **The beam box says which notes, the marker only says that.** The digit is
+   printed over the middle of its group and does not span it; the bracket spans
+   far more than it (1846px over a 478px group). Neither box is the group. The
+   beam box is, padded by a notehead width — beam ink starts at the first stem,
+   and unpadded the test drops the first note of every stem-up group.
+3. **`_compute_divisions` had to become an LCM.** It searched a power-of-two
+   ladder and took the max, and 16 thirds is not an integer, so a triplet would
+   have been written with a rounded `<duration>` and a short bar. The LCM of
+   powers of two is their max, so tuplet-free scores are byte-identical — which
+   is what Brahms's unchanged 1444 confirms.
+
+Coverage is 4 of the 5 triplet groups on the page; the fifth has no marker
+detected at any confidence, and its 2 remaining `instuplet` edits are the whole
+residue of the category. Mahler's remaining 86 edits are directions (24), the
+whole-bar amplification those cause (18), and 11 accidentals.
+
+**Still open, in the order this file ranked them:** Brahms Violin 1's staff
+window (263 edits), beam level ±1 and lost dots, the `count` mechanisms, and
+directions and text.

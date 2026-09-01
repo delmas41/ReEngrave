@@ -394,6 +394,62 @@ famous bar in the repertoire.
 
 ---
 
+## Tuplets
+
+A triplet's noteheads are ORDINARY eighths on the page. The printed value is
+right; the bracket says three of them occupy two's worth of time. So
+`rhythm.resolve_rhythms_for_cell` does not re-read anything — it multiplies
+`duration_beats` by 2/3 and leaves `duration_type` as the written value, which
+is what MusicXML's `<type>` and LilyPond's `8` both want inside a tuplet.
+
+**The signal was already in the JSON and nothing consumed it.** Before
+2026-09-01 `grep -ci tuplet` returned 0 in `export.py`, `rhythm.py` and
+`transcribe.py`, while the Mahler page carried `tuplet3` and `tupletBracket`
+detections and ALL 15 of that work's wrong durations were one triplet figure
+read straight — 87 of its 154 OMR-NED edits. Pooled 0.2595 → **0.2489**,
+Mahler 0.0826 → **0.0455**, duration rate 0.318 → 0.864, with Beethoven and
+Brahms byte-identical.
+
+**Two markers, read differently, because they sit differently on the page.**
+The DIGIT is printed over the middle of its group, so its centre must fall
+inside the group's span. The BRACKET encloses the group, so the group must fall
+inside the BRACKET's span — detected brackets are far wider than the notes they
+cover (one measured at 1846px over a 478px group) and testing a bracket's centre
+rejects every one of them.
+
+**Which notes are in the group is the BEAM box, not the marker.** Same split
+`export.annotate_beams` documents: the marker says a tuplet is there, the beam
+box says how far it reaches. The box is padded by a notehead width because it
+bounds beam INK, which starts at the first stem — unpadded, every stem-up group
+loses its first note.
+
+Deliberately narrow, and it abstains rather than guesses:
+
+- only `tuplet3` → 3:2. `tuplet5`/`6`/`7` are in the DSv2 class space but each
+  needs its own normal-count convention and none of them occurs in anything
+  measured here;
+- the group must have exactly as many notes as the digit claims, so a triplet
+  written quarter-plus-eighth is left alone rather than guessed at;
+- an unnumbered bracket is read as a triplet only over a group of exactly
+  three, and only when it covers exactly one group in the cell;
+- rests inside a group are NOT scaled — pairing a rest to a beam group needs a
+  signal the beam box does not carry;
+- tuplet notes are excluded from `_reconcile_measure_to_meter`'s candidates,
+  because `_duration_for_level` re-derives a duration from beams and dots alone
+  and would silently drop the ratio.
+
+⚠️ **`export._compute_divisions` is an LCM, not a max, and that is load-bearing.**
+A triplet eighth is 1/3 of a quarter; the old power-of-two ladder returned 16 and
+16 thirds is not a whole number, so every triplet would get a rounded
+`<duration>` and a short bar. The LCM of powers of two IS their maximum, so
+scores without tuplets get exactly the old number — verified byte-identical on
+Brahms (8) and the authored fixtures.
+
+Coverage is what the detector gives: 4 of the 5 triplet groups on the Mahler
+page. The fifth carries no marker at all, at any confidence.
+
+---
+
 ## Orchestral end-to-end benchmark
 
 `benchmarks/omr-orchestral-e2e/` — renders an excerpt of a Gradus MXL back to
@@ -532,17 +588,30 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Baseline on the engraved orchestral benchmark: **pooled 0.3164** (Mahler 0.0785,
-Beethoven 0.1958, Brahms 0.4664). Full reading, and the three findings it
-surfaced that note recall is blind to, in
-[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md).
+Current on the engraved orchestral benchmark: **pooled 0.2489** (Mahler 0.0455,
+Beethoven 0.1714, Brahms 0.3730), from an opening baseline of 0.3164. Full
+reading, and the findings it surfaced that note recall is blind to, in
+[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md)
+and
+[WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md).
 
-**Two traps when reading it.** (1) The metric is SYMMETRIC — swapping prediction
-and truth does not change the score, it only changes which file is parsed
-strictly, which is why `score_pair` is keyword-only. (2) A large `entire measure
-insert/delete` bucket is amplified, not necessarily severe: a measure differing
-only by a fermata is charged delete-whole-bar + insert-whole-bar. Open the op
-list before believing it.
+**Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
+prediction and truth does not change the score, it only changes which file is
+parsed strictly, which is why `score_pair` is keyword-only. (2) A large `entire
+measure insert/delete` bucket is amplified, not necessarily severe: a measure
+differing only by a fermata is charged delete-whole-bar + insert-whole-bar. Open
+the op list before believing it. (3) **`wrong note` does not mean wrong
+pitches.** musicdiff maps `noteins`/`notedel` to `wrong note` and
+`pitchnameedit` to a separate `wrong pitch`, which is zero on all three works —
+so `wrong note` counts notes the aligner would not PAIR, and what usually stops
+it pairing is the duration. One misread rhythm costs about eight edits there.
+
+Two tools open a number up rather than restating it:
+
+```bash
+python3 benchmarks/omr-ned-2026-08/attribute_wrong_notes.py   # cause per part
+.venv-omrned/bin/python benchmarks/omr-ned-2026-08/dump_ops.py PRED TRUTH
+```
 
 ---
 

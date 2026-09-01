@@ -1698,6 +1698,13 @@ def _detections_for_cell(
             # needs it to know which durations are the fragile ones.
             if rinfo.get("beam_levels"):
                 out_d["beam_levels"] = rinfo["beam_levels"]
+            # Tuplets, same policy: only carried when there is one. `tuplet`
+            # is the ratio the exporters write as <time-modification>;
+            # `tuplet_group` is which bracket it belongs to, so start/stop land
+            # on the right notes without re-deriving the grouping.
+            if rinfo.get("tuplet"):
+                out_d["tuplet"] = rinfo["tuplet"]
+                out_d["tuplet_group"] = rinfo["tuplet_group"]
         # Stem direction for noteheads (Phase 4h voice splitting).
         if id(d) in stem_direction_by_id:
             out_d["stem_direction"] = stem_direction_by_id[id(d)]
@@ -2091,6 +2098,12 @@ def _beam_groups(detections: list[dict[str, Any]]) -> list[list[dict[str, Any]]]
     beamed = [
         d for d in detections
         if d.get("category") == "notehead" and d.get("beam_levels")
+        # A tuplet note is excluded, not because re-reading its beam level is
+        # meaningless but because `_duration_for_level` re-derives a duration
+        # from beam count and dots alone and would silently drop the tuplet
+        # ratio. The bar sum below still counts the tuplet's scaled durations,
+        # so another group in the same bar can still be arbitrated.
+        and not d.get("tuplet")
     ]
     if not beamed:
         return []
