@@ -18,6 +18,7 @@ from tools.omr.export import (
     annotate_slurs_in_staff,
     measure_dynamics,
     _compute_divisions,
+    _direction_slots,
     _tuplet_runs,
     _mxl_note,
     _DURATION_TABLE,
@@ -638,24 +639,24 @@ class TestDynamicsAndSlurs:
 
     # ── dynamics: the detector spells them one letter at a time ──────────
     def test_a_single_letter_is_a_dynamic(self):
-        assert measure_dynamics([self._dyn(100, 60, "dynamicF")]) == [(100, "f")]
+        assert measure_dynamics([self._dyn(100, 60, "dynamicF")]) == [(100, "dynamic", "f")]
 
     def test_adjacent_letters_join_into_one_word(self):
         """Two `dynamicF` a glyph apart are 'ff', not two 'f'."""
         out = measure_dynamics([self._dyn(100, 60, "dynamicF"),
                                 self._dyn(112, 60, "dynamicF")])
-        assert out == [(100, "ff")]
+        assert out == [(100, "dynamic", "ff")]
 
     def test_letters_far_apart_stay_separate(self):
         out = measure_dynamics([self._dyn(100, 60, "dynamicF"),
                                 self._dyn(400, 60, "dynamicP")])
-        assert out == [(100, "f"), (400, "p")]
+        assert out == [(100, "dynamic", "f"), (400, "dynamic", "p")]
 
     def test_letters_on_different_lines_stay_separate(self):
         """Two staves' dynamics can share an x; only vertical proximity joins."""
         out = measure_dynamics([self._dyn(100, 60, "dynamicF"),
                                 self._dyn(112, 300, "dynamicP")])
-        assert sorted(out) == [(100, "f"), (112, "p")]
+        assert sorted(out) == [(100, "dynamic", "f"), (112, "dynamic", "p")]
 
     def test_a_letter_run_that_is_not_a_word_is_dropped(self):
         """'fzp' is not a dynamic; guessing at it is worse than saying nothing."""
@@ -663,9 +664,47 @@ class TestDynamicsAndSlurs:
                                  self._dyn(110, 60, "dynamicZ"),
                                  self._dyn(120, 60, "dynamicP")]) == []
 
+    # ── where a direction attaches ───────────────────────────────────────
+    def _ev(self, x):
+        return {"kind": "chord", "x_position": x, "duration_beats": 1.0,
+                "duration_type": "quarter", "dots": 0, "noteheads": []}
+
+    def test_a_mark_attaches_to_the_first_note_at_or_past_it(self):
+        events = [self._ev(100), self._ev(200), self._ev(300)]
+        assert _direction_slots(events, [(150, "dynamic", "f")]) == {
+            1: [("dynamic", "f")]}
+
+    def test_a_mark_never_moves_backwards_onto_a_rest(self):
+        """Why the rule is not `nearest`. Beethoven 5's `ff` belongs to the
+        note at beat 0.5 and is printed after an eighth REST at 0.0; it stands
+        nearer the rest, and a nearest rule put it there — 14 edits."""
+        rest = {"kind": "rest", "x_position": 100, "duration_beats": 0.5,
+                "duration_type": "eighth", "dots": 0}
+        events = [rest, self._ev(200)]
+        assert _direction_slots(events, [(120, "dynamic", "ff")]) == {
+            1: [("dynamic", "ff")]}
+
+    def test_marks_on_one_note_keep_their_printed_order(self):
+        events = [self._ev(200)]
+        assert _direction_slots(events, [(120, "words", "legato"),
+                                         (90, "dynamic", "f")]) == {
+            0: [("dynamic", "f"), ("words", "legato")]}
+
+    def test_a_mark_past_the_last_note_stays_in_the_measure(self):
+        assert _direction_slots([self._ev(100)], [(500, "words", "legato")]) == {
+            1: [("words", "legato")]}
+
+    def test_with_no_notes_a_direction_goes_past_the_end(self):
+        """An empty measure must not silently swallow its own markings."""
+        assert _direction_slots([], [(100, "dynamic", "f")]) == {
+            0: [("dynamic", "f")]}
+
+    def test_no_directions_means_no_slots(self):
+        assert _direction_slots([self._ev(100)], None) == {}
+
     def test_mf_and_sf_are_recognised(self):
         assert measure_dynamics([self._dyn(100, 60, "dynamicM"),
-                                 self._dyn(110, 60, "dynamicF")]) == [(100, "mf")]
+                                 self._dyn(110, 60, "dynamicF")]) == [(100, "dynamic", "mf")]
 
     def test_slur_and_tie_share_one_notations_block(self):
         """Two <notations> elements on one note is invalid MusicXML."""

@@ -140,14 +140,16 @@ def excerpt(work_id: str, first: int, last: int,
 
 
 def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
-             weights: str, dpi: int | None, use_dossier: bool) -> dict[str, Any]:
+             weights: str, dpi: int | None, use_dossier: bool,
+             direction_text: bool = False) -> dict[str, Any]:
     truth_xml, pdf, last_used = excerpt(work_id, first, last, work_dir)
     dossier = find_dossier(work_id) if use_dossier else None
 
     # dpi=None takes `transcribe`'s default rather than restating it here.
     opts = {"dpi": dpi} if dpi is not None else {}
     result = transcribe(pdf_path=pdf, pages=[0], weights=weights,
-                        dossier=dossier, progress=False, **opts)
+                        dossier=dossier, progress=False,
+                        read_direction_text=direction_text, **opts)
     omr_xml = work_dir / f"{work_id}.omr.musicxml"
     omr_xml.write_text(to_musicxml(result))
 
@@ -174,6 +176,7 @@ def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
         "rhythm_reconciliations": result.get("n_rhythm_reconciliations", 0),
         "dossier_warnings": summarize(result.get("dossier_warnings", [])),
         "dossier_used": dossier is not None,
+        "direction_text": result.get("direction_text"),
     }
 
 
@@ -187,6 +190,11 @@ def main(argv: list[str] | None = None) -> int:
                     help="override the pipeline default")
     ap.add_argument("--no-dossier", action="store_true",
                     help="run without the dossier, to measure what it adds")
+    ap.add_argument("--direction-text", action="store_true",
+                    help="read the words printed inside each system with "
+                         "Surya and export them as MusicXML <words> — the "
+                         "`wrong direction` category, 151 of the 1715 pooled "
+                         "edits at the 0.2449 baseline. Needs .venv-surya.")
     ap.add_argument("--work-dir", type=Path, default=BENCH_DIR / "fixtures")
     ap.add_argument("--out", type=Path, default=None)
     ap.add_argument("--omr-ned", action="store_true",
@@ -211,7 +219,8 @@ def main(argv: list[str] | None = None) -> int:
         try:
             r = run_work(work_id, first=first, last=last, work_dir=args.work_dir,
                          weights=args.weights, dpi=args.dpi,
-                         use_dossier=not args.no_dossier)
+                         use_dossier=not args.no_dossier,
+                         direction_text=args.direction_text)
         except Exception as exc:  # noqa: BLE001 — one bad work must not stop the run
             print(f"{work_id:22s} FAILED: {type(exc).__name__}: {exc}",
                   file=sys.stderr)

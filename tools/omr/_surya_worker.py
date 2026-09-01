@@ -45,13 +45,13 @@ def _text_of(block) -> str:
     return unescape(re.sub(r"<[^>]+>", " ", html)).replace("\xa0", " ").strip()
 
 
-def _lines(predictor, image) -> list[tuple[str, float]]:
-    """`(text, y_centre)` for every block Surya reads.
+def _lines_with_boxes(predictor, image) -> list[tuple[str, float, float]]:
+    """`(text, y_centre, x_left)` for every block Surya reads.
 
     `full_page=True` is not optional: without it the predictor looks for layout
     regions, finds none on a bare margin strip, and returns nothing at all.
     """
-    out: list[tuple[str, float]] = []
+    out: list[tuple[str, float, float]] = []
     for page in predictor([image], full_page=True):
         for block in getattr(page, "blocks", []) or []:
             if getattr(block, "skipped", False) or getattr(block, "error", None):
@@ -61,8 +61,14 @@ def _lines(predictor, image) -> list[tuple[str, float]]:
             if not text or not polygon:
                 continue
             ys = [point[1] for point in polygon]
-            out.append((text, (min(ys) + max(ys)) / 2.0))
+            xs = [point[0] for point in polygon]
+            out.append((text, (min(ys) + max(ys)) / 2.0, min(xs)))
     return out
+
+
+def _lines(predictor, image) -> list[tuple[str, float]]:
+    """`(text, y_centre)` — the margin reader's view, which needs no x."""
+    return [(text, y) for text, y, _x in _lines_with_boxes(predictor, image)]
 
 
 def _assign(lines, tick_ys, staff_indices) -> dict[int, str]:
@@ -87,16 +93,49 @@ def _assign(lines, tick_ys, staff_indices) -> dict[int, str]:
             for idx, items in per_staff.items()}
 
 
+def _read_crops(predictor, Image, crops: list[str]) -> list[dict]:
+    """Plain OCR: one image in, its text out. No tick mapping.
+
+    The second job this worker answers, added for `direction_text`. A margin
+    crop holds a COLUMN of labels and has to be split by which staff each sits
+    beside; a direction crop holds one word and has nothing to split. Sharing
+    the process is the whole point — the 650M GGUF loads once either way, and
+    it is the load that costs.
+
+    Blocks are joined in READING order, top-to-bottom then left-to-right, so a
+    phrase Surya breaks into two blocks (`espr.` / `e legato`) comes back as
+    one string in the order it is printed.
+    """
+    out = []
+    for b64 in crops:
+        image = Image.open(io.BytesIO(base64.standard_b64decode(b64))).convert("RGB")
+        try:
+            lines = _lines_with_boxes(predictor, image)
+        except Exception as exc:                            # noqa: BLE001
+            out.append({"text": "", "error": f"{type(exc).__name__}: {exc}"})
+            continue
+        lines.sort(key=lambda item: (round(item[1] / 20.0), item[2]))
+        out.append({"text": " ".join(text for text, _y, _x in lines).strip()})
+    return out
+
+
 def main() -> int:
     job = json.load(sys.stdin)
     systems = job.get("systems") or []
-    if not systems:
-        json.dump({"error": "no systems supplied"}, sys.stdout)
-        return 2
+    crops = job.get("crops")
 
     from PIL import Image                                  # noqa: PLC0415
     from surya.inference import SuryaInferenceManager      # noqa: PLC0415
     from surya.recognition import RecognitionPredictor     # noqa: PLC0415
+
+    if crops is not None:
+        predictor = RecognitionPredictor(SuryaInferenceManager())
+        json.dump({"crops": _read_crops(predictor, Image, crops)}, sys.stdout)
+        return 0
+
+    if not systems:
+        json.dump({"error": "no systems supplied"}, sys.stdout)
+        return 2
 
     predictor = RecognitionPredictor(SuryaInferenceManager())
 

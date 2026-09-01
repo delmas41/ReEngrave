@@ -69,6 +69,9 @@ tools/omr/
 ├── voicing.py                 ← Chord-grouping helper used by export
 ├── rhythm.py                  ← Duration parsing (Phase 4c)
 ├── line_detection.py          ← Classical-CV stems + beams (Phase 4f)
+├── direction_text.py          ← Words inside a system (`legato`) — subtract
+│                                every detection, OCR what is left, gate it
+├── direction_lexicon.py       ← Is this string a musical direction?
 ├── run_pipeline.py            ← Older Phase-1-only CLI (staves/measures only,
 │                                no symbol detection). Mostly for debugging
 │                                the staff/measure extractor in isolation.

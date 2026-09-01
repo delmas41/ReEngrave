@@ -855,8 +855,8 @@ _DYNAMIC_ELEMENTS = {
 }
 
 
-def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str]]:
-    """`(x, word)` for each dynamic marking in a measure, left to right.
+def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str, str]]:
+    """`(x, "dynamic", word)` for each dynamic marking in a measure, left to right.
 
     The detector emits one glyph per LETTER, so adjacent letters are joined
     into a word before it means anything: two `dynamicF` a notehead apart are
@@ -874,7 +874,7 @@ def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str]
     letters.sort()
     width = max(w for _x, _y, w, _l in letters) or 1
 
-    out: list[tuple[float, str]] = []
+    out: list[tuple[float, str, str]] = []
     run_x, run_y, word = letters[0][0], letters[0][1], letters[0][3]
     prev_right = letters[0][0] + letters[0][2]
     for x, y, w, letter in letters[1:]:
@@ -883,16 +883,57 @@ def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str]
             word += letter
         else:
             if word in _DYNAMIC_WORDS:
-                out.append((run_x, word))
+                out.append((run_x, "dynamic", word))
             run_x, run_y, word = x, y, letter
         prev_right = x + w
     if word in _DYNAMIC_WORDS:
-        out.append((run_x, word))
+        out.append((run_x, "dynamic", word))
     return out
 
 
-def _mxl_direction(word: str, indent: str) -> str:
-    """One `<direction>` carrying a dynamic marking."""
+def measure_direction_words(measure: dict[str, Any]) -> list[tuple[float, str, str]]:
+    """`(x_canonical, "words", text)` for each direction word on a measure.
+
+    Read from `direction_texts`, which `direction_text.attach_to_page` writes
+    and which is absent from every result produced without that post-pass — so
+    a transcription that did not read text exports exactly as it did before.
+
+    The x is converted here rather than stored converted, because the reader
+    works in PAGE pixels (it cuts crops out of the page) and the exporter works
+    in the cell's CANONICAL frame (that is what `x_position` is). The cell is
+    rescaled uniformly, so `upscale_factor` — defined on the height — is the
+    x scale too.
+    """
+    entries = measure.get("direction_texts") or []
+    if not entries:
+        return []
+    box = measure.get("bbox_page_px") or [0, 0, 0, 0]
+    scale = float(measure.get("upscale_factor") or 1.0)
+    out = []
+    for entry in entries:
+        text = (entry.get("text") or "").strip()
+        if not text:
+            continue
+        x_canonical = (float(entry.get("x_page", box[0])) - float(box[0])) * scale
+        out.append((x_canonical, "words", text))
+    return out
+
+
+def _mxl_direction(item: tuple[str, str], indent: str) -> str:
+    """One `<direction>`: a dynamic marking, or a word.
+
+    `<dynamics>` and `<words>` are different `<direction-type>` children and
+    musicdiff scores them as different KINDS — a word emitted as an
+    `<other-dynamics>` would not pair with the truth's direction at all, and
+    would be charged twice over. So the kind travels with the text.
+    """
+    kind, word = item
+    if kind == "words":
+        return (f'{indent}<direction placement="below">\n'
+                f"{indent}  <direction-type>\n"
+                f"{indent}    <words>{_xml_escape(word)}</words>\n"
+                f"{indent}  </direction-type>\n"
+                f"{indent}</direction>")
     inner = (f"<{word}/>" if word in _DYNAMIC_ELEMENTS
              else f'<other-dynamics>{_xml_escape(word)}</other-dynamics>')
     return (f'{indent}<direction placement="below">\n'
@@ -1181,12 +1222,58 @@ def _tuplet_runs(events: list[dict[str, Any]]) -> list[tuple[int, int, dict[str,
     return runs
 
 
+def _direction_slots(
+    events: list[dict[str, Any]],
+    directions: list[tuple[float, str, str]] | None,
+) -> dict[int, list[tuple[str, str]]]:
+    """Which event each direction is emitted before: `{event_index: [(kind, text)]}`.
+
+    The rule is **the first note at or past the mark's left edge**. An index of
+    `len(events)` means "after everything" — where a mark past the last note
+    goes, so an empty measure does not silently drop its own markings.
+
+    ⚠️ **`min(abs(note_x - mark_x))` was tried instead, and is worse.** It is
+    the more obviously right rule — a mark is printed AT the note it means, so
+    the nearest note should be that note — and on WORDS it is right: it fixed
+    Brahms's `pesante`, which begins 47 canonical px to the RIGHT of its note
+    and so was skipping a beat under this rule. Measured, though
+    (`benchmarks/omr-direction-text-2026-09/FINDINGS.md`):
+
+        rule                  wrong direction   wrong dynamic   pooled
+        first at or past x          33               29         0.2234
+        nearest note                31               43         0.2251
+
+    Two edits bought on words, fourteen lost on dynamics, because **a rest
+    occupies x-space and nearness reaches backwards onto it.** Beethoven 5's
+    `ff` belongs to the note at beat 0.5 and is printed after an eighth REST at
+    0.0; it stands nearer the rest than the note, and the nearest rule moved it
+    there. A rule that only ever moves forward cannot make that mistake.
+
+    Splitting it by kind — nearest for words, this for dynamics — was scored
+    too and lands at 0.2233, one ten-thousandth, which does not pay for two
+    rules where the page has one.
+    """
+    slots: dict[int, list[tuple[str, str]]] = {}
+    if not directions:
+        return slots
+    ordered = sorted(directions)
+    i = 0
+    for index, event in enumerate(events):
+        event_x = event.get("x_position")
+        while i < len(ordered) and (event_x is None or ordered[i][0] <= event_x):
+            slots.setdefault(index, []).append(ordered[i][1:])
+            i += 1
+    for x, kind, text in ordered[i:]:
+        slots.setdefault(len(events), []).append((kind, text))
+    return slots
+
+
 def _mxl_voice_events(
     events: list[dict[str, Any]],
     voice: int,
     divisions: int,
     indent: str,
-    directions: list[tuple[float, str]] | None = None,
+    directions: list[tuple[float, str, str]] | None = None,
 ) -> tuple[list[str], int]:
     """Render an ordered list of events as MusicXML <note> elements with
     the given voice number. Returns (lines, total_duration_units) where
@@ -1206,12 +1293,11 @@ def _mxl_voice_events(
         tuplet_state_at[first] = "start"
         tuplet_state_at[last] = "stop"
     # `<direction>` carries no duration, so it applies where it SITS in the
-    # element order — emitted before the first event at or past its x.
-    pending = sorted(directions or [])
+    # element order — before the note it belongs to.
+    direction_at = _direction_slots(events, directions)
     for event_index, event in enumerate(events):
-        event_x = event.get("x_position")
-        while pending and (event_x is None or pending[0][0] <= event_x):
-            lines.append(_mxl_direction(pending.pop(0)[1], indent))
+        for item in direction_at.get(event_index, ()):
+            lines.append(_mxl_direction(item, indent))
         _, xml_type, dots = _duration_to_lily_xml(
             event["duration_type"], event.get("dots", 0)
         )
@@ -1248,9 +1334,9 @@ def _mxl_voice_events(
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.
             total_dur += dur_units
-    # Anything sitting past the last note still belongs to this measure.
-    for _x, word in pending:
-        lines.append(_mxl_direction(word, indent))
+    # Anything with no note to attach to still belongs to this measure.
+    for item in direction_at.get(len(events), ()):
+        lines.append(_mxl_direction(item, indent))
     return lines, total_dur
 
 
@@ -1307,8 +1393,11 @@ def _staff_measures_xml(
         for _voice_events in voices:
             annotate_beams(_voice_events, measure.get("detections", []))
         # Dynamics belong to the staff, not to a voice, so they go on voice 1
-        # rather than being emitted once per voice.
-        _dyn = measure_dynamics(measure.get("detections", []))
+        # rather than being emitted once per voice. The words read by
+        # `direction_text` join them: both are `<direction>` elements placed by
+        # x, and both belong to the staff for the same reason.
+        _dyn = (measure_dynamics(measure.get("detections", []))
+                + measure_direction_words(measure))
 
         if not events:
             r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
@@ -1540,8 +1629,12 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
                     # Dynamics belong to the staff, not to a voice, so they go
-                    # on voice 1 rather than being emitted once per voice.
-                    _dyn = measure_dynamics(measure.get("detections", []))
+                    # on voice 1 rather than being emitted once per voice. The
+                    # words read by `direction_text` join them: both are
+                    # `<direction>` elements placed by x, and both belong to the
+                    # staff for the same reason.
+                    _dyn = (measure_dynamics(measure.get("detections", []))
+                            + measure_direction_words(measure))
 
                     if not events:
                         r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
