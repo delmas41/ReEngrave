@@ -68,22 +68,30 @@ coverage corpora cannot regress by construction.
 The four-item leverage list was worked through and two items are dead. Read
 `RESULTS.md`'s last three sections before starting anything here.
 
-0. **DONE: Surya is installed** (`--bootstrap`, `.venv-surya`, gitignored;
+0. **OPEN AND IMPORTANT: Surya's presence costs three staves, and nobody knows
+   why.** `--assist vision` scores **149/166 with `.venv-surya` renamed away**
+   and **146 with it present** — an exact control, nothing else changed. The
+   labels are not the cause: Surya and the vision reader agree on all twelve of
+   beet5-p48's, field for field including `y_center_px`. Downstream the dossier
+   fills 6 staves instead of 9. Start from `apply_contextual_analysis`'s summary
+   ("12 labels, 0 corrections, 9 from the dossier" vs "12 labels, 2 corrections,
+   6 from the dossier") and look at what reaches `_apply_dossier_clefs` besides
+   the label fields — list ORDER and the tier bookkeeping are the two candidates.
+   **Until this is understood, 149 is the best this corpus has produced and it
+   needs Surya absent.**
+
+0b. **DONE: Surya is installed** (`--bootstrap`, `.venv-surya`, gitignored;
    re-run it in any other checkout). Free, ~7.6 s a page, correct where it
    reads — and **net zero end-to-end on this corpus** (145/166 either way). It
    is worth keeping: it takes the dossier from 9-right-of-12 to 9-of-9 by making
    the join abstain where it used to answer wrongly. See `RESULTS.md`.
 
-1. **THE LADDER'S ORDER, not any reader's accuracy.** The paid reader's four
-   staves are still unclaimed, and the reason is where each reader sits rather
-   than how well it reads. `_labels_for_page` runs text layer -> Surya ->
-   Tesseract -> paid, and each rung is consulted only when the one above
-   returned NOTHING. So on beet9-p30 a poor text layer blocks a better reader,
-   and on lamer-p50 Tesseract's 19 reads (resolving to 4 labels) block Surya.
-   `_usable()` already compares readers by labels the lexicon can resolve —
-   the question is whether a LOWER rung should be allowed to beat a higher one
-   on that measure rather than only to fill its silence. Measure on the wide
-   corpus; the arms are `--assist none` and `--assist vision`.
+1. **PARTLY DONE: the ladder's order.** My earlier description of it was wrong —
+   the rungs are gated on `_well_covered`, not on emptiness, and Surya already
+   replaces the text layer when it reads more. The real bug was that "more" meant
+   RAW labels at the free rung and USABLE labels at the paid one; both now
+   compare usable, which took beet9-p30 from 9/13 to 10/13. What remains is item
+   0, which is a different animal.
 
 2. **INSTRUMENT IDENTITY, which is where the errors actually are.** Seventeen of
    the twenty-one end-to-end clef errors are the positional default calling a
