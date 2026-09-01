@@ -223,6 +223,49 @@ def test_detect_staves_finds_a_single_line_percussion_staff():
     assert perc.line_spacing_px == pytest.approx(LINE_SPACING, abs=1.0)
 
 
+def test_two_percussion_rules_survive_a_shorter_line_between_them():
+    """A trill line between two percussion parts must not take both down.
+
+    The clearance rule rejects EVERY row in a tight cluster, which is right for
+    two lines of one broken five-line staff and wrong here. Measured on Mahler 5
+    p10: the Gr.Tr. rule (1857 px), the wavy trill printed between the parts
+    (1410 px) and the Kl.Tr. rule (1858 px) — the two rules are 62 px apart and
+    clear each other easily, but the trill sits 37 px and 25 px away, so all
+    three were dropped and the page reported 18 staves instead of 20.
+    """
+    img = _blank()
+    _draw_staff(img, 100)
+    _draw_staff(img, 260)
+    img[420:422, X0:X1] = 0                       # percussion rule
+    img[455:457, X0:X0 + (X1 - X0) * 3 // 4] = 0  # shorter interloper between
+    img[490:492, X0:X1] = 0                       # second percussion rule
+    _draw_staff(img, 640)
+    pws = detect_staves(_page(img))
+
+    tops = sorted(s.top_y for s in pws.staves)
+    assert 420 in tops, "first percussion rule lost to the interloper"
+    assert 490 in tops, "second percussion rule lost to the interloper"
+    assert 455 not in tops, "the short interloper was admitted as a staff"
+    assert len(pws.staves) == 5
+
+
+def test_a_cluster_of_equal_length_rules_is_still_rejected():
+    """The interloper filter must not weaken the rule it guards. Two rows of
+    the SAME length close together really are more likely two lines of one
+    five-line staff, and both must still be refused."""
+    img = _blank()
+    _draw_staff(img, 100)
+    _draw_staff(img, 260)
+    img[420:422, X0:X1] = 0
+    img[450:452, X0:X1] = 0      # same length, within clearance
+    _draw_staff(img, 600)
+    pws = detect_staves(_page(img))
+
+    tops = sorted(s.top_y for s in pws.staves)
+    assert 420 not in tops and 450 not in tops
+    assert len(pws.staves) == 3
+
+
 def test_a_lone_rule_outside_the_staves_is_not_a_staff():
     """A page border, a title rule or a footer is one long inked row too. What
     separates a percussion staff from them is that it stands BETWEEN the

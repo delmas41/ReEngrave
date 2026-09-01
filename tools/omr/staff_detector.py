@@ -97,6 +97,27 @@ SINGLE_LINE_MIN_OVERLAP_FRAC = 0.6
 # lines are still PRINTED, though, whether or not the row pass saw them, so the
 # question is asked of the page rather than of the peak list.
 SINGLE_LINE_NEIGHBOUR_RUN_FRAC = 0.5
+# Before the clearance rule above is applied, drop candidates far SHORTER than
+# the longest in their own cluster. The clearance rule rejects every row in a
+# tight group, which is right when they are two lines of one broken staff and
+# wrong when a non-rule has wandered in between two real percussion parts —
+# and it takes both real ones down with it.
+#
+# Measured 2026-08-31 on Mahler 5 p10 (Edition Peters): the candidates are the
+# Gr.Tr. rule (width 1857), the long WAVY TRILL LINE printed between the two
+# parts (1410), and the Kl.Tr. rule (1858). The two rules are 62 px apart and
+# would clear each other's 52 px clearance easily; the trill sits 37 px from one
+# and 25 px from the other, so all three were rejected and the page reported 18
+# staves instead of 20. Boléro p2 is the same shape — a full-width `Tamb.` rule
+# at 3112 px with 59 px and 142 px fragments beside it, in all four systems.
+#
+# A printed rule is as long as the staves around it, which is what
+# SINGLE_LINE_MIN_WIDTH_FRAC already says in absolute terms; this says it
+# RELATIVELY, so an interloper is judged against the rules it is interfering
+# with rather than against the page. 0.9 because the real rules on these pages
+# agree to within 0.1% of each other while the interlopers are at 0.76, 0.02
+# and 0.05 of them — the gap is enormous and the constant is nowhere near it.
+SINGLE_LINE_CLUSTER_WIDTH_FRAC = 0.9
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -390,6 +411,16 @@ def _single_line_staff_rows(
         if top < int(y) < bottom
         and min(abs(int(y) - a) for a in accepted_lines) >= clearance
     ]
+
+    # Drop the interlopers FIRST. A row much shorter than the longest candidate
+    # is not a printed rule — it is a trill line, a hairpin, a fragment of text
+    # — and leaving it in the list makes the clearance rule below reject the
+    # genuine rules on either side of it along with it.
+    runs = {y: _longest_row_run(binary, y, spacing)[2] for y in candidates}
+    longest = max(runs.values(), default=0)
+    if longest > 0:
+        candidates = [y for y in candidates
+                      if runs[y] >= SINGLE_LINE_CLUSTER_WIDTH_FRAC * longest]
 
     out: list[int] = []
     for y in candidates:

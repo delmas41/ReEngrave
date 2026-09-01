@@ -98,6 +98,15 @@
    "actual_cause": "The bridge was never the problem. The 28 runs were an artefact of the measurement: the reader sliced a fixed 2px band around the line's nominal row, and the printed line wanders further than that, so it left the band and came back. Re-measured with a band scaled to the staff (0.35 spaces) and a 3-of-5 line vote, the SAME staff is 2 runs with a largest gap of 0.3 spaces. The ink was there all along.",
    "fix": "staff_detector._staff_x_extent reads all five lines with a scaled band and a 3-of-5 column vote. beet5-p10 now matches this file on staves, systems and bars; the two xfail tests in test_pipeline.py that recorded the gap are retired.",
    "lesson": "A measurement taken through a broken reader describes the reader, not the page. '28 runs with 11-space gaps' was a fact about the band width."
+  },
+  {
+   "page": "mahler5-p10 (Mahler_5_.pdf page index 10, Edition Peters, 300 DPI)",
+   "status": "OPEN 2026-08-31",
+   "symptom": "20 staves on the page, 19 detected. Gr.Tr. is now found; Kl.Tr. is not.",
+   "verified_by": "Sean-style margin read 2026-08-31 \u2014 both parts carry a printed label and a single printed rule with noteheads on it, between Pauken and Erste Viol.",
+   "first_cause_FIXED": "Three lone rows were candidates \u2014 the Gr.Tr. rule (1857 px), the wavy trill line printed between the parts (1410 px) and the Kl.Tr. rule (1858 px). The clearance rule rejects every row in a tight cluster, so the trill took both real rules with it. Fixed by dropping cluster members far shorter than the longest before clearance is applied (SINGLE_LINE_CLUSTER_WIDTH_FRAC).",
+   "remaining_cause": "Kl.Tr. is then refused by _has_the_rest_of_a_staff: the Erste Viol. staff begins 75 px below it, so the rows where Kl.Tr.'s other four lines would fall are NOT empty \u2014 they are the violin staff's lines. That gate exists for a real reason (a pocket score can lose four of five lines and the survivor is indistinguishable from a rule), so it was left alone rather than weakened for one page.",
+   "next": "The gate asks whether ink exists where the other four lines would be. It does not ask whether that ink belongs to a staff ALREADY DETECTED. Excluding rows claimed by an accepted staff would separate the two cases without loosening anything \u2014 measure on lamer-p25 and bolero-p5/p31, which are the pages this feature currently gets right."
   }
  ]
 }

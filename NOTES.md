@@ -68,13 +68,15 @@ over-split, so the next attempt fails fast instead of passing 14/14 and shipping
 | score | page | staves | systems | how it reads |
 |---|--:|--:|--:|---|
 | Mahler 5 | 2 | 15 | 1 | one bracket Fag.→Bässe, m.9 |
-| Mahler 5 | 10 | 18 | 1 | Hoboen→Bässe, m.78 |
+| Mahler 5 | 10 | 19 | 1 | Hoboen→Bässe, m.78 (20 printed; Kl.Tr. still missed) |
 | Mahler 5 | 20 | 16 | 1 | Flöten→Bässe, m.171 |
 | La Mer | 2 | 20 | 2 | two brackets, sub-brackets on the strings |
 | La Mer | 20 | 16 | 1 | one outer bracket, 4 sub-groups |
-| Boléro | 2 | 27 | 4 | m. 14 / 21 / 27 / 33 |
-| Boléro | 10 | 32 | 2 | m.153 and m.159 |
-| Boléro | 20 | 19 | 1 | m.219, Ptes Fl.→C.B. |
+| Boléro | 2 | 31 | 4 | m. 14 / 21 / 27 / 33 |
+| Boléro | 10 | 34 | 2 | m.153 and m.159 |
+| Boléro | 20 | 20 | 1 | m.219, Ptes Fl.→C.B. |
+
+The staff counts are what the detector reports after the 08-31 one-line percussion fix; the eval asserts SYSTEMS, not staves.
 
 All eight pass today: **connectivity 20/23 (87%)**, the three failures still the
 known merges (B9 p25, B9 p60, B5 p40). Run `eval_grouping.py` AND the 54-page
@@ -245,9 +247,20 @@ handoff. The four threads below are all CLOSED — the 2026-08-28 file is kept b
 each turned out is more useful than how it was posed; three of the four ended somewhere
 other than where they started.
 
-1. ~~**One-line percussion staves are invisible**~~ — **DONE 2026-08-28.** A percussion
-   part printed as one rule is now a staff, so the staves below it keep their slots
-   (La Mer p.25: 20 staves reported on a 21-part page). `benchmarks/omr-phase1-baseline/`.
+1. ~~**One-line percussion staves are invisible**~~ — **DONE 2026-08-28**, and
+   **extended 2026-08-31**. A percussion part printed as one rule is now a staff, so
+   the staves below it keep their slots (La Mer p.25: 20 staves on a 21-part page).
+   `benchmarks/omr-phase1-baseline/`.
+   The 08-31 extension: the clearance rule rejected EVERY row in a tight cluster, so a
+   non-rule between two percussion parts took both real ones down with it — Mahler 5
+   p10's wavy trill line between Gr.Tr. and Kl.Tr., and short fragments beside Boléro's
+   `Tamb.` rule in every system. Candidates far shorter than the longest in their
+   cluster are now dropped first (`SINGLE_LINE_CLUSTER_WIDTH_FRAC`). Boléro p5 26 → 29
+   staves, p31 29 → 30, p2 27 → 31, p10 32 → 34, p20 19 → 20; La Mer p25 unchanged and
+   still matching hand-verified truth. **Still open:** Mahler p10 recovers Gr.Tr. but
+   not Kl.Tr., which `_has_the_rest_of_a_staff` refuses because the violin staff 75 px
+   below supplies the lines its missing four would occupy — recorded with a proposed
+   route in `ground-truth.json` → `known_gaps`.
 2. **Key signature** — the cause was found 2026-08-28 and it was neither detection nor
    reading: the staff's left edge was lost, so the header was cropped out of every cell.
    Fixed; clefs on Beethoven 5 p.15 went 0/23 -> 13/23 and the reader started firing.
