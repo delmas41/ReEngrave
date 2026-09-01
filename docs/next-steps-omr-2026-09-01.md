@@ -58,11 +58,20 @@ What it found, ranked, replaces the rest of this list at the top:
   identical. The fifth instance of the beams/dots/dynamics shape, and it was
   export-and-resolution again: the detections were in the JSON and nothing read
   them. See the FIXED section of the attribution report.
-- **Brahms Violin 1's staff window is two spaces high** — 263 edits, the largest
-  single part in the benchmark. Row COVERAGE separates its two impostor lines
-  (0.44, 0.49) from real ones (1.00); the existing step-3d rule gates on
-  thickness ratio, which is 1.8 here against a 2.5 threshold, and slides by one
-  spacing where this needs two. Do not lower the threshold.
+- ~~**Brahms Violin 1's staff window is two spaces high**~~ — **DONE**, pooled
+  0.2489 → **0.2449**, Brahms recall 0.800 → 0.824. Coverage went in beside
+  thickness as a second signal and found **five more misfitted windows** across
+  bolero and beet5-p2 that nobody had seen. Net was −28 rather than −86 because
+  it uncovered the next item.
+- **Cross-staff attribution of ledger notes — NEW, and now the top item.** With
+  Violin 1 placed correctly its highest notes (`A6`, `B♭6`) sit in the gap
+  ABOVE its own cell and INSIDE the Timpani's, and export as `A♭1`/`B♭1` on a
+  timpani: +59 edits on that part. `_dedupe_cross_staff_detections` awards a
+  contested glyph to the nearer five-line band, and LilyPond opened that gap
+  *for* those notes, so nearness is the wrong rule. Raising
+  `PAD_ABOVE_STAFF_LINES` does not fix it — the note then lands in both cells
+  and the same distance rule still picks the timpani. Needs the ledger lines
+  (299 detected on that page) or the stem.
 - **Beam level ±1 and lost dots** — the rest of the 452-edit rhythm bucket.
   `_reconcile_measure_to_meter` declines correctly because it can move a beam
   and not a dot.

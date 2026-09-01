@@ -302,3 +302,69 @@ whole-bar amplification those cause (18), and 11 accidentals.
 **Still open, in the order this file ranked them:** Brahms Violin 1's staff
 window (263 edits), beam level ±1 and lost dots, the `count` mechanisms, and
 directions and text.
+
+---
+
+## FIXED 2026-09-01 — the Violin 1 staff window, and what it uncovered
+
+Pooled **0.2489 → 0.2449**, 1743 edits → 1715. Brahms 0.3730 → **0.3657**, its
+note recall 0.800 → **0.824** and precision 0.797 → **0.819**. Beethoven and
+Mahler unchanged to the edit; phase-1 layout unchanged on all 12 pages; the
+authored fixtures identical. Tests 1152 → 1166.
+
+**The window is right now.** Violin 1's `shift:-4` is gone — 35 of its 39 notes
+were four staff positions low and none is. `[7498, 7539, 7580, 7621, 7662]`
+became `[7580, 7621, 7662, 7702, 7743]`, and `m1` reads `C6 C6 C#6` exactly.
+
+Coverage went in as a SECOND signal beside thickness, not a replacement, because
+the fault has two shapes: a window that locked onto a BEAM has a fat end line
+(the contrabass, 18px against 5px) and one that locked onto LEDGER LINES has end
+lines at staff weight that do not run. The rule can now also slide by two, which
+the old one could not — and Violin 1 needed two.
+
+Measured over 270 staves and 5 editions before anything changed
+(`benchmarks/omr-phase1-baseline/probe_line_coverage.py`), the worse end line's
+coverage over the staff's own median:
+
+    0.041  brahms-e2e  staff 16      0.107  bolero-p5 staff 12
+    0.055  bolero-p31  staff 11      0.109  bolero-p5 staff 21
+    0.076  beet5-p2    staff 18      0.112  bolero-p5 staff  3
+    ------------------------------- 6x gap, nothing in between -----------
+    0.682  lamer-p25   staff 16      0.784  beet5-p2  staff  2
+
+All six were confirmed misfitted by reading each page's own ink profile — this
+found **five more** than the one it was written for. Both of the next two are
+correctly placed staves on faint scans and are untouched. After the fix the
+worst deficit on the corpus is lamer-p25's 0.237, its last row sitting 2px off
+its line, and the staff count is unchanged at 270 — nothing was lost or invented.
+
+### The net is −28, not −86, and the difference is worth more than the fix
+
+| part | before | after | |
+|---|--:|--:|---|
+| 16 Violin 1 | 263 | **177** | −86 |
+| 15 Timpani | 31 | **90** | **+59** |
+| every other part | | | 0 |
+
+Violin 1's own cost fell by 86. The Timpani gained 59, and the cause is exact:
+
+    staff 15 Timpani  lines [7093 … 7259]   cell reaches 4 spaces below → 7423
+    staff 16 Violin 1 lines [7580 … 7743]   cell reaches 4 spaces above → 7416
+
+Violin 1's m3 and m4 are its highest notes — `G6 A♭6 A♭6 A6`, `A6 B♭6 B♭6 A♭6` —
+and they sit at y 7373-7408, ABOVE its own cell and INSIDE the Timpani's. They
+now export as `A♭1 B♭1 G1 A1` on a timpani, and Violin 1's m3 and m4 come out
+empty. Before the fix the window was two spaces higher, so the same notes fell
+inside it by accident.
+
+**So this is not a regression the fix caused; it is a pre-existing mis-assignment
+the fix stopped hiding.** LilyPond opened that gap *for* those ledger notes, and
+`_dedupe_cross_staff_detections` resolves a contested glyph by distance to the
+nearer five-line band — which, for a note in a gap opened on its account, is the
+wrong staff. Raising `PAD_ABOVE_STAFF_LINES` alone does not help: the note then
+lands in both cells and the same distance rule still awards it to the Timpani.
+
+That makes cross-staff attribution the next item, ahead of the rhythm residue,
+and it needs a signal the band distance does not carry — the ledger lines
+themselves, which this page detects 299 of, or the stem. It is the same
+mechanism as the two flutes trading a note in Finding 3.

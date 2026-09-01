@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from tools.omr.staff_detector import detect_staves
+from tools.omr.staff_detector import _coverage_shift, detect_staves
 from tools.omr.system_grouping import (
     GROUP_BOUNDARY_RATIO,
     assign_systems,
@@ -456,3 +456,108 @@ class TestMisalignedWindow:
         assert near, "staff disappeared entirely"
         # It stays where it was — on the beam — rather than being invented lower.
         assert near[0].top_y != top + LINE_SPACING
+
+
+class TestShortEndLineWindow:
+    """The same fault told by COVERAGE, which is the half thickness misses.
+
+    Brahms's Violin 1 locked onto two LEDGER LINES above its staff. They are
+    printed at staff weight — thickness ratio 1.8, no outlier — but they cover
+    4% and 6% of the staff's width where a real line covers all of it. The
+    window sat two spaces high and 35 of that part's 39 notes came out four
+    staff positions low, at a cost of 263 OMR-NED edits.
+
+    Measured over 270 staves and 5 editions, the worse end line's coverage
+    divided by the staff's median is 0.041-0.112 for the six misfitted windows
+    and 0.682 or more for every correctly placed staff.
+    """
+
+    @staticmethod
+    def _staff_with_stubs(top: int, n_stubs: int, stub_frac: float = 0.05):
+        """A real five-line staff with `n_stubs` short rows above it, spaced
+        like lines. The grouper takes the stubs plus the staff's first
+        `5 - n_stubs` lines and misses the rest."""
+        img = _blank()
+        _draw_staff(img, 100)
+        for k in range(5):
+            y = top + k * LINE_SPACING
+            img[y:y + 2, X0:X1] = 0
+        stub_end = X0 + int((X1 - X0) * stub_frac)
+        for i in range(1, n_stubs + 1):
+            y = top - i * LINE_SPACING
+            img[y:y + 2, X0:stub_end] = 0
+        return img
+
+    def test_one_short_end_line_slides_the_window_by_one(self):
+        top = 500
+        pws = detect_staves(_page(self._staff_with_stubs(top, 1)))
+        near = [s for s in pws.staves if abs(s.top_y - top) <= 2 * LINE_SPACING]
+        assert near, "the staff under the stub was not detected at all"
+        assert near[0].top_y == top, (
+            f"window still on the stub: top_y={near[0].top_y}, want {top}")
+
+    def test_two_short_end_lines_slide_the_window_by_two(self):
+        """Brahms Violin 1's case. The old rule could only ever slide by one,
+        so even a thickness outlier would have left this two-space misfit."""
+        top = 500
+        pws = detect_staves(_page(self._staff_with_stubs(top, 2)))
+        near = [s for s in pws.staves if abs(s.top_y - top) <= 3 * LINE_SPACING]
+        assert near, "the staff under the stubs was not detected at all"
+        assert near[0].top_y == top, (
+            f"window still on the stubs: top_y={near[0].top_y}, want {top}")
+
+    def test_a_faint_but_full_length_line_is_left_alone(self):
+        """A correctly placed staff on a poor scan has SHORTER lines, not short
+        ones — lamer-p25 staff 16 covers 0.51-0.88 and must not move. The test
+        is relative to the staff's own median, which is why it survives."""
+        img = _blank()
+        _draw_staff(img, 100)
+        top = 500
+        width = X1 - X0
+        for k in range(5):
+            y = top + k * LINE_SPACING
+            # Every line partial, the end ones a little more so — the shape of
+            # a faint scan rather than of a misfit.
+            end = X0 + int(width * (0.6 if k in (0, 4) else 0.8))
+            img[y:y + 2, X0:end] = 0
+        pws = detect_staves(_page(img))
+        near = [s for s in pws.staves if abs(s.top_y - top) <= 2 * LINE_SPACING]
+        assert near, "faint staff was lost"
+        assert near[0].top_y == top, "a faint but correctly placed staff moved"
+
+    # A dropout in the MIDDLE cannot be tested end-to-end: a middle line short
+    # enough to be coverage-bad is also short enough that the peak gates never
+    # group the staff at all, so there is no window to leave alone. The rule
+    # itself is pinned directly in TestCoverageShift.
+
+
+class TestCoverageShift:
+    """`_coverage_shift` alone, on the exact coverage vectors that were measured."""
+
+    @pytest.mark.parametrize("coverage, expected", [
+        # brahms-e2e staff 16 — two ledger lines on top, slide down two.
+        ([0.041, 0.055, 1.0, 1.0, 1.0], 2),
+        # bolero-p31 staff 11 — same shape.
+        ([0.055, 0.026, 1.0, 1.0, 1.0], 2),
+        # bolero-p5 staff 12 — one, slide down one.
+        ([0.107, 1.0, 1.0, 1.0, 1.0], 1),
+        # beet5-p2 staff 18 — one, on a faint scan where the real lines are 0.7.
+        ([0.05, 0.655, 0.694, 0.758, 0.659], 1),
+        # A bad line at the BOTTOM slides the other way.
+        ([1.0, 1.0, 1.0, 1.0, 0.05], -1),
+        # lamer-p25 staff 16 — correctly placed, last row 2px off its line.
+        ([0.746, 0.743, 0.878, 0.773, 0.509], 0),
+        # beet5-p2 staff 2 — a faint scan, correctly placed.
+        ([0.485, 0.664, 0.573, 0.619, 0.645], 0),
+        # A clean staff.
+        ([1.0, 1.0, 1.0, 1.0, 1.0], 0),
+        # A dropout in the middle: no slide fixes it.
+        ([1.0, 1.0, 0.04, 1.0, 1.0], 0),
+        # Bad at BOTH ends: not a misplaced window, so no verdict.
+        ([0.04, 1.0, 1.0, 1.0, 0.04], 0),
+        # Three off one end is past MISFIT_MAX_SHIFT — no line in common with
+        # the true staff, so no evidence it is the same staff.
+        ([0.04, 0.04, 0.04, 1.0, 1.0], 0),
+    ])
+    def test_shift(self, coverage, expected):
+        assert _coverage_shift(coverage) == expected

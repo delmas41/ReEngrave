@@ -148,6 +148,50 @@ MISFIT_THICKNESS_RATIO = 2.5
 # the first pass judges one: a long horizontal run at the staff's own width.
 MISFIT_MIN_RUN_FRAC = 0.5
 
+# ─── The same fault, told by COVERAGE instead (step 3d, second signal) ───────
+# Thickness catches a window that locked onto a BEAM, because a beam is fat.
+# It does not catch one that locked onto LEDGER LINES, because those are printed
+# at staff-line weight. Brahms's Violin 1 is the second kind:
+#
+#     window            [7498, 7539, 7580, 7621, 7662]
+#     line_thickness_px [   9,    8,    5,    4,    5]     ratio 1.8, no outlier
+#     true staff        [7578, 7620, 7661, 7703, 7744]
+#
+# It sits TWO spaces high, and its top two rows are ledger lines under a high
+# violin line. 35 of that part's 39 notes then came out four staff positions
+# low, and it cost 263 OMR-NED edits — more than any other part in the
+# benchmark and more than the whole of Beethoven
+# (`benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md`).
+#
+# What separates the impostors is not how thick they are but HOW FAR THEY RUN.
+# A printed staff line spans the staff; those two rows cover 4% and 6% of it.
+# `_longest_row_run` already measures exactly that and was already used here —
+# as the confirmation gate, never as the thing that fires.
+#
+# MEASURED OVER 270 STAVES, 5 editions plus the three engraved fixtures
+# (`benchmarks/omr-phase1-baseline/probe_line_coverage.py`), as the worse END
+# line's coverage divided by the staff's own median:
+#
+#     0.041  brahms-e2e  staff 16   [0.041, 0.055, 1.0, 1.0, 1.0]
+#     0.055  bolero-p31  staff 11   [0.055, 0.026, 1.0, 1.0, 1.0]
+#     0.076  beet5-p2    staff 18   [0.05, 0.655, 0.694, 0.758, 0.659]
+#     0.107  bolero-p5   staff 12   [0.107, 1.0, 1.0, 1.0, 1.0]
+#     0.109  bolero-p5   staff 21   [0.109, 1.0, 1.0, 1.0, 1.0]
+#     0.112  bolero-p5   staff  3   [0.112, 1.0, 1.0, 1.0, 1.0]
+#     ---------------------------------------- 6x gap, nothing in between ----
+#     0.682  lamer-p25   staff 16   [0.746, 0.743, 0.878, 0.773, 0.509]
+#     0.784  beet5-p2    staff  2   [0.485, 0.664, 0.573, 0.619, 0.645]
+#
+# Every one of the first six was confirmed misfitted by reading the page's own
+# ink profile; both of the next two are correctly placed staves on faint scans
+# (lamer's last row is 2px off its line, not a space). RELATIVE to the staff's
+# own median rather than absolute, because a faint scan's real lines only cover
+# 0.5-0.7 and an absolute floor would either miss them or condemn them.
+MISFIT_COVERAGE_FRAC = 0.35
+# A window three or more spaces off shares no line with the true staff, so
+# there is no evidence it is the same staff; the measured cases are 1 and 2.
+MISFIT_MAX_SHIFT = 2
+
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
 
@@ -779,17 +823,106 @@ def measure_line_geometry(
     return thicknesses, round(max(wanders), 3)
 
 
+def _line_coverage(
+    binary: np.ndarray, line_ys: Sequence[int], spacing: float,
+    x_start: int, x_end: int,
+) -> list[float]:
+    """How much of the staff's own width each of its lines actually inks."""
+    width = max(1, x_end - x_start)
+    return [
+        _longest_row_run(binary, int(y), spacing, x_start, x_end + 1)[2] / width
+        for y in line_ys
+    ]
+
+
+def _coverage_shift(coverage: Sequence[float]) -> int:
+    """How many spacings the window is out, from the coverage alone.
+
+    Positive k: the first k rows are not staff lines, so slide DOWN by k.
+    Negative k: the last |k| are not, so slide UP. Zero: no verdict.
+
+    The bad rows must ALL be at one end and form a run from it. A bad row in
+    the MIDDLE is a real line the print lost, and a bad row at each end is not
+    a misplaced window but a group assembled out of two different staves —
+    neither is something a slide can fix.
+    """
+    if not coverage:
+        return 0
+    median = statistics.median(coverage)
+    if median <= 0:
+        return 0
+    bad = [c < MISFIT_COVERAGE_FRAC * median for c in coverage]
+    n_bad = sum(bad)
+    if n_bad == 0 or n_bad == len(bad):
+        return 0
+    leading = 0
+    while leading < len(bad) and bad[leading]:
+        leading += 1
+    trailing = 0
+    while trailing < len(bad) and bad[-1 - trailing]:
+        trailing += 1
+    if leading and trailing:
+        return 0
+    k = leading or trailing
+    if k > MISFIT_MAX_SHIFT or n_bad != k:
+        return 0
+    return k if leading else -k
+
+
+def _slide_window(
+    binary: np.ndarray, line_ys: list[int], k: int,
+    x_start: int, x_end: int, spacing: float,
+) -> list[int] | None:
+    """Drop |k| rows off one end of the window and grow |k| onto the other.
+
+    The step comes from the lines being KEPT, not from the page's spacing: the
+    kept lines are the ones known to be real, and on a page whose staves differ
+    slightly the page median can place a new row a pixel or two off its line.
+    Each new row is then snapped to the best-covered row within a small window,
+    bounded well inside a quarter of a space so a snap can never cross to a
+    neighbour.
+    """
+    kept = line_ys[k:] if k > 0 else line_ys[:k]
+    if len(kept) < 2:
+        return None
+    step = (kept[-1] - kept[0]) / (len(kept) - 1)
+    if step <= 0:
+        return None
+    snap = max(1, int(min(2.0, step / 4.0)))
+    height = binary.shape[0]
+
+    grown: list[int] = []
+    for i in range(1, abs(k) + 1):
+        nominal = int(round(kept[-1] + i * step if k > 0 else kept[0] - i * step))
+        best_row, best_cover = None, -1.0
+        for row in range(nominal - snap, nominal + snap + 1):
+            if not (0 <= row < height):
+                continue
+            cover = _line_coverage(binary, [row], spacing, x_start, x_end)[0]
+            if cover > best_cover:
+                best_row, best_cover = row, cover
+        if best_row is None:
+            return None
+        grown.append(best_row)
+    return sorted(kept + grown)
+
+
 def _refit_misaligned_group(
     binary: np.ndarray, line_ys: list[int], spacing: float,
 ) -> list[int] | None:
     """Slide a five-line window back onto the staff it missed, or None.
 
-    Returns a corrected `line_ys` only when the group's first or last line is a
-    thickness outlier AND the row one spacing beyond the opposite end carries a
-    real line AND the resulting window measures more uniformly than the one it
-    replaces. Any of those failing leaves the group alone — a staff invented in
-    the wrong place is worse than a staff read a space low, because the second
-    at least keeps its notes in one voice.
+    TWO SIGNALS FOR ONE FAULT, because the fault has two shapes. A window that
+    locked onto a BEAM has an end line far THICKER than the rest (Brahms's
+    contrabass, 18px against 5px). A window that locked onto LEDGER LINES has
+    end lines printed at staff weight that do not RUN (Brahms's Violin 1, 4%
+    and 6% of the staff's width, thickness ratio 1.8 and invisible to the first
+    test). Either fires; the acceptance below is the same for both and
+    demands the candidate be clean on BOTH.
+
+    Returns None on anything unclear. A staff invented in the wrong place is
+    worse than a staff read a space low, because the second at least keeps its
+    notes in one voice.
     """
     if len(line_ys) != 5 or spacing <= 0:
         return None
@@ -799,27 +932,49 @@ def _refit_misaligned_group(
         return None
     thickness = measured[0]
     median = statistics.median(thickness)
-    if median <= 0 or max(thickness) < MISFIT_THICKNESS_RATIO * median:
+    coverage = _line_coverage(binary, line_ys, spacing, x_start, x_end)
+
+    shift = 0
+    fired = ""
+    if median > 0 and max(thickness) >= MISFIT_THICKNESS_RATIO * median:
+        worst = int(np.argmax(thickness))
+        # A thick line in the MIDDLE is pinned by the lines either side of it,
+        # so it is a beam crossing a correctly-placed staff. Brahms staff 8 is
+        # exactly that and must not be touched.
+        if worst == 0:
+            shift = 1
+        elif worst == len(thickness) - 1:
+            shift = -1
+        fired = "thickness" if shift else ""
+    if shift == 0:
+        shift = _coverage_shift(coverage)
+        fired = "coverage" if shift else ""
+    if shift == 0:
         return None
 
-    worst = int(np.argmax(thickness))
-    if worst == 0:
-        candidate = line_ys[1:] + [int(round(line_ys[-1] + spacing))]
-    elif worst == len(thickness) - 1:
-        candidate = [int(round(line_ys[0] - spacing))] + line_ys[:-1]
-    else:
-        # Pinned on both sides: a beam crossing a staff that is placed right.
+    candidate = _slide_window(binary, line_ys, shift, x_start, x_end, spacing)
+    if candidate is None or len(candidate) != 5:
         return None
-
-    height, width = binary.shape
-    new_row = candidate[-1] if worst == 0 else candidate[0]
-    if not (0 <= new_row < height):
-        return None
-    _, _, run = _longest_row_run(binary, new_row, spacing, x_start, x_end + 1)
-    if run < MISFIT_MIN_RUN_FRAC * max(1, x_end - x_start):
+    if candidate == line_ys:
         return None
 
     new_x0, new_x1 = _staff_x_extent(binary, candidate, spacing)
+    new_coverage = _line_coverage(binary, candidate, spacing, new_x0, new_x1)
+    new_median_cover = statistics.median(new_coverage)
+    if new_median_cover <= 0:
+        return None
+    # The rows we moved onto have to carry a real line — the same demand the
+    # old rule made of its single replacement row.
+    if min(new_coverage) < MISFIT_MIN_RUN_FRAC * new_median_cover:
+        return None
+    # Each signal must IMPROVE on the one that fired it, so a slide is never
+    # accepted for merely being different. Coverage is checked only when
+    # coverage fired: a beam runs the full width of the staff it crosses, so a
+    # thickness-detected misfit can have perfect coverage on both sides and
+    # demanding an improvement there would veto the case the rule was built for.
+    if fired == "coverage" and min(new_coverage) <= min(coverage):
+        return None
+
     remeasured = measure_line_geometry(binary, candidate, new_x0, new_x1)
     if remeasured is None:
         return None

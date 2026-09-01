@@ -588,8 +588,8 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Current on the engraved orchestral benchmark: **pooled 0.2489** (Mahler 0.0455,
-Beethoven 0.1714, Brahms 0.3730), from an opening baseline of 0.3164. Full
+Current on the engraved orchestral benchmark: **pooled 0.2449** (Mahler 0.0455,
+Beethoven 0.1714, Brahms 0.3657), from an opening baseline of 0.3164. Full
 reading, and the findings it surfaced that note recall is blind to, in
 [benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md)
 and
@@ -884,7 +884,27 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 
 - **Clef reading is geometric, but clef *detection* is still a model weakness.** Which line a clef names is now measured, not classified (`tools/omr/clef_geometry.py`) — alto/tenor/soprano/mezzo/baritone are the same glyph on different lines, so a class label can never separate them, and all ten clefs now flow through pitch resolution and both exporters. A classical-CV C-clef locator (`tools/omr/clef_locator.py`) covers scores where no model sees a clef at all (19th-century C-clef prints: zero detections even at conf 0.03). It runs only where nothing else read a clef, recognises C clefs only, and abstains otherwise. G/F clef *detection* on degraded scans is unimproved. See `benchmarks/omr-clef-geometry/RESULTS.md`.
 
-- **Body text is no longer detected as staves** (fixed 2026-08-28). Row ink-count alone passed the line-length test on justified paragraphs; `staff_detector` now also requires the lines to be *continuous strokes* rather than rows of glyphs (`_line_ink_runs_per_space`). Music tops out at 1.39 runs per staff-space, text starts at 2.02. All music-only scores byte-identical.
+- **A five-line window that locked onto the wrong ink is slid back** (step 3d,
+`staff_detector._refit_misaligned_group`), by TWO signals because the fault has
+two shapes. A window that locked onto a BEAM has an end line far thicker than
+the rest (Brahms's contrabass, 18px against 5px). A window that locked onto
+LEDGER LINES has end lines printed at staff weight that do not RUN — Brahms's
+Violin 1 covered 4% and 6% of the staff's width at a thickness ratio of 1.8,
+invisible to the first test, and sat TWO spaces high, so 35 of its 39 notes came
+out four staff positions low at a cost of 263 OMR-NED edits. Measured over 270
+staves and 5 editions (`benchmarks/omr-phase1-baseline/probe_line_coverage.py`),
+the worse end line's coverage over the staff's median is **0.041–0.112 for the
+six misfitted windows and 0.682 or more for every correctly placed staff** — a
+6× gap with nothing in it, which is why the constant is not a tuned one. It is
+RELATIVE to the staff's own median because a faint scan's real lines only cover
+0.5–0.7. Slides by 1 or 2, never 3 (a window three spaces off shares no line
+with the true staff). ⚠️ **Fixing this uncovered the next problem rather than
+finishing one:** with Violin 1 placed correctly its highest notes fall in the
+gap above its own cell and inside the Timpani's, and are awarded to the timpani
+by `_dedupe_cross_staff_detections`, which resolves a contested glyph by
+distance to the nearer band. See the attribution report.
+
+**Body text is no longer detected as staves** (fixed 2026-08-28). Row ink-count alone passed the line-length test on justified paragraphs; `staff_detector` now also requires the lines to be *continuous strokes* rather than rows of glyphs (`_line_ink_runs_per_space`). Music tops out at 1.39 runs per staff-space, text starts at 2.02. All music-only scores byte-identical.
 
 - **End-to-end clef accuracy is 92%, and the detector does most of the work.** Measured 2026-08-29 on 52 hand-read staves (`benchmarks/omr-clef-geometry/eval_pipeline_clefs.py`, `PIPELINE_CLEF_RESULTS.md`): the detector supplies 39 of them at 95% accuracy, the positional default 11 at 82%, the CV locator 2 at 100%. This is the number that matters downstream — a staff carries its clef into every pitch on it and into which slot table its key signature is fitted — and it is much better than the coverage figures below, which are about the CV LOCATOR alone and predate the `imgsz` fix. Every remaining error is a non-treble clef read as treble. A staff that read no clef now takes the clef its own part read in another system when every reading agrees (`contextual._fill_defaulted_clefs`), worth 48/52 → 49/52. With `--dossier`, the work's own parts are joined to the page's slots on the margin LABELS (never on the clefs, which would be circular) and supply the clef where that join is anchored by a label above and below — **50/52 (96%)**. Score-order identity driving clef correction was measured and rejected there: it fixes one staff and breaks another.
 
