@@ -1,4 +1,4 @@
-# Handoff — the clef locator, after position beat shape three times
+# Handoff — the clef layer, after the leverage list was worked to the end
 
 > Written at the end of the 2026-08-31 session, which executed
 > `NEXT_SESSION_CLEF_2026-08-31.md` in full. Everything below is measured and
@@ -63,61 +63,38 @@ loosening height at the old 0.55 w position cost 27 clefs. Shipped as a second
 tier, so every veto that fired before still fires and the reference, piano and
 coverage corpora cannot regress by construction.
 
-### The next job, in order
+### The next job, in order — REWRITTEN 2026-09-01
 
-1. **DO NOT re-open the five staves with no dots in the window.** Four ideas
-   were built and measured and all four are refused — the merged-pair
-   signature (109 of 123 real C clefs carry one), a harder staff-line strip
-   (zero effect at any dilation), a bigger search window (zero effect at any
-   padding), and a proportion floor on the candidate (real clefs run narrower
-   than the misreads). The dots are on the page and not in the mask, so the
-   only route left is a reader that goes back to the grayscale print rather
-   than the shared ink mask — a real piece of work with a ceiling of four false
-   positives. Full write-up in `RESULTS.md`; do not spend the afternoon again.
-2. **TAKEN: the single-dot veto** (`dot_single_clear_is_enough`), FALSE
-   POSITIVES 13 → 5. The only non-free change in this area: 8 removed for 20
-   declined C clefs. Watch two things if you revisit it — `eval_score_order`'s
-   read-clefs arm fell from 10 named/5 correct to 8/3, the one number that got
-   worse; and `eval_pipeline_clefs` holds 69/69 only because `slot_continuity`
-   picks up what the locator drops, which is worth knowing before leaning on
-   the locator alone anywhere new.
-3. **The other shape cases** are turned away on aspect or height even by the
-   loose tier. The sweep table in `RESULTS.md` shows the cost column staying at
-   zero out to aspect 3.0 and height 1.40, so there may be a little room — but
-   re-measure rather than extrapolating off that table, which was taken on a
-   different survivor population.
-4. **The two treble false positives are out of reach of any dot rule.** A G clef
-   has no dots. They need a different veto or nothing.
-5. **`no_clusters` (3 C clefs lost) and `asymmetric` (3)** are the joint
-   second-largest losses after the dot veto and neither has ever been looked
-   at. `off_staff_only` costs 2 with 0 caught on these pages.
-6. **WIDEN THE GROUND TRUTH FURTHER.** It went from 4 pages to 10 and reversed
-   two conclusions; it is still 24 C clefs. `render_staff_heads.py` renders a
-   page's staff heads and `orchestral-clef-truth.json` is the file. Bolero p40
-   (34 staves) is rendered and unread.
-7. **A third edition.**
+The four-item leverage list was worked through and two items are dead. Read
+`RESULTS.md`'s last three sections before starting anything here.
 
-**FIRST: decide whether to keep the single-dot veto.** On the widened hand-read
-corpus (`orchestral-clef-truth.json`, 10 pages / 187 staves / 24 C clefs)
-turning `dot_single_clear_is_enough` OFF recovers **5 real C clefs for 1 false
-positive** — recall 8/24 to 13/24. That is the opposite of what the sweep
-corpora said, and the sweeps are the wrong instrument for the question: they are
-built from the candidates the locator FIRES on, so they oversample staves where
-it produces something. It is left shipped because taking it was a deliberate
-call, but the evidence it rested on has been superseded. `probe_cluster_too_big.py
---no-single-dot` reproduces both arms.
-
-**DO NOT go after the fused cluster.** Its 52.9% share of orchestral header
-cells looks like the largest drain and is not: it costs **1 C clef against 90
-correct refusals** — a G clef is seven staff spaces tall and refusing it is the
-branch working. Chasing it would invent false positives.
-
-**And do not quote 8.1% as coverage.** `58 of 720 located` is over ALL header
-cells, and most orchestral staves correctly get nothing. The real pair is
-**8 of 24 C clefs read, 163 of 163 non-C staves declined**. Two editions have now each shown a false-positive family
-   the other could not. `sweep_located_clefs.py` builds the corpus and
-   `check_clef_precision.py` picks it up with no code change; the cost is an
-   afternoon of reading glyphs. Pick a different publisher again.
+1. **INSTRUMENT IDENTITY, which is where the errors actually are.** Seventeen of
+   the twenty-one end-to-end clef errors are the positional default calling a
+   bass or C-clef staff treble. `correct_clefs_from_instruments` already turns
+   an instrument name into a clef, gap-fill only and vetoed by register fit, and
+   it applied ZERO corrections across ten pages — starved of names, not broken.
+   Hand-supply "Viola" for beet6-p20's slot 7 and it fires immediately
+   (`treble -> alto`, fit 1.00, applied). `eval_score_order` says the prior
+   names 12 of 33 staves at 0.92 precision, abstaining on two thirds. Every
+   staff it can safely name is a staff whose clef stops being a guess. **This is
+   the whole game now.**
+2. **The part-staff join, because the dossier is WRONG where it fires.** 12
+   staves, 9 right; the three wrong are consecutive on beet5-p48 and are the
+   join slipping across the trombones. Do not widen dossier coverage before
+   fixing it — that spreads a known misalignment.
+3. **The detector's blind 45 staves of 113**, where neither the measure cell nor
+   the header crop yields a clef. A training question, and the project has three
+   negative results on it already (catalog, domain augmentation, clef
+   fine-tune). Do not start here without a new idea.
+4. **DEAD: `slot_continuity`.** The same slot fails in every system it appears
+   in — the same part in the same edition prints the same glyph — so there is
+   never a good reading to propagate. Fixing beet9-p60's system grouping (whose
+   true boundary scores 324 bridged columns against a within-system median near
+   120, i.e. the signal is inverted, not weak) would gain nothing.
+5. **DEAD-ish: the CV locator.** Three staves of 166. It is where a whole
+   session went; it is not where the errors are.
+6. **Widen the ground truth again.** It went 4 pages -> 10 and reversed two
+   conclusions. Bolero p40 (34 staves) is rendered and unread.
 
 ## Standing rules in this area, none of them optional
 
