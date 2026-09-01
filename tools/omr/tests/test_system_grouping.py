@@ -383,3 +383,76 @@ def test_a_short_rule_between_staves_is_not_a_staff():
     img[400:402, X0:X0 + 460] = 0
     pws = detect_staves(_page(img))
     assert len(pws.staves) == 2
+
+
+# ── step 3d: windows that locked onto a beam ────────────────────────────────
+
+class TestMisalignedWindow:
+    """A five-line window that slid onto a beam reads every note a space low.
+
+    Measured on the engraved Brahms 1 fixture, staff 20 (Contrabass): an 18 px
+    "line" against 5 px for the rest, window internally consistent (spacing 41,
+    span 164, both normal), and every note a third flat — truth 42 x C3 read as
+    Ab2. That one staff produced 42 of the page's 65 wrong pitches.
+
+    The synthetic beams below are 5-6 px against 2 px lines, which keeps the
+    ratio near the real 18:5. Scaling it up breaks the peak grouper instead,
+    which is a different failure and not what this is about.
+    """
+
+    def test_a_thick_end_line_slides_the_window_back(self):
+        img = _blank()
+        _draw_staff(img, 100)
+        _draw_staff(img, 260)
+        # A real five-line staff, plus a thick beam one spacing ABOVE it. The
+        # grouper takes beam + the first four lines and misses the real fifth.
+        top = 500
+        for k in range(5):
+            y = top + k * LINE_SPACING
+            img[y:y + 2, X0:X1] = 0
+        img[top - LINE_SPACING:top - LINE_SPACING + 5, X0:X1] = 0
+        pws = detect_staves(_page(img))
+
+        near = [s for s in pws.staves if abs(s.top_y - top) <= LINE_SPACING]
+        assert near, "the staff under the beam was not detected at all"
+        staff = near[0]
+        assert staff.top_y == top, (
+            f"window still sitting on the beam: top_y={staff.top_y}, want {top}")
+        assert staff.line_thickness_px == [2.0, 2.0, 2.0, 2.0, 2.0]
+
+    def test_a_thick_MIDDLE_line_is_left_alone(self):
+        """A thick line with real lines either side is a beam crossing a staff
+        that is placed correctly — Brahms staff 8. Moving it would be the bug."""
+        img = _blank()
+        _draw_staff(img, 100)
+        top = 400
+        for k in range(5):
+            y = top + k * LINE_SPACING
+            img[y:y + (6 if k == 2 else 2), X0:X1] = 0
+        _draw_staff(img, 700)
+        pws = detect_staves(_page(img))
+
+        near = [s for s in pws.staves if abs(s.top_y - top) <= 2]
+        assert near, "staff with a fat middle line was lost"
+        assert near[0].top_y == top, "a pinned middle outlier moved the window"
+        assert near[0].line_thickness_px[2] == 6.0, "the fat line was not kept"
+
+    def test_no_replacement_line_means_no_move(self):
+        """The row a slid window would need must actually carry a printed line.
+        With nothing there the staff is left as it was, because a staff invented
+        in the wrong place is worse than one read a space low."""
+        img = _blank()
+        _draw_staff(img, 100)
+        top = 500
+        for k in range(5):
+            y = top + k * LINE_SPACING
+            img[y:y + 2, X0:X1] = 0
+        img[top - LINE_SPACING:top - LINE_SPACING + 5, X0:X1] = 0
+        # Blank the row the slid window would need.
+        img[top + 5 * LINE_SPACING - 3:top + 5 * LINE_SPACING + 6, :] = 255
+        pws = detect_staves(_page(img))
+        assert pws.staves, "page lost all staves"
+        near = [s for s in pws.staves if abs(s.top_y - top) <= LINE_SPACING]
+        assert near, "staff disappeared entirely"
+        # It stays where it was — on the beam — rather than being invented lower.
+        assert near[0].top_y != top + LINE_SPACING

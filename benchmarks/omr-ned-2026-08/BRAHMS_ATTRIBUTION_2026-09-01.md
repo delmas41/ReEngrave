@@ -94,6 +94,32 @@ a separate look — 103 edits for a single symbol class.
 the same gap Beethoven showed with dynamics and tempo. Known, unglamorous,
 ~11% of Brahms.
 
+## FIXED 2026-09-01 — finding 1
+
+`staff_detector` step 3d slides a window back when its FIRST or LAST line is a
+thickness outlier, the row one spacing beyond the far end carries a real line,
+and the result measures more uniformly. Staff 20 went
+`[9287,9327,9368,9408,9451]` / `[18,5,5,5,5]` to
+`[9327,9368,9408,9451,9492]` / `[5,5,5,5,5]`, and its notes from `Ab2` to `C3`.
+Staff 8 — the fat line in the MIDDLE — is untouched, as intended.
+
+| | before beams | + beam export | **+ this fix** |
+|---|--:|--:|--:|
+| pooled OMR-NED | 0.3164 | 0.3045 | **0.2716** |
+| edits | 2224 | 2140 | **1908** |
+| brahms | 0.4664 | 0.4486 | **0.3899** |
+
+**Finding 2 collapsed on its own, as predicted.** `entire measure` fell
+705 -> 482 (-223) while `wrong note` moved only -38: most of that 32% bucket
+was one misplaced staff being charged by the bar, not 40 broken measures.
+That is the amplification this file warned about, confirmed by removing its
+cause rather than by arguing about it.
+
+Still open: finding 3 (82 spurious augmentation dots) and finding 4 (slurs and
+directions never exported). `wrong flag/beam` rose 141 -> 163, which is expected
+— with the staff placed right, more notes align and their beam differences
+become visible rather than being hidden inside whole-measure charges.
+
 ## What this changes
 
 The headline was one number and looked like a wall. It is four problems, and

@@ -178,7 +178,7 @@ own `Timp.` is lost to OCR.
 
 ---
 
-## ➡️ NEXT: Brahms is four problems, not one (attributed 2026-09-01)
+## ➡️ NEXT: Brahms — one of four fixed (2026-09-01)
 
 Brahms carries **1768 of the 2140 pooled OMR-NED edits — 83%** — so the
 orchestral headline is essentially a Brahms number. Attributed in
@@ -186,7 +186,13 @@ orchestral headline is essentially a Brahms number. Attributed in
 unlike Beethoven (recall 1.000, all notation) this is genuine recognition
 failure — recall 0.717 — but NOT the kind that argues for retraining.
 
-**One misaligned staff produces two thirds of the pitch errors.** 65 notes are
+✅ **The misaligned staff is FIXED** (`staff_detector` step 3d). Pooled OMR-NED
+**0.3045 → 0.2716**, Brahms **0.4486 → 0.3899**, and the whole-measure bucket
+collapsed 705 → 482 on its own — most of that 32% was one misplaced staff being
+charged by the bar. Still open: 82 spurious augmentation dots, and slurs and
+directions never exported.
+
+**One misaligned staff produced two thirds of the pitch errors.** 65 notes are
 replaced page-wide; **42 of them are part 20 alone** and **41 are exactly −4
 semitones**. Part 20 is the Contrabass: truth 42 × `C3`, we read `A♭2`. Its
 five-line window is fitted one space too high — the top "line" is a BEAM —

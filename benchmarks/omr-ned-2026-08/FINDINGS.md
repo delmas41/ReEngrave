@@ -42,6 +42,11 @@ excerpts, production weights, dossier on:
 > | brahms | 0.4664 | **0.4486** |
 >
 > Mahler is unchanged — its 8-bar excerpt carries only 24 notes.
+>
+> **Then the Brahms staff misfit** (`BRAHMS_ATTRIBUTION_2026-09-01.md`), which
+> took the pooled score to **0.2716 / 1908 edits** and Brahms to **0.3899**.
+> Session total: **0.3164 -> 0.2716**, both fixes found by this metric and
+> invisible to every other number the repo reports.
 
 Pooled, not averaged — one edit-sum over one symbol-sum, the way the paper
 defines it, so the dense score counts for more.

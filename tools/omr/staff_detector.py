@@ -23,6 +23,7 @@ Public surface:
 
 from __future__ import annotations
 
+import statistics
 from typing import Sequence
 
 import numpy as np
@@ -120,6 +121,32 @@ SINGLE_LINE_NEIGHBOUR_RUN_FRAC = 0.5
 # agree to within 0.1% of each other while the interlopers are at 0.76, 0.02
 # and 0.05 of them — the gap is enormous and the constant is nowhere near it.
 SINGLE_LINE_CLUSTER_WIDTH_FRAC = 0.9
+
+# ─── Misaligned five-line windows (step 3d) ─────────────────────────────────
+# A group whose FIRST or LAST line is far thicker than the rest is not a staff
+# with one fat line — it is a window that locked onto something else and slid
+# by a space. Measured on the engraved Brahms 1 fixture, staff 20 (Contrabass):
+#
+#     line_ys_page      [9287, 9327, 9368, 9408, 9451]
+#     line_thickness_px [18.0,  5.0,  5.0,  5.0,  5.0]
+#
+# The 18 px "line" is a BEAM. The window is internally consistent — spacing 41,
+# span 164, both normal for the page — which is why nothing downstream ever
+# questioned it, and every note on the staff then resolved one space low: truth
+# 42 x C3 read as Ab2, the key signature supplying the flat. That single staff
+# produced 42 of the page's 65 wrong pitches
+# (`benchmarks/omr-ned-2026-08/BRAHMS_ATTRIBUTION_2026-09-01.md`).
+#
+# ONLY AN END LINE CAN BE THIS. A thick line in the MIDDLE is pinned by the
+# lines either side of it, so it is a beam crossing a correctly-placed staff —
+# Brahms staff 8 is exactly that, and must not be touched.
+#
+# Thickness ratio against the group's median: 19 of the 21 staves on that page
+# sit at 1.0-1.8, the two outliers at 3.6 and 4.0. 2.5 is the gap.
+MISFIT_THICKNESS_RATIO = 2.5
+# The replacement row must actually carry a printed line, judged the same way
+# the first pass judges one: a long horizontal run at the staff's own width.
+MISFIT_MIN_RUN_FRAC = 0.5
 
 
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
@@ -752,6 +779,59 @@ def measure_line_geometry(
     return thicknesses, round(max(wanders), 3)
 
 
+def _refit_misaligned_group(
+    binary: np.ndarray, line_ys: list[int], spacing: float,
+) -> list[int] | None:
+    """Slide a five-line window back onto the staff it missed, or None.
+
+    Returns a corrected `line_ys` only when the group's first or last line is a
+    thickness outlier AND the row one spacing beyond the opposite end carries a
+    real line AND the resulting window measures more uniformly than the one it
+    replaces. Any of those failing leaves the group alone — a staff invented in
+    the wrong place is worse than a staff read a space low, because the second
+    at least keeps its notes in one voice.
+    """
+    if len(line_ys) != 5 or spacing <= 0:
+        return None
+    x_start, x_end = _staff_x_extent(binary, line_ys, spacing)
+    measured = measure_line_geometry(binary, line_ys, x_start, x_end)
+    if measured is None:
+        return None
+    thickness = measured[0]
+    median = statistics.median(thickness)
+    if median <= 0 or max(thickness) < MISFIT_THICKNESS_RATIO * median:
+        return None
+
+    worst = int(np.argmax(thickness))
+    if worst == 0:
+        candidate = line_ys[1:] + [int(round(line_ys[-1] + spacing))]
+    elif worst == len(thickness) - 1:
+        candidate = [int(round(line_ys[0] - spacing))] + line_ys[:-1]
+    else:
+        # Pinned on both sides: a beam crossing a staff that is placed right.
+        return None
+
+    height, width = binary.shape
+    new_row = candidate[-1] if worst == 0 else candidate[0]
+    if not (0 <= new_row < height):
+        return None
+    _, _, run = _longest_row_run(binary, new_row, spacing, x_start, x_end + 1)
+    if run < MISFIT_MIN_RUN_FRAC * max(1, x_end - x_start):
+        return None
+
+    new_x0, new_x1 = _staff_x_extent(binary, candidate, spacing)
+    remeasured = measure_line_geometry(binary, candidate, new_x0, new_x1)
+    if remeasured is None:
+        return None
+    new_thickness = remeasured[0]
+    new_median = statistics.median(new_thickness)
+    if new_median <= 0:
+        return None
+    if max(new_thickness) >= MISFIT_THICKNESS_RATIO * new_median:
+        return None                      # no better than what we had
+    return candidate
+
+
 # ─── Public entry point ──────────────────────────────────────────────────────
 
 
@@ -778,6 +858,12 @@ def detect_staves(page: PageImage) -> PageWithStaves:
         # the x-window and the vertical extent it is judged against.
         for row in _single_line_staff_rows(page.binary, peaks, groups, spacing):
             groups.append([row])
+        groups.sort(key=lambda g: g[0])
+
+    # Step 3d: slide any window that locked onto a beam back onto its staff.
+    if spacing > 0:
+        groups = [(_refit_misaligned_group(page.binary, g, spacing) or g)
+                  for g in groups]
         groups.sort(key=lambda g: g[0])
 
     staves: list[Staff] = []
