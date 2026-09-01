@@ -88,11 +88,21 @@ coverage corpora cannot regress by construction.
    different survivor population.
 4. **The two treble false positives are out of reach of any dot rule.** A G clef
    has no dots. They need a different veto or nothing.
-5. **The fused cluster is HALF the orchestral problem** — 52.9% of header cells
-   against Nottebohm's 16.5%, at a median height of 7.5 staff spaces against
-   5.9. It is the largest single drain on orchestral coverage by a wide margin
-   and nothing today touched it.
-6. **A third edition.** Two editions have now each shown a false-positive family
+5. **WIDEN THE HAND-READ GROUND TRUTH.** It is the only measurement that tells
+   a rejection from a loss, and it currently rests on four pages and ten C
+   clefs. Everything else in this list is guesswork until it is bigger.
+6. **A third edition.**
+
+**DO NOT go after the fused cluster.** Its 52.9% share of orchestral header
+cells looks like the largest drain and is not a drain at all: `probe_cluster_
+too_big.py` shows **0 of its 47 cells carry a C clef** — every one is a treble
+or bass staff being refused correctly, which is what a seven-space-tall G clef
+should get. Chasing it would invent false positives, not find clefs.
+
+**And do not quote 8.1% as coverage.** `58 of 720 located` is over ALL header
+cells, and most orchestral staves correctly get nothing. On the pages where the
+answer is known the locator reads **8 of the 10 real C clefs with no false
+positive on any of the 74 staves**. Two numbers, not one. Two editions have now each shown a false-positive family
    the other could not. `sweep_located_clefs.py` builds the corpus and
    `check_clef_precision.py` picks it up with no code change; the cost is an
    afternoon of reading glyphs. Pick a different publisher again.

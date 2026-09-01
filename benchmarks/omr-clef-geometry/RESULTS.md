@@ -1514,3 +1514,74 @@ coverage headline was Nottebohm's, and it was flattering.
 reference 5/5 exact | orchestral misses 7 | sweep misses 24 | FALSE POSITIVES 5
 1107 tests
 ```
+
+
+---
+
+## The fused cluster costs nothing — and 8.1% was never a recall figure (2026-08-31)
+
+The section above ended by calling the fused cluster "the largest single drain on
+orchestral coverage", on the strength of its 52.9% share of orchestral header
+cells. **That was wrong, and the correction is the whole of this section.**
+
+`probe_cluster_too_big.py` cross-tabulates the branch each staff dies on against
+what that staff's clef really is, over the four hand-read orchestral pages that
+carry a clef per staff — beet5-p2, pastoral-p2, beet5-p48, mahler5-p72:
+
+```
+  branch                        C clef   not a C clef
+  too_big                            0             47
+  asymmetric                         1             13
+  located                            8              0
+  f_clef_dots                        1              2
+  ambiguous_snap                     0              2
+  TOTAL                             10             64
+```
+
+**Not one C clef is lost to the fused cluster.** All 47 cells it turns away are
+treble or bass staves, which is the branch doing exactly its job: a G clef is
+about seven staff spaces tall, and refusing it is the point. Going after that
+branch would not buy coverage, it would invent false positives — the trade this
+layer refuses, arrived at from the other direction.
+
+### What the 8.1% actually measures
+
+`58 of 720 located (8.1%)` is **located over ALL header cells**, and most
+orchestral staves are treble or bass and correctly get nothing. It is not
+recall, and the previous section presented it as though it were.
+
+On the pages where the answer is known, the locator finds **8 of the 10 real C
+clefs, with no false positive on any of the 74 staves.** That is the number, and
+it is a great deal better than "8.1% coverage" implies. Both figures are true;
+only one of them answers "how good is this at reading C clefs".
+
+The honest way to state the orchestral position is therefore two numbers, not
+one: it reads 8 of 10 C clefs on hand-read pages, and it declines 64 of 64
+staves that do not carry one.
+
+### The two it loses, which are the only real targets here
+
+| page | staff | truth | branch |
+|---|---|---|---|
+| mahler5-p72 | s12 (Violen) | alto | `asymmetric` |
+| beet5-p2 | s9 (viola) | alto | `f_clef_dots` |
+
+The second is the single-dot veto's cost, appearing in the wild — and it is
+worth seeing what it looks like there. The same page's OTHER system has its
+viola at s20, and that one is located correctly. So the veto fires on one system
+of a page and not the other, for the same part, which is precisely the
+inconsistency `contextual._fill_defaulted_clefs` and `slot_continuity` exist to
+absorb — and did, when `eval_pipeline_clefs` held 69/69 through this change.
+
+### The caveat, stated rather than buried
+
+Four pages, 74 staves, 10 C clefs. That is a thin sample for a claim about a
+whole repertoire, and the `asymmetric` branch in particular (1 lost, 13 correctly
+refused) is nowhere near enough evidence to tune anything on. What it does
+support, because the signal is 0 against 47, is the negative: **the fused
+cluster is not where orchestral C clefs are being lost, and the next person
+should not spend an afternoon there.**
+
+Widening this ground truth is the useful next job in this area — it is the only
+measurement that distinguishes a rejection from a loss, and it currently rests
+on ten clefs.
