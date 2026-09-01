@@ -138,7 +138,35 @@ deleted, with the reason, because the assertion looked deliberate.
     pooled OMR-NED       0.2716 -> 0.2624      edits 1908 -> 1819
     brahms               0.3899 -> 0.3764
 
-Still open: finding 4 (slurs and directions never exported). `wrong flag/beam` rose 141 -> 163, which is expected
+## PARTLY FIXED 2026-09-01 — finding 4
+
+Detected and dropped, like beams and dots before them: 118 slur arcs and 31
+dynamic letter glyphs on this page, and `export.py` mentioned neither.
+
+**Dynamics shipped.** The detector spells them one LETTER at a time, so adjacent
+glyphs are joined into a word first — two `dynamicF` a glyph apart are "ff", not
+two "f" — and a run that is not a dynamic word is dropped rather than guessed at.
+
+**Slurs implemented, tested, and deliberately NOT wired**, on measurement:
+
+| | pooled | edits | brahms |
+|---|--:|--:|--:|
+| before | 0.2624 | 1819 | 0.3764 |
+| **dynamics only** | **0.2595** | **1811** | 0.3730 |
+| dynamics + slurs | 0.2598 | 1835 | 0.3712 |
+
+Slurs make Brahms alone slightly better and everything else worse, `wrong slur`
+rising 76 -> 97. The cause is structural, not a threshold: cells are cut per
+MEASURE, so a slur crossing a barline is detected as two arcs — 118 arcs against
+82 true slurs — and emitting per measure writes two slurs where the music has
+one. The arc-to-note mapping is the correct half; what is missing is a slur that
+can span measures, which the per-measure event model cannot express.
+
+Mahler regressed 0.0785 -> 0.0826 in BOTH arms, so that is the dynamics, not the
+slurs — 8 edits on an excerpt with 24 notes.
+
+Still open: text expressions and tempo marks (17 of the truth's directions),
+which need text detection the pipeline does not have. `wrong flag/beam` rose 141 -> 163, which is expected
 — with the staff placed right, more notes align and their beam differences
 become visible rather than being hidden inside whole-measure charges.
 

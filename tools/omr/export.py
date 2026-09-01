@@ -602,7 +602,8 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               is_rest: bool, indent: str, voice: int = 1,
               tied_to_next: bool = False,
               tied_from_prev: bool = False,
-              beam_states: dict[int, str] | None = None) -> str:
+              beam_states: dict[int, str] | None = None,
+              slur_states: list[tuple[int, str]] | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -639,13 +640,18 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     # DTD's element order. Levels ascend, 1 being the primary beam.
     for level in sorted(beam_states or {}):
         lines.append(f'{indent}  <beam number="{level}">{beam_states[level]}</beam>')
-    # <notations><tied/></notations> (notation/visual layer)
-    if tied_from_prev or tied_to_next:
+    # <notations> holds ties AND slurs, so they share one block — emitting a
+    # second <notations> per note is invalid MusicXML.
+    notations: list[str] = []
+    if tied_from_prev:
+        notations.append(f'{indent}    <tied type="stop"/>')
+    if tied_to_next:
+        notations.append(f'{indent}    <tied type="start"/>')
+    for number, kind in (slur_states or []):
+        notations.append(f'{indent}    <slur number="{number}" type="{kind}"/>')
+    if notations:
         lines.append(f"{indent}  <notations>")
-        if tied_from_prev:
-            lines.append(f'{indent}    <tied type="stop"/>')
-        if tied_to_next:
-            lines.append(f'{indent}    <tied type="start"/>')
+        lines.extend(notations)
         lines.append(f"{indent}  </notations>")
     lines.append(f"{indent}</note>")
     return "\n".join(lines)
@@ -750,11 +756,134 @@ def _mark_run(events: list[dict[str, Any]], run: list[int], level: int,
         events[i].setdefault("beam_states", {})[level] = value
 
 
+# DSv2 spells a dynamic out as separate letter glyphs, so "ff" arrives as two
+# `dynamicF` detections side by side and has to be reassembled. Letters that do
+# not form a dynamic word are dropped rather than guessed at.
+_DYNAMIC_LETTER = {
+    "dynamicF": "f", "dynamicP": "p", "dynamicM": "m",
+    "dynamicS": "s", "dynamicZ": "z", "dynamicR": "r",
+}
+# Only words MusicXML has an element for. `sf`/`sfz`/`fp` are <other-dynamics>.
+_DYNAMIC_WORDS = {
+    "p", "pp", "ppp", "pppp", "f", "ff", "fff", "ffff",
+    "mp", "mf", "sf", "sfz", "fp", "rf", "rfz", "sfp", "fz",
+}
+_DYNAMIC_ELEMENTS = {
+    "p", "pp", "ppp", "pppp", "f", "ff", "fff", "ffff", "mp", "mf",
+    "sf", "sfz", "fp", "rf", "rfz", "sfp", "fz",
+}
+
+
+def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str]]:
+    """`(x, word)` for each dynamic marking in a measure, left to right.
+
+    The detector emits one glyph per LETTER, so adjacent letters are joined
+    into a word before it means anything: two `dynamicF` a notehead apart are
+    one "ff", not two "f". Measured on the Brahms fixture, 31 letter glyphs
+    across 7 bars against 19 dynamics in the truth.
+    """
+    letters = []
+    for det in detections:
+        letter = _DYNAMIC_LETTER.get(det.get("class") or "")
+        box = det.get("bbox")
+        if letter and box and len(box) == 4:
+            letters.append((box[0], box[1], box[2], letter))
+    if not letters:
+        return []
+    letters.sort()
+    width = max(w for _x, _y, w, _l in letters) or 1
+
+    out: list[tuple[float, str]] = []
+    run_x, run_y, word = letters[0][0], letters[0][1], letters[0][3]
+    prev_right = letters[0][0] + letters[0][2]
+    for x, y, w, letter in letters[1:]:
+        # Same word: touching horizontally and on the same line vertically.
+        if x - prev_right <= width and abs(y - run_y) <= width:
+            word += letter
+        else:
+            if word in _DYNAMIC_WORDS:
+                out.append((run_x, word))
+            run_x, run_y, word = x, y, letter
+        prev_right = x + w
+    if word in _DYNAMIC_WORDS:
+        out.append((run_x, word))
+    return out
+
+
+def _mxl_direction(word: str, indent: str) -> str:
+    """One `<direction>` carrying a dynamic marking."""
+    inner = (f"<{word}/>" if word in _DYNAMIC_ELEMENTS
+             else f'<other-dynamics>{_xml_escape(word)}</other-dynamics>')
+    return (f'{indent}<direction placement="below">\n'
+            f"{indent}  <direction-type>\n"
+            f"{indent}    <dynamics>{inner}</dynamics>\n"
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
+
+
+def annotate_slurs(events: list[dict[str, Any]],
+                   detections: list[dict[str, Any]]) -> None:
+    """Mark the first and last event under each slur arc, in place.
+
+    Same shape as `annotate_beams`: the detection gives the arc's x extent and
+    the notes underneath it are the ones it joins. A slur over a single event —
+    or none — is dropped, because MusicXML has nothing to attach it to and an
+    unpaired `<slur type="start">` makes the file invalid rather than merely
+    wrong.
+
+    Numbering restarts per measure. Overlapping slurs are rare in this
+    repertoire and get distinct numbers when they do occur.
+
+    ⚠️ NOT WIRED INTO THE EXPORTER, and the reason is measured rather than
+    suspected. A slur crossing a barline is detected as TWO arcs, because cells
+    are cut per measure — 118 arcs on the Brahms fixture against 82 slurs in the
+    truth — so emitting them per measure writes two slurs where the music has
+    one. Measured on the orchestral benchmark:
+
+        dynamics only        pooled 0.2595   1811 edits
+        dynamics + slurs     pooled 0.2598   1835 edits   `wrong slur` 76 -> 97
+
+    Brahms alone improves slightly (0.3730 -> 0.3712) and everything else pays
+    for it. Kept, with its tests, because the arc-to-note mapping here is the
+    correct half; what is missing is a slur that can span measures, which the
+    per-measure event model cannot express. Wire this in once that exists.
+    """
+    arcs = sorted(
+        (d["bbox"] for d in detections
+         if d.get("category") == "structural" and d.get("class") == "slur"
+         and len(d.get("bbox") or ()) == 4),
+        key=lambda b: b[0],
+    )
+    if not arcs:
+        return
+
+    def centre(event: dict[str, Any]) -> float | None:
+        heads = event.get("noteheads") or []
+        if not heads:
+            return None
+        box = heads[0].get("bbox")
+        return (box[0] + box[2] / 2.0) if box and len(box) == 4 else None
+
+    number = 0
+    for ax, _ay, aw, _ah in arcs:
+        under = [i for i, e in enumerate(events)
+                 if e.get("kind") != "rest"
+                 and (c := centre(e)) is not None and ax <= c <= ax + aw]
+        if len(under) < 2:
+            continue
+        number += 1
+        if number > 6:            # MusicXML allows 1-6 simultaneous slurs
+            break
+        events[under[0]].setdefault("slur_states", []).append((number, "start"))
+        events[under[-1]].setdefault("slur_states", []).append((number, "stop"))
+
+
 def _mxl_voice_events(
     events: list[dict[str, Any]],
     voice: int,
     divisions: int,
     indent: str,
+    directions: list[tuple[float, str]] | None = None,
 ) -> tuple[list[str], int]:
     """Render an ordered list of events as MusicXML <note> elements with
     the given voice number. Returns (lines, total_duration_units) where
@@ -767,7 +896,13 @@ def _mxl_voice_events(
     """
     lines: list[str] = []
     total_dur = 0
+    # `<direction>` carries no duration, so it applies where it SITS in the
+    # element order — emitted before the first event at or past its x.
+    pending = sorted(directions or [])
     for event in events:
+        event_x = event.get("x_position")
+        while pending and (event_x is None or pending[0][0] <= event_x):
+            lines.append(_mxl_direction(pending.pop(0)[1], indent))
         _, xml_type, dots = _duration_to_lily_xml(
             event["duration_type"], event.get("dots", 0)
         )
@@ -790,12 +925,16 @@ def _mxl_voice_events(
                     indent=indent, voice=voice,
                     tied_to_next=(tied_to_next and ni == 0),
                     tied_from_prev=(tied_from_prev and ni == 0),
-                    # A chord is beamed once, through its first note.
+                    # A chord is beamed and slurred once, through its first note.
                     beam_states=(beam_states if ni == 0 else None),
+                    slur_states=(event.get("slur_states") if ni == 0 else None),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.
             total_dur += dur_units
+    # Anything sitting past the last note still belongs to this measure.
+    for _x, word in pending:
+        lines.append(_mxl_direction(word, indent))
     return lines, total_dur
 
 
@@ -886,6 +1025,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
+                    # Dynamics belong to the staff, not to a voice, so they go
+                    # on voice 1 rather than being emitted once per voice.
+                    _dyn = measure_dynamics(measure.get("detections", []))
 
                     if not events:
                         r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
@@ -897,11 +1039,13 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     elif len(voices) == 1:
                         v1_lines, _ = _mxl_voice_events(
                             voices[0], voice=1, divisions=divisions, indent="      ",
+                            directions=_dyn,
                         )
                         inner.extend(v1_lines)
                     else:
                         v1_lines, v1_dur = _mxl_voice_events(
                             voices[0], voice=1, divisions=divisions, indent="      ",
+                            directions=_dyn,
                         )
                         inner.extend(v1_lines)
                         if v1_dur > 0:
@@ -1000,6 +1144,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
+                    # Dynamics belong to the staff, not to a voice, so they go
+                    # on voice 1 rather than being emitted once per voice.
+                    _dyn = measure_dynamics(measure.get("detections", []))
 
                     if not events:
                         r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
@@ -1011,11 +1158,13 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     elif len(voices) == 1:
                         v1_lines, _ = _mxl_voice_events(
                             voices[0], voice=1, divisions=divisions, indent="      ",
+                            directions=_dyn,
                         )
                         inner.extend(v1_lines)
                     else:
                         v1_lines, v1_dur = _mxl_voice_events(
                             voices[0], voice=1, divisions=divisions, indent="      ",
+                            directions=_dyn,
                         )
                         inner.extend(v1_lines)
                         if v1_dur > 0:

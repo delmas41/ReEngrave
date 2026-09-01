@@ -49,9 +49,15 @@ excerpts, production weights, dossier on:
 > one fact, summed. **0.2716 -> 0.2624 / 1819 edits**, Brahms `wrong dot`
 > 103 -> 18.
 >
-> Session total: **0.3164 -> 0.2624**, all three fixes found by this metric and
-> invisible to every other number the repo reports. Two of the three were
-> EXPORT bugs on data the pipeline had already computed correctly.
+> **Then dynamics**, detected and dropped like the rest: **0.2624 -> 0.2595 /
+> 1811 edits**. Slurs were implemented and measured and NOT shipped — they make
+> Brahms alone better and the pooled score worse, because a slur crossing a
+> barline is detected as two arcs.
+>
+> Session total: **0.3164 -> 0.2595**, every step found by this metric and
+> invisible to every other number the repo reports. THREE of the four were
+> EXPORT bugs on data the pipeline had already computed correctly: beams dropped
+> entirely, dots counted twice, dynamics dropped entirely.
 
 Pooled, not averaged — one edit-sum over one symbol-sum, the way the paper
 defines it, so the dense score counts for more.

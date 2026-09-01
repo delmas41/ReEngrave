@@ -13,6 +13,9 @@ import pytest
 
 from tools.omr.export import (
     annotate_beams,
+    annotate_slurs,
+    measure_dynamics,
+    _mxl_note,
     _DURATION_TABLE,
     _dotted_duration_for_beats,
     _duration_to_lily_xml,
@@ -602,3 +605,90 @@ class TestDotCounting:
         ]
         xml = to_musicxml(result)
         assert xml.count("<dot/>") == 1, "a single-dotted note wrote two dots"
+
+
+class TestDynamicsAndSlurs:
+    """Both are detected and were dropped on export, like beams before them.
+
+    On the Brahms fixture the pipeline finds 118 slur arcs and 31 dynamic letter
+    glyphs, and `export.py` mentioned neither. Truth carries 82 slurs and 19
+    dynamics.
+    """
+
+    @staticmethod
+    def _dyn(x, y, cls, w=10):
+        return {"category": "dynamic", "class": cls, "bbox": [x, y, w, 12]}
+
+    @staticmethod
+    def _note(x, levels=0):
+        return {"kind": "note", "duration_type": "quarter", "duration_beats": 1.0,
+                "dots": 0, "x_position": x,
+                "noteheads": [{"pitch": "C4", "beam_levels": levels,
+                               "bbox": [x, 40, 10, 10], "bbox_page": [x, 40, 10, 10]}]}
+
+    @staticmethod
+    def _slur(x0, x1):
+        return {"category": "structural", "class": "slur",
+                "bbox": [x0, 20, x1 - x0, 8]}
+
+    # ── dynamics: the detector spells them one letter at a time ──────────
+    def test_a_single_letter_is_a_dynamic(self):
+        assert measure_dynamics([self._dyn(100, 60, "dynamicF")]) == [(100, "f")]
+
+    def test_adjacent_letters_join_into_one_word(self):
+        """Two `dynamicF` a glyph apart are 'ff', not two 'f'."""
+        out = measure_dynamics([self._dyn(100, 60, "dynamicF"),
+                                self._dyn(112, 60, "dynamicF")])
+        assert out == [(100, "ff")]
+
+    def test_letters_far_apart_stay_separate(self):
+        out = measure_dynamics([self._dyn(100, 60, "dynamicF"),
+                                self._dyn(400, 60, "dynamicP")])
+        assert out == [(100, "f"), (400, "p")]
+
+    def test_letters_on_different_lines_stay_separate(self):
+        """Two staves' dynamics can share an x; only vertical proximity joins."""
+        out = measure_dynamics([self._dyn(100, 60, "dynamicF"),
+                                self._dyn(112, 300, "dynamicP")])
+        assert sorted(out) == [(100, "f"), (112, "p")]
+
+    def test_a_letter_run_that_is_not_a_word_is_dropped(self):
+        """'fzp' is not a dynamic; guessing at it is worse than saying nothing."""
+        assert measure_dynamics([self._dyn(100, 60, "dynamicF"),
+                                 self._dyn(110, 60, "dynamicZ"),
+                                 self._dyn(120, 60, "dynamicP")]) == []
+
+    def test_mf_and_sf_are_recognised(self):
+        assert measure_dynamics([self._dyn(100, 60, "dynamicM"),
+                                 self._dyn(110, 60, "dynamicF")]) == [(100, "mf")]
+
+    # ── slurs ────────────────────────────────────────────────────────────
+    def test_a_slur_marks_its_first_and_last_note(self):
+        events = [self._note(x) for x in (100, 140, 180, 220)]
+        annotate_slurs(events, [self._slur(95, 230)])
+        assert events[0]["slur_states"] == [(1, "start")]
+        assert events[3]["slur_states"] == [(1, "stop")]
+        assert "slur_states" not in events[1] and "slur_states" not in events[2]
+
+    def test_a_slur_over_one_note_is_dropped(self):
+        """An unpaired <slur type="start"/> makes the file invalid, not merely
+        wrong, so a lone note under an arc gets nothing."""
+        events = [self._note(100), self._note(400)]
+        annotate_slurs(events, [self._slur(95, 115)])
+        assert all("slur_states" not in e for e in events)
+
+    def test_two_slurs_get_distinct_numbers(self):
+        events = [self._note(x) for x in (100, 140, 300, 340)]
+        annotate_slurs(events, [self._slur(95, 150), self._slur(295, 350)])
+        assert events[0]["slur_states"] == [(1, "start")]
+        assert events[1]["slur_states"] == [(1, "stop")]
+        assert events[2]["slur_states"] == [(2, "start")]
+        assert events[3]["slur_states"] == [(2, "stop")]
+
+    def test_slur_and_tie_share_one_notations_block(self):
+        """Two <notations> elements on one note is invalid MusicXML."""
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, False, False, "      ",
+                        tied_to_next=True, slur_states=[(1, "start")])
+        assert xml.count("<notations>") == 1
+        assert '<tie type="start"/>' in xml
+        assert '<slur number="1" type="start"/>' in xml
