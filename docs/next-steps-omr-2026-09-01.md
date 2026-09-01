@@ -11,8 +11,8 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.2489** on the engraved orchestral benchmark (Mahler 0.0455,
-Beethoven 0.1714, Brahms 0.3730), down from **0.3164** at the start of
+**Pooled OMR-NED 0.2263** on the engraved orchestral benchmark (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.3302), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
 `benchmarks/omr-ned-2026-08/FINDINGS.md`.
@@ -63,15 +63,18 @@ What it found, ranked, replaces the rest of this list at the top:
   thickness as a second signal and found **five more misfitted windows** across
   bolero and beet5-p2 that nobody had seen. Net was −28 rather than −86 because
   it uncovered the next item.
-- **Cross-staff attribution of ledger notes — NEW, and now the top item.** With
-  Violin 1 placed correctly its highest notes (`A6`, `B♭6`) sit in the gap
-  ABOVE its own cell and INSIDE the Timpani's, and export as `A♭1`/`B♭1` on a
-  timpani: +59 edits on that part. `_dedupe_cross_staff_detections` awards a
-  contested glyph to the nearer five-line band, and LilyPond opened that gap
-  *for* those notes, so nearness is the wrong rule. Raising
-  `PAD_ABOVE_STAFF_LINES` does not fix it — the note then lands in both cells
-  and the same distance rule still picks the timpani. Needs the ledger lines
-  (299 detected on that page) or the stem.
+- ~~**Cross-staff attribution of ledger notes**~~ — **DONE**, pooled
+  0.2449 → **0.2263**, Brahms recall 0.824 → **0.909**. Distance to the nearer
+  band is not how a note is read; the ledger LADDER (evidence about the glyph)
+  and the instrument's written RANGE (evidence about the part) now decide, with
+  distance as the tie-break. The cell pad also had to grow — but only where
+  there is unambiguously room, since cell height moves detections.
+- **The bassoon pair Beethoven still gets wrong.** Two adjacent bassoon staves
+  contest one notehead; one bar resolves on the range veto and the identical bar
+  beside it does not. Worth ~8 edits. The ladder cannot help — the note is near
+  both staves — so it is the pair ordering reaching the veto inconsistently.
+- **A spurious whole note on Beethoven's Flute 1 m1**, older than any of this
+  work and never attributed.
 - **Beam level ±1 and lost dots** — the rest of the 452-edit rhythm bucket.
   `_reconcile_measure_to_meter` declines correctly because it can move a beam
   and not a dot.

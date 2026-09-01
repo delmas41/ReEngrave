@@ -368,3 +368,79 @@ That makes cross-staff attribution the next item, ahead of the rhythm residue,
 and it needs a signal the band distance does not carry — the ledger lines
 themselves, which this page detects 299 of, or the stem. It is the same
 mechanism as the two flutes trading a note in Finding 3.
+
+---
+
+## FIXED 2026-09-01 — cross-staff attribution, and it needed CONTEXT not geometry
+
+Pooled **0.2449 → 0.2263**, 1715 edits → 1584. Brahms **0.3657 → 0.3302**, its
+note recall **0.824 → 0.909** and precision **0.819 → 0.890**. Mahler unchanged
+to the edit. Beethoven 0.1714 → 0.1775 (+8, see below). Phase-1 layout unchanged
+on all 12 pages; authored fixtures: keyboard and ensemble identical, melody's
+recall 0.708 → 0.750. Tests 1166 → 1192.
+
+The Timpani's spurious `A♭1`/`B♭1`/`G1` are gone and it reads 6 × C3 in every
+bar, which is the truth. Violin 1's bar 3 reads `G6 A♭6 A♭6 A6` — exactly right.
+
+### Two halves, and the first one alone does nothing
+
+**The cell has to reach the note.** At a flat pad of 4 staff spaces the Violin's
+cell stopped at y 7416 and its own notes sat at 7373-7408, so they existed ONLY
+in the timpani's cell and there was nothing to arbitrate. But a flat pad of 6
+made Mahler and Beethoven worse (+20 and +59), because their staves are set
+1.7 and 3.4 spaces apart and a taller cell reaches through the neighbour — and
+cell height is coupled to `OMR_IMGSZ`, so it moves detections, not just crops.
+
+Bounding the pad by the actual gap fixed that and broke something else: Mahler's
+1.7-space gap gave cells too short to hold their own stems, and its duration
+rate fell 0.864 → 0.455. So the pad now **grows where there is room and never
+shrinks**: 4 spaces by default, 6 where the neighbouring staff is more than 6
+away, and nothing in between — a marginal 4.0 → 4.6 growth on the authored
+`ensemble` fixture cost it three notes of 45 for no gain.
+
+**Then the arbitration has to be right.** With both cells holding the note,
+`_dedupe_cross_staff_detections` still awarded it to the timpani, because its
+rule was distance to the nearer five-line band and the note is nearer.
+
+### What decides it is what a reader uses
+
+Distance is a fact about the page; it is not how the note is read. Three kinds
+of evidence now apply in order:
+
+1. **The ledger ladder** — evidence about THIS glyph. A ledger note is joined
+   to its staff by an unbroken run of ledger lines and joined to nothing in the
+   other direction. On this page the violin's cells carry three rungs per
+   note-column at exactly its 1st/2nd/3rd ledger positions, and there is not one
+   rung between those notes and the timpani. **Completeness before count**: an
+   unbroken ladder outranks a broken one however long, because a gap in a ladder
+   is what you see when the rungs belong to something else lying in the way.
+2. **The instrument's written range** — evidence about the PART. Measured on
+   Beethoven: two bassoon staves contested one notehead, distance gave it to the
+   upper one, and the reading kept was `A♭1` — MIDI 32, below the bassoon's
+   range of (34, 72) — while the reading discarded was C4, inside it. A player
+   cannot sound the note we chose. `instruments.written_range` already had this;
+   what was missing was which instrument each staff is, and since the contextual
+   pass names parts AFTER the dedupe runs, the names come from the DOSSIER on
+   its usual terms — only where staff count equals part count, abstaining
+   otherwise. It is a veto on the IMPOSSIBLE, never a judgement of the unlikely.
+3. **Distance**, unchanged, as the tie-break — and on a page with neither ledger
+   lines nor a dossier it is still the whole rule.
+
+### Two rewrites measured and rejected
+
+- **One winner per cluster.** Grouping every overlapping copy and letting the
+  group choose once is tidier and scored WORSE (0.2275 vs 0.2263): IoU overlap
+  is not transitive, so A~B and B~C chain A and C into one cluster even when
+  they are different glyphs, and the group throws one away.
+- **Strongest verdict first.** Judging every pair and applying ladder and range
+  verdicts before distance ones, so an arbitrary call cannot pre-empt an
+  informed one. Exactly no measured difference; kept, because it is better
+  defined and free.
+
+### What is left
+
+Beethoven's +8 is one contested bassoon pair that still resolves the wrong way
+(one bar of the two does; the identical bar next to it does not) plus a spurious
+whole note on Flute 1 that predates all of this. The ladder has nothing to say
+there — the note is near both staves — so it rests entirely on the range veto,
+and something in the pair ordering is still reaching it inconsistently.

@@ -13,6 +13,9 @@ import pytest
 from tools.omr.transcribe import (
     _bbox_overlap_area,
     _build_pitch,
+    _in_written_range,
+    _ledger_ladder,
+    _pitch_midi,
     _clef_name_from_class,
     _ClefContinuity,
     _default_clef_for_position,
@@ -833,3 +836,98 @@ class TestStaffGeometry:
         # Same abstain-when-blind rule the geometric readers follow: line
         # numbering is only defined on a 5-line staff.
         assert _staff_geometry(self._staff(line_ys=(100, 120, 140, 160))) is None
+
+
+# ─── Cross-staff attribution of ledger notes ────────────────────────────────
+
+
+class TestPitchMidi:
+    @pytest.mark.parametrize("pitch, midi", [
+        ("C4", 60), ("A4", 69), ("Ab1", 32), ("C#4", 61),
+        ("Bb1", 34), ("A6", 93), ("Cb4", 59), ("F##3", 55),
+    ])
+    def test_known(self, pitch, midi):
+        assert _pitch_midi(pitch) == midi
+
+    @pytest.mark.parametrize("pitch", [None, "", "H4", "C", "Cx", "4"])
+    def test_unparseable(self, pitch):
+        assert _pitch_midi(pitch) is None
+
+
+class TestInWrittenRange:
+    """The bassoon case, which is what this exists for: two adjacent bassoon
+    staves contested one notehead and the reading kept was `Ab1` — MIDI 32,
+    below the bassoon's written range of (34, 72) — while the one discarded was
+    C4, squarely inside it."""
+
+    def test_below_the_range(self):
+        assert _in_written_range("Ab1", (34, 72)) is False
+
+    def test_inside_the_range(self):
+        assert _in_written_range("C4", (34, 72)) is True
+
+    def test_an_unknown_part_gives_no_verdict(self):
+        assert _in_written_range("C4", None) is None
+
+    def test_an_unreadable_pitch_gives_no_verdict(self):
+        assert _in_written_range(None, (34, 72)) is None
+
+    def test_the_edges_are_inside(self):
+        assert _in_written_range("Bb1", (34, 72)) is True
+        assert _in_written_range("C5", (34, 72)) is True
+
+
+class TestLedgerLadder:
+    """Which staff a ledger note is JOINED to.
+
+    Brahms's Violin 1 plays up to B6, and its cells carry three rungs per
+    note-column at exactly the 1st/2nd/3rd ledger positions above a top line at
+    7580, while nothing at all stands between those notes and the timpani staff
+    above them.
+    """
+
+    TOP, BOTTOM, SPACING = 7580.0, 7743.0, 41.0
+    BAND = (TOP, BOTTOM, SPACING)
+
+    @staticmethod
+    def _note(y_centre, x=3000, w=80, h=60):
+        return [x, y_centre - h / 2, w, h]
+
+    def _rungs_above(self, n, x=3000, w=80):
+        return [(x, x + w, self.TOP - k * self.SPACING) for k in range(1, n + 1)]
+
+    def test_a_complete_ladder_is_complete(self):
+        note = self._note(self.TOP - 4.6 * self.SPACING)   # A6
+        assert _ledger_ladder(note, self.BAND, self._rungs_above(4)) == (1, 4)
+
+    def test_no_rungs_is_no_claim(self):
+        note = self._note(self.TOP - 4.6 * self.SPACING)
+        assert _ledger_ladder(note, self.BAND, []) == (0, 0)
+
+    def test_a_broken_ladder_loses_to_a_complete_one(self):
+        note = self._note(self.TOP - 4.6 * self.SPACING)
+        broken = self._rungs_above(4)[:1] + self._rungs_above(4)[2:]   # rung 2 gone
+        assert _ledger_ladder(note, self.BAND, broken) == (0, 3)
+        assert _ledger_ladder(note, self.BAND, broken) < \
+            _ledger_ladder(note, self.BAND, self._rungs_above(4))
+
+    def test_rungs_under_a_different_note_do_not_count(self):
+        note = self._note(self.TOP - 4.6 * self.SPACING, x=3000)
+        elsewhere = [(500.0, 580.0, self.TOP - k * self.SPACING)
+                     for k in range(1, 5)]
+        assert _ledger_ladder(note, self.BAND, elsewhere) == (0, 0)
+
+    def test_a_note_inside_the_staff_needs_no_ladder(self):
+        note = self._note((self.TOP + self.BOTTOM) / 2)
+        assert _ledger_ladder(note, self.BAND, self._rungs_above(4)) == (0, 0)
+
+    def test_below_the_staff_reads_downwards(self):
+        note = self._note(self.BOTTOM + 2.4 * self.SPACING)
+        below = [(3000.0, 3080.0, self.BOTTOM + k * self.SPACING)
+                 for k in range(1, 3)]
+        assert _ledger_ladder(note, self.BAND, below) == (1, 2)
+
+    def test_a_band_with_no_spacing_gives_no_verdict(self):
+        note = self._note(self.TOP - 4.6 * self.SPACING)
+        assert _ledger_ladder(note, (self.TOP, self.BOTTOM),
+                              self._rungs_above(4)) == (0, 0)
