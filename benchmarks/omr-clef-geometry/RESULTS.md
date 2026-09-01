@@ -2187,3 +2187,15 @@ Piccolo at high confidence, and neither alias is in `AMBIGUOUS_ALIASES` — so i
 that is the cause, something downstream is reading the RAW TEXT rather than the
 resolved label. That is the thread to pull. The fix does not depend on which end
 it is, which is why it shipped and the mechanism is still written down as open.
+
+**A hypothesis that would reconcile the two observations, and is worth testing
+first.** The llama.cpp server Surya spawns runs `--parallel 8` with a large
+context, so requests are batched. The subagent was reading margins while driving
+full ten-page benchmark runs; the checks here were single-page reads against an
+otherwise idle server. If batching or concurrency perturbs the decode, Surya's
+output is not a fixed function of its input — which would explain one reader
+seeing `Tr. Teq.` consistently and another seeing `Tr. Ten.` consistently, and
+would matter far more than this one label: a reader whose answer depends on what
+else is in flight cannot be measured by a benchmark that reads it in isolation.
+Test it by reading the same page repeatedly under concurrent load before
+spending time on the staff-0 text.

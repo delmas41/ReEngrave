@@ -82,6 +82,11 @@ The four-item leverage list was worked through and two items are dead. Read
    would mean something downstream reads the text rather than the resolved
    label. Worth an hour, not a day.
 
+   TEST THIS FIRST though: Surya's llama.cpp server runs `--parallel 8`, and the
+   two contradictory readings were taken under different load — a full benchmark
+   run against an idle server. If batching perturbs the decode then Surya is not
+   a fixed function of its input, which matters far more than one label.
+
 0b. **DONE: Surya is installed** (`--bootstrap`, `.venv-surya`, gitignored;
    re-run it in any other checkout). Free, ~7.6 s a page, correct where it
    reads — and **net zero end-to-end on this corpus** (145/166 either way). It
