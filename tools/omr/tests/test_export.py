@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 import pytest
 
 from tools.omr.export import (
+    annotate_beams,
     _DURATION_TABLE,
     _dotted_duration_for_beats,
     _duration_to_lily_xml,
@@ -443,3 +444,112 @@ class TestPartNaming:
         xml = to_musicxml(self._result({"instrument": 'Horn & "Tuba"'}))
         assert "&amp;" in xml
         assert '<part-name>Horn & "Tuba"</part-name>' not in xml
+
+
+class TestBeamAnnotation:
+    """Beams are detected by Phase 4f and were dropped on export.
+
+    Two signals do different jobs and the tests pin both: the beam BOX says
+    which notes form one group (the CV merges primary and secondary beams into
+    one box, so it gives extent), and `beam_levels` gives the level structure
+    inside that extent.
+    """
+
+    @staticmethod
+    def _note(x, levels, dur="eighth", beats=0.5):
+        return {"kind": "note", "duration_type": dur, "duration_beats": beats,
+                "dots": 0,
+                "noteheads": [{"pitch": "C4", "beam_levels": levels,
+                               "bbox_page": [x, 0, 10, 10]}]}
+
+    @staticmethod
+    def _beam(x0, x1):
+        return {"category": "structural", "class": "beam",
+                "bbox_page": [x0, 0, x1 - x0, 5]}
+
+    def _states(self, events):
+        return [e.get("beam_states") for e in events]
+
+    def test_four_eighths_under_one_box(self):
+        events = [self._note(x, 1) for x in (100, 120, 140, 160)]
+        annotate_beams(events, [self._beam(95, 175)])
+        assert self._states(events) == [
+            {1: "begin"}, {1: "continue"}, {1: "continue"}, {1: "end"}]
+
+    def test_levels_nest_inside_the_group(self):
+        """Two sixteenths then three eighths: the primary beam spans all five,
+        the secondary only the sixteenths."""
+        events = ([self._note(100, 2, "16th", 0.25), self._note(115, 2, "16th", 0.25)]
+                  + [self._note(x, 1) for x in (135, 155, 175)])
+        annotate_beams(events, [self._beam(95, 190)])
+        assert self._states(events) == [
+            {1: "begin", 2: "begin"}, {1: "continue", 2: "end"},
+            {1: "continue"}, {1: "continue"}, {1: "end"}]
+
+    def test_two_boxes_are_two_groups(self):
+        """Adjacency alone would merge these into one run of four — which is
+        the error this exists to avoid on dense music."""
+        events = [self._note(x, 1) for x in (100, 120, 300, 320)]
+        annotate_beams(events, [self._beam(95, 135), self._beam(295, 335)])
+        assert self._states(events) == [
+            {1: "begin"}, {1: "end"}, {1: "begin"}, {1: "end"}]
+
+    def test_a_lone_note_is_flagged_not_beamed(self):
+        events = [self._note(100, 1)]
+        annotate_beams(events, [self._beam(95, 115)])
+        assert self._states(events) == [None]
+
+    def test_a_single_note_at_a_level_becomes_a_hook(self):
+        """Dotted eighth + sixteenth: the sixteenth's second beam is a hook,
+        pointing back at the note it shares the primary beam with."""
+        events = [self._note(100, 1, "eighth", 0.75),
+                  self._note(130, 2, "16th", 0.25)]
+        annotate_beams(events, [self._beam(95, 145)])
+        assert events[0]["beam_states"] == {1: "begin"}
+        assert events[1]["beam_states"] == {1: "end", 2: "backward hook"}
+
+    def test_rests_and_unbeamed_notes_do_not_join_a_group(self):
+        events = [self._note(100, 1),
+                  {"kind": "rest", "duration_type": "eighth",
+                   "duration_beats": 0.5, "dots": 0, "noteheads": []},
+                  self._note(160, 1)]
+        annotate_beams(events, [self._beam(95, 175)])
+        # Both notes are under the same box, so they are still one group — the
+        # rest does not split it, but it carries no beam of its own.
+        assert events[1].get("beam_states") is None
+        assert events[0]["beam_states"] == {1: "begin"}
+        assert events[2]["beam_states"] == {1: "end"}
+
+    def test_no_beam_data_emits_nothing(self):
+        events = [self._note(x, 0) for x in (100, 120)]
+        annotate_beams(events, [])
+        assert self._states(events) == [None, None]
+
+    def test_only_the_chords_first_note_is_beamed(self):
+        result = _tiny_result_empty_measure({"beats": 4, "beat_type": 4})
+        staff = result["pages"][0]["systems"][0]["staves"][0]
+        staff["measures"][0]["detections"] = [
+            {"category": "structural", "class": "beam", "bbox_page": [95, 0, 80, 5]},
+            # `bbox` is CELL space and is what chord grouping reads; `bbox_page`
+            # is page space and is what the beam boxes are measured in. Both are
+            # needed, and giving only one is why this fixture first read as a
+            # single three-note chord.
+            {"category": "notehead", "class": "noteheadBlack", "pitch": "C4",
+             "duration_type": "eighth", "duration_beats": 0.5, "dots": 0,
+             "beam_levels": 1, "bbox": [100, 40, 10, 10],
+             "bbox_page": [100, 40, 10, 10], "confidence": 0.9},
+            {"category": "notehead", "class": "noteheadBlack", "pitch": "E4",
+             "duration_type": "eighth", "duration_beats": 0.5, "dots": 0,
+             "beam_levels": 1, "bbox": [100, 20, 10, 10],
+             "bbox_page": [100, 20, 10, 10], "confidence": 0.9},
+            {"category": "notehead", "class": "noteheadBlack", "pitch": "G4",
+             "duration_type": "eighth", "duration_beats": 0.5, "dots": 0,
+             "beam_levels": 1, "bbox": [160, 40, 10, 10],
+             "bbox_page": [160, 40, 10, 10], "confidence": 0.9},
+        ]
+        xml = to_musicxml(result)
+        # Three notes, one of them a chord member, but only two beam-carrying
+        # notes: the chord is beamed once, through its first note.
+        assert xml.count("<beam") == 2
+        assert '<beam number="1">begin</beam>' in xml
+        assert '<beam number="1">end</beam>' in xml

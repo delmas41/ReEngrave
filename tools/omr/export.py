@@ -588,7 +588,8 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               dots: int, beats: float, divisions: int, is_chord: bool,
               is_rest: bool, indent: str, voice: int = 1,
               tied_to_next: bool = False,
-              tied_from_prev: bool = False) -> str:
+              tied_from_prev: bool = False,
+              beam_states: dict[int, str] | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -621,6 +622,10 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     lines.append(f"{indent}  <type>{xml_type}</type>")
     for _ in range(dots):
         lines.append(f"{indent}  <dot/>")
+    # <beam> sits after <type>/<dot> and before <notations>, per the MusicXML
+    # DTD's element order. Levels ascend, 1 being the primary beam.
+    for level in sorted(beam_states or {}):
+        lines.append(f'{indent}  <beam number="{level}">{beam_states[level]}</beam>')
     # <notations><tied/></notations> (notation/visual layer)
     if tied_from_prev or tied_to_next:
         lines.append(f"{indent}  <notations>")
@@ -631,6 +636,105 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
         lines.append(f"{indent}  </notations>")
     lines.append(f"{indent}</note>")
     return "\n".join(lines)
+
+
+def annotate_beams(events: list[dict[str, Any]],
+                   detections: list[dict[str, Any]]) -> None:
+    """Attach MusicXML beam states to each event, in place.
+
+    Phase 4f detects beams with classical CV and `transcribe` writes the result
+    onto every notehead as `beam_levels` (1 for an eighth, 2 for a sixteenth),
+    plus a `structural`/`beam` detection carrying the group's bounding box. None
+    of it reached the exporter: `export.py` did not contain the string "beam"
+    at all, so every beamed group was written out as flagged notes. Measured on
+    an engraved Beethoven 5 page — 48 `<beam>` elements in the truth, 0 in our
+    MusicXML, and 10.1% of the whole OMR-NED edit budget
+    (`benchmarks/omr-ned-2026-08/FINDINGS.md`).
+
+    TWO SIGNALS, AND THEY DO DIFFERENT JOBS. The beam BOX says which notes form
+    one group — the CV merges a group's primary and secondary beams into a
+    single box, so it gives extent, not level. `beam_levels` on each note then
+    gives the level structure inside that extent. Grouping by adjacency instead
+    would merge two beat-groups in one bar into a single run, which is wrong on
+    exactly the dense music this exists for.
+
+    Must be called PER VOICE. Two voices interleave in x, so a run computed
+    across both would be broken by the other voice's notes.
+    """
+    boxes = sorted(
+        (d["bbox_page"] for d in detections
+         if d.get("category") == "structural" and d.get("class") == "beam"
+         and len(d.get("bbox_page") or ()) == 4),
+        key=lambda b: b[0],
+    )
+
+    def centre(event: dict[str, Any]) -> float | None:
+        heads = event.get("noteheads") or []
+        if not heads:
+            return None
+        box = heads[0].get("bbox_page")
+        return (box[0] + box[2] / 2.0) if box and len(box) == 4 else None
+
+    def levels(event: dict[str, Any]) -> int:
+        heads = event.get("noteheads") or []
+        return int(heads[0].get("beam_levels") or 0) if heads else 0
+
+    # Group id per event: the beam box covering it, or a synthetic run for
+    # events that carry a level but sit under no detected box.
+    group_of: dict[int, object] = {}
+    synthetic = 0
+    prev_beamed = False
+    for i, event in enumerate(events):
+        if event.get("kind") == "rest" or levels(event) < 1:
+            prev_beamed = False
+            continue
+        x = centre(event)
+        hit = None
+        if x is not None:
+            for bi, (bx, _by, bw, _bh) in enumerate(boxes):
+                if bx <= x <= bx + bw:
+                    hit = ("box", bi)
+                    break
+        if hit is None:
+            if not prev_beamed:
+                synthetic += 1
+            hit = ("run", synthetic)
+        group_of[i] = hit
+        prev_beamed = True
+
+    # Within each group, each level's consecutive run becomes begin/continue/end.
+    by_group: dict[object, list[int]] = {}
+    for i, g in group_of.items():
+        by_group.setdefault(g, []).append(i)
+
+    for members in by_group.values():
+        members.sort()
+        if len(members) < 2:
+            continue                      # a lone note is flagged, not beamed
+        top = max(levels(events[i]) for i in members)
+        for level in range(1, top + 1):
+            run: list[int] = []
+            for i in members + [None]:
+                if i is not None and levels(events[i]) >= level:
+                    run.append(i)
+                    continue
+                if run:
+                    _mark_run(events, run, level, members)
+                run = []
+
+
+def _mark_run(events: list[dict[str, Any]], run: list[int], level: int,
+              members: list[int]) -> None:
+    """Write begin/continue/end — or a hook for a run of one — over `run`."""
+    if len(run) == 1:
+        # A single note at this level is a hook: it points back toward the note
+        # it shares the lower beam with, forward only at the group's start.
+        value = "forward hook" if run[0] == members[0] else "backward hook"
+        events[run[0]].setdefault("beam_states", {})[level] = value
+        return
+    for pos, i in enumerate(run):
+        value = "begin" if pos == 0 else ("end" if pos == len(run) - 1 else "continue")
+        events[i].setdefault("beam_states", {})[level] = value
 
 
 def _mxl_voice_events(
@@ -665,6 +769,7 @@ def _mxl_voice_events(
             ))
             total_dur += dur_units
         else:
+            beam_states = event.get("beam_states")
             for ni, nh in enumerate(event["noteheads"]):
                 lines.append(_mxl_note(
                     nh.get("pitch"), "", xml_type, dots, beats, divisions,
@@ -672,6 +777,8 @@ def _mxl_voice_events(
                     indent=indent, voice=voice,
                     tied_to_next=(tied_to_next and ni == 0),
                     tied_from_prev=(tied_from_prev and ni == 0),
+                    # A chord is beamed once, through its first note.
+                    beam_states=(beam_states if ni == 0 else None),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.
@@ -763,6 +870,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
 
                     events = group_chords_in_measure(measure.get("detections", []))
                     voices = split_events_into_voices(events)
+                    # Per voice: interleaved voices would break each other's runs.
+                    for _voice_events in voices:
+                        annotate_beams(_voice_events, measure.get("detections", []))
 
                     if not events:
                         r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
@@ -874,6 +984,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
 
                     events = group_chords_in_measure(measure.get("detections", []))
                     voices = split_events_into_voices(events)
+                    # Per voice: interleaved voices would break each other's runs.
+                    for _voice_events in voices:
+                        annotate_beams(_voice_events, measure.get("detections", []))
 
                     if not events:
                         r_beats, r_type, r_dots = _mxl_measure_rest(m_time)

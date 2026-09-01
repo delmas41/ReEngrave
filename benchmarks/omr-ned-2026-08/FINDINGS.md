@@ -29,6 +29,20 @@ excerpts, production weights, dossier on:
 | brahms-sym1-mvt1 | **0.4664** | 1838 | 2083 | 1858 | 0.717 |
 | **pooled** | **0.3164** | 2224 | 3696 | 3332 | — |
 
+> **Superseded 2026-09-01 by the beam fix, the first thing this metric bought.**
+> `export.py` never emitted `<beam>` at all, though Phase 4f detects beams and
+> `transcribe` writes them into the JSON. Emitting them:
+>
+> | | before | after |
+> |---|--:|--:|
+> | pooled | 0.3164 | **0.3045** |
+> | edits | 2224 | **2140** |
+> | wrong flag/beam | 225 (10.1%) | **141 (6.6%)** |
+> | beethoven | 0.1958 | **0.1843** |
+> | brahms | 0.4664 | **0.4486** |
+>
+> Mahler is unchanged — its 8-bar excerpt carries only 24 notes.
+
 Pooled, not averaged — one edit-sum over one symbol-sum, the way the paper
 defines it, so the dense score counts for more.
 
