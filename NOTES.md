@@ -25,11 +25,28 @@ a measure number or a margin label does.
 
 Neither signal separates the cases alone (bridging 11 at a true break vs 11–14
 at bracket-group boundaries; gap size was what connectivity replaced). The PAIR
-does on these four pages — a large gap that is *nearly* unbridged — but that is
-one edition, and **`eval_grouping.py`'s 12-page ground truth is Beethoven 9,
-which is not in the local corpus**, so the change cannot be regression-tested
-here. Restore B9 first, add p40 as a free GT case (truth 3, the set's first
-MERGE), widen the crosscheck, and only then relax the threshold.
+does on these four pages — a large gap that is *nearly* unbridged.
+
+✅ **UNBLOCKED 2026-08-31.** The Beethoven 9 scan (IMSLP 516488, 189 pp, 20 MB)
+has been downloaded back into
+`tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-516488/score.pdf`
+(gitignored, like the rest of that corpus). `eval_grouping.py` runs and
+reproduces its recorded baseline exactly: connectivity **12/14 (86%)**, gap
+heuristic 5/14, 0 spurious single-staff systems. So a rule change can now be
+regression-tested.
+
+**The failure set is three adjudicated pages, and they are not all alike:**
+
+| page | truth | ours | LEGATO | note |
+|---|--:|--:|--:|---|
+| B9 p25 | 2 | 1 | **1** | **LEGATO misses it too** |
+| B9 p60 | 2 | 1 | 2 | LEGATO catches it |
+| B5 p40 | 3 | 1 | 3 | LEGATO caught it; adjudicated on the margin |
+
+Against the 12 hand-read B9 pages: ours 10/12, **LEGATO 11/12**. So the miner is
+better than us here but is NOT an oracle — p25 is the standing counter-example,
+and a page LEGATO agrees with is not thereby correct. Measure the fix against
+`eval_grouping.py`, never against the miner.
 
 Full writeup + evidence:
 [LEGATO_CROSSCHECK_2026-08-31.md](benchmarks/omr-system-grouping-2026-08/LEGATO_CROSSCHECK_2026-08-31.md).

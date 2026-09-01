@@ -130,6 +130,41 @@ So this stops at diagnosis. To finish it:
    before touching the threshold, so the rule is fitted to more than one edition.
 4. Only then relax `bridging == 0`.
 
+## The miner, measured against hand-read truth (added after restoring B9)
+
+The Beethoven 9 scan (IMSLP 516488, 189 pp) was missing from this machine, which
+is why the section above says the rule change could not be regression-tested. It
+has since been downloaded back into
+`tools/omr/training/data/imslp/beethoven-symphony-9/pdfs/imslp-516488/score.pdf`,
+and `eval_grouping.py` reproduces its recorded baseline exactly — connectivity
+**12/14 (86%)**, gap heuristic 5/14, zero spurious single-staff systems.
+
+That also gives the MINER its own ground truth for the first time. On the 12
+hand-read B9 pages:
+
+| | correct |
+|---|--:|
+| our connectivity grouping | **10/12** |
+| LEGATO | **11/12** |
+
+| page | truth | ours | LEGATO | |
+|---|--:|--:|--:|---|
+| 60 | 2 | **1** | **2** | LEGATO right, we merged |
+| 25 | 2 | **1** | **1** | **both wrong — LEGATO missed it too** |
+
+**This is the honest limit of the technique, and it is worth more than the win.**
+LEGATO would have surfaced p60 and stayed silent on p25 — so used as a miner it
+finds *some* of our merges, not all of them. It is a cheap way to shorten the
+list of pages a human looks at, and it is emphatically not a source of labels:
+a page it agrees with is not thereby correct. p25 is the counter-example, on
+record.
+
+So the failure set for the system-break rule is now three adjudicated pages:
+**B9 p25, B9 p60** (hand-read truth) and **B5 p40** (adjudicated here from the
+margin). Two of the three are invisible to LEGATO or to the current rule
+respectively, which is why the fix has to be measured against `eval_grouping.py`
+rather than against the miner.
+
 ## The other thing worth keeping
 
 LEGATO placed every staff on all 47 pages — `staves_legato_missed` was 0
