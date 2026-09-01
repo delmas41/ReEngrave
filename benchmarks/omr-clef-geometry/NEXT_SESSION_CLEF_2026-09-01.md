@@ -68,17 +68,24 @@ coverage corpora cannot regress by construction.
 The four-item leverage list was worked through and two items are dead. Read
 `RESULTS.md`'s last three sections before starting anything here.
 
-0. **INSTALL SURYA. It is a free rung of the label ladder and it has never
-   run.** `staff_labels_surya.available()` is False on this machine, so every
-   "free path" number recorded in this project describes a ladder with a rung
-   missing. Labels are now measured to be the binding constraint on clef
-   accuracy — `--assist vision` is worth +4 staves end-to-end and takes the
-   dossier from 9/12 to 12/12 — and Surya sits exactly between the text layer
-   (which returns nothing on scanned pages) and the reader that costs money.
-   `git submodule update --init` / the venv setup in `staff_labels_surya.py`.
-   Cheapest experiment available on the largest remaining error class.
+0. **DONE: Surya is installed** (`--bootstrap`, `.venv-surya`, gitignored;
+   re-run it in any other checkout). Free, ~7.6 s a page, correct where it
+   reads — and **net zero end-to-end on this corpus** (145/166 either way). It
+   is worth keeping: it takes the dossier from 9-right-of-12 to 9-of-9 by making
+   the join abstain where it used to answer wrongly. See `RESULTS.md`.
 
-1. **INSTRUMENT IDENTITY, which is where the errors actually are.** Seventeen of
+1. **THE LADDER'S ORDER, not any reader's accuracy.** The paid reader's four
+   staves are still unclaimed, and the reason is where each reader sits rather
+   than how well it reads. `_labels_for_page` runs text layer -> Surya ->
+   Tesseract -> paid, and each rung is consulted only when the one above
+   returned NOTHING. So on beet9-p30 a poor text layer blocks a better reader,
+   and on lamer-p50 Tesseract's 19 reads (resolving to 4 labels) block Surya.
+   `_usable()` already compares readers by labels the lexicon can resolve —
+   the question is whether a LOWER rung should be allowed to beat a higher one
+   on that measure rather than only to fill its silence. Measure on the wide
+   corpus; the arms are `--assist none` and `--assist vision`.
+
+2. **INSTRUMENT IDENTITY, which is where the errors actually are.** Seventeen of
    the twenty-one end-to-end clef errors are the positional default calling a
    bass or C-clef staff treble. `correct_clefs_from_instruments` already turns
    an instrument name into a clef, gap-fill only and vetoed by register fit, and
@@ -88,21 +95,21 @@ The four-item leverage list was worked through and two items are dead. Read
    names 12 of 33 staves at 0.92 precision, abstaining on two thirds. Every
    staff it can safely name is a staff whose clef stops being a guess. **This is
    the whole game now.**
-2. **The part-staff join is NOT broken — it was starved.** The three wrong
+3. **The part-staff join is NOT broken — it was starved.** The three wrong
    dossier clefs on beet5-p48 are 12/12 correct once the vision reader supplies
    that page's labels. Read this as an instance of item 0, not a separate job.
-3. **The detector's blind 45 staves of 113**, where neither the measure cell nor
+4. **The detector's blind 45 staves of 113**, where neither the measure cell nor
    the header crop yields a clef. A training question, and the project has three
    negative results on it already (catalog, domain augmentation, clef
    fine-tune). Do not start here without a new idea.
-4. **DEAD: `slot_continuity`.** The same slot fails in every system it appears
+5. **DEAD: `slot_continuity`.** The same slot fails in every system it appears
    in — the same part in the same edition prints the same glyph — so there is
    never a good reading to propagate. Fixing beet9-p60's system grouping (whose
    true boundary scores 324 bridged columns against a within-system median near
    120, i.e. the signal is inverted, not weak) would gain nothing.
-5. **DEAD-ish: the CV locator.** Three staves of 166. It is where a whole
+6. **DEAD-ish: the CV locator.** Three staves of 166. It is where a whole
    session went; it is not where the errors are.
-6. **Widen the ground truth again.** It went 4 pages -> 10 and reversed two
+7. **Widen the ground truth again.** It went 4 pages -> 10 and reversed two
    conclusions. Bolero p40 (34 staves) is rendered and unread.
 
 ## Standing rules in this area, none of them optional
