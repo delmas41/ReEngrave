@@ -13,8 +13,9 @@ import pytest
 
 from tools.omr.export import (
     annotate_beams,
-    annotate_slurs,
+    annotate_slurs_in_staff,
     measure_dynamics,
+    _lift_slur_states,
     _compute_divisions,
     _tuplet_runs,
     _mxl_note,
@@ -631,7 +632,8 @@ class TestDynamicsAndSlurs:
     @staticmethod
     def _slur(x0, x1):
         return {"category": "structural", "class": "slur",
-                "bbox": [x0, 20, x1 - x0, 8]}
+                "bbox": [x0, 20, x1 - x0, 8],
+                "bbox_page": [x0, 20, x1 - x0, 8]}
 
     # ── dynamics: the detector spells them one letter at a time ──────────
     def test_a_single_letter_is_a_dynamic(self):
@@ -664,29 +666,6 @@ class TestDynamicsAndSlurs:
         assert measure_dynamics([self._dyn(100, 60, "dynamicM"),
                                  self._dyn(110, 60, "dynamicF")]) == [(100, "mf")]
 
-    # ── slurs ────────────────────────────────────────────────────────────
-    def test_a_slur_marks_its_first_and_last_note(self):
-        events = [self._note(x) for x in (100, 140, 180, 220)]
-        annotate_slurs(events, [self._slur(95, 230)])
-        assert events[0]["slur_states"] == [(1, "start")]
-        assert events[3]["slur_states"] == [(1, "stop")]
-        assert "slur_states" not in events[1] and "slur_states" not in events[2]
-
-    def test_a_slur_over_one_note_is_dropped(self):
-        """An unpaired <slur type="start"/> makes the file invalid, not merely
-        wrong, so a lone note under an arc gets nothing."""
-        events = [self._note(100), self._note(400)]
-        annotate_slurs(events, [self._slur(95, 115)])
-        assert all("slur_states" not in e for e in events)
-
-    def test_two_slurs_get_distinct_numbers(self):
-        events = [self._note(x) for x in (100, 140, 300, 340)]
-        annotate_slurs(events, [self._slur(95, 150), self._slur(295, 350)])
-        assert events[0]["slur_states"] == [(1, "start")]
-        assert events[1]["slur_states"] == [(1, "stop")]
-        assert events[2]["slur_states"] == [(2, "start")]
-        assert events[3]["slur_states"] == [(2, "stop")]
-
     def test_slur_and_tie_share_one_notations_block(self):
         """Two <notations> elements on one note is invalid MusicXML."""
         xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, False, False, "      ",
@@ -694,6 +673,226 @@ class TestDynamicsAndSlurs:
         assert xml.count("<notations>") == 1
         assert '<tie type="start"/>' in xml
         assert '<slur number="1" type="start"/>' in xml
+
+
+# ─── Slurs, which outlive the measure they start in ─────────────────────────
+
+
+def _slur_head(x, pitch="C4", width=10):
+    """One pitched notehead at page-x `x`."""
+    return {"category": "notehead", "class": "noteheadBlack", "pitch": pitch,
+            "duration_type": "quarter", "duration_beats": 1.0, "dots": 0,
+            "bbox": [x, 40, width, 10], "bbox_page": [x, 40, width, 10],
+            "confidence": 0.9}
+
+
+def _slur_arc(x0, x1, y=20):
+    return {"category": "structural", "class": "slur",
+            "bbox": [x0, y, x1 - x0, 8], "bbox_page": [x0, y, x1 - x0, 8]}
+
+
+def _slur_staff(measures, spacing=10.0):
+    """A staff whose cells tile [0,100), [100,200), … so a barline is a
+    cell edge, which is what makes an arc's clipping visible."""
+    return {
+        "staff_index": 0,
+        "clef": "treble",
+        "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+        "time_signature": {"numerator": 4, "denominator": 4},
+        "staff_geometry": {"line_ys_page": [40, 50, 60, 70, 80],
+                           "line_spacing_px": spacing,
+                           "x_start": 0, "x_end": 100 * len(measures)},
+        "n_measures": len(measures),
+        "measures": [{
+            "measure_index": i,
+            "bbox_page_px": [i * 100, 0, (i + 1) * 100, 90],
+            "clef": "treble",
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4},
+            "n_detections": len(dets),
+            "detections": dets,
+        } for i, dets in enumerate(measures)],
+    }
+
+
+def _states(staff):
+    """Every slur mark on the staff, as (measure, x, number, kind)."""
+    out = []
+    for m_idx, measure in enumerate(staff["measures"]):
+        for det in measure["detections"]:
+            for number, kind in det.get("slur_states") or []:
+                out.append((m_idx, det["bbox_page"][0], number, kind))
+    return sorted(out)
+
+
+class TestSlursAcrossMeasures:
+    """A slur crossing a barline is DETECTED AS TWO ARCS, because cells are cut
+    per measure — 120 arcs on the Brahms fixture against 82 slurs in the truth.
+    Rejoining them is the whole reason this pass works on a staff rather than
+    on a measure.
+    """
+
+    def test_a_slur_inside_one_measure_marks_its_first_and_last_note(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_head(50), _slur_head(70),
+            _slur_arc(12, 78),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _states(staff) == [(0, 10, 1, "start"), (0, 70, 1, "stop")]
+
+    def test_an_arc_over_one_note_is_dropped(self):
+        """An unpaired <slur type="start"/> makes the file invalid, not merely
+        wrong, so a lone note under an arc gets nothing."""
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _slur_arc(8, 25),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _states(staff) == []
+
+    def test_two_arcs_meeting_at_a_barline_are_ONE_slur(self):
+        """The arc is clipped exactly at the cell edge on both sides, so the
+        slur opens in measure 0 and closes in measure 1 — one slur, not two.
+        """
+        staff = _slur_staff([
+            [_slur_head(60), _slur_head(80), _slur_arc(66, 100)],
+            [_slur_head(110), _slur_head(130), _slur_arc(100, 136)],
+        ])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _states(staff) == [(0, 60, 1, "start"), (1, 130, 1, "stop")]
+
+    def test_arcs_that_stop_short_of_the_barline_stay_two_slurs(self):
+        """Only an arc CUT by the boundary continues past it; one that ends
+        inside its own measure is a slur that ended there."""
+        staff = _slur_staff([
+            [_slur_head(20), _slur_head(60), _slur_arc(18, 75)],
+            [_slur_head(120), _slur_head(160), _slur_arc(118, 175)],
+        ])
+        assert annotate_slurs_in_staff(staff) == 2
+        assert _states(staff) == [
+            (0, 20, 1, "start"), (0, 60, 1, "stop"),
+            (1, 120, 1, "start"), (1, 160, 1, "stop"),
+        ]
+
+    def test_arcs_at_a_barline_but_different_heights_do_not_join(self):
+        """Two staves' worth of arc can meet at one barline. An arc ABOVE the
+        staff and one BELOW it are two slurs however well they line up in x —
+        measured 8.05 staff spaces apart on the fixture against 0.53 for a
+        genuine continuation.
+        """
+        staff = _slur_staff([
+            [_slur_head(60), _slur_head(80), _slur_arc(66, 100, y=20)],
+            [_slur_head(110), _slur_head(130), _slur_arc(100, 136, y=120)],
+        ])
+        assert annotate_slurs_in_staff(staff) == 2
+
+    def test_a_slur_spanning_a_whole_measure_chains_through_it(self):
+        """Three arcs, two barlines, one slur."""
+        staff = _slur_staff([
+            [_slur_head(80), _slur_arc(78, 100)],
+            [_slur_head(150), _slur_arc(100, 200)],
+            [_slur_head(210), _slur_arc(200, 215)],
+        ])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _states(staff) == [(0, 80, 1, "start"), (2, 210, 1, "stop")]
+
+    def test_the_arc_is_padded_because_it_is_narrower_than_its_run(self):
+        """A slur is drawn between the noteheads, so its ink stops a hair
+        inside the outer centres. Unpadded, the Contrabass read `n1 -> n4` in
+        bars whose truth is `n0 -> n5`.
+        """
+        # centres at 15, 35, 55, 75; the arc's ink spans only 36..54
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_head(50), _slur_head(70),
+            _slur_arc(36, 54),
+        ]])
+        annotate_slurs_in_staff(staff)
+        # 30 and 50 are inside; 10 and 70 are more than a notehead away
+        assert _states(staff) == [(0, 30, 1, "start"), (0, 50, 1, "stop")]
+
+    def test_numbers_are_reused_once_a_slur_has_closed(self):
+        """Consecutive slurs are all number 1 — a number only has to be unique
+        among slurs open AT THE SAME TIME."""
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_head(60), _slur_head(80),
+            _slur_arc(16, 34), _slur_arc(66, 84),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 2
+        assert {n for _m, _x, n, _k in _states(staff)} == {1}
+
+    def test_overlapping_slurs_take_distinct_numbers(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_head(50), _slur_head(70),
+            _slur_arc(12, 52), _slur_arc(32, 72),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 2
+        assert {n for _m, _x, n, _k in _states(staff)} == {1, 2}
+
+    def test_running_twice_does_not_stack_marks(self):
+        """`to_musicxml` and `to_lilypond` may both be called on one result."""
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_head(50), _slur_arc(12, 52),
+        ]])
+        annotate_slurs_in_staff(staff)
+        first = _states(staff)
+        annotate_slurs_in_staff(staff)
+        assert _states(staff) == first
+
+    def test_a_staff_with_no_five_line_geometry_abstains(self):
+        """Without the staff's own spacing there is no unit to measure the
+        boundary in, and a rule in raw pixels means a different thing on every
+        page."""
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_arc(12, 32),
+        ]])
+        staff["staff_geometry"] = None
+        assert annotate_slurs_in_staff(staff) == 0
+
+    def test_lift_drops_a_slur_whose_two_ends_share_one_chord(self):
+        """A start and a stop on one note is a slur to nowhere."""
+        head_a, head_b = _slur_head(10), _slur_head(11)
+        head_a["slur_states"] = [(1, "start")]
+        head_b["slur_states"] = [(1, "stop")]
+        events = [{"kind": "chord", "noteheads": [head_a, head_b]}]
+        _lift_slur_states(events)
+        assert "slur_states" not in events[0]
+
+
+class TestSlurExport:
+    def test_musicxml_carries_one_slur_across_a_barline(self):
+        result = _tiny_result_empty_measure({"numerator": 4, "denominator": 4})
+        staff = _slur_staff([
+            [_slur_head(60), _slur_head(80), _slur_arc(66, 100)],
+            [_slur_head(110), _slur_head(130), _slur_arc(100, 136)],
+        ])
+        result["pages"][0]["systems"][0]["staves"] = [staff]
+        xml = to_musicxml(result)
+        measures = ET.fromstring(xml).find("part").findall("measure")
+        kinds = [[s.get("type") for s in m.iter("slur")] for m in measures]
+        assert kinds == [["start"], ["stop"]], (
+            "a slur crossing a barline must open in one measure and close in "
+            "the next, not open and close in both"
+        )
+
+    def test_lilypond_carries_one_slur_across_a_barline(self):
+        result = _tiny_result_empty_measure({"numerator": 4, "denominator": 4})
+        staff = _slur_staff([
+            [_slur_head(60), _slur_head(80), _slur_arc(66, 100)],
+            [_slur_head(110), _slur_head(130), _slur_arc(100, 136)],
+        ])
+        result["pages"][0]["systems"][0]["staves"] = [staff]
+        ly = to_lilypond(result)
+        assert ly.count("(") == 1 and ly.count(")") == 1
+        # the barline falls between the two, which is the whole point
+        body = ly[ly.index("("):ly.index(")")]
+        assert "|" in body
+
+    def test_a_note_that_ends_one_slur_and_begins_the_next_closes_first(self):
+        """LilyPond writes `d)(` — close what arrived, then open what leaves."""
+        event = {"kind": "chord", "duration_type": "quarter",
+                 "duration_beats": 1.0, "dots": 0,
+                 "noteheads": [{"pitch": "C4"}],
+                 "slur_states": [(2, "start"), (1, "stop")]}
+        assert _lily_event(event).endswith(")\\=2(")
 
 
 # ─── Tuplets ────────────────────────────────────────────────────────────────

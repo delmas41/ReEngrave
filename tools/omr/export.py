@@ -295,6 +295,25 @@ def _clef_to_lily(clef: str) -> str:
     return clef
 
 
+def _lily_slur_suffix(event: dict[str, Any]) -> str:
+    """`(` / `)` for a note that opens or closes a slur.
+
+    LilyPond needs no help to carry a slur across a barline — `c8( d | e f)`
+    is one slur — so the same staff-level pairing that MusicXML uses serves
+    here unchanged. Simultaneous slurs are distinguished by `\\=N`, which is
+    LilyPond's equivalent of the MusicXML slur number; the common single-slur
+    case stays plain `(` … `)`.
+    """
+    out = ""
+    # Stops before starts: a note that ends one slur and begins the next is
+    # written `d)(`, closing what arrived before opening what leaves.
+    for number, kind in sorted(event.get("slur_states") or [],
+                               key=lambda s: (s[1] != "stop", s[0])):
+        prefix = "" if number == 1 else f"\\={number}"
+        out += prefix + (")" if kind == "stop" else "(")
+    return out
+
+
 def _lily_event(event: dict[str, Any]) -> str:
     """Render one chord/rest event in LilyPond syntax.
 
@@ -306,6 +325,10 @@ def _lily_event(event: dict[str, Any]) -> str:
     )
     dot_str = "." * dots
     tie_suffix = "~" if event.get("tied_to_next") else ""
+    # A slur closes on the note it reaches and opens after it, so a stop
+    # precedes a start on the same note — `sorted` puts "start" first, hence
+    # the ordering is handled in `_lily_slur_suffix`.
+    slur_suffix = _lily_slur_suffix(event)
 
     if event["kind"] == "rest":
         return f"r{lily_suffix}{dot_str}"
@@ -319,8 +342,9 @@ def _lily_event(event: dict[str, Any]) -> str:
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
     if len(pitches) == 1:
-        return f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}"
-    return f"<{' '.join(pitches)}>{lily_suffix}{dot_str}{tie_suffix}"
+        return f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}{slur_suffix}"
+    return (f"<{' '.join(pitches)}>{lily_suffix}{dot_str}"
+            f"{tie_suffix}{slur_suffix}")
 
 
 def _lily_measure(events: list[dict[str, Any]]) -> str:
@@ -374,6 +398,11 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     else:
         lines.append(f"{indent}  \\time 4/4")
 
+    # Slurs are paired over the whole staff, before any measure is rendered:
+    # the arc that crosses a barline is cut in two by the cell boundary and
+    # only page coordinates can rejoin it.
+    annotate_slurs_in_staff(staff)
+
     # Decide once for the whole staff whether to render as one-voice
     # or two-voice. Two-voice only if any measure has BOTH stem-up and
     # stem-down chords — otherwise it's overkill.
@@ -382,6 +411,7 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     per_measure_time_sig: list[dict[str, Any] | None] = []
     for measure in staff.get("measures", []):
         events = group_chords_in_measure(measure.get("detections", []))
+        _lift_slur_states(events)
         per_measure_events.append(events)
         per_measure_time_sig.append(measure.get("time_signature") or time_sig)
         voices = split_events_into_voices(events)
@@ -873,61 +903,266 @@ def _mxl_direction(word: str, indent: str) -> str:
             f"{indent}</direction>")
 
 
-def annotate_slurs(events: list[dict[str, Any]],
-                   detections: list[dict[str, Any]]) -> None:
-    """Mark the first and last event under each slur arc, in place.
+# A slur clipped by a cell boundary ends EXACTLY on it. Measured over the
+# Brahms fixture (`benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`): the facing
+# edges of a split pair sit 0.00-0.05 staff spaces from the boundary, and the
+# nearest consecutive-measure arc pair that is NOT a split sits at 1.75. The
+# constant is read off that gap rather than tuned into it — anything between
+# 0.05 and 1.75 gives the same 16 merges.
+_SLUR_BOUNDARY_SPACES = 0.5
+# Two halves of one slur cross the barline at the same height: 0.00-0.53 staff
+# spaces apart on the same fixture. The next-nearest pair is 8.05 — an arc
+# ABOVE the staff against one BELOW it, which is two different slurs, not one.
+_SLUR_CONTINUATION_DY_SPACES = 2.0
+# MusicXML numbers simultaneous slurs 1-6.
+_MAX_SLUR_NUMBER = 6
+# How far past an arc's edge a notehead centre may sit and still be under it,
+# in notehead widths. See `_noteheads_under` for the measurement.
+_SLUR_ARC_PAD_NOTEHEADS = 0.25
 
-    Same shape as `annotate_beams`: the detection gives the arc's x extent and
-    the notes underneath it are the ones it joins. A slur over a single event —
-    or none — is dropped, because MusicXML has nothing to attach it to and an
-    unpaired `<slur type="start">` makes the file invalid rather than merely
-    wrong.
 
-    Numbering restarts per measure. Overlapping slurs are rare in this
-    repertoire and get distinct numbers when they do occur.
+def _staff_arcs_by_measure(
+    measures: list[dict[str, Any]],
+) -> list[list[list[int]]]:
+    """Each measure's slur arcs, in page pixels, left to right."""
+    out = []
+    for measure in measures:
+        out.append(sorted(
+            (d["bbox_page"] for d in measure.get("detections", [])
+             if d.get("category") == "structural" and d.get("class") == "slur"
+             and len(d.get("bbox_page") or ()) == 4),
+            key=lambda b: b[0],
+        ))
+    return out
 
-    ⚠️ NOT WIRED INTO THE EXPORTER, and the reason is measured rather than
-    suspected. A slur crossing a barline is detected as TWO arcs, because cells
-    are cut per measure — 118 arcs on the Brahms fixture against 82 slurs in the
-    truth — so emitting them per measure writes two slurs where the music has
-    one. Measured on the orchestral benchmark:
+
+def _merge_arcs_across_barlines(
+    measures: list[dict[str, Any]],
+    per_measure_arcs: list[list[list[int]]],
+    spacing: float,
+) -> list[list[tuple[int, list[int]]]]:
+    """Chain arcs split by a barline into one slur each.
+
+    Returns one entry per slur: the `(measure_index, arc_bbox_page)` segments
+    it is made of. A slur inside one measure has a single segment; one crossing
+    a barline has two; one spanning a whole measure has three.
+
+    The join is geometric and local: an arc that ends ON its cell's right
+    boundary is left open, and an arc in the NEXT measure that begins on that
+    cell's left boundary at the same height closes it.
+    """
+    edge_tol = _SLUR_BOUNDARY_SPACES * spacing
+    dy_tol = _SLUR_CONTINUATION_DY_SPACES * spacing
+
+    slurs: list[list[tuple[int, list[int]]]] = []
+    # Slurs left hanging at the barline just passed: (slur index, arc y-centre).
+    pending: list[tuple[int, float]] = []
+    for m_idx, (measure, arcs) in enumerate(zip(measures, per_measure_arcs)):
+        box = measure.get("bbox_page_px")
+        if not box or len(box) != 4:
+            pending = []
+            continue
+        cell_x0, _, cell_x1, _ = box
+        still_open: list[tuple[int, float]] = []
+        for arc in arcs:
+            ax, ay, aw, ah = arc
+            y_centre = ay + ah / 2.0
+            joined = None
+            if pending and (ax - cell_x0) <= edge_tol:
+                nearest = min(pending, key=lambda p: abs(p[1] - y_centre))
+                if abs(nearest[1] - y_centre) <= dy_tol:
+                    joined = nearest[0]
+                    pending.remove(nearest)
+            if joined is None:
+                slurs.append([])
+                joined = len(slurs) - 1
+            slurs[joined].append((m_idx, arc))
+            if (cell_x1 - (ax + aw)) <= edge_tol:
+                still_open.append((joined, y_centre))
+        # Only the barline just crossed can continue a slur; an arc two
+        # measures later is a different slur however well it lines up.
+        pending = still_open
+    return slurs
+
+
+def _measure_noteheads(measure: dict[str, Any]) -> list[dict[str, Any]]:
+    """The pitched noteheads of one measure — the ones that become notes.
+
+    An unpitched or duration-less detection never survives into an event, so
+    anchoring a slur to one would silently drop the slur.
+    """
+    return [d for d in measure.get("detections", [])
+            if d.get("category") == "notehead"
+            and d.get("pitch") is not None
+            and d.get("duration_beats") is not None
+            and len(d.get("bbox_page") or ()) == 4]
+
+
+def _noteheads_under(
+    measures: list[dict[str, Any]],
+    segments: list[tuple[int, list[int]]],
+    pad_notehead_widths: float = _SLUR_ARC_PAD_NOTEHEADS,
+) -> list[tuple[int, float, dict[str, Any]]]:
+    """`(measure_index, x_centre, detection)` for the noteheads a slur covers,
+    in playing order.
+
+    THE ARC IS NARROWER THAN THE RUN IT BINDS, so its box is padded — the same
+    correction `rhythm._beamed_groups` makes to a beam box, for the same kind of
+    reason. A slur is drawn from just above (or below) its first notehead to
+    just above its last, so the ink stops a hair inside both centres and an
+    unpadded test drops the outer note at each end. Measured on the Brahms
+    fixture: of the 75 notehead centres lying just outside an arc, 54 sit within
+    0.19 notehead widths of its edge and the next is at 0.32 — so the pad is
+    read off that gap. Before it, the Contrabass read `n1 -> n4` in bars where
+    the truth slurs `n0 -> n5`.
+
+    The position travels with the detection because slur NUMBERS are allocated
+    by overlap, which needs to know where each slur starts and stops.
+    """
+    covered: list[tuple[int, float, dict[str, Any]]] = []
+    for m_idx, (ax, _ay, aw, _ah) in segments:
+        heads = _measure_noteheads(measures[m_idx])
+        if not heads:
+            continue
+        pad = pad_notehead_widths * (
+            sum(h["bbox_page"][2] for h in heads) / len(heads))
+        for det in heads:
+            box = det["bbox_page"]
+            x_centre = box[0] + box[2] / 2.0
+            if ax - pad <= x_centre <= ax + aw + pad:
+                covered.append((m_idx, x_centre, det))
+    covered.sort(key=lambda t: (t[0], t[1]))
+    return covered
+
+
+def _voice_of_notehead(measures: list[dict[str, Any]]) -> dict[int, int]:
+    """`id(notehead) -> voice index`, over a whole staff.
+
+    A slur lives inside ONE voice: MusicXML pairs `<slur>` within a `<voice>`
+    stream, so a start in voice 1 closed by a stop in voice 2 leaves both ends
+    unpaired and the file malformed rather than merely wrong. Measured on the
+    Brahms fixture, 3 of 75 slurs did exactly that.
+    """
+    voice_of: dict[int, int] = {}
+    for measure in measures:
+        events = group_chords_in_measure(measure.get("detections", []))
+        for v_idx, voice_events in enumerate(split_events_into_voices(events)):
+            for event in voice_events:
+                for head in event.get("noteheads") or []:
+                    voice_of[id(head)] = v_idx
+    return voice_of
+
+
+def annotate_slurs_in_staff(staff: dict[str, Any]) -> int:
+    """Mark the noteheads that open and close each slur on one staff, in place.
+
+    Returns the number of slurs marked.
+
+    WHY THIS IS A STAFF PASS AND NOT A MEASURE ONE. Cells are cut per measure,
+    so a slur crossing a barline is DETECTED AS TWO ARCS — 120 arcs on the
+    Brahms fixture against 82 slurs in the truth. Annotating per measure writes
+    two slurs where the music has one, which is what kept an implemented and
+    tested `annotate_slurs` out of the exporter until now:
 
         dynamics only        pooled 0.2595   1811 edits
         dynamics + slurs     pooled 0.2598   1835 edits   `wrong slur` 76 -> 97
 
-    Brahms alone improves slightly (0.3730 -> 0.3712) and everything else pays
-    for it. Kept, with its tests, because the arc-to-note mapping here is the
-    correct half; what is missing is a slur that can span measures, which the
-    per-measure event model cannot express. Wire this in once that exists.
+    Page pixels are the only frame shared across cells, so the merge is done
+    there — the same reason `transcribe._pair_ties_in_staff` works in page
+    coordinates to catch ties across a barline. The arc-to-note mapping is the
+    part that was always right and is kept.
+
+    NOTHING IN THE EXPORTER NEEDS TO LEARN ABOUT MEASURES. A MusicXML slur is
+    already free to open in one measure and close in another; all it needs is a
+    number that means the same thing at both ends. So the pass allocates
+    numbers over the whole STAFF, releasing one only when its slur has closed,
+    and marks the notehead detections — which `group_chords_in_measure` already
+    carries into events, the way it carries the tie flags.
     """
-    arcs = sorted(
-        (d["bbox"] for d in detections
-         if d.get("category") == "structural" and d.get("class") == "slur"
-         and len(d.get("bbox") or ()) == 4),
-        key=lambda b: b[0],
-    )
-    if not arcs:
-        return
+    measures = staff.get("measures", [])
+    # Idempotent: exporting a result twice must not stack two marks per note.
+    for measure in measures:
+        for det in measure.get("detections", []):
+            det.pop("slur_states", None)
+    spacing = (staff.get("staff_geometry") or {}).get("line_spacing_px")
+    if not measures or not spacing:
+        # Without the staff's own spacing there is no unit to measure the
+        # boundary in, and a merge rule in raw pixels would mean a different
+        # thing on every page. Abstain rather than guess.
+        return 0
 
-    def centre(event: dict[str, Any]) -> float | None:
-        heads = event.get("noteheads") or []
-        if not heads:
-            return None
-        box = heads[0].get("bbox")
-        return (box[0] + box[2] / 2.0) if box and len(box) == 4 else None
+    per_measure_arcs = _staff_arcs_by_measure(measures)
+    if not any(per_measure_arcs):
+        return 0
 
-    number = 0
-    for ax, _ay, aw, _ah in arcs:
-        under = [i for i, e in enumerate(events)
-                 if e.get("kind") != "rest"
-                 and (c := centre(e)) is not None and ax <= c <= ax + aw]
-        if len(under) < 2:
+    voice_of = _voice_of_notehead(measures)
+    slurs = []
+    for segments in _merge_arcs_across_barlines(
+            measures, per_measure_arcs, spacing):
+        covered = _noteheads_under(measures, segments)
+        # A slur needs two notes to join. One or none leaves an unpaired
+        # <slur type="start">, which makes the file invalid rather than
+        # merely wrong.
+        if len(covered) < 2 or covered[0][2] is covered[-1][2]:
             continue
-        number += 1
-        if number > 6:            # MusicXML allows 1-6 simultaneous slurs
-            break
-        events[under[0]].setdefault("slur_states", []).append((number, "start"))
-        events[under[-1]].setdefault("slur_states", []).append((number, "stop"))
+        # Both ends must belong to the same voice, for the same reason: the
+        # two halves of a slur split across voices are each unpaired. Prefer
+        # the longest run the arc covers WITHIN one voice over dropping it.
+        voice = voice_of.get(id(covered[0][2]), 0)
+        in_voice = [c for c in covered if voice_of.get(id(c[2]), 0) == voice]
+        if len(in_voice) < 2 or in_voice[0][2] is in_voice[-1][2]:
+            continue
+        start_m, start_x, first = in_voice[0]
+        stop_m, stop_x, last = in_voice[-1]
+        slurs.append(((start_m, start_x), (stop_m, stop_x), first, last))
+
+    # Numbers are reused as soon as a slur closes, so a staff of ordinary
+    # non-overlapping slurs is numbered 1, 1, 1 … and only genuine overlap
+    # spends a second number.
+    slurs.sort(key=lambda s: s[0])
+    open_slurs: dict[int, tuple[int, float]] = {}   # number -> where it stops
+    n_marked = 0
+    for start_key, stop_key, first, last in slurs:
+        # STRICTLY before: a slur that begins exactly where another ends takes
+        # a fresh number, so no note ever carries the same number twice and a
+        # stop-then-start on one note stays two readable slurs rather than an
+        # ambiguous pair.
+        for number, open_stop in list(open_slurs.items()):
+            if open_stop < start_key:
+                del open_slurs[number]
+        number = next((n for n in range(1, _MAX_SLUR_NUMBER + 1)
+                       if n not in open_slurs), None)
+        if number is None:
+            continue          # more than six slurs open at once: drop this one
+        first.setdefault("slur_states", []).append((number, "start"))
+        last.setdefault("slur_states", []).append((number, "stop"))
+        open_slurs[number] = stop_key
+        n_marked += 1
+    return n_marked
+
+
+def _lift_slur_states(events: list[dict[str, Any]]) -> None:
+    """Carry notehead slur marks up onto their event, in place.
+
+    Same convention `group_chords_in_measure` uses for ties: a chord is slurred
+    if any of its noteheads is, and the mark is emitted once through the
+    chord's first note.
+    """
+    for event in events:
+        states: list[tuple[int, str]] = []
+        for head in event.get("noteheads") or []:
+            for state in head.get("slur_states") or []:
+                if state not in states:
+                    states.append(state)
+        if not states:
+            continue
+        # A slur whose two ends landed in the same chord spans no time; a
+        # start and a stop on one note is a slur to nowhere.
+        degenerate = ({n for n, kind in states if kind == "start"}
+                      & {n for n, kind in states if kind == "stop"})
+        states = [s for s in states if s[0] not in degenerate]
+        if states:
+            event["slur_states"] = states
 
 
 def _event_tuplet(event: dict[str, Any]) -> tuple[dict[str, int], int] | None:
@@ -1097,7 +1332,10 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 last_key_sig = None
                 last_time_sig = None
                 first_in_part = True
+                # Each "staff" here holds one measure of one melodic line, so
+                # a slur has no barline to cross within it.
                 for staff in staves:
+                    annotate_slurs_in_staff(staff)
                     # By construction, each staff has exactly 1 measure.
                     measure = staff["measures"][0]
                     m_clef = measure.get("clef") or staff.get("clef")
@@ -1128,6 +1366,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
+                        _lift_slur_states(_voice_events)
                     # Dynamics belong to the staff, not to a voice, so they go
                     # on voice 1 rather than being emitted once per voice.
                     _dyn = measure_dynamics(measure.get("detections", []))
@@ -1215,6 +1454,11 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 key_sig = staff.get("key_signature")
                 time_sig = staff.get("time_signature")
 
+                # Before the measure loop: a slur is a fact about the STAFF,
+                # because the arc that crosses a barline is cut in two by the
+                # cell boundary and only page coordinates can rejoin it.
+                annotate_slurs_in_staff(staff)
+
                 measures_xml = []
                 last_clef = None
                 last_key_sig = None
@@ -1247,6 +1491,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
+                        _lift_slur_states(_voice_events)
                     # Dynamics belong to the staff, not to a voice, so they go
                     # on voice 1 rather than being emitted once per voice.
                     _dyn = measure_dynamics(measure.get("detections", []))
