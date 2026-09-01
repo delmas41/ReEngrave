@@ -22,14 +22,14 @@ piano-false-positives.ly` — the "fatal error" it ends on is harmless.
 **Current baseline, shipped config (clustering ON, position rule ON):**
 
 ```
-79 of 206 located (38.3%)
-reference 5/5 exact | coverage 7/9 | orchestral misses 5 | sweep misses 8
-                                                        | FALSE POSITIVES 13
-                                       (3 Beethoven + 10 Mahler)
+77 of 206 located (37.4%)
+reference 5/5 exact | coverage 7/9 | orchestral misses 7 | sweep misses 24
+                                                        | FALSE POSITIVES 5
+                                       (1 Beethoven + 4 Mahler)
 ```
 
-Plus: `pytest tools/omr/tests` — **1117 passed, 0 failed**.
-`benchmarks/omr-score-order/eval_score_order.py` 11/12, 5/10, 23/23.
+Plus: `pytest tools/omr/tests` — **1118 passed, 0 failed**.
+`benchmarks/omr-score-order/eval_score_order.py` 11/12, **3/8**, 23/23.
 `eval_pipeline_clefs.py --contextual --dossier --assist vision` 69/69, base-3
 52/52, about a cent.
 
@@ -69,11 +69,13 @@ coverage corpora cannot regress by construction.
    only route left is a reader that goes back to the grayscale print rather
    than the shared ink mask — a real piece of work with a ceiling of four false
    positives. Full write-up in `RESULTS.md`; do not spend the afternoon again.
-2. **A DECISION, not a bug: a single-dot veto.** No pair required — it removes
-   8 of the 13 false positives and costs 16 of the 123 real clefs. Far better
-   than chance (the population is 13:123) and far worse than everything shipped
-   on 2026-08-31, all of which cost zero. Taking it is a choice about how much
-   coverage this reader should spend on precision. It is left open on purpose.
+2. **TAKEN: the single-dot veto** (`dot_single_clear_is_enough`), FALSE
+   POSITIVES 13 → 5. The only non-free change in this area: 8 removed for 20
+   declined C clefs. Watch two things if you revisit it — `eval_score_order`'s
+   read-clefs arm fell from 10 named/5 correct to 8/3, the one number that got
+   worse; and `eval_pipeline_clefs` holds 69/69 only because `slot_continuity`
+   picks up what the locator drops, which is worth knowing before leaning on
+   the locator alone anywhere new.
 3. **The other shape cases** are turned away on aspect or height even by the
    loose tier. The sweep table in `RESULTS.md` shows the cost column staying at
    zero out to aspect 3.0 and height 1.40, so there may be a little room — but

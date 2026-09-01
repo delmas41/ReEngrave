@@ -252,6 +252,25 @@ class ClefLocatorConfig:
     # costs 2 real C clefs and to 0.30 costs 4, at every height. A shape that
     # tall and narrow is a stroke, not a dot, wherever it stands.
     dot_clear_min_aspect: float = 0.65
+    # Accept ONE dot standing clear of the body, without its partner.
+    #
+    # Unlike everything else in this module this is a trade rather than a free
+    # win, and it was taken deliberately. Measured over both sweep corpora it
+    # removes 8 of the 13 remaining false positives and declines 16 of the 123
+    # real C clefs — far better than the surviving population's own 13:123, and
+    # far worse than the position rules, which cost nothing at all.
+    #
+    # It is defensible because the two outcomes are not symmetric. A declined C
+    # clef leaves its staff on the positional default it would have had if this
+    # locator did not exist; an accepted F clef invents a clef that transposes
+    # every note on the staff. So the layer buys precision with coverage it can
+    # afford, and that is the whole argument — there is no measurement here
+    # that makes the trade free.
+    #
+    # Only a CLEAR-tier dot counts, never a strict-tier one. A lone dot-shaped
+    # component inside the body is a C clef's own stroke fragment: 109 of the
+    # 123 real clefs have one, and accepting those would empty the layer.
+    dot_single_clear_is_enough: bool = True
     dot_max_dx_spaces: float = 0.30
     dot_min_dy_spaces: float = 0.60
     dot_max_dy_spaces: float = 1.50
@@ -576,6 +595,13 @@ def _has_f_clef_dots(
         )
         if not (strict or clear):
             continue
+        if clear and config.dot_single_clear_is_enough:
+            # One dot standing clear of the body is enough on its own — the
+            # partner is often lost to the morphology on a worn print, and on
+            # four staves of the Mahler sweep it does not survive as a separate
+            # component at any dilation or search window. See
+            # `dot_single_clear_is_enough` for the trade this makes.
+            return True
         dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0, bw))
     for i in range(len(dots)):
         for j in range(i + 1, len(dots)):

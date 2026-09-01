@@ -406,6 +406,31 @@ class TestAbstains:
         draw_noteheads(img)
         assert locate_clef(make_cell(img)) is None
 
+    def test_one_dot_standing_clear_is_enough(self):
+        """The partner is often lost to the morphology on a worn print — on
+        four staves of the Mahler sweep it does not survive as a separate
+        component at any dilation or search window — so one dot clear of the
+        body vetoes on its own.
+
+        Deliberately a TRADE and not a free win: it removes 8 of the 13
+        remaining false positives across both editions and declines 16 of the
+        123 real C clefs. See `dot_single_clear_is_enough`.
+        """
+        img = blank_page()
+        draw_f_clef(img, 4)
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):        # erase both dots
+            cv2.circle(img, (22 + 34, cy + dy), 8, 255, -1)
+        # One dot, standing WELL clear. The distance matters and is a real
+        # limit of the rule rather than a detail of this drawing: a lone dot
+        # closer than `cluster_gap_spaces` is absorbed into the candidate, and
+        # then it is inside the body by definition and cannot be a clear dot.
+        # The four staves this rule was measured on carry theirs at 1.50 to
+        # 1.79 of the body's width.
+        cv2.circle(img, (22 + 46, cy + SPACING // 2), 5, 0, -1)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img)) is None
+
     def test_the_loose_reading_does_not_reach_inside_the_body(self):
         """The half that makes it safe. The same worn pair, printed ON the
         glyph instead of clear of it, is NOT dots — a C clef's near-pairs are

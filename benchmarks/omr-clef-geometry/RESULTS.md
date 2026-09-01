@@ -1360,3 +1360,77 @@ They are on the page and not in the mask, at any dilation and any window. So the
 only route left to them is a reader that goes back to the grayscale print
 instead of the shared ink mask — a real piece of work whose ceiling is four
 false positives out of thirteen. Worth knowing before anyone starts.
+
+
+---
+
+## The single-dot veto: taken, and it is a trade (2026-08-31)
+
+The section above left this open as a decision rather than a bug. Taken:
+`dot_single_clear_is_enough`. One dot standing clear of the body vetoes on its
+own, without its partner — because on a worn print the partner is often simply
+not there, and on four staves of the Mahler sweep it does not survive as a
+separate component at any dilation or search window.
+
+**This is the first change in this area that is not free, and it should be read
+as a trade rather than a fix.**
+
+| | before | after |
+|---|---:|---:|
+| Nottebohm located | 79 / 206 | **77 / 206** |
+| reference | 5/5 | 5/5 |
+| piano false positives | 0 | 0 |
+| coverage (Nottebohm p.46) | 7/9 | 7/9 |
+| orchestral spot check, misses | 5 | **7** |
+| sweep misses | 8 | **24** |
+| beethoven5 false positives | 3 | **1** |
+| mahler5 false positives | 10 | **4** |
+| **FALSE POSITIVES** | **13** | **5** |
+
+Eight false positives removed for twenty declined C clefs — sixteen on the
+sweeps, two on the orchestral spot check, two on Nottebohm. The ratio is 1:2.5,
+against a surviving population that was running at 13:123, so the rule is
+picking out F clefs far better than chance and still costing more than it saves
+in raw counts.
+
+The argument for taking it is that the two outcomes are not symmetric. A
+declined C clef leaves its staff on the positional default it would have had if
+this locator did not exist; an accepted F clef invents a clef that transposes
+every note on its staff. There is no measurement that makes this free, and none
+is claimed.
+
+### Only a CLEAR dot counts, and that is what makes it survivable
+
+A lone dot-shaped component INSIDE the body is a C clef's own stroke fragment —
+109 of the 123 real clefs have one — so admitting those would empty the layer
+outright. The rule fires only on the clear tier, past the body's right edge.
+
+There is a real limit worth knowing, found while writing the test for it: a lone
+dot closer to the body than `cluster_gap_spaces` is absorbed INTO the candidate,
+and is then inside the body by definition and cannot be a clear dot. The four
+staves this was measured on carry theirs at 1.50–1.79 of the body's width.
+
+### What else moved, including the one number that got worse
+
+`eval_pipeline_clefs --contextual --dossier --assist vision` holds at **69/69**,
+base-3 52/52 — and the way it holds is the interesting part. The CV locator's
+contribution fell from two staves to one, and `slot_continuity` picked the other
+one up and got it right. Downstream of the locator there is redundancy, so a
+declined clef frequently costs nothing at all by the time the pipeline has
+finished.
+
+`eval_score_order` did move, and against us: its *read clefs* arm went from 10
+named / 5 correct (precision 0.50) to **8 named / 3 correct (precision 0.38)**.
+Both clefs it lost were correct ones. That arm is two pages and thirty-three
+staves, so it is a small and noisy sample — but it is the one place where the
+surviving reads got *less* accurate rather than more, which is the opposite of
+what a precision veto is supposed to do, and it should not be buried. The
+`position` and `true clefs` arms are untouched, as they must be: they never
+consult the locator.
+
+1118 tests.
+
+### The remaining five
+
+Three bass clefs and the two treble. The G clefs are out of a dot veto's reach
+by construction, and were never going to be anything else.
