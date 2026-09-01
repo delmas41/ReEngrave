@@ -22,6 +22,7 @@ has one, because this reader is for conductor's scores.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import sys
 from collections import Counter, defaultdict
@@ -33,7 +34,10 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 sys.path.insert(0, str(REPO))
 
-from tools.omr.clef_locator import locate_clef  # noqa: E402
+from tools.omr.clef_locator import (  # noqa: E402
+    DEFAULT_LOCATOR_CONFIG,
+    locate_clef,
+)
 from tools.omr.measure_extractor import (  # noqa: E402
     detect_barlines,
     extract_measures,
@@ -44,7 +48,9 @@ from tools.omr.staff_detector import detect_staves  # noqa: E402
 from tools.omr.staff_header import header_cells_for_page  # noqa: E402
 from tools.omr.staff_line_removal import remove_staff_lines  # noqa: E402
 
-C_CLEFS = {"soprano", "mezzosoprano", "alto", "tenor", "baritone"}
+C_CLEFS = {"soprano", "mezzosoprano", "alto", "tenor", "baritone",
+           # the glyph is certainly a C clef, the line was not read
+           "c-clef"}
 # Keyboard pages in the shared ground truth, skipped on purpose.
 SKIP_IDS = {"wtc-p17"}
 
@@ -72,6 +78,18 @@ def orchestral_pages() -> list[dict]:
                         "dpi": g.get("dpi", 300),
                         "clefs": [s["clef"] for s in g["slots"]]})
 
+    # The widened corpus: every staff on the page, matched TOP TO BOTTOM, with
+    # its own staff count so a page Phase 1 now lays out differently is skipped
+    # rather than mis-mapped. Marked `flat` because the legacy files above are
+    # per-system-ordinal and this one is not.
+    wide = HERE / "orchestral-clef-truth.json"
+    if wide.exists():
+        for page in json.loads(wide.read_text())["pages"]:
+            out.append({"id": page["id"], "pdf": page["pdf"],
+                        "page_index": page["page_index"], "dpi": page.get("dpi", 300),
+                        "clefs": page["clefs"], "flat": True,
+                        "n_staves": page["n_staves"]})
+
     mahler = HERE / "ground-truth-mahler5-p72.json"
     if mahler.exists():
         g = json.loads(mahler.read_text())
@@ -86,7 +104,13 @@ def main() -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--per-staff", action="store_true")
+    ap.add_argument("--no-single-dot", action="store_true",
+                    help="turn `dot_single_clear_is_enough` off, to see what "
+                         "that veto costs against hand-read truth")
     args = ap.parse_args()
+    config = DEFAULT_LOCATOR_CONFIG
+    if args.no_single_dot:
+        config = dataclasses.replace(config, dot_single_clear_is_enough=False)
 
     # branch -> {"C": n, "not C": n}
     table: dict[str, Counter] = defaultdict(Counter)
@@ -103,20 +127,31 @@ def main() -> int:
         pws = detect_barlines(detect_staves(rendered))
         remove_staff_lines(resegment_fused_measures(pws, extract_measures(pws)))
         cells = header_cells_for_page(pws)
+        ordered = sorted(pws.staves, key=lambda s: s.top_y)
+        if page.get("flat"):
+            if len(ordered) != page["n_staves"]:
+                print(f"  {page['id']}: SKIPPED — {len(ordered)} staves detected, "
+                      f"truth records {page['n_staves']}")
+                continue
+            groups = [ordered]
+        else:
+            by_system: dict[int, list] = defaultdict(list)
+            for staff in ordered:
+                by_system[staff.system_index].append(staff)
+            groups = list(by_system.values())
         n_pages += 1
-        by_system: dict[int, list] = defaultdict(list)
-        for staff in sorted(pws.staves, key=lambda s: s.top_y):
-            by_system[staff.system_index].append(staff)
-        for staves in by_system.values():
+        for staves in groups:
             for ordinal, staff in enumerate(staves):
                 if ordinal >= len(page["clefs"]):
                     continue
                 truth = page["clefs"][ordinal]
+                if truth is None:
+                    continue          # could not be read by eye; not evidence
                 cell = cells.get(staff.staff_index)
                 if cell is None:
                     continue
                 trace: dict = {}
-                found = locate_clef(cell, trace=trace)
+                found = locate_clef(cell, config=config, trace=trace)
                 branch = ("located" if found is not None
                           else trace.get("reason", "unknown"))
                 group = "C" if truth in C_CLEFS else "not C"

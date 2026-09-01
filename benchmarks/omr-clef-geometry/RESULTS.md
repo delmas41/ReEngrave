@@ -1585,3 +1585,99 @@ should not spend an afternoon there.**
 Widening this ground truth is the useful next job in this area — it is the only
 measurement that distinguishes a rejection from a loss, and it currently rests
 on ten clefs.
+
+
+---
+
+## The ground truth widened 2.5x — and it overturns two of today's conclusions (2026-08-31)
+
+`orchestral-clef-truth.json`: **six new orchestral pages, 116 staves, 14 C
+clefs**, every staff on the page read by eye. With the four pages that existed
+before, the corpus is now **10 pages, 187 staves, 24 C clefs** — against four
+pages and ten C clefs an hour ago.
+
+Built with `render_staff_heads.py`, which renders the head of every DETECTED
+staff — the sweep corpora render only the staves the locator fires on, which is
+why they can measure precision and can say nothing about whether a rejected
+staff was rejected rightly. Every C-clef call was then re-read enlarged against
+numbered staff lines before being recorded, and three staves are recorded as
+`null` because they could not be read honestly. Four publishers: two IMSLP
+Beethoven editions, and Durand's Ravel and Debussy.
+
+Two deliberate choices in the file. It matches **top to bottom, not by system
+ordinal**, because system grouping is itself imperfect — beet9-p60 is really two
+systems of twelve and Phase 1 reports one of twenty-four — and it records the
+staff count so a page Phase 1 later lays out differently is skipped rather than
+mis-mapped. And where a glyph is certainly a C clef but its line could not be
+read at the print's resolution, it is recorded as the generic `c-clef` rather
+than guessed at from the vocal convention. Beethoven 9's choral finale supplies
+six of those.
+
+### What it says
+
+```
+  branch                        C clef   not a C clef
+  too_big                            1             90
+  asymmetric                         3             30
+  only_debris                        1             22
+  no_clusters                        3             12
+  f_clef_dots                        6              3
+  located                            8              0
+  ambiguous_snap                     0              6
+  off_staff_only                     2              0
+  TOTAL                             24            163
+```
+
+**Conclusion 1, overturned: the layer is not at 8-of-10.** It reads **8 of 24**
+real C clefs. The four old pages were easy ones, and "8 of 10 with no false
+positive" was a small-sample flatter — the same mistake as the Nottebohm
+coverage figure, one measurement later. It still declines 163 of 163 staves that
+carry no C clef, which is the half of the claim that survived.
+
+**Conclusion 2, mostly holds: the fused cluster is still not the place to dig.**
+One C clef of twenty-four is lost there against ninety correct refusals — no
+longer the zero the thin corpus reported, but nowhere near the leading cost. The
+one it loses is beet9-p30 s10, a viola whose cluster comes in at 4.14 × 10.32
+staff spaces, twice the height limit.
+
+### And the single-dot veto is a much worse trade than the sweeps suggested
+
+Running the same cross-tab with `dot_single_clear_is_enough` off isolates it:
+
+| | shipped | veto off |
+|---|---:|---:|
+| **C clefs located** | **8** | **13** |
+| non-C clefs located (false positives) | 0 | 1 |
+| C clefs lost to `f_clef_dots` | 6 | 0 |
+| non-C refused by `f_clef_dots` | 3 | 1 |
+
+**Turning it off recovers five real C clefs and costs one false positive.**
+Recall goes 8/24 to 13/24 — from a third of the C clefs on the page to more than
+half.
+
+That is the opposite direction from the sweep corpora, which said eight false
+positives removed for sixteen declined clefs, and the discrepancy is not noise:
+**a sweep corpus is built from the candidates the locator FIRES on, so it
+oversamples exactly the staves where it produces something.** The hand-read
+corpus samples every staff on the page. For a question of the form "what does
+this rule cost in the wild", the unbiased population is the right one, and the
+sweeps are the wrong instrument however carefully they are read.
+
+That is worth keeping separately from the veto itself: **the two corpus kinds
+answer different questions, and the sweep kind cannot answer this one.** It was
+built to make false positives visible, and it does that and nothing else.
+
+The veto is left as shipped, because taking it was a deliberate decision made on
+the evidence available at the time; the evidence has changed and the decision is
+Sean's to revisit. Reverting is one flag.
+
+### Also visible for the first time
+
+`off_staff_only` — the margin rule — costs **2 C clefs and catches 0 non-C** on
+these ten pages. That is not a contradiction of the 27 Mahler false positives it
+removes (those pages are full of the stacked-numeral family and these are not),
+but it is the first measurement of its cost on an unbiased population, and it is
+not free either.
+
+`no_clusters` (3 C clefs) and `asymmetric` (3) are now the joint second-largest
+losses after the dot veto, and neither has ever been looked at.

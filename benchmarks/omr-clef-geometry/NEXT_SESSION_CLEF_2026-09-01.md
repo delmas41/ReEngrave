@@ -88,21 +88,33 @@ coverage corpora cannot regress by construction.
    different survivor population.
 4. **The two treble false positives are out of reach of any dot rule.** A G clef
    has no dots. They need a different veto or nothing.
-5. **WIDEN THE HAND-READ GROUND TRUTH.** It is the only measurement that tells
-   a rejection from a loss, and it currently rests on four pages and ten C
-   clefs. Everything else in this list is guesswork until it is bigger.
-6. **A third edition.**
+5. **`no_clusters` (3 C clefs lost) and `asymmetric` (3)** are the joint
+   second-largest losses after the dot veto and neither has ever been looked
+   at. `off_staff_only` costs 2 with 0 caught on these pages.
+6. **WIDEN THE GROUND TRUTH FURTHER.** It went from 4 pages to 10 and reversed
+   two conclusions; it is still 24 C clefs. `render_staff_heads.py` renders a
+   page's staff heads and `orchestral-clef-truth.json` is the file. Bolero p40
+   (34 staves) is rendered and unread.
+7. **A third edition.**
+
+**FIRST: decide whether to keep the single-dot veto.** On the widened hand-read
+corpus (`orchestral-clef-truth.json`, 10 pages / 187 staves / 24 C clefs)
+turning `dot_single_clear_is_enough` OFF recovers **5 real C clefs for 1 false
+positive** — recall 8/24 to 13/24. That is the opposite of what the sweep
+corpora said, and the sweeps are the wrong instrument for the question: they are
+built from the candidates the locator FIRES on, so they oversample staves where
+it produces something. It is left shipped because taking it was a deliberate
+call, but the evidence it rested on has been superseded. `probe_cluster_too_big.py
+--no-single-dot` reproduces both arms.
 
 **DO NOT go after the fused cluster.** Its 52.9% share of orchestral header
-cells looks like the largest drain and is not a drain at all: `probe_cluster_
-too_big.py` shows **0 of its 47 cells carry a C clef** — every one is a treble
-or bass staff being refused correctly, which is what a seven-space-tall G clef
-should get. Chasing it would invent false positives, not find clefs.
+cells looks like the largest drain and is not: it costs **1 C clef against 90
+correct refusals** — a G clef is seven staff spaces tall and refusing it is the
+branch working. Chasing it would invent false positives.
 
 **And do not quote 8.1% as coverage.** `58 of 720 located` is over ALL header
-cells, and most orchestral staves correctly get nothing. On the pages where the
-answer is known the locator reads **8 of the 10 real C clefs with no false
-positive on any of the 74 staves**. Two numbers, not one. Two editions have now each shown a false-positive family
+cells, and most orchestral staves correctly get nothing. The real pair is
+**8 of 24 C clefs read, 163 of 163 non-C staves declined**. Two editions have now each shown a false-positive family
    the other could not. `sweep_located_clefs.py` builds the corpus and
    `check_clef_precision.py` picks it up with no code change; the cost is an
    afternoon of reading glyphs. Pick a different publisher again.
