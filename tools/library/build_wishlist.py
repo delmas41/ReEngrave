@@ -42,7 +42,9 @@ WORKS: list[tuple[str, str, str]] = [
     ("Beethoven", "Symphony No.8", "Symphony No.8, Op.93 (Beethoven, Ludwig van)"),
     ("Beethoven", "Egmont Overture", "Egmont, Op.84 (Beethoven, Ludwig van)"),
     ("Beethoven", "Coriolan Overture", "Coriolan Overture, Op.62 (Beethoven, Ludwig van)"),
-    ("Beethoven", "Leonore Overture No.3", "Leonore Overture No.3, Op.72b (Beethoven, Ludwig van)"),
+    # Leonore Overture No.3 has NO standalone IMSLP page — it exists only inside
+    # "Fidelio, Op.72", whose "Complete Score" files are the Fidelio overture and
+    # the opera itself. Dropped rather than left looking merely unresolved.
     # --- Brahms ---------------------------------------------------------------
     ("Brahms", "Symphony No.1", "Symphony No.1, Op.68 (Brahms, Johannes)"),
     ("Brahms", "Symphony No.2", "Symphony No.2, Op.73 (Brahms, Johannes)"),
@@ -131,7 +133,7 @@ WORKS: list[tuple[str, str, str]] = [
     ("Debussy", "Nocturnes", "Nocturnes (Debussy, Claude)"),
     ("Ravel", "Daphnis et Chloe Suite No.2", "Daphnis et Chloé (Ravel, Maurice)"),
     ("Ravel", "Rapsodie espagnole", "Rapsodie espagnole (Ravel, Maurice)"),
-    ("Ravel", "Ma mere l'Oye", "Ma mère l'Oye (Ravel, Maurice)"),
+    ("Ravel", "Ma mere l'Oye", "Ma Mère l'Oye (Ravel, Maurice)"),
     ("Stravinsky", "The Firebird Suite", "The Firebird (Stravinsky, Igor)"),
     ("Stravinsky", "Petrushka", "Petrushka (Stravinsky, Igor)"),
     ("Prokofiev", "Symphony No.1 'Classical'", "Symphony No.1, Op.25 (Prokofiev, Sergey)"),
@@ -169,7 +171,7 @@ WORKS: list[tuple[str, str, str]] = [
     ("Bach", "Orchestral Suite No.3", "Orchestral Suite No.3 in D major, BWV 1068 (Bach, Johann Sebastian)"),
     ("Handel", "Water Music", "Water Music, HWV 348-350 (Handel, George Frideric)"),
     ("Handel", "Music for the Royal Fireworks", "Music for the Royal Fireworks, HWV 351 (Handel, George Frideric)"),
-    ("Vivaldi", "The Four Seasons", "The Four Seasons (Vivaldi, Antonio)"),
+    ("Vivaldi", "The Four Seasons", "Il cimento dell'armonia e dell'inventione, Op.8 (Vivaldi, Antonio)"),
     # --- Beethoven concertos and choral ---------------------------------------
     ("Beethoven", "Piano Concerto No.3", "Piano Concerto No.3, Op.37 (Beethoven, Ludwig van)"),
     ("Beethoven", "Piano Concerto No.4", "Piano Concerto No.4, Op.58 (Beethoven, Ludwig van)"),
@@ -211,7 +213,7 @@ WORKS: list[tuple[str, str, str]] = [
     ("Brahms", "Ein deutsches Requiem", "Ein deutsches Requiem, Op.45 (Brahms, Johannes)"),
     ("Brahms", "Piano Concerto No.1", "Piano Concerto No.1, Op.15 (Brahms, Johannes)"),
     ("Brahms", "Piano Concerto No.2", "Piano Concerto No.2, Op.83 (Brahms, Johannes)"),
-    ("Brahms", "Double Concerto", "Double Concerto, Op.102 (Brahms, Johannes)"),
+    ("Brahms", "Double Concerto", "Concerto for Violin and Cello, Op.102 (Brahms, Johannes)"),
     ("Brahms", "Tragic Overture", "Tragic Overture, Op.81 (Brahms, Johannes)"),
     ("Bruckner", "Symphony No.1", "Symphony No.1 in C minor, WAB 101 (Bruckner, Anton)"),
     ("Bruckner", "Symphony No.3", "Symphony No.3 in D minor, WAB 103 (Bruckner, Anton)"),
@@ -229,7 +231,7 @@ WORKS: list[tuple[str, str, str]] = [
     ("Tchaikovsky", "Violin Concerto", "Violin Concerto, Op.35 (Tchaikovsky, Pyotr)"),
     ("Tchaikovsky", "Swan Lake", "Swan Lake, Op.20 (Tchaikovsky, Pyotr)"),
     ("Tchaikovsky", "The Sleeping Beauty", "The Sleeping Beauty, Op.66 (Tchaikovsky, Pyotr)"),
-    ("Rimsky-Korsakov", "Russian Easter Festival Overture", "Russian Easter Festival Overture, Op.36 (Rimsky-Korsakov, Nikolay)"),
+    ("Rimsky-Korsakov", "Russian Easter Festival Overture", "Russian Easter Overture, Op.36 (Rimsky-Korsakov, Nikolay)"),
     ("Mussorgsky", "Night on Bald Mountain", "Night on the Bare Mountain (Mussorgsky, Modest)"),
     ("Borodin", "In the Steppes of Central Asia", "In the Steppes of Central Asia (Borodin, Aleksandr)"),
     ("Glazunov", "Symphony No.5", "Symphony No.5, Op.55 (Glazunov, Aleksandr)"),
@@ -241,7 +243,7 @@ WORKS: list[tuple[str, str, str]] = [
     ("Dvorak", "Slavonic Dances, Op.46", "Slavonic Dances, Op.46 (Dvořák, Antonín)"),
     ("Dvorak", "Serenade for Strings", "Serenade for Strings, Op.22 (Dvořák, Antonín)"),
     ("Smetana", "The Bartered Bride Overture", "Prodaná nevěsta, JB 1:100 (Smetana, Bedřich)"),
-    ("Janacek", "Sinfonietta", "Sinfonietta, JW 6/18 (Janáček, Leoš)"),
+    ("Janacek", "Sinfonietta", "Sinfonietta (Janáček, Leoš)"),
     # --- French ----------------------------------------------------------------
     ("Saint-Saens", "Cello Concerto No.1", "Cello Concerto No.1, Op.33 (Saint-Saëns, Camille)"),
     ("Saint-Saens", "Piano Concerto No.2", "Piano Concerto No.2, Op.22 (Saint-Saëns, Camille)"),
@@ -265,7 +267,7 @@ WORKS: list[tuple[str, str, str]] = [
     ("Wagner", "Siegfried Idyll", "Siegfried Idyll, WWV 103 (Wagner, Richard)"),
     ("Weber", "Oberon Overture", "Oberon, J.306 (Weber, Carl Maria von)"),
     ("R. Strauss", "Eine Alpensinfonie", "Eine Alpensinfonie, Op.64 (Strauss, Richard)"),
-    ("R. Strauss", "Sinfonia Domestica", "Symphonia domestica, Op.53 (Strauss, Richard)"),
+    ("R. Strauss", "Sinfonia Domestica", "Sinfonia domestica, Op.53 (Strauss, Richard)"),
     ("Verdi", "Requiem", "Messa da Requiem (Verdi, Giuseppe)"),
     ("Rossini", "Il barbiere di Siviglia Overture", "Il barbiere di Siviglia (Rossini, Gioacchino)"),
     ("Respighi", "Fontane di Roma", "Fontane di Roma (Respighi, Ottorino)"),
@@ -286,8 +288,8 @@ WORKS: list[tuple[str, str, str]] = [
     ("Boulanger", "Faust et Hélène", "Faust et Hélène (Boulanger, Lili)"),
     ("Boulanger", "D'un soir triste", "D'un soir triste (Boulanger, Lili)"),
     ("Clara Schumann", "Piano Concerto", "Piano Concerto, Op.7 (Schumann, Clara)"),
-    ("Coleridge-Taylor", "Hiawatha's Wedding Feast", "Hiawatha's Wedding Feast, Op.30 No.1 (Coleridge-Taylor, Samuel)"),
-    ("Saint-Georges", "Symphonie concertante", "Symphonie concertante, Op.10 (Saint-Georges, Joseph Bologne)"),
+    ("Coleridge-Taylor", "Hiawatha's Wedding Feast", "The Song of Hiawatha, Op.30 (Coleridge-Taylor, Samuel)"),
+    ("Saint-Georges", "Sinfonia Concertante in G", "Sinfonia Concertante in G major (Saint-Georges, Joseph Bologne)"),
     ("Smyth", "The Wreckers Overture", "The Wreckers (Smyth, Ethel)"),
 ]
 

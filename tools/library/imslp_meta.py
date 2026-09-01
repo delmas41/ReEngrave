@@ -299,13 +299,19 @@ def page_files(title: str) -> list[dict]:
     # Most works have a "Full Scores" subsection; works with only one kind of
     # score have a bare "Scores" header instead, and looking only for the former
     # silently returned nothing for them (Beethoven's first symphony among them).
-    fs_start = html.find('id="Full_Scores"')
-    if fs_start < 0:
-        fs_start = html.find('id="Scores"')
+    # Works file their scores under whichever heading fits: a big work has
+    # "Full Scores", a small one just "Scores", and a piece published as score+
+    # parts together (Boulanger's orchestral pieces) has "Scores and Parts".
+    # Looking only for the first two returned nothing for those, silently.
+    fs_start = -1
+    for heading in ('id="Full_Scores"', 'id="Scores_and_Parts"', 'id="Scores"'):
+        fs_start = html.find(heading)
+        if fs_start >= 0:
+            break
     fs_end = len(html)
     if fs_start >= 0:
         for marker in ('id="Parts"', 'id="Arrangements', 'id="Vocal_Scores"',
-                       'id="Sheet_Music"', 'id="Libretti"'):
+                       'id="Libretti"', 'id="General_Information"'):
             pos = html.find(marker, fs_start + 1)
             if pos >= 0:
                 fs_end = min(fs_end, pos)

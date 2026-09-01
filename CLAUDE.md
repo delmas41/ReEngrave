@@ -308,7 +308,7 @@ Every score the project uses lives in one place with its provenance attached:
 [`data/score-library/catalog.json`](data/score-library/catalog.json). Full
 conventions: [`data/score-library/README.md`](data/score-library/README.md).
 
-**235 editions and 1745 reference encodings**, 6.4 GB, 27 works pairing a PDF
+**243 editions and 1745 reference encodings**, 6.5 GB, 28 works pairing a PDF
 with ground truth. Before this, the same score existed under four names in four
 trees — `tools/omr/training/data/imslp/`,
 `~/Desktop/gradus-vercel/public/scores/`, and two copies of

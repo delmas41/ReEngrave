@@ -1,9 +1,11 @@
-# IMSLP orchestral editions — 215 held
+# IMSLP orchestral editions — 223 held
 
-Chosen by `tools/library/build_wishlist.py`, ranked for OMR use: a real engraving beats a
-modern typeset, a named publisher beats an anonymous upload, and an edition series already
-held beats one that is not. All are in `library/editions/`, checksummed, with publisher
-provenance from the IMSLP wiki API.
+Chosen by `tools/library/build_wishlist.py`, ranked for OMR use. All are in
+`library/editions/`, checksummed, with publisher provenance from the IMSLP wiki API.
+
+Three works on the original list are not here and cannot be: Beethoven's *Leonore* Overture
+No. 3 (no standalone page), Boulanger's *D'un soir triste* (MuseScore typesets only), and
+Vivaldi's *Four Seasons* (every Op. 8 full score is EU-hosted). See NOTES.md.
 
 ```bash
 python3 -m tools.library.ingest verify
@@ -75,6 +77,7 @@ python3 -m tools.library.ingest verify
 
 | Work | File | Pages | Print | Ground truth | Publisher |
 |---|---|---:|---|---|---|
+| D'un matin de printemps | [IMSLP780326](https://imslp.org/wiki/Special:ReverseLookup/780326) | 20 | scan | xml | Durand, Paris, plate D. & F. 10095 |
 | Faust et Hélène | [IMSLP862104](https://imslp.org/wiki/Special:ReverseLookup/862104) | 99 | scan | — | Ricordi, Paris |
 
 **Brahms**
@@ -82,6 +85,7 @@ python3 -m tools.library.ingest verify
 | Work | File | Pages | Print | Ground truth | Publisher |
 |---|---|---:|---|---|---|
 | Academic Festival Overture | [IMSLP28983](https://imslp.org/wiki/Special:ReverseLookup/28983) | 69 | scan | — | N. Simrock, Berlin, 1881, plate 8187 |
+| Double Concerto | [IMSLP1048967](https://imslp.org/wiki/Special:ReverseLookup/1048967) | 69 | scan | — | Breitkopf & Härtel (Brahms Sämtliche Werke) |
 | Ein deutsches Requiem | [IMSLP317461](https://imslp.org/wiki/Special:ReverseLookup/317461) | 190 | scan | xml | Breitkopf & Härtel (Brahms Sämtliche Werke) |
 | Piano Concerto No.1 | [IMSLP317582](https://imslp.org/wiki/Special:ReverseLookup/317582) | 91 | scan | — | Breitkopf & Härtel (Brahms Sämtliche Werke) |
 | Piano Concerto No.2 | [IMSLP145434](https://imslp.org/wiki/Special:ReverseLookup/145434) | 159 | scan | — | N. Simrock, Berlin, 1882, plate 8263 |
@@ -136,6 +140,7 @@ python3 -m tools.library.ingest verify
 | Work | File | Pages | Print | Ground truth | Publisher |
 |---|---|---:|---|---|---|
 | Ballade in A minor | [IMSLP860015](https://imslp.org/wiki/Special:ReverseLookup/860015) | 63 | scan | — | Novello, London |
+| Hiawatha's Wedding Feast | [IMSLP333420](https://imslp.org/wiki/Special:ReverseLookup/333420) | 129 | scan | — | Novello & Co., London, 1900 |
 
 **Debussy**
 
@@ -241,6 +246,12 @@ python3 -m tools.library.ingest verify
 | St Paul's Suite | [IMSLP21160](https://imslp.org/wiki/Special:ReverseLookup/21160) | 21 | scan | — | Goodwin & Tabb, London, 1922 |
 | The Planets | [IMSLP1014401](https://imslp.org/wiki/Special:ReverseLookup/1014401) | 190 | scan | dossier | Goodwin & Tabb, London, 1921 |
 
+**Janacek**
+
+| Work | File | Pages | Print | Ground truth | Publisher |
+|---|---|---:|---|---|---|
+| Sinfonietta | [IMSLP440853](https://imslp.org/wiki/Special:ReverseLookup/440853) | 111 | scan | — | Edition Peters, Leipzig, 1980, plate E.P. 13060 |
+
 **Lalo**
 
 | Work | File | Pages | Print | Ground truth | Publisher |
@@ -328,6 +339,7 @@ python3 -m tools.library.ingest verify
 | Don Quixote | [IMSLP18787](https://imslp.org/wiki/Special:ReverseLookup/18787) | 94 | scan | — | Jos. Aibl Verlag, Munich, 1898, plate R. 2885 |
 | Ein Heldenleben | [IMSLP19168](https://imslp.org/wiki/Special:ReverseLookup/19168) | 139 | scan | — | F.E.C. Leuckart, Leipzig, 1899, plate F.E.C.L. 520 |
 | Eine Alpensinfonie | [IMSLP853346](https://imslp.org/wiki/Special:ReverseLookup/853346) | 160 | scan | — | F.E.C. Leuckart, Leipzig, 1915, plate F.E.C.L. 752 |
+| Sinfonia Domestica | [IMSLP13130](https://imslp.org/wiki/Special:ReverseLookup/13130) | — | scan | — | Bote & Bock, Berlin, 1904, plate 15613 |
 | Tod und Verklarung | [IMSLP18779](https://imslp.org/wiki/Special:ReverseLookup/18779) | 90 | scan | — | Josesph Aibl, Munich, 1891, plate 2676 |
 
 **Rachmaninoff**
@@ -345,6 +357,7 @@ python3 -m tools.library.ingest verify
 | Daphnis et Chloe Suite No.2 | [IMSLP952691](https://imslp.org/wiki/Special:ReverseLookup/952691) | — | scan | — | Durand, Paris, plate D. et F. 7937 |
 | La Valse | [IMSLP923399](https://imslp.org/wiki/Special:ReverseLookup/923399) | 134 | scan | — | Durand & Cie., Paris, 1921, plate D. & F. 9885 |
 | Le Tombeau de Couperin | [IMSLP918879](https://imslp.org/wiki/Special:ReverseLookup/918879) | 34 | scan | — | Durand & Cie., Paris, 1918, plate D. & F. 9569 |
+| Ma mere l'Oye | [IMSLP62635](https://imslp.org/wiki/Special:ReverseLookup/62635) | 98 | scan | — | Durand & Cie., Paris, 1912 |
 | Pavane pour une infante défunte | [IMSLP617507](https://imslp.org/wiki/Special:ReverseLookup/617507) | 7 | scan | — | B. Schott's Söhne, Mainz, 1924, plate S. & Co. 414 |
 | Rapsodie espagnole | [IMSLP134638](https://imslp.org/wiki/Special:ReverseLookup/134638) | 94 | scan | — | Durand & Fils, Paris, 1908, plate D. & F. 7128 |
 
@@ -360,6 +373,7 @@ python3 -m tools.library.ingest verify
 | Work | File | Pages | Print | Ground truth | Publisher |
 |---|---|---:|---|---|---|
 | Capriccio espagnol | [IMSLP875678](https://imslp.org/wiki/Special:ReverseLookup/875678) | 95 | scan | — | M.P. Belaieff, Leipzig, plate 3220 |
+| Russian Easter Festival Overture | [IMSLP386846](https://imslp.org/wiki/Special:ReverseLookup/386846) | 101 | scan | — | M.P. Belaieff, Leipzig, 1890, plate 245 |
 | Scheherazade | [IMSLP1010338](https://imslp.org/wiki/Special:ReverseLookup/1010338) | 257 | scan | — | Ernst Eulenburg, Leipzig, plate 2957* |
 
 **Rossini**
@@ -368,6 +382,12 @@ python3 -m tools.library.ingest verify
 |---|---|---:|---|---|---|
 | Il barbiere di Siviglia Overture | [IMSLP280515](https://imslp.org/wiki/Special:ReverseLookup/280515) | 50 | scan | — | Wiener Philharmonischer Verlag, Vienna, plate W.Ph |
 | William Tell Overture | [IMSLP33461](https://imslp.org/wiki/Special:ReverseLookup/33461) | 51 | scan | — | Breitkopf & Härtel, Leipzig |
+
+**Saint-Georges**
+
+| Work | File | Pages | Print | Ground truth | Publisher |
+|---|---|---:|---|---|---|
+| Sinfonia Concertante in G | [IMSLP716390](https://imslp.org/wiki/Special:ReverseLookup/716390) | 94 | typeset | — | David Wolfson |
 
 **Saint-Saens**
 

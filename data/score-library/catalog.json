@@ -1415,6 +1415,44 @@
     },
     {
       "kind": "edition",
+      "path": "editions/boulanger/d-un-matin-de-printemps/boulanger--d-un-matin-de-printemps--durand--imslp780326.pdf",
+      "work_id": "boulanger--d-un-matin-de-printemps",
+      "composer": "Boulanger, Lili",
+      "composer_slug": "boulanger",
+      "title": "D'un matin de printemps",
+      "source": "imslp",
+      "sha256": "e420e32ac161788a421db6826ab091d28a8e53f1e85186d947b22176430640f8",
+      "bytes": 6864500,
+      "variant": "durand",
+      "pages": 20,
+      "has_text_layer": false,
+      "imslp_id": "780326",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/780326",
+      "publisher": "Durand, Paris, plate D. & F. 10095",
+      "plate": "D.",
+      "image_type": "Normal Scan",
+      "copyright": "Public Domain",
+      "uploader": "Sylvain.P",
+      "date_submitted": "2022/5/8",
+      "original_filename": "IMSLP780326-PMLP45120-Boulanger,_Lili_-_D'un_matin_de_printemps_(1920)_v3.pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "D'un matin de printemps (Boulanger, Lili)",
+        "imslp_work_url": "https://imslp.org/wiki/D%27un_matin_de_printemps_%28Boulanger%2C_Lili%29",
+        "file_description": "Complete Score and Parts",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.4",
+          "creator": "pdftk 1.41 - www.pdftk.com",
+          "producer": "itext-paulo-155 (itextpdf.sf.net-lowagie.com)",
+          "creationDate": "D:20220508124830Z",
+          "modDate": "D:20220508124830Z"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
       "path": "editions/boulanger/faust-et-helene/boulanger--faust-et-helene--ricordi--imslp862104.pdf",
       "work_id": "boulanger--faust-et-helene",
       "composer": "Boulanger, Lili",
@@ -1484,6 +1522,46 @@
           "format": "PDF 1.6",
           "creationDate": "D:20090227232952-06'00'",
           "modDate": "D:20090227232952-06'00'"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
+      "path": "editions/brahms/concerto-for-violin-and-cello-op102/brahms--concerto-for-violin-and-cello-op102--breitkopf-hartel-brahms--imslp1048967.pdf",
+      "work_id": "brahms--concerto-for-violin-and-cello",
+      "composer": "Brahms, Johannes",
+      "composer_slug": "brahms",
+      "title": "Concerto for Violin and Cello, Op.102",
+      "source": "imslp",
+      "sha256": "5cbbcbd9ba8e2c23e8eb8aba68aa9ad1ebff3c4083c422424940a3382958eace",
+      "bytes": 19468395,
+      "variant": "breitkopf-hartel-brahms",
+      "catalogue": "Op.102",
+      "pages": 69,
+      "has_text_layer": true,
+      "imslp_id": "1048967",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/1048967",
+      "publisher": "Breitkopf & Härtel (Brahms Sämtliche Werke)",
+      "editor": "Hans Gál (1890)",
+      "reprint": "International Music Company, New York, plate 747",
+      "image_type": "Normal Scan",
+      "copyright": "Public Domain",
+      "uploader": "Feduol",
+      "date_submitted": "2026/7/28",
+      "original_filename": "IMSLP1048967-PMLP6525-brahms_concerto_op.102.pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "Concerto for Violin and Cello, Op.102 (Brahms, Johannes)",
+        "imslp_work_url": "https://imslp.org/wiki/Concerto_for_Violin_and_Cello%2C_Op.102_%28Brahms%2C_Johannes%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.5",
+          "creator": "PDFsam Basic v5.3.0",
+          "producer": "SAMBox 3.0.23",
+          "creationDate": "D:20250724205137+00'00'",
+          "modDate": "D:20260728201441+01'00'"
         }
       },
       "composer_source": "imslp"
@@ -2428,6 +2506,45 @@
           "producer": "Adobe Acrobat 20.12 Image Conversion Plug-in",
           "creationDate": "D:20230618011545-04'00'",
           "modDate": "D:20230618011545-04'00'"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
+      "path": "editions/coleridge-taylor/the-song-of-hiawatha-op30/coleridge-taylor--the-song-of-hiawatha-op30--novello-co-1900--imslp333420.pdf",
+      "work_id": "coleridge-taylor--the-song-of-hiawatha",
+      "composer": "Coleridge-Taylor, Samuel",
+      "composer_slug": "coleridge-taylor",
+      "title": "The Song of Hiawatha, Op.30",
+      "source": "imslp",
+      "sha256": "cd7ee17a4e8f2dcfb598087ea5a65c4565dc22a971be538dbcc717720dbd71bc",
+      "bytes": 15429125,
+      "variant": "novello-co-1900",
+      "catalogue": "Op.30",
+      "pages": 129,
+      "has_text_layer": false,
+      "imslp_id": "333420",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/333420",
+      "publisher": "Novello & Co., London, 1900",
+      "publisher_year": "1900",
+      "image_type": "Normal Scan",
+      "copyright": "Public Domain",
+      "uploader": "Afp0815",
+      "date_submitted": "2014/7/9",
+      "original_filename": "IMSLP333420-SIBLEY1802.25160.19d4-39087011376755score.pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "The Song of Hiawatha, Op.30 (Coleridge-Taylor, Samuel)",
+        "imslp_work_url": "https://imslp.org/wiki/The_Song_of_Hiawatha%2C_Op.30_%28Coleridge-Taylor%2C_Samuel%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.6",
+          "creator": "FUJITSU fi-4530Cdj #2",
+          "producer": "PDFScanLib v1.2.2 in Adobe Acrobat 10.1.4",
+          "creationDate": "D:20121025105502-04'00'",
+          "modDate": "D:20121030105713-04'00'"
         }
       },
       "composer_source": "imslp"
@@ -4255,6 +4372,46 @@
           "producer": "DynaPDF 4.0.102.302",
           "creationDate": "D:20260121183804-06'00'",
           "modDate": "D:20260121185712-06'00'"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
+      "path": "editions/janacek/sinfonietta/janacek--sinfonietta--peters-1980--imslp440853.pdf",
+      "work_id": "janacek--sinfonietta",
+      "composer": "Janáček, Leoš",
+      "composer_slug": "janacek",
+      "title": "Sinfonietta",
+      "source": "imslp",
+      "sha256": "faec9d300bf994fd81d34763beefdb1394f83b5cfea679f8bc0ac869cca7c16a",
+      "bytes": 8802319,
+      "variant": "peters-1980",
+      "pages": 111,
+      "has_text_layer": false,
+      "imslp_id": "440853",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/440853",
+      "publisher": "Edition Peters, Leipzig, 1980, plate E.P. 13060",
+      "publisher_year": "1980",
+      "plate": "E.P.",
+      "editor": "Miroslav Barvík (1919)",
+      "image_type": "Normal Scan",
+      "copyright": "Public Domain",
+      "uploader": "Sallen112",
+      "date_submitted": "2016/9/28",
+      "original_filename": "IMSLP440853-PMLP193042-janaceksinfoniettaeditionpetersfullscore.pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "Sinfonietta (Janáček, Leoš)",
+        "imslp_work_url": "https://imslp.org/wiki/Sinfonietta_%28Jan%C3%A1%C4%8Dek%2C_Leo%C5%A1%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.7",
+          "creator": "PDF-XChange Editor 6.0.317.1",
+          "producer": "PDF-XChange Core API SDK (6.0.317.1)",
+          "creationDate": "D:20160927200541-05'00'",
+          "modDate": "D:20160927200625-05'00'"
         }
       },
       "composer_source": "imslp"
@@ -6477,6 +6634,46 @@
     },
     {
       "kind": "edition",
+      "path": "editions/ravel/ma-mere-l-oye-ballet-m-62/ravel--ma-mere-l-oye-ballet-m-62--durand-cie-1912--imslp62635.pdf",
+      "work_id": "ravel--ma-mere-l-oye-ballet",
+      "composer": "Ravel, Maurice",
+      "composer_slug": "ravel",
+      "title": "Ma mère l'Oye (ballet), M.62",
+      "source": "imslp",
+      "sha256": "dcd459e83b05e89bf273725009bf8651ef41d8052603653a85b966e5c1812052",
+      "bytes": 15292250,
+      "variant": "durand-cie-1912",
+      "pages": 98,
+      "has_text_layer": false,
+      "imslp_id": "62635",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/62635",
+      "publisher": "Durand & Cie., Paris, 1912",
+      "publisher_year": "1912",
+      "reprint": "Catalog 817.",
+      "image_type": "Normal Scan",
+      "copyright": "Public Domain",
+      "uploader": "Daphnis",
+      "date_submitted": "2010/4/27",
+      "original_filename": "IMSLP62635-PMLP80657-Ravel_-_Ma_m%C3%A8re_l'oye_(full_ballet).pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "Ma mère l'Oye (ballet), M.62 (Ravel, Maurice)",
+        "imslp_work_url": "https://imslp.org/wiki/Ma_m%C3%A8re_l%27Oye_%28ballet%29%2C_M.62_%28Ravel%2C_Maurice%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.6",
+          "keywords": "Paris: Durand & Cie., 1912. Plate unknown.\nReprint - Munich: Musikproduktion Höflich, 2008. Catalog 817.",
+          "creator": "Adobe Acrobat 9.3.2",
+          "producer": "Adobe Acrobat Pro 9.3.2",
+          "creationDate": "D:20100427010440-05'00'",
+          "modDate": "D:20100720175452-05'00'"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
       "path": "editions/ravel/pavane-pour-une-infante-defunte-m-19/ravel--pavane-pour-une-infante-defunte-m-19--b-schott-s-sohne-1924--imslp617507.pdf",
       "work_id": "ravel--pavane-pour-une-infante-defunte",
       "composer": "Ravel, Maurice",
@@ -6640,7 +6837,7 @@
       "kind": "edition",
       "path": "editions/rimsky-korsakov/capriccio-espagnol-op34/rimsky-korsakov--capriccio-espagnol-op34--belaieff--imslp875678.pdf",
       "work_id": "rimsky-korsakov--capriccio-espagnol",
-      "composer": "Rimsky-Korsakov, Nikolai",
+      "composer": "Rimsky-Korsakov, Nikolay",
       "composer_slug": "rimsky-korsakov",
       "title": "Capriccio espagnol, Op.34",
       "source": "imslp",
@@ -6676,9 +6873,50 @@
     },
     {
       "kind": "edition",
+      "path": "editions/rimsky-korsakov/russian-easter-festival-op36/rimsky-korsakov--russian-easter-festival-op36--belaieff-1890--imslp386846.pdf",
+      "work_id": "rimsky-korsakov--russian-easter-festival",
+      "composer": "Rimsky-Korsakov, Nikolay",
+      "composer_slug": "rimsky-korsakov",
+      "title": "Russian Easter Festival, Op.36",
+      "source": "imslp",
+      "sha256": "3a2572de33bfceb89822354ae2400cd97c0d1295f6878797ec1cce393b1f9fd7",
+      "bytes": 12347160,
+      "variant": "belaieff-1890",
+      "catalogue": "Op.36",
+      "pages": 101,
+      "has_text_layer": false,
+      "imslp_id": "386846",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/386846",
+      "publisher": "M.P. Belaieff, Leipzig, 1890, plate 245",
+      "publisher_year": "1890",
+      "plate": "245",
+      "editor": "First edition",
+      "image_type": "Normal Scan",
+      "copyright": "Public Domain",
+      "uploader": "Carolus",
+      "date_submitted": "2015/7/22",
+      "original_filename": "IMSLP386846-SIBLEY1802.29885.b128-39087009280142score.pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "Russian Easter Festival, Op.36 (Rimsky-Korsakov, Nikolay)",
+        "imslp_work_url": "https://imslp.org/wiki/Russian_Easter_Festival%2C_Op.36_%28Rimsky-Korsakov%2C_Nikolay%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.6",
+          "creator": "FUJITSU fi-5530C2dj #2",
+          "producer": "PDFScanLib v1.2.2 in Adobe Acrobat 9.0",
+          "creationDate": "D:20150718161937-04'00'",
+          "modDate": "D:20150721102214-04'00'"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
       "path": "editions/rimsky-korsakov/scheherazade-op35/rimsky-korsakov--scheherazade-op35--eulenburg--imslp1010338.pdf",
       "work_id": "rimsky-korsakov--scheherazade",
-      "composer": "Rimsky-Korsakov, Nikolai",
+      "composer": "Rimsky-Korsakov, Nikolay",
       "composer_slug": "rimsky-korsakov",
       "title": "Scheherazade, Op.35",
       "source": "imslp",
@@ -6788,6 +7026,47 @@
           "producer": "Recoded by LuraDocument PDF v2.28",
           "creationDate": "D:20110808191002Z",
           "modDate": "D:20110808191619Z00'00'"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
+      "path": "editions/saint-georges/2-symphonies-concertantes-op13/saint-georges--2-symphonies-concertantes-op13--wolfson--imslp716390.pdf",
+      "work_id": "saint-georges--2-symphonies-concertantes",
+      "composer": "Saint-Georges, Joseph Bologne",
+      "composer_slug": "saint-georges",
+      "title": "2 Symphonies concertantes, Op.13",
+      "source": "imslp",
+      "sha256": "f5ff4ded29c6757a98f87b3289f019ded4de0c1ef617ca568ebd759f7851e4d0",
+      "bytes": 3839883,
+      "variant": "wolfson",
+      "catalogue": "Op.13",
+      "pages": 94,
+      "has_text_layer": true,
+      "imslp_id": "716390",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/716390",
+      "publisher": "David Wolfson",
+      "editor": "David Wolfson",
+      "image_type": "Typeset",
+      "copyright": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0",
+      "uploader": "David Wolfson",
+      "date_submitted": "2021/7/15",
+      "original_filename": "IMSLP716390-PMLP525325-Boulogne_Deux_Symphonies_Concertantes_-_Score.pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "2 Symphonies concertantes, Op.13 (Saint-Georges, Joseph Bologne)",
+        "imslp_work_url": "https://imslp.org/wiki/2_Symphonies_concertantes%2C_Op.13_%28Saint-Georges%2C_Joseph_Bologne%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.3",
+          "title": "Boulogne Deux Symphonies Concertantes",
+          "author": "David Wolfson",
+          "creator": "Finale",
+          "producer": "macOS Version 10.16 (Build 20D64) Quartz PDFContext",
+          "creationDate": "D:20210715203555Z00'00'",
+          "modDate": "D:20210715203555Z00'00'"
         }
       },
       "composer_source": "imslp"
@@ -8132,6 +8411,47 @@
           "producer": "MFPImgLib V1.0",
           "creationDate": "D:20061114103309Z",
           "modDate": "D:20081124213328-06'00'"
+        }
+      },
+      "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
+      "path": "editions/strauss/symphony-domestica-op53/strauss--symphony-domestica-op53--bote-bock-1904--imslp13130.pdf",
+      "work_id": "strauss--symphony-domestica",
+      "composer": "Strauss, Richard",
+      "composer_slug": "strauss",
+      "title": "Symphony domestica, Op.53",
+      "source": "imslp",
+      "sha256": "4d9c4079fb3802b04fddb62d9fe27836773cd439d8f27b4069b42b6fed038288",
+      "bytes": 32419822,
+      "variant": "bote-bock-1904",
+      "catalogue": "Op.53",
+      "pages": 123,
+      "has_text_layer": false,
+      "imslp_id": "13130",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/13130",
+      "publisher": "Bote & Bock, Berlin, 1904, plate 15613",
+      "publisher_year": "1904",
+      "plate": "15613",
+      "editor": "First edition (reprint)",
+      "image_type": "Normal Scan",
+      "copyright": "Public Domain",
+      "uploader": "Horndude77",
+      "date_submitted": "2007/9/2",
+      "original_filename": "IMSLP13130-Strauss-Sinfonia_Domestica,_Op.53.pdf",
+      "added": "2026-09-01",
+      "raw": {
+        "imslp_page": "Sinfonia domestica, Op.53 (Strauss, Richard)",
+        "imslp_work_url": "https://imslp.org/wiki/Sinfonia_domestica%2C_Op.53_%28Strauss%2C_Richard%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.4",
+          "creator": "pdftk 1.40 - www.pdftk.com",
+          "producer": "itext-paulo-155 (itextpdf.sf.net-lowagie.com)",
+          "creationDate": "D:20070901194642-07'00'",
+          "modDate": "D:20070901194642-07'00'"
         }
       },
       "composer_source": "imslp"
@@ -41540,7 +41860,7 @@
       "kind": "reference",
       "path": "reference/rimsky-korsakov/flight-of-the-bumblebee/rimsky-korsakov--flight-of-the-bumblebee--flight-of-the-bumblebee--gradus-assets.mxl",
       "work_id": "rimsky-korsakov--flight-of-the-bumblebee",
-      "composer": "Rimsky-Korsakov, Nikolai",
+      "composer": "Rimsky-Korsakov, Nikolay",
       "composer_slug": "rimsky-korsakov",
       "title": "Flight of the Bumblebee",
       "source": "gradus-assets",
@@ -50540,5 +50860,5 @@
     }
   ],
   "schema_version": 1,
-  "count": 1980
+  "count": 1988
 }

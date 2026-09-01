@@ -2234,24 +2234,6 @@
       ]
     },
     {
-      "composer": "Beethoven",
-      "work": "Leonore Overture No.3",
-      "page_title": "Leonore Overture No.3, Op.72b (Beethoven, Ludwig van)",
-      "error": "no full score found"
-    },
-    {
-      "composer": "Ravel",
-      "work": "Ma mere l'Oye",
-      "page_title": "Ma mère l'Oye (Ravel, Maurice)",
-      "error": "no full score found"
-    },
-    {
-      "composer": "Boulanger",
-      "work": "D'un matin de printemps",
-      "page_title": "D'un matin de printemps (Boulanger, Lili)",
-      "error": "no full score found"
-    },
-    {
       "composer": "Bach",
       "work": "Mass in B minor, BWV 232",
       "page_title": "Mass in B minor, BWV 232 (Bach, Johann Sebastian)",
@@ -2506,12 +2488,6 @@
         "24009",
         "559955"
       ]
-    },
-    {
-      "composer": "Vivaldi",
-      "work": "The Four Seasons",
-      "page_title": "The Four Seasons (Vivaldi, Antonio)",
-      "error": "no full score found"
     },
     {
       "composer": "Beethoven",
@@ -3339,12 +3315,6 @@
     },
     {
       "composer": "Brahms",
-      "work": "Double Concerto",
-      "page_title": "Double Concerto, Op.102 (Brahms, Johannes)",
-      "error": "no full score found"
-    },
-    {
-      "composer": "Brahms",
       "work": "Tragic Overture",
       "page_title": "Tragic Overture, Op.81 (Brahms, Johannes)",
       "page_url": "https://imslp.org/wiki/Tragic_Overture%2C_Op.81_%28Brahms%2C_Johannes%29",
@@ -3684,12 +3654,6 @@
       ]
     },
     {
-      "composer": "Rimsky-Korsakov",
-      "work": "Russian Easter Festival Overture",
-      "page_title": "Russian Easter Festival Overture, Op.36 (Rimsky-Korsakov, Nikolay)",
-      "error": "no full score found"
-    },
-    {
       "composer": "Mussorgsky",
       "work": "Night on Bald Mountain",
       "page_title": "Night on Bald Mountain (Mussorgsky, Modest)",
@@ -3916,12 +3880,6 @@
         "63660",
         "1032833"
       ]
-    },
-    {
-      "composer": "Janacek",
-      "work": "Sinfonietta",
-      "page_title": "Sinfonietta, JW 6/18 (Janáček, Leoš)",
-      "error": "no full score found"
     },
     {
       "composer": "Saint-Saens",
@@ -4393,12 +4351,6 @@
       ]
     },
     {
-      "composer": "R. Strauss",
-      "work": "Sinfonia Domestica",
-      "page_title": "Symphonia domestica, Op.53 (Strauss, Richard)",
-      "error": "no full score found"
-    },
-    {
       "composer": "Verdi",
       "work": "Requiem",
       "page_title": "Requiem (Verdi, Giuseppe)",
@@ -4760,12 +4712,6 @@
       ]
     },
     {
-      "composer": "Boulanger",
-      "work": "D'un soir triste",
-      "page_title": "D'un soir triste (Boulanger, Lili)",
-      "error": "no full score found"
-    },
-    {
       "composer": "Clara Schumann",
       "work": "Piano Concerto",
       "page_title": "Piano Concerto, Op.7 (Schumann, Clara)",
@@ -4790,18 +4736,6 @@
       "note": "substituted: the higher-ranked pick was behind a regional linkhandler"
     },
     {
-      "composer": "Coleridge-Taylor",
-      "work": "Hiawatha's Wedding Feast",
-      "page_title": "Hiawatha's Wedding Feast, Op.30 No.1 (Coleridge-Taylor, Samuel)",
-      "error": "no full score found"
-    },
-    {
-      "composer": "Saint-Georges",
-      "work": "Symphonie concertante",
-      "page_title": "Symphonie concertante, Op.10 (Saint-Georges, Joseph Bologne)",
-      "error": "no full score found"
-    },
-    {
       "composer": "Smyth",
       "work": "The Wreckers Overture",
       "page_title": "The Wreckers (Smyth, Ethel)",
@@ -4823,6 +4757,211 @@
         "420877",
         "605408"
       ]
+    },
+    {
+      "composer": "Ravel",
+      "work": "Ma mere l'Oye",
+      "page_title": "Ma Mère l'Oye (Ravel, Maurice)",
+      "page_url": "https://imslp.org/wiki/Ma_M%C3%A8re_l%27Oye_%28Ravel%2C_Maurice%29",
+      "already_held": false,
+      "n_full_scores": 3,
+      "imslp_id": "62635",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/62635",
+      "pages": 98,
+      "publisher": "Durand & Cie., Paris, 1912",
+      "editor": "",
+      "scan": "Normal Scan",
+      "description": "Complete Score",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "7483",
+      "alternatives": [
+        "7483",
+        "1014357"
+      ]
+    },
+    {
+      "composer": "Boulanger",
+      "work": "D'un matin de printemps",
+      "page_title": "D'un matin de printemps (Boulanger, Lili)",
+      "page_url": "https://imslp.org/wiki/D%27un_matin_de_printemps_%28Boulanger%2C_Lili%29",
+      "already_held": false,
+      "n_full_scores": 2,
+      "imslp_id": "780326",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/780326",
+      "pages": 20,
+      "publisher": "Durand, Paris, plate D. & F. 10095",
+      "editor": "",
+      "scan": "Normal Scan",
+      "description": "Complete Score and Parts",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "19124",
+      "alternatives": [
+        "19124"
+      ]
+    },
+    {
+      "composer": "Vivaldi",
+      "work": "The Four Seasons",
+      "page_title": "Il cimento dell'armonia e dell'inventione, Op.8 (Vivaldi, Antonio)",
+      "page_url": "https://imslp.org/wiki/Il_cimento_dell%27armonia_e_dell%27inventione%2C_Op.8_%28Vivaldi%2C_Antonio%29",
+      "already_held": false,
+      "n_full_scores": 4,
+      "imslp_id": "922146",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/922146",
+      "pages": 137,
+      "publisher": "''Vivaldi: Le quattro stagioni''",
+      "editor": "Simon Launchbury",
+      "scan": "Normal Scan",
+      "description": "Complete Score",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "925460",
+      "alternatives": [
+        "925460",
+        "927280",
+        "922030"
+      ]
+    },
+    {
+      "composer": "Brahms",
+      "work": "Double Concerto",
+      "page_title": "Concerto for Violin and Cello, Op.102 (Brahms, Johannes)",
+      "page_url": "https://imslp.org/wiki/Concerto_for_Violin_and_Cello%2C_Op.102_%28Brahms%2C_Johannes%29",
+      "already_held": false,
+      "n_full_scores": 4,
+      "imslp_id": "1048967",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/1048967",
+      "pages": 69,
+      "publisher": "Breitkopf & Härtel (Brahms Sämtliche Werke)",
+      "editor": "Hans Gál (1890)",
+      "scan": "Normal Scan",
+      "description": "Complete Score",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "23146",
+      "alternatives": [
+        "23146",
+        "269771",
+        "11668"
+      ]
+    },
+    {
+      "composer": "Rimsky-Korsakov",
+      "work": "Russian Easter Festival Overture",
+      "page_title": "Russian Easter Overture, Op.36 (Rimsky-Korsakov, Nikolay)",
+      "page_url": "https://imslp.org/wiki/Russian_Easter_Overture%2C_Op.36_%28Rimsky-Korsakov%2C_Nikolay%29",
+      "already_held": false,
+      "n_full_scores": 6,
+      "imslp_id": "386846",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/386846",
+      "pages": 101,
+      "publisher": "M.P. Belaieff, Leipzig, 1890, plate 245",
+      "editor": "First edition",
+      "scan": "Normal Scan",
+      "description": "Complete Score",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "32586",
+      "alternatives": [
+        "32586",
+        "12682",
+        "1005431"
+      ]
+    },
+    {
+      "composer": "Janacek",
+      "work": "Sinfonietta",
+      "page_title": "Sinfonietta (Janáček, Leoš)",
+      "page_url": "https://imslp.org/wiki/Sinfonietta_%28Jan%C3%A1%C4%8Dek%2C_Leo%C5%A1%29",
+      "already_held": false,
+      "n_full_scores": 4,
+      "imslp_id": "440853",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/440853",
+      "pages": 111,
+      "publisher": "Edition Peters, Leipzig, 1980, plate E.P. 13060",
+      "editor": "Karl Heinz Füssl (1924)",
+      "scan": "Normal Scan",
+      "description": "Complete Score",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "382762",
+      "alternatives": [
+        "382762",
+        "440853",
+        "777603"
+      ]
+    },
+    {
+      "composer": "R. Strauss",
+      "work": "Sinfonia Domestica",
+      "page_title": "Sinfonia domestica, Op.53 (Strauss, Richard)",
+      "page_url": "https://imslp.org/wiki/Sinfonia_domestica%2C_Op.53_%28Strauss%2C_Richard%29",
+      "already_held": false,
+      "n_full_scores": 3,
+      "imslp_id": "13130",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/13130",
+      "pages": null,
+      "publisher": "Bote & Bock, Berlin, 1904, plate 15613",
+      "editor": "First edition (reprint)",
+      "scan": "Normal Scan",
+      "description": "Complete Score",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "45569",
+      "alternatives": [
+        "45569",
+        "984547"
+      ]
+    },
+    {
+      "composer": "Boulanger",
+      "work": "D'un soir triste",
+      "page_title": "D'un soir triste (Boulanger, Lili)",
+      "error": "no full score found"
+    },
+    {
+      "composer": "Coleridge-Taylor",
+      "work": "Hiawatha's Wedding Feast",
+      "page_title": "The Song of Hiawatha, Op.30 (Coleridge-Taylor, Samuel)",
+      "page_url": "https://imslp.org/wiki/The_Song_of_Hiawatha%2C_Op.30_%28Coleridge-Taylor%2C_Samuel%29",
+      "already_held": false,
+      "n_full_scores": 9,
+      "imslp_id": "333420",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/333420",
+      "pages": 129,
+      "publisher": "Novello & Co., London, 1900",
+      "editor": "",
+      "scan": "Normal Scan",
+      "description": "Complete Score",
+      "copyright": "Public Domain",
+      "held": false,
+      "runner_up": "19181",
+      "alternatives": [
+        "19181",
+        "100021",
+        "721203"
+      ]
+    },
+    {
+      "composer": "Saint-Georges",
+      "work": "Sinfonia Concertante in G",
+      "page_title": "Sinfonia Concertante in G major (Saint-Georges, Joseph Bologne)",
+      "page_url": "https://imslp.org/wiki/Sinfonia_Concertante_in_G_major_%28Saint-Georges%2C_Joseph_Bologne%29",
+      "already_held": false,
+      "n_full_scores": 1,
+      "imslp_id": "716390",
+      "download_url": "https://imslp.org/wiki/Special:ReverseLookup/716390",
+      "pages": 94,
+      "publisher": "David Wolfson",
+      "editor": "David Wolfson",
+      "scan": "Typeset",
+      "description": "Complete Score",
+      "copyright": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0",
+      "held": false,
+      "runner_up": null,
+      "alternatives": []
     }
   ]
 }

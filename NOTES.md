@@ -710,29 +710,42 @@ Also: the first measurement pass labelled p.25 and p.29 as "text" when both
 contain music examples, which made the separation look marginal. Check page
 contents by eye before trusting a distribution built from them.
 
-## Score library — eleven works still to find (2026-09-01)
+## Score library — three works IMSLP cannot supply (2026-09-01)
 
-The central library holds 235 editions and 1745 reference encodings, but eleven
-works on the wantlist never resolved: `build_wishlist` guesses an IMSLP page
-title and falls back to the search API, and for these neither matched. They are
-not absent from IMSLP — they are filed under names the guess missed.
+Of the eleven works that never resolved, **eight were bad title guesses** and are
+now held. The failures were instructive: the search fallback returns nothing for
+many valid queries, so titles had to be probed directly.
 
-    Beethoven   Leonore Overture No.3        Ravel        Ma mere l'Oye
-    Vivaldi     The Four Seasons             Boulanger    D'un matin de printemps
-    Brahms      Double Concerto Op.102       Boulanger    D'un soir triste
-    Rimsky      Russian Easter Overture      Coleridge-Taylor  Hiawatha's Wedding Feast
-    Janacek     Sinfonietta                  Saint-Georges     Symphonie concertante
-    R. Strauss  Sinfonia Domestica
+    guessed                                   actual IMSLP page
+    Symphonia domestica, Op.53                Sinfonia domestica, Op.53
+    Ma mère l'Oye                             Ma Mère l'Oye          (capital M)
+    Sinfonietta, JW 6/18                      Sinfonietta            (no catalogue)
+    Russian Easter Festival Overture, Op.36   Russian Easter Overture, Op.36
+    Double Concerto, Op.102                   Concerto for Violin and Cello, Op.102
+    Hiawatha's Wedding Feast, Op.30 No.1      The Song of Hiawatha, Op.30
+    Symphonie concertante (Saint-Georges)     Sinfonia Concertante in G major
+    The Four Seasons                          Il cimento dell'armonia..., Op.8
 
-Find each id by hand, then `python3 -m tools.library.ingest imslp <file>` — the
-ingest does the rest. The full list, with what IS held, is
-`data/score-library/wishlist.md`.
+A ninth, Boulanger's *D'un matin de printemps*, was a **section-detection bug**:
+its scores sit under a `Scores and Parts` heading, which `page_files` did not
+recognise, so the page reported zero full scores while listing 41 files. Fixed.
 
-Four editions carry no publisher because they were imported from local files
-rather than IMSLP (two Handel *Messiah*, Kirchhoff, the unidentified Mahler 5
-scan); `ingest set` can correct them if the edition is ever identified.
+**Three remain, and none is a bug:**
 
----
+- **Beethoven, *Leonore* Overture No. 3** — has no standalone IMSLP page. It
+  exists only inside `Fidelio, Op.72`, whose "Complete Score" files are the
+  *Fidelio* overture and the opera. Dropped from the wantlist with that note.
+- **Boulanger, *D'un soir triste*** — IMSLP holds only 2021/2024 MuseScore
+  typesets, filed under `For Orchestra` rather than any scores heading. No
+  engraving exists to fetch. Widening the heading match would let *parts* through
+  as full scores on other pages, so it was left alone deliberately.
+- **Vivaldi, *The Four Seasons*** — all four full scores of `Op.8` are
+  EU-hosted, so none is reachable without an interactive session. The individual
+  concertos (RV 269, 315, 293, 297) have their own pages and may be reachable;
+  not tried.
+
+Saint-Georges is held but is a modern typeset (David Wolfson), the only full
+score IMSLP has — worth replacing if an engraving ever appears.
 
 ## YOLO training via symphony MusicXML × multiple IMSLP editions (2026-05-23)
 
