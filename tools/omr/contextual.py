@@ -471,16 +471,24 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     # kept, and the dossier join then anchors six staves instead of nine.
     #
     # WHAT IS NOT ESTABLISHED, recorded so nobody re-derives a wrong answer:
-    # WHICH label makes the two twelves behave differently. A subagent reported
-    # Surya misreading staff 10's `Tr. Ten.` as `Tr. Teq.` -> Trumpet, and that
-    # does NOT reproduce here — four direct runs, warm and cold llama.cpp
-    # server, and a capture inside the ladder's own call all return `Tr. Ten.`
-    # -> Trombone at high confidence. The one difference that does survive
-    # checking is staff 0: Surya reads `'Fl. fl. pic.'` where the paid reader
-    # reads `'Fl. picc.'`. Both resolve to Piccolo at high confidence and
-    # neither alias is in AMBIGUOUS_ALIASES, so if that is the cause, something
-    # downstream is reading the RAW TEXT and not the resolved label. That is the
-    # thread to pull; the fix above does not depend on which end it is.
+    # WHICH label makes the two twelves behave differently. Read the measured
+    # readings before assuming; they have moved between sessions on identical
+    # input, which is itself unexplained.
+    #
+    # 2026-09-01, 45 replays of frozen crop bytes across warm, cold, concurrent
+    # x4 and x8, mixed with other pages' crops, and 1/8/16 llama.cpp slots:
+    # staff 10 reads `Tr. Teq.` -> Trumpet at MEDIUM confidence every time, and
+    # that IS a wrong instrument on a trombone staff. An earlier session
+    # recorded `Tr. Ten.` -> Trombone as consistently, on the same commit and
+    # the same crop, and no version of surya, llama.cpp or the GGUF differs.
+    # Staff 0 moved the same way: `'Fl. pic.'` now, `'Fl. fl. pic.'` then.
+    #
+    # Surya is NOT load-dependent — that hypothesis was tested and refused, and
+    # the disputed character is decided at p=0.991 with a 5.53-nat margin, so
+    # batching cannot be what moves it. The only sampled path in surya's client
+    # is `_should_retry`, which raises the temperature on a failed or repetitive
+    # request; a retry is silent in production because worker stderr is
+    # discarded. See benchmarks/omr-clef-geometry/RESULTS.md, "JOB A".
     if read and _usable(read) >= _usable(labels):
         # The vision read replaces what the cheap tiers found, so the credit
         # does too — otherwise the summary would name tiers that were overruled.

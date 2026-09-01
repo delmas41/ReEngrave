@@ -16,13 +16,22 @@ that changes afterwards is the reader, not the pipeline.
     build   render the page, detect staves, cache the job payload
     serial  N replays back to back, one at a time
     load    K replays at once, in K separate processes
+    mixed   the target replayed BESIDE other pages' jobs (`--mix-with`),
+            sequentially and then concurrently
+
+`load` alone is not the sharp test, and that is worth saying out loud: it puts K
+copies of ONE image in flight, and llama.cpp may serve them from a shared prompt
+cache, so the K decodes are not independent. `mixed` is what the hypothesis
+actually names — a different image in the batch, and slots left holding another
+page's cache.
 
 The comparison is on the worker's raw output — `raw_lines` as well as the
 assigned labels — because a mapping change and an OCR change are
 indistinguishable in the label dict alone.
 
     python3 benchmarks/omr-margin-labels-2026-08/probe_surya_determinism.py \
-        --page beet5-p48 --serial 6 --load 4
+        --page beet5-p48 --serial 6 --load 4 \
+        --mix-with beet9-p30,beet9-p60 --cycles 3
 
 Both phases run against whatever server state the machine is in; `--stop-first`
 kills a resident one so the serial phase starts cold, which is the state a
@@ -90,6 +99,16 @@ def build_job(page_id: str, cache: Path) -> Path:
         })
     cache.write_text(json.dumps({"systems": systems}))
     print(f"cached {len(systems)} system crop(s) from {page_id} -> {cache}")
+    return cache
+
+
+def job_for(page_id: str, explicit: Path | None = None) -> Path:
+    """The cached job for one page, built on first use."""
+    cache = explicit or (Path(__file__).parent / f".job-{page_id}.json")
+    if cache.exists():
+        print(f"reusing cached job {cache}")
+    else:
+        build_job(page_id, cache)
     return cache
 
 
@@ -168,6 +187,36 @@ def diff_variants(sigs: Counter) -> None:
                         print(f"      {x!r} vs {y!r}")
 
 
+def mixed_phase(target: Path, others: list[Path], cycles: int,
+                keep_alive: bool) -> list[dict]:
+    """Read the target with other pages' crops around it, two ways.
+
+    SEQUENTIAL dirties the server's slots: llama.cpp holds a KV cache per slot
+    and reuses it by prefix, so a target read that follows another page is not
+    the same server state as a target read that follows itself. CONCURRENT puts
+    a DIFFERENT image in flight beside the target, which is what "what else is
+    in the batch" actually means — `--load` cannot show it, because K copies of
+    one image may share a prompt cache.
+
+    Only the target's reads are returned; the neighbours are there to disturb.
+    """
+    out: list[dict] = []
+    for cycle in range(cycles):
+        for other in others:                      # dirty the slots, in turn
+            one_read(str(other), keep_alive)
+        out.append(one_read(str(target), keep_alive))
+        print(f"  cycle {cycle}: sequential-after-{len(others)}-other-pages done")
+
+    paths = [str(target)] + [str(o) for o in others]
+    for cycle in range(cycles):
+        with ProcessPoolExecutor(max_workers=len(paths)) as pool:
+            results = list(pool.map(one_read, paths,
+                                    [keep_alive] * len(paths)))
+        out.append(results[0])                    # index 0 is the target
+        print(f"  cycle {cycle}: concurrent-with-{len(others)}-other-pages done")
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--page", default="beet5-p48", choices=sorted(PAGES))
@@ -179,13 +228,16 @@ def main() -> int:
                     help="kill a resident llama.cpp server before starting")
     ap.add_argument("--cache", type=Path,
                     help="job payload path (built if absent)")
+    ap.add_argument("--mix-with", default="",
+                    help="comma-separated page ids to read AROUND the target — "
+                         "the only phase that puts a different image in the batch")
+    ap.add_argument("--cycles", type=int, default=3,
+                    help="mixed-phase repeats, each way")
+    ap.add_argument("--out", type=Path,
+                    help="write every payload here, so a run can be re-read")
     args = ap.parse_args()
 
-    cache = args.cache or (Path(__file__).parent / f".job-{args.page}.json")
-    if not cache.exists():
-        build_job(args.page, cache)
-    else:
-        print(f"reusing cached job {cache}")
+    cache = job_for(args.page, args.cache)
 
     if args.stop_first:
         from tools.omr.staff_labels_surya import stop_server
@@ -195,6 +247,7 @@ def main() -> int:
     sigs = report(f"SERIAL (keep_alive={args.keep_alive})", serial)
     diff_variants(sigs)
 
+    loaded: list[dict] = []
     if args.load > 1:
         with ProcessPoolExecutor(max_workers=args.load) as pool:
             loaded = list(pool.map(one_read, [str(cache)] * args.load,
@@ -202,12 +255,29 @@ def main() -> int:
         lsigs = report(f"CONCURRENT x{args.load}", loaded)
         diff_variants(lsigs)
 
-        combined = Counter()
-        combined.update(signature(p) for p in serial)
-        combined.update(signature(p) for p in loaded)
-        print(f"\nACROSS BOTH PHASES: {len(combined)} distinct answer(s) "
-              f"over {len(serial) + len(loaded)} reads")
-        diff_variants(combined)
+    mixed: list[dict] = []
+    others = [job_for(pid) for pid in
+              [s.strip() for s in args.mix_with.split(",") if s.strip()]]
+    if others:
+        print(f"\nMIXED: target beside {len(others)} other page(s), "
+              f"{args.cycles} cycles each way")
+        mixed = mixed_phase(cache, others, args.cycles, args.keep_alive)
+        msigs = report(f"MIXED (target only, {len(others)} neighbours)", mixed)
+        diff_variants(msigs)
+
+    every = serial + loaded + mixed
+    combined = Counter(signature(p) for p in every)
+    print(f"\nACROSS ALL PHASES: {len(combined)} distinct answer(s) "
+          f"over {len(every)} reads of {args.page}")
+    diff_variants(combined)
+
+    if args.out:
+        args.out.write_text(json.dumps({
+            "page": args.page, "keep_alive": args.keep_alive,
+            "mix_with": [o.name for o in others],
+            "phases": {"serial": serial, "load": loaded, "mixed": mixed},
+        }, indent=1))
+        print(f"wrote {args.out}")
     return 0
 
 
