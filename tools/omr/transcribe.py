@@ -1939,6 +1939,194 @@ def _measure_rhythm_sum_warning(
 # never overlap is byte-identical.
 
 
+# ─── Which staff a LEDGER note belongs to ───────────────────────────────────
+#
+# Distance to the nearer band is the wrong rule for the one case the padding
+# exists for, and the Brahms fixture is that case. Its Violin 1 plays up to B6,
+# five spaces above its own top line, and LilyPond opened the gap above the
+# staff to fit those ledger notes — so the note sits nearer the TIMPANI band
+# above it than its own. Measured: the notehead at y 7392 is 133px below the
+# timpani's band and 188px above the violin's, and exported as `Ab1` on a
+# timpani while Violin 1's bars 3 and 4 came out empty.
+#
+# The physical fact distance ignores is that a ledger note is JOINED to its
+# staff by a ladder of ledger lines, and joined to nothing in the other
+# direction. On that page the violin's cells carry three rungs per note-column
+# at y 7455/7497/7538 — exactly the 3rd/2nd/1st ledger positions above a top
+# line at 7580 — and there is no rung anywhere between the note and the timpani.
+#
+# So read the ladder. A rung counts when a `ledgerLine` detection sits within
+# a third of a space of where that staff's k-th ledger line would be AND
+# overlaps the notehead in x.
+#
+# COMPLETENESS BEFORE COUNT, because that is what makes a ladder a ladder. A
+# note four spaces out with all four rungs present is JOINED to that staff; a
+# note with three of four has a gap in it, and a gap is what you see when the
+# rungs belong to something else that happens to lie in the way. So an unbroken
+# ladder outranks a broken one however many rungs the broken one has, and only
+# between two ladders of the same kind does the count decide. A tie — including
+# nothing found either way, which is most glyphs — falls back to distance, so a
+# page with no ledger lines behaves exactly as before.
+#
+# NOTEHEADS ONLY. A contested accidental or rest has no ladder of its own, and
+# inheriting one from a neighbour is the kind of inference that would need its
+# own measurement.
+_LEDGER_RUNG_Y_TOL_SPACES = 0.35
+_LEDGER_RUNG_MIN_X_OVERLAP = 0.25
+
+
+# ─── ... and what the INSTRUMENT says about it ──────────────────────────────
+#
+# A ladder is evidence about the glyph; an instrument's range is evidence about
+# the part, and a reader uses both. Measured on the engraved Beethoven 5
+# fixture, where the ladder has nothing to say because the note is near the
+# staff:
+#
+#     Bassoon 1 m7   truth C4        read as `Ab1` AND `C4`
+#     Bassoon 2 m7   truth C4        read as nothing
+#
+# Two adjacent bassoon staves contested one notehead, distance awarded it to
+# the upper one, and the reading it kept was `Ab1` — MIDI 32, below the
+# bassoon's written range of (34, 72) — while the reading it discarded was C4,
+# squarely inside it. A player cannot sound the note we chose, and the note we
+# threw away is the one that was printed.
+#
+# `instruments.Instrument.written_range` already carries a generous written
+# range for every instrument in the lexicon. What is missing at this point in
+# the run is WHICH instrument each staff is: the contextual pass names the
+# parts, and it runs after this. So the names come from the DOSSIER instead,
+# on the same terms the rest of the dossier layer uses — only where the page's
+# staff count equals the work's part count, and abstaining otherwise. Without a
+# dossier there is no verdict here and the rule below is exactly what it was.
+#
+# GENEROUS ON PURPOSE. This is a veto on the impossible, not a judgement of the
+# unlikely: it fires only when one reading is outside the range and the other
+# is inside, so a part playing at the edge of its range is never touched.
+
+
+def _pitch_midi(pitch: str | None) -> int | None:
+    """MIDI number for a `C#4`-style pitch name, or None if unparseable."""
+    if not pitch or len(pitch) < 2:
+        return None
+    letter = pitch[0].upper()
+    step = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}.get(letter)
+    if step is None:
+        return None
+    i = 1
+    alter = 0
+    while i < len(pitch) and pitch[i] in "#b":
+        alter += 1 if pitch[i] == "#" else -1
+        i += 1
+    try:
+        octave = int(pitch[i:])
+    except ValueError:
+        return None
+    return (octave + 1) * 12 + step + alter
+
+
+def _in_written_range(pitch: str | None,
+                      rng: tuple[int, int] | None) -> bool | None:
+    """True/False if the pitch is inside the part's range, None if unknown."""
+    if rng is None:
+        return None
+    midi = _pitch_midi(pitch)
+    if midi is None:
+        return None
+    return rng[0] <= midi <= rng[1]
+
+
+def _staff_written_ranges(
+    page: dict[str, Any], dossier: dict[str, Any] | None,
+) -> dict[int, tuple[int, int]]:
+    """staff_index -> the written MIDI range of the part printed on it.
+
+    Empty unless the dossier's part count matches the page's staff count, which
+    is the same join `dossier.slot_facts_for_page` makes and abstains on.
+    """
+    if not dossier:
+        return {}
+    staves = [st for sys_ in page.get("systems", [])
+              for st in sys_.get("staves", [])]
+    facts = slot_facts_for_page(len(staves), dossier)
+    if not facts or len(facts) != len(staves):
+        return {}
+    from .instruments import lookup as lookup_instrument  # noqa: PLC0415
+
+    out: dict[int, tuple[int, int]] = {}
+    for staff, fact in zip(sorted(staves, key=lambda s: s.get("staff_index", 0)),
+                           facts):
+        name = (fact or {}).get("part")
+        if not name:
+            continue
+        match = lookup_instrument(name)
+        rng = getattr(getattr(match, "instrument", None), "written_range", None)
+        if rng:
+            out[staff.get("staff_index")] = tuple(rng)
+    return out
+
+
+def _ledger_rows(page: dict[str, Any]) -> list[tuple[float, float, float]]:
+    """Every ledger-line detection on the page as `(x0, x1, y_centre)`.
+
+    Collected across ALL staves without deduplication: this only ever answers
+    "is there a rung here", so a rung seen from two cells is not a problem.
+    """
+    rows: list[tuple[float, float, float]] = []
+    for sys_ in page.get("systems", []):
+        for staff in sys_.get("staves", []):
+            for measure in staff.get("measures", []):
+                for det in measure.get("detections", []):
+                    if det.get("class") != "ledgerLine":
+                        continue
+                    box = det.get("bbox_page")
+                    if not box or len(box) != 4:
+                        continue
+                    rows.append((box[0], box[0] + box[2], box[1] + box[3] / 2.0))
+    return rows
+
+
+def _ledger_ladder(
+    box: Sequence[float],
+    band: tuple[float, ...],
+    ledgers: Sequence[tuple[float, float, float]],
+) -> tuple[int, int]:
+    """`(complete, rungs)` for the ladder joining this staff to the glyph.
+
+    `complete` is 1 only when EVERY rung the glyph's distance calls for is
+    present, so it sorts an unbroken ladder above a broken one of any length.
+    Both are 0 for a glyph inside the staff, which needs no ladder.
+    """
+    if len(band) < 3:
+        return (0, 0)
+    top, bottom, spacing = band[0], band[1], band[2]
+    if spacing <= 0:
+        return (0, 0)
+    x0, y0, w, h = box[0], box[1], box[2], box[3]
+    y_centre = y0 + h / 2.0
+    if y_centre < top:
+        anchor, sign = top, -1.0
+    elif y_centre > bottom:
+        anchor, sign = bottom, 1.0
+    else:
+        return (0, 0)       # inside the staff — no ladder, and none needed
+    n_expected = int(abs(y_centre - anchor) / spacing)
+    if n_expected <= 0:
+        return (0, 0)
+    tol = _LEDGER_RUNG_Y_TOL_SPACES * spacing
+    min_overlap = _LEDGER_RUNG_MIN_X_OVERLAP * max(1.0, w)
+    found = 0
+    for k in range(1, n_expected + 1):
+        rung_y = anchor + sign * k * spacing
+        for lx0, lx1, ly in ledgers:
+            if abs(ly - rung_y) > tol:
+                continue
+            if min(lx1, x0 + w) - max(lx0, x0) < min_overlap:
+                continue
+            found += 1
+            break
+    return (1 if found == n_expected else 0, found)
+
+
 # Two boxes this far into each other are the same glyph seen from two staves,
 # not two glyphs that happen to touch. Swept over all three orchestral works at
 # 0.25/0.3/0.4/0.5 (benchmarks/omr-orchestral-e2e/DEDUPE_THRESHOLD.md): 0.3 is
@@ -1976,11 +2164,18 @@ def _distance_to_band(y: float, top: float, bottom: float) -> float:
 
 def _dedupe_cross_staff_detections(
     page: dict[str, Any],
-    bands: dict[int, tuple[int, int]],
+    bands: dict[int, tuple[int, ...]],
     *,
     iou_threshold: float = _CROSS_STAFF_DUPLICATE_IOU,
+    dossier: dict[str, Any] | None = None,
 ) -> int:
-    """Drop glyphs claimed by more than one staff. Returns how many went."""
+    """Drop glyphs claimed by more than one staff. Returns how many went.
+
+    `bands` maps a staff index to `(top, bottom)` or `(top, bottom, spacing)`.
+    The spacing is what places a staff's ledger rungs, so a band given without
+    one simply falls back to distance — which is what the rule was before the
+    ledger arbitration and still is for every glyph with no ladder either way.
+    """
     entries: list[tuple[int, dict[str, Any], list[dict[str, Any]]]] = []
     for sys_ in page.get("systems", []):
         for staff in sys_.get("staves", []):
@@ -2000,15 +2195,34 @@ def _dedupe_cross_staff_detections(
         for k in (key - 1, key, key + 1):
             buckets.setdefault(k, []).append(i)
 
-    doomed: set[int] = set()
+    # Rungs are only consultable where every band carries a spacing; otherwise
+    # this is the old distance-only rule, unchanged.
+    ledgers = (_ledger_rows(page)
+               if all(len(b) >= 3 for b in bands.values()) else None)
+    ranges = _staff_written_ranges(page, dossier)
+
+    # PAIRWISE, and a cluster-winner refactor was measured and REJECTED.
+    # Grouping every overlapping copy and letting the group pick one winner is
+    # the tidier formulation and it scored worse — 0.2275 against 0.2263 — for
+    # a reason worth recording: IoU overlap is not transitive, so A-B and B-C
+    # chain A and C into one cluster even where they are genuinely different
+    # glyphs, and the group then throws one of them away. Removing one of each
+    # overlapping PAIR cannot make that mistake.
+    #
+    # STRONGEST VERDICT FIRST, though, which is what pairing alone got wrong.
+    # Deciding pairs in whatever order the buckets produced let an arbitrary
+    # distance call eliminate a copy before a pair that actually KNEW the
+    # answer was ever looked at: measured on Beethoven's two bassoons, one bar
+    # resolved on the range veto and the next, identical in shape, did not.
+    # So every contested pair is judged first, then applied in order of how
+    # much the judgement rests on.
+    verdicts: list[tuple[int, int, int]] = []   # (rank, loser, winner)
     seen: set[tuple[int, int]] = set()
     for idxs in buckets.values():
         for pos_a in range(len(idxs)):
             i = idxs[pos_a]
             for pos_b in range(pos_a + 1, len(idxs)):
                 j = idxs[pos_b]
-                if i in doomed or j in doomed:
-                    continue
                 pair = (i, j) if i < j else (j, i)
                 if pair in seen:
                     continue
@@ -2019,15 +2233,43 @@ def _dedupe_cross_staff_detections(
                     continue
                 if _bbox_iou_xywh(di["bbox_page"], dj["bbox_page"]) <= iou_threshold:
                     continue
-                # Same glyph, two staves. Keep it on the nearer one.
-                ti, bi = bands[si]
-                tj, bj = bands[sj]
-                loser = (
-                    i if _distance_to_band(_bbox_center_y(di), ti, bi)
-                    > _distance_to_band(_bbox_center_y(dj), tj, bj)
-                    else j
-                )
-                doomed.add(loser)
+                # Same glyph, two staves. Three kinds of evidence, in the order
+                # a reader uses them: the LADDER is about this glyph — an
+                # unbroken run of ledger lines physically joins it to a staff;
+                # the RANGE is about the part — a player cannot sound a note
+                # outside it; DISTANCE is the tie-break and, on a page with
+                # neither ledger lines nor a dossier, still the whole rule.
+                is_note = di.get("category") == "notehead"
+                rank, loser = 0, None
+                if is_note and ledgers is not None:
+                    ladder_i = _ledger_ladder(di["bbox_page"], bands[si], ledgers)
+                    ladder_j = _ledger_ladder(dj["bbox_page"], bands[sj], ledgers)
+                    if ladder_i != ladder_j:
+                        rank, loser = 2, (i if ladder_i < ladder_j else j)
+                if loser is None and is_note and ranges:
+                    # A veto on the IMPOSSIBLE, not a judgement of the
+                    # unlikely: it fires only when one reading falls outside
+                    # its part's range and the other falls inside its own, so
+                    # a part playing at the edge of its range is never touched.
+                    fit_i = _in_written_range(di.get("pitch"), ranges.get(si))
+                    fit_j = _in_written_range(dj.get("pitch"), ranges.get(sj))
+                    if fit_i is not None and fit_j is not None and fit_i != fit_j:
+                        rank, loser = 1, (i if not fit_i else j)
+                if loser is None:
+                    ti, bi = bands[si][0], bands[si][1]
+                    tj, bj = bands[sj][0], bands[sj][1]
+                    loser = (
+                        i if _distance_to_band(_bbox_center_y(di), ti, bi)
+                        > _distance_to_band(_bbox_center_y(dj), tj, bj)
+                        else j
+                    )
+                verdicts.append((rank, loser, j if loser == i else i))
+
+    doomed: set[int] = set()
+    for _rank, loser, winner in sorted(verdicts, key=lambda v: -v[0]):
+        if loser in doomed or winner in doomed:
+            continue
+        doomed.add(loser)
 
     for i in sorted(doomed, reverse=True):
         _idx, det, lst = entries[i]
@@ -3335,9 +3577,11 @@ def transcribe(
         # (4 staff-spaces of padding each way) and on a conductor's score those
         # bands meet. See _dedupe_cross_staff_detections.
         _bands = {
-            st.staff_index: (st.top_y, st.bottom_y) for st in pws.staves
+            st.staff_index: (st.top_y, st.bottom_y, st.line_spacing_px)
+            for st in pws.staves
         }
-        n_deduped = _dedupe_cross_staff_detections(page_dict, _bands)
+        n_deduped = _dedupe_cross_staff_detections(
+            page_dict, _bands, dossier=dossier)
         if n_deduped:
             page_dict["n_cross_staff_duplicates_removed"] = n_deduped
             out["n_cross_staff_duplicates_removed"] = (

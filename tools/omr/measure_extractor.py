@@ -38,8 +38,34 @@ MAX_CELL_WIDTH_PX = 2048
 # Padding around a measure cell (in units of staff line spacing — so it
 # scales with score size). Above the staff: ledger lines / dynamics.
 # Below the staff: ledger lines / pedal markings.
+#
 PAD_ABOVE_STAFF_LINES = 4
 PAD_BELOW_STAFF_LINES = 4
+
+# THE PAD GROWS WHERE THE PAGE LEAVES ROOM, and never shrinks below the four
+# above. Measured inter-staff gaps on the engraved fixtures, in staff spaces:
+# Mahler 1.7-1.9, Beethoven 3.2-3.4, Brahms 3.5-8.7. So four already reaches
+# through both of Mahler's neighbours — and it must, because a stem is about
+# 3.5 spaces and a cell cut to Mahler's 1.7-space gap loses its stems and
+# beams: measured, that alone took Mahler's duration rate 0.864 -> 0.455.
+#
+# What the extra room buys is the case this exists for. Brahms's Violin 1 plays
+# up to B6, five spaces above its own top line, and LilyPond opened a 7.8-space
+# gap above that staff to fit exactly those notes. At a flat four the cell
+# stopped short of them, they fell only into the TIMPANI's cell, and they
+# exported as `Ab1` on a timpani while Violin 1's bars 3 and 4 came out empty.
+#
+# ALL OR NOTHING, never a marginal in-between. Cell height is coupled to
+# `OMR_IMGSZ` — a taller cell letterboxes the staff into fewer pixels — so a
+# small change in it moves DETECTIONS, not just the crop. Measured: growing the
+# authored `ensemble` fixture's pad from 4.0 to 4.6 spaces, because its staves
+# happen to sit 5.1 apart, cost it three notes of 45 for no gain. So the pad is
+# four, or six where there is unambiguously room for six, and nothing between.
+PAD_MAX_STAFF_LINES = 6
+
+# How close a grown cell may come to the NEIGHBOURING staff's nearest line.
+# Half a space clears a printed line and its wander at every DPI measured here.
+CELL_NEIGHBOUR_CLEARANCE_SPACES = 0.5
 
 # Barline detection — morphological approach. A barline is a vertical
 # ink stripe that:
@@ -555,6 +581,27 @@ def _upscale_to_canonical(
     return out, scale, new_line_ys
 
 
+def _neighbour_room(pws: PageWithStaves, staff: Staff) -> tuple[float, float]:
+    """Px from this staff's top and bottom lines to the nearest neighbouring
+    staff line, above and below. `inf` where there is no neighbour that side,
+    which the caller clamps to the ceiling.
+
+    Page order rather than system order on purpose: a staff at the foot of one
+    system and one at the head of the next are far apart, so the gap is large
+    and the ceiling applies anyway — while a page whose systems interleave
+    badly still gets a cell that stays off its neighbour's lines.
+    """
+    above = below = float("inf")
+    for other in pws.staves:
+        if other is staff or len(other.line_ys) < 5:
+            continue
+        if other.bottom_y <= staff.top_y:
+            above = min(above, float(staff.top_y - other.bottom_y))
+        elif other.top_y >= staff.bottom_y:
+            below = min(below, float(other.top_y - staff.bottom_y))
+    return above, below
+
+
 def _build_measure_cell(
     pws: PageWithStaves,
     staff: Staff,
@@ -576,8 +623,16 @@ def _build_measure_cell(
     rgb = pws.page.rgb
     binary = pws.page.binary
     spacing = max(1.0, staff.line_spacing_px)
-    pad_above = int(PAD_ABOVE_STAFF_LINES * spacing)
-    pad_below = int(PAD_BELOW_STAFF_LINES * spacing)
+    clearance = CELL_NEIGHBOUR_CLEARANCE_SPACES * spacing
+    room_above, room_below = _neighbour_room(pws, staff)
+    ceiling = PAD_MAX_STAFF_LINES * spacing
+
+    def grown(default_spaces: float, room: float) -> int:
+        default = default_spaces * spacing
+        return int(ceiling if room - clearance >= ceiling else default)
+
+    pad_above = grown(PAD_ABOVE_STAFF_LINES, room_above)
+    pad_below = grown(PAD_BELOW_STAFF_LINES, room_below)
     y0 = max(0, staff.top_y - pad_above)
     y1 = min(rgb.shape[0], staff.bottom_y + pad_below)
     x0 = max(0, x0)
