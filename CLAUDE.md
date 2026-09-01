@@ -301,6 +301,60 @@ ReEngrave/
 
 ---
 
+## The central score library
+
+Every score the project uses lives in one place with its provenance attached:
+`library/` (machine-local, gitignored) plus a **committed** catalog at
+[`data/score-library/catalog.json`](data/score-library/catalog.json). Full
+conventions: [`data/score-library/README.md`](data/score-library/README.md).
+
+Before this, the same score existed under four names in four trees —
+`tools/omr/training/data/imslp/`, `~/Desktop/gradus-vercel/public/scores/`, and
+two copies of `~/Documents/Gradus-Assets/Scores/`. Importing all of them yielded
+**1745 unique reference files out of 4167+ candidates**; the rest were recorded
+as extra origins on files already held.
+
+```
+library/editions/<composer>/<work>/<composer>--<work>--<edition>--<source>.pdf
+library/reference/<composer>/<work>/<composer>--<work>--<movement>--<source>.mxl
+```
+
+`editions/` is what a reader sees (OMR input); `reference/` is what the notes are
+(ground truth). They join on `work_id`, which is keyed on **genre + number**, not
+the full title — an IMSLP page says "Symphony No.5, Op.67" and a MusicXML header
+says "Symphony No.5", and keying on the title split Beethoven's fifth into two
+works with no edition and no ground truth respectively.
+
+```bash
+python3 -m tools.library.ingest imslp ~/Downloads/IMSLP*.pdf   # provenance from the wiki API
+python3 -m tools.library.ingest musicxml <dir> --source gradus
+python3 -m tools.library.ingest catalog | verify | reorganize | refresh | relink
+python3 -m tools.library.build_wishlist --out data/score-library/wishlist.json
+```
+
+**The legacy paths still work.** ~20 benchmark scripts hard-code
+`tools/omr/training/data/imslp/<work>/pdfs/imslp-<id>/score.pdf` and NOTES.md
+quotes measured numbers from them; those are now symlinks into the store,
+recreated by `relink`. `library_root()` also resolves to the MAIN checkout from
+inside a git worktree, so one machine keeps one store.
+
+**Downloading from IMSLP.** File downloads sit behind a JavaScript redirect gate
+that `curl` cannot pass, so a logged-in browser has to resolve
+`Special:ImagefromIndex/<id>` to its direct file URL; the wiki pages and the
+MediaWiki API are open, which is where all provenance comes from. **Do not try to
+defeat the gate** — pace the requests instead.
+
+⚠️ **Never trust an embedded composer or movement field.** The Mahler 5 export
+repeats "I. Trauermarsch" as the movement title of *every* movement; one
+collection wrote `Desktop` as the composer of 70 Bach chorales; life dates arrive
+glued to the name (`Bach(1685 - 1750)`) and once made the store grow a composer
+called `1750`. `reorganize` re-derives from the strongest evidence available and
+is idempotent — a hand-supplied name outranks the file's own metadata, which
+outranks a folder name, and a folder name is accepted only if some *other* file's
+metadata independently vouches for it.
+
+---
+
 ## Dossiers — checking a reading against what the work actually is
 
 The five internal-consistency checks can only ask whether a page agrees with
