@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-01, end of day (pooled OMR-NED cut by 57% from its 0.3164 opening — 64% with `--direction-text` — across **fourteen landed branches in one day**, coordinated through a single landing queue with every merge measured on the merged tree; the current figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
+**Last updated:** 2026-09-02 (the branch audit is closed out — `omr-dossier-verification-layer` is superseded on all four phases and archived, and the two March web-app branches carry verdicts, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the 09-01 landing-queue story is in the TL;DR below; the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
