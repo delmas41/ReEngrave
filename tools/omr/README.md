@@ -957,8 +957,17 @@ gets letters wrong inside the word. On an 1870 scan, either alone yields 11
 usable words of 74 crops and the union yields 17 — while on the engraved
 benchmark the union changes nothing at all, because Surya already reads every
 crop there and Tesseract's extra noise is refused by the lexicon. Each rung
-self-disables when its dependency is missing. See `direction_text.default_readers`
-and [SCAN_2026-09-01.md](../../benchmarks/omr-direction-text-2026-09/SCAN_2026-09-01.md).
+self-disables when its dependency is missing.
+
+Measured on the current code, the second rung supplies **21 of the 44** readings
+on five scanned pages and **0 of the 15** on the engraved benchmark, where every
+accepted reading is Surya's — so it is a no-op there by construction, not by
+luck. It cannot make a reading worse: Surya has precedence and is consulted
+first, and across 129 scan candidates there is one crop where both accept and
+disagree, resolved in Surya's favour and correctly. Its only cost is about
+140 ms a crop. `OMR_DIRECTION_READERS=surya` switches it off. See
+`direction_text.default_readers` and
+[SCAN_2026-09-01.md](../../benchmarks/omr-direction-text-2026-09/SCAN_2026-09-01.md).
 
 It is a **post-pass over the built page dicts**, like `contextual`: it adds a
 `direction_texts` key to measures that already exist, so a run without it

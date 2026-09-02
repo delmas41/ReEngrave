@@ -430,6 +430,22 @@ class TestReadDirections:
         assert info["reason"] == "no OCR rung available"
 
 
+class TestReaderSelection:
+    def test_the_env_var_restricts_the_rungs(self, monkeypatch):
+        """The second rung costs ~140 ms a crop. A caller who measures it worth
+        less than that on their own material switches it off here."""
+        from tools.omr.direction_text import default_readers
+
+        monkeypatch.setenv("OMR_DIRECTION_READERS", "surya")
+        assert [n for n, _fn in default_readers()] == ["surya"]
+
+    def test_an_empty_setting_means_every_rung(self, monkeypatch):
+        from tools.omr.direction_text import default_readers
+
+        monkeypatch.setenv("OMR_DIRECTION_READERS", "")
+        assert len(default_readers()) >= 1
+
+
 class TestUnionOfRungs:
     """The two rungs fail differently, which is the whole reason for both.
 

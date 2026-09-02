@@ -56,6 +56,7 @@ which measure it is.
 from __future__ import annotations
 
 import logging
+import os
 from dataclasses import dataclass
 from typing import Any, Callable, Sequence
 
@@ -643,20 +644,32 @@ def default_readers() -> list[tuple[str, Reader]]:
     Each rung self-disables when its dependency is absent, so a machine with
     neither degrades to no directions rather than to an error — the same
     contract `staff_labels_surya` has had since it shipped.
+
+    `OMR_DIRECTION_READERS` restricts the set — `surya`, `tesseract`, or a
+    comma-separated pair. It exists so the question above can be re-asked
+    cheaply on a corpus nobody here has seen: the second rung costs about 140 ms
+    a crop, and a caller who measures it worth less than that on their own
+    material should be able to switch it off without editing code.
     """
+    wanted = [n.strip().lower()
+              for n in os.environ.get("OMR_DIRECTION_READERS", "").split(",")
+              if n.strip()]
     readers: list[tuple[str, Reader]] = []
-    try:
-        from . import staff_labels_surya
-        if staff_labels_surya.available():
-            readers.append(("surya", staff_labels_surya.read_crops_text))
-    except Exception as exc:                                  # noqa: BLE001
-        logger.debug("surya rung unavailable: %s", exc)
-    try:
-        from . import staff_labels_tesseract
-        if staff_labels_tesseract.available():
-            readers.append(("tesseract", staff_labels_tesseract.read_crops_text))
-    except Exception as exc:                                  # noqa: BLE001
-        logger.debug("tesseract rung unavailable: %s", exc)
+    if not wanted or "surya" in wanted:
+        try:
+            from . import staff_labels_surya
+            if staff_labels_surya.available():
+                readers.append(("surya", staff_labels_surya.read_crops_text))
+        except Exception as exc:                              # noqa: BLE001
+            logger.debug("surya rung unavailable: %s", exc)
+    if not wanted or "tesseract" in wanted:
+        try:
+            from . import staff_labels_tesseract
+            if staff_labels_tesseract.available():
+                readers.append(
+                    ("tesseract", staff_labels_tesseract.read_crops_text))
+        except Exception as exc:                              # noqa: BLE001
+            logger.debug("tesseract rung unavailable: %s", exc)
     return readers
 
 
