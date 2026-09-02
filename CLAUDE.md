@@ -968,6 +968,35 @@ reading, and the findings it surfaced that note recall is blind to, in
 [WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)
 and [SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md).
 
+**The eighth gap should be caught by a test, not by a day of forensics.**
+Seven times a signal was recognised correctly and lost on the way to the file,
+and six of those were found only after the metric bucket they fell into grew
+large enough for someone to open it. `tools/omr/export_coverage.py` asks the
+question that found the seventh, on every run of the suite:
+
+```bash
+python3 -m tools.omr.export_coverage --all   # the inventory, with reasons
+```
+
+It compares element COUNTS between the truth file and our export, and reports
+only the categorical case — the truth has some, we emit **zero**. That is the
+signature of an export gap; emitting fewer than the truth is a recognition
+shortfall and belongs to the accuracy metric. All seven read `truth N, ours 0`.
+
+⚠️ **The obvious version of this check does not work**, and the reason is worth
+keeping: auditing the DETECTOR'S CLASS SPACE for classes nothing downstream
+mentions calls accidentals *consumed* — because they are, into `pitch` — and
+clefs and time-signature digits likewise. Run on the benchmark it surfaced
+`repeatDot` ×4 and `fingering3` ×1 while a 64-edit gap sat in plain sight. The
+question is never "does anything consume this class"; it is "does anything the
+reader would SEE come out".
+
+`KNOWN_GAPS` is an inventory rather than a suppression list — every element we
+knowingly drop, with its reason and its size — and anything not on it fails.
+Two open items are recorded there now: **accents** (Mahler's truth has 6, the
+detector finds exactly 6, nothing consumes them) and **hairpins** (6 in the
+truth, 4 detected).
+
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is
 parsed strictly, which is why `score_pair` is keyword-only. **The same symmetry
