@@ -2569,3 +2569,70 @@ hand-read clefs first; Bolero p40 is rendered and still unread.
 * Touching the prior itself, or `MIN_NOTEHEADS`, on this evidence.
 * Claiming the +2 as instrument identity. It is a clef class, arrived at through
   a wrong name, on a page whose truth is deliberately generic about C clefs.
+
+---
+
+## A second edition with hand-read C clefs — Boléro p.40, and what it settled
+
+**2026-09-02.** Two open items were both blocked on the same thing: *"get a
+second edition with hand-read clefs first"*. Boléro p.40 was the page named for
+it — 34 printed staves, the widest in the corpus, rendered and unread since
+2026-08-31.
+
+Read by the file's own method: `render_staff_heads.py` for every staff, then a
+zoom pass on each C clef against **numbered staff lines**, the numbering taken
+from Phase 1's `line_ys`, which knows nothing about clefs and so is not circular
+with the reading.
+
+### What it carries, and why it is the right second page
+
+Four C clefs in **two kinds** — the trombones read **tenor** (waist on line 4)
+and the divided violas read **alto** (waist on line 3). Every other C clef in
+this file is an alto, so until now nothing measured could tell a clef reader
+that gets the *glyph* right and the *line* wrong from one that gets both right.
+
+The corpus goes **166 → 197 staves, 10 → 11 pages**, and the page scores
+
+    bolero-p40                 31 staves   30 correct   97%
+    whole corpus, --assist none      176 / 197 = 89%
+    whole corpus, --assist vision    179 / 197 = 91%
+
+### Two things the page recorded that were not the point
+
+**It is stored as 31 staves, not the 34 that are printed.** Three are ONE-LINE
+percussion — Tambour, Cymbales, Grosse Caisse — carrying a percussion clef,
+which is neither a clef this file records nor something `transcribe` keeps: it
+drops all three and renumbers, so a 34-row truth would have scored the harp
+against a cymbal. `detect_staves` alone *does* return them, one line each, which
+is why `render_staff_heads.py` shows 34 and the eval saw 31. Worth knowing
+before adding any page: **the file must be written against what `transcribe`
+sees, not what `render_staff_heads` shows.**
+
+**The page's one error is a Phase-1 misfit, and it corroborates the reading.**
+Ordinal 26 (staff_index 29) is a viola whose detected window sits one staff
+space too high — its five lines land on the printed staff's top four plus empty
+space above, and the printed bottom line falls outside. Line-ink coverage over
+the full staff width is **0.41 for that top line against 0.99 for the rest**,
+the signature `_refit_misaligned_group` exists for and did not catch here. The
+pipeline reads that staff **`mezzosoprano`** — exactly one line below the alto
+that is printed, which is what a window one space high does to a clef. The hand
+reading and the failure explain each other.
+
+### And it settled `MIN_NOTEHEADS` without being needed for it
+
+The item was: lowering the notehead floor from 12 would win 3 and cost 1 on
+beet9-p120, so get a second edition before touching it. Instrumented across all
+11 pages — asking `propose_clef` itself what it would say with the floor removed,
+so no logic is duplicated:
+
+    propose_clef calls   111        proposals made      14
+    refusals             97         refusals due to MIN_NOTEHEADS   0
+
+**It binds on nothing.** The 3-for-1 was measured in a state that no longer
+exists: those candidates were beet9-p120's vocal staves while a stretched
+`classical-condensed` was calling them Viola. With `choral-orchestral` fitting
+that page the prior names them nothing, so there is no proposal to refuse. The
+threshold is not costing anything and there is nothing to tune — **closed, and
+by the layout fix rather than by the new page.**
+
+The page stands on its own merits: it is the only tenor C clef in the corpus.

@@ -101,13 +101,13 @@ piano-false-positives.ly` — the "fatal error" it ends on is harmless.
 single-dot veto was reverted — do not quote figures from before that):
 
 ```
-THE NUMBER TO STEER BY — end-to-end clef accuracy on ten hand-read
-orchestral pages, 166 staves:
+THE NUMBER TO STEER BY — end-to-end clef accuracy on ELEVEN hand-read
+orchestral pages, 197 staves (Boléro p.40 added 2026-09-02, +31):
 
     eval_pipeline_clefs.py --contextual --dossier --wide --assist vision
-        149 / 166  (90%)          <- best
+        179 / 197  (91%)          <- best        (was 149/166)
     eval_pipeline_clefs.py --contextual --dossier --wide --assist none
-        146 / 166  (88%)          <- free path, no API spend
+        176 / 197  (89%)          <- free path   (was 146/166)
 
     Job C took both to 151/148 and Job C's identity half gave the two back on
     purpose: they were beet9-p120 choral staves named "Viola" by a layout
