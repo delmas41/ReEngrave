@@ -864,6 +864,38 @@ ran with its own `--work-dir` so a parallel canonical run could not collide;
 that directory's committed provenance (`FINDINGS.md`, `out/*.json`) is
 unchanged by the widening of the default.
 
+### What eleven works still cannot see
+
+⚠️ **A corpus that cannot express a fault cannot regression-test its repair**,
+and a benchmark that says what it cannot see is worth more than one that implies
+coverage it lacks. Measured on the widened set with
+`benchmarks/omr-direction-text-2026-09/probe_empty_measure_marks.py`, which asks
+the question in both directions:
+
+| side | what it asks | 3 works | **11 works** |
+|---|---|--:|--:|
+| truth | a bar carrying a mark and no note — the SHAPE | 1 | **6** |
+| pred (`--direction-text`) | our export having one — the same shape | ~1 | **20** |
+| either | a bar carrying a mark and **nothing at all** — the TRIGGER | 0 | **0** |
+
+The bug it is about (`46e42a4`): a measure with no detected events takes the
+whole-measure-rest path, which never calls `_mxl_voice_events` — the only
+`<direction>` emitter — so placed directions AND dynamics are computed and then
+discarded. **The trigger is the DETECTOR finding nothing**, which is why the
+shape is not the trigger: a rest IS an event, so a bar of rests takes the normal
+path and its marks survive. Widening multiplied the near-misses sixfold (the
+`P1 m1` tempo mark over a resting first part, in Beethoven 5, Brahms 4, Bruckner
+5, Dvorak 9, Mozart 40 and Tchaikovsky 6) and added **not one** triggering bar.
+
+So: **the eleven-work benchmark does not guard that fix.** Its unit tests in
+`test_direction_text.py` are the only thing that does. The pred row is measured
+under `--direction-text`, which emits strictly more marks than a default run and
+therefore has strictly more chances to trigger — a zero there is a zero for the
+default configuration too. The likeliest future source of a real triggering bar
+is a **scanned** work, where a staff genuinely rests through a marked bar and
+the detector finds nothing in it; every work here is engraved, and engraved
+pages put an event in every bar.
+
 ---
 
 ## Contextual analysis — part identity, in the pipeline
@@ -1076,7 +1108,7 @@ re-measured, so the paragraph can never state an 11-work default beside a 3-work
 variant.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `907abde`: **pooled 0.1399 / 2915 edits** over 11 works (Mahler 5 0.0272 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10175 predicted symbols.
+Current on the engraved orchestral benchmark, measured on `907abde`: **pooled 0.1399 / 2915 edits** over 11 works (Mahler 5 0.0272 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10175 predicted symbols. With `--direction-text` (off by default, needs `.venv-surya`), **0.1306 / 2745**, measured on `d3d5ec5`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
