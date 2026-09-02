@@ -614,7 +614,56 @@ def crop_for(page: PageImage, candidate: TextCandidate,
 Reader = Callable[[list[np.ndarray]], list[str]]
 
 
-def default_readers() -> list[tuple[str, Reader]]:
+def page_is_engraved(page: PageImage) -> bool:
+    """Is this page born-digital vector, rather than a photograph of paper?
+
+    Cheap enough to ask per page — it reads the PDF's own structure and renders
+    nothing. An engraver emits the notes as VECTOR PATHS; a scanner emits one
+    raster covering the sheet. Measured over the three benchmark fixtures and
+    fourteen IMSLP editions, the two populations do not touch:
+
+                             vector paths   images   image cover
+        engraved  (3)          467-2058        0         0.00
+        scanned  (14)             0-1        1-2      0.86-1.41
+
+    ⚠️ **The obvious signal does not work.** Print noise ought to show up as
+    mid-grey pixels a vector render has none of, and it does not separate them
+    at all: 0.098-0.216 of the engraved pages against 0.009-0.978 of the scans,
+    thoroughly overlapped. Embedded FONTS are no better — several scans carry
+    nine of them, for the OCR text layer someone attached later.
+
+    **Answers False on any doubt, and the asymmetry is the whole design.** A
+    page wrongly called scanned costs about 140 ms a crop; a page wrongly called
+    engraved loses the second reader on material where it supplies half the
+    readings, and loses it silently. So this has to PROVE born-digital — vector
+    paths present and no page-sized raster — and anything else, including a
+    hybrid, a blank page or a PDF it cannot open, is treated as a scan.
+    """
+    pdf_path = getattr(page, "pdf_path", None)
+    if not pdf_path:
+        return False
+    try:
+        import fitz                                          # noqa: PLC0415
+
+        with fitz.open(pdf_path) as doc:
+            index = getattr(page, "page_index", 0)
+            if not 0 <= index < doc.page_count:
+                return False
+            pdf_page = doc[index]
+            if not pdf_page.get_drawings():
+                return False
+            area = abs(pdf_page.rect.width * pdf_page.rect.height) or 1.0
+            for image in pdf_page.get_images(full=True):
+                for rect in pdf_page.get_image_rects(image[0]) or []:
+                    if abs(rect.width * rect.height) / area > 0.5:
+                        return False    # a page-sized raster: scanned, or hybrid
+    except Exception as exc:                                  # noqa: BLE001
+        logger.debug("could not classify %s: %s", pdf_path, exc)
+        return False
+    return True
+
+
+def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
     """The rungs to ask, in precedence order, skipping any that cannot run.
 
     **Both, not one, and the reason is measured rather than tidy.** On 74 crops
@@ -645,11 +694,24 @@ def default_readers() -> list[tuple[str, Reader]]:
     neither degrades to no directions rather than to an error — the same
     contract `staff_labels_surya` has had since it shipped.
 
-    `OMR_DIRECTION_READERS` restricts the set — `surya`, `tesseract`, or a
-    comma-separated pair. It exists so the question above can be re-asked
-    cheaply on a corpus nobody here has seen: the second rung costs about 140 ms
-    a crop, and a caller who measures it worth less than that on their own
-    material should be able to switch it off without editing code.
+    **A born-digital page is asked once, a scan twice.** Given a `page`, the
+    second rung is dropped where `page_is_engraved` can prove the sheet is
+    vector: on the engraved benchmark every accepted reading comes from Surya
+    and Tesseract supplies none of the fifteen, so asking it there buys nothing
+    and costs about 140 ms a crop. On the scan it supplies 21 of 44. The
+    classifier answers False on any doubt, so the expensive direction — a scan
+    read by one rung — needs a positive proof of engraving that a scan cannot
+    produce.
+
+    ⚠️ **That the second rung is worthless on born-digital pages is measured on
+    THREE LilyPond fixtures**, which is a thin basis for a claim about every
+    engraver. It is the reason this only ever drops the rung on a page that
+    proves itself vector, and the reason the report records which rungs ran:
+    a born-digital edition whose font defeats Surya would show up as candidates
+    proposed and not accepted, with `readers` naming only one.
+
+    `OMR_DIRECTION_READERS` overrides all of it — `surya`, `tesseract`, or a
+    comma-separated pair. An explicit choice beats the classifier.
     """
     wanted = [n.strip().lower()
               for n in os.environ.get("OMR_DIRECTION_READERS", "").split(",")
@@ -662,6 +724,11 @@ def default_readers() -> list[tuple[str, Reader]]:
                 readers.append(("surya", staff_labels_surya.read_crops_text))
         except Exception as exc:                              # noqa: BLE001
             logger.debug("surya rung unavailable: %s", exc)
+    # Only ever DROP the second rung, and only where the page proves itself
+    # born-digital — never drop the first, which would leave a page unread.
+    engraved = bool(readers) and page is not None and page_is_engraved(page)
+    if not wanted and engraved:
+        return readers
     if not wanted or "tesseract" in wanted:
         try:
             from . import staff_labels_tesseract
@@ -697,8 +764,9 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
         return [], info
 
     if readers is None:
-        readers = default_readers()
+        readers = default_readers(pws.page)
     info["readers"] = [name for name, _fn in readers]
+    info["page_is_engraved"] = page_is_engraved(pws.page)
     if not readers:
         info["reason"] = "no OCR rung available"
         return [], info

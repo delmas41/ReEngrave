@@ -82,21 +82,19 @@
       "pages": [
         {
           "n_candidates": 3,
-          "n_read": 3,
+          "n_read": 2,
           "n_accepted": 1,
           "rejected": [
-            "(d = 108)",
-            "(J = 108)",
-            "l.a"
+            "(d = 108)"
           ],
           "by_reader": {
             "surya": 1
           },
           "conflicts": [],
           "readers": [
-            "surya",
-            "tesseract"
-          ]
+            "surya"
+          ],
+          "page_is_engraved": true
         }
       ]
     },
@@ -208,24 +206,17 @@
       "pages": [
         {
           "n_candidates": 20,
-          "n_read": 20,
+          "n_read": 14,
           "n_accepted": 14,
-          "rejected": [
-            "tT.",
-            "Sf tot ttt",
-            "\u2014t toto ott",
-            "Tf",
-            "la",
-            "So 4+"
-          ],
+          "rejected": [],
           "by_reader": {
             "surya": 14
           },
           "conflicts": [],
           "readers": [
-            "surya",
-            "tesseract"
-          ]
+            "surya"
+          ],
+          "page_is_engraved": true
         }
       ]
     },

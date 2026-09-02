@@ -965,7 +965,17 @@ accepted reading is Surya's — so it is a no-op there by construction, not by
 luck. It cannot make a reading worse: Surya has precedence and is consulted
 first, and across 129 scan candidates there is one crop where both accept and
 disagree, resolved in Surya's favour and correctly. Its only cost is about
-140 ms a crop. `OMR_DIRECTION_READERS=surya` switches it off. See
+140 ms a crop.
+
+**The page decides which rungs run.** `page_is_engraved` reads the PDF's own
+structure — vector paths and no page-sized raster means born-digital — and drops
+the second rung there, where it provably contributes nothing. Measured over
+3 fixtures and 14 IMSLP editions the two populations do not touch (vector paths
+467–2058 against 0–1; image cover 0.00 against 0.86–1.41), and the engraved
+benchmark scores 0.1138 either way. It answers "scanned" on any doubt, because a
+page wrongly called engraved loses half its readings silently while one wrongly
+called scanned only costs time. `OMR_DIRECTION_READERS=surya` (or
+`surya,tesseract`) overrides it. See
 `direction_text.default_readers` and
 [SCAN_2026-09-01.md](../../benchmarks/omr-direction-text-2026-09/SCAN_2026-09-01.md).
 

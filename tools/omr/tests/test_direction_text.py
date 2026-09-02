@@ -9,6 +9,7 @@ candidate step is pure CV so it can be tested on a drawn image.
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 import cv2
 import numpy as np
@@ -17,6 +18,7 @@ import pytest
 from tools.omr.direction_lexicon import lookup
 from tools.omr.direction_text import (
     BandConfig,
+    page_is_engraved,
     DEFAULT_BAND_CONFIG,
     DirectionText,
     TextCandidate,
@@ -430,6 +432,35 @@ class TestReadDirections:
         assert info["reason"] == "no OCR rung available"
 
 
+class TestPageIsEngraved:
+    """Born-digital pages are asked once, scans twice. The classifier must
+    PROVE vector, because the two mistakes cost wildly different amounts."""
+
+    ROOT = Path(__file__).resolve().parents[3]
+    ENGRAVED = ROOT / "benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.pdf"
+
+    def _page(self, pdf, index=0):
+        z = np.zeros((2, 2, 3), np.uint8)
+        return PageImage(pdf_path=pdf, page_index=index, dpi=600,
+                         rgb=z, binary=z[:, :, 0])
+
+    @pytest.mark.skipif(not ENGRAVED.is_file(), reason="fixture not built")
+    def test_a_vector_page_is_engraved(self):
+        assert page_is_engraved(self._page(self.ENGRAVED)) is True
+
+    def test_a_pdf_that_cannot_be_opened_is_not_engraved(self):
+        """Any doubt answers False: a scan read by one rung loses half its
+        readings silently, and that is the expensive mistake."""
+        assert page_is_engraved(self._page(Path("/nonexistent.pdf"))) is False
+
+    def test_no_path_is_not_engraved(self):
+        assert page_is_engraved(self._page(None)) is False
+
+    @pytest.mark.skipif(not ENGRAVED.is_file(), reason="fixture not built")
+    def test_a_page_index_off_the_end_is_not_engraved(self):
+        assert page_is_engraved(self._page(self.ENGRAVED, 999)) is False
+
+
 class TestReaderSelection:
     def test_the_env_var_restricts_the_rungs(self, monkeypatch):
         """The second rung costs ~140 ms a crop. A caller who measures it worth
@@ -444,6 +475,34 @@ class TestReaderSelection:
 
         monkeypatch.setenv("OMR_DIRECTION_READERS", "")
         assert len(default_readers()) >= 1
+
+    def test_an_explicit_setting_beats_the_classifier(self, monkeypatch):
+        """A caller who names the rungs means it, engraved page or not."""
+        from tools.omr.direction_text import default_readers
+
+        pdf = TestPageIsEngraved.ENGRAVED
+        if not pdf.is_file():
+            pytest.skip("fixture not built")
+        z = np.zeros((2, 2, 3), np.uint8)
+        page = PageImage(pdf_path=pdf, page_index=0, dpi=600,
+                         rgb=z, binary=z[:, :, 0])
+        monkeypatch.setenv("OMR_DIRECTION_READERS", "surya,tesseract")
+        assert len(default_readers(page)) == len(default_readers(None))
+
+    def test_the_first_rung_is_never_dropped(self, monkeypatch):
+        """The classifier may only ever remove the SECOND reader. Dropping the
+        first would leave a page unread rather than merely read once."""
+        from tools.omr.direction_text import default_readers
+
+        pdf = TestPageIsEngraved.ENGRAVED
+        if not pdf.is_file():
+            pytest.skip("fixture not built")
+        monkeypatch.delenv("OMR_DIRECTION_READERS", raising=False)
+        z = np.zeros((2, 2, 3), np.uint8)
+        page = PageImage(pdf_path=pdf, page_index=0, dpi=600,
+                         rgb=z, binary=z[:, :, 0])
+        chosen = [n for n, _fn in default_readers(page)]
+        assert chosen and chosen[0] == "surya"
 
 
 class TestUnionOfRungs:
