@@ -829,11 +829,22 @@ the two-argument form, and check its exit code.
   Slurs section above.** The event model needed nothing; the pairing moved to the staff,
   in page pixels. What remains under the arcs has the right note indices and the wrong
   pitches — note recognition, not slur work.
-- **There is no text detection in the pipeline at all.** Text expressions and tempo
-  marks are **319 pooled edits — the largest single line in the attribution**, and the
-  only large one that is not an export bug. `textDynamic` was the class that caused the
-  Phase 3.4 collapse, so this is a genuinely different kind of work; do not start it
-  expecting the economics of the last five fixes.
+- ~~**There is no text detection in the pipeline at all.**~~ **Direction text is read
+  now, behind `--direction-text` (shipped 2026-09-01, `ceb6714`; current numbers
+  `df16665`).** The words printed inside a system — `legato`, `Allegro con brio` — are
+  read by subtracting every detection from the page's ink, OCRing what is left with
+  Surya, and gating the result on a lexicon of musical terms, so the detector is never
+  touched (`textDynamic` remains the class that caused the Phase 3.4 collapse). On the
+  current base: pooled 0.1861 → **0.1624**, edits 1315 → 1171, `wrong direction`
+  **151 → 7** — every direction on the benchmark is read exactly AND placed on the
+  correct beat, and the 7 that remain are Mahler's `molto` (printed against the staff
+  below, so the band never proposes it) and the `[` / `]` the lexicon refuses because
+  they are not words. **Off by default** because it needs `.venv-surya` and spends
+  ~9 s of OCR on a 21-staff page even with the server resident. ⚠️ The reader's own
+  candidate/read/accepted counts are identical on all six bases it has been measured
+  on while the pooled delta moved four times — the counts are the invariant, the
+  pooled score is not. See
+  [benchmarks/omr-direction-text-2026-09/FINDINGS.md](benchmarks/omr-direction-text-2026-09/FINDINGS.md).
 - **`gap_bridging_counts` does not implement its own docstring.** The prose says the
   band runs from the top line of the upper staff to the bottom line of the lower, and
   argues the gap-only version fails on exactly Beethoven 9 p.25; the code measures the
@@ -912,8 +923,11 @@ START HERE block was three fixes behind until `6a1b601` and says so itself.
    zero notes in all seven of its bars, and two flute staves trading a note. **Re-measure
    this one before working it** — the flute case was the same cross-staff mechanism the
    ledger-ladder fix addressed, so part of this budget may already be gone.
-6. **Text expressions and tempo marks** — 319 pooled edits, the largest single line, and
-   the only large one that is not an export bug.
+6. ~~**Text expressions and tempo marks**~~ — **read now, behind `--direction-text`**
+   (shipped 2026-09-01 as `ceb6714`; on the current base 0.1861 → 0.1624,
+   `wrong direction` 151 → 7 — see the limitations entry above). What remains is a
+   default-on decision (the reader needs `.venv-surya` and ~9 s of OCR per dense page),
+   not reading work.
 
 **The header layer:**
 
