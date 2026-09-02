@@ -32,7 +32,8 @@
     "why_no_dossier": "data/dossiers/ is generated from the same Gradus MusicXML used here as truth, so --dossier would hand the run its own answer key",
     "conf_threshold": 0.25,
     "imgsz": null,
-    "read_direction_text": false
+    "read_direction_text": null,
+    "why_read_direction_text": "null = pass None to transcribe, i.e. the pipeline default (ON since 2026-09-02), which is what `pipeline: CLI defaults` promises; the former `false` pinned the reader OFF while claiming defaults. Force either arm on one tree with scan_eval.py --direction-text / --no-direction-text."
   },
   "rows": [
     {

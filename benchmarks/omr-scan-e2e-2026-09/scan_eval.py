@@ -289,6 +289,15 @@ def main(argv: list[str] | None = None) -> int:
                          "is dpi times the PDF's DECLARED PAGE BOX, and two "
                          "scans of one plate can declare boxes differing 2x. "
                          "Use with --tag so the arm lands in its own fixtures.")
+    ap.add_argument("--direction-text", action=argparse.BooleanOptionalAction,
+                    default=None,
+                    help="force the direction-text reader on or off, overriding "
+                         "the protocol. The protocol pins `read_direction_text` "
+                         "to null — pass None to transcribe, i.e. the pipeline "
+                         "default (ON since 2026-09-02) — so a default scan run "
+                         "reads directions; `--no-direction-text` measures the "
+                         "OFF arm on the same tree. Use with --tag so the arms "
+                         "land in separate fixtures.")
     ap.add_argument("--tag", default="",
                     help="suffix for fixture and row names, for side arms")
     ap.add_argument("--out", type=Path, default=BENCH / "results.json")
@@ -301,6 +310,10 @@ def main(argv: list[str] | None = None) -> int:
     protocol = dict(doc["protocol"])
     if args.dpi is not None:
         protocol["dpi"] = args.dpi
+    # null in the protocol means "use the pipeline default"; the flag forces
+    # either arm so the two can be compared on one tree.
+    if args.direction_text is not None:
+        protocol["read_direction_text"] = args.direction_text
     tag = f".{args.tag}" if args.tag else ""
     wanted = args.rows or [r["row_id"] for r in rows]
     selected = [r for r in rows if r["row_id"] in wanted]
