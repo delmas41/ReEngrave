@@ -54,22 +54,22 @@ adds `len(content)`. Two consequences that shaped everything below:
 
 ## The result
 
-Measured on `main` at `2eee2a9`, immediately before and after:
+Measured on `main` at `dc74488`, immediately before and after:
 
 | | pooled | edits | `wrong direction` |
 |---|--:|--:|--:|
-| baseline | 0.1861 | 1315 | 151 |
-| **with `--direction-text`** | **0.1624** | **1171** | **7** |
+| baseline | 0.1364 | 966 | 151 |
+| **with `--direction-text`** | **0.1138** | **822** | **7** |
 
 Per work, and **every other category is unchanged to the edit** — `wrong note`
-597, `wrong flag/beam` 183, `entire measure` 136, `wrong accidental` 61, `wrong
-slur` 49, all identical on both sides. It is a post-pass that adds a key to
+247, `wrong flag/beam` 197, `entire measure` 130, `wrong accidental` 64, `wrong
+slur` 38, all identical on both sides. It is a post-pass that adds a key to
 measures that already exist.
 
 | work | before | after |
 |---|--:|--:|
-| brahms-sym1-mvt1 | 0.2563 (1008) | **0.2167 (880)** |
-| beethoven-sym5-mvt1 | 0.1775 (221) | **0.1626 (205)** |
+| brahms-sym1-mvt1 | 0.1709 (675) | **0.1342 (547)** |
+| beethoven-sym5-mvt1 | 0.1649 (205) | **0.1501 (189)** |
 | mahler-sym5-mvt1 | 0.0455 (86) | 0.0455 (86) |
 
 **All 14 of Brahms's directions and Beethoven's one are read exactly right, with
@@ -91,6 +91,7 @@ it is worth kept changing while nothing in it changed:
 | `6f64bfa` | slurs | 0.2209 | 61 |
 | `0ec4849` | placement rule corrected here | 0.2209 | 47 |
 | `2eee2a9` | **the dot-threshold fix** | 0.1861 | **7** |
+| `dc74488` | stems, beams, voicing, viola; and the union rung | 0.1364 | **7** |
 
 Two of those movements are worth understanding, because neither is about this
 reader:
@@ -113,7 +114,14 @@ the number to watch rather than the pooled score — see finding 4 for why:
 | beethoven | 2 | 2 | 1 | `(♩=108)` |
 | mahler | 0 | 0 | 0 | — |
 
-Identical on all six mains. It is the invariant the pooled score is not.
+Identical on all seven mains. It is the invariant the pooled score is not.
+
+**And the reader's own contribution has been −144 edits on every tree since the
+dot fix**, while the baseline it is subtracted from fell from 0.1861 to 0.1364
+underneath it. `wrong direction` starts at 151 and ends at 7 regardless of what
+else has landed. That is what a layer looks like when it is finished and the
+rest of the pipeline is not: its number stops moving and its SHARE of the total
+climbs, from 8.8% of the budget when this began to 15.6% of the baseline now.
 
 ## The findings, in the order they were forced
 

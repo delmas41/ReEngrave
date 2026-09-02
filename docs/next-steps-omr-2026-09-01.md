@@ -251,8 +251,11 @@ amplifying.
 
 ### 4. ~~Text expressions and tempo marks~~ — DONE 2026-09-01
 
-Pooled **0.1861 -> 0.1624** on `2eee2a9`, 1315 -> 1171 edits, `wrong direction`
-151 -> **7**, and every other category unchanged to the edit. Every direction on
+Pooled **0.1364 -> 0.1138** on `dc74488`, 966 -> 822 edits, `wrong direction`
+151 -> **7**, and every other category unchanged to the edit. The reader's own
+contribution has been -144 edits on every tree since the dot fix, while the
+baseline under it fell from 0.1861 to 0.1364 — the layer's number stopped moving
+and its SHARE of the budget climbed, 8.8% when this began to 15.6% now. Every direction on
 the benchmark is now read exactly and placed on the correct beat; the 7 are
 Mahler's `molto` (never proposed — printed against the staff below it) and the
 `[` / `]` the lexicon refuses because they are not words. `tools/omr/direction_text.py`,

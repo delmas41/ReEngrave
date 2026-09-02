@@ -55,7 +55,7 @@
         8,
         8
       ],
-      "notes": 82
+      "notes": 81
     },
     "detected": {
       "systems": 1,
@@ -64,11 +64,11 @@
     "notes": {
       "part_aligned": true,
       "truth_notes": 81,
-      "omr_notes": 82,
-      "pitch_matched": 80,
-      "pitch_recall": 0.988,
-      "pitch_precision": 0.976,
-      "duration_ok_on_matched": 80,
+      "omr_notes": 81,
+      "pitch_matched": 81,
+      "pitch_recall": 1.0,
+      "pitch_precision": 1.0,
+      "duration_ok_on_matched": 81,
       "duration_rate": 1.0
     },
     "rhythm_reconciliations": 0,
@@ -103,20 +103,20 @@
       "name": "beethoven-sym5-mvt1",
       "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/quirky-lalande-1bb7bd/benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym5-mvt1.omr.musicxml",
       "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/quirky-lalande-1bb7bd/benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym5-mvt1.musicxml",
-      "omr_ned": 0.1625693893735131,
-      "omr_ed": 205,
-      "pred_symbols": 606,
+      "omr_ned": 0.15011914217633043,
+      "omr_ed": 189,
+      "pred_symbols": 604,
       "truth_symbols": 655,
       "categories": {
-        "wrong note": 11,
+        "wrong note": 2,
         "wrong note head": 2,
         "wrong flag/beam": 34,
-        "wrong tie": 6,
+        "wrong tie": 5,
         "wrong ornament": 15,
         "wrong lyric": 15,
         "wrong tempo": 1,
         "wrong dynamic": 10,
-        "entire measure insert/delete": 111
+        "entire measure insert/delete": 105
       }
     }
   },
@@ -182,7 +182,7 @@
         7,
         7
       ],
-      "notes": 508
+      "notes": 506
     },
     "detected": {
       "systems": 1,
@@ -191,12 +191,12 @@
     "notes": {
       "part_aligned": true,
       "truth_notes": 505,
-      "omr_notes": 508,
-      "pitch_matched": 463,
-      "pitch_recall": 0.917,
-      "pitch_precision": 0.911,
-      "duration_ok_on_matched": 431,
-      "duration_rate": 0.931
+      "omr_notes": 506,
+      "pitch_matched": 483,
+      "pitch_recall": 0.956,
+      "pitch_precision": 0.955,
+      "duration_ok_on_matched": 479,
+      "duration_rate": 0.992
     },
     "rhythm_reconciliations": 0,
     "dossier_warnings": {},
@@ -228,15 +228,15 @@
       "name": "brahms-sym1-mvt1",
       "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/quirky-lalande-1bb7bd/benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.omr.musicxml",
       "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/quirky-lalande-1bb7bd/benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.musicxml",
-      "omr_ned": 0.21669539522285153,
-      "omr_ed": 880,
-      "pred_symbols": 1978,
+      "omr_ned": 0.1341672798626441,
+      "omr_ed": 547,
+      "pred_symbols": 1994,
       "truth_symbols": 2083,
       "categories": {
-        "wrong note": 570,
-        "wrong flag/beam": 140,
-        "wrong accidental": 50,
-        "wrong tie": 7,
+        "wrong note": 229,
+        "wrong flag/beam": 154,
+        "wrong accidental": 53,
+        "wrong tie": 9,
         "wrong lyric": 6,
         "wrong clef": 1,
         "wrong timesig": 4,
@@ -245,7 +245,7 @@
         "wrong barline": 21,
         "wrong direction": 2,
         "wrong dynamic": 16,
-        "wrong slur": 49,
+        "wrong slur": 38,
         "entire measure insert/delete": 7
       }
     }
