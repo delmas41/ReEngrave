@@ -329,9 +329,13 @@ def _lily_event(event: dict[str, Any]) -> str:
     # precedes a start on the same note — `sorted` puts "start" first, hence
     # the ordering is handled in `_lily_slur_suffix`.
     slur_suffix = _lily_slur_suffix(event)
+    # `\fermata` is an articulation in LilyPond and attaches to a rest exactly
+    # as it does to a note, which is the case that matters on an orchestral
+    # page — the mark usually sits over a whole-bar rest.
+    fermata_suffix = "\\fermata" if event.get("fermata") else ""
 
     if event["kind"] == "rest":
-        return f"r{lily_suffix}{dot_str}"
+        return f"r{lily_suffix}{dot_str}{fermata_suffix}"
 
     # Chord
     pitches = []
@@ -342,9 +346,10 @@ def _lily_event(event: dict[str, Any]) -> str:
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
     if len(pitches) == 1:
-        return f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}{slur_suffix}"
+        return (f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}"
+                f"{fermata_suffix}{slur_suffix}")
     return (f"<{' '.join(pitches)}>{lily_suffix}{dot_str}"
-            f"{tie_suffix}{slur_suffix}")
+            f"{tie_suffix}{fermata_suffix}{slur_suffix}")
 
 
 def _lily_measure(events: list[dict[str, Any]]) -> str:
@@ -411,6 +416,7 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     per_measure_time_sig: list[dict[str, Any] | None] = []
     for measure in staff.get("measures", []):
         events = group_chords_in_measure(measure.get("detections", []))
+        annotate_fermatas(events, measure.get("detections", []))
         per_measure_events.append(events)
         per_measure_time_sig.append(measure.get("time_signature") or time_sig)
         voices = split_events_into_voices(events)
@@ -670,7 +676,8 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               beam_states: dict[int, str] | None = None,
               slur_states: list[tuple[int, str]] | None = None,
               time_modification: dict[str, int] | None = None,
-              tuplet_state: str | None = None) -> str:
+              tuplet_state: str | None = None,
+              fermata: bool = False) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -730,12 +737,72 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     # <tuplet> follows <slur> in the <notations> content model.
     if tuplet_state:
         notations.append(f'{indent}    <tuplet type="{tuplet_state}" number="1"/>')
+    # A fermata hangs off the note OR the rest — the commonest carrier on an
+    # orchestral page is a whole-bar rest, which is why this is not folded in
+    # with the articulations.
+    if fermata:
+        notations.append(f'{indent}    <fermata type="upright"/>')
     if notations:
         lines.append(f"{indent}  <notations>")
         lines.extend(notations)
         lines.append(f"{indent}  </notations>")
     lines.append(f"{indent}</note>")
     return "\n".join(lines)
+
+
+def annotate_fermatas(events: list[dict[str, Any]],
+                      detections: list[dict[str, Any]]) -> int:
+    """Mark the event under each detected fermata, in place. Returns how many.
+
+    The sixth instance of the shape this file keeps finding: `fermataAbove` is
+    in the DSv2 class space, the detector reads it on the engraved Beethoven
+    page at confidence 0.90-0.95, and `grep -c fermata export.py` returned 0 —
+    every one was dropped on the way out.
+
+    A fermata belongs to whatever is sounding under it, which on an orchestral
+    page is usually a WHOLE-BAR REST rather than a note; pairing is therefore by
+    x alone, against notes and rests alike, and never by pitch. The mark goes to
+    the event whose x-span contains the fermata's centre, or failing that to the
+    nearest event centre in the bar — a fermata over a bar's only rest is
+    engraved at the bar's middle, while the rest glyph sits at its own centre,
+    so requiring containment alone would miss the commonest case of all.
+    """
+    marks = [
+        d["bbox_page"] for d in detections
+        if "fermata" in (d.get("class") or "").lower()
+        and len(d.get("bbox_page") or ()) == 4
+    ]
+    if not marks or not events:
+        return 0
+
+    def span(event: dict[str, Any]) -> tuple[float, float] | None:
+        boxes = [
+            h.get("bbox_page") for h in (event.get("noteheads") or [])
+            if h.get("bbox_page") and len(h["bbox_page"]) == 4
+        ]
+        rest = event.get("rest") or {}
+        if rest.get("bbox_page") and len(rest["bbox_page"]) == 4:
+            boxes.append(rest["bbox_page"])
+        if not boxes:
+            return None
+        return (min(b[0] for b in boxes),
+                max(b[0] + b[2] for b in boxes))
+
+    spans = [(i, span(e)) for i, e in enumerate(events)]
+    spans = [(i, s) for i, s in spans if s is not None]
+    if not spans:
+        return 0
+
+    marked = 0
+    for box in marks:
+        centre = box[0] + box[2] / 2.0
+        hit = next((i for i, (lo, hi) in spans if lo <= centre <= hi), None)
+        if hit is None:
+            hit = min(spans, key=lambda p: abs((p[1][0] + p[1][1]) / 2.0 - centre))[0]
+        if not events[hit].get("fermata"):
+            events[hit]["fermata"] = True
+            marked += 1
+    return marked
 
 
 def annotate_beams(events: list[dict[str, Any]],
@@ -1463,6 +1530,7 @@ def _mxl_voice_events(
             lines.append(_mxl_note(
                 None, "", xml_type, dots, beats, divisions,
                 is_chord=False, is_rest=True, indent=indent, voice=voice,
+                fermata=bool(event.get("fermata")),
             ))
             total_dur += dur_units
         else:
@@ -1481,6 +1549,8 @@ def _mxl_voice_events(
                     # note is worth — but the bracket is drawn once.
                     time_modification=time_modification,
                     tuplet_state=(tuplet_state if ni == 0 else None),
+                    # A chord takes one fermata, through its first note.
+                    fermata=(bool(event.get("fermata")) and ni == 0),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.
@@ -1549,6 +1619,7 @@ def _staff_measures_xml(
         # Per voice: interleaved voices would break each other's runs.
         for _voice_events in voices:
             annotate_beams(_voice_events, measure.get("detections", []))
+            annotate_fermatas(_voice_events, measure.get("detections", []))
         # Marks belong to the staff, not to a voice, so they go on voice 1
         # rather than being emitted once per voice. The dynamics the detector
         # drew and the words `direction_text` read are both `<direction>`
@@ -1790,6 +1861,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
+                        annotate_fermatas(_voice_events, measure.get("detections", []))
                     # Marks belong to the staff, not to a voice, so they go on
                     # voice 1 rather than being emitted once per voice. The
                     # dynamics the detector drew and the words `direction_text`

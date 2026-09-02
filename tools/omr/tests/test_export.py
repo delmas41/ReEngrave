@@ -15,6 +15,7 @@ from tools.omr.voicing import group_chords_in_measure
 
 from tools.omr.export import (
     annotate_beams,
+    annotate_fermatas,
     annotate_slurs_in_slot,
     annotate_slurs_in_staff,
     measure_dynamics,
@@ -1271,3 +1272,99 @@ class TestSlursAcrossSystemBreaks:
         # four measures: nothing, open at the end of system 1, close at the
         # start of system 2, nothing
         assert kinds == [[], ["start"], ["stop"], []]
+
+
+# ─── Fermatas: detected since Phase 3.3, exported since 2026-09-01 ──────────
+#
+# `fermataAbove` is in the DSv2 class space and the detector reads it at 0.90 -
+# 0.95 on the engraved Beethoven page. `grep -c fermata export.py` returned 0:
+# the sixth signal in this file's history that was computed and then dropped on
+# the way out. The commonest carrier on an orchestral page is a WHOLE-BAR REST,
+# which is why pairing is by x against notes and rests alike.
+
+
+def _head(x, w=40, pitch="C4"):
+    return {"bbox_page": [x, 100, w, 40], "pitch": pitch}
+
+
+def _note_event(x, w=40, pitch="C4"):
+    return {"kind": "chord", "duration_beats": 1.0, "duration_type": "quarter",
+            "dots": 0, "noteheads": [_head(x, w, pitch)], "rest": None,
+            "x_position": x}
+
+
+def _rest_event(x, w=60):
+    return {"kind": "rest", "duration_beats": 2.0, "duration_type": "half",
+            "dots": 0, "noteheads": [], "x_position": x,
+            "rest": {"bbox_page": [x, 100, w, 30]}}
+
+
+def _fermata(x, w=50):
+    return {"class": "fermataAbove", "category": "ornament",
+            "bbox_page": [x, 20, w, 30]}
+
+
+class TestAnnotateFermatas:
+
+    def test_a_fermata_over_a_rest_marks_the_rest(self):
+        """The case that matters: 22 of the benchmark's 36 sit over rests."""
+        events = [_rest_event(100)]
+        assert annotate_fermatas(events, [_fermata(110)]) == 1
+        assert events[0]["fermata"] is True
+
+    def test_a_fermata_over_a_note_marks_the_note(self):
+        events = [_note_event(100)]
+        assert annotate_fermatas(events, [_fermata(105)]) == 1
+        assert events[0]["fermata"] is True
+
+    def test_the_mark_goes_to_the_event_it_sits_over(self):
+        events = [_note_event(100), _note_event(400), _note_event(700)]
+        annotate_fermatas(events, [_fermata(405)])
+        assert [bool(e.get("fermata")) for e in events] == [False, True, False]
+
+    def test_a_fermata_between_events_goes_to_the_nearer(self):
+        # A fermata over a bar's only rest is engraved at the BAR's middle,
+        # while the rest glyph sits at its own centre — so containment alone
+        # would miss the commonest case of all.
+        events = [_rest_event(100, w=60), _note_event(900)]
+        annotate_fermatas(events, [_fermata(200)])
+        assert events[0].get("fermata") and not events[1].get("fermata")
+
+    def test_no_detections_marks_nothing(self):
+        events = [_note_event(100)]
+        assert annotate_fermatas(events, []) == 0
+        assert "fermata" not in events[0]
+
+    def test_two_fermatas_on_one_event_count_once(self):
+        events = [_note_event(100)]
+        assert annotate_fermatas(events, [_fermata(105), _fermata(108)]) == 1
+
+    def test_it_is_safe_on_a_measure_with_no_events(self):
+        assert annotate_fermatas([], [_fermata(100)]) == 0
+
+
+class TestFermataReachesTheOutput:
+
+    def test_musicxml_puts_it_in_notations(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", fermata=True)
+        assert "<notations>" in xml and '<fermata type="upright"/>' in xml
+
+    def test_musicxml_omits_it_when_absent(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ")
+        assert "fermata" not in xml
+
+    def test_a_rest_can_carry_one(self):
+        xml = _mxl_note(None, "", "half", 0, 2.0, 4, is_chord=False,
+                        is_rest=True, indent="  ", fermata=True)
+        assert "<rest/>" in xml and '<fermata type="upright"/>' in xml
+
+    def test_the_notations_block_stays_single(self):
+        """A second <notations> per note is invalid MusicXML."""
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", fermata=True,
+                        tied_to_next=True, slur_states=[(1, "start")])
+        assert xml.count("<notations>") == 1
+        for tag in ("<tied", "<slur", "<fermata"):
+            assert tag in xml
