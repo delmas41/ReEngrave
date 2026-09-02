@@ -1,0 +1,278 @@
+[
+  {
+    "work_id": "mozart-sym40-mvt1",
+    "measures": [
+      1,
+      6
+    ],
+    "truth_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym40-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym40-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 11,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 164
+    },
+    "omr": {
+      "parts": 11,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 164
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 11
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 164,
+      "omr_notes": 164,
+      "pitch_matched": 125,
+      "pitch_recall": 0.762,
+      "pitch_precision": 0.762,
+      "duration_ok_on_matched": 119,
+      "duration_rate": 0.952
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "direction_text": null,
+    "omr_ned": {
+      "name": "mozart-sym40-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym40-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym40-mvt1.musicxml",
+      "omr_ned": 0.22602739726027396,
+      "omr_ed": 330,
+      "pred_symbols": 672,
+      "truth_symbols": 788,
+      "categories": {
+        "wrong note": 135,
+        "wrong flag/beam": 65,
+        "wrong articulation": 102,
+        "wrong direction": 14,
+        "wrong dynamic": 3,
+        "wrong slur": 11
+      }
+    }
+  },
+  {
+    "work_id": "mozart-sym41-mvt1",
+    "measures": [
+      1,
+      6
+    ],
+    "truth_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym41-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym41-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 17,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 228
+    },
+    "omr": {
+      "parts": 17,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 228
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 17
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 228,
+      "omr_notes": 228,
+      "pitch_matched": 226,
+      "pitch_recall": 0.991,
+      "pitch_precision": 0.991,
+      "duration_ok_on_matched": 105,
+      "duration_rate": 0.465
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "direction_text": null,
+    "omr_ned": {
+      "name": "mozart-sym41-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym41-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/mozart-sym41-mvt1.musicxml",
+      "omr_ned": 0.5522660818713451,
+      "omr_ed": 1511,
+      "pred_symbols": 1282,
+      "truth_symbols": 1454,
+      "categories": {
+        "wrong note": 1363,
+        "wrong flag/beam": 23,
+        "wrong tuplet": 32,
+        "wrong direction": 14,
+        "wrong dynamic": 12,
+        "wrong slur": 67
+      }
+    }
+  },
+  {
+    "work_id": "brahms-sym4-mvt1",
+    "measures": [
+      1,
+      6
+    ],
+    "truth_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/brahms-sym4-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/brahms-sym4-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 20,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 172
+    },
+    "omr": {
+      "parts": 20,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 175
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 20
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 172,
+      "omr_notes": 175,
+      "pitch_matched": 165,
+      "pitch_recall": 0.959,
+      "pitch_precision": 0.943,
+      "duration_ok_on_matched": 154,
+      "duration_rate": 0.933
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "direction_text": null,
+    "omr_ned": {
+      "name": "brahms-sym4-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/brahms-sym4-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/brahms-sym4-mvt1.musicxml",
+      "omr_ned": 0.2548476454293629,
+      "omr_ed": 460,
+      "pred_symbols": 856,
+      "truth_symbols": 949,
+      "categories": {
+        "wrong note": 216,
+        "wrong note head": 2,
+        "wrong flag/beam": 30,
+        "wrong accidental": 10,
+        "wrong tie": 2,
+        "wrong articulation": 49,
+        "wrong lyric": 6,
+        "wrong direction": 48,
+        "wrong dynamic": 9,
+        "wrong diminuendo": 2,
+        "wrong slur": 33,
+        "entire measure insert/delete": 53
+      }
+    }
+  }
+]

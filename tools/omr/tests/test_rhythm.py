@@ -321,12 +321,14 @@ class TestParseTimeSignature:
         # the clef, not jammed against x==0 (which is a misread; see below).
         d = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=50)
         result = parse_time_signature([d])
-        assert result == {"numerator": 4, "denominator": 4, "raw": "C"}
+        assert result == {"numerator": 4, "denominator": 4, "raw": "C",
+                          "symbol": "common"}
 
     def test_cut_common_shortcut(self):
         d = FakeDet(category="time_sig_digit", smufl_name="timeSigCutCommon", x_canonical=50)
         result = parse_time_signature([d])
-        assert result == {"numerator": 2, "denominator": 2, "raw": "C|"}
+        assert result == {"numerator": 2, "denominator": 2, "raw": "C|",
+                          "symbol": "cut"}
 
     def test_no_time_sig_returns_none(self):
         assert parse_time_signature([]) is None
@@ -374,7 +376,7 @@ class TestParseTimeSignature:
         nh = FakeDet(category="notehead", smufl_name="noteheadBlackOnLine")
         ts = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=50)
         assert parse_time_signature([nh, ts]) == {
-            "numerator": 4, "denominator": 4, "raw": "C"
+            "numerator": 4, "denominator": 4, "raw": "C", "symbol": "common"
         }
 
     def test_rejects_left_edge_misread(self):
@@ -390,7 +392,8 @@ class TestParseTimeSignature:
     def test_keeps_glyph_just_past_margin(self):
         # A real time sig a bit past the margin (x >= threshold) is kept.
         d = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=16)
-        assert parse_time_signature([d]) == {"numerator": 4, "denominator": 4, "raw": "C"}
+        assert parse_time_signature([d]) == {"numerator": 4, "denominator": 4,
+                                             "raw": "C", "symbol": "common"}
 
 
 # ─── _deduplicate_beams ────────────────────────────────────────────────────

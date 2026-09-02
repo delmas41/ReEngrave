@@ -245,4 +245,144 @@ pages every fix was measured on.
 
 ## 4. Fixes and refusals
 
-*(in progress)*
+### FIX 1 — the time signature carries its glyph (`symbol="common"` / `"cut"`)
+
+**The canonical three do not regress.** Measured on the same tree, same
+harness, in this benchmark\'s own `--work-dir`:
+
+| work | before | after | |
+|---|--:|--:|---|
+| `beethoven-sym5-mvt1` | 0.1649 / 205 | 0.1649 / 205 | identical |
+| `mahler-sym5-mvt1` | 0.0455 / 86 | 0.0455 / 86 | identical |
+| `brahms-sym1-mvt1` | 0.1709 / 675 | **0.1707 / 674** | **−1 edit** |
+| **pooled** | 0.1364 / 966 | **0.1363 / 965** | |
+
+⚠️ **Brahms 1 moved by one edit and it is NOT a recognition gain — it is a
+misread reported more completely.** That page is 6/8, and on one staff of
+twenty-one the detector reads `timeSigCommon`. `brahms-sym1-mvt1` has
+`constant_meter: false`, so `expected_meter` abstains and `apply_meter` never
+runs — the misread stands, exactly as it did before. What changed is that the
+export now says which glyph was read, so that staff emits
+`<time symbol="common">4/4` instead of `<time>4/4` against a truth of `6/8`,
+and musicdiff happens to price the two forms one edit apart. Counted:
+**Brahms gains exactly 1 `symbol=` attribute, Beethoven and Mahler gain 0**, so
+the other two works are byte-identical by construction rather than by
+comparison.
+
+That is worth stating plainly rather than banking: the fix is justified by the
+five works below, not by this edit.
+
+### What it bought — 273 edits, and every work moved by exactly 3 x its staves
+
+| work | before | after | delta | staves x 3 |
+|---|--:|--:|--:|--:|
+| `bruckner-sym5-mvt1` | 0.1431 / 284 | **0.1067 / 209** | −75 | 25 x 3 = 75 |
+| `brahms-sym4-mvt1` | 0.2849 / 520 | **0.2548 / 460** | −60 | 20 x 3 = 60 |
+| `dvorak-sym9-mvt4` | 0.4106 / 294 | **0.3438 / 240** | −54 | 18 x 3 = 54 |
+| `mozart-sym41-mvt1` | 0.5674 / 1562 | **0.5523 / 1511** | −51 | 17 x 3 = 51 |
+| `mozart-sym40-mvt1` | 0.2468 / 363 | **0.2260 / 330** | −33 | 11 x 3 = 33 |
+| `beethoven-sym3-mvt1` | 0.1553 / 252 | 0.1553 / 252 | **0** | 3/4, no glyph |
+| | | | **−273** | |
+
+**Every delta is exactly three times the staff count**, which is the strongest
+form this evidence could take: the mechanism predicted the size of its own fix
+before the run, per work, and was right five times out of five. `wrong timesig`
+has disappeared from the category list of every batch.
+
+`beethoven-sym3-mvt1` is the control and is **identical to the edit** — it is in
+3/4, prints digits, and nothing about it changes. The exports confirm the same
+thing by count: Mozart 40 emits 11 `<time symbol="cut">` for its 11 staves and
+Mozart 41 emits 17 `<time symbol="common">` for its 17, matching their truths
+exactly, while Beethoven 5 and Mahler 5 emit none at all.
+
+### What the fix is
+
+Three changes, and the division between them is the point:
+
+1. `rhythm.parse_time_signature` sets a new **`symbol`** key ("common" / "cut")
+   on the two branches where a `timeSigCommon` / `timeSigCutCommon` GLYPH was
+   detected.
+2. `dossier.apply_meter` keeps that `symbol` when the detected numbers equal
+   the dossier\'s, and drops it otherwise.
+3. `export.to_musicxml` emits `symbol=` from it.
+
+⚠️ **`symbol` is a new key rather than a reuse of `raw`, and that is
+load-bearing.** `raw` looks like it already holds the glyph — it is `"C"` for
+common time and `"C|"` for cut — but `_propagated_meter` **synthesises** it from
+the winning numbers (`"C" if (num, den) == (4, 4)`), so a `raw` of `"C"` is not
+evidence that a C was printed. Exporting off `raw` would have stamped
+`symbol="common"` on every 4/4 page in the corpus whether or not the glyph is
+there, which is the same class of mistake as inferring a signal that was never
+read. `symbol` is set in exactly one place, off the glyph.
+
+**The numbers come from the work; the glyph comes from the page.** A dossier is
+generated from one MusicXML file and can say that a movement is in 2/2 — it
+cannot say whether the edition in hand set that as `¢` or as two digits, because
+that is a fact about the engraving. So the symbol could not have come from the
+dossier and did not need to: the detector reads it at 0.89-0.96.
+
+### Refused along the way
+
+- **Deriving the symbol from the numbers.** Rejected before measurement, on the
+  grounds above: it asserts a difference nobody read. The distinction is now
+  guarded by `test_raw_alone_does_not_produce_a_symbol`.
+- **Teaching the LilyPond exporter to match.** `\\time 4/4` already renders as a
+  C in LilyPond and `\\time 2/2` as a stroked C, so the LilyPond path is right
+  for these five works by accident and wrong for a page that prints digits —
+  `\\numericTimeSignature` is the lever. Not touched: LilyPond is not what
+  OMR-NED scores, and an unmeasured change to it is churn.
+
+---
+
+## 5. Two findings that are about the MEASUREMENT, not the pipeline
+
+### `pitch_recall` understates a divisi part, badly
+
+`mozart-sym40-mvt1` reports note recall **0.762** and puts **41.5% of its notes
+in `order` bars** — 96 of them the Viola. Reading the two files side by side,
+the Viola is not misread at all:
+
+    TRUTH  m1: B-3(v1) B-3(v1) G4(v1) G4(v1) ... G3(v2) G3(v2)
+    PRED   m1: G3/B-3(v1) G3/B-3(v1) G4(v1) G4(v1) ... B-3(v2) B-3(v2)
+
+Every pitch is present on both sides. The truth separates the violas\' divisi
+into two independent VOICES — an inner G3 held under an alternating line — while
+the prediction reads the page, which prints G3 and B♭3 as one two-note chord on
+one stem. The disagreement is about voice assignment, a semantic layer the
+engraving does not carry, and the sequence aligner charges it as a quarter of
+the part\'s notes.
+
+This is the same caveat the Brahms Viola work recorded from the other side
+("writing a double stop high-to-low is free" in OMR-NED, and not free in note
+recall). It is worth carrying: **on a divisi part, `pitch_recall` is not a
+recognition number.** Mozart 40\'s op list confirms it — the Viola\'s 160 edits
+are 88 articulation, 40 flag/beam and 32 wrong note, none of them pitch.
+
+### `dvorak-sym9-mvt4` is a 3-bar row and should be read as one
+
+The one-page fit shrank its excerpt to 3 measures against everyone else\'s 6-8,
+so its 0.4106 rests on a third of the symbols and is the noisiest ratio in the
+table.
+
+---
+
+## 6. Recorded, not fixed
+
+- **The margin-label lexicon is missing two English plurals.**
+  `instruments.lookup("Oboes")` and `lookup("Cellos")` both return `None`,
+  while `Flutes`, `Violins`, `Violas`, `Bassoons`, `Horns` and `Trumpets` all
+  match. It is an inconsistency rather than a decision — `Oboe` has aliases
+  `(oboe, oboen, oboi, hoboen, hautbois, ob)` and simply never got its plural.
+  Batch 2 dropped a real `'Oboes'` for it. **Not fixed here on purpose:** a new
+  label changes the part-staff join, which changes seeded clefs and keys, which
+  changes the score — so it needs its own measured run and must not be folded
+  into another fix\'s numbers.
+- **Two labels lost their leading characters** — `'larinetti in B.'`
+  (Clarinetti) and `'mpani in C-G'` (Timpani), on LilyPond pages whose text
+  layer contains the names in full (`'Flauto.'`, `'Oboi.'` read cleanly on the
+  same page). That is a reader/window fault, not a lexicon one, and the two
+  should not be confused: adding `larinetti` as an alias would paper over it.
+- **`tchaikovsky-sym6-mvt2` carries `shift:-4` on the Fagotti (2 bars) and
+  Violoncello (1 bar)** — 11 notes. `shift:k` is the misfitted-staff-window /
+  wrong-clef signature the Brahms Violin 1 work chased. Small here, and the
+  only instance of it in the corpus.

@@ -35,7 +35,7 @@ is printed in the space above it, half a staff space up. See
 
 from __future__ import annotations
 
-from collections import Counter
+from collections import Counter, defaultdict
 from typing import Any
 
 from .voicing import group_chords_in_measure, split_events_into_voices
@@ -200,6 +200,16 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
     a cell, if any. Returns `{numerator, denominator, raw}` or None if no
     time sig markers were seen.
 
+    ⚠️ `symbol` AND `raw` ARE NOT THE SAME FACT, and only one of them is
+    evidence. `symbol` ("common" / "cut") is set ONLY here, and only when a
+    `timeSigCommon` / `timeSigCutCommon` GLYPH was detected — it says what was
+    printed on the page. `raw` is a display string that `_propagated_meter`
+    synthesises from the numbers alone ("C" for any 4/4, "C|" for any 2/2), so
+    a `raw` of "C" is not evidence that a C was printed. A page setting 4/4 in
+    digits and a page setting it as C are different engravings and MusicXML
+    distinguishes them; deriving the glyph from the numbers would assert the
+    difference without having read it. Absent `symbol` means digits.
+
     Algorithm:
       0. Drop glyphs at the extreme left edge (`_timesig_at_left_edge`) —
          orchestral instrument-number misreads clamp there.
@@ -218,9 +228,11 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
         if _timesig_at_left_edge(d):
             continue  # margin / instrument-number misread
         if cls == "timesigcommon":
-            return {"numerator": 4, "denominator": 4, "raw": "C"}
+            return {"numerator": 4, "denominator": 4, "raw": "C",
+                    "symbol": "common"}
         if cls in ("timesigcuttime", "timesigcutcommon"):
-            return {"numerator": 2, "denominator": 2, "raw": "C|"}
+            return {"numerator": 2, "denominator": 2, "raw": "C|",
+                    "symbol": "cut"}
         # timesigN → digit
         if cls.startswith("timesig") and len(cls) > len("timesig"):
             tail = cls[len("timesig"):]
@@ -531,6 +543,11 @@ def _dominant_detected_meter(
     Assumes `drop_uncorroborated_meter_changes` has already run over the page —
     it is what keeps a misread in the MIDDLE of a staff from voting at all."""
     votes: Counter[tuple[int, int]] = Counter()
+    # The GLYPH each voter saw, kept separately from the numbers. A symbol may
+    # only travel if a reading actually carried one — see the warning in
+    # `parse_time_signature`. Synthesising it from the winning numbers would
+    # stamp `symbol="common"` on every 4/4 page whether or not a C is printed.
+    symbol_votes: dict[tuple[int, int], Counter[str]] = defaultdict(Counter)
     n_staves = 0
     for system in page.get("systems", []):
         for staff in system.get("staves", []):
@@ -542,7 +559,10 @@ def _dominant_detected_meter(
                 if not _is_propagatable_meter(ts):
                     continue
                 # The meter this staff opens in — its one vote.
-                votes[(ts.get("numerator"), ts.get("denominator"))] += 1
+                key = (ts.get("numerator"), ts.get("denominator"))
+                votes[key] += 1
+                if ts.get("symbol"):
+                    symbol_votes[key][ts["symbol"]] += 1
                 break
     if not votes:
         return None
@@ -552,7 +572,7 @@ def _dominant_detected_meter(
     if count < needed or count / total < min_fraction:
         return None
     raw = "C" if (num, den) == (4, 4) else "C|" if (num, den) == (2, 2) else f"{num}/{den}"
-    return {
+    out = {
         "numerator": num,
         "denominator": den,
         "raw": raw,
@@ -560,6 +580,10 @@ def _dominant_detected_meter(
         "votes": count,
         "voters": total,
     }
+    seen = symbol_votes.get((num, den))
+    if seen:
+        out["symbol"] = seen.most_common(1)[0][0]
+    return out
 
 
 def drop_uncorroborated_meter_changes(

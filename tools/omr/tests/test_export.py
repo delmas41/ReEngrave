@@ -294,6 +294,47 @@ class TestEmptyMeasurePadding:
         assert "<type>whole</type>" in out
 
 
+class TestTimeSignatureSymbol:
+    """`4/4` and a common-time `C` are one bar length and two engravings.
+
+    musicdiff charges the difference as `extrainfoedit`, a flat 3 edits per
+    staff — 270 over 5 works of the widened corpus, and 0 on the three the
+    benchmark used to be, all of which print digit meters. The detector reads
+    both glyphs at confidence 0.89-0.96; only the export was dropping them.
+    """
+
+    def test_common_time_carries_its_symbol(self):
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4, "symbol": "common"}))
+        assert '<time symbol="common">' in out
+
+    def test_cut_common_carries_its_symbol(self):
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 2, "denominator": 2, "symbol": "cut"}))
+        assert '<time symbol="cut">' in out
+
+    def test_a_digit_meter_gets_no_symbol(self):
+        """Absent a reading the export must say nothing, not guess. A 4/4 set
+        in digits and one set as C are different pages."""
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4}))
+        assert "<time>" in out
+        assert "symbol=" not in out
+
+    def test_raw_alone_does_not_produce_a_symbol(self):
+        """`raw` is synthesised from the numbers by `_propagated_meter` ("C"
+        for any 4/4), so it is not evidence that a C was printed. Only
+        `symbol`, set where the glyph was detected, may reach the export."""
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4, "raw": "C"}))
+        assert "symbol=" not in out
+
+    def test_an_unknown_symbol_is_refused(self):
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4, "symbol": "single-number"}))
+        assert "symbol=" not in out
+
+
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────
 
 

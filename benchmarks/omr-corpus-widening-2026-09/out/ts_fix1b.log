@@ -1,0 +1,56 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'Oboes' — these are the strings to add to tools/omr/instruments.py
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+bruckner-sym5-mvt1         8    25/25       8/8       105/105      0.962  0.962  1.000  clean
+dvorak-sym9-mvt4           3    18/19       3/3        40/40       0.975  0.975  1.000  clean
+beethoven-sym3-mvt1        8    19/19       8/8        80/80       0.975  0.975  1.000  clean
+
+OMR-NED (pooled over 3 scores): 0.1638   [lower is better; 0 = identical]
+  701 symbol edits over 2262 truth + 2018 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+bruckner-sym5-mvt1               0.1067     209    1007     952  wrong note
+beethoven-sym3-mvt1              0.1553     252     882     741  entire measure insert/delete
+dvorak-sym9-mvt4                 0.3438     240     373     325  wrong note
+
+where the edits are (pooled):
+  wrong note                                 195   27.8%
+  entire measure insert/delete               175   25.0%
+  wrong direction                            111   15.8%
+  wrong articulation                          53    7.6%
+  entire staff insert/delete                  42    6.0%
+  wrong dynamic                               29    4.1%
+  (13 more)                                   96   13.7%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/ts_fix1b.json

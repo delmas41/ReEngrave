@@ -101,6 +101,52 @@ def test_apply_meter_fills_and_overrides():
     assert [w["read"] for w in warnings] == ["7/24"]
 
 
+def test_apply_meter_keeps_the_glyph_the_page_printed():
+    """The numbers come from the work, the GLYPH comes from the page.
+
+    A dossier is built from one MusicXML file and cannot say whether the print
+    in hand set its 2/4 as digits or its 2/2 as a stroked C. Dropping the
+    detected `symbol` on override was worth 270 edits over 5 works of the
+    widened corpus — 3 per staff, every staff — and nothing on the three works
+    the benchmark used to be, all of which print digit meters.
+    """
+    d = make_dossier(starting_meter={"beats": 2, "beat_type": 2})
+    pg = page(staff(0, measures=[
+        {"measure_index": 0,
+         "time_signature": {"numerator": 2, "denominator": 2,
+                            "raw": "C|", "symbol": "cut"}},
+    ]))
+    dz.apply_meter(pg, d)
+    ts = pg["systems"][0]["staves"][0]["measures"][0]["time_signature"]
+    assert ts["numerator"] == 2 and ts["denominator"] == 2
+    assert ts["symbol"] == "cut"
+    assert ts["source"] == "dossier"
+
+
+def test_apply_meter_drops_a_glyph_read_off_a_different_meter():
+    """A `timeSigCommon` read on a 2/4 movement is a misread, and its glyph is
+    as wrong as its numbers. The symbol may only ride on agreement."""
+    d = make_dossier()  # 2/4
+    pg = page(staff(0, measures=[
+        {"measure_index": 0,
+         "time_signature": {"numerator": 4, "denominator": 4,
+                            "raw": "C", "symbol": "common"}},
+    ]))
+    dz.apply_meter(pg, d)
+    ts = pg["systems"][0]["staves"][0]["measures"][0]["time_signature"]
+    assert ts["numerator"] == 2 and ts["denominator"] == 4
+    assert "symbol" not in ts
+
+
+def test_apply_meter_invents_no_glyph_where_nothing_was_read():
+    """A staff that read no meter exports digits, exactly as before."""
+    d = make_dossier(starting_meter={"beats": 4, "beat_type": 4})
+    pg = page(staff(0, measures=[{"measure_index": 0}]))
+    dz.apply_meter(pg, d)
+    assert "symbol" not in (
+        pg["systems"][0]["staves"][0]["measures"][0]["time_signature"])
+
+
 def test_apply_meter_does_not_flag_equal_bar_lengths():
     """6/8 and 3/4 are the same bar length; the beat-sum path cannot separate
     them and must not be called wrong for it."""

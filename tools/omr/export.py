@@ -643,7 +643,18 @@ def _mxl_attributes_block(
         lines.append(f"{indent}    <mode>major</mode>")
         lines.append(f"{indent}  </key>")
     if time_sig is not None:
-        lines.append(f"{indent}  <time>")
+        # THE GLYPH IS PART OF THE METER, and dropping it was worth 270 edits.
+        # `4/4` and a common-time `C` are the same bar length and different
+        # engravings; MusicXML says so with `symbol=`, and musicdiff charges
+        # `extrainfoedit` at a flat 3 edits per staff when they disagree —
+        # 25 staves of Bruckner 5 alone is 75. The detector reads the two
+        # glyphs well (conf 0.89-0.96 on the works measured), so this is the
+        # eighth case of a signal detected and thrown away at the export.
+        # Only `symbol`, never `raw`: see the warning in
+        # `rhythm.parse_time_signature` for why the two are not the same fact.
+        symbol = time_sig.get("symbol")
+        attr = f' symbol="{symbol}"' if symbol in ("common", "cut") else ""
+        lines.append(f"{indent}  <time{attr}>")
         lines.append(f"{indent}    <beats>{time_sig.get('numerator', 4)}</beats>")
         lines.append(f"{indent}    <beat-type>{time_sig.get('denominator', 4)}</beat-type>")
         lines.append(f"{indent}  </time>")

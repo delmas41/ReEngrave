@@ -71,7 +71,8 @@ def test_common_time_glyph():
             _det("time_sig_digit", "timeSigCommon", 400, 40)]
     clef, ts = _read(_FakeReader(dets), _cell())
     assert clef == "treble"
-    assert ts == {"numerator": 4, "denominator": 4, "raw": "C"}
+    assert ts == {"numerator": 4, "denominator": 4, "raw": "C",
+                  "symbol": "common"}
 
 
 def test_highest_confidence_clef_wins():

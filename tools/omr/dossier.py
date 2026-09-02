@@ -247,6 +247,33 @@ def apply_meter(page: dict[str, Any],
     want = (meter["numerator"], meter["denominator"])
     displaced: list[dict[str, Any]] = []
 
+    def _keep_symbol(ts: dict[str, Any] | None) -> dict[str, Any]:
+        """The dossier's meter, carrying the page's own glyph where it agrees.
+
+        THE NUMBERS COME FROM THE WORK; THE GLYPH COMES FROM THE PAGE. A work
+        is in 2/2 in every edition of it, which is what a dossier can say. But
+        whether THIS edition set that 2/2 as a stroked C or as two digits is a
+        fact about the engraving, and only the page carries it — the dossier is
+        built from one MusicXML file and cannot answer for the print in hand.
+
+        So the override keeps `symbol` when the detector read the same meter the
+        dossier asserts. It cannot travel on disagreement: a `timeSigCommon`
+        read on a 3/4 movement is a misread, and its glyph is as wrong as its
+        numbers. Absent a reading nothing is added and the export falls back to
+        digits, exactly as before.
+
+        Measured on the widened corpus: `symbol` was dropped on 5 of 9 works
+        (Mozart 40/41, Brahms 4, Bruckner 5, Dvorak 9) at a flat 3 edits per
+        staff, 270 edits total — and on none of the three works the benchmark
+        used to consist of, all of which print digit meters.
+        """
+        out = dict(meter)
+        if ts and ts.get("symbol") and (
+            int(ts.get("numerator", 0)), int(ts.get("denominator", 0))
+        ) == want:
+            out["symbol"] = ts["symbol"]
+        return out
+
     def _apply(container: dict[str, Any], sys_idx, staff_idx, measure_idx):
         ts = container.get("time_signature")
         if not ts:
@@ -254,11 +281,12 @@ def apply_meter(page: dict[str, Any],
             return
         if ts.get("source"):
             # Already ours, or back-filled by a later pass; nothing detected.
-            container["time_signature"] = dict(meter)
+            # A propagated reading may still carry the glyph it was read from.
+            container["time_signature"] = _keep_symbol(ts)
             return
         got = (int(ts.get("numerator", 0)), int(ts.get("denominator", 0)))
         if got == want or not got[0] or not got[1]:
-            container["time_signature"] = dict(meter)
+            container["time_signature"] = _keep_symbol(ts)
             return
         # 6/8 against an inferred 3/4 is the same bar length; the beat-sum path
         # cannot separate them and must not be called wrong for it.

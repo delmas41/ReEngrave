@@ -1,0 +1,44 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'larinetti in B.' — these are the strings to add to tools/omr/instruments.py
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'A', 'mpani in C-G' — these are the strings to add to tools/omr/instruments.py
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:5128: MusicXMLWarning: Could not import wedge: Error in getting DynamicWedges
+  warnings.warn(f'Could not import {tag}: {excep}', MusicXMLWarning)
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+mozart-sym40-mvt1          6    11/11       6/6       164/164      0.762  0.762  0.952  clean
+mozart-sym41-mvt1          6    17/17       6/6       228/228      0.991  0.991  0.465  clean
+brahms-sym4-mvt1           6    20/20       6/6       175/172      0.959  0.943  0.933  clean
+
+OMR-NED (pooled over 3 scores): 0.3834   [lower is better; 0 = identical]
+  2301 symbol edits over 3191 truth + 2810 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+mozart-sym40-mvt1                0.2260     330     788     672  wrong note
+brahms-sym4-mvt1                 0.2548     460     949     856  wrong note
+mozart-sym41-mvt1                0.5523    1511    1454    1282  wrong note
+
+where the edits are (pooled):
+  wrong note                                1714   74.5%
+  wrong articulation                         151    6.6%
+  wrong flag/beam                            118    5.1%
+  wrong slur                                 111    4.8%
+  wrong direction                             76    3.3%
+  entire measure insert/delete                53    2.3%
+  (7 more)                                    78    3.4%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/ts_fix1a.json
