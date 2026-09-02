@@ -179,7 +179,17 @@ class TimeSignatureLocatorConfig:
     #: A meter must be read on this fraction of the system's staves. Real
     #: meters are printed on all of them; the false reads that clear
     #: `min_score` are scattered ones and twos.
-    min_staff_fraction: float = 0.5
+    #:
+    #: 0.5 until 2026-09-01, and half a system is nothing like what agreement on
+    #: a printed meter looks like. Measured over the 13 systems that produce a
+    #: reading across both corpora: every one of the 12 CORRECT readings is
+    #: agreed by **0.909 of its system or more** (the worst are 10/11, 11/12 and
+    #: 25/27, all pages with an unreadable staff or two), and the one WRONG
+    #: reading — Beethoven 3 i, whose `3` matches Bravura's `6` on a Litolff
+    #: plate — is agreed by exactly **6 of 12**. Every value from 0.55 to 0.90
+    #: gives the identical verdict table, so this is a plateau read off a gap
+    #: with nothing in it and 0.70 is its middle.
+    min_staff_fraction: float = 0.70
 
     #: ...and on at least this many, so a two-staff system cannot be decided by
     #: a single reading.
@@ -461,6 +471,15 @@ def vote_system_time_signature(
     the evidence — not the strength of any one reading. The winner must be read
     on `min_staff_fraction` of the system's staves and on at least `min_staves`
     of them, and must be unopposed by another meter with as many votes.
+
+    ⚠️ **Strength is not the tie-break either, and that was measured rather than
+    assumed.** On the one page where the majority is wrong, Beethoven 3 i, the
+    CORRECT `3/4` reads score higher than the winning `6/4` ones (median 0.620
+    against 0.561), so ranking by median score picks the right answer there. It
+    was tried on the full corpus and buys exactly nothing: `3/4` is read on 3
+    staves of 12, so the agreement gate refuses it anyway and the page abstains
+    under either rule. Identical verdict table, one documented principle
+    weakened — refused.
 
     `n_staves` defaults to `len(reads)`; pass it when `reads` has already been
     filtered so the denominator stays the size of the system.

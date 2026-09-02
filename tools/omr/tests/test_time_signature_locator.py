@@ -224,6 +224,19 @@ class TestVote:
         reads = [self._read(2, 4)] + [None] * 9
         assert vote_system_time_signature(reads) is None
 
+    def test_half_a_system_is_not_agreement(self):
+        # The floor was 0.5 until 2026-09-01, and half a system is nothing like
+        # what a printed meter looks like: measured over both corpora, every one
+        # of the 12 correct readings is agreed by 0.909 of its system or more,
+        # and the single wrong one — Beethoven 3 i, `3` matching Bravura's `6` on
+        # a Litolff plate — by exactly 6 of 12.
+        reads = [self._read(6, 4) for _ in range(6)] + [None] * 6
+        assert vote_system_time_signature(reads) is None
+        # ...and a real one, which loses a staff or two to an unreadable header,
+        # still carries. 10/11 is the worst true reading in either corpus.
+        reads = [self._read(4, 4, raw="C") for _ in range(10)] + [None]
+        assert vote_system_time_signature(reads)["raw"] == "C"
+
     def test_a_tie_is_not_a_reading(self):
         reads = [self._read(2, 4), self._read(3, 4)]
         assert vote_system_time_signature(reads) is None
