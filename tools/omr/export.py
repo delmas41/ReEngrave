@@ -919,6 +919,19 @@ def measure_direction_words(measure: dict[str, Any]) -> list[tuple[float, str, s
     return out
 
 
+def measure_directions(measure: dict[str, Any]) -> list[tuple[float, str, str]]:
+    """Every `<direction>` on a measure, as `(x_canonical, kind, text)`.
+
+    Two sources with nothing in common but where they end up: the DYNAMICS the
+    detector drew as glyphs, and the WORDS `direction_text` read with OCR. One
+    entry point for both so a caller asks "what marks does this measure carry"
+    rather than assembling the answer itself — there is more than one place in
+    this file that emits a measure, and they must not drift.
+    """
+    return (measure_dynamics(measure.get("detections", []))
+            + measure_direction_words(measure))
+
+
 def _mxl_direction(item: tuple[str, str], indent: str) -> str:
     """One `<direction>`: a dynamic marking, or a word.
 
@@ -1392,12 +1405,11 @@ def _staff_measures_xml(
         # Per voice: interleaved voices would break each other's runs.
         for _voice_events in voices:
             annotate_beams(_voice_events, measure.get("detections", []))
-        # Dynamics belong to the staff, not to a voice, so they go on voice 1
-        # rather than being emitted once per voice. The words read by
-        # `direction_text` join them: both are `<direction>` elements placed by
-        # x, and both belong to the staff for the same reason.
-        _dyn = (measure_dynamics(measure.get("detections", []))
-                + measure_direction_words(measure))
+        # Marks belong to the staff, not to a voice, so they go on voice 1
+        # rather than being emitted once per voice. The dynamics the detector
+        # drew and the words `direction_text` read are both `<direction>`
+        # elements placed by x, and belong to the staff for the same reason.
+        _dyn = measure_directions(measure)
 
         if not events:
             r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
@@ -1628,13 +1640,12 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
-                    # Dynamics belong to the staff, not to a voice, so they go
-                    # on voice 1 rather than being emitted once per voice. The
-                    # words read by `direction_text` join them: both are
-                    # `<direction>` elements placed by x, and both belong to the
-                    # staff for the same reason.
-                    _dyn = (measure_dynamics(measure.get("detections", []))
-                            + measure_direction_words(measure))
+                    # Marks belong to the staff, not to a voice, so they go on
+                    # voice 1 rather than being emitted once per voice. The
+                    # dynamics the detector drew and the words `direction_text`
+                    # read are both `<direction>` elements placed by x, and
+                    # belong to the staff for the same reason.
+                    _dyn = measure_directions(measure)
 
                     if not events:
                         r_beats, r_type, r_dots = _mxl_measure_rest(m_time)

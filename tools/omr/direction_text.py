@@ -158,6 +158,27 @@ class BandConfig:
     #: a bounding box clips the glyph it names — an augmentation dot's box
     #: routinely leaves its own edge behind as two-pixel specks.
     detection_pad_spaces: float = 0.18
+    #: ...except a dynamic glyph with ink hard against it on BOTH sides at its
+    #: own row, which is not a glyph but a letter of a word.
+    #:
+    #: A dynamic `p` and the `p` of `espr.` are the same letter in the same
+    #: family, so the detector reads the middle of that word as `dynamicP` at
+    #: confidence 0.87 — correctly, on the evidence it has. Blanking it took
+    #: `espr. e legato` off two of Brahms's four string staves, worth 56 edits,
+    #: and it did so only after an unrelated detection change; before that the
+    #: same word survived on all four. A reader whose recall turns on which
+    #: boxes the detector happened to draw is not a reader.
+    #:
+    #: What separates the two cases is a GAP, not a shape: the letters of one
+    #: word touch, while a dynamic beside a word stands clear of it. Measured
+    #: on the Brahms page, `f` sits about 1.7 spaces from the `legato` beside
+    #: it and `es` sits against the `p` inside `espr.` with nothing between.
+    #: Half a space is well inside that.
+    #:
+    #: Only dynamics are excused, and deliberately: a notehead in a beamed run
+    #: also has ink on both sides, and letting the test excuse THOSE would put
+    #: the notes back into the very mask that exists to have them taken out.
+    inside_word_gap_spaces: float = 0.5
 
 
 DEFAULT_BAND_CONFIG = BandConfig()
@@ -219,6 +240,25 @@ def _page_ink(page: PageImage) -> np.ndarray:
     return mask
 
 
+def _is_inside_a_word(mask: np.ndarray, box: tuple[int, int, int, int],
+                      spacing: float, config: BandConfig) -> bool:
+    """Is there ink hard against this box on BOTH sides, at its own rows?
+
+    The test that tells a dynamic marking from a letter the detector read as
+    one. See `BandConfig.inside_word_gap_spaces` for why it is a gap and not a
+    shape.
+    """
+    x, y, w, h = box
+    reach = max(2, int(round(config.inside_word_gap_spaces * spacing)))
+    height, width = mask.shape
+    top, bottom = max(0, y), min(height, y + h)
+    if bottom <= top:
+        return False
+    left = mask[top:bottom, max(0, x - reach):max(0, x)]
+    right = mask[top:bottom, min(width, x + w):min(width, x + w + reach)]
+    return bool(left.size and right.size and left.any() and right.any())
+
+
 def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
                       spacing: float, config: BandConfig) -> np.ndarray:
     """Erase every detected glyph from the mask.
@@ -226,6 +266,9 @@ def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
     This is the step that makes the rest cheap. A conductor's page is mostly
     notes, and the pipeline has already found them and knows where they are in
     page pixels; subtracting them turns "find the text" into "find the ink".
+
+    The one exception is a `dynamic` sitting inside a run of letters, which is
+    a letter — see `BandConfig.inside_word_gap_spaces`.
     """
     out = mask.copy()
     pad = int(round(config.detection_pad_spaces * spacing))
@@ -238,6 +281,10 @@ def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
                     if not box or len(box) != 4:
                         continue
                     x, y, w, h = (int(v) for v in box)
+                    if (det.get("category") == "dynamic"
+                            and _is_inside_a_word(mask, (x, y, w, h),
+                                                  spacing, config)):
+                        continue
                     out[max(0, y - pad):min(height, y + h + pad),
                         max(0, x - pad):min(width, x + w + pad)] = 0
     return out
@@ -473,10 +520,28 @@ def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
 CROP_PAD_X_SPACES = 1.3
 CROP_PAD_Y_SPACES = 0.45
 
+#: Upscale a crop until one staff space is at least this many pixels.
+#:
+#: The reader is MARGINAL at the size a 600-dpi page gives it, and marginal in
+#: a way that looks like a hard failure. Measured on the one Brahms staff whose
+#: `espr. e legato` came back empty — a crop no worse to a human eye than the
+#: three identical ones that read fine:
+#:
+#:     as printed (124 x 625 px)     ''
+#:     upscaled 2x                   'espr. e legato'
+#:     top 15% trimmed off           'espr. e legato'
+#:
+#: Expressed in staff spaces rather than pixels because that is what makes it
+#: independent of `--dpi`: at 600 dpi a space is 41 px and this doubles it,
+#: while a 300-dpi page gets the 4x it needs to reach the same place. Capped,
+#: so a tiny miniature-score space cannot ask for a 20x enlargement.
+MIN_CROP_SPACING_PX = 80.0
+MAX_CROP_UPSCALE = 4.0
+
 
 def crop_for(page: PageImage, candidate: TextCandidate,
              spacing: float) -> np.ndarray:
-    """The candidate's own pixels, padded, from the ORIGINAL render.
+    """The candidate's own pixels, padded and enlarged, from the ORIGINAL render.
 
     Not from the subtracted mask: the mask has holes where the detections were
     blanked, and a letter that overlapped one would arrive with a bite out of
@@ -486,8 +551,13 @@ def crop_for(page: PageImage, candidate: TextCandidate,
     pad_y = int(round(CROP_PAD_Y_SPACES * spacing))
     x0, y0, x1, y1 = candidate.bbox_page
     h, w = page.rgb.shape[:2]
-    return page.rgb[max(0, y0 - pad_y):min(h, y1 + pad_y),
+    crop = page.rgb[max(0, y0 - pad_y):min(h, y1 + pad_y),
                     max(0, x0 - pad_x):min(w, x1 + pad_x)]
+    scale = min(MAX_CROP_UPSCALE, MIN_CROP_SPACING_PX / max(1.0, spacing))
+    if scale <= 1.0 or crop.size == 0:
+        return crop
+    return cv2.resize(crop, None, fx=scale, fy=scale,
+                      interpolation=cv2.INTER_CUBIC)
 
 
 #: A reader takes a list of crops (BGR arrays) and returns one string each,

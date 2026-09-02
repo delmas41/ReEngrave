@@ -122,12 +122,36 @@ fermata or one slur is charged whole. Do not target it directly — open the op
 list first (`benchmarks/omr-ned-2026-08/` shows how) and fix whatever it is
 amplifying.
 
-### 4. Text expressions and tempo marks
+### 4. ~~Text expressions and tempo marks~~ — DONE 2026-09-01
 
-17 of the truth's directions on the Brahms page. Unlike the last four this is
-NOT an export bug — there is no text detection in the pipeline at all, and
-`textDynamic` was the class that caused the Phase 3.4 collapse. A genuinely
-different kind of work; do not start it expecting the last four's economics.
+Pooled **0.2263 -> 0.2091**, 1584 -> 1494 edits, `wrong direction` 151 -> 61,
+and every other category unchanged to the edit. `tools/omr/direction_text.py`,
+behind `--direction-text` (off by default; needs `.venv-surya`). Full reading in
+`benchmarks/omr-direction-text-2026-09/FINDINGS.md`.
+
+It was a genuinely different kind of work, as this entry said — no detections to
+consume, and the detector deliberately untouched. What it reads text WITH is the
+subtraction: every detection is erased from the page's ink, the curves are
+refused by fill ratio, and what is left is OCRed by the Surya rung already here
+for margin labels and gated on a lexicon of musical terms.
+
+**All 14 Brahms directions and Beethoven's one were read exactly right, zero
+false positives.** The remaining 61 is 54 edits of three correctly-read words
+attached one beat out, plus Mahler's `molto` (never proposed — printed against
+the staff below it on a 38-staff page) and `[` / `]` (not words).
+
+Three things it settled, all in FINDINGS:
+
+- **No distance separates a tempo mark from a title.** Mahler's title sits
+  closer to its first staff than Beethoven's direction sits to that one. What
+  separates them is alignment: a heading is centred on the PAGE, a direction is
+  left-aligned to the music.
+- **The detector reads the `p` of `espr.` as a dynamic `p`, correctly**, and
+  subtracting it destroyed the word — on two staves, and only after the
+  cross-staff fix changed which detections exist.
+- **Attaching a mark to the NEAREST note rather than the next one was measured
+  and rejected**: +2 on words, −14 on dynamics, because a rest occupies x-space
+  and nearness reaches backwards onto it.
 
 ### 5. Small and known
 

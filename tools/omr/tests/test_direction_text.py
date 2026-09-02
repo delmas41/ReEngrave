@@ -19,11 +19,13 @@ from tools.omr.direction_text import (
     BandConfig,
     DEFAULT_BAND_CONFIG,
     DirectionText,
+    TextCandidate,
     _bands_for_page,
     _cluster_into_words,
     _letter_components,
     _measure_at,
     attach_to_page,
+    crop_for,
     find_candidates,
     read_directions,
 )
@@ -261,6 +263,37 @@ class TestFindCandidates:
             {0: [{"bbox_page": [290, 690, 200, 60]}]})
         assert find_candidates(pws, page_dict) == []
 
+    def test_a_dynamic_inside_a_word_is_not_subtracted(self):
+        """A dynamic `p` and the `p` of `espr.` are the same letter in the same
+        family, so the detector reads the middle of that word as `dynamicP` at
+        confidence 0.87. Blanking it took the word off two Brahms staves —
+        56 edits — and only after an unrelated detection change."""
+        pws = self._page_with_word(text_y=700)
+        page_dict = _page_dict(
+            [0, 1], [(100, 1000), (1000, 2000)],
+            # A box over one letter in the middle of the run, with letters
+            # hard against it on both sides.
+            {0: [{"bbox_page": [360, 700, 22, 34], "category": "dynamic"}]})
+        found = find_candidates(pws, page_dict)
+        assert len(found) == 1 and found[0].staff_index == 0
+
+    def test_a_dynamic_standing_clear_of_a_word_is_subtracted(self):
+        """And the case that must keep working: `f` sits about 1.7 spaces from
+        the `legato` beside it, so blanking it leaves `legato` to be read
+        alone. Excusing it would give the reader `f legato`, which the lexicon
+        refuses — and there are eight of those on the page."""
+        staves = [_staff(0, 500), _staff(1, 1200)]
+        pws = _pws(staves)
+        cv2.rectangle(pws.page.rgb, (200, 700), (222, 734), (0, 0, 0), -1)
+        for x in range(300, 480, 30):
+            cv2.rectangle(pws.page.rgb, (x, 700), (x + 22, 734), (0, 0, 0), -1)
+        page_dict = _page_dict(
+            [0, 1], [(100, 1000), (1000, 2000)],
+            {0: [{"bbox_page": [200, 700, 22, 34], "category": "dynamic"}]})
+        found = find_candidates(pws, page_dict)
+        assert len(found) == 1
+        assert found[0].bbox_page[0] >= 290, "the lone dynamic was kept"
+
     def test_ink_in_the_margin_is_ignored(self):
         """Left of the staff's start is where the instrument name is printed."""
         staves = [_staff(0, 500, x0=600), _staff(1, 1200, x0=600)]
@@ -286,6 +319,30 @@ class TestFindCandidates:
 
 
 # ─── the gate, with a stubbed reader ────────────────────────────────────────
+
+
+class TestCropping:
+    def test_a_crop_is_enlarged_until_a_staff_space_is_legible(self):
+        """The reader is marginal at the size a 600-dpi page gives it, and
+        marginal in a way that looks like a hard failure: one Brahms crop read
+        as nothing at 124 px tall and as `espr. e legato` at twice that."""
+        pws = _pws([_staff(0, 500), _staff(1, 1200)])
+        candidate = TextCandidate(staff_index=0, measure_index=0,
+                                  bbox_page=(300, 700, 480, 734),
+                                  placement="below", n_components=6)
+        small = crop_for(pws.page, candidate, spacing=SPACING)
+        assert small.shape[0] > (734 - 700), "crop was not enlarged"
+
+    def test_an_already_large_crop_is_left_alone(self):
+        """A page rendered at a higher DPI needs no help, and resampling it
+        would only cost time."""
+        pws = _pws([_staff(0, 500), _staff(1, 1200)])
+        candidate = TextCandidate(staff_index=0, measure_index=0,
+                                  bbox_page=(300, 700, 480, 734),
+                                  placement="below", n_components=6)
+        big = crop_for(pws.page, candidate, spacing=200.0)
+        pad_y = int(round(0.45 * 200.0))
+        assert big.shape[0] == (734 - 700) + 2 * pad_y
 
 
 class TestReadDirections:
