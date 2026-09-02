@@ -39,20 +39,24 @@ if str(ROOT) not in sys.path:
 
 from tools.omr.direction_lexicon import lookup            # noqa: E402
 
-#: Tesseract page-segmentation mode. 7 = "a single text line", which is what a
-#: direction crop is. The margin-label rung uses 6 (a uniform block) because it
-#: reads a COLUMN of labels; a single word is the other case.
-PSM = 7
-UPSCALE = 2
+# The settings come FROM the shipped rung rather than being restated here. This
+# harness has to read RAW — the whole point is the raw-versus-stripped column —
+# so it cannot simply call `read_crops_text`, which strips. Importing the
+# constants is what stops the two drifting into measuring different things.
+from tools.omr.staff_labels_tesseract import (PSM_LINE,   # noqa: E402
+                                              UPSCALE,
+                                              strip_line_fragments)
 
 
 def read_tesseract(image) -> str:
+    """Tesseract's RAW reading — the shipped rung's settings, without its
+    `strip_line_fragments`, so the two columns can be compared."""
     import pytesseract                                     # noqa: PLC0415
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
     work = cv2.resize(gray, None, fx=UPSCALE, fy=UPSCALE,
                       interpolation=cv2.INTER_CUBIC)
-    return pytesseract.image_to_string(work, config=f"--psm {PSM}").strip()
+    return pytesseract.image_to_string(work, config=f"--psm {PSM_LINE}").strip()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -75,9 +79,12 @@ def main(argv: list[str] | None = None) -> int:
 
     rows = []
     for path, s, t in zip(paths, surya, tess):
+        stripped = strip_line_fragments(t)
         rows.append({"crop": path.name, "surya": s, "tesseract": t,
+                     "tesseract_stripped": stripped,
                      "surya_accepted": bool(lookup(s)),
-                     "tesseract_accepted": bool(lookup(t))})
+                     "tesseract_accepted": bool(lookup(t)),
+                     "tesseract_stripped_accepted": bool(lookup(stripped))})
 
     print(f"{'crop':34s} {'surya':>26s}  {'tesseract':>26s}")
     for r in rows:
@@ -90,10 +97,15 @@ def main(argv: list[str] | None = None) -> int:
     t_read = sum(1 for r in rows if r["tesseract"])
     s_ok = sum(1 for r in rows if r["surya_accepted"])
     t_ok = sum(1 for r in rows if r["tesseract_accepted"])
+    t_ok_stripped = sum(1 for r in rows if r["tesseract_stripped_accepted"])
+    union = sum(1 for r in rows
+                if r["surya_accepted"] or r["tesseract_stripped_accepted"])
     both_silent = sum(1 for r in rows if not r["surya"] and not r["tesseract"])
     print(f"\n{n} crops")
     print(f"  surya      read {s_read:3d}   lexicon-accepted {s_ok:3d}")
-    print(f"  tesseract  read {t_read:3d}   lexicon-accepted {t_ok:3d}")
+    print(f"  tesseract  read {t_read:3d}   lexicon-accepted {t_ok:3d} raw, "
+          f"{t_ok_stripped:3d} with staff-line fragments stripped")
+    print(f"  UNION (what ships)                    {union:3d}")
     print(f"  both silent {both_silent} — for these the CROP is the problem, "
           f"not the rung")
     if args.out:
