@@ -64,6 +64,47 @@ DEFAULT_WORKS = (
 )
 
 
+# ---------------------------------------------------------------------------
+# Does the page carry what the truth claims?
+# ---------------------------------------------------------------------------
+#
+# The fixture's contract is that every symbol is known by construction, because
+# the page IS the truth, rendered. `musicxml2ly` quietly breaks that: on the
+# Beethoven excerpt the truth carries 36 fermatas — 22 of them over rests — and
+# the LilyPond it produces carries 14, all over notes. Not one of the 22 rest
+# fermatas reaches the page.
+#
+# The cost is not the 22 symbols. Each of those bars holds nothing but a rest,
+# so the fermata is the only thing distinguishing it, and musicdiff charges a
+# whole-bar delete plus a whole-bar insert: **105 edits on the Beethoven page,
+# for ink that was never printed.** A perfect reader is charged them too. That
+# is a floor built into the instrument, and it went unnoticed for a day of work
+# on the bucket it dominates.
+#
+# So the run says so. Not fixed here, deliberately: making the render complete
+# or the truth smaller both change every historical number, and that is a call
+# for a person, not a side effect of a benchmark run.
+
+#: (name, how it appears in the truth XML, how it appears in the LilyPond).
+#: Only symbols actually measured to go missing belong here — a speculative
+#: entry would raise a warning nobody can act on.
+RENDER_DROPS = (("fermata", "<fermata", "\\fermata"),)
+
+
+def render_shortfall(truth_xml: Path, ly: Path) -> list[tuple[str, int, int]]:
+    """`(symbol, in_truth, in_render)` for anything the render lost."""
+    try:
+        xml_text, ly_text = truth_xml.read_text(), ly.read_text()
+    except OSError:
+        return []
+    out = []
+    for name, xml_pat, ly_pat in RENDER_DROPS:
+        in_truth, in_render = xml_text.count(xml_pat), ly_text.count(ly_pat)
+        if in_render < in_truth:
+            out.append((name, in_truth, in_render))
+    return out
+
+
 def excerpt(work_id: str, first: int, last: int,
             out_dir: Path) -> tuple[Path, Path, int]:
     """Write `<work>.musicxml` (the truth) and `<work>.pdf` (the input).
@@ -134,7 +175,7 @@ def excerpt(work_id: str, first: int, last: int,
         with fitz.open(pdf) as doc:
             n_pages = doc.page_count
         if n_pages == 1 or last_used == first:
-            return xml, pdf, last_used
+            return xml, pdf, last_used, ly
         last_used -= 1
     raise RuntimeError(f"{work_id}: could not fit any excerpt on one page")
 
@@ -142,7 +183,7 @@ def excerpt(work_id: str, first: int, last: int,
 def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
              weights: str, dpi: int | None, use_dossier: bool,
              direction_text: bool = False) -> dict[str, Any]:
-    truth_xml, pdf, last_used = excerpt(work_id, first, last, work_dir)
+    truth_xml, pdf, last_used, ly = excerpt(work_id, first, last, work_dir)
     dossier = find_dossier(work_id) if use_dossier else None
 
     # dpi=None takes `transcribe`'s default rather than restating it here.
@@ -184,6 +225,9 @@ def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
         "rhythm_reconciliations": result.get("n_rhythm_reconciliations", 0),
         "dossier_warnings": summarize(result.get("dossier_warnings", [])),
         "dossier_used": dossier is not None,
+        # Symbols the truth claims that the render never put on the page. See
+        # `render_shortfall` — these are charged to us and are unreachable.
+        "render_shortfall": render_shortfall(truth_xml, ly),
         "direction_text": result.get("direction_text"),
     }
 
@@ -312,6 +356,16 @@ def main(argv: list[str] | None = None) -> int:
               f"{run['commit']}"
               + (f"; rewrote {', '.join(changed)}" if changed else
                  "; CLAUDE.md already agreed"))
+
+    shortfalls = [(r["work_id"], r.get("render_shortfall") or []) for r in results]
+    shortfalls = [(w, sf) for w, sf in shortfalls if sf]
+    if shortfalls:
+        print("\nUNREACHABLE BY CONSTRUCTION — the truth carries symbols its own\n"
+              "render never drew, so these are charged to us and cannot be read:")
+        for work_id, sf in shortfalls:
+            for name, in_truth, in_render in sf:
+                print(f"  {work_id}: {in_truth - in_render} of {in_truth} "
+                      f"{name}s are in the truth but not on the page")
 
     if broken_passes:
         print("\nBROKEN, not abstaining — these are defects and the numbers "
