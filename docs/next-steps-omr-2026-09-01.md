@@ -319,6 +319,13 @@ error moves from `entire measure insert/delete` to `wrong flag/beam`. The
 pooled `entire measure` bucket falls 130 → **30**. Every pre-2026-09-02 figure
 carries the old floor; see the discontinuity note under the fix table above.
 
+On the merge with the printed-accidentals fix (`b3ef9ac`) the two compose
+EXACTLY — default **0.1101 / 791**, `--direction-text` **0.0883 / 647** —
+Beethoven identical to the fermata side's 93 edits, Mahler and Brahms
+identical to the accidentals side's 75 and 623. Both configurations
+re-recorded on the merge; the headline block in CLAUDE.md is the current
+statement.
+
 What WAS real here: `fermataAbove` had been detected all along at 0.90-0.95 and
 never exported — the sixth instance of that shape — worth pooled 0.1364 →
 **0.1342**, Beethoven 205 → **191**, exactly 14 edits, one per fermata that is
