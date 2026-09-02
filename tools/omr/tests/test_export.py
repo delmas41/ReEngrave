@@ -15,6 +15,7 @@ from tools.omr.voicing import group_chords_in_measure
 
 from tools.omr.export import (
     annotate_beams,
+    annotate_slurs_in_slot,
     annotate_slurs_in_staff,
     measure_dynamics,
     _compute_divisions,
@@ -679,11 +680,11 @@ class TestDynamicsAndSlurs:
 # ─── Slurs, which outlive the measure they start in ─────────────────────────
 
 
-def _slur_head(x, pitch="C4", width=10):
+def _slur_head(x, pitch="C4", width=10, y=40):
     """One pitched notehead at page-x `x`."""
     return {"category": "notehead", "class": "noteheadBlack", "pitch": pitch,
             "duration_type": "quarter", "duration_beats": 1.0, "dots": 0,
-            "bbox": [x, 40, width, 10], "bbox_page": [x, 40, width, 10],
+            "bbox": [x, y, width, 10], "bbox_page": [x, y, width, 10],
             "confidence": 0.9}
 
 
@@ -692,21 +693,25 @@ def _slur_arc(x0, x1, y=20):
             "bbox": [x0, y, x1 - x0, 8], "bbox_page": [x0, y, x1 - x0, 8]}
 
 
-def _slur_staff(measures, spacing=10.0):
+def _slur_staff(measures, spacing=10.0, top=40):
     """A staff whose cells tile [0,100), [100,200), … so a barline is a
-    cell edge, which is what makes an arc's clipping visible."""
+    cell edge, which is what makes an arc's clipping visible.
+
+    `top` is the staff's top line, so a second system can be placed further
+    down the page — across a system break the only comparable height is the
+    one relative to each staff's OWN lines."""
     return {
         "staff_index": 0,
         "clef": "treble",
         "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
         "time_signature": {"numerator": 4, "denominator": 4},
-        "staff_geometry": {"line_ys_page": [40, 50, 60, 70, 80],
+        "staff_geometry": {"line_ys_page": [top + d for d in (0, 10, 20, 30, 40)],
                            "line_spacing_px": spacing,
                            "x_start": 0, "x_end": 100 * len(measures)},
         "n_measures": len(measures),
         "measures": [{
             "measure_index": i,
-            "bbox_page_px": [i * 100, 0, (i + 1) * 100, 90],
+            "bbox_page_px": [i * 100, top - 40, (i + 1) * 100, top + 50],
             "clef": "treble",
             "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
             "time_signature": {"numerator": 4, "denominator": 4},
@@ -1093,3 +1098,97 @@ class TestTupletExport:
         out = to_lilypond(_tuplet_result())
         line = next(ln for ln in out.splitlines() if "\\tuplet" in ln)
         assert line.index("dis'2") < line.index("\\tuplet")
+
+
+class TestSlursAcrossSystemBreaks:
+    """A part is the same staff on EVERY system, so a slur may run from the
+    last bar of one system into the first bar of the next.
+
+    The junction geometry is not the barline's. A barline cuts one arc and both
+    halves end exactly on the cut; the resuming half of a system break begins
+    well inside its cell, because that cell opens with a CLEF and a KEY
+    SIGNATURE — measured at 5.28 staff spaces on the `systems` fixture. So the
+    resuming half is anchored on the FIRST NOTE instead, which is what it
+    attaches to and is independent of how wide the header is.
+    """
+
+    @staticmethod
+    def _system_end(top):
+        """A staff whose last cell holds an arc running off its right edge."""
+        return _slur_staff([
+            [_slur_head(20, y=top), _slur_head(60, y=top)],
+            [_slur_head(150, y=top), _slur_arc(150, 200, y=top - 20)],
+        ], top=top)
+
+    @staticmethod
+    def _system_start(top, arc=(10, 55)):
+        """A staff whose first cell holds an arc running in from the margin."""
+        return _slur_staff([
+            [_slur_head(50, y=top), _slur_arc(arc[0], arc[1], y=top - 20)],
+            [_slur_head(150, y=top)],
+        ], top=top)
+
+    def test_a_slur_joins_across_a_system_break(self):
+        a, b = self._system_end(40), self._system_start(400)
+        assert annotate_slurs_in_slot([a, b]) == 1
+        assert a["measures"][1]["detections"][0]["slur_states"] == [(1, "start")]
+        assert b["measures"][0]["detections"][0]["slur_states"] == [(1, "stop")]
+
+    def test_one_staff_alone_never_makes_a_cross_system_slur(self):
+        """`annotate_slurs_in_staff` is the single-staff case, and the LilyPond
+        exporter uses it — a LilyPond slur cannot span two Staff contexts, so a
+        cross-system slur there would be unpaired."""
+        a, b = self._system_end(40), self._system_start(400)
+        assert annotate_slurs_in_staff(a) == 0
+        assert annotate_slurs_in_staff(b) == 0
+
+    def test_an_arc_starting_ON_the_first_note_is_a_NEW_slur_not_a_resumption(self):
+        """A resuming fragment runs in from the margin and ends on the first
+        note; a slur that merely begins there runs the other way. The two are
+        told apart by which side of the note the ink is on."""
+        a = self._system_end(40)
+        # arc spans from the first notehead rightwards, not into it
+        b = self._system_start(400, arc=(55, 95))
+        assert annotate_slurs_in_slot([a, b]) == 0
+
+    def test_arcs_on_opposite_sides_of_their_staves_do_not_join(self):
+        """One above its staff and one below is two slurs, however well they
+        line up — the same rule the barline case uses, applied to a height
+        relative to each staff's own lines."""
+        a = self._system_end(40)
+        b = _slur_staff([
+            [_slur_head(50, y=400), _slur_arc(10, 55, y=400 + 60)],  # BELOW
+            [_slur_head(150, y=400)],
+        ], top=400)
+        assert annotate_slurs_in_slot([a, b]) == 0
+
+    def test_a_staff_with_no_geometry_breaks_the_chain_but_keeps_the_rest(self):
+        """It cannot be measured, so nothing joins across it — but the slurs on
+        the staves either side are still paired."""
+        a = self._system_end(40)
+        blind = self._system_start(400)
+        blind["staff_geometry"] = None
+        good = _slur_staff([[
+            _slur_head(10, y=800), _slur_head(30, y=800), _slur_head(50, y=800),
+            _slur_arc(12, 52, y=780),
+        ]], top=800)
+        assert annotate_slurs_in_slot([a, blind, good]) == 1
+        assert good["measures"][0]["detections"][0]["slur_states"] == [(1, "start")]
+
+    def test_musicxml_opens_in_one_system_and_closes_in_the_next(self):
+        result = _tiny_result_empty_measure({"numerator": 4, "denominator": 4})
+        page = result["pages"][0]
+        page["systems"] = [
+            {"system_index": 0, "n_staves": 2, "staves": [
+                self._system_end(40), self._system_end(160)]},
+            {"system_index": 1, "n_staves": 2, "staves": [
+                self._system_start(400), self._system_start(520)]},
+        ]
+        root = ET.fromstring(to_musicxml(result))
+        parts = root.findall("part")
+        assert len(parts) == 2, "the two slots should stitch into two parts"
+        kinds = [[s.get("type") for s in m.iter("slur")]
+                 for m in parts[0].findall("measure")]
+        # four measures: nothing, open at the end of system 1, close at the
+        # start of system 2, nothing
+        assert kinds == [[], ["start"], ["stop"], []]
