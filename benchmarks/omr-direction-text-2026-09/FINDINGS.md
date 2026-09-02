@@ -54,38 +54,55 @@ adds `len(content)`. Two consequences that shaped everything below:
 
 ## The result
 
-Measured on `main` at `6f64bfa`, immediately before and after:
+Measured on `main` at `2eee2a9`, immediately before and after:
 
 | | pooled | edits | `wrong direction` |
 |---|--:|--:|--:|
-| baseline | 0.2209 | 1563 | 151 |
-| **with `--direction-text`** | **0.2020** | **1459** | **47** |
+| baseline | 0.1861 | 1315 | 151 |
+| **with `--direction-text`** | **0.1624** | **1171** | **7** |
 
 Per work, and **every other category is unchanged to the edit** — `wrong note`
-831, `wrong flag/beam` 171, `entire measure` 136, `wrong slur` 61, `wrong
-accidental` 57, all identical on both sides. It is a post-pass that adds a key
-to measures that already exist.
+597, `wrong flag/beam` 183, `entire measure` 136, `wrong accidental` 61, `wrong
+slur` 49, all identical on both sides. It is a post-pass that adds a key to
+measures that already exist.
 
 | work | before | after |
 |---|--:|--:|
-| brahms-sym1-mvt1 | 0.3185 (1256) | **0.2869 (1168)** |
+| brahms-sym1-mvt1 | 0.2563 (1008) | **0.2167 (880)** |
 | beethoven-sym5-mvt1 | 0.1775 (221) | **0.1626 (205)** |
 | mahler-sym5-mvt1 | 0.0455 (86) | 0.0455 (86) |
 
-**The −104 edits is the same on every tree this was measured against**, which is
-worth more than any one absolute figure. Main moved four times during the work
-— `81446a0` (cross-staff ledger notes), `6a1b601` (the integration branch,
-including the `_staff_measures_xml` refactor these call sites now go through),
-`7516768` (default-on left-edge system split), `6f64bfa` (slurs) — and on each
-one the baseline differed and `wrong direction` fell by the same amount
-regardless (to 61 before the placement rule was corrected, 47 after). The
-reader and the slur work compose without interacting: they reach
-`_mxl_voice_events` by different doors, slurs riding on the events as
-`slur_states` and directions arriving as the `directions=` argument.
+**All 14 of Brahms's directions and Beethoven's one are read exactly right, with
+zero false positives, and every one of them is now on the correct beat.** The 7
+that remain are Mahler's `molto`, which is never proposed at all, and the `[`
+and `]` the lexicon refuses because they are not words. Nothing left in this
+category is a reading or a placement fault.
 
-**All 14 of Brahms's directions and Beethoven's one were read exactly right,
-with zero false positives on either page.** Everything left in the 61 is where
-a correctly-read word was attached, not what it says.
+### The delta grew as the tree improved, and that is the interesting part
+
+The reader was measured on six mains during and after the work, and the number
+it is worth kept changing while nothing in it changed:
+
+| main | what had landed | baseline | `wrong direction` after |
+|---|---|--:|--:|
+| `81446a0` | cross-staff ledger notes | 0.2449 | 33 |
+| `6a1b601` | the integration branch | 0.2263 | 33 |
+| `7516768` | default-on left-edge split | 0.2263 | 33 |
+| `6f64bfa` | slurs | 0.2209 | 61 |
+| `0ec4849` | placement rule corrected here | 0.2209 | 47 |
+| `2eee2a9` | **the dot-threshold fix** | 0.1861 | **7** |
+
+Two of those movements are worth understanding, because neither is about this
+reader:
+
+- **61 is worse than 33, and no code got worse.** The cross-staff fix changed
+  which detections exist, and the subtraction inherits that — see finding 4.
+- **47 → 7 is not this reader's doing at all.** `ac5b3c3` fixed a dot threshold
+  written against a glyph's own bounding box instead of the staff space, and
+  that fix landed on two Brahms bars whose misread rhythm was displacing a
+  correctly-read word. See finding 7, which recorded those 40 edits as
+  unreachable from here and was right about the diagnosis and wrong about the
+  lever.
 
 What the reader itself reports (`direction_text` in the result JSON), which is
 the number to watch rather than the pooled score — see finding 4 for why:
@@ -95,6 +112,8 @@ the number to watch rather than the pooled score — see finding 4 for why:
 | brahms | 17 | 14 | 14 | — |
 | beethoven | 2 | 2 | 1 | `(♩=108)` |
 | mahler | 0 | 0 | 0 | — |
+
+Identical on all six mains. It is the invariant the pooled score is not.
 
 ## The findings, in the order they were forced
 
@@ -227,7 +246,7 @@ This is the same fact as finding 1 seen from the other end: whole-band OCR
 failed because the band downscales the text, and this failed because the page
 never scaled it up enough.
 
-## 6. Where a mark attaches — and how a rejected rule turned out to be right
+### 6. Where a mark attaches — and how a rejected rule turned out to be right
 
 `_direction_slots` decides which note a mark is emitted before, and getting it
 wrong costs DOUBLE: musicdiff deletes the mark where we put it and inserts it
@@ -277,7 +296,7 @@ and that is exactly what happened. `score_placement_rules.py` replays every rule
 over the same marks and reports each miss by name, in about two seconds against
 the hour a benchmark run costs. It is what made the next finding visible at all.
 
-## 7. Two of the three "wrong offsets" were never offsets
+### 7. Two of the three "wrong offsets" were never offsets
 
 This is the finding the mark-by-mark view produced, and it is the reason the
 remaining 40 edits are not worth attacking from here.
@@ -306,29 +325,47 @@ note keeps its wrong duration would put the direction at a time no note in the
 bar occupies. A consistently wrong file beats an internally contradictory one,
 and the metric would charge for it either way.
 
-The reachable fix is in the rhythm layer, and it is only partly reachable there:
-adding a dot to make staff 2's bar sum to 3.0 has a UNIQUE answer, but staff 16
-has two (`[1.5,1.0,0.5]` and `[1.0,1.5,0.5]` both total 3.0), so a
-uniqueness-gated dot pass — the same discipline `_reconcile_measure_to_meter`
-already applies to beams — would take one of the two and abstain on the other.
-That is a change to note durations, with the note budget at stake, not a
-direction change.
+#### Right about the diagnosis, wrong about the lever — and the lever mattered
 
-## What remains, all 47 edits of it
+This section originally ended by naming the fix: widen
+`_reconcile_measure_to_meter` to move a dot as well as a beam level, under the
+uniqueness gate it already applies. **That was wrong, and both bars were fixed
+without it four hours later.**
 
-**Every word is read correctly, and only one of them is on the wrong beat for a
-reason this layer could reach.**
+`ac5b3c3` (`claude/funny-villani-98dd46`) found the real fault while working a
+different residue: a dot was being measured against **its own bounding box
+instead of the staff space**, so dots on the page were being thrown away. Fixing
+the unit recovered them. Both of the bars above now read their durations exactly
+— staff 2 `[1.5, 1.5]`, staff 16 `[1.5, 1.0, 0.5]` — and the 40 edits went with
+them, without the reconciler being touched. That session ALSO retired the
+"widen the reconciler" advice explicitly, for its own residue, on the grounds
+that the reconciler declines those bars correctly and is one CONCEPT short
+rather than one edit short (a beam group whose members differ in level).
+
+Two things to carry from that:
+
+- **The reconciler was never the lever here either.** It declines these bars
+  correctly. The signal — the printed dot — was on the page the whole time and a
+  threshold in the wrong unit was discarding it. That is the seventh and eighth
+  instance of the shape this repository keeps finding, and this section walked
+  right past it to recommend new machinery instead. **Before proposing a
+  mechanism that would infer a missing signal, check whether the signal is
+  already detected and being dropped.**
+- **A correct diagnosis does not imply a correct remedy.** "These are rhythm
+  faults, not placement faults, and the placement layer must not paper over
+  them" was right, and is why nothing was papered over. "And the fix is the
+  reconciler" was a guess wearing the same confident tone, in a document whose
+  whole purpose is to be trusted by whoever reads it next.
+
+## What remains, all 7 edits of it
+
+**Every word is read correctly and every one is on the correct beat.** What is
+left is not a reading fault, a placement fault or a rhythm fault:
 
 | | edits | why |
 |---|--:|---|
-| one `espr. e legato` at beat 1.0, truth 1.5 | 28 | its bar lost a dot — finding 7 |
-| one `legato` at 1.0, truth 1.5 | 12 | same |
 | Mahler's `molto` — never proposed | 5 | printed against the staff BELOW it |
 | `[` and `]` | 2 | not words. Correctly refused |
-
-So 40 of the 47 is one rhythm fault (a quarter read where the truth has a dotted
-quarter, twice) wearing a direction's clothes, 5 is a band that cannot reach a
-crowded page, and 2 is the lexicon doing its job.
 
 ## Cost
 
@@ -344,22 +381,23 @@ total.
 
 ## For whoever picks this up
 
-1. **The lost dot, 40 of the 47.** Not a reading problem and not a placement
-   one — finding 7 has the proof. It is `_reconcile_measure_to_meter` learning
-   to move a dot as well as a beam level, under the same uniqueness gate. Worth
-   40 edits here and an unknown amount of the much larger note budget, which is
-   the real reason to do it.
-2. **Mahler's `molto`, 5 edits, and the general case behind it.** The band
+1. **Mahler's `molto`, 5 edits, and the general case behind it.** The band
    assumes a direction fits in the gap it is printed in. On a 38-staff page it
-   does not, and every dense page will lose its crowded directions the same way.
-   The fix is `header_ink.erase_staff_lines` over a band that reaches into the
-   staff below, not a wider band — a wider band fuses the letters to the lines.
-3. **Nothing here has been run on a SCAN.** The benchmark is engraved, so the
+   does not — `molto`'s ink crosses the next staff's top line — and every dense
+   page will lose its crowded directions the same way. The fix is
+   `header_ink.erase_staff_lines` over a band that reaches into the staff below,
+   not a wider band: a wider band fuses the letters to the lines.
+2. **Nothing here has been run on a SCAN.** The benchmark is engraved, so the
    letter filters have never met broken ink, foxing or bleed-through, and the
    lexicon has never met a genuinely garbled read. The gate is built to abstain,
    so the expected failure is silence rather than nonsense — but that is a
-   prediction, not a measurement.
-4. **The lexicon is three pages wide.** It holds what these fixtures print plus
+   prediction, not a measurement, and finding 5 is a warning about how silence
+   looks here.
+3. **The lexicon is three pages wide.** It holds what these fixtures print plus
    the obvious neighbours. A German or French edition will need its own entries,
    and `instruments.py` is the cautionary tale: a newly-readable page surfaced
    lexicon bugs that had been dormant.
+4. **`wrong direction` is 7 and this file is nearly out of work.** Do not read
+   that as the reader being good on real material — read it as the benchmark
+   having three engraved pages with sixteen directions between them. The next
+   honest measurement is a scanned page, not a smaller residue on this one.

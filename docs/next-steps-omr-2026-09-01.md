@@ -189,8 +189,11 @@ amplifying.
 
 ### 4. ~~Text expressions and tempo marks~~ — DONE 2026-09-01
 
-Pooled **0.2209 -> 0.2020**, 1563 -> 1459 edits, `wrong direction` 151 -> 47,
-and every other category unchanged to the edit. `tools/omr/direction_text.py`,
+Pooled **0.1861 -> 0.1624** on `2eee2a9`, 1315 -> 1171 edits, `wrong direction`
+151 -> **7**, and every other category unchanged to the edit. Every direction on
+the benchmark is now read exactly and placed on the correct beat; the 7 are
+Mahler's `molto` (never proposed — printed against the staff below it) and the
+`[` / `]` the lexicon refuses because they are not words. `tools/omr/direction_text.py`,
 behind `--direction-text` (off by default; needs `.venv-surya`). Full reading in
 `benchmarks/omr-direction-text-2026-09/FINDINGS.md`.
 
@@ -221,11 +224,15 @@ Three things it settled, all in FINDINGS:
   not a candidate at all. Excluding rests keeps what nearness buys and costs
   nothing. Worth 14 edits, and only visible once rules were compared MARK BY
   MARK (`score_placement_rules.py`, seconds per rule) instead of by pooled score.
-- **Two of the three remaining misplaced words are not misplaced.** They sit on
-  the correct note, in a bar whose first note lost its augmentation dot and so
-  sums to 2.5 in a 3.0 bar. 40 of the 47 residual edits, and the fix belongs in
-  `_reconcile_measure_to_meter` — which moves a beam level and not a dot, and
-  says so.
+- **Two of the three remaining misplaced words were not misplaced** — they sat
+  on the correct note in a bar whose first note lost its augmentation dot. That
+  diagnosis was right and is why nothing was papered over in the placement
+  layer. The remedy proposed alongside it — widen `_reconcile_measure_to_meter`
+  to move a dot — was **wrong**, and both bars were fixed without it by
+  `ac5b3c3`, which found a dot measured against its own bounding box instead of
+  the staff space. The printed dot had been on the page all along. Before
+  proposing machinery to infer a missing signal, check whether the signal is
+  already detected and being dropped.
 
 ### 5. Small and known
 

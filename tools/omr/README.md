@@ -996,20 +996,20 @@ wrong.
 
 ### What it does not reach
 
-- **A bar that lost an augmentation dot.** 40 of the 47 remaining edits, and
-  they are not direction faults at all: the word sits on the CORRECT note, and
-  the note sits at the wrong time because an earlier note in the bar reads a
-  quarter where the truth has a dotted quarter. Correcting the offset while the
-  note keeps its duration would put the direction at a time no note occupies.
-  The fix belongs in `_reconcile_measure_to_meter`, which moves a beam level and
-  not a dot.
 - **A direction printed against the staff below it.** Mahler's `molto` sits in a
   4.5-space gap on a 38-staff page and its ink crosses the next staff's top
   line; the band stops clear of that line, so the word is never proposed. Worth
-  5 edits, and the fix needs the staff lines traced off the band
-  (`header_ink.erase_staff_lines`) rather than a wider band.
+  5 of the 7 remaining edits, and the fix needs the staff lines traced off the
+  band (`header_ink.erase_staff_lines`) rather than a wider band.
 - **Marks that are not words.** `[`, `]`, `(♩=108)` — refused by the lexicon,
-  correctly, and 2 of the 47 remaining edits.
+  correctly, and the other 2.
+
+Everything else is right: on the current benchmark every direction is read
+exactly and placed on the correct beat. Two words that WERE on the wrong beat
+were fixed upstream by a dot-threshold correction (`ac5b3c3`) rather than here —
+their bars' rhythm was misread, which displaced a correctly-read word. See
+FINDINGS finding 7 for why that was left alone deliberately, and for the lever
+this file recommended that turned out to be the wrong one.
 - **The letter dynamics.** `f`, `pp`, `sf` are drawn glyphs the detector finds
   and `export.measure_dynamics` already emits. The lexicon deliberately omits
   them so the two readers cannot both claim one mark.
