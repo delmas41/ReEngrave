@@ -6,7 +6,7 @@
       "edits": 966,
       "truth_symbols": 3696,
       "pred_symbols": 3385,
-      "commit": "68be549",
+      "commit": "3aee540",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -35,12 +35,37 @@
       ]
     },
     "direction_text": {
-      "pooled": 0.1138,
+      "pooled": 0.11377162629757785,
       "edits": 822,
       "truth_symbols": 3696,
       "pred_symbols": 3529,
-      "commit": "dc74488",
-      "works": []
+      "commit": "3aee540",
+      "works": [
+        {
+          "work_id": "beethoven-sym5-mvt1",
+          "omr_ned": 0.15011914217633043,
+          "edits": 189,
+          "pitch_recall": 1.0,
+          "pitch_precision": 1.0,
+          "duration_rate": 1.0
+        },
+        {
+          "work_id": "brahms-sym1-mvt1",
+          "omr_ned": 0.1341672798626441,
+          "edits": 547,
+          "pitch_recall": 0.956,
+          "pitch_precision": 0.955,
+          "duration_rate": 0.992
+        },
+        {
+          "work_id": "mahler-sym5-mvt1",
+          "omr_ned": 0.04552673372154579,
+          "edits": 86,
+          "pitch_recall": 0.917,
+          "pitch_precision": 0.917,
+          "duration_rate": 0.864
+        }
+      ]
     }
   }
 }
