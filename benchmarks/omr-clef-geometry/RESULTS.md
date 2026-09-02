@@ -2296,10 +2296,20 @@ staff 0, `'Tr. At.'` for `Tr. Alt.`, every staff gaining a spurious `pic.` in
 one decode, and one decode appending an invented sentence about a Kansas
 courthouse. **`Tr. Ten.` appears in none of the 24.**
 
-A retry is currently INVISIBLE in production: surya logs it with
-`logger.warning` inside the worker, and `read_crops_surya` discards worker
-stderr unless the process fails outright. If anything here deserves a change, it
-is surfacing that — not the batching that turned out not to matter.
+A retry was INVISIBLE in production: surya logs the error branch with
+`logger.warning` inside the worker, logs the repeat branch not at all, and
+`read_crops_surya` discards worker stderr unless the process fails outright.
+
+**Fixed 2026-09-02, and it is the only change this investigation produced.**
+`_surya_worker._watch_retries` counts decodes made at a temperature above zero,
+which is a retry by construction — the base decode is 0.0 and the ladder is
+`min(0.0 + 0.2 * (retries + 1), 0.8)`. The count rides back in the job payload
+and `read_crops_surya` warns on it, so a sampled page can no longer look like a
+greedy one. Verified against the real reader both ways: the frozen beet5-p48
+crop reports **0 retries** and reads identically to all 45 replays, and forcing
+every request to time out reports **6 retries at up to 0.6**. It degrades
+quietly if a future surya moves the function — the reader still works and only
+the count goes missing.
 
 ### What did NOT reproduce, said plainly
 

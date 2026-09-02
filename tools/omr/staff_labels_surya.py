@@ -227,6 +227,18 @@ def read_crops_surya(crops: list[MarginCrop], *,
     if "error" in payload:
         raise SuryaLabelError(payload["error"])
 
+    # A retry decodes at a raised temperature, so that page was read by a
+    # SAMPLED pass rather than the greedy one everything here is measured on.
+    # Rare, and silent until now: surya logs it inside the worker and this
+    # function throws worker stderr away unless the process failed outright.
+    if payload.get("retries"):
+        logger.warning(
+            "surya retried %d decode(s) at a raised temperature (up to %.1f) — "
+            "those readings are sampled, not greedy, and are the one way this "
+            "reader stops being a function of its input. See "
+            "benchmarks/omr-clef-geometry/RESULTS.md, JOB A.",
+            payload["retries"], payload.get("max_temperature") or 0.0)
+
     out: list[dict[int, str]] = []
     for entry in payload.get("systems", []):
         if entry.get("error"):

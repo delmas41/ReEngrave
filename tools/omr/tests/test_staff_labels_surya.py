@@ -332,3 +332,71 @@ def test_keep_alive_is_off_unless_asked(monkeypatch):
         assert reloaded.KEEP_ALIVE is False
     finally:
         importlib.reload(staff_labels_surya)
+
+
+# ── the retry, which is the one way this reader stops being deterministic ────
+
+class TestARetryIsReported:
+    """`chat_completions_batch` decodes at temperature 0.0, but `_should_retry`
+    fires on a transport error or a repeat token and every retry RAISES the
+    temperature. That page is then read by a sampled pass, and it used to be
+    invisible: surya logs it inside the worker, and `read_crops_surya` discards
+    worker stderr unless the process failed outright.
+
+    Measured against the real reader 2026-09-01: the happy path reports 0, and
+    forcing every request to time out reports 6 retries at up to 0.6.
+    """
+
+    @staticmethod
+    def _crop():
+        from tools.omr.staff_labels_vision import MarginCrop
+        return MarginCrop(png=b"", staff_indices=[0], tick_ys=(1.0,), gutter_px=0)
+
+    def _run(self, monkeypatch, payload):
+        import json
+        import pathlib
+
+        class _Proc:
+            returncode = 0
+            stdout = json.dumps(payload)
+            stderr = ""
+
+        monkeypatch.setattr(staff_labels_surya, "interpreter",
+                            lambda: pathlib.Path("/nonexistent/python"))
+        monkeypatch.setattr(staff_labels_surya.subprocess, "run",
+                            lambda *a, **k: _Proc())
+        return staff_labels_surya.read_crops_surya([self._crop()])
+
+    def test_a_clean_read_says_nothing(self, monkeypatch, caplog):
+        import logging
+
+        with caplog.at_level(logging.WARNING):
+            out = self._run(monkeypatch, {
+                "systems": [{"labels": {"0": "Fl."}, "raw_lines": ["Fl."]}],
+                "retries": 0, "max_temperature": 0.0})
+        assert out == [{0: "Fl."}]
+        assert "retried" not in caplog.text
+
+    def test_a_retry_is_warned_about_and_the_read_still_returned(
+            self, monkeypatch, caplog):
+        import logging
+
+        with caplog.at_level(logging.WARNING):
+            out = self._run(monkeypatch, {
+                "systems": [{"labels": {"0": "Fl."}, "raw_lines": ["Fl."]}],
+                "retries": 2, "max_temperature": 0.4})
+        assert out == [{0: "Fl."}], "a warning must not cost the reading"
+        assert "retried 2" in caplog.text
+        assert "0.4" in caplog.text
+
+    def test_an_older_worker_without_the_field_is_not_a_retry(
+            self, monkeypatch, caplog):
+        """The bridge and the worker are separate processes and can be out of
+        step; a missing count means unknown, not "it happened"."""
+        import logging
+
+        with caplog.at_level(logging.WARNING):
+            out = self._run(monkeypatch, {
+                "systems": [{"labels": {"0": "Fl."}, "raw_lines": ["Fl."]}]})
+        assert out == [{0: "Fl."}]
+        assert "retried" not in caplog.text

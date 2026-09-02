@@ -34,6 +34,50 @@ from html import unescape
 _TOLERANCE = 0.5
 
 
+#: Decodes surya made at a RAISED temperature, reported per job.
+_RETRIES: dict[str, float] = {"count": 0, "max_temperature": 0.0}
+
+
+def _watch_retries() -> None:
+    """Count decodes surya retried at a raised temperature.
+
+    `openai_client.chat_completions_batch` decodes at temperature 0.0, but
+    `_should_retry` fires on a transport error OR a detected repeat token, and
+    every retry raises it — `min(0.0 + 0.2 * (retries + 1), 0.8)`. So a call at
+    ANY temperature above zero is a retry by construction, and what it returns
+    is sampled rather than greedy.
+
+    This is worth reporting because it was the one way the reader stops being a
+    function of its input, and it was silent: surya logs the error branch with
+    `logger.warning` inside THIS process, logs the repeat branch not at all, and
+    `read_crops_surya` discards worker stderr unless the process fails outright.
+    Measured 2026-09-01 on a frozen crop: the happy path gave one answer over 45
+    replays, warm, cold and eight-deep concurrent; the same crop at the ladder's
+    ceiling of 0.8 gave 17 distinct label sequences in 24 decodes, including a
+    staff label with a word invented into it.
+
+    A surya that has moved this function is not an error — the reader still
+    works, and only the count goes missing.
+    """
+    try:
+        from surya.inference.backends import openai_client   # noqa: PLC0415
+    except Exception:                                        # noqa: BLE001
+        return
+    original = getattr(openai_client, "_generate_one", None)
+    if original is None:
+        return
+
+    def counted(item, **kwargs):
+        temperature = float(kwargs.get("temperature") or 0.0)
+        if temperature > 0.0:
+            _RETRIES["count"] += 1
+            _RETRIES["max_temperature"] = max(
+                _RETRIES["max_temperature"], temperature)
+        return original(item, **kwargs)
+
+    openai_client._generate_one = counted
+
+
 def _text_of(block) -> str:
     """Surya 2 returns each block's content as HTML, not a plain string.
 
@@ -98,6 +142,7 @@ def main() -> int:
     from surya.inference import SuryaInferenceManager      # noqa: PLC0415
     from surya.recognition import RecognitionPredictor     # noqa: PLC0415
 
+    _watch_retries()
     predictor = RecognitionPredictor(SuryaInferenceManager())
 
     results = []
@@ -126,7 +171,9 @@ def main() -> int:
             "raw_lines": [t for t, _ in lines],
         })
 
-    json.dump({"systems": results}, sys.stdout)
+    json.dump({"systems": results,
+               "retries": int(_RETRIES["count"]),
+               "max_temperature": _RETRIES["max_temperature"]}, sys.stdout)
     return 0
 
 
