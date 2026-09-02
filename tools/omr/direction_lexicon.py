@@ -49,8 +49,13 @@ from dataclasses import dataclass
 CONNECTIVE = {
     "a", "al", "alla", "e", "ed", "il", "la", "un", "una", "con", "col",
     "ma", "non", "piu", "più", "meno", "poco", "molto", "assai", "quasi",
-    "sempre", "subito", "in", "di", "da", "the", "and", "of",
+    "sempre", "subito", "in", "di", "da",
 }
+# `the`, `and` and `of` were here and are deliberately gone. No direction in
+# this repertoire is English, and their only measured effect was to let OCR
+# noise through: a scanned `a Tempo.` came back from the language-model rung as
+# `a Tempo. and`, which passed because `and` was glue. Removing them refuses
+# that string, and the union then takes the other rung's `a Tempo.` — correct.
 
 #: The intensifiers are in CONNECTIVE **and** here, because they are both. In
 #: `Un poco sostenuto` `poco` is glue; on the Mahler page `molto` is printed
@@ -147,6 +152,18 @@ def lookup(text: str) -> DirectionHit | None:
     tokens = [_normalise(t) for t in text.split()]
     tokens = [t for t in tokens if t]
     if not tokens or len(tokens) > MAX_PHRASE_TOKENS:
+        return None
+
+    # A word never follows itself in a direction, and a decoder that says it did
+    # is repeating itself. Surya is a language model behind an OCR interface and
+    # does this on ambiguous crops: one `arco.` on a scanned Beethoven 5 page
+    # came back as `arco. arco. arco. arco.`, which passed because every token
+    # was a real term. The other rung read the same crop as `arco.`, so
+    # refusing the repetition is what lets the union reach the right answer.
+    #
+    # ADJACENT, not anywhere: `poco a poco` is a real marking and repeats `poco`
+    # with a connective between. Only the immediate repeat is the failure.
+    if any(a == b for a, b in zip(tokens, tokens[1:])):
         return None
 
     matched: list[str] = []

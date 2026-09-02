@@ -83,6 +83,24 @@ class TestLexicon:
     def test_a_long_run_on_is_refused(self):
         assert lookup("legato legato legato legato legato legato legato") is None
 
+    def test_a_word_repeated_immediately_is_a_decoder_repeating_itself(self):
+        """One `arco.` on a scanned page came back from the language-model rung
+        as `arco. arco. arco. arco.`, and every token was a real term. The
+        other rung read the same crop as `arco.`."""
+        assert lookup("arco. arco. arco.") is None
+        assert lookup("sempre sempre") is None
+
+    def test_a_repeat_with_a_connective_between_is_real_music(self):
+        """ADJACENT, not anywhere — `poco a poco` is a marking."""
+        assert lookup("poco a poco") is not None
+        assert lookup("cresc. poco a poco") is not None
+
+    def test_english_glue_is_not_a_connective(self):
+        """`and` was glue once, and its only measured effect was to pass a
+        scanned `a Tempo.` misread as `a Tempo. and`."""
+        assert lookup("a Tempo. and") is None
+        assert lookup("a Tempo.") is not None
+
 
 # ─── letter components ──────────────────────────────────────────────────────
 
@@ -256,12 +274,28 @@ class TestFindCandidates:
 
     def test_ink_inside_a_detection_is_subtracted(self):
         """Everything the detector found is already accounted for — a page of
-        noteheads must propose nothing."""
+        noteheads must propose nothing. (Glyph-sized boxes: a single 200px box
+        would be five staff spaces wide, which is a span, not a glyph.)"""
         pws = self._page_with_word(text_y=700)
         page_dict = _page_dict(
             [0, 1], [(100, 1000), (1000, 2000)],
-            {0: [{"bbox_page": [290, 690, 200, 60]}]})
+            {0: [{"bbox_page": [290, 690, 110, 60]},
+                 {"bbox_page": [400, 690, 110, 60]}]})
         assert find_candidates(pws, page_dict) == []
+
+    def test_a_span_is_not_blanked_and_does_not_swallow_a_word(self):
+        """A slur's box is the rectangle its arc travels through, mostly paper.
+        On a scanned Beethoven 5 page one detected at 24 x 4 spaces sat over
+        `sempre` and erased all nine of its components. No glyph is that wide —
+        the widest in the class space is a notehead at 3.2 — and a span's own
+        ink is refused downstream by the fill-ratio test instead."""
+        pws = self._page_with_word(text_y=700)
+        page_dict = _page_dict(
+            [0, 1], [(100, 1000), (1000, 2000)],
+            {0: [{"bbox_page": [250, 680, 400, 80], "category": "structural",
+                  "class": "slur"}]})
+        found = find_candidates(pws, page_dict)
+        assert len(found) == 1 and found[0].staff_index == 0
 
     def test_a_dynamic_inside_a_word_is_not_subtracted(self):
         """A dynamic `p` and the `p` of `espr.` are the same letter in the same

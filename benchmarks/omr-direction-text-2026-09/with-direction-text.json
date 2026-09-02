@@ -81,12 +81,13 @@
       "n_placed": 1,
       "pages": [
         {
-          "n_candidates": 2,
-          "n_read": 2,
+          "n_candidates": 3,
+          "n_read": 3,
           "n_accepted": 1,
           "rejected": [
             "(d = 108)",
-            "(J = 108)"
+            "(J = 108)",
+            "l.a"
           ],
           "by_reader": {
             "surya": 1
@@ -206,12 +207,16 @@
       "n_placed": 14,
       "pages": [
         {
-          "n_candidates": 17,
-          "n_read": 16,
+          "n_candidates": 20,
+          "n_read": 20,
           "n_accepted": 14,
           "rejected": [
-            "atoll y yt",
-            "ee ee ee ee ee"
+            "tT.",
+            "Sf tot ttt",
+            "\u2014t toto ott",
+            "Tf",
+            "la",
+            "So 4+"
           ],
           "by_reader": {
             "surya": 14
