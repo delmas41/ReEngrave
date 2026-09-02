@@ -1173,9 +1173,12 @@ reading, and the findings it surfaced that note recall is blind to, in
 [WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)
 and [SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md).
 
-**The eighth gap should be caught by a test, not by a day of forensics.**
-Seven times a signal was recognised correctly and lost on the way to the file,
-and six of those were found only after the metric bucket they fell into grew
+**The next gap should be caught by a test, not by a day of forensics** — and
+the eighth (accents) and every one since WERE. The count lives in ONE place,
+numbered in `export_coverage.py` with the closing commit beside each entry;
+prose that restates an ordinal goes stale the way a restated figure does.
+Repeatedly a signal was recognised correctly and lost on the way to the file,
+and the early ones were found only after the metric bucket they fell into grew
 large enough for someone to open it. `tools/omr/export_coverage.py` asks the
 question that found the seventh, on every run of the suite:
 
