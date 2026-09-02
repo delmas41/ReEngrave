@@ -959,14 +959,19 @@ copies are now pointers.
    corrected — it detects them and labels them `accidentalFlat`, while every
    key-signature reader consumes only `key*` classes. Routing them in was implemented,
    measured and **not shipped** (beet5-p2 10 correct → 9).
-9. **Infer the key signature from the music** (roadmap #4b, explicitly wanted by Sean).
-   Untouched by the #4 negative, which killed only the clef half. The evidence that it
-   is a real unflagged error class: Beethoven 5 p.15 reads *0 sharps / 0 flats* on all
-   18 staves of a C-minor movement carrying 33 inline flat detections, and Boléro p.10
-   reads five different signatures across 32 staves. More tractable than the clef half
-   because a key signature is global and corroborated across staves. **Do not reuse
-   per-staff key-profile fitting — measured as noise.** First establish whether the
-   failure is *reading* or *detecting*.
+9. ~~**Infer the key signature from the music**~~ — **measured NO-GO 2026-09-02**
+   ([benchmarks/omr-keysig-from-music-2026-09/PHASE1.md](benchmarks/omr-keysig-from-music-2026-09/PHASE1.md)).
+   The ceiling was measured on ground-truth MusicXML — before any OMR — over 118
+   works / 773 parts: the strongest rule reaches **57.6% accuracy at movement scope
+   and 36.7% at the 8-bar scope a page actually offers**, 26% of parts are
+   self-contradictory because music modulates, and it would read WTC p.17 (4♯, read
+   perfectly today) as 7♯. **Both cited failure pages were mis-attributed**: Beethoven
+   5 p.15 is a VOTE bug (three staves read the correct 3♭ and the vote rejected all
+   three — weightless readings are barred from setting the reference and then judged
+   against one set by two under-counting readers), and Boléro p.10 *genuinely prints*
+   five signatures (Ravel polytonality) which the pipeline reads correctly — its only
+   errors are five spurious template flats asserting on empty headers through the
+   no-majority branch. The redirect: fix the vote, not build inference.
 10. **Auto-populate the dossier** (roadmap #5, untouched). It still requires hand-input
     facts; the contextual layer would make it self-populating on the same
     model-proposes / human-adjudicates loop as the annotate UI.

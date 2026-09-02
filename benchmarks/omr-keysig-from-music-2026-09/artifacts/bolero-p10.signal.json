@@ -1,0 +1,699 @@
+{
+ "label": "bolero-p10",
+ "staves": [
+  {
+   "staff_index": 0,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": null,
+   "fifths": 4,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 39,
+   "sig_region": {
+    "#": 4
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 0
+  },
+  {
+   "staff_index": 1,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Flute",
+   "fifths": 1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 39,
+   "sig_region": {
+    "#": 1
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 1
+  },
+  {
+   "staff_index": 2,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Flute",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 72,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 2
+  },
+  {
+   "staff_index": 3,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Clarinet",
+   "fifths": 2,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 12,
+   "sig_region": {
+    "#": 2
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 3
+  },
+  {
+   "staff_index": 4,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Bassoon",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 24,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 4
+  },
+  {
+   "staff_index": 5,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Horn",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 111,
+   "sig_region": {},
+   "inline": {
+    "#:F": 3
+   },
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 5
+  },
+  {
+   "staff_index": 7,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Percussion",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 39,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 6
+  },
+  {
+   "staff_index": 8,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Piano",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 39,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 7
+  },
+  {
+   "staff_index": 9,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Harp",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 6,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 8
+  },
+  {
+   "staff_index": 10,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Harp",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 6,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 9
+  },
+  {
+   "staff_index": 11,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Harp",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 0,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 10
+  },
+  {
+   "staff_index": 12,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Violin",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 24,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 11
+  },
+  {
+   "staff_index": 13,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Violin",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 12,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 12
+  },
+  {
+   "staff_index": 14,
+   "clef": "alto",
+   "clef_source": "detector",
+   "part": "Viola",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 48,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 13
+  },
+  {
+   "staff_index": 15,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Cello",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 33,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 14
+  },
+  {
+   "staff_index": 16,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Contrabass",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 12,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 15
+  },
+  {
+   "staff_index": 17,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": null,
+   "fifths": 4,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 46,
+   "sig_region": {
+    "#": 4
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 0
+  },
+  {
+   "staff_index": 18,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Flute",
+   "fifths": 1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 46,
+   "sig_region": {
+    "#": 1
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 1
+  },
+  {
+   "staff_index": 19,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Flute",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 72,
+   "sig_region": {
+    "#": 1
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 2
+  },
+  {
+   "staff_index": 20,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Clarinet",
+   "fifths": 2,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 12,
+   "sig_region": {
+    "#": 2
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 3
+  },
+  {
+   "staff_index": 21,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Bassoon",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 24,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {
+    "#": 1
+   },
+   "system": 1,
+   "ordinal": 4
+  },
+  {
+   "staff_index": 22,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Horn",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 118,
+   "sig_region": {},
+   "inline": {
+    "#:F": 2
+   },
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 5
+  },
+  {
+   "staff_index": 24,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Percussion",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 46,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 6
+  },
+  {
+   "staff_index": 25,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Piano",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: no majority to check against",
+   "key_unread_reason": null,
+   "n_noteheads": 46,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 7
+  },
+  {
+   "staff_index": 26,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Harp",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 6,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 8
+  },
+  {
+   "staff_index": 27,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Harp",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 6,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 9
+  },
+  {
+   "staff_index": 28,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Harp",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 0,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 10
+  },
+  {
+   "staff_index": 29,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Violin",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 24,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 11
+  },
+  {
+   "staff_index": 30,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Violin",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 13,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 12
+  },
+  {
+   "staff_index": 31,
+   "clef": "alto",
+   "clef_source": "detector",
+   "part": "Viola",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 48,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 13
+  },
+  {
+   "staff_index": 32,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Cello",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 33,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 14
+  },
+  {
+   "staff_index": 33,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Contrabass",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 12,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 15
+  }
+ ],
+ "pooled_inline": {
+  "#:F": 5
+ },
+ "pooled_sig_region": {
+  "#": 15
+ },
+ "model_n": [
+  [
+   0,
+   0.0
+  ],
+  [
+   -1,
+   0.0
+  ],
+  [
+   1,
+   0.0
+  ],
+  [
+   -2,
+   0.0
+  ],
+  [
+   2,
+   0.0
+  ],
+  [
+   -3,
+   0.0
+  ],
+  [
+   3,
+   0.0
+  ],
+  [
+   -4,
+   0.0
+  ],
+  [
+   4,
+   0.0
+  ],
+  [
+   -5,
+   0.0
+  ],
+  [
+   5,
+   0.0
+  ],
+  [
+   -6,
+   0.0
+  ],
+  [
+   6,
+   0.0
+  ],
+  [
+   -7,
+   0.0
+  ],
+  [
+   7,
+   0.0
+  ]
+ ],
+ "model_f": [
+  [
+   1,
+   5.0
+  ],
+  [
+   2,
+   5.0
+  ],
+  [
+   3,
+   5.0
+  ],
+  [
+   4,
+   5.0
+  ],
+  [
+   5,
+   5.0
+  ],
+  [
+   6,
+   5.0
+  ],
+  [
+   7,
+   5.0
+  ],
+  [
+   -1,
+   0.0
+  ],
+  [
+   -2,
+   0.0
+  ],
+  [
+   -3,
+   0.0
+  ],
+  [
+   -4,
+   0.0
+  ],
+  [
+   -5,
+   0.0
+  ],
+  [
+   -6,
+   0.0
+  ],
+  [
+   -7,
+   0.0
+  ],
+  [
+   0,
+   -5.0
+  ]
+ ]
+}

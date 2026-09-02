@@ -1,0 +1,632 @@
+{
+ "label": "beet5-p15",
+ "staves": [
+  {
+   "staff_index": 0,
+   "clef": "treble",
+   "clef_source": null,
+   "part": "Flute",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": null,
+   "n_noteheads": 28,
+   "sig_region": {
+    "b": 1
+   },
+   "inline": {},
+   "unpaired": {
+    "#": 1
+   },
+   "system": 0,
+   "ordinal": 0
+  },
+  {
+   "staff_index": 1,
+   "clef": "treble",
+   "clef_source": null,
+   "part": "Oboe",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 31,
+   "sig_region": {
+    "b": 2
+   },
+   "inline": {
+    "b:A": 1,
+    "n:C": 1
+   },
+   "unpaired": {
+    "b": 5
+   },
+   "system": 0,
+   "ordinal": 1
+  },
+  {
+   "staff_index": 2,
+   "clef": "treble",
+   "clef_source": "detector",
+   "part": "Clarinet",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 34,
+   "sig_region": {},
+   "inline": {
+    "b:B": 1
+   },
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 2
+  },
+  {
+   "staff_index": 3,
+   "clef": "bass",
+   "clef_source": "slot_continuity",
+   "part": "Bassoon",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 39,
+   "sig_region": {},
+   "inline": {
+    "#:G": 2,
+    "b:C": 2,
+    "n:G": 1
+   },
+   "unpaired": {
+    "b": 4
+   },
+   "system": 0,
+   "ordinal": 3
+  },
+  {
+   "staff_index": 4,
+   "clef": "treble",
+   "clef_source": null,
+   "part": "Horn",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 10,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 0,
+   "ordinal": 4
+  },
+  {
+   "staff_index": 5,
+   "clef": "treble",
+   "clef_source": null,
+   "part": "Trumpet",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 31,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {
+    "#": 1
+   },
+   "system": 0,
+   "ordinal": 5
+  },
+  {
+   "staff_index": 6,
+   "clef": "bass",
+   "clef_source": "detector_header",
+   "part": "Timpani",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 19,
+   "sig_region": {},
+   "inline": {
+    "n:C": 1
+   },
+   "unpaired": {
+    "b": 1,
+    "#": 1
+   },
+   "system": 0,
+   "ordinal": 6
+  },
+  {
+   "staff_index": 7,
+   "clef": "treble",
+   "clef_source": null,
+   "part": "Violin",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": "header_vote",
+   "key_reason": "rejected: 2 flats differs from the system's 1 flat on too little evidence",
+   "key_unread_reason": "rejected: 2 flats differs from the system's 1 flat on too little evidence",
+   "n_noteheads": 30,
+   "sig_region": {
+    "b": 3
+   },
+   "inline": {
+    "b:F": 1,
+    "b:G": 2,
+    "n:A": 1
+   },
+   "unpaired": {
+    "#": 2
+   },
+   "system": 0,
+   "ordinal": 7
+  },
+  {
+   "staff_index": 8,
+   "clef": "treble",
+   "clef_source": "detector_header",
+   "part": "Violin",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: agrees with the system's 1 flat",
+   "key_unread_reason": null,
+   "n_noteheads": 27,
+   "sig_region": {
+    "b": 2
+   },
+   "inline": {
+    "b:G": 2,
+    "n:A": 2,
+    "n:B": 1,
+    "n:G": 1
+   },
+   "unpaired": {
+    "n": 1,
+    "b": 2,
+    "#": 1
+   },
+   "system": 0,
+   "ordinal": 8
+  },
+  {
+   "staff_index": 9,
+   "clef": "treble",
+   "clef_source": "detector_header",
+   "part": "Violin",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "carried: agrees with the system's 1 flat",
+   "key_unread_reason": null,
+   "n_noteheads": 25,
+   "sig_region": {
+    "b": 2,
+    "#": 1
+   },
+   "inline": {
+    "b:F": 1,
+    "n:F": 2,
+    "n:G": 2
+   },
+   "unpaired": {
+    "#": 1
+   },
+   "system": 0,
+   "ordinal": 9
+  },
+  {
+   "staff_index": 10,
+   "clef": "bass",
+   "clef_source": "detector_header",
+   "part": "Cello",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "carried: agrees with the system's 1 flat",
+   "key_unread_reason": null,
+   "n_noteheads": 23,
+   "sig_region": {},
+   "inline": {
+    "n:G": 1
+   },
+   "unpaired": {
+    "n": 2
+   },
+   "system": 0,
+   "ordinal": 10
+  },
+  {
+   "staff_index": 11,
+   "clef": "treble",
+   "clef_source": null,
+   "part": "Flute",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 35,
+   "sig_region": {
+    "n": 1,
+    "b": 1
+   },
+   "inline": {},
+   "unpaired": {
+    "n": 1,
+    "b": 2
+   },
+   "system": 1,
+   "ordinal": 0
+  },
+  {
+   "staff_index": 12,
+   "clef": "treble",
+   "clef_source": "detector_header",
+   "part": "Oboe",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": "header_vote",
+   "key_reason": "rejected: 3 flats differs from the system's 1 flat on too little evidence",
+   "key_unread_reason": "rejected: 3 flats differs from the system's 1 flat on too little evidence",
+   "n_noteheads": 37,
+   "sig_region": {
+    "b": 2
+   },
+   "inline": {
+    "n:B": 1,
+    "n:C": 1,
+    "n:D": 1
+   },
+   "unpaired": {
+    "b": 3,
+    "n": 1
+   },
+   "system": 1,
+   "ordinal": 1
+  },
+  {
+   "staff_index": 13,
+   "clef": "treble",
+   "clef_source": "detector_header",
+   "part": "Clarinet",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 47,
+   "sig_region": {
+    "b": 1
+   },
+   "inline": {
+    "#:B": 1,
+    "#:E": 1,
+    "b:A": 1,
+    "n:B": 1
+   },
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 2
+  },
+  {
+   "staff_index": 14,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Bassoon",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 52,
+   "sig_region": {
+    "b": 2,
+    "n": 1
+   },
+   "inline": {
+    "b:G": 1,
+    "n:F": 1,
+    "n:G": 1
+   },
+   "unpaired": {
+    "n": 1,
+    "b": 3
+   },
+   "system": 1,
+   "ordinal": 3
+  },
+  {
+   "staff_index": 15,
+   "clef": "treble",
+   "clef_source": "detector_header",
+   "part": "Horn",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 37,
+   "sig_region": {
+    "#": 1
+   },
+   "inline": {},
+   "unpaired": {
+    "b": 9,
+    "#": 1
+   },
+   "system": 1,
+   "ordinal": 4
+  },
+  {
+   "staff_index": 16,
+   "clef": "treble",
+   "clef_source": "detector_header",
+   "part": "Trumpet",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "no clef was read on this staff, and the slot table a signature is fitted against is chosen by the clef",
+   "n_noteheads": 26,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {
+    "#": 1
+   },
+   "system": 1,
+   "ordinal": 5
+  },
+  {
+   "staff_index": 17,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Timpani",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": null,
+   "key_reason": null,
+   "key_unread_reason": "neither the detector's markers nor the CV locator found key-signature accidentals in this staff's header",
+   "n_noteheads": 12,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 6
+  },
+  {
+   "staff_index": 18,
+   "clef": "tenor",
+   "clef_source": null,
+   "part": "Violin",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": "header_vote",
+   "key_reason": "rejected: 3 flats differs from the system's 1 flat on too little evidence",
+   "key_unread_reason": "rejected: 3 flats differs from the system's 1 flat on too little evidence",
+   "n_noteheads": 27,
+   "sig_region": {},
+   "inline": {},
+   "unpaired": {
+    "b": 1
+   },
+   "system": 1,
+   "ordinal": 7
+  },
+  {
+   "staff_index": 19,
+   "clef": "treble",
+   "clef_source": null,
+   "part": "Violin",
+   "fifths": 0,
+   "key_read": false,
+   "key_source": "header_vote",
+   "key_reason": "rejected: 3 flats differs from the system's 1 flat on too little evidence",
+   "key_unread_reason": "rejected: 3 flats differs from the system's 1 flat on too little evidence",
+   "n_noteheads": 34,
+   "sig_region": {
+    "b": 1
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 8
+  },
+  {
+   "staff_index": 20,
+   "clef": "alto",
+   "clef_source": "cv_locator",
+   "part": "Violin",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: agrees with the system's 1 flat",
+   "key_unread_reason": null,
+   "n_noteheads": 26,
+   "sig_region": {
+    "b": 2
+   },
+   "inline": {},
+   "unpaired": {
+    "#": 1
+   },
+   "system": 1,
+   "ordinal": 9
+  },
+  {
+   "staff_index": 21,
+   "clef": "bass",
+   "clef_source": "detector",
+   "part": "Cello",
+   "fifths": -1,
+   "key_read": true,
+   "key_source": "header_vote",
+   "key_reason": "kept: agrees with the system's 1 flat",
+   "key_unread_reason": null,
+   "n_noteheads": 15,
+   "sig_region": {
+    "b": 2,
+    "#": 1
+   },
+   "inline": {},
+   "unpaired": {},
+   "system": 1,
+   "ordinal": 10
+  }
+ ],
+ "pooled_inline": {
+  "#:B": 1,
+  "#:E": 1,
+  "#:G": 2,
+  "b:A": 2,
+  "b:B": 1,
+  "b:C": 2,
+  "b:F": 2,
+  "b:G": 5,
+  "n:A": 3,
+  "n:B": 3,
+  "n:C": 3,
+  "n:D": 1,
+  "n:F": 3,
+  "n:G": 6
+ },
+ "pooled_sig_region": {
+  "b": 21,
+  "#": 3,
+  "n": 2
+ },
+ "model_n": [
+  [
+   -7,
+   19.0
+  ],
+  [
+   7,
+   19.0
+  ],
+  [
+   5,
+   13.0
+  ],
+  [
+   -6,
+   13.0
+  ],
+  [
+   6,
+   13.0
+  ],
+  [
+   4,
+   7.0
+  ],
+  [
+   -5,
+   7.0
+  ],
+  [
+   3,
+   5.0
+  ],
+  [
+   -4,
+   -5.0
+  ],
+  [
+   2,
+   -7.0
+  ],
+  [
+   -3,
+   -7.0
+  ],
+  [
+   -1,
+   -13.0
+  ],
+  [
+   1,
+   -13.0
+  ],
+  [
+   -2,
+   -13.0
+  ],
+  [
+   0,
+   -19.0
+  ]
+ ],
+ "model_f": [
+  [
+   -7,
+   12.0
+  ],
+  [
+   -6,
+   8.0
+  ],
+  [
+   -5,
+   4.0
+  ],
+  [
+   7,
+   4.0
+  ],
+  [
+   6,
+   2.0
+  ],
+  [
+   3,
+   0.0
+  ],
+  [
+   4,
+   0.0
+  ],
+  [
+   5,
+   0.0
+  ],
+  [
+   1,
+   -4.0
+  ],
+  [
+   2,
+   -4.0
+  ],
+  [
+   -3,
+   -6.0
+  ],
+  [
+   -4,
+   -6.0
+  ],
+  [
+   -1,
+   -10.0
+  ],
+  [
+   -2,
+   -10.0
+  ],
+  [
+   0,
+   -16.0
+  ]
+ ]
+}
