@@ -35,6 +35,9 @@ from tools.omr.transcribe import (
 )
 from tools.omr.types import Staff
 from tools.omr import transcribe as tr
+from tools.omr.key_signature_vote import (
+    DEFAULT_VOTE_CONFIG, StaffCandidate, reconcile,
+)
 
 
 class TestResolveClefWeights:
@@ -1330,3 +1333,78 @@ class TestAttachArticulations:
     def test_a_cell_with_no_noteheads_places_nothing(self):
         out: dict = {}
         assert tr._attach_articulations_in_cell([self._mark(109, 560)], out) == 0
+
+
+# ─── the weight a defaulted clef leaves on a key-signature reading ───────────
+
+class TestDefaultedClefWeight:
+    """Beethoven 5 p.15.
+
+    A key signature read against a GUESSED clef is worth less than one read
+    against a known clef — but it is not worth a CONSTANT. Until 2026-09-01 the
+    defaulted-clef branch replaced `len(matched_slots)` with a flat 0.5, so a
+    template reading of three flats and a template reading of one flat reached
+    `key_signature_vote` as the same number, and `_modal_reference` (which
+    ignores anything under 1.0) dropped both. A 22-staff page then took its
+    reference from the only two readings left, each of which had under-counted
+    the page's three flats as one, and three staves that had read the signature
+    CORRECTLY were rejected for departing from it.
+
+    See benchmarks/omr-keysig-from-music-2026-09/PHASE1.md.
+    """
+
+    @staticmethod
+    def _weight(n_matched: int) -> float:
+        """The expression under test, as `_page_key_signatures` computes it."""
+        return min(n_matched * tr.DEFAULTED_CLEF_WEIGHT,
+                   tr.DEFAULTED_CLEF_MAX_WEIGHT)
+
+    def test_three_accidentals_outweigh_one(self):
+        assert self._weight(3) > self._weight(1)
+
+    def test_a_lone_accidental_still_cannot_vote_for_the_reference(self):
+        # _modal_reference ignores readings under 1.0. One accidental on a
+        # guessed clef is exactly the reading that should not define a page.
+        assert self._weight(1) < 1.0
+
+    def test_a_real_signature_CAN_vote_for_the_reference(self):
+        # This is what p.15 needed and did not have: two or more matched
+        # accidentals on a guessed clef must reach the modal tally.
+        assert self._weight(2) >= 1.0
+        assert self._weight(3) >= 1.0
+
+    def test_it_may_still_only_AGREE_never_depart(self):
+        # The invariant DEFAULTED_CLEF_WEIGHT was introduced for, and the
+        # reason the discount is capped: `_trustworthy` accepts a departure
+        # from the system's modal signature only at `strong_weight`. Pinned as
+        # a RELATION, not a number, so moving either constant cannot silently
+        # let a guess-squared reading assert a transposition.
+        for n in range(1, 8):
+            assert self._weight(n) < DEFAULT_VOTE_CONFIG.strong_weight
+
+    def test_the_p15_shape_end_to_end_through_the_vote(self):
+        # The page's real candidates, from probe_vote_inputs.py: three staves
+        # reading 3 flats on a defaulted clef, two reading 1 flat on a known
+        # one. The reference must come out 3 flats, the correct readings must
+        # be kept, and the under-counts must become refused departures.
+        cands = []
+        for i, (fifths, n_matched, source) in enumerate([
+                (-3, 3, "template_default_clef"),
+                (-3, 3, "template_default_clef"),
+                (-3, 3, "template_default_clef"),
+                (-1, 1, "detector"),
+                (-1, 1, "cv_locator")]):
+            weight = (self._weight(n_matched)
+                      if source == "template_default_clef" else float(n_matched))
+            cands.append(StaffCandidate(
+                staff_index=i, system_index=0, ordinal=i, fifths=fifths,
+                weight=weight, source=source,
+                can_carry=not source.startswith("template")))
+        result = reconcile(cands)
+        assert result.reference_written_by_system[0] == -3
+        for i in (0, 1, 2):
+            assert result.verdicts[i].action == "kept"
+            assert result.verdicts[i].fifths == -3
+        for i in (3, 4):
+            assert result.verdicts[i].action == "rejected"
+            assert result.verdicts[i].fifths is None

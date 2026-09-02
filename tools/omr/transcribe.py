@@ -1237,10 +1237,31 @@ def _read_staff_header(
 # detector is silent" rule the CV clef locator follows.
 
 
-#: Weight given to a key signature read against a DEFAULTED clef. Small enough
-#: that `key_signature_vote._trustworthy` can never accept it as a transposing
-#: departure from the system's modal signature — it may only agree.
+#: How much a key signature read against a DEFAULTED clef is DISCOUNTED by.
+#:
+#: It used to REPLACE the reading's weight rather than discount it, and that is
+#: the whole of the Beethoven 5 p.15 defect: a template reading of three flats
+#: and a template reading of one flat both arrived at the vote as 0.5, so the
+#: one measure of evidence the vote has — how many accidentals were actually
+#: matched — was destroyed for exactly the readings that needed it.
+#: `_modal_reference` then dropped all of them together for weighing under 1.0,
+#: and a 22-staff page took its reference from the only two readings left, both
+#: of which had under-counted the same signature as one flat. Three staves that
+#: read the correct three flats were rejected for departing from it. See
+#: benchmarks/omr-keysig-from-music-2026-09/PHASE1.md.
+#:
+#: A guessed clef halves what a reading is worth; it does not erase what the
+#: reading saw, so three matched accidentals still outweigh one.
 DEFAULTED_CLEF_WEIGHT = 0.5
+
+#: The cap that keeps the ORIGINAL invariant true for a signature of any size:
+#: `key_signature_vote._trustworthy` may never accept a defaulted-clef reading
+#: as a transposing DEPARTURE from the system's modal signature — it may only
+#: agree with it, or vote for it. Discounting alone would break that at four
+#: matched accidentals (4 × 0.5 = 2.0, which is `VoteConfig.strong_weight`), so
+#: the discount is capped below it. `test_transcribe_helpers` pins the relation
+#: rather than the number, because it is the relation that matters.
+DEFAULTED_CLEF_MAX_WEIGHT = 1.5
 
 
 def _key_sig_richer(candidate, current) -> bool:
@@ -1367,7 +1388,12 @@ def _header_key_signatures(
                 ordinal=ordinal,
                 fifths=read.fifths if read else None,
                 weight=(
-                    DEFAULTED_CLEF_WEIGHT if source == "template_default_clef"
+                    # A guessed clef DISCOUNTS the accidental count; it does
+                    # not replace it. Capped so the reading can still only ever
+                    # agree with the system, never depart from it.
+                    min(len(read.matched_slots) * DEFAULTED_CLEF_WEIGHT,
+                        DEFAULTED_CLEF_MAX_WEIGHT)
+                    if source == "template_default_clef"
                     else float(len(read.matched_slots))
                 ) if read else 0.0,
                 source=source if read else "",
