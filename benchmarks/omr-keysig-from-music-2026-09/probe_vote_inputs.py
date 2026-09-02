@@ -48,6 +48,10 @@ def main() -> None:
     ap.add_argument("--page", type=int, required=True)
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--label", required=True)
+    ap.add_argument("--dump", action="store_true",
+                    help="persist the candidate list to artifacts/<label>.cands.json "
+                         "so the vote can be replayed under another revision "
+                         "WITHOUT re-running the model")
     args = ap.parse_args()
 
     ksv._real_reconcile = ksv.reconcile
@@ -86,6 +90,15 @@ def main() -> None:
             print(f"  EXCLUDED from the reference for weight < 1.0: " +
                   ", ".join(f"sys{c.system_index}/ord{c.ordinal}={fname(c.fifths)}"
                             f"@{c.weight:.2f}({c.source})" for c in dropped))
+
+    if args.dump:
+        out = HERE / "artifacts" / f"{args.label}.cands.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps([
+            [[c.system_index, c.ordinal, c.fifths, c.weight, c.source]
+             for c in sorted(cands, key=lambda c: (c.system_index, c.ordinal))]
+            for cands, _ in CAPTURED], indent=1))
+        print(f"\nwrote {out}")
 
 
 if __name__ == "__main__":

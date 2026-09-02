@@ -1,19 +1,31 @@
 # Phase 2 — the vote fixes
 
+> **Both fixes are landed and measured end to end.** `2fd787c` (the vote) and
+> `0bfe60d` (the weight). The full ground-truth corpus, the canonical benchmark
+> and the beet5 scan page are in **§ Measured end to end** below, which
+> supersedes the *Still owed* section this document opened with. Item #8 was
+> re-measured against the fixed reference and is **refused, with numbers.**
+
 **2026-09-01.** Successor to `PHASE1.md`, which established that inferring a
 key signature from the music is a measured NO-GO and that both pages cited as
 evidence for it were failing for a different reason: the cross-page vote.
 
-Two defects were named there. **One is fixed and landed. The other cannot be
-fixed in `tools/omr/key_signature_vote.py`** — the information it needs is
-destroyed one call upstream, in `transcribe.py`, which is outside the paths
-this phase was authorised to change. It is measured, the one-line change is
-written out below, and it is waiting on authorisation rather than on work.
+Two defects were named there, and **both are now fixed and landed**.
 
 | | before | after | landed |
 |---|---|---|---|
 | **bolero-p10** — lone template flats on empty headers | 6 correct / **5 wrong** | 6 correct / **0 wrong** | ✅ `2fd787c` |
-| **beet5-p15** — three correct readings rejected | **0 correct** / 5 wrong | **3 correct** / **0 wrong** | ⛔ needs `transcribe.py` |
+| **beet5-p15** — three correct readings rejected | **0 correct / 6 wrong** | **3 correct / 1 wrong** | ✅ `0bfe60d` |
+
+⚠️ **Everything from here to "Measured end to end" was written BEFORE fix 1 was
+authorised, and its numbers are vote-level replays rather than end-to-end
+scores.** It is kept because the diagnosis is the useful part — in particular
+*why* the second defect could not be repaired inside `key_signature_vote.py`,
+which is the reasoning that earned the authorisation. Where the two disagree,
+the end-to-end section is the one that describes what ships. Two specific
+corrections it makes: p.15's before is 6 wrong end-to-end (5 at vote level, the
+sixth arriving from the measure pass), and pastoral-p2 is 9 correct end-to-end
+rather than the 8 the vote replay shows.
 
 ---
 
@@ -56,10 +68,9 @@ Tree state at measurement (`git status --porcelain`, HEAD `8c6452e`, then
  M tools/omr/voicing.py                                <- another workstream
 ```
 
-**The end-to-end runs the brief asks for are still owed** — the full
-ground-truth corpus in pipeline mode, `orchestral_eval --omr-ned`, and beet5
-p.1 — and are listed under *Still owed* below. `pytest tools/omr/tests -q` was
-green (**1494 passed**) before the commit.
+**The end-to-end runs were owed at this point and have since been taken** —
+see *Measured end to end*. `pytest tools/omr/tests -q` was green (**1494
+passed**) before this commit; 1546 after both fixes.
 
 ---
 
@@ -109,7 +120,7 @@ behaviours pass unchanged; 5 tests added.
 
 ---
 
-## Fix 1 — measured, NOT landed, and it is not in the vote
+## Fix 1 — the diagnosis (landed as `0bfe60d`; this section is why)
 
 ### Why the reference was wrong
 
@@ -261,7 +272,7 @@ PHASE1's control was not the ground-truth page.
 
 ---
 
-## Item #8 — cannot be re-measured yet, and the reason is the ordering
+## Item #8 — the ordering argument (it was re-measured; see the end)
 
 PHASE1 recommended: *fix R1 first, then re-run #8.* R1 is not landed, so #8's
 re-measurement is not available — and this is not a scheduling excuse, it is
@@ -301,9 +312,10 @@ That is a stronger statement than a matching score would be — it says the page
 is outside the change's reach by construction, not that it happened to come out
 the same.
 
-## Still owed
+## Still owed — CLEARED
 
-Not done, and not claimed:
+⚠️ Superseded by *Measured end to end*. Kept as written so the sequence is
+legible; every item below has since been run.
 
 * **The full ground-truth corpus end-to-end**, pipeline mode, all four pages
   (`eval_key_signatures.py --mode pipeline`, `--weights
@@ -327,3 +339,120 @@ Not done, and not claimed:
 |---|---|
 | `2fd787c` | fix 2 — the no-majority branch, + 5 tests |
 | *(this doc)* | ground truth `beet5-p15`, `replay_vote.py`, PHASE2.md |
+
+---
+
+# Measured end to end
+
+Taken on a clean pipeline tree after workstream A released `transcribe.py`,
+`export.py` and `voicing.py`. Every row is `eval_key_signatures.py --mode
+pipeline` — the honest end-to-end number, not the vote replay — run twice, once
+with the change and once with `git checkout tools/omr/transcribe.py` under it.
+
+```bash
+python3 benchmarks/omr-key-signature/eval_key_signatures.py --mode pipeline \
+    --weights tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+```
+
+## The ground-truth corpus, before and after
+
+| page | before | after | |
+|---|---|---|---|
+| **beet5-p15** | **0 correct / 6 wrong** / 10 missed / 6 ac | **3 correct / 1 wrong** / 12 missed / 6 ac | **+3 correct, −5 wrong** |
+| beet5-p2 | 10 correct / 1 wrong / 6 missed / 5 ac | 10 / 1 / 6 / 5 | identical |
+| pastoral-p2 | 9 correct / 0 wrong / 9 missed / 2 ac | 9 / 0 / 9 / 2 | identical |
+| wtc-p17 | 10 correct / 0 wrong / 0 missed | 10 / 0 / 0 | identical |
+| bolero-p10 *(control, not GT)* | 6 correct / **5 wrong** | 6 correct / **0 wrong** | fix 2, −5 wrong |
+| beet5 scan p.1 | 9/12, 0 wrong | 9/12, 0 wrong | identical |
+
+**No page loses a correct reading. No page gains a wrong one.**
+
+Two things in that table that would be easy to misread:
+
+* **beet5-p2's one wrong reading is PRE-EXISTING.** It is there before the
+  change and after it, byte for byte. It is not something this work introduced,
+  and the vote-level replay does not show it at all because it comes from the
+  measure pass rather than the vote.
+* **beet5 scan p.1 is 9/12, not the 7/12 the brief quoted**, and that is
+  workstream A's gain arriving tonight, not mine — my own before/after on that
+  page is identical. The same applies to pastoral-p2, where an earlier
+  vote-level replay in this document read 8 rather than 9: the replay scores
+  the VOTE, and the end-to-end number includes the measure pass. Two different
+  quantities, and the earlier draft's guess that the difference was "tree
+  drift" was wrong.
+
+## The canonical engraved benchmark
+
+```
+OMR-NED (pooled over 3 scores): 0.1328     942 edits
+  mahler 0.0331 / beethoven 0.1649 / brahms 0.1707
+```
+
+**Byte-identical to the record before and after both fixes** — same pooled
+figure, same edit count, same per-work rows, same error histogram. No
+`--record` run and no CLAUDE.md edit was needed. That is the expected result
+and worth stating as a *positive*: the three engraved works take their
+signatures from the dossier, so a change to how a READ signature is weighted
+must not reach them, and it does not.
+
+## The single wrong staff that remains on p.15
+
+`sys0 ord0` still reads one flat where the page prints three. It never reaches
+the vote: the MEASURE pass (`_detect_key_sig_from_cell`) reads it off a lone
+`keyFlat` at confidence 0.49. Out of scope for both fixes, and named here so
+nobody re-derives it.
+
+---
+
+# Item #8 — re-measured against the fixed reference, and REFUSED
+
+PHASE1 predicted #8's `-1` was an artefact of the broken reference and asked
+for it to be re-run once R1 landed. It was. **The answer is still no, and it is
+now emphatically worse.**
+
+The implementation is not in the repo (it was written, measured and discarded
+in August), so it was rebuilt to the blindspot report's own specification: fall
+back to `accidentalSharp` / `accidentalFlat` where no key-ROLE marker is found,
+with an x-cut at the first notehead, `max_outliers=0`, and permission to assert
+only a POSITIVE signature.
+
+| page | fix 1 only | **+ item #8** |
+|---|---|---|
+| **beet5-p15** | **3 correct / 1 wrong** | **0 correct / 6 wrong** |
+| beet5-p2 | 10 correct / 1 wrong | **9 correct** / 1 wrong |
+| pastoral-p2 | 9 / 0 | 9 / 0 |
+| wtc-p17 | 10 / 0 | 10 / 0 |
+
+It reproduces its old `-1` on beet5-p2 and **undoes the entire p.15 gain**.
+
+**Why, and this is the part worth keeping.** `_key_sig_read_from_dets` runs
+FIRST, before the CV locator and before the template reader. Routing
+accidentals into it means the noisy source now PRE-EMPTS the reader that was
+getting the right answer: the p.15 staves acquire an accidental-derived reading
+from a header cell that also contains inline accidentals, and the correct
+three-flat template fit never happens. The blindspot report saw half of this —
+"the accidental path read 5 flats where there are 3" — and the other half is
+precedence, which only became visible once something downstream was succeeding.
+
+So the sequencing recommended in PHASE1 was right and the conclusion it was
+expected to overturn stands. **Do not re-open #8 as a change to
+`_key_sig_read_from_dets`.** If the class-role gap is ever worth closing, it
+has to enter LAST — behind the template reader, into gaps only — and be marked
+as a source that can over-count so `can_carry=False` and fix 2's guard apply to
+it. That is a different change from the one that has now been measured twice.
+
+Reverted; `tools/omr/transcribe.py` is at `0bfe60d`. Suite green, 1546 passed.
+
+---
+
+# Commits
+
+| | |
+|---|---|
+| `2fd787c` | fix 2 — the no-majority branch may not licence an over-counting source (+5 tests) |
+| `664cc71` | ground truth: `beet5-p15`, and `replay_vote.py` |
+| `339e04c` | correction: the `min_majority` denominator is worth 1 wrong reading, not 0 |
+| `f3a5d7f` | `wtc-p17` is outside fix 2's reach by construction |
+| `0bfe60d` | fix 1 — a guessed clef DISCOUNTS a reading (+6 tests) |
+
+Nothing pushed.

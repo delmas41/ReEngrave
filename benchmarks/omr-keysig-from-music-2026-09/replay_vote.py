@@ -119,10 +119,40 @@ def score(name, rows, truth_by_ordinal, weight_fix: bool):
     return t, result
 
 
+def load_dumped(label: str):
+    """Candidates captured by `probe_vote_inputs.py --dump`."""
+    f = Path(__file__).resolve().parent / "artifacts" / f"{label}.cands.json"
+    if not f.exists():
+        return None
+    calls = json.loads(f.read_text())
+    return [tuple(row) for row in calls[0]]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--dumped", nargs="*", default=[],
+                    help="ground-truth page ids whose candidates were captured "
+                         "with probe_vote_inputs.py --dump")
     args = ap.parse_args()
+
+    for label in args.dumped:
+        rows = load_dumped(label)
+        if rows is None:
+            print(f"\n=== {label}: no captured candidates ===")
+            continue
+        truth = {s["ordinal"]: s["fifths"] for pg in GT["pages"]
+                 if pg["id"] == label for s in pg["staves"]}
+        sources = sorted({r[4] for r in rows if r[4]})
+        over = [r for r in rows if r[4].startswith("template") and r[2]]
+        print(f"\n=== {label} — vote replayed on captured candidates ===")
+        print(f"  reader sources: {sources}")
+        print(f"  candidates from a source that can OVER-count: {len(over)}"
+              f"  <- fix 2 can only reach these")
+        score("current", rows, truth, weight_fix=False)
+        score("+ defaulted-clef weight fix", rows, truth, weight_fix=True)
+    if args.dumped:
+        return
 
     p15 = {s["ordinal"]: s["fifths"]
            for pg in GT["pages"] if pg["id"] == "beet5-p15"
