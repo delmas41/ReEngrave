@@ -117,6 +117,15 @@ slot 1   OUT right-gap 0.10 sp   (no IN arc detected)   -> abstains
   rest** — the slot is paired in contiguous runs, so one unmeasurable system
   does not cost the slurs on the others.
 
+## The fixture is deterministic; its PDF bytes are not
+
+Rendered twice, the truth's music hashes identically (14 slurs, 73 notes) and
+the rasterised page is **pixel-identical** — same SHA at 300 dpi, same file size
+— but the PDF BYTES differ, because LilyPond stamps a creation date into them.
+So `diff` on the PDFs is not a determinism check and will always report a
+difference; rasterise and compare pixels instead. Same pixels in, same
+transcription out, which is all the benchmark needs.
+
 ## Reproducing
 
 ```bash
