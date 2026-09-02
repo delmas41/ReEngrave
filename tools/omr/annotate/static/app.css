@@ -391,8 +391,16 @@ li.v-pending .vbadge { background: #aaa; }
   flex-direction: column;
 }
 /* `hidden` HTML attribute → really hide it. The `display: flex` rule
-   above otherwise wins over the browser's default `[hidden] { display: none }`. */
-.page-context-overlay[hidden] {
+   above otherwise wins over the browser's default `[hidden] { display: none }`.
+   Every flex element the JS hides needs this, so they are listed together:
+   .page-cell-strip was missing it (visible even for a single-cell page), and
+   the pass-mode elements would each have been visible when switched off —
+   an empty pass bar on every bench with no batch_config.json. */
+.page-context-overlay[hidden],
+.page-cell-strip[hidden],
+.pass-bar[hidden],
+.picker-tabs[hidden],
+.picker-search[hidden] {
   display: none !important;
 }
 .page-context-header {
