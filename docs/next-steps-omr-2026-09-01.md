@@ -124,8 +124,10 @@ amplifying.
 
 ### 4. ~~Text expressions and tempo marks~~ — DONE 2026-09-01
 
-Pooled **0.2263 -> 0.2091**, 1584 -> 1494 edits, `wrong direction` 151 -> 61,
-and every other category unchanged to the edit. `tools/omr/direction_text.py`,
+Pooled **0.2209 -> 0.2040** on `6f64bfa`, 1563 -> 1473 edits, `wrong direction`
+151 -> 61, and every other category unchanged to the edit. The -90 is the same
+on all four mains this was measured against, which matters more than the
+absolute figure — see FINDINGS. `tools/omr/direction_text.py`,
 behind `--direction-text` (off by default; needs `.venv-surya`). Full reading in
 `benchmarks/omr-direction-text-2026-09/FINDINGS.md`.
 

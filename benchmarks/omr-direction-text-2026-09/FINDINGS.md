@@ -54,23 +54,33 @@ adds `len(content)`. Two consequences that shaped everything below:
 
 ## The result
 
-Measured on `main` at `7516768`, immediately before and after — and byte-identical at `81446a0` and `6a1b601`, the two intermediate mains this was rebased through:
+Measured on `main` at `6f64bfa`, immediately before and after:
 
 | | pooled | edits | `wrong direction` |
 |---|--:|--:|--:|
-| baseline | 0.2263 | 1584 | 151 |
-| **with `--direction-text`** | **0.2091** | **1494** | **61** |
+| baseline | 0.2209 | 1563 | 151 |
+| **with `--direction-text`** | **0.2040** | **1473** | **61** |
 
 Per work, and **every other category is unchanged to the edit** — `wrong note`
-756, `entire measure` 213, `wrong flag/beam` 171, `wrong slur` 81, `wrong
+831, `wrong flag/beam` 171, `entire measure` 136, `wrong slur` 61, `wrong
 accidental` 57, all identical on both sides. It is a post-pass that adds a key
 to measures that already exist.
 
 | work | before | after |
 |---|--:|--:|
-| brahms-sym1-mvt1 | 0.3302 (1277) | **0.3011 (1203)** |
+| brahms-sym1-mvt1 | 0.3185 (1256) | **0.2903 (1182)** |
 | beethoven-sym5-mvt1 | 0.1775 (221) | **0.1626 (205)** |
 | mahler-sym5-mvt1 | 0.0455 (86) | 0.0455 (86) |
+
+**The −90 edits is the same on every tree this was measured against**, which is
+worth more than any one absolute figure. Main moved four times during the work
+— `81446a0` (cross-staff ledger notes), `6a1b601` (the integration branch,
+including the `_staff_measures_xml` refactor these call sites now go through),
+`7516768` (default-on left-edge system split), `6f64bfa` (slurs) — and on each
+one the baseline differed and `wrong direction` went 151 → 61 regardless. The
+reader and the slur work compose without interacting: they reach
+`_mxl_voice_events` by different doors, slurs riding on the events as
+`slur_states` and directions arriving as the `directions=` argument.
 
 **All 14 of Brahms's directions and Beethoven's one were read exactly right,
 with zero false positives on either page.** Everything left in the 61 is where
