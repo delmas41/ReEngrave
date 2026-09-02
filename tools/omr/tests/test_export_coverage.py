@@ -83,6 +83,13 @@ class TestTheRepositoryItself:
 
     @pytest.fixture(autouse=True)
     def _needs_fixtures(self):
+        """⚠️ These three read UNPINNED artifacts — see the module docstring.
+
+        The `.omr.musicxml` files are gitignored output of whatever
+        configuration last ran the eval, so a red here can mean the fixtures are
+        stale or were written with `--direction-text`, not that the exporter
+        regressed. Check what last wrote them before believing the failure.
+        """
         if not (ec.FIXTURES / f"{ec.WORKS[0]}.omr.musicxml").is_file():
             pytest.skip("benchmark fixtures not built — run orchestral_eval")
 
