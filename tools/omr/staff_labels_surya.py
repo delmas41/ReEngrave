@@ -237,6 +237,70 @@ def read_crops_surya(crops: list[MarginCrop], *,
     return out
 
 
+def read_crops_text(crops: list, *,
+                    timeout_s: float | None = None,
+                    keep_alive: bool | None = None) -> list[str]:
+    """Plain OCR for a list of BGR image arrays — one string per crop.
+
+    The second thing this venv is good for. `direction_text` needs to read a
+    word out of a crop it cut itself, which is the same model on a different
+    shape of input, so it goes through the same subprocess rather than standing
+    up a second one: the 650M GGUF load dominates either caller's cost and is
+    paid once per process, not once per crop.
+
+    A crop that reads as nothing comes back as `""`, never as an exception —
+    the caller's job is to gate what was read, and a blank crop is a legitimate
+    answer to "what does this say".
+    """
+    if not crops:
+        return []
+    import cv2                                              # noqa: PLC0415
+
+    encoded = []
+    for crop in crops:
+        ok, buf = cv2.imencode(".png", crop)
+        encoded.append(base64.standard_b64encode(buf.tobytes()).decode("ascii")
+                       if ok else "")
+
+    python = interpreter()
+    env = dict(os.environ)
+    if KEEP_ALIVE if keep_alive is None else keep_alive:
+        env["SURYA_INFERENCE_KEEP_ALIVE"] = "true"
+    try:
+        proc = subprocess.run(
+            [str(python), str(_WORKER)],
+            input=json.dumps({"crops": encoded}), capture_output=True,
+            text=True, env=env,
+            timeout=timeout_s if timeout_s is not None else DEFAULT_TIMEOUT_S,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise SuryaLabelError(f"surya timed out after {exc.timeout}s") from exc
+    if proc.returncode != 0 and not proc.stdout.strip():
+        raise SuryaLabelError(
+            f"surya worker failed (exit {proc.returncode}):\n"
+            f"{proc.stderr.strip()[-2000:]}"
+        )
+    try:
+        payload: dict[str, Any] = json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        raise SuryaLabelError(
+            "surya worker returned non-JSON:\n"
+            f"stdout: {proc.stdout.strip()[:400]}\n"
+            f"stderr: {proc.stderr.strip()[-1200:]}"
+        ) from exc
+    if "error" in payload:
+        raise SuryaLabelError(payload["error"])
+
+    out = []
+    for entry in payload.get("crops", []):
+        if entry.get("error"):
+            logger.warning("surya failed on one crop: %s", entry["error"])
+            out.append("")
+            continue
+        out.append(entry.get("text") or "")
+    return out
+
+
 def read_staff_labels_surya(pws: PageWithStaves, *,
                             timeout_s: float | None = None,
                             keep_alive: bool | None = None) -> list[StaffLabel]:

@@ -69,6 +69,9 @@ tools/omr/
 ├── voicing.py                 ← Chord-grouping helper used by export
 ├── rhythm.py                  ← Duration parsing (Phase 4c)
 ├── line_detection.py          ← Classical-CV stems + beams (Phase 4f)
+├── direction_text.py          ← Words inside a system (`legato`) — subtract
+│                                every detection, OCR what is left, gate it
+├── direction_lexicon.py       ← Is this string a musical direction?
 ├── run_pipeline.py            ← Older Phase-1-only CLI (staves/measures only,
 │                                no symbol detection). Mostly for debugging
 │                                the staff/measure extractor in isolation.
@@ -921,6 +924,79 @@ staves of twenty on Beethoven 6 p.2 and none at all on Beethoven 5 p.2, against
 failure, but it is the honest ceiling on this work today — clef *detection* on
 such scans is itself unsolved (see "Clef location" above).
 
+## Direction text — the words printed inside a system
+
+`--direction-text` reads `legato`, `espr. e legato`, `Allegro con brio` and
+exports them as MusicXML `<words>`. **Off by default**, and it needs
+`.venv-surya` (see "Instrument identity" — it is the same OCR rung).
+
+```bash
+python3 -m tools.omr.staff_labels_surya --serve      # once, so the model stays loaded
+export OMR_SURYA_KEEP_ALIVE=1
+python3 -m tools.omr.transcribe score.pdf --direction-text --out r.json
+python3 -m tools.omr.export r.json --format musicxml --out r.musicxml
+```
+
+`wrong direction` was 151 of the 1715 pooled OMR-NED edits, the largest
+category with nothing upstream to consume — and the class that would have
+supplied one, `textDynamic`, is the class that caused the Phase 3.4 collapse.
+So this reads text **without the detector**:
+
+```
+ink in the band between two staves
+  minus every detection      already in the JSON, in page pixels
+  minus curves and rules     a slur fills 1/40 of its box, a letter 1/5
+  = word-shaped clusters     letters grouped by proximity and a shared row
+  -> Surya                   on a word-sized crop, ~9 s for a 21-staff page
+  -> direction_lexicon       a term, or a phrase of terms, or nothing
+```
+
+It is a **post-pass over the built page dicts**, like `contextual`: it adds a
+`direction_texts` key to measures that already exist, so a run without it
+serialises byte-identically, and a failure is recorded in
+`direction_text.reason` rather than raised.
+
+### Three things it turned on
+
+**Whole-band OCR does not work, and the subtraction is not optional.** Handing
+Surya the raw inter-staff strips — 5900×183 px on the Brahms page, 32:1 — found
+3 of 8 `legato`s, invented dozens of `f` and `p` out of noteheads and stems, and
+took about fifteen minutes for one page. An OCR model resizes to a fixed frame,
+and at that aspect ratio a six-letter word survives as four pixels of height.
+
+**No distance separates a tempo mark from a title.** Ink above the first staff,
+in staff spaces above its top line (`probe_direction_bands.py`):
+
+| | direction | title |
+|---|---|---|
+| brahms | `Un poco sostenuto` 0–6.4 | 21–25 |
+| beethoven | `Allegro con brio` 3.1–8.2 | 13–16 |
+| mahler | *(none)* | **6.6–9.9** |
+
+Mahler's title sits closer to its staff than Beethoven's direction does to that
+one, so the two populations overlap and no reach separates them. **Position
+does**: a heading is centred or right-aligned on the PAGE, a direction is
+left-aligned to the music it starts. Above a staff — and only there — a
+candidate must therefore begin inside the first measure.
+
+**Precision and recall cost the same.** OMR-NED charges a direction its own
+character count on both sides, so an invented `IIII` costs 4 exactly as a missed
+`legato` costs 6. The lexicon gate is arithmetic, not taste, and a reader that
+guesses trades one for the other at par.
+
+### What it does not reach
+
+- **A direction printed against the staff below it.** Mahler's `molto` sits in a
+  4.5-space gap on a 38-staff page and its ink crosses the next staff's top
+  line; the band stops clear of that line, so the word is never proposed. Worth
+  5 edits, and the fix needs the staff lines traced off the band
+  (`header_ink.erase_staff_lines`) rather than a wider band.
+- **Marks that are not words.** `[`, `]`, `(♩=108)` — refused by the lexicon,
+  correctly, and 3 of the 33 remaining edits.
+- **The letter dynamics.** `f`, `pp`, `sf` are drawn glyphs the detector finds
+  and `export.measure_dynamics` already emits. The lexicon deliberately omits
+  them so the two readers cannot both claim one mark.
+
 ### `--clef-weights` is optional, and is not general-purpose weights
 
 The one footgun worth naming. `--clef-weights` takes a **clef-specialist
@@ -990,6 +1066,13 @@ options:
   --iou IOU             NMS IoU threshold (default: 0.5)
   --no-agnostic-nms     Disable agnostic NMS
   --dpi DPI             Source-page render DPI (default: 600)
+  --direction-text      Read the words printed inside a system (`legato`,
+                        `Allegro con brio`) by subtracting every detection from
+                        the page's ink and OCRing what is left with Surya, then
+                        gating on a lexicon of musical terms. Exported as
+                        MusicXML `<words>`. OFF by default: needs .venv-surya
+                        and spends OCR (~9 s on a 21-staff page with the server
+                        resident). See "Direction text" above.
   --overlays-dir DIR    If set, write per-page overlay PNGs here
   --quiet               Suppress per-page progress logs
 ```

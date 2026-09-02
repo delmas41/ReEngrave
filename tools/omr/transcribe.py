@@ -3129,6 +3129,7 @@ def transcribe(
     dossier_seeding: bool = True,
     contextual: bool = True,
     contextual_vision_fallback: bool = False,
+    read_direction_text: bool = False,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -3915,6 +3916,44 @@ def transcribe(
             out.get("dossier_warnings", [])
         )
 
+    # ── Direction text ──────────────────────────────────────────────────────
+    #
+    # The words printed inside a system — `legato`, `Allegro con brio`. A
+    # post-pass for the same reason `contextual` is one: it works by
+    # SUBTRACTING every detection from the page's ink, so it needs the finished
+    # detections, and it adds a key to measures that already exist rather than
+    # changing any of them. A result read without it serialises identically.
+    #
+    # OFF by default because it spends OCR: ~9 s on a 21-staff page with the
+    # Surya server resident, and the first call of a run pays ~70 s more to
+    # spawn llama.cpp and load a 650M GGUF. That is a cost a caller should ask
+    # for, not one a default should impose.
+    if read_direction_text:
+        t_dir = time.perf_counter()
+        try:
+            from .direction_text import attach_to_page, read_directions
+
+            n_placed = 0
+            report: list[dict[str, Any]] = []
+            for page_dict, pws_page in zip(out["pages"], staved_pages):
+                directions, info = read_directions(pws_page, page_dict)
+                n_placed += attach_to_page(page_dict, directions)
+                report.append(info)
+            out["direction_text"] = {
+                "available": True,
+                "n_placed": n_placed,
+                "pages": report,
+            }
+        except Exception as exc:                              # noqa: BLE001
+            out["direction_text"] = {
+                "available": False,
+                "reason": f"{type(exc).__name__}: {exc}",
+            }
+            if progress:
+                print(f"  direction text failed: {type(exc).__name__}: {exc}",
+                      flush=True)
+        out["runtime"]["direction_text_s"] = round(time.perf_counter() - t_dir, 2)
+
     # ── Contextual post-pass ────────────────────────────────────────────────
     #
     # Part identity, and the clefs that follow from it. This lived outside the
@@ -4020,6 +4059,15 @@ def main(argv: list[str] | None = None) -> int:
                          "never read — reported under `contextual` in the JSON. "
                          "It is a post-pass over resolved pitches: nothing "
                          "about detection, rhythm or segmentation changes.")
+    ap.add_argument("--direction-text", action="store_true",
+                    help="Read the words printed inside a system — `legato`, "
+                         "`Allegro con brio` — by subtracting every detection "
+                         "from the page's ink and OCRing what is left with "
+                         "Surya, then gating the result on a lexicon of "
+                         "musical terms. Emitted as MusicXML `<words>`. Needs "
+                         ".venv-surya; OFF by default because it spends OCR "
+                         "(about 9 s on a 21-staff page with the server "
+                         "resident, `staff_labels_surya --serve`).")
     ap.add_argument("--contextual-vision", action="store_true",
                     help="Let the contextual pass fall back to reading the "
                          "margin with Claude when the text layer and Surya both "
@@ -4140,6 +4188,7 @@ def main(argv: list[str] | None = None) -> int:
         dossier_seeding=not args.no_dossier_seeding,
         contextual=not args.no_contextual,
         contextual_vision_fallback=args.contextual_vision,
+        read_direction_text=args.direction_text,
         overlays_dir=args.overlays_dir,
         progress=not args.quiet,
     )
