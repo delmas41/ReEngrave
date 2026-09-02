@@ -3,7 +3,9 @@
 This directory is the **single source of truth** for hand-labeled YOLO training
 data on real orchestral / piano scores. Every labeling session you run becomes
 an immutable `vN-YYYY-MM-DD-descriptor/` directory; the catalog YAML unions
-all versions so re-training picks them all up automatically.
+the versions listed in `catalog-versions.txt` — **membership is a recorded
+training decision, not a directory listing**, and a new version is not
+included until its line is added there (see "Catalog membership" below).
 
 The whole point of this layout is to **compound effort**: every minute spent
 labeling shows up in every future model.
@@ -13,6 +15,8 @@ labeling shows up in every future model.
 ```
 data/user-labeled/
   README.md                          ← this file
+  catalog-versions.txt               ← COMMITTED; the membership record —
+                                        which versions the catalog unions
   catalog.yaml                       ← generated; ultralytics consumes this
   _catalog_train.txt                 ← generated; list of train PNGs
   _catalog_val.txt                   ← generated; list of val PNGs
@@ -36,11 +40,31 @@ data/user-labeled/
 
 1. **Versions are immutable.** Once a `vN-…/` directory exists, never edit its
    contents. To fix a mistake, write a new version that supersedes the bad
-   cells (and update the catalog generator if needed to skip the bad ones).
+   cells (and drop the bad version from `catalog-versions.txt`).
 2. **One session = one directory.** Don't mix sessions inside a single version.
 3. **Naming:** `vN-YYYY-MM-DD-descriptor/` — version, ISO date, short
    descriptor (`orchestral`, `piano-solo`, `bach-wtc-rerun`, …). The `vN`
    prefix is what `build_catalog_yaml.py` looks for; the rest is for humans.
+
+## Catalog membership (`catalog-versions.txt`)
+
+Which versions the catalog unions is a **training decision with a decision
+record**, not an inventory: the committed membership is v1–v4, and the
+clef-heavy v5/v6 batches are excluded on purpose because they narrow the
+density prior — the mechanism that collapsed dense-page noteheads 2506 → 114
+in the clef fine-tune (PROJECT_STATUS.md open decision #13; v7's entry is
+likewise an open decision, `benchmarks/omr-labeling-hollow-2026-08/AUDIT.md`).
+
+`build_catalog_yaml` therefore reads `catalog-versions.txt` and builds exactly
+what it lists, printing any on-disk versions it leaves out. Without the
+manifest (and without an explicit `--versions`) it **refuses** — it never
+falls back to "everything on disk", because that would silently reverse the
+recorded decision. To admit a version: add its line to the manifest, rebuild,
+and commit the manifest edit together with the regenerated catalog files
+(`test_training_pipeline.py` pins the membership, so the change is loud by
+design). `--versions NAME [NAME ...]` builds a one-off catalog from an
+explicit list without touching the manifest — for experiments, not for
+changing the record.
 
 The class vocabulary is the **208-class DeepScoresV2 list** (the same list the
 YOLOv8l weights were trained against). It's read from the trained `.pt` file at
@@ -149,15 +173,19 @@ and architecture notes.
    The converter writes `data/user-labeled/v2-2026-06-15-piano-solo/`
    (`images/`, `labels/`, `metadata.json`) and never touches earlier versions.
 
-5. **Rebuild the catalog.**
+5. **Decide whether the version enters the catalog, then rebuild.** A new
+   version is *not* auto-included — admitting it is the training decision
+   described in "Catalog membership" above. If (and only if) it should
+   train, add its name to `data/user-labeled/catalog-versions.txt`, then:
    ```bash
    python3 -m tools.omr.training.build_catalog_yaml \
        --root data/user-labeled --val-fraction 0.15
    ```
    This regenerates `catalog.yaml`, `_catalog_train.txt`, `_catalog_val.txt`,
-   and `_catalog_summary.json`. The val split is per-version-deterministic
-   (hash-seeded), so re-running with the same seed produces the same split —
-   safe to re-run any time.
+   and `_catalog_summary.json` from exactly the manifest's versions (it
+   refuses without the manifest, and lists what it excluded). The val split
+   is per-version-deterministic (hash-seeded), so re-running with the same
+   seed produces the same split — safe to re-run any time.
 
 6. **Re-train.** Point fine-tuning at the new catalog (see next section).
 
