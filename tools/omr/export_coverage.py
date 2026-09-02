@@ -6,9 +6,25 @@ file. Beams, augmentation dots, dynamics, tuplet markers, slur arcs, fermatas,
 accidentals — 0.3164 to 0.1242 on the benchmark, and almost none of it from
 making the detector better.
 
-Six of the seven were found FORENSICALLY: a metric bucket grew, someone opened
-the op list, and the cause was underneath. That works, and it only ever finds
-what is already large.
+THE LIST, NUMBERED, because the ordinal has been reconstructed from memory
+twice and collided both times. `0eb1271` calls articulations "the seventh time"
+while `d112052` and `docs/next-steps-omr-2026-09-01.md` §2b both call printed
+accidentals the seventh — the two were written on branches that could not see
+each other. Counted once, in the order they were fixed:
+
+    1  beams                d272ac3   detected, never exported
+    2  augmentation dots    52ba215   detected, counted twice
+    3  dynamics             89277a2   detected, never exported
+    4  tuplet markers       d5079d5   sitting unread in the JSON
+    5  slur arcs            bae93b1   detected, never rejoined across a barline
+    6  fermatas             (in §3)   detected at 0.90-0.95, never exported
+    7  printed accidentals  d112052   folded into <alter>, <accidental> dropped
+    8  articulations        0eb1271   ten artic* classes, one docstring mention
+    9  hairpins                       OPEN — and not purely an export fix
+
+Six of the first seven were found FORENSICALLY: a metric bucket grew, someone
+opened the op list, and the cause was underneath. That works, and it only ever
+finds what is already large.
 
 THE OBVIOUS PROACTIVE CHECK DOES NOT WORK, and knowing why is the whole design.
 Auditing the detector's class space for classes nothing downstream mentions
@@ -136,18 +152,28 @@ VISIBLE: dict[str, str] = {
 #: is a new gap and fails the test.
 KNOWN_GAPS: dict[str, str] = {
     "accent": (
-        "EIGHTH GAP, open and cheap. Mahler's truth has 6 and the detector "
-        "finds exactly 6 (articAccentBelow x5, articAccentAbove x1). Nothing "
-        "consumes them. This is the next one to close."
+        "EIGHTH GAP — open on main, and ALREADY FIXED on the unmerged branch "
+        "claude/transcription-overnight-progress-426c90 (`0eb1271`), which maps "
+        "DSv2's ten artic* classes and emits <accent> among five marks. Do not "
+        "write it again; `git show 0eb1271` first. Mahler's truth has 6 here "
+        "and the detector finds exactly 6, but Mozart 40 prints 102 staccati "
+        "and was charged 102 edits, 28% of that work's budget — which is why "
+        "this survived so long on a benchmark of three works printing 0, 2 "
+        "and 6. When that branch lands, the staleness test goes red and BOTH "
+        "this entry and `articulations` come out."
     ),
     "articulations": (
         "The <notations> wrapper the accents would sit in — same item as "
-        "`accent`, and it appears the moment that does."
+        "`accent`, closed by the same unmerged commit, and it leaves this "
+        "inventory at the same moment."
     ),
     "wedge": (
-        "NINTH GAP, open. Mahler's truth has 6 hairpins; the detector finds 4 "
+        "NINTH GAP, open — and genuinely unclaimed: `git log --all -S wedge` "
+        "and `-S hairpin` over export.py and transcribe.py return nothing on "
+        "any branch. Mahler's truth has 6 hairpins; the detector finds 4 "
         "(dynamicCrescendoHairpin x2, dynamicDiminuendoHairpin x2). Partial "
-        "detection, so this one is not purely an export fix."
+        "detection, so unlike the eight above this is not purely an export "
+        "fix, and closing it cannot be priced from this inventory alone."
     ),
     "barline": (
         "Documented limitation — repeat signs are dropped on export, tied to "
