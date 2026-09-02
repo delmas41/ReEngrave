@@ -203,12 +203,27 @@ in the caller, not the vote:
   pass or the same reading simply reappears there". Changing it is a decision
   about the measure pass, not about the vote.
 * **`min_majority` computed over voters** — real, and on p.15 it lets a
-  reference standing on 2.0 of the page's weight report a 100% majority. But
-  fixing the denominator alone changes p.15's output by **nothing**: it moves
-  the page into the no-majority branch, where the same wrong 1♭ readings are
-  kept for a different stated reason. It is only worth changing alongside the
-  weight fix, and it is not needed once the weight fix makes the reference
-  correct. Recorded, not done.
+  reference standing on 2.0 of the page's weight report a **100% majority**.
+  Measured rather than argued (an earlier draft of this section asserted it was
+  worth nothing and that was wrong):
+
+  | p.15, weight fix OFF | correct | wrong |
+  |---|--:|--:|
+  | as shipped | 0 | **5** |
+  | denominator over ALL readings | 0 | **4** |
+
+  It is worth one wrong reading, not zero. The mechanism is that it moves the
+  page into the no-majority branch, where **fix 2's new guard** then refuses
+  the one template 1♭ — the two changes compose. With the weight fix on, it
+  changes nothing (3 correct / 0 wrong either way), because the reference is
+  correct and the majority is real.
+
+  ⚠️ **Not landed, deliberately.** It makes the no-majority branch fire on more
+  pages, and that branch now REJECTS over-counting sources — so it can lose a
+  correct template reading on a page whose reference is right but weakly held.
+  One wrong reading on one page is not worth taking that risk unmeasured, and
+  the corpus run that would measure it is in *Still owed*. Reproduce with the
+  `honest_denominator` variant against `replay_vote.py`.
 
 ---
 
