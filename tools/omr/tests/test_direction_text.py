@@ -345,6 +345,11 @@ class TestCropping:
         assert big.shape[0] == (734 - 700) + 2 * pad_y
 
 
+def _says(word):
+    """A stub rung that reads `word` from every crop."""
+    return lambda crops: [word] * len(crops)
+
+
 class TestReadDirections:
     def _setup(self):
         staves = [_staff(0, 500), _staff(1, 1200)]
@@ -356,22 +361,22 @@ class TestReadDirections:
     def test_a_lexicon_hit_is_kept(self):
         pws, page_dict = self._setup()
         out, info = read_directions(pws, page_dict,
-                                    reader=lambda crops: ["legato"] * len(crops))
+                                    readers=[("stub", _says("legato"))])
         assert [d.text for d in out] == ["legato"]
-        assert info["n_accepted"] == 1
+        assert info["n_accepted"] == 1 and info["by_reader"] == {"stub": 1}
 
     def test_ocr_noise_is_refused_and_reported(self):
         """Precision and recall cost the same, so the reader that guesses
         trades one for the other at par."""
         pws, page_dict = self._setup()
         out, info = read_directions(pws, page_dict,
-                                    reader=lambda crops: ["IIII"] * len(crops))
+                                    readers=[("stub", _says("IIII"))])
         assert out == [] and info["rejected"] == ["IIII"]
 
     def test_an_empty_read_is_not_an_error(self):
         pws, page_dict = self._setup()
         out, info = read_directions(pws, page_dict,
-                                    reader=lambda crops: [""] * len(crops))
+                                    readers=[("stub", _says(""))])
         assert out == [] and info["n_read"] == 0
 
     def test_no_candidates_means_the_reader_is_never_called(self):
@@ -381,7 +386,75 @@ class TestReadDirections:
         def explode(_crops):
             raise AssertionError("reader called with nothing to read")
 
-        assert read_directions(pws, page_dict, reader=explode)[0] == []
+        assert read_directions(pws, page_dict,
+                               readers=[("boom", explode)])[0] == []
+
+    def test_with_no_rung_available_it_abstains_rather_than_fails(self):
+        pws, page_dict = self._setup()
+        out, info = read_directions(pws, page_dict, readers=[])
+        assert out == [] and info["n_accepted"] == 0
+        assert info["reason"] == "no OCR rung available"
+
+
+class TestUnionOfRungs:
+    """The two rungs fail differently, which is the whole reason for both.
+
+    Surya is silent or right; Tesseract reads nearly everything and gets
+    letters wrong inside the word. Measured on an 1870 scan, either alone
+    accepts 11 of 74 crops and the union accepts 17.
+    """
+
+    def _setup(self):
+        staves = [_staff(0, 500), _staff(1, 1200)]
+        pws = _pws(staves)
+        for x in range(300, 480, 30):
+            cv2.rectangle(pws.page.rgb, (x, 700), (x + 22, 734), (0, 0, 0), -1)
+        return pws, _page_dict([0, 1], [(100, 1000), (1000, 2000)])
+
+    def test_the_second_rung_reads_what_the_first_is_silent_on(self):
+        pws, page_dict = self._setup()
+        out, info = read_directions(pws, page_dict, readers=[
+            ("surya", _says("")), ("tesseract", _says("sempre"))])
+        assert [d.text for d in out] == ["sempre"]
+        assert info["by_reader"] == {"tesseract": 1}
+        assert out[0].reader == "tesseract"
+
+    def test_the_first_rung_wins_when_both_read_the_same_word(self):
+        pws, page_dict = self._setup()
+        out, info = read_directions(pws, page_dict, readers=[
+            ("surya", _says("legato")), ("tesseract", _says("legato"))])
+        assert len(out) == 1 and out[0].reader == "surya"
+        assert info["conflicts"] == []
+
+    def test_a_disagreement_is_recorded_and_the_first_rung_wins(self):
+        """Never seen on the scan corpus — 17 accepted, no crop where both
+        named different words. The rule exists for the day it happens, and
+        the count is how anyone would find out."""
+        pws, page_dict = self._setup()
+        out, info = read_directions(pws, page_dict, readers=[
+            ("surya", _says("legato")), ("tesseract", _says("dolce"))])
+        assert [d.text for d in out] == ["legato"]
+        assert len(info["conflicts"]) == 1
+        assert info["conflicts"][0]["readings"] == {
+            "surya": "legato", "tesseract": "dolce"}
+        assert info["conflicts"][0]["took"] == "surya"
+
+    def test_punctuation_alone_is_not_a_disagreement(self):
+        """`cresc` and `cresc.` are the same mark; only the words matter."""
+        pws, page_dict = self._setup()
+        _out, info = read_directions(pws, page_dict, readers=[
+            ("surya", _says("cresc.")), ("tesseract", _says("Cresc"))])
+        assert info["conflicts"] == []
+
+    def test_a_rung_that_throws_does_not_take_the_page_with_it(self):
+        def boom(_crops):
+            raise RuntimeError("tesseract exploded")
+
+        pws, page_dict = self._setup()
+        out, info = read_directions(pws, page_dict, readers=[
+            ("surya", _says("legato")), ("tesseract", boom)])
+        assert [d.text for d in out] == ["legato"]
+        assert "tesseract" in info["failed_readers"]
 
 
 # ─── attachment and export ──────────────────────────────────────────────────

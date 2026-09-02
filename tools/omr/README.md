@@ -947,9 +947,18 @@ ink in the band between two staves
   minus every detection      already in the JSON, in page pixels
   minus curves and rules     a slur fills 1/40 of its box, a letter 1/5
   = word-shaped clusters     letters grouped by proximity and a shared row
-  -> Surya                   on a word-sized crop, ~9 s for a 21-staff page
+  -> Surya AND Tesseract     two free rungs, on a word-sized crop
   -> direction_lexicon       a term, or a phrase of terms, or nothing
 ```
+
+**Both rungs, not one.** They fail in ways that do not overlap: Surya either
+reads a crop or says nothing at all, and Tesseract reads almost everything and
+gets letters wrong inside the word. On an 1870 scan, either alone yields 11
+usable words of 74 crops and the union yields 17 — while on the engraved
+benchmark the union changes nothing at all, because Surya already reads every
+crop there and Tesseract's extra noise is refused by the lexicon. Each rung
+self-disables when its dependency is missing. See `direction_text.default_readers`
+and [SCAN_2026-09-01.md](../../benchmarks/omr-direction-text-2026-09/SCAN_2026-09-01.md).
 
 It is a **post-pass over the built page dicts**, like `contextual`: it adds a
 `direction_texts` key to measures that already exist, so a run without it
