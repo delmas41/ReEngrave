@@ -1,0 +1,41 @@
+  [397/804] ERROR lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf p22: FileNotFoundError: no such file: '/Users/seanjohnson/Desktop/ReEngrave/library/editions/lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf'
+  [398/804] ERROR lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf p59: FileNotFoundError: no such file: '/Users/seanjohnson/Desktop/ReEngrave/library/editions/lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf'
+  [399/804] ERROR lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf p96: FileNotFoundError: no such file: '/Users/seanjohnson/Desktop/ReEngrave/library/editions/lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf'
+  [400/804] ERROR lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf p132: FileNotFoundError: no such file: '/Users/seanjohnson/Desktop/ReEngrave/library/editions/lalo/symphonie-espagnole-op21/lalo--symphonie-espagnole-op21--durand--imslp174510.pdf'
+206 PDFs, 853 planned pages (pair-tagged PDFs: 8)
+49 (pdf,page) rows already present in /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/system-break-rule-publishers-62ead4/benchmarks/omr-system-grouping-2026-09/sweep.jsonl
+804 tasks to run this invocation
+  [25/804] ok=25 err=0 elapsed=15s
+  [50/804] ok=50 err=0 elapsed=29s
+  [75/804] ok=75 err=0 elapsed=47s
+  [100/804] ok=100 err=0 elapsed=66s
+  [125/804] ok=125 err=0 elapsed=82s
+  [150/804] ok=150 err=0 elapsed=99s
+  [175/804] ok=175 err=0 elapsed=113s
+  [200/804] ok=200 err=0 elapsed=127s
+  [225/804] ok=225 err=0 elapsed=143s
+  [250/804] ok=250 err=0 elapsed=161s
+  [275/804] ok=275 err=0 elapsed=191s
+  [300/804] ok=300 err=0 elapsed=212s
+  [325/804] ok=325 err=0 elapsed=228s
+  [350/804] ok=350 err=0 elapsed=243s
+  [375/804] ok=375 err=0 elapsed=258s
+  [400/804] ok=396 err=4 elapsed=271s
+  [425/804] ok=421 err=4 elapsed=288s
+  [450/804] ok=446 err=4 elapsed=304s
+  [475/804] ok=471 err=4 elapsed=321s
+  [500/804] ok=496 err=4 elapsed=340s
+  [525/804] ok=521 err=4 elapsed=358s
+  [550/804] ok=546 err=4 elapsed=377s
+  [575/804] ok=571 err=4 elapsed=394s
+  [600/804] ok=596 err=4 elapsed=411s
+  [625/804] ok=621 err=4 elapsed=428s
+  [650/804] ok=646 err=4 elapsed=445s
+  [675/804] ok=671 err=4 elapsed=462s
+  [700/804] ok=696 err=4 elapsed=478s
+  [725/804] ok=721 err=4 elapsed=498s
+  [750/804] ok=746 err=4 elapsed=517s
+  [775/804] ok=771 err=4 elapsed=537s
+  [800/804] ok=796 err=4 elapsed=555s
+  [804/804] ok=800 err=4 elapsed=558s
+done: 800 ok, 4 error, wrote/updated /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/system-break-rule-publishers-62ead4/benchmarks/omr-system-grouping-2026-09/sweep.jsonl

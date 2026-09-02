@@ -71,6 +71,7 @@ in `staff_header.py` on the key-signature branch.)
 
 from __future__ import annotations
 
+import os
 import statistics
 
 import cv2
@@ -113,6 +114,52 @@ MIN_X_OVERLAP_FRAC = 0.5
 # 68 px gap while intra-system gaps reach 99 px, so the guard suppressed a real
 # break. Gap size is exactly the assumption this module exists to reject — the
 # connectivity signal stands alone.
+
+# ── Left-edge system-start split (`OMR_LEFT_EDGE_SPLIT`) ───────────────────────
+# The window above scans the whole staff width, so music ink out in the staff
+# body — a stem, an "a 2." marking, a measure number, a brace curve — can be
+# counted as a crossing column and fake a connection across a real system
+# boundary, MERGING two stacked systems into one. Measured over-merges: Beethoven
+# 9 p60 had 324 crossing columns at the true break but ZERO at the shared left
+# edge; Beethoven 5 p40 the same (3/11 body ink, 0 at the edge); Eroica p36 read
+# one 22-staff system for a true [11, 11].
+#
+# The systemic barline is the one rule engraved through a whole system and absent
+# between systems, so a SECOND, narrow band anchored at the shared left edge
+# recovers the boundary the wide window fumbled: a gap whose left-edge column is
+# empty is a system start. This only ever ADDS a break (union with the rule
+# above); it can never merge, so it cannot reintroduce an over-split the wide
+# rule already avoids.
+#
+# `RIGHT` (how far right of x_start the band reaches) is the load-bearing knob:
+# the leftmost barline sits at a different offset per edition — ~0 spacings on
+# Beethoven, +1.4-3 on La Mer, because `x_start` is measured after the clef
+# margin — so the band must reach >= 3 spacings right to admit every edition's
+# barline. Measured flat for RIGHT >= 3; 4.5 sits well inside that plateau.
+# Validated in benchmarks/omr-system-grouping-2026-09/fix/PHASE1_RESULTS.md:
+# fixes 2/3 known over-merges + Eroica, 0/37 control regressions, stable across
+# 45/45 RIGHT>=3 settings and 300/600 dpi.
+LEFT_BAND_LEFT_SPACINGS = 2.0
+LEFT_BAND_RIGHT_SPACINGS = 4.5
+LEFT_BAND_MIN_CROSS = 1
+# Trust the empty-left signal only on a page that actually uses a continuous left
+# barline: require this fraction of the wide rule's within-system gaps to BE
+# left-edge crossed before adding any left-edge break. Guards a degraded
+# multi-system scan (broken interior barlines) from being shattered. Inactive on
+# the validation corpus; kept as insurance.
+LEFT_BAND_GATE_FRAC = 0.7
+
+
+# On by default: measured across 964 library pages it corrected 27 over-merged
+# symphony pages (e.g. Bach Brandenburg, Schubert, Schumann, Wagner, Tchaikovsky
+# read as one system where there were two) against a single mild residual
+# over-split (Mozart K22 p4, a movement-start left-edge defect — the B9-p25
+# family, Phase 3), with zero size-1 systems created. Set OMR_LEFT_EDGE_SPLIT=0
+# to disable.
+def _left_edge_split_enabled() -> bool:
+    return os.environ.get("OMR_LEFT_EDGE_SPLIT", "1").strip().lower() not in (
+        "0", "", "false", "no", "off",
+    )
 
 
 def _robust_x_window(staves: list[Staff]) -> tuple[int, int]:
@@ -169,6 +216,79 @@ def gap_bridging_counts(
     return counts
 
 
+def left_edge_barline_counts(
+    binary: np.ndarray,
+    staves: list[Staff],
+    *,
+    ink_fraction: float = BRIDGE_INK_FRACTION,
+) -> list[int]:
+    """Per adjacent staff pair, the number of near-solid crossing columns in a
+    NARROW band at the page's shared left edge (the systemic barline), rather
+    than the whole staff width `gap_bridging_counts` scans.
+
+    High at a within-system gap (the systemic barline runs the whole system
+    height); ~0 at a system boundary, where the wide window is fooled by music
+    ink out in the staff body. Same closing and coverage test as
+    `gap_bridging_counts`; `-1` for a degenerate pair. `staves` must be sorted
+    by `top_y`.
+    """
+    if len(staves) < 2:
+        return []
+    height, width = binary.shape
+    spacing_pg = statistics.median([s.line_spacing_px for s in staves]) or 1.0
+    x_start = int(statistics.median([s.x_start for s in staves]))
+    x0 = max(0, int(x_start - LEFT_BAND_LEFT_SPACINGS * spacing_pg))
+    x1 = min(width, int(x_start + LEFT_BAND_RIGHT_SPACINGS * spacing_pg))
+
+    counts: list[int] = []
+    for upper, lower in zip(staves, staves[1:]):
+        top = max(0, upper.bottom_y + 2)
+        bot = min(height, lower.top_y - 2)
+        if bot <= top or x1 <= x0:
+            counts.append(-1)
+            continue
+        band = (binary[top:bot, x0:x1] < 128).astype(np.uint8)
+        spacing = max(upper.line_spacing_px, lower.line_spacing_px)
+        k = max(3, int(round(spacing * BRIDGE_GAP_TOLERANCE_SPACINGS)) * 2 + 1)
+        closed = cv2.morphologyEx(band, cv2.MORPH_CLOSE, np.ones((k, 1), np.uint8))
+        counts.append(int((closed.mean(axis=0) > ink_fraction).sum()))
+    return counts
+
+
+def _suppress_orphaning_breaks(
+    existing_break: list[bool], left_break: list[bool]
+) -> list[bool]:
+    """Clear any cue-A break that would isolate a single staff.
+
+    A lone-staff "system" is the over-split signature and essentially never a
+    real orchestral system (the connectivity rule proper produces zero of them),
+    so cue A must never create one — measured on small-system pages (keyboard
+    grand staves, chamber groups, a partial last system) where a faint internal
+    connector makes the narrow left band read empty. Only cue-A (`left_break`)
+    breaks are cleared; existing-rule breaks are always kept. Clearing only ever
+    merges, so the pass converges.
+    """
+    n_gaps = len(existing_break)
+    lb = list(left_break)
+    while True:
+        combined = [existing_break[i] or lb[i] for i in range(n_gaps)]
+        cleared = False
+        for j in range(n_gaps + 1):  # staff index; a size-1 system is one staff
+            before = combined[j - 1] if j > 0 else True
+            after = combined[j] if j < n_gaps else True
+            if before and after:  # staff j stands alone
+                if j > 0 and lb[j - 1] and not existing_break[j - 1]:
+                    lb[j - 1] = False
+                    cleared = True
+                    break
+                if j < n_gaps and lb[j] and not existing_break[j]:
+                    lb[j] = False
+                    cleared = True
+                    break
+        if not cleared:
+            return lb
+
+
 def _assign_groups(staves: list[Staff], bridging: list[int]) -> None:
     """Within each system, split at gaps bridged far less than the system's
     typical gap — the bracket-group boundaries. Sets `Staff.group_index`
@@ -203,6 +323,7 @@ def assign_systems(
     staves: list[Staff],
     *,
     fallback: bool = True,
+    left_edge_split: bool | None = None,
 ) -> tuple[list[Staff], bool]:
     """Set `system_index` and `group_index` from vertical connectivity.
 
@@ -211,7 +332,16 @@ def assign_systems(
     the gap heuristic — which happens when no gap anywhere on the page is
     bridged (a page whose barlines and bracket are too faint to see, where
     trusting the signal would make every staff its own system).
+
+    When `left_edge_split` is true (default read from `OMR_LEFT_EDGE_SPLIT`, off),
+    a second narrow left-edge barline scan ADDS a system break at any gap whose
+    shared-left-edge column is empty even though the wide window found body ink —
+    recovering two stacked systems merged by that body ink. It never merges, and
+    is gated on the page using a continuous left barline. See the `LEFT_BAND_*`
+    constants and `left_edge_barline_counts`.
     """
+    if left_edge_split is None:
+        left_edge_split = _left_edge_split_enabled()
     staves = sorted(staves, key=lambda s: s.top_y)
     if len(staves) < 2:
         for s in staves:
@@ -223,13 +353,37 @@ def assign_systems(
     if fallback and not any(n > 0 for n in bridging):
         return staves, False
 
+    # The break the connectivity rule decides for each gap: a multi-column
+    # layout, or a gap the wide window found nothing crossing.
+    existing_break = [
+        (_x_overlap_frac(upper, lower) <= MIN_X_OVERLAP_FRAC) or (bridging[i] == 0)
+        for i, (upper, lower) in enumerate(zip(staves, staves[1:]))
+    ]
+
+    # Cue A (opt-in): a gap whose narrow left-edge column is empty is a system
+    # start the wide window missed because body ink bridged it. Only trusted on a
+    # page that otherwise keeps a continuous left barline (the gate), so a
+    # degraded multi-system scan is left to the wide rule rather than shattered.
+    left_break = [False] * len(existing_break)
+    if left_edge_split and existing_break:
+        left_counts = left_edge_barline_counts(binary, staves)
+        interior = [
+            i for i in range(len(existing_break))
+            if not existing_break[i] and 0 <= left_counts[i]
+        ]
+        if interior:
+            crossed = sum(1 for i in interior if left_counts[i] >= LEFT_BAND_MIN_CROSS)
+            if crossed / len(interior) >= LEFT_BAND_GATE_FRAC:
+                for i in interior:
+                    if left_counts[i] < LEFT_BAND_MIN_CROSS:
+                        left_break[i] = True
+                if any(left_break):
+                    left_break = _suppress_orphaning_breaks(existing_break, left_break)
+
     system = 0
     staves[0].system_index = 0
-    for i, (upper, lower) in enumerate(zip(staves, staves[1:])):
-        # Multi-column layouts break regardless of what crosses the gap.
-        if _x_overlap_frac(upper, lower) <= MIN_X_OVERLAP_FRAC:
-            system += 1
-        elif bridging[i] == 0:
+    for i, lower in enumerate(staves[1:]):
+        if existing_break[i] or left_break[i]:
             system += 1
         lower.system_index = system
 
