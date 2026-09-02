@@ -20,6 +20,7 @@ from tools.omr.export import (
     measure_dynamics,
     _compute_divisions,
     _direction_slots,
+    _first_clef_bearing_measure,
     _tuplet_runs,
     _mxl_note,
     _DURATION_TABLE,
@@ -1357,3 +1358,126 @@ class TestSlursAcrossSystemBreaks:
         # four measures: nothing, open at the end of system 1, close at the
         # start of system 2, nothing
         assert kinds == [[], ["start"], ["stop"], []]
+
+
+# ─── the part's opening clef ────────────────────────────────────────────────
+
+
+def _clef_det(x=6.0):
+    return {"class": "cClefAlto", "category": "clef", "bbox": [x, 10, 8, 20],
+            "bbox_page": [x, 10, 8, 20], "confidence": 0.8}
+
+
+def _note_det(x, pitch="C4"):
+    return {"class": "noteheadBlackOnLine", "category": "notehead",
+            "bbox": [x, 10, 5, 5], "bbox_page": [x, 10, 5, 5],
+            "confidence": 0.9, "pitch": pitch,
+            "duration_beats": 1.0, "duration_type": "quarter", "dots": 0}
+
+
+def _brace_det(x=2.0):
+    return {"class": "brace", "category": "structural", "bbox": [x, 0, 3, 60],
+            "bbox_page": [x, 0, 3, 60], "confidence": 0.33}
+
+
+def _m(index, clef, dets):
+    return {"measure_index": index, "bbox_page_px": [0, 0, 100, 50],
+            "clef": clef,
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
+            "n_detections": len(dets), "detections": dets}
+
+
+def _staff_with(measures, clef="treble"):
+    return {"staff_index": 0, "clef": clef,
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
+            "n_measures": len(measures), "measures": measures}
+
+
+def _one_staff_result(staff):
+    return {"source_pdf": "synthetic.pdf",
+            "pages": [{"page_index": 0, "n_systems": 1,
+                       "systems": [{"system_index": 0, "n_staves": 1,
+                                    "staves": [staff]}]}]}
+
+
+class TestFirstClefBearingMeasure:
+    """The Dvorak 9 mechanism: system furniture caught as measure 0 prints no
+    clef, so the clef in EFFECT there is the positional default, and a part
+    that takes its opening clef from measure 0 regardless exports as G2."""
+
+    def test_a_clef_in_measure_zero_keeps_measure_zero(self):
+        ms = [_m(0, "alto", [_clef_det(), _note_det(20)]),
+              _m(1, "alto", [_note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_a_leading_furniture_cell_defers_to_the_measure_that_read_one(self):
+        ms = [_m(0, "treble", [_brace_det()]),
+              _m(1, "alto", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 1
+
+    def test_an_utterly_empty_leading_cell_defers_too(self):
+        """Four of Dvorak's fifteen leading cells hold no detection at all."""
+        ms = [_m(0, "treble", []), _m(1, "bass", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 1
+
+    def test_two_leading_furniture_cells_both_defer(self):
+        ms = [_m(0, "treble", [_brace_det()]), _m(1, "treble", []),
+              _m(2, "bass", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 2
+
+    def test_a_leading_cell_that_holds_MUSIC_is_never_skipped(self):
+        """The notes there were resolved under the clef in effect there, so
+        overruling it would claim a clef the exported pitches do not belong to
+        — even though no clef was detected in it."""
+        ms = [_m(0, "treble", [_note_det(20)]),
+              _m(1, "bass", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_a_tacet_leading_bar_holds_its_whole_rest_and_is_music(self):
+        rest = {"class": "restWhole", "category": "rest", "bbox": [20, 10, 6, 4],
+                "bbox_page": [20, 10, 6, 4], "confidence": 0.8,
+                "duration_beats": 4.0, "duration_type": "whole", "dots": 0}
+        ms = [_m(0, "bass", [rest]), _m(1, "tenor", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_nothing_qualifies_falls_back_to_measure_zero(self):
+        ms = [_m(0, "treble", [_brace_det()]), _m(1, "treble", [])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_no_measures_at_all(self):
+        assert _first_clef_bearing_measure([]) == 0
+
+
+class TestOpeningClefInExport:
+    def test_musicxml_opens_on_the_read_clef_not_the_furniture_default(self):
+        staff = _staff_with([
+            _m(0, "treble", [_brace_det()]),
+            _m(1, "alto", [_clef_det(), _note_det(20)]),
+            _m(2, "alto", [_note_det(20)]),
+        ])
+        root = ET.fromstring(to_musicxml(_one_staff_result(staff)))
+        clefs = [(m.get("number"), c.findtext("sign"), c.findtext("line"))
+                 for m in root.iter("measure") for c in m.iter("clef")]
+        # one clef, in the opening measure, and no spurious change after it
+        assert clefs == [("1", "C", "3")]
+
+    def test_a_genuine_mid_part_clef_change_is_untouched(self):
+        staff = _staff_with([
+            _m(0, "bass", [_clef_det(), _note_det(20)]),
+            _m(1, "tenor", [_clef_det(), _note_det(20)]),
+        ])
+        root = ET.fromstring(to_musicxml(_one_staff_result(staff)))
+        clefs = [(m.get("number"), c.findtext("sign"), c.findtext("line"))
+                 for m in root.iter("measure") for c in m.iter("clef")]
+        assert clefs == [("1", "F", "4"), ("2", "C", "4")]
+
+    def test_lilypond_has_no_clef_change_to_recover_with(self):
+        """`_lily_staff_block` emits one `\\clef` for the whole staff, so a
+        leading furniture cell costs LilyPond the clef outright."""
+        staff = _staff_with([
+            _m(0, "treble", [_brace_det()]),
+            _m(1, "alto", [_clef_det(), _note_det(20)]),
+        ])
+        assert "\\clef alto" in to_lilypond(_one_staff_result(staff))

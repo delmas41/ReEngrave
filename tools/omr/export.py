@@ -386,6 +386,13 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     with `\\new Voice { \\voiceOne ... }` + `\\voiceTwo`.
     """
     clef = staff.get("clef") or "treble"
+    # `\clef` is emitted once for the whole staff here, so a leading furniture
+    # cell costs LilyPond the clef outright — there is no later measure to
+    # recover it the way MusicXML's clef-change does. Same rule, same reason:
+    # see `_first_clef_bearing_measure`. `lead == 0` leaves this untouched.
+    lead = _first_clef_bearing_measure(staff.get("measures", []))
+    if lead:
+        clef = staff["measures"][lead].get("clef") or clef
     key_sig = staff.get("key_signature") or {}
     time_sig = staff.get("time_signature")
 
@@ -1546,6 +1553,48 @@ def _mxl_voice_events(
     return lines, total_dur
 
 
+def _first_clef_bearing_measure(measures: list[dict[str, Any]]) -> int:
+    """Index of the measure whose clef speaks for the part's OPENING.
+
+    A measure's `clef` field is the clef in EFFECT there, and on the staff's
+    leading cells that can be nothing but the positional default: `transcribe`
+    reads a clef where one is printed, and system furniture caught as a measure
+    — a brace, a courtesy meter after the final barline — prints none. Taking
+    the opening clef from measure 0 regardless is what exported Dvorak 9's
+    bassoon, both trombones, the timpani, the viola, the cello and the
+    contrabass as G2 on a page whose per-measure clefs are right from measure 1
+    onwards: measure 0 is a 56-px cell holding one `brace` detection.
+
+    Brahms 1 is the control that names the mechanism. Its spurious cell is at
+    the END of the system, so measure 0 is genuine, and it exports all fourteen
+    clefs correctly including an alto and a tenor. Same pipeline, same page
+    shape, opposite end — the only difference is which measure the export asked.
+
+    So the answer is the first measure that could have READ a clef or could
+    have USED one:
+
+      - it holds a `clef` detection, so its clef is a reading rather than an
+        inheritance; or
+      - it holds music, so whatever clef was in effect there is the clef the
+        exported pitches were resolved under.
+
+    **Both conditions are load-bearing.** Without the first, this would
+    overrule a genuine clef printed at a system head. Without the second, it
+    could claim an opening clef under which notes already written out were not
+    resolved — the measures it skips emit a whole-measure rest either way, so
+    skipping them cannot move a single pitch.
+
+    Returns 0 — today's behaviour exactly — when no measure qualifies.
+    """
+    for index, measure in enumerate(measures):
+        dets = measure.get("detections") or []
+        if any(d.get("category") == "clef" for d in dets):
+            return index
+        if group_chords_in_measure(dets):
+            return index
+    return 0
+
+
 def _staff_measures_xml(
     staff: dict[str, Any],
     divisions: int,
@@ -1576,9 +1625,20 @@ def _staff_measures_xml(
     clef = staff.get("clef")
     key_sig = staff.get("key_signature")
     time_sig = staff.get("time_signature")
+    measures = staff.get("measures", [])
+
+    # The part's opening clef, and every measure before the one that supplied
+    # it. `not state` is what says this staff BEGINS the part: a later system's
+    # staff continues one, and its own first measure is a genuine continuation
+    # rather than an opening. The whole leading RUN is overridden, not just
+    # measure 0 — leaving the second furniture cell on the default would emit a
+    # clef change back to it and another one away again.
+    lead = _first_clef_bearing_measure(measures) if not state else 0
+    lead_clef = (measures[lead].get("clef") or clef) if lead else None
+
     out: list[str] = []
-    for m_idx, measure in enumerate(staff.get("measures", [])):
-        m_clef = measure.get("clef") or clef
+    for m_idx, measure in enumerate(measures):
+        m_clef = lead_clef if m_idx < lead else (measure.get("clef") or clef)
         m_key = measure.get("key_signature") or key_sig
         m_time = measure.get("time_signature") or time_sig
 
