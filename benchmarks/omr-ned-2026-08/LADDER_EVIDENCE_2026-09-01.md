@@ -44,7 +44,11 @@ Two fixes, each principled alone:
 - **`_LEDGER_RUNG_EXPECTED_SLACK` = 0.25.** A note ON the k-th ledger sits
   k.0 spacings out; a note in the space above it sits k.5. `int(d + 0.25)`
   puts the boundary halfway between the two populations a notehead can
-  occupy, where `int(d)` put it exactly ON one of them.
+  occupy, where `int(d)` put it exactly ON one of them. This is the same
+  family as the dot-height gate and the 6-space stem cap (the "two units"
+  section of `WRONG_NOTE_ATTRIBUTION_2026-09-01.md`): a threshold whose
+  value sits ON a population instead of in the gap between populations, so
+  the answer flips on measurement noise rather than on the music.
 - **Completeness only.** The dedupe's ladder verdict now fires only when
   exactly one side's ladder is unbroken. The doctrine was already
   "completeness before count — a gap is what you see when the rungs belong
