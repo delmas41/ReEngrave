@@ -742,6 +742,44 @@ def _deduplicate_beams(beams: list, line_spacing: float) -> list:
     return kept
 
 
+#: A YOLO `beam` wider than this fraction of its cell is not a beam.
+#:
+#: A beam group lives INSIDE its measure, with the barline's margin on one side
+#: and its own outer noteheads on the other, so it cannot reach both edges of
+#: the cell. Ink that does is a staff line, a system rule, or the residue of
+#: one — exactly the class `line_detection.detect_beams` rejects by demanding
+#: that two stems END at a component. YOLO beams get no such test and `rhythm`
+#: uses them wherever the CV detector is silent, which is precisely where the
+#: CV test refused something.
+#:
+#: Measured over the 136 YOLO beam detections of the three benchmark works:
+#:
+#:     0.1-0.2  16     0.4-0.5   7     0.7-0.8   1
+#:     0.2-0.3  65     ---------------  0.8-0.9   1
+#:     0.3-0.4  33     0.5-0.7   0     0.9-1.0  13
+#:
+#: 121 below 0.5, nothing at all between 0.5 and 0.7, and 15 above — every one
+#: of the 15 between 16.8 and 23.0 staff spaces LONG and 0.25 to 0.38 spaces
+#: THICK, against the half-space thickness engraving gives a beam. Six of them
+#: touch both x edges exactly.
+#:
+#: What it cost: Brahms's Viola bar 2 has no beam in it at all (a dotted
+#: quarter, a quarter and a flagged eighth), and a 19.6 x 0.33-space detection
+#: at confidence 0.30 spanning the entire cell gave all six of its noteheads a
+#: beam level, halving every duration in the bar.
+YOLO_BEAM_MAX_CELL_FRACTION = 0.6
+
+
+def _spans_the_whole_cell(det, cell) -> bool:
+    """Whether a beam detection runs the width of its cell — see
+    `YOLO_BEAM_MAX_CELL_FRACTION`. False when the cell's width is unknown, so
+    a caller without one keeps every detection."""
+    width = getattr(cell, "width", None) if cell is not None else None
+    if not width or width <= 0:
+        return False
+    return det.width_canonical > width * YOLO_BEAM_MAX_CELL_FRACTION
+
+
 def _overlaps_any_in_x(box, others) -> bool:
     """Whether `box`'s x-range meets any of `others`'.
 
@@ -1234,7 +1272,8 @@ def resolve_rhythms_for_cell(
         elif cat == "flag":
             flags.append(d)
         elif cat == "structural" and cls == "beam":
-            beams.append(d)
+            if not _spans_the_whole_cell(d, cell):
+                beams.append(d)
         elif cat == "structural" and cls == "augmentationdot":
             aug_dots.append(d)
 
