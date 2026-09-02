@@ -234,6 +234,7 @@ import argparse
 import dataclasses
 import json
 import os
+import sys
 import time
 from collections import Counter
 from pathlib import Path
@@ -3109,6 +3110,49 @@ def _resolve_clef_weights(clef_weights: str | None) -> str | None:
     return os.environ.get("OMR_CLEF_WEIGHTS") or None
 
 
+def _optional_pass_failure(
+    name: str, exc: BaseException, *, progress: bool,
+) -> dict[str, Any]:
+    """The record an optional enrichment leaves behind when it could not run.
+
+    A transcription that succeeded must not be lost because an optional
+    enrichment failed, so nothing here re-raises. But NOT RAISING IS NOT THE
+    SAME AS NOT TELLING ANYONE, and that distinction is the whole reason this
+    function exists.
+
+    The contextual pass died for six weeks behind exactly this `except`. The
+    callee renamed a parameter, the caller kept the old name, and the resulting
+    TypeError was filed as `reason` and returned as an ordinary "unavailable" —
+    indistinguishable, to every reader and every benchmark, from the honest
+    abstentions this pass makes all the time (no text layer, no five-line
+    geometry, no Surya venv). The suite stayed green, the OMR-NED number did not
+    move, and the only surviving trace was one line of stderr that
+    `orchestral_eval` — which runs `progress=False` — never printed.
+
+    So a failure is classified. An ABSTENTION is the pass saying it had nothing
+    to work with; a BUG is the code being wrong, and a bug is announced on
+    stderr whether or not the caller asked for progress, because a caller who
+    silenced progress asked not to be told about NOTES, not about defects.
+    `error_class` is recorded either way so a benchmark can assert on it.
+    """
+    # A missing optional dependency is an environment fact, not a defect: the
+    # Surya and musicdiff venvs are meant to be absent on a fresh clone.
+    bug = isinstance(exc, (TypeError, AttributeError, NameError,
+                           KeyError, IndexError, ValueError))
+    record = {
+        "available": False,
+        "reason": f"{type(exc).__name__}: {exc}",
+        "error_class": type(exc).__name__,
+        "looks_like_a_bug": bug,
+    }
+    if bug:
+        print(f"  {name} FAILED WITH WHAT LOOKS LIKE A BUG, not an abstention: "
+              f"{type(exc).__name__}: {exc}", file=sys.stderr, flush=True)
+    elif progress:
+        print(f"  {name} unavailable: {type(exc).__name__}: {exc}", flush=True)
+    return record
+
+
 def _contextual_call_kwargs(
     *,
     pdf_path: Path,
@@ -3974,13 +4018,8 @@ def transcribe(
                 "pages": report,
             }
         except Exception as exc:                              # noqa: BLE001
-            out["direction_text"] = {
-                "available": False,
-                "reason": f"{type(exc).__name__}: {exc}",
-            }
-            if progress:
-                print(f"  direction text failed: {type(exc).__name__}: {exc}",
-                      flush=True)
+            out["direction_text"] = _optional_pass_failure(
+                "direction text", exc, progress=progress)
         out["runtime"]["direction_text_s"] = round(time.perf_counter() - t_dir, 2)
 
     # ── Contextual post-pass ────────────────────────────────────────────────
@@ -4012,13 +4051,8 @@ def transcribe(
                 ),
             )
         except Exception as exc:                              # noqa: BLE001
-            out["contextual"] = {
-                "available": False,
-                "reason": f"{type(exc).__name__}: {exc}",
-            }
-            if progress:
-                print(f"  contextual analysis failed: {type(exc).__name__}: {exc}",
-                      flush=True)
+            out["contextual"] = _optional_pass_failure(
+                "contextual analysis", exc, progress=progress)
         out["runtime"]["contextual_s"] = round(time.perf_counter() - t_ctx, 2)
 
     out["runtime"]["total_s"] = round(time.perf_counter() - t_total, 2)

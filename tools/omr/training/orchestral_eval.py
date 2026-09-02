@@ -215,6 +215,10 @@ def main(argv: list[str] | None = None) -> int:
               f"{'notes':>12s} {'recall':>7s} {'prec':>6s} {'dur':>6s}  dossier")
     print(header)
     results = []
+    # An enrichment that failed like a DEFECT, as opposed to abstaining. Kept
+    # so the run can end non-zero: a benchmark that quietly measures a pipeline
+    # with a documented pass broken is worse than one that refuses to report.
+    broken_passes: list[tuple[str, str, str | None]] = []
     for work_id in args.works:
         try:
             r = run_work(work_id, first=first, last=last, work_dir=args.work_dir,
@@ -227,6 +231,12 @@ def main(argv: list[str] | None = None) -> int:
             continue
         results.append(r)
         n = r["notes"]
+        ctx = r.get("contextual") or {}
+        if ctx.get("looks_like_a_bug"):
+            broken_passes.append((work_id, "contextual", ctx.get("reason")))
+        elif not ctx.get("available", True):
+            print(f"{'':22s} note: contextual unavailable — "
+                  f"{ctx.get('reason')}", file=sys.stderr)
         flags = r["dossier_warnings"]
         used = r["measures"][1] - r["measures"][0] + 1
         print(f"{work_id:22s} {used:>5d} "
@@ -258,6 +268,13 @@ def main(argv: list[str] | None = None) -> int:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(results, indent=2) + "\n")
         print(f"\nwrote {args.out}")
+
+    if broken_passes:
+        print("\nBROKEN, not abstaining — these are defects and the numbers "
+              "above were measured without them:", file=sys.stderr)
+        for work_id, pass_name, reason in broken_passes:
+            print(f"  {work_id}: {pass_name}: {reason}", file=sys.stderr)
+        return 1
     return 0
 
 

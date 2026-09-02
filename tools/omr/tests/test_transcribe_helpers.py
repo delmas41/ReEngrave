@@ -988,3 +988,92 @@ class TestContextualCallSeam:
             pdf_path=Path("x.pdf"), dpi=300, dossier=None, vision_fallback=True)
         assert off["assist"].mode == "none"
         assert on["assist"].mode == "vision"
+
+
+class TestOptionalPassFailureIsLoudAboutBugs:
+    """The contextual pass died for six weeks behind an `except Exception`.
+
+    Every check that existed said things were fine: the suite was green, the
+    OMR-NED number did not move (contextual's two channels into the export —
+    part names and clef fill — provably do not reach the metric on the dossier-
+    seeded fixtures), and the one line of stderr that would have told anyone was
+    gated on `progress`, which `orchestral_eval` sets to False. So the ONLY
+    surviving signal was invisible in the benchmark everybody runs.
+
+    These tests are about the swallow itself rather than about one renamed
+    parameter: an optional enrichment may abstain quietly, but it may not fail
+    like a defect quietly.
+    """
+
+    def test_the_exact_failure_that_hid_is_flagged_as_a_bug(self):
+        from tools.omr.transcribe import _optional_pass_failure
+
+        record = _optional_pass_failure(
+            "contextual analysis",
+            TypeError("apply_contextual_analysis() got an unexpected keyword "
+                      "argument 'vision_fallback'"),
+            progress=False,
+        )
+        assert record["available"] is False
+        assert record["error_class"] == "TypeError"
+        assert record["looks_like_a_bug"] is True
+
+    def test_a_bug_is_announced_even_when_progress_is_silenced(self, capsys):
+        """`orchestral_eval` runs progress=False. A caller who silences progress
+        asked not to be told about NOTES, not about defects."""
+        from tools.omr.transcribe import _optional_pass_failure
+
+        _optional_pass_failure("contextual analysis",
+                               TypeError("boom"), progress=False)
+        err = capsys.readouterr().err
+        assert "contextual analysis" in err
+        assert "BUG" in err
+
+    def test_a_missing_optional_dependency_stays_quiet(self, capsys):
+        """The Surya and musicdiff venvs are meant to be absent on a fresh
+        clone — that is an environment fact, not a defect, and shouting about
+        it would train everyone to ignore the shouting."""
+        from tools.omr.transcribe import _optional_pass_failure
+
+        record = _optional_pass_failure(
+            "contextual analysis", ImportError("No module named 'surya'"),
+            progress=False)
+        assert record["looks_like_a_bug"] is False
+        assert capsys.readouterr().err == ""
+
+    @pytest.mark.parametrize("exc", [
+        TypeError("renamed parameter"),
+        AttributeError("moved attribute"),
+        NameError("typo"),
+        KeyError("missing key"),
+        IndexError("off by one"),
+        ValueError("bad argument"),
+    ])
+    def test_the_defect_shaped_exceptions_are_all_flagged(self, exc):
+        from tools.omr.transcribe import _optional_pass_failure
+
+        assert _optional_pass_failure("p", exc, progress=False)["looks_like_a_bug"]
+
+    def test_every_failure_still_records_available_false_and_a_reason(self):
+        """The contract callers already depend on must not change: a failed
+        enrichment reports itself, it does not raise and lose the
+        transcription."""
+        from tools.omr.transcribe import _optional_pass_failure
+
+        for exc in (TypeError("x"), ImportError("y"), RuntimeError("z")):
+            record = _optional_pass_failure("p", exc, progress=False)
+            assert record["available"] is False
+            assert type(exc).__name__ in record["reason"]
+
+    def test_both_optional_passes_route_through_it(self):
+        """Two copies of this swallow exist — contextual and direction text —
+        and one of them has already cost six weeks. Neither may hand-roll the
+        record again."""
+        import inspect
+
+        from tools.omr import transcribe as T
+
+        src = inspect.getsource(T.transcribe)
+        assert src.count("_optional_pass_failure(") == 2
+        # the old hand-rolled shape, which is what hid the failure
+        assert '"reason": f"{type(exc).__name__}: {exc}"' not in src
