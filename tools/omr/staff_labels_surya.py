@@ -26,8 +26,14 @@ truth can check it is exactly as accurate; what it gives up is a little reach.
 Claude repairs a damaged label from the running order — it reads a clipped
 "arinetti" as Clarinetti because Fl./Ob. sit above it. Surya transcribes what is
 in the image and the lexicon then rejects the fragment. Widening the crop
-(`MARGIN_SPACINGS`, 14 -> 20) removed most of that, but the asymmetry is
+(`MARGIN_SPACINGS`, 14 -> 20, then 20 -> 30 on 2026-09-02 when four more
+publishers showed 20 still cutting) removed most of that, but the asymmetry is
 structural: an OCR engine reads, a vision model reads *and infers*.
+
+⚠️ **A clipped label is the free reader's problem and nobody else's**, which is
+why it stayed invisible for so long: the paid reader scored byte-identical
+tallies at every crop width ever tried. Do not read "Claude and Surya disagree
+about nothing" as "the crop is wide enough".
 
 ## Setup
 

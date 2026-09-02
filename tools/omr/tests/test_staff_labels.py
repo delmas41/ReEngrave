@@ -249,3 +249,45 @@ class TestUnresolvedLabelsAreReported:
         src = inspect.getsource(contextual.apply_contextual_analysis)
         assert "unresolved_labels=unresolved" in src
         assert "NOT MATCHED by the lexicon" in src
+
+
+# ── the margin crop must reach the margin ───────────────────────────────────
+
+
+class TestMarginCropReachesTheLabels:
+    """The crop's left edge is the one thing that decides whether an instrument
+    name arrives whole, and it has been too narrow twice: 14 clipped
+    "Clarinetti" to "arinetti" (fixed 2026-08-31), and 20 clipped "Pauken in
+    C u.G" to "ken in C u. G" on four further publishers (fixed 2026-09-02).
+
+    Both times the failure was silent — the paid reader repairs a clipped label
+    from the running order and scored byte-identical tallies at every width ever
+    tried, so only the free OCR rung ever showed it. These pin the measurement
+    so a third narrowing has to argue with a number.
+    """
+
+    #: The furthest any label reached, over 5 editions and 74 staves, in staff
+    #: spacings left of the crop's own x_ref — Mahler 5, Edition Peters.
+    #: `benchmarks/omr-scan-e2e-2026-09/probe_margin_reach.py`.
+    WIDEST_MEASURED_LABEL = 26.4
+
+    def test_the_crop_clears_the_widest_label_ever_measured(self):
+        from tools.omr.staff_labels_vision import MARGIN_SPACINGS
+        assert MARGIN_SPACINGS > self.WIDEST_MEASURED_LABEL, (
+            "MARGIN_SPACINGS no longer clears the widest measured label; "
+            "re-run probe_margin_reach.py before narrowing it")
+
+    def test_the_strip_is_cropped_that_far_left_in_practice(self, labelled_pdf):
+        """The constant is only worth what `margin_strip` does with it."""
+        from tools.omr.staff_labels_vision import (
+            MARGIN_SPACINGS, OVERLAP_SPACINGS, margin_strip)
+
+        path, labels = labelled_pdf
+        pws = _pws_for(path, labels)
+        strip, _y0 = margin_strip(pws, pws.staves)
+        spacing = pws.staves[0].line_ys[1] - pws.staves[0].line_ys[0]
+        x_ref = pws.staves[0].x_start
+        # The strip runs from x_ref - MARGIN_SPACINGS*spacing to
+        # x_ref + OVERLAP_SPACINGS*spacing, clipped at the page edge.
+        expected = min(x_ref, MARGIN_SPACINGS * spacing) + OVERLAP_SPACINGS * spacing
+        assert strip.width == pytest.approx(expected, abs=2)

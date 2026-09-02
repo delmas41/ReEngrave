@@ -82,9 +82,47 @@ DEFAULT_MODEL = "claude-opus-5"
 #
 # 20.0 rather than 26.0 because the two measured identically, so 20 is the
 # smaller change that gets the whole benefit. Claude scored 36/0/19 at both 14
-# and 20 — byte-identical tallies — so this is free for the paid reader and
-# worth 91% -> 94% agreement for the free one.
-MARGIN_SPACINGS = 20.0
+# and 20 — byte-identical tallies — so this is free for the paid reader.
+#
+# 2026-09-02: 20 -> 30, because "the smaller change that gets the whole benefit"
+# was measured on ONE publisher and does not travel. Beethoven 5 and 6 are the
+# only editions in that corpus; the scan benchmark put four more publishers
+# through the same crop and 20 cuts a margin ink run on every one of them
+# (`benchmarks/omr-scan-e2e-2026-09/probe_margin_reach.py`, 5 pages / 74 staves,
+# reach measured in spacings left of the crop's own x_ref):
+#
+#     Dvorak, Simrock 1894       max 20.3   3 of 15 staves cut
+#     Beethoven 5, 575951        max 22.5   2 of 12
+#     Beethoven 5, 984073        max 22.9   2 of 12   <- the fix's own edition
+#     Brahms 1, Breitkopf        max 24.9   6 of 14
+#     Mahler 5, Peters           max 26.4  11 of 19
+#
+# and every one of the eight labels the scan run's lexicon rejected belongs to a
+# staff on that cut list — `Pauken in C u.G` reaches 24.4 and arrived as
+# `ken in C u. G`, `2 Klarinetten in B` reaches 24.9 and arrived as
+# `larinetten in B`, `Clarinetti in B.` reaches 22.3 and arrived as
+# `Carinetti in B.`. The 14 -> 20 move fixed the failures its corpus reported
+# without checking whether ink still crossed the boundary; on its own edition it
+# still did, on two staves.
+#
+# 30 is placed in a measured EMPTY BAND, not at the largest observation. The
+# probe searches 45 spacings out and finds nothing at all beyond 26.4 on any of
+# the 74 staves — an 18-spacing gap with the whole corpus on one side of it.
+# Free where it can be checked: at 20, 26 and 30 Surya returns
+# CHARACTER-IDENTICAL labels on all 12 systems of the 2026-08-31 validation
+# corpus (`results-surya-w30.json`), so this buys the other publishers their
+# first letters and costs its own corpus nothing.
+#
+# Widening does not cost image resolution. `build_margin_crop` downscales on
+# `max(width, height)` and a system's crop is far taller than it is wide, so a
+# wider crop is scaled by exactly the same factor.
+#
+# ⚠️ A SELF-CALIBRATING LEFT EDGE — crop to the leftmost margin ink instead of a
+# constant — was considered and NOT taken. On a scan whose page border or
+# binding shadow survives binarisation it degrades to "use the cap" anyway, so
+# it buys crop size rather than correctness, and it would put a second ink
+# threshold in the path of every label read.
+MARGIN_SPACINGS = 30.0
 # ...and how far INTO the staves, for scores that print the name tight against
 # the bracket.
 OVERLAP_SPACINGS = 1.0
