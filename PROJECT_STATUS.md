@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-02 (the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, nine "detected and dropped" categories on the ledger; see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md); the current figures live in [CLAUDE.md](CLAUDE.md)'s OMR-NED section and the two new benchmarks' home files, not here)
+**Last updated:** 2026-09-02 (two parallel arcs merged: the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md) — and the day queue's export-gap arc (fermatas, printed accidentals, the coverage check) plus the branch audit, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -63,6 +63,10 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
   [docs/next-steps-omr-2026-09-02.md](docs/next-steps-omr-2026-09-02.md).
 
 - **September 1 — the system-break rule got its fix after all, and then its end-to-end guard.** The 2026-08 verdict ("five attempts, all rejected, stop") was about threshold-style rules tuned on two editions. What worked was a different question: instead of asking whether ANY ink crosses a gap (the wide window, which stems and measure numbers fake out), a second **narrow scan at the system's shared left edge** — empty at a true boundary even when body ink bridges the wide window (cue A, from the Audiveris "starting column" idea). Union-only, and it may never create a size-1 system. Measured across 964 library pages: **27 over-merged symphony pages fixed : 1 mild residual (Mozart K22) : 0 size-1**, grouping eval **20/23 → 22/23**, default ON (`OMR_LEFT_EDGE_SPLIT=0` reverts). Then the gap in its measurement was closed: the orchestral OMR-NED fixtures are LilyPond renders whose systems are always grouped correctly, so cue A never fired on any measured fixture — `tools/omr/tests/test_left_edge_split_e2e.py` now pins it end to end on **four scanned pages, three publishers**, against hand-read truth (`benchmarks/omr-system-grouping-2026-09/gt/e2e-ground-truth.json`): split on, each page reads its true two systems with every staff carrying the system's full measure row; split off, the pages still merge — and merged, Eroica p.36 reads **10 measures where the page prints 16**, because a barline must span the whole merged block to survive the vote. Full story: [benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md](benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md).
+
+- **September 1, evening — the queue kept landing, and the deltas composed.** Six more branches in one evening, each measured on its base AND re-measured on the merged tree before pushing (the rule the contextual break taught). The count bucket (edge fragments are not noteheads; a dot is not at its note's height; a YOLO beam box bounds the stack, not a stroke), then the stems the last handoff named (a 6-space height cap cut real beamed stems; `_stacked_bar_count` sampled a bounding box instead of the component's own mask), then ledger evidence (rung counts carry 0.25 slack because `int()` truncated a note ON the first ledger; two broken ladders fall through to range then distance; unladdered low-confidence noteheads drop — **Beethoven's note row reached 81/81, recall and precision 1.000, the benchmark's first perfect note row**), then viola double stops (one stem, one voice — and chord notes written bottom-up, a commit that deliberately costs +2 OMR-NED edits because musicdiff sorts chord pitches and cannot see the convention it corrects, while 46 notes leave the `order` class). Then the direction reader met a real scan and the union rung shipped: Surya's silence and one-letter errors are REPAIRED by staff-line-stripped Tesseract, not merely filled — 3 of its 5 scan contributions were refused near-misses (`sempire`, `senpre`) — scan recall 18% → 37% at 17/17 precision, engraved byte-identical, and every accepted word records which rung found it. The direction layer's own contribution was **−144 edits, invariant across seven mains** while the floor moved beneath it: that is what a finished layer looks like standing next to an unfinished pipeline. Finally the number itself was made trustworthy: it lives in ONE place (a merge had auto-merged three of four hand-copies into staleness — a conflict is loud, a clean auto-merge of a duplicated fact is silent), it is generated from a measured record keyed by configuration, and `accuracy_record --check` fails the suite if prose and record disagree. The day's method, stated by the sessions that used it: *the check was evidence about its own coverage, read as evidence about the change* — ask whether the harness contains a case where what you changed would matter; and *an accurate copy and a measurement are different things — only one stays right when the pipeline moves.*
+
+- **September 2 — the fixture stopped charging for ink it never printed.** The entire-measure diagnosis had left a decision open: the Beethoven truth carries 36 fermatas, 22 over whole-measure rests, and `musicxml2ly` drops every one of those — 105 edits charged against a page that never showed them, to a perfect reader too. The render was **completed** rather than the truth shrunk (`3f447f7`): the truth is what the work IS, those fermatas are printed in every real edition, and LilyPond takes `\fermata` on a multi-measure rest directly, so the fixture pipeline splits the compressed `R2*8` runs at the truth's fermata bars — anchored on musicxml2ly's own `| % n` comments and refusing to guess when anything disagrees. Shown the marks for the first time, the reader reads **21 of 22**: Beethoven **0.1519 → 0.0727** (191 → 93 edits), pooled **0.1342 → 0.1200**, Mahler and Brahms unchanged to the edit, the entire-measure bucket 130 → 30. Both recorded configurations were re-measured on the fixed fixture; every earlier figure carries the old floor, and the discontinuity is marked where the history is quoted (CLAUDE.md's OMR-NED section, `benchmarks/omr-ned-2026-08/FINDINGS.md`, and the fix table in `docs/next-steps-omr-2026-09-01.md`). On the merge with the same day's printed-accidentals fix the two compose exactly — Beethoven identical to the fermata side, Mahler and Brahms identical to the accidentals side — and both configurations were recorded again on the merge itself.
 
 ---
 
@@ -770,6 +774,16 @@ pick up the cross-staff fix. Their content is described throughout this document
 **Promoted to `main` as `d83b07e` and pushed**, so `main` now carries the cross-staff fix,
 the whole OMR-NED arc and all five branches together.
 
+**The evening queue (audited from `git log`, all landed and pushed the same day):**
+the count-bucket fixes, `omr-missing-stems`, the ladder-evidence work (`kind-kapitsa`),
+`omr-viola-voices` (measured on the merged tree before its own push — the CLAUDE.md
+pooled-line conflict was resolved with that measurement, not either branch's claim),
+the direction-text union rung, the single-source docs restructure, and the
+accuracy-record machinery with its provenance correction. Nothing from the evening
+remains unmerged; the sessions' own fix tables in this file and in
+`benchmarks/omr-ned-2026-08/` carry the per-branch numbers, with a note that rows
+do not chain (each was measured on the base current when it shipped).
+
 Two notes for whoever audits it next:
 
 - `claude/omr-info-retention-erasure-c26534` contributed **nothing new** — both of its
@@ -787,18 +801,23 @@ Two notes for whoever audits it next:
 | `claude/recognition-improvement-next-2f1709` | **Landed** | Nothing unlanded. |
 | `clef-phase0-eval` | **Labels landed 2026-08-29** | v5, v6, three labeling batches (79 verdicts) and the audit tooling are on `main`. Its code half was redundant, its docs conflict with two months of newer files, and its weights stay unused. The branch is now an archive. |
 | `claude/omr-clef-tenor-fixture` | **Superseded 2026-09-01** | Its one commit — *an F clef's dots stand alone; a C clef's lobes have company* — is the same idea that landed as `bebc50f` (false positives 21 → 13), measured on a wider corpus. The stricter single-dot form was then shipped as `d9c1a58` and **reverted** as `5bd0624`. Archive it. |
-| `claude/omr-dossier-verification-layer-eaf6d0` | **Assessed 2026-09-02 — close as superseded** | The earlier claim here that "Phase 2/3 and dossier-steered re-segmentation have no equivalent on `main`" was wrong: all four phases have shipped `main` equivalents, three of them landed 2026-08-28/29 *before* this table's audit date — `git cherry` legitimately missed them because the Phase-4 landing (`886ac23`) is a deliberate non-patch-identical cherry-pick (its own message says so), and it was then measured **inert** (0 of 27 systems steered). Phase 3's per-page layout cannot be generated from MusicXML at all (page breaks are an edition fact, not a work fact). Full evidence: [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md). Archive. |
+| `claude/omr-dossier-verification-layer-eaf6d0` | **Superseded — close, archive** | 4 commits, July. A *parallel* dossier implementation: hand-typed `tools/omr/dossiers/*.json` where `main` generates `data/dossiers/` from the Gradus MusicXML. Assessed 2026-09-02 ([docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md)): **all four phases have a shipped `main` equivalent** — this table's 09-01 claim that Phase 2/3 and the re-segmentation had none was stale on the day it was written, since all three equivalents landed 08-28/29. Phase 2 → `dossier.join_parts_to_slots` (handles the condensed systems Phase 2's gate refused) + `clef_correction.py` (`5a146e7`, needs no dossier). Phase 3 → `_flag_measure_count_inconsistency` (`05b5b63`, the branch's own day) + `check_total_measures` (`d0563a6`); its per-edition `pages[]` layout cannot be generated from MusicXML at all. Phase 4 was **cherry-picked outright as `886ac23`** — credited by hash, only the data source swapped — then measured inert (0 of 27 systems steered, `benchmarks/omr-majority-steering-2026-08/`). Nothing remains to port. |
 | `claude/interesting-curran-3ca1b7` | Archive + one live thread | Catalog experiment Phases A–L (concluded; do not retrain from it) **plus** 2026-05-25 `line_detection` improvements still worth a cherry-pick review. Its label-EMITTER half is validated prior art for MXL-guided auto-labeling. |
 | `claude/scoreaug-fair-test-a2928e`, `claude/training-domain-augmentation-a29baf` | Archives | The two **disproven** training experiments. Do not deploy their weights; do not retry the recipes. |
-| `claude/magical-bhabha` | 1 commit (March) | **Real MusicXML measure-level patching in `export_module`** — the #1 web-app TODO. Pre-consolidation code; evaluate against current `export_module`. |
-| `claude/peaceful-kapitsa` | 1 commit (March) | SQLite-backed persistent job queue replacing FastAPI `BackgroundTasks`. Same: pre-consolidation; evaluate or discard. |
+| `claude/magical-bhabha` | 1 commit (March) — **assessed 2026-09-02: port** | **Real MusicXML measure-level patching in `export_module`** — the #1 web-app TODO. The target function is byte-identical to March and 2 of 5 tests in `backend/tests/test_export_module.py` already fail on `main` for want of it. See [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md). |
+| `claude/peaceful-kapitsa` | 1 commit (March) — **assessed 2026-09-02: re-implement fresh** | SQLite-backed persistent job queue replacing FastAPI `BackgroundTasks`. The gap is real but `main.py`/`models.py` drifted +400/+78 lines and the `download` job type's route is gone; deprioritized with the web app. Same doc. |
 | `claude/quizzical-bell` | 1 commit (April) | The parked `/engrave` skill (Claude Vision-only OMR). Superseded; safe to delete. |
 
 **Method note.** `git merge-tree <base> <a> <b>` — the deprecated three-argument
 form — reports no conflict on trees that plainly conflict. It said `clef-phase0-eval`
 merged cleanly; `git merge-tree --write-tree main clef-phase0-eval` correctly
 reports conflicts in `CLAUDE.md`, `tools/omr/README.md` and `transcribe.py`. Use
-the two-argument form, and check its exit code.
+the two-argument form, and check its exit code. And `git cherry` sees only
+*patch-identical* picks: `886ac23` restates `aa28dcb` with its data source swapped —
+says so in its own commit message — and `git cherry` correctly does not mark it,
+which is how this audit's first pass called Phase 4 "no equivalent on `main`."
+A branch's ideas can land without one patch ID matching; read the commit messages
+of the subsystem it touches, not just the patch algebra.
 
 ---
 
@@ -1040,16 +1059,17 @@ copies are now pointers.
     density prior, which is what collapsed dense-page noteheads 2506 → 114 — so it wants
     a measured run behind `wtc_forgetting_eval.py`, not a rebuild. The retrain can no
     longer silently re-trigger the Phase 3.4 head-reset collapse (nc=208 cap + guard).
-14. ~~**Assess `claude/omr-dossier-verification-layer-eaf6d0`**~~ — **done 2026-09-02,
-    verdict: superseded on all four phases, archive**
-    ([docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the
-    "capability `main` lacks" premise was stale — see the branch table above). Of the two
-    March web-app branches assessed alongside it: `claude/magical-bhabha`
-    (measure-level MusicXML patching) is a **cheap port** — the target function is
-    byte-identical to March and `backend/tests/test_export_module.py` on `main` already
-    specifies the behavior, with 2 of 5 tests currently failing against the stub;
-    `claude/peaceful-kapitsa` (job queue) should be re-implemented fresh if ever
-    (personal-use scope deprioritizes it).
+14. **Assess `claude/omr-dossier-verification-layer-eaf6d0`** — **done 2026-09-02,
+    verdict: close** ([docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md)).
+    It was not the last branch with a capability `main` lacks — all four phases have a
+    shipped equivalent (see the branch table), and the one this item named,
+    re-segmentation on a known bar count, was already cherry-picked as `886ac23` and
+    measured inert. **Still open: the two March web-app branches**, assessed in the same
+    doc — measure-level MusicXML patching (**port**: one function region untouched by
+    five months of drift, and 2 of 5 tests in `backend/tests/test_export_module.py`
+    already fail on `main` for want of it) and the persistent job queue
+    (**re-implement fresh, deprioritized**: `main.py` grew 400 lines since the fork and
+    the `download` job type's route no longer exists).
 15. **Ensemble recognition for clef + detail prediction** (Sean flagged, 2026-07-10).
     Partly overtaken — the clef half needed geometry, not an ensemble, and the
     time-signature half was substantially closed 2026-09-02 (cut-common read by

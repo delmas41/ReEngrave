@@ -984,6 +984,20 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
+⚠️ **A fresh git worktree has NEITHER venv.** `.venv-omrned` and `.venv-surya`
+are repo-root-relative and gitignored, so in a worktree the scorer refuses and
+— worse — Surya silently self-disables, which makes a `--direction-text` run
+score without the direction reader while looking like a normal run. Point at
+the main checkout instead of re-bootstrapping:
+
+```bash
+export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/python
+ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-surya .venv-surya
+```
+
+(No env override exists for the Surya venv — `staff_labels_surya.VENV_DIR` is
+computed from the file's own location — hence the symlink.)
+
 ⚠️ **This paragraph is where the current figure lives, and nowhere else.** It
 used to be restated in PROJECT_STATUS.md, NOTES.md and the next-steps doc, and
 the `a271b1e` merge left three of the four copies stale without a warning: two
@@ -995,13 +1009,13 @@ to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `a62e47a`: **pooled 0.1328 / 942 edits** (Mahler 0.0331, Beethoven 0.1649, Brahms 0.1707), over 3696 truth + 3396 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.1138 / 822**, measured on `dc74488`.
+Current on the engraved orchestral benchmark, measured on `b3ef9ac`: **pooled 0.1101 / 791 edits** (Mahler 0.0395, Beethoven 0.0727, Brahms 0.1556), over 3696 truth + 3486 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0883 / 647**, measured on `b3ef9ac`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler | 0.0331 | 63 | 0.917 | 0.917 | 1.000 |
-| Beethoven | 0.1649 | 205 | 1.000 | 1.000 | 1.000 |
-| Brahms | 0.1707 | 674 | 0.956 | 0.955 | 0.992 |
+| Mahler | 0.0395 | 75 | 0.917 | 0.917 | 0.864 |
+| Beethoven | 0.0727 | 93 | 1.000 | 1.000 | 1.000 |
+| Brahms | 0.1556 | 623 | 0.956 | 0.955 | 0.992 |
 <!-- accuracy:end -->
 
 **Generated — do not hand-edit, here or anywhere.** `68be549` made this the
@@ -1020,11 +1034,49 @@ figure fails the suite. HISTORY IS NOT MANAGED THIS WAY and must not be: "pooled
 0.2595 → 0.2489" against the commit that did it is a frozen fact and is never
 rewritten.
 
+⚠️ **Every figure measured before 2026-09-02 sits on a different fixture and is
+not directly comparable to the current one** — including the 0.3164 opening
+baseline. The Beethoven fixture's render dropped every fermata over a rest
+(`musicxml2ly` does that), charging ~105 edits (≈0.014 pooled) against ink a
+perfect reader could never have read; the render was completed on 2026-09-02
+(`_restore_rest_fermatas` in `orchestral_eval.py`). Historical transitions stay
+quoted as measured, with that floor in them — see the discontinuity note beside
+the fix table in `docs/next-steps-omr-2026-09-01.md`.
+
 Full
 reading, and the findings it surfaced that note recall is blind to, in
 [benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md),
 [WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)
 and [SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md).
+
+**The eighth gap should be caught by a test, not by a day of forensics.**
+Seven times a signal was recognised correctly and lost on the way to the file,
+and six of those were found only after the metric bucket they fell into grew
+large enough for someone to open it. `tools/omr/export_coverage.py` asks the
+question that found the seventh, on every run of the suite:
+
+```bash
+python3 -m tools.omr.export_coverage --all   # the inventory, with reasons
+```
+
+It compares element COUNTS between the truth file and our export, and reports
+only the categorical case — the truth has some, we emit **zero**. That is the
+signature of an export gap; emitting fewer than the truth is a recognition
+shortfall and belongs to the accuracy metric. All seven read `truth N, ours 0`.
+
+⚠️ **The obvious version of this check does not work**, and the reason is worth
+keeping: auditing the DETECTOR'S CLASS SPACE for classes nothing downstream
+mentions calls accidentals *consumed* — because they are, into `pitch` — and
+clefs and time-signature digits likewise. Run on the benchmark it surfaced
+`repeatDot` ×4 and `fingering3` ×1 while a 64-edit gap sat in plain sight. The
+question is never "does anything consume this class"; it is "does anything the
+reader would SEE come out".
+
+`KNOWN_GAPS` is an inventory rather than a suppression list — every element we
+knowingly drop, with its reason and its size — and anything not on it fails.
+Two open items are recorded there now: **accents** (Mahler's truth has 6, the
+detector finds exactly 6, nothing consumes them) and **hairpins** (6 in the
+truth, 4 detected).
 
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is

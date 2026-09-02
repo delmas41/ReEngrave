@@ -1,0 +1,96 @@
+{
+  "cell_id": "beet5-p6-sys0-s6-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 136,
+      "y": 728,
+      "w": 49,
+      "h": 50,
+      "x_center": 160,
+      "y_center": 753,
+      "confidence": 0.351797491312027,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 136,
+      "y": 690,
+      "w": 66,
+      "h": 40,
+      "x_center": 169,
+      "y_center": 710,
+      "confidence": 0.3154596984386444,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 169,
+      "y": 677,
+      "w": 95,
+      "h": 67,
+      "x_center": 216,
+      "y_center": 710,
+      "confidence": 0.29452815651893616,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 190,
+      "y": 764,
+      "w": 56,
+      "h": 92,
+      "x_center": 218,
+      "y_center": 810,
+      "confidence": 0.4029957354068756,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 205,
+      "y": 886,
+      "w": 501,
+      "h": 183,
+      "x_center": 455,
+      "y_center": 977,
+      "confidence": 0.2683112919330597,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 893,
+      "y": 931,
+      "w": 62,
+      "h": 50,
+      "x_center": 924,
+      "y_center": 956,
+      "confidence": 0.35091307759284973,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 912,
+      "y": 927,
+      "w": 45,
+      "h": 45,
+      "x_center": 934,
+      "y_center": 949,
+      "confidence": 0.2512745261192322,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "cell_id": "bolero-p2-sys1-s18-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 3,
+      "y": 341,
+      "w": 307,
+      "h": 59,
+      "x_center": 156,
+      "y_center": 370,
+      "confidence": 0.3437471091747284,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 9,
+      "y": 596,
+      "w": 298,
+      "h": 13,
+      "x_center": 158,
+      "y_center": 602,
+      "confidence": 0.5133365988731384,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 8,
+      "y": 426,
+      "w": 300,
+      "h": 83,
+      "x_center": 158,
+      "y_center": 467,
+      "confidence": 0.30720624327659607,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 187,
+      "y": 756,
+      "w": 118,
+      "h": 47,
+      "x_center": 246,
+      "y_center": 779,
+      "confidence": 0.32761794328689575,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 192,
+      "y": 703,
+      "w": 110,
+      "h": 89,
+      "x_center": 247,
+      "y_center": 747,
+      "confidence": 0.6548720002174377,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 193,
+      "y": 746,
+      "w": 116,
+      "h": 57,
+      "x_center": 251,
+      "y_center": 774,
+      "confidence": 0.43794211745262146,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 198,
+      "y": 708,
+      "w": 106,
+      "h": 62,
+      "x_center": 251,
+      "y_center": 739,
+      "confidence": 0.3627011179924011,
+      "pitch": null
+    }
+  ]
+}

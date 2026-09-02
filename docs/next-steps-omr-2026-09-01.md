@@ -51,6 +51,16 @@ measured on the merge itself — better than either arm alone. Read the headline
 figure in CLAUDE.md's OMR-NED section, which is always the one measured ON
 main; treat this table as a record of what each fix was worth where it landed.
 
+⚠️ **Pre-fixture-fix: every row above also carries a ~105-edit floor the
+current figure does not.** Until 2026-09-02 the Beethoven fixture's render
+dropped the truth's 22 fermatas-over-rests (`musicxml2ly` does that), and
+musicdiff charged each rest-only bar whole — ≈0.014 pooled that a perfect
+reader was charged too. The render was completed on 2026-09-02 (option (a) of
+the two in §3 below), so figures from that date on are measured against a page
+that finally carries everything the truth claims. The rows stay quoted as
+measured — history is not rewritten — they are just not comparable across that
+line without adding the floor back in.
+
 **Five of the first eight were EXPORT bugs on data the pipeline had already
 computed correctly.** Beams detected and dropped, dots detected and counted twice,
 dynamics detected and dropped, tuplet markers sitting unread in the JSON, slur
@@ -243,13 +253,83 @@ Three things this step is worth carrying:
   read as beams), which the metric charged to the SLUR because musicdiff prices a
   slur by the duration it spans.
 
-### 3. The `entire measure` bucket, still 22%
+### 2b. ~~Accidentals — the printed glyph~~ — DONE 2026-09-02
 
-406 pooled edits. It halved on its own when the staff misfit was fixed, which is
-the point: **it is amplification, not severity.** A measure differing by one
-fermata or one slur is charged whole. Do not target it directly — open the op
-list first (`benchmarks/omr-ned-2026-08/` shows how) and fix whatever it is
-amplifying.
+Pooled **0.1342 → 0.1242**, 952 → 889 edits, `wrong accidental` **64 → 0**.
+Brahms 0.1709 → 0.1556, Mahler 0.0455 → 0.0395; Beethoven unchanged, its truth
+carrying none. Ours now matches the truth exactly, 54 against 54 and 11 against
+11.
+
+The seventh detected-and-never-exported signal, and the one that hid longest,
+because it was not merely detected: `_pair_accidentals_to_noteheads` pairs each
+accidental to its notehead and the alteration is folded into the PITCH — then
+the fact that a glyph was drawn is discarded. MusicXML separates `<alter>`
+(what sounds) from `<accidental>` (what was printed); we emitted only the first.
+Every edit looked like `pred [A5]4* | truth [A5natural]4*`: the pitch agreeing
+and the printed sign missing.
+
+**How it was found is the transferable part.** The obvious proactive check —
+"which detector classes does nothing downstream mention?" — calls this one
+CONSUMED, because it is. The question that finds it is *does everything the
+truth would show survive into our output?*, answered with `grep -c` on element
+names. Six of the seven were found forensically, by opening a metric bucket
+after it grew; this one was found in a few greps before anyone looked at its
+bucket.
+
+### 3. ~~The `entire measure` bucket~~ — OPENED 2026-09-01, and it is the FIXTURE
+
+This entry said: do not target it directly, open the op list, and fix whatever
+it is amplifying. Done, and the answer is that most of what it amplifies is not
+in the pipeline.
+
+The bucket had already fallen 406 → 130 as its causes were fixed elsewhere,
+which is the entry's own point about amplification holding. Of the 130:
+
+| | edits | what it is |
+|---|--:|---|
+| Beethoven whole-bar | **105** | fermatas the fixture's render never drew |
+| Mahler | 18 | whole-vs-half rest in bars that are otherwise empty |
+| Brahms | 7 | one tied C4 in the Horn, an alignment artifact |
+
+**The 105 is unreachable by construction.** The Beethoven truth carries 36
+fermatas, 22 of them over rests; `musicxml2ly` drops every fermata that sits on
+a rest, so the rendered page carries 14. Those 22 bars hold nothing but a rest,
+so the fermata is the only thing distinguishing them, and musicdiff charges a
+whole-bar delete plus a whole-bar insert for each. **A perfect reader is charged
+them too.** `orchestral_eval` now says so on every run, and the finding is
+written up in the attribution report.
+
+~~Not fixed: making the render complete, or the truth smaller, both change every
+historical number in this repository, and that is a decision for Sean rather
+than a side effect of a benchmark run.~~ **Decided and fixed 2026-09-02
+(`3f447f7`): the render was COMPLETED — option (a) — rather than the truth
+shrunk.** The truth is what the work IS: those fermatas are printed in every
+real edition of Beethoven 5, and stripping them would also have forked the
+fixture's truth away from the Gradus reference it is cut from. The workaround
+stayed proportionate — LilyPond ≥ 2.22 takes `\fermata` on a multi-measure
+rest directly, so `_restore_rest_fermatas` splits the generated `R2*8` runs at
+the truth's fermata bars, anchored on musicxml2ly's own `| % n` bar comments
+and refusing to guess when anything disagrees.
+
+Measured on the completed fixture: pooled **0.1342 → 0.1200** (952 → 854
+edits), Beethoven **0.1519 → 0.0727** (191 → 93), Mahler and Brahms unchanged
+to the edit. The reader reads **21 of the 22** restored fermatas — the one it
+misses is now a legitimate charge, not a floor — and Beethoven's dominant
+error moves from `entire measure insert/delete` to `wrong flag/beam`. The
+pooled `entire measure` bucket falls 130 → **30**. Every pre-2026-09-02 figure
+carries the old floor; see the discontinuity note under the fix table above.
+
+On the merge with the printed-accidentals fix (`b3ef9ac`) the two compose
+EXACTLY — default **0.1101 / 791**, `--direction-text` **0.0883 / 647** —
+Beethoven identical to the fermata side's 93 edits, Mahler and Brahms
+identical to the accidentals side's 75 and 623. Both configurations
+re-recorded on the merge; the headline block in CLAUDE.md is the current
+statement.
+
+What WAS real here: `fermataAbove` had been detected all along at 0.90-0.95 and
+never exported — the sixth instance of that shape — worth pooled 0.1364 →
+**0.1342**, Beethoven 205 → **191**, exactly 14 edits, one per fermata that is
+actually on the page. The detector reads 14 of 14.
 
 ### 4. ~~Text expressions and tempo marks~~ — DONE 2026-09-01
 
@@ -300,6 +380,38 @@ Three things it settled, all in FINDINGS:
   the staff space. The printed dot had been on the page all along. Before
   proposing machinery to infer a missing signal, check whether the signal is
   already detected and being dropped.
+
+### 4b. OPEN DECISION — the `--direction-text` default, and the trap in it
+
+`--direction-text` is off by default and worth **144 edits** on the engraved
+orchestral benchmark (`wrong direction` 151 → 7). The question is what the
+default should be. Two things settle most of it and one nearly derailed it.
+
+**The dependency worry is already handled.** `direction_text` abstains when no
+OCR rung is available — its own documented contract, "no venv and no Tesseract
+means no directions, the same degradation `staff_labels_surya` has" — and it
+calls `staff_labels_surya.available()` to decide. Nothing breaks on a machine
+without Surya; the pass simply does not run. Its twin, the margin-label reader,
+has the SAME dependency and is already on by default (`surya_fallback=True`).
+The two are inconsistent with each other today, and the direction reader is the
+odd one out.
+
+⚠️ **"Surya only helps on scans, not engravings" is TRUE OF THE OTHER READER
+AND FALSE OF THIS ONE.** The two consumers differ in one decisive way:
+
+| | rung 1 | on an engraving |
+|---|---|---|
+| `staff_labels` (margin labels) | **the PDF text layer** | Surya is redundant — the text layer already answers |
+| `direction_text` | *(none)* — Surya and Tesseract only | Surya is the ONLY reader; nothing else can see the words |
+
+So a finding that Surya adds nothing on engravings comes from the margin-label
+ladder, where rung 1 already covers them, and does not transfer. Measured here
+on an ENGRAVED benchmark, the direction reader is worth 144 edits. A default of
+"on for scans only" would switch it off exactly where it was measured helping.
+
+What is genuinely unmeasured is the reverse: nobody has measured
+`--direction-text` on a SCAN. `benchmarks/omr-first-run-2026-08/` has the one
+real scan measured end to end and is where that would go.
 
 ### 5. Small and known
 

@@ -29,6 +29,14 @@ excerpts, production weights, dossier on:
 | brahms-sym1-mvt1 | **0.4664** | 1838 | 2083 | 1858 | 0.717 |
 | **pooled** | **0.3164** | 2224 | 3696 | 3332 | — |
 
+> ⚠️ **Pre-fixture-fix.** This number — and every transition quoted below it —
+> was measured on a Beethoven render that never drew the truth's 22
+> fermatas-over-rests (`musicxml2ly` drops them), a ~105-edit floor (≈0.014
+> pooled) no reader could reach. The render was completed on 2026-09-02, so
+> figures from that date on sit on a fixture the older ones do not. The
+> historical rows stay as measured; only the headline block in CLAUDE.md is
+> ever current.
+
 > **Superseded 2026-09-01 by the beam fix, the first thing this metric bought.**
 > `export.py` never emitted `<beam>` at all, though Phase 4f detects beams and
 > `transcribe` writes them into the JSON. Emitting them:

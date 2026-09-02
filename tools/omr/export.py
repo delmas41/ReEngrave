@@ -240,6 +240,22 @@ _LILY_ACCIDENTAL = {
     "bb": "eses",
 }
 
+#: `transcribe`'s alteration strings -> the MusicXML `<accidental>` vocabulary.
+#:
+#: This is the PRINTED GLYPH, not the pitch. `<alter>` inside `<pitch>` already
+#: carries what sounds, and the two are independent: a natural has `<alter>0</>`
+#: and a drawn natural sign, which is why the element cannot be recovered from
+#: the pitch downstream. All 65 accidentals in the benchmark truth are one of
+#: the first three; the doubles are here because `_parse_inline_accidental`
+#: emits them and a silent drop would be the same bug in miniature.
+_MXL_ACCIDENTAL = {
+    "#":       "sharp",
+    "b":       "flat",
+    "natural": "natural",
+    "##":      "double-sharp",
+    "bb":      "flat-flat",
+}
+
 
 def _pitch_to_lily(pitch: str) -> str | None:
     """'F#4' → "fis'", 'A2' → 'a,', 'C5' → "c''"."""
@@ -335,23 +351,37 @@ def _lily_event(event: dict[str, Any]) -> str:
     artic_suffix = "".join(_LILY_ARTICULATION[k]
                            for k in (event.get("articulations") or [])
                            if k in _LILY_ARTICULATION)
+    # `\fermata` is an articulation in LilyPond and attaches to a rest exactly
+    # as it does to a note, which is the case that matters on an orchestral
+    # page — the mark usually sits over a whole-bar rest.
+    fermata_suffix = "\\fermata" if event.get("fermata") else ""
 
     if event["kind"] == "rest":
-        return f"r{lily_suffix}{dot_str}"
+        return f"r{lily_suffix}{dot_str}{fermata_suffix}"
 
     # Chord
     pitches = []
     for nh in event["noteheads"]:
         ly = _pitch_to_lily(nh["pitch"])
         if ly is not None:
+            # `!` forces the accidental into print where a glyph was READ.
+            # LilyPond re-derives most of them from the pitch stream on its
+            # own — measured on the fresh benchmark JSONs, 62 of the 65
+            # recorded glyphs re-print from pitch alone — but a COURTESY
+            # accidental restates what the key signature already implies and
+            # is exactly what the derivation drops (the 3: A-flats restating
+            # the key on three Brahms staves). The page prints them plain, so
+            # `!`, not `?` (which parenthesizes).
+            if nh.get("accidental"):
+                ly += "!"
             pitches.append(ly)
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
     if len(pitches) == 1:
         return (f"{pitches[0]}{lily_suffix}{dot_str}"
-                f"{tie_suffix}{artic_suffix}{slur_suffix}")
+                f"{tie_suffix}{artic_suffix}{fermata_suffix}{slur_suffix}")
     return (f"<{' '.join(pitches)}>{lily_suffix}{dot_str}"
-            f"{tie_suffix}{artic_suffix}{slur_suffix}")
+            f"{tie_suffix}{artic_suffix}{fermata_suffix}{slur_suffix}")
 
 
 def _lily_measure(events: list[dict[str, Any]]) -> str:
@@ -376,6 +406,38 @@ def _lily_measure(events: list[dict[str, Any]]) -> str:
         out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
         i = last + 1
     return " ".join(out)
+
+
+def _lily_measure_spacer(time_sig: dict[str, Any] | None) -> str:
+    """An invisible full measure (`s2.`, `s1*5/4`), for the voice of a
+    two-voice staff that has no music in this bar.
+
+    A PRINTED rest (`r`/`R`) would put a symbol on the page that the source
+    never shows — the bar isn't resting, it simply has one voice — so the
+    spacer keeps the voice's timeline aligned while drawing nothing.
+    Derived from `_lily_measure_rest` because the duration arithmetic is
+    identical and `s` accepts every duration form `r`/`R` does, multiplier
+    included.
+    """
+    rest = _lily_measure_rest(time_sig)
+    return "s" + rest[1:]
+
+
+def _lone_voice_is_the_second(events: list[dict[str, Any]]) -> bool:
+    """A single-voice measure on a two-voice staff belongs to \\voiceTwo when
+    its stems say so.
+
+    `split_events_into_voices` only splits when BOTH directions appear, so a
+    measure where the lower voice plays alone arrives as one voice of
+    stem-down chords — and rendering it in \\voiceOne forces its stems up,
+    the opposite of the page. All chords must agree; a measure with any
+    stem-up, unknown-direction or no chords at all stays in voice 1, which is
+    the pre-2026-09-02 routing for everything.
+    """
+    chords = [e for e in events if e["kind"] == "chord"]
+    if not chords:
+        return False
+    return all(e.get("stem_direction") == "down" for e in chords)
 
 
 def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
@@ -425,6 +487,7 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     per_measure_time_sig: list[dict[str, Any] | None] = []
     for measure in staff.get("measures", []):
         events = group_chords_in_measure(measure.get("detections", []))
+        annotate_fermatas(events, measure.get("detections", []))
         per_measure_events.append(events)
         per_measure_time_sig.append(measure.get("time_signature") or time_sig)
         voices = split_events_into_voices(events)
@@ -432,21 +495,41 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             needs_two_voices = True
 
     if needs_two_voices:
-        # Two-voice block.
+        # Two-voice block. The block spans the whole staff, so every measure
+        # must feed BOTH voices — but a measure where the split found only one
+        # voice has no second music to feed, and repeating voice 1 into voice 2
+        # (as this did from Phase 4h until 2026-09-02) prints every note in the
+        # measure TWICE, once per voice, each copy with its voice's forced stem.
+        # The absent voice takes a SPACER (`s`, invisible) rather than a
+        # printed rest, because the page shows nothing there — the music never
+        # had a second voice in that bar.
+        #
+        # A lone voice whose stems all point DOWN is the SECOND voice playing
+        # alone (13 of the Brahms benchmark page's 23 such measures), so it is
+        # routed to \voiceTwo — which is what keeps its printed stem direction
+        # — and voice 1 takes the spacer. Mixed or unknown directions stay in
+        # voice 1, as before.
         v1_lines: list[str] = [f"{indent}    \\voiceOne"]
         v2_lines: list[str] = [f"{indent}    \\voiceTwo"]
         for events, m_time in zip(per_measure_events, per_measure_time_sig):
             voices = split_events_into_voices(events)
             v1_events = voices[0] if voices else []
-            v2_events = voices[1] if len(voices) >= 2 else voices[0] if voices else []
+            v2_events = voices[1] if len(voices) >= 2 else []
+            if len(voices) == 1 and _lone_voice_is_the_second(voices[0]):
+                v1_events, v2_events = [], voices[0]
             empty_rest = _lily_measure_rest(m_time)
+            spacer = _lily_measure_spacer(m_time)
+            # An entirely empty measure prints ONE whole-bar rest, so it goes
+            # in voice 1 and voice 2 stays invisible — two stacked printed
+            # rests were the same duplication in rest form.
             v1_lines.append(
-                f"{indent}    " + _lily_measure(v1_events)
-                + " |" if v1_events else f"{indent}    {empty_rest} |"
+                f"{indent}    " + _lily_measure(v1_events) + " |"
+                if v1_events
+                else f"{indent}    {spacer if v2_events else empty_rest} |"
             )
             v2_lines.append(
                 f"{indent}    " + _lily_measure(v2_events)
-                + " |" if v2_events else f"{indent}    {empty_rest} |"
+                + " |" if v2_events else f"{indent}    {spacer} |"
             )
         lines.append(f"{indent}  <<")
         lines.append(f"{indent}    \\new Voice {{")
@@ -720,7 +803,9 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               slur_states: list[tuple[int, str]] | None = None,
               time_modification: dict[str, int] | None = None,
               tuplet_state: str | None = None,
-              articulations: list[str] | None = None) -> str:
+              articulations: list[str] | None = None,
+              fermata: bool = False,
+              accidental: str | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -753,6 +838,16 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     lines.append(f"{indent}  <type>{xml_type}</type>")
     for _ in range(dots):
         lines.append(f"{indent}  <dot/>")
+    # <accidental> sits after <dot> and before <time-modification>. It is what
+    # the engraver DREW; `<alter>` inside <pitch> is what sounds. The two are
+    # independent — a natural has alter 0 and a printed glyph — which is why
+    # this cannot be derived from the pitch on the way out.
+    # Guarded on is_rest even though no caller passes one for a rest today —
+    # a glyph on a rest is meaningless and the guard keeps that a fact about
+    # the element rather than about the current call sites.
+    _acc = _MXL_ACCIDENTAL.get(accidental or "") if not is_rest else None
+    if _acc:
+        lines.append(f"{indent}  <accidental>{_acc}</accidental>")
     # <time-modification> sits after <dot> and before <beam>, per the MusicXML
     # DTD's element order. It carries the tuplet RATIO; the <tuplet> in
     # <notations> below is the bracket that draws it, and a reader needs the
@@ -788,12 +883,72 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
         notations.append(f"{indent}    <articulations>")
         notations.extend(f"{indent}      <{m}/>" for m in marks)
         notations.append(f"{indent}    </articulations>")
+    # A fermata hangs off the note OR the rest — the commonest carrier on an
+    # orchestral page is a whole-bar rest, which is why this is not folded in
+    # with the articulations.
+    if fermata:
+        notations.append(f'{indent}    <fermata type="upright"/>')
     if notations:
         lines.append(f"{indent}  <notations>")
         lines.extend(notations)
         lines.append(f"{indent}  </notations>")
     lines.append(f"{indent}</note>")
     return "\n".join(lines)
+
+
+def annotate_fermatas(events: list[dict[str, Any]],
+                      detections: list[dict[str, Any]]) -> int:
+    """Mark the event under each detected fermata, in place. Returns how many.
+
+    The sixth instance of the shape this file keeps finding: `fermataAbove` is
+    in the DSv2 class space, the detector reads it on the engraved Beethoven
+    page at confidence 0.90-0.95, and `grep -c fermata export.py` returned 0 —
+    every one was dropped on the way out.
+
+    A fermata belongs to whatever is sounding under it, which on an orchestral
+    page is usually a WHOLE-BAR REST rather than a note; pairing is therefore by
+    x alone, against notes and rests alike, and never by pitch. The mark goes to
+    the event whose x-span contains the fermata's centre, or failing that to the
+    nearest event centre in the bar — a fermata over a bar's only rest is
+    engraved at the bar's middle, while the rest glyph sits at its own centre,
+    so requiring containment alone would miss the commonest case of all.
+    """
+    marks = [
+        d["bbox_page"] for d in detections
+        if "fermata" in (d.get("class") or "").lower()
+        and len(d.get("bbox_page") or ()) == 4
+    ]
+    if not marks or not events:
+        return 0
+
+    def span(event: dict[str, Any]) -> tuple[float, float] | None:
+        boxes = [
+            h.get("bbox_page") for h in (event.get("noteheads") or [])
+            if h.get("bbox_page") and len(h["bbox_page"]) == 4
+        ]
+        rest = event.get("rest") or {}
+        if rest.get("bbox_page") and len(rest["bbox_page"]) == 4:
+            boxes.append(rest["bbox_page"])
+        if not boxes:
+            return None
+        return (min(b[0] for b in boxes),
+                max(b[0] + b[2] for b in boxes))
+
+    spans = [(i, span(e)) for i, e in enumerate(events)]
+    spans = [(i, s) for i, s in spans if s is not None]
+    if not spans:
+        return 0
+
+    marked = 0
+    for box in marks:
+        centre = box[0] + box[2] / 2.0
+        hit = next((i for i, (lo, hi) in spans if lo <= centre <= hi), None)
+        if hit is None:
+            hit = min(spans, key=lambda p: abs((p[1][0] + p[1][1]) / 2.0 - centre))[0]
+        if not events[hit].get("fermata"):
+            events[hit]["fermata"] = True
+            marked += 1
+    return marked
 
 
 def annotate_beams(events: list[dict[str, Any]],
@@ -1521,6 +1676,7 @@ def _mxl_voice_events(
             lines.append(_mxl_note(
                 None, "", xml_type, dots, beats, divisions,
                 is_chord=False, is_rest=True, indent=indent, voice=voice,
+                fermata=bool(event.get("fermata")),
             ))
             total_dur += dur_units
         else:
@@ -1543,6 +1699,12 @@ def _mxl_voice_events(
                     # slur, and hung off its first <note>.
                     articulations=(event.get("articulations") if ni == 0
                                    else None),
+                    # A chord takes one fermata, through its first note.
+                    fermata=(bool(event.get("fermata")) and ni == 0),
+                    # ...but an accidental belongs to the NOTEHEAD. A chord can
+                    # carry one on any subset of its members, so this is the
+                    # one per-note mark here that must not be first-note-only.
+                    accidental=nh.get("accidental"),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.
@@ -1664,6 +1826,7 @@ def _staff_measures_xml(
         # Per voice: interleaved voices would break each other's runs.
         for _voice_events in voices:
             annotate_beams(_voice_events, measure.get("detections", []))
+            annotate_fermatas(_voice_events, measure.get("detections", []))
         # Marks belong to the staff, not to a voice, so they go on voice 1
         # rather than being emitted once per voice. The dynamics the detector
         # drew and the words `direction_text` read are both `<direction>`
@@ -1905,6 +2068,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
+                        annotate_fermatas(_voice_events, measure.get("detections", []))
                     # Marks belong to the staff, not to a voice, so they go on
                     # voice 1 rather than being emitted once per voice. The
                     # dynamics the detector drew and the words `direction_text`

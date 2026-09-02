@@ -15,6 +15,7 @@ from tools.omr.voicing import group_chords_in_measure
 
 from tools.omr.export import (
     annotate_beams,
+    annotate_fermatas,
     annotate_slurs_in_slot,
     annotate_slurs_in_staff,
     measure_dynamics,
@@ -1481,3 +1482,327 @@ class TestOpeningClefInExport:
             _m(1, "alto", [_clef_det(), _note_det(20)]),
         ])
         assert "\\clef alto" in to_lilypond(_one_staff_result(staff))
+# ─── Fermatas: detected since Phase 3.3, exported since 2026-09-01 ──────────
+#
+# `fermataAbove` is in the DSv2 class space and the detector reads it at 0.90 -
+# 0.95 on the engraved Beethoven page. `grep -c fermata export.py` returned 0:
+# the sixth signal in this file's history that was computed and then dropped on
+# the way out. The commonest carrier on an orchestral page is a WHOLE-BAR REST,
+# which is why pairing is by x against notes and rests alike.
+
+
+def _head(x, w=40, pitch="C4"):
+    return {"bbox_page": [x, 100, w, 40], "pitch": pitch}
+
+
+def _note_event(x, w=40, pitch="C4"):
+    return {"kind": "chord", "duration_beats": 1.0, "duration_type": "quarter",
+            "dots": 0, "noteheads": [_head(x, w, pitch)], "rest": None,
+            "x_position": x}
+
+
+def _rest_event(x, w=60):
+    return {"kind": "rest", "duration_beats": 2.0, "duration_type": "half",
+            "dots": 0, "noteheads": [], "x_position": x,
+            "rest": {"bbox_page": [x, 100, w, 30]}}
+
+
+def _fermata(x, w=50):
+    return {"class": "fermataAbove", "category": "ornament",
+            "bbox_page": [x, 20, w, 30]}
+
+
+class TestAnnotateFermatas:
+
+    def test_a_fermata_over_a_rest_marks_the_rest(self):
+        """The case that matters: 22 of the benchmark's 36 sit over rests."""
+        events = [_rest_event(100)]
+        assert annotate_fermatas(events, [_fermata(110)]) == 1
+        assert events[0]["fermata"] is True
+
+    def test_a_fermata_over_a_note_marks_the_note(self):
+        events = [_note_event(100)]
+        assert annotate_fermatas(events, [_fermata(105)]) == 1
+        assert events[0]["fermata"] is True
+
+    def test_the_mark_goes_to_the_event_it_sits_over(self):
+        events = [_note_event(100), _note_event(400), _note_event(700)]
+        annotate_fermatas(events, [_fermata(405)])
+        assert [bool(e.get("fermata")) for e in events] == [False, True, False]
+
+    def test_a_fermata_between_events_goes_to_the_nearer(self):
+        # A fermata over a bar's only rest is engraved at the BAR's middle,
+        # while the rest glyph sits at its own centre — so containment alone
+        # would miss the commonest case of all.
+        events = [_rest_event(100, w=60), _note_event(900)]
+        annotate_fermatas(events, [_fermata(200)])
+        assert events[0].get("fermata") and not events[1].get("fermata")
+
+    def test_no_detections_marks_nothing(self):
+        events = [_note_event(100)]
+        assert annotate_fermatas(events, []) == 0
+        assert "fermata" not in events[0]
+
+    def test_two_fermatas_on_one_event_count_once(self):
+        events = [_note_event(100)]
+        assert annotate_fermatas(events, [_fermata(105), _fermata(108)]) == 1
+
+    def test_it_is_safe_on_a_measure_with_no_events(self):
+        assert annotate_fermatas([], [_fermata(100)]) == 0
+
+
+class TestFermataReachesTheOutput:
+
+    def test_musicxml_puts_it_in_notations(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", fermata=True)
+        assert "<notations>" in xml and '<fermata type="upright"/>' in xml
+
+    def test_musicxml_omits_it_when_absent(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ")
+        assert "fermata" not in xml
+
+    def test_a_rest_can_carry_one(self):
+        xml = _mxl_note(None, "", "half", 0, 2.0, 4, is_chord=False,
+                        is_rest=True, indent="  ", fermata=True)
+        assert "<rest/>" in xml and '<fermata type="upright"/>' in xml
+
+    def test_the_notations_block_stays_single(self):
+        """A second <notations> per note is invalid MusicXML."""
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", fermata=True,
+                        tied_to_next=True, slur_states=[(1, "start")])
+        assert xml.count("<notations>") == 1
+        for tag in ("<tied", "<slur", "<fermata"):
+            assert tag in xml
+
+
+# ─── Accidentals: the printed glyph, not the pitch ─────────────────────────
+#
+# The seventh instance of this file's recurring shape, and the one that hid the
+# longest, because the signal was not merely detected — it was detected, paired
+# to its notehead, USED to resolve the pitch, and then the fact that a glyph had
+# been drawn was discarded. MusicXML separates `<alter>` (what sounds) from
+# `<accidental>` (what is printed) and we had only ever emitted the first.
+# Measured: 65 `<accidental>` elements in the benchmark truth, 0 in ours, and
+# all 64 `wrong accidental` edits were `accidentins`.
+
+
+class TestAccidentalIsThePrintedGlyph:
+
+    @pytest.mark.parametrize("alteration, expected", [
+        ("#", "sharp"),
+        ("b", "flat"),
+        ("natural", "natural"),
+        ("##", "double-sharp"),
+        ("bb", "flat-flat"),
+    ])
+    def test_each_alteration_maps_to_its_musicxml_name(self, alteration, expected):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental=alteration)
+        assert f"<accidental>{expected}</accidental>" in xml
+
+    def test_no_accidental_emits_nothing(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ")
+        assert "<accidental>" not in xml
+
+    def test_an_unknown_alteration_emits_nothing(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental="?")
+        assert "<accidental>" not in xml
+
+    def test_a_natural_is_a_printed_glyph_on_an_unaltered_pitch(self):
+        """The case that makes this a separate fact from the pitch.
+
+        `<alter>` is absent or 0 and the engraver still drew a natural — which
+        is exactly what every one of the benchmark's `accidentins` edits was.
+        """
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental="natural")
+        assert "<accidental>natural</accidental>" in xml
+        assert "<alter>" not in xml
+
+    def test_it_sits_after_the_dots_and_before_time_modification(self):
+        """DTD order, and the order the truth files use."""
+        xml = _mxl_note("C4", "", "quarter", 1, 1.5, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental="sharp"
+                        if False else "#",
+                        time_modification={"actual": 3, "normal": 2})
+        assert xml.index("<dot/>") < xml.index("<accidental>")
+        assert xml.index("<accidental>") < xml.index("<time-modification>")
+
+    def test_a_rest_never_carries_one(self):
+        xml = _mxl_note(None, "", "half", 0, 2.0, 4, is_chord=False,
+                        is_rest=True, indent="  ")
+        assert "<accidental>" not in xml
+
+
+# ─── The glyph through the exporters end to end ─────────────────────────────
+#
+# The class above tests `_mxl_note` in isolation; these follow the field the
+# whole way — through `group_chords_in_measure` (the event carries raw
+# notehead dicts, which is what threads it) into `to_musicxml`, and through
+# `_lily_event` into the LilyPond text. The LilyPond side is `!`, measured
+# rather than assumed: LilyPond re-derives 62 of the benchmark's 65 recorded
+# glyphs from the pitch stream on its own, and the 3 it drops are COURTESY
+# accidentals — A-flats restating the key signature on three Brahms staves —
+# which is exactly what `!` exists to force. Plain `!`, not `?`, because the
+# page prints them plain and `?` parenthesizes.
+
+
+class TestAccidentalReachesBothOutputs:
+    def test_it_survives_to_musicxml_end_to_end(self):
+        result = _tiny_result()
+        dets = result["pages"][0]["systems"][0]["staves"][0]["measures"][0][
+            "detections"]
+        dets[0]["accidental"] = "natural"
+        dets[1]["accidental"] = "#"
+        xml = to_musicxml(result)
+        assert "<accidental>natural</accidental>" in xml
+        assert "<accidental>sharp</accidental>" in xml
+        # The other two noteheads carried no glyph.
+        assert xml.count("<accidental>") == 2
+
+    def test_each_chord_member_keeps_its_own(self):
+        """A chord can carry a glyph on any subset of its members — the one
+        per-note mark that must NOT be first-note-only, and the reason
+        `_mxl_voice_events` passes it per notehead rather than per event."""
+        result = _tiny_result()
+        measure = result["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        # Stack the four noteheads at one x so they group as a single chord.
+        for i, d in enumerate(measure["detections"]):
+            d["bbox"] = [10, 10 + 8 * i, 5, 5]
+            d["bbox_page"] = [10, 10 + 8 * i, 5, 5]
+        measure["detections"][2]["accidental"] = "b"
+        xml = to_musicxml(result)
+        assert xml.count("<chord/>") == 3
+        assert xml.count("<accidental>") == 1
+        assert "<accidental>flat</accidental>" in xml
+
+    def test_a_rest_never_carries_one_even_if_handed_one(self):
+        xml = _mxl_note(None, "", "half", 0, 2.0, 4, is_chord=False,
+                        is_rest=True, indent="  ", accidental="#")
+        assert "<accidental>" not in xml
+
+    def test_lilypond_forces_the_read_glyph(self):
+        event = {"kind": "chord", "duration_beats": 1.0,
+                 "duration_type": "quarter", "dots": 0,
+                 "noteheads": [{"pitch": "Ab4", "accidental": "b"}],
+                 "rest": None}
+        assert _lily_event(event) == "aes'!4"
+
+    def test_lilypond_leaves_unmarked_notes_alone(self):
+        event = {"kind": "chord", "duration_beats": 1.0,
+                 "duration_type": "quarter", "dots": 0,
+                 "noteheads": [{"pitch": "Ab4"}], "rest": None}
+        assert _lily_event(event) == "aes'4"
+
+    def test_lilypond_chord_members_force_independently(self):
+        event = {"kind": "chord", "duration_beats": 1.0,
+                 "duration_type": "quarter", "dots": 0,
+                 "noteheads": [{"pitch": "C4", "accidental": "natural"},
+                               {"pitch": "E4"}],
+                 "rest": None}
+        assert _lily_event(event) == "<c'! e'>4"
+
+
+# ─── Two-voice staves: the absent voice is invisible, not an echo ───────────
+#
+# From Phase 4h until 2026-09-02, a measure where `split_events_into_voices`
+# found only ONE voice fed that voice to BOTH `\new Voice` blocks
+# (`v2_events = voices[0]`), so every note in it printed twice — once per
+# voice, each copy with its voice's forced stem. Measured on the Brahms
+# benchmark page: 4 two-voice staves, 23 such measures, 62 noteheads drawn
+# twice (73 forced-accidental tokens from 54 recorded glyphs, which is how it
+# was noticed). The absent voice now takes a SPACER (`s`, invisible), because
+# the page shows nothing there; a printed rest would be the same bug in rest
+# form. And a lone voice whose stems all point DOWN is the second voice
+# playing alone, so it is routed to `\voiceTwo` — which is what preserves its
+# printed stem direction — 13 of the 23.
+
+from tools.omr.export import (  # noqa: E402  (late, beside the tests that use them)
+    _lily_measure_spacer,
+    _lily_staff_block,
+    _lone_voice_is_the_second,
+)
+
+
+def _nh(x, pitch, stem, dur=("quarter", 1.0)):
+    return {"class": "noteheadBlackOnLine", "category": "notehead",
+            "bbox": [x, 10, 5, 5], "bbox_page": [x, 10, 5, 5],
+            "confidence": 0.9, "pitch": pitch, "duration_beats": dur[1],
+            "duration_type": dur[0], "dots": 0, "stem_direction": stem}
+
+
+def _two_voice_staff(measures):
+    return {"staff_index": 0, "clef": "treble",
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
+            "n_measures": len(measures),
+            "measures": [
+                {"measure_index": i, "bbox_page_px": [0, 0, 100, 50],
+                 "n_detections": len(dets), "detections": dets}
+                for i, dets in enumerate(measures)]}
+
+
+class TestTwoVoiceStaffDoesNotEcho:
+    # A genuinely two-voice measure, to force the staff onto the two-voice
+    # path: four quarters up, four quarters down.
+    SPLIT = ([_nh(x, "C5", "up") for x in (10, 30, 50, 70)]
+             + [_nh(x, "E4", "down") for x in (12, 32, 52, 72)])
+
+    def test_a_single_voice_measure_renders_once(self):
+        # Measure 2 is voice 1 alone: its four notes must appear exactly once.
+        solo = [_nh(x, "G4", "up") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, solo]))
+        assert out.count("g'4 g'4 g'4 g'4") == 1
+        assert "s1 |" in out  # the absent voice, invisible
+
+    def test_the_absent_voice_is_a_spacer_not_a_printed_rest(self):
+        solo = [_nh(x, "G4", "up") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, solo]))
+        v2 = out[out.index("\\voiceTwo"):]
+        assert "s1 |" in v2
+        assert "r1" not in v2  # nothing printed where the page shows nothing
+
+    def test_a_lone_all_stem_down_measure_is_the_second_voice(self):
+        solo_down = [_nh(x, "E4", "down") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, solo_down]))
+        v1 = out[out.index("\\voiceOne"):out.index("\\voiceTwo")]
+        v2 = out[out.index("\\voiceTwo"):]
+        assert "e'4 e'4 e'4 e'4" in v2  # keeps its printed stem direction
+        assert "e'4 e'4 e'4 e'4" not in v1
+        assert "s1 |" in v1
+
+    def test_an_empty_measure_prints_one_rest_not_two(self):
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, []]))
+        v1 = out[out.index("\\voiceOne"):out.index("\\voiceTwo")]
+        v2 = out[out.index("\\voiceTwo"):]
+        assert "r1 |" in v1   # the page's whole-bar rest, once
+        assert "s1 |" in v2
+
+    def test_single_voice_staves_are_untouched(self):
+        solo = [_nh(x, "G4", "up") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([solo, solo]))
+        assert "\\voiceOne" not in out and "s1" not in out
+
+    @pytest.mark.parametrize("time_sig, expected", [
+        ({"numerator": 4, "denominator": 4}, "s1"),
+        ({"numerator": 3, "denominator": 4}, "s2."),
+        ({"numerator": 5, "denominator": 4}, "s1*5/4"),
+        (None, "s1"),
+    ])
+    def test_spacer_matches_the_measure_rest_arithmetic(self, time_sig, expected):
+        assert _lily_measure_spacer(time_sig) == expected
+
+    def test_lone_voice_routing_needs_unanimous_down_stems(self):
+        down = [{"kind": "chord", "stem_direction": "down"}]
+        mixed = [{"kind": "chord", "stem_direction": "down"},
+                 {"kind": "chord", "stem_direction": None}]
+        rests_only = [{"kind": "rest"}]
+        assert _lone_voice_is_the_second(down)
+        assert not _lone_voice_is_the_second(mixed)
+        assert not _lone_voice_is_the_second(rests_only)
+        assert not _lone_voice_is_the_second([])

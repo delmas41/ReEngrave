@@ -1,0 +1,18 @@
+{
+  "cell_id": "beet5-p2-sys0-s8-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 202,
+      "y": 812,
+      "w": 26,
+      "h": 26,
+      "x_center": 215,
+      "y_center": 825,
+      "confidence": 0.2715776860713959,
+      "pitch": null
+    }
+  ]
+}
