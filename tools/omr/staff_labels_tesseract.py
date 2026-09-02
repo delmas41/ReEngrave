@@ -117,7 +117,25 @@ PSM_LINE = 7
 #: turns `'|sempre |'`, `'| cresc.'` and `'[sempre |'` into words the lexicon
 #: accepts, and takes this rung from 5 usable reads to 11. None of them can occur
 #: inside a musical direction, so nothing is lost by removing them.
+#: `|` and `[` `]` are the measured ones — `'|sempre |'`, `'| cresc.'`,
+#: `'[sempre |'` on the scan. The braces, underscore and tilde are added on the
+#: same reasoning and were never observed: none can occur inside a musical
+#: direction, so removing them cannot cost a reading.
 _RULE_FRAGMENTS = "|[]{}_~"
+
+
+def strip_line_fragments(text: str) -> str:
+    """`text` with staff-line fragments removed and their whitespace collapsed.
+
+    `'|sempre |'` -> `'sempre'`. Named and public so the boundary it draws can
+    be TESTED, because the boundary is the whole safety of the second rung: it
+    cleans ink the CROP contributed and never edits the word. `'Crese.'` stays
+    `'Crese.'` and stays refused. Cleaning a reading and repairing one are
+    different things, and only the first is free.
+    """
+    for ch in _RULE_FRAGMENTS:
+        text = text.replace(ch, " ")
+    return " ".join(text.split())
 
 
 def read_crops_text(crops: list, *, upscale: int = UPSCALE) -> list[str]:
@@ -153,9 +171,7 @@ def read_crops_text(crops: list, *, upscale: int = UPSCALE) -> list[str]:
             logger.warning("tesseract failed on one crop: %s", exc)
             out.append("")
             continue
-        for ch in _RULE_FRAGMENTS:
-            text = text.replace(ch, " ")
-        out.append(" ".join(text.split()))
+        out.append(strip_line_fragments(text))
     return out
 
 

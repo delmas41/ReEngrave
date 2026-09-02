@@ -16,6 +16,7 @@ import numpy as np
 import pytest
 
 from tools.omr.direction_lexicon import lookup
+from tools.omr.staff_labels_tesseract import strip_line_fragments
 from tools.omr.direction_text import (
     BandConfig,
     page_is_engraved,
@@ -505,6 +506,31 @@ class TestReaderSelection:
         assert chosen and chosen[0] == "surya"
 
 
+class TestStripLineFragments:
+    """Salvaged from `claude/peaceful-mahavira-8dc765` (eed60a4), an independent
+    implementation of this union that reached the same design. Its tests pinned
+    a boundary mine left implicit."""
+
+    @pytest.mark.parametrize("raw,cleaned", [
+        ("|sempre |", "sempre"),
+        ("| cresc.", "cresc."),
+        ("[sempre |", "sempre"),
+        ("poco a| poco", "poco a poco"),
+        ("sempre", "sempre"),
+    ])
+    def test_staff_line_fragments_are_stripped(self, raw, cleaned):
+        assert strip_line_fragments(raw) == cleaned
+
+    def test_an_in_word_error_is_not_repaired(self):
+        """The boundary that keeps the second rung safe. The strip removes ink
+        the CROP contributed — a band between two staves always carries line
+        ink — and never edits the word. `Crese.` stays refused, which is the
+        difference between cleaning a reading and loosening the gate."""
+        assert strip_line_fragments("Crese.") == "Crese."
+        assert lookup(strip_line_fragments("Crese.")) is None
+        assert lookup(strip_line_fragments("CTeSC.")) is None
+
+
 class TestUnionOfRungs:
     """The two rungs fail differently, which is the whole reason for both.
 
@@ -554,6 +580,20 @@ class TestUnionOfRungs:
         _out, info = read_directions(pws, page_dict, readers=[
             ("surya", _says("cresc.")), ("tesseract", _says("Cresc"))])
         assert info["conflicts"] == []
+
+    def test_a_crop_the_second_rung_rescued_is_not_reported_as_refused(self):
+        """`rejected` is the false-positive channel — candidates NEITHER rung
+        got past the gate. A crop the second rung rescued does not belong in
+        it, or the channel stops meaning what its readers think it means.
+
+        Salvaged from eed60a4; the behaviour was already right here and had no
+        test, which is exactly the kind of thing a second implementation is
+        worth reading for."""
+        pws, page_dict = self._setup()
+        out, info = read_directions(pws, page_dict, readers=[
+            ("surya", _says("CTeSC.")), ("tesseract", _says("cresc."))])
+        assert [d.text for d in out] == ["cresc."]
+        assert info["rejected"] == []
 
     def test_a_rung_that_throws_does_not_take_the_page_with_it(self):
         def boom(_crops):
