@@ -210,6 +210,11 @@ def main(argv: list[str] | None = None) -> int:
                          "Benchmark metric, so the result is comparable to "
                          "published numbers (needs `python3 -m tools.omr.omr_ned "
                          "--bootstrap` once)")
+    ap.add_argument("--record", action="store_true",
+                    help="write the measured figure to the accuracy record and "
+                         "into CLAUDE.md — the ONLY way a present-tense figure "
+                         "should reach a document. Needs --omr-ned. See "
+                         "tools/omr/accuracy_record.py")
     ap.add_argument("--omr-ned-detail", default="AllObjects",
                     help="musicdiff DetailLevel; NotesAndRests restricts the "
                          "score to pitch and rhythm, which is the closest "
@@ -276,6 +281,37 @@ def main(argv: list[str] | None = None) -> int:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(results, indent=2) + "\n")
         print(f"\nwrote {args.out}")
+
+    if args.record:
+        from tools.omr import accuracy_record as ar
+
+        # Each refusal is a way the record would state a figure for the whole
+        # benchmark that is not one.
+        if not args.omr_ned:
+            print("\n--record needs --omr-ned", file=sys.stderr)
+            return 1
+        if broken_passes:
+            print("\n--record refused: a pipeline pass failed, so these numbers "
+                  "are not what the pipeline does", file=sys.stderr)
+            return 1
+        if set(args.works) != set(DEFAULT_WORKS):
+            print(f"\n--record refused: the record is the figure for the whole "
+                  f"benchmark, and this run covered {sorted(args.works)}",
+                  file=sys.stderr)
+            return 1
+        run_name = (ar.DIRECTION_TEXT_RUN if args.direction_text
+                    else ar.DEFAULT_RUN)
+        previous = ar.load_record() if ar.RECORD_PATH.is_file() else None
+        record = ar.record_from_results(results, run_name=run_name,
+                                        previous=previous)
+        ar.RECORD_PATH.parent.mkdir(parents=True, exist_ok=True)
+        ar.RECORD_PATH.write_text(json.dumps(record, indent=2) + "\n")
+        changed = ar.update(record)
+        run = record["runs"][run_name]
+        print(f"\nrecorded {run_name}: pooled {run['pooled']:.4f} on "
+              f"{run['commit']}"
+              + (f"; rewrote {', '.join(changed)}" if changed else
+                 "; CLAUDE.md already agreed"))
 
     if broken_passes:
         print("\nBROKEN, not abstaining — these are defects and the numbers "
