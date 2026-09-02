@@ -904,14 +904,17 @@ def _mxl_direction(word: str, indent: str) -> str:
 
 # A slur clipped by a cell boundary ends EXACTLY on it. Measured over the
 # Brahms fixture (`benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`): the facing
-# edges of a split pair sit 0.00-0.05 staff spaces from the boundary, and the
-# nearest consecutive-measure arc pair that is NOT a split sits at 1.75. The
-# constant is read off that gap rather than tuned into it — anything between
-# 0.05 and 1.75 gives the same 16 merges.
+# edges of a split pair sit 0.00-0.10 staff spaces from the boundary, and the
+# nearest consecutive-measure arc pair that is NOT a split sits at 1.58. The
+# constant is read off that gap rather than tuned into it — every value between
+# 0.10 and 1.58 gives the same 16 merges.
 _SLUR_BOUNDARY_SPACES = 0.5
-# Two halves of one slur cross the barline at the same height: 0.00-0.53 staff
-# spaces apart on the same fixture. The next-nearest pair is 8.05 — an arc
+# Two halves of one slur cross the barline at the same height: 0.02-1.14 staff
+# spaces apart on the same fixture. The next-nearest pair is 8.04 — an arc
 # ABOVE the staff against one BELOW it, which is two different slurs, not one.
+# The exported score is IDENTICAL for anything from 1.0 to 6.0, so this is a
+# plateau rather than a peak; the single pair between 0.53 and 1.14 that a
+# tighter value would drop changes no note.
 _SLUR_CONTINUATION_DY_SPACES = 2.0
 # MusicXML numbers simultaneous slurs 1-6.
 _MAX_SLUR_NUMBER = 6

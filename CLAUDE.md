@@ -546,9 +546,16 @@ found** (`benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`):
 
 | what it decides | the two clusters | constant |
 |---|---|--:|
-| an arc was CUT by the boundary | 0.00–0.05 spaces vs 1.75 | 0.5 spaces |
-| the two halves are ONE slur | 0.00–0.53 spaces vs 8.05 | 2.0 spaces |
+| an arc was CUT by the boundary | 0.00–0.10 spaces vs 1.58 | 0.5 spaces |
+| the two halves are ONE slur | 0.02–1.14 spaces vs 8.04 | 2.0 spaces |
 | a notehead is UNDER the arc | 0.00–0.19 widths vs 0.32 | 0.25 nh widths |
+
+Each is a PLATEAU rather than a peak — the exported score is identical for the
+continuation tolerance anywhere in 1.0–6.0, and for the pad at 0.25 or 0.5 —
+which is what a constant read off a gap should look like. **Re-check them when
+the geometry beneath them moves:** the continuation cluster's top went 0.53 →
+1.14 across the system-grouping change, still inside the gap and changing no
+note, but it moved.
 
 ⚠️ **The arc is NARROWER than the run it binds, and that half is what made the
 change real rather than cosmetic.** A slur is drawn *between* its noteheads, so
