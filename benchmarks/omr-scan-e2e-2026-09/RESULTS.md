@@ -66,6 +66,49 @@ is not a Beethoven peculiarity. And **the row with the best note recall (Dvořá
 
 ---
 
+## Row 1 is a controlled reproduction of the first run — what is and is not comparable
+
+`benchmarks/omr-first-run-2026-08` reported **0.8706** on Beethoven 5 p.1. Row 1
+uses the *same* edition (IMSLP 984073), the *same* page (PDF index 1), the
+*same* window (mm. 1–16) and the *same* protocol (CLI defaults, no dossier), so
+it is a like-for-like before/after on the pipeline.
+
+**Comparable:** the edition, the page, the measure window, the protocol, the
+metric, and the truth. Three separate checks say the truth is the same object:
+the trimmer's output and the first run's committed
+`truth/beet5-mm1-16.musicxml` both parse to 18 parts, 16 measures and 147 note
+objects; scoring the first run's committed *prediction* against each gives
+**identical** results — 0.8667, 1664 edits, 1064 truth symbols, same category
+breakdown to the edit; and this reference carries no invisible notes, so the
+trimmer's one editorial rule does not touch it.
+
+**Not comparable:** the number 0.8706 itself. Re-scoring the first run's own
+committed prediction against its own committed truth today gives **0.8667** —
+1664 edits over 1064 truth symbols, against the recorded 1723 over 1123. Edits
+and truth symbols are both down by exactly **59**, so the change is entirely on
+the truth side of a file that has not changed. It is not the trimmer (proved
+above); the remaining candidate is the musicdiff / music21 stack in
+`.venv-omrned`, which was not pinned when 0.8706 was recorded. **0.8667 is the
+baseline this row should be read against**, not 0.8706.
+
+So, on identical inputs:
+
+| | first run (2026-08-31) | row 1 (today) |
+|---|--:|--:|
+| OMR-NED | 0.8667 | **0.7119** |
+| edits | 1664 | 1305 |
+| measures found | 13 / 16 | **16 / 16** |
+| `wrong note head` | 208 | **14** |
+| `wrong note` | 288 | 154 |
+| `wrong timesig` | 26 | **0** |
+| `entire staff insert/delete` | 513 | 513 |
+
+The meter and barline work of 2026-08-31 and everything since is visible in
+every row of that table except the last, which is the condensation floor and
+does not move because nothing about the page or the part model changed.
+
+---
+
 ## The same plates, twice: 984073 against 575951
 
 The two Beethoven scans are the same engraving. Normalising each page's 17
