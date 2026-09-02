@@ -577,6 +577,22 @@ the detector reads. A slur-stripped truth scores 0.2171, so this takes ~38% of
 what slurs are worth here; the residue has the right note INDICES and the wrong
 pitches, which is note recognition, not slur work.
 
+**A slur can also cross a SYSTEM BREAK**, since stitching made a part the same
+staff on every system (`annotate_slurs_in_slot`). That junction is NOT the
+barline's: the resuming half begins ~5.3 staff spaces inside its cell, because
+the cell opens with a clef and a key signature, so it is anchored on the FIRST
+NOTE instead — a resuming fragment runs in from the margin and ENDS on that
+note, where a slur merely beginning there runs the other way. Heights are
+compared RELATIVE to each staff's own top line; absolute page y is meaningless
+across a break. Measured on `e2e_fixtures.build_systems`, the only multi-system
+fixture in the repo: 0.2416 → **0.2381**, `wrong slur` 7 → 6, with the
+orchestral benchmark byte-identical. LilyPond deliberately never receives one —
+it emits one `\new Staff` per system-staff and a LilyPond slur cannot span two
+Staff contexts. See
+[SYSTEM_BREAK_SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SYSTEM_BREAK_SLURS_2026-09-01.md),
+which is mostly about how the FIXTURE had to be built before the fix could be
+measured at all.
+
 ---
 
 ## Orchestral end-to-end benchmark

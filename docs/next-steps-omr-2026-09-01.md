@@ -113,6 +113,15 @@ Three things this step is worth carrying:
   same fraction the pre-ledger measurement gave, which is some evidence the two
   fixes are independent. The residue is NOT slur work: the Cello's remaining
   errors have the right note indices and the wrong pitches.
+- ~~**Slurs across a SYSTEM break**~~ — **DONE**, and it needed a FIXTURE before
+  it needed a fix: every excerpt in this repo is one system, so the case was
+  invisible rather than rare. `e2e_fixtures.build_systems` is the first
+  multi-system fixture. 0.2416 → **0.2381** on it, orchestral byte-identical.
+  Two lessons in `SYSTEM_BREAK_SLURS_2026-09-01.md` worth more than the fix: a
+  fixture without a `StaffGroup` is read as one-staff systems and silently tests
+  nothing, and slurring every barline made the bars stop summing to four (arcs
+  read as beams), which the metric charged to the SLUR because musicdiff prices a
+  slur by the duration it spans.
 
 ### 3. The `entire measure` bucket, still 22%
 

@@ -992,12 +992,45 @@ def _staff_arcs_by_measure(
     return out
 
 
+def _resumes_after_system_break(
+    measure: dict[str, Any], arc: list[int], spacing: float,
+) -> bool:
+    """Is this arc the far half of a slur cut by a SYSTEM break?
+
+    A BARLINE cuts one arc in two and both halves end exactly on the cut, so
+    each is found by its distance to a cell edge. A SYSTEM break does not work
+    that way on the resuming side: the new system's first cell opens with a
+    CLEF and a KEY SIGNATURE, so the resuming arc begins well inside it —
+    measured at 5.28 staff spaces on the `systems` fixture, and further on any
+    score with more accidentals. A constant for that would be a constant for
+    how wide a clef is.
+
+    So the anchor is the FIRST NOTE instead, which is what the fragment
+    actually attaches to and is independent of the header's width. A resuming
+    fragment lies entirely BEFORE that note — it runs in from the margin and
+    ends on it (measured: arc x[400,503] against a first notehead centred at
+    504). A slur that merely BEGINS on the first note runs the other way, from
+    the note rightwards, so the two are told apart by which side of the note
+    the ink is on rather than by a threshold.
+    """
+    heads = _measure_noteheads(measure)
+    if not heads:
+        return False
+    pad = _SLUR_ARC_PAD_NOTEHEADS * (
+        sum(h["bbox_page"][2] for h in heads) / len(heads))
+    first_centre = min(h["bbox_page"][0] + h["bbox_page"][2] / 2.0 for h in heads)
+    ax, _ay, aw, _ah = arc
+    return ax < first_centre and (ax + aw) <= first_centre + pad
+
+
 def _merge_arcs_across_barlines(
     measures: list[dict[str, Any]],
     per_measure_arcs: list[list[list[int]]],
-    spacing: float,
+    spacings: list[float],
+    tops: list[float | None],
+    system_breaks: frozenset[int] = frozenset(),
 ) -> list[list[tuple[int, list[int]]]]:
-    """Chain arcs split by a barline into one slur each.
+    """Chain arcs split by a barline — or by a system break — into one slur each.
 
     Returns one entry per slur: the `(measure_index, arc_bbox_page)` segments
     it is made of. A slur inside one measure has a single segment; one crossing
@@ -1006,36 +1039,64 @@ def _merge_arcs_across_barlines(
     The join is geometric and local: an arc that ends ON its cell's right
     boundary is left open, and an arc in the NEXT measure that begins on that
     cell's left boundary at the same height closes it.
-    """
-    edge_tol = _SLUR_BOUNDARY_SPACES * spacing
-    dy_tol = _SLUR_CONTINUATION_DY_SPACES * spacing
 
+    `system_breaks` holds the indices of measures that OPEN a new system, where
+    the resuming half is recognised by `_resumes_after_system_break` instead —
+    see there for why a cell edge cannot be used on that side. `spacings` and
+    `tops` give each measure its own staff's line spacing and top line, because
+    a slot spans systems and the two staves are not the same object; a height is
+    only comparable between them once it is relative to each one's own lines.
+    """
     slurs: list[list[tuple[int, list[int]]]] = []
-    # Slurs left hanging at the barline just passed: (slur index, arc y-centre).
-    pending: list[tuple[int, float]] = []
+    # Slurs left hanging at the junction just passed: (slur index, arc y-centre,
+    # height above that staff's top line — the only comparable one across a
+    # break, where absolute page y differs by a whole system).
+    pending: list[tuple[int, float, float]] = []
     for m_idx, (measure, arcs) in enumerate(zip(measures, per_measure_arcs)):
         box = measure.get("bbox_page_px")
-        if not box or len(box) != 4:
+        sp = spacings[m_idx]
+        if not box or len(box) != 4 or not sp:
             pending = []
             continue
+        edge_tol = _SLUR_BOUNDARY_SPACES * sp
+        dy_tol = _SLUR_CONTINUATION_DY_SPACES * sp
         cell_x0, _, cell_x1, _ = box
-        still_open: list[tuple[int, float]] = []
+        top = tops[m_idx]
+        at_break = m_idx in system_breaks
+        still_open: list[tuple[int, float, float]] = []
         for arc in arcs:
             ax, ay, aw, ah = arc
             y_centre = ay + ah / 2.0
+            y_rel = (y_centre - top) / sp if top is not None else None
+            resumes = (_resumes_after_system_break(measure, arc, sp) if at_break
+                       else (ax - cell_x0) <= edge_tol)
             joined = None
-            if pending and (ax - cell_x0) <= edge_tol:
-                nearest = min(pending, key=lambda p: abs(p[1] - y_centre))
-                if abs(nearest[1] - y_centre) <= dy_tol:
-                    joined = nearest[0]
-                    pending.remove(nearest)
+            if pending and resumes:
+                if at_break:
+                    # Across a break the two halves sit at comparable heights
+                    # ABOVE OR BELOW THEIR OWN staves; page y says nothing.
+                    usable = [p for p in pending if p[2] is not None
+                              and y_rel is not None
+                              and (p[2] < 0) == (y_rel < 0)]
+                    key = lambda p: abs(p[2] - y_rel)          # noqa: E731
+                else:
+                    usable = pending
+                    key = lambda p: abs(p[1] - y_centre)       # noqa: E731
+                if usable:
+                    nearest = min(usable, key=key)
+                    close = (abs(nearest[2] - y_rel) <= _SLUR_CONTINUATION_DY_SPACES
+                             if at_break else
+                             abs(nearest[1] - y_centre) <= dy_tol)
+                    if close:
+                        joined = nearest[0]
+                        pending.remove(nearest)
             if joined is None:
                 slurs.append([])
                 joined = len(slurs) - 1
             slurs[joined].append((m_idx, arc))
             if (cell_x1 - (ax + aw)) <= edge_tol:
-                still_open.append((joined, y_centre))
-        # Only the barline just crossed can continue a slur; an arc two
+                still_open.append((joined, y_centre, y_rel))
+        # Only the junction just crossed can continue a slur; an arc two
         # measures later is a different slur however well it lines up.
         pending = still_open
     return slurs
@@ -1110,9 +1171,17 @@ def _voice_of_notehead(measures: list[dict[str, Any]]) -> dict[int, int]:
 
 
 def annotate_slurs_in_staff(staff: dict[str, Any]) -> int:
-    """Mark the noteheads that open and close each slur on one staff, in place.
+    """Pair slurs on ONE staff. See `annotate_slurs_in_slot`, of which this is
+    the single-staff case — a staff that is not stitched to any other is a part
+    one system long."""
+    return annotate_slurs_in_slot([staff])
 
-    Returns the number of slurs marked.
+
+def annotate_slurs_in_slot(staves: list[dict[str, Any]]) -> int:
+    """Mark the noteheads that open and close each slur on one PART, in place.
+
+    `staves` is that part's staff on each system, in order — a slot, as
+    `_stitch_slots` builds it. Returns the number of slurs marked.
 
     WHY THIS IS A STAFF PASS AND NOT A MEASURE ONE. Cells are cut per measure,
     so a slur crossing a barline is DETECTED AS TWO ARCS — 120 arcs on the
@@ -1135,16 +1204,51 @@ def annotate_slurs_in_staff(staff: dict[str, Any]) -> int:
     and marks the notehead detections — which `group_chords_in_measure` already
     carries into events, the way it carries the tie flags.
     """
-    measures = staff.get("measures", [])
     # Idempotent: exporting a result twice must not stack two marks per note.
-    for measure in measures:
-        for det in measure.get("detections", []):
-            det.pop("slur_states", None)
-    spacing = (staff.get("staff_geometry") or {}).get("line_spacing_px")
-    if not measures or not spacing:
-        # Without the staff's own spacing there is no unit to measure the
-        # boundary in, and a merge rule in raw pixels would mean a different
-        # thing on every page. Abstain rather than guess.
+    for staff in staves:
+        for measure in staff.get("measures", []):
+            for det in measure.get("detections", []):
+                det.pop("slur_states", None)
+    # Without a staff's own line spacing there is no unit to measure a boundary
+    # in, and a rule in raw pixels would mean a different thing on every page.
+    # Such a staff is skipped, and it also ENDS the chain — nothing is joined
+    # across a staff that cannot be measured — so the slot is paired in
+    # contiguous runs rather than being abandoned whole.
+    runs: list[list[dict[str, Any]]] = []
+    current: list[dict[str, Any]] = []
+    for staff in staves:
+        geom = staff.get("staff_geometry") or {}
+        if staff.get("measures") and geom.get("line_spacing_px"):
+            current.append(staff)
+        elif current:
+            runs.append(current)
+            current = []
+    if current:
+        runs.append(current)
+    return sum(_pair_slurs_in_run(run) for run in runs)
+
+
+def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
+    """`annotate_slurs_in_slot` over staves that all carry five-line geometry."""
+    # Flatten the run into one measure sequence, remembering which measures
+    # OPEN a new system — those junctions are system breaks, not barlines.
+    measures: list[dict[str, Any]] = []
+    spacings: list[float] = []
+    tops: list[float | None] = []
+    breaks: set[int] = set()
+    for staff in staves:
+        geom = staff["staff_geometry"]
+        lines = geom.get("line_ys_page")
+        if measures:
+            breaks.add(len(measures))
+        for measure in staff["measures"]:
+            # Carried BESIDE the measures rather than stashed on them: the
+            # result dict is the pipeline's output and export must not leave
+            # private keys in it.
+            measures.append(measure)
+            spacings.append(float(geom["line_spacing_px"]))
+            tops.append(float(min(lines)) if lines else None)
+    if not measures:
         return 0
 
     per_measure_arcs = _staff_arcs_by_measure(measures)
@@ -1154,7 +1258,7 @@ def annotate_slurs_in_staff(staff: dict[str, Any]) -> int:
     voice_of = _voice_of_notehead(measures)
     slurs = []
     for segments in _merge_arcs_across_barlines(
-            measures, per_measure_arcs, spacing):
+            measures, per_measure_arcs, spacings, tops, frozenset(breaks)):
         covered = _noteheads_under(measures, segments)
         # A slur needs two notes to join. One or none leaves an unpaired
         # <slur type="start">, which makes the file invalid rather than
@@ -1358,6 +1462,7 @@ def _staff_measures_xml(
     divisions: int,
     start_number: int,
     state: dict[str, Any],
+    pair_slurs: bool = True,
 ) -> list[str]:
     """One staff's measures as `<measure>` blocks.
 
@@ -1367,12 +1472,17 @@ def _staff_measures_xml(
     MusicXML means by an attribute — instead of once per system. Pass a fresh
     dict for a part that begins here.
     """
-    # Before the measure loop, and here rather than at either call site: a slur
-    # is a fact about the STAFF, because the arc crossing a barline is cut in
-    # two by the cell boundary and only page coordinates can rejoin it. The
+    # A slur is a fact about the PART, because the arc crossing a barline — or a
+    # system break — is cut in two and only page coordinates can rejoin it. The
     # marks land on the notehead detections, which `group_chords_in_measure`
     # lifts onto events below the way it lifts the tie flags.
-    annotate_slurs_in_staff(staff)
+    #
+    # `pair_slurs=False` is for the STITCHED caller, which has the whole slot
+    # and has already paired it. Re-pairing here would see one system at a time
+    # and, because the pass clears before it marks, would erase exactly the
+    # cross-system slurs the slot pass just found.
+    if pair_slurs:
+        annotate_slurs_in_staff(staff)
 
     clef = staff.get("clef")
     key_sig = staff.get("key_signature")
@@ -1564,10 +1674,16 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
                 f"  </score-part>"
             )
+            # The slot is ONE part, so its slurs are paired across every system
+            # it spans before any of its measures are written — that is what
+            # lets a slur opened in the last bar of one system close in the
+            # first bar of the next.
+            annotate_slurs_in_slot(slot)
             state: dict[str, Any] = {}
             measures_xml: list[str] = []
             for staff, start in zip(slot, starts):
-                measures_xml += _staff_measures_xml(staff, divisions, start, state)
+                measures_xml += _staff_measures_xml(
+                    staff, divisions, start, state, pair_slurs=False)
             parts_xml.append(
                 f"  <part id=\"{part_id}\">\n"
                 + "\n".join(measures_xml)
