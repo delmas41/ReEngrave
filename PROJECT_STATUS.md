@@ -29,7 +29,7 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 
 - **August 30 — a crash, a diagnosis, and three ideas that did not survive contact.** A probe written for an unrelated feature found that `resegment_fused_measures` never got the one-line-staff filter its two sibling functions have, so a percussion staff of span 0 asked OpenCV for a 1x0 kernel: **3 of 13 pages carrying a one-line staff could not be transcribed at all**, La Mer p.25 among them — the very page that support was validated on. Separately, the key-signature "blindness" on Beethoven 5 p.15 turned out to be a **class-role mismatch**: the detector finds the flats at conf 0.25 and labels them `accidentalFlat`, and every key-signature reader consumes only `keyFlat`. Three fixes were then implemented, measured, and **not shipped** — majority-steered re-segmentation (inert on all 27 systems of the corpus), accidental-role recovery (−1 on the only ground truth), and a foot-of-system anchor for the dossier join (50/52 → 44/52). The measurements are the deliverable; see the benchmarks below.
 
-- **August 31 → September 1 — the clef layer, and a benchmark that changed the target.** Nineteen commits. The CV locator's false positives went **48 → 13** across two scanned editions, by POSITION rather than shape three times over: margin ink is ink that ends before the staff's printed lines begin; an F clef's dots are the ones standing clear of the body. Nine other ideas were measured and refused, each with numbers on both sides — including a tenor symmetry floor that separated cleanly on one edition and overlapped completely on a second. Then the hand-read ground truth was widened from 4 pages to 10 (187 staves, 24 C clefs, four publishers), and it reversed two conclusions and reframed the work: **the locator supplies three staves of 166.** The end-to-end benchmark had been reporting 52/52 = 100% on three easy pages — a benchmark that cannot go down cannot show an improvement — and on hard pages it reads **87%**, rising to 90% with the paid margin reader. Seventeen of its twenty-one errors are the positional default calling a bass or C-clef staff treble, and the machinery to replace it (instrument → conventional clef, vetoed by register) works and is starved of instrument names. **Labels, not clef reading, are the binding constraint.** Full story: [benchmarks/omr-clef-session-2026-09/RETROSPECTIVE.md](benchmarks/omr-clef-session-2026-09/RETROSPECTIVE.md). Also: Nottebohm removed from every harness and test (orchestral scores only), and Surya installed as the free label rung. Final numbers on that corpus, after a tie at the paid rung was made to go to the paid rung: **149/166 with the vision reader, 146/166 free**, against 145 free with Surya absent — so Surya is worth keeping, and it also stopped the paid reader being called on every page and used on one. **The mechanism is still open**: Surya's presence moves three staves while returning byte-identical labels.
+- **August 31 → September 1 — the clef layer, and a benchmark that changed the target.** Nineteen commits. The CV locator's false positives went **48 → 13** across two scanned editions, by POSITION rather than shape three times over: margin ink is ink that ends before the staff's printed lines begin; an F clef's dots are the ones standing clear of the body. Nine other ideas were measured and refused, each with numbers on both sides — including a tenor symmetry floor that separated cleanly on one edition and overlapped completely on a second. Then the hand-read ground truth was widened from 4 pages to 10 (187 staves, 24 C clefs, four publishers), and it reversed two conclusions and reframed the work: **the locator supplies three staves of 166.** The end-to-end benchmark had been reporting 52/52 = 100% on three easy pages — a benchmark that cannot go down cannot show an improvement — and on hard pages it reads **87%**, rising to 90% with the paid margin reader. Seventeen of its twenty-one errors are the positional default calling a bass or C-clef staff treble, and the machinery to replace it (instrument → conventional clef, vetoed by register) works and is starved of instrument names. **Labels, not clef reading, are the binding constraint.** Full story: [benchmarks/omr-clef-session-2026-09/RETROSPECTIVE.md](benchmarks/omr-clef-session-2026-09/RETROSPECTIVE.md). Also: Nottebohm removed from every harness and test (orchestral scores only), and Surya installed as the free label rung. Final numbers on that corpus, after a tie at the paid rung was made to go to the paid rung: **149/166 with the vision reader, 146/166 free**, against 145 free with Surya absent — so Surya is worth keeping, and it also stopped the paid reader being called on every page and used on one. **The mechanism is still open**, but narrowed: Surya's presence moves three staves while returning byte-identical labels, and the obvious suspect — batch load perturbing the decode — was probed at 45 replays and **refused**, so Surya is a fixed function of its input and the free-path numbers stand.
 
 - **August 31 → September 1 — accuracy acquired an outside reference point, and it found seven bugs in two days.** OMR-NED (*Sheet Music Benchmark*, ISMIR 2025) is the metric OMR papers report, and `musicdiff` computes it, so adopting it cost a bridge rather than an implementation. Pooled **0.3164 → 0.2263** on the engraved orchestral benchmark. **Four of the seven were export or resolution bugs on data the pipeline had already computed correctly** — beams detected and dropped, augmentation dots counted twice, dynamics dropped, tuplet markers sitting unread in the JSON — and *none of them was visible to any number this repository had before*, because note recall called the Beethoven page **1.000** throughout. The other three were all **placement**: two staff windows that had locked onto a beam and onto ledger lines, and a cross-staff rule that awarded a contested notehead to the nearer staff — which is precisely backwards, since an engraver opens the gap above a staff *for* its ledger notes. Then `wrong note`, 40% of the edit budget and never opened, was attributed: it is **rhythm and one staff**, and the part that disagrees in no pattern at all is **3.3%**. Nothing in it argues for detector work.
 
@@ -669,10 +669,8 @@ Two notes for whoever audits it next:
   `-`), and `main` additionally carries a re-baseline the branch lacks. Its merge was a
   no-op with an add/add conflict, which is exactly what a duplicated commit looks like.
 - `claude/part-alignment-label-pins-978a57` was merged at `c520f1b`, **not at its tip**.
-  The tip commit adds three cold-start job briefs and `probe_surya_determinism.py`,
-  committed deliberately **unrun**: it tests whether Surya's llama.cpp `--parallel 8`
-  makes its decode depend on batch load. If it does, every free-path number in the clef
-  handoff was measured wrong. Worth running before trusting them.
+  Its remaining commits — the cold-start job briefs and the Surya determinism work —
+  came in afterwards as `45b15f7` and `bd1e09f`.
 
 | Branch | State | Disposition |
 |---|---|---|
@@ -826,11 +824,9 @@ the two-argument form, and check its exit code.
 The ranked handoff is [`docs/next-steps-omr-2026-09-01.md`](docs/next-steps-omr-2026-09-01.md);
 NOTES.md carries the long-form context for everything below.
 
-⚠️ **NOTES.md's headline is stale and understates the result** — it still quotes pooled
-**0.2595**, having been last touched several commits before the tuplet, staff-window and
-cross-staff fixes, and it has no entry for tuplets at all. The current figure is
-**0.2263** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.3302); CLAUDE.md and
-`next-steps-omr-2026-09-01.md` both have it right.
+The current figure is **0.2263** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.3302), and
+NOTES.md, CLAUDE.md and `next-steps-omr-2026-09-01.md` now all agree on it — NOTES.md's
+START HERE block was three fixes behind until `6a1b601` and says so itself.
 
 **Recognition, in the order the metric ranks them:**
 
@@ -885,9 +881,26 @@ cross-staff fixes, and it has no entry for tuplets at all. The current figure is
     someone else, not on us. NOTES.md still describes the request as un-submitted.
     ⚠️ **AGPL-3.0**, inherited from ultralytics: fine host-side, a problem the day this
     is served to other people through the Stripe gate.
-12. **Run `probe_surya_determinism.py`.** Committed deliberately unrun on the tip of the
-    label-pins branch. If Surya's `--parallel 8` makes its decode depend on batch load,
-    every free-path number in the clef handoff was measured wrong.
+12. ~~**Run `probe_surya_determinism.py`.**~~ **Done (`bd1e09f`) — the batching
+    hypothesis is REFUSED and the free-path numbers stand.** 45 replays of frozen crop
+    bytes at the production decode gave **one answer**, across serial warm, cold
+    spawn/kill, concurrent ×4 and ×8, mixed batches holding another page's KV, and
+    `PARALLEL=1` against `PARALLEL=16`. The mechanism says why load could never have
+    been it: `_surya_worker` calls the predictor once per system, so a ten-page run
+    issues one request at a time. Two things worth keeping from it — **`--load K` alone
+    could not have settled this**, because llama.cpp may serve K copies of one image
+    from a shared prompt cache, so those decodes are not independent; and the contested
+    character is not a near-tie (`Tr. Teq.` is spelled at p ≥ 0.975 with a 5.53-nat gap,
+    and batch order moves logits by parts in a thousand). *Measure how hard a thing
+    would have to be pushed before reporting that you could not push it.*
+
+    ⚠️ **What did not reproduce is recorded rather than explained away.** Staff 10 now
+    reads `Tr. Teq.` and staff 0 `Fl. pic.`; the earlier session recorded the opposite
+    on both, just as consistently, at the same commit and the same crop bytes with every
+    binary untouched. The stated guess — offered as a guess — is that the earlier
+    reading came off a silent retry, since retries sample (at temperature 0.8, 24
+    decodes gave 17 sequences) and worker stderr is discarded unless the process fails.
+    The earlier session has **not** been called wrong, because unreproduced is not wrong.
 13. **Whether v5/v6 enter the training catalog.** Six label versions are on `main` (223
     cells); `catalog.yaml` unions only v1–v4. Adding the 62 clef cells narrows the
     density prior, which is what collapsed dense-page noteheads 2506 → 114 — so it wants
