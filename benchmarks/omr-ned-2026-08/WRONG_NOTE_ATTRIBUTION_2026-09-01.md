@@ -963,3 +963,65 @@ containment alone would miss the commonest case there is.
 Twenty-five edits of genuine whole-bar cost, in two unrelated places, and no
 shared mechanism between them. As with the duration residue, that is the size
 at which attribution stops paying.
+
+---
+
+## FIXED 2026-09-02 — accidentals, and the seventh found before its bucket was opened
+
+Pooled **0.1342 → 0.1242**, 952 edits → **889**. Brahms 0.1709 → 0.1556 (675 →
+623), Mahler 0.0455 → 0.0395 (86 → 75), Beethoven unchanged — its truth carries
+no accidentals at all. `wrong accidental` **64 → 0**, the whole category, and
+ours now matches the truth exactly: 54 against 54 on Brahms, 11 against 11 on
+Mahler.
+
+### Why it hid through six earlier hunts
+
+The other six were signals the pipeline computed and then dropped. This one was
+computed, PAIRED, and USED, and only the printedness was dropped:
+
+    _pair_accidentals_to_noteheads   pairs each accidental to its notehead
+    the alteration                   folds into the note's `pitch`
+    the fact a glyph was drawn       discarded before the JSON is written
+
+MusicXML keeps the two apart deliberately — `<alter>` inside `<pitch>` is what
+SOUNDS, `<accidental>` is what the engraver DREW — and a natural is the case
+that makes them plainly different: the pitch is unaltered either way, and the
+sign is the whole of the difference. Every edit had this shape, with the pitch
+agreeing on both sides:
+
+    pred [A5]4*      truth [A5natural]4*
+
+106 accidentals are detected on the Brahms page. Nothing was wrong with the
+detector, the pairing, or the pitches. `grep -c "<accidental" export.py`
+returned 0.
+
+### The method, which is the part worth keeping
+
+Six of the seven were found FORENSICALLY: a bucket grew, someone opened the op
+list, and the cause was underneath. That works and it is slow, and it only ever
+finds what is already large.
+
+The proactive version has an obvious form that does not work. Auditing the
+detector's class space for classes nothing downstream mentions calls
+accidentals CONSUMED — because they are, into `pitch` — and produces a list of
+false leads (clefs and time-signature digits are consumed into `<attributes>`
+the same way). Run on the three benchmark pages it surfaced exactly two classes,
+`repeatDot` ×4 and `fingering3` ×1, both negligible.
+
+The question that works is:
+
+> Does everything the TRUTH would show survive into our output?
+
+    grep -c "<accidental" truth.musicxml   ->  65
+    grep -c "<accidental" ours.musicxml    ->   0
+
+Two greps. An eventual automated check should diff truth-visible FEATURES, not
+detector classes — the failure is never "nothing consumes this", it is "nothing
+the reader would see comes out".
+
+### One implementation detail worth its own line
+
+The accidental is the only per-note mark in `_mxl_note` that must NOT be
+first-note-only. A fermata, a beam and a slur belong to a chord as a whole and
+are written through its first note; an accidental belongs to a NOTEHEAD, and a
+chord may carry one on any subset of its members.

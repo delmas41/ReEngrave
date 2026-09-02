@@ -1941,6 +1941,17 @@ def _detections_for_cell(
             if rinfo.get("tuplet"):
                 out_d["tuplet"] = rinfo["tuplet"]
                 out_d["tuplet_group"] = rinfo["tuplet_group"]
+        # THE ACCIDENTAL THAT WAS PRINTED, which is not the same fact as the
+        # pitch. `inline_map` already pairs each accidental detection to its
+        # notehead and the alteration is folded into `pitch` above — but the
+        # pitch says what SOUNDS and an `<accidental>` says what the engraver
+        # DREW, and MusicXML carries them separately (`<alter>` against
+        # `<accidental>`). A natural is the clearest case: the pitch is
+        # unaltered either way, and the glyph is the whole of the difference.
+        # Recorded here because the pairing is computed here and was, until
+        # now, consumed and discarded.
+        if id(d) in inline_map:
+            out_d["accidental"] = inline_map[id(d)]
         # Stem direction for noteheads (Phase 4h voice splitting).
         if id(d) in stem_direction_by_id:
             out_d["stem_direction"] = stem_direction_by_id[id(d)]
