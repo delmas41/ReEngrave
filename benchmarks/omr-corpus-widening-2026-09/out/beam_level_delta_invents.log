@@ -1,0 +1,33 @@
+  mozart-sym41-mvt1: 19 stems change
+  mozart-sym40-mvt1: 4 stems change
+  boulanger-printemps-mvt1: 7 stems change
+
+666 stems examined, 30 change level
+
+transition  count   kind
+   0 -> 1       4   INVENTS a first beam
+   1 -> 2      21   EXTENDS a stack
+   2 -> 3       5   EXTENDS a stack
+
+  extends an existing stack : 26
+  invents a first beam      : 4
+
+examples:
+            mozart-sym41-mvt1 staff 0 m4 stem x=525 y=642 h=304 sp=94 1 -> 2
+            mozart-sym41-mvt1 staff 0 m4 stem x=1572 y=646 h=300 sp=94 1 -> 2
+            mozart-sym41-mvt1 staff 1 m0 stem x=1318 y=146 h=256 sp=65 1 -> 2
+            mozart-sym41-mvt1 staff 1 m4 stem x=525 y=450 h=304 sp=93 1 -> 2
+            mozart-sym41-mvt1 staff 1 m4 stem x=1572 y=455 h=299 sp=93 1 -> 2
+            mozart-sym41-mvt1 staff 2 m0 stem x=1318 y=148 h=254 sp=65 1 -> 2
+            mozart-sym41-mvt1 staff 2 m4 stem x=525 y=452 h=305 sp=93 1 -> 2
+            mozart-sym41-mvt1 staff 2 m4 stem x=1572 y=457 h=300 sp=93 1 -> 2
+            mozart-sym41-mvt1 staff 3 m4 stem x=1572 y=553 h=365 sp=94 1 -> 2
+            mozart-sym41-mvt1 staff 4 m0 stem x=1318 y=257 h=210 sp=65 1 -> 2
+            mozart-sym41-mvt1 staff 4 m4 stem x=1572 y=550 h=363 sp=93 1 -> 2
+            mozart-sym41-mvt1 staff 12 m4 stem x=1095 y=368 h=345 sp=93 1 -> 2
+            mozart-sym41-mvt1 staff 13 m4 stem x=1095 y=558 h=347 sp=94 1 -> 2
+            mozart-sym41-mvt1 staff 14 m0 stem x=1318 y=322 h=244 sp=65 1 -> 2
+    INVENTS mozart-sym40-mvt1 staff 8 m2 stem x=125 y=799 h=212 sp=100 0 -> 1
+    INVENTS mozart-sym40-mvt1 staff 8 m2 stem x=293 y=799 h=212 sp=100 0 -> 1
+    INVENTS mozart-sym40-mvt1 staff 8 m2 stem x=820 y=799 h=212 sp=100 0 -> 1
+    INVENTS mozart-sym40-mvt1 staff 8 m2 stem x=988 y=799 h=212 sp=100 0 -> 1

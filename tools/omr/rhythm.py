@@ -861,6 +861,21 @@ def _stem_for_notehead(nh, stems, max_x_distance: float):
     return best
 
 
+def _distance_to_band(y: float, band_top: float, band_bottom: float) -> float:
+    """Distance from `y` to the closed interval [band_top, band_bottom]; 0 inside.
+
+    A beam detection is a BAND, not a line: it bounds one stroke over its whole
+    run, so a sloped stroke occupies every y in the band at some x. The nearest
+    point of the band is the closest the stroke can be said to come without
+    knowing which way it slopes. See `_beams_attached_to_stem`.
+    """
+    if y < band_top:
+        return band_top - y
+    if y > band_bottom:
+        return y - band_bottom
+    return 0.0
+
+
 def _beams_attached_to_stem(stem, beams,
                             beam_y_cluster_tol: float,
                             end_window: float | None = None) -> int:
@@ -881,6 +896,37 @@ def _beams_attached_to_stem(stem, beams,
 
     `end_window` defaults to `4 × beam_y_cluster_tol` — enough room
     for 3-4 stacked beam levels (a 64th-note's worth) at one end.
+
+    ⚠️ **The reach is measured to the beam's BAND, not to the band's centre,
+    and on a sloped beam those are different questions.** A beam detection
+    bounds a stroke over its whole run, so a SLOPED stroke's band spans the
+    stroke's entire vertical excursion: the ink is at the band's top where the
+    group ends high and at its bottom where it ends low, and the centre is a y
+    the stroke passes through only in the middle. Measuring to the centre
+    therefore overstates the distance from the OUTERMOST stem of a group by
+    about half the band height — in the direction that pushes it out of the
+    window, and only for the stem furthest from the middle.
+
+    Worked example, Mozart 41 Oboe I m0 (`MOZART41_BEAMS.md`): a rising triplet
+    of sixteenths, stems at canonical x 1061/1189/1318 with tops at y
+    192/170/146, under two bands at y 163-207 and 217-264. Against the band the
+    three stems are 0/0/17 and 25/47/71 px away and all six pairs are inside the
+    91.3 px window. Against the CENTRES (185, 240) they are 7/15/39 and
+    48/70/**94** — and 94 > 91.3, so the third note alone lost its second beam
+    and a triplet sixteenth was exported as a triplet eighth.
+
+    `line_detection._attached_stem_count` already makes exactly this choice for
+    exactly this reason, and its docstring says so: *"A sloped beam's box
+    reaches far above and below the bar itself, so box edges put the far stem
+    out of range and a sloped double beam lost its lower bar."* This is that
+    same correction, one module later, on the count that becomes the duration.
+
+    The correction is self-scaling and needs no new constant: it widens the
+    reach by exactly the vertical distance the slope introduced, so a LEVEL
+    beam — whose band is a bar thick — is unaffected. `end_window` and
+    `beam_y_cluster_tol` are untouched, and the CLUSTER count still runs on
+    band centres, which is the right representative for telling two stacked
+    strokes apart.
     """
     s_x_l = stem.x_canonical
     s_x_r = stem.x_canonical + stem.width_canonical
@@ -897,9 +943,12 @@ def _beams_attached_to_stem(stem, beams,
         if b_x_r < s_x_l - 5 or b_x_l > s_x_r + 5:
             continue
         b_y_c = b.y_canonical + b.height_canonical // 2
-        # Must be at one end of the stem (not in the middle).
-        d_top = abs(b_y_c - s_y_top)
-        d_bot = abs(b_y_c - s_y_bot)
+        b_y_top = float(b.y_canonical)
+        b_y_bot = b_y_top + b.height_canonical
+        # Must be at one end of the stem (not in the middle). Distance to the
+        # band as an INTERVAL — zero where the stem end lies inside it.
+        d_top = _distance_to_band(s_y_top, b_y_top, b_y_bot)
+        d_bot = _distance_to_band(s_y_bot, b_y_top, b_y_bot)
         if d_top <= end_window and d_top <= d_bot:
             top_ys.append(b_y_c)
         elif d_bot <= end_window:

@@ -1,0 +1,25 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'A', 'mpani in C-G' — these are the strings to add to tools/omr/instruments.py
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+mozart-sym41-mvt1          6    17/17       6/6       228/228      0.991  0.991  0.947  clean
+
+OMR-NED (pooled over 1 scores): 0.1541   [lower is better; 0 = identical]
+  449 symbol edits over 1454 truth + 1459 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+mozart-sym41-mvt1                0.1541     449    1454    1459  wrong note
+
+where the edits are (pooled):
+  wrong note                                 250   55.7%
+  wrong flag/beam                            127   28.3%
+  wrong slur                                  26    5.8%
+  wrong direction                             14    3.1%
+  wrong dynamic                               12    2.7%
+  wrong accidental                            10    2.2%
+  (2 more)                                    10    2.2%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/beamfix_mozart41.json

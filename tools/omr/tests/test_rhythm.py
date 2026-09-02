@@ -13,6 +13,8 @@ import pytest
 from tools.omr.rhythm import (
     _BEAM_COUNT_DURATIONS,
     _beamed_groups,
+    _beams_attached_to_stem,
+    _distance_to_band,
     _tuplet_digit,
     _tuplet_groups,
     _FLAG_DURATIONS,
@@ -287,6 +289,97 @@ class TestOverlapsAnyInX:
     def test_any_one_overlap_is_enough(self):
         others = [_beam(0, 50), _beam(500, 50)]
         assert _overlaps_any_in_x(_beam(480, 100), others)
+
+
+# ─── _beams_attached_to_stem — reach measured to the BAND, not its centre ───
+#
+# A beam detection bounds one stroke over its whole run, so a SLOPED stroke's
+# band spans the stroke's entire vertical excursion and its CENTRE is a y the
+# stroke occupies only in the middle of the group. Measuring the stem's reach
+# to that centre overstates the distance for the OUTERMOST stem of the group
+# by about half the band height — and the window is only 4 x the clustering
+# tolerance, so the outermost note of a sixteenth group lost its second beam
+# and came out twice as long.
+#
+# The geometry below is measured, not invented: Mozart 41, Oboe I (staff 1),
+# measure 0, canonical coordinates at staff spacing 65.2 px. See
+# benchmarks/omr-corpus-widening-2026-09/MOZART41_BEAMS.md.
+
+M41_SPACING = 65.2
+M41_TOL = M41_SPACING * 0.35          # 22.8 px; end_window is 4x = 91.3 px
+
+#: The two CV beam bands over the rising triplet of sixteenths.
+M41_BANDS = [
+    FakeDet(smufl_name="beam", category="structural",
+            x_canonical=1062, y_canonical=163,
+            width_canonical=267, height_canonical=44),
+    FakeDet(smufl_name="beam", category="structural",
+            x_canonical=1060, y_canonical=217,
+            width_canonical=269, height_canonical=47),
+]
+
+
+def _m41_stem(x, y, h):
+    return FakeDet(smufl_name="stem", category="stem", x_canonical=x,
+                   y_canonical=y, width_canonical=8, height_canonical=h)
+
+
+class TestBeamsAttachedToStem:
+    #: All three stems of the group carry two strokes. The third is the one
+    #: that used to read 1 — its top is 146, so its distance to the second
+    #: band's CENTRE (240) is 94 px against a 91.3 px window, while its
+    #: distance to the BAND (217-264) is 71.
+    @pytest.mark.parametrize("x,y,h", [(1061, 192, 275),
+                                       (1189, 170, 265),
+                                       (1318, 146, 256)])
+    def test_every_stem_of_a_sloped_group_reads_both_strokes(self, x, y, h):
+        stem = _m41_stem(x, y, h)
+        assert _beams_attached_to_stem(stem, M41_BANDS, M41_TOL) == 2
+
+    def test_the_outermost_stem_is_the_one_the_centre_rule_lost(self):
+        # Pins the mechanism rather than just the outcome: the old rule is
+        # reproduced here, and it must disagree on exactly this stem.
+        stem = _m41_stem(1318, 146, 256)
+        centres = [b.y_canonical + b.height_canonical // 2 for b in M41_BANDS]
+        d_centre = [abs(c - stem.y_canonical) for c in centres]
+        end_window = M41_TOL * 4.0
+        assert d_centre[0] <= end_window < d_centre[1]
+        assert _beams_attached_to_stem(stem, M41_BANDS, M41_TOL) == 2
+
+    def test_a_stem_end_inside_a_band_is_at_zero_distance(self):
+        assert _distance_to_band(180.0, 163.0, 207.0) == 0.0
+
+    def test_distance_to_a_band_is_to_its_nearer_edge(self):
+        assert _distance_to_band(146.0, 217.0, 264.0) == 71.0
+        assert _distance_to_band(300.0, 217.0, 264.0) == 36.0
+
+    def test_a_beam_that_does_not_overlap_the_stem_in_x_is_not_counted(self):
+        # The x filter is unchanged; widening the y reach must not reach
+        # sideways into the next group.
+        far = FakeDet(smufl_name="beam", category="structural",
+                      x_canonical=1750, y_canonical=163,
+                      width_canonical=267, height_canonical=44)
+        stem = _m41_stem(1061, 192, 275)
+        assert _beams_attached_to_stem(stem, [far], M41_TOL) == 0
+
+    def test_a_beam_far_beyond_the_window_is_still_rejected(self):
+        # The band rule is a bounded widening, not an open one: a band a
+        # staff's height away from either stem end stays out.
+        stem = _m41_stem(1061, 192, 275)
+        remote = FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=1062, y_canonical=900,
+                         width_canonical=267, height_canonical=44)
+        assert _beams_attached_to_stem(stem, [remote], M41_TOL) == 0
+
+    def test_a_level_beam_is_unaffected_by_the_change(self):
+        # A single thin band: centre and edges are within a bar's thickness of
+        # each other, so both rules agree. This is why 8 of the 12 benchmark
+        # works see no stem change at all.
+        flat = FakeDet(smufl_name="beam", category="structural",
+                       x_canonical=1062, y_canonical=180,
+                       width_canonical=267, height_canonical=8)
+        stem = _m41_stem(1061, 192, 275)
+        assert _beams_attached_to_stem(stem, [flat], M41_TOL) == 1
 
 
 # ─── _parse_inline_accidental (in transcribe.py, but we test alongside) ─────
