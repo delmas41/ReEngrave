@@ -903,6 +903,20 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
+⚠️ **A fresh git worktree has NEITHER venv.** `.venv-omrned` and `.venv-surya`
+are repo-root-relative and gitignored, so in a worktree the scorer refuses and
+— worse — Surya silently self-disables, which makes a `--direction-text` run
+score without the direction reader while looking like a normal run. Point at
+the main checkout instead of re-bootstrapping:
+
+```bash
+export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/python
+ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-surya .venv-surya
+```
+
+(No env override exists for the Surya venv — `staff_labels_surya.VENV_DIR` is
+computed from the file's own location — hence the symlink.)
+
 ⚠️ **This paragraph is where the current figure lives, and nowhere else.** It
 used to be restated in PROJECT_STATUS.md, NOTES.md and the next-steps doc, and
 the `a271b1e` merge left three of the four copies stale without a warning: two

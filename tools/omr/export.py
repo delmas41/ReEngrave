@@ -358,6 +358,16 @@ def _lily_event(event: dict[str, Any]) -> str:
     for nh in event["noteheads"]:
         ly = _pitch_to_lily(nh["pitch"])
         if ly is not None:
+            # `!` forces the accidental into print where a glyph was READ.
+            # LilyPond re-derives most of them from the pitch stream on its
+            # own — measured on the fresh benchmark JSONs, 62 of the 65
+            # recorded glyphs re-print from pitch alone — but a COURTESY
+            # accidental restates what the key signature already implies and
+            # is exactly what the derivation drops (the 3: A-flats restating
+            # the key on three Brahms staves). The page prints them plain, so
+            # `!`, not `?` (which parenthesizes).
+            if nh.get("accidental"):
+                ly += "!"
             pitches.append(ly)
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
@@ -390,6 +400,38 @@ def _lily_measure(events: list[dict[str, Any]]) -> str:
         out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
         i = last + 1
     return " ".join(out)
+
+
+def _lily_measure_spacer(time_sig: dict[str, Any] | None) -> str:
+    """An invisible full measure (`s2.`, `s1*5/4`), for the voice of a
+    two-voice staff that has no music in this bar.
+
+    A PRINTED rest (`r`/`R`) would put a symbol on the page that the source
+    never shows — the bar isn't resting, it simply has one voice — so the
+    spacer keeps the voice's timeline aligned while drawing nothing.
+    Derived from `_lily_measure_rest` because the duration arithmetic is
+    identical and `s` accepts every duration form `r`/`R` does, multiplier
+    included.
+    """
+    rest = _lily_measure_rest(time_sig)
+    return "s" + rest[1:]
+
+
+def _lone_voice_is_the_second(events: list[dict[str, Any]]) -> bool:
+    """A single-voice measure on a two-voice staff belongs to \\voiceTwo when
+    its stems say so.
+
+    `split_events_into_voices` only splits when BOTH directions appear, so a
+    measure where the lower voice plays alone arrives as one voice of
+    stem-down chords — and rendering it in \\voiceOne forces its stems up,
+    the opposite of the page. All chords must agree; a measure with any
+    stem-up, unknown-direction or no chords at all stays in voice 1, which is
+    the pre-2026-09-02 routing for everything.
+    """
+    chords = [e for e in events if e["kind"] == "chord"]
+    if not chords:
+        return False
+    return all(e.get("stem_direction") == "down" for e in chords)
 
 
 def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
@@ -440,21 +482,41 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             needs_two_voices = True
 
     if needs_two_voices:
-        # Two-voice block.
+        # Two-voice block. The block spans the whole staff, so every measure
+        # must feed BOTH voices — but a measure where the split found only one
+        # voice has no second music to feed, and repeating voice 1 into voice 2
+        # (as this did from Phase 4h until 2026-09-02) prints every note in the
+        # measure TWICE, once per voice, each copy with its voice's forced stem.
+        # The absent voice takes a SPACER (`s`, invisible) rather than a
+        # printed rest, because the page shows nothing there — the music never
+        # had a second voice in that bar.
+        #
+        # A lone voice whose stems all point DOWN is the SECOND voice playing
+        # alone (13 of the Brahms benchmark page's 23 such measures), so it is
+        # routed to \voiceTwo — which is what keeps its printed stem direction
+        # — and voice 1 takes the spacer. Mixed or unknown directions stay in
+        # voice 1, as before.
         v1_lines: list[str] = [f"{indent}    \\voiceOne"]
         v2_lines: list[str] = [f"{indent}    \\voiceTwo"]
         for events, m_time in zip(per_measure_events, per_measure_time_sig):
             voices = split_events_into_voices(events)
             v1_events = voices[0] if voices else []
-            v2_events = voices[1] if len(voices) >= 2 else voices[0] if voices else []
+            v2_events = voices[1] if len(voices) >= 2 else []
+            if len(voices) == 1 and _lone_voice_is_the_second(voices[0]):
+                v1_events, v2_events = [], voices[0]
             empty_rest = _lily_measure_rest(m_time)
+            spacer = _lily_measure_spacer(m_time)
+            # An entirely empty measure prints ONE whole-bar rest, so it goes
+            # in voice 1 and voice 2 stays invisible — two stacked printed
+            # rests were the same duplication in rest form.
             v1_lines.append(
-                f"{indent}    " + _lily_measure(v1_events)
-                + " |" if v1_events else f"{indent}    {empty_rest} |"
+                f"{indent}    " + _lily_measure(v1_events) + " |"
+                if v1_events
+                else f"{indent}    {spacer if v2_events else empty_rest} |"
             )
             v2_lines.append(
                 f"{indent}    " + _lily_measure(v2_events)
-                + " |" if v2_events else f"{indent}    {empty_rest} |"
+                + " |" if v2_events else f"{indent}    {spacer} |"
             )
         lines.append(f"{indent}  <<")
         lines.append(f"{indent}    \\new Voice {{")
@@ -731,7 +793,10 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     # the engraver DREW; `<alter>` inside <pitch> is what sounds. The two are
     # independent — a natural has alter 0 and a printed glyph — which is why
     # this cannot be derived from the pitch on the way out.
-    _acc = _MXL_ACCIDENTAL.get(accidental or "")
+    # Guarded on is_rest even though no caller passes one for a rest today —
+    # a glyph on a rest is meaningless and the guard keeps that a fact about
+    # the element rather than about the current call sites.
+    _acc = _MXL_ACCIDENTAL.get(accidental or "") if not is_rest else None
     if _acc:
         lines.append(f"{indent}  <accidental>{_acc}</accidental>")
     # <time-modification> sits after <dot> and before <beam>, per the MusicXML
