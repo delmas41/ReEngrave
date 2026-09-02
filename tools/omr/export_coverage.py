@@ -31,6 +31,29 @@ never will, and a check that reported it would list 55 elements, be ignored,
 and then be deleted. `VISIBLE` is therefore a curated list of things a reader
 sees on the page, and everything else is out of scope by construction.
 
+⚠️ KNOWN DEFECT, FOUND WITHIN AN HOUR OF LANDING — THE ARTIFACTS ARE NOT PINNED.
+`survey()` reads the benchmark's `.omr.musicxml` files from disk, and those are
+gitignored artifacts of WHATEVER CONFIGURATION LAST RAN THE EVAL. That makes the
+three repository tests below depend on something no test controls:
+
+  * a run with `--direction-text` leaves `<words>` in them, so `words` — listed
+    in KNOWN_GAPS as a flag decision — is suddenly emitted, and the
+    staleness test fails;
+  * fixtures predating a fix are missing elements the exporter now writes, and
+    the seven-stay-fixed test fails.
+
+Both are FALSE REDS: the exporter is healthy and the test is reading a stale or
+differently-configured artifact. That is the failure mode most likely to get a
+check switched off, so it is written here rather than in a commit message.
+
+The real fix is for the check to run against freshly generated output rather
+than a leftover artifact, which is a design change and wants its own session.
+The cheaper interim fix is a provenance stamp: have `orchestral_eval` record the
+commit and the configuration it ran with beside the fixtures, and have these
+three tests SKIP unless that stamp says "default config, current tree". Neither
+is done. Until one is, a red here means "check what last wrote the fixtures"
+before it means "the exporter regressed".
+
     python3 -m tools.omr.export_coverage        # the report
     python3 -m tools.omr.export_coverage --all  # including what is accepted
 """
