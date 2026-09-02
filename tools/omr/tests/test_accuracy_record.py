@@ -83,6 +83,21 @@ class TestTheRepositoryItself:
         run = ar._run(ar.load_record(), ar.DEFAULT_RUN)
         assert {w["work_id"] for w in run["works"]} == set(DEFAULT_WORKS)
 
+    def test_the_eval_and_the_record_cannot_hold_separate_work_lists(self):
+        """Two copies of the work set would drift the way six copies of the
+        figure drifted. The eval reads the definition; it does not restate it."""
+        from tools.omr.training.orchestral_eval import DEFAULT_WORKS
+        assert DEFAULT_WORKS is ar.BENCHMARK_WORKS
+
+    def test_the_record_is_stamped_with_the_current_definition(self):
+        assert ar.definition_problems(ar.load_record()) == []
+
+    def test_boulanger_is_not_in_the_pooled_set(self):
+        """Runnable via `--works`, never pooled — it is the one work whose
+        structure fails (43 parts of 46), so it measures segmentation and
+        dominates any pool it enters. See the note on BENCHMARK_WORKS."""
+        assert "boulanger-printemps-mvt1" not in ar.BENCHMARK_WORKS
+
 
 class TestRendering:
 
@@ -107,14 +122,49 @@ class TestRendering:
         assert ar._fmt(0.13642) == "0.1364"
         assert ar._fmt(0.13648) == "0.1365"
 
-    def test_works_are_named_in_ascending_score_order(self, record):
-        phrase = ar._works_phrase(record["runs"][ar.DEFAULT_RUN])
-        assert phrase == "Mahler 0.0455, Beethoven 0.1649, Brahms 0.1709"
+    def test_the_sentence_states_the_spread_best_first(self, record):
+        """Eleven works do not fit a sentence and the table already lists them.
+        What the sentence carries instead is the range, which is the thing the
+        widening showed a pooled figure hides."""
+        phrase = ar._spread_phrase(record["runs"][ar.DEFAULT_RUN])
+        assert phrase == "Mahler 5 0.0455 at best, Brahms 1 0.1709 at worst"
 
     def test_the_headline_carries_every_work_s_row(self, record):
         text = ar.BLOCKS["headline"][1](record)
-        for work in ("Mahler", "Beethoven", "Brahms"):
+        for work in ("Mahler 5", "Beethoven 5", "Brahms 1"):
             assert f"| {work} |" in text
+
+    def test_the_headline_states_how_many_works_it_pooled(self, record):
+        """A sentence saying "three works" over a table of eleven is exactly
+        the stale hand-typed fact this module exists to make impossible."""
+        assert "over 3 works" in ar.BLOCKS["headline"][1](record)
+
+    def test_no_pre_boundary_baseline_is_quoted_beside_the_figure(self, record):
+        """0.3164 was pooled over three works. Standing it beside an 11-work
+        figure as "an opening baseline" is the comparison the boundary forbids,
+        so the generated block quotes no historical number at all."""
+        assert "0.3164" not in ar.BLOCKS["headline"][1](record)
+
+
+class TestNamingTheWorks:
+    """Two Beethovens, two Brahmses, two Mozarts and two Tchaikovskys."""
+
+    def test_the_symphony_number_is_part_of_the_name(self):
+        assert ar._short("beethoven-sym5-mvt1") == "Beethoven 5"
+        assert ar._short("mozart-sym41-mvt1") == "Mozart 41"
+
+    def test_a_work_that_is_not_a_numbered_symphony_keeps_its_title(self):
+        assert ar._short("boulanger-printemps-mvt1") == "Boulanger Printemps"
+
+    def test_every_benchmark_work_gets_a_distinct_label(self):
+        """A table with two rows called `Beethoven` looks fine and cannot be
+        read. This is the property, not the spelling of any one label."""
+        labels = ar._labels(list(ar.BENCHMARK_WORKS))
+        assert len(set(labels.values())) == len(ar.BENCHMARK_WORKS)
+
+    def test_two_movements_of_one_work_are_separated_by_movement(self):
+        labels = ar._labels(["mahler-sym5-mvt1", "mahler-sym5-mvt4"])
+        assert sorted(labels.values()) == ["Mahler 5 mvt1", "Mahler 5 mvt4"]
 
 
 class TestRewriting:
@@ -201,3 +251,90 @@ class TestBuildingTheRecord:
     def test_the_record_round_trips_through_json(self):
         rec = ar.record_from_results([self._result("a", 0.1, 10)], commit="c0ffee")
         assert json.loads(json.dumps(rec)) == rec
+
+    def test_the_record_is_stamped_with_the_work_set_it_measured(self):
+        rec = ar.record_from_results(
+            [self._result("b", 0.1, 10), self._result("a", 0.2, 20)],
+            commit="c0ffee")
+        assert rec["benchmark"]["works"] == ["a", "b"]
+        assert rec["benchmark"]["since"] == ar.BENCHMARK_SINCE
+
+    def test_a_run_over_the_old_work_set_is_dropped_not_kept(self):
+        """The two configurations are measured in separate commands, so a
+        definition change always has a moment where one is re-measured and the
+        other is not. Keeping the stale one would render an 11-work default
+        beside a 3-work variant in one paragraph, with nothing saying so."""
+        old = ar.record_from_results([self._result("a", 0.1, 10)],
+                                     run_name=ar.DIRECTION_TEXT_RUN,
+                                     commit="old")
+        new = ar.record_from_results(
+            [self._result("a", 0.1, 10), self._result("b", 0.2, 20)],
+            previous=old, commit="new")
+        assert set(new["runs"]) == {ar.DEFAULT_RUN}
+        assert new["benchmark"]["works"] == ["a", "b"]
+
+
+class TestTheDefinitionBoundary:
+    """A figure is about a work set as much as about the pipeline.
+
+    `--check` compares the docs to the record. If the record was measured over
+    a different set of works, the docs and the record can agree PERFECTLY and
+    both describe a benchmark the code no longer runs — which is the quiet
+    failure, worse than the loud one.
+    """
+
+    def _record(self, works, **stamp):
+        run = {"pooled": 0.1, "edits": 1, "truth_symbols": 1,
+               "pred_symbols": 1, "commit": "x",
+               "works": [{"work_id": w, "omr_ned": 0.1, "edits": 1,
+                          "pitch_recall": 1.0, "pitch_precision": 1.0,
+                          "duration_rate": 1.0} for w in works]}
+        rec = {"runs": {ar.DEFAULT_RUN: run}}
+        if stamp.get("stamped", True):
+            rec["benchmark"] = {"name": ar.BENCHMARK_NAME,
+                                "since": ar.BENCHMARK_SINCE,
+                                "works": sorted(stamp.get("stamp", works))}
+        return rec
+
+    def test_a_record_with_the_current_work_set_is_clean(self):
+        rec = self._record(ar.BENCHMARK_WORKS)
+        assert ar.definition_problems(rec) == []
+
+    def test_a_record_with_no_stamp_is_reported_as_pre_boundary(self):
+        """Every record written before 2026-09-02 has no `benchmark` key, so
+        being pre-boundary is DETECTED rather than assumed."""
+        rec = self._record(ar.BENCHMARK_WORKS, stamped=False)
+        problems = ar.definition_problems(rec)
+        assert len(problems) == 1
+        assert "predates the benchmark-definition boundary" in problems[0]
+
+    def test_a_record_over_the_old_three_works_is_refused(self):
+        three = ["beethoven-sym5-mvt1", "brahms-sym1-mvt1", "mahler-sym5-mvt1"]
+        problems = ar.definition_problems(self._record(three))
+        assert problems and "not measured:" in problems[0]
+
+    def test_a_work_no_longer_in_the_benchmark_is_named(self):
+        rec = self._record(list(ar.BENCHMARK_WORKS) + ["boulanger-printemps-mvt1"])
+        problems = ar.definition_problems(rec)
+        assert problems and "no longer in the benchmark" in problems[0]
+
+    def test_a_stamp_that_disagrees_with_its_own_run_is_refused(self):
+        """The stamp is written from the works measured, so this can only
+        happen by hand-editing — which the record says not to do."""
+        rec = self._record(ar.BENCHMARK_WORKS,
+                           stamp=list(ar.BENCHMARK_WORKS)[:2])
+        assert any("internally inconsistent" in p
+                   for p in ar.definition_problems(rec))
+
+    def test_check_surfaces_a_definition_problem_before_any_text_problem(self):
+        rec = self._record(ar.BENCHMARK_WORKS, stamped=False)
+        assert ar.check(rec)[0].startswith("current-accuracy.json has no")
+
+    def test_update_refuses_to_write_a_figure_from_another_definition(self):
+        """The WRITE direction needs its own guard. Writing a 3-work figure
+        into the paragraph leaves the docs and the record agreeing perfectly
+        about a benchmark the code does not run — and `check()` is then silent,
+        because it compares exactly those two things."""
+        three = ["beethoven-sym5-mvt1", "brahms-sym1-mvt1", "mahler-sym5-mvt1"]
+        with pytest.raises(ValueError, match="refusing to write"):
+            ar.update(self._record(three))

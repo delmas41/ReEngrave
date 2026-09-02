@@ -808,8 +808,8 @@ to Eb Horn 3 by 19 px while C Horn 2 stays empty. See the DIAGNOSED section of
 ## Orchestral end-to-end benchmark
 
 `benchmarks/omr-orchestral-e2e/` — renders an excerpt of a Gradus MXL back to
-PDF through LilyPond, so every note is known by construction, at eighteen
-staves. The first measurement of note accuracy on a conductor's page.
+PDF through LilyPond, so every note is known by construction, at eleven to
+twenty-five staves. The first measurement of note accuracy on a conductor's page.
 
 ```bash
 python3 -m tools.omr.training.orchestral_eval
@@ -819,6 +819,50 @@ python3 -m tools.omr.training.orchestral_eval --works mahler-sym5-mvt1 --no-doss
 The input is engraved, not scanned, so a failure is a failure of recognition on
 dense music and cannot be blamed on print quality. It says nothing about scan
 robustness.
+
+**ELEVEN WORKS SINCE 2026-09-02** (`accuracy_record.BENCHMARK_WORKS`, which is
+where the set and the per-work reasons live). It was three —
+`beethoven-sym5-mvt1`, `brahms-sym1-mvt1`, `mahler-sym5-mvt1` — and sixteen
+fixes were landed against those three and measured on nothing else. The corpus
+widening ran eight more engraved orchestral pages of the same kind and they
+scored roughly **twice** the incumbents' error rate, so the three-work figure
+was hiding a distribution rather than summarising one. Three of the faults that
+surfaced were invisible to the incumbents by accident of what those pages print:
+a cut-common glyph read at 0.92 and dropped on export (all three incumbents
+print digit meters), triplet digits filed under `fingering3` (two incumbents
+have none), articulations never exported at all (0, 2 and 6 detections across
+the three). It also falsified a documented claim about the incumbent Mahler —
+"its fifth triplet group carries no marker at any confidence" — which was the
+**highest-confidence** marker on the page, under the other class name.
+*A benchmark of three pages cannot falsify a story about one of them.*
+Full reading: [benchmarks/omr-corpus-widening-2026-09/FINDINGS.md](benchmarks/omr-corpus-widening-2026-09/FINDINGS.md).
+
+The eight added: `mozart-sym40-mvt1`, `mozart-sym41-mvt1`,
+`beethoven-sym3-mvt1`, `brahms-sym4-mvt1`, `dvorak-sym9-mvt4`,
+`tchaikovsky-sym4-mvt2`, `tchaikovsky-sym6-mvt2`, `bruckner-sym5-mvt1` — chosen
+on the three axes a fix tuned on three pages could break (era, part count,
+texture/meter), with `beethoven-sym3-mvt1` and `brahms-sym4-mvt1` as deliberate
+**near-neighbour controls** for two incumbents: a distant composer failing is
+ambiguous, a near neighbour failing is not.
+
+⚠️ **`boulanger-printemps-mvt1` is deliberately NOT pooled**, and stays runnable
+with `--works boulanger-printemps-mvt1`. At 46 parts it is the one work whose
+*structure* fails — 43 parts against 46, with 76% of its budget in `entire
+measure` and `entire staff` operations — so it measures page segmentation on a2
+paper rather than note recognition, and it dominates any pool it enters (alone,
+it moved the widening pool 0.2057 → 0.3846). It is also where a correct fix
+looked like a regression: the articulation work read 263 of its 271 printed
+marks and its OMR-NED still **rose**, because a symbol added to a bar already
+charged delete-whole-plus-insert-whole costs more. Its row is kept and honest in
+FINDINGS.md §2 and §4; what it must not do is set the headline.
+
+**Fixtures are build products, not artifacts to move.** `excerpt()` regenerates
+every truth XML and rendered PDF from the score library on each run, into
+`--work-dir` (default `benchmarks/omr-orchestral-e2e/fixtures/`, gitignored), so
+a default run is self-contained with no flags and nothing on disk. The widening
+ran with its own `--work-dir` so a parallel canonical run could not collide;
+that directory's committed provenance (`FINDINGS.md`, `out/*.json`) is
+unchanged by the widening of the default.
 
 ---
 
@@ -1008,6 +1052,29 @@ four places is silent, and the copy that loses is whichever file happened not
 to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
+⚠️ **THE BENCHMARK'S DEFINITION CHANGED ON 2026-09-02 — 3 WORKS TO 11 — AND NO
+FIGURE CROSSES THAT BOUNDARY.** At Sean's decision the headline widened from the
+canonical three to eleven engraved orchestral works (see the *Orchestral
+end-to-end benchmark* section for the set and why each is in it). A pooled
+OMR-NED is a property of **the work set it is pooled over** as much as of the
+pipeline, so an 11-work figure and a 3-work figure are measurements of different
+things: **comparing them is invalid in either direction**, and a rise or fall
+across the boundary is not progress or regression. For the record, the last
+3-work figures were **0.1066 / 767 edits** (default) and **0.0849 / 623**
+(`--direction-text`), both on `15ca32a`; that three-work arc opened at 0.3164 on
+2026-08-31. Those numbers are history and belong to a benchmark that no longer
+exists — they are written here, in prose, precisely so nobody reaches for them
+as a baseline for the block below.
+
+The boundary is enforced, not just documented: `current-accuracy.json` carries a
+`benchmark` stamp naming the work set and the date, `accuracy_record.check()`
+refuses a record whose stamp disagrees with `BENCHMARK_WORKS`, and a record
+written before 2026-09-02 has no stamp at all — so it is detectably
+pre-boundary rather than silently comparable. Recording one configuration over a
+new work set also **drops** the other configuration's run until it is
+re-measured, so the paragraph can never state an 11-work default beside a 3-work
+variant.
+
 <!-- accuracy:begin name=headline -->
 Current on the engraved orchestral benchmark, measured on `15ca32a`: **pooled 0.1066 / 767 edits** (Mahler 0.0272, Beethoven 0.0727, Brahms 0.1554), over 3696 truth + 3497 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0849 / 623**, measured on `15ca32a`.
 
@@ -1027,12 +1094,13 @@ python3 -m tools.omr.training.orchestral_eval --omr-ned --record   # measure, re
 python3 -m tools.omr.accuracy_record --check                       # has it drifted?
 ```
 
-`--record` refuses a run without `--omr-ned`, over a subset of the works, or
-with a failed pipeline pass — each would state a figure for the whole benchmark
-that is not one. `test_accuracy_record.py` runs `--check`, so a hand-edited
-figure fails the suite. HISTORY IS NOT MANAGED THIS WAY and must not be: "pooled
-0.2595 → 0.2489" against the commit that did it is a frozen fact and is never
-rewritten.
+`--record` refuses a run without `--omr-ned`, over a subset of the works, with a
+work that FAILED (silently absent from the results, so the pool would be smaller
+than the benchmark), or with a failed pipeline pass — each would state a figure
+for the whole benchmark that is not one. `test_accuracy_record.py` runs
+`--check`, so a hand-edited figure fails the suite. HISTORY IS NOT MANAGED THIS
+WAY and must not be: "pooled 0.2595 → 0.2489" against the commit that did it is
+a frozen fact and is never rewritten.
 
 ⚠️ **Every figure measured before 2026-09-02 sits on a different fixture and is
 not directly comparable to the current one** — including the 0.3164 opening
@@ -1041,7 +1109,11 @@ baseline. The Beethoven fixture's render dropped every fermata over a rest
 perfect reader could never have read; the render was completed on 2026-09-02
 (`_restore_rest_fermatas` in `orchestral_eval.py`). Historical transitions stay
 quoted as measured, with that floor in them — see the discontinuity note beside
-the fix table in `docs/next-steps-omr-2026-09-01.md`.
+the fix table in `docs/next-steps-omr-2026-09-01.md`. **That is a separate
+discontinuity from the work-set one above, and they landed on the same day**:
+one changed what the three pages CONTAIN, the other changed HOW MANY pages there
+are. A figure from before 2026-09-02 differs from a current one for both
+reasons at once, which is another way of saying it cannot be differenced.
 
 Full
 reading, and the findings it surfaced that note recall is blind to, in

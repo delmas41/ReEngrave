@@ -11,6 +11,11 @@ The Gradus score library has ~97 orchestral movements as MusicXML — Beethoven
 Boléro. Rendering an excerpt of one back to PDF gives a dense orchestral page
 whose every note is known exactly, for free, at eighteen staves.
 
+ELEVEN OF THEM SINCE 2026-09-02, three before that — see
+`accuracy_record.BENCHMARK_WORKS`, which is where the set and the reasons for it
+live. A default run needs no flags and no fixtures on disk: every fixture is
+regenerated from the score library by `excerpt()` below, into `--work-dir`.
+
     python3 -m tools.omr.training.orchestral_eval --works beethoven-sym5-mvt1
     python3 -m tools.omr.training.orchestral_eval --measures 1-8 --out after.json
 
@@ -38,6 +43,7 @@ from typing import Any
 import fitz
 from music21 import converter, expressions
 
+from tools.omr import accuracy_record
 from tools.omr.dossier import find_dossier, summarize
 from tools.omr.export import to_musicxml
 from tools.omr.training.end_to_end_eval import (
@@ -56,13 +62,18 @@ SCORE_DIR = Path("/Users/seanjohnson/Desktop/gradus-vercel/public/scores")
 # page, and the point is density per page, not length.
 DEFAULT_MEASURES = (1, 8)
 
-# One per texture family rather than all 97, so a default run stays minutes not
-# hours. `--works` takes any work_id that has a dossier.
-DEFAULT_WORKS = (
-    "beethoven-sym5-mvt1",   # classical orchestra, 18 parts, one alto clef
-    "brahms-sym1-mvt1",      # romantic, thicker inner voices
-    "mahler-sym5-mvt1",      # late romantic, largest forces
-)
+#: The works a default run covers — ELEVEN since 2026-09-02, three before it.
+#:
+#: The list itself lives in `accuracy_record`, next to the record it defines,
+#: because it is the benchmark's DEFINITION and not merely this script's
+#: default: a pooled figure is a property of the work set it is pooled over, so
+#: the two must be able to disagree with each other loudly and cannot be two
+#: copies. `accuracy_record.check()` refuses a record whose stamp names a
+#: different set. The per-work rationale is there too.
+#:
+#: `--works` still takes any work_id that has a dossier — including
+#: `boulanger-printemps-mvt1`, which is deliberately not in the pooled set.
+DEFAULT_WORKS = accuracy_record.BENCHMARK_WORKS
 
 
 # ---------------------------------------------------------------------------
@@ -516,7 +527,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\nwrote {args.out}")
 
     if args.record:
-        from tools.omr import accuracy_record as ar
+        ar = accuracy_record
 
         # Each refusal is a way the record would state a figure for the whole
         # benchmark that is not one.
@@ -528,8 +539,21 @@ def main(argv: list[str] | None = None) -> int:
                   "are not what the pipeline does", file=sys.stderr)
             return 1
         if set(args.works) != set(DEFAULT_WORKS):
+            missing = sorted(set(DEFAULT_WORKS) - set(args.works))
+            extra = sorted(set(args.works) - set(DEFAULT_WORKS))
             print(f"\n--record refused: the record is the figure for the whole "
-                  f"benchmark, and this run covered {sorted(args.works)}",
+                  f"benchmark, which is {len(DEFAULT_WORKS)} works, and this "
+                  f"run covered {len(set(args.works))}"
+                  + (f"; missing {missing}" if missing else "")
+                  + (f"; not in the benchmark: {extra}" if extra else ""),
+                  file=sys.stderr)
+            return 1
+        # A work that FAILED is silently absent from `results`, and the pooled
+        # figure over what survived would be recorded as the benchmark's.
+        if {r["work_id"] for r in results} != set(DEFAULT_WORKS):
+            failed = sorted(set(DEFAULT_WORKS) - {r["work_id"] for r in results})
+            print(f"\n--record refused: {failed} did not produce a result, so "
+                  "the pooled figure would cover less than the benchmark",
                   file=sys.stderr)
             return 1
         run_name = (ar.DIRECTION_TEXT_RUN if args.direction_text
