@@ -285,3 +285,120 @@ class TestLabelPins:
         pinned, _pins = align_to_layout_pinned(layout, 5, labels=labels,
                                                allow_merge=True)
         assert pinned == [0, 1, 2, 3, 4]
+
+
+# ─── Basso: the ballot answers a question the assignment could not ──────────
+
+
+class TestAmbiguousLabelReadsTheBallot:
+    """Beethoven 5 p.1 prints `Basso` at the foot of a twelve-staff system and
+    the run reported `ambiguous_labels_resolved: 0`. The layouts vote 0.64
+    Contrabass / 0.36 Cello there — below MIN_AGREEMENT, so `assignment` is None
+    and the resolver used to give up. But the twelve-way question being
+    unsettled does not unsettle the two-way one: no voter puts a VOICE there."""
+
+    def test_the_alias_is_declared_ambiguous(self):
+        assert [c.name for c in candidates_for_alias("basso")] == [
+            "Bass voice", "Contrabass"]
+
+    def test_the_bottom_staff_has_no_agreed_reading(self):
+        """The precondition, stated so this test fails loudly if the layouts
+        ever start agreeing and the case below stops being exercised."""
+        fit = fit_layouts(len(CLASSICAL), clefs=_true_clefs(CLASSICAL))
+        assert fit.instrument_for(11) is None
+
+    def test_a_split_ballot_still_settles_a_two_way_question(self):
+        fit = fit_layouts(len(CLASSICAL), clefs=_true_clefs(CLASSICAL))
+        support = fit.support_for(11)
+        assert set(support) == {"Contrabass", "Cello"}, support
+        assert "Bass voice" not in support
+        chosen = resolve_ambiguous_label(11, candidates_for_alias("basso"), fit)
+        assert chosen is not None and chosen.name == "Contrabass"
+
+    def test_a_choral_system_still_reads_the_voice(self):
+        """The reading the lexicon defaults to has to survive where it is right,
+        or this trades one systematic error for another."""
+        fit = fit_layouts(4, labels={0: "Soprano", 1: "Alto", 2: "Tenor"},
+                          clefs={0: "treble", 1: "treble", 2: "treble",
+                                 3: "bass"})
+        chosen = resolve_ambiguous_label(3, candidates_for_alias("basso"), fit)
+        assert chosen is not None and chosen.name == "Bass voice"
+
+    def test_a_ballot_backing_BOTH_candidates_abstains(self):
+        from tools.omr.score_layouts import LayoutFit, LAYOUTS
+        fit = LayoutFit(layout=LAYOUTS[0], assignment=(None,), agreement=(0.5,),
+                        score_per_staff=1.0, considered=(),
+                        support=({"Bass voice": 0.5, "Contrabass": 0.5},))
+        assert resolve_ambiguous_label(0, candidates_for_alias("basso"), fit) is None
+
+    def test_an_empty_ballot_abstains(self):
+        from tools.omr.score_layouts import LayoutFit, LAYOUTS
+        fit = LayoutFit(layout=LAYOUTS[0], assignment=(None,), agreement=(0.0,),
+                        score_per_staff=1.0, considered=(), support=({},))
+        assert resolve_ambiguous_label(0, candidates_for_alias("basso"), fit) is None
+
+    def test_an_agreed_reading_outside_the_candidates_still_abstains(self):
+        """Unchanged behaviour: the layouts agreeing on something the alias
+        cannot mean is a disagreement, not a gap, and must not fall through to
+        the ballot."""
+        fit = fit_layouts(len(CLASSICAL), clefs=_true_clefs(CLASSICAL))
+        assert fit.instrument_for(0) == "Flute"
+        assert resolve_ambiguous_label(0, candidates_for_alias("basso"), fit) is None
+
+
+class TestAmbiguousSlotsAreWithheldFromThePrior:
+    """The other half, and neither works alone. Handing the fit `Bass voice`
+    does not merely bias it — no orchestral layout has a voice anywhere, so the
+    aligner can place that staff in NONE of them and every voter abstains."""
+
+    def _fit(self, bottom_label):
+        labels = {i: n for i, n in enumerate(CLASSICAL[:11])}
+        if bottom_label is not None:
+            labels[11] = bottom_label
+        return fit_layouts(12, labels=labels, clefs=_true_clefs(CLASSICAL))
+
+    def test_the_ambiguous_label_silences_the_ballot_it_should_consult(self):
+        assert self._fit("Bass voice").support_for(11) == {}
+
+    def test_withholding_it_restores_the_ballot(self):
+        assert set(self._fit(None).support_for(11)) == {"Contrabass", "Cello"}
+
+    def test_neither_half_settles_basso_alone(self):
+        cands = candidates_for_alias("basso")
+        # (a) alone — the ballot is consulted but empty.
+        assert resolve_ambiguous_label(11, cands, self._fit("Bass voice")) is None
+        # (a) + (b) — withheld AND read off the ballot.
+        chosen = resolve_ambiguous_label(11, cands, self._fit(None))
+        assert chosen is not None and chosen.name == "Contrabass"
+
+
+class TestContextualWithholdsAmbiguousSlots:
+    def test_the_slot_finder_picks_out_an_ambiguous_alias(self):
+        from tools.omr.contextual import _ambiguous_label_slots
+        from tools.omr.staff_labels import StaffLabel
+        from tools.omr.types import PageWithStaves, Staff
+
+        staves = [Staff(page_index=0, staff_index=i,
+                        line_ys=[100 * i + 10 * k for k in range(5)],
+                        x_start=50, x_end=500, slot_index=i)
+                  for i in range(3)]
+        pws = PageWithStaves(page=None, staves=staves)
+        page_labels = [
+            StaffLabel(0, "Violoncello", None, 0, 0.0, alias="violoncello"),
+            StaffLabel(1, "Basso", None, 0, 0.0, alias="basso"),
+            StaffLabel(2, "Tp.", None, 0, 0.0, alias="tp"),
+        ]
+        slot_by_staff = {(0, 0, i): i for i in range(3)}
+        got = _ambiguous_label_slots([page_labels], slot_by_staff, [0], [pws])
+        assert got == {1, 2}, "basso and tp are ambiguous; violoncello is not"
+
+    def test_an_unmatched_label_carries_no_alias_and_is_not_ambiguous(self):
+        from tools.omr.contextual import _ambiguous_label_slots
+        from tools.omr.staff_labels import StaffLabel
+        from tools.omr.types import PageWithStaves, Staff
+
+        staves = [Staff(page_index=0, staff_index=0, line_ys=[0, 10, 20, 30, 40],
+                        x_start=50, x_end=500, slot_index=0)]
+        pws = PageWithStaves(page=None, staves=staves)
+        labels = [StaffLabel(0, "larinetten in B", None, 0, 0.0)]
+        assert _ambiguous_label_slots([labels], {(0, 0, 0): 0}, [0], [pws]) == set()

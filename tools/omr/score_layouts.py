@@ -296,6 +296,14 @@ class LayoutFit:
     None where the layouts within the score band did not agree. `agreement` is
     the vote fraction behind each entry, so a caller can be stricter than
     `MIN_AGREEMENT` without re-running anything.
+
+    `support` is the whole ballot — every name any voter put at that staff, with
+    its share — because being stricter is not the only thing a caller may want.
+    A caller asking a NARROWER question than "what is this staff" can be
+    answered by a ballot that failed to answer the wide one: the layouts can
+    split 0.64 Contrabass / 0.36 Cello, name the staff nothing, and still be
+    unanimous that it is not a singer. `agreement` cannot say that and
+    `assignment` throws it away. See `resolve_ambiguous_label`.
     """
 
     layout: ScoreLayout             # the best-scoring layout, i.e. the tradition
@@ -303,12 +311,19 @@ class LayoutFit:
     agreement: tuple[float, ...]
     score_per_staff: float
     considered: tuple[str, ...]     # every layout that got a vote
+    support: tuple[dict[str, float], ...] = ()
 
     def instrument_for(self, ordinal: int) -> str | None:
         """The instrument agreed for the `ordinal`-th staff of the system."""
         if 0 <= ordinal < len(self.assignment):
             return self.assignment[ordinal]
         return None
+
+    def support_for(self, ordinal: int) -> dict[str, float]:
+        """`{instrument name: vote share}` at the `ordinal`-th staff."""
+        if 0 <= ordinal < len(self.support):
+            return self.support[ordinal]
+        return {}
 
     @property
     def n_named(self) -> int:
@@ -518,12 +533,14 @@ def fit_layouts(
 
     assignment: list[str | None] = []
     agreement: list[float] = []
+    support: list[dict[str, float]] = []
     for i in range(n):
         tally: dict[str, float] = {}
         for (_, _, a), w in zip(voters, weights):
             name = a[i]
             if name is not None:
                 tally[name] = tally.get(name, 0.0) + w
+        support.append({name: w / total_weight for name, w in tally.items()})
         if not tally:
             assignment.append(None)
             agreement.append(0.0)
@@ -539,6 +556,7 @@ def fit_layouts(
         agreement=tuple(agreement),
         score_per_staff=best_score,
         considered=tuple(layout.name for _, layout, _ in voters),
+        support=tuple(support),
     )
 
 
@@ -558,16 +576,38 @@ def resolve_ambiguous_label(
     Returns None when the fit does not cover this staff, so the caller keeps
     whatever it would have done anyway. This never invents a reading; it only
     chooses among ones already on the table.
+
+    ⚠️ **The agreed reading is the answer to a wider question than this one, and
+    asking only for it is what kept `Basso` dormant.** Beethoven 5 p.1 prints
+    `Basso` at the foot of a twelve-staff system; the candidates are Bass voice
+    and Contrabass; and the layouts vote 0.64 Contrabass / 0.36 Cello — which is
+    below `MIN_AGREEMENT`, so `assignment` is None and this used to give up. But
+    the twelve-way question "which instrument is this staff" being unsettled
+    does not make the two-way question "voice, or contrabass" unsettled: **not
+    one voter put a voice there.** So when there is no agreed reading, the
+    BALLOT is consulted, and a candidate is chosen only when it is the only one
+    of them with any support at all.
+
+    Unanimity among the candidates is the right bar rather than a share
+    threshold, because the question is two-way. `MIN_AGREEMENT` is calibrated
+    for "which of a dozen instruments", and reusing it here would ask a 2-way
+    choice to clear a 12-way bar. A ballot that backs BOTH candidates is a
+    genuine disagreement about this very question and still abstains.
     """
     if fit is None or not candidates:
         return None
     proposed = fit.instrument_for(ordinal)
-    if proposed is None:
+    if proposed is not None:
+        for candidate in candidates:
+            if candidate.name == proposed:
+                return candidate
+        # The layouts agreed, and on something the alias does not allow. That is
+        # a real disagreement, not a gap — abstain rather than fall through.
         return None
-    for candidate in candidates:
-        if candidate.name == proposed:
-            return candidate
-    return None
+
+    support = fit.support_for(ordinal)
+    backed = [c for c in candidates if support.get(c.name, 0.0) > 0.0]
+    return backed[0] if len(backed) == 1 else None
 
 
 # ── Pinning: the labels know the PRINT's order ──────────────────────────────
