@@ -63,9 +63,17 @@ DARK_FRACTION = 0.92
 #: pair: on Dvorak 9 the Violino I/II staves carry a brace 2.4 staff spaces
 #: right of the rule and the trombone and timpani staves do not, which showed up
 #: as those two staves reporting 9 measures against the others' 8 while every
-#: INTERIOR barline agreed to within 6 px across all four. The constant is set
-#: past that brace and nowhere near real music: the narrowest interior measure
-#: on any page measured here is 18 staff spaces wide.
+#: INTERIOR barline agreed to within 6 px across all four.
+#:
+#: ⚠️ The margin is NOT large and an earlier version of this comment claimed it
+#: was. Measured over the five benchmark pages, genuine measures run **4.2 to
+#: 28.7 staff spaces** — the 4.2 is a compressed rest bar on Beethoven 5 p.1 —
+#: while the furniture this collapses sits at 2.2 (Dvorak's brace) and 3.5
+#: (Brahms's courtesy meter). So 3.0 has about a staff space of room, not ten.
+#: What keeps it safe here is that it only ever collapses the LEADING cluster,
+#: and on every page measured the first genuine measure is 20+ spaces wide
+#: (it carries clef, key and meter). A page whose opening measure is genuinely
+#: narrow would break it, and none of these is.
 BRACKET_MERGE_SPACES = 3.0
 
 #: How far beyond the staff to look for the column continuing, and how much of

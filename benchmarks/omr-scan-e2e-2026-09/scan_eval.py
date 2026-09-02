@@ -164,9 +164,9 @@ def trim_truth(row: dict, ref: Path, *, force: bool = False) -> tuple[Path, dict
 
 
 def run_pipeline(row: dict, pdf: Path, protocol: dict, *,
-                 force: bool = False) -> tuple[Path, Path]:
-    pred = FIXTURES / f"{row['row_id']}.omr.musicxml"
-    raw = FIXTURES / f"{row['row_id']}.omr.json"
+                 force: bool = False, tag: str = "") -> tuple[Path, Path]:
+    pred = FIXTURES / f"{row['row_id']}{tag}.omr.musicxml"
+    raw = FIXTURES / f"{row['row_id']}{tag}.omr.json"
     if pred.is_file() and raw.is_file() and not force:
         return pred, raw
 
@@ -282,6 +282,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--wait-for-cpu", action="store_true",
                     help=f"poll until no {BUSY_PATTERN} process is running "
                          "before each transcription")
+    ap.add_argument("--dpi", type=int, default=None,
+                    help="override the protocol's render dpi. NOT part of the "
+                         "headline protocol — it exists because `--dpi` is not "
+                         "a resolution control across editions: the raster size "
+                         "is dpi times the PDF's DECLARED PAGE BOX, and two "
+                         "scans of one plate can declare boxes differing 2x. "
+                         "Use with --tag so the arm lands in its own fixtures.")
+    ap.add_argument("--tag", default="",
+                    help="suffix for fixture and row names, for side arms")
     ap.add_argument("--out", type=Path, default=BENCH / "results.json")
     ap.add_argument("--detail", default="AllObjects",
                     help="musicdiff DetailLevel; NotesAndRests scores pitch and "
@@ -289,7 +298,10 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     doc, rows = load_rows()
-    protocol = doc["protocol"]
+    protocol = dict(doc["protocol"])
+    if args.dpi is not None:
+        protocol["dpi"] = args.dpi
+    tag = f".{args.tag}" if args.tag else ""
     wanted = args.rows or [r["row_id"] for r in rows]
     selected = [r for r in rows if r["row_id"] in wanted]
     missing = sorted(set(wanted) - {r["row_id"] for r in selected})
@@ -321,7 +333,7 @@ def main(argv: list[str] | None = None) -> int:
         pdf, ref = resolve(row)
         truth_xml, trim_report = trim_truth(row, ref, force=args.force)
 
-        pred_xml = FIXTURES / f"{rid}.omr.musicxml"
+        pred_xml = FIXTURES / f"{rid}{tag}.omr.musicxml"
         if not pred_xml.is_file() or args.force:
             if args.score_only:
                 print(f"{rid}: no prediction in fixtures/ and --score-only; "
@@ -335,13 +347,14 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             print(f"{rid}: transcribing page {row['page']['pdf_page_index']} "
                   f"of {pdf.name} …", flush=True)
-        pred_xml, raw = run_pipeline(row, pdf, protocol, force=args.force)
+        pred_xml, raw = run_pipeline(row, pdf, protocol, force=args.force, tag=tag)
 
         result = json.loads(raw.read_text())
         page = result["pages"][0]
         entry = {
-            "row_id": rid,
+            "row_id": rid + tag,
             "label": row.get("label"),
+            "dpi": protocol["dpi"],
             "work_id": row["work_id"],
             "imslp_id": row["edition"].get("imslp_id"),
             "pdf_page_index": row["page"]["pdf_page_index"],
@@ -377,7 +390,7 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:  # noqa: BLE001
             entry["notes_error"] = f"{type(exc).__name__}: {exc}"
         results.append(entry)
-        pairs.append((rid, pred_xml, truth_xml))
+        pairs.append((rid + tag, pred_xml, truth_xml))
 
     if not results:
         print("nothing scored", file=sys.stderr)
