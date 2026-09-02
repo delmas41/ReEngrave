@@ -659,11 +659,8 @@ concluded experiment.
 `imslp-scores-central-library` → `pdf-mxl-pipeline-test`, then `main` merged back in to
 pick up the cross-staff fix. Their content is described throughout this document.
 
-⚠️ **As written, the integration branch had not yet been promoted to `main`** — `main`
-was at `81446a0`, holding the cross-staff fix but none of the queue, with the promotion
-pending a final benchmark run. This document was written against the integrated tree, so
-if `git log main` does not show these five branches, that promotion is the missing step
-rather than anything being wrong here.
+**Promoted to `main` as `d83b07e` and pushed**, so `main` now carries the cross-staff fix,
+the whole OMR-NED arc and all five branches together.
 
 Two notes for whoever audits it next:
 
