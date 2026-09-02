@@ -81,8 +81,12 @@ Nine works ran; **one failed and is recorded as a failure, not fought for**:
       'benchmarks/omr-corpus-widening-2026-09/fixtures/mahler-sym5-mvt4.ly',
       '.../mahler-sym5-mvt4.musicxml']' returned non-zero exit status 1.
 
-`boulanger-printemps-mvt1` is still running at the time of writing and its row
-is added below when it lands.
+`boulanger-printemps-mvt1` ran and is reported, with a caveat: at 46 parts it
+is the only work whose STRUCTURE fails. It emits 43 parts against 46 and its
+budget is 54% `entire measure insert/delete` plus 22% `entire staff
+insert/delete` — it is measuring page segmentation on an a2 sheet, not note
+recognition, and it dominates any pool it is in. It is kept as an honest row
+and excluded from the pooled line, which is stated both ways.
 
 | work | bars | parts | OMR-NED | edits | truth | pred | recall | prec | dur |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|--:|
@@ -94,7 +98,9 @@ is added below when it lands.
 | `brahms-sym4-mvt1` | 6 | 20/20 | **0.2849** | 520 | 949 | 876 | 0.959 | 0.943 | 0.933 |
 | `dvorak-sym9-mvt4` | 3 | 18/19 | **0.4106** | 294 | 373 | 343 | 0.975 | 0.975 | 1.000 |
 | `mozart-sym41-mvt1` | 6 | 17/17 | **0.5674** | 1562 | 1454 | 1299 | 0.991 | 0.991 | 0.465 |
-| **pooled (8 works)** | | | **0.2770** | 3691 | 6969 | 6357 | | | |
+| `boulanger-printemps-mvt1` | 8 | 43/46 | 0.6971 | 5155 | 3969 | 3426 | 0.783 | 0.768 | 0.880 |
+| **pooled (8, without Boulanger)** | | | **0.2770** | 3691 | 6969 | 6357 | | | |
+| pooled (all 9) | | | 0.4269 | 8846 | 10938 | 9783 | | | |
 
 **The headline: the new corpus scores 0.2770 against the incumbents' 0.1364 —
 almost exactly twice the error rate**, on music of the same kind, engraved by
@@ -197,9 +203,25 @@ is not a detection failure at all — coverage is 90% — it is a class label.
 `if getattr(d, "category", "") != "structural": continue`, so every
 `fingering3` is discarded before the gate that would have judged it.
 
-⚠️ **The incumbent Mahler carries `fingering3: 1`** — its known residue is "the
-fifth triplet group carries no marker at any confidence", and that sentence may
-be wrong in the same way. Beethoven 5 and Brahms 1 have none.
+⚠️ **A DOCUMENTED CLAIM ABOUT THE INCUMBENT MAHLER IS WRONG, and this is how
+the widening earned its keep.** CLAUDE.md and the attribution report both say
+its fifth triplet group "carries no marker at all, at any confidence", and it
+has stood as that work\'s named residue since the tuplet fix. Mahler\'s five
+triplet groups are all on staff 17, `Vier Trompeten in B.`, measures 0, 1, 3, 4
+and 5:
+
+    m0  tuplet3 0.32
+    m1  tupletBracket 0.25
+    m3  tuplet3 0.51 + tupletBracket 0.45
+    m4  fingering3 0.72        <- the "missing" fifth marker
+    m5  tuplet3 0.50
+
+The fifth marker is not missing and is not faint. It is the **highest-confidence
+tuplet marker on the page** and it came back under the other class name. Nobody
+looked because the work had a plausible story, and a plausible story about one
+page is exactly what three pages cannot falsify.
+
+Beethoven 5 and Brahms 1 have no `fingering3` at all, so they cannot move.
 
 ### 3. Articulations are detected and never exported — ~180 edits, 5 works
 
@@ -224,6 +246,37 @@ largest line in its op list after wrong notes.
 
 Again the incumbents could not show it: 0, 2 and 6 detections across the three
 pages every fix was measured on.
+
+**An attachment rule was measured before it was written**
+(`probe_articulations.py`), because emitting a mark on the wrong note costs the
+same as not emitting it. The rule under test is the obvious one, in the unit the
+dot fix insisted on: take the notehead whose x-centre is nearest the mark\'s, on
+the side the DSv2 class names (`...Above` / `...Below`), within N notehead
+widths. Scored by index against the truth over eight works:
+
+| max_dx (notehead widths) | placed | on an articulated note | precision | placement rate |
+|--:|--:|--:|--:|--:|
+| 0.30 | 106 | 102 | 0.962 | 0.486 |
+| **0.50** | 197 | 193 | **0.980** | **0.904** |
+| **0.75** | 197 | 193 | **0.980** | **0.904** |
+| **1.00** | 197 | 193 | **0.980** | **0.904** |
+| **1.50** | 197 | 193 | **0.980** | **0.904** |
+| **2.50** | 197 | 193 | **0.980** | **0.904** |
+
+**A flat plateau from 0.50 to 2.50 — identical to the mark — with a cliff below
+it.** That is what a constant read off a gap looks like rather than one tuned to
+a corpus: a mark is x-centred on its notehead to within half a width, and on the
+correct side there is nothing else within 2.5. The 21 marks of 218 that are
+never placed have no notehead on the correct side in their cell, and abstaining
+there is right.
+
+⚠️ **`boulanger-printemps-mvt1` is excluded from that table and the reason is a
+trap worth naming.** Scored with it, precision reads **0.525** — because the
+probe joins prediction to truth by INDEX, and Boulanger emits 43 parts against
+46, so the join is meaningless there and every mark is scored against the wrong
+part. The rule is not worse on Boulanger; the measurement is. Any index-joined
+metric over this corpus has the same hole, and it is the only work in it wide
+enough to fall through.
 
 ### 4. Smaller, recorded but not yet acted on
 
@@ -334,6 +387,78 @@ dossier and did not need to: the detector reads it at 0.89-0.96.
 
 ---
 
+### FIX 2 — a triplet digit is a triplet digit whichever class it arrives under
+
+`rhythm._tuplet_groups` collected digits only from `category == "structural"`,
+so every `fingering3` was discarded before the gate that would have judged it.
+The class is now admitted and **the gate is untouched** — the digit\'s centre
+must still fall inside a BEAMED group\'s span, and the group must still hold
+exactly as many notes as the digit claims.
+
+Measured on its own, before the second fault below was found:
+
+| work | before | after | |
+|---|--:|--:|---|
+| `mahler-sym5-mvt1` (incumbent) | 0.0455 / 86 | **0.0364 / 69** | **−17** |
+| `tchaikovsky-sym6-mvt2` | 0.2321 / 328 | **0.1958 / 279** | **−49** |
+| `beethoven-sym5-mvt1` | 0.1649 / 205 | 0.1649 / 205 | identical |
+| `brahms-sym1-mvt1` | 0.1707 / 674 | 0.1707 / 674 | identical |
+| `mozart-sym40-mvt1` | 0.2260 / 330 | 0.2260 / 330 | identical (no `fingering3`) |
+
+Tchaikovsky 6\'s duration rate went **0.892 → 0.985** and its six triplet notes
+from 6 wrong to **0**. Mahler\'s recovered fifth group is the one this file
+said above was never missing.
+
+### And the fault that fix 2 uncovered — the ratio applied TWICE
+
+`mozart-sym41-mvt1` is why the edit count has to be read beside the ratio. Its
+OMR-NED fell 0.5523 → 0.5239 while its **edits ROSE, 1511 → 1515**, and its
+predicted symbols rose by 156. That is the dilution signature the FINDINGS file
+warns about, and here it was hiding a real bug rather than a null result: the
+duration probe showed the dominant ratio had flipped from **3/2 on 70 notes**
+(read straight) to **2/3 on 89** — and `(1/4) × (2/3) × (2/3) = 1/9`.
+
+`_beamed_groups` returns one group per BEAM BOX. **A sixteenth carries two beam
+strokes**, the CV detector finds both, and each produced its own group over the
+same three noteheads — so `resolve_rhythms_for_cell` scaled them once per
+stroke. A group is a set of NOTES, not a stroke, and identical member sets are
+now collapsed.
+
+⚠️ **This bug predates all of tonight\'s work and the old benchmark could not
+show it.** Every triplet in Beethoven 5, Brahms 1 and Mahler 5 is an EIGHTH
+triplet — one stroke, one group, no duplication. `mozart-sym41-mvt1` prints 40
+groups of triplet SIXTEENTHS, and it took both the wider corpus and the class
+admission for the fault to become visible at all: with only 11 of 40 groups
+claimed it was there, quiet, in a work nobody was measuring.
+
+---
+
+### FIX 3 — articulations reach the export, both of them
+
+`export.py` contained the string "articulation" once, in a docstring. Nothing in
+the pipeline attached a mark to a note, and nothing emitted one.
+
+| work | before | after | |
+|---|--:|--:|---|
+| `mozart-sym40-mvt1` | 0.2260 / 330 | **0.1772 / 273** | **−57** |
+| `mahler-sym5-mvt1` (incumbent) | 0.0364 / 69 | **0.0331 / 63** | **−6**, its 6 detections exactly |
+| `beethoven-sym5-mvt1` | 0.1649 / 205 | 0.1649 / 205 | identical |
+| `brahms-sym1-mvt1` | 0.1707 / 674 | 0.1707 / 674 | identical |
+| `tchaikovsky-sym6-mvt2` | 0.1958 / 279 | 0.1958 / 279 | identical (prints none) |
+
+`wrong articulation` over the batch that holds Mozart 40 fell **102 → 37**.
+
+**The residue is named, not scattered.** Mozart 40\'s truth carries 96
+`<staccato/>` and **14 `<detached-legato/>`**; the prediction emits 81
+staccato. Detached legato is *portato* — a staccato dot printed UNDER A SLUR —
+and DSv2 has no class for it, because on the page it is a staccato dot. The
+detector is right about the glyph and the truth is right about the meaning, and
+nothing between them can bridge that without reading the slur and the dot
+together. The other ~15 are marks with no notehead on the correct side of them,
+which the rule declines by design.
+
+---
+
 ## 5. Two findings that are about the MEASUREMENT, not the pipeline
 
 ### `pitch_recall` understates a divisi part, badly
@@ -386,3 +511,48 @@ table.
   Violoncello (1 bar)** — 11 notes. `shift:k` is the misfitted-staff-window /
   wrong-clef signature the Brahms Violin 1 work chased. Small here, and the
   only instance of it in the corpus.
+
+
+---
+
+## 7. What the next session should pick up
+
+Ranked, with the evidence already gathered.
+
+1. **`mozart-sym41-mvt1` is still the worst work at 0.3632**, and its residue is
+   named: `wrong note` 886 of its 1051 edits, concentrated in the **Viola (156)**
+   and the **two Oboes (~78 each)**. `exact` measures went 27.2% → 41.2% and its
+   wrong durations 129 → **40**, of which the Viola holds 11. The dominant
+   surviving ratio is **×2 on 18 notes — a beam level one too few**, which is
+   `line_detection` territory, the same place the stem-cap fix lived.
+2. **Six of its forty triplet groups are still read straight** (ratio 3/2 on 6
+   notes). Those are groups where no digit was detected under EITHER class name.
+   That is a genuine detection gap, unlike the 30 that were a label.
+3. **`detached-legato` has no glyph of its own.** Mozart 40\'s truth has 14 of
+   them and the page prints a staccato dot under a slur. Reading it needs the
+   dot and the slur together; the detector cannot be blamed and neither can the
+   truth. Worth a decision rather than a fix.
+4. **The margin-label lexicon misses `Oboes` and `Cellos`** (section 6). Cheap,
+   but it changes the part-staff join and therefore the score, so it needs its
+   own measured run and must not be folded into another fix.
+5. **`tchaikovsky-sym6-mvt2` carries `shift:-4` on the Fagotti and
+   Violoncello** — 11 notes, the misfitted-window/wrong-clef signature, and the
+   only instance in the corpus.
+6. **`boulanger-printemps-mvt1` at 46 parts is a STRUCTURE failure**, 43 parts
+   against 46 with 76% of its budget in whole-measure and whole-staff ops. It is
+   the only work that exercises a2 paper. Nothing here touched it and nothing
+   here should be read as evidence about it.
+7. **`mahler-sym5-mvt4` never rendered** — `musicxml2ly` exits 1 on it. One
+   line of diagnosis would add a 9-part late-romantic string texture to the
+   corpus, which nothing else covers.
+
+### Two standing warnings this round produced
+
+- **A benchmark of three pages cannot falsify a story about one of them.**
+  Mahler\'s "fifth triplet group carries no marker at any confidence" survived
+  in CLAUDE.md and in the attribution report because nothing forced anyone to
+  look again. It carries a `fingering3` at 0.72.
+- **Read the edit count beside the ratio, every time.** Fix 2\'s first
+  measurement showed Mozart 41\'s OMR-NED falling while its edits ROSE — and
+  that was not dilution-as-noise, it was a real bug (the ratio applied twice)
+  that the ratio alone would have reported as a success.
