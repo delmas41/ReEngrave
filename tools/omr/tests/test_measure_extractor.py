@@ -45,6 +45,10 @@ from tools.omr.measure_extractor import (
     resegment_fused_measures,
 )
 from tools.omr.types import MeasureCell, PageImage, PageWithStaves, Staff
+# Content is what separates furniture from a measure, and content only exists
+# after detection — so the pass lives in `transcribe`, not here. Tested beside
+# the measure work because that is what it is about.
+from tools.omr.transcribe import _drop_furniture_measures
 
 
 PAGE_W = 1000
@@ -575,3 +579,96 @@ class TestOneLineStaffIsExcludedFromResegmentation:
             pws, cells, max_cell_width=TEST_MAX_CELL_WIDTH,
             expected_bars_by_system={0: 4})
         assert out, "the steered path must be guarded too"
+
+
+# ─── system furniture read as a measure ─────────────────────────────────────
+
+
+class TestFurnitureMeasuresAreDropped:
+    """Dvorak 9's Simrock print opens every system with a 56-px cell holding one
+    `brace` at confidence 0.33, so all fifteen staves emit nine measures where
+    the page prints eight. Width does not separate that from a genuine bar
+    (4.2 spaces on a compressed rest bar against 2.2 here); content does."""
+
+    @staticmethod
+    def _note(x=20.0):
+        return {"class": "noteheadBlackOnLine", "category": "notehead",
+                "bbox": [x, 10, 5, 5], "bbox_page": [x, 10, 5, 5],
+                "confidence": 0.9, "pitch": "C4", "duration_beats": 1.0,
+                "duration_type": "quarter", "dots": 0}
+
+    @staticmethod
+    def _rest():
+        return {"class": "restWhole", "category": "rest", "bbox": [20, 10, 6, 4],
+                "bbox_page": [20, 10, 6, 4], "confidence": 0.8,
+                "duration_beats": 4.0, "duration_type": "whole", "dots": 0}
+
+    @staticmethod
+    def _brace():
+        return {"class": "brace", "category": "structural", "bbox": [2, 0, 3, 60],
+                "bbox_page": [2, 0, 3, 60], "confidence": 0.33}
+
+    def _page(self, per_staff):
+        """`per_staff` is a list of lists of detection lists."""
+        return {"page_index": 0, "systems": [{"system_index": 0, "staves": [
+            {"staff_index": si, "n_measures": len(cells),
+             "measures": [{"measure_index": mi, "bbox_page_px": [0, 0, 100, 50],
+                           "detections": dets}
+                          for mi, dets in enumerate(cells)]}
+            for si, cells in enumerate(per_staff)]}]}
+
+    def _measures(self, page):
+        return [len(s["measures"]) for s in page["systems"][0]["staves"]]
+
+    def test_a_leading_brace_only_column_is_dropped_from_every_staff(self):
+        page = self._page([
+            [[self._brace()], [self._note()], [self._note()]],
+            [[], [self._rest()], [self._note()]],
+        ])
+        cells, dets = _drop_furniture_measures(page)
+        assert (cells, dets) == (2, 1)
+        assert self._measures(page) == [2, 2]
+        assert [m["measure_index"] for m in
+                page["systems"][0]["staves"][0]["measures"]] == [0, 1]
+
+    def test_a_column_where_ONE_staff_plays_is_a_measure(self):
+        """Per-staff emptiness says nothing — any staff may be tacet. Only a
+        column silent on EVERY staff is furniture."""
+        page = self._page([
+            [[self._brace()], [self._note()]],
+            [[self._note()], [self._note()]],
+        ])
+        assert _drop_furniture_measures(page) == (0, 0)
+        assert self._measures(page) == [2, 2]
+
+    def test_a_tacet_staff_keeps_the_column_through_its_whole_bar_rest(self):
+        page = self._page([[[self._rest()], [self._note()]],
+                           [[self._rest()], [self._note()]]])
+        assert _drop_furniture_measures(page) == (0, 0)
+
+    def test_a_trailing_courtesy_column_is_dropped(self):
+        page = self._page([[[self._note()], [self._note()], []],
+                           [[self._note()], [self._note()], [self._brace()]]])
+        cells, _ = _drop_furniture_measures(page)
+        assert cells == 2 and self._measures(page) == [2, 2]
+
+    def test_a_silent_column_in_the_MIDDLE_is_kept(self):
+        """A spurious barline mid-system splits one bar into two halves that
+        both still hold notes, so a music-free middle column is far more likely
+        a bar the detector failed on — and dropping it would splice its
+        neighbours together and shift every measure after it."""
+        page = self._page([[[self._note()], [], [self._note()]],
+                           [[self._note()], [], [self._note()]]])
+        assert _drop_furniture_measures(page) == (0, 0)
+        assert self._measures(page) == [3, 3]
+
+    def test_a_system_with_no_music_at_all_is_left_alone(self):
+        """A recognition failure, not a furniture question. Deleting its
+        measures would turn a bad reading into no reading."""
+        page = self._page([[[self._brace()], []], [[], []]])
+        assert _drop_furniture_measures(page) == (0, 0)
+        assert self._measures(page) == [2, 2]
+
+    def test_a_single_measure_system_is_never_touched(self):
+        page = self._page([[[self._brace()]], [[]]])
+        assert _drop_furniture_measures(page) == (0, 0)

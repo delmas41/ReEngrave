@@ -2694,6 +2694,110 @@ def _dedupe_cross_staff_detections(
 _UNLADDERED_NOTEHEAD_MAX_CONF = 0.65
 
 
+def _drop_furniture_measures(page: dict[str, Any]) -> int:
+    """Take out the measure columns that are system furniture, not music.
+
+    A system's opening rule and the bracket or brace beside it are two vertical
+    strokes a barline's width apart, and `detect_barlines` reads them as two
+    barlines with a measure between. Dvorak 9's Simrock print is the clean case:
+    a cell 56 px wide — 2.2 staff spaces, narrower than a notehead and its stem,
+    on a page whose real measures run 299 to 731 px — holding one `brace`
+    detection at confidence 0.33, on all fifteen staves. Every staff then emits
+    nine measures where the page prints eight.
+
+    ⚠️ **WIDTH IS NOT THE TEST, and it was checked before being rejected**
+    (`benchmarks/omr-scan-e2e-2026-09/RESULTS.md` §1): genuine measures on those
+    five pages run 4.2 to 28.7 staff spaces against 2.2 and 3.5 for the two
+    spurious ones. A 0.7-space gap on a five-page corpus is a threshold to tune,
+    not a cliff to sit on — and it would also miss the WTC case below, which is
+    12.5 spaces wide and just as spurious.
+
+    CONTENT is the test, asked at the level the answer lives at. **A barline
+    spans the system**, so a column is furniture for every staff of a system or
+    for none of them; per-staff emptiness says nothing, because any staff may be
+    tacet, while a column where not one staff of fifteen carries a notehead or a
+    rest is a different object. A genuine measure on even a fully tacet staff
+    contains its whole-bar rest.
+
+    Measured over **243 measure columns, 27 systems, 20 committed
+    transcriptions** of many publishers
+    (`benchmarks/omr-scan-e2e-2026-09/probe_furniture_columns.py`): exactly
+    **two** columns carry no notehead and no rest on any staff — 0.82% — and
+    both are furniture. The second was not one of the two RESULTS.md found:
+    WTC I p.17 system 1 opens with a 463 px cell holding `clef ×2,
+    accidental ×8` and no notes, where every other system on that page carries
+    its clef and key signature inside a first measure that also plays.
+
+    "Has music" is `voicing.group_chords_in_measure` — the EXPORTER's own test
+    for whether a measure needs a whole-bar rest — so the rule and the thing it
+    protects cannot drift apart.
+
+    ⚠️ **Leading and trailing columns only.** Furniture is what sits OUTSIDE the
+    music, at the ends a system's rules bound. A silent column in the MIDDLE is
+    a different animal: a spurious barline there splits one bar into two halves
+    that both still hold notes, so a music-free middle column is much more
+    likely a bar the detector failed on — and dropping it would splice its
+    neighbours together and shift every measure after it. Those are kept.
+
+    Returns `(cells removed, detections removed with them)`, so the page's
+    running totals stay true rather than counting glyphs that are no longer in
+    the output.
+    """
+    dropped = 0
+    dropped_detections = 0
+    for system in page.get("systems", []):
+        staves = system.get("staves", [])
+        if not staves:
+            continue
+        width = max((len(s.get("measures", [])) for s in staves), default=0)
+        if width < 2:
+            continue
+
+        def _has_music(m: int) -> bool:
+            return any(
+                group_chords_in_measure(
+                    s["measures"][m].get("detections") or [])
+                for s in staves if m < len(s.get("measures", []))
+            )
+
+        voiced = [m for m in range(width) if _has_music(m)]
+        if not voiced:
+            # Nothing to anchor on. A system the detector read no music in at
+            # all is a recognition failure, not a furniture question, and
+            # deleting its measures would turn a bad reading into no reading.
+            continue
+        keep = set(range(voiced[0], voiced[-1] + 1))
+        if len(keep) == width:
+            continue
+        lead_dropped = voiced[0] > 0
+        for staff in staves:
+            measures = staff.get("measures", [])
+            kept = [m for i, m in enumerate(measures) if i in keep]
+            dropped += len(measures) - len(kept)
+            dropped_detections += sum(
+                len(m.get("detections") or [])
+                for i, m in enumerate(measures) if i not in keep
+            )
+            for new_index, measure in enumerate(kept):
+                measure["measure_index"] = new_index
+            staff["measures"] = kept
+            staff["n_measures"] = len(kept)
+            # The staff-level summary is "what was in effect during the staff's
+            # FIRST measure", and dropping a leading column moves which measure
+            # that is. Leaving it stale is not cosmetic: `_lily_staff_block`
+            # emits one `\clef` per staff from this field, so on Dvorak it would
+            # print treble for the bassoon and both trombones — and, worse, it
+            # would do so only AFTER this pass removed the furniture cell that
+            # `export._first_clef_bearing_measure` was recovering the clef from.
+            # A fix must not disarm the other fix that covers it.
+            if lead_dropped and kept:
+                for field in ("clef", "key_signature", "time_signature"):
+                    if kept[0].get(field) is not None:
+                        staff[field] = kept[0][field]
+        system["n_measures_dropped_as_furniture"] = width - len(keep)
+    return dropped, dropped_detections
+
+
 def _drop_unladdered_noteheads(
     page: dict[str, Any],
     bands: dict[int, tuple[int, ...]],
@@ -4172,6 +4276,20 @@ def transcribe(
                 out.get("n_cross_staff_duplicates_removed", 0) + n_deduped
             )
             out["n_detections_total"] -= n_deduped
+
+        # ── System furniture read as a measure ──
+        # After the two dedupers, so the content test sees the detections
+        # everything downstream will see; before the meter passes, so a
+        # courtesy meter or a system rule caught as a bar cannot vote on the
+        # page's time signature or be counted as one of its measures.
+        n_furniture, n_furniture_dets = _drop_furniture_measures(page_dict)
+        if n_furniture:
+            page_dict["n_furniture_measure_cells_dropped"] = n_furniture
+            out["n_furniture_measure_cells_dropped"] = (
+                out.get("n_furniture_measure_cells_dropped", 0) + n_furniture
+            )
+            out["n_measures_total"] -= n_furniture
+            out["n_detections_total"] -= n_furniture_dets
 
         # A dossier meter is KNOWN, so it is applied before inference runs and
         # inference is left with nothing to guess at. It also overrules a
