@@ -85,6 +85,42 @@ def _measure_facts(score) -> dict:
     }
 
 
+def _drop_invisible_notes(score) -> int:
+    """Remove notes the ENGRAVER marked as not printed.
+
+    THE PAGE IS THE TRUTH, NOT THE FILE. A note carrying
+    `style.hideObjectOnPrint` is one the encoding explicitly says does not
+    appear on paper — MuseScore writes them for playback and for spacing — and
+    a scan benchmark that charges the pipeline for failing to read an invisible
+    note has stopped measuring reading.
+
+    Found by `verify_window.py`, which is the whole reason that check exists.
+    Mahler 5's pickup carries **twenty** of them: a hidden quarter (C#5 on the
+    flutes, oboes and violins, G4 on the horns) sitting in a second voice
+    alongside the visible quarter rest that the page actually prints, on every
+    staff except the solo trumpet. The trumpet's own three triplet eighths —
+    the Auftakt the page's footnote describes — are visible and stay.
+
+    RESTS ARE NOT TOUCHED, and the distinction was checked rather than assumed.
+    Dvorak 9's window holds 19 hidden rests, and they are ordinary second-voice
+    padding: two players condensed on one staff, voice 2's duplicated rests
+    hidden so they do not print twice while its NOTES print normally. Removing
+    them would leave voice 2 short and corrupt the truth, and they cost 19
+    symbols against 93 visible notes. Beethoven 5 and Brahms 1 carry neither
+    kind, so this changes nothing on the reproduction row.
+    """
+    removed = 0
+    for part in score.parts:
+        for measure in part.getElementsByClass("Measure"):
+            for element in list(measure.recurse().notes):
+                style = getattr(element, "style", None)
+                if getattr(style, "hideObjectOnPrint", False):
+                    holder = element.activeSite or measure
+                    holder.remove(element)
+                    removed += 1
+    return removed
+
+
 def _strip_unmatched_repeats(score) -> int:
     """Drop repeat marks the window cut in half.
 
@@ -111,7 +147,8 @@ def _strip_unmatched_repeats(score) -> int:
 
 def trim(source: Path, first: int, last: int, out: Path,
          merge_parts: list[list[int]] | None = None,
-         keep_repeats: bool = False) -> dict:
+         keep_repeats: bool = False,
+         keep_invisible: bool = False) -> dict:
     score = converter.parse(str(source))
     whole = _measure_facts(score)
 
@@ -131,6 +168,7 @@ def trim(source: Path, first: int, last: int, out: Path,
         )
 
     stripped = 0 if keep_repeats else _strip_unmatched_repeats(window)
+    invisible = 0 if keep_invisible else _drop_invisible_notes(window)
 
     merged = None
     if merge_parts:
@@ -160,6 +198,7 @@ def trim(source: Path, first: int, last: int, out: Path,
             "first_measure_padding_left": trimmed_facts["first_measure_padding_left"],
         },
         "unmatched_repeats_stripped": stripped,
+        "invisible_notes_dropped": invisible,
         "parts_after_merge": merged,
     }
 
@@ -183,6 +222,10 @@ def main(argv: list[str] | None = None) -> int:
                          'against musicdiff — a second column, not the headline.')
     ap.add_argument("--keep-repeats", action="store_true",
                     help="do not strip repeat marks the window cut in half")
+    ap.add_argument("--keep-invisible", action="store_true",
+                    help="keep notes marked hideObjectOnPrint. They are not on "
+                         "the page, so keeping them charges the pipeline for "
+                         "failing to read what the engraver said not to print.")
     args = ap.parse_args(argv)
 
     if args.out.suffix.lower() not in (".musicxml", ".xml"):
@@ -192,7 +235,8 @@ def main(argv: list[str] | None = None) -> int:
 
     merge = json.loads(args.merge_parts) if args.merge_parts else None
     report = trim(args.source, args.first, args.last, args.out,
-                  merge_parts=merge, keep_repeats=args.keep_repeats)
+                  merge_parts=merge, keep_repeats=args.keep_repeats,
+                  keep_invisible=args.keep_invisible)
     json.dump(report, sys.stdout, indent=1)
     sys.stdout.write("\n")
     return 0

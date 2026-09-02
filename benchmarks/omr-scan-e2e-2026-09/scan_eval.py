@@ -76,9 +76,24 @@ BUSY_PATTERN = "orchestral_eval"
 # ---------------------------------------------------------------- compute
 
 def cpu_busy() -> list[str]:
-    out = subprocess.run(["pgrep", "-f", BUSY_PATTERN],
+    """PIDs of real eval runs — not shells that merely mention one.
+
+    `pgrep -f orchestral_eval` matches any command line containing the string,
+    which on this machine includes the monitoring shell wrappers another
+    worktree leaves around and the grep looking for them. Requiring the
+    EXECUTABLE to be a Python is what separates a run from a mention.
+    """
+    out = subprocess.run(["ps", "-Ao", "pid=,comm=,args="],
                          capture_output=True, text=True)
-    return [ln for ln in out.stdout.split() if ln.strip()]
+    busy = []
+    for line in out.stdout.splitlines():
+        parts = line.strip().split(None, 2)
+        if len(parts) < 3:
+            continue
+        pid, comm, argv = parts
+        if "python" in comm.lower() and BUSY_PATTERN in argv:
+            busy.append(pid)
+    return busy
 
 
 def wait_for_cpu(poll_s: int = 60, limit_s: int = 0) -> bool:
