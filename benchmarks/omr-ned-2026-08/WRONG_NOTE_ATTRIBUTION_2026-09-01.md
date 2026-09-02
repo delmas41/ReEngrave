@@ -701,3 +701,100 @@ item in this file's history whose next step is detector work:
 
 So the lever is `line_detection.detect_stems` finding the stems it is missing,
 not a wider tolerance downstream of it.
+
+---
+
+## FIXED 2026-09-01 — the missing stems, and the beam bar beside them
+
+Pooled **0.1861 → 0.1506**, 1315 edits → **1068**. All of it Brahms
+(1008 → 761, 0.2563 → 0.1922), whose duration rate went 0.931 → **0.968**,
+recall 0.917 → 0.923 and `exact` measures 67% → **76%**. Beethoven and Mahler
+unchanged to the edit through both changes; authored fixtures identical.
+
+The previous section called this residue detector work, and it is — but in
+`line_detection`, not the model. Two more constants that did not mean what they
+said, and neither needed a retrain.
+
+### A stem is as long as the music needs it to be
+
+`detect_stems` capped a candidate at 6.0 staff spaces. A stem runs from its
+notehead to its beam, so a note two ledger lines above the staff beamed to notes
+inside it carries six spaces or more — ordinary orchestral writing. The cap cut
+exactly there.
+
+The two faults compound, which is why the note lost everything rather than one
+level: with no stem `_beams_attached_to_stem` never runs, and the fallback pairs
+the notehead to a beam directly with a reach of 5.5 spaces — so the same
+distance that removed the stem put the beam out of reach too. Violin 2's two
+notes above the staff came out a quarter and an eighth; their stems measure 6.19
+and 6.27 spaces.
+
+Measured over 8746 candidates on 13 pages of 8 editions, taking every component
+that passes every other filter:
+
+    2-3 spaces  3130      6-7 spaces   265      10-11 spaces  43
+    3-4         3087      7-8          290      11-12          9
+    4-5         1390      ------------------    12-13         43
+    5-6          365      8-9           25      13-14         43
+                          9-10           5      14-17         42
+
+One population decays smoothly from 2 to 8 and stops; a second begins near 10
+and runs to the height of the cell (per-page maxima 13.96 on a 14-space cell,
+15.98 on a 16-space one) — barlines and brackets crossing the crop. The 11x drop
+between 7-8 and 8-9 is the sharpest edge in the distribution, and the benchmark
+agrees with it:
+
+    cap    pooled   edits    brahms duration rate
+    6.0    0.1861    1315         0.931            <- before
+    7.0    0.1601    1136         0.963
+    8.0    0.1601    1136         0.964            <- chosen
+    9.0    0.1610    1142         0.963
+   12.0    0.1610    1142         0.963
+
+7.0 ties and is worse: it sits INSIDE the smooth decay and would cut the 290
+real stems the corpus carries between 7 and 8 spaces on scores this benchmark
+does not contain. The other direction costs 6 edits, and the single component
+that buys spans canonical y 260-989 against a staff of 537-896 — through the
+staff from above to below. A barline, which is what the cap is for.
+
+### A beam bar was counted from its neighbour's ink
+
+`_stacked_bar_count` counts vertical ink runs in a column — the right method,
+and its docstring explains why box height is not. But it sampled the OPENED
+IMAGE inside the component's bounding box rather than the component's own label
+mask, so anything else lying in that box was counted.
+
+A sloped bar's box is precisely the shape that reaches over its neighbours.
+Where the slope exceeds the pitch between bars — 61 px against 53 on this page —
+the secondary bar lies inside the primary's box without touching it:
+
+    primary   component x 213-965   box y 1082-1203   1.21 spaces, 36% filled
+    secondary component x 575-965   box y 1058-1121
+
+26 of the primary's 51 sampled columns then showed two runs, the median came out
+2, and the box was cut into two equal bands over the full x-range. Every note
+under it gained a level: the dotted eighth became a dotted sixteenth.
+
+`_attached_stem_count`, the next function in the file, already reads the label
+mask and gives this exact reason in its own docstring.
+
+**The LilyPond beam ground truth moved, 9 → 8 summed error**, and that is the
+corroboration worth having — it counts bars exactly, from the notation, and it
+had been one over.
+
+⚠️ **A green ground truth is not evidence when the case is outside what it
+engraves.** `benchmarks/omr-phase4-lines` is unchanged at stem caps of 6, 7, 8,
+9 and 12, because its music has no long stems. It could not have caught the
+first fault and does not pretend to.
+
+### What is left
+
+Eighteen wrong durations, twelve of them the **Viola** — whose every bar is
+`order` class, meaning the pitches are right and the sequence is not. It plays
+double stops, and a two-note chord is where voice splitting and duration
+resolution meet. That is the next thread and it is not a beam problem.
+
+The reconciler is still declining correctly, and still for the structural reason
+given above: a dotted eighth beamed to three sixteenths is two levels inside one
+beam group, and `_beam_groups` builds a group from noteheads that share a
+`beam_levels` value.

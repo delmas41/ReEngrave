@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED 0.3164 → 0.1861, slurs shipped after all; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
+**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED 0.3164 → 0.1506, slurs shipped after all; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -64,7 +64,7 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once — builds .venv
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled 0.3164 → 0.1861** on the engraved orchestral benchmark, in two days. Lower is
+**Pooled 0.3164 → 0.1506** on the engraved orchestral benchmark, in two days. Lower is
 better.
 
 | step | pooled | edits | commit |
@@ -80,9 +80,11 @@ better.
 | slurs rejoined across the barline that cut them | 0.2209 | 1563 | `bae93b1` |
 | the crop's own edge read as noteheads | 0.2137 | 1508 | `77f796e` |
 | a dot measured against its own bounding box | 0.1917 | 1355 | `b445e66` |
-| a YOLO beam box bounds the stack, not a stroke | **0.1861** | 1315 | `cf559ca` |
+| a YOLO beam box bounds the stack, not a stroke | 0.1861 | 1315 | `cf559ca` |
+| a stem capped at 6 staff spaces | 0.1601 | 1136 | `50a3920` |
+| a beam bar counted from its neighbour's ink | **0.1506** | 1068 | `c62b372` |
 
-Currently Mahler **0.0455**, Beethoven **0.1775**, Brahms **0.2563**.
+Currently Mahler **0.0455**, Beethoven **0.1775**, Brahms **0.1922**.
 
 **Five of the eleven were export or resolution bugs on data the pipeline had already
 computed correctly** — beams, dots, dynamics, tuplets and slurs. The lesson is written down
@@ -900,7 +902,7 @@ the two-argument form, and check its exit code.
 The ranked handoff is [`docs/next-steps-omr-2026-09-01.md`](docs/next-steps-omr-2026-09-01.md);
 NOTES.md carries the long-form context for everything below.
 
-The current figure is **0.1861** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.2563), and
+The current figure is **0.1506** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.1922), and
 NOTES.md, CLAUDE.md and `next-steps-omr-2026-09-01.md` now all agree on it — NOTES.md's
 START HERE block was three fixes behind until `6a1b601` and says so itself.
 

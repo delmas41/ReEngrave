@@ -522,6 +522,41 @@ measure's amplification is worth; the beams are the thing.
 Together the two: **pooled 0.2209 → 0.1861**, Brahms 0.3185 → 0.2563 and its
 duration rate 0.889 → 0.931, Beethoven and Mahler unchanged to the edit.
 
+### Then the two beneath them, in the classical CV
+
+Fixing the above left 36 wrong durations and a handoff saying the next step was
+detector work. It was — `line_detection`, not the model — and it was two more
+constants that did not mean what they said. Together: **pooled 0.1861 → 0.1506**,
+Brahms 0.2563 → **0.1922**, its duration rate 0.931 → 0.968 and `exact` measures
+67% → **76%**; Beethoven and Mahler unchanged to the edit both times.
+
+**A stem is as long as the music needs it to be** (`STEM_MAX_HEIGHT_LINES`). The
+cap was 6.0 staff spaces, and a note two ledger lines above the staff beamed to
+notes inside it carries a stem longer than that — so the notes furthest from
+their beam were silently un-stemmed, and the same distance then put the beam out
+of reach of the notehead-to-beam fallback (which gives up at 5.5 spaces). The
+note lost every level it had. Over 8746 candidates on 13 pages of 8 editions the
+population decays smoothly to 8 spaces and stops, with a second population from
+10 up to the height of the cell itself — barlines and brackets crossing the crop.
+The constant sits on the 11× cliff between them, and the benchmark agrees:
+6.0 → 0.1861, 7.0 → 0.1601, **8.0 → 0.1601**, 9.0 → 0.1610.
+
+**A beam bar was counted from its neighbour's ink.** `_stacked_bar_count` counts
+vertical ink runs in a column, which is right, but it sampled the OPENED IMAGE
+inside the component's bounding box instead of the component's own label mask.
+A sloped bar's box is exactly the shape that reaches over its neighbours: where
+the slope exceeds the pitch between bars (61 px against 53 on the Brahms page),
+the secondary bar sits inside the primary's box, 26 of 51 columns show two runs,
+and the primary is cut into two bands — giving every note under it a level too
+many. `_attached_stem_count` right below it already reads the label mask and says
+why. The LilyPond beam ground truth went 9 → **8** summed error, which is the
+corroboration worth having: it counts bars exactly, and it had been one over.
+
+⚠️ **A green ground truth is not evidence when the case is outside what it
+engraves.** `benchmarks/omr-phase4-lines` is unchanged at every stem cap tried
+(6, 7, 8, 9, 12) because its music has no long stems. It could not have caught
+this and does not pretend to.
+
 ---
 
 ## Tuplets
@@ -868,8 +903,8 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Current on the engraved orchestral benchmark: **pooled 0.1861** (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.2563), from an opening baseline of 0.3164. Full
+Current on the engraved orchestral benchmark: **pooled 0.1506** (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.1922), from an opening baseline of 0.3164. Full
 reading, and the findings it surfaced that note recall is blind to, in
 [benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md),
 [WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)

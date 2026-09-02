@@ -4,7 +4,7 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ➡️ **START HERE: [docs/next-steps-omr-2026-09-01.md](docs/next-steps-omr-2026-09-01.md)**
 — accuracy is measurable against an outside standard now (pooled OMR-NED
-**0.1861**, down from 0.3164; its top-ranked item — cross-staff attribution —
+**0.1506**, down from 0.3164; its top-ranked item — cross-staff attribution —
 landed 2026-09-01 as 81446a0, slurs, its #4, the same day as bae93b1, and the
 rhythm bucket — dots and beam levels — the same day again).
 The ranked residue plus the closed dead ends are in that file;

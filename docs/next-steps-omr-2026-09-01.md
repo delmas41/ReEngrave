@@ -11,8 +11,8 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.1861** on the engraved orchestral benchmark (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.2563), down from **0.3164** at the start of
+**Pooled OMR-NED 0.1506** on the engraved orchestral benchmark (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.1922), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
 `benchmarks/omr-ned-2026-08/FINDINGS.md`.
@@ -35,6 +35,8 @@ export together, and the engraved benchmark says nothing about scan robustness.
 | the crop's own edge read as noteheads | 0.2209 → 0.2137 | `77f796e` |
 | a dot measured against its own bounding box | 0.2137 → 0.1917 | `b445e66` |
 | a YOLO beam box bounds the stack, not a stroke | 0.1917 → 0.1861 | `cf559ca` |
+| a stem capped at 6 staff spaces | 0.1861 → 0.1601 | `50a3920` |
+| a beam bar counted from its neighbour's ink | 0.1601 → 0.1506 | `c62b372` |
 
 **Five of the first eight were EXPORT bugs on data the pipeline had already
 computed correctly.** Beams detected and dropped, dots detected and counted twice,
@@ -131,14 +133,32 @@ What it found, ranked, replaces the rest of this list at the top:
     welded them into one. The docstring had said "replace" since Phase 4f while
     the code said "union"; the truth is neither — CV wins where it speaks, YOLO
     covers where it is silent.
-  Full reading in the FIXED section of the attribution report. What is left of
-  the bucket is 36 wrong durations, and the reconciler still declines on them
-  CORRECTLY: the Violin 2 figure is a dotted eighth beamed to three sixteenths,
-  which is two levels inside ONE beam group, and `_beam_groups` splits by equal
-  `beam_levels` so it has no way to say that. The residue is a missing stem on
-  the notes whose beams sit more than 5.5 spaces from the notehead — CV geometry,
-  not plumbing, and the first thing in this file's history whose next step is
-  detector work rather than a signal already computed.
+  Full reading in the FIXED section of the attribution report.
+- ~~**The missing stems, and the beam bar beside them**~~ — **DONE**, pooled
+  0.1861 → **0.1506**, Brahms 1008 → **761 edits**, duration rate 0.931 →
+  **0.968**, `exact` measures 67% → **76%**, Beethoven and Mahler unchanged to
+  the edit. This entry called the residue detector work, and it was — but
+  `line_detection`, not the model, and two more constants that did not mean what
+  they said:
+  - **a stem was capped at 6.0 staff spaces.** A note beamed to notes far below
+    it carries a longer one, so the notes furthest from their beam were
+    un-stemmed, and the same distance put the beam beyond the 5.5-space fallback
+    — the note lost every level it had. 8746 candidates over 13 pages of 8
+    editions put the music population's end at 8 spaces and a second population
+    (barlines, brackets) from 10 to the height of the cell; the constant sits on
+    the 11× cliff between them, and the sweep agrees (7.0 and 8.0 tie, 9.0 costs
+    6 edits and buys one barline).
+  - **a beam bar was counted from its neighbour's ink.** `_stacked_bar_count`
+    sampled the opened image inside the component's box rather than the label
+    mask, and a sloped bar's box reaches over the bar beside it. The LilyPond
+    beam ground truth was one over and is now exact.
+  What is left is 18 wrong durations, 12 of them the **Viola**, whose bars are
+  all `order` class — it plays double stops, and a two-note chord is where
+  voice splitting and duration resolution meet. That is the next thread, and it
+  is not a beam problem.
+  ⚠️ **A green ground truth is not evidence when the case is outside what it
+  engraves.** `benchmarks/omr-phase4-lines` is unchanged at every stem cap tried
+  because its music has no long stems.
 
 ### 2. ~~Slurs that can span measures~~ — DONE 2026-09-01
 
