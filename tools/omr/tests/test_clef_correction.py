@@ -322,3 +322,52 @@ class TestSlotClefContinuity:
         slots = {(0, 0, 0): -1, (0, 1, 0): 3}
         assert _fill_defaulted_clefs(pages, slots) == []
         assert defaulted["clef"] == "treble"
+
+
+class TestWhichIdentitiesMayCorrectAClef:
+    """`_instruments_for_clef_correction` — the non-circularity rule.
+
+    The score-order prior is fed the clefs that were READ, so a name it deduced
+    for a slot whose clef it saw must not come back to rewrite that clef. A name
+    deduced for a slot it saw NO clef for carries no such echo, and that is the
+    population the positional default actually leaves stranded.
+    """
+
+    @staticmethod
+    def _inst(name):
+        from tools.omr.instruments import lookup
+        return lookup(name).instrument
+
+    def test_a_name_that_was_read_always_qualifies(self):
+        from tools.omr.contextual import _instruments_for_clef_correction
+
+        viola = self._inst("Viola")
+        out = _instruments_for_clef_correction(
+            {4: viola}, {4: "label"}, clef_by_slot={4: "treble"})
+        assert out == {4: viola}, "a printed label is evidence, clef or no clef"
+
+    def test_a_deduced_name_is_refused_where_the_prior_saw_the_clef(self):
+        from tools.omr.contextual import _instruments_for_clef_correction
+
+        out = _instruments_for_clef_correction(
+            {4: self._inst("Violin")}, {4: "score_order"},
+            clef_by_slot={4: "treble"})
+        assert out == {}, "that name may be an echo of the clef it would fix"
+
+    def test_a_deduced_name_qualifies_where_no_clef_was_ever_read(self):
+        from tools.omr.contextual import _instruments_for_clef_correction
+
+        cello = self._inst("Violoncello")
+        out = _instruments_for_clef_correction(
+            {7: cello}, {7: "score_order"}, clef_by_slot={4: "treble"})
+        assert out == {7: cello}, "position said so, and no clef of its own did"
+
+    def test_the_ambiguity_resolver_is_not_the_prior(self):
+        """`score_order_ambiguity` settles WHICH reading of a printed label is
+        meant; the label itself was still read off the page."""
+        from tools.omr.contextual import _instruments_for_clef_correction
+
+        timp = self._inst("Timpani")
+        out = _instruments_for_clef_correction(
+            {2: timp}, {2: "score_order_ambiguity"}, clef_by_slot={2: "bass"})
+        assert out == {2: timp}

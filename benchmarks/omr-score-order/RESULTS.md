@@ -46,10 +46,22 @@ treble**, and the prior faithfully concluded that three treble staves are three
 violin staves. It inherits the clef problem exactly as the key-signature reader
 does, and for the same reason.
 
-That is why identity deduced from position is **not** allowed to drive clef
+That is why identity deduced from position was **not** allowed to drive clef
 correction (`contextual.py`): using it there would let the prior rewrite the
 clefs whose misreading produced it. It is written into the JSON as
 `instrument_source: "score_order"`, where a reader can see it and judge it.
+
+**Narrowed 2026-09-01, and this page is why it is safe.** The loop needs the
+SLOT'S OWN clef to be in the prior's evidence, so the gate is now `slot not in
+clef_by_slot` rather than a blanket refusal — a name deduced for a slot the
+prior saw no clef for carries no echo of a clef it would then rewrite. The
+errors described just above are untouched by it: the prior's failure here is
+calling string staves *violins*, and a violin proposes the treble those staves
+already carry, so nothing is applied. Beethoven 5 p.15 changes zero clefs under
+the new gate; La Mer p.25 changes one, staff 20 treble → bass on a `Contrabass`
+the part list above confirms. End to end 146 → 148/166 free and 149 → 151 paid.
+See `benchmarks/omr-clef-geometry/RESULTS.md`, "JOB C" — including why the +2
+is worth less than it looks.
 
 ## Two design decisions that measurement forced
 

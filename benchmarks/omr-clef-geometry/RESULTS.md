@@ -2435,3 +2435,118 @@ Two tests in `test_score_layouts.py` carrying the measured numbers
 (`test_one_misread_inside_a_run_costs_four_pins_not_one`,
 `test_abstaining_on_the_doubtful_label_does_not_restore_the_run`), because the
 second one is the counter-intuitive half and nothing guarded it. 1110 tests.
+
+---
+
+## JOB C — the score-order prior may correct a clef it never saw
+
+**2026-09-01.** Job C was framed as "widen the score-order prior so
+`correct_clefs_from_instruments` stops being starved of names". Measuring first
+showed the prior is not the thing that is narrow: **its names were being thrown
+away on purpose**, and the discard was wider than the reason for it.
+
+```python
+read_instruments = {slot: inst for slot, inst in instrument_by_slot.items()
+                    if instrument_source.get(slot) != "score_order"}
+```
+
+### The exclusion was right about the danger and wrong about its extent
+
+The prior is fitted with `clefs=clef_by_slot`, so a staff whose clef is misread
+feeds the fit and comes back named — on Beethoven 5 p.15 two string staves
+misread as treble come out as violins, and letting that rewrite their clefs
+closes a loop on its own mistake. Real.
+
+But the loop needs **the slot's own clef** in the prior's evidence, and
+`clef_by_slot` *is* that evidence, so the condition can be stated directly:
+
+```python
+if instrument_source.get(slot) != "score_order" or slot not in clef_by_slot
+```
+
+Two independent guards already stand behind it, which is why the rule is a
+one-liner rather than a mechanism. `_read_clefs_by_slot` counts only clefs a
+reader produced, never the positional default. And
+`correct_clefs_from_instruments` applies only where **no reader read that
+staff's clef** — with `_fill_defaulted_clefs` having already given the silent
+staves of a slot that reads anywhere both the reading and a `clef_source`.
+
+Checked rather than assumed: of the nine defaulted-and-wrong staves the prior
+names across the corpus, **none** is a slot whose clef the prior saw.
+
+### Measured — both arms, and no page loses a staff
+
+| | before | after |
+|---|--:|--:|
+| `--contextual --dossier --wide --assist none` | 146 / 166 | **148 / 166** |
+| `--contextual --dossier --wide --assist vision` | 149 / 166 | **151 / 166** |
+| (base 3) | 52 / 52 | 52 / 52 |
+
+Every page is unchanged except **beet9-p120, 14/21 → 16/21, on both arms.**
+
+The risk side is the more valuable half, since only one page in this corpus can
+exercise the change at all: of the 26 defaulted staves that are already RIGHT,
+the prior names 23 and breaks **none**.
+
+Widened to the two pages that carry the prior's own hand-read part list
+(`benchmarks/omr-score-order/ground_truth.json`) — no clef truth there, so the
+test is whether a changed clef rests on a name the part list confirms:
+
+* **La Mer p.25 staff 20**: treble → **bass**, named `Contrabass`, and the
+  hand-read part list says Contrabass. One change, and it is right.
+* **Beethoven 5 p.15**: **nothing changes** — the page this exclusion was
+  written against. The reason is worth keeping: the prior's failure mode there
+  is calling string staves *violins*, and a violin proposes treble onto a staff
+  already carrying the treble default, so `propose_clef` returns None on
+  `chosen == current`. The prior's characteristic error is self-cancelling here.
+
+`eval_score_order` 11/12, 5/10, 23/23 — unchanged, as it must be: the prior
+itself is untouched. `probe_clef_rejection` 68 of 720 and
+`check_clef_precision` reference 5/5 | orchestral misses 5 | sweep misses 8 |
+FP 13, both identical. 1114 tests (1110 + 4).
+
+### What the +2 is actually worth, which is less than 2
+
+**Do not read this as two staves correctly identified.** Both are on
+beet9-p120, the choral finale, whose ground truth records *"six vocal staves in
+C clefs … the LINE could not be read with confidence, so they are recorded as
+the generic `c-clef`"*. The page yields **zero** margin labels from any reader,
+so identity is the prior alone, and it smears `Viola` across the vocal block —
+staves 12, 14, 15, 16 and 17. A viola's convention is the alto clef, the alto
+clef is a C clef, and `scores()` accepts any C clef against `c-clef`.
+
+So the clef CLASS is right and the identity is wrong. Staff 15, which the prior
+also calls Viola, actually prints bass.
+
+That the two survived and staff 15 did not is `MIN_NOTEHEADS`, not the register:
+
+    staff  4  Bassoon  default=bass  n= 8   fits {treble .50, bass 1.00}  REFUSED
+    staff 12  Viola    default=alto  n= 7   fits {treble 1.00, alto 1.00} REFUSED
+    staff 14  Viola    default=alto  n= 9   fits {treble 1.00, alto 1.00} REFUSED
+    staff 15  Viola    default=alto  n= 3   fits {treble 1.00, alto .67}  REFUSED
+    staff 16  Viola    default=alto  n=37   fits {treble 1.00, alto 1.00} alto
+    staff 17  Viola    default=alto  n=33   fits {treble 1.00, alto 1.00} alto
+
+Five candidates, one bound, and it refused the wrong one along with three right
+ones — including the only properly-reasoned fix on the page, the bassoon at
+staff 4. Note also that `margin` is 0.00 on both applied proposals: the register
+does not separate alto from treble for a viola, and it is not supposed to. By
+design the instrument's convention leads and the range's job is to **veto** it,
+which is sound only because the clef being replaced is a positional guess
+carrying no evidence at all.
+
+### The next lever, measured but NOT pulled
+
+`MIN_NOTEHEADS = 12` is what now binds. On beet9-p120 lowering it would buy 3
+and cost 1. **That is one page, and this area has three sessions' worth of
+thresholds that looked clean on one corpus and were closed by a second** — so it
+is written down rather than tuned. Anyone taking it needs a second edition with
+hand-read clefs first; Bolero p40 is rendered and still unread.
+
+### Refused
+
+* Feeding the prior's names in wholesale. The exclusion's fear is real; only its
+  extent was wrong.
+* Touching the prior itself, or `MIN_NOTEHEADS`, on this evidence.
+* Claiming the +2 as instrument identity. It is a clef class, arrived at through
+  a wrong name, on a page whose truth is deliberately generic about C clefs.

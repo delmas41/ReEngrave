@@ -78,6 +78,26 @@ def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
     return out
 
 
+def _instruments_for_clef_correction(
+    instrument_by_slot: dict[int, Instrument],
+    instrument_source: dict[int, str],
+    clef_by_slot: dict[int, str],
+) -> dict[int, Instrument]:
+    """The identities `correct_clefs_from_instruments` is allowed to act on.
+
+    A name that was READ always qualifies. A name the score-order prior DEDUCED
+    qualifies only for a slot whose clef the prior never saw, because the prior
+    is fed the clefs that were read and a name derived from a slot's own misread
+    clef must not come back to rewrite it. `clef_by_slot` is that evidence, so
+    the test is on the evidence itself rather than on a downstream gate that
+    happens to imply it.
+    """
+    return {
+        slot: instrument for slot, instrument in instrument_by_slot.items()
+        if instrument_source.get(slot) != "score_order" or slot not in clef_by_slot
+    }
+
+
 def _apply_dossier_clefs(pages, slot_by_staff, reference, labels_by_slot,
                         dossier) -> list[dict]:
     """Give each staff the clef its part carries IN THE SCORE, where the join
@@ -677,17 +697,38 @@ def apply_contextual_analysis(
                     if instrument.unpitched:
                         staff["unpitched"] = True
 
-    # Clef correction runs on identity that was READ, never on identity the
-    # score-order prior deduced. The prior is a hypothesis about where a staff
-    # sits, and it inherits the clef problem it would then be used to fix: on
-    # Beethoven 5 p.15 two string staves whose clefs are misread as treble come
-    # out of the prior as violins, and letting that rewrite their clefs would
-    # close the loop on its own mistake. So the deduction is written into the
-    # JSON, where a reader can see it and judge it, and stops there.
-    read_instruments = {
-        slot: inst for slot, inst in instrument_by_slot.items()
-        if instrument_source.get(slot) != "score_order"
-    }
+    # Clef correction runs on identity that was READ — and on identity the
+    # score-order prior deduced ONLY for a slot whose clef the prior never saw.
+    #
+    # The circularity this guards against is real and was measured: the prior is
+    # fed the clefs that WERE read, so on Beethoven 5 p.15 two string staves
+    # misread as treble come out of it as violins, and letting that rewrite
+    # their clefs would close the loop on its own mistake. But the loop needs
+    # the SLOT'S OWN clef to be in the prior's evidence, and `clef_by_slot` is
+    # exactly that evidence — so excluding those slots states the condition
+    # directly instead of trusting the three gates downstream to imply it.
+    #
+    # `correct_clefs_from_instruments` then applies its own three, of which the
+    # first is "no reader read this staff's clef", so a slot that reads a clef
+    # anywhere is doubly protected: `_fill_defaulted_clefs` above has already
+    # given its silent staves that reading and a `clef_source` with it.
+    #
+    # Measured 2026-09-01 on the ten hand-read pages, BOTH arms:
+    # `--assist none` 146/166 -> 148, `--assist vision` 149 -> 151, base 3 still
+    # 52/52, and no page loses a staff. Of the 26 defaulted staves that are
+    # already RIGHT the prior names 23 and breaks none. On the two pages where
+    # the prior has its own hand-read part list it changes ONE clef — La Mer
+    # p.25 staff 20, treble -> bass, named Contrabass, which the part list
+    # confirms — and Beethoven 5 p.15, the page this exclusion was written
+    # against, is untouched, because there the prior's wrong names propose the
+    # treble that is already in effect.
+    #
+    # READ THE COST BEFORE TRUSTING THE +2: both gains are choral staves on
+    # beet9-p120 that the prior calls "Viola", and they score because the truth
+    # records the generic `c-clef` and a viola's alto clef is one. The clef
+    # class is right and the identity is not. See RESULTS.md, "JOB C".
+    read_instruments = _instruments_for_clef_correction(
+        instrument_by_slot, instrument_source, clef_by_slot)
     # Fill defaulted clefs from the same part in another system BEFORE the
     # instrument pass, so that pass sees the borrowed reading and leaves those
     # staves alone — a clef read on the page outranks one deduced from an

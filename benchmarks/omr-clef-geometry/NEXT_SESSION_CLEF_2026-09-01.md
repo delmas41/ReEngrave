@@ -39,17 +39,31 @@ opening message, with this file's path.
 > a fuzzy-lexicon change and needs the ten-edition validation this project holds
 > those to. Full write-up: `RESULTS.md`, "JOB B".
 
-> **JOB C — the positional default, which is the largest error class.** Seventeen
-> of the ~20 remaining end-to-end errors are a bass or C-clef staff called treble
-> because nothing read a clef. `clef_correction.correct_clefs_from_instruments`
-> already turns an instrument name into a clef — gap-fill only, vetoed by register
-> fit — and it is STARVED OF NAMES, not broken: naming beet6-p20's slot 7 "Viola"
-> by hand makes it fire correctly at once. `eval_score_order` says the score-order
-> prior names 12 of 33 staves at 0.92 precision, abstaining on two thirds.
-> Widening that safely is the biggest measured lever left. Ceiling, stated
-> honestly: identity is worth roughly twelve of the seventeen — beet9-p120 is a
-> choral page where a modern lexicon answers "treble" for Soprano and Tenor staves
-> that actually print C clefs.
+> **JOB C — PARTLY DONE 2026-09-01, and the framing was wrong.**
+> `correct_clefs_from_instruments` was not starved because the prior abstains —
+> the prior's names were being DISCARDED on purpose, by an exclusion wider than
+> its own reason. The circularity it feared needs the SLOT'S OWN clef in the
+> prior's evidence, so the gate now states that (`slot not in clef_by_slot`)
+> instead of dropping every deduced name. Measured both arms: `--assist none`
+> 146 -> **148/166**, `--assist vision` 149 -> **151/166**, base 3 still 52/52,
+> no page loses a staff, 23 already-correct defaulted staves named and none
+> broken, and on La Mer p.25 it turns a Contrabass staff from treble to bass —
+> confirmed against that page's hand-read part list. READ THE COST: both +2
+> gains are choral staves on beet9-p120 that the prior calls "Viola", scoring
+> only because the truth records the generic `c-clef` and a viola's alto clef is
+> one. The clef class is right, the identity is not.
+>
+> STILL OPEN, and it is the same page: `MIN_NOTEHEADS = 12` in
+> `clef_correction.py` now binds, refusing four of the six candidates there — a
+> bassoon at 8 noteheads and two violas at 7 and 9 that would all have been
+> right, and one at 3 that would have been wrong. Lowering it buys 3 and costs 1
+> ON ONE PAGE, which is exactly the shape this area has been burned by three
+> times. Get a second edition with hand-read clefs first — Bolero p40 is
+> rendered and unread (item 7). The identity half of the original Job C —
+> widening `eval_score_order`'s 12-of-33 at 0.92 — is untouched and still the
+> biggest lever; note that the prior runs in production on READ CLEFS, where its
+> measured precision is 0.50, not the 0.92 of position alone.
+> Full write-up: `RESULTS.md`, "JOB C".
 
 **DO NOT START** on the detector's 45-of-113 blind staves (a training problem
 with three negative results already: catalog training, domain augmentation, the
@@ -91,9 +105,9 @@ THE NUMBER TO STEER BY — end-to-end clef accuracy on ten hand-read
 orchestral pages, 166 staves:
 
     eval_pipeline_clefs.py --contextual --dossier --wide --assist vision
-        149 / 166  (90%)          <- best
+        151 / 166  (91%)          <- best        (149 before Job C)
     eval_pipeline_clefs.py --contextual --dossier --wide --assist none
-        146 / 166  (88%)          <- free path, no API spend
+        148 / 166  (89%)          <- free path, no API spend  (146 before)
     (base 3) 52/52 in both. The base-3 subtotal is three easy pages that
     saturated years ago; report it for continuity, steer by the 166.
 
@@ -103,7 +117,7 @@ THE CV LOCATOR, which supplies 3 of those 166 staves:
     check_clef_precision.py      reference 5/5 exact | orchestral misses 5
                                  | sweep misses 8 | FALSE POSITIVES 13
 
-    pytest tools/omr/tests                     1108 passed
+    pytest tools/omr/tests                     1114 passed
     benchmarks/omr-score-order/eval_score_order.py   11/12, 5/10, 23/23
 ```
 
