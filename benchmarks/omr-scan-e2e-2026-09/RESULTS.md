@@ -38,12 +38,18 @@ Pooled edit distribution:
 | wrong keysig | 175 | 1.9% |
 | wrong note head | 118 | 1.3% |
 
+The top two are 69% of the corpus and most of that is the **condensation
+convention** — 18 reference parts against 12 printed staves, 21 against 14, 38
+against 21. §3 measures how much: **23.4%** of the pooled edits, not the 29.6%
+the `entire staff insert/delete` bucket alone suggests, with the rest of that
+bucket turning out to be reading failure it was hiding.
+
 **Layout is not the problem, and that is the most encouraging line in the
 table.** Staff counts are exact on all five pages — 12, 12, 15, 14, 17 — on five
-different publishers' scans, including Mahler's page where four one-line
-percussion staves sit between the tuba and the strings. Measure counts are exact
-on three of five, and the two misses are both one measure and both the same
-class of bug (§1).
+different publishers' scans, including Mahler's page where five one-line
+percussion staves sit between the tuba and the strings (five, not four: §9).
+Measure counts are exact on three of five, and the two misses are both one
+measure and both the same class of bug (§1).
 
 ## Note recall, which disagrees with OMR-NED and is right to
 
@@ -195,6 +201,13 @@ printed cleanly. Nothing about the recognition changed; the page did.
 Measuring, not fixing. Each item has the evidence that found it; pipeline code
 was not touched.
 
+Ranked by how clearly the mechanism is established, not by edit count — several
+items carry no edit count at all. **The 2026-09-02 condensation measurement (§3)
+does not reorder them.** It resizes §3 (29.6% → 23.4%, and from "a floor" to "a
+floor with reading failure hiding inside it") and adds §9, which was found while
+counting the printed staves that §3 needed. §2 has since been fixed; the note
+under it says by what.
+
 ### 1. System furniture is read as a measure — 2 of 5 rows
 
 The single most mechanical bug here, and it appears at both ends of a system.
@@ -246,31 +259,130 @@ proof of the mechanism.
 Evidence: `fixtures/dvorak-*.omr.json` staff `measures[i].clef` against
 `<clef>` in `fixtures/dvorak-*.omr.musicxml`.
 
-### 3. The condensation floor — 29.6% of all edits, and it is not a bug
+✅ **Fixed on main after this was measured**, by `6d11a34` and
+[FIX_ROUND_2026-09-02.md](FIX_ROUND_2026-09-02.md), which narrows the mechanism
+one step (seven parts open G2 and *recover* at m2 in MusicXML; on LilyPond all
+fifteen really are treble). Re-scoring the re-exported prediction on
+2026-09-02 the Dvořák parts read `G2 G2 G2 F4 G2 G2 G2 C3 F4 F4 G2 G2 C3 F4 F4`
+— bassoon, both trombones, timpani, viola, cello and bass now correct. Its raw
+score moved **955 → 956 edits** (`wrong clef` 8 → 12, `wrong note` 525 → 517):
+the notation is right and the metric is a point worse, which is what a fix that
+adds symbols to a symmetric measure looks like. The table at the top of this
+file predates it.
 
-`entire staff insert/delete` is 2676 pooled edits. On Beethoven it is a single
-op type, `inspart`, **513 cost over 6 ops**: six whole reference parts with no
-counterpart, because the print condenses 18 parts onto 12 staves. That one
-structural fact is 39% of that row's edits before a single note is read.
+### 3. The condensation floor — measured: the convention explains 23.4% of pooled edits, not 29.6%
 
-**Dvořák is the control that proves it.** It is the only work in the library
-whose printed staff count equals its reference part count, and its category
-breakdown has no `entire staff insert/delete` in the top six at all — while
-`wrong note` rises to **55%** of its edits. Remove the part-model penalty and
-the metric starts measuring the reading. That is exactly why the row was chosen,
-and it is the reason Dvořák's 0.5873 is the most informative number in the table.
+`entire staff insert/delete` is 2676 pooled edits, 29.6% of the corpus: whole
+reference parts with no counterpart, because the print condenses. On Beethoven
+it is a single op type, `inspart`, **513 cost over 6 ops** — 18 reference parts
+onto 12 printed staves, 39% of that row's edits before a note is read.
 
-Not a defect to fix in the pipeline — printed scores condense; that is what a
-printed score is. But it means **a pooled scan figure is dominated by how much
-each edition condenses**, and per-row reading is mandatory.
+**That bucket is an upper bound on what the convention costs, and it overstates
+it by nearly a third.** `condensation_arm.py` builds a second ground truth per
+row with `music21.Score.partsToVoices`, stacking the reference's parts as
+voices on the number of staves the page prints, and re-scores the *same*
+predictions against it. Nothing is re-transcribed; no YOLO runs.
+
+**The allocation comes from the page.** On four rows it is `works.json`'s
+hand-read `staves` map — which printed staff carries which reference parts, read
+off the scan — used as the `voiceAllocation` directly rather than restated, so
+the join stays stated once. Mahler had no such map and one was derived for it
+from the plate's own margin labels and staff geometry (`condensation
+.staves_as_printed`, §9): 15 of its 22 printed staves match a reference part
+name verbatim, the **only** staff carrying notes in mm.0–8 is pinned by what the
+page prints rather than assumed — the reference's one sounding part is index 17
+and the page prints that fanfare on the upper trumpet staff, marked `I.` — and
+the seven parts with no printed staff here are doublings and divisi that are
+silent across the whole window, so where they land moves no note. That last
+claim is priced, not asserted, at the end of this section.
+
+| row | parts → staves | raw NED | raw edits | condensed NED | condensed edits | convention explains |
+|---|---|--:|--:|--:|--:|--:|
+| Beethoven 984073 | 18 → 12 | 0.7119 | 1305 | 0.6180 | 1100 | 205 (**15.7%**) |
+| Beethoven 575951 | 18 → 12 | 0.7479 | 1454 | 0.6330 | 1197 | 257 (**17.7%**) |
+| Dvořák 9 | 15 → 15 | 0.5905 | 956 | 0.5905 | 956 | 0 (**0.0%**) |
+| Brahms 1 | 21 → 14 | 0.9351 | 3689 | 0.6123 | 2339 | 1350 (**36.6%**) |
+| Mahler 5 | 38 → 21 | 0.8149 | 1647 | 0.7497 | 1342 | 305 (**18.5%**) |
+| **pooled** | | 0.7966 | 9051 | **0.6361** | 6934 | **2117 (23.4%)** |
+
+⚠️ **The raw column is the benchmark headline and stays that way.** The
+condensed column attributes; it does not flatter. Truth symbols fall 6151 →
+5689 while predicted symbols are unchanged at 5211, so merging parts moves the
+symmetric **denominator** as well as the numerator — the same trap the
+resolution arm sprang from the other side. Read the edits: pooled 9051 → 6934.
+
+⚠️ **Both columns are re-measured together against the same prediction bytes**,
+whose sha256 is recorded per row in `results-condensation-arm.json`, and the raw
+column is re-computed rather than read out of `results.json`. It has to be: the
+predictions are gitignored, a parallel workstream re-exported all five of them
+mid-measurement, and the raw pooled is 9051 here against the 9050 at the top of
+this file entirely because of §2's fix. A ratio between a raw number from one
+tree and a condensed number from another is not an attribution.
+
+**Where the edits go is the finding, and it is not where the bucket said.**
+
+| | raw | condensed | Δ |
+|---|--:|--:|--:|
+| entire staff insert/delete | 2676 | **182** | −2494 |
+| entire measure insert/delete | 3540 | 2030 | −1510 |
+| wrong note | 2054 | **3696** | +1642 |
+| every other note-level bucket | 781 | 1026 | +245 |
+| **total** | **9051** | **6934** | **−2117** |
+
+4004 edits leave the two structural buckets and **1887 of them come straight
+back as note-level errors** — 47%. Merging the parts does not delete that
+content; it re-charges it. Once a condensed staff is *matched* to its printed
+counterpart, the second voice's notes stop being an unread part and start being
+notes the reader missed, one by one. That half was never convention: it is
+reading failure the raw framing had hidden inside a structural bucket. So the
+condensation convention is worth **23.4%** of the pooled edit budget, and
+`wrong note` — 22.7% of the raw corpus — is **53.3%** of the condensed one.
+
+**Dvořák is the control, and it is an exact no-op.** Its 15-into-15 allocation
+asks `partsToVoices` to change nothing, and it changes nothing: the file it
+writes differs from the untouched truth **only** in music21's randomly
+regenerated instrument ids (0 non-id diff lines over 98 KB), and the score is
+identical to the edit — 0.5905, 956 edits, 792 truth symbols, both ways. Note
+counts are preserved on every row too (Beethoven 147 → 147, Brahms 482 → 482,
+Mahler 27 → 27), so nothing is being merged away. That is what makes the other
+four rows' numbers readable at all; without it the arm would be untrustworthy
+and this section would say so instead.
+
+⚠️ **What the condensed truth is NOT.** It is not a reconstruction of the
+printed page. Two resting parts merged onto one staff keep two stacked whole
+rests where the page prints one, and a printed staff the reference has no part
+for cannot be created at all (§9). It is the minimal mechanical removal of the
+part-count mismatch — enough to price the convention, not a second ground truth
+anyone should score against as the headline.
+
+Two further checks, because both were open risks in SCOPING.md:
+
+- **musicdiff aligns parts by POSITION, not by name** (risk 5). `partsToVoices`
+  drops `partName`, which would matter if the aligner used it. Restoring the
+  twelve printed staff names onto the Beethoven condensed truth and re-scoring
+  gives 0.6180 / 1100 edits and a byte-identical category breakdown. The name
+  loss is free.
+- **Mahler's mapping ambiguity is priced** (risk 4, and see §9). Its allocation
+  has three genuinely 50/50 splits between two *printed* staves. Taking the
+  other branch of all three gives 1350 edits against 1342 — **eight edits, 0.5%
+  of the row's budget, against the 305 the condensation explains**. Recorded as
+  `condensation.sensitivity_allocation`; `condensation_arm.py --sensitivity`
+  re-runs it.
+
+Still not a defect to fix in the pipeline — printed scores condense; that is
+what a printed score is. But **a pooled scan figure is dominated by how much
+each edition condenses** — 0.0% of Dvořák's budget against 36.6% of Brahms's —
+and per-row reading is mandatory.
 
 ### 4. Clefs on Dvořák's Simrock print (see §2 for the export half)
 
 Nine of Dvořák's fifteen staves print a non-treble clef (bass on Fagotti,
 Trombone basso, Tympani, Violoncello, Contrabasso; C-clefs on Tromboni and
 Viola). The per-measure reader gets them; the summarising `staff.clef` field and
-the export do not. Brahms by contrast reads **14/14 including alto and tenor**,
-so this is edition-specific, not a general clef failure.
+the export do not — **the export half is fixed as of `6d11a34`** (see §2's
+note); `staff.clef` is still `'treble'` on all fifteen. Brahms by contrast reads
+**14/14 including alto and tenor**, so this is edition-specific, not a general
+clef failure.
 
 ### 5. The margin-label crop clips the first characters of a label
 
@@ -329,6 +441,37 @@ trumpet, beside the visible rest the page prints. The trimmer drops them.
 `orchestral_eval` excerpts from measure 1 by default, so it never renders m0.
 Anyone extending it to include a pickup will meet these twenty notes.
 
+### 9. Mahler's page prints 22 staves, five of them ONE-LINE — 182 edits, and this file said 21
+
+Found while building §3's allocation, which needed the printed staff layout and
+therefore had to count it. Two things, and the second corrects this directory.
+
+**A five-line staff detector cannot find a one-line staff, by construction.**
+That is the entire residual `entire staff insert/delete` in the condensed
+column: 182 edits, all Mahler, exactly the four percussion parts (Becken,
+Grosse Trommel, Kleine Trommel, Tamtam) whose printed staves are a single rule.
+Every other row goes to zero. It is a real limit rather than a tuning miss —
+`staff_detector` searches for five-line groups — and 182 pooled edits prices it
+for the first time.
+
+**The page prints a 22nd staff that the reference has no part for.** Between
+`Grosse Trommel` and `Kleine Trommel` the Peters plate prints a *third* one-line
+staff labelled `Becken / Gr.Trommel } von einem geschlagen` — cymbal and bass
+drum struck by one player — with its own 2/2 and its own quarter rest. Counted
+by horizontal projection over the music body at 300 dpi: 17 five-line groups,
+then **five** evenly spaced single rules 52–53 px apart, and each of the five
+one-line margin labels centres on a rule to within 6 px rather than between two
+of them (`Pauken`, the sixth label, centres on its five-line staff). `works.json`
+previously recorded four one-line staves and a 21-staff page; it is corrected,
+with the evidence, in that row's `page.n_staves_note` and `condensation`.
+
+The consequence for §3 is that the condensed Mahler truth has **21 parts against
+22 printed staves** and cannot represent that staff at all. It is also why
+Mahler's map lives in `condensation.staves_as_printed` and not in `staves`: a
+`staves` map is joined to the prediction's parts *positionally* by the note
+recall arm, and five of these staves are invisible to the detector, so that join
+would be wrong from staff 13 down.
+
 ---
 
 ## What is in this directory
@@ -341,7 +484,9 @@ Anyone extending it to include a pickup will meet these twenty notes.
 | `RESULTS.md` | yes | this file |
 | `results.json` | yes | the table behind it |
 | `results-resolution-arm.json` | yes | the 321-dpi side arm |
+| `results-condensation-arm.json` | yes | §3's raw-vs-condensed arm, with the sha256 of every file it scored |
 | `scan_eval.py` | yes | the runner |
+| `condensation_arm.py` | yes | §3: re-scores the existing predictions against an as-printed truth |
 | `trim_reference.py` | yes | venv-side trimmer (music21 10.5) |
 | `verify_window.py` | yes | the content cross-check |
 | `probe_page_measures.py` | yes | the ink cross-check |
@@ -354,11 +499,17 @@ Anyone extending it to include a pickup will meet these twenty notes.
   and a second system that needs counting by hand). It is the only work whose
   reference numbers the pickup 1, so the print runs one *behind* the file — the
   reason to finish it later.
-- **The pooled 0.7960 is dominated by condensation**, which varies per edition.
-  Track the rows; the pooled number is a headline, not a diagnostic.
-- **Mahler has no hand-read staff map**, so it contributes to OMR-NED but not to
-  the note-recall table. Its 17 five-line staves plus four one-line percussion
-  staves make that map more work than the others.
+- **The pooled 0.7960 is dominated by condensation**, which varies per edition —
+  measured at **23.4% of the pooled edit budget**, from 0.0% on Dvořák to 36.6%
+  on Brahms (§3). Track the rows; the pooled number is a headline, not a
+  diagnostic.
+- **Mahler has no hand-read staff map in `staves`**, so it contributes to
+  OMR-NED but not to the note-recall table. §3 needed the printed layout and
+  established it — 17 five-line staves plus **five** one-line percussion staves
+  (§9) — but it lives in `condensation.staves_as_printed`, because the note
+  recall arm joins `staves` to the prediction positionally and five of these
+  staves are ones the detector cannot see. Turning it into a note-recall map
+  means teaching `scan_eval.note_recall` about undetectable staves first.
 - **This benchmark writes nothing into
   `benchmarks/omr-ned-2026-08/current-accuracy.json` or CLAUDE.md's
   `accuracy:begin name=headline` block.** Those are defined as the engraved
