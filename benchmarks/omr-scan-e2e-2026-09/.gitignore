@@ -1,0 +1,19 @@
+# Trimmed truth, transcriptions, exports and page renders for each row.
+#
+# All of it is regenerable: the truth from the reference .mxl plus the measure
+# window in works.json, the prediction from the PDF plus the production weights.
+# The root .gitignore already rules that benchmarks/**/*.omr.json is a dump
+# rather than a record — "Commit the REPORT that cites the numbers, not the dump
+# it read them from" — and the same holds for the rest of this directory. A
+# single scanned orchestral page's .omr.json runs to six figures of lines.
+#
+# What IS committed lives outside fixtures/: works.json (hand-verified windows
+# and staff maps, irreplaceable), the scripts, results.json (small), and the
+# reports.
+fixtures/
+
+# Page renders made while establishing or re-verifying a measure count. Same
+# principle as benchmarks/*/page-thumbnails/ and benchmarks/**/crops/ — seconds
+# to regenerate from the PDF, heavy to carry.
+pages/
+*.png

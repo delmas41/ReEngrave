@@ -60,6 +60,27 @@ def _paste_letter(img: np.ndarray, smufl_name: str, x: int) -> None:
     region[:] = np.minimum(region, 255 - scaled)
 
 
+def _paste_cut_common(img: np.ndarray, x: int) -> None:
+    """Draw a cut common the way a plate does: a C two spaces tall with a
+    vertical stroke through it that overshoots top and bottom.
+
+    ⚠️ Pasting the `timeSigCutCommon` RASTER instead does not print what a plate
+    prints. That raster's height includes the overshoot, so scaling it to two
+    staff spaces shrinks the bowl to about one and a half — and the reader is
+    measuring the bowl. Measured on the two corpus pages that print a real cut
+    common, all 24 staves fill 1.00 of the centre column; the shrunk raster fills
+    0.60, which is a fact about the fixture. The stroke is what is being tested,
+    so the fixture draws the geometry rather than borrowing a raster whose
+    padding it would then be asserting on.
+    """
+    _paste_letter(img, "timeSigCommon", x)
+    glyph = _letter_templates(DEFAULT_LOCATOR_CONFIG.template_em_px)["timeSigCommon"]
+    width = int(glyph.shape[1] * (2 * SPACING) / glyph.shape[0])
+    mid_x = x + width // 2
+    cv2.line(img, (mid_x, STAFF_LINES[1] - SPACING // 2),
+             (mid_x, STAFF_LINES[3] + SPACING // 2), 0, 3)
+
+
 def _cell(img: np.ndarray) -> MeasureCell:
     return MeasureCell(
         page_index=0, system_index=0, staff_index=0, measure_index=-1,
@@ -125,10 +146,55 @@ class TestReadsAMeter:
         assert (read.numerator, read.denominator, read.raw) == (4, 4, "C")
 
     def test_cut_common_is_not_searched_for(self):
-        # Built, measured, withheld: it read a meter on seven systems printing
-        # none. Its glyph is still in the library, so this guards the decision
-        # rather than the absence of a template.
+        # Built, measured, withheld TWICE: on 2026-08-31 for reading a meter on
+        # seven systems printing none, and on 2026-09-01 for also losing to plain
+        # `C` on the two pages that print a real one — a C is a subset of a
+        # cut-C's ink. It is read by `_looks_cut` instead, which is why this
+        # guards the decision rather than the absence of a template: putting the
+        # template back would restore the false positives without fixing
+        # anything, because the stroke test already reads every real one.
         assert all(raw != "C|" for _n, _d, raw in DEFAULT_METERS)
+
+    def test_finds_cut_common_by_the_stroke_through_it(self):
+        # ⚠️ `min_score` is lowered, and that is a fact about the FIXTURE, not a
+        # loosening of the reader. The stroke is ink the `C` template cannot
+        # account for, so a cut common always scores lower AS a C than a real C
+        # does — measured on the two corpus pages that print one, 0.545–0.608
+        # against 0.741–0.821 for a plain C. Bravura's own cut-C against Bravura's
+        # own thin C is the extreme of that: 0.30, where a 19th-century plate's
+        # fat C leaves 0.56. Both real pages clear the production floor
+        # unanimously; this fixture cannot, so it would test the threshold
+        # instead of the stroke. The threshold has its own test.
+        img = _blank()
+        _paste_cut_common(img, x=200)
+        read = locate_time_signature(_cell(img), min_score=0.2)
+        assert read is not None
+        assert (read.numerator, read.denominator, read.raw) == (2, 2, "C|")
+
+    def test_a_plain_c_is_not_read_as_cut(self):
+        # The other half of the pair: the stroke test may not fire on a C, whose
+        # middle is hollow because its aperture faces right. Measured over 87
+        # staves, every real cut fills 1.00 of its centre column and no plain C
+        # exceeds 0.30 — see benchmarks/omr-timesig-2026-09/cut_stroke.json.
+        img = _blank()
+        _paste_letter(img, "timeSigCommon", x=200)
+        read = locate_time_signature(_cell(img))
+        assert read is not None and read.raw == "C"
+
+    def test_the_glyph_is_carried_as_a_symbol(self):
+        # `export.to_musicxml` writes MusicXML's `symbol=` from this, and
+        # musicdiff charges 3 edits per staff when it disagrees with the truth.
+        # A digit meter carries none — the numbers are not evidence for a glyph.
+        img = _blank()
+        _paste_cut_common(img, x=200)
+        assert locate_time_signature(
+            _cell(img), min_score=0.2).as_dict()["symbol"] == "cut"
+        img = _blank()
+        _paste_letter(img, "timeSigCommon", x=200)
+        assert locate_time_signature(_cell(img)).as_dict()["symbol"] == "common"
+        img = _blank()
+        _paste_meter(img, "3", "4", x=200)
+        assert "symbol" not in locate_time_signature(_cell(img)).as_dict()
 
     def test_empty_staff_reads_nothing(self):
         read = locate_time_signature(_cell(_blank()))
@@ -158,6 +224,19 @@ class TestVote:
         reads = [self._read(2, 4)] + [None] * 9
         assert vote_system_time_signature(reads) is None
 
+    def test_half_a_system_is_not_agreement(self):
+        # The floor was 0.5 until 2026-09-01, and half a system is nothing like
+        # what a printed meter looks like: measured over both corpora, every one
+        # of the 12 correct readings is agreed by 0.909 of its system or more,
+        # and the single wrong one — Beethoven 3 i, `3` matching Bravura's `6` on
+        # a Litolff plate — by exactly 6 of 12.
+        reads = [self._read(6, 4) for _ in range(6)] + [None] * 6
+        assert vote_system_time_signature(reads) is None
+        # ...and a real one, which loses a staff or two to an unreadable header,
+        # still carries. 10/11 is the worst true reading in either corpus.
+        reads = [self._read(4, 4, raw="C") for _ in range(10)] + [None]
+        assert vote_system_time_signature(reads)["raw"] == "C"
+
     def test_a_tie_is_not_a_reading(self):
         reads = [self._read(2, 4), self._read(3, 4)]
         assert vote_system_time_signature(reads) is None
@@ -181,6 +260,24 @@ class TestVote:
         img = _blank()
         _paste_meter(img, "2", "4", x=200)
         assert locate_time_signature(_cell(img), config=config) is None
+
+    def test_the_winning_glyph_reaches_the_system(self):
+        reads = [self._read(2, 2, raw="C|") for _ in range(4)]
+        assert vote_system_time_signature(reads)["symbol"] == "cut"
+
+    def test_a_digit_meter_claims_no_glyph(self):
+        # A 4/4 in digits and a common-time C are the same bar length and
+        # different engravings; deriving the glyph from the numbers would assert
+        # a difference nobody read.
+        assert "symbol" not in vote_system_time_signature(
+            [self._read(4, 4) for _ in range(4)]
+        )
+
+    def test_a_cut_common_does_not_average_with_a_digit_two_two(self):
+        # Both are (2, 2); only `raw` separates them, and it is part of the vote's
+        # key so a page cannot merge the two engravings into one answer.
+        reads = [self._read(2, 2, raw="C|"), self._read(2, 2, raw="2/2")]
+        assert vote_system_time_signature(reads) is None
 
 
 def _system(staff_meters):

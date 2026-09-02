@@ -1,0 +1,45 @@
+{
+  "_about": [
+    "Hand-read key signatures for Beethoven 5 p.15 (IMSLP984073, PDF page index",
+    "15, printed page 15, bars 430 and 452). Read off a 500 dpi render of the",
+    "left margin by eye — benchmarks/omr-keysig-from-music-2026-09/crops/",
+    "beet5_p15_sys1_headers.png is the image the lower system was read from.",
+    "",
+    "This page had no per-staff ground truth before. The 2026-08-29 blindspot",
+    "report says so explicitly and is why its +4 gain there was called",
+    "unverifiable. It is the page roadmap #4b cites as its primary evidence, so",
+    "it needed one.",
+    "",
+    "`fifths` is the WRITTEN signature: +N sharps, -N flats, 0 for none. Both",
+    "systems carry the same instrumentation and the same signatures; the values",
+    "below apply to each of the two systems.",
+    "",
+    "Note what the natural brass and the timpani print: NOTHING, on a page in",
+    "three flats. The modern MusicXML edition the dossier is generated from",
+    "gives C Trumpet and Timpani written_fifths -3, so the dossier and this",
+    "print disagree about 3 of the 11 parts. That is an edition difference, not",
+    "an error in either."
+  ],
+  "page": {
+    "id": "beet5-p15",
+    "work": "Beethoven, Symphony No. 5, Op. 67 — first movement, concert C minor",
+    "pdf": "Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "page_index": 15,
+    "dpi": 600,
+    "n_systems": 2,
+    "staves_per_system": 11,
+    "staves": [
+      {"ordinal": 0,  "instrument": "Flauti",              "clef": "treble", "fifths": -3},
+      {"ordinal": 1,  "instrument": "Oboi",                "clef": "treble", "fifths": -3},
+      {"ordinal": 2,  "instrument": "Clarinetti in Bb",    "clef": "treble", "fifths": -1},
+      {"ordinal": 3,  "instrument": "Fagotti",             "clef": "bass",   "fifths": -3},
+      {"ordinal": 4,  "instrument": "Corni",               "clef": "treble", "fifths": 0},
+      {"ordinal": 5,  "instrument": "Trombe",              "clef": "treble", "fifths": 0},
+      {"ordinal": 6,  "instrument": "Timpani",             "clef": "bass",   "fifths": 0},
+      {"ordinal": 7,  "instrument": "Violino I",           "clef": "treble", "fifths": -3},
+      {"ordinal": 8,  "instrument": "Violino II",          "clef": "treble", "fifths": -3},
+      {"ordinal": 9,  "instrument": "Viola",               "clef": "alto",   "fifths": -3},
+      {"ordinal": 10, "instrument": "Violoncello e Basso", "clef": "bass",   "fifths": -3}
+    ]
+  }
+}

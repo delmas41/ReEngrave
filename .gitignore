@@ -81,6 +81,7 @@ benchmarks/*/cells/
 # they depend on an external checkout that may move.
 benchmarks/omr-orchestral-e2e/fixtures/
 benchmarks/omr-end-to-end/fixtures/
+benchmarks/omr-corpus-widening-2026-09/fixtures/
 benchmarks/*/overlays/
 benchmarks/omr-phase1/*.png
 benchmarks/omr-phase1/*-cells/

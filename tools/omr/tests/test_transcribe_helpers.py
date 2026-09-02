@@ -34,6 +34,10 @@ from tools.omr.transcribe import (
     _stem_direction,
 )
 from tools.omr.types import Staff
+from tools.omr import transcribe as tr
+from tools.omr.key_signature_vote import (
+    DEFAULT_VOTE_CONFIG, StaffCandidate, reconcile,
+)
 
 
 class TestResolveClefWeights:
@@ -1228,3 +1232,179 @@ class TestOptionalPassFailureIsLoudAboutBugs:
         assert src.count("_optional_pass_failure(") == 2
         # the old hand-rolled shape, which is what hid the failure
         assert '"reason": f"{type(exc).__name__}: {exc}"' not in src
+
+
+# ─── articulations — the seventh signal detected and never exported ─────────
+#
+# `export.py` contained the string "articulation" once, in a docstring, while
+# the detector fired 102 staccati on one engraved Mozart 40 page and musicdiff
+# charged back exactly 102 `insarticulation` edits — 28% of that work's budget.
+# The three works the benchmark used to consist of print 0, 2 and 6 of them.
+
+
+class TestArticulationKind:
+    @pytest.mark.parametrize("cls, expected", [
+        ("articStaccatoAbove", ("staccato", True)),
+        ("articStaccatoBelow", ("staccato", False)),
+        ("articAccentAbove", ("accent", True)),
+        ("articMarcatoBelow", ("marcato", False)),
+        ("articTenutoAbove", ("tenuto", True)),
+        ("articStaccatissimoBelow", ("staccatissimo", False)),
+    ])
+    def test_reads_the_five_marks_and_their_side(self, cls, expected):
+        assert tr.articulation_kind(cls) == expected
+
+    @pytest.mark.parametrize("cls", [
+        "noteheadBlackOnLine", "fermataAbove", "dynamicF", "", "artic",
+        # DSv2 always names a side; anything without one is not one of ours.
+        "articStaccato",
+        # A mark outside the five we map is refused rather than guessed at.
+        "articSoftAccentAbove",
+    ])
+    def test_refuses_everything_else(self, cls):
+        assert tr.articulation_kind(cls) is None
+
+
+class TestAttachArticulations:
+    """A mark goes to the notehead it is printed against — nearest in X, on the
+    side its own class names. Larger canonical y is LOWER on the page."""
+
+    @staticmethod
+    def _nh(x, y=500):
+        return FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                       x_canonical=x, y_canonical=y,
+                       width_canonical=30, height_canonical=20)
+
+    @staticmethod
+    def _mark(x, y, cls="articStaccatoBelow"):
+        return FakeDet(smufl_name=cls, category="ornament",
+                       x_canonical=x, y_canonical=y,
+                       width_canonical=12, height_canonical=12)
+
+    def test_a_mark_below_goes_to_the_note_above_it(self):
+        nh = self._nh(100)
+        dets = [nh, self._mark(109, 560)]
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(dets, out) == 1
+        assert out[id(nh)] == ["staccato"]
+
+    def test_a_mark_above_goes_to_the_note_below_it(self):
+        nh = self._nh(100)
+        dets = [nh, self._mark(109, 440, "articAccentAbove")]
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(dets, out) == 1
+        assert out[id(nh)] == ["accent"]
+
+    def test_the_side_is_obeyed_not_just_the_distance(self):
+        """A mark labelled `Below` sitting under the only notehead in the cell
+        belongs to it; one labelled `Above` in the same place belongs to
+        nothing here, and is left unattached rather than given to the nearest
+        thing available."""
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(
+            [nh, self._mark(109, 560, "articStaccatoAbove")], out) == 0
+        assert out == {}
+
+    def test_it_picks_the_nearest_notehead_in_x(self):
+        near, far = self._nh(100), self._nh(400)
+        out: dict = {}
+        tr._attach_articulations_in_cell([near, far, self._mark(109, 560)], out)
+        assert out.get(id(near)) == ["staccato"]
+        assert id(far) not in out
+
+    def test_a_mark_too_far_in_x_is_left_unattached(self):
+        """0.75 notehead widths. 21 of 218 marks across the engraved corpus
+        have no notehead on the correct side, and abstaining is why the
+        placement precision is 0.980."""
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(
+            [nh, self._mark(400, 560)], out) == 0
+
+    def test_two_marks_on_one_note_both_land(self):
+        nh = self._nh(100)
+        dets = [nh, self._mark(109, 560),
+                self._mark(109, 440, "articAccentAbove")]
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(dets, out) == 2
+        assert out[id(nh)] == ["staccato", "accent"]
+
+    def test_a_cell_with_no_noteheads_places_nothing(self):
+        out: dict = {}
+        assert tr._attach_articulations_in_cell([self._mark(109, 560)], out) == 0
+
+
+# ─── the weight a defaulted clef leaves on a key-signature reading ───────────
+
+class TestDefaultedClefWeight:
+    """Beethoven 5 p.15.
+
+    A key signature read against a GUESSED clef is worth less than one read
+    against a known clef — but it is not worth a CONSTANT. Until 2026-09-01 the
+    defaulted-clef branch replaced `len(matched_slots)` with a flat 0.5, so a
+    template reading of three flats and a template reading of one flat reached
+    `key_signature_vote` as the same number, and `_modal_reference` (which
+    ignores anything under 1.0) dropped both. A 22-staff page then took its
+    reference from the only two readings left, each of which had under-counted
+    the page's three flats as one, and three staves that had read the signature
+    CORRECTLY were rejected for departing from it.
+
+    See benchmarks/omr-keysig-from-music-2026-09/PHASE1.md.
+    """
+
+    @staticmethod
+    def _weight(n_matched: int) -> float:
+        """The expression under test, as `_page_key_signatures` computes it."""
+        return min(n_matched * tr.DEFAULTED_CLEF_WEIGHT,
+                   tr.DEFAULTED_CLEF_MAX_WEIGHT)
+
+    def test_three_accidentals_outweigh_one(self):
+        assert self._weight(3) > self._weight(1)
+
+    def test_a_lone_accidental_still_cannot_vote_for_the_reference(self):
+        # _modal_reference ignores readings under 1.0. One accidental on a
+        # guessed clef is exactly the reading that should not define a page.
+        assert self._weight(1) < 1.0
+
+    def test_a_real_signature_CAN_vote_for_the_reference(self):
+        # This is what p.15 needed and did not have: two or more matched
+        # accidentals on a guessed clef must reach the modal tally.
+        assert self._weight(2) >= 1.0
+        assert self._weight(3) >= 1.0
+
+    def test_it_may_still_only_AGREE_never_depart(self):
+        # The invariant DEFAULTED_CLEF_WEIGHT was introduced for, and the
+        # reason the discount is capped: `_trustworthy` accepts a departure
+        # from the system's modal signature only at `strong_weight`. Pinned as
+        # a RELATION, not a number, so moving either constant cannot silently
+        # let a guess-squared reading assert a transposition.
+        for n in range(1, 8):
+            assert self._weight(n) < DEFAULT_VOTE_CONFIG.strong_weight
+
+    def test_the_p15_shape_end_to_end_through_the_vote(self):
+        # The page's real candidates, from probe_vote_inputs.py: three staves
+        # reading 3 flats on a defaulted clef, two reading 1 flat on a known
+        # one. The reference must come out 3 flats, the correct readings must
+        # be kept, and the under-counts must become refused departures.
+        cands = []
+        for i, (fifths, n_matched, source) in enumerate([
+                (-3, 3, "template_default_clef"),
+                (-3, 3, "template_default_clef"),
+                (-3, 3, "template_default_clef"),
+                (-1, 1, "detector"),
+                (-1, 1, "cv_locator")]):
+            weight = (self._weight(n_matched)
+                      if source == "template_default_clef" else float(n_matched))
+            cands.append(StaffCandidate(
+                staff_index=i, system_index=0, ordinal=i, fifths=fifths,
+                weight=weight, source=source,
+                can_carry=not source.startswith("template")))
+        result = reconcile(cands)
+        assert result.reference_written_by_system[0] == -3
+        for i in (0, 1, 2):
+            assert result.verdicts[i].action == "kept"
+            assert result.verdicts[i].fifths == -3
+        for i in (3, 4):
+            assert result.verdicts[i].action == "rejected"
+            assert result.verdicts[i].fifths is None

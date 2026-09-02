@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "about": [
+    "Page-level ground truth for the header time-signature reader, widening",
+    "benchmarks/omr-timesig-2026-08/sweep_time_signatures.py from 5 sources to 11.",
+    "",
+    "Every `expected` entry is per SYSTEM, in top-to-bottom order, and was hand-read",
+    "off a render of the page itself (pdftoppm at 200-500 dpi, then a left-header",
+    "crop) — not recalled from the work. `verified` says how. Where a page is too",
+    "degraded to read the glyph outright, the work's own MusicXML `<time symbol=>`",
+    "corroborates and that is said so.",
+    "",
+    "The corpus is deliberately half NEGATIVES. A reader that answers more often",
+    "looks better on any metric that only counts answers, and the failure this whole",
+    "layer exists to stop was a confident WRONG meter, not a silence.",
+    "",
+    "New in 2026-09 and not present in the 08 corpus:",
+    "  * SEVEN pages that print a real cut-common. The 08 work withheld the cut-C",
+    "    template saying 'no page in the corpus prints a real cut-C, so there was",
+    "    nothing to measure the other side of that against'. 15 of the 97 dossier",
+    "    works open on one; these are the evidence that was missing.",
+    "  * 4/8 (Dvorak 9 i), which is the ONE meter in the dossier set absent from",
+    "    the locator's candidate list.",
+    "  * 3/4 and 6/4, the most and least common digit meters in the dossier set,",
+    "    neither of which the 08 corpus contained.",
+    "  * Four publishers the 08 corpus does not have: Breitkopf & Haertel,",
+    "    N. Simrock, P. Jurgenson, BrucknerAGA."
+  ],
+  "library_root": "/Users/seanjohnson/Desktop/ReEngrave/library/editions",
+  "cases": [
+    {
+      "label": "mozart40-p1",
+      "pdf": "mozart/symphony-40-in-g-minor-k550/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf",
+      "page": 0,
+      "expected": ["C|"],
+      "work_id": "mozart-sym40-mvt1",
+      "publisher": "Breitkopf & Haertel (Mozart's Werke), 1880",
+      "printed": "cut common on all 11 staves of system 0; system 1 continues, none printed",
+      "verified": "read off a 200 dpi left-header crop; the stroke through the C is unambiguous. MusicXML symbol=cut."
+    },
+    {
+      "label": "mozart40-p2",
+      "pdf": "mozart/symphony-40-in-g-minor-k550/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf",
+      "page": 1,
+      "expected": [null, null],
+      "work_id": "mozart-sym40-mvt1",
+      "publisher": "Breitkopf & Haertel (Mozart's Werke), 1880",
+      "printed": "nothing — two continuation systems, clef and key only",
+      "verified": "read off an 80 dpi full page"
+    },
+    {
+      "label": "brahms4-p1",
+      "pdf": "brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+      "page": 0,
+      "expected": ["C|"],
+      "work_id": "brahms-sym4-mvt1",
+      "publisher": "Breitkopf & Haertel (Brahms Saemtliche Werke)",
+      "printed": "cut common on all 13 staves of system 0",
+      "verified": "read off a 200 dpi left-header crop. MusicXML symbol=cut."
+    },
+    {
+      "label": "brahms4-p2",
+      "pdf": "brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+      "page": 1,
+      "expected": [null, null],
+      "work_id": "brahms-sym4-mvt1",
+      "publisher": "Breitkopf & Haertel (Brahms Saemtliche Werke)",
+      "printed": "nothing",
+      "verified": "read off an 80 dpi full page"
+    },
+    {
+      "label": "bruckner5-p1",
+      "pdf": "bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+      "page": 0,
+      "expected": ["C|"],
+      "work_id": "bruckner-sym5-mvt1",
+      "publisher": "BrucknerAGA, 1935",
+      "printed": "cut common — the worst print in the corpus; clef, key and meter are fused blobs at 500 dpi",
+      "verified": "a 500 dpi zoom shows a rounded blob with a vertical stroke through it on every staff; the glyph itself is NOT legible enough to call alone, and the work's MusicXML symbol=cut is what settles it. Flagged degraded on purpose — it is the hard end of the ¢ question."
+    },
+    {
+      "label": "mozart41-p1",
+      "pdf": "mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+      "page": 0,
+      "expected": ["C"],
+      "work_id": "mozart-sym41-mvt1",
+      "publisher": "Breitkopf & Haertel (Mozart's Werke), 1880",
+      "printed": "common-time C on all 10 staves — the SAME plate house and the same page position as mozart40-p1's cut C, which is the pairing the cut-C question needs",
+      "verified": "read off a 200 dpi left-header crop. MusicXML symbol=common."
+    },
+    {
+      "label": "mozart41-p2",
+      "pdf": "mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+      "page": 1,
+      "expected": [null, null],
+      "work_id": "mozart-sym41-mvt1",
+      "publisher": "Breitkopf & Haertel (Mozart's Werke), 1880",
+      "printed": "nothing",
+      "verified": "read off an 80 dpi full page"
+    },
+    {
+      "label": "beet3-p1",
+      "pdf": "beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+      "page": 0,
+      "expected": ["3/4"],
+      "work_id": "beethoven-sym3-mvt1",
+      "publisher": "Henry Litolff's Verlag, 1870",
+      "printed": "3/4 on every staff — 3/4 is the commonest meter in the dossier set (30 of 97 works) and the 08 corpus has none",
+      "verified": "read off a 200 dpi left-header crop"
+    },
+    {
+      "label": "beet3-p2",
+      "pdf": "beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+      "page": 1,
+      "expected": [null, null],
+      "work_id": "beethoven-sym3-mvt1",
+      "publisher": "Henry Litolff's Verlag, 1870",
+      "printed": "nothing",
+      "verified": "read off an 80 dpi full page"
+    },
+    {
+      "label": "brahms3-p1",
+      "pdf": "brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+      "page": 0,
+      "expected": ["6/4"],
+      "work_id": "brahms-sym3-mvt1",
+      "publisher": "Breitkopf & Haertel (Brahms Saemtliche Werke)",
+      "printed": "6/4 on every staff",
+      "verified": "read off a 200 dpi left-header crop"
+    },
+    {
+      "label": "brahms3-p2",
+      "pdf": "brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+      "page": 1,
+      "expected": [null, null],
+      "work_id": "brahms-sym3-mvt1",
+      "publisher": "Breitkopf & Haertel (Brahms Saemtliche Werke)",
+      "printed": "nothing",
+      "verified": "read off an 80 dpi full page"
+    },
+    {
+      "label": "dvorak9-p5",
+      "pdf": "dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+      "page": 4,
+      "expected": ["4/8"],
+      "work_id": "dvorak-sym9-mvt1",
+      "publisher": "N. Simrock, Berlin, 1894",
+      "printed": "4/8 on every staff of the Adagio introduction — the only meter in the whole dossier set that the locator has no template for",
+      "verified": "read off a 220 dpi left-header crop; the 4 over 8 is unmistakable"
+    },
+    {
+      "label": "dvorak9-p6",
+      "pdf": "dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+      "page": 5,
+      "expected": [null],
+      "work_id": "dvorak-sym9-mvt1",
+      "publisher": "N. Simrock, Berlin, 1894",
+      "printed": "nothing — one 14-staff system, clef and key only",
+      "verified": "read off a 200 dpi full-height left crop"
+    },
+    {
+      "label": "tchaikovsky4-p4",
+      "pdf": "tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+      "page": 3,
+      "expected": [null, null],
+      "work_id": "tchaikovsky-sym4-mvt1",
+      "publisher": "P. Jurgenson, Moscow",
+      "printed": "nothing — a dense continuation page, printed page number 4",
+      "verified": "read off a 220 dpi left-header crop"
+    },
+    {
+      "label": "mahler5-scan-p5",
+      "pdf": "mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+      "page": 4,
+      "expected": [null, null],
+      "work_id": "mahler-sym5-mvt1",
+      "publisher": "unidentified scan, 2016",
+      "printed": "nothing — dense orchestral continuation",
+      "verified": "read off a 60 dpi full page"
+    },
+    {
+      "label": "mahler5-scan-p6",
+      "pdf": "mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+      "page": 5,
+      "expected": [null, null],
+      "work_id": "mahler-sym5-mvt1",
+      "publisher": "unidentified scan, 2016",
+      "printed": "nothing — dense orchestral continuation",
+      "verified": "read off a 60 dpi full page"
+    }
+  ]
+}

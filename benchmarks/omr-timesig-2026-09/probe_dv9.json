@@ -1,0 +1,111 @@
+{
+  "add_meters": "4/8",
+  "min_score": 0.0,
+  "totals": {
+    "wrong": 1,
+    "correct": 0,
+    "missed": 0,
+    "correct_silences": 0
+  },
+  "cases": [
+    {
+      "case": "dvorak9-p5",
+      "expected": [
+        "4/8"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 15,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "4/4",
+            "source": "header_reader",
+            "votes": 10,
+            "voters": 15,
+            "median_score": 0.4021
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "4/4",
+              "score": 0.413
+            },
+            {
+              "staff": 1,
+              "raw": "4/4",
+              "score": 0.429
+            },
+            {
+              "staff": 2,
+              "raw": "4/4",
+              "score": 0.385
+            },
+            {
+              "staff": 3,
+              "raw": "4/4",
+              "score": 0.42
+            },
+            {
+              "staff": 4,
+              "raw": "4/4",
+              "score": 0.397
+            },
+            {
+              "staff": 5,
+              "raw": "4/4",
+              "score": 0.384
+            },
+            {
+              "staff": 6,
+              "raw": "4/4",
+              "score": 0.405
+            },
+            {
+              "staff": 7,
+              "raw": "7/4",
+              "score": 0.435
+            },
+            {
+              "staff": 8,
+              "raw": "4/4",
+              "score": 0.366
+            },
+            {
+              "staff": 9,
+              "raw": "4/4",
+              "score": 0.402
+            },
+            {
+              "staff": 10,
+              "raw": "7/4",
+              "score": 0.478
+            },
+            {
+              "staff": 11,
+              "raw": "7/4",
+              "score": 0.445
+            },
+            {
+              "staff": 12,
+              "raw": "4/4",
+              "score": 0.371
+            },
+            {
+              "staff": 13,
+              "raw": "7/4",
+              "score": 0.452
+            },
+            {
+              "staff": 14,
+              "raw": "7/4",
+              "score": 0.467
+            }
+          ]
+        }
+      ],
+      "seconds": 4.1
+    }
+  ]
+}

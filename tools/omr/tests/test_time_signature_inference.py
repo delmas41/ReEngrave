@@ -266,6 +266,23 @@ class TestDetectedPropagation:
         assert meter is not None and meter["raw"] == "C|"
         assert (meter["numerator"], meter["denominator"]) == (2, 2)
 
+    def test_the_glyph_travels_only_when_a_reading_carried_one(self):
+        """`raw` is synthesised here ("C" for any 4/4) and is NOT evidence that
+        a C was printed; `symbol` is set only where the glyph was detected. A
+        page whose 4/4 was read off digits must not propagate `symbol`."""
+        read_c = dict(_DET_C, symbol="common")
+        staves = [[dict(_measure([], measure_index=i), time_signature=dict(read_c))
+                   for i in range(4)] for _ in range(2)]
+        meter = _dominant_detected_meter(_page([_system(staves)]))
+        assert meter is not None and meter["symbol"] == "common"
+
+        # Same numbers, no glyph read: raw still says "C", symbol must not.
+        digits = [[dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
+                   for i in range(4)] for _ in range(2)]
+        meter = _dominant_detected_meter(_page([_system(digits)]))
+        assert meter is not None and meter["raw"] == "C"
+        assert "symbol" not in meter
+
     def test_plausible_digit_meter_propagates(self):
         # A real printed digit meter (3/4 on a movement's first page).
         staves = [[dict(_measure([], measure_index=i), time_signature=dict(_DET_34))

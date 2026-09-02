@@ -1,0 +1,96 @@
+{
+  "add_meters": "",
+  "min_score": 0.0,
+  "totals": {
+    "wrong": 1,
+    "correct": 0,
+    "missed": 0,
+    "correct_silences": 0
+  },
+  "cases": [
+    {
+      "case": "beet3-p1",
+      "expected": [
+        "3/4"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 12,
+          "meter": {
+            "numerator": 6,
+            "denominator": 4,
+            "raw": "6/4",
+            "source": "header_reader",
+            "votes": 7,
+            "voters": 12,
+            "median_score": 0.5607
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "6/4",
+              "score": 0.553
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.506
+            },
+            {
+              "staff": 2,
+              "raw": "6/4",
+              "score": 0.571
+            },
+            {
+              "staff": 3,
+              "raw": "6/4",
+              "score": 0.561
+            },
+            {
+              "staff": 4,
+              "raw": "3/4",
+              "score": 0.613
+            },
+            {
+              "staff": 5,
+              "raw": "6/4",
+              "score": 0.623
+            },
+            {
+              "staff": 6,
+              "raw": "6/4",
+              "score": 0.546
+            },
+            {
+              "staff": 7,
+              "raw": "3/4",
+              "score": 0.623
+            },
+            {
+              "staff": 8,
+              "raw": "3/4",
+              "score": 0.62
+            },
+            {
+              "staff": 9,
+              "raw": "6/4",
+              "score": 0.467
+            },
+            {
+              "staff": 10,
+              "raw": "9/4",
+              "score": 0.598
+            },
+            {
+              "staff": 11,
+              "raw": "6/4",
+              "score": 0.575
+            }
+          ]
+        }
+      ],
+      "seconds": 4.5
+    }
+  ]
+}

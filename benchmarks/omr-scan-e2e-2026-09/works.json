@@ -1,0 +1,875 @@
+{
+  "_README": [
+    "One row per (edition PDF, page). The window is stated as reference measure",
+    "NUMBERS, never as a count, because the corpus uses both anacrusis",
+    "conventions: Mahler 5 numbers its pickup 0, Bach BWV1048 numbers its pickup",
+    "1 (so the reference runs +1 against the print), and everything else starts",
+    "at a full bar numbered 1. `first_ref_measure`/`last_ref_measure` go straight",
+    "to music21's Stream.measures(a, b), which matches NUMBERS and is INCLUSIVE.",
+    "",
+    "`confidence` is load-bearing. scan_eval.py REFUSES to report a pooled figure",
+    "while any scored row is `first_pass`: a pooled number over an unverified",
+    "window is the 0.8706-against-seventeen-measures mistake with more decimals.",
+    "",
+    "`staves` maps each PRINTED staff to the reference part indices it carries,",
+    "and its clef/key are HAND-READ OFF THE SCAN — the page is the truth, not the",
+    "file. It is optional; without it the row reports OMR-NED only.",
+    "",
+    "Paths are relative to the score library (tools.library.score_library",
+    ".library_root(), which resolves to the MAIN checkout from a worktree).",
+    "",
+    "`condensation` is the second-truth arm (condensation_arm.py). Where a row",
+    "has a `staves` map, that map IS the voiceAllocation and no allocation is",
+    "restated here. Mahler carries its own `staves_as_printed` instead, because",
+    "its printed staves cannot double as a note-recall map: five of them are",
+    "ONE-LINE percussion staves a five-line detector cannot find, so a",
+    "positional join to the prediction's parts would be wrong from staff 13 on."
+  ],
+  "protocol": {
+    "pipeline": "tools.omr.transcribe at CLI defaults",
+    "dpi": 600,
+    "dossier": null,
+    "why_no_dossier": "data/dossiers/ is generated from the same Gradus MusicXML used here as truth, so --dossier would hand the run its own answer key",
+    "conf_threshold": 0.25,
+    "imgsz": null,
+    "read_direction_text": false
+  },
+  "rows": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1",
+      "work_id": "beethoven--symphony-5",
+      "label": "Beethoven 5 / Litolff-family / low-res bitonal",
+      "edition": {
+        "catalog_path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+        "imslp_id": "984073",
+        "publisher_as_catalogued": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+        "raster": "2897x3813 ccitt bitonal @600ppi, page 347.6x457.6 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 18,
+        "n_measures": 502,
+        "meter_at_start": "2/4"
+      },
+      "page": {
+        "pdf_page_index": 1,
+        "printed_page": 1,
+        "n_systems": 1,
+        "n_staves": 12
+      },
+      "window": {
+        "first_ref_measure": 1,
+        "last_ref_measure": 16,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "probe_page_measures.py — five tacet staves (Flauti, Oboi, Corni, Trombe, Timpani), full-height columns that continue past the staff into the gap; all five give 16",
+        "verified_by": [
+          "2026-08-31: corrected from a wrong 17 that all five tacet staves agreed on, because all five print the same time signature.",
+          "2026-09-01 re-verified with this directory's probe_page_measures.py, whose staff bands are found by projection rather than taken from the pipeline: they land within 2 px of the original's hand-entered constants, and all five tacet staves give 17 barlines / 16 measures. The time-signature column at x~832 is REJECTED on every one of them, reach 0.00-0.09 against 1.00 for a real barline.",
+          "content: the trimmed window holds 147 visible note objects, the same 147 reference pitches eval_first_run.py scores against."
+        ],
+        "confidence": "verified"
+      },
+      "staves": [
+        {
+          "name": "Flauti",
+          "parts": [
+            0,
+            1
+          ],
+          "clef": "treble",
+          "key": -3
+        },
+        {
+          "name": "Oboi",
+          "parts": [
+            2,
+            3
+          ],
+          "clef": "treble",
+          "key": -3
+        },
+        {
+          "name": "Clarinetti in B",
+          "parts": [
+            4,
+            5
+          ],
+          "clef": "treble",
+          "key": -1
+        },
+        {
+          "name": "Fagotti",
+          "parts": [
+            6,
+            7
+          ],
+          "clef": "bass",
+          "key": -3
+        },
+        {
+          "name": "Corni in Es",
+          "parts": [
+            8,
+            9
+          ],
+          "clef": "treble",
+          "key": 0
+        },
+        {
+          "name": "Trombe in C",
+          "parts": [
+            10,
+            11
+          ],
+          "clef": "treble",
+          "key": 0
+        },
+        {
+          "name": "Timpani in C.G.",
+          "parts": [
+            12
+          ],
+          "clef": "bass",
+          "key": 0
+        },
+        {
+          "name": "Violino I",
+          "parts": [
+            13
+          ],
+          "clef": "treble",
+          "key": -3
+        },
+        {
+          "name": "Violino II",
+          "parts": [
+            14
+          ],
+          "clef": "treble",
+          "key": -3
+        },
+        {
+          "name": "Viola",
+          "parts": [
+            15
+          ],
+          "clef": "alto",
+          "key": -3
+        },
+        {
+          "name": "Violoncello",
+          "parts": [
+            16
+          ],
+          "clef": "bass",
+          "key": -3
+        },
+        {
+          "name": "Basso",
+          "parts": [
+            17
+          ],
+          "clef": "bass",
+          "key": -3
+        }
+      ],
+      "notes": "The window and the staves map are the first run's, reused verbatim so this row is a controlled reproduction. The print gives Trombe and Timpani NO key signature where the Gradus file gives them three flats; the page wins."
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1",
+      "work_id": "beethoven--symphony-5",
+      "label": "Beethoven 5 / same plates, high-res + text layer",
+      "edition": {
+        "catalog_path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+        "imslp_id": "575951",
+        "publisher_as_catalogued": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+        "raster": "5409x7207 jbig2 bitonal @599ppi, page 649.1x865.1 pt",
+        "has_text_layer": true
+      },
+      "reference": {
+        "catalog_path": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 18,
+        "n_measures": 502,
+        "meter_at_start": "2/4"
+      },
+      "page": {
+        "pdf_page_index": 0,
+        "printed_page": 1,
+        "n_systems": 1,
+        "n_staves": 12
+      },
+      "window": {
+        "first_ref_measure": 1,
+        "last_ref_measure": 16,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "same printed page as row 1 (identical 12-staff layout, part names, meter and key signatures), independently re-counted from the tacet Flauti staff",
+        "verified_by": [
+          "probe_page_measures.py: five tacet staves (Flauti, Oboi, Corni, Trombe, Timpani), all giving 17 barlines / 16 measures.",
+          "SAME ENGRAVING, proved by the barline fingerprint. Normalising each page's 17 Flauti barlines to its own system width, the two scans agree to a maximum of 0.0014 — 0.14% of the system, about 5 px on the high-res scan. Bar-by-bar spacing on an engraved page cannot coincide to 1.4 parts per thousand across 17 barlines by accident. The page break, and therefore the window, is the same.",
+          "This also settles the catalogue question: 575951 is the same Litolff plate 2769, reprinted with modern English running heads."
+        ],
+        "confidence": "verified"
+      },
+      "staves": "same-as:beethoven-sym5-mvt1-984073-p1",
+      "notes": "Same music and same window as row 1; what differs is scan resolution AND the text layer together. The text layer turns on staff_labels.read_staff_labels, which feeds part naming and contextual clef filling, and a filled clef does reach OMR-NED — so this is not a pure resolution A/B. 575951 also carries modern English running heads (`2 SYMPHONY NO. 5 (1)`) that 984073 does not: a later reprint of the same plates, catalogued with identical provenance. The barline-fingerprint test (max normalised disagreement 0.0014 over 17 barlines) is what makes the shared window a measurement rather than an assumption."
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p5",
+      "work_id": "dvorak--symphony-9",
+      "label": "Dvorak 9 / Simrock 1894 / the one 1:1 part-staff pair",
+      "edition": {
+        "catalog_path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+        "imslp_id": "405834",
+        "publisher_as_catalogued": "N. Simrock, Berlin, 1894, plate 10139",
+        "raster": "5088x6976 jbig2 (indexed) @601x600ppi, page 610x837 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/dvorak/symphony-9/dvorak--symphony-9--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 15,
+        "n_measures": 452,
+        "meter_at_start": "4/8"
+      },
+      "page": {
+        "pdf_page_index": 4,
+        "printed_page": 183,
+        "n_systems": 1,
+        "n_staves": 15
+      },
+      "window": {
+        "first_ref_measure": 1,
+        "last_ref_measure": 8,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "tacet `Trombe in E` staff — whole-bar rests counted visually at 250 dpi",
+        "verified_by": [
+          "probe_page_measures.py: four fully tacet staves (Tromboni I.II., Tympani, Violino I, Violino II) all give 9 barlines / 8 measures.",
+          "CONTENT, which fails differently from counting ink (verify_window.py). The reference's mm.1-8 predict: Viole/Violoncelli/Contrabassi sounding mm.1-4 then silent; Clarinetti+Fagotti entering mm.3-4; Corni III.IV. mm.4-5; Flauto+Oboi entering mm.6-8; Trombe, Tromboni, Trombone III, Timpani, Violini I/II silent throughout. The printed page shows exactly that.",
+          "And decisively what the page must NOT contain: the reference has Violini I and II entering at m9 and Timpani at m10, and neither appears anywhere on the page. The page ends at m8."
+        ],
+        "confidence": "verified"
+      },
+      "staves": [
+        {
+          "name": "Flauti",
+          "parts": [
+            0
+          ]
+        },
+        {
+          "name": "Oboi",
+          "parts": [
+            1
+          ]
+        },
+        {
+          "name": "Clarinetti in A",
+          "parts": [
+            2
+          ]
+        },
+        {
+          "name": "Fagotti",
+          "parts": [
+            3
+          ]
+        },
+        {
+          "name": "Corni I.II. in E",
+          "parts": [
+            4
+          ]
+        },
+        {
+          "name": "Corni III.IV. in C",
+          "parts": [
+            5
+          ]
+        },
+        {
+          "name": "Trombe in E",
+          "parts": [
+            6
+          ]
+        },
+        {
+          "name": "Tromboni I.II.",
+          "parts": [
+            7
+          ]
+        },
+        {
+          "name": "Trombone basso",
+          "parts": [
+            8
+          ]
+        },
+        {
+          "name": "Tympani A.E.H.",
+          "parts": [
+            9
+          ]
+        },
+        {
+          "name": "Violino I",
+          "parts": [
+            10
+          ]
+        },
+        {
+          "name": "Violino II",
+          "parts": [
+            11
+          ]
+        },
+        {
+          "name": "Viola",
+          "parts": [
+            12
+          ]
+        },
+        {
+          "name": "Violoncello",
+          "parts": [
+            13
+          ]
+        },
+        {
+          "name": "Contrabasso",
+          "parts": [
+            14
+          ]
+        }
+      ],
+      "notes": "The only work in the library whose printed staff count equals its reference part count, and in the same order. No condensation, so no `entire staff insert/delete` floor — the row where OMR-NED measures recognition rather than the export's part model. PDF index 2 is a Contents page for a two-symphony volume with Symphony 8 struck through; index 3 is blank. Clefs/keys not yet hand-read."
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1",
+      "work_id": "brahms--symphony-1",
+      "label": "Brahms 1 / Breitkopf Samtliche Werke / dense, engraved twin",
+      "edition": {
+        "catalog_path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+        "imslp_id": "317803",
+        "publisher_as_catalogued": "Breitkopf & Hartel (Brahms Samtliche Werke)",
+        "raster": "~5276x6940 ccitt bitonal @~533ppi (dimensions vary per page), page 711.6x936.3 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 21,
+        "n_measures": 513,
+        "meter_at_start": "6/8"
+      },
+      "page": {
+        "pdf_page_index": 0,
+        "printed_page": 1,
+        "n_systems": 1,
+        "n_staves": 14
+      },
+      "window": {
+        "first_ref_measure": 1,
+        "last_ref_measure": 7,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "tacet `2 Trompeten in C` staff (m1 has notes, then six whole-bar rests) with the Pauken staff agreeing",
+        "cross_check": "the system ends with a CAUTIONARY 9/8 printed after the final barline, and the reference changes meter to 9/8 at measure 8. The page therefore ends at m7 — a fact from the reference, with no failure mode shared with counting ink.",
+        "verified_by": [
+          "The cautionary 9/8 printed after the final barline on every staff, against the reference's meter change to 9/8 AT MEASURE 8. The page therefore ends at m7 — a fact taken from the reference, with no failure mode shared with counting ink.",
+          "CONTENT (verify_window.py): the reference has C Trumpet 1/2 sounding in m1 and silent from m2, and the printed 2 Trompeten in C staff carries notes in the first cell and then EXACTLY SIX whole-bar rests. Six rests after m1 is seven measures. The reference also has Eb Horn 3/4 sounding mm.1-4 and silent 5-7, which the printed in Es 3./4. staff matches; and every part jumping in density at m8 (Flute 4 notes -> 9, Violin 1 6 -> 10), which the page does not show.",
+          "⚠️ probe_page_measures.py ABSTAINS here and its number should not be quoted: the page has no fully tacet staff, the system's opening rule is rejected as too wide (it is the bracket), and the final barline plus the cautionary meter's rule are counted as two. Its near-tacet staves report 7, 9 and 9. The 7 it happens to print for the Pauken staff is a coincidence of one loss and one gain, not a measurement."
+        ],
+        "confidence": "verified"
+      },
+      "staves": [
+        {
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ]
+        },
+        {
+          "name": "Kontrafagott",
+          "parts": [
+            8
+          ]
+        },
+        {
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ]
+        },
+        {
+          "name": "4 Horner in Es 3./4.",
+          "parts": [
+            11,
+            12
+          ]
+        },
+        {
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ]
+        },
+        {
+          "name": "Pauken in C u.G",
+          "parts": [
+            15
+          ]
+        },
+        {
+          "name": "1. Violine",
+          "parts": [
+            16
+          ]
+        },
+        {
+          "name": "2. Violine",
+          "parts": [
+            17
+          ]
+        },
+        {
+          "name": "Bratsche",
+          "parts": [
+            18
+          ]
+        },
+        {
+          "name": "Violoncell",
+          "parts": [
+            19
+          ]
+        },
+        {
+          "name": "Kontrabass",
+          "parts": [
+            20
+          ]
+        }
+      ],
+      "notes": "Same music as brahms-sym1-mvt1 in benchmarks/omr-orchestral-e2e — the engraved-vs-scan delta on identical notes. Clefs/keys not yet hand-read."
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p2",
+      "work_id": "mahler--symphony-5",
+      "label": "Mahler 5 / Edition Peters / densest, anacrusis",
+      "edition": {
+        "catalog_path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+        "imslp_id": null,
+        "publisher_as_catalogued": "(unidentified scan 2016); the page itself says Edition Peters No. 3087b",
+        "raster": "4385x5857 jbig2 bitonal @600ppi, page 523.8x703.3 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 38,
+        "n_measures": 416,
+        "meter_at_start": "2/2"
+      },
+      "page": {
+        "pdf_page_index": 1,
+        "printed_page": 3,
+        "n_systems": 1,
+        "n_staves": 17,
+        "n_staves_note": "17 FIVE-LINE staves. The page also prints FIVE one-line percussion staves — Becken, Grosse Trommel, `Becken/Gr.Trommel von einem geschlagen`, Kleine Trommel, Tamtam — each a single rule with its own 2/2 and quarter rest, which a five-line staff detector cannot find by construction. Compare `detected` against 17, not against 22. ⚠️ CORRECTED 2026-09-01 from \"four one-line staves … against 21\": the third rule is the combined-player staff, counted by projection (five evenly spaced single rules, 52–53 px apart) and confirmed by each margin label sitting on a rule to within 6 px. See condensation.notes."
+      },
+      "window": {
+        "first_ref_measure": 0,
+        "last_ref_measure": 8,
+        "leading_pickup": true,
+        "print_to_reference_offset": 0,
+        "established_by": "tacet `Vier Floten` staff — a quarter rest before the first barline (the pickup, reference measure 0, ql 1.0) then whole-bar rests",
+        "verified_by": [
+          "probe_page_measures.py: six tacet staves (Vier Floten, Drei Hoboen, Zwei Fagotte, Tuba, Erste Violinen, Basse) all give 10 barlines / 9 cells. The first cell is the pickup — it holds a quarter rest — so the page is measures 0..8, which is the 9 measures the trimmed truth contains.",
+          "PRINTED confirmation of the anacrusis: the page's own footnote reads '*) Die AUFTAKT-Triolen dieses Themas muessen stets etwas fluechtig (quasi accel.) nach Art der Militaerfanfaren vorgetragen werden'. Auftakt is upbeat, and the reference numbers that measure 0 with ql 1.0 and paddingLeft 3.0.",
+          "CONTENT (verify_window.py): after the invisible notes are dropped, the reference's mm.0-8 sound on the solo trumpet staff and nowhere else, which is exactly what the page prints."
+        ],
+        "confidence": "verified"
+      },
+      "notes": "PDF index 0 is the Peters title page; a horizontal-rule probe called it music because of the decorative frame. Reference measure 0 has ql 1.0 and paddingLeft 3.0 — the solo trumpet upbeat, and the printed page shows exactly that. Staff count established 2026-09-01: 17 five-line + 5 one-line = 22 printed staves (see condensation). Same music as mahler-sym5-mvt1 in the engraved benchmark. ⚠️ The reference's pickup carries TWENTY invisible notes (style.hideObjectOnPrint) — a hidden quarter beside the visible quarter rest on every staff but the solo trumpet. The trimmer drops them: the page is the truth, and the engraver said these are not on the page. Beethoven 5 and Brahms 1 have none; Dvorak 9 has 19 hidden RESTS which are ordinary voice-2 padding and are kept.",
+      "condensation": {
+        "printed_staves_total": 22,
+        "printed_five_line": 17,
+        "printed_one_line": 5,
+        "confidence": "derived 2026-09-01; the note-bearing staff is PINNED, the silent ones conventional",
+        "derived_from": [
+          "The margin labels of the page itself, rendered at 300–500 dpi. Staff",
+          "geometry by horizontal projection over the music body (x 0.30–0.95 of the",
+          "page): 17 five-line groups, and 5 evenly spaced (52–53 px) single rules,",
+          "each single rule carrying its own 2/2 and quarter rest and each with a",
+          "margin label centred on it to within 6 px.",
+          "The one staff that CARRIES NOTES is pinned, not assumed: the reference's",
+          "only sounding part in mm.0–8 is index 17 (Vier Trompeten in B, 27 notes",
+          "against 0 everywhere else), and the page prints that fanfare on the UPPER",
+          "of the two trumpet staves, marked `I.` under the footnote asterisk. Every",
+          "other reference part is rests-only across the whole window, so where a",
+          "silent part is allocated moves no note — only how deep one staff's rest",
+          "stack is. The ambiguity is PRICED rather than waved away: see",
+          "sensitivity_allocation."
+        ],
+        "notes": [
+          "SEVEN reference parts have no printed staff on this page and are folded",
+          "onto the section staff Mahler's own instrumentation gives them: Piccolo",
+          "(0), English Horn (5), Bass Clarinet (8) and C Clarinet (9) are doublings",
+          "of the four flutes / three oboes / three clarinets; the two F Trumpet",
+          "parts (15, 16) join the four B trumpets on their two staves; the bare",
+          "`Violin` part (27) rides with Erste Violinen. All seven are silent here.",
+          "",
+          "⚠️ THE PAGE PRINTS A 22nd STAFF THE REFERENCE HAS NO PART FOR. Between",
+          "`Grosse Trommel` and `Kleine Trommel` the Peters plate prints a third",
+          "one-line staff labelled `Becken / Gr.Trommel } von einem geschlagen` —",
+          "cymbal and bass drum struck by one player — with its own 2/2 and its own",
+          "quarter rest, and its label sits ON that rule rather than between rules.",
+          "The Gradus file has four percussion parts and no fifth, so the condensed",
+          "truth has 21 parts against 22 printed staves and CANNOT represent that",
+          "staff. Recorded because this file previously said the page prints FOUR",
+          "one-line percussion staves; it prints five."
+        ],
+        "sensitivity_why": [
+          "Three splits are genuinely 50/50 between two PRINTED staves and the page",
+          "does not settle them, because the parts on either side are silent: which",
+          "of the three reference horn parts share the upper horn staff, which of the",
+          "four trumpet parts share the upper trumpet staff (part 17 is pinned there",
+          "by its printed fanfare; 15, 16 and 18 are not), and whether the bare",
+          "`Violin` part rides with the first or the second violins. This allocation",
+          "takes the other branch of all three. Measured: 1350 edits against 1342,",
+          "OMR-NED 0.7517 against 0.7497 — eight edits, 0.5% of the row's 1647-edit",
+          "raw budget, against the 305 the condensation explains. The mapping's own",
+          "ambiguity is two orders below its effect."
+        ],
+        "staves_as_printed": [
+          {
+            "name": "Vier Flöten",
+            "lines": 5,
+            "parts": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "name": "Drei Hoboen",
+            "lines": 5,
+            "parts": [
+              3,
+              4,
+              5
+            ]
+          },
+          {
+            "name": "Drei Klarinetten in A",
+            "lines": 5,
+            "parts": [
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "name": "Zwei Fagotte",
+            "lines": 5,
+            "parts": [
+              10
+            ]
+          },
+          {
+            "name": "Contrafagott",
+            "lines": 5,
+            "parts": [
+              11
+            ]
+          },
+          {
+            "name": "Sechs Hörner in F (upper)",
+            "lines": 5,
+            "parts": [
+              12,
+              13
+            ]
+          },
+          {
+            "name": "Sechs Hörner in F (lower)",
+            "lines": 5,
+            "parts": [
+              14
+            ]
+          },
+          {
+            "name": "Vier Trompeten in B (upper)",
+            "lines": 5,
+            "parts": [
+              15,
+              17
+            ]
+          },
+          {
+            "name": "Vier Trompeten in B (lower)",
+            "lines": 5,
+            "parts": [
+              16,
+              18
+            ]
+          },
+          {
+            "name": "Drei Posaunen",
+            "lines": 5,
+            "parts": [
+              19,
+              20
+            ]
+          },
+          {
+            "name": "Tuba",
+            "lines": 5,
+            "parts": [
+              21
+            ]
+          },
+          {
+            "name": "Pauken",
+            "lines": 5,
+            "parts": [
+              22
+            ]
+          },
+          {
+            "name": "Becken",
+            "lines": 1,
+            "parts": [
+              23
+            ]
+          },
+          {
+            "name": "Grosse Trommel",
+            "lines": 1,
+            "parts": [
+              24
+            ]
+          },
+          {
+            "name": "Becken u. Gr.Trommel von einem geschlagen",
+            "lines": 1,
+            "parts": [],
+            "note": "printed, labelled, and carrying its own meter and rest — the reference has no part for it"
+          },
+          {
+            "name": "Kleine Trommel",
+            "lines": 1,
+            "parts": [
+              25
+            ]
+          },
+          {
+            "name": "Tamtam",
+            "lines": 1,
+            "parts": [
+              26
+            ]
+          },
+          {
+            "name": "Erste Violinen",
+            "lines": 5,
+            "parts": [
+              27,
+              28
+            ]
+          },
+          {
+            "name": "Zweite Violinen",
+            "lines": 5,
+            "parts": [
+              29,
+              30,
+              31
+            ]
+          },
+          {
+            "name": "Violen",
+            "lines": 5,
+            "parts": [
+              32,
+              33
+            ]
+          },
+          {
+            "name": "Violoncelle",
+            "lines": 5,
+            "parts": [
+              34,
+              35
+            ]
+          },
+          {
+            "name": "Bässe",
+            "lines": 5,
+            "parts": [
+              36,
+              37
+            ]
+          }
+        ],
+        "sensitivity_allocation": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ],
+          [
+            6,
+            7,
+            8,
+            9
+          ],
+          [
+            10
+          ],
+          [
+            11
+          ],
+          [
+            12
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            17
+          ],
+          [
+            15,
+            16,
+            18
+          ],
+          [
+            19,
+            20
+          ],
+          [
+            21
+          ],
+          [
+            22
+          ],
+          [
+            23
+          ],
+          [
+            24
+          ],
+          [
+            25
+          ],
+          [
+            26
+          ],
+          [
+            28
+          ],
+          [
+            27,
+            29,
+            30,
+            31
+          ],
+          [
+            32,
+            33
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            36,
+            37
+          ]
+        ]
+      }
+    },
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1",
+      "work_id": "bach--concerto-3",
+      "label": "Bach Brandenburg 3 / Edition Peters / 300 dpi, +1 numbering",
+      "edition": {
+        "catalog_path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+        "imslp_id": "468678",
+        "publisher_as_catalogued": "''Edition Peters Nr.4412''",
+        "raster": "2341x3277 jbig2 bitonal @300ppi, page 561.8x786.5 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/bach/brandenburg-concerto-3/bach--brandenburg-concerto-3--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 11,
+        "n_measures": 137,
+        "meter_at_start": "4/4"
+      },
+      "page": {
+        "pdf_page_index": 0,
+        "printed_page": 59,
+        "n_systems": null,
+        "n_staves": 13
+      },
+      "window": {
+        "first_ref_measure": 1,
+        "last_ref_measure": null,
+        "leading_pickup": true,
+        "print_to_reference_offset": 1,
+        "established_by": "system 1 = a narrow pickup cell (two sixteenths) plus 4 full bars, confirmed by the boxed `5` opening the next block. Reference numbers the PICKUP measure 1, so system 1 is reference mm. 1-5.",
+        "verified_by": "see VERIFICATION.md",
+        "confidence": "unknown",
+        "dropped_for_now": "Not run 2026-09-01. The page is a Bach tutti with no tacet staff anywhere, so the ink probe has nothing to count on; the band finder reports 24 five-line bands, consistent with TWO systems of 12 (3 Violini + 3 Viole + 3 Violoncelli + Contrabasso + Cembalo on two staves), each with its Cembalo set apart by a gap — so the page total needs system 2 counted by hand. System 1 is established (pickup + 4 printed bars = reference mm. 1-5, confirmed by the boxed 5 opening the next block). Left recorded rather than forced: an honest five-row table beats a fought-for sixth."
+      },
+      "notes": "NOT RUNNABLE until last_ref_measure is established. The page shows three blocks — full score, then a strings block and a Cembalo block BOTH carrying the boxed 5 — so the system structure is itself an open question. Kept as a stress row: it is the only work whose reference numbering runs +1 against the print.",
+      "condensation": {
+        "skip": "the row itself is not run (window not established)"
+      }
+    }
+  ],
+  "provenance": {
+    "verification": "benchmarks/omr-scan-e2e-2026-09/VERIFICATION.md",
+    "probe": "benchmarks/omr-scan-e2e-2026-09/probe_page_measures.py",
+    "content_check": "benchmarks/omr-scan-e2e-2026-09/verify_window.py"
+  }
+}

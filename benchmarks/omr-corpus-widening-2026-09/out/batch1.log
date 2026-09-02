@@ -1,0 +1,35 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'larinetti in B.' — these are the strings to add to tools/omr/instruments.py
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'A', 'mpani in C-G' — these are the strings to add to tools/omr/instruments.py
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:4081: MusicXMLWarning: Line <dashes> stop without start
+  warnings.warn('Line <' + mxObj.tag + '> stop without start', MusicXMLWarning)
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+mozart-sym40-mvt1          6    11/11       6/6       164/164      0.762  0.762  0.952  clean
+mozart-sym41-mvt1          6    17/17       6/6       228/228      0.991  0.991  0.465  clean
+beethoven-sym3-mvt1        8    19/19       8/8        80/80       0.975  0.975  1.000  clean
+
+OMR-NED (pooled over 3 scores): 0.3723   [lower is better; 0 = identical]
+  2177 symbol edits over 3124 truth + 2723 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+beethoven-sym3-mvt1              0.1553     252     882     741  entire measure insert/delete
+mozart-sym40-mvt1                0.2468     363     788     683  wrong note
+mozart-sym41-mvt1                0.5674    1562    1454    1299  wrong note
+
+where the edits are (pooled):
+  wrong note                                1502   69.0%
+  wrong articulation                         140    6.4%
+  entire measure insert/delete               129    5.9%
+  wrong flag/beam                             88    4.0%
+  wrong timesig                               84    3.9%
+  wrong slur                                  80    3.7%
+  (9 more)                                   154    7.1%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/batch1.json

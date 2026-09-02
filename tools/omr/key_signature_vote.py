@@ -126,14 +126,24 @@ class StaffCandidate:
     fifths:   +N sharps / −N flats / 0 for none; None when nothing was read.
     weight:   how much the reading is worth — the number of accidentals actually
               observed is the natural measure, and what the locator supplies.
-    can_carry: whether this reading may be exported to the same part in ANOTHER
-              system. Carrying rests on the asymmetry in the module docstring —
-              a reader loses accidentals and never invents them — so a reading
-              from a source that CAN over-count must not travel. Measured on WTC
-              I p.17: one staff's spurious fifth sharp, carried by `abs(fifths)`
-              winning, made every treble staff of all five systems read five
-              sharps where the page prints four. It stays usable for its own
-              staff, where the system's own reference still has to accept it.
+    can_carry: whether this reading's SOURCE obeys the asymmetry in the module
+              docstring — that a reader loses accidentals and never invents
+              them. False marks a source that can OVER-count, and that has two
+              consequences, not one:
+
+              * such a reading may not travel to the same part in another
+                system. Measured on WTC I p.17: one staff's spurious fifth
+                sharp, carried by `abs(fifths)` winning, made every treble
+                staff of all five systems read five sharps where the page
+                prints four.
+              * such a reading may not assert on its own staff **unchecked**.
+                It stays usable where the system's reference accepts it, but
+                where there is no reference to check it against it must clear
+                `strong_weight` like any other departure. Measured on Boléro
+                p.10: five template readings of a single flat, on headers that
+                print nothing — one of them a percussion staff — survived
+                because a genuinely polytonal page has no majority, and the
+                no-majority branch used to keep everything.
     """
 
     staff_index: int
@@ -358,10 +368,25 @@ def reconcile(
                     cand.staff_index, None, "unread", "no key signature read",
                 )
             elif reference is None or majority <= config.min_majority or fifths == 0:
-                result.verdicts[cand.staff_index] = StaffVerdict(
-                    cand.staff_index, fifths, "carried" if carried else "kept",
-                    "no majority to check against",
-                )
+                # "No majority" is a statement about the PAGE, not a licence for
+                # the reading. A source that can over-count (see
+                # StaffCandidate.can_carry) has nothing checking it here, so it
+                # must clear `strong_weight` on its own — the same bar a
+                # departure clears when there IS a reference. A lone accidental
+                # never does, which is exactly what this branch used to wave
+                # through on Boléro p.10.
+                if (fifths != 0 and not cand.can_carry
+                        and weight < config.strong_weight):
+                    result.verdicts[cand.staff_index] = StaffVerdict(
+                        cand.staff_index, None, "rejected",
+                        f"{fifths_accidentals(fifths)} from a reader that can "
+                        f"over-count, with no majority to check it against",
+                    )
+                else:
+                    result.verdicts[cand.staff_index] = StaffVerdict(
+                        cand.staff_index, fifths, "carried" if carried else "kept",
+                        "no majority to check against",
+                    )
             elif fifths == reference:
                 result.verdicts[cand.staff_index] = StaffVerdict(
                     cand.staff_index, fifths, "carried" if carried else "kept",

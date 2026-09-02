@@ -215,6 +215,36 @@ def _read_clefs_by_slot(pages, slot_by_staff) -> dict[int, str]:
     }
 
 
+def _ambiguous_label_slots(
+    staff_labels_per_page, slot_by_staff, page_indices, staved,
+) -> set[int]:
+    """Slots whose instrument rests on an alias the lexicon cannot settle.
+
+    These are exactly the slots `_resolve_ambiguous_labels` exists to decide by
+    POSITION, and so exactly the slots that must not be fed to the positional
+    prior as if they were known — the same reason `score_layouts` withdraws a
+    PIN from an ambiguous alias, which it already documents: "a pin is the one
+    move that takes position off the table". Handing the fit `Bass voice` does
+    the same thing more quietly, and it silences the prior rather than merely
+    biasing it: no orchestral layout has a voice anywhere, so the aligner can
+    place that staff in NONE of them and every voter abstains. Measured on
+    Beethoven 5 p.1, slot 11: agreement 0.000 with the label, 0.643 without it.
+    """
+    out: set[int] = set()
+    for page_index, pws, staff_labels in zip(
+            page_indices, staved, staff_labels_per_page):
+        for label in staff_labels:
+            if len(candidates_for_alias(label.alias or "")) < 2:
+                continue
+            key = (page_index, next(
+                (s.system_index for s in pws.staves
+                 if s.staff_index == label.staff_index), 0), label.staff_index)
+            slot = slot_by_staff.get(key)
+            if slot is not None and slot >= 0:
+                out.add(slot)
+    return out
+
+
 def _resolve_ambiguous_labels(
     reference, staff_labels_per_page, slot_by_staff, page_indices, staved,
     fit, instrument_by_slot, instrument_source,
@@ -636,10 +666,18 @@ def apply_contextual_analysis(
     # a property of the work: one fit then reaches every system through the
     # slots. It is given whatever is already known — the labels that resolved,
     # and the clefs that were actually READ — and fills in only what is missing.
+    #
+    # A slot named by an AMBIGUOUS alias is withheld — see
+    # `_ambiguous_label_slots`. It is the one kind of label the prior is meant
+    # to overturn, and feeding it in first is what stopped it: the prior was
+    # being asked to confirm the reading it exists to question.
     clef_by_slot = _read_clefs_by_slot(pages, slot_by_staff)
+    ambiguous_slots = _ambiguous_label_slots(
+        staff_labels_per_page, slot_by_staff, page_indices, staved)
     fit = fit_layouts(
         len(reference),
-        labels={s.index: s.instrument for s in reference if s.instrument},
+        labels={s.index: s.instrument for s in reference
+                if s.instrument and s.index not in ambiguous_slots},
         clefs=clef_by_slot,
     )
     instrument_source: dict[int, str] = {i: "label" for i in instrument_by_slot}

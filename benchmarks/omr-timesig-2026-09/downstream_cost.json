@@ -1,0 +1,43 @@
+[
+  {
+    "arm": "as-read",
+    "meter_on_staves": [
+      "4/4",
+      "None"
+    ],
+    "time_directives": {
+      "4/4": 12
+    },
+    "barcheck_failures": 164
+  },
+  {
+    "arm": "wrong-6-4",
+    "meter_on_staves": [
+      "6/4"
+    ],
+    "time_directives": {
+      "6/4": 12
+    },
+    "barcheck_failures": 390
+  },
+  {
+    "arm": "right-3-4",
+    "meter_on_staves": [
+      "3/4"
+    ],
+    "time_directives": {
+      "3/4": 12
+    },
+    "barcheck_failures": 270
+  },
+  {
+    "arm": "common-4-4",
+    "meter_on_staves": [
+      "4/4"
+    ],
+    "time_directives": {
+      "4/4": 12
+    },
+    "barcheck_failures": 164
+  }
+]

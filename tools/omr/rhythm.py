@@ -35,7 +35,7 @@ is printed in the space above it, half a staff space up. See
 
 from __future__ import annotations
 
-from collections import Counter
+from collections import Counter, defaultdict
 from typing import Any
 
 from .voicing import group_chords_in_measure, split_events_into_voices
@@ -200,6 +200,16 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
     a cell, if any. Returns `{numerator, denominator, raw}` or None if no
     time sig markers were seen.
 
+    ⚠️ `symbol` AND `raw` ARE NOT THE SAME FACT, and only one of them is
+    evidence. `symbol` ("common" / "cut") is set ONLY here, and only when a
+    `timeSigCommon` / `timeSigCutCommon` GLYPH was detected — it says what was
+    printed on the page. `raw` is a display string that `_propagated_meter`
+    synthesises from the numbers alone ("C" for any 4/4, "C|" for any 2/2), so
+    a `raw` of "C" is not evidence that a C was printed. A page setting 4/4 in
+    digits and a page setting it as C are different engravings and MusicXML
+    distinguishes them; deriving the glyph from the numbers would assert the
+    difference without having read it. Absent `symbol` means digits.
+
     Algorithm:
       0. Drop glyphs at the extreme left edge (`_timesig_at_left_edge`) —
          orchestral instrument-number misreads clamp there.
@@ -218,9 +228,11 @@ def parse_time_signature(detections: list[Any]) -> dict[str, Any] | None:
         if _timesig_at_left_edge(d):
             continue  # margin / instrument-number misread
         if cls == "timesigcommon":
-            return {"numerator": 4, "denominator": 4, "raw": "C"}
+            return {"numerator": 4, "denominator": 4, "raw": "C",
+                    "symbol": "common"}
         if cls in ("timesigcuttime", "timesigcutcommon"):
-            return {"numerator": 2, "denominator": 2, "raw": "C|"}
+            return {"numerator": 2, "denominator": 2, "raw": "C|",
+                    "symbol": "cut"}
         # timesigN → digit
         if cls.startswith("timesig") and len(cls) > len("timesig"):
             tail = cls[len("timesig"):]
@@ -531,6 +543,11 @@ def _dominant_detected_meter(
     Assumes `drop_uncorroborated_meter_changes` has already run over the page —
     it is what keeps a misread in the MIDDLE of a staff from voting at all."""
     votes: Counter[tuple[int, int]] = Counter()
+    # The GLYPH each voter saw, kept separately from the numbers. A symbol may
+    # only travel if a reading actually carried one — see the warning in
+    # `parse_time_signature`. Synthesising it from the winning numbers would
+    # stamp `symbol="common"` on every 4/4 page whether or not a C is printed.
+    symbol_votes: dict[tuple[int, int], Counter[str]] = defaultdict(Counter)
     n_staves = 0
     for system in page.get("systems", []):
         for staff in system.get("staves", []):
@@ -542,7 +559,10 @@ def _dominant_detected_meter(
                 if not _is_propagatable_meter(ts):
                     continue
                 # The meter this staff opens in — its one vote.
-                votes[(ts.get("numerator"), ts.get("denominator"))] += 1
+                key = (ts.get("numerator"), ts.get("denominator"))
+                votes[key] += 1
+                if ts.get("symbol"):
+                    symbol_votes[key][ts["symbol"]] += 1
                 break
     if not votes:
         return None
@@ -552,7 +572,7 @@ def _dominant_detected_meter(
     if count < needed or count / total < min_fraction:
         return None
     raw = "C" if (num, den) == (4, 4) else "C|" if (num, den) == (2, 2) else f"{num}/{den}"
-    return {
+    out = {
         "numerator": num,
         "denominator": den,
         "raw": raw,
@@ -560,6 +580,10 @@ def _dominant_detected_meter(
         "votes": count,
         "voters": total,
     }
+    seen = symbol_votes.get((num, den))
+    if seen:
+        out["symbol"] = seen.most_common(1)[0][0]
+    return out
 
 
 def drop_uncorroborated_meter_changes(
@@ -837,6 +861,21 @@ def _stem_for_notehead(nh, stems, max_x_distance: float):
     return best
 
 
+def _distance_to_band(y: float, band_top: float, band_bottom: float) -> float:
+    """Distance from `y` to the closed interval [band_top, band_bottom]; 0 inside.
+
+    A beam detection is a BAND, not a line: it bounds one stroke over its whole
+    run, so a sloped stroke occupies every y in the band at some x. The nearest
+    point of the band is the closest the stroke can be said to come without
+    knowing which way it slopes. See `_beams_attached_to_stem`.
+    """
+    if y < band_top:
+        return band_top - y
+    if y > band_bottom:
+        return y - band_bottom
+    return 0.0
+
+
 def _beams_attached_to_stem(stem, beams,
                             beam_y_cluster_tol: float,
                             end_window: float | None = None) -> int:
@@ -857,6 +896,37 @@ def _beams_attached_to_stem(stem, beams,
 
     `end_window` defaults to `4 × beam_y_cluster_tol` — enough room
     for 3-4 stacked beam levels (a 64th-note's worth) at one end.
+
+    ⚠️ **The reach is measured to the beam's BAND, not to the band's centre,
+    and on a sloped beam those are different questions.** A beam detection
+    bounds a stroke over its whole run, so a SLOPED stroke's band spans the
+    stroke's entire vertical excursion: the ink is at the band's top where the
+    group ends high and at its bottom where it ends low, and the centre is a y
+    the stroke passes through only in the middle. Measuring to the centre
+    therefore overstates the distance from the OUTERMOST stem of a group by
+    about half the band height — in the direction that pushes it out of the
+    window, and only for the stem furthest from the middle.
+
+    Worked example, Mozart 41 Oboe I m0 (`MOZART41_BEAMS.md`): a rising triplet
+    of sixteenths, stems at canonical x 1061/1189/1318 with tops at y
+    192/170/146, under two bands at y 163-207 and 217-264. Against the band the
+    three stems are 0/0/17 and 25/47/71 px away and all six pairs are inside the
+    91.3 px window. Against the CENTRES (185, 240) they are 7/15/39 and
+    48/70/**94** — and 94 > 91.3, so the third note alone lost its second beam
+    and a triplet sixteenth was exported as a triplet eighth.
+
+    `line_detection._attached_stem_count` already makes exactly this choice for
+    exactly this reason, and its docstring says so: *"A sloped beam's box
+    reaches far above and below the bar itself, so box edges put the far stem
+    out of range and a sloped double beam lost its lower bar."* This is that
+    same correction, one module later, on the count that becomes the duration.
+
+    The correction is self-scaling and needs no new constant: it widens the
+    reach by exactly the vertical distance the slope introduced, so a LEVEL
+    beam — whose band is a bar thick — is unaffected. `end_window` and
+    `beam_y_cluster_tol` are untouched, and the CLUSTER count still runs on
+    band centres, which is the right representative for telling two stacked
+    strokes apart.
     """
     s_x_l = stem.x_canonical
     s_x_r = stem.x_canonical + stem.width_canonical
@@ -873,9 +943,12 @@ def _beams_attached_to_stem(stem, beams,
         if b_x_r < s_x_l - 5 or b_x_l > s_x_r + 5:
             continue
         b_y_c = b.y_canonical + b.height_canonical // 2
-        # Must be at one end of the stem (not in the middle).
-        d_top = abs(b_y_c - s_y_top)
-        d_bot = abs(b_y_c - s_y_bot)
+        b_y_top = float(b.y_canonical)
+        b_y_bot = b_y_top + b.height_canonical
+        # Must be at one end of the stem (not in the middle). Distance to the
+        # band as an INTERVAL — zero where the stem end lies inside it.
+        d_top = _distance_to_band(s_y_top, b_y_top, b_y_bot)
+        d_bot = _distance_to_band(s_y_bot, b_y_top, b_y_bot)
         if d_top <= end_window and d_top <= d_bot:
             top_ys.append(b_y_c)
         elif d_bot <= end_window:
@@ -1086,14 +1159,52 @@ def _pair_dots_to_targets(dots, targets, line_spacing: float) -> dict[int, int]:
 #: not measured is how a correct bar becomes a wrong one, so they abstain.
 _TUPLET_NORMAL_FOR: dict[int, int] = {3: 2}
 
+#: THE SAME PRINTED GLYPH ARRIVES UNDER TWO CLASS NAMES, and the class is not
+#: evidence about which. DSv2 labels a `3` over a beamed group `tuplet3` and a
+#: `3` beside a notehead `fingering3` — a distinction that is POSITIONAL, made
+#: by where the digit stands, and the detector reproduces it badly on
+#: orchestral pages because the training data has almost no orchestral
+#: fingerings to contrast against.
+#:
+#: Measured over the twelve engraved works of `benchmarks/omr-corpus-widening-2026-09`:
+#:
+#:     tuplet3     16 detections
+#:     fingering3  33 detections
+#:     48 of the 49 sit in a cell that contains a real triplet group;
+#:     ALL 33 fingering3 do. The one that does not is a `tuplet3`.
+#:
+#: `mozart-sym41-mvt1` alone prints 40 triplet groups and hands back 30
+#: `fingering3` against 13 `tuplet3`, so 70% of its markers were being dropped
+#: before anything looked at them — and its duration rate was 0.465 with a note
+#: recall of 0.991, every one of its 120 triplet sixteenths read straight.
+#:
+#: ⚠️ **This admits the class; it does not relax the gate.** `_tuplet_groups`
+#: still requires the digit's centre inside a BEAMED group's span and the group
+#: to hold exactly as many notes as the digit claims, which is the test that
+#: separates a tuplet marker from anything else. A real fingering `3` centred
+#: over a beamed group of exactly three would still be misread — the corpus
+#: contains no such case to price that against, and the honest statement is
+#: that the risk is unmeasured rather than absent. Conductor's scores do not
+#: carry fingerings, which is why it has not appeared.
+_TUPLET_DIGIT_PREFIXES = ("tuplet", "fingering")
+
+#: The categories those two classes arrive in (`yolo_detector._CATEGORY_BY_PREFIX`).
+_TUPLET_DIGIT_CATEGORIES = frozenset({"structural", "ornament"})
+
 
 def _tuplet_digit(class_name: str) -> int | None:
-    """The number painted on a tuplet bracket: `tuplet3` -> 3. Else None."""
+    """The number painted over a beamed group: `tuplet3` -> 3. Else None.
+
+    Reads `fingering3` as the same digit — see `_TUPLET_DIGIT_PREFIXES`.
+    `tupletBracket` returns None here (its tail is not a digit) and is handled
+    by its caller before this is reached.
+    """
     norm = _normalize_class(class_name)
-    if not norm.startswith("tuplet"):
-        return None
-    tail = norm[len("tuplet"):]
-    return int(tail) if tail.isdigit() else None
+    for prefix in _TUPLET_DIGIT_PREFIXES:
+        if norm.startswith(prefix):
+            tail = norm[len(prefix):]
+            return int(tail) if tail.isdigit() else None
+    return None
 
 
 def _x_span(d) -> tuple[float, float]:
@@ -1116,13 +1227,31 @@ def _beamed_groups(beamed_noteheads: list, beams: list, pad: float) -> list[list
     width to the left of it. Unpadded, every stem-up group loses its first note:
     measured on Mahler's first triplet, beam box x 1659-1957 against noteheads
     centred 1621, 1770, 1918.
+
+    ⚠️ **A GROUP IS A SET OF NOTES, NOT A BEAM STROKE, and the difference is
+    invisible until the music has sixteenth tuplets.** A sixteenth carries TWO
+    beam strokes, the CV detector finds both, and each produced its own group
+    over the same three noteheads — so `resolve_rhythms_for_cell` scaled them
+    once per stroke and a triplet sixteenth came out as `1/4 * 2/3 * 2/3 = 1/9`.
+    Every triplet in the three works this benchmark used to consist of is an
+    EIGHTH triplet, one stroke and one group, so the fault could not appear
+    there; `mozart-sym41-mvt1` prints 40 groups of triplet sixteenths and
+    reported ratio 2/3 on 89 notes the moment its markers started being read.
+    Identical member sets are therefore collapsed.
     """
     groups: list[list] = []
+    seen: set[tuple[int, ...]] = set()
     for beam in beams:
         lo, hi = _x_span(beam)
         members = [nh for nh in beamed_noteheads if lo - pad <= _x_centre(nh) <= hi + pad]
-        if len(members) >= 2:
-            groups.append(sorted(members, key=_x_centre))
+        if len(members) < 2:
+            continue
+        members = sorted(members, key=_x_centre)
+        key = tuple(id(nh) for nh in members)
+        if key in seen:
+            continue
+        seen.add(key)
+        groups.append(members)
     return groups
 
 
@@ -1152,13 +1281,15 @@ def _tuplet_groups(noteheads: list, out: dict, dets, beams: list,
     digits: list[tuple[float, int]] = []
     brackets: list[tuple[float, float]] = []
     for d in dets:
-        if getattr(d, "category", "") != "structural":
-            continue
+        cat = getattr(d, "category", "")
         norm = _normalize_class(getattr(d, "smufl_name", ""))
         if norm == "tupletbracket":
-            brackets.append(_x_span(d))
+            if cat == "structural":
+                brackets.append(_x_span(d))
             continue
-        digit = _tuplet_digit(getattr(d, "smufl_name", ""))
+        if cat not in _TUPLET_DIGIT_CATEGORIES:
+            continue
+        digit = _tuplet_digit(norm)
         if digit is not None:
             digits.append((_x_centre(d), digit))
     if not digits and not brackets:
@@ -1168,11 +1299,16 @@ def _tuplet_groups(noteheads: list, out: dict, dets, beams: list,
     for members in groups:
         lo = _x_centre(members[0])
         hi = _x_centre(members[-1])
-        actual = None
-        for centre, digit in digits:
-            if lo - nh_width <= centre <= hi + nh_width:
-                actual = digit
-                break
+        # PREFER A DIGIT THIS MODULE CAN READ. `_TUPLET_NORMAL_FOR` holds only
+        # 3, and taking the first digit inside the group meant an unreadable
+        # one VETOED a readable one sitting in the same group — the group is
+        # abandoned a few lines below when `normal` comes back None. Mozart 41
+        # detects a `fingering1` and a `fingering2` beside its 30 `fingering3`,
+        # so admitting the family without this would have cost groups outright.
+        inside = [digit for centre, digit in digits
+                  if lo - nh_width <= centre <= hi + nh_width]
+        actual = next((d for d in inside if d in _TUPLET_NORMAL_FOR),
+                      inside[0] if inside else None)
         if actual is None:
             enclosing = [b for b in brackets if b[0] <= lo and hi <= b[1]]
             if len(enclosing) == 1 and len(members) == 3 and sum(

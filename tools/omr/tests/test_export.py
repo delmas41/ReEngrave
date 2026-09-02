@@ -21,6 +21,7 @@ from tools.omr.export import (
     measure_dynamics,
     _compute_divisions,
     _direction_slots,
+    _first_clef_bearing_measure,
     _tuplet_runs,
     _mxl_note,
     _DURATION_TABLE,
@@ -293,6 +294,92 @@ class TestEmptyMeasurePadding:
         out = to_musicxml(_tiny_result_empty_measure(None))
         assert "<duration>16</duration>" in out  # 4 beats * 4 divisions
         assert "<type>whole</type>" in out
+
+
+class TestTimeSignatureSymbol:
+    """`4/4` and a common-time `C` are one bar length and two engravings.
+
+    musicdiff charges the difference as `extrainfoedit`, a flat 3 edits per
+    staff — 270 over 5 works of the widened corpus, and 0 on the three the
+    benchmark used to be, all of which print digit meters. The detector reads
+    both glyphs at confidence 0.89-0.96; only the export was dropping them.
+    """
+
+    def test_common_time_carries_its_symbol(self):
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4, "symbol": "common"}))
+        assert '<time symbol="common">' in out
+
+    def test_cut_common_carries_its_symbol(self):
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 2, "denominator": 2, "symbol": "cut"}))
+        assert '<time symbol="cut">' in out
+
+    def test_a_digit_meter_gets_no_symbol(self):
+        """Absent a reading the export must say nothing, not guess. A 4/4 set
+        in digits and one set as C are different pages."""
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4}))
+        assert "<time>" in out
+        assert "symbol=" not in out
+
+    def test_raw_alone_does_not_produce_a_symbol(self):
+        """`raw` is synthesised from the numbers by `_propagated_meter` ("C"
+        for any 4/4), so it is not evidence that a C was printed. Only
+        `symbol`, set where the glyph was detected, may reach the export."""
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4, "raw": "C"}))
+        assert "symbol=" not in out
+
+    def test_an_unknown_symbol_is_refused(self):
+        out = to_musicxml(_tiny_result_empty_measure(
+            {"numerator": 4, "denominator": 4, "symbol": "single-number"}))
+        assert "symbol=" not in out
+
+
+class TestArticulations:
+    """Detected on every page and exported from none of them until now.
+
+    Mozart 40 fires exactly 102 `articStaccato*` and was charged exactly 102
+    `insarticulation` edits, 28% of its budget. Both exporters carry every
+    other mark the pipeline reads, so both carry these.
+    """
+
+    @staticmethod
+    def _result(marks):
+        r = _tiny_result()
+        nh = (r["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+              ["detections"][0])
+        nh["articulations"] = marks
+        return r
+
+    def test_musicxml_wraps_the_marks_in_one_articulations_element(self):
+        out = to_musicxml(self._result(["staccato", "accent"]))
+        assert "<articulations>" in out
+        assert "<staccato/>" in out and "<accent/>" in out
+        # One wrapper holding both, not one block per mark.
+        assert out.count("<articulations>") == 1
+
+    def test_marcato_is_musicxmls_strong_accent(self):
+        out = to_musicxml(self._result(["marcato"]))
+        assert "<strong-accent/>" in out
+        assert "<marcato/>" not in out
+
+    def test_a_score_with_no_marks_emits_no_articulations(self):
+        assert "<articulations>" not in to_musicxml(_tiny_result())
+
+    def test_an_unknown_mark_is_dropped_not_guessed(self):
+        out = to_musicxml(self._result(["staccato", "bartok-pizzicato"]))
+        assert "<staccato/>" in out
+        assert "bartok" not in out
+
+    def test_lilypond_carries_them_too(self):
+        out = to_lilypond(self._result(["staccato"]))
+        assert "-." in out
+
+    def test_lilypond_marcato_and_tenuto(self):
+        assert "-^" in to_lilypond(self._result(["marcato"]))
+        assert "--" in to_lilypond(self._result(["tenuto"]))
 
 
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────
@@ -1274,6 +1361,127 @@ class TestSlursAcrossSystemBreaks:
         assert kinds == [[], ["start"], ["stop"], []]
 
 
+# ─── the part's opening clef ────────────────────────────────────────────────
+
+
+def _clef_det(x=6.0):
+    return {"class": "cClefAlto", "category": "clef", "bbox": [x, 10, 8, 20],
+            "bbox_page": [x, 10, 8, 20], "confidence": 0.8}
+
+
+def _note_det(x, pitch="C4"):
+    return {"class": "noteheadBlackOnLine", "category": "notehead",
+            "bbox": [x, 10, 5, 5], "bbox_page": [x, 10, 5, 5],
+            "confidence": 0.9, "pitch": pitch,
+            "duration_beats": 1.0, "duration_type": "quarter", "dots": 0}
+
+
+def _brace_det(x=2.0):
+    return {"class": "brace", "category": "structural", "bbox": [x, 0, 3, 60],
+            "bbox_page": [x, 0, 3, 60], "confidence": 0.33}
+
+
+def _m(index, clef, dets):
+    return {"measure_index": index, "bbox_page_px": [0, 0, 100, 50],
+            "clef": clef,
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
+            "n_detections": len(dets), "detections": dets}
+
+
+def _staff_with(measures, clef="treble"):
+    return {"staff_index": 0, "clef": clef,
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
+            "n_measures": len(measures), "measures": measures}
+
+
+def _one_staff_result(staff):
+    return {"source_pdf": "synthetic.pdf",
+            "pages": [{"page_index": 0, "n_systems": 1,
+                       "systems": [{"system_index": 0, "n_staves": 1,
+                                    "staves": [staff]}]}]}
+
+
+class TestFirstClefBearingMeasure:
+    """The Dvorak 9 mechanism: system furniture caught as measure 0 prints no
+    clef, so the clef in EFFECT there is the positional default, and a part
+    that takes its opening clef from measure 0 regardless exports as G2."""
+
+    def test_a_clef_in_measure_zero_keeps_measure_zero(self):
+        ms = [_m(0, "alto", [_clef_det(), _note_det(20)]),
+              _m(1, "alto", [_note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_a_leading_furniture_cell_defers_to_the_measure_that_read_one(self):
+        ms = [_m(0, "treble", [_brace_det()]),
+              _m(1, "alto", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 1
+
+    def test_an_utterly_empty_leading_cell_defers_too(self):
+        """Four of Dvorak's fifteen leading cells hold no detection at all."""
+        ms = [_m(0, "treble", []), _m(1, "bass", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 1
+
+    def test_two_leading_furniture_cells_both_defer(self):
+        ms = [_m(0, "treble", [_brace_det()]), _m(1, "treble", []),
+              _m(2, "bass", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 2
+
+    def test_a_leading_cell_that_holds_MUSIC_is_never_skipped(self):
+        """The notes there were resolved under the clef in effect there, so
+        overruling it would claim a clef the exported pitches do not belong to
+        — even though no clef was detected in it."""
+        ms = [_m(0, "treble", [_note_det(20)]),
+              _m(1, "bass", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_a_tacet_leading_bar_holds_its_whole_rest_and_is_music(self):
+        rest = {"class": "restWhole", "category": "rest", "bbox": [20, 10, 6, 4],
+                "bbox_page": [20, 10, 6, 4], "confidence": 0.8,
+                "duration_beats": 4.0, "duration_type": "whole", "dots": 0}
+        ms = [_m(0, "bass", [rest]), _m(1, "tenor", [_clef_det(), _note_det(20)])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_nothing_qualifies_falls_back_to_measure_zero(self):
+        ms = [_m(0, "treble", [_brace_det()]), _m(1, "treble", [])]
+        assert _first_clef_bearing_measure(ms) == 0
+
+    def test_no_measures_at_all(self):
+        assert _first_clef_bearing_measure([]) == 0
+
+
+class TestOpeningClefInExport:
+    def test_musicxml_opens_on_the_read_clef_not_the_furniture_default(self):
+        staff = _staff_with([
+            _m(0, "treble", [_brace_det()]),
+            _m(1, "alto", [_clef_det(), _note_det(20)]),
+            _m(2, "alto", [_note_det(20)]),
+        ])
+        root = ET.fromstring(to_musicxml(_one_staff_result(staff)))
+        clefs = [(m.get("number"), c.findtext("sign"), c.findtext("line"))
+                 for m in root.iter("measure") for c in m.iter("clef")]
+        # one clef, in the opening measure, and no spurious change after it
+        assert clefs == [("1", "C", "3")]
+
+    def test_a_genuine_mid_part_clef_change_is_untouched(self):
+        staff = _staff_with([
+            _m(0, "bass", [_clef_det(), _note_det(20)]),
+            _m(1, "tenor", [_clef_det(), _note_det(20)]),
+        ])
+        root = ET.fromstring(to_musicxml(_one_staff_result(staff)))
+        clefs = [(m.get("number"), c.findtext("sign"), c.findtext("line"))
+                 for m in root.iter("measure") for c in m.iter("clef")]
+        assert clefs == [("1", "F", "4"), ("2", "C", "4")]
+
+    def test_lilypond_has_no_clef_change_to_recover_with(self):
+        """`_lily_staff_block` emits one `\\clef` for the whole staff, so a
+        leading furniture cell costs LilyPond the clef outright."""
+        staff = _staff_with([
+            _m(0, "treble", [_brace_det()]),
+            _m(1, "alto", [_clef_det(), _note_det(20)]),
+        ])
+        assert "\\clef alto" in to_lilypond(_one_staff_result(staff))
 # ─── Fermatas: detected since Phase 3.3, exported since 2026-09-01 ──────────
 #
 # `fermataAbove` is in the DSv2 class space and the detector reads it at 0.90 -

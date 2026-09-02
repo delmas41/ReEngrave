@@ -13,6 +13,8 @@ import pytest
 from tools.omr.rhythm import (
     _BEAM_COUNT_DURATIONS,
     _beamed_groups,
+    _beams_attached_to_stem,
+    _distance_to_band,
     _tuplet_digit,
     _tuplet_groups,
     _FLAG_DURATIONS,
@@ -289,6 +291,97 @@ class TestOverlapsAnyInX:
         assert _overlaps_any_in_x(_beam(480, 100), others)
 
 
+# ─── _beams_attached_to_stem — reach measured to the BAND, not its centre ───
+#
+# A beam detection bounds one stroke over its whole run, so a SLOPED stroke's
+# band spans the stroke's entire vertical excursion and its CENTRE is a y the
+# stroke occupies only in the middle of the group. Measuring the stem's reach
+# to that centre overstates the distance for the OUTERMOST stem of the group
+# by about half the band height — and the window is only 4 x the clustering
+# tolerance, so the outermost note of a sixteenth group lost its second beam
+# and came out twice as long.
+#
+# The geometry below is measured, not invented: Mozart 41, Oboe I (staff 1),
+# measure 0, canonical coordinates at staff spacing 65.2 px. See
+# benchmarks/omr-corpus-widening-2026-09/MOZART41_BEAMS.md.
+
+M41_SPACING = 65.2
+M41_TOL = M41_SPACING * 0.35          # 22.8 px; end_window is 4x = 91.3 px
+
+#: The two CV beam bands over the rising triplet of sixteenths.
+M41_BANDS = [
+    FakeDet(smufl_name="beam", category="structural",
+            x_canonical=1062, y_canonical=163,
+            width_canonical=267, height_canonical=44),
+    FakeDet(smufl_name="beam", category="structural",
+            x_canonical=1060, y_canonical=217,
+            width_canonical=269, height_canonical=47),
+]
+
+
+def _m41_stem(x, y, h):
+    return FakeDet(smufl_name="stem", category="stem", x_canonical=x,
+                   y_canonical=y, width_canonical=8, height_canonical=h)
+
+
+class TestBeamsAttachedToStem:
+    #: All three stems of the group carry two strokes. The third is the one
+    #: that used to read 1 — its top is 146, so its distance to the second
+    #: band's CENTRE (240) is 94 px against a 91.3 px window, while its
+    #: distance to the BAND (217-264) is 71.
+    @pytest.mark.parametrize("x,y,h", [(1061, 192, 275),
+                                       (1189, 170, 265),
+                                       (1318, 146, 256)])
+    def test_every_stem_of_a_sloped_group_reads_both_strokes(self, x, y, h):
+        stem = _m41_stem(x, y, h)
+        assert _beams_attached_to_stem(stem, M41_BANDS, M41_TOL) == 2
+
+    def test_the_outermost_stem_is_the_one_the_centre_rule_lost(self):
+        # Pins the mechanism rather than just the outcome: the old rule is
+        # reproduced here, and it must disagree on exactly this stem.
+        stem = _m41_stem(1318, 146, 256)
+        centres = [b.y_canonical + b.height_canonical // 2 for b in M41_BANDS]
+        d_centre = [abs(c - stem.y_canonical) for c in centres]
+        end_window = M41_TOL * 4.0
+        assert d_centre[0] <= end_window < d_centre[1]
+        assert _beams_attached_to_stem(stem, M41_BANDS, M41_TOL) == 2
+
+    def test_a_stem_end_inside_a_band_is_at_zero_distance(self):
+        assert _distance_to_band(180.0, 163.0, 207.0) == 0.0
+
+    def test_distance_to_a_band_is_to_its_nearer_edge(self):
+        assert _distance_to_band(146.0, 217.0, 264.0) == 71.0
+        assert _distance_to_band(300.0, 217.0, 264.0) == 36.0
+
+    def test_a_beam_that_does_not_overlap_the_stem_in_x_is_not_counted(self):
+        # The x filter is unchanged; widening the y reach must not reach
+        # sideways into the next group.
+        far = FakeDet(smufl_name="beam", category="structural",
+                      x_canonical=1750, y_canonical=163,
+                      width_canonical=267, height_canonical=44)
+        stem = _m41_stem(1061, 192, 275)
+        assert _beams_attached_to_stem(stem, [far], M41_TOL) == 0
+
+    def test_a_beam_far_beyond_the_window_is_still_rejected(self):
+        # The band rule is a bounded widening, not an open one: a band a
+        # staff's height away from either stem end stays out.
+        stem = _m41_stem(1061, 192, 275)
+        remote = FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=1062, y_canonical=900,
+                         width_canonical=267, height_canonical=44)
+        assert _beams_attached_to_stem(stem, [remote], M41_TOL) == 0
+
+    def test_a_level_beam_is_unaffected_by_the_change(self):
+        # A single thin band: centre and edges are within a bar's thickness of
+        # each other, so both rules agree. This is why 8 of the 12 benchmark
+        # works see no stem change at all.
+        flat = FakeDet(smufl_name="beam", category="structural",
+                       x_canonical=1062, y_canonical=180,
+                       width_canonical=267, height_canonical=8)
+        stem = _m41_stem(1061, 192, 275)
+        assert _beams_attached_to_stem(stem, [flat], M41_TOL) == 1
+
+
 # ─── _parse_inline_accidental (in transcribe.py, but we test alongside) ─────
 
 
@@ -321,12 +414,14 @@ class TestParseTimeSignature:
         # the clef, not jammed against x==0 (which is a misread; see below).
         d = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=50)
         result = parse_time_signature([d])
-        assert result == {"numerator": 4, "denominator": 4, "raw": "C"}
+        assert result == {"numerator": 4, "denominator": 4, "raw": "C",
+                          "symbol": "common"}
 
     def test_cut_common_shortcut(self):
         d = FakeDet(category="time_sig_digit", smufl_name="timeSigCutCommon", x_canonical=50)
         result = parse_time_signature([d])
-        assert result == {"numerator": 2, "denominator": 2, "raw": "C|"}
+        assert result == {"numerator": 2, "denominator": 2, "raw": "C|",
+                          "symbol": "cut"}
 
     def test_no_time_sig_returns_none(self):
         assert parse_time_signature([]) is None
@@ -374,7 +469,7 @@ class TestParseTimeSignature:
         nh = FakeDet(category="notehead", smufl_name="noteheadBlackOnLine")
         ts = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=50)
         assert parse_time_signature([nh, ts]) == {
-            "numerator": 4, "denominator": 4, "raw": "C"
+            "numerator": 4, "denominator": 4, "raw": "C", "symbol": "common"
         }
 
     def test_rejects_left_edge_misread(self):
@@ -390,7 +485,8 @@ class TestParseTimeSignature:
     def test_keeps_glyph_just_past_margin(self):
         # A real time sig a bit past the margin (x >= threshold) is kept.
         d = FakeDet(category="time_sig_digit", smufl_name="timeSigCommon", x_canonical=16)
-        assert parse_time_signature([d]) == {"numerator": 4, "denominator": 4, "raw": "C"}
+        assert parse_time_signature([d]) == {"numerator": 4, "denominator": 4,
+                                             "raw": "C", "symbol": "common"}
 
 
 # ─── _deduplicate_beams ────────────────────────────────────────────────────
@@ -644,6 +740,75 @@ class TestTupletGroups:
         for rec in out.values():
             rec["beam_levels"] = 0
         assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    # ── the same glyph under DSv2's other class name ───────────────────────
+    #
+    # A `3` over a beamed group is `tuplet3` and a `3` beside a notehead is
+    # `fingering3`; the distinction is POSITIONAL and the detector reproduces
+    # it badly on orchestral pages. Measured over the twelve engraved works of
+    # `benchmarks/omr-corpus-widening-2026-09`: 33 `fingering3` against 16
+    # `tuplet3`, and ALL 33 sit in a cell that holds a real triplet.
+    # `mozart-sym41-mvt1` alone hands back 30 of them for its 40 groups.
+
+    @staticmethod
+    def _fingering(x, n=3):
+        return FakeDet(smufl_name=f"fingering{n}", category="ornament",
+                       x_canonical=x, width_canonical=20)
+
+    def test_a_fingering_digit_over_a_beamed_group_is_read_as_a_tuplet(self):
+        heads, out, dets, beams = self._setup([self._fingering(150)])
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1
+        assert claimed[0][1:] == (3, 2)
+
+    def test_the_gate_is_unchanged_for_the_new_class(self):
+        """Admitting the class must not relax the test that makes it safe: the
+        group still has to hold exactly as many notes as the digit claims."""
+        heads, out, dets, beams = self._setup(
+            [self._fingering(150)], xs=(100, 160, 220, 280))
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_a_fingering_digit_off_the_group_claims_nothing(self):
+        heads, out, dets, beams = self._setup([self._fingering(900)])
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_an_unreadable_digit_no_longer_vetoes_a_readable_one(self):
+        """`_TUPLET_NORMAL_FOR` holds only 3, and the old loop took the FIRST
+        digit inside the group — so a stray `fingering2` sitting over a real
+        triplet abandoned it. Mozart 41 detects one `fingering1` and one
+        `fingering2` beside its 30 `fingering3`."""
+        heads, out, dets, beams = self._setup(
+            [self._fingering(120, n=2), self._fingering(150, n=3)])
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1
+        assert claimed[0][1:] == (3, 2)
+
+    def test_a_fingering_digit_we_cannot_read_still_abstains(self):
+        heads, out, dets, beams = self._setup(
+            [self._fingering(150, n=5)], xs=(100, 140, 180, 220, 260))
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_two_beam_strokes_over_one_group_claim_it_once(self):
+        """A sixteenth carries TWO beam strokes and the CV detector finds both.
+        Each used to produce its own group over the same noteheads, so the
+        ratio was applied once per stroke and a triplet sixteenth came out
+        `1/4 * 2/3 * 2/3 = 1/9`. Invisible on eighth triplets, which is all the
+        three original works print; `mozart-sym41-mvt1` reported ratio 2/3 on
+        89 notes."""
+        xs = (100, 160, 220)
+        heads = [FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                         x_canonical=x - 15, width_canonical=30) for x in xs]
+        beams = [FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=xs[0] + 5,
+                         width_canonical=xs[-1] - xs[0] + 10),
+                 FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=xs[0] + 5,
+                         width_canonical=xs[-1] - xs[0] + 10)]
+        out = {id(h): {"duration_beats": 0.25, "duration_type": "16th",
+                       "dots": 0, "beam_levels": 2} for h in heads}
+        dets = heads + beams + [self._digit(150)]
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1, "one group of notes, not one per beam stroke"
 
 
 # ─── _spans_the_whole_cell — a beam group cannot reach both barlines ────────

@@ -1,0 +1,36 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'A', 'mpani in C-G' — these are the strings to add to tools/omr/instruments.py
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+5 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'ani in A.D.E.', 'larinetti in A', 'ni in F III IV', 'orni in F I II', '|' — these are the strings to add to tools/omr/instruments.py
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'larinetti in B.' — these are the strings to add to tools/omr/instruments.py
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+mozart-sym41-mvt1          6    17/17       6/6       228/228      0.991  0.991  0.465  clean
+tchaikovsky-sym6-mvt2      4    17/17       4/4        87/86       0.756  0.747  0.985  clean
+mozart-sym40-mvt1          6    11/11       6/6       164/164      0.762  0.762  0.952  clean
+
+OMR-NED (pooled over 3 scores): 0.3677   [lower is better; 0 = identical]
+  2124 symbol edits over 2972 truth + 2805 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+tchaikovsky-sym6-mvt2            0.1958     279     730     695  wrong note
+mozart-sym40-mvt1                0.2260     330     788     672  wrong note
+mozart-sym41-mvt1                0.5239    1515    1454    1438  wrong note
+
+where the edits are (pooled):
+  wrong note                                1688   79.5%
+  wrong flag/beam                            110    5.2%
+  wrong articulation                         102    4.8%
+  wrong slur                                  85    4.0%
+  wrong direction                             69    3.2%
+  wrong dynamic                               35    1.6%
+  (8 more)                                    35    1.6%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/tup_fix2.json

@@ -104,9 +104,17 @@ class TestTheComparison:
         for name, why in ec.KNOWN_GAPS.items():
             assert len(why) > 40, f"{name}'s reason is too thin to act on"
 
-    def test_every_conditional_gap_is_a_known_gap(self):
-        """A configuration can only ever SPEND an explanation that exists."""
-        assert set(ec.CONDITIONAL_GAPS) <= set(ec.KNOWN_GAPS)
+    def test_every_flag_dependent_gap_is_a_known_gap(self):
+        """A flag can only ever SPEND an explanation that exists."""
+        assert ec.FLAG_DEPENDENT <= set(ec.KNOWN_GAPS)
+
+    def test_metronome_is_NOT_flag_dependent(self):
+        """Measured, not reasoned: on a `--direction-text` run of the whole
+        benchmark `<metronome>` is still absent, because the reader writes a
+        tempo mark as <words> and the structured form is not built. Exempting
+        it would hide the regression on the day somebody builds it."""
+        assert "metronome" not in ec.FLAG_DEPENDENT
+        assert "metronome" in ec.KNOWN_GAPS
 
 
 class TestTheConfigurationIsReadOffTheArtifact:
@@ -261,7 +269,16 @@ class TestTheRepositoryItself:
 
     def test_the_inventory_has_no_stale_entries(self):
         """A gap that has been CLOSED must leave KNOWN_GAPS, or the list stops
-        describing the exporter and starts describing its history."""
+        describing the exporter and starts describing its history.
+
+        `cbd8ca2` subtracted FLAG_DEPENDENT here, to stop this reporting which
+        flags someone last ran with. No subtraction is needed once the
+        configuration is known, and the arithmetic says why: `expected` already
+        drops `words` on a run that PLACED words, and on a run that did not,
+        `words` is genuinely missing and so is not stale either. Both arms come
+        out right without an exemption, and the run where the exporter really
+        did drop them is caught instead of excused.
+        """
         assert self.survey.stale_entries == [], (
             "these are emitted now and should come out of KNOWN_GAPS: "
             f"{self.survey.stale_entries}\n"

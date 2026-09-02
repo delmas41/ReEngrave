@@ -1,0 +1,65 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:5128: MusicXMLWarning: Could not import wedge: Error in getting DynamicWedges
+  warnings.warn(f'Could not import {tag}: {excep}', MusicXMLWarning)
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+4 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'A', 'B', 'C', 'E' — these are the strings to add to tools/omr/instruments.py
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:5128: MusicXMLWarning: Could not import wedge: Error in getting DynamicWedges
+  warnings.warn(f'Could not import {tag}: {excep}', MusicXMLWarning)
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'Oboes' — these are the strings to add to tools/omr/instruments.py
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+brahms-sym4-mvt1           6    20/20       6/6       175/172      0.959  0.943  0.933  clean
+dvorak-sym9-mvt4           3    18/19       3/3        40/40       0.975  0.975  1.000  clean
+tchaikovsky-sym4-mvt2      8    20/20       8/8        67/67       0.925  0.925  1.000  clean
+
+OMR-NED (pooled over 3 scores): 0.2210   [lower is better; 0 = identical]
+  902 symbol edits over 2108 truth + 1974 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+tchaikovsky-sym4-mvt2            0.0571      88     786     755  wrong note
+brahms-sym4-mvt1                 0.2849     520     949     876  wrong note
+dvorak-sym9-mvt4                 0.4106     294     373     343  wrong note
+
+where the edits are (pooled):
+  wrong note                                 333   36.9%
+  wrong timesig                              111   12.3%
+  entire measure insert/delete               108   12.0%
+  wrong direction                             92   10.2%
+  wrong articulation                          54    6.0%
+  wrong flag/beam                             51    5.7%
+  (12 more)                                  153   17.0%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/batch2.json

@@ -107,6 +107,79 @@ def result_action(result, staff_ordinal, system=0):
     return result.verdicts[system * 100 + staff_ordinal].action
 
 
+# ─── a page with no majority is not a licence to assert ─────────────────────
+
+class TestNoMajorityIsNotALicence:
+    """Boléro p.10, bar 153 — Ravel's parallel-harmony passage.
+
+    The page GENUINELY prints five different signatures: the two piccolos are
+    notated in E (4 sharps) and G (1 sharp) and the clarinet in D (2 sharps),
+    over a C major orchestra. So no signature holds a majority, and the
+    no-majority branch used to keep every reading unchecked — including five
+    template readings of a SINGLE flat on headers that print nothing at all,
+    one of them a percussion staff.
+
+    `can_carry=False` marks a source that can over-count. Where there is no
+    reference to check such a reading against, it must clear `strong_weight`
+    on its own. See benchmarks/omr-keysig-from-music-2026-09/PHASE1.md.
+    """
+
+    def _bolero(self):
+        # (ordinal, fifths, weight, source) as measured by probe_vote_inputs.py.
+        printed = [(0, 4, 4.0, "detector"), (1, 1, 1.0, "detector"),
+                   (3, 2, 2.0, "detector")]
+        spurious = [(2, -1, 1.0, "template"), (7, -1, 1.0, "template"),
+                    (8, -1, 1.0, "template")]
+        out = []
+        for ordinal, fifths, weight, source in printed + spurious:
+            out.append(StaffCandidate(
+                staff_index=ordinal, system_index=0, ordinal=ordinal,
+                fifths=fifths, weight=weight, source=source,
+                can_carry=not source.startswith("template"),
+            ))
+        return out
+
+    def test_the_printed_signatures_survive(self):
+        result = reconcile(self._bolero())
+        assert result.verdicts[0].fifths == 4      # piccolo in E
+        assert result.verdicts[1].fifths == 1      # piccolo in G — ONE sharp,
+        assert result.verdicts[3].fifths == 2      # and it must not be lost
+        assert all(result.verdicts[o].action == "kept" for o in (0, 1, 3))
+
+    def test_a_lone_template_accidental_does_not_assert(self):
+        result = reconcile(self._bolero())
+        for ordinal in (2, 7, 8):
+            assert result.verdicts[ordinal].action == "rejected"
+            assert result.verdicts[ordinal].fifths is None
+            assert "over-count" in result.verdicts[ordinal].reason
+
+    def test_a_detector_reading_of_one_accidental_is_not_touched(self):
+        # The guard is about the SOURCE, not the count. The piccolo in G is one
+        # sharp from the detector and must survive; making this a weight rule
+        # alone would cost it.
+        result = reconcile(self._bolero())
+        assert result.verdicts[1].action == "kept"
+
+    def test_a_strong_template_reading_still_asserts(self):
+        # Three flats off three matched accidentals is not a lone accidental,
+        # and the bar it clears is the same one a departure clears elsewhere.
+        cands = self._bolero() + [StaffCandidate(
+            staff_index=9, system_index=0, ordinal=9, fifths=-3, weight=3.0,
+            source="template", can_carry=False)]
+        result = reconcile(cands)
+        assert result.verdicts[9].action == "kept"
+        assert result.verdicts[9].fifths == -3
+
+    def test_an_empty_reading_is_still_a_wildcard(self):
+        # A staff read as printing NO signature stays kept, majority or not.
+        cands = self._bolero() + [StaffCandidate(
+            staff_index=9, system_index=0, ordinal=9, fifths=0, weight=1.0,
+            source="template", can_carry=False)]
+        result = reconcile(cands)
+        assert result.verdicts[9].action == "kept"
+        assert result.verdicts[9].fifths == 0
+
+
 # ─── across systems ─────────────────────────────────────────────────────────
 
 class TestAcrossSystems:

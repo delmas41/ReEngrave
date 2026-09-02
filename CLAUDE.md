@@ -610,8 +610,33 @@ A triplet eighth is 1/3 of a quarter; the old power-of-two ladder returned 16 an
 scores without tuplets get exactly the old number — verified byte-identical on
 Brahms (8) and the authored fixtures.
 
-Coverage is what the detector gives: 4 of the 5 triplet groups on the Mahler
-page. The fifth carries no marker at all, at any confidence.
+**A triplet digit arrives under two class names, and the class is not evidence
+about which.** DSv2 labels a `3` over a beamed group `tuplet3` and a `3` beside a
+notehead `fingering3` — a POSITIONAL distinction, made by where the digit
+stands, and the detector reproduces it badly on orchestral pages. Measured over
+twelve engraved works (`benchmarks/omr-corpus-widening-2026-09/`): **33
+`fingering3` against 16 `tuplet3`, and all 33 sit in a cell that holds a real
+triplet**; the single detection that does not is a `tuplet3`. So both classes
+are read, and the positional gate above is what keeps that safe — a real
+fingering centred over a beamed group of exactly three would still be misread,
+and no conductor's score in the corpus prints one to price that against.
+
+⚠️ **This corrected a claim that stood here for a day.** The line this replaces
+said Mahler's fifth triplet group "carries no marker at all, at any
+confidence". It carries a `fingering3` at **0.72** — the highest-confidence
+tuplet marker on that page. Nothing was wrong with the reasoning; the three-work
+benchmark simply could not falsify a story about one of its own pages. Mahler
+went 0.0455 → **0.0331** and its duration rate 0.864 → **1.000** when the class
+was admitted, and `tchaikovsky-sym6-mvt2` 0.2321 → 0.1958.
+
+⚠️ **A GROUP IS A SET OF NOTES, NOT A BEAM STROKE.** A sixteenth carries two
+beam strokes, the CV detector finds both, and `_beamed_groups` returned one
+group per box — so the ratio was applied once per stroke and a triplet
+sixteenth came out `(1/4) × (2/3) × (2/3) = 1/9`. Every triplet in the three
+works this benchmark used to consist of is an EIGHTH triplet, one stroke and one
+group, so the fault could not appear there; `mozart-sym41-mvt1` prints 40 groups
+of triplet sixteenths and cost 464 edits for it. Identical member sets are
+collapsed.
 
 ---
 
@@ -682,6 +707,62 @@ Staff contexts. See
 [SYSTEM_BREAK_SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SYSTEM_BREAK_SLURS_2026-09-01.md),
 which is mostly about how the FIXTURE had to be built before the fix could be
 measured at all.
+
+---
+
+## Articulations, and the time signature's own glyph
+
+Both shipped 2026-09-01 out of the corpus widening
+(`benchmarks/omr-corpus-widening-2026-09/FINDINGS.md`), and both are the shape
+this project has now paid for eight times: **the signal was detected and
+something downstream threw it away.** Neither needed the detector touched.
+
+**A time signature carries a GLYPH as well as numbers.** `4/4` and a common-time
+`C` are one bar length and two engravings; MusicXML says so with `symbol=`, and
+musicdiff charges the difference at a flat **3 edits per staff** — 25 staves of
+Bruckner 5 is 75 of them. `parse_time_signature` sets `symbol` ("common" /
+"cut") only where a `timeSigCommon` / `timeSigCutCommon` glyph was detected, at
+confidence 0.89-0.96 on the works measured. Worth **273 edits over five works**,
+each delta exactly three times that work's staff count.
+
+⚠️ **`symbol` is not `raw`, and exporting off `raw` would be wrong.**
+`_propagated_meter` SYNTHESISES `raw` from the winning numbers (`"C"` for any
+4/4), so a `raw` of `"C"` is not evidence that a C was printed. Only `symbol`,
+set at the one place the glyph is read, reaches the export.
+
+**The numbers come from the work; the glyph comes from the page.**
+`dossier.apply_meter` used to replace the whole dict — including on the branch
+where the detector AGREED — so the reading was discarded. A dossier is built
+from one MusicXML file and can say a movement is in 2/2; it cannot say whether
+THIS edition set that as a stroked C or as two digits, because that is a fact
+about the engraving. The override now keeps the detected `symbol` where the
+numbers agree, and drops it where they do not: a `timeSigCommon` read on a 3/4
+movement is a misread, and its glyph is as wrong as its numbers.
+
+**Articulations reach both exporters.** `export.py` contained the string
+"articulation" once, in a docstring, while the detector maps all ten DSv2
+`artic*` classes to category `ornament` and fires them freely — Mozart 40
+detects **exactly 102** staccati and was charged **exactly 102**
+`insarticulation` edits. The three works the benchmark used to consist of print
+0, 2 and 6 of them, which is the only reason it survived sixteen fixes.
+
+`transcribe._attach_articulations_in_cell` gives each mark to the notehead
+nearest it in x on the side its own class names, within **0.75 notehead
+widths** — the unit, not the mark's own bounding box, which is the mistake the
+augmentation-dot gate made. Not a tuned constant: swept over eight works and
+scored against the truth, **0.50 through 2.50 are identical** (197 placed, 193
+correct, precision 0.980) with a cliff below at 0.30 (placement 0.486). A mark
+with no notehead on the correct side is left unattached — 21 of 218.
+
+⚠️ **This one makes pooled OMR-NED WORSE by 97 edits and shipped anyway**, which
+is worth stating plainly. It is −122 across the eight works whose pages segment
+correctly and **+219 on `boulanger-printemps-mvt1` alone** — a 46-part score
+that emits 43 parts and spends 76% of its budget on whole-measure and
+whole-staff operations. Its marks are not wrong there: 263 of the 271 printed
+articulations are exported, with the right kinds. What is wrong is that its bars
+do not pair, so every correct symbol added to one raises a charge already being
+levied whole. Same call as `b8ccc89` (chords written bottom-up, +2 edits, still
+right), at a larger number and with the counter-argument recorded beside it.
 
 ---
 
@@ -928,13 +1009,13 @@ to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `b3ef9ac`: **pooled 0.1101 / 791 edits** (Mahler 0.0395, Beethoven 0.0727, Brahms 0.1556), over 3696 truth + 3486 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0883 / 647**, measured on `b3ef9ac`.
+Current on the engraved orchestral benchmark, measured on `15ca32a`: **pooled 0.1066 / 767 edits** (Mahler 0.0272, Beethoven 0.0727, Brahms 0.1554), over 3696 truth + 3497 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0849 / 623**, measured on `15ca32a`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler | 0.0395 | 75 | 0.917 | 0.917 | 0.864 |
+| Mahler | 0.0272 | 52 | 0.917 | 0.917 | 1.000 |
 | Beethoven | 0.0727 | 93 | 1.000 | 1.000 | 1.000 |
-| Brahms | 0.1556 | 623 | 0.956 | 0.955 | 0.992 |
+| Brahms | 0.1554 | 622 | 0.956 | 0.955 | 0.992 |
 <!-- accuracy:end -->
 
 **Generated — do not hand-edit, here or anywhere.** `68be549` made this the
@@ -1236,8 +1317,19 @@ python3 -m tools.omr.annotate.server --bench-dir benchmarks/omr-labeling-NEW   #
 python3 -m tools.omr.training.verdicts_to_yolo_labels --verdicts-dir benchmarks/omr-labeling-NEW/verdicts \
     --manifest benchmarks/omr-labeling-NEW/cells.json --version-name v<n>-<date>-<tag> \
     --out-root data/user-labeled --labeler sean --description "..."   # --dry-run first
-python3 -m tools.omr.training.build_catalog_yaml --root data/user-labeled   # unions all versions → catalog.yaml
+python3 -m tools.omr.training.build_catalog_yaml --root data/user-labeled   # unions the versions in catalog-versions.txt → catalog.yaml
 ```
+
+**Which versions the catalog unions is a recorded decision, not a directory
+listing** — `data/user-labeled/catalog-versions.txt` is the membership record,
+and `build_catalog_yaml` refuses to run without it (or an explicit
+`--versions`), so a rebuild reproduces the committed membership exactly and
+can never silently widen it. A freshly converted version is **not**
+auto-included: admitting one means editing the manifest (a committed,
+reviewable diff — `test_training_pipeline.py` pins the membership, so do it
+deliberately). Currently v1–v4 are in; v5/v6 (clef-heavy, narrows the density
+prior) are excluded per PROJECT_STATUS.md open decision #13, and v7 (hollow
+noteheads) is an open training-time decision.
 
 The catalog is **capped at nc=208 by default** (custom-class boxes — barlines, textDynamic — are filtered into `_nc208/` copies) so fine-tuning matches the DSv2 checkpoints' class count; a mismatched `nc` silently re-initializes the classification head (the Phase 3.4 collapse). `train_yolo.py` refuses an nc mismatch unless you pass `--allow-nc-expansion`; `--emit-full-catalog` also writes an uncapped `catalog-214.yaml` for a deliberate future expansion.
 
@@ -1294,7 +1386,7 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 
 - **Two rules the template reader needed, both found by breaking WTC p.17.** (1) **It may not infer.** `fit_key_signature` recovers slots nothing was detected at, which is right for a reader that only ever loses accidentals; this one can gain a spurious match, and inference compounded five matches into *seven sharps* on a four-sharp page. (2) **It may not carry across systems.** `key_signature_vote` resolves a part by taking the reading with the most accidentals — sound only while every reader under-counts. One staff's spurious fifth sharp was carried onto **every treble staff of all five systems**, taking the page from 10 correct to 5 correct and 5 wrong. `StaffCandidate.can_carry` keeps such a reading on its own staff. ⚠️ **The reader speaks only into GAPS** (where detector and locator both found nothing). Letting the fuller reading win instead is worth +1 on beet5-p2 and +2 on the Pastoral and costs a WRONG reading on the cleanest page in the corpus — priced and refused. Staves with no clef read get the reader against the positional default at `DEFAULTED_CLEF_WEIGHT`, too weak to justify a departure, so the vote can keep it only where it agrees with the system: the clef gate moves from the staff to the page.
 
-- **Common time is read; cut common was measured and withheld** (2026-08-31). `timeSigCommon` and `timeSigCutCommon` were added to `symbol_library/builder.py` and the library rebuilt (every pre-existing template came back byte-identical — the check that mattered, since the clef and key-signature readers share it). A letter meter is one glyph two spaces tall centred on the middle line, padded into the same four-space box so the search stays one-dimensional, and `C` is the strongest reading in the corpus: five common-time pages at 0.745-0.761 against 0.50-0.62 for scanned digit meters. **Cut common is not searched for.** A C with a stroke through it correlates with any vertical ink crossing any rounded blob: with it enabled the sweep claimed a meter on *seven systems that print none*, at 0.51-0.56 over a 0.50 threshold, and no page in the corpus prints a real ¢ to measure the other side against. 2/2 spelled in digits is still read. Corpus total: **8 correct, 0 wrong, 21 correct abstentions.**
+- **Common time is read; cut common was measured and withheld** (2026-08-31). `timeSigCommon` and `timeSigCutCommon` were added to `symbol_library/builder.py` and the library rebuilt (every pre-existing template came back byte-identical — the check that mattered, since the clef and key-signature readers share it). A letter meter is one glyph two spaces tall centred on the middle line, padded into the same four-space box so the search stays one-dimensional, and `C` is the strongest reading in the corpus: five common-time pages at 0.745-0.761 against 0.50-0.62 for scanned digit meters. **Cut common is still not searched for, and is now READ** (2026-09-01). Withholding the template does not produce an abstention — it produces `C`. Fifteen of the 97 dossier works open on a ¢, and on those pages the reader was confidently wrong: Mozart 40 i at 11 staves of 11 and Brahms 4 i at 13 of 13, so a 2/2 page shipped as 4/4 with every bar measured against a meter twice too long. Putting the template in fails BOTH ways — nine false systems, *and* it still loses to plain `C` on the real ¢ pages, because a C is a SUBSET of a cut-C's ink and the template with less to account for scores higher. So the stroke is read by POSITION after `C` has won (`_looks_cut`): the middle of a C is hollow, its aperture faces right. Over 87 staves that matched C, the 24 cut ones fill **1.00** of the centre column and no other exceeds **0.48** — every threshold in 0.50-1.00 gives the same answer. **No new false-positive surface exists by construction**, since the cut reading rides on a `C` that already cleared the threshold and the vote. Also **the vote's agreement floor went 0.5 → 0.70**: every one of the 12 correct readings is agreed by 0.909 of its system or more and the one wrong reading (Beethoven 3 i, a Litolff `3` matching Bravura's `6`) by exactly 0.500. Corpus total over 11 sources: **12 correct, 0 wrong, 3 missed, 40 correct abstentions**, up from 3 wrong; `orchestral_eval --omr-ned` identical to the edit, A/B'd. A wrong meter is not cosmetic — measured on Beethoven 3 i, it costs **390 LilyPond bar-check failures against 164 for no meter at all**. See [benchmarks/omr-timesig-2026-09/FINDINGS.md](benchmarks/omr-timesig-2026-09/FINDINGS.md), including why adding 4/8 (the one repertoire meter with no template) fixes nothing and why the bar-check count rewards the longer meter.
 
 - **A barline is a straight line, not a vertical one** (2026-08-31). The IMSLP Beethoven 5 scan is warped — one barline's x drifts monotonically by up to 40 px between the top staff and the bottom, over three times the clustering tolerance — and `_intersystem_connectivity` dropped a *vertical* column at the cluster's mean x, so three real barlines that had passed the vote (9, 12 and 10 of 12 staves) scored 0.27-0.36 against a 0.40 gate and were thrown away. `measure_extractor._barline_x_at` now fits the line to the staves that observed it and probes along it, using **Theil-Sen and not least squares**, because a note stem that joins the cluster votes too and two such among nine still dragged a least-squares fit off the line. Page 1: 17/17 barlines, 0 false, **16 measures of 16**; pages 2-6 unchanged. Also `_spans_system` — the weakest band of a column along the fitted line — rescues barlines on **braced two-staff systems**, where "both staves must agree" fails whenever one hand plays continuously: on WTC I Prelude 1 p.4 the left hand read all four barlines of every system and the right hand, thick with sixteenths, read none of them and 31 of its own stems, so five systems of three bars each came out as ONE bar (now 4,4,4,4,4,4). The gap test is *not* enough there — a fugue's long stem crosses the brace gap and scores 1.00 connectivity — but nothing except a barline runs from the top of the upper staff to the bottom of the lower. The rescue is **additive**: letting the span test filter instead costs every system its opening rule, which often does not span the brace.
 

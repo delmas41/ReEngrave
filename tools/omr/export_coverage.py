@@ -1,14 +1,13 @@
 """Does everything the truth would SHOW survive into our output?
 
-WHY THIS EXISTS. Seven times on main the defect has been the same shape, and an
-eighth on a branch that has not landed: the pipeline recognises something
-correctly and then loses it on the way to the file. Beams, augmentation dots,
-dynamics, tuplet markers, slur arcs, fermatas, accidentals. Most of the
-benchmark's fall from its 0.3164 opening is those, and almost none of it is a
-better detector. (The CURRENT figure is not restated here; it lives in
-CLAUDE.md's OMR-NED section and nowhere else, for the reason
-`tools/omr/accuracy_record.py` gives. An earlier draft of this paragraph
-quoted 0.1242 and was stale within a day.)
+WHY THIS EXISTS. Eight times now the defect has been the same shape: the
+pipeline recognises something correctly and then loses it on the way to the
+file. Beams, augmentation dots, dynamics, tuplet markers, slur arcs, fermatas,
+accidentals, articulations. Most of the benchmark's fall from its 0.3164
+opening is those, and almost none of it is a better detector. (The CURRENT
+figure is not restated here; it lives in CLAUDE.md's OMR-NED section and
+nowhere else, for the reason `tools/omr/accuracy_record.py` gives. An earlier
+draft of this paragraph quoted 0.1242 and was stale within a day.)
 
 THE LIST, NUMBERED, because the ordinal has been reconstructed from memory
 twice and collided both times. `0eb1271` calls articulations "the seventh time"
@@ -25,6 +24,10 @@ each other. Counted once, in the order they were fixed:
     7  printed accidentals  d112052   folded into <alter>, <accidental> dropped
     8  articulations        0eb1271   ten artic* classes, one docstring mention
     9  hairpins                       OPEN — and not purely an export fix
+
+(8 landed on main in `bdda54d` on 2026-09-02. An earlier draft of this list
+said it was unmerged and told the reader to run `git show 0eb1271` before
+rewriting it; that warning did its job for about an hour.)
 
 Six of the first seven were found FORENSICALLY: a metric bucket grew, someone
 opened the op list, and the cause was underneath. That works, and it only ever
@@ -102,6 +105,19 @@ configurations (`disagreement`), and — the one the report cannot see — a tru
 file older than the render that produced it. The first two abstain loudly. The
 third is why `--all` prints provenance at all.
 
+`cbd8ca2` got to the flag half of this first, by a different route: a
+`FLAG_DEPENDENT` set exempted from the staleness check, with the observation —
+correct, and the reason that commit's shape survives here — that EXEMPTING IS
+NOT SKIPPING. A skip switches the whole check off for anyone whose last run used
+a flag; an exemption leaves it running and correct either way.
+
+Knowing the configuration takes that one step further, because the exemption is
+symmetric and the fact is not. Exempting `words` is right while the reader is
+off and too weak once it is on: a reader that placed 15 words against an
+exporter that wrote none would be the NEXT one of the nine above, on the newest
+layer, and an exemption says nothing about it. So the entries stay named, and
+what the configuration buys is the ability to ASSERT rather than excuse.
+
     python3 -m tools.omr.export_coverage        # the report
     python3 -m tools.omr.export_coverage --all  # including what is accepted
 """
@@ -155,22 +171,6 @@ VISIBLE: dict[str, str] = {
 #: decision already taken or an open item someone can pick up. Anything NOT here
 #: is a new gap and fails the test.
 KNOWN_GAPS: dict[str, str] = {
-    "accent": (
-        "EIGHTH GAP — open on main, and ALREADY FIXED on the unmerged branch "
-        "claude/transcription-overnight-progress-426c90 (`0eb1271`), which maps "
-        "DSv2's ten artic* classes and emits <accent> among five marks. Do not "
-        "write it again; `git show 0eb1271` first. Mahler's truth has 6 here "
-        "and the detector finds exactly 6, but Mozart 40 prints 102 staccati "
-        "and was charged 102 edits, 28% of that work's budget — which is why "
-        "this survived so long on a benchmark of three works printing 0, 2 "
-        "and 6. When that branch lands, the staleness test goes red and BOTH "
-        "this entry and `articulations` come out."
-    ),
-    "articulations": (
-        "The <notations> wrapper the accents would sit in — same item as "
-        "`accent`, closed by the same unmerged commit, and it leaves this "
-        "inventory at the same moment."
-    ),
     "wedge": (
         "NINTH GAP, open — and genuinely unclaimed: `git log --all -S wedge` "
         "and `-S hairpin` over export.py and transcribe.py return nothing on "
@@ -210,11 +210,18 @@ KNOWN_GAPS: dict[str, str] = {
     ),
 }
 
-#: The entries of `KNOWN_GAPS` a CONFIGURATION can spend. An explanation of the
-#: form "we only emit this behind a flag" stops explaining anything the moment
-#: the flag is on, and leaving it standing is what made a healthy exporter go
-#: red on a `--direction-text` run.
-CONDITIONAL_GAPS = ("words",)
+#: The entries of `KNOWN_GAPS` whose status is a FLAG decision rather than a
+#: fact about the exporter. `cbd8ca2` named this set; what changed here is that
+#: knowing the configuration lets the check ASSERT on them instead of merely
+#: excusing them — an explanation of the form "we only emit this behind a flag"
+#: stops explaining anything the moment the flag is on.
+#:
+#: ⚠️ `metronome` was in this set and has been TAKEN OUT, measured rather than
+#: reasoned: on a `--direction-text` run of the whole benchmark, `<metronome>`
+#: is STILL absent from the export. The reader emits a tempo mark as <words>
+#: and the structured form is not built, so it is an ordinary unconditional gap
+#: — and exempting it would hide a real regression on the day it is built.
+FLAG_DEPENDENT: frozenset[str] = frozenset({"words"})
 
 
 _ELEMENT = re.compile(r"<([a-z][a-z0-9-]*)[ />]")
@@ -330,7 +337,7 @@ def expected_gaps(runs: list[Run]) -> dict[str, str]:
     reader that ran and accepted nothing has nothing to export.
     """
     if any(r.directions_placed for r in runs):
-        return {k: v for k, v in KNOWN_GAPS.items() if k not in CONDITIONAL_GAPS}
+        return {k: v for k, v in KNOWN_GAPS.items() if k not in FLAG_DEPENDENT}
     return dict(KNOWN_GAPS)
 
 

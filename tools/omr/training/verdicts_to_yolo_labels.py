@@ -5,7 +5,10 @@ This is the bridge from the labeling UI (which writes
 human-added FN detections) into a YOLO training set that lives under
 `data/user-labeled/<version>/`. The output is a fresh "session" directory
 whose contents never get modified again — each future labeling pass writes
-a new versioned directory and `build_catalog_yaml.py` unions them.
+a new versioned directory. `build_catalog_yaml.py` unions the versions
+listed in `<out-root>/catalog-versions.txt`; a new version is NOT
+auto-included there, because catalog membership is a recorded training
+decision (PROJECT_STATUS.md open decision #13).
 
 For each cell with a verdict JSON, we emit:
 
@@ -755,7 +758,11 @@ def main() -> None:
     print(f"  images/  ({len(summaries)} files)")
     print(f"  labels/  ({len(summaries)} files)")
     print(f"  metadata.json")
-    print(f"\nNext: rebuild the catalog YAML:")
+    print(f"\nNext: decide whether this version enters the training catalog.")
+    print(f"Membership is a recorded decision, not automatic (see")
+    print(f"PROJECT_STATUS.md open decision #13). To admit it, add")
+    print(f"  {args.version_name}")
+    print(f"to {args.out_root}/catalog-versions.txt, then rebuild:")
     print(f"  python3 -m tools.omr.training.build_catalog_yaml "
           f"--root {args.out_root}")
 

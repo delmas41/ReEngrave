@@ -1,0 +1,50 @@
+  mozart-sym41-mvt1: 102 cells, 430 (stem end, beam band) pairs
+  mozart-sym40-mvt1: 66 cells, 434 (stem end, beam band) pairs
+  beethoven-sym3-mvt1: 152 cells, 0 (stem end, beam band) pairs
+  brahms-sym4-mvt1: 120 cells, 72 (stem end, beam band) pairs
+  bruckner-sym5-mvt1: 200 cells, 10 (stem end, beam band) pairs
+  dvorak-sym9-mvt4: 54 cells, 0 (stem end, beam band) pairs
+  tchaikovsky-sym4-mvt2: 160 cells, 56 (stem end, beam band) pairs
+  tchaikovsky-sym6-mvt2: 68 cells, 12 (stem end, beam band) pairs
+  boulanger-printemps-mvt1: 344 cells, 800 (stem end, beam band) pairs
+  beethoven-sym5-mvt1: 144 cells, 96 (stem end, beam band) pairs
+  brahms-sym1-mvt1: 147 cells, 648 (stem end, beam band) pairs
+  mahler-sym5-mvt1: 304 cells, 28 (stem end, beam band) pairs
+
+2586 pairs over 12 works
+
+BAND HEIGHT (staff spaces) — what the bias is half of:
+    0.00 sp      18  
+    0.25 sp     130  ######
+    0.50 sp    1080  ######################################################
+    0.75 sp     896  ############################################
+    1.00 sp     292  ##############
+    1.25 sp     124  ######
+    2.25 sp      14  
+    2.75 sp      16  
+    3.00 sp      16  
+
+admitted by BOTH rules        1128
+FLIPS (box admits, centre rejects)     49
+admitted by NEITHER           1409
+
+d_box (distance to the band as an interval), in px:
+  admitted by both             n=  1128  min=   0.0 p25=   0.0 med=   0.0 p75=  17.0 max= 121.0
+  FLIPPED                      n=    49  min=   1.0 p25=  82.0 med=  95.0 p75= 105.0 max= 137.0
+
+band height (staff spaces):
+  admitted by both             n=  1128  min=   0.1 p25=   0.5 med=   0.6 p75=   0.8 max=   3.0
+  FLIPPED                      n=    49  min=   0.5 p25=   0.7 med=   0.8 p75=   1.1 max=   3.0
+
+bias = d_centre - d_box, in px:
+  admitted by both             n=  1128  min=   0.0 p25=  16.0 med=  23.0 p75=  27.0 max= 136.0
+  FLIPPED                      n=    49  min=  21.0 p25=  27.0 med=  39.0 p75=  52.0 max= 151.0
+
+FLIPS per work:
+   mozart-sym41-mvt1               26 of    430 pairs
+   brahms-sym4-mvt1                 9 of     72 pairs
+   boulanger-printemps-mvt1         7 of    800 pairs
+   mozart-sym40-mvt1                4 of    434 pairs
+   brahms-sym1-mvt1                 3 of    648 pairs
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/sloped_beam_reach.csv

@@ -1237,10 +1237,31 @@ def _read_staff_header(
 # detector is silent" rule the CV clef locator follows.
 
 
-#: Weight given to a key signature read against a DEFAULTED clef. Small enough
-#: that `key_signature_vote._trustworthy` can never accept it as a transposing
-#: departure from the system's modal signature — it may only agree.
+#: How much a key signature read against a DEFAULTED clef is DISCOUNTED by.
+#:
+#: It used to REPLACE the reading's weight rather than discount it, and that is
+#: the whole of the Beethoven 5 p.15 defect: a template reading of three flats
+#: and a template reading of one flat both arrived at the vote as 0.5, so the
+#: one measure of evidence the vote has — how many accidentals were actually
+#: matched — was destroyed for exactly the readings that needed it.
+#: `_modal_reference` then dropped all of them together for weighing under 1.0,
+#: and a 22-staff page took its reference from the only two readings left, both
+#: of which had under-counted the same signature as one flat. Three staves that
+#: read the correct three flats were rejected for departing from it. See
+#: benchmarks/omr-keysig-from-music-2026-09/PHASE1.md.
+#:
+#: A guessed clef halves what a reading is worth; it does not erase what the
+#: reading saw, so three matched accidentals still outweigh one.
 DEFAULTED_CLEF_WEIGHT = 0.5
+
+#: The cap that keeps the ORIGINAL invariant true for a signature of any size:
+#: `key_signature_vote._trustworthy` may never accept a defaulted-clef reading
+#: as a transposing DEPARTURE from the system's modal signature — it may only
+#: agree with it, or vote for it. Discounting alone would break that at four
+#: matched accidentals (4 × 0.5 = 2.0, which is `VoteConfig.strong_weight`), so
+#: the discount is capped below it. `test_transcribe_helpers` pins the relation
+#: rather than the number, because it is the relation that matters.
+DEFAULTED_CLEF_MAX_WEIGHT = 1.5
 
 
 def _key_sig_richer(candidate, current) -> bool:
@@ -1367,7 +1388,12 @@ def _header_key_signatures(
                 ordinal=ordinal,
                 fifths=read.fifths if read else None,
                 weight=(
-                    DEFAULTED_CLEF_WEIGHT if source == "template_default_clef"
+                    # A guessed clef DISCOUNTS the accidental count; it does
+                    # not replace it. Capped so the reading can still only ever
+                    # agree with the system, never depart from it.
+                    min(len(read.matched_slots) * DEFAULTED_CLEF_WEIGHT,
+                        DEFAULTED_CLEF_MAX_WEIGHT)
+                    if source == "template_default_clef"
                     else float(len(read.matched_slots))
                 ) if read else 0.0,
                 source=source if read else "",
@@ -1888,6 +1914,12 @@ def _detections_for_cell(
     ties_from_prev: set[int] = set()
     _pair_ties_in_cell(dets, ties_to_next, ties_from_prev)
 
+    # Articulations, matched to the notehead they are printed against. Same
+    # shape as the tie pass above and for the same reason: the mark and its
+    # note are separate detections and only geometry joins them.
+    articulations: dict[int, list[str]] = {}
+    _attach_articulations_in_cell(dets, articulations)
+
     # ── Build output dicts. Convert cell-local bbox → page-pixel bbox. ────
     out: list[dict[str, Any]] = []
     cell_x0, cell_y0, cell_x1, cell_y1 = cell.bbox_page_px
@@ -1941,6 +1973,11 @@ def _detections_for_cell(
             if rinfo.get("tuplet"):
                 out_d["tuplet"] = rinfo["tuplet"]
                 out_d["tuplet_group"] = rinfo["tuplet_group"]
+        # Articulations printed against this notehead. Only carried when there
+        # are some, to keep the JSON terser — the same policy as beams, tuplets
+        # and the tie flags below.
+        if id(d) in articulations:
+            out_d["articulations"] = articulations[id(d)]
         # THE ACCIDENTAL THAT WAS PRINTED, which is not the same fact as the
         # pitch. `inline_map` already pairs each accidental detection to its
         # notehead and the alteration is folded into `pitch` above — but the
@@ -2051,6 +2088,107 @@ def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
                 n_new_pairs += 1
 
     return n_new_pairs
+
+
+#: DSv2's ten articulation classes are five marks on two sides, and the side is
+#: part of the class name rather than something to infer.
+_ARTICULATION_KINDS = frozenset(
+    {"staccato", "staccatissimo", "accent", "marcato", "tenuto"})
+
+#: How far along x a mark may sit from the notehead it belongs to, in NOTEHEAD
+#: WIDTHS — the unit, not the mark's own bounding box, which is the mistake the
+#: augmentation-dot gate made and paid 193 edits for.
+#:
+#: NOT a tuned value. Swept over eight engraved works, scoring each placement
+#: against the truth by index (`benchmarks/omr-corpus-widening-2026-09/probe_articulations.py`):
+#:
+#:     0.30   106 placed, precision 0.962, placement rate 0.486
+#:     0.50   197 placed, precision 0.980, placement rate 0.904
+#:     0.75   197 placed, precision 0.980, placement rate 0.904   <- chosen
+#:     1.00   197 placed, precision 0.980, placement rate 0.904
+#:     1.50   197 placed, precision 0.980, placement rate 0.904
+#:     2.50   197 placed, precision 0.980, placement rate 0.904
+#:
+#: A flat plateau from 0.50 to 2.50, identical to the mark, with a cliff below
+#: it: a mark is x-centred on its notehead to within half a width, and on the
+#: correct side there is nothing else within two and a half. 0.75 sits in the
+#: middle of the plateau rather than on either edge of it.
+_ARTIC_MAX_DX_NOTEHEAD_WIDTHS = 0.75
+
+
+def articulation_kind(class_name: str) -> tuple[str, bool] | None:
+    """`("staccato", True)` for `articStaccatoAbove`. None if not one.
+
+    The bool is whether the mark is printed ABOVE the notehead, which the class
+    name states and geometry then has to agree with — a mark labelled `Above`
+    that sits below every notehead in the cell belongs to none of them.
+    """
+    norm = "".join(ch for ch in (class_name or "").lower() if ch.isalnum())
+    if not norm.startswith("artic"):
+        return None
+    body = norm[len("artic"):]
+    for suffix, above in (("above", True), ("below", False)):
+        if body.endswith(suffix):
+            kind = body[: -len(suffix)]
+            return (kind, above) if kind in _ARTICULATION_KINDS else None
+    return None
+
+
+def _attach_articulations_in_cell(dets, out: dict[int, list[str]]) -> int:
+    """Give each articulation mark to the notehead it is printed against.
+
+    THE SEVENTH SIGNAL DETECTED AND NEVER EXPORTED. `export.py` contained the
+    string "articulation" once, in a docstring, while the detector fired 102
+    staccati on one engraved Mozart 40 page — and musicdiff charged back
+    exactly 102 `insarticulation` edits, 28% of that work's whole budget. The
+    three works the benchmark used to consist of print 0, 2 and 6 of them,
+    which is why nothing saw it.
+
+    The rule is the one the engraving makes true: a staccato or accent is
+    printed directly above or below its notehead, so the mark is matched to the
+    notehead nearest it in X, on the side its own class names, within
+    `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS`. A mark with no notehead on the correct side
+    is left unattached rather than given to the nearest thing available — 21 of
+    218 across the corpus, and abstaining there is why precision is 0.980.
+
+    Mutates `out` (notehead id -> list of MusicXML articulation names) and
+    returns the number of marks placed.
+    """
+    noteheads = [d for d in dets if (d.category or "") == "notehead"]
+    if not noteheads:
+        return 0
+    marks = [(d, k) for d in dets
+             if (k := articulation_kind(d.smufl_name or "")) is not None]
+    if not marks:
+        return 0
+
+    widths = sorted(n.width_canonical for n in noteheads)
+    nh_width = widths[len(widths) // 2] or 1.0
+    limit = nh_width * _ARTIC_MAX_DX_NOTEHEAD_WIDTHS
+
+    placed = 0
+    for mark, (kind, above) in marks:
+        mx = mark.x_canonical + mark.width_canonical / 2.0
+        my = mark.y_canonical + mark.height_canonical / 2.0
+        best = None
+        for n in noteheads:
+            ny = n.y_canonical + n.height_canonical / 2.0
+            # Larger canonical y is LOWER on the page, so a mark printed above
+            # its notehead has the smaller y of the two.
+            if above and my >= ny:
+                continue
+            if not above and my <= ny:
+                continue
+            dx = abs(mx - (n.x_canonical + n.width_canonical / 2.0))
+            if dx > limit:
+                continue
+            if best is None or dx < best[0]:
+                best = (dx, n)
+        if best is None:
+            continue
+        out.setdefault(id(best[1]), []).append(kind)
+        placed += 1
+    return placed
 
 
 def _pair_ties_in_cell(dets, ties_to_next: set, ties_from_prev: set) -> None:
@@ -2565,6 +2703,110 @@ def _dedupe_cross_staff_detections(
 # expected, none found, confidence below the bar. Inside-staff detections are
 # never touched, whatever their confidence.
 _UNLADDERED_NOTEHEAD_MAX_CONF = 0.65
+
+
+def _drop_furniture_measures(page: dict[str, Any]) -> int:
+    """Take out the measure columns that are system furniture, not music.
+
+    A system's opening rule and the bracket or brace beside it are two vertical
+    strokes a barline's width apart, and `detect_barlines` reads them as two
+    barlines with a measure between. Dvorak 9's Simrock print is the clean case:
+    a cell 56 px wide — 2.2 staff spaces, narrower than a notehead and its stem,
+    on a page whose real measures run 299 to 731 px — holding one `brace`
+    detection at confidence 0.33, on all fifteen staves. Every staff then emits
+    nine measures where the page prints eight.
+
+    ⚠️ **WIDTH IS NOT THE TEST, and it was checked before being rejected**
+    (`benchmarks/omr-scan-e2e-2026-09/RESULTS.md` §1): genuine measures on those
+    five pages run 4.2 to 28.7 staff spaces against 2.2 and 3.5 for the two
+    spurious ones. A 0.7-space gap on a five-page corpus is a threshold to tune,
+    not a cliff to sit on — and it would also miss the WTC case below, which is
+    12.5 spaces wide and just as spurious.
+
+    CONTENT is the test, asked at the level the answer lives at. **A barline
+    spans the system**, so a column is furniture for every staff of a system or
+    for none of them; per-staff emptiness says nothing, because any staff may be
+    tacet, while a column where not one staff of fifteen carries a notehead or a
+    rest is a different object. A genuine measure on even a fully tacet staff
+    contains its whole-bar rest.
+
+    Measured over **243 measure columns, 27 systems, 20 committed
+    transcriptions** of many publishers
+    (`benchmarks/omr-scan-e2e-2026-09/probe_furniture_columns.py`): exactly
+    **two** columns carry no notehead and no rest on any staff — 0.82% — and
+    both are furniture. The second was not one of the two RESULTS.md found:
+    WTC I p.17 system 1 opens with a 463 px cell holding `clef ×2,
+    accidental ×8` and no notes, where every other system on that page carries
+    its clef and key signature inside a first measure that also plays.
+
+    "Has music" is `voicing.group_chords_in_measure` — the EXPORTER's own test
+    for whether a measure needs a whole-bar rest — so the rule and the thing it
+    protects cannot drift apart.
+
+    ⚠️ **Leading and trailing columns only.** Furniture is what sits OUTSIDE the
+    music, at the ends a system's rules bound. A silent column in the MIDDLE is
+    a different animal: a spurious barline there splits one bar into two halves
+    that both still hold notes, so a music-free middle column is much more
+    likely a bar the detector failed on — and dropping it would splice its
+    neighbours together and shift every measure after it. Those are kept.
+
+    Returns `(cells removed, detections removed with them)`, so the page's
+    running totals stay true rather than counting glyphs that are no longer in
+    the output.
+    """
+    dropped = 0
+    dropped_detections = 0
+    for system in page.get("systems", []):
+        staves = system.get("staves", [])
+        if not staves:
+            continue
+        width = max((len(s.get("measures", [])) for s in staves), default=0)
+        if width < 2:
+            continue
+
+        def _has_music(m: int) -> bool:
+            return any(
+                group_chords_in_measure(
+                    s["measures"][m].get("detections") or [])
+                for s in staves if m < len(s.get("measures", []))
+            )
+
+        voiced = [m for m in range(width) if _has_music(m)]
+        if not voiced:
+            # Nothing to anchor on. A system the detector read no music in at
+            # all is a recognition failure, not a furniture question, and
+            # deleting its measures would turn a bad reading into no reading.
+            continue
+        keep = set(range(voiced[0], voiced[-1] + 1))
+        if len(keep) == width:
+            continue
+        lead_dropped = voiced[0] > 0
+        for staff in staves:
+            measures = staff.get("measures", [])
+            kept = [m for i, m in enumerate(measures) if i in keep]
+            dropped += len(measures) - len(kept)
+            dropped_detections += sum(
+                len(m.get("detections") or [])
+                for i, m in enumerate(measures) if i not in keep
+            )
+            for new_index, measure in enumerate(kept):
+                measure["measure_index"] = new_index
+            staff["measures"] = kept
+            staff["n_measures"] = len(kept)
+            # The staff-level summary is "what was in effect during the staff's
+            # FIRST measure", and dropping a leading column moves which measure
+            # that is. Leaving it stale is not cosmetic: `_lily_staff_block`
+            # emits one `\clef` per staff from this field, so on Dvorak it would
+            # print treble for the bassoon and both trombones — and, worse, it
+            # would do so only AFTER this pass removed the furniture cell that
+            # `export._first_clef_bearing_measure` was recovering the clef from.
+            # A fix must not disarm the other fix that covers it.
+            if lead_dropped and kept:
+                for field in ("clef", "key_signature", "time_signature"):
+                    if kept[0].get(field) is not None:
+                        staff[field] = kept[0][field]
+        system["n_measures_dropped_as_furniture"] = width - len(keep)
+    return dropped, dropped_detections
 
 
 def _drop_unladdered_noteheads(
@@ -4045,6 +4287,20 @@ def transcribe(
                 out.get("n_cross_staff_duplicates_removed", 0) + n_deduped
             )
             out["n_detections_total"] -= n_deduped
+
+        # ── System furniture read as a measure ──
+        # After the two dedupers, so the content test sees the detections
+        # everything downstream will see; before the meter passes, so a
+        # courtesy meter or a system rule caught as a bar cannot vote on the
+        # page's time signature or be counted as one of its measures.
+        n_furniture, n_furniture_dets = _drop_furniture_measures(page_dict)
+        if n_furniture:
+            page_dict["n_furniture_measure_cells_dropped"] = n_furniture
+            out["n_furniture_measure_cells_dropped"] = (
+                out.get("n_furniture_measure_cells_dropped", 0) + n_furniture
+            )
+            out["n_measures_total"] -= n_furniture
+            out["n_detections_total"] -= n_furniture_dets
 
         # A dossier meter is KNOWN, so it is applied before inference runs and
         # inference is left with nothing to guess at. It also overrules a

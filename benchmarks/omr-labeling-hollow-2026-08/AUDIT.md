@@ -198,6 +198,12 @@ training-time decision for Sean**, alongside the standing v5/v6 one.
 as nobody runs a documented command is a footgun of the same shape as the
 nc=214 one that was closed in July.
 
+*(Closed 2026-09-02: membership now lives in
+`data/user-labeled/catalog-versions.txt` — `build_catalog_yaml` builds exactly
+what it lists, refuses without it, and reports what it excludes, so a rebuild
+can no longer silently widen the catalog. `test_training_pipeline.py` pins the
+v1–v4 membership; v7's entry remains the open decision recorded above.)*
+
 ---
 
 ## How to reproduce the audit view

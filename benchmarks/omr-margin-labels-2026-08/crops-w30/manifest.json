@@ -1,0 +1,433 @@
+[
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p10_s0.png",
+    "work": "beethoven-symphony-5_imslp-575951",
+    "page_index": 10,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Oh.",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "3": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Tp.",
+        "instrument": "Timpani",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p10_s1.png",
+    "work": "beethoven-symphony-5_imslp-575951",
+    "page_index": 10,
+    "system_index": 1,
+    "staff_indices": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "truth": {
+      "9": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "10": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "11": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "12": {
+        "text": "Fag-.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "13": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "14": {
+        "text": "Tp.",
+        "instrument": "Timpani",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p40_s0.png",
+    "work": "beethoven-symphony-5_imslp-575951",
+    "page_index": 40,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "truth": {
+      "0": {
+        "text": ") fag.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": ")",
+        "instrument": null,
+        "confidence": "none"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p40_s1.png",
+    "work": "beethoven-symphony-5_imslp-575951",
+    "page_index": 40,
+    "system_index": 1,
+    "staff_indices": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "truth": {
+      "5": {
+        "text": "I Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "7": {
+        "text": "('or.",
+        "instrument": null,
+        "confidence": "none"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p40_s2.png",
+    "work": "beethoven-symphony-5_imslp-575951",
+    "page_index": 40,
+    "system_index": 2,
+    "staff_indices": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "truth": {
+      "12": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "14": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-5_imslp-575951_p59_s0.png",
+    "work": "beethoven-symphony-5_imslp-575951",
+    "page_index": 59,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "truth": {
+      "0": {
+        "text": "pie, F).",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "1": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Ob",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Fag",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "5": {
+        "text": "Fag c.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "6": {
+        "text": "Cor",
+        "instrument": "Horn",
+        "confidence": "high"
+      },
+      "7": {
+        "text": "Tr.",
+        "instrument": "Trumpet",
+        "confidence": "high"
+      },
+      "8": {
+        "text": "Tp",
+        "instrument": "Timpani",
+        "confidence": "high"
+      },
+      "9": {
+        "text": "Tr. Alt.",
+        "instrument": "Trombone",
+        "confidence": "high"
+      },
+      "10": {
+        "text": "Tr. Ten",
+        "instrument": "Trombone",
+        "confidence": "high"
+      },
+      "11": {
+        "text": "Tr. Bas",
+        "instrument": "Trombone",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p10_s0.png",
+    "work": "beethoven-symphony-6_imslp-504082",
+    "page_index": 10,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "truth": {
+      "0": {
+        "text": ")",
+        "instrument": null,
+        "confidence": "none"
+      },
+      "1": {
+        "text": "Cor.",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p10_s1.png",
+    "work": "beethoven-symphony-6_imslp-504082",
+    "page_index": 10,
+    "system_index": 1,
+    "staff_indices": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "truth": {
+      "7": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "8": {
+        "text": "Ob.",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "9": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "11": {
+        "text": "Cor",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p10_s2.png",
+    "work": "beethoven-symphony-6_imslp-504082",
+    "page_index": 10,
+    "system_index": 2,
+    "staff_indices": [
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "truth": {
+      "16": {
+        "text": "Cor:",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p40_s0.png",
+    "work": "beethoven-symphony-6_imslp-504082",
+    "page_index": 40,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "truth": {
+      "0": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      },
+      "1": {
+        "text": "Ob",
+        "instrument": "Oboe",
+        "confidence": "high"
+      },
+      "2": {
+        "text": "Cl.",
+        "instrument": "Clarinet",
+        "confidence": "high"
+      },
+      "3": {
+        "text": "Fag.",
+        "instrument": "Bassoon",
+        "confidence": "high"
+      },
+      "4": {
+        "text": "Cor",
+        "instrument": "Horn",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p40_s1.png",
+    "work": "beethoven-symphony-6_imslp-504082",
+    "page_index": 40,
+    "system_index": 1,
+    "staff_indices": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "truth": {
+      "9": {
+        "text": "Fl.",
+        "instrument": "Flute",
+        "confidence": "high"
+      }
+    }
+  },
+  {
+    "png": "beethoven-symphony-6_imslp-504082_p59_s0.png",
+    "work": "beethoven-symphony-6_imslp-504082",
+    "page_index": 59,
+    "system_index": 0,
+    "staff_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "truth": {}
+  }
+]
