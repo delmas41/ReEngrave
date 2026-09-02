@@ -348,6 +348,38 @@ Three things it settled, all in FINDINGS:
   proposing machinery to infer a missing signal, check whether the signal is
   already detected and being dropped.
 
+### 4b. OPEN DECISION — the `--direction-text` default, and the trap in it
+
+`--direction-text` is off by default and worth **144 edits** on the engraved
+orchestral benchmark (`wrong direction` 151 → 7). The question is what the
+default should be. Two things settle most of it and one nearly derailed it.
+
+**The dependency worry is already handled.** `direction_text` abstains when no
+OCR rung is available — its own documented contract, "no venv and no Tesseract
+means no directions, the same degradation `staff_labels_surya` has" — and it
+calls `staff_labels_surya.available()` to decide. Nothing breaks on a machine
+without Surya; the pass simply does not run. Its twin, the margin-label reader,
+has the SAME dependency and is already on by default (`surya_fallback=True`).
+The two are inconsistent with each other today, and the direction reader is the
+odd one out.
+
+⚠️ **"Surya only helps on scans, not engravings" is TRUE OF THE OTHER READER
+AND FALSE OF THIS ONE.** The two consumers differ in one decisive way:
+
+| | rung 1 | on an engraving |
+|---|---|---|
+| `staff_labels` (margin labels) | **the PDF text layer** | Surya is redundant — the text layer already answers |
+| `direction_text` | *(none)* — Surya and Tesseract only | Surya is the ONLY reader; nothing else can see the words |
+
+So a finding that Surya adds nothing on engravings comes from the margin-label
+ladder, where rung 1 already covers them, and does not transfer. Measured here
+on an ENGRAVED benchmark, the direction reader is worth 144 edits. A default of
+"on for scans only" would switch it off exactly where it was measured helping.
+
+What is genuinely unmeasured is the reverse: nobody has measured
+`--direction-text` on a SCAN. `benchmarks/omr-first-run-2026-08/` has the one
+real scan measured end to end and is where that would go.
+
 ### 5. Small and known
 
 - Mahler regressed 0.0785 → 0.0826 when dynamics landed (8 edits on a 24-note
