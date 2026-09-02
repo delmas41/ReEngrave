@@ -100,6 +100,24 @@ class ClefLocatorConfig:
     min_height_spaces: float = 2.2
     max_height_spaces: float = 5.0
     min_symmetry: float = 0.70      # the C-clef signature — see _refine_symmetry_axis
+    # A rarer answer has to be better evidenced, and mezzosoprano is the rarest
+    # of the five C clefs by a long way — essentially absent from the orchestral
+    # and keyboard repertoire this reads. Measured over 101 located candidates on
+    # a scanned Beethoven 5 (`beethoven5-clef-sweep.json`), it is named five
+    # times and is WRONG ALL FIVE: four are G clefs whose surviving fragment
+    # balances about line 2 — which is the line a G clef curls around, so the
+    # misread is not random — and one is an F clef.
+    #
+    # The separation is wide and it is in symmetry. The one real mezzosoprano in
+    # any corpus, engraved by LilyPond on the reference sheet, scores 0.981; the
+    # five misreads score 0.712 to 0.815, all under the general 0.70 floor's
+    # nearest neighbours. So the answer is not to ban the clef — that would cost
+    # the real one — but to ask more of it than of the others.
+    #
+    # Nottebohm, twenty pages of vocal-clef counterpoint, names mezzosoprano
+    # ZERO times with clustering on or off, so this floor cannot cost it
+    # anything.
+    min_symmetry_mezzosoprano: float = 0.90
     # How far the measured axis of symmetry may sit from the box centre. Big
     # enough to undo a stray fragment's pull, small enough that it can never
     # reach the next staff line (half a space would be the tipping point).
@@ -123,8 +141,7 @@ class ClefLocatorConfig:
     # Above 0.4 the heading text starts fusing back on and coverage falls.
     # 0.3 is the middle of that window, as far from inventing clefs as from
     # losing them.
-    # Vertical counterpart of the x-gap. OFF by default — set it to 1.0 to
-    # turn it on — and the reason it is off is not that it doesn't work.
+    # Vertical counterpart of the x-gap.
     #
     # What it does: a staff header is a narrow column that also holds whatever
     # is printed above and below the staff, and grouping ink by its x-gap alone
@@ -146,24 +163,23 @@ class ClefLocatorConfig:
     # clef's tail detaches at 0.49), a heading stands 1.68 spaces clear at the
     # median, and 1.0 sits between them.
     #
-    # Why it is off: of the 19 staves it adds across both books, 14 are right
-    # and **5 are bass clefs read as C clefs**. Every one of the five is the
-    # same pre-existing hole — `_has_f_clef_dots` is the only thing separating
-    # an F clef from a C clef, and on these prints the two dots merge into the
-    # clef's body under thresholding, so there is no pair to find. The extra
-    # coverage lands disproportionately on staves where that hole is open, and
-    # a wrong clef transposes every note on its staff while a missed one costs
-    # nothing that was not already lost. Nothing cheap closes it: symmetry does
-    # not separate the two populations (wrong reads 0.70-0.80 against correct
-    # reads from 0.701), nor does horizontal ink balance, nor the cluster's
-    # internal ink profile — all measured, all in
-    # benchmarks/omr-clef-geometry/RESULTS.md.
+    # It was held back for two sessions on the strength of "14 staves right and
+    # 5 wrong", a count taken when no corpus could see either number — the four
+    # corpora of the day contained no bass clef the locator was liable to
+    # misread, so they reported FALSE POSITIVES 0 whatever it did. Measured
+    # against `beethoven5-clef-sweep.json`, which is built from the locator's
+    # own reads and therefore cannot have that blind spot:
     #
-    # So this is finished work waiting on a different fix. Turn it on when the
-    # F-clef veto can survive a merged dot pair, and re-run
-    # `check_clef_precision.py` — which grew its orchestral corpus for exactly
-    # this reason.
-    cluster_y_gap_spaces: float | None = None
+    #     arm            located   orch misses   sweep misses   FALSE POS
+    #     off                 69             6             10           6
+    #     ON (this)           77             5              7           7
+    #
+    # Eight more located clefs and four fewer misses for ONE more false
+    # positive. The RATE is what this layer trades on — 6/69 against 7/77, flat
+    # — and "coverage bought at a worse precision than the layer already has"
+    # is the trade it refuses; this is not that. Nottebohm coverage 69 -> 77 of
+    # 206 headers, reference 5/5 and piano 0 unchanged.
+    cluster_y_gap_spaces: float | None = 1.0
     min_component_area_spaces: float = 0.02  # speck filter, in (staff space)²
     vertical_rule_max_width_spaces: float = 0.5   # thinner ⇒ a rule, not a glyph
     vertical_rule_min_height_spaces: float = 2.0
@@ -183,12 +199,108 @@ class ClefLocatorConfig:
     # because they straddle the line the clef names. See _has_f_clef_dots.
     dot_min_size_spaces: float = 0.22
     dot_max_size_spaces: float = 0.75
+    # A worn dot is not round: the staff-line stripper leaves a stub where the
+    # line ran under it and the dot inherits it, so the pair on Beethoven 5
+    # p.54 staff 8 measures 0.59 x 0.86 and 0.64 x 1.00 — widths still exactly
+    # dot-sized, heights half again too big. Loosening the HEIGHT bound alone
+    # (to ~1.15, with a matching-widths test to pay for it) does veto that F
+    # clef, and it was measured and NOT shipped: it costs two real orchestral C
+    # clefs and one Nottebohm cell, while its benefit appears in no corpus,
+    # because none contains a bass clef read as a C clef. See RESULTS.md —
+    # "the veto could not see the dots". The corpus is the next step, not the
+    # threshold.
+    dot_max_height_spaces: float = 0.75
     dot_min_aspect: float = 0.65
     dot_max_aspect: float = 1.5
+    dot_pair_max_width_diff_spaces: float | None = None
     dot_right_fraction: float = 0.55   # dots sit right of the glyph's middle
+    # A SECOND, looser reading of the same two dots, admitted only where they
+    # stand clear of the body — past its right edge rather than merely right of
+    # its middle. Everything the strict bounds above accept is still accepted
+    # exactly as before, so this can only ever ADD a veto.
+    #
+    # This is what the earlier height loosening got wrong, and the corpora now
+    # say so in one line. Loosening the height alone, at the old 0.55 position,
+    # vetoes 5 misreads and costs 3 real C clefs; requiring the same dots to sit
+    # past the body's right edge costs **zero** real clefs at EVERY height and
+    # aspect tried, on both editions:
+    #
+    #     position    height   aspect      false pos. vetoed   real clefs lost
+    #     >= 0.55w      0.95    <= 1.5              5                 3
+    #     >= 0.55w      1.15    <= 1.5              5                 4
+    #     >= 1.00w      0.95    <= 1.5              5                 0
+    #     >= 1.00w      1.15    <= 2.2              8                 0
+    #     >= 1.00w      1.40    <= 3.0              8                 0
+    #
+    # The reason is structural rather than lucky. A C clef's near-pair is made
+    # of fragments of its OWN strokes, which live inside the glyph; an F clef's
+    # dots are printed clear of it. Position separates the two populations
+    # completely, which is why the cost column is identically zero across the
+    # whole grid — so the shape bounds below only govern how many F clefs are
+    # caught, never how many C clefs are lost, and being generous with them
+    # risks a missed veto rather than a wrong one.
+    #
+    # The height reaches 1.25 because a worn dot is not round: the staff-line
+    # stripper leaves a stub where the line ran under it, and the pair on
+    # Beethoven 5 p.54 staff 8 measures 0.86 and 1.00 tall against widths of
+    # 0.59 and 0.64. The aspect reaches 2.2 for the mirror case, a dot the
+    # stripper has cut flat. Both sit inside a plateau rather than at its edge.
+    dot_clear_right_fraction: float = 1.0
+    dot_clear_max_height_spaces: float = 1.25
+    dot_clear_max_aspect: float = 2.2
+    # NOT loosened, and measured: dropping `dot_min_aspect` from 0.65 to 0.45
+    # costs 2 real C clefs and to 0.30 costs 4, at every height. A shape that
+    # tall and narrow is a stroke, not a dot, wherever it stands.
+    dot_clear_min_aspect: float = 0.65
+    # Accept ONE dot standing clear of the body, without its partner.
+    #
+    # OFF. It was taken deliberately on 2026-08-31 and reverted the same day,
+    # when a wider ground truth showed the trade running the other way — and
+    # the reason the first measurement misled is worth more than the rule.
+    #
+    # The sweep corpora said it removed 8 false positives for 16 declined C
+    # clefs: a bad ratio, but defensible, because a declined C clef leaves its
+    # staff on the default it would have had anyway while an accepted F clef
+    # transposes every note on it.
+    #
+    # Then `orchestral-clef-truth.json` widened from 4 pages to 10 — every
+    # staff on the page read by eye rather than only the ones the locator fires
+    # on — and measured the same rule against an unbiased population:
+    #
+    #                                   veto on   veto off
+    #     C clefs located                     8         13
+    #     false positives                     0          1
+    #     C clefs lost to this veto           6          0
+    #
+    # FIVE real C clefs for ONE false positive, recall a third of the page
+    # against more than half. **A sweep corpus is built from the candidates the
+    # locator FIRES on, so it oversamples exactly the staves where it produces
+    # something, and it cannot answer "what does this rule cost in the wild".**
+    # It was the wrong instrument, read carefully.
+    #
+    # The mechanism stays because it is measured and the arm is worth being
+    # able to reproduce: `probe_cluster_too_big.py --single-dot` turns it on.
+    # Only a CLEAR-tier dot ever counted — a lone dot-shaped component inside
+    # the body is a C clef's own stroke fragment, and 109 of 123 real clefs
+    # have one.
+    dot_single_clear_is_enough: bool = False
     dot_max_dx_spaces: float = 0.30
     dot_min_dy_spaces: float = 0.60
     dot_max_dy_spaces: float = 1.50
+    # How far PAST the candidate's own box to look for those dots.
+    #
+    # They are part of the glyph but they are not always part of the candidate:
+    # what bounds a candidate is the clustering and the `header_frac` strip, and
+    # neither knows about F clefs. Measured on Beethoven 5 p.54 staff 8 — a bass
+    # clef read as an alto clef — the body ends exactly at the strip's right
+    # edge and both dots sit beyond it, so the veto was being asked to find them
+    # in pixels it had never been shown. Nothing was merged and no threshold was
+    # wrong; the evidence was simply outside the frame.
+    #
+    # 1.5 spaces reaches the dots of every F clef in the corpora and stops well
+    # short of the first notehead. The search also runs on the FULL mask rather
+    # than the header strip, for the same reason.
+    dot_search_right_spaces: float = 1.5
     # Staff spacing, in pixels, that the shape analysis is done at. Cells
     # arrive at whatever scale their measure width happened to force — a
     # narrow measure is upscaled far more than a wide one — and morphology is
@@ -204,6 +316,62 @@ class ClefLocatorConfig:
     # clef on the bottom line reaches about two spaces below it; anything
     # centred further out belongs to the neighbouring staff.
     staff_band_spaces: float = 2.2
+    # A clef is printed ON the staff. A cluster that ends before the staff's
+    # own five lines begin is standing in the margin, so whatever it is, it is
+    # not this staff's clef — and it is skipped rather than stopped for, on
+    # exactly the reasoning the ink-fraction and minimum-width tests already
+    # use: a cluster is only worth STOPPING for if it could be the clef, and
+    # the real one is further right.
+    #
+    # This exists because a second edition showed a false-positive family the
+    # first could not. Edition Peters prints the stacked instrument numbers
+    # (1/2, 1/2/3) and the brace's curl to the LEFT of the system's bracket,
+    # close enough to fall inside the header window — and a column of two or
+    # three numerals is glyph-sized and vertically symmetric, because a column
+    # of numerals is. No shape gate can refuse them; they really are symmetric.
+    # Their POSITION is what gives them away. Twenty-four of the forty-one
+    # false positives on `mahler5-clef-sweep.json` are that family, and none
+    # appear in `beethoven5-clef-sweep.json` at all.
+    #
+    # `probe_false_positive_geometry.py` measured the ceiling before this was
+    # written: 27 of Mahler's 40 removed for 2 of its 64 real clefs, and
+    # exactly neutral on Beethoven, whose false positives are all real clefs
+    # misread in the place a clef belongs. Set False to measure the other arm.
+    require_cluster_on_staff: bool = True
+    # How the staff's left edge is found: the leftmost horizontal run at least
+    # this many spaces long. Length is what identifies a staff line, and the
+    # bound is not cosmetic — at analysis scale a bold serif's crossbar clears
+    # a 1.5-space horizontal opening, so the instrument name and the numerals
+    # themselves leave "horizontal" fragments at the very left of the window.
+    # Taking the leftmost horizontal ink instead reported that EVERY staff
+    # begins at column 0, and the rule did nothing.
+    staff_line_min_length_spaces: float = 4.0
+    # How far into its own header window a staff may appear to begin before
+    # the measurement is disbelieved and the margin test abstains.
+    #
+    # It exists because the one genuine clef this rule cost was p48 s12 of the
+    # Mahler sweep, where the printed lines are so broken at the head of the
+    # system that no run four spaces long exists until 6.8 spaces in — past
+    # the clef — so the clef was judged to be in the margin. The window is
+    # biased left by half a space plus the bracket and the instrument name; a
+    # staff that seems to start further in than THAT has not been measured, it
+    # has been lost.
+    #
+    # Measured over all 174 staves of both sweep corpora: every one of them
+    # lands between 0 and 3.55 spaces except p48 s12, which lands at 6.77.
+    # The next-highest value is 3.55 and the gap above it is 3.2 spaces wide —
+    # wider than the whole spread of the rest of the population — so unlike
+    # the tenor symmetry floor this bound is not fitted to one edition's ink.
+    # It abstains on exactly one staff in two editions, and that staff is
+    # precisely the one where the measurement is known to be wrong.
+    #
+    # The alternative was to fix the OPERATOR — measure the staff's left edge
+    # from the band ink profile the way `staff_header._walk_left` does, so a
+    # broken line is bridged. That was built and measured, and every version
+    # of it that recovered p48 s12 cost more false positives than it saved:
+    # the ink that lets you follow a broken staff line is the same ink that
+    # lets an instrument name look like one. See RESULTS.md.
+    staff_left_max_spaces: float = 4.0
 
 
 DEFAULT_LOCATOR_CONFIG = ClefLocatorConfig()
@@ -264,6 +432,59 @@ def _ink_mask(
     mask = _strip_vertical_rules(mask, spacing, config)
     mask = _strip_horizontal_rules(mask, spacing)
     return _drop_flat_residue(mask, spacing, config)
+
+
+def _staff_left_column(
+    cell: MeasureCell, spacing: float, config: ClefLocatorConfig
+) -> int | None:
+    """The column where this staff's printed lines begin, in ANALYSIS space,
+    or None when they cannot be found.
+
+    Deliberately measured on `cell.image` and not on the staff-line-removed
+    variant `_ink_mask` prefers: here the lines ARE the measurement. On the
+    prints this locator exists for the removal leaves most of them behind
+    anyway, but relying on that would make the answer depend on how well an
+    upstream step worked.
+
+    A staff line is identified by LENGTH — it is the one horizontal that runs
+    the width of the cell. See `staff_line_min_length_spaces` for what happens
+    when it is identified by position instead.
+    """
+    img = cell.image
+    if img is None or img.size == 0:
+        return None
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if img.ndim == 3 else img
+    # The same resize `_ink_mask` performs, so the column it returns is
+    # directly comparable with a cluster's bbox.
+    scale = _analysis_scale(spacing, config)
+    if scale < 1.0:
+        gray = cv2.resize(
+            gray,
+            (max(1, int(round(gray.shape[1] * scale))),
+             max(1, int(round(gray.shape[0] * scale)))),
+            interpolation=cv2.INTER_AREA,
+        )
+        spacing = spacing * scale
+    _, mask = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
+    k = max(3, int(round(1.5 * spacing)))
+    horiz = cv2.morphologyEx(
+        mask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (k, 1))
+    )
+    n, _labels, stats, _c = cv2.connectedComponentsWithStats(horiz, connectivity=8)
+    long_enough = config.staff_line_min_length_spaces * spacing
+    lefts = [int(stats[i, cv2.CC_STAT_LEFT]) for i in range(1, n)
+             if stats[i, cv2.CC_STAT_WIDTH] >= long_enough]
+    if not lefts:
+        return None
+    left = min(lefts)
+    if left > config.staff_left_max_spaces * spacing:
+        # Further in than any staff plausibly starts inside its own header
+        # window: the lines are too broken to be followed, and this is a
+        # failed measurement rather than a staff that begins late. Abstain —
+        # the margin test is off for this cell — instead of rejecting a clef
+        # on it. See `staff_left_max_spaces`.
+        return None
+    return left
 
 
 def _refine_symmetry_axis(
@@ -347,8 +568,13 @@ def _has_f_clef_dots(
     even though it costs nothing on C clefs.
     """
     x, y, w, h = bbox
-    sub = mask[y : y + h, x : x + w]
-    if sub.size == 0 or w <= 0:
+    if w <= 0:
+        return False
+    # Look across the body AND a little way past it: the dots belong to the
+    # glyph but need not belong to the candidate — see `dot_search_right_spaces`.
+    right = min(mask.shape[1], x + w + int(round(config.dot_search_right_spaces * spacing)))
+    sub = mask[y : y + h, x:right]
+    if sub.size == 0:
         return False
     n, _labels, stats, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
     dots: list[tuple[float, float]] = []
@@ -357,22 +583,48 @@ def _has_f_clef_dots(
         bh = stats[i, cv2.CC_STAT_HEIGHT] / spacing
         if not (config.dot_min_size_spaces <= bw <= config.dot_max_size_spaces):
             continue
-        if not (config.dot_min_size_spaces <= bh <= config.dot_max_size_spaces):
-            continue
         aspect = bw / max(bh, 1e-6)
-        if not (config.dot_min_aspect <= aspect <= config.dot_max_aspect):
-            continue
         cx = stats[i, cv2.CC_STAT_LEFT] + stats[i, cv2.CC_STAT_WIDTH] / 2.0
-        if cx / w < config.dot_right_fraction:
+        # Two readings of the same dot, and a component only has to satisfy one.
+        #
+        # The strict one is unchanged, and is measured against the BODY's
+        # middle rather than the widened search window — the test is about
+        # where the dots sit on the glyph, and widening the window must not
+        # quietly move the line it is measured against.
+        #
+        # The loose one asks for more position and less shape: a dot standing
+        # clear of the body, past its right edge, may be as worn as the
+        # staff-line stripper leaves it. A C clef has no ink out there, so
+        # nothing is risked; see `dot_clear_right_fraction`.
+        strict = (
+            config.dot_min_size_spaces <= bh <= config.dot_max_height_spaces
+            and config.dot_min_aspect <= aspect <= config.dot_max_aspect
+            and cx / w >= config.dot_right_fraction
+        )
+        clear = (
+            config.dot_min_size_spaces <= bh <= config.dot_clear_max_height_spaces
+            and config.dot_clear_min_aspect <= aspect <= config.dot_clear_max_aspect
+            and cx / w >= config.dot_clear_right_fraction
+        )
+        if not (strict or clear):
             continue
-        dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0))
+        if clear and config.dot_single_clear_is_enough:
+            # One dot standing clear of the body is enough on its own — the
+            # partner is often lost to the morphology on a worn print, and on
+            # four staves of the Mahler sweep it does not survive as a separate
+            # component at any dilation or search window. See
+            # `dot_single_clear_is_enough` for the trade this makes.
+            return True
+        dots.append((cx, stats[i, cv2.CC_STAT_TOP] + stats[i, cv2.CC_STAT_HEIGHT] / 2.0, bw))
     for i in range(len(dots)):
         for j in range(i + 1, len(dots)):
             dx = abs(dots[i][0] - dots[j][0]) / spacing
             dy = abs(dots[i][1] - dots[j][1]) / spacing
-            if dx <= config.dot_max_dx_spaces and (
-                config.dot_min_dy_spaces <= dy <= config.dot_max_dy_spaces
-            ):
+            dw = abs(dots[i][2] - dots[j][2])
+            if (dx <= config.dot_max_dx_spaces
+                    and config.dot_min_dy_spaces <= dy <= config.dot_max_dy_spaces
+                    and (config.dot_pair_max_width_diff_spaces is None
+                         or dw <= config.dot_pair_max_width_diff_spaces)):
                 return True
     return False
 
@@ -505,9 +757,24 @@ def locate_clef(
         _note("no_clusters")
         return None
 
+    # Where the staff itself starts, for the margin test below. Measured once
+    # per cell rather than per cluster, and only when the test is on.
+    staff_left = (
+        _staff_left_column(cell, metrics[0], config)
+        if config.require_cluster_on_staff else None
+    )
+    skipped_off_staff = 0
+
     for bbox in clusters:
         x, y, w, h = bbox
         w_sp, h_sp = w / spacing, h / spacing
+        if staff_left is not None and x + w <= staff_left:
+            # In the margin, before the staff's lines begin — the instrument
+            # numbers, the brace's curl, the part name. Not this staff's clef,
+            # and not worth stopping for either: the clef is further right,
+            # behind the bracket. See `require_cluster_on_staff`.
+            skipped_off_staff += 1
+            continue
         if x / spacing > config.max_start_spaces:
             # Too far in to be a clef, and everything further right is further
             # still — whatever is at the head of this staff, we didn't find it.
@@ -580,7 +847,7 @@ def locate_clef(
             _note("asymmetric", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
                   symmetry=round(symmetry, 3))
             return None
-        if _has_f_clef_dots(strip, bbox, spacing, config):
+        if _has_f_clef_dots(mask, bbox, spacing, config):
             _note("f_clef_dots", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
                   symmetry=round(symmetry, 3))
             return None  # an F clef wearing a C clef's proportions
@@ -599,6 +866,11 @@ def locate_clef(
             _note("ambiguous_snap", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
                   symmetry=round(symmetry, 3))
             return None  # the snap was ambiguous — abstain
+        if (read.name == "mezzosoprano"
+                and symmetry < config.min_symmetry_mezzosoprano):
+            _note("mezzosoprano_symmetry", w_spaces=round(w_sp, 2),
+                  h_spaces=round(h_sp, 2), symmetry=round(symmetry, 3))
+            return None  # see `min_symmetry_mezzosoprano`
         # Report the box in the cell's own coordinates, not analysis space.
         _note("located", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
               symmetry=round(symmetry, 3), clef=read.name)
@@ -609,5 +881,11 @@ def locate_clef(
             symmetry=round(symmetry, 4),
         )
 
+    if skipped_off_staff:
+        # Reported apart from `only_debris` because the cause is different and
+        # the remedy would be too: there WAS glyph-sized ink in this header,
+        # standing in the margin rather than on the staff.
+        _note("off_staff_only", skipped_off_staff=skipped_off_staff)
+        return None
     _note("only_debris")
     return None

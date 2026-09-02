@@ -33,6 +33,17 @@ system, so the label count and the staff count disagree.
 the schema allows it; a model that invents a plausible instrument for an
 unlabelled staff is worse than one that abstains, because a wrong instrument
 propagates through slots into a wrong clef and wrong pitches.
+
+## Requires a current SDK, on the HOST
+
+Structured outputs (`output_config.format`) need `anthropic>=0.116`, which is
+what `backend/requirements.txt` pins for the container. This module also runs
+host-side, outside that container, and an old host SDK raises
+`TypeError: create() got an unexpected keyword argument 'output_config'` —
+measured on a host carrying 0.28.0. That failure is caught per system so one bad
+page cannot kill a batch, but it is logged at ERROR precisely because zero
+labels from a broken dependency and zero labels from an unlabelled margin are
+otherwise the same observation.
 """
 
 from __future__ import annotations
@@ -148,12 +159,18 @@ def _spacing(staves: list[Staff]) -> float:
     return (sum(vals) / len(vals)) if vals else 10.0
 
 
-def build_margin_crop(pws: PageWithStaves, staves: list[Staff]) -> MarginCrop | None:
-    """Crop the margin beside `staves` and annotate it with their indices."""
-    from PIL import Image, ImageDraw
+def margin_strip(pws: PageWithStaves, staves: list[Staff]):
+    """The bare margin beside `staves`: `(PIL image, y offset into the page)`.
+
+    Split out from `build_margin_crop` so that every reader of the margin — the
+    vision model, the OCR tier, and the benchmark that compares them — is
+    provably looking at the same pixels. The annotated crop below is this strip
+    plus a gutter; nothing else differs.
+    """
+    from PIL import Image
 
     if not staves:
-        return None
+        return None, 0
     page = pws.page
     height, width = page.binary.shape
     spacing = _spacing(staves)
@@ -166,9 +183,17 @@ def build_margin_crop(pws: PageWithStaves, staves: list[Staff]) -> MarginCrop | 
     y0 = max(0, min(s.top_y for s in staves) - int(2 * spacing))
     y1 = min(height, max(s.bottom_y for s in staves) + int(2 * spacing))
     if x1 <= x0 or y1 <= y0:
-        return None
+        return None, 0
+    return Image.fromarray(page.rgb[y0:y1, x0:x1]).convert("RGB"), y0
 
-    strip = Image.fromarray(page.rgb[y0:y1, x0:x1]).convert("RGB")
+
+def build_margin_crop(pws: PageWithStaves, staves: list[Staff]) -> MarginCrop | None:
+    """Crop the margin beside `staves` and annotate it with their indices."""
+    from PIL import Image, ImageDraw
+
+    strip, y0 = margin_strip(pws, staves)
+    if strip is None:
+        return None
     canvas = Image.new("RGB", (strip.width + GUTTER_PX, strip.height), (255, 255, 255))
     canvas.paste(strip, (GUTTER_PX, 0))
 
@@ -263,6 +288,7 @@ def read_staff_labels_vision(pws: PageWithStaves, *, client=None,
         by_system.setdefault(staff.system_index, []).append(staff)
 
     out: list[StaffLabel] = []
+    failures = 0
     for _sys_index, staves in sorted(by_system.items()):
         crop = build_margin_crop(pws, staves)
         if crop is None:
@@ -270,7 +296,16 @@ def read_staff_labels_vision(pws: PageWithStaves, *, client=None,
         try:
             texts = read_system_labels(crop, client=client, model=model)
         except Exception as exc:                      # noqa: BLE001
-            logger.warning("margin label read failed: %s", exc)
+            # ERROR, not warning, and naming the exception type: a read that
+            # could not RUN returns the same empty result as a margin with
+            # nothing printed on it, and those two want opposite responses.
+            # `output_config` unexpected-keyword here means the host's anthropic
+            # SDK predates structured outputs — see the module docstring.
+            logger.error("margin label read FAILED on system %s (%s: %s) — "
+                         "0 labels here means the reader did not run, not that "
+                         "the margin is empty",
+                         _sys_index, type(exc).__name__, exc)
+            failures += 1
             continue
         for staff in staves:
             text = texts.get(staff.staff_index)
@@ -287,4 +322,8 @@ def read_staff_labels_vision(pws: PageWithStaves, *, client=None,
                 confidence=hit.confidence if hit else "none",
                 alias=hit.alias if hit else "",
             ))
+    if failures:
+        logger.error("margin label read: %d of %d systems FAILED; the %d labels "
+                     "returned are from the systems that ran",
+                     failures, len(by_system), len(out))
     return out

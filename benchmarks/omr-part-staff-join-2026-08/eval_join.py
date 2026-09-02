@@ -27,7 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.omr.dossier import join_parts_to_slots
-from tools.omr.instruments import lookup
+from tools.omr.instruments import candidates_for_alias, lookup
 
 ROOT = Path(__file__).resolve().parents[2]
 GT=json.load(open(ROOT/"benchmarks/omr-key-signature/ground_truth.json"))
@@ -36,6 +36,24 @@ WORK={"beet5-p2":"beethoven-sym5-mvt1","pastoral-p2":"beethoven-sym6-mvt1"}
 def canon(name):
     m=lookup(name or "")
     return m.instrument.name if m else (name or "")
+
+def same(truth, got):
+    """Is `got` the instrument `truth` names — allowing for a truth label that
+    is genuinely ambiguous?
+
+    The Pastoral's bottom staff is hand-read as `Basso`, which the lexicon reads
+    as the bass VOICE and which on an orchestral page below the cellos is the
+    contrabass — that is exactly what `AMBIGUOUS_ALIASES` exists to record. The
+    join answering `Contrabass` there is right, and counting it wrong has been
+    reporting a measurement artifact as a join error since this harness was
+    written. Compare against every reading the alias allows.
+    """
+    if canon(truth) == canon(got):
+        return True
+    m = lookup(truth or "")
+    if m is None:
+        return False
+    return canon(got) in {i.name for i in candidates_for_alias(m.alias)}
 
 # The condensed page, whose ground truth lives beside this script.
 EXTRA = ROOT/"benchmarks/omr-part-staff-join-2026-08/ground-truth-beet5-p48.json"
@@ -61,19 +79,28 @@ for page in GT["pages"]:
     for arm, labels in (("NO labels", {}),
                         ("PERFECT labels (every staff)", {i:t for i,t in enumerate(truth)}),
                         ("REALISTIC (winds only, as printed)",
-                         {i:t for i,t in enumerate(truth) if i < 6})):
+                         {i:t for i,t in enumerate(truth) if i < 6}),
+                        # What the PIPELINE actually has. The margin reader
+                        # returns five labels on the Pastoral, not six, and the
+                        # sixth in the arm above is `Violino I` — which pins the
+                        # strings and hides anything that goes wrong below the
+                        # winds. A conventional cello-and-bass merge scored 10/10
+                        # in the six-label arm and 5/10 here, and it was the
+                        # six-label arm that nearly shipped it.
+                        ("AS THE PIPELINE READS IT (5 labels)",
+                         {i:t for i,t in enumerate(truth) if i < 5})):
         facts=join_parts_to_slots(n, dossier, labels or None)
         ok=anch_ok=anch=0
         rows=[]
         for i,(t,f) in enumerate(zip(truth,facts)):
             got=f["part"] if f else None
-            good = got is not None and canon(got)==canon(t)
+            good = got is not None and same(t, got)
             ok+=good
             if f and f.get("anchored"):
                 anch+=1; anch_ok+=good
             rows.append((i,t,got,good,bool(f and f.get("anchored"))))
         print(f"  {arm:<36} {ok}/{n} correct   (anchored {anch_ok}/{anch})")
-        if arm.startswith("REALISTIC"):
+        if arm.startswith("AS THE PIPELINE"):
             for i,t,got,good,a in rows:
                 mark = "ok " if good else "XX "
                 print(f"       {mark}slot {i:>2} {t:<22} -> {str(got):<22} {'anchored' if a else ''}")

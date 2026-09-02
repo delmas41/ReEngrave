@@ -126,6 +126,14 @@ class StaffCandidate:
     fifths:   +N sharps / −N flats / 0 for none; None when nothing was read.
     weight:   how much the reading is worth — the number of accidentals actually
               observed is the natural measure, and what the locator supplies.
+    can_carry: whether this reading may be exported to the same part in ANOTHER
+              system. Carrying rests on the asymmetry in the module docstring —
+              a reader loses accidentals and never invents them — so a reading
+              from a source that CAN over-count must not travel. Measured on WTC
+              I p.17: one staff's spurious fifth sharp, carried by `abs(fifths)`
+              winning, made every treble staff of all five systems read five
+              sharps where the page prints four. It stays usable for its own
+              staff, where the system's own reference still has to accept it.
     """
 
     staff_index: int
@@ -134,6 +142,7 @@ class StaffCandidate:
     fifths: int | None
     weight: float = 1.0
     source: str = ""
+    can_carry: bool = True
 
 
 @dataclass(frozen=True)
@@ -184,9 +193,21 @@ def _modal_reference(
 
     Ties go to the signature with fewer accidentals: it is the likelier reading,
     since the reader loses accidentals and does not invent them.
+
+    Readings weighted below 1 do not vote for the reference at all. A weight
+    under one accidental is a caller saying the reading is too weak to assert on
+    its own — a signature fitted against a DEFAULTED clef, in the one case that
+    exists — and such a reading must be able to AGREE with the system without
+    being able to define what the system says.
+
+    This was expected to recover a staff on the Pastoral and did not: it
+    measured neutral on all three ground-truth pages. It is kept as the
+    invariant it is, not for a gain it does not deliver.
     """
     totals: dict[int, float] = defaultdict(float)
     for fifths, weight in values_with_weight:
+        if weight < 1.0:
+            continue
         totals[fifths] += max(weight, 1.0)
     if not totals:
         return None, 0.0
@@ -256,6 +277,8 @@ def _consolidate_across_systems(
 
     readings: dict[int, list[tuple[int, float]]] = defaultdict(list)
     for cand in candidates:
+        if not cand.can_carry:
+            continue
         if cand.fifths and cand.ordinal not in conflicted and _trustworthy(
             cand.fifths, cand.weight, references.get(cand.system_index), config
         ):

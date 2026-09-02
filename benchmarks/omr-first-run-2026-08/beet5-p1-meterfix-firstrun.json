@@ -1,0 +1,429 @@
+{
+  "source_pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+  "page_index": 1,
+  "measures_window": [
+    1,
+    16
+  ],
+  "dossier": null,
+  "structure": {
+    "systems_truth": 1,
+    "systems_omr": 1,
+    "staves_truth": 12,
+    "staves_omr": 12,
+    "measures_truth": 16,
+    "measures_omr": 16
+  },
+  "clef_accuracy": "10/12",
+  "key_accuracy": "4/12",
+  "key_signatures_actually_read": 2,
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 159,
+      "matched": 84,
+      "recall": 0.5714,
+      "precision": 0.5283
+    },
+    "step": {
+      "truth": 147,
+      "omr": 159,
+      "matched": 105,
+      "recall": 0.7143,
+      "precision": 0.6604
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 159,
+      "matched": 53,
+      "recall": 0.3605,
+      "precision": 0.3333
+    }
+  },
+  "per_staff": [
+    {
+      "staff": 0,
+      "name": "Flauti",
+      "clef_truth": "treble",
+      "clef_omr": "treble",
+      "clef_ok": true,
+      "key_truth": -3,
+      "key_omr": -1,
+      "key_read": true,
+      "key_ok": false,
+      "exact": {
+        "truth": 0,
+        "omr": 6,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "step": {
+        "truth": 0,
+        "omr": 6,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "with_duration": {
+        "truth": 0,
+        "omr": 6,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      }
+    },
+    {
+      "staff": 1,
+      "name": "Oboi",
+      "clef_truth": "treble",
+      "clef_omr": "treble",
+      "clef_ok": true,
+      "key_truth": -3,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": false,
+      "exact": {
+        "truth": 0,
+        "omr": 0,
+        "matched": 0,
+        "recall": null,
+        "precision": null
+      },
+      "step": {
+        "truth": 0,
+        "omr": 0,
+        "matched": 0,
+        "recall": null,
+        "precision": null
+      },
+      "with_duration": {
+        "truth": 0,
+        "omr": 0,
+        "matched": 0,
+        "recall": null,
+        "precision": null
+      }
+    },
+    {
+      "staff": 2,
+      "name": "Clarinetti in B",
+      "clef_truth": "treble",
+      "clef_omr": "treble",
+      "clef_ok": true,
+      "key_truth": -1,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": false,
+      "exact": {
+        "truth": 18,
+        "omr": 11,
+        "matched": 8,
+        "recall": 0.4444,
+        "precision": 0.7273
+      },
+      "step": {
+        "truth": 18,
+        "omr": 11,
+        "matched": 8,
+        "recall": 0.4444,
+        "precision": 0.7273
+      },
+      "with_duration": {
+        "truth": 18,
+        "omr": 11,
+        "matched": 5,
+        "recall": 0.2778,
+        "precision": 0.4545
+      }
+    },
+    {
+      "staff": 3,
+      "name": "Fagotti",
+      "clef_truth": "bass",
+      "clef_omr": "bass",
+      "clef_ok": true,
+      "key_truth": -3,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": false,
+      "exact": {
+        "truth": 20,
+        "omr": 18,
+        "matched": 5,
+        "recall": 0.25,
+        "precision": 0.2778
+      },
+      "step": {
+        "truth": 20,
+        "omr": 18,
+        "matched": 5,
+        "recall": 0.25,
+        "precision": 0.2778
+      },
+      "with_duration": {
+        "truth": 20,
+        "omr": 18,
+        "matched": 1,
+        "recall": 0.05,
+        "precision": 0.0556
+      }
+    },
+    {
+      "staff": 4,
+      "name": "Corni in Es",
+      "clef_truth": "treble",
+      "clef_omr": "treble",
+      "clef_ok": true,
+      "key_truth": 0,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": true,
+      "exact": {
+        "truth": 0,
+        "omr": 4,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "step": {
+        "truth": 0,
+        "omr": 4,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "with_duration": {
+        "truth": 0,
+        "omr": 4,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      }
+    },
+    {
+      "staff": 5,
+      "name": "Trombe in C",
+      "clef_truth": "treble",
+      "clef_omr": "treble",
+      "clef_ok": true,
+      "key_truth": 0,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": true,
+      "exact": {
+        "truth": 0,
+        "omr": 6,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "step": {
+        "truth": 0,
+        "omr": 6,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "with_duration": {
+        "truth": 0,
+        "omr": 6,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      }
+    },
+    {
+      "staff": 6,
+      "name": "Timpani in C.G.",
+      "clef_truth": "bass",
+      "clef_omr": "treble",
+      "clef_ok": false,
+      "key_truth": 0,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": true,
+      "exact": {
+        "truth": 0,
+        "omr": 5,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "step": {
+        "truth": 0,
+        "omr": 5,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      },
+      "with_duration": {
+        "truth": 0,
+        "omr": 5,
+        "matched": 0,
+        "recall": null,
+        "precision": 0.0
+      }
+    },
+    {
+      "staff": 7,
+      "name": "Violino I",
+      "clef_truth": "treble",
+      "clef_omr": "treble",
+      "clef_ok": true,
+      "key_truth": -3,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": false,
+      "exact": {
+        "truth": 27,
+        "omr": 24,
+        "matched": 14,
+        "recall": 0.5185,
+        "precision": 0.5833
+      },
+      "step": {
+        "truth": 27,
+        "omr": 24,
+        "matched": 20,
+        "recall": 0.7407,
+        "precision": 0.8333
+      },
+      "with_duration": {
+        "truth": 27,
+        "omr": 24,
+        "matched": 12,
+        "recall": 0.4444,
+        "precision": 0.5
+      }
+    },
+    {
+      "staff": 8,
+      "name": "Violino II",
+      "clef_truth": "treble",
+      "clef_omr": "treble",
+      "clef_ok": true,
+      "key_truth": -3,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": false,
+      "exact": {
+        "truth": 28,
+        "omr": 25,
+        "matched": 15,
+        "recall": 0.5357,
+        "precision": 0.6
+      },
+      "step": {
+        "truth": 28,
+        "omr": 25,
+        "matched": 19,
+        "recall": 0.6786,
+        "precision": 0.76
+      },
+      "with_duration": {
+        "truth": 28,
+        "omr": 25,
+        "matched": 13,
+        "recall": 0.4643,
+        "precision": 0.52
+      }
+    },
+    {
+      "staff": 9,
+      "name": "Viola",
+      "clef_truth": "alto",
+      "clef_omr": "treble",
+      "clef_ok": false,
+      "key_truth": -3,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": false,
+      "exact": {
+        "truth": 26,
+        "omr": 32,
+        "matched": 2,
+        "recall": 0.0769,
+        "precision": 0.0625
+      },
+      "step": {
+        "truth": 26,
+        "omr": 32,
+        "matched": 6,
+        "recall": 0.2308,
+        "precision": 0.1875
+      },
+      "with_duration": {
+        "truth": 26,
+        "omr": 32,
+        "matched": 1,
+        "recall": 0.0385,
+        "precision": 0.0312
+      }
+    },
+    {
+      "staff": 10,
+      "name": "Violoncello",
+      "clef_truth": "bass",
+      "clef_omr": "bass",
+      "clef_ok": true,
+      "key_truth": -3,
+      "key_omr": -3,
+      "key_read": true,
+      "key_ok": true,
+      "exact": {
+        "truth": 19,
+        "omr": 18,
+        "matched": 10,
+        "recall": 0.5263,
+        "precision": 0.5556
+      },
+      "step": {
+        "truth": 19,
+        "omr": 18,
+        "matched": 10,
+        "recall": 0.5263,
+        "precision": 0.5556
+      },
+      "with_duration": {
+        "truth": 19,
+        "omr": 18,
+        "matched": 7,
+        "recall": 0.3684,
+        "precision": 0.3889
+      }
+    },
+    {
+      "staff": 11,
+      "name": "Basso",
+      "clef_truth": "bass",
+      "clef_omr": "bass",
+      "clef_ok": true,
+      "key_truth": -3,
+      "key_omr": 0,
+      "key_read": false,
+      "key_ok": false,
+      "exact": {
+        "truth": 9,
+        "omr": 10,
+        "matched": 5,
+        "recall": 0.5556,
+        "precision": 0.5
+      },
+      "step": {
+        "truth": 9,
+        "omr": 10,
+        "matched": 7,
+        "recall": 0.7778,
+        "precision": 0.7
+      },
+      "with_duration": {
+        "truth": 9,
+        "omr": 10,
+        "matched": 5,
+        "recall": 0.5556,
+        "precision": 0.5
+      }
+    }
+  ]
+}

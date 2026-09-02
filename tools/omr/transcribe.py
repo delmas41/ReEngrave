@@ -255,6 +255,9 @@ from .key_signature_geometry import (
     fit_key_signature,
 )
 from .key_signature_locator import locate_key_signature
+from .key_signature_template import (
+    read_key_signature as read_key_signature_by_template,
+)
 from .key_signature_vote import StaffCandidate, reconcile
 from .staff_header import (
     HEADER_MEASURE_INDEX,
@@ -262,6 +265,7 @@ from .staff_header import (
     header_cells_for_page,
     header_windows_for_page,
 )
+from .time_signature_locator import read_system_time_signatures
 from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
@@ -1128,6 +1132,29 @@ def _read_staff_header(
 # detector is silent" rule the CV clef locator follows.
 
 
+#: Weight given to a key signature read against a DEFAULTED clef. Small enough
+#: that `key_signature_vote._trustworthy` can never accept it as a transposing
+#: departure from the system's modal signature — it may only agree.
+DEFAULTED_CLEF_WEIGHT = 0.5
+
+
+def _key_sig_richer(candidate, current) -> bool:
+    """Is `candidate` a fuller key-signature reading than `current`?
+
+    Fuller means more accidentals actually matched to slots. The asymmetry is
+    the one `key_signature_vote` documents: `key_signature_geometry` requires
+    the first slot to be observed and cannot extend past the last observation,
+    so no reader here can invent an accidental, while every one of them can lose
+    one to a broken glyph. Where two readings disagree, the longer is the one to
+    keep — and a reading of nothing never displaces a reading of something.
+    """
+    if candidate is None or not candidate.fifths:
+        return False
+    if current is None:
+        return True
+    return len(candidate.matched_slots) > len(current.matched_slots)
+
+
 def _header_key_signatures(
     pws: PageWithStaves,
     header_cells: dict[int, MeasureCell],
@@ -1188,6 +1215,42 @@ def _header_key_signatures(
                     located = locate_key_signature(cell, clef)
                     read = located.read if located else None
                     source = "cv_locator"
+                # The template reader. It matches the Bravura outlines instead
+                # of reassembling ink into components, which is what the locator
+                # cannot do on a scan whose staff-line removal leaves every
+                # glyph in pieces — measured on Beethoven 5 p.1, where the
+                # locator reads 2 of 12 staves given the correct clef and this
+                # reads 11.
+                #
+                # It speaks ONLY where the other two found nothing, and that
+                # restraint was measured rather than assumed. Letting the FULLER
+                # reading win instead — which the vote's own asymmetry argues
+                # for, since a reader loses accidentals rather than inventing
+                # them — gains 1 staff on Beethoven 5 p.2 and 2 on the Pastoral
+                # and costs a WRONG reading on WTC I p.17, the cleanest page in
+                # the corpus, where the detector was already right. This reader
+                # is the one source here that can over-count, so the asymmetry
+                # the argument rests on does not hold for it. Gaps only.
+                if (read is None or not read.fifths) and cell is not None:
+                    templated = read_key_signature_by_template(cell, clef)
+                    if templated is not None and templated.fifths:
+                        read, source = templated, "template"
+            # No clef was read: the staff is carrying the positional default,
+            # and a signature fitted against a guessed clef is a guess squared
+            # — measured, bass staves defaulted to treble read three flats as
+            # two sharps. That is why every reader above is gated on a real
+            # clef, and this does not lift the gate so much as move who checks
+            # it. The template reader runs against the default, and the reading
+            # is entered with a weight too small to justify a DEPARTURE, so the
+            # vote can only keep it where it agrees with what the rest of the
+            # system printed. A staff whose default clef is wrong disagrees, and
+            # is abstained on exactly as before.
+            if not clef and cell is not None:
+                fallback = _default_clef_for_position(ordinal, len(staves))
+                templated = read_key_signature_by_template(cell, fallback)
+                if templated is not None and templated.fifths:
+                    read, source = templated, "template_default_clef"
+                    unread.pop(staff.staff_index, None)
             if clef and cell is not None and read is None:
                 unread[staff.staff_index] = (
                     "neither the detector's markers nor the CV locator found "
@@ -1198,8 +1261,14 @@ def _header_key_signatures(
                 system_index=system_index,
                 ordinal=ordinal,
                 fifths=read.fifths if read else None,
-                weight=float(len(read.matched_slots)) if read else 0.0,
+                weight=(
+                    DEFAULTED_CLEF_WEIGHT if source == "template_default_clef"
+                    else float(len(read.matched_slots))
+                ) if read else 0.0,
                 source=source if read else "",
+                # The template reader can over-count, so its readings stay on
+                # their own staff — see StaffCandidate.can_carry.
+                can_carry=not source.startswith("template"),
             ))
     result = reconcile(candidates)
     fifths: dict[int, int] = {}
@@ -1295,6 +1364,7 @@ def _detections_for_cell(
     active_time_sig: dict[str, Any] | None,
     clef_reader=None,  # optional secondary YoloDetector — staff-header specialist
     header_cell: MeasureCell | None = None,
+    prefer_header: bool = False,
     skip_key_sig_detection: bool = False,
     read_clef: bool = False,
     clef_reader_conf: float = 0.30,
@@ -1428,15 +1498,55 @@ def _detections_for_cell(
             for d in dets
             if d.category == "notehead"
         ]
+        # `prefer_header`, not merely `header_cell is not None`: the header
+        # cell is now supplied on every staff so the detector fallback below
+        # can use it, and only `_header_cell_beats_measure_cell` decides
+        # whether a reader should look there INSTEAD of the measure cell.
+        use_header = prefer_header and header_cell is not None
         located = locate_clef(
-            header_cell if header_cell is not None else cell,
+            header_cell if use_header else cell,
             # The detector's boxes belong to the measure cell's frame; they only
             # describe the header cell when it IS the measure cell.
-            occupied_boxes=occupied if header_cell is None else None,
+            occupied_boxes=None if use_header else occupied,
         )
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
+
+    # ── The production detector, a second time, on the measured header crop.
+    #
+    #    GAP-FILL ONLY, and it runs after the locator so neither of them loses
+    #    precedence. The detector reads the MEASURE cell above and that stays
+    #    the primary reading — on WTC p.17 the header crop is strictly worse
+    #    for this model, which is why `_header_detections` is pointed at the
+    #    measure cell and why this is a fallback rather than a switch.
+    #
+    #    But a crop that is worse on average is not worse everywhere, and where
+    #    the measure cell yields NOTHING there is nothing to lose. Measured
+    #    over the 113 staves of the hand-read orchestral corpus
+    #    (`probe_detector_reach.py`): the measure cell reads no clef on 45 of
+    #    them, the header crop reads one on 8 of those 45, and **all 8 are
+    #    right** — seven trebles and one C clef the positional default would
+    #    have called treble. It contradicts a measure-cell reading on zero
+    #    staves, because it is never consulted when there is one.
+    #
+    #    Note the header cell is supplied here whatever
+    #    `_header_cell_beats_measure_cell` decided: that gate chooses which
+    #    crop the locator and specialist READ INSTEAD of the measure cell, and
+    #    half of these eight sit on staves it leaves alone.
+    if read_clef and clef_source is None and header_cell is not None:
+        header_clef = _clef_from_dets(
+            detector.detect(
+                header_cell,
+                conf_threshold=conf_threshold,
+                imgsz=imgsz,
+                iou_threshold=iou_threshold,
+                agnostic_nms=agnostic_nms,
+            )
+        )
+        if header_clef is not None:
+            active_clef = header_clef
+            clef_source = "detector_header"
 
     # ── Decoupled staff-header specialist (clef + time-sig override). The
     #    production detector under-detects clefs on real orchestral scans (9%
@@ -1461,7 +1571,8 @@ def _detections_for_cell(
     #    benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. ──
     if read_clef and clef_reader is not None:
         spec_clef, spec_time_sig = _read_staff_header(
-            clef_reader, header_cell if header_cell is not None else cell,
+            clef_reader,
+            header_cell if (prefer_header and header_cell is not None) else cell,
             conf=clef_reader_conf,
             imgsz=clef_reader_imgsz,
             header_frac=clef_reader_header_frac,
@@ -3097,6 +3208,8 @@ def transcribe(
     active_clef_by_staff: dict[tuple[int, int, int], str | None] = {}
     active_key_sig_by_staff: dict[tuple[int, int, int], dict[str, str]] = {}
     active_time_sig_by_staff: dict[tuple[int, int, int], dict[str, Any] | None] = {}
+    #: The meter in effect, carried onto pages that print none.
+    carried_meter: dict[str, Any] | None = None
 
     # Clef CONTINUITY (Task-2 clef-stability pass). The last EFFECTIVE clef
     # seen at each staff ROLE (vertical position within its system), carried
@@ -3276,10 +3389,22 @@ def transcribe(
                 )
             )
             key_sig_default_unread = "no reader spoke for this staff"
+            # The meter, read from the same header crops and voted across each
+            # system's staves. The detector cannot supply this on a real scan —
+            # on Beethoven 5 p.1 it finds no time-signature digit in any header
+            # and the five it does fire are barline fragments mid-bar, which
+            # `_dominant_detected_meter` then propagates as common time over a
+            # 2/4 page. See tools/omr/time_signature_locator.py.
+            header_meters = read_system_time_signatures(
+                header_cells,
+                {sys_idx: sorted(systems[sys_idx].keys())
+                 for sys_idx in sorted(systems.keys())},
+            )
         else:
             voted_fifths, voted_reasons = {}, {}
             key_sig_unread_reasons = {}
             key_sig_default_unread = "header reading is off (--no-header-reading)"
+            header_meters = {}
 
         # Dossier slot facts for the whole page, used when per-system grouping
         # is too fragmented to join (which is the normal case — see
@@ -3345,9 +3470,17 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     alterations_for_fifths(seeded_fifths or 0),
                 )
+                # A meter carried over from the previous system, else the one
+                # the header reader voted for THIS system, else unknown. The
+                # carry-over comes first because a system that prints no time
+                # signature is still in the meter the last one established, and
+                # the reader abstains on those systems rather than contradicting
+                # it. A seed is a SEED: any meter the detector reads in the
+                # music replaces it, the same rule the clef locator and the
+                # key-signature vote follow.
                 active_time_sig = active_time_sig_by_staff.get(
                     (p, sys_idx, staff_idx),
-                    None,  # default: unknown — only set when detected
+                    dict(header_meters[sys_idx]) if sys_idx in header_meters else None,
                 )
                 staff_obj = next(
                     (st for st in pws.staves if st.staff_index == staff_idx), None
@@ -3369,16 +3502,22 @@ def transcribe(
                 # Point the clef readers at the measured header only where the
                 # staff-start measure cell actually misses it — see
                 # `_header_cell_beats_measure_cell`.
-                header_cell_for_clef = None
-                if (
+                # The header cell is supplied on EVERY staff, because the
+                # detector's gap-fill pass reads it wherever the measure cell
+                # yielded no clef. The gate decides something narrower: whether
+                # the locator and the specialist should look there INSTEAD of
+                # the measure cell.
+                header_cell_for_clef = (
+                    header_cells.get(staff_idx) if read_headers else None
+                )
+                prefer_header_cell = bool(
                     read_headers
                     and staff_cells
                     and staff_obj is not None
                     and _header_cell_beats_measure_cell(
                         header_windows.get(staff_idx), staff_obj, staff_cells[0]
                     )
-                ):
-                    header_cell_for_clef = header_cells.get(staff_idx)
+                )
 
                 first_cell_effective_clef: str | None = None
                 first_cell_clef_source: str | None = None
@@ -3404,6 +3543,7 @@ def transcribe(
                             active_time_sig=active_time_sig,
                             clef_reader=clef_reader,
                             header_cell=header_cell_for_clef,
+                            prefer_header=prefer_header_cell,
                             skip_key_sig_detection=(
                                 cell_idx == 0 and staff_idx in voted_fifths
                             ),
@@ -3600,7 +3740,28 @@ def transcribe(
                 out.setdefault("dossier_warnings", []).extend(meter_warnings)
                 page_dict.setdefault("dossier_warnings", []).extend(meter_warnings)
 
-        backfill_page_time_signatures(page_dict)
+        page_meter = backfill_page_time_signatures(page_dict)
+        # A meter, once printed, is in effect until it changes — that is what a
+        # time signature MEANS, and it is printed at the start of a movement and
+        # nowhere else. Everything above works a page at a time, so page 2 of a
+        # 2/4 movement had no meter at all and the exporter fell back to 4/4 on
+        # it. Carry the last page's meter onto a page that read none, tagged so
+        # it is never mistaken for something this page said.
+        if page_meter is None and carried_meter is not None:
+            for system in page_dict.get("systems", []):
+                for staff in system.get("staves", []):
+                    if not staff.get("time_signature"):
+                        staff["time_signature"] = dict(carried_meter)
+                    for measure in staff.get("measures", []):
+                        if not measure.get("time_signature"):
+                            measure["time_signature"] = dict(carried_meter)
+            page_dict["inferred_time_signature"] = dict(carried_meter)
+        elif page_meter is not None:
+            carried_meter = {
+                **{k: v for k, v in page_meter.items()
+                   if k in ("numerator", "denominator", "raw")},
+                "source": "carried_from_previous_page",
+            }
 
         # ── Meter → rhythm feedback ──
         # Runs after the meter is settled (dossier, detected or inferred) and

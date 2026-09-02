@@ -13,22 +13,175 @@
   ],
   "known_complication": "THE PAGE AND THE PART LIST DISAGREE ABOUT ORDER. The print puts Timp. at slot 8 and the three trombones at 9-11; the MusicXML part list puts Alto/Tenor/Bass Trombone at indices 14-16 and Timpani at 17. `align_to_layout` is a monotone alignment and cannot express a transposition, so this page is a test of what an order inversion costs, not only of the merge budget.",
   "slots": [
-    {"slot": 0,  "label": "Fl. Pic.", "instrument": "Piccolo",       "parts": ["Piccolo"]},
-    {"slot": 1,  "label": "Fl.",      "instrument": "Flute",         "parts": ["Flute 1", "Flute 2"]},
-    {"slot": 2,  "label": "Ob.",      "instrument": "Oboe",          "parts": ["Oboe 1", "Oboe 2"]},
-    {"slot": 3,  "label": "Cl.",      "instrument": "Clarinet",      "parts": ["C Clarinet 1", "C Clarinet 2"]},
-    {"slot": 4,  "label": "Fag.",     "instrument": "Bassoon",       "parts": ["Bassoon 1", "Bassoon 2"]},
-    {"slot": 5,  "label": "C. Fag.",  "instrument": "Contrabassoon", "parts": ["Contrabassoon"]},
-    {"slot": 6,  "label": "Cor.",     "instrument": "Horn",          "parts": ["C Horn 1", "C Horn 2"]},
-    {"slot": 7,  "label": "Tr.",      "instrument": "Trumpet",       "parts": ["C Trumpet 1", "C Trumpet 2"]},
-    {"slot": 8,  "label": "Timp.",    "instrument": "Timpani",       "parts": ["C, G Timpani"]},
-    {"slot": 9,  "label": "Tr. Alt.", "instrument": "Trombone",      "parts": ["Alto Trombone"]},
-    {"slot": 10, "label": "Tr. Ten.", "instrument": "Trombone",      "parts": ["Tenor Trombone"]},
-    {"slot": 11, "label": "Tr. Bas.", "instrument": "Trombone",      "parts": ["Bass Trombone"]},
-    {"slot": 12, "label": null,       "instrument": "Violin",        "parts": ["Violin 1"]},
-    {"slot": 13, "label": null,       "instrument": "Violin",        "parts": ["Violin 2"]},
-    {"slot": 14, "label": null,       "instrument": "Viola",         "parts": ["Viola"]},
-    {"slot": 15, "label": null,       "instrument": "Cello",         "parts": ["Violoncello"]},
-    {"slot": 16, "label": null,       "instrument": "Contrabass",    "parts": ["Contrabass"]}
-  ]
+    {
+      "slot": 0,
+      "label": "Fl. pic.",
+      "instrument": "Piccolo",
+      "clef": "treble",
+      "parts": [
+        "Piccolo"
+      ]
+    },
+    {
+      "slot": 1,
+      "label": "Fl.",
+      "instrument": "Flute",
+      "clef": "treble",
+      "parts": [
+        "Flute 1",
+        "Flute 2"
+      ]
+    },
+    {
+      "slot": 2,
+      "label": "Ob.",
+      "instrument": "Oboe",
+      "clef": "treble",
+      "parts": [
+        "Oboe 1",
+        "Oboe 2"
+      ]
+    },
+    {
+      "slot": 3,
+      "label": "Cl.",
+      "instrument": "Clarinet",
+      "clef": "treble",
+      "parts": [
+        "C Clarinet 1",
+        "C Clarinet 2"
+      ]
+    },
+    {
+      "slot": 4,
+      "label": "Fag.",
+      "instrument": "Bassoon",
+      "clef": "bass",
+      "parts": [
+        "Bassoon 1",
+        "Bassoon 2"
+      ]
+    },
+    {
+      "slot": 5,
+      "label": "C. Fag.",
+      "instrument": "Contrabassoon",
+      "clef": "bass",
+      "parts": [
+        "Contrabassoon"
+      ]
+    },
+    {
+      "slot": 6,
+      "label": "Cor.",
+      "instrument": "Horn",
+      "clef": "treble",
+      "parts": [
+        "C Horn 1",
+        "C Horn 2"
+      ]
+    },
+    {
+      "slot": 7,
+      "label": "Tr.",
+      "instrument": "Trumpet",
+      "clef": "treble",
+      "parts": [
+        "C Trumpet 1",
+        "C Trumpet 2"
+      ]
+    },
+    {
+      "slot": 8,
+      "label": "Timp.",
+      "instrument": "Timpani",
+      "clef": "bass",
+      "parts": [
+        "C, G Timpani"
+      ]
+    },
+    {
+      "slot": 9,
+      "label": "Tr. Alt.",
+      "instrument": "Trombone",
+      "clef": "alto",
+      "parts": [
+        "Alto Trombone"
+      ]
+    },
+    {
+      "slot": 10,
+      "label": "Tr Ten.",
+      "instrument": "Trombone",
+      "clef": "tenor",
+      "parts": [
+        "Tenor Trombone"
+      ]
+    },
+    {
+      "slot": 11,
+      "label": "Tr. Bas.",
+      "instrument": "Trombone",
+      "clef": "bass",
+      "parts": [
+        "Bass Trombone"
+      ]
+    },
+    {
+      "slot": 12,
+      "label": null,
+      "instrument": "Violin",
+      "clef": "treble",
+      "parts": [
+        "Violin 1"
+      ]
+    },
+    {
+      "slot": 13,
+      "label": null,
+      "instrument": "Violin",
+      "clef": "treble",
+      "parts": [
+        "Violin 2"
+      ]
+    },
+    {
+      "slot": 14,
+      "label": null,
+      "instrument": "Viola",
+      "clef": "alto",
+      "parts": [
+        "Viola"
+      ]
+    },
+    {
+      "slot": 15,
+      "label": null,
+      "instrument": "Cello",
+      "clef": "bass",
+      "parts": [
+        "Violoncello"
+      ]
+    },
+    {
+      "slot": 16,
+      "label": null,
+      "instrument": "Contrabass",
+      "clef": "bass",
+      "parts": [
+        "Contrabass"
+      ]
+    }
+  ],
+  "how_the_clefs_were_read": [
+    "Hand-read from the page itself at 600 dpi, glyph by glyph, NOT taken from the dossier — the dossier is what this page exists to measure, and seeding truth from it would be circular.",
+    "Clef TYPE (G / F / C) was read visually from the printed glyph.",
+    "Which line a C clef names was MEASURED, not eyed, because alto and tenor are the same glyph one line apart and that is the whole difficulty: the glyph's ink centre was compared against the staff's own five detected lines. Staff 9 sits at line 3.25 and staff 10 at line 4.30 — a clean one-line separation. Visually the same thing: staff 9's clef fits inside the staff (waist on the middle line, ALTO) and staff 10's rides above the top line (waist on the 4th, TENOR). Staff 14, the viola, measures with staff 9.",
+    "All six F clefs carry the blob and dots on the 4th line — bass throughout, no baritone.",
+    "No staff carries a key signature: the finale is C major and every transposing part is in C, so written fifths are 0 across the page. Nothing is printed between any clef and the first note.",
+    "CROSS-CHECK, not source: the dossier generated from the Gradus MusicXML gives the same clef for all 17 staves. The two are independent — a modern digital edition and this 19th-century print — so the agreement is worth something, but the reading above stands on the image."
+  ],
+  "why_the_clefs_matter_here": "Staves 9, 10 and 11 are the alto, tenor and bass trombones — the readings no detector supplies (benchmarks/omr-clef-geometry/) and the ones the part-staff join could not deliver before pinning. This page is where the join's gain can be measured DOWNSTREAM rather than at the join.",
+  "a_correction_2026_08_30": "Slots 0 and 10 originally read 'Fl. Pic.' and 'Tr. Ten.'. The page prints 'Fl. pic.' (lower-case p) and 'Tr Ten.' (no stop after Tr) — checked against the print at 5x, see evidence/. The margin reader transcribed both more faithfully than this hand read did. Nothing downstream moves, because `normalize_label` folds case and punctuation away, but ground truth should be what is on the paper.",
+  "see_also": "A SECOND, INDEPENDENT hand reading of this page's clefs already existed at benchmarks/omr-clef-geometry/ground-truth-beet5-p48.json, read in an earlier session off a 600-dpi render with the staff lines marked. The two were compared after the fact and agree on ALL SEVENTEEN clefs, which is worth more than either alone. They are kept separate because they answer different questions — that file is clefs per staff for the clef harnesses, this one is the part-to-staff join — but check for the other before re-reading the page a third time."
 }

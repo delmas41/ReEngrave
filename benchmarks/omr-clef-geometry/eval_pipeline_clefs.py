@@ -33,22 +33,85 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
+from tools.omr.assist import Assist, add_cli_argument  # noqa: E402
 from tools.omr.contextual import apply_contextual_analysis  # noqa: E402
 from tools.omr.dossier import resolve_dossier  # noqa: E402
 from tools.omr.transcribe import transcribe  # noqa: E402
 
 TRUTH = REPO / "benchmarks" / "omr-key-signature" / "ground_truth.json"
+# A fourth page, kept beside the join benchmark rather than folded into the file
+# above, and deliberately: several other benchmarks read that file, and moving
+# its page count would silently move their denominators too. Its clefs are
+# hand-read from the print (see `how_the_clefs_were_read` in it).
+EXTRA = (REPO / "benchmarks" / "omr-part-staff-join-2026-08"
+         / "ground-truth-beet5-p48.json")
 WEIGHTS = REPO / "omr-weights" / "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
 
+# The three pages this benchmark has always carried. Their subtotal is reported
+# separately so the historical number stays directly comparable across sessions.
+BASE_PAGES = ("beet5-p2", "pastoral-p2", "wtc-p17")
 
 # The work each ground-truth page comes from, for --dossier. Only pages whose
 # work has a generated dossier can be scored that way.
-WORKS = {"beet5-p2": "beethoven-sym5-mvt1", "pastoral-p2": "beethoven-sym6-mvt1"}
+WORKS = {"beet5-p2": "beethoven-sym5-mvt1", "pastoral-p2": "beethoven-sym6-mvt1",
+         "beet5-p48": "beethoven-sym5-mvt4"}
+
+
+def wide_pages() -> list[dict]:
+    """The widened hand-read corpus, in this benchmark's page schema.
+
+    It is matched TOP TO BOTTOM across the whole page rather than by ordinal
+    within a system, because system grouping is itself imperfect — the file
+    carries `n_staves` so a page the pipeline lays out differently is skipped
+    rather than mis-scored. `flat` marks that.
+
+    It exists here because the three historical pages had saturated at 100%,
+    and a benchmark that cannot go down cannot show an improvement either.
+    """
+    path = (REPO / "benchmarks" / "omr-clef-geometry"
+            / "orchestral-clef-truth.json")
+    if not path.exists():
+        return []
+    out = []
+    for page in json.loads(path.read_text())["pages"]:
+        out.append({
+            "id": page["id"], "work": page.get("work", ""), "pdf": page["pdf"],
+            "page_index": page["page_index"], "dpi": page.get("dpi", 300),
+            "flat": True, "n_staves": page["n_staves"],
+            "staves": [{"ordinal": i, "instrument": None, "clef": c, "fifths": 0}
+                       for i, c in enumerate(page["clefs"])],
+        })
+    return out
+
+
+def extra_pages() -> list[dict]:
+    """The join benchmark's page, in this benchmark's own page schema.
+
+    It is the page where the part-staff join has something to prove: 23 parts on
+    17 staves, printed out of the part list's order, and three of its staves are
+    the alto, tenor and bass trombones that no detector reads.
+    """
+    if not EXTRA.exists():
+        return []
+    g = json.loads(EXTRA.read_text())
+    if not all("clef" in slot for slot in g["slots"]):
+        return []
+    return [{
+        "id": g["id"],
+        "work": g.get("_about", ""),
+        "pdf": g["pdf"],
+        "page_index": g["page_index"],
+        "dpi": g["dpi"],
+        "n_systems": 1,
+        "staves": [{"ordinal": slot["slot"], "instrument": slot["instrument"],
+                    "clef": slot["clef"], "fifths": 0} for slot in g["slots"]],
+    }]
 
 
 def score_page(page: dict, weights: Path, dpi: int | None,
-               contextual: bool = False, use_dossier: bool = False) -> list[dict]:
-    pdf = Path(page["pdf"])
+               contextual: bool = False, use_dossier: bool = False,
+               assist=None) -> list[dict]:
+    pdf = Path(page["pdf"]).expanduser()
     if not pdf.is_absolute():
         pdf = REPO / pdf
     if not pdf.exists():
@@ -65,13 +128,35 @@ def score_page(page: dict, weights: Path, dpi: int | None,
                    if use_dossier and page["id"] in WORKS else None)
         summary = apply_contextual_analysis(
             result, pdf_path=pdf, dpi=dpi or page["dpi"], apply_clefs=True,
-            dossier=dossier)
+            dossier=dossier, assist=assist)
         print(f"  {page['id']}: contextual — {summary.get('labelled_staves')} labels, "
               f"{summary.get('clefs_applied')} instrument corrections, "
               f"{summary.get('clefs_filled_from_slot')} filled from another system, "
-              f"{summary.get('clefs_from_dossier')} from the dossier")
+              f"{summary.get('clefs_from_dossier')} from the dossier"
+              f"  tiers={summary.get('label_tiers')}")
+        # Read off the page and then dropped, because nothing in the lexicon
+        # matched. Printed because it is otherwise invisible — the page just
+        # behaves as though those staves carry no label.
+        if summary.get("unresolved_labels"):
+            print(f"  {page['id']}: UNRESOLVED labels (lexicon gaps): "
+                  + ", ".join(repr(t) for t in summary["unresolved_labels"]))
     truth = {s["ordinal"]: s["clef"] for s in page["staves"]}
     rows = []
+    if page.get("flat"):
+        # One flat sequence over the whole page, guarded on the staff count.
+        ordered = [st for page_d in result["pages"]
+                   for system in page_d["systems"] for st in system["staves"]]
+        if len(ordered) != page["n_staves"]:
+            print(f"  {page['id']}: {len(ordered)} staves against "
+                  f"{page['n_staves']} in ground truth — skipped")
+            return []
+        for ordinal, staff in enumerate(ordered):
+            if truth[ordinal] is None:
+                continue      # could not be read by eye; not evidence
+            rows.append({"page": page["id"], "system": None, "ordinal": ordinal,
+                         "want": truth[ordinal], "got": staff.get("clef"),
+                         "source": staff.get("clef_source") or "default"})
+        return rows
     for page_d in result["pages"]:
         for system in page_d["systems"]:
             staves = system["staves"]
@@ -96,6 +181,24 @@ def score_page(page: dict, weights: Path, dpi: int | None,
     return rows
 
 
+C_CLEFS = {"soprano", "mezzosoprano", "alto", "tenor", "baritone"}
+
+
+def scores(row: dict) -> bool:
+    """Whether a reading counts as correct.
+
+    `orchestral-clef-truth.json` records `c-clef` where the glyph is certainly
+    a C clef but the line it names could not be read off the print. Any C clef
+    answers such a row as well as the truth is precise; matching the string
+    exactly would score a correct reading as wrong, which it did once before
+    this existed.
+    """
+    want, got = row["want"], row["got"]
+    if want == "c-clef":
+        return got in C_CLEFS
+    return got == want
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, help="override each page's own DPI")
@@ -105,15 +208,28 @@ def main() -> int:
                     help="let the work's own parts supply clefs where the join is anchored")
     ap.add_argument("--contextual", action="store_true",
                     help="run contextual analysis (instrument identity -> clef) first")
+    ap.add_argument("--wide", action="store_true",
+                    help="also score the widened hand-read corpus "
+                         "(orchestral-clef-truth.json) — six harder pages the "
+                         "historical three cannot show movement on")
+    # Who settles the margin where the free tiers fall short. No default, on
+    # purpose — see tools/omr/assist.py. A benchmark is non-interactive, so it
+    # must state the mode rather than be asked.
+    add_cli_argument(ap)
     args = ap.parse_args()
+    assist = Assist(args.assist) if args.assist else Assist("none")
     if not args.weights.exists():
         print(f"no weights at {args.weights}", file=sys.stderr)
         return 1
 
     rows: list[dict] = []
-    for page in json.loads(TRUTH.read_text())["pages"]:
+    pages = json.loads(TRUTH.read_text())["pages"] + extra_pages()
+    if args.wide:
+        pages += wide_pages()
+    for page in pages:
         rows.extend(score_page(page, args.weights, args.dpi,
-                               args.contextual or args.dossier, args.dossier))
+                               args.contextual or args.dossier, args.dossier,
+                               assist))
     if not rows:
         print("no pages scored")
         return 1
@@ -122,17 +238,28 @@ def main() -> int:
     for r in rows:
         c = by_source.setdefault(r["source"], Counter())
         c["n"] += 1
-        c["ok"] += 1 if r["got"] == r["want"] else 0
+        c["ok"] += 1 if scores(r) else 0
 
     total = len(rows)
-    correct = sum(1 for r in rows if r["got"] == r["want"])
+    correct = sum(1 for r in rows if scores(r))
     print(f"\n{total} staves with hand-read clefs")
     print(f"  correct overall: {correct}/{total} = {correct / total:.0%}")
+
+    print(f"\n  {'page':12s} {'staves':>7} {'correct':>8} {'accuracy':>9}")
+    for page_id in dict.fromkeys(r["page"] for r in rows):
+        pr = [r for r in rows if r["page"] == page_id]
+        ok = sum(1 for r in pr if scores(r))
+        print(f"  {page_id:12s} {len(pr):7d} {ok:8d} {ok / len(pr):9.0%}")
+    base = [r for r in rows if r["page"] in BASE_PAGES]
+    if base and len(base) != total:
+        ok = sum(1 for r in base if scores(r))
+        print(f"  {'(base 3)':12s} {len(base):7d} {ok:8d} {ok / len(base):9.0%}"
+              f"   <- the historical number")
     print(f"\n  {'source':12s} {'staves':>7} {'correct':>8} {'accuracy':>9}")
     for source, c in sorted(by_source.items(), key=lambda kv: -kv[1]["n"]):
         print(f"  {source:12s} {c['n']:7d} {c['ok']:8d} {c['ok'] / c['n']:9.0%}")
 
-    wrong = [r for r in rows if r["got"] != r["want"]]
+    wrong = [r for r in rows if not scores(r)]
     if wrong:
         print(f"\n  the {len(wrong)} wrong readings, by (want -> got):")
         for (want, got), n in Counter((r["want"], r["got"]) for r in wrong).most_common():

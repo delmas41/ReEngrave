@@ -16,6 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from tools.omr.assist import Assist
 from tools.omr.contextual import apply_contextual_analysis
 from tools.omr.transcribe import transcribe
 
@@ -48,7 +49,7 @@ def main() -> int:
     for pdf, pages in CASES:
         result = transcribe(pdf_path=Path(pdf), pages=pages, weights=WEIGHTS,
                             dpi=300, imgsz=2048, progress=False)
-        summary = apply_contextual_analysis(result, pdf_path=pdf, dpi=300)
+        summary = apply_contextual_analysis(result, pdf_path=pdf, dpi=300, assist=Assist('none'))
         name = Path(pdf).parents[1].name
         if not summary["available"]:
             print(f"\n=== {name} p{pages[0]} — skipped: {summary['reason']}")

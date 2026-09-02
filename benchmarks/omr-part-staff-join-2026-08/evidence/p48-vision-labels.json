@@ -1,0 +1,25 @@
+{
+  "_about": "What `staff_labels_vision.read_staff_labels_vision` returned for Beethoven 5 p.48, one API call on the single system, model claude-opus-5. Cached so the measurement is reproducible without spending credits. The crop it was given is p48-system0-margin.png beside this file.",
+  "read_2026_08_30": true,
+  "labels_by_staff_ordinal": {
+    "0": "Fl. pic.",
+    "1": "Fl.",
+    "2": "Ob.",
+    "3": "Cl.",
+    "4": "Fag.",
+    "5": "C. Fag.",
+    "6": "Cor.",
+    "7": "Tr.",
+    "8": "Timp.",
+    "9": "Tr. Alt.",
+    "10": "Tr Ten.",
+    "11": "Tr. Bas."
+  },
+  "staves_correctly_left_unlabelled": [
+    12,
+    13,
+    14,
+    15,
+    16
+  ]
+}

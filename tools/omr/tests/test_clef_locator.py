@@ -218,12 +218,12 @@ class TestLocatesCClefs:
 class TestTheVerticalGroupingRule:
     """Grouping header ink by proximity in BOTH axes, not just across.
 
-    Off by default — see `ClefLocatorConfig.cluster_y_gap_spaces` for the
-    measured reason, which is not that it fails to work. These tests pin what
-    it does when it is on, and that it is off.
+    ON by default since it was measured against a corpus that could see both
+    of its sides — see `ClefLocatorConfig.cluster_y_gap_spaces`. These tests
+    pin what it does, what the page looked like without it, and that it is on.
     """
 
-    ON = dataclasses.replace(DEFAULT_LOCATOR_CONFIG, cluster_y_gap_spaces=1.0)
+    OFF = dataclasses.replace(DEFAULT_LOCATOR_CONFIG, cluster_y_gap_spaces=None)
 
     def _heading_cell(self):
         img = blank_page()
@@ -232,19 +232,19 @@ class TestTheVerticalGroupingRule:
         draw_noteheads(img)
         return make_cell(img)
 
-    def test_it_is_off_by_default(self):
-        assert DEFAULT_LOCATOR_CONFIG.cluster_y_gap_spaces is None
+    def test_it_is_on_by_default(self):
+        assert DEFAULT_LOCATOR_CONFIG.cluster_y_gap_spaces == 1.0
 
     def test_a_heading_above_the_staff_hides_the_clef_when_it_is_off(self):
-        # The default behaviour, and the thing the rule exists to fix: the
+        # What the layer did before, and the thing the rule exists to fix: the
         # heading and the clef are one column 5.5 staff spaces tall, which is
         # bigger than any C clef, so the search stops on it.
-        assert locate_clef(self._heading_cell()) is None
+        assert locate_clef(self._heading_cell(), config=self.OFF) is None
 
-    def test_a_heading_above_the_staff_does_not_hide_the_clef_when_it_is_on(self):
+    def test_a_heading_above_the_staff_does_not_hide_the_clef(self):
         # Measured over 191 headers of 19th-century engraving, that fusion was
         # 55% of all header cells — the single largest drain on clef coverage.
-        found = locate_clef(self._heading_cell(), config=self.ON)
+        found = locate_clef(self._heading_cell())
         assert found is not None and found.read.name == "alto"
 
     def test_ink_touching_the_staff_is_never_split_apart(self):
@@ -261,7 +261,89 @@ class TestTheVerticalGroupingRule:
         img = blank_page()
         draw_split_g_clef(img)
         draw_noteheads(img)
-        assert locate_clef(make_cell(img), config=self.ON) is None
+        assert locate_clef(make_cell(img)) is None
+
+
+# ─── the margin is not the staff ────────────────────────────────────────────
+
+
+class TestInkBeforeTheStaffBegins:
+    """A clef is printed ON the staff, so glyph-sized ink standing in the
+    margin is skipped rather than stopped for.
+
+    The case is Edition Peters, which prints the stacked instrument numbers
+    (1/2, 1/2/3) to the left of the system's bracket, close enough to fall
+    inside the header window. A column of numerals is glyph-sized AND
+    vertically symmetric — no shape gate can refuse it, because it really is
+    symmetric — so what gives it away is where it stands. Twenty-four of the
+    forty-one false positives on `mahler5-clef-sweep.json` are that family.
+    """
+
+    OFF = dataclasses.replace(DEFAULT_LOCATOR_CONFIG,
+                              require_cluster_on_staff=False)
+    # Where the staff's own lines begin. Everything here has to fit inside the
+    # `header_frac` strip the locator searches (30% of the cell), which is what
+    # a real header window gives it: the margin ink at its left, the clef a few
+    # spaces in, and room to spare.
+    STAFF_X0 = 70
+
+    def _margin_and_clef(self, with_clef: bool):
+        """A page whose staff starts at STAFF_X0, with a symmetric numeral
+        stack in the margin before it."""
+        img = np.full((CELL_H, CELL_W), 255, dtype=np.uint8)
+        for y in STAFF_LINES:
+            cv2.line(img, (self.STAFF_X0, y), (CELL_W - 1, y), 0, 2)
+        # The bracket, at the staff's left edge.
+        cv2.rectangle(img, (self.STAFF_X0 - 8, 100), (self.STAFF_X0 - 3, 180), 0, -1)
+        # Two numerals stacked in the margin: glyph-sized, and symmetric about
+        # the gap between them, which is what makes them dangerous.
+        for dy in (-16, 16):
+            cv2.rectangle(img, (16, line_y(3) + dy - 9), (34, line_y(3) + dy + 9), 0, -1)
+        if with_clef:
+            draw_c_clef(img, 3, x=self.STAFF_X0 + 6)
+        draw_noteheads(img)
+        return make_cell(img)
+
+    def test_the_margin_stack_does_not_become_the_clef(self):
+        # Without the rule the numerals are the leftmost glyph-sized cluster,
+        # so they are what the locator reads.
+        assert locate_clef(self._margin_and_clef(with_clef=False),
+                           config=self.OFF) is not None
+        # With it, a staff whose only glyph-sized header ink is in the margin
+        # reads nothing, which is the right answer.
+        assert locate_clef(self._margin_and_clef(with_clef=False)) is None
+
+    def test_the_clef_behind_the_stack_is_still_found(self):
+        # SKIPPED, not stopped for — the same reasoning the ink-fraction and
+        # minimum-width tests already use. If this returned None the rule would
+        # buy its precision by throwing the clef away too.
+        found = locate_clef(self._margin_and_clef(with_clef=True))
+        assert found is not None and found.read.line == 3
+
+    def test_it_abstains_when_the_staff_cannot_be_found(self):
+        """A staff whose lines are too broken to follow is a FAILED
+        measurement, not a staff that begins late — so the margin test turns
+        itself off rather than rejecting a clef on it.
+
+        This is what the rule's one genuine cost looked like: on p48 s12 of the
+        Mahler sweep no run four spaces long exists until 6.8 spaces into the
+        header window, past the clef, so the clef was judged to be in the
+        margin. Over all 174 staves of both sweep corpora every other one lands
+        between 0 and 3.55.
+        """
+        img = self._margin_and_clef(with_clef=True)
+        # Erase the staff lines left of the clef, as a worn plate does — the
+        # clef still sits on the staff, but nothing left of it says so.
+        for y in STAFF_LINES:
+            cv2.line(img.image, (0, y), (200, y), 255, 4)
+        found = locate_clef(img)
+        assert found is not None and found.read.line == 3
+
+    def test_the_branch_is_reported_apart_from_debris(self):
+        trace: dict = {}
+        locate_clef(self._margin_and_clef(with_clef=False), trace=trace)
+        assert trace["reason"] == "off_staff_only"
+        assert trace["skipped_off_staff"] >= 1
 
 
 # ─── declining to guess ─────────────────────────────────────────────────────
@@ -299,12 +381,87 @@ class TestAbstains:
         draw_noteheads(img)
         assert locate_clef(make_cell(img)) is None
 
+    def test_worn_dots_standing_clear_of_the_body_still_veto(self):
+        """The second reading of the same two dots: more position, less shape.
+
+        A worn dot is not round — the staff-line stripper leaves a stub where
+        the line ran under it, and the pair on Beethoven 5 p.54 staff 8
+        measures 0.86 and 1.00 tall against widths of 0.59 and 0.64, well past
+        the strict height bound. Loosening that bound WHERE THE DOTS STAND is
+        what the corpora refused; loosening it only where they stand clear of
+        the body costs no C clef on either edition, because a C clef has no ink
+        out there. See `dot_clear_right_fraction`.
+        """
+        img = blank_page()
+        draw_f_clef(img, 4)
+        # Give each dot the staff-line stub a worn print leaves on it, taking
+        # it past `dot_max_height_spaces` but not past `dot_clear_...`.
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):
+            # 0.6 x 0.9 spaces — the proportions the worn pair on p.54 s8
+            # actually measures, not a sliver: a stub makes a dot taller, and
+            # a shape this narrow is refused by `dot_clear_min_aspect` however
+            # it stands (which is itself measured — see that field).
+            cv2.rectangle(img, (22 + 28, cy + dy - 9), (22 + 40, cy + dy + 9), 0, -1)
+        draw_noteheads(img)
+        assert locate_clef(make_cell(img)) is None
+
+    def test_one_dot_alone_does_not_veto(self):
+        """A single dot is NOT enough, and the arm where it is stays
+        reproducible.
+
+        `dot_single_clear_is_enough` was taken and reverted the same day: the
+        sweep corpora made it look like 8 false positives for 16 declined
+        clefs, and the wider hand-read corpus measured 5 real C clefs lost for
+        1 false positive avoided. A sweep corpus is built from the candidates
+        the locator FIRES on, so it oversamples the staves where it produces
+        something and cannot price a rule's cost in the wild.
+        """
+        img = blank_page()
+        draw_f_clef(img, 4)
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):        # erase both dots
+            cv2.circle(img, (22 + 34, cy + dy), 8, 255, -1)
+        # One dot, standing WELL clear. The distance matters and is a real
+        # limit of the rule rather than a detail of this drawing: a lone dot
+        # closer than `cluster_gap_spaces` is absorbed into the candidate, and
+        # then it is inside the body by definition and cannot be a clear dot.
+        # The four staves this rule was measured on carry theirs at 1.50 to
+        # 1.79 of the body's width.
+        cv2.circle(img, (22 + 46, cy + SPACING // 2), 5, 0, -1)
+        draw_noteheads(img)
+        cell = make_cell(img)
+        found = locate_clef(cell)
+        assert found is not None, "one dot must not veto — see the docstring"
+        on = dataclasses.replace(DEFAULT_LOCATOR_CONFIG,
+                                 dot_single_clear_is_enough=True)
+        assert locate_clef(cell, config=on) is None, "the arm still works"
+
+    def test_the_loose_reading_does_not_reach_inside_the_body(self):
+        """The half that makes it safe. The same worn pair, printed ON the
+        glyph instead of clear of it, is NOT dots — a C clef's near-pairs are
+        fragments of its own strokes, and admitting them is exactly what cost
+        27 real clefs when the height bound was loosened on its own."""
+        img = blank_page()
+        draw_c_clef(img, 4)
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):   # inside the clef's own width
+            cv2.rectangle(img, (22 + 12, cy + dy - 9), (22 + 18, cy + dy + 9), 0, -1)
+        draw_noteheads(img)
+        found = locate_clef(make_cell(img))
+        assert found is not None and found.read.line == 4
+
     def test_the_same_body_without_dots_is_read_as_a_c_clef(self):
         # Proves the dots are doing the rejecting, not the body's shape.
         img = blank_page()
         draw_f_clef(img, 4)
-        # Erase the dots.
-        cv2.rectangle(img, (48, 0), (70, CELL_H), 255, -1)
+        # Erase the dots, and ONLY the dots. This used to be a white column
+        # through the whole cell, which also severed all five staff lines and
+        # so moved where the staff appears to begin — nothing a print does,
+        # but enough to trip the margin test (`require_cluster_on_staff`).
+        cy = line_y(4)
+        for dy in (-SPACING // 2, SPACING // 2):
+            cv2.circle(img, (22 + 34, cy + dy), 7, 255, -1)
         found = locate_clef(make_cell(img))
         assert found is not None and found.read.line == 4
 
@@ -426,3 +583,83 @@ class TestConfig:
         assert found is not None
         strict = ClefLocatorConfig(min_symmetry=found.symmetry + 0.001)
         assert locate_clef(cell, config=strict) is None
+
+
+class TestTheDotVetoCanSeeTheDots:
+    """The veto was being asked to find the dots in pixels it had never been shown.
+
+    `benchmarks/omr-clef-geometry/RESULTS.md` — "the veto could not see the
+    dots". Two crops stood between it and the evidence: it was handed the
+    `header_frac` STRIP rather than the full mask, and it looked only INSIDE the
+    candidate's own box. An F clef's dots are to the right of its body, so on
+    Beethoven 5 p.54 staff 8 both sat past the strip's edge and the veto could
+    not have fired whatever its thresholds were.
+    """
+
+    def test_it_searches_past_the_candidate_box(self):
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG
+        assert DEFAULT_LOCATOR_CONFIG.dot_search_right_spaces > 0, (
+            "the dots belong to the glyph but need not belong to the candidate")
+
+    def test_dots_just_right_of_the_body_are_found(self):
+        """A body, and two dots beyond its right edge — where the search window
+        reaches but the candidate box does not."""
+        import numpy as np
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG, _has_f_clef_dots
+
+        spacing = 22.0
+        mask = np.zeros((int(6 * spacing), int(8 * spacing)), np.uint8)
+        # body: 2 spaces wide, 3 tall, starting one space in
+        bx, by = int(spacing), int(spacing)
+        bw, bh = int(2 * spacing), int(3 * spacing)
+        mask[by:by + bh, bx:bx + bw] = 255
+        # two dots, half a space PAST the body's right edge, one space apart
+        r = int(0.18 * spacing)
+        for cy in (by + int(1.0 * spacing), by + int(2.0 * spacing)):
+            cx = bx + bw + int(0.4 * spacing)
+            mask[cy - r:cy + r, cx - r:cx + r] = 255
+        assert _has_f_clef_dots(mask, (bx, by, bw, bh), spacing,
+                                DEFAULT_LOCATOR_CONFIG) is True
+
+    def test_the_right_fraction_is_measured_against_the_body(self):
+        """Widening the search must not move the line the `right of the body`
+        test is measured against, or a dot on the body's LEFT would start
+        passing as the window grew."""
+        import numpy as np
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG, _has_f_clef_dots
+
+        spacing = 22.0
+        mask = np.zeros((int(6 * spacing), int(8 * spacing)), np.uint8)
+        bx, by = int(spacing), int(spacing)
+        bw, bh = int(2 * spacing), int(3 * spacing)
+        r = int(0.18 * spacing)
+        # a pair on the LEFT of the body — never an F clef's dots
+        for cy in (by + int(1.0 * spacing), by + int(2.0 * spacing)):
+            cx = bx + int(0.15 * spacing)
+            mask[cy - r:cy + r, cx - r:cx + r] = 255
+        assert _has_f_clef_dots(mask, (bx, by, bw, bh), spacing,
+                                DEFAULT_LOCATOR_CONFIG) is False
+
+
+class TestMezzosopranoMustBeBetterEvidenced:
+    """A rarer answer has to be better evidenced.
+
+    Mezzosoprano is the rarest of the five C clefs by a long way. Over 101
+    located candidates on a scanned Beethoven 5 it is named five times and is
+    wrong all five — four G clefs whose surviving fragment balances about line 2,
+    which is the line a G clef curls around, and one F clef. The one real
+    mezzosoprano in any corpus scores 0.981; the five misreads score 0.712-0.815.
+    See `benchmarks/omr-clef-geometry/beethoven5-clef-sweep.json`.
+    """
+
+    def test_the_floor_is_above_every_measured_misread_and_below_the_real_one(self):
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG as C
+        assert 0.815 < C.min_symmetry_mezzosoprano < 0.981, (
+            "the five misreads top out at 0.815 and the reference sheet's real "
+            "mezzosoprano scores 0.981 — the floor has to sit between them")
+
+    def test_it_is_stricter_than_the_general_floor_and_only_for_this_clef(self):
+        from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG as C
+        assert C.min_symmetry_mezzosoprano > C.min_symmetry, (
+            "asking MORE of the rare answer is the whole idea; a general raise "
+            "would cost the scanned alto and tenor clefs, which score 0.70-0.80")
