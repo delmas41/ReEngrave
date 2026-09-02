@@ -1578,7 +1578,12 @@ def main() -> None:
     if not bench.detections_dir.exists():
         print(f"[server] WARN: detections dir missing: {bench.detections_dir}")
 
-    app = create_app(bench)
+    try:
+        app = create_app(bench)
+    except ValueError as e:
+        # Almost always a hand-edited batch_config.json. Say what is wrong
+        # rather than serving the full picker to someone who asked for a pass.
+        raise SystemExit(f"[server] ERROR: {e}")
     url = f"http://{args.host}:{args.port}"
     print(f"[server] listening on {url}")
     print(f"[server] open {url}/ to start labeling")

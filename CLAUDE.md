@@ -1310,7 +1310,101 @@ python3 -m tools.omr.annotate.server --bench-dir benchmarks/omr-labeling-NEW   #
 - **Ink-bleed / mostly-FP cells are GOOD** — dropped FPs become hard-negative background that suppresses bleed hallucinations. Don't `f` every blob: confirm real notes, leave bleed **pending** (pending and FP convert identically → no label). Too bled to read → skip the cell.
 - **Edge-clipped extreme-range notes** — label what's in the *image*, not the musical measure. Notehead cropped out → skip; partly visible → box the visible part. Cells crop at `ORCH_PAD_STAFF_LINES` staff-spaces (`select_cells_orchestral`; raised 2.5 → 5.0 in June 2026 because 2.5 clipped ledger notes); raise further and re-cut only the unlabeled cells if clipping persists.
 
-**UI hotkeys:** `t`/`f`/`u` = TP/FP/unsure (triage) · `c` = fix class (`/` searches) · `b` = redraw bbox · `a` = draw a new box, stays in draw mode after each (`Esc` stops) · `Del`/`Backspace` = remove selected box · `Tab`/`Shift+Tab` = next/prev cell (autosaves).
+**UI hotkeys:** `t`/`f`/`u` = TP/FP/unsure (triage) · `c` = fix class (`/` searches) · `b` = redraw bbox · `a` = draw a new box, stays in draw mode after each (`Esc` stops) · `Del`/`Backspace` = remove selected box · `Tab`/`Shift+Tab` = next/prev cell (autosaves). In a pass (below), `1`–`n` pick the symbol you are drawing.
+
+#### Single-symbol pass mode
+
+One symbol kind at a time is much faster than deciding every class on every
+cell — and the picker was what made it slow, 174 classes to scroll for a pass
+that only ever needs one. A batch may ship a **`batch_config.json`** naming
+the classes this sweep is for. **It is optional: with no such file the server
+and UI behave exactly as before**, which `test_annotate_server.py` pins.
+
+```json
+{
+  "pass_name": "hollow noteheads",
+  "note": "every half or whole notehead the detector missed",
+  "classes": [
+    { "label": "half notehead",
+      "on_line": "noteheadHalfOnLine",
+      "in_space": "noteheadHalfInSpace",
+      "click_box": true },
+    { "label": "whole notehead",
+      "on_line": "noteheadWholeOnLine",
+      "in_space": "noteheadWholeInSpace",
+      "click_box": true }
+  ]
+}
+```
+
+`classes` (alias `active_classes`) is a list of **palette slots**, and a slot
+is one of:
+
+| form | means |
+|---|---|
+| `"restWhole"` | a plain class |
+| `{"name": "restWhole", "label": …, "click_box": …}` | the same, with options |
+| `{"on_line": …, "in_space": …}` | a **staff-position pair** — one slot, and the click's y picks which |
+
+Number keys `1`–`n` select the slot; a **single**-slot palette needs no key at
+all. `a` enters draw mode as always, but the class is now **assigned for you**
+— no picker opens. Both halves of a pair draw in different colors with a
+`·line` / `·space` tag, so a mis-snap is visible on the image; `b` on a drawn
+box redraws it (that only ever worked on model detections), and moving one
+across the staff grid **re-derives** its variant. The full 174-class picker is
+one **button** away in the pass bar — never a hotkey, because leaving the pass
+should be an act and not a slip.
+
+**`click_box` makes a plain CLICK the whole label**, and it is declared per
+slot rather than hardcoded: a rests pass omits it and keeps drag-to-draw,
+because a rest's height varies with its value and no fixed box is right. Where
+it is on, the box is the glyph's own size, **measured, not guessed** — SMuFL
+sets the em box to four staff spaces and the committed Bravura templates trim
+to exactly `size_px/4` tall at every rendered size, so `noteheadHalf` is
+**1.000 staff spaces at aspect 1.167** and `noteheadWhole` 1.000 at 1.722
+(`_symbol_metrics` reads it out of `symbol_library/data/manifest.json`).
+Override per slot with `{"height_spaces": …, "aspect": …}`.
+
+⚠️ **The placed box is deliberately TIGHTER than a hand-drawn one.** Sean's 29
+hollow-notehead boxes from 2026-09-02 measure a median 199×178 px against a
+100 px staff space — 1.78 spaces — and AUDIT.md flags exactly that: "the boxes
+are generous … YOLO will learn a slightly loose box prior". A click places
+121×102. Do not "fix" the difference by widening the default to match the
+older labels.
+
+**Which variant is geometry, not appearance** (`snap_to_staff`): notehead
+centres sit on a half-space grid, so an even step is a line and an odd step a
+space, and the parity keeps working through the ledger positions above and
+below the staff. The grid uses each cell's **own measured line positions** —
+one real cell reads 400/502/603/698/800, and snapping off a single median from
+the top line would put its third line 4 px out. A cell with no staff geometry
+abstains and the picker opens instead. The arithmetic lives in Python and the
+browser calls `/api/cell/{id}/snap`, so the tested code is the code that runs.
+
+**The multi-pass campaign rule.** A campaign sweeps the **same cell set**
+several times — whites, then rests, then accidentals — and the set becomes
+complete across passes, not within one. So:
+
+- **Verdicts accumulate**; a later pass adds to what an earlier one drew.
+  Verified rather than assumed (against the real hollow batch, then pinned by
+  `test_added_detections_survive_a_new_serving_session`). Human boxes also
+  outlive the model detections they were drawn beside — but a verdict on a
+  *model* detection is keyed by detection id and is dropped if that id leaves
+  `detections/`, so don't regenerate detections mid-campaign.
+- **Export only when the set's passes are complete.** Anything unboxed trains
+  as background, so exporting after the whites pass alone teaches the model
+  that every rest and accidental in those cells is nothing. This is the same
+  fact that forced `verdicts-merged/` in the hollow batch.
+- ⚠️ **An inspected-and-empty cell leaves no trace.** The UI writes a file
+  only once something is decided, so a cell that legitimately holds none of
+  this pass's symbols is indistinguishable from one never opened — hollow
+  coverage was 48/48 while only 25 cells have verdict files. Pass coverage has
+  to be tracked outside the verdicts directory until that gap is closed.
+
+A corrupt config, or one naming no class that exists, **refuses to start** with
+a one-line error; an unknown class among usable ones is dropped with a loud
+warning. Serving the full picker to someone who asked for a pass would be the
+quiet failure.
 
 **Convert finished verdicts → YOLO labels:**
 ```bash
