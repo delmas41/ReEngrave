@@ -649,18 +649,41 @@ def _find_attached_stem(notehead, stems):
     return best
 
 
-def _stem_direction(notehead, stem) -> str:
-    """Decide stem direction ('up' / 'down') from notehead position
-    within the stem's y-range.
+def _stem_direction(stem, noteheads) -> str:
+    """Decide a STEM's direction ('up' / 'down') from where it projects past
+    the noteheads hanging on it.
 
-    Stem-up: stem extends ABOVE the notehead (notehead at bottom of stem).
-    Stem-down: stem extends BELOW the notehead (notehead at top of stem).
+    Stem-up: the stem extends ABOVE the notes (they sit at its foot).
+    Stem-down: it extends BELOW them.
 
-    Compare the notehead's y_center to the stem's y midpoint.
+    DIRECTION BELONGS TO THE STEM, NOT TO EACH NOTEHEAD, which is why this
+    takes all the noteheads attached to one stem at once. It used to compare a
+    single notehead's centre against the stem's MIDPOINT, one notehead at a
+    time — and a double stop is two noteheads on one stem, so for any interval
+    wider than the stem is long the same stem came out above the lower note's
+    centre and below the upper one's. The two members of one chord were then
+    handed opposite directions.
+
+    That reads as divisi. `voicing.group_chords_in_measure` refuses to merge
+    noteheads whose directions disagree, on the sound principle that a real
+    chord shares one physical stem — so the chord was split into two voices and
+    exported through a `<backup>`, one note per voice. Measured on Brahms's
+    Viola, which plays double stops throughout: `C4/C5` (an octave) came out as
+    `C4` and then `C5` at the end of the bar, and `A♭3/C5` (a tenth) likewise.
+    Thirds were unaffected, which is what made the fault look intermittent.
+
+    Comparing the projections rather than the midpoint also generalises the old
+    rule rather than replacing it: for a single notehead the stem overhangs on
+    exactly one side, and the answer is the same one it always gave.
     """
-    nh_y_c = notehead.y_canonical + notehead.height_canonical // 2
-    s_y_mid = stem.y_canonical + stem.height_canonical // 2
-    return "up" if nh_y_c > s_y_mid else "down"
+    heads = list(noteheads) if isinstance(noteheads, (list, tuple)) else [noteheads]
+    if not heads:
+        return "up"
+    top = min(nh.y_canonical for nh in heads)
+    bottom = max(nh.y_canonical + nh.height_canonical for nh in heads)
+    above = top - stem.y_canonical
+    below = (stem.y_canonical + stem.height_canonical) - bottom
+    return "up" if above > below else "down"
 
 
 def _default_clef_for_position(position_in_system: int, system_size: int) -> str:
@@ -1746,20 +1769,33 @@ def _detections_for_cell(
             stem = _find_attached_stem(d, cv_stems_for_class_check)
             _correct_notehead_class_by_fill(d, cell, has_stem=stem is not None)
 
-    # ── Stem-direction inference. For each notehead, find its attached
-    #    stem (classical-CV) and decide whether the stem goes up (above
-    #    the notehead) or down (below). This drives voice splitting in
-    #    Phase 4h: stem-up = voice 1 (upper), stem-down = voice 2 (lower).
+    # ── Stem-direction inference. Pair each notehead to its attached stem
+    #    (classical-CV), then decide the direction ONCE PER STEM from all the
+    #    noteheads on it. This drives voice splitting in Phase 4h: stem-up =
+    #    voice 1 (upper), stem-down = voice 2 (lower).
+    #
+    #    Deciding per stem rather than per notehead is what keeps a double stop
+    #    together. Its two noteheads share one stem, so they must share its
+    #    direction; resolved one notehead at a time they could disagree, and a
+    #    chord whose members disagree is exactly what `voicing` treats as
+    #    divisi. See `_stem_direction`.
     stem_direction_by_id: dict[int, str] = {}
     cv_stems = extra_lines.get("stems") or []
     if cv_stems:
+        heads_by_stem: dict[int, list] = {}
+        stems_by_key: dict[int, Any] = {}
         for d in dets:
             if getattr(d, "category", "") != "notehead":
                 continue
             stem = _find_attached_stem(d, cv_stems)
             if stem is None:
                 continue
-            stem_direction_by_id[id(d)] = _stem_direction(d, stem)
+            heads_by_stem.setdefault(id(stem), []).append(d)
+            stems_by_key[id(stem)] = stem
+        for key, heads in heads_by_stem.items():
+            direction = _stem_direction(stems_by_key[key], heads)
+            for d in heads:
+                stem_direction_by_id[id(d)] = direction
 
     # ── Rhythm pass: resolve duration_beats / duration_type / dots per
     #    notehead and rest. Uses beams + flags + augmentationDot geometry.
