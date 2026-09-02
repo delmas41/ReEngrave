@@ -2,11 +2,11 @@
   "_comment": "The single source for the CURRENT accuracy figures. Written by `orchestral_eval --omr-ned --record`; propagated into CLAUDE.md by `python3 -m tools.omr.accuracy_record --update`. Do not hand-edit, and do not restate a current figure in another document \u2014 see tools/omr/accuracy_record.py, and 68be549 for why there is only one.",
   "runs": {
     "default": {
-      "pooled": 0.1101364522417154,
-      "edits": 791,
+      "pooled": 0.10663144724037259,
+      "edits": 767,
       "truth_symbols": 3696,
-      "pred_symbols": 3486,
-      "commit": "ecd7edf",
+      "pred_symbols": 3497,
+      "commit": "15ca32a",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -18,28 +18,28 @@
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.1556332750437172,
-          "edits": 623,
+          "omr_ned": 0.15542228885557222,
+          "edits": 622,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
         },
         {
           "work_id": "mahler-sym5-mvt1",
-          "omr_ned": 0.039473684210526314,
-          "edits": 75,
+          "omr_ned": 0.027196652719665274,
+          "edits": 52,
           "pitch_recall": 0.917,
           "pitch_precision": 0.917,
-          "duration_rate": 0.864
+          "duration_rate": 1.0
         }
       ]
     },
     "direction_text": {
-      "pooled": 0.08831558831558832,
-      "edits": 647,
+      "pooled": 0.08491208940984053,
+      "edits": 623,
       "truth_symbols": 3696,
-      "pred_symbols": 3630,
-      "commit": "ecd7edf",
+      "pred_symbols": 3641,
+      "commit": "15ca32a",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -51,19 +51,19 @@
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.11982570806100218,
-          "edits": 495,
+          "omr_ned": 0.11961259079903147,
+          "edits": 494,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
         },
         {
           "work_id": "mahler-sym5-mvt1",
-          "omr_ned": 0.039473684210526314,
-          "edits": 75,
+          "omr_ned": 0.027196652719665274,
+          "edits": 52,
           "pitch_recall": 0.917,
           "pitch_precision": 0.917,
-          "duration_rate": 0.864
+          "duration_rate": 1.0
         }
       ]
     }

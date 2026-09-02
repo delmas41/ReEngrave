@@ -246,3 +246,18 @@ this section is the reconciliation the shared-tree lesson demands:
   attribution as morning item 4a** rather than hand-waved here. The scan table
   remains what RESULTS.md declares it: a baseline row set, not yet a
   regression gate.
+
+## Postscript — the integration (2026-09-02, midday)
+
+Main moved a full working day while this branch was built (the day queue's
+fermata / printed-accidental / coverage-check / scan-recall arcs). Integrated
+in two merges (`bdda54d`, `15ca32a` — the export.py seams were parallel-feature
+unions at five extension points) and re-measured whole on the final tree:
+**canonical 0.1066 / 767 default and 0.0849 / 623 with direction text — better
+than either parent arc alone** (this branch reached 0.1328, main 0.1101), which
+is what two independent fix arcs should do when neither was overfitted. Suite
+**1644 passed**; widened corpus 0.1613 → **0.1574**; scan-5 ratio 0.7987 →
+**0.7946** with edits up 65 — the merged exporter emits more symbols on scans
+(printed accidentals, fermatas), the symmetric-denominator effect noted once
+more. The figures' home files are unchanged: CLAUDE.md's generated block and
+the two benchmarks' own records.
