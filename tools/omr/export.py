@@ -358,6 +358,16 @@ def _lily_event(event: dict[str, Any]) -> str:
     for nh in event["noteheads"]:
         ly = _pitch_to_lily(nh["pitch"])
         if ly is not None:
+            # `!` forces the accidental into print where a glyph was READ.
+            # LilyPond re-derives most of them from the pitch stream on its
+            # own — measured on the fresh benchmark JSONs, 62 of the 65
+            # recorded glyphs re-print from pitch alone — but a COURTESY
+            # accidental restates what the key signature already implies and
+            # is exactly what the derivation drops (the 3: A-flats restating
+            # the key on three Brahms staves). The page prints them plain, so
+            # `!`, not `?` (which parenthesizes).
+            if nh.get("accidental"):
+                ly += "!"
             pitches.append(ly)
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
@@ -731,7 +741,10 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     # the engraver DREW; `<alter>` inside <pitch> is what sounds. The two are
     # independent — a natural has alter 0 and a printed glyph — which is why
     # this cannot be derived from the pitch on the way out.
-    _acc = _MXL_ACCIDENTAL.get(accidental or "")
+    # Guarded on is_rest even though no caller passes one for a rest today —
+    # a glyph on a rest is meaningless and the guard keeps that a fact about
+    # the element rather than about the current call sites.
+    _acc = _MXL_ACCIDENTAL.get(accidental or "") if not is_rest else None
     if _acc:
         lines.append(f"{indent}  <accidental>{_acc}</accidental>")
     # <time-modification> sits after <dot> and before <beam>, per the MusicXML

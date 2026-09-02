@@ -1429,3 +1429,72 @@ class TestAccidentalIsThePrintedGlyph:
         xml = _mxl_note(None, "", "half", 0, 2.0, 4, is_chord=False,
                         is_rest=True, indent="  ")
         assert "<accidental>" not in xml
+
+
+# ─── The glyph through the exporters end to end ─────────────────────────────
+#
+# The class above tests `_mxl_note` in isolation; these follow the field the
+# whole way — through `group_chords_in_measure` (the event carries raw
+# notehead dicts, which is what threads it) into `to_musicxml`, and through
+# `_lily_event` into the LilyPond text. The LilyPond side is `!`, measured
+# rather than assumed: LilyPond re-derives 62 of the benchmark's 65 recorded
+# glyphs from the pitch stream on its own, and the 3 it drops are COURTESY
+# accidentals — A-flats restating the key signature on three Brahms staves —
+# which is exactly what `!` exists to force. Plain `!`, not `?`, because the
+# page prints them plain and `?` parenthesizes.
+
+
+class TestAccidentalReachesBothOutputs:
+    def test_it_survives_to_musicxml_end_to_end(self):
+        result = _tiny_result()
+        dets = result["pages"][0]["systems"][0]["staves"][0]["measures"][0][
+            "detections"]
+        dets[0]["accidental"] = "natural"
+        dets[1]["accidental"] = "#"
+        xml = to_musicxml(result)
+        assert "<accidental>natural</accidental>" in xml
+        assert "<accidental>sharp</accidental>" in xml
+        # The other two noteheads carried no glyph.
+        assert xml.count("<accidental>") == 2
+
+    def test_each_chord_member_keeps_its_own(self):
+        """A chord can carry a glyph on any subset of its members — the one
+        per-note mark that must NOT be first-note-only, and the reason
+        `_mxl_voice_events` passes it per notehead rather than per event."""
+        result = _tiny_result()
+        measure = result["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        # Stack the four noteheads at one x so they group as a single chord.
+        for i, d in enumerate(measure["detections"]):
+            d["bbox"] = [10, 10 + 8 * i, 5, 5]
+            d["bbox_page"] = [10, 10 + 8 * i, 5, 5]
+        measure["detections"][2]["accidental"] = "b"
+        xml = to_musicxml(result)
+        assert xml.count("<chord/>") == 3
+        assert xml.count("<accidental>") == 1
+        assert "<accidental>flat</accidental>" in xml
+
+    def test_a_rest_never_carries_one_even_if_handed_one(self):
+        xml = _mxl_note(None, "", "half", 0, 2.0, 4, is_chord=False,
+                        is_rest=True, indent="  ", accidental="#")
+        assert "<accidental>" not in xml
+
+    def test_lilypond_forces_the_read_glyph(self):
+        event = {"kind": "chord", "duration_beats": 1.0,
+                 "duration_type": "quarter", "dots": 0,
+                 "noteheads": [{"pitch": "Ab4", "accidental": "b"}],
+                 "rest": None}
+        assert _lily_event(event) == "aes'!4"
+
+    def test_lilypond_leaves_unmarked_notes_alone(self):
+        event = {"kind": "chord", "duration_beats": 1.0,
+                 "duration_type": "quarter", "dots": 0,
+                 "noteheads": [{"pitch": "Ab4"}], "rest": None}
+        assert _lily_event(event) == "aes'4"
+
+    def test_lilypond_chord_members_force_independently(self):
+        event = {"kind": "chord", "duration_beats": 1.0,
+                 "duration_type": "quarter", "dots": 0,
+                 "noteheads": [{"pitch": "C4", "accidental": "natural"},
+                               {"pitch": "E4"}],
+                 "rest": None}
+        assert _lily_event(event) == "<c'! e'>4"
