@@ -928,7 +928,7 @@ to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `b3ef9ac`: **pooled 0.1101 / 791 edits** (Mahler 0.0395, Beethoven 0.0727, Brahms 0.1556), over 3696 truth + 3486 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0883 / 647**, measured on `b3ef9ac`.
+Current on the engraved orchestral benchmark, measured on `ecd7edf`: **pooled 0.1101 / 791 edits** (Mahler 0.0395, Beethoven 0.0727, Brahms 0.1556), over 3696 truth + 3486 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0883 / 647**, measured on `ecd7edf`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|

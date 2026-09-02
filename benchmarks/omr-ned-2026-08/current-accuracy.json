@@ -6,7 +6,7 @@
       "edits": 791,
       "truth_symbols": 3696,
       "pred_symbols": 3486,
-      "commit": "b3ef9ac",
+      "commit": "ecd7edf",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -39,7 +39,7 @@
       "edits": 647,
       "truth_symbols": 3696,
       "pred_symbols": 3630,
-      "commit": "b3ef9ac",
+      "commit": "ecd7edf",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",

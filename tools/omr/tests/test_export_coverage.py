@@ -105,12 +105,23 @@ class TestTheRepositoryItself:
 
     def test_the_inventory_has_no_stale_entries(self):
         """A gap that has been CLOSED must leave KNOWN_GAPS, or the list stops
-        describing the exporter and starts describing its history."""
+        describing the exporter and starts describing its history.
+
+        FLAG_DEPENDENT entries are exempt. The fixtures are gitignored build
+        products, so this reads whatever the last local run produced, and a run
+        with `--direction-text` emits <words> while one without it does not —
+        both correct. Without the exemption this test reports which flags
+        someone last used, which is not a fact about the exporter.
+        """
         still_missing = {name for name, _, _ in ec.survey()}
-        stale = sorted(set(ec.KNOWN_GAPS) - still_missing)
+        stale = sorted(set(ec.KNOWN_GAPS) - still_missing - ec.FLAG_DEPENDENT)
         assert stale == [], (
             f"these are emitted now and should come out of KNOWN_GAPS: {stale}"
         )
+
+    def test_every_flag_dependent_gap_is_a_known_gap(self):
+        """The exemption may only ever excuse an entry that is written down."""
+        assert ec.FLAG_DEPENDENT <= set(ec.KNOWN_GAPS)
 
     def test_the_seven_that_were_fixed_stay_fixed(self):
         """Regression guard for the actual history: each of these was once
