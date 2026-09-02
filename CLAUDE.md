@@ -903,10 +903,21 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Current on the engraved orchestral benchmark: **pooled 0.1364** (Mahler
-0.0455, Beethoven 0.1649, Brahms 0.1709), from an opening baseline
-of 0.3164. Beethoven's note row is **81/81, recall and precision 1.000** — the
-residue there is no longer notes. Full
+⚠️ **This paragraph is where the current figure lives, and nowhere else.** It
+used to be restated in PROJECT_STATUS.md, NOTES.md and the next-steps doc, and
+the `a271b1e` merge left three of the four copies stale without a warning: two
+branches had each edited different copies, git auto-merged all of them cleanly,
+and only the copy that CONFLICTED was resolved with a fresh measurement
+(`ae7c259`). A conflict is loud; a clean auto-merge of the same fact held in
+four places is silent, and the copy that loses is whichever file happened not
+to collide. So the other three link here, and a new measurement updates this
+paragraph only.
+
+Current on the engraved orchestral benchmark, measured on main: **pooled
+0.1364 / 966 edits** (Mahler 0.0455, Beethoven 0.1649, Brahms 0.1709), from an
+opening baseline of 0.3164 on 2026-08-31; with `--direction-text` (off by
+default), 0.1138 / 822. Beethoven's note row is **81/81, recall and precision
+1.000** — the residue there is no longer notes. Full
 reading, and the findings it surfaced that note recall is blind to, in
 [benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md),
 [WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)

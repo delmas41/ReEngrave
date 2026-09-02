@@ -3,11 +3,13 @@
 Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean at the start of a ReEngrave session.
 
 ➡️ **START HERE: [docs/next-steps-omr-2026-09-01.md](docs/next-steps-omr-2026-09-01.md)**
-— accuracy is measurable against an outside standard now (pooled OMR-NED
-**0.1364**, down from 0.3164; its top-ranked item — cross-staff attribution —
-landed 2026-09-01 as 81446a0, slurs, its #4, the same day as bae93b1, and the
-rhythm bucket — dots and beam levels — the same day again).
-The ranked residue plus the closed dead ends are in that file;
+— accuracy is measurable against an outside standard now (pooled OMR-NED; the
+current figure lives in ONE place, [CLAUDE.md](CLAUDE.md)'s OMR-NED section,
+and is deliberately not restated here — this block was one of the three copies
+the `a271b1e` merge silently left stale). The metric's top-ranked item —
+cross-staff attribution — landed 2026-09-01 as 81446a0, slurs, its #4, the
+same day as bae93b1, and the rhythm bucket — dots and beam levels — the same
+day again. The ranked residue plus the closed dead ends are in that file;
 [PROJECT_STATUS.md](PROJECT_STATUS.md) is current through the 09-01 landing.
 
 ---

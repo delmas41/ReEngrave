@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED 0.3164 → 0.1364, slurs shipped after all; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
+**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED, more than halved from its 0.3164 opening in two days; the current figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section and is not restated here; slurs shipped after all; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -64,8 +64,10 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once — builds .venv
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled 0.3164 → 0.1364** on the engraved orchestral benchmark, in two days. Lower is
-better.
+The opening baseline was **0.3164**; two days of fixes more than halved it. The
+current figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section — the one place
+it is stated, after the `a271b1e` merge silently left three of its four copies
+stale. Lower is better.
 
 | step | pooled | edits | commit |
 |---|--:|--:|---|
@@ -87,15 +89,13 @@ better.
 | ink across the whole bar read as a beam | 0.1436 | 1018 | `e4ff44b` |
 | a chord written top-down (see note) | **0.1439** | 1020 | `b8ccc89` |
 
-Currently Mahler **0.0455**, Beethoven **0.1649**, Brahms **0.1709** — measured on the
-merge (`a271b1e`), not carried over from any branch.
-
 **The rows above do not chain, and the last two landings are not in them.** Each
 row is the figure measured on the base that was current when that fix shipped,
 and main moved under most of them; the two that followed `b8ccc89` — `120de2a`
-(ledger ladders) and `0c85468` — compose with it to **0.1364 / 966 edits**, which
-is better than either measured alone. The pooled figure below is always the one
-measured ON main.
+(ledger ladders) and `0c85468` — compose with it to **0.1364 / 966 edits**,
+measured on the merge (`a271b1e`) rather than carried over from any branch. The
+headline figure in CLAUDE.md is always the one measured ON main; treat this
+table as a record of what each fix was worth where it landed.
 
 The last row goes UP by two edits on purpose: OMR-NED sorts a chord's pitches
 before comparing, so it is indifferent to writing a chord bottom-up, while note
@@ -918,9 +918,11 @@ the two-argument form, and check its exit code.
 The ranked handoff is [`docs/next-steps-omr-2026-09-01.md`](docs/next-steps-omr-2026-09-01.md);
 NOTES.md carries the long-form context for everything below.
 
-The current figure is **0.1364** (Mahler 0.0455, Beethoven 0.1649, Brahms 0.1709), and
-NOTES.md, CLAUDE.md and `next-steps-omr-2026-09-01.md` now all agree on it — NOTES.md's
-START HERE block was three fixes behind until `6a1b601` and says so itself.
+The current figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section and nowhere
+else. Restated copies here, in NOTES.md and in the next-steps doc kept going
+stale one merge at a time — `6a1b601` caught NOTES.md three fixes behind, and
+`a271b1e` left three of the four copies stale in a single landing — so the
+copies are now pointers.
 
 **Recognition, in the order the metric ranks them:**
 
