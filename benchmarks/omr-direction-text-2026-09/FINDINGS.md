@@ -389,16 +389,17 @@ total.
    not a wider band: a wider band fuses the letters to the lines.
 2. ~~**Nothing here has been run on a SCAN.**~~ **DONE — see
    [SCAN_2026-09-01.md](SCAN_2026-09-01.md).** Five pages of an 1870 Beethoven 5
-   scan: **precision survives perfectly** (12 accepted, 0 wrong, on paper this
-   layer had never met) and **recall collapses to 18%**. The candidate CV
+   scan: **precision survives perfectly** (17 accepted, 0 invented, on paper this
+   layer had never met) and **recall falls to about 37%**. The candidate CV
    transfers largely intact — 72 of 74 crops contain ink a second OCR can read —
    and the loss is Surya being silent on 53 legible crops. Two things there
    outrank the numbers: Surya emitted **1307 characters of hallucinated prose**
    on one crop, which only the lexicon stopped; and Tesseract as a REPLACEMENT
    rung is refuted (reads 72 of 74 and yields fewer usable words than Surya's
    21, because its errors are in-word where Surya's are total) while Tesseract
-   as a UNION rung is the measured lever, 11 → 17 accepted with zero
-   disagreements.
+   as a UNION rung is now SHIPPED — 12 → 17 accepted on the scan, and the
+   engraved benchmark unchanged to the edit, because Surya already reads every
+   crop here and the lexicon refuses Tesseract's extra noise.
 3. **The lexicon is three pages wide.** It holds what these fixtures print plus
    the obvious neighbours. A German or French edition will need its own entries,
    and `instruments.py` is the cautionary tale: a newly-readable page surfaced

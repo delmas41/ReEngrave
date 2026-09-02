@@ -85,7 +85,16 @@
           "n_read": 2,
           "n_accepted": 1,
           "rejected": [
-            "(d = 108)"
+            "(d = 108)",
+            "(J = 108)"
+          ],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya",
+            "tesseract"
           ]
         }
       ]
@@ -198,9 +207,20 @@
       "pages": [
         {
           "n_candidates": 17,
-          "n_read": 14,
+          "n_read": 16,
           "n_accepted": 14,
-          "rejected": []
+          "rejected": [
+            "atoll y yt",
+            "ee ee ee ee ee"
+          ],
+          "by_reader": {
+            "surya": 14
+          },
+          "conflicts": [],
+          "readers": [
+            "surya",
+            "tesseract"
+          ]
         }
       ]
     },
@@ -355,7 +375,9 @@
           "n_candidates": 0,
           "n_read": 0,
           "n_accepted": 0,
-          "rejected": []
+          "rejected": [],
+          "by_reader": {},
+          "conflicts": []
         }
       ]
     },

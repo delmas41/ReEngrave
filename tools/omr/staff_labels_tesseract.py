@@ -106,6 +106,59 @@ def _words(image, upscale: int = UPSCALE) -> list[tuple[float, float, str]]:
     return out
 
 
+#: Page-segmentation mode for a DIRECTION crop, which is one line of one or two
+#: words. `PSM` above is 6 (a uniform block) because the margin reader is handed
+#: a COLUMN of labels; a direction crop is the other case, and 7 says so.
+PSM_LINE = 7
+
+#: Characters this engine invents out of the staff lines and barlines that cross
+#: a direction crop. Measured on 74 crops from an 1870 Beethoven 5 scan
+#: (`benchmarks/omr-direction-text-2026-09/SCAN_2026-09-01.md`): stripping them
+#: turns `'|sempre |'`, `'| cresc.'` and `'[sempre |'` into words the lexicon
+#: accepts, and takes this rung from 5 usable reads to 11. None of them can occur
+#: inside a musical direction, so nothing is lost by removing them.
+_RULE_FRAGMENTS = "|[]{}_~"
+
+
+def read_crops_text(crops: list, *, upscale: int = UPSCALE) -> list[str]:
+    """Plain OCR for a list of BGR crops — one string each, `""` where nothing.
+
+    The counterpart to `staff_labels_surya.read_crops_text`, and deliberately
+    the same signature so `direction_text` can call both without caring which
+    is which.
+
+    **This rung reads far MORE than Surya and yields no more usable words on its
+    own** — 72 of 74 scan crops against Surya's 21, and 5 lexicon hits against
+    Surya's 11, because its errors fall inside the word (`Crese.`, `CTeSC.`)
+    where Surya's are total silence. It is here as a SECOND opinion, not a
+    replacement: the union of the two accepts 17 where either alone accepts 11.
+    """
+    import cv2                                              # noqa: PLC0415
+    import pytesseract                                      # noqa: PLC0415
+
+    out: list[str] = []
+    for crop in crops:
+        if crop is None or getattr(crop, "size", 0) == 0:
+            out.append("")
+            continue
+        gray = (cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+                if getattr(crop, "ndim", 2) == 3 else crop)
+        work = (cv2.resize(gray, None, fx=upscale, fy=upscale,
+                           interpolation=cv2.INTER_CUBIC)
+                if upscale > 1 else gray)
+        try:
+            text = pytesseract.image_to_string(
+                work, config=f"--psm {PSM_LINE}")
+        except Exception as exc:                            # noqa: BLE001
+            logger.warning("tesseract failed on one crop: %s", exc)
+            out.append("")
+            continue
+        for ch in _RULE_FRAGMENTS:
+            text = text.replace(ch, " ")
+        out.append(" ".join(text.split()))
+    return out
+
+
 def read_system_labels(pws: PageWithStaves,
                        staves: list[Staff]) -> dict[int, str]:
     """`{staff_index: text}` for one system's margin, from OCR."""

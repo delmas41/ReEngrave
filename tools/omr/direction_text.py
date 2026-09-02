@@ -13,7 +13,7 @@ the Phase 3.4 catastrophic forgetting — so this reads text WITHOUT the detecto
       minus detections       noteheads, rests, clefs, accidentals, dynamics …
       minus curves and rules slurs, ties, beams, stems, ledger lines, barlines
       = candidate clusters   letter-sized components grouped into words
-      -> Surya               the free OCR rung, on a word-sized crop
+      -> Surya AND Tesseract two free OCR rungs, on a word-sized crop
       -> direction_lexicon   a term or a phrase of terms, or nothing
 
 Every one of those steps except the OCR is arithmetic on data already in the
@@ -48,8 +48,10 @@ which measure it is.
   glyphs, the detector finds them, and `export.measure_dynamics` already emits
   them. The lexicon deliberately omits them so the two readers cannot both
   claim one mark.
-- **It abstains without Surya.** No venv, no directions, and the rest of the
-  transcription is unchanged — the same degradation `staff_labels_surya` has.
+- **It abstains without an OCR rung.** No venv and no Tesseract means no
+  directions, and the rest of the transcription is unchanged — the same
+  degradation `staff_labels_surya` has. With either one it still runs; see
+  `default_readers` for why it asks BOTH when both are there.
 """
 from __future__ import annotations
 
@@ -203,7 +205,7 @@ class TextCandidate:
 
 @dataclass(frozen=True)
 class DirectionText:
-    """A candidate that Surya read and the lexicon accepted."""
+    """A candidate an OCR rung read and the lexicon accepted."""
 
     staff_index: int
     measure_index: int
@@ -212,6 +214,10 @@ class DirectionText:
     category: str
     placement: str
     terms: tuple[str, ...]
+    #: Which rung supplied it. Kept in the exported JSON because the two rungs
+    #: fail differently, so "who found this" is the first question to ask when
+    #: a page's yield changes.
+    reader: str = ""
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -222,6 +228,7 @@ class DirectionText:
             "category": self.category,
             "placement": self.placement,
             "terms": list(self.terms),
+            "reader": self.reader,
         }
 
 
@@ -561,20 +568,67 @@ def crop_for(page: PageImage, candidate: TextCandidate,
 
 
 #: A reader takes a list of crops (BGR arrays) and returns one string each,
-#: empty where it read nothing. `staff_labels_surya` supplies the default.
+#: empty where it read nothing. Both OCR rungs have this signature.
 Reader = Callable[[list[np.ndarray]], list[str]]
 
 
+def default_readers() -> list[tuple[str, Reader]]:
+    """The rungs to ask, in precedence order, skipping any that cannot run.
+
+    **Both, not one, and the reason is measured rather than tidy.** On 74 crops
+    cut from an 1870 Beethoven 5 scan
+    (`benchmarks/omr-direction-text-2026-09/SCAN_2026-09-01.md`):
+
+        rung                          crops read   lexicon-accepted
+        surya                             21             11
+        tesseract                         72              5   (raw)
+        tesseract                         72             11   (rules stripped)
+        surya OR tesseract                73             17
+
+    The two fail in ways that do not overlap. Surya is an OCR interface over a
+    language model: it either reads a crop or says nothing at all, and on that
+    page it said nothing about 53 crops a person reads at a glance. Tesseract
+    reads almost everything and gets letters wrong INSIDE the word — `Crese.`,
+    `CTeSC.` — which the lexicon then refuses. So neither dominates: swapping
+    Surya out for Tesseract would have LOST recall (11 accepted to 5), and
+    running both accepts half again as many as either.
+
+    Precedence is Surya first. On the scan corpus there was not one crop where
+    both accepted and named different words, so this rule has never yet been
+    load-bearing — it is here so that the day it is, the answer is the rung
+    whose accuracy the engraved benchmark measures, not the one whose errors
+    are in-word. Disagreements are counted in the report rather than hidden.
+
+    Each rung self-disables when its dependency is absent, so a machine with
+    neither degrades to no directions rather than to an error — the same
+    contract `staff_labels_surya` has had since it shipped.
+    """
+    readers: list[tuple[str, Reader]] = []
+    try:
+        from . import staff_labels_surya
+        if staff_labels_surya.available():
+            readers.append(("surya", staff_labels_surya.read_crops_text))
+    except Exception as exc:                                  # noqa: BLE001
+        logger.debug("surya rung unavailable: %s", exc)
+    try:
+        from . import staff_labels_tesseract
+        if staff_labels_tesseract.available():
+            readers.append(("tesseract", staff_labels_tesseract.read_crops_text))
+    except Exception as exc:                                  # noqa: BLE001
+        logger.debug("tesseract rung unavailable: %s", exc)
+    return readers
+
+
 def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
-                    reader: Reader | None = None,
+                    readers: Sequence[tuple[str, Reader]] | None = None,
                     config: BandConfig = DEFAULT_BAND_CONFIG,
                     ) -> tuple[list[DirectionText], dict[str, Any]]:
     """Every direction on the page, plus a report of what happened.
 
-    The report is returned rather than logged because the two numbers that
-    matter — how many candidates the CV proposed and how many the lexicon
-    accepted — are the only way to tell a page with no text from a reader that
-    could not run, and they look identical in the output otherwise.
+    The report is returned rather than logged because the numbers that matter —
+    how many candidates the CV proposed, how many each rung read, and how many
+    the lexicon accepted — are the only way to tell a page with no text from a
+    reader that could not run, and they look identical in the output otherwise.
     """
     candidates = find_candidates(pws, page_dict, config=config)
     info: dict[str, Any] = {
@@ -582,27 +636,56 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
         "n_read": 0,
         "n_accepted": 0,
         "rejected": [],
+        "by_reader": {},
+        "conflicts": [],
     }
     if not candidates:
         return [], info
 
-    if reader is None:
-        from .staff_labels_surya import read_crops_text
-        reader = read_crops_text
+    if readers is None:
+        readers = default_readers()
+    info["readers"] = [name for name, _fn in readers]
+    if not readers:
+        info["reason"] = "no OCR rung available"
+        return [], info
 
     spacing = float(np.median([_spacing(s) for s in pws.staves]))
     crops = [crop_for(pws.page, c, spacing) for c in candidates]
-    texts = reader(crops)
-    info["n_read"] = sum(1 for t in texts if t)
+
+    # Every rung reads every crop. Running the later ones only where the first
+    # came back empty would be cheaper and would measure something else: a rung
+    # that DISAGREES is worth knowing about, and the count below is how that
+    # ever surfaces.
+    read: list[tuple[str, list[str]]] = []
+    for name, fn in readers:
+        try:
+            read.append((name, list(fn(crops))))
+        except Exception as exc:                              # noqa: BLE001
+            logger.warning("direction reader %s failed: %s", name, exc)
+            info.setdefault("failed_readers", {})[name] = f"{type(exc).__name__}: {exc}"
 
     out: list[DirectionText] = []
-    for candidate, text in zip(candidates, texts):
-        if not text:
+    for index, candidate in enumerate(candidates):
+        texts = [(name, texts[index]) for name, texts in read
+                 if index < len(texts) and texts[index]]
+        if texts:
+            info["n_read"] += 1
+        hits = [(name, text, lexicon_lookup(text)) for name, text in texts]
+        accepted = [(name, hit) for name, _text, hit in hits if hit is not None]
+        if not accepted:
+            info["rejected"].extend(text for _name, text in texts)
             continue
-        hit: DirectionHit | None = lexicon_lookup(text)
-        if hit is None:
-            info["rejected"].append(text)
-            continue
+
+        winner_name, hit = accepted[0]
+        distinct = {h.text.strip().lower().rstrip(".") for _n, h in accepted}
+        if len(distinct) > 1:
+            info["conflicts"].append({
+                "staff": candidate.staff_index,
+                "measure": candidate.measure_index,
+                "readings": {name: h.text for name, h in accepted},
+                "took": winner_name,
+            })
+        info["by_reader"][winner_name] = info["by_reader"].get(winner_name, 0) + 1
         out.append(DirectionText(
             staff_index=candidate.staff_index,
             measure_index=candidate.measure_index,
@@ -611,6 +694,7 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             category=hit.category,
             placement=candidate.placement,
             terms=hit.terms,
+            reader=winner_name,
         ))
     info["n_accepted"] = len(out)
     return out, info

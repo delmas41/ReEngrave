@@ -52,8 +52,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from tools.omr.direction_lexicon import lookup            # noqa: E402
-from tools.omr.direction_text import (crop_for, find_candidates,  # noqa: E402
-                                      read_directions)
+from tools.omr.direction_text import (crop_for, default_readers,  # noqa: E402
+                                      find_candidates, read_directions)
 from tools.omr.preprocessing import render_page           # noqa: E402
 from tools.omr.staff_detector import detect_staves        # noqa: E402
 from tools.omr.transcribe import DEFAULT_WEIGHTS, transcribe  # noqa: E402
@@ -117,17 +117,26 @@ def run_page(pdf: Path, page_index: int, *, weights: str, dpi: int,
     # between "never proposed", "proposed and read as nothing" and "read" is
     # the whole diagnosis on a scan, and the summary counts hide it.
     candidates = find_candidates(pws, page_dict)
-    texts = []
+    by_rung: dict[str, list[str]] = {}
     if candidates:
-        from tools.omr.staff_labels_surya import read_crops_text
-        texts = read_crops_text([crop_for(page, c, spacing) for c in candidates])
-    per_candidate = [
-        {"staff": c.staff_index, "measure": c.measure_index,
-         "placement": c.placement, "y": c.bbox_page[1],
-         "x": c.x_page, "ocr": txt,
-         "verdict": ("accepted" if txt and lookup(txt) else
-                     "refused" if txt else "unread")}
-        for c, txt in zip(candidates, texts or [""] * len(candidates))]
+        crops = [crop_for(page, c, spacing) for c in candidates]
+        for name, fn in default_readers():
+            try:
+                by_rung[name] = list(fn(crops))
+            except Exception as exc:                        # noqa: BLE001
+                print(f"   rung {name} failed: {exc}", file=sys.stderr)
+    per_candidate = []
+    for i, c in enumerate(candidates):
+        reads = {name: (texts[i] if i < len(texts) else "")
+                 for name, texts in by_rung.items()}
+        hit = next((r for r in reads.values() if r and lookup(r)), "")
+        any_text = next((r for r in reads.values() if r), "")
+        per_candidate.append(
+            {"staff": c.staff_index, "measure": c.measure_index,
+             "placement": c.placement, "y": c.bbox_page[1], "x": c.x_page,
+             "reads": reads, "ocr": hit or any_text,
+             "verdict": ("accepted" if hit else
+                         "refused" if any_text else "unread")})
 
     # Corroborate each accepted reading against the layer, in TWO dimensions.
     for a in accepted:
@@ -209,6 +218,12 @@ def main(argv: list[str] | None = None) -> int:
         for c in row["per_candidate"]:
             verdicts[c["verdict"]] = verdicts.get(c["verdict"], 0) + 1
         print(f"   candidate verdicts: {verdicts}")
+        rung_counts = {}
+        for c in row["per_candidate"]:
+            for name, txt in c.get("reads", {}).items():
+                if txt and lookup(txt):
+                    rung_counts[name] = rung_counts.get(name, 0) + 1
+        print(f"   lexicon hits per rung: {rung_counts}")
         refused = [c["ocr"] for c in row["per_candidate"]
                    if c["verdict"] == "refused"]
         if refused:
