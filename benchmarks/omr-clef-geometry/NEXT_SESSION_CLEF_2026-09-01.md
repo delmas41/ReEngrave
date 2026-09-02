@@ -4,6 +4,63 @@
 > `NEXT_SESSION_CLEF_2026-08-31.md` in full. Everything below is measured and
 > reproducible from the harnesses named in it.
 
+## Start here — three self-contained jobs, one session each
+
+This work is meant to be picked up by a FRESH session per item; they are
+independent and each is small enough to finish. Paste one of these as the
+opening message, with this file's path.
+
+> **JOB A — DONE 2026-09-01. Surya is a fixed function of its input; load was
+> never the variable.** 45 replays of frozen crop bytes — warm, cold, concurrent
+> x4 and x8, mixed with other pages' crops both sequentially and concurrently,
+> and 1/8/16 llama.cpp slots — returned ONE answer. The contested character is
+> decided at p=0.991 with a 5.53-nat margin, so batching could not have moved
+> it, and `_surya_worker` issues one request per system anyway, so a benchmark
+> run is not concurrent in the first place. **`SURYA_BAKEOFF_2026-08-31.md` and
+> the free-path numbers stand.** Two things it turned up that the next session
+> needs: the only sampled path is surya's retry ladder (temperature 0.2 -> 0.8
+> on a failed or repetitive request, and silent in production); and the two
+> sessions' readings STILL disagree on identical bytes with no version
+> difference, which is unexplained. Full write-up: `RESULTS.md`, "JOB A".
+
+> **JOB B — which label makes two twelves behave differently?** On beet5-p48
+> Surya and the paid vision reader each return 12 usable labels, but Surya's
+> produce 6 dossier fills and vision's 9. The tie is already resolved in the paid
+> reader's favour (shipped), so this is about the cause, not the symptom.
+> **RE-MEASURE THE LABELS FIRST — this job's stated premise is now inverted.**
+> Job A found staff 10 reading `Tr. Teq.` -> **Trumpet at medium confidence** on
+> all 45 reads, which is a wrong instrument on a trombone staff and exactly the
+> poisoned `label_pins` the original report described; staff 0 reads a clean
+> `'Fl. pic.'`. The earlier session measured both the other way round on the
+> same bytes. So run the reader, write down what it actually returns TODAY, and
+> only then start at `score_layouts.label_pins` and `dossier.join_parts_to_slots`
+> — and note that `Tr. Teq.` is a resolved-label fault, not a raw-text one, so
+> the "something downstream reads the RAW TEXT" theory may not be needed at all.
+
+> **JOB C — the positional default, which is the largest error class.** Seventeen
+> of the ~20 remaining end-to-end errors are a bass or C-clef staff called treble
+> because nothing read a clef. `clef_correction.correct_clefs_from_instruments`
+> already turns an instrument name into a clef — gap-fill only, vetoed by register
+> fit — and it is STARVED OF NAMES, not broken: naming beet6-p20's slot 7 "Viola"
+> by hand makes it fire correctly at once. `eval_score_order` says the score-order
+> prior names 12 of 33 staves at 0.92 precision, abstaining on two thirds.
+> Widening that safely is the biggest measured lever left. Ceiling, stated
+> honestly: identity is worth roughly twelve of the seventeen — beet9-p120 is a
+> choral page where a modern lexicon answers "treble" for Soprano and Tenor staves
+> that actually print C clefs.
+
+**DO NOT START** on the detector's 45-of-113 blind staves (a training problem
+with three negative results already: catalog training, domain augmentation, the
+clef fine-tune) without a genuinely new idea, and do not re-open the five "no
+dots in the window" staves — four approaches measured and refused, in
+`RESULTS.md`.
+
+**Environment**, all host-side: weights in `omr-weights/`, the API key for
+`--assist vision` in `backend/.env`, and Surya at `.venv-surya` (gitignored —
+`python3 -m tools.omr.staff_labels_surya --bootstrap` in a fresh checkout).
+
+---
+
 ## Run all of it, every time
 
 ```bash
@@ -97,10 +154,9 @@ The four-item leverage list was worked through and two items are dead. Read
    would mean something downstream reads the text rather than the resolved
    label. Worth an hour, not a day.
 
-   TEST THIS FIRST though: Surya's llama.cpp server runs `--parallel 8`, and the
-   two contradictory readings were taken under different load — a full benchmark
-   run against an idle server. If batching perturbs the decode then Surya is not
-   a fixed function of its input, which matters far more than one label.
+   TESTED 2026-09-01 and REFUSED: Surya is a fixed function of its input, and
+   `--parallel 8` batching is not what moved the label. 45 replays, one answer;
+   the contested character sits at p=0.991. Do not re-open the load question.
 
 0b. **DONE: Surya is installed** (`--bootstrap`, `.venv-surya`, gitignored;
    re-run it in any other checkout). Free, ~7.6 s a page, correct where it

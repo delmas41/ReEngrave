@@ -2199,3 +2199,145 @@ would matter far more than this one label: a reader whose answer depends on what
 else is in flight cannot be measured by a benchmark that reads it in isolation.
 Test it by reading the same page repeatedly under concurrent load before
 spending time on the staff-0 text.
+
+---
+
+## JOB A — Surya IS a fixed function of its input, and LOAD was never the variable
+
+**2026-09-01.** `probe_surya_determinism.py` had never been run. It has now, on
+Beethoven 5 p.48, plus two arms it did not have. The hypothesis the previous
+section proposed — that `--parallel 8` batching perturbs the decode, so a
+benchmark that reads Surya in isolation cannot price what it does inside a
+benchmark — **is refused.** The bake-off numbers and every free-path figure that
+rests on them stand.
+
+### The input really is frozen
+
+The probe caches the worker's own JSON job and replays those bytes. Built twice
+from the PDF, independently: **sha256 `4c3e441b75b93fa3`, 34 230 bytes** both
+times — one system, 17 staves, 34 px gutter. And it is the crop the PIPELINE
+uses: `eval_pipeline_clefs` does not pass `staved`, so
+`apply_contextual_analysis` re-runs `detect_staves(render_page(...))` exactly as
+the probe does. Only `transcribe.py:3573` threads its own staves in, and that
+call is the one currently raising TypeError.
+
+### Forty-five replays, one answer
+
+Every arm at the production setting (temperature 0.0, top_p 0.1):
+
+| arm | reads | distinct answers |
+|---|--:|--:|
+| serial, warm resident server | 14 | 1 |
+| serial, **cold** — server spawned and killed per read | 4 | 1 |
+| concurrent ×4 | 8 | 1 |
+| concurrent ×8 (all slots busy) | 8 | 1 |
+| mixed, **sequential** after two other pages — dirty KV slots | 3 | 1 |
+| mixed, **concurrent** with two other pages' crops | 3 | 1 |
+| `SURYA_INFERENCE_PARALLEL=1` | 2 | 1 |
+| `SURYA_INFERENCE_PARALLEL=16` | 2 | 1 |
+| **total** | **45** | **1** |
+
+The concurrent arms genuinely contended rather than queuing politely: ×4 took
+8.4–8.5 s each against 4.5–5.2 s alone, ×8 took 12.8–13.0 s against 6.6 s.
+
+Two further reads went through `read_staff_labels_surya` itself rather than the
+frozen job — the ladder's own path — at 600 and at 300 dpi. **Different crops**
+(300 dpi is sha `0c794fad058b21f2`) and the same twelve labels.
+
+`--load K` alone would not have settled this and the probe now says so: it puts
+K copies of ONE image in flight, which llama.cpp may serve from a shared prompt
+cache. The `mixed` phase added here is what the hypothesis actually names — a
+DIFFERENT image in the batch, and slots left holding another page's KV.
+
+### And the mechanism says why load could not have been it
+
+`_surya_worker.main` loops over systems and calls `predictor([image])` once per
+system, so `chat_completions_batch` gets a batch of ONE. Confirmed by counting
+requests: the 17-staff page issues exactly **1** request. A ten-page benchmark
+run is therefore one request at a time; concurrency can only arise from two
+PROCESSES overlapping, and 2–8 overlapping requests move nothing.
+
+### The disputed character is not a near-tie — 0.991, and `n` is not on the list
+
+`probe_surya_margin.py` (new, runs inside `.venv-surya`) re-asks the server for
+the same completion with `top_logprobs`, which surya does not request. Staff 10
+is spelled `T r . ␣ T e q .` with **every token at p ≥ 0.975**, and the contested
+one at
+
+    [206] 'q'  p=0.991  gap 5.53 nats  runner-up 'a' p=0.004
+
+`'n'` is not in the top five. Batch-order floating point moves logits by parts
+in a thousand; it does not move 5.5 nats. **Before concluding "I could not make
+it move", measure how hard it would have to be pushed** — otherwise the negative
+result is a statement about this machine rather than about the reader.
+
+Where this decode IS fragile is the GEOMETRY, not the text: the small-gap tokens
+are all bbox digits (`'541'` over `'542'` at 0.02 nats). `_assign` uses only the
+y-centre, so a digit's worth of wobble changes nothing.
+
+### The one stochastic route that does exist, and it is not batching
+
+Reading `openai_client.py`: decode is temperature 0.0, but `_should_retry` fires
+on a transport error OR a detected repeat token, and each retry RAISES the
+temperature — `min(0.0 + 0.2 * (retries + 1), 0.8)`, with `top_p` 0.95 on the
+repeat branch. A page whose first attempt fails is read by a SAMPLED decode.
+Priced with `--sample`:
+
+| decode | outputs | distinct label sequences | staff 10 |
+|---|--:|--:|---|
+| temperature 0.0 (production) | 45 | **1** | `Tr. Teq.` ×45 |
+| temperature 0.2 (first retry) | 8 | 2, both folding to one reading | `Tr. Teq.` ×8 |
+| temperature 0.8 (ladder ceiling) | 24 | **17** | `Tr. Teq.` ×24 |
+
+At 0.2 all eight whole outputs differ and only the bboxes have moved; the two
+label sequences differ by `<br/>` against a space, which `_text_of` folds away.
+At 0.8 the reading does break down — `'Fl. Fig. pic.'` and `'Fl. plo. pic.'` at
+staff 0, `'Tr. At.'` for `Tr. Alt.`, every staff gaining a spurious `pic.` in
+one decode, and one decode appending an invented sentence about a Kansas
+courthouse. **`Tr. Ten.` appears in none of the 24.**
+
+A retry is currently INVISIBLE in production: surya logs it with
+`logger.warning` inside the worker, and `read_crops_surya` discards worker
+stderr unless the process fails outright. If anything here deserves a change, it
+is surfacing that — not the batching that turned out not to matter.
+
+### What did NOT reproduce, said plainly
+
+Today, on every path measured above, staff 10 of beet5-p48 reads **`Tr. Teq.` →
+Trumpet at MEDIUM confidence** and staff 0 reads **`Fl. pic.` → Piccolo, high**.
+The previous session recorded the opposite on both — `Tr. Ten.` → Trombone at
+high confidence over four runs "warm and cold … and a capture inside the
+ladder's own call", and `'Fl. fl. pic.'` at staff 0.
+
+Nothing I can find differs. Same commit; crop bytes reproducible; `surya-ocr
+0.22.1` in all four `.venv-surya` installs on this machine; the GGUF blobs and
+`llama.cpp 0.3.0 (build 10621)` both dated 2026-08-31 and untouched since. Two
+sessions, each internally consistent over dozens of reads, disagreeing on the
+same bytes. **I could not explain it, and I am not going to pretend the earlier
+reading was simply wrong.**
+
+The best-supported guess, and it is a guess: the earlier reading came off a
+RETRY. `'Fl. fl. pic.'` — a duplicated fragment of the staff's own label — is
+the shape the sampled decodes produce twice in 24 and that temperature 0 never
+produced in 45. That is evidence about staff 0's half of it. It is not evidence
+about `Tr. Ten.`, which no temperature reached.
+
+### What this costs Job B
+
+Job B is scoped around staff 0's raw text being "the one difference that
+survives checking". On today's measurement that premise is inverted: staff 10 reads
+`Tr. Teq.` → **Trumpet**, a wrong instrument on a trombone staff, at medium
+confidence — which is exactly the poisoned `label_pins` the original subagent
+described. Whoever takes Job B should re-measure which labels Surya returns
+before assuming staff 0 is the culprit.
+
+### Refused
+
+* **The CPU backend arm.** `LLAMA_CPP_NGL=0` did not finish ONE read inside
+  surya's own 600 s request timeout (11+ min elapsed at 696% CPU), so it could
+  only have ended in the retry ladder — measuring the retry, not the backend.
+  Abandoned rather than reported as a backend comparison.
+* **Any change to the reader.** This was a measurement job; the measurement says
+  the production path is deterministic.
+* **Declaring the earlier reading a mistake.** It is unreproduced, which is not
+  the same thing.
