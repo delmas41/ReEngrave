@@ -3429,6 +3429,20 @@ _CLEF_MIN_NOTEHEADS = 6      # per staff — fewer gives an unreliable register
 _CLEF_INVERSION_GAP = 12     # semitones (an octave) of p25/p75 separation to flag
 
 
+def _direction_text_default() -> bool:
+    """Whether the direction reader runs when the caller expressed no opinion.
+
+    On since 2026-09-02. `OMR_DIRECTION_TEXT=0` turns it off for a deployment
+    that would rather not spend the OCR — the backend passes no flag, so an env
+    knob is the only lever it has, which is why every other OMR default has one
+    (`OMR_LEFT_EDGE_SPLIT`, `OMR_CONF_THRESHOLD`, `OMR_IMGSZ`). Same spelling of
+    "off" as `system_grouping._left_edge_split_enabled`.
+    """
+    return os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() not in (
+        "0", "", "false", "no", "off",
+    )
+
+
 def _pitch_to_midi(pitch: str | None) -> int | None:
     """Convert a pitch string ('F#3', 'Bb5', 'C4') to a MIDI number (C4 = 60),
     or None if unparseable. Thin alias — the implementation lives in
@@ -3671,7 +3685,7 @@ def transcribe(
     dossier_seeding: bool = True,
     contextual: bool = True,
     contextual_vision_fallback: bool = False,
-    read_direction_text: bool = False,
+    read_direction_text: bool | None = None,
     overlays_dir: Path | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -4496,11 +4510,31 @@ def transcribe(
     # detections, and it adds a key to measures that already exist rather than
     # changing any of them. A result read without it serialises identically.
     #
-    # OFF by default because it spends OCR: ~9 s on a 21-staff page with the
-    # Surya server resident, and the first call of a run pays ~70 s more to
-    # spawn llama.cpp and load a 650M GGUF. That is a cost a caller should ask
-    # for, not one a default should impose.
-    if read_direction_text:
+    # ON by default since 2026-09-02. It was off, on the grounds that OCR is a
+    # cost a caller should ask for, and the measurement that settled the
+    # question took most of that cost away (`DEFAULT_2026-09-02.md`):
+    #
+    #   * THE MODEL IS USUALLY ALREADY LOADED. The ~70 s to spawn llama.cpp was
+    #     the real objection, and it belongs to whoever loads Surya first — which
+    #     on any page WITHOUT a PDF text layer is the margin-label reader, on by
+    #     default since it shipped. Measured with this reader off, a scan page
+    #     reports `label_tiers = {'text_layer': 0, 'surya': 12}`.
+    #   * WHAT IS LEFT IS BOUNDED AND SMALL: 0.5-0.8 s per candidate crop across
+    #     both OCR rungs, so 0.25-11.7 s per engraved work and 15.6-21.5 s on a
+    #     dense scan page, measured twice each in isolation.
+    #   * IT IS WORTH 144 EDITS on the engraved orchestral benchmark, 18.8% of
+    #     the pooled figure, and `wrong direction` is the third-largest bucket.
+    #   * IT IS ADDITIVE. Every word placed reaches the file and the export is
+    #     identical outside its `<direction>` blocks — checked per page, on
+    #     engravings and on a scan.
+    #
+    # A machine with neither `.venv-surya` nor Tesseract still gets nothing:
+    # `read_directions` returns `[]` with `reason="no OCR rung available"`, the
+    # same degradation `staff_labels_surya` has always had. Its twin reader has
+    # the identical dependency and has been on by default all along; this was
+    # the odd one out.
+    if (_direction_text_default() if read_direction_text is None
+            else read_direction_text):
         t_dir = time.perf_counter()
         try:
             from .direction_text import attach_to_page, read_directions
@@ -4623,15 +4657,17 @@ def main(argv: list[str] | None = None) -> int:
                          "never read — reported under `contextual` in the JSON. "
                          "It is a post-pass over resolved pitches: nothing "
                          "about detection, rhythm or segmentation changes.")
-    ap.add_argument("--direction-text", action="store_true",
+    ap.add_argument("--direction-text", action=argparse.BooleanOptionalAction,
+                    default=True,
                     help="Read the words printed inside a system — `legato`, "
                          "`Allegro con brio` — by subtracting every detection "
                          "from the page's ink and OCRing what is left with "
                          "Surya, then gating the result on a lexicon of "
-                         "musical terms. Emitted as MusicXML `<words>`. Needs "
-                         ".venv-surya; OFF by default because it spends OCR "
-                         "(about 9 s on a 21-staff page with the server "
-                         "resident, `staff_labels_surya --serve`).")
+                         "musical terms. Emitted as MusicXML `<words>`. ON by "
+                         "default since 2026-09-02: worth 144 edits on the "
+                         "orchestral benchmark, additive, and 0.5-0.8 s per "
+                         "candidate crop. Self-disables where no OCR rung "
+                         "exists. `--no-direction-text` turns it off.")
     ap.add_argument("--contextual-vision", action="store_true",
                     help="Let the contextual pass fall back to reading the "
                          "margin with Claude when the text layer and Surya both "

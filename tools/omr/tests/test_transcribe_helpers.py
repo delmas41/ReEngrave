@@ -11,6 +11,7 @@ from dataclasses import dataclass
 import pytest
 
 from tools.omr.transcribe import (
+    _direction_text_default,
     _bbox_overlap_area,
     _build_pitch,
     _in_written_range,
@@ -1408,3 +1409,37 @@ class TestDefaultedClefWeight:
         for i in (3, 4):
             assert result.verdicts[i].action == "rejected"
             assert result.verdicts[i].fifths is None
+
+
+class TestTheDirectionTextDefault:
+    """The direction reader is ON by default since 2026-09-02, and the backend
+    has no way to pass a flag — so `OMR_DIRECTION_TEXT` is the only lever a
+    deployment has, exactly as `OMR_LEFT_EDGE_SPLIT` is for system grouping.
+    """
+
+    def test_absent_env_means_on(self, monkeypatch):
+        monkeypatch.delenv("OMR_DIRECTION_TEXT", raising=False)
+        assert _direction_text_default() is True
+
+    @pytest.mark.parametrize("value", ["0", "off", "false", "no", "", "OFF"])
+    def test_the_ways_of_saying_off(self, monkeypatch, value):
+        """Same spelling of "off" as `system_grouping._left_edge_split_enabled`
+        — two knobs that disagreed about what "no" means would be worse than
+        either spelling alone."""
+        monkeypatch.setenv("OMR_DIRECTION_TEXT", value)
+        assert _direction_text_default() is False
+
+    @pytest.mark.parametrize("value", ["1", "yes", "on", "true"])
+    def test_anything_else_means_on(self, monkeypatch, value):
+        monkeypatch.setenv("OMR_DIRECTION_TEXT", value)
+        assert _direction_text_default() is True
+
+    def test_an_explicit_argument_still_beats_the_env(self):
+        """`transcribe` takes None for "no opinion" so the env can decide, and
+        a caller who passed False is not overruled by a machine's environment —
+        which is what a plain `bool = True` default would have done."""
+        import inspect
+
+        from tools.omr.transcribe import transcribe
+        assert inspect.signature(
+            transcribe).parameters["read_direction_text"].default is None

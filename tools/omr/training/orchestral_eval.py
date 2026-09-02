@@ -431,11 +431,15 @@ def main(argv: list[str] | None = None) -> int:
                     help="override the pipeline default")
     ap.add_argument("--no-dossier", action="store_true",
                     help="run without the dossier, to measure what it adds")
-    ap.add_argument("--direction-text", action="store_true",
+    ap.add_argument("--direction-text", action=argparse.BooleanOptionalAction,
+                    default=True,
                     help="read the words printed inside each system with "
                          "Surya and export them as MusicXML <words> — the "
-                         "`wrong direction` category, 151 of the 1715 pooled "
-                         "edits at the 0.2449 baseline. Needs .venv-surya.")
+                         "`wrong direction` category, 151 of the 767 pooled "
+                         "edits on the default configuration. ON by default "
+                         "since 2026-09-02, matching `transcribe`; "
+                         "`--no-direction-text` measures the configuration a "
+                         "machine with no OCR rung gets. Needs .venv-surya.")
     ap.add_argument("--work-dir", type=Path, default=BENCH_DIR / "fixtures")
     ap.add_argument("--out", type=Path, default=None)
     ap.add_argument("--omr-ned", action="store_true",
@@ -532,8 +536,8 @@ def main(argv: list[str] | None = None) -> int:
                   f"benchmark, and this run covered {sorted(args.works)}",
                   file=sys.stderr)
             return 1
-        run_name = (ar.DIRECTION_TEXT_RUN if args.direction_text
-                    else ar.DEFAULT_RUN)
+        run_name = (ar.WITH_DIRECTION_TEXT if args.direction_text
+                    else ar.WITHOUT_DIRECTION_TEXT)
         previous = ar.load_record() if ar.RECORD_PATH.is_file() else None
         record = ar.record_from_results(results, run_name=run_name,
                                         previous=previous)

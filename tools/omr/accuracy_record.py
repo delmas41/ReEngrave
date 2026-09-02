@@ -72,12 +72,22 @@ def _fmt(value: float, places: int = 4) -> str:
     return f"{value:.{places}f}"
 
 
-#: The configurations the benchmark is quoted for. `--direction-text` is off by
-#: default and needs `.venv-surya`, so it is measured separately and recorded
-#: separately — one run cannot produce both, and a record that let one clobber
-#: the other would silently restate a figure for the wrong configuration.
-DEFAULT_RUN = "default"
-DIRECTION_TEXT_RUN = "direction_text"
+#: The two configurations the benchmark is quoted for. One run cannot produce
+#: both, and a record that let one clobber the other would silently restate a
+#: figure for the wrong configuration — so they are recorded under separate keys
+#: and `--record` writes exactly the one it measured.
+#:
+#: NAMED BY CONFIGURATION, NOT BY WHICH IS THE DEFAULT. They were `DEFAULT_RUN`
+#: and `DIRECTION_TEXT_RUN` until 2026-09-02, when the direction reader became
+#: the default and `DEFAULT_RUN` began naming the configuration that is not one.
+#: A constant whose name has to be re-read against a changelog is worse than a
+#: longer one.
+WITH_DIRECTION_TEXT = "direction_text"
+WITHOUT_DIRECTION_TEXT = "no_direction_text"
+
+#: What the headline leads with: the configuration a user actually gets.
+PRIMARY_RUN = WITH_DIRECTION_TEXT
+SECONDARY_RUN = WITHOUT_DIRECTION_TEXT
 
 
 def _run(record: dict[str, Any], name: str) -> dict[str, Any] | None:
@@ -112,22 +122,26 @@ def _headline(record: dict[str, Any]) -> str:
     precision 1.000" — exactly the kind of sentence that survives three fixes
     after it stops being true.
     """
-    run = _run(record, DEFAULT_RUN)
+    run = _run(record, PRIMARY_RUN)
     if run is None:
-        raise ValueError("the record has no default run")
+        raise ValueError(
+            f"the record has no {PRIMARY_RUN!r} run — the headline leads with "
+            "the DEFAULT configuration, which reads direction text since "
+            "2026-09-02. Measure it with `orchestral_eval --omr-ned --record`.")
     rows = "\n".join(
         f"| {_short(w['work_id'])} | {_fmt(w['omr_ned'])} | {w['edits']} | "
         f"{_fmt(w['pitch_recall'], 3)} | {_fmt(w['pitch_precision'], 3)} | "
         f"{_fmt(w['duration_rate'], 3)} |"
         for w in sorted(run["works"], key=lambda w: w["omr_ned"])
     )
-    variant = _run(record, DIRECTION_TEXT_RUN)
+    variant = _run(record, SECONDARY_RUN)
     variant_clause = ""
     if variant:
         variant_clause = (
-            f" With `--direction-text` (off by default, needs `.venv-surya`), "
-            f"**{_fmt(variant['pooled'])} / {variant['edits']}**, measured on "
-            f"`{variant['commit']}`."
+            f" The direction reader is ON by default and needs `.venv-surya` or "
+            f"Tesseract; with neither — `--no-direction-text`, and what a "
+            f"machine with no OCR rung gets — **{_fmt(variant['pooled'])} / "
+            f"{variant['edits']}**, measured on `{variant['commit']}`."
         )
     return (
         f"Current on the engraved orchestral benchmark, measured on "
@@ -157,7 +171,7 @@ def load_record(path: Path | None = None) -> dict[str, Any]:
 
 
 def record_from_results(results: list[dict[str, Any]],
-                        run_name: str = DEFAULT_RUN,
+                        run_name: str = PRIMARY_RUN,
                         previous: dict[str, Any] | None = None,
                         commit: str | None = None) -> dict[str, Any]:
     """Fold one measured run into the record, leaving the other runs alone.
@@ -301,7 +315,7 @@ def main(argv: list[str] | None = None) -> int:
     for p in problems:
         print(p, file=sys.stderr)
     if not problems:
-        run = _run(load_record(), DEFAULT_RUN) or {}
+        run = _run(load_record(), PRIMARY_RUN) or {}
         print(f"CLAUDE.md agrees with the record: pooled "
               f"{_fmt(run.get('pooled', 0.0))}, {run.get('edits')} edits, "
               f"measured on {run.get('commit')}")

@@ -192,15 +192,20 @@ KNOWN_GAPS: dict[str, str] = {
         "Out of scope rather than missing."
     ),
     "metronome": (
-        "Read by `--direction-text` (off by default, needs .venv-surya), which "
-        "emits <words>. The structured <metronome> form is not built, so this "
-        "stays a gap under BOTH configurations — unlike `words` beside it."
+        "A tempo mark is read by the direction reader and emitted as <words>; "
+        "the structured <metronome> form is not built. So this is a gap under "
+        "BOTH configurations — unlike `words` beside it — and it is NOT in "
+        "FLAG_DEPENDENT. Measured rather than reasoned: on a full "
+        "`--direction-text` eval <metronome> is still absent from the export."
     ),
     "words": (
-        "CONDITIONAL — the only entry here that is. Read by `--direction-text`, "
-        "so with that reader off this is a flag decision rather than a gap; "
-        "with it on and words actually placed, the explanation is spent and a "
-        "missing <words> is a real gap. `expected_gaps` is where that applies."
+        "CONDITIONAL — the only entry here that is, and since 2026-09-02 the "
+        "reader that fills it is ON by default. It stays written down because "
+        "the OTHER configuration is still reachable: `--no-direction-text`, and "
+        "any machine with neither .venv-surya nor Tesseract, where no words are "
+        "placed and none can be exported. With words actually placed the "
+        "explanation is spent and a missing <words> is a real gap — "
+        "`expected_gaps` is where that applies."
     ),
     "stem": (
         "`transcribe` computes stem direction and uses it for voice splitting; "
@@ -264,11 +269,19 @@ class Run:
 
     @property
     def direction_reader_ran(self) -> bool:
-        """Was `--direction-text` asked for, and did it get off the ground?
+        """Did the direction pass execute at all?
 
-        Asked-for-but-ABSTAINED — no `.venv-surya`, no Tesseract — reads as not
-        run, which is right: an abstaining reader emits no words, so `words` is
-        still an honest gap and not a broken promise.
+        ⚠️ NOT "was there a reader to run". `transcribe` sets `available`
+        False only when the pass RAISED — `_optional_pass_failure`, an import
+        error, a defect. A machine with neither `.venv-surya` nor Tesseract
+        raises nothing: `read_directions` returns normally with
+        `reason="no OCR rung available"`, so `available` is True and
+        `n_placed` is 0. An earlier version of this docstring had that
+        backwards.
+
+        Which is why the conditional gap is gated on `directions_placed` and
+        not on this: a reader with nothing to read and a reader that read
+        nothing both export no words, and neither is a broken promise.
         """
         return bool((self.result.get("direction_text") or {}).get("available"))
 

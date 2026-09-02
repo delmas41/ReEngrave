@@ -381,37 +381,64 @@ Three things it settled, all in FINDINGS:
   proposing machinery to infer a missing signal, check whether the signal is
   already detected and being dropped.
 
-### 4b. OPEN DECISION — the `--direction-text` default, and the trap in it
+### 4b. ~~OPEN DECISION — the `--direction-text` default~~ — DECIDED 2026-09-02: ON
 
-`--direction-text` is off by default and worth **144 edits** on the engraved
-orchestral benchmark (`wrong direction` 151 → 7). The question is what the
-default should be. Two things settle most of it and one nearly derailed it.
+**It is on by default.** `transcribe(read_direction_text=None)` reads
+`OMR_DIRECTION_TEXT` (default `1`); `--no-direction-text` turns it off on both
+CLIs. Full measurement in
+[`benchmarks/omr-direction-text-2026-09/DEFAULT_2026-09-02.md`](../benchmarks/omr-direction-text-2026-09/DEFAULT_2026-09-02.md).
 
-**The dependency worry is already handled.** `direction_text` abstains when no
-OCR rung is available — its own documented contract, "no venv and no Tesseract
-means no directions, the same degradation `staff_labels_surya` has" — and it
-calls `staff_labels_surya.available()` to decide. Nothing breaks on a machine
-without Surya; the pass simply does not run. Its twin, the margin-label reader,
-has the SAME dependency and is already on by default (`surya_fallback=True`).
-The two are inconsistent with each other today, and the direction reader is the
-odd one out.
+This entry framed the question as "does it help on scans?" and warned that a
+scans-only default would switch it off where it was measured helping. That
+warning was right and it turned out not to be the deciding question. Four things
+decided it, and two of them contradicted what this entry assumed.
 
-⚠️ **"Surya only helps on scans, not engravings" is TRUE OF THE OTHER READER
-AND FALSE OF THIS ONE.** The two consumers differ in one decisive way:
+1. **Worth 144 edits**, and the figure is stable across trees — the same −144 on
+   `bd88b32` (0.1101 → 0.0883) and on `7e0f8ec` (0.1066 → 0.0849). `wrong
+   direction` is 19.7% of the pooled budget, the third-largest bucket.
 
-| | rung 1 | on an engraving |
-|---|---|---|
-| `staff_labels` (margin labels) | **the PDF text layer** | Surya is redundant — the text layer already answers |
-| `direction_text` | *(none)* — Surya and Tesseract only | Surya is the ONLY reader; nothing else can see the words |
+2. **It is additive, and that was checked rather than assumed.** On all three
+   engraved works every word placed reaches the file (1→1, 14→14, 0→0) and the
+   export is identical outside its `<direction>` blocks. Same on four of five
+   scan pages.
 
-So a finding that Surya adds nothing on engravings comes from the margin-label
-ladder, where rung 1 already covers them, and does not transfer. Measured here
-on an ENGRAVED benchmark, the direction reader is worth 144 edits. A default of
-"on for scans only" would switch it off exactly where it was measured helping.
+3. ⚠️ **THE COST OBJECTION IN THE CODE WAS MOSTLY NOT THIS FLAG'S.**
+   `transcribe`'s comment justified the default with "~70 s to spawn llama.cpp
+   and load a 650M GGUF". That load belongs to whoever asks for Surya FIRST, and
+   on any page without a PDF text layer that is the margin-label reader — on by
+   default since it shipped. Measured with the direction reader OFF, a scan page
+   reports `label_tiers = {'text_layer': 0, 'surya': 12}`. What the flag actually
+   adds is 0.5–0.8 s per candidate crop: 0.25–11.7 s per engraved work, 15.6–21.5 s
+   on a dense scan page.
 
-What is genuinely unmeasured is the reverse: nobody has measured
-`--direction-text` on a SCAN. `benchmarks/omr-first-run-2026-08/` has the one
-real scan measured end to end and is where that would go.
+4. ⚠️ **AND THE FIRST COST MEASUREMENT WAS WRONG, IN THE DIRECTION THAT WOULD
+   HAVE KILLED IT.** The five-page scan run reported +127% and one page at 606 s
+   of OCR — ten minutes, which is not a default. It was contention: that run
+   overlapped a benchmark eval and two controls. Re-measured in isolation the
+   same page is **15.6 s and 17.5 s**, 11 accepted both times. The mechanism was
+   checked too, and was absent — the page's longest REJECTED string is 14
+   characters, so this was never the 1307-character Surya runaway that
+   `SCAN_2026-09-01.md` documents. **Do not quote the +127%.**
+
+**What did NOT decide it, and is worth separating out.** The same measurement
+found that page 84 exports ~490 lines differently between two runs of the SAME
+configuration — and that is the pre-existing non-determinism of the margin-label
+readers, not this flag. See the entry in NOTES.md and
+`NONDETERMINISM_2026-09-02.md`; it is a bigger open problem than this decision
+was, and it is orthogonal to it.
+
+Two things that follow from the flip and are easy to miss:
+
+- `orchestral_eval --record` keys the record slot off `args.direction_text`, and
+  `accuracy_record` publishes one slot as the headline. Flipping the flag
+  without touching those would record into one and publish the other. The run
+  constants are now named for the CONFIGURATION (`WITH_DIRECTION_TEXT`,
+  `WITHOUT_DIRECTION_TEXT`) rather than for which is the default, because
+  `DEFAULT_RUN` stopped naming the default the moment the flag moved.
+- The headline now leads with the default configuration and states what a
+  machine with no OCR rung gets beside it. Nothing about the degradation
+  changed: `read_directions` still returns `[]` with `reason="no OCR rung
+  available"`, which is tested.
 
 ### 5. Small and known
 

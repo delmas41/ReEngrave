@@ -28,13 +28,13 @@ from tools.omr import accuracy_record as ar
 
 @pytest.fixture
 def record():
-    return {"runs": {ar.DEFAULT_RUN: _run()}}
+    return {"runs": {ar.PRIMARY_RUN: _run()}}
 
 
 @pytest.fixture
 def record_with_variant():
-    return {"runs": {ar.DEFAULT_RUN: _run(),
-                     ar.DIRECTION_TEXT_RUN: dict(_run(), pooled=0.1138,
+    return {"runs": {ar.PRIMARY_RUN: _run(),
+                     ar.SECONDARY_RUN: dict(_run(), pooled=0.1138,
                                                  edits=822, commit="dc74488")}}
 
 
@@ -80,7 +80,7 @@ class TestTheRepositoryItself:
 
     def test_the_record_covers_the_whole_benchmark(self):
         from tools.omr.training.orchestral_eval import DEFAULT_WORKS
-        run = ar._run(ar.load_record(), ar.DEFAULT_RUN)
+        run = ar._run(ar.load_record(), ar.PRIMARY_RUN)
         assert {w["work_id"] for w in run["works"]} == set(DEFAULT_WORKS)
 
 
@@ -95,8 +95,8 @@ class TestRendering:
         the POOLED figure — `per_work` states the per-work ones — so the test
         is that each responds to the record, not that each quotes one field.
         """
-        run = record["runs"][ar.DEFAULT_RUN]
-        moved = {"runs": {ar.DEFAULT_RUN: dict(
+        run = record["runs"][ar.PRIMARY_RUN]
+        moved = {"runs": {ar.PRIMARY_RUN: dict(
             run, pooled=0.2222, edits=1111, commit="fedcba9",
             works=[dict(w, omr_ned=w["omr_ned"] + 0.1) for w in run["works"]])}}
         for name, (_, render) in ar.BLOCKS.items():
@@ -108,7 +108,7 @@ class TestRendering:
         assert ar._fmt(0.13648) == "0.1365"
 
     def test_works_are_named_in_ascending_score_order(self, record):
-        phrase = ar._works_phrase(record["runs"][ar.DEFAULT_RUN])
+        phrase = ar._works_phrase(record["runs"][ar.PRIMARY_RUN])
         assert phrase == "Mahler 0.0455, Beethoven 0.1649, Brahms 0.1709"
 
     def test_the_headline_carries_every_work_s_row(self, record):
@@ -163,7 +163,7 @@ class TestBuildingTheRecord:
         rec = ar.record_from_results(
             [self._result("a", 0.1, 10), self._result("b", 0.2, 20)],
             commit="deadbee")
-        run = rec["runs"][ar.DEFAULT_RUN]
+        run = rec["runs"][ar.PRIMARY_RUN]
         assert run["edits"] == 30
         assert run["truth_symbols"] == 200 and run["pred_symbols"] == 180
         assert run["pooled"] == pytest.approx(30 / 380)
@@ -178,16 +178,34 @@ class TestBuildingTheRecord:
         first = ar.record_from_results([self._result("a", 0.1, 10)],
                                        commit="aaa")
         second = ar.record_from_results([self._result("a", 0.2, 20)],
-                                        run_name=ar.DIRECTION_TEXT_RUN,
+                                        run_name=ar.SECONDARY_RUN,
                                         previous=first, commit="bbb")
-        assert set(second["runs"]) == {ar.DEFAULT_RUN, ar.DIRECTION_TEXT_RUN}
-        assert second["runs"][ar.DEFAULT_RUN]["commit"] == "aaa"
-        assert second["runs"][ar.DIRECTION_TEXT_RUN]["commit"] == "bbb"
+        assert set(second["runs"]) == {ar.PRIMARY_RUN, ar.SECONDARY_RUN}
+        assert second["runs"][ar.PRIMARY_RUN]["commit"] == "aaa"
+        assert second["runs"][ar.SECONDARY_RUN]["commit"] == "bbb"
 
     def test_the_variant_clause_appears_only_when_it_is_recorded(
             self, record, record_with_variant):
-        assert "--direction-text" not in ar.BLOCKS["headline"][1](record)
-        assert "--direction-text" in ar.BLOCKS["headline"][1](record_with_variant)
+        """One run cannot produce both configurations, so the headline states
+        the second only when it is actually on record."""
+        alone = ar.BLOCKS["headline"][1](record)
+        both = ar.BLOCKS["headline"][1](record_with_variant)
+        assert "no-direction-text" not in alone
+        assert "0.1138" not in alone
+        assert "no-direction-text" in both and "0.1138" in both
+
+    def test_the_headline_leads_with_the_DEFAULT_configuration(self, record):
+        """Which is the one that reads direction text, since 2026-09-02. The
+        constants are named for the configuration and not for which is the
+        default, because `DEFAULT_RUN` stopped naming the default the moment
+        the flag flipped."""
+        assert ar.PRIMARY_RUN == ar.WITH_DIRECTION_TEXT
+        assert "0.1364" in ar.BLOCKS["headline"][1](record)
+
+    def test_a_record_with_only_the_secondary_run_is_refused(self):
+        """It would otherwise publish the no-OCR figure as the headline."""
+        with pytest.raises(ValueError, match="direction_text"):
+            ar.BLOCKS["headline"][1]({"runs": {ar.SECONDARY_RUN: _run()}})
 
     def test_an_unscored_work_refuses_the_record(self):
         """A pooled figure over a subset would be stated as the whole thing."""
