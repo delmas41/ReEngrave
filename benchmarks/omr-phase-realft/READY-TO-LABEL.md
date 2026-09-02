@@ -19,7 +19,10 @@ in this session will land in the new versioned catalog under
    immutable `vN-DATE-NAME/` directory under `data/user-labeled/`, and the
    catalog YAML unions all versions for retraining. See
    [data/user-labeled/README.md](../../data/user-labeled/README.md) for
-   the full contract. Three new scripts:
+   the full contract. *(Superseded 2026-09-02: the union is no longer
+   automatic — membership comes from `data/user-labeled/catalog-versions.txt`,
+   a recorded training decision; the README has the current contract.)*
+   Three new scripts:
 
    - [tools/omr/training/verdicts_to_yolo_labels.py](../../tools/omr/training/verdicts_to_yolo_labels.py)
      — turns `<cell>.verdict.json` files into a versioned YOLO dataset.
