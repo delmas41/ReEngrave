@@ -889,3 +889,77 @@ carries no marker at any confidence and has been known since the tuplet work;
 the other five are scattered across five parts with no shared mechanism — which
 is what the `mixed` bucket looked like when this file started, and at this size
 is the point where attribution stops paying.
+
+---
+
+## OPENED 2026-09-01 — the `entire measure` bucket is mostly the FIXTURE
+
+`next-steps` said of this bucket: it is amplification, not severity; do not
+target it directly; open the op list and fix whatever it is amplifying. Opening
+it says that most of what it amplifies is not in the pipeline at all.
+
+It had already fallen **406 → 130** as its causes were fixed elsewhere, which is
+that entry's own point holding. The 130:
+
+| | edits | what it is |
+|---|--:|---|
+| Beethoven, whole-bar | **105** | fermatas the fixture's render never drew |
+| Mahler | 18 | whole-vs-half rest in bars that are otherwise empty |
+| Brahms | 7 | one tied `C4` in the Horn, an alignment artifact |
+
+### The 105 is charged against ink that was never printed
+
+Every Beethoven op in the bucket is a rest-only bar. Truth and prediction are
+otherwise identical — eight half-rest bars against eight half-rest bars — and
+the truth's m2 and m5 carry a fermata:
+
+    TRUTH  Oboe 1   m1 R:2.0   m2 R:2.0(F)   m3 R:2.0 ... m5 R:2.0(F) ...
+    PRED   Oboe     m1 R:2.0   m2 R:2.0      m3 R:2.0 ... m5 R:2.0    ...
+
+With nothing else in the bar to pair, musicdiff charges a whole-bar delete plus
+a whole-bar insert — the amplification CLAUDE.md's trap (2) describes, in its
+purest form: 21 bar-pairs × 5 = 105.
+
+**And the fermata is not on the page.** The fixture renders its own truth
+through `musicxml2ly`, which drops every fermata that sits on a REST:
+
+    truth  36 fermatas   22 over rests, 14 over notes
+    .ly    14 fermatas   all over notes, not one of the 22
+
+Cropping the page confirms it — the Oboe's rest bars carry a staff, a rest, and
+nothing above them. So a perfect reader is charged those 105 edits too. It is a
+floor built into the instrument.
+
+**The split is exact and it is the tell.** Of the 18 parts, the 7 whose m2 holds
+a NOTE have their fermata detected (7 of 7, at 0.90-0.95); the 11 whose m2 holds
+only a rest do not (0 of 11) — because there is nothing there to detect. At
+conf 0.05 the rest bars still yield only `restWhole` and `staff`.
+
+`orchestral_eval` now reports this on every run rather than leaving it to be
+rediscovered:
+
+    UNREACHABLE BY CONSTRUCTION — the truth carries symbols its own
+    render never drew, so these are charged to us and cannot be read:
+      beethoven-sym5-mvt1: 22 of 36 fermatas are in the truth but not on the page
+
+It is NOT fixed. Making the render complete or the truth smaller both change
+every historical number here, and that is a decision for a person.
+
+### What was real: the sixth detected-and-never-exported signal
+
+`fermataAbove` has been in the class space and read at 0.90-0.95 all along, and
+`grep -c fermata tools/omr/export.py` returned 0. Emitting it is worth pooled
+**0.1364 → 0.1342**, Beethoven 205 → **191** — exactly 14 edits, one per fermata
+that is actually on the page, which is the whole of what `insexpression` was
+charging. Beams, dots, dynamics, tuplets, slurs, fermatas: six now.
+
+Pairing is by x against notes and rests alike, and falls back to the nearest
+event rather than requiring containment — a fermata over a bar's only rest is
+engraved at the BAR's centre while the rest glyph sits at its own, so
+containment alone would miss the commonest case there is.
+
+### What this leaves
+
+Twenty-five edits of genuine whole-bar cost, in two unrelated places, and no
+shared mechanism between them. As with the duration residue, that is the size
+at which attribution stops paying.

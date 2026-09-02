@@ -243,13 +243,37 @@ Three things this step is worth carrying:
   read as beams), which the metric charged to the SLUR because musicdiff prices a
   slur by the duration it spans.
 
-### 3. The `entire measure` bucket, still 22%
+### 3. ~~The `entire measure` bucket~~ — OPENED 2026-09-01, and it is the FIXTURE
 
-406 pooled edits. It halved on its own when the staff misfit was fixed, which is
-the point: **it is amplification, not severity.** A measure differing by one
-fermata or one slur is charged whole. Do not target it directly — open the op
-list first (`benchmarks/omr-ned-2026-08/` shows how) and fix whatever it is
-amplifying.
+This entry said: do not target it directly, open the op list, and fix whatever
+it is amplifying. Done, and the answer is that most of what it amplifies is not
+in the pipeline.
+
+The bucket had already fallen 406 → 130 as its causes were fixed elsewhere,
+which is the entry's own point about amplification holding. Of the 130:
+
+| | edits | what it is |
+|---|--:|---|
+| Beethoven whole-bar | **105** | fermatas the fixture's render never drew |
+| Mahler | 18 | whole-vs-half rest in bars that are otherwise empty |
+| Brahms | 7 | one tied C4 in the Horn, an alignment artifact |
+
+**The 105 is unreachable by construction.** The Beethoven truth carries 36
+fermatas, 22 of them over rests; `musicxml2ly` drops every fermata that sits on
+a rest, so the rendered page carries 14. Those 22 bars hold nothing but a rest,
+so the fermata is the only thing distinguishing them, and musicdiff charges a
+whole-bar delete plus a whole-bar insert for each. **A perfect reader is charged
+them too.** `orchestral_eval` now says so on every run, and the finding is
+written up in the attribution report.
+
+Not fixed: making the render complete, or the truth smaller, both change every
+historical number in this repository, and that is a decision for Sean rather
+than a side effect of a benchmark run.
+
+What WAS real here: `fermataAbove` had been detected all along at 0.90-0.95 and
+never exported — the sixth instance of that shape — worth pooled 0.1364 →
+**0.1342**, Beethoven 205 → **191**, exactly 14 edits, one per fermata that is
+actually on the page. The detector reads 14 of 14.
 
 ### 4. ~~Text expressions and tempo marks~~ — DONE 2026-09-01
 
