@@ -377,12 +377,31 @@ _ALIAS_INDEX: tuple[tuple[str, Instrument], ...] = tuple(
 )
 
 
-# Characters OCR routinely swaps on printed score margins. Only the
-# unambiguous families: the i/l/1 stroke group and o/0. Deliberately NOT c/e —
-# folding those would merge distinct instrument names.
+# Characters OCR routinely swaps on printed score margins. Only the RARE
+# confusions: the i/l/1 stroke group, o/0, and v/y. A fold is applied to both
+# the alias and the candidate and then matched as a word-bounded substring, so
+# it is safe only where the folded character does not distinguish real
+# instrument names — which is why the SET is deliberately small.
+#
+# `y -> v` is the one added after the others (a printed "Violino II." read as
+# "Yiolino II.", surfaced 2026-09-02 in labelling). It is safe for the same
+# reason the stroke group is: `y` is rare in the vocabulary — only `tympani`
+# and `xylophone` carry one, and both resolve on the EXACT pass before the fold
+# ever runs — so folding it collides with nothing. Measured: zero collisions
+# over all 260 aliases and every margin-label corpus truth string, and it
+# resolves the whole V->Y family (Yiolino/Yiola/Yioloncello/Yni).
+#
+# Deliberately NOT the COMMON-letter confusions — c/e, a/u, b/h, n/m. Folding
+# those merges distinct names and widens what garbage resolves, and a wrong
+# resolution PINS a staff to the wrong part (`dossier.join_parts_to_slots`
+# pins on any unambiguous alias, folded or not). The cost is real and specific:
+# the margin corpora's own unrecovered reads `Oh.`->`Ob.` and `Fug.`->`Fag.`
+# would need exactly b/h and a/u, and are left unread rather than bought at that
+# price. See benchmarks/omr-margin-labels-2026-08/OCR_CONFUSIONS_2026-09-02.md.
 _OCR_FOLD = str.maketrans({
     "l": "i", "1": "i", "|": "i", "!": "i", "}": "i", "{": "i", "]": "i", "[": "i",
     "0": "o",
+    "y": "v",
 })
 
 
