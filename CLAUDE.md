@@ -469,6 +469,61 @@ famous bar in the repertoire.
 
 ---
 
+## Durations: two units, and both of them were wrong
+
+The rhythm bucket was the largest remaining after the metric's first eight
+fixes, and neither half of it needed the meter, better detection, or a wider
+`_reconcile_measure_to_meter`. Both were signals already on the page, thrown
+away by a threshold expressed in the wrong unit.
+
+**A dot does not sit at its note's height.** A note in a space takes its dot in
+the same space; a note ON A LINE takes it in the space ABOVE, half a staff space
+up. The gate was `max(dot.height, 12) * 1.2` — a length derived from the dot's
+own bounding box, which is small and mostly detector noise — so the on-a-line
+case landed within a few pixels of the threshold and went either way. C Horn 1's
+dotted half was read as a half in bars 1 and 5 and as a dotted half in bars 2,
+3, 4 and 6. Measured over the 116 dots of the three works, the signed offsets
+are bimodal and nothing else: 52 at 0.00 spaces, 52 at +0.50, nothing between
++0.57 and +3.75.
+
+⚠️ **The window is ASYMMETRIC, and it has to be.** A dot goes above its note or
+level with it, never under. Brahms's Viola plays double stops — two noteheads a
+space apart, each with its own dot — so the lower dot is equidistant from both
+noteheads, a symmetric window ties, and the upper note comes out double-dotted
+while the lower loses its dot. `DOT_ABOVE_NOTE_MAX_SPACES` is 0.75 and
+`DOT_BELOW_NOTE_MAX_SPACES` is 0.25.
+
+**A YOLO beam box bounds the STACK, not a stroke.** `resolve_rhythms_for_cell`'s
+docstring always said the classical-CV beams replace the YOLO ones; the code
+unioned them, for the Phase-4f reason that CV was the more conservative detector
+and missed strokes. What the union costs is the one thing beams are read for —
+how many are stacked. A YOLO box spanning two strokes contributes a centre in
+the GAP between them, and the run then has no gap wider than the clustering
+tolerance anywhere in it: on Brahms's Violin 2, CV reads the strokes at
+canonical y 1112 and 1172 (60 px apart against a 35 px tolerance, two levels)
+and the YOLO box adds 1142 between them, so three sixteenths read as three
+eighths. A YOLO beam is now kept only where **no CV beam overlaps its x-range**.
+
+All three arrangements were measured, because the Phase-4f reason is still half
+true — replacing outright throws real beams away:
+
+| | pooled | edits | brahms dur | melody dur |
+|---|--:|--:|--:|--:|
+| union (Phase 4f) | 0.1917 | 1355 | 0.916 | 0.778 |
+| replace outright | **0.1855** | **1310** | 0.929 | **0.722** |
+| **kept** | 0.1861 | 1315 | **0.931** | 0.778 |
+
+Replace scores best, by five edits out of 1315, and gets there by throwing real
+beams away: it is the only arm that regresses an authored fixture, and the
+`×4` family — notes that lost every beam they had, read four times too long —
+goes from 4 under the kept rule to **7** under it. Five edits is less than one
+measure's amplification is worth; the beams are the thing.
+
+Together the two: **pooled 0.2209 → 0.1861**, Brahms 0.3185 → 0.2563 and its
+duration rate 0.889 → 0.931, Beethoven and Mahler unchanged to the edit.
+
+---
+
 ## Tuplets
 
 A triplet's noteheads are ORDINARY eighths on the page. The printed value is
@@ -607,9 +662,11 @@ all, that produced seven `noteheadWholeInSpace` — two of them the bowl of the
 **g** in the word *legato*, one the lower bowl of the **8** of a 6/8 printed on
 the staff above, and four real noteheads belonging to the staff above or below.
 `transcribe._drop_clipped_notehead_fragments` takes them out at detection time,
-worth pooled 0.2449 → **0.2314** (Brahms 1416 → 1317 edits) — ten detections and
-99 edits, because a bar that differs by one spurious note is charged as a whole
-bar inserted plus a whole bar deleted.
+worth pooled 0.2209 → **0.2137** (Brahms 1256 → 1201 edits) — ten detections and
+55 edits, because a bar that differs by one spurious note is charged as a whole
+bar inserted plus a whole bar deleted. (It was worth 99 edits when first
+measured, before the ledger-attribution fix landed and took some of the same
+damage a different way.)
 
 **The discriminator is the one dimension a notehead cannot vary in:** it is a
 staff space tall, because that is what a notehead is. Measured over the three
@@ -804,8 +861,8 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Current on the engraved orchestral benchmark: **pooled 0.2209** (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.3185), from an opening baseline of 0.3164. Full
+Current on the engraved orchestral benchmark: **pooled 0.1861** (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.2563), from an opening baseline of 0.3164. Full
 reading, and the findings it surfaced that note recall is blind to, in
 [benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md),
 [WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)

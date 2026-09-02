@@ -11,8 +11,8 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.2209** on the engraved orchestral benchmark (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.3185), down from **0.3164** at the start of
+**Pooled OMR-NED 0.1861** on the engraved orchestral benchmark (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.2563), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
 `benchmarks/omr-ned-2026-08/FINDINGS.md`.
@@ -32,9 +32,12 @@ export together, and the engraved benchmark says nothing about scan robustness.
 | a staff line RUNS (two windows in five did not) | 0.2489 → 0.2449 | `9276122` |
 | ledger notes awarded by distance, not evidence | 0.2449 → 0.2263 | `81446a0` |
 | slurs cut in two by the barline | 0.2263 → 0.2209 | `bae93b1` |
+| the crop's own edge read as noteheads | 0.2209 → 0.2137 | `77f796e` |
+| a dot measured against its own bounding box | 0.2137 → 0.1917 | `b445e66` |
+| a YOLO beam box bounds the stack, not a stroke | 0.1917 → 0.1861 | `cf559ca` |
 
-**Five of the eight were EXPORT bugs on data the pipeline had already computed
-correctly.** Beams detected and dropped, dots detected and counted twice,
+**Five of the first eight were EXPORT bugs on data the pipeline had already
+computed correctly.** Beams detected and dropped, dots detected and counted twice,
 dynamics detected and dropped, tuplet markers sitting unread in the JSON, slur
 arcs detected and never rejoined. None was visible to any metric this repo had
 before — note recall called the Beethoven page perfect (1.000) throughout.
@@ -80,9 +83,11 @@ What it found, ranked, replaces the rest of this list at the top:
   both staves — so it is the pair ordering reaching the veto inconsistently.
 - **A spurious whole note on Beethoven's Flute 1 m1**, older than any of this
   work and never attributed.
-- ~~**Seven spurious whole noteheads**~~ — **DONE**, pooled 0.2449 → **0.2314**,
-  Brahms 0.3657 → **0.3420** (1416 → 1317 edits), Beethoven and Mahler unchanged
-  to the edit, authored fixtures untouched because the rule never fires on them.
+- ~~**Seven spurious whole noteheads**~~ — **DONE**, pooled 0.2209 → **0.2137**,
+  Brahms 1256 → **1201 edits**, Beethoven and Mahler unchanged to the edit,
+  authored fixtures untouched because the rule never fires on them. (It was
+  worth 99 edits when first measured; the ledger fix landed in between and took
+  some of the same damage a different way.)
   Not a header misread, which is what the attribution report had guessed from
   three of the seven landing in bar 1: they are ink from the staff next door
   that the cell crop sliced, and a wide flat sliver is the shape of a hollow
@@ -108,9 +113,32 @@ What it found, ranked, replaces the rest of this list at the top:
   **0.3732** (+128 edits), C Horn 2 is still empty, Eb Horn 3 gains the note in
   all seven bars, and page-wide dedupe removals go 135 → 390. Full geometry in
   the attribution report's DIAGNOSED section.
-- **Beam level ±1 and lost dots** — the rest of the 452-edit rhythm bucket.
-  `_reconcile_measure_to_meter` declines correctly because it can move a beam
-  and not a dot.
+- ~~**Beam level ±1 and lost dots**~~ — **DONE**, pooled 0.2137 → **0.1861**,
+  Brahms 1201 → **1008 edits** and its duration rate 0.889 → **0.931**,
+  Beethoven and Mahler unchanged to the edit. The biggest single step the metric
+  has produced, and **neither half needed the meter.** This entry proposed
+  widening `_reconcile_measure_to_meter` to move a dot as well as a beam; that
+  turned out to be the wrong lever twice over. Both faults were signals already
+  on the page, discarded by a threshold written in the wrong unit:
+  - a dot was measured against **its own bounding box** (`max(dot.height,12)*1.2`)
+    rather than the staff space, so the on-a-line case — where engraving puts
+    the dot half a space up — landed on the threshold and went either way. 30 of
+    120 detected dots never reached a note. The window also has to be
+    ASYMMETRIC, or a double stop's lower dot ties between the two noteheads and
+    double-dots the upper one.
+  - a **YOLO beam box bounds the whole stack**, not one stroke, so unioning it
+    with the classical-CV beams put a centre in the GAP between two levels and
+    welded them into one. The docstring had said "replace" since Phase 4f while
+    the code said "union"; the truth is neither — CV wins where it speaks, YOLO
+    covers where it is silent.
+  Full reading in the FIXED section of the attribution report. What is left of
+  the bucket is 36 wrong durations, and the reconciler still declines on them
+  CORRECTLY: the Violin 2 figure is a dotted eighth beamed to three sixteenths,
+  which is two levels inside ONE beam group, and `_beam_groups` splits by equal
+  `beam_levels` so it has no way to say that. The residue is a missing stem on
+  the notes whose beams sit more than 5.5 spaces from the notehead — CV geometry,
+  not plumbing, and the first thing in this file's history whose next step is
+  detector work rather than a signal already computed.
 
 ### 2. ~~Slurs that can span measures~~ — DONE 2026-09-01
 

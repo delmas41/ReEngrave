@@ -581,3 +581,123 @@ worth carrying over to it: **an attribution fix alone will not recover C Horn 2
 either.** Attribution can only choose between cells that hold the note, and
 today no cell holds it. The crop has to reach the note first, and the two
 changes are only worth anything together.
+
+---
+
+## RESOLVED 2026-09-01 — C Horn 2, by the other half landing
+
+`81446a0` (cross-staff notes: read the ledger ladder and the instrument, not the
+distance) recovered this staff outright, and it did it by making **both** of the
+changes the section above said were needed together: the cell pad grows where
+there is unambiguously room, and attribution stopped being a distance test.
+
+C Horn 2 no longer appears in the wrong-note list at all. Brahms's `count`-class
+notes went **96 → 19** across the page, which is this staff plus the two flutes
+of Finding 3's third mechanism.
+
+The prediction that mattered held: growing the crop and fixing attribution are
+worth nothing apart and everything together. It is worth keeping in mind for
+the next note-in-a-gap: the arithmetic that says which way the distance rule
+falls (171 px against 190) was right, and it was right about a rule that no
+longer exists.
+
+## FIXED 2026-09-01 — the rhythm bucket, and neither half needed the meter
+
+Pooled **0.2137 → 0.1861**, 1508 edits → **1315**. All of it is Brahms
+(1201 → 1008, 0.3063 → 0.2563), whose duration rate went 0.889 → **0.931** and
+precision 0.890 → 0.911; Beethoven and Mahler are unchanged to the edit. The
+authored fixtures are identical. Tests 1199 → 1213.
+
+The handoff proposed widening `_reconcile_measure_to_meter` to move a dot as
+well as a beam. **That was the wrong lever twice over.** The reconciler is not
+what was failing; it declines these bars correctly, and it still does. Both
+faults were signals already on the page, thrown away by a threshold written in
+the wrong unit — the same shape as beams, dots, dynamics, tuplets and the crop
+edge before them, and now the seventh and eighth instances of it.
+
+### The dots: measured against the dot's own bounding box
+
+Twelve wrong durations were exactly ×0.667 — a dotted note read undotted — and
+30 of 120 detected `augmentationDot`s never reached a note. The gate was
+`max(dot.height, 12) * 1.2`: a length with no musical meaning, since a dot's box
+is small and its size is mostly detector noise.
+
+What it was being compared against is fixed by engraving. A note in a space
+takes its dot in the same space; a note ON A LINE takes it in the space ABOVE,
+half a staff space up. The gate landed within a few pixels of that offset, so
+the on-a-line case went either way — C Horn 1's dotted half read as a half in
+bars 1 and 5 and as a dotted half in bars 2, 3, 4 and 6, the same note of the
+same part six times. Signed offsets over the 116 dots of the three works:
+
+    +0.00 spaces   52    note in a space, dot level with it
+    +0.50 spaces   52    note on a line, dot in the space above
+    nothing between +0.57 and +3.75
+
+⚠️ **The window has to be ASYMMETRIC, and the first measurement is what said
+so.** A dot goes above its note or level with it, never under. Brahms's Viola
+plays double stops — two noteheads a space apart, each with its own dot — so the
+lower dot sits half a space above the lower note AND half a space below the
+upper one, equidistant to the pixel. A symmetric window ties, the tie goes to
+whichever note was listed first, and the upper note came out double-dotted while
+the lower lost its dot entirely (`1.5 → 1.75`, `1.5 → 0.875`, four notes).
+Refusing the downward direction breaks the tie the way the page does, and gives
+up only the rare engraving that dodges another voice by printing the dot below —
+losing one dot rather than mis-assigning two notes.
+
+### The beams: a YOLO box bounds the STACK, not a stroke
+
+`resolve_rhythms_for_cell`'s docstring has always said the classical-CV beams
+REPLACE the YOLO ones. The code has always unioned them, with its own comment
+giving the Phase-4f reason: CV was then the more conservative detector and
+missed strokes YOLO caught.
+
+What the union costs is the one measurement the beam pipeline exists to make:
+**how many strokes are stacked.** A YOLO beam box does not bound one stroke, it
+bounds the whole stack, so its centre falls in the GAP between two levels. On
+Violin 2 the CV detector reads the two strokes correctly at canonical y 1112 and
+1172 — 60 px apart against a 35 px clustering tolerance, which is two levels —
+and the YOLO box spanning both contributes a centre at 1142, exactly between
+them. The run 1112, 1142, 1172 then has no gap wider than the tolerance anywhere
+in it, so it counts as one level and three sixteenths are read as three eighths.
+
+The Phase-4f reason is still half true, so all three arrangements were measured:
+
+| | pooled | edits | brahms dur | melody dur |
+|---|--:|--:|--:|--:|
+| union (Phase 4f) | 0.1917 | 1355 | 0.916 | 0.778 |
+| replace outright | **0.1855** | **1310** | 0.929 | **0.722** |
+| **kept** | 0.1861 | 1315 | **0.931** | 0.778 |
+
+A YOLO beam is now kept only where no CV beam overlaps its x-range: where the CV
+detector has measured a column of the page its answer stands alone, and where it
+found nothing YOLO's coverage is better than none. Replacing outright scores
+best by five edits out of 1315 and gets there by throwing real beams away — it
+is the only arm that regresses an authored fixture, and the `×4` family (notes
+that lost every beam and read four times too long) goes 4 → 7 under it.
+
+### What is left, and why the reconciler is still right to decline
+
+Thirty-six wrong durations, and the reconciler fires on exactly one of them.
+
+Violin 2's bar is the shape of the residue: a dotted eighth beamed to three
+sixteenths. That is **two beam levels inside one beam group**, and
+`_beam_groups` builds a group out of noteheads that share a `beam_levels` value,
+so it has no way to express "these three are sixteenths and that one is an
+eighth". Re-reading the group as a whole lands on 2.625 beats where the meter
+wants 3.0, and it correctly refuses. Its reach is not one edit short, as the
+handoff supposed — it is one CONCEPT short, and the concept is a group whose
+members can differ.
+
+Underneath that is CV geometry rather than plumbing, which makes it the first
+item in this file's history whose next step is detector work:
+
+- the first two noteheads of that bar have **no stem detected** (4 stems for 6
+  noteheads), so `_beams_attached_to_stem` never runs for them;
+- the fallback pairs a notehead to a beam directly and caps the reach at 5.5
+  staff spaces, and these notes sit high above the staff with long stems — their
+  own beam is 5.9 and 6.1 spaces away. The cap cannot simply be widened: its
+  comment records that a 5.5-space window already swept 183 noteheads into
+  counts of 5, 6, 7 and 8 beams.
+
+So the lever is `line_detection.detect_stems` finding the stems it is missing,
+not a wider tolerance downstream of it.
