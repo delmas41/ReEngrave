@@ -669,10 +669,17 @@ Absent entirely where `.venv-surya` is not installed, including the container.
 `transcribe` runs two optional enrichments behind `except Exception`, because a
 transcription that succeeded must not be lost to an enrichment that could not
 run. **Not raising is not the same as not telling anyone**, and the gap between
-those cost six weeks: `apply_contextual_analysis` renamed a parameter, the
+those is how a documented on-by-default pass went dark:
+`apply_contextual_analysis` renamed a parameter (`e518679`, 2026-08-31), the
 caller kept the old name, and the TypeError was filed as an ordinary
 "unavailable" — indistinguishable from the honest abstentions that pass makes
 constantly (no text layer, no five-line geometry, no Surya venv).
+
+**It was live on main for hours, not weeks** — it arrived with the five-branch
+integration merge on 2026-09-01 and was fixed the same day. The duration is not
+the lesson and an earlier draft of this section invented one; what matters is
+that in those hours it cleared a five-branch merge queue, a full benchmark run
+and a green suite without a single check noticing.
 
 **Nothing caught it.** The suite was green. The OMR-NED number did not move —
 contextual's two channels into the export (part names, clef fill) provably do

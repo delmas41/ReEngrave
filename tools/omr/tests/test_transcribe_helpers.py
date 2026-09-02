@@ -991,7 +991,7 @@ class TestContextualCallSeam:
 
 
 class TestOptionalPassFailureIsLoudAboutBugs:
-    """The contextual pass died for six weeks behind an `except Exception`.
+    """The contextual pass went dark behind an `except Exception`.
 
     Every check that existed said things were fine: the suite was green, the
     OMR-NED number did not move (contextual's two channels into the export —
@@ -1067,8 +1067,8 @@ class TestOptionalPassFailureIsLoudAboutBugs:
 
     def test_both_optional_passes_route_through_it(self):
         """Two copies of this swallow exist — contextual and direction text —
-        and one of them has already cost six weeks. Neither may hand-roll the
-        record again."""
+        and one of them has already gone dark this way. Neither may hand-roll
+        the record again."""
         import inspect
 
         from tools.omr import transcribe as T

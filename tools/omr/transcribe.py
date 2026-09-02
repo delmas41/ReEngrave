@@ -3120,14 +3120,20 @@ def _optional_pass_failure(
     SAME AS NOT TELLING ANYONE, and that distinction is the whole reason this
     function exists.
 
-    The contextual pass died for six weeks behind exactly this `except`. The
-    callee renamed a parameter, the caller kept the old name, and the resulting
+    The contextual pass went dark behind exactly this `except`. The callee
+    renamed a parameter, the caller kept the old name, and the resulting
     TypeError was filed as `reason` and returned as an ordinary "unavailable" —
     indistinguishable, to every reader and every benchmark, from the honest
     abstentions this pass makes all the time (no text layer, no five-line
     geometry, no Surya venv). The suite stayed green, the OMR-NED number did not
     move, and the only surviving trace was one line of stderr that
     `orchestral_eval` — which runs `progress=False` — never printed.
+
+    It was live on main for HOURS, not weeks: it arrived with an integration
+    merge and was fixed the same day. That is not reassurance. In those hours it
+    passed a five-branch merge queue and a full benchmark run untouched, and
+    nothing about the mechanism limited it to hours — it was found because
+    somebody happened to read stderr from a different benchmark.
 
     So a failure is classified. An ABSTENTION is the pass saying it had nothing
     to work with; a BUG is the code being wrong, and a bug is announced on
