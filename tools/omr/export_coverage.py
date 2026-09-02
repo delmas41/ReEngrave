@@ -77,9 +77,22 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from tools.omr import accuracy_record
+
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "benchmarks" / "omr-orchestral-e2e" / "fixtures"
-WORKS = ("beethoven-sym5-mvt1", "brahms-sym1-mvt1", "mahler-sym5-mvt1")
+
+#: Every work the default benchmark writes into `FIXTURES` — read from the
+#: benchmark's definition rather than restated, so widening the benchmark cannot
+#: leave this check surveying a subset of the fixtures sitting on disk. Three
+#: canonical works until 2026-09-02, eleven since.
+#:
+#: ⚠️ `survey()` pools, so more works cut both ways: the truth side sees more
+#: kinds of notation (which is why the widening is worth doing here at all),
+#: while a gap in ONE work is masked if another work emits that element. The
+#: categorical signature is `truth N, ours 0` POOLED, and it always was — this
+#: widens what the check can see without changing what it means.
+WORKS = accuracy_record.BENCHMARK_WORKS
 
 #: MusicXML elements that are NOTATION — ink a reader sees on the page. Only
 #: these are checked. Each is here because losing it would change what the score
@@ -117,7 +130,10 @@ KNOWN_GAPS: dict[str, str] = {
     "wedge": (
         "NINTH GAP, open. Mahler's truth has 6 hairpins; the detector finds 4 "
         "(dynamicCrescendoHairpin x2, dynamicDiminuendoHairpin x2). Partial "
-        "detection, so this one is not purely an export fix."
+        "detection, so this one is not purely an export fix. Widened to 11 "
+        "works the truth carries 17 across three of them — Mahler 5 (6), "
+        "Tchaikovsky 6 (6), Brahms 4 (5) — so the gap is three times the size "
+        "the three-work corpus could show."
     ),
     "barline": (
         "Documented limitation — repeat signs are dropped on export, tied to "
@@ -137,7 +153,10 @@ KNOWN_GAPS: dict[str, str] = {
     ),
     "words": (
         "Read by `--direction-text`, which is OFF BY DEFAULT — so this is a "
-        "flag decision, not a gap. With it on, `wrong direction` is 151 -> 7."
+        "flag decision, not a gap. With it on, `wrong direction` was 151 -> 7 "
+        "ON THE THREE CANONICAL WORKS; that pair of numbers is pre-boundary "
+        "and does not carry to the 11-work set, where all eleven truths print "
+        "words (52 in total, most of them Brahms 1's 16 and Bruckner's 10)."
     ),
     "stem": (
         "`transcribe` computes stem direction and uses it for voice splitting; "
