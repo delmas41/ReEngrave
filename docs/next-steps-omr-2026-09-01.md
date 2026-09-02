@@ -11,8 +11,8 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.1439** on the engraved orchestral benchmark (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.1804), down from **0.3164** at the start of
+**Pooled OMR-NED 0.1364** on the engraved orchestral benchmark (Mahler 0.0455,
+Beethoven 0.1649, Brahms 0.1709), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
 `benchmarks/omr-ned-2026-08/FINDINGS.md`.
@@ -40,6 +40,14 @@ export together, and the engraved benchmark says nothing about scan robustness.
 | a chord's members given opposite stem directions | 0.1506 → 0.1505 | `de99318` |
 | ink across the whole bar read as a beam | 0.1505 → 0.1436 | `e4ff44b` |
 | a chord written top-down | 0.1436 → 0.1439 | `b8ccc89` |
+
+⚠️ **These rows do not chain into the current figure, and two landings are
+missing from them.** Each is measured on the base that was current when the fix
+shipped, and main moved under most of them. `120de2a` (ledger ladders) and
+`0c85468` followed `b8ccc89` and compose with it to **0.1364 / 966 edits**,
+measured on the merge itself — better than either arm alone. Read the headline
+figure above, which is always the one measured ON main; treat this table as a
+record of what each fix was worth where it landed.
 
 **Five of the first eight were EXPORT bugs on data the pipeline had already
 computed correctly.** Beams detected and dropped, dots detected and counted twice,
