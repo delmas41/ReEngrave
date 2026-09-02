@@ -1,0 +1,25 @@
+# Catalog membership — the version directories build_catalog_yaml unions
+# into catalog.yaml. One directory name per line; '#' comments allowed.
+#
+# THIS LIST IS A TRAINING DECISION, NOT AN INVENTORY. Versions on disk but
+# not listed here are excluded ON PURPOSE:
+#
+#   v5-2026-07-12-clef, v6-2026-07-13-clef-diverse — 62 clef-heavy cells.
+#     Adding them narrows the density prior, the mechanism that collapsed
+#     dense-page noteheads 2506 -> 114 in the clef fine-tune. Entry wants a
+#     measured run behind wtc_forgetting_eval.py, not a rebuild.
+#     See PROJECT_STATUS.md, open decision #13.
+#
+#   v7-2026-09-02-hollow — 24 hollow-notehead scan cells. Whether it enters
+#     is an open training-time decision
+#     (benchmarks/omr-labeling-hollow-2026-08/AUDIT.md).
+#
+# Admitting a version is deliberate: add its line here, rebuild the
+# catalog, and commit the manifest edit together with the regenerated
+# catalog files (test_training_pipeline.py pins the membership, so the
+# change is loud by design).
+
+v1-2026-05-18-orchestral
+v2-2026-06-08-beet5
+v3-2026-06-09-mahler5
+v4-2026-06-10-la-mer

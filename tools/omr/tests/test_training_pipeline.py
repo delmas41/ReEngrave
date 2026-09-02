@@ -340,7 +340,8 @@ def test_load_base_class_names_errors_with_no_sources(tmp_path: Path):
 
 def _make_catalog_root(tmp_path: Path) -> Path:
     """A minimal version dir: one cell with a base-class box and a
-    custom-class box, one cell with only base-class boxes."""
+    custom-class box, one cell with only base-class boxes. Includes the
+    membership manifest — a catalog root without one is refused."""
     root = tmp_path / "user-labeled"
     v1 = root / "v1-2026-01-01-test"
     (v1 / "images").mkdir(parents=True)
@@ -351,6 +352,7 @@ def _make_catalog_root(tmp_path: Path) -> Path:
     )
     (v1 / "images" / "clean.png").write_bytes(_MINIMAL_PNG)
     (v1 / "labels" / "clean.txt").write_text("5 0.5 0.5 0.1 0.1\n")
+    (root / "catalog-versions.txt").write_text("v1-2026-01-01-test\n")
     return root
 
 
@@ -418,6 +420,162 @@ def test_build_catalog_cli_keep_custom_classes(tmp_path: Path):
     cat = yaml.safe_load((root / "catalog.yaml").read_text())
     assert cat["nc"] == 214
     assert "_nc208" not in (root / "_catalog_train.txt").read_text()
+
+
+# ---------------------------------------------------------------------------
+# build_catalog_yaml — version membership (catalog-versions.txt)
+# ---------------------------------------------------------------------------
+#
+# Which versions the catalog unions is a recorded training decision, not a
+# directory listing: the committed catalog deliberately excludes the
+# clef-heavy v5/v6 batches (they narrow the density prior — the mechanism
+# that collapsed dense-page noteheads 2506 -> 114; PROJECT_STATUS.md open
+# decision #13). Until 2026-09-02 that exclusion survived only as long as
+# nobody re-ran the documented command. These tests pin the guard: a
+# default run reproduces the manifest's membership exactly or refuses —
+# it never silently widens.
+
+
+def _add_version(root: Path, name: str) -> Path:
+    v = root / name
+    (v / "images").mkdir(parents=True)
+    (v / "labels").mkdir(parents=True)
+    (v / "images" / f"{name}-cell.png").write_bytes(_MINIMAL_PNG)
+    (v / "labels" / f"{name}-cell.txt").write_text("0 0.5 0.5 0.1 0.1\n")
+    return v
+
+
+def _run_catalog_builder(root: Path, *extra: str) -> subprocess.CompletedProcess:
+    cmd = [
+        sys.executable, "-m", "tools.omr.training.build_catalog_yaml",
+        "--root", str(root), "--val-fraction", "0",
+        "--weights", str(root / "no-weights.pt"),
+        *extra,
+    ]
+    return subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
+
+
+def test_catalog_refuses_without_manifest_or_versions(tmp_path: Path):
+    """No manifest + no --versions = refuse, pointing at the decision
+    record — never a silent union of what happens to be on disk."""
+    root = tmp_path / "user-labeled"
+    _add_version(root, "v1-2026-01-01-a")
+    _add_version(root, "v2-2026-01-02-b")
+    result = _run_catalog_builder(root)
+    assert result.returncode != 0
+    assert "catalog-versions.txt" in result.stderr
+    assert "decision #13" in result.stderr
+    # The refusal lists what IS on disk, so writing the manifest is easy.
+    assert "v2-2026-01-02-b" in result.stderr
+    assert not (root / "catalog.yaml").exists()
+
+
+def test_catalog_unions_only_manifest_members(tmp_path: Path):
+    """A version on disk but not in the manifest stays out of the catalog,
+    and the exclusion is reported rather than silent."""
+    root = tmp_path / "user-labeled"
+    _add_version(root, "v1-2026-01-01-a")
+    _add_version(root, "v2-2026-01-02-b")
+    (root / "catalog-versions.txt").write_text(
+        "# membership record\nv1-2026-01-01-a\n"
+    )
+    result = _run_catalog_builder(root)
+    assert result.returncode == 0, result.stderr
+
+    train = (root / "_catalog_train.txt").read_text()
+    assert "v1-2026-01-01-a" in train
+    assert "v2-2026-01-02-b" not in train
+    assert "v2-2026-01-02-b" in result.stdout          # named as excluded
+    assert "decision #13" in result.stdout
+
+    summary = json.loads((root / "_catalog_summary.json").read_text())
+    assert [v["name"] for v in summary["versions"]] == ["v1-2026-01-01-a"]
+    assert summary["versions_excluded_on_disk"] == ["v2-2026-01-02-b"]
+    assert summary["membership_source"].endswith("catalog-versions.txt")
+
+
+def test_catalog_refuses_manifest_entry_missing_on_disk(tmp_path: Path):
+    """A manifest naming a version that isn't there cannot be reproduced —
+    refuse rather than build a smaller catalog quietly."""
+    root = tmp_path / "user-labeled"
+    _add_version(root, "v1-2026-01-01-a")
+    (root / "catalog-versions.txt").write_text(
+        "v1-2026-01-01-a\nv9-2026-01-09-ghost\n"
+    )
+    result = _run_catalog_builder(root)
+    assert result.returncode != 0
+    assert "v9-2026-01-09-ghost" in result.stderr
+
+
+def test_catalog_refuses_duplicate_manifest_entries(tmp_path: Path):
+    root = tmp_path / "user-labeled"
+    _add_version(root, "v1-2026-01-01-a")
+    (root / "catalog-versions.txt").write_text(
+        "v1-2026-01-01-a\nv1-2026-01-01-a\n"
+    )
+    result = _run_catalog_builder(root)
+    assert result.returncode != 0
+    assert "more than once" in result.stderr
+
+
+def test_catalog_versions_flag_overrides_manifest(tmp_path: Path):
+    """--versions is the deliberate one-off path: it names its membership
+    on the command line and is recorded as the source in the summary."""
+    root = tmp_path / "user-labeled"
+    _add_version(root, "v1-2026-01-01-a")
+    _add_version(root, "v2-2026-01-02-b")
+    (root / "catalog-versions.txt").write_text("v1-2026-01-01-a\n")
+    result = _run_catalog_builder(root, "--versions", "v2-2026-01-02-b")
+    assert result.returncode == 0, result.stderr
+    train = (root / "_catalog_train.txt").read_text()
+    assert "v2-2026-01-02-b" in train
+    assert "v1-2026-01-01-a/images" not in train
+    summary = json.loads((root / "_catalog_summary.json").read_text())
+    assert summary["membership_source"] == "--versions"
+    assert [v["name"] for v in summary["versions"]] == ["v2-2026-01-02-b"]
+
+
+def test_committed_catalog_membership_is_v1_through_v4():
+    """Pin the committed membership AND that the manifest reproduces the
+    committed catalog exactly.
+
+    If this fails because you changed data/user-labeled/catalog-versions.txt
+    on purpose: that is a training decision — update PROJECT_STATUS.md open
+    decision #13, rebuild the catalog so _catalog_summary.json matches, and
+    update this pin, all in the same commit. If you did NOT change the
+    manifest on purpose, put it back.
+    """
+    from tools.omr.training.build_catalog_yaml import (
+        read_versions_manifest,
+        select_versions,
+    )
+
+    root = REPO_ROOT / "data" / "user-labeled"
+    committed = [
+        "v1-2026-05-18-orchestral",
+        "v2-2026-06-08-beet5",
+        "v3-2026-06-09-mahler5",
+        "v4-2026-06-10-la-mer",
+    ]
+    assert read_versions_manifest(root) == committed
+
+    # The manifest and the generated catalog must agree — editing one
+    # without rebuilding the other is exactly the drift this guards.
+    summary = json.loads((root / "_catalog_summary.json").read_text())
+    assert [v["name"] for v in summary["versions"]] == committed
+
+    # A default run resolves to the same membership (read-only check;
+    # nothing is written).
+    members, excluded, source = select_versions(root, None)
+    assert [d.name for d in members] == committed
+    assert source.endswith("catalog-versions.txt")
+    # The recorded exclusions are on disk and stay out (PROJECT_STATUS.md
+    # #13 for v5/v6; the hollow batch's entry is an open training-time
+    # decision — benchmarks/omr-labeling-hollow-2026-08/AUDIT.md).
+    for parked in ("v5-2026-07-12-clef", "v6-2026-07-13-clef-diverse",
+                   "v7-2026-09-02-hollow"):
+        assert (root / parked).is_dir()
+        assert parked in excluded
 
 
 # ---------------------------------------------------------------------------

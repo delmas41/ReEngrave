@@ -1020,11 +1020,17 @@ copies are now pointers.
     reading came off a silent retry, since retries sample (at temperature 0.8, 24
     decodes gave 17 sequences) and worker stderr is discarded unless the process fails.
     The earlier session has **not** been called wrong, because unreproduced is not wrong.
-13. **Whether v5/v6 enter the training catalog.** Six label versions are on `main` (223
-    cells); `catalog.yaml` unions only v1–v4. Adding the 62 clef cells narrows the
-    density prior, which is what collapsed dense-page noteheads 2506 → 114 — so it wants
-    a measured run behind `wtc_forgetting_eval.py`, not a rebuild. The retrain can no
-    longer silently re-trigger the Phase 3.4 head-reset collapse (nc=208 cap + guard).
+13. **Whether v5/v6 (and now v7) enter the training catalog.** Seven label versions are
+    on `main` (247 cells); `catalog.yaml` unions only v1–v4. Adding the 62 clef cells
+    narrows the density prior, which is what collapsed dense-page noteheads 2506 → 114 —
+    so it wants a measured run behind `wtc_forgetting_eval.py`, not a rebuild; the
+    hollow batch (v7, 24 scan cells) is the same kind of decision. The retrain can no
+    longer silently re-trigger the Phase 3.4 head-reset collapse (nc=208 cap + guard),
+    and since 2026-09-02 the rebuild can no longer silently reverse *this* decision
+    either: membership lives in `data/user-labeled/catalog-versions.txt`,
+    `build_catalog_yaml` refuses to run without it and reports what it excludes, and
+    `test_training_pipeline.py` pins the v1–v4 membership. Deciding is still open;
+    executing the decision is now an edit to the manifest.
 14. **Assess `claude/omr-dossier-verification-layer-eaf6d0`** — **done 2026-09-02,
     verdict: close** ([docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md)).
     It was not the last branch with a capability `main` lacks — all four phases have a
