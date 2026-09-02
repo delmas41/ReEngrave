@@ -243,6 +243,29 @@ Three things this step is worth carrying:
   read as beams), which the metric charged to the SLUR because musicdiff prices a
   slur by the duration it spans.
 
+### 2b. ~~Accidentals — the printed glyph~~ — DONE 2026-09-02
+
+Pooled **0.1342 → 0.1242**, 952 → 889 edits, `wrong accidental` **64 → 0**.
+Brahms 0.1709 → 0.1556, Mahler 0.0455 → 0.0395; Beethoven unchanged, its truth
+carrying none. Ours now matches the truth exactly, 54 against 54 and 11 against
+11.
+
+The seventh detected-and-never-exported signal, and the one that hid longest,
+because it was not merely detected: `_pair_accidentals_to_noteheads` pairs each
+accidental to its notehead and the alteration is folded into the PITCH — then
+the fact that a glyph was drawn is discarded. MusicXML separates `<alter>`
+(what sounds) from `<accidental>` (what was printed); we emitted only the first.
+Every edit looked like `pred [A5]4* | truth [A5natural]4*`: the pitch agreeing
+and the printed sign missing.
+
+**How it was found is the transferable part.** The obvious proactive check —
+"which detector classes does nothing downstream mention?" — calls this one
+CONSUMED, because it is. The question that finds it is *does everything the
+truth would show survive into our output?*, answered with `grep -c` on element
+names. Six of the seven were found forensically, by opening a metric bucket
+after it grew; this one was found in a few greps before anyone looked at its
+bucket.
+
 ### 3. ~~The `entire measure` bucket~~ — OPENED 2026-09-01, and it is the FIXTURE
 
 This entry said: do not target it directly, open the op list, and fix whatever
