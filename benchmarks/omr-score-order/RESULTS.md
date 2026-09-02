@@ -108,3 +108,90 @@ prior cannot read keeps exactly the reading it had.
   but a small one, and the two orchestral pages of the key-signature benchmark
   can no longer be scored on this machine (their PDFs are gone), so this is what
   there is.
+
+---
+
+## The ruler was wrong in two ways — corrected and widened, 2026-09-01
+
+Job C's identity half opened on a number from this file: *the prior names 12 of
+33 staves at 0.92 precision from position, and 0.50 on read clefs, which is what
+production uses.* **Production uses neither.** Both halves of that sentence
+describe configurations no run performs, and the corrected measurement says
+something different about where the work is.
+
+### 1. "read clefs" is the CV locator alone, and the locator is 3 staves of 166
+
+`read_clefs()` calls `locate_clef` and nothing else — deliberately, so this
+benchmark needs no weights, and the docstring says so. But production hands
+`fit_layouts` the output of `contextual._read_clefs_by_slot`, and on the ten-page
+clef corpus its 122 sourced clefs are **97 detector + 12 header + 9 dossier + 3
+locator + 1 slot-continuity**, the detector alone at 98% on the staves it covers.
+
+Quoting 0.50 as production's number is quoting the weakest reader in the stack.
+A `--pipeline` arm now measures the real thing.
+
+### 2. The benchmark fits ONE SYSTEM; production fits the page
+
+`fit_layouts(len(reference))` — the slot set `assign_slots` builds across every
+system of the page — and one fit then reaches every system through the slots.
+Scoring a system at a time is a second way to measure something that never runs.
+A `--production` arm now goes through `apply_contextual_analysis` itself, with
+the label readers switched off so what is measured is the prior.
+
+### 3. The corpus was 2 pages of 1 edition
+
+`--wide` adds two truth sources that were already in the repo: 36 staves the PDF
+text layer names across 12 systems of Beethoven 5 and 6, and Beethoven 5 p.48's
+17 hand-read slots. Nine pages, four editions.
+
+⚠️ **The manifest's stored `instrument` is not ground truth — its `text` is.**
+That file was written on 2026-08-31 and froze a lexicon bug fixed hours later the
+same day: Beethoven 5 p.59's three trombones are stored as `Tr. Alt.` → Alto,
+`Tr. Ten` → Tenor and `Tr. Bas` → Trumpet — two singers and a trumpet where the
+page prints trombones. A stored resolution measures the lexicon of its day, so
+the harness re-resolves the printed text through today's.
+
+### What the corrected ruler says
+
+```
+python3 benchmarks/omr-score-order/eval_score_order.py --wide --production
+```
+
+| arm | named | correct | precision |
+|---|--:|--:|--:|
+| position only | 22 | 21 | **0.95** |
+| read clefs — the CV locator, as before | 24 | 13 | 0.54 |
+| **PRODUCTION — page-level fit, every reader** | **44** | **32** | **0.73** |
+| true clefs — the ceiling | 36 | 33 | 0.92 |
+
+So the prior is **not** the narrow, high-precision thing the old number
+described. In production it names twice what the position arm does — 44 against
+22 — at 0.73. The lever is no longer coverage. It is precision.
+
+### Where the 12 errors are, and they are one shape
+
+Seven of the twelve come from four pages where the winning layout is far too
+small for the system, and the continuation move — which exists so that two horns
+or a divided violin section can take more than one staff — is carrying every
+part instead of a few:
+
+| staves per part of the winning layout | pages | named right | named wrong |
+|---|--:|--:|--:|
+| 0.82 – 1.09 | 7 | **32** | 5 |
+| 1.75 | 4 | **0** | **7** |
+
+Nothing sits between 1.09 and 1.75. At 1.75 it is `string-quartet` stretched
+over Beethoven 5 p.40's seven-staff condensed systems — calling each top staff
+Violin, where the page prints Oboe, Oboe and Bassoon — and `classical-condensed`
+stretched over La Mer's 21 staves, where the true layout is `french-large`. La
+Mer's own truth is 21 staves for 17 parts, **1.24**: real division does not reach
+1.75.
+
+**The root cause is a gap in the layout library, not a bad fit.** The ten layouts
+run 2, 4, 4, 4, 11, 12, 13, 16, 17, 20 parts, and there is **no
+orchestra-plus-voices layout at all**. Beethoven 9's choral finale is 21 staves
+of orchestra and six vocal staves; the best the library can offer is a 12-part
+classical layout stretched to 1.75, and the prior then calls the vocal block
+Viola. That is the same page whose two "gains" the clef benchmark records under
+JOB C in `benchmarks/omr-clef-geometry/RESULTS.md` — a wrong identity landing on
+the right clef class.
