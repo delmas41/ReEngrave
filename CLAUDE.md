@@ -809,8 +809,8 @@ to Eb Horn 3 by 19 px while C Horn 2 stays empty. See the DIAGNOSED section of
 ## Orchestral end-to-end benchmark
 
 `benchmarks/omr-orchestral-e2e/` — renders an excerpt of a Gradus MXL back to
-PDF through LilyPond, so every note is known by construction, at eighteen
-staves. The first measurement of note accuracy on a conductor's page.
+PDF through LilyPond, so every note is known by construction, at eleven to
+twenty-five staves. The first measurement of note accuracy on a conductor's page.
 
 ```bash
 python3 -m tools.omr.training.orchestral_eval
@@ -820,6 +820,82 @@ python3 -m tools.omr.training.orchestral_eval --works mahler-sym5-mvt1 --no-doss
 The input is engraved, not scanned, so a failure is a failure of recognition on
 dense music and cannot be blamed on print quality. It says nothing about scan
 robustness.
+
+**ELEVEN WORKS SINCE 2026-09-02** (`accuracy_record.BENCHMARK_WORKS`, which is
+where the set and the per-work reasons live). It was three —
+`beethoven-sym5-mvt1`, `brahms-sym1-mvt1`, `mahler-sym5-mvt1` — and sixteen
+fixes were landed against those three and measured on nothing else. The corpus
+widening ran eight more engraved orchestral pages of the same kind and they
+scored roughly **twice** the incumbents' error rate, so the three-work figure
+was hiding a distribution rather than summarising one. Three of the faults that
+surfaced were invisible to the incumbents by accident of what those pages print:
+a cut-common glyph read at 0.92 and dropped on export (all three incumbents
+print digit meters), triplet digits filed under `fingering3` (two incumbents
+have none), articulations never exported at all (0, 2 and 6 detections across
+the three). It also falsified a documented claim about the incumbent Mahler —
+"its fifth triplet group carries no marker at any confidence" — which was the
+**highest-confidence** marker on the page, under the other class name.
+*A benchmark of three pages cannot falsify a story about one of them.*
+Full reading: [benchmarks/omr-corpus-widening-2026-09/FINDINGS.md](benchmarks/omr-corpus-widening-2026-09/FINDINGS.md).
+
+The eight added: `mozart-sym40-mvt1`, `mozart-sym41-mvt1`,
+`beethoven-sym3-mvt1`, `brahms-sym4-mvt1`, `dvorak-sym9-mvt4`,
+`tchaikovsky-sym4-mvt2`, `tchaikovsky-sym6-mvt2`, `bruckner-sym5-mvt1` — chosen
+on the three axes a fix tuned on three pages could break (era, part count,
+texture/meter), with `beethoven-sym3-mvt1` and `brahms-sym4-mvt1` as deliberate
+**near-neighbour controls** for two incumbents: a distant composer failing is
+ambiguous, a near neighbour failing is not.
+
+⚠️ **`boulanger-printemps-mvt1` is deliberately NOT pooled**, and stays runnable
+with `--works boulanger-printemps-mvt1`. At 46 parts it is the one work whose
+*structure* fails — 43 parts against 46, with 76% of its budget in `entire
+measure` and `entire staff` operations — so it measures page segmentation on a2
+paper rather than note recognition, and it dominates any pool it enters (alone,
+it moved the widening pool 0.2057 → 0.3846). It is also where a correct fix
+looked like a regression: the articulation work read 263 of its 271 printed
+marks and its OMR-NED still **rose**, because a symbol added to a bar already
+charged delete-whole-plus-insert-whole costs more. Its row is kept and honest in
+FINDINGS.md §2 and §4; what it must not do is set the headline.
+
+**Fixtures are build products, not artifacts to move.** `excerpt()` regenerates
+every truth XML and rendered PDF from the score library on each run, into
+`--work-dir` (default `benchmarks/omr-orchestral-e2e/fixtures/`, gitignored), so
+a default run is self-contained with no flags and nothing on disk. The widening
+ran with its own `--work-dir` so a parallel canonical run could not collide;
+that directory's committed provenance (`FINDINGS.md`, `out/*.json`) is
+unchanged by the widening of the default.
+
+### What eleven works still cannot see
+
+⚠️ **A corpus that cannot express a fault cannot regression-test its repair**,
+and a benchmark that says what it cannot see is worth more than one that implies
+coverage it lacks. Measured on the widened set with
+`benchmarks/omr-direction-text-2026-09/probe_empty_measure_marks.py`, which asks
+the question in both directions:
+
+| side | what it asks | 3 works | **11 works** |
+|---|---|--:|--:|
+| truth | a bar carrying a mark and no note — the SHAPE | 1 | **6** |
+| pred (`--direction-text`) | our export having one — the same shape | ~1 | **20** |
+| either | a bar carrying a mark and **nothing at all** — the TRIGGER | 0 | **0** |
+
+The bug it is about (`46e42a4`): a measure with no detected events takes the
+whole-measure-rest path, which never calls `_mxl_voice_events` — the only
+`<direction>` emitter — so placed directions AND dynamics are computed and then
+discarded. **The trigger is the DETECTOR finding nothing**, which is why the
+shape is not the trigger: a rest IS an event, so a bar of rests takes the normal
+path and its marks survive. Widening multiplied the near-misses sixfold (the
+`P1 m1` tempo mark over a resting first part, in Beethoven 5, Brahms 4, Bruckner
+5, Dvorak 9, Mozart 40 and Tchaikovsky 6) and added **not one** triggering bar.
+
+So: **the eleven-work benchmark does not guard that fix.** Its unit tests in
+`test_direction_text.py` are the only thing that does. The pred row is measured
+under `--direction-text`, which emits strictly more marks than a default run and
+therefore has strictly more chances to trigger — a zero there is a zero for the
+default configuration too. The likeliest future source of a real triggering bar
+is a **scanned** work, where a staff genuinely rests through a marked bar and
+the detector finds nothing in it; every work here is engraved, and engraved
+pages put an event in every bar.
 
 ---
 
@@ -1009,15 +1085,57 @@ four places is silent, and the copy that loses is whichever file happened not
 to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
+⚠️ **THE BENCHMARK'S DEFINITION CHANGED ON 2026-09-02 — 3 WORKS TO 11 — AND NO
+FIGURE CROSSES THAT BOUNDARY.** At Sean's decision the headline widened from the
+canonical three to eleven engraved orchestral works (see the *Orchestral
+end-to-end benchmark* section for the set and why each is in it). A pooled
+OMR-NED is a property of **the work set it is pooled over** as much as of the
+pipeline, so an 11-work figure and a 3-work figure are measurements of different
+things: **comparing them is invalid in either direction**, and a rise or fall
+across the boundary is not progress or regression. For the record, the last
+3-work figures were **0.0849 / 623 edits** (default, with the direction reader
+on) and **0.1066 / 767** (`--no-direction-text`), both on `bc4214d`; that
+three-work arc opened at 0.3164 on 2026-08-31. Those numbers are history and
+belong to a benchmark that no longer exists — they are written here, in prose,
+precisely so nobody reaches for them as a baseline for the block below.
+
+The boundary is enforced, not just documented: `current-accuracy.json` carries a
+`benchmark` stamp naming the work set and the date, `accuracy_record.check()`
+refuses a record whose stamp disagrees with `BENCHMARK_WORKS`, and a record
+written before 2026-09-02 has no stamp at all — so it is detectably
+pre-boundary rather than silently comparable. Recording one configuration over a
+new work set also **drops** the other configuration's run until it is
+re-measured, so the paragraph can never state an 11-work default beside a 3-work
+variant.
+
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `bc4214d`: **pooled 0.0849 / 623 edits** (Mahler 0.0272, Beethoven 0.0595, Brahms 0.1196), over 3696 truth + 3641 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1066 / 767**, measured on `bc4214d`.
+Current on the engraved orchestral benchmark, measured on `44a1745`: **pooled 0.1306 / 2745 edits** over 11 works (Mahler 5 0.0272 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10361 predicted symbols. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1399 / 2915**, measured on `44a1745`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler | 0.0272 | 52 | 0.917 | 0.917 | 1.000 |
-| Beethoven | 0.0595 | 77 | 1.000 | 1.000 | 1.000 |
-| Brahms | 0.1196 | 494 | 0.956 | 0.955 | 0.992 |
+| Mahler 5 | 0.0272 | 52 | 0.917 | 0.917 | 1.000 |
+| Tchaikovsky 4 | 0.0580 | 90 | 0.925 | 0.925 | 1.000 |
+| Beethoven 5 | 0.0595 | 77 | 1.000 | 1.000 | 1.000 |
+| Bruckner 5 | 0.0941 | 187 | 0.962 | 0.962 | 1.000 |
+| Brahms 1 | 0.1196 | 494 | 0.956 | 0.955 | 0.992 |
+| Beethoven 3 | 0.1294 | 215 | 0.975 | 0.975 | 1.000 |
+| Mozart 41 | 0.1447 | 425 | 0.991 | 0.991 | 0.947 |
+| Mozart 40 | 0.1772 | 273 | 0.762 | 0.762 | 0.952 |
+| Tchaikovsky 6 | 0.1916 | 274 | 0.756 | 0.747 | 0.985 |
+| Brahms 4 | 0.2238 | 419 | 0.959 | 0.943 | 0.933 |
+| Dvorak 9 | 0.3380 | 239 | 0.975 | 0.975 | 1.000 |
 <!-- accuracy:end -->
+
+⚠️ **Two rows of that table are not read the way the others are.**
+`dvorak-sym9-mvt4`'s excerpt auto-shrank to **3 bars** against everyone else's
+6-8 (the one-page fit in `excerpt()`), so its denominator is a third of the
+rest and its ratio is the noisiest in the set — it sits at the bottom of the
+table on a third of the evidence. And `mozart-sym40-mvt1`'s note recall is not
+a recognition number: its Viola plays divisi double stops, the truth splits
+them into two voices and the page prints one two-note chord, so ~41% of its
+notes land in `order` bars with **every pitch present on both sides**. Both are
+measured in
+[benchmarks/omr-corpus-widening-2026-09/FINDINGS.md](benchmarks/omr-corpus-widening-2026-09/FINDINGS.md) §5.
 
 **Generated — do not hand-edit, here or anywhere.** `68be549` made this the
 only place the figure is stated; this block makes it the only place it is
@@ -1028,12 +1146,13 @@ python3 -m tools.omr.training.orchestral_eval --omr-ned --record   # measure, re
 python3 -m tools.omr.accuracy_record --check                       # has it drifted?
 ```
 
-`--record` refuses a run without `--omr-ned`, over a subset of the works, or
-with a failed pipeline pass — each would state a figure for the whole benchmark
-that is not one. `test_accuracy_record.py` runs `--check`, so a hand-edited
-figure fails the suite. HISTORY IS NOT MANAGED THIS WAY and must not be: "pooled
-0.2595 → 0.2489" against the commit that did it is a frozen fact and is never
-rewritten.
+`--record` refuses a run without `--omr-ned`, over a subset of the works, with a
+work that FAILED (silently absent from the results, so the pool would be smaller
+than the benchmark), or with a failed pipeline pass — each would state a figure
+for the whole benchmark that is not one. `test_accuracy_record.py` runs
+`--check`, so a hand-edited figure fails the suite. HISTORY IS NOT MANAGED THIS
+WAY and must not be: "pooled 0.2595 → 0.2489" against the commit that did it is
+a frozen fact and is never rewritten.
 
 ⚠️ **Every figure measured before 2026-09-02 sits on a different fixture and is
 not directly comparable to the current one** — including the 0.3164 opening
@@ -1042,7 +1161,11 @@ baseline. The Beethoven fixture's render dropped every fermata over a rest
 perfect reader could never have read; the render was completed on 2026-09-02
 (`_restore_rest_fermatas` in `orchestral_eval.py`). Historical transitions stay
 quoted as measured, with that floor in them — see the discontinuity note beside
-the fix table in `docs/next-steps-omr-2026-09-01.md`.
+the fix table in `docs/next-steps-omr-2026-09-01.md`. **That is a separate
+discontinuity from the work-set one above, and they landed on the same day**:
+one changed what the three pages CONTAIN, the other changed HOW MANY pages there
+are. A figure from before 2026-09-02 differs from a current one for both
+reasons at once, which is another way of saying it cannot be differenced.
 
 Full
 reading, and the findings it surfaced that note recall is blind to, in
