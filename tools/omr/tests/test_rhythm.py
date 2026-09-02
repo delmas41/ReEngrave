@@ -23,6 +23,7 @@ from tools.omr.rhythm import (
     _flag_duration,
     _intrinsic_notehead_duration,
     _name_for_dots,
+    _overlaps_any_in_x,
     _pair_dots_to_targets,
     _normalize_class,
     _rest_duration,
@@ -251,6 +252,40 @@ class TestPairDotsToTargets:
         note = _note(0, 600)
         dot = _dot(140, 8, h=17)
         assert _pair_dots_to_targets([dot], [note], SPACE) == {}
+
+
+# ─── _overlaps_any_in_x — which beam list speaks for a column ───────────────
+#
+# A YOLO beam box bounds the whole STACK of strokes, not one stroke, so its
+# centre lands in the gap between two levels and welds them into one. Where the
+# classical-CV detector has measured a column, its answer stands alone; where it
+# found nothing, YOLO's coverage is still better than none.
+
+
+def _beam(x, w, y=0, h=60):
+    return FakeDet(smufl_name="beam", category="structural",
+                   x_canonical=x, y_canonical=y,
+                   width_canonical=w, height_canonical=h)
+
+
+class TestOverlapsAnyInX:
+    def test_overlapping_box_is_covered(self):
+        assert _overlaps_any_in_x(_beam(200, 400), [_beam(0, 300)])
+
+    def test_disjoint_box_is_not(self):
+        assert not _overlaps_any_in_x(_beam(400, 100), [_beam(0, 300)])
+
+    def test_touching_edges_do_not_count_as_overlap(self):
+        # Abutting spans share no column; the second one is still the only
+        # reading of its own.
+        assert not _overlaps_any_in_x(_beam(300, 100), [_beam(0, 300)])
+
+    def test_empty_others_covers_nothing(self):
+        assert not _overlaps_any_in_x(_beam(0, 100), [])
+
+    def test_any_one_overlap_is_enough(self):
+        others = [_beam(0, 50), _beam(500, 50)]
+        assert _overlaps_any_in_x(_beam(480, 100), others)
 
 
 # ─── _parse_inline_accidental (in transcribe.py, but we test alongside) ─────

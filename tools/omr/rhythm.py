@@ -742,6 +742,23 @@ def _deduplicate_beams(beams: list, line_spacing: float) -> list:
     return kept
 
 
+def _overlaps_any_in_x(box, others) -> bool:
+    """Whether `box`'s x-range meets any of `others`'.
+
+    Used to decide where a YOLO beam still has something to say: a column of
+    the page the CV beam detector has already measured is one it should not
+    speak into. See the beam-list merge in `resolve_rhythms_for_cell`.
+    """
+    x0 = box.x_canonical
+    x1 = x0 + box.width_canonical
+    for other in others:
+        o0 = other.x_canonical
+        o1 = o0 + other.width_canonical
+        if min(x1, o1) > max(x0, o0):
+            return True
+    return False
+
+
 def _stem_for_notehead(nh, stems, max_x_distance: float):
     """Find the stem touching this notehead (classical-CV stems).
 
@@ -1281,11 +1298,38 @@ def resolve_rhythms_for_cell(
 
     # Classical-CV stems are pure additive value — the YOLO detector
     # doesn't emit stems at all, so we have no prior anchor to lose.
-    # Classical-CV beams, on the other hand, are MORE conservative than
-    # YOLO's (precise endpoints, fewer false positives) but in practice
-    # miss real beams that YOLO catches. So we UNION the two beam lists
-    # rather than replacing: the loose YOLO bboxes set the broad
-    # coverage, the CV bboxes add coverage where YOLO misses.
+    #
+    # Beams: the CV reading WINS WHERE IT SPEAKS, and YOLO covers the rest.
+    #
+    # Phase 4f unioned the two lists, with the reason in the code: the CV beam
+    # detector was the more conservative of the two and missed strokes YOLO
+    # caught, so the loose YOLO boxes set broad coverage. Half of that is still
+    # true, and all three arrangements were measured rather than argued:
+    #
+    #                    pooled   edits   brahms dur   melody dur   notes losing
+    #                                                                 every beam
+    #     union (4f)     0.1982    1386      0.916        0.778           3
+    #     replace        0.1922    1343      0.929        0.722           7
+    #     this one       0.1928    1348      0.931        0.778           4
+    #
+    # Replacing outright scores best by five edits out of 1348 and gets there by
+    # throwing real beams away — it is the only arm that regresses an authored
+    # fixture, and the only one where notes lose every beam they had. Five edits
+    # is less than one measure's amplification; the beams are the thing.
+    #
+    # The other half is not, and it costs the one measurement the beam pipeline
+    # exists to make: HOW MANY STROKES ARE STACKED. A YOLO beam box does not
+    # bound one stroke, it bounds the whole stack, so its centre lands in the
+    # GAP between two levels. On Brahms's Violin 2 the CV detector reads the two
+    # strokes correctly at canonical y 1112 and 1172 — 60 px apart against a
+    # 35 px clustering tolerance, two levels — and the YOLO box spanning both
+    # contributes a centre at 1142, exactly between them. The run 1112, 1142,
+    # 1172 has no gap wider than the tolerance anywhere in it, so it counts as
+    # one level and three sixteenths are read as three eighths.
+    #
+    # So a YOLO beam is kept only where no CV beam overlaps its x-range. Where
+    # the CV detector has measured a column of the page, its answer stands
+    # alone; where it found nothing, YOLO's coverage is still better than none.
     stems: list = []
     if extra_lines is not None:
         cv_stems = extra_lines.get("stems") or []
@@ -1293,7 +1337,9 @@ def resolve_rhythms_for_cell(
         if cv_stems:
             stems = list(cv_stems)
         if cv_beams:
-            beams = beams + list(cv_beams)
+            beams = list(cv_beams) + [
+                y for y in beams if not _overlaps_any_in_x(y, cv_beams)
+            ]
 
     # Deduplicate beams: if two beam detections overlap heavily in both
     # x AND y, they're the same physical beam (CV + YOLO both fired on
