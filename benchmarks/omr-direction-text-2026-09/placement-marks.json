@@ -1,0 +1,1057 @@
+{
+ "brahms-sym1-mvt1": [
+  {
+   "staff": 0,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 876,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 911.257368,
+     "kind": "words",
+     "text": "Un poco sostenuto"
+    },
+    {
+     "x": 1468.447456,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1517,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 1,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1468.447456,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1515,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 2,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 876,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1468.447456,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 1.0,
+     "rest": false
+    },
+    {
+     "x": 1517,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 3,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1468.447456,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 957,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1514,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1621,
+     "dur": 4.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 4,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 876,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1470.310968,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1516,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 5,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 879,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1470.310968,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 957,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1516,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1620,
+     "dur": 4.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 6,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 878,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1470.310968,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 957,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1515,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1620,
+     "dur": 4.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 7,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1468.447456,
+     "kind": "words",
+     "text": "legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 957,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 9,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 2.0,
+     "rest": false
+    },
+    {
+     "x": 1146,
+     "dur": 1.0,
+     "rest": false
+    },
+    {
+     "x": 1893,
+     "dur": 1.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 10,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 882,
+     "kind": "dynamic",
+     "text": "f"
+    }
+   ],
+   "events": [
+    {
+     "x": 985,
+     "dur": 3.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 11,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 881,
+     "kind": "dynamic",
+     "text": "f"
+    }
+   ],
+   "events": [
+    {
+     "x": 1324,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1519,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 12,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1437,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1439,
+     "kind": "dynamic",
+     "text": "f"
+    }
+   ],
+   "events": [
+    {
+     "x": 942,
+     "dur": 1.0,
+     "rest": true
+    },
+    {
+     "x": 1324,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1514,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 14,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 878,
+     "kind": "dynamic",
+     "text": "f"
+    }
+   ],
+   "events": [
+    {
+     "x": 957,
+     "dur": 0.75,
+     "rest": false
+    },
+    {
+     "x": 1514,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1685,
+     "dur": 1.0,
+     "rest": true
+    }
+   ]
+  },
+  {
+   "staff": 15,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    }
+   ],
+   "events": [
+    {
+     "x": 954,
+     "dur": 4.0,
+     "rest": false
+    },
+    {
+     "x": 1145,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1336,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1512,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1702,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1893,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 16,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 878,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1592,
+     "kind": "dynamic",
+     "text": "p"
+    },
+    {
+     "x": 1464.720432,
+     "kind": "words",
+     "text": "espr. e legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 1.0,
+     "rest": false
+    },
+    {
+     "x": 1514,
+     "dur": 1.0,
+     "rest": false
+    },
+    {
+     "x": 1895,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 17,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1591,
+     "kind": "dynamic",
+     "text": "p"
+    },
+    {
+     "x": 1464.720432,
+     "kind": "words",
+     "text": "espr. e legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 957,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1515,
+     "dur": 1.0,
+     "rest": false
+    },
+    {
+     "x": 1892,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 18,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 876,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1591,
+     "kind": "dynamic",
+     "text": "p"
+    },
+    {
+     "x": 1464.720432,
+     "kind": "words",
+     "text": "espr. e legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1515,
+     "dur": 1.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 19,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 879,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1590,
+     "kind": "dynamic",
+     "text": "p"
+    },
+    {
+     "x": 1464.720432,
+     "kind": "words",
+     "text": "espr. e legato"
+    }
+   ],
+   "events": [
+    {
+     "x": 958,
+     "dur": 1.5,
+     "rest": false
+    },
+    {
+     "x": 1516,
+     "dur": 1.0,
+     "rest": false
+    },
+    {
+     "x": 1894,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 20,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 877,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1268,
+     "kind": "dynamic",
+     "text": "p"
+    },
+    {
+     "x": 1701,
+     "kind": "dynamic",
+     "text": "p"
+    },
+    {
+     "x": 1382.7259040000001,
+     "kind": "words",
+     "text": "pesante"
+    }
+   ],
+   "events": [
+    {
+     "x": 957,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1145,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1336,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1514,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1701,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1893,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  }
+ ],
+ "beethoven-sym5-mvt1": [
+  {
+   "staff": 0,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 854.4637080000001,
+     "kind": "words",
+     "text": "Allegro con brio"
+    }
+   ],
+   "events": [
+    {
+     "x": 1104,
+     "dur": 4.0,
+     "rest": false
+    },
+    {
+     "x": 1483,
+     "dur": 4.0,
+     "rest": true
+    }
+   ]
+  },
+  {
+   "staff": 4,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1231,
+     "kind": "dynamic",
+     "text": "ff"
+    }
+   ],
+   "events": [
+    {
+     "x": 1160,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1378,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1614,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1850,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 6,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1232,
+     "kind": "dynamic",
+     "text": "ff"
+    }
+   ],
+   "events": [
+    {
+     "x": 1482,
+     "dur": 4.0,
+     "rest": true
+    }
+   ]
+  },
+  {
+   "staff": 6,
+   "measure": 6,
+   "marks": [
+    {
+     "x": 43,
+     "kind": "dynamic",
+     "text": "fp"
+    }
+   ],
+   "events": [
+    {
+     "x": 166,
+     "dur": 2.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 7,
+   "measure": 6,
+   "marks": [
+    {
+     "x": 49,
+     "kind": "dynamic",
+     "text": "p"
+    }
+   ],
+   "events": []
+  },
+  {
+   "staff": 13,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1232,
+     "kind": "dynamic",
+     "text": "ff"
+    }
+   ],
+   "events": [
+    {
+     "x": 1160,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1377,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1613,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1849,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 13,
+   "measure": 7,
+   "marks": [
+    {
+     "x": 263,
+     "kind": "dynamic",
+     "text": "p"
+    }
+   ],
+   "events": [
+    {
+     "x": 153,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 389,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 640,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 889,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 14,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1231,
+     "kind": "dynamic",
+     "text": "ff"
+    }
+   ],
+   "events": [
+    {
+     "x": 1160,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1377,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1613,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1849,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 14,
+   "measure": 5,
+   "marks": [
+    {
+     "x": 255,
+     "kind": "dynamic",
+     "text": "p"
+    }
+   ],
+   "events": [
+    {
+     "x": 146,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 379,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 630,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 881,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 14,
+   "measure": 7,
+   "marks": [
+    {
+     "x": 262,
+     "kind": "dynamic",
+     "text": "p"
+    }
+   ],
+   "events": [
+    {
+     "x": 171,
+     "dur": 2.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 15,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1232,
+     "kind": "dynamic",
+     "text": "ff"
+    }
+   ],
+   "events": [
+    {
+     "x": 1160,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1378,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1612,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1850,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 15,
+   "measure": 6,
+   "marks": [
+    {
+     "x": 259,
+     "kind": "dynamic",
+     "text": "p"
+    }
+   ],
+   "events": [
+    {
+     "x": 148,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 386,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 637,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 889,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 16,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1231,
+     "kind": "dynamic",
+     "text": "ff"
+    }
+   ],
+   "events": [
+    {
+     "x": 1160,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1377,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1612,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1850,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 16,
+   "measure": 6,
+   "marks": [
+    {
+     "x": 45,
+     "kind": "dynamic",
+     "text": "p"
+    }
+   ],
+   "events": [
+    {
+     "x": 167,
+     "dur": 2.0,
+     "rest": false
+    }
+   ]
+  },
+  {
+   "staff": 17,
+   "measure": 0,
+   "marks": [
+    {
+     "x": 1230,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1231,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1336,
+     "kind": "dynamic",
+     "text": "f"
+    },
+    {
+     "x": 1336,
+     "kind": "dynamic",
+     "text": "f"
+    }
+   ],
+   "events": [
+    {
+     "x": 1160,
+     "dur": 0.5,
+     "rest": true
+    },
+    {
+     "x": 1379,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1614,
+     "dur": 0.5,
+     "rest": false
+    },
+    {
+     "x": 1850,
+     "dur": 0.5,
+     "rest": false
+    }
+   ]
+  }
+ ]
+}

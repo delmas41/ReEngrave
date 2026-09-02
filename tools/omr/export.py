@@ -1345,43 +1345,77 @@ def _direction_slots(
 ) -> dict[int, list[tuple[str, str]]]:
     """Which event each direction is emitted before: `{event_index: [(kind, text)]}`.
 
-    The rule is **the first note at or past the mark's left edge**. An index of
-    `len(events)` means "after everything" — where a mark past the last note
-    goes, so an empty measure does not silently drop its own markings.
+    The rule has three clauses, and each one is a case the other two get wrong.
+    Scored against the truth's own offsets for all 47 marks on the benchmark
+    (`benchmarks/omr-direction-text-2026-09/score_placement_rules.py`):
 
-    ⚠️ **`min(abs(note_x - mark_x))` was tried instead, and is worse.** It is
-    the more obviously right rule — a mark is printed AT the note it means, so
-    the nearest note should be that note — and on WORDS it is right: it fixed
-    Brahms's `pesante`, which begins 47 canonical px to the RIGHT of its note
-    and so was skipping a beat under this rule. Measured, though
-    (`benchmarks/omr-direction-text-2026-09/FINDINGS.md`):
+        rule                                     misplaced   direction edits
+        first event at or past x  (was shipped)      4              54
+        nearest event                               12              54
+        nearest NOTE                                 4              40
+        nearest note, keeping the tail               3              40   <-
 
-        rule                  wrong direction   wrong dynamic   pooled
-        first at or past x          33               29         0.2234
-        nearest note                31               43         0.2251
+    1. **A mark to the right of every event keeps the past-the-end position.**
+       It is the only clause that survived from the previous rule, and it earns
+       its place on a bar where a note was MISSED: Brahms's Bassoon 2 detects
+       one note where the truth has two, and its `legato` — printed under the
+       second — falls past everything. Landing after what we did detect puts it
+       at beat 1.5, which is right. Snapping it back to the one note we have
+       puts it at 0.0, which is not.
 
-    Two edits bought on words, fourteen lost on dynamics, because **a rest
-    occupies x-space and nearness reaches backwards onto it.** Beethoven 5's
-    `ff` belongs to the note at beat 0.5 and is printed after an eighth REST at
-    0.0; it stands nearer the rest than the note, and the nearest rule moved it
-    there. A rule that only ever moves forward cannot make that mistake.
+    2. **Otherwise, the NEAREST event.** A mark is printed at the note it
+       applies to, and its left edge sits on either side of that note with no
+       consistent bias: measured in canonical pixels on one Brahms page,
+       `legato` begins 48 px LEFT of its note and `pesante` 47 px RIGHT of its
+       own. A mark is set against its own width, and a word's width has nothing
+       to do with the music. Taking the first note at or past the left edge
+       therefore overshoots whenever a mark starts right of its note — which is
+       what sent `pesante` to beat 1.5 where the truth says 1.0, and musicdiff
+       charges the whole word twice for that: deleted where we put it, inserted
+       where it belongs.
 
-    Splitting it by kind — nearest for words, this for dynamics — was scored
-    too and lands at 0.2233, one ten-thousandth, which does not pay for two
-    rules where the page has one.
+    3. **Rests are not candidates.** This is what a plain nearest rule gets
+       wrong, and it is worth 14 edits on its own. A rest occupies x-space, so
+       nearness can reach BACKWARDS onto one: Beethoven 5's `ff` belongs to the
+       note at beat 0.5 and is printed after an eighth rest at 0.0, standing
+       nearer the rest than the note. You do not mark a rest `ff` or `legato`,
+       so a rest is never the answer — unless the bar is nothing but rests, in
+       which case nearness among everything is all there is.
+
+    Ties go FORWARD, to the later event, which is the direction the mark's own
+    text runs in.
+
+    An index of `len(events)` means "after everything" — clause 1's answer, and
+    also where a mark in a measure with no events goes, so an empty bar does not
+    silently drop its own markings.
+
+    ⚠️ **What this rule CANNOT fix, and do not try to make it.** Two of the
+    three remaining misplaced words on the benchmark are not misplaced at all:
+    they sit on the correct EVENT, and the event sits at the wrong time because
+    an earlier note in the bar lost its augmentation dot. Brahms staff 2 reads
+    `[1.0, 1.5]` where the truth has `[1.5, 1.5]`, and staff 16 `[1.0, 1.0, 0.5]`
+    against `[1.5, 1.0, 0.5]` — both 6/8 bars summing to 2.5. That is the lost-dot
+    half of the rhythm budget (`_reconcile_measure_to_meter` moves a beam level
+    and not a dot), surfacing here. Correcting the OFFSET while the note keeps
+    its wrong duration would put the direction at a time no note in the bar
+    occupies, which is worse than being consistently wrong.
     """
     slots: dict[int, list[tuple[str, str]]] = {}
     if not directions:
         return slots
-    ordered = sorted(directions)
-    i = 0
-    for index, event in enumerate(events):
-        event_x = event.get("x_position")
-        while i < len(ordered) and (event_x is None or ordered[i][0] <= event_x):
-            slots.setdefault(index, []).append(ordered[i][1:])
-            i += 1
-    for x, kind, text in ordered[i:]:
-        slots.setdefault(len(events), []).append((kind, text))
+    xs = [event.get("x_position") for event in events]
+    placed = [i for i, x in enumerate(xs) if x is not None]
+    notes = [i for i in placed if events[i].get("kind") != "rest"]
+    last_x = max((xs[i] for i in placed), default=None)
+
+    for x, kind, text in sorted(directions):
+        if last_x is None or x > last_x:
+            index = len(events)
+        else:
+            # `-i` breaks a tie towards the LATER event.
+            candidates = notes or placed
+            index = min(candidates, key=lambda i: (abs(xs[i] - x), -i))
+        slots.setdefault(index, []).append((kind, text))
     return slots
 
 

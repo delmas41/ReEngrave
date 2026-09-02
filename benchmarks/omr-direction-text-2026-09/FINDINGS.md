@@ -59,7 +59,7 @@ Measured on `main` at `6f64bfa`, immediately before and after:
 | | pooled | edits | `wrong direction` |
 |---|--:|--:|--:|
 | baseline | 0.2209 | 1563 | 151 |
-| **with `--direction-text`** | **0.2040** | **1473** | **61** |
+| **with `--direction-text`** | **0.2020** | **1459** | **47** |
 
 Per work, and **every other category is unchanged to the edit** — `wrong note`
 831, `wrong flag/beam` 171, `entire measure` 136, `wrong slur` 61, `wrong
@@ -68,16 +68,17 @@ to measures that already exist.
 
 | work | before | after |
 |---|--:|--:|
-| brahms-sym1-mvt1 | 0.3185 (1256) | **0.2903 (1182)** |
+| brahms-sym1-mvt1 | 0.3185 (1256) | **0.2869 (1168)** |
 | beethoven-sym5-mvt1 | 0.1775 (221) | **0.1626 (205)** |
 | mahler-sym5-mvt1 | 0.0455 (86) | 0.0455 (86) |
 
-**The −90 edits is the same on every tree this was measured against**, which is
+**The −104 edits is the same on every tree this was measured against**, which is
 worth more than any one absolute figure. Main moved four times during the work
 — `81446a0` (cross-staff ledger notes), `6a1b601` (the integration branch,
 including the `_staff_measures_xml` refactor these call sites now go through),
 `7516768` (default-on left-edge system split), `6f64bfa` (slurs) — and on each
-one the baseline differed and `wrong direction` went 151 → 61 regardless. The
+one the baseline differed and `wrong direction` fell by the same amount
+regardless (to 61 before the placement rule was corrected, 47 after). The
 reader and the slur work compose without interacting: they reach
 `_mxl_voice_events` by different doors, slurs riding on the events as
 `slur_states` and directions arriving as the `directions=` argument.
@@ -95,7 +96,7 @@ the number to watch rather than the pooled score — see finding 4 for why:
 | beethoven | 2 | 2 | 1 | `(♩=108)` |
 | mahler | 0 | 0 | 0 | — |
 
-## Three things the work turned on
+## The findings, in the order they were forced
 
 ### 1. Whole-band OCR does not work, and the subtraction is not optional
 
@@ -226,67 +227,108 @@ This is the same fact as finding 1 seen from the other end: whole-band OCR
 failed because the band downscales the text, and this failed because the page
 never scaled it up enough.
 
-## A measured rejection: attach to the nearest note, not the next one
+## 6. Where a mark attaches — and how a rejected rule turned out to be right
 
-`export._direction_slots` places a mark before **the first note at or past its
-left edge**. The obviously better rule is the nearest note — a mark is printed
-AT the note it means — and on words it IS better: it fixed Brahms's `pesante`,
-which begins 47 canonical px to the RIGHT of its note and was skipping a beat.
-(There is no consistent side to lean on: on the same page `legato` begins 48 px
-to the LEFT of its note. A mark is set against its own width, and a word's width
-has nothing to do with the music.)
+`_direction_slots` decides which note a mark is emitted before, and getting it
+wrong costs DOUBLE: musicdiff deletes the mark where we put it and inserts it
+where it belongs, each charged the mark's full character count. One misplaced
+`espr. e legato` is 28 edits.
 
-Scored:
+The rule shipped first was **the first event at or past the mark's left edge**,
+which is only correct if a mark's left edge is at or left of its own note. It is
+not, in either direction: measured in canonical pixels on one Brahms page,
+`legato` begins 48 px LEFT of the note it belongs to and `pesante` 47 px RIGHT
+of its own. A mark is set against its own width, and a word's width has nothing
+to do with the music.
 
-| rule | `wrong direction` | `wrong dynamic` | pooled |
+**The obvious repair — nearest note — was tried, measured, and rejected, and
+that rejection was wrong.** It scored worse (`wrong dynamic` 29 → 43) for a real
+reason: a rest occupies x-space, so nearness reaches BACKWARDS onto one, and
+Beethoven 5's `ff` belongs to the note at beat 0.5 but is printed after an
+eighth rest at 0.0, standing nearer the rest. The mechanism was correct. The
+conclusion drawn from it — that the rule was wrong — was not. **A rest is not a
+candidate at all**; you do not mark a rest `ff` or `legato`. Excluding rests
+keeps everything nearness buys and costs nothing.
+
+One clause more was needed, and it comes from a bar where a note was MISSED.
+Brahms's Bassoon 2 detects one note where the truth has two, and its `legato` is
+printed under the second, so the mark falls past every event we have. Landing it
+after what we detected puts it at beat 1.5, which is right; snapping it back to
+the single note we found puts it at 0.0, which is not. So a mark right of every
+event keeps the past-the-end position — the one clause of the original rule that
+survives.
+
+Scored mark-by-mark against the truth's own offsets, all 47 marks
+(`score_placement_rules.py`):
+
+| rule | misplaced | word edits | dynamic edits |
 |---|--:|--:|--:|
-| **first note at or past x** (kept) | 33 | 29 | **0.2234** |
-| nearest note | 31 | 43 | 0.2251 |
+| first event at or past x | 4 | 54 | 2 |
+| nearest event | 12 | 52 | 28 |
+| nearest NOTE | 4 | 52 | 2 |
+| **nearest note, keeping the tail** | **3** | **40** | **2** |
 
-Two edits bought on words, fourteen lost on dynamics. The mechanism is exact:
-**a rest occupies x-space, and nearness reaches backwards onto it.** Beethoven
-5's `ff` belongs to the note at beat 0.5 and is printed after an eighth rest at
-0.0; it stands nearer the rest, and the nearest rule moved it there. A rule that
-only ever moves forward cannot make that mistake.
+Confirmed end to end: `wrong direction` 61 → 47, `wrong dynamic` unchanged, the
+no-flag baseline byte-identical at 0.2209 / 1563.
 
-Splitting it by kind — nearest for words, first-past for dynamics — was scored
-too and lands at 0.2233, one ten-thousandth, which does not pay for two rules
-where the page has one.
+**The method matters more than the rule.** The first rejection was decided on a
+POOLED score, which cannot see that a rule fixed one case and broke another —
+and that is exactly what happened. `score_placement_rules.py` replays every rule
+over the same marks and reports each miss by name, in about two seconds against
+the hour a benchmark run costs. It is what made the next finding visible at all.
 
-*(These three numbers are from the pre-rebase tree, where the baseline was
-0.2449. The comparison between them is what the experiment was; the absolute
-figures moved when the cross-staff fix landed.)*
+## 7. Two of the three "wrong offsets" were never offsets
 
-## What remains, all 61 edits of it
+This is the finding the mark-by-mark view produced, and it is the reason the
+remaining 40 edits are not worth attacking from here.
 
-**Every word is read correctly. All that is left is where it was attached.**
+Of the three misplaced words at 61 edits, only ONE was a placement error. The
+other two sit on the **correct event**, and the event sits at the wrong time
+because an earlier note in the bar lost its augmentation dot:
+
+| staff | mark | truth durations | detected | sum |
+|---|---|---|---|--:|
+| 20 | `pesante` | `[.5 × 6]` | `[.5 × 6]` | 3.0 ✓ — a real placement error |
+| 2 | `legato` | `[1.5, 1.5]` | `[1.0, 1.5]` | **2.5** in a 3.0 bar |
+| 16 | `espr. e legato` | `[1.5, 1.0, 0.5]` | `[1.0, 1.0, 0.5]` | **2.5** in a 3.0 bar |
+
+Both short bars are the FIRST note of the measure reading a quarter where the
+truth has a dotted quarter. Every onset after it is early by exactly the missing
+dot, so a mark on the second note reports beat 1.0 where the truth says 1.5.
+
+That is the lost-dot half of the rhythm budget showing up in the direction
+column. `transcribe._reconcile_measure_to_meter` declines these correctly and
+says so in its own docstring — it re-reads a beam level by ±1 and cannot move a
+dot, and `[1.0, 1.5] → [1.5, 1.5]` needs a dot.
+
+⚠️ **Do not "fix" this in the placement rule.** Correcting the offset while the
+note keeps its wrong duration would put the direction at a time no note in the
+bar occupies. A consistently wrong file beats an internally contradictory one,
+and the metric would charge for it either way.
+
+The reachable fix is in the rhythm layer, and it is only partly reachable there:
+adding a dot to make staff 2's bar sum to 3.0 has a UNIQUE answer, but staff 16
+has two (`[1.5,1.0,0.5]` and `[1.0,1.5,0.5]` both total 3.0), so a
+uniqueness-gated dot pass — the same discipline `_reconcile_measure_to_meter`
+already applies to beams — would take one of the two and abstain on the other.
+That is a change to note durations, with the note budget at stake, not a
+direction change.
+
+## What remains, all 47 edits of it
+
+**Every word is read correctly, and only one of them is on the wrong beat for a
+reason this layer could reach.**
 
 | | edits | why |
 |---|--:|---|
-| one `espr. e legato` at beat 1.0, truth 1.5 | 28 | |
-| one `pesante` at 1.5, truth 1.0 | 14 | begins right of its note — see the rejection above |
-| one `legato` at 1.0, truth 1.5 | 12 | |
-| Mahler's `molto` — never proposed | 5 | printed against the staff BELOW it, see below |
+| one `espr. e legato` at beat 1.0, truth 1.5 | 28 | its bar lost a dot — finding 7 |
+| one `legato` at 1.0, truth 1.5 | 12 | same |
+| Mahler's `molto` — never proposed | 5 | printed against the staff BELOW it |
 | `[` and `]` | 2 | not words. Correctly refused |
 
-The three offset errors are all one step of the beat, and all on Brahms, whose
-note detection the cross-staff fix changed (recall 0.824 → 0.909). A wrong
-offset costs the WHOLE word twice — deleted where we put it, inserted where it
-belongs — so 54 of the 61 is three marks landing one note out. That, and not the
-reading, is where the next work in this feature is.
-
-**Mahler's `molto` is the interesting one.** It is on a 38-staff A2 page where
-the inter-staff gaps are about 4.5 spaces, and engraving crowds it: its ink
-spans y 5041–5133 while the staff below it begins at 5080. The band stops clear
-of that line, so the word is never proposed at all. The fix is not a wider band
-— that admits the staff lines, which then fuse with the letters into one
-component — but tracing the lines off the band with
-`header_ink.erase_staff_lines`. Five edits, and real work.
-
-**The general lesson in it:** the band design assumes a direction fits in the
-gap it is printed in. On a sparse page it does. On the densest pages — the ones
-this project exists for — it does not, and every one of them will lose its
-crowded directions the same way.
+So 40 of the 47 is one rhythm fault (a quarter read where the truth has a dotted
+quarter, twice) wearing a direction's clothes, 5 is a band that cannot reach a
+crowded page, and 2 is the lexicon doing its job.
 
 ## Cost
 
@@ -302,9 +344,11 @@ total.
 
 ## For whoever picks this up
 
-1. **The three offsets, 54 of the 61.** Not a reading problem. Start from
-   `export._direction_slots` and read the rejection above first — the obvious
-   rule has been tried and costs more than it saves.
+1. **The lost dot, 40 of the 47.** Not a reading problem and not a placement
+   one — finding 7 has the proof. It is `_reconcile_measure_to_meter` learning
+   to move a dot as well as a beam level, under the same uniqueness gate. Worth
+   40 edits here and an unknown amount of the much larger note budget, which is
+   the real reason to do it.
 2. **Mahler's `molto`, 5 edits, and the general case behind it.** The band
    assumes a direction fits in the gap it is printed in. On a 38-staff page it
    does not, and every dense page will lose its crowded directions the same way.

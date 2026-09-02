@@ -208,8 +208,8 @@
       "name": "brahms-sym1-mvt1",
       "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/quirky-lalande-1bb7bd/benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.omr.musicxml",
       "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/quirky-lalande-1bb7bd/benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.musicxml",
-      "omr_ned": 0.290346352247605,
-      "omr_ed": 1182,
+      "omr_ned": 0.28690739376074675,
+      "omr_ed": 1168,
       "pred_symbols": 1988,
       "truth_symbols": 2083,
       "categories": {
@@ -225,7 +225,7 @@
         "wrong keysig": 6,
         "wrong tempo": 1,
         "wrong barline": 21,
-        "wrong direction": 56,
+        "wrong direction": 42,
         "wrong dynamic": 16,
         "wrong slur": 61,
         "entire measure insert/delete": 7
