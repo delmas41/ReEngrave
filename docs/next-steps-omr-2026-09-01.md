@@ -51,6 +51,16 @@ measured on the merge itself — better than either arm alone. Read the headline
 figure in CLAUDE.md's OMR-NED section, which is always the one measured ON
 main; treat this table as a record of what each fix was worth where it landed.
 
+⚠️ **Pre-fixture-fix: every row above also carries a ~105-edit floor the
+current figure does not.** Until 2026-09-02 the Beethoven fixture's render
+dropped the truth's 22 fermatas-over-rests (`musicxml2ly` does that), and
+musicdiff charged each rest-only bar whole — ≈0.014 pooled that a perfect
+reader was charged too. The render was completed on 2026-09-02 (option (a) of
+the two in §3 below), so figures from that date on are measured against a page
+that finally carries everything the truth claims. The rows stay quoted as
+measured — history is not rewritten — they are just not comparable across that
+line without adding the floor back in.
+
 **Five of the first eight were EXPORT bugs on data the pipeline had already
 computed correctly.** Beams detected and dropped, dots detected and counted twice,
 dynamics detected and dropped, tuplet markers sitting unread in the JSON, slur
@@ -266,9 +276,25 @@ whole-bar delete plus a whole-bar insert for each. **A perfect reader is charged
 them too.** `orchestral_eval` now says so on every run, and the finding is
 written up in the attribution report.
 
-Not fixed: making the render complete, or the truth smaller, both change every
+~~Not fixed: making the render complete, or the truth smaller, both change every
 historical number in this repository, and that is a decision for Sean rather
-than a side effect of a benchmark run.
+than a side effect of a benchmark run.~~ **Decided and fixed 2026-09-02
+(`3f447f7`): the render was COMPLETED — option (a) — rather than the truth
+shrunk.** The truth is what the work IS: those fermatas are printed in every
+real edition of Beethoven 5, and stripping them would also have forked the
+fixture's truth away from the Gradus reference it is cut from. The workaround
+stayed proportionate — LilyPond ≥ 2.22 takes `\fermata` on a multi-measure
+rest directly, so `_restore_rest_fermatas` splits the generated `R2*8` runs at
+the truth's fermata bars, anchored on musicxml2ly's own `| % n` bar comments
+and refusing to guess when anything disagrees.
+
+Measured on the completed fixture: pooled **0.1342 → 0.1200** (952 → 854
+edits), Beethoven **0.1519 → 0.0727** (191 → 93), Mahler and Brahms unchanged
+to the edit. The reader reads **21 of the 22** restored fermatas — the one it
+misses is now a legitimate charge, not a floor — and Beethoven's dominant
+error moves from `entire measure insert/delete` to `wrong flag/beam`. The
+pooled `entire measure` bucket falls 130 → **30**. Every pre-2026-09-02 figure
+carries the old floor; see the discontinuity note under the fix table above.
 
 What WAS real here: `fermataAbove` had been detected all along at 0.90-0.95 and
 never exported — the sixth instance of that shape — worth pooled 0.1364 →

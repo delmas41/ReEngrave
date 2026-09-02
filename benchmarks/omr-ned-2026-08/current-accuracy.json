@@ -2,16 +2,16 @@
   "_comment": "The single source for the CURRENT accuracy figures. Written by `orchestral_eval --omr-ned --record`; propagated into CLAUDE.md by `python3 -m tools.omr.accuracy_record --update`. Do not hand-edit, and do not restate a current figure in another document \u2014 see tools/omr/accuracy_record.py, and 68be549 for why there is only one.",
   "runs": {
     "default": {
-      "pooled": 0.13417899929527838,
-      "edits": 952,
+      "pooled": 0.11999437965434874,
+      "edits": 854,
       "truth_symbols": 3696,
-      "pred_symbols": 3399,
-      "commit": "e78e8f3",
+      "pred_symbols": 3421,
+      "commit": "3f447f7",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
-          "omr_ned": 0.15194908512330946,
-          "edits": 191,
+          "omr_ned": 0.0727130570758405,
+          "edits": 93,
           "pitch_recall": 1.0,
           "pitch_precision": 1.0,
           "duration_rate": 1.0
@@ -35,16 +35,16 @@
       ]
     },
     "direction_text": {
-      "pooled": 0.11161762674402542,
-      "edits": 808,
+      "pooled": 0.0977826745627324,
+      "edits": 710,
       "truth_symbols": 3696,
-      "pred_symbols": 3543,
-      "commit": "e78e8f3",
+      "pred_symbols": 3565,
+      "commit": "3f447f7",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
-          "omr_ned": 0.13747054202670855,
-          "edits": 175,
+          "omr_ned": 0.05945945945945946,
+          "edits": 77,
           "pitch_recall": 1.0,
           "pitch_precision": 1.0,
           "duration_rate": 1.0

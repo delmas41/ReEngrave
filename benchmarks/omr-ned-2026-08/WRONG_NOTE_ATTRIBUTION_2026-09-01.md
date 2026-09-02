@@ -942,8 +942,18 @@ rediscovered:
     render never drew, so these are charged to us and cannot be read:
       beethoven-sym5-mvt1: 22 of 36 fermatas are in the truth but not on the page
 
-It is NOT fixed. Making the render complete or the truth smaller both change
-every historical number here, and that is a decision for a person.
+~~It is NOT fixed. Making the render complete or the truth smaller both change
+every historical number here, and that is a decision for a person.~~
+**RESOLVED 2026-09-02 (`3f447f7`): the render was completed** — the fixture
+pipeline now splits the `R2*8` runs musicxml2ly compresses and re-attaches
+`\fermata` at the truth's fermata-on-rest bars, so the page finally carries
+all 36. The reader then reads **21 of the 22** it had never been shown:
+Beethoven **0.1519 → 0.0727** (191 → 93 edits), pooled **0.1342 → 0.1200**,
+Mahler and Brahms unchanged to the edit, and this bucket falls 130 → **30**
+pooled — the 105-edit floor gone, with the one unread fermata (a Bassoon
+staff's bar 5; its bar 2 is read) now charged legitimately. Figures before that date sit on the old fixture; the
+discontinuity is marked beside the fix table in
+`docs/next-steps-omr-2026-09-01.md` and in `FINDINGS.md`.
 
 ### What was real: the sixth detected-and-never-exported signal
 

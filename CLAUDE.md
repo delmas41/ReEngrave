@@ -914,12 +914,12 @@ to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `e78e8f3`: **pooled 0.1342 / 952 edits** (Mahler 0.0455, Beethoven 0.1519, Brahms 0.1709), over 3696 truth + 3399 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.1116 / 808**, measured on `e78e8f3`.
+Current on the engraved orchestral benchmark, measured on `3f447f7`: **pooled 0.1200 / 854 edits** (Mahler 0.0455, Beethoven 0.0727, Brahms 0.1709), over 3696 truth + 3421 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0978 / 710**, measured on `3f447f7`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
 | Mahler | 0.0455 | 86 | 0.917 | 0.917 | 0.864 |
-| Beethoven | 0.1519 | 191 | 1.000 | 1.000 | 1.000 |
+| Beethoven | 0.0727 | 93 | 1.000 | 1.000 | 1.000 |
 | Brahms | 0.1709 | 675 | 0.956 | 0.955 | 0.992 |
 <!-- accuracy:end -->
 
@@ -938,6 +938,15 @@ that is not one. `test_accuracy_record.py` runs `--check`, so a hand-edited
 figure fails the suite. HISTORY IS NOT MANAGED THIS WAY and must not be: "pooled
 0.2595 → 0.2489" against the commit that did it is a frozen fact and is never
 rewritten.
+
+⚠️ **Every figure measured before 2026-09-02 sits on a different fixture and is
+not directly comparable to the current one** — including the 0.3164 opening
+baseline. The Beethoven fixture's render dropped every fermata over a rest
+(`musicxml2ly` does that), charging ~105 edits (≈0.014 pooled) against ink a
+perfect reader could never have read; the render was completed on 2026-09-02
+(`_restore_rest_fermatas` in `orchestral_eval.py`). Historical transitions stay
+quoted as measured, with that floor in them — see the discontinuity note beside
+the fix table in `docs/next-steps-omr-2026-09-01.md`.
 
 Full
 reading, and the findings it surfaced that note recall is blind to, in
