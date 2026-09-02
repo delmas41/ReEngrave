@@ -3109,6 +3109,35 @@ def _resolve_clef_weights(clef_weights: str | None) -> str | None:
     return os.environ.get("OMR_CLEF_WEIGHTS") or None
 
 
+def _contextual_call_kwargs(
+    *,
+    pdf_path: Path,
+    dpi: int,
+    dossier: dict[str, Any] | None,
+    vision_fallback: bool,
+) -> dict[str, Any]:
+    """The keyword arguments `transcribe` hands to `apply_contextual_analysis`.
+
+    A separate function so a test can BIND them against the real signature.
+    This seam broke silently once: `apply_contextual_analysis` replaced its
+    `vision_fallback` flag with the `Assist` object and the call here kept the
+    old name — a TypeError the try/except around the call dutifully filed into
+    `contextual.reason`, turning the documented on-by-default pass into a no-op
+    on every transcription until someone read the JSON. The flag maps onto the
+    two assist modes that spend no attention: vision when the caller opted into
+    paying for it, none otherwise — free tiers only, abstain where they fall
+    short, which is exactly what `vision_fallback=False` always meant.
+    """
+    from .assist import Assist
+
+    return {
+        "pdf_path": pdf_path,
+        "dpi": dpi,
+        "dossier": dossier,
+        "assist": Assist("vision" if vision_fallback else "none"),
+    }
+
+
 def transcribe(
     *,
     pdf_path: Path,
@@ -3974,11 +4003,13 @@ def transcribe(
             from .contextual import apply_contextual_analysis
             out["contextual"] = apply_contextual_analysis(
                 out,
-                pdf_path=pdf_path,
-                dpi=dpi,
-                dossier=dossier,
-                vision_fallback=contextual_vision_fallback,
                 staved=staved_pages,
+                **_contextual_call_kwargs(
+                    pdf_path=pdf_path,
+                    dpi=dpi,
+                    dossier=dossier,
+                    vision_fallback=contextual_vision_fallback,
+                ),
             )
         except Exception as exc:                              # noqa: BLE001
             out["contextual"] = {

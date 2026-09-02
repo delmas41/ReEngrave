@@ -931,3 +931,60 @@ class TestLedgerLadder:
         note = self._note(self.TOP - 4.6 * self.SPACING)
         assert _ledger_ladder(note, (self.TOP, self.BOTTOM),
                               self._rungs_above(4)) == (0, 0)
+
+
+class TestContextualCallSeam:
+    """`transcribe` -> `apply_contextual_analysis` is a kwargs seam that broke
+    SILENTLY once: the callee renamed `vision_fallback` away and the caller's
+    try/except filed the TypeError into `contextual.reason`, so the documented
+    on-by-default pass was a no-op on every transcription (0 of 21 staves named
+    on the Brahms benchmark page) while the suite stayed green. These tests make
+    that failure loud: they bind the caller's actual kwargs against the callee's
+    actual signature, and then make the call.
+    """
+
+    def test_kwargs_bind_against_the_real_signature(self):
+        import inspect
+        from pathlib import Path
+
+        from tools.omr.contextual import apply_contextual_analysis
+        from tools.omr.transcribe import _contextual_call_kwargs
+
+        kwargs = _contextual_call_kwargs(
+            pdf_path=Path("does-not-exist.pdf"), dpi=300,
+            dossier=None, vision_fallback=False,
+        )
+        # Raises TypeError on any renamed/removed parameter — the exact class
+        # of break the production try/except would swallow.
+        inspect.signature(apply_contextual_analysis).bind(
+            {"pages": []}, staved=None, **kwargs,
+        )
+
+    def test_the_call_itself_survives_and_reports_unavailable_not_typeerror(self):
+        from pathlib import Path
+
+        from tools.omr.contextual import apply_contextual_analysis
+        from tools.omr.transcribe import _contextual_call_kwargs
+
+        summary = apply_contextual_analysis(
+            {"pages": []},
+            staved=None,
+            **_contextual_call_kwargs(
+                pdf_path=Path("does-not-exist.pdf"), dpi=300,
+                dossier=None, vision_fallback=False,
+            ),
+        )
+        assert summary["available"] is False
+        assert "TypeError" not in str(summary.get("reason"))
+
+    def test_the_flag_maps_onto_the_assist_modes_that_spend_nothing_by_default(self):
+        from pathlib import Path
+
+        from tools.omr.transcribe import _contextual_call_kwargs
+
+        off = _contextual_call_kwargs(
+            pdf_path=Path("x.pdf"), dpi=300, dossier=None, vision_fallback=False)
+        on = _contextual_call_kwargs(
+            pdf_path=Path("x.pdf"), dpi=300, dossier=None, vision_fallback=True)
+        assert off["assist"].mode == "none"
+        assert on["assist"].mode == "vision"
