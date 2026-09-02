@@ -648,6 +648,75 @@ class TestTupletGroups:
             rec["beam_levels"] = 0
         assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
 
+    # ── the same glyph under DSv2's other class name ───────────────────────
+    #
+    # A `3` over a beamed group is `tuplet3` and a `3` beside a notehead is
+    # `fingering3`; the distinction is POSITIONAL and the detector reproduces
+    # it badly on orchestral pages. Measured over the twelve engraved works of
+    # `benchmarks/omr-corpus-widening-2026-09`: 33 `fingering3` against 16
+    # `tuplet3`, and ALL 33 sit in a cell that holds a real triplet.
+    # `mozart-sym41-mvt1` alone hands back 30 of them for its 40 groups.
+
+    @staticmethod
+    def _fingering(x, n=3):
+        return FakeDet(smufl_name=f"fingering{n}", category="ornament",
+                       x_canonical=x, width_canonical=20)
+
+    def test_a_fingering_digit_over_a_beamed_group_is_read_as_a_tuplet(self):
+        heads, out, dets, beams = self._setup([self._fingering(150)])
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1
+        assert claimed[0][1:] == (3, 2)
+
+    def test_the_gate_is_unchanged_for_the_new_class(self):
+        """Admitting the class must not relax the test that makes it safe: the
+        group still has to hold exactly as many notes as the digit claims."""
+        heads, out, dets, beams = self._setup(
+            [self._fingering(150)], xs=(100, 160, 220, 280))
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_a_fingering_digit_off_the_group_claims_nothing(self):
+        heads, out, dets, beams = self._setup([self._fingering(900)])
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_an_unreadable_digit_no_longer_vetoes_a_readable_one(self):
+        """`_TUPLET_NORMAL_FOR` holds only 3, and the old loop took the FIRST
+        digit inside the group — so a stray `fingering2` sitting over a real
+        triplet abandoned it. Mozart 41 detects one `fingering1` and one
+        `fingering2` beside its 30 `fingering3`."""
+        heads, out, dets, beams = self._setup(
+            [self._fingering(120, n=2), self._fingering(150, n=3)])
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1
+        assert claimed[0][1:] == (3, 2)
+
+    def test_a_fingering_digit_we_cannot_read_still_abstains(self):
+        heads, out, dets, beams = self._setup(
+            [self._fingering(150, n=5)], xs=(100, 140, 180, 220, 260))
+        assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+    def test_two_beam_strokes_over_one_group_claim_it_once(self):
+        """A sixteenth carries TWO beam strokes and the CV detector finds both.
+        Each used to produce its own group over the same noteheads, so the
+        ratio was applied once per stroke and a triplet sixteenth came out
+        `1/4 * 2/3 * 2/3 = 1/9`. Invisible on eighth triplets, which is all the
+        three original works print; `mozart-sym41-mvt1` reported ratio 2/3 on
+        89 notes."""
+        xs = (100, 160, 220)
+        heads = [FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                         x_canonical=x - 15, width_canonical=30) for x in xs]
+        beams = [FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=xs[0] + 5,
+                         width_canonical=xs[-1] - xs[0] + 10),
+                 FakeDet(smufl_name="beam", category="structural",
+                         x_canonical=xs[0] + 5,
+                         width_canonical=xs[-1] - xs[0] + 10)]
+        out = {id(h): {"duration_beats": 0.25, "duration_type": "16th",
+                       "dots": 0, "beam_levels": 2} for h in heads}
+        dets = heads + beams + [self._digit(150)]
+        claimed = _tuplet_groups(heads, out, dets, beams, nh_width=30)
+        assert len(claimed) == 1, "one group of notes, not one per beam stroke"
+
 
 # ─── _spans_the_whole_cell — a beam group cannot reach both barlines ────────
 

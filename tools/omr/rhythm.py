@@ -1110,14 +1110,52 @@ def _pair_dots_to_targets(dots, targets, line_spacing: float) -> dict[int, int]:
 #: not measured is how a correct bar becomes a wrong one, so they abstain.
 _TUPLET_NORMAL_FOR: dict[int, int] = {3: 2}
 
+#: THE SAME PRINTED GLYPH ARRIVES UNDER TWO CLASS NAMES, and the class is not
+#: evidence about which. DSv2 labels a `3` over a beamed group `tuplet3` and a
+#: `3` beside a notehead `fingering3` — a distinction that is POSITIONAL, made
+#: by where the digit stands, and the detector reproduces it badly on
+#: orchestral pages because the training data has almost no orchestral
+#: fingerings to contrast against.
+#:
+#: Measured over the twelve engraved works of `benchmarks/omr-corpus-widening-2026-09`:
+#:
+#:     tuplet3     16 detections
+#:     fingering3  33 detections
+#:     48 of the 49 sit in a cell that contains a real triplet group;
+#:     ALL 33 fingering3 do. The one that does not is a `tuplet3`.
+#:
+#: `mozart-sym41-mvt1` alone prints 40 triplet groups and hands back 30
+#: `fingering3` against 13 `tuplet3`, so 70% of its markers were being dropped
+#: before anything looked at them — and its duration rate was 0.465 with a note
+#: recall of 0.991, every one of its 120 triplet sixteenths read straight.
+#:
+#: ⚠️ **This admits the class; it does not relax the gate.** `_tuplet_groups`
+#: still requires the digit's centre inside a BEAMED group's span and the group
+#: to hold exactly as many notes as the digit claims, which is the test that
+#: separates a tuplet marker from anything else. A real fingering `3` centred
+#: over a beamed group of exactly three would still be misread — the corpus
+#: contains no such case to price that against, and the honest statement is
+#: that the risk is unmeasured rather than absent. Conductor's scores do not
+#: carry fingerings, which is why it has not appeared.
+_TUPLET_DIGIT_PREFIXES = ("tuplet", "fingering")
+
+#: The categories those two classes arrive in (`yolo_detector._CATEGORY_BY_PREFIX`).
+_TUPLET_DIGIT_CATEGORIES = frozenset({"structural", "ornament"})
+
 
 def _tuplet_digit(class_name: str) -> int | None:
-    """The number painted on a tuplet bracket: `tuplet3` -> 3. Else None."""
+    """The number painted over a beamed group: `tuplet3` -> 3. Else None.
+
+    Reads `fingering3` as the same digit — see `_TUPLET_DIGIT_PREFIXES`.
+    `tupletBracket` returns None here (its tail is not a digit) and is handled
+    by its caller before this is reached.
+    """
     norm = _normalize_class(class_name)
-    if not norm.startswith("tuplet"):
-        return None
-    tail = norm[len("tuplet"):]
-    return int(tail) if tail.isdigit() else None
+    for prefix in _TUPLET_DIGIT_PREFIXES:
+        if norm.startswith(prefix):
+            tail = norm[len(prefix):]
+            return int(tail) if tail.isdigit() else None
+    return None
 
 
 def _x_span(d) -> tuple[float, float]:
@@ -1140,13 +1178,31 @@ def _beamed_groups(beamed_noteheads: list, beams: list, pad: float) -> list[list
     width to the left of it. Unpadded, every stem-up group loses its first note:
     measured on Mahler's first triplet, beam box x 1659-1957 against noteheads
     centred 1621, 1770, 1918.
+
+    ⚠️ **A GROUP IS A SET OF NOTES, NOT A BEAM STROKE, and the difference is
+    invisible until the music has sixteenth tuplets.** A sixteenth carries TWO
+    beam strokes, the CV detector finds both, and each produced its own group
+    over the same three noteheads — so `resolve_rhythms_for_cell` scaled them
+    once per stroke and a triplet sixteenth came out as `1/4 * 2/3 * 2/3 = 1/9`.
+    Every triplet in the three works this benchmark used to consist of is an
+    EIGHTH triplet, one stroke and one group, so the fault could not appear
+    there; `mozart-sym41-mvt1` prints 40 groups of triplet sixteenths and
+    reported ratio 2/3 on 89 notes the moment its markers started being read.
+    Identical member sets are therefore collapsed.
     """
     groups: list[list] = []
+    seen: set[tuple[int, ...]] = set()
     for beam in beams:
         lo, hi = _x_span(beam)
         members = [nh for nh in beamed_noteheads if lo - pad <= _x_centre(nh) <= hi + pad]
-        if len(members) >= 2:
-            groups.append(sorted(members, key=_x_centre))
+        if len(members) < 2:
+            continue
+        members = sorted(members, key=_x_centre)
+        key = tuple(id(nh) for nh in members)
+        if key in seen:
+            continue
+        seen.add(key)
+        groups.append(members)
     return groups
 
 
@@ -1176,13 +1232,15 @@ def _tuplet_groups(noteheads: list, out: dict, dets, beams: list,
     digits: list[tuple[float, int]] = []
     brackets: list[tuple[float, float]] = []
     for d in dets:
-        if getattr(d, "category", "") != "structural":
-            continue
+        cat = getattr(d, "category", "")
         norm = _normalize_class(getattr(d, "smufl_name", ""))
         if norm == "tupletbracket":
-            brackets.append(_x_span(d))
+            if cat == "structural":
+                brackets.append(_x_span(d))
             continue
-        digit = _tuplet_digit(getattr(d, "smufl_name", ""))
+        if cat not in _TUPLET_DIGIT_CATEGORIES:
+            continue
+        digit = _tuplet_digit(norm)
         if digit is not None:
             digits.append((_x_centre(d), digit))
     if not digits and not brackets:
@@ -1192,11 +1250,16 @@ def _tuplet_groups(noteheads: list, out: dict, dets, beams: list,
     for members in groups:
         lo = _x_centre(members[0])
         hi = _x_centre(members[-1])
-        actual = None
-        for centre, digit in digits:
-            if lo - nh_width <= centre <= hi + nh_width:
-                actual = digit
-                break
+        # PREFER A DIGIT THIS MODULE CAN READ. `_TUPLET_NORMAL_FOR` holds only
+        # 3, and taking the first digit inside the group meant an unreadable
+        # one VETOED a readable one sitting in the same group — the group is
+        # abandoned a few lines below when `normal` comes back None. Mozart 41
+        # detects a `fingering1` and a `fingering2` beside its 30 `fingering3`,
+        # so admitting the family without this would have cost groups outright.
+        inside = [digit for centre, digit in digits
+                  if lo - nh_width <= centre <= hi + nh_width]
+        actual = next((d for d in inside if d in _TUPLET_NORMAL_FOR),
+                      inside[0] if inside else None)
         if actual is None:
             enclosing = [b for b in brackets if b[0] <= lo and hi <= b[1]]
             if len(enclosing) == 1 and len(members) == 3 and sum(
