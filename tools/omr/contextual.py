@@ -713,20 +713,22 @@ def apply_contextual_analysis(
     # anywhere is doubly protected: `_fill_defaulted_clefs` above has already
     # given its silent staves that reading and a `clef_source` with it.
     #
-    # Measured 2026-09-01 on the ten hand-read pages, BOTH arms:
-    # `--assist none` 146/166 -> 148, `--assist vision` 149 -> 151, base 3 still
-    # 52/52, and no page loses a staff. Of the 26 defaulted staves that are
-    # already RIGHT the prior names 23 and breaks none. On the two pages where
-    # the prior has its own hand-read part list it changes ONE clef — La Mer
-    # p.25 staff 20, treble -> bass, named Contrabass, which the part list
-    # confirms — and Beethoven 5 p.15, the page this exclusion was written
-    # against, is untouched, because there the prior's wrong names propose the
-    # treble that is already in effect.
+    # Measured 2026-09-01 on the ten hand-read pages, BOTH arms. Of the 26
+    # defaulted staves that are already RIGHT the prior names 23 and breaks
+    # none, and on the two pages where the prior has its own hand-read part list
+    # it changes ONE clef — La Mer p.25 staff 20, treble -> bass, named
+    # Contrabass, which the part list confirms. Beethoven 5 p.15, the page this
+    # exclusion was written against, is untouched, because there the prior's
+    # wrong names propose the treble that is already in effect.
     #
-    # READ THE COST BEFORE TRUSTING THE +2: both gains are choral staves on
-    # beet9-p120 that the prior calls "Viola", and they score because the truth
-    # records the generic `c-clef` and a viola's alto clef is one. The clef
-    # class is right and the identity is not. See RESULTS.md, "JOB C".
+    # It read 148/151 when this shipped. Both are 146/149 now, and the two
+    # staves went deliberately: they were beet9-p120's choral staves, named
+    # "Viola" by a `classical-condensed` layout stretched over 21 staves, whose
+    # alto clef scored against a truth that records the generic `c-clef`. The
+    # `choral-orchestral` layout now fits that page and names those staves
+    # nothing, which is the honest answer — the lexicon gives Soprano, Alto and
+    # Tenor a modern treble default, so correct identity cannot produce a C clef
+    # there either. See benchmarks/omr-score-order/RESULTS.md.
     read_instruments = _instruments_for_clef_correction(
         instrument_by_slot, instrument_source, clef_by_slot)
     # Fill defaulted clefs from the same part in another system BEFORE the

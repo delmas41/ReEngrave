@@ -105,9 +105,16 @@ THE NUMBER TO STEER BY — end-to-end clef accuracy on ten hand-read
 orchestral pages, 166 staves:
 
     eval_pipeline_clefs.py --contextual --dossier --wide --assist vision
-        151 / 166  (91%)          <- best        (149 before Job C)
+        149 / 166  (90%)          <- best
     eval_pipeline_clefs.py --contextual --dossier --wide --assist none
-        148 / 166  (89%)          <- free path, no API spend  (146 before)
+        146 / 166  (88%)          <- free path, no API spend
+
+    Job C took both to 151/148 and Job C's identity half gave the two back on
+    purpose: they were beet9-p120 choral staves named "Viola" by a layout
+    stretched over them, and a viola's alto clef scored against a truth that
+    records the generic `c-clef`. Identity precision went 0.73 -> 0.86 for it.
+    Steer by these two numbers, but do not read a 2 here as worth more than a
+    13-point move in identity precision — this corpus cannot see identity.
     (base 3) 52/52 in both. The base-3 subtotal is three easy pages that
     saturated years ago; report it for continuity, steer by the 166.
 
@@ -117,8 +124,10 @@ THE CV LOCATOR, which supplies 3 of those 166 staves:
     check_clef_precision.py      reference 5/5 exact | orchestral misses 5
                                  | sweep misses 8 | FALSE POSITIVES 13
 
-    pytest tools/omr/tests                     1114 passed
-    benchmarks/omr-score-order/eval_score_order.py   11/12, 5/10, 23/23
+    pytest tools/omr/tests                     1116 passed
+    benchmarks/omr-score-order/eval_score_order.py    9/10, 2/2, 23/23
+    ...and --wide --production, the arm that describes a real run:
+        37 named, 32 correct, precision 0.86  (9 pages, 4 editions)
 ```
 
 `--assist vision` costs a few cents a run; `--wide` needs

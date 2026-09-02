@@ -2482,6 +2482,15 @@ names across the corpus, **none** is a slot whose clef the prior saw.
 | `--contextual --dossier --wide --assist vision` | 149 / 166 | **151 / 166** |
 | (base 3) | 52 / 52 | 52 / 52 |
 
+> ⚠️ **SUPERSEDED the same day, deliberately: both are 146 / 149 now.** The two
+> staves this section gains are beet9-p120's choral staves, and the section
+> below already says they are a wrong identity landing on a right clef class.
+> The `choral-orchestral` layout added in
+> `benchmarks/omr-score-order/RESULTS.md` fits that page properly, names those
+> staves nothing, and gives the two points back. The gate described here is
+> unchanged and still right; what changed is that the page it was measured on
+> stopped being read by a layout stretched to 1.75 staves per part.
+
 Every page is unchanged except **beet9-p120, 14/21 → 16/21, on both arms.**
 
 The risk side is the more valuable half, since only one page in this corpus can

@@ -196,6 +196,25 @@ MIN_AGREEMENT = 0.75
 MIN_SCORE_PER_STAFF = 0.5
 # Fewer staves than this is not an ensemble whose order says anything.
 MIN_STAVES = 3
+# ...and a layout whose parts would EACH have to cover this many staves is the
+# wrong layout, however well it scores. The continuation move exists for the
+# parts that genuinely take more than one staff — two horns, a harp, divided
+# violins — and when nearly every part needs it, what it is papering over is a
+# layout too small for the score.
+#
+# Measured 2026-09-01 over 11 pages of 4 editions
+# (`eval_score_order.py --wide --production`), by page:
+#
+#   staves/part   pages          named right   named wrong
+#   0.82 - 1.09   7 pages             32             5
+#   1.75          4 pages              0             7
+#
+# Nothing between 1.09 and 1.75, and every name produced at 1.75 is wrong: a
+# string-quartet layout stretched over Beethoven 5 p.40's seven-staff condensed
+# systems, calling each top staff Violin, and `classical-condensed` stretched
+# over La Mer's 21. The bound sits above what real division reaches — La Mer's
+# own truth is 21 staves for 17 parts, 1.24 — and below every observed failure.
+MAX_STAVES_PER_PART = 1.5
 
 
 @dataclass(frozen=True)
@@ -284,6 +303,23 @@ LAYOUTS: tuple[ScoreLayout, ...] = (
     ScoreLayout(
         "choral-satb",
         ("Soprano", "Alto", "Tenor", "Bass voice"),
+    ),
+    ScoreLayout(
+        "choral-orchestral",
+        ("Piccolo", "Flute", "Oboe", "Clarinet", "Bassoon", "Contrabassoon",
+         "Horn", "Trumpet", "Trombone", "Timpani", "Percussion",
+         "Violin", "Violin", "Viola",
+         "Soprano", "Alto", "Tenor", "Bass voice",
+         "Soprano", "Alto", "Tenor", "Bass voice",
+         "Cello", "Contrabass"),
+        "A choral symphony or requiem, where THE STRINGS SPLIT AROUND THE "
+        "VOICES: violins and viola above the vocal block, cellos and basses "
+        "below it. No other layout here does that, and until this existed the "
+        "largest on offer for such a page was `classical-condensed` at 12 "
+        "parts, stretched over 21 staves — 1.75 staves per part, where the "
+        "prior scored 0 right and 7 wrong. Solo quartet above chorus, both "
+        "SATB, because a score that prints only one still aligns: the "
+        "alignment may leave parts unassigned, it may not reorder them.",
     ),
 )
 
@@ -507,6 +543,9 @@ def fit_layouts(
 
     best_score, best_layout, _ = scored[0]
     if best_score < MIN_SCORE_PER_STAFF:
+        return None
+    # The winning layout is too small for this system to be the right one.
+    if n / max(1, len(best_layout.parts)) > MAX_STAVES_PER_PART:
         return None
 
     voters = [t for t in scored if t[0] >= best_score - SCORE_BAND_PER_STAFF]

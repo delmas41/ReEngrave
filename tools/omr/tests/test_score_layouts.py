@@ -321,3 +321,38 @@ class TestLabelPins:
         pinned, _pins = align_to_layout_pinned(layout, 5, labels=labels,
                                                allow_merge=True)
         assert pinned == [0, 1, 2, 3, 4]
+
+
+class TestALayoutTooSmallForItsScore:
+    """`MAX_STAVES_PER_PART`, and the layout whose absence made it necessary.
+
+    The continuation move lets one part take more than one staff, which is what
+    two horns, a harp or a divided violin section need. When nearly every part
+    needs it, what it is covering up is a layout too small for the score.
+    """
+
+    def test_a_twelve_part_layout_will_not_answer_for_twenty_one_staves(self):
+        from tools.omr.score_layouts import LAYOUTS, fit_layouts
+
+        condensed = next(l for l in LAYOUTS if l.name == "classical-condensed")
+        assert fit_layouts(12, None, None, layouts=(condensed,)) is not None
+        # 21 / 12 = 1.75. Measured over 11 pages of 4 editions, every name the
+        # prior produced at that ratio was wrong — 0 right, 7 wrong — while
+        # every page at 1.09 or below gave 32 right against 5 wrong.
+        assert fit_layouts(21, None, None, layouts=(condensed,)) is None
+
+    def test_the_choral_layout_splits_the_strings_around_the_voices(self):
+        """Beethoven 9's finale prints violins and viola ABOVE the vocal block
+        and cellos and basses BELOW it, and no other layout here does that. A
+        21-staff choral page had nothing to fit but `classical-condensed`."""
+        from tools.omr.score_layouts import LAYOUTS
+
+        choral = next(l for l in LAYOUTS if l.name == "choral-orchestral")
+        upper = [i for i, p in enumerate(choral.parts) if p in ("Violin", "Viola")]
+        voices = [i for i, p in enumerate(choral.parts)
+                  if p in ("Soprano", "Alto", "Tenor", "Bass voice")]
+        lower = [i for i, p in enumerate(choral.parts)
+                 if p in ("Cello", "Contrabass")]
+        assert max(upper) < min(voices), "upper strings sit above the voices"
+        assert max(voices) < min(lower), "cellos and basses sit below them"
+        assert len(choral.parts) / 21 <= 1.5, "and it must fit a 21-staff page"

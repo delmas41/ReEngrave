@@ -195,3 +195,69 @@ classical layout stretched to 1.75, and the prior then calls the vocal block
 Viola. That is the same page whose two "gains" the clef benchmark records under
 JOB C in `benchmarks/omr-clef-geometry/RESULTS.md` — a wrong identity landing on
 the right clef class.
+
+### Shipped: the missing layout, and the abstention it makes free
+
+**`choral-orchestral`, 24 parts.** A choral symphony or requiem, where **the
+strings split around the voices** — violins and viola above the vocal block,
+cellos and basses below it. No other layout here does that, and nothing else in
+the library is bigger than 20 parts. Beethoven 9's finale is the canonical case
+and Beethoven 5 p.15's edition prints the same shape; Mahler 2 and 8 and the
+Verdi Requiem are the same instrumentation.
+
+Beethoven 9 p.120 now fits it at **0.88 staves per part** instead of
+`classical-condensed` at 1.75, and the alignment is musically right where it
+speaks: staff 3 Bassoon, 5 Horn, 7 Trumpet, 8 Timpani, 10 Violin, 11 Viola,
+19 Cello, 20 Contrabass — against a hand-read clef column that has the viola's
+waist plainly on line 3 at staff 11.
+
+**`MAX_STAVES_PER_PART = 1.5`**, from the table above. With the layout in place
+this costs nothing at all, because the page it would have cost is no longer in
+the stretched regime.
+
+| harness | before | after |
+|---|--:|--:|
+| identity, **PRODUCTION** arm — 9 pages, 4 editions | 44 named / 32 correct, **0.73** | 37 / 32, **0.86** |
+| identity, locator arm, `--wide` | 24 / 13, 0.54 | 11 / 10, 0.91 |
+| identity, position arm, `--wide` | 22 / 21, 0.95 | 20 / 19, 0.95 |
+| `eval_score_order` default — position | 12 / 11, 0.92 | 10 / 9, 0.90 |
+| `eval_score_order` default — read clefs | 10 / 5, 0.50 | 2 / 2, 1.00 |
+| `eval_pipeline_clefs --assist none` | 148 / 166 | **146 / 166** |
+| `eval_pipeline_clefs --assist vision` | 151 / 166 | **149 / 166** |
+| base 3 · `probe_clef_rejection` · `check_clef_precision` | 52/52 · 68/720 · FP 13 | unchanged |
+| `pytest tools/omr/tests` | 1114 | 1116 |
+
+**No correct name is lost anywhere.** The production arm keeps all 32 and drops
+7 wrong ones; the position arm's 22→20 is La Mer, where the new layout joins the
+vote band and the agreement filter then names three staves instead of five.
+
+### What it costs, stated first because it is the number people quote
+
+**Clef accuracy goes DOWN by two, on both arms**, and both are beet9-p120:
+16/21 → 14/21. Those two staves were the whole of Job C's `+2`, and they were a
+wrong identity producing a right clef class — `classical-condensed` stretched
+over the page called the vocal block Viola, and a viola's alto clef scores
+against a truth that deliberately records the generic `c-clef`.
+
+With the right layout the prior names those staves **nothing**: the agreement
+filter finds the plausible layouts disagreeing there, which is the truthful
+answer for six vocal staves in a corpus of orchestral layouts. And correct
+identity would not recover the points either — `instruments.py` gives Soprano,
+Alto and Tenor a **treble** default, the modern convention, so a correctly named
+choral staff proposes treble and nothing moves. The handoff predicted exactly
+this ceiling.
+
+So the trade is 2 clef staves for 13 points of identity precision, on a clef
+corpus that cannot see identity at all. Worth knowing before quoting either.
+
+### Still open
+
+* **The vocal-clef convention.** A 19th-century vocal part prints soprano, alto
+  and tenor C clefs where a modern one prints treble. That is a fact about the
+  edition, not the instrument, so it does not belong in `default_clef`; it wants
+  something that knows the print's date or reads the glyph. Six staves of
+  beet9-p120 wait on it.
+* **beet9-p60 fits at 2.18 staves per part** and now abstains — 24 staves
+  against `classical-shared-bass`'s 11. It is a Beethoven 9 page too, so the new
+  layout does not cover it either; look at what 24 staves of that edition
+  actually are before adding another.
