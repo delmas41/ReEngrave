@@ -283,6 +283,24 @@ the `accidentalFlat` role and are discarded (9.5% carry `keyFlat`). Re-measure
 
 ---
 
+## wtc-p17 — verified, and by mechanism rather than by score
+
+The page that must stay 10/10. Run through `probe_vote_inputs.py` on the
+ground-truth page (index **16**, 5 systems, 10 staves):
+
+```
+  10 candidates, every one:  4#   weight 4.00   source detector   can_carry y
+  reference per system: {0..4: '4#'}      modal tally: {'4#': 40.0}
+```
+
+Fix 2 **cannot fire here, twice over**: no candidate has `can_carry=False`, so
+none can reach the guard, and the reference holds 100% of the weight so the
+no-majority branch is never entered at all. 10 correct / 0 wrong, unchanged.
+
+That is a stronger statement than a matching score would be — it says the page
+is outside the change's reach by construction, not that it happened to come out
+the same.
+
 ## Still owed
 
 Not done, and not claimed:
