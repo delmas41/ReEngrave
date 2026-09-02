@@ -137,3 +137,46 @@ engraved control says the ceiling is duration recall equal to pitch recall.
 orchestral cells narrowed the density prior once before and collapsed dense-page
 noteheads 2506 → 114 (`[[project_clef_finetune_conclusion]]`); the audit tool
 for it is `wtc_forgetting_eval.py`.
+
+---
+
+## Postscript, 2026-09-02: how it was actually labelled
+
+**Blank-canvas mode, not triage.** `detections/` was emptied to 48 stubs and
+the model's 262 pre-labels moved to `detections-pre-labels/` (they are also in
+history at `5bf08bc`), so the UI showed nothing and every box drawn is a human
+one. Sean went through **all 48 cells** and drew **29 hollow noteheads across
+25** of them — 22 `noteheadHalfOnLine`, 7 `noteheadHalfInSpace`. The other 23
+cells carry no verdict file because they contain **no hollow notehead**: the
+UI only writes a file once something is decided, so an inspected-and-empty cell
+leaves no trace. Coverage was 48/48, not 25/48.
+
+**Merged, then audited.** Exporting hollow heads alone would teach that every
+black notehead and rest in those cells is background, so the pre-labels were
+merged back in as confirmed detections (`verdicts-merged/`, `verdicts/` never
+touched) and then every box was viewed on the cell image beside its
+staff-line-removed variant.
+
+The audit is the story. **24 structural pre-labels were dropped by class**
+(beam 17, staff 4, brace 2, ledgerLine 1) and **116 of the remaining 117 were
+culled as false positives** — 45 firing on the same glyph Sean had just called
+hollow, 34 on bled slur arcs, 17 on barlines, 10 on nothing at all. Exactly
+**one** survived. The premise above — "most black noteheads, rests and
+accidentals are already boxed and only need confirming" — does not hold on this
+print; the detector is wrong nearly everywhere on it, which is the same fact
+the batch exists to fix, larger than expected.
+
+**One cell was excluded**: `beet5-p6-sys0-s8-m13` prints an unmistakable hollow
+notehead at the top of the crop that is not boxed, and an unboxed instance of
+the class being taught is the worst incompleteness there is. The 23 no-verdict
+cells were re-scanned and confirmed hollow-head-free.
+
+**Landed as** `data/user-labeled/v7-2026-09-02-hollow/` — 24 cells, **28
+boxes** (21 `noteheadHalfOnLine`, 6 `noteheadHalfInSpace`, 1
+`noteheadBlackInSpace`). `catalog.yaml` was **not** rebuilt: the builder unions
+every `vN-*/` under its root with no exclusion flag, so re-running it would
+silently reverse the deliberate v5/v6 exclusion. Membership is a training-time
+decision.
+
+Full reading, including the classes left unlabelled in the exported cells and
+what that costs: [AUDIT.md](AUDIT.md).

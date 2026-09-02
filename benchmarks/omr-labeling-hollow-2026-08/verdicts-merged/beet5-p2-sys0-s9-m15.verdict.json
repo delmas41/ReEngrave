@@ -1,0 +1,37 @@
+{
+  "cell_id": "beet5-p2-sys0-s9-m15",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-02T17:33:58+00:00",
+  "merge_provenance": {
+    "human_verdicts": "verdicts/beet5-p2-sys0-s9-m15.verdict.json",
+    "pre_labels": "detections-pre-labels/beet5-p2-sys0-s9-m15.json",
+    "pre_labels_total": 6,
+    "pre_labels_kept_tp": 0,
+    "pre_labels_dropped_structural": [
+      "D5:ledgerLine"
+    ],
+    "pre_labels_culled_in_audit": [
+      "D0:noteheadBlackInSpace",
+      "D1:noteheadBlackInSpace",
+      "D2:restWhole",
+      "D3:noteheadBlackOnLine",
+      "D4:restWhole"
+    ],
+    "merged_by": "agent visual audit 2026-09-02"
+  },
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 18,
+        "y": 292,
+        "w": 193,
+        "h": 203
+      },
+      "notes": ""
+    }
+  ]
+}

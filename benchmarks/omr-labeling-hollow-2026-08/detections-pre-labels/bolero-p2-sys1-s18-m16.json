@@ -1,0 +1,31 @@
+{
+  "cell_id": "bolero-p2-sys1-s18-m16",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 9,
+      "y": 596,
+      "w": 244,
+      "h": 13,
+      "x_center": 131,
+      "y_center": 602,
+      "confidence": 0.2570866346359253,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 138,
+      "y": 784,
+      "w": 119,
+      "h": 75,
+      "x_center": 197,
+      "y_center": 821,
+      "confidence": 0.6718326807022095,
+      "pitch": null
+    }
+  ]
+}

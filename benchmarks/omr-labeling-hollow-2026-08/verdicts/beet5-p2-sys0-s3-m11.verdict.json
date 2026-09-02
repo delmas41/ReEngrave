@@ -1,0 +1,20 @@
+{
+  "cell_id": "beet5-p2-sys0-s3-m11",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-02T17:34:24+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 107,
+        "y": 228,
+        "w": 192,
+        "h": 178
+      },
+      "notes": ""
+    }
+  ]
+}

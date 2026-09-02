@@ -1,0 +1,18 @@
+{
+  "cell_id": "beet5-p4-sys1-s14-m1",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 489,
+      "y": 943,
+      "w": 78,
+      "h": 42,
+      "x_center": 528,
+      "y_center": 964,
+      "confidence": 0.410097599029541,
+      "pitch": null
+    }
+  ]
+}
