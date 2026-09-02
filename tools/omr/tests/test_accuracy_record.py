@@ -202,6 +202,34 @@ class TestBuildingTheRecord:
         assert ar.PRIMARY_RUN == ar.WITH_DIRECTION_TEXT
         assert "0.1364" in ar.BLOCKS["headline"][1](record)
 
+    def test_a_renamed_key_is_dropped_not_carried(self):
+        """The 2026-09-02 rename left `default` holding a real pooled figure
+        under a name that had stopped meaning anything, beside the two keys
+        that still did. A measured number under a dead label is exactly the
+        hazard this module exists to remove."""
+        stale = {"runs": {ar.PRIMARY_RUN: _run(), "default": _run()}}
+        assert set(ar.prune_unknown_runs(stale)["runs"]) == {ar.PRIMARY_RUN}
+
+    def test_pruning_leaves_a_clean_record_untouched(self):
+        clean = {"runs": {ar.PRIMARY_RUN: _run(), ar.SECONDARY_RUN: _run()}}
+        assert ar.prune_unknown_runs(clean) is clean
+
+    def test_folding_a_run_in_also_prunes(self):
+        """So the next measurement finishes a rename without anyone noticing
+        there was one to finish."""
+        stale = {"runs": {"default": _run()}}
+        out = ar.record_from_results(
+            [self._result("a", 0.1, 10)], run_name=ar.PRIMARY_RUN,
+            previous=stale, commit="x")
+        assert set(out["runs"]) == {ar.PRIMARY_RUN}
+
+    def test_every_known_run_has_a_constant(self):
+        """A key the record may hold that the code cannot name would be pruned
+        by its own guard the next time anything wrote the file."""
+        assert ar.KNOWN_RUNS == {ar.WITH_DIRECTION_TEXT, ar.WITHOUT_DIRECTION_TEXT}
+        assert ar.PRIMARY_RUN in ar.KNOWN_RUNS
+        assert ar.SECONDARY_RUN in ar.KNOWN_RUNS
+
     def test_a_record_with_only_the_secondary_run_is_refused(self):
         """It would otherwise publish the no-OCR figure as the headline."""
         with pytest.raises(ValueError, match="direction_text"):

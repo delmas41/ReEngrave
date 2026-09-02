@@ -1010,13 +1010,13 @@ to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `15ca32a`: **pooled 0.1066 / 767 edits** (Mahler 0.0272, Beethoven 0.0727, Brahms 0.1554), over 3696 truth + 3497 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0849 / 623**, measured on `15ca32a`.
+Current on the engraved orchestral benchmark, measured on `bc4214d`: **pooled 0.0849 / 623 edits** (Mahler 0.0272, Beethoven 0.0595, Brahms 0.1196), over 3696 truth + 3641 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1066 / 767**, measured on `bc4214d`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
 | Mahler | 0.0272 | 52 | 0.917 | 0.917 | 1.000 |
-| Beethoven | 0.0727 | 93 | 1.000 | 1.000 | 1.000 |
-| Brahms | 0.1554 | 622 | 0.956 | 0.955 | 0.992 |
+| Beethoven | 0.0595 | 77 | 1.000 | 1.000 | 1.000 |
+| Brahms | 0.1196 | 494 | 0.956 | 0.955 | 0.992 |
 <!-- accuracy:end -->
 
 **Generated — do not hand-edit, here or anywhere.** `68be549` made this the

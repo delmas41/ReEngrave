@@ -89,6 +89,34 @@ WITHOUT_DIRECTION_TEXT = "no_direction_text"
 PRIMARY_RUN = WITH_DIRECTION_TEXT
 SECONDARY_RUN = WITHOUT_DIRECTION_TEXT
 
+#: Every key the record is allowed to hold. Anything else is dropped on read
+#: and on write — see `prune_unknown_runs`, and the rename that motivated it.
+KNOWN_RUNS = frozenset({WITH_DIRECTION_TEXT, WITHOUT_DIRECTION_TEXT})
+
+
+def prune_unknown_runs(record: dict[str, Any]) -> dict[str, Any]:
+    """Drop run keys this module no longer knows about.
+
+    A renamed key leaves its old entry behind holding a real, measured, and now
+    UNLABELLED figure — which is the exact hazard this module exists to remove,
+    reappearing through the back door. The 2026-09-02 rename did it: `default`
+    kept a pooled 0.1066 under a name that had stopped meaning anything, beside
+    the two keys that did.
+
+    Dropping rather than migrating is deliberate. A stale run cannot be
+    relabelled safely — nothing in the file says which configuration produced
+    it — and the fix is one `orchestral_eval --record` away. Adding a new
+    configuration means adding its constant to `KNOWN_RUNS`, which is the point:
+    the record holds what the code can name, and nothing else.
+    """
+    runs = record.get("runs") or {}
+    kept = {k: v for k, v in runs.items() if k in KNOWN_RUNS}
+    if kept == runs:
+        return record
+    out = dict(record)
+    out["runs"] = kept
+    return out
+
 
 def _run(record: dict[str, Any], name: str) -> dict[str, Any] | None:
     return (record.get("runs") or {}).get(name)
@@ -167,7 +195,7 @@ def load_record(path: Path | None = None) -> dict[str, Any]:
             f"no accuracy record at {path} — run "
             "`python3 -m tools.omr.training.orchestral_eval --omr-ned --record`"
         )
-    return json.loads(path.read_text())
+    return prune_unknown_runs(json.loads(path.read_text()))
 
 
 def record_from_results(results: list[dict[str, Any]],
@@ -219,7 +247,7 @@ def record_from_results(results: list[dict[str, Any]],
     runs = dict(record.get("runs") or {})
     runs[run_name] = run
     record["runs"] = runs
-    return record
+    return prune_unknown_runs(record)
 
 
 def _git_commit() -> str:
@@ -261,9 +289,23 @@ def _rewrite(text: str, record: dict[str, Any], path_label: str,
 
 
 def update(record: dict[str, Any] | None = None) -> list[str]:
-    """Rewrite every block from the record. Returns the files changed."""
-    record = record or load_record()
+    """Rewrite every block from the record. Returns the files changed.
+
+    Also NORMALISES the record on disk when it holds runs this module can no
+    longer name. `load_record` prunes on read, so the docs are already safe
+    without this — but leaving the orphan in the file leaves a real measured
+    figure sitting under a dead key, looking authoritative to anyone who opens
+    it, which is the failure this whole module is about. Writing it back is how
+    the rename gets finished without waiting for the next measurement.
+    """
+    on_disk = None
+    if record is None:
+        on_disk = json.loads(RECORD_PATH.read_text()) if RECORD_PATH.is_file() else None
+        record = load_record()
     changed = []
+    if on_disk is not None and (on_disk.get("runs") or {}) != (record.get("runs") or {}):
+        RECORD_PATH.write_text(json.dumps(record, indent=2) + "\n")
+        changed.append(str(RECORD_PATH.relative_to(ROOT)))
     for path in sorted({ROOT / f for f, _ in BLOCKS.values()}):
         text = path.read_text()
         new, _ = _rewrite(text, record, path.name)

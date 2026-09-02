@@ -1,25 +1,25 @@
 {
   "_comment": "The single source for the CURRENT accuracy figures. Written by `orchestral_eval --omr-ned --record`; propagated into CLAUDE.md by `python3 -m tools.omr.accuracy_record --update`. Do not hand-edit, and do not restate a current figure in another document \u2014 see tools/omr/accuracy_record.py, and 68be549 for why there is only one.",
   "runs": {
-    "default": {
-      "pooled": 0.10663144724037259,
-      "edits": 767,
+    "direction_text": {
+      "pooled": 0.08491208940984053,
+      "edits": 623,
       "truth_symbols": 3696,
-      "pred_symbols": 3497,
-      "commit": "15ca32a",
+      "pred_symbols": 3641,
+      "commit": "bc4214d",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
-          "omr_ned": 0.0727130570758405,
-          "edits": 93,
+          "omr_ned": 0.05945945945945946,
+          "edits": 77,
           "pitch_recall": 1.0,
           "pitch_precision": 1.0,
           "duration_rate": 1.0
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.15542228885557222,
-          "edits": 622,
+          "omr_ned": 0.11961259079903147,
+          "edits": 494,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
@@ -34,25 +34,25 @@
         }
       ]
     },
-    "direction_text": {
-      "pooled": 0.08491208940984053,
-      "edits": 623,
+    "no_direction_text": {
+      "pooled": 0.10663144724037259,
+      "edits": 767,
       "truth_symbols": 3696,
-      "pred_symbols": 3641,
-      "commit": "15ca32a",
+      "pred_symbols": 3497,
+      "commit": "bc4214d",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
-          "omr_ned": 0.05945945945945946,
-          "edits": 77,
+          "omr_ned": 0.0727130570758405,
+          "edits": 93,
           "pitch_recall": 1.0,
           "pitch_precision": 1.0,
           "duration_rate": 1.0
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.11961259079903147,
-          "edits": 494,
+          "omr_ned": 0.15542228885557222,
+          "edits": 622,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
