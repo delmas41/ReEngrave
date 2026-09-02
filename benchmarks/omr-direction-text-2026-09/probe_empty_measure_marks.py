@@ -26,6 +26,12 @@ rest is NOT a trigger (a rest is an event), while a bar we simply missed is.
 So a corpus can be clean on the truth side and still exercise the bug through
 detection failure. Report both; do not treat either alone as coverage.
 
+VERIFIED NEUTRAL IN BOTH CONFIGURATIONS. `46e42a4` measures 0.1066 / 767 with
+the reader off and 0.0849 / 623 with it on, both identical to the tree without
+the fix — which is the point: the engraved benchmark cannot reach the path in
+EITHER configuration, so neither number is evidence the fix works. The unit
+tests are.
+
 RESULT on the three works as of 2026-09-02: **0 triggering bars on either
 side.** Beethoven's `Allegro con brio` sits on a rests-only bar, which is the
 shape — but a rest IS an event, so the detector finds it, the normal path runs,
