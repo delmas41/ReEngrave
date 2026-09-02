@@ -103,3 +103,18 @@ the dossier-supplied structure as the guaranteed fallback for known works.
   disable). Not yet committed.
 - Remaining (Phase 3): B9 p25 + Mozart K22 (brace/movement-start left-edge defect,
   needs a curvature/solidity discriminator, separately validated); vocal over-splits.
+- 09-01: **End-to-end regression fixture** (`tools/omr/tests/test_left_edge_split_e2e.py`,
+  truth in `gt/e2e-ground-truth.json`). Until now nothing measured what the split is
+  worth PAST the system count — the orchestral OMR-NED fixtures are LilyPond renders,
+  always grouped correctly, so cue A never fires on any of them. Four scanned pages,
+  three publishers (Eroica p36, Schubert 8 p23, Schumann 3 p14, B9 p60), hand-read
+  truth at 600 dpi verified against a barline overlay: split ON, all four read their
+  true two systems with every staff carrying the system's full measure row
+  ([8,8]/[15,13]/[12,9]/[13,14]); split OFF, Eroica collapses to one 22-staff system of
+  TEN measures against the printed 16 — barlines must span the merged block to survive
+  the vote, so most don't. The suite asserts both directions: on = hand-read structure,
+  off = the page still merges (fixture-validity guard: if the wide window ever groups
+  these pages alone, the case must be re-picked from the sweep, not deleted). Marked
+  `omr_smoke`, skips without the library. NOTE the schubert sys-0 measure count is 15 —
+  a first 110-dpi thumbnail count said 14 and was wrong; at 300 dpi the pipeline also
+  reads 14 (one barline missed), which is why the fixture pins 600 dpi.

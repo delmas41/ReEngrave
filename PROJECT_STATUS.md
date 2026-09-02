@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED 0.3164 → 0.2263; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
+**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED 0.3164 → 0.2209, slurs shipped after all; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -31,9 +31,11 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 
 - **August 31 → September 1 — the clef layer, and a benchmark that changed the target.** Nineteen commits. The CV locator's false positives went **48 → 13** across two scanned editions, by POSITION rather than shape three times over: margin ink is ink that ends before the staff's printed lines begin; an F clef's dots are the ones standing clear of the body. Nine other ideas were measured and refused, each with numbers on both sides — including a tenor symmetry floor that separated cleanly on one edition and overlapped completely on a second. Then the hand-read ground truth was widened from 4 pages to 10 (187 staves, 24 C clefs, four publishers), and it reversed two conclusions and reframed the work: **the locator supplies three staves of 166.** The end-to-end benchmark had been reporting 52/52 = 100% on three easy pages — a benchmark that cannot go down cannot show an improvement — and on hard pages it reads **87%**, rising to 90% with the paid margin reader. Seventeen of its twenty-one errors are the positional default calling a bass or C-clef staff treble, and the machinery to replace it (instrument → conventional clef, vetoed by register) works and is starved of instrument names. **Labels, not clef reading, are the binding constraint.** Full story: [benchmarks/omr-clef-session-2026-09/RETROSPECTIVE.md](benchmarks/omr-clef-session-2026-09/RETROSPECTIVE.md). Also: Nottebohm removed from every harness and test (orchestral scores only), and Surya installed as the free label rung. Final numbers on that corpus, after a tie at the paid rung was made to go to the paid rung: **149/166 with the vision reader, 146/166 free**, against 145 free with Surya absent — so Surya is worth keeping, and it also stopped the paid reader being called on every page and used on one. **The mechanism is still open**, but narrowed: Surya's presence moves three staves while returning byte-identical labels, and the obvious suspect — batch load perturbing the decode — was probed at 45 replays and **refused**, so Surya is a fixed function of its input and the free-path numbers stand.
 
-- **August 31 → September 1 — accuracy acquired an outside reference point, and it found seven bugs in two days.** OMR-NED (*Sheet Music Benchmark*, ISMIR 2025) is the metric OMR papers report, and `musicdiff` computes it, so adopting it cost a bridge rather than an implementation. Pooled **0.3164 → 0.2263** on the engraved orchestral benchmark. **Four of the seven were export or resolution bugs on data the pipeline had already computed correctly** — beams detected and dropped, augmentation dots counted twice, dynamics dropped, tuplet markers sitting unread in the JSON — and *none of them was visible to any number this repository had before*, because note recall called the Beethoven page **1.000** throughout. The other three were all **placement**: two staff windows that had locked onto a beam and onto ledger lines, and a cross-staff rule that awarded a contested notehead to the nearer staff — which is precisely backwards, since an engraver opens the gap above a staff *for* its ledger notes. Then `wrong note`, 40% of the edit budget and never opened, was attributed: it is **rhythm and one staff**, and the part that disagrees in no pattern at all is **3.3%**. Nothing in it argues for detector work.
+- **August 31 → September 1 — accuracy acquired an outside reference point, and it found seven bugs in two days.** OMR-NED (*Sheet Music Benchmark*, ISMIR 2025) is the metric OMR papers report, and `musicdiff` computes it, so adopting it cost a bridge rather than an implementation. Pooled **0.3164 → 0.2263** on the engraved orchestral benchmark. **Four of the seven were export or resolution bugs on data the pipeline had already computed correctly** — beams detected and dropped, augmentation dots counted twice, dynamics dropped, tuplet markers sitting unread in the JSON — and *none of them was visible to any number this repository had before*, because note recall called the Beethoven page **1.000** throughout. The other three were all **placement**: two staff windows that had locked onto a beam and onto ledger lines, and a cross-staff rule that awarded a contested notehead to the nearer staff — which is precisely backwards, since an engraver opens the gap above a staff *for* its ledger notes. Then `wrong note`, 40% of the edit budget and never opened, was attributed: it is **rhythm and one staff**, and the part that disagrees in no pattern at all is **3.3%**. Nothing in it argues for detector work. An eighth fix then followed the same day: **slurs**, held back in August because a barline cuts an arc in two, shipped once the PAIRING moved from the measure to the staff — the event model itself needed nothing — taking pooled **0.2263 → 0.2209**.
 
 - **September 1 — the first end-to-end run on a real scan, and it is a different problem from the engraved one.** Every accuracy number this project held had been measured one element at a time, or on pages it rendered itself from the same MusicXML it then scored against. Beethoven 5 p.1 of a 600 dpi IMSLP scan, defaults, no dossier (the dossiers are generated from the file used as truth, so seeding would hand the run its own answer key): layout exact at **113 staves over six pages**, step recall **0.742**, exact-pitch recall **0.579**, duration recall **0.340**, and **OMR-NED 0.8706** against 0.3164 on rendered pages. Four fixes followed — a header meter reader, barlines fitted with Theil-Sen through a page that warps 40 px, key-signature accidentals found by sliding Bravura templates, and parts stitched across systems in the exporter. The headline diagnosis is **not** a fix: **the page prints 68 half notes and the output contains 8**, because at 600 dpi bitonal the hollow notehead's counter has closed and the detector has no reason to call it hollow. An engraved control with the same music and the same weights finds 31 against 30 — so the rhythm layer is fine, and the lever is a labeling batch, which is prepared and waiting.
+
+- **September 1 — the system-break rule got its fix after all, and then its end-to-end guard.** The 2026-08 verdict ("five attempts, all rejected, stop") was about threshold-style rules tuned on two editions. What worked was a different question: instead of asking whether ANY ink crosses a gap (the wide window, which stems and measure numbers fake out), a second **narrow scan at the system's shared left edge** — empty at a true boundary even when body ink bridges the wide window (cue A, from the Audiveris "starting column" idea). Union-only, and it may never create a size-1 system. Measured across 964 library pages: **27 over-merged symphony pages fixed : 1 mild residual (Mozart K22) : 0 size-1**, grouping eval **20/23 → 22/23**, default ON (`OMR_LEFT_EDGE_SPLIT=0` reverts). Then the gap in its measurement was closed: the orchestral OMR-NED fixtures are LilyPond renders whose systems are always grouped correctly, so cue A never fired on any measured fixture — `tools/omr/tests/test_left_edge_split_e2e.py` now pins it end to end on **four scanned pages, three publishers**, against hand-read truth (`benchmarks/omr-system-grouping-2026-09/gt/e2e-ground-truth.json`): split on, each page reads its true two systems with every staff carrying the system's full measure row; split off, the pages still merge — and merged, Eroica p.36 reads **10 measures where the page prints 16**, because a barline must span the whole merged block to survive the vote. Full story: [benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md](benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md).
 
 ---
 
@@ -62,7 +64,7 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once — builds .venv
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled 0.3164 → 0.2263** on the engraved orchestral benchmark, in two days. Lower is
+**Pooled 0.3164 → 0.2209** on the engraved orchestral benchmark, in two days. Lower is
 better.
 
 | step | pooled | edits | commit |
@@ -74,12 +76,13 @@ better.
 | dynamics never exported | 0.2595 | 1811 | `89277a2` |
 | tuplets detected and never consumed | 0.2489 | 1743 | `d5079d5` |
 | a staff window fitted onto ledger lines | 0.2449 | 1715 | `9276122` |
-| cross-staff notes awarded by distance | **0.2263** | 1584 | `81446a0` |
+| cross-staff notes awarded by distance | 0.2263 | 1584 | `81446a0` |
+| slurs rejoined across the barline that cut them | **0.2209** | 1563 | `bae93b1` |
 
-Currently Mahler **0.0455**, Beethoven **0.1775**, Brahms **0.3302**.
+Currently Mahler **0.0455**, Beethoven **0.1775**, Brahms **0.3185**.
 
-**Four of the seven were export or resolution bugs on data the pipeline had already
-computed correctly** — beams, dots, dynamics and tuplets. The lesson is written down
+**Five of the eight were export or resolution bugs on data the pipeline had already
+computed correctly** — beams, dots, dynamics, tuplets and slurs. The lesson is written down
 because it keeps paying: when a category is large, check whether the signal already
 exists upstream before concluding that detection needs work. `grep -c beam
 tools/omr/export.py` returned 0 while `beam_levels` sat on 271 noteheads. The other
@@ -180,6 +183,53 @@ the group is the **beam box**, not the marker.
 load-bearing: a triplet eighth is a third of a quarter, and 16 thirds is not a whole
 number. The LCM of powers of two IS their maximum, so tuplet-free scores get the
 identical number — which Brahms's byte-identical output confirms.
+
+### Slurs — paired over the STAFF, because the barline cuts the arc
+
+Held back in August, shipped 2026-09-01 (`bae93b1`, re-measured on the post-ledger base
+as `6f64bfa`). Cells are cut per measure, so a slur crossing a barline is detected as
+**two arcs** — 120 arcs on the Brahms fixture against 82 slurs in the truth — and
+emitting per measure wrote two slurs where the music has one, which is why
+`export.annotate_slurs` sat implemented, tested and unwired since `89277a2`.
+
+**The event model needed nothing.** A MusicXML slur may already open in one measure and
+close in another, and LilyPond's `(` `)` never cared about barlines. What was
+per-measure was the *pairing* — so `annotate_slurs_in_staff` runs once per staff in
+**page pixels**, the only frame shared across cells, the same move
+`transcribe._pair_ties_in_staff` makes for ties. **Pooled 0.2263 → 0.2209**, edits
+1584 → 1563, `wrong slur` 81 → 61, Contrabass 7/7 exact. A slur-stripped truth scores
+0.2171 and a perfect reader would land near 0.2121, so this takes about **38%** of what
+slurs are worth here; the residue has the right note INDICES and the wrong pitches,
+which is note recognition, not slur work. Beethoven and Mahler export
+**byte-identically** — neither page carries a slur the detector reads.
+
+Three constants, none of them tuned — each sits in a gap the measurement found
+([SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md)):
+
+| what it decides | the two clusters | constant |
+|---|---|--:|
+| an arc was CUT by the boundary | 0.00–0.10 spaces vs 1.58 | 0.5 spaces |
+| the two halves are ONE slur | 0.02–1.14 spaces vs 8.04 | 2.0 spaces |
+| a notehead is UNDER the arc | 0.00–0.19 widths vs 0.32 | 0.25 nh widths |
+
+⚠️ **The pad is what made the change real rather than cosmetic.** A slur is drawn
+*between* its noteheads, so its ink stops inside both outer centres — unpadded, the
+Contrabass read `n1 → n4` in every bar whose truth is `n0 → n5`. Merging *without* the
+pad lowered the pooled ratio (0.2449 → 0.2436, pre-ledger base) while **raising** the
+edit count and the `wrong slur` category — the metric's symmetric denominator rewarding
+74 extra predicted symbols. That is **dilution, not recognition**: always read the edit
+count beside the ratio. Both ends of a slur must also land in the same voice, because
+MusicXML pairs `<slur>` within a `<voice>` stream — 3 of 75 straddled two voices and
+left both halves unpaired, malformed rather than merely wrong.
+
+A slur can also cross a **system break** (`annotate_slurs_in_slot`, `b95e558`), since
+stitching made a part the same staff on every system. That junction is anchored on the
+**first note**, not the cell edge — a resuming cell opens with a clef and key signature,
+so the fragment begins ~5.3 spaces in — and heights compare relative to each staff's own
+top line. Measured on the only multi-system fixture: 0.2416 → **0.2381**, orchestral
+benchmark byte-identical. LilyPond deliberately never receives one — its slurs cannot
+span two Staff contexts. See
+[SYSTEM_BREAK_SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SYSTEM_BREAK_SLURS_2026-09-01.md).
 
 ### Theory layer (optional, env-gated)
 
@@ -335,8 +385,10 @@ Bassoon / Horn / Trumpet / Timpani / Violin / Viola / Cello* instead of
   86%** over 14 bracket-verified pages, and spurious single-staff "systems" 19 → 0. The
   same pass recovers the instrument-family grouping as `Staff.group_index` (verified on
   Beethoven 9: 4 woodwinds | 2 horns | 5 strings). The ground truth is now **23 pages
-  over 5 editions** and connectivity scores **20/23 (87%)** on it; see "Measured and
-  held back" for the five attempts to close the last three.
+  over 5 editions** and connectivity + the left-edge split (cue A, 2026-09, default on)
+  scores **22/23** on it — see the September 1 grouping entry above; the five
+  threshold-style attempts that preceded cue A are in "Measured and held back".
+  End-to-end guard on real scans: `tools/omr/tests/test_left_edge_split_e2e.py`.
 - **`instruments.py` + `staff_labels.py`** — instrument identity from the PDF's text
   layer, free. 18/65 score PDFs had one on the old corpus and **53 of the score
   library's 235 editions do (23%)**; **79% of labelled staves resolve**. The
@@ -472,8 +524,8 @@ repository's own handoff notes.
 | **Majority-steered re-segmentation** (`benchmarks/omr-majority-steering-2026-08/`) | shipped **inert** | 27 systems across 12 real pages, **0** with a staff disagreeing from its system's majority. The conservative pass has already done the work; there is no shortfall left to steer. |
 | **Accidental-role key recovery** (`benchmarks/omr-keysig-blindspot-2026-08/`) | **not shipped**, −1 | Routing `accidentalFlat` into the key readers takes beet5-p2 from 10 correct to 9. The accidental set is noisier than the marker set, and it displaced a better CV-locator reading. |
 | **Foot-of-system anchor** (`benchmarks/omr-margin-labels-2026-08/`) | **not shipped**, −6 | 50/52 → 44/52; the dossier went from supplying 1 clef at 100% to 11 at 27%. "The strings at the bottom are the same in every tradition" is about which *instruments* are there, not how many *staves* they occupy — divisi and condensation are the actual unknown. |
-| **Slurs** (`export.annotate_slurs`) | **implemented, tested, not wired**, +24 edits | Cells are cut per MEASURE, so a slur crossing a barline is detected as two arcs — **118 arcs against 82 true slurs** — and emitting per measure writes two slurs where the music has one. Dynamics alone scored pooled 0.2595; dynamics + slurs 0.2598, `wrong slur` 76 → 97. The arc-to-note mapping is the correct half and is kept with its tests; what is missing is a slur that can outlive a measure in the event model. Worth ~70 edits once it can. |
-| **The system-break rule, five attempts** (`benchmarks/omr-system-grouping-2026-08/`) | **all rejected; the recommendation is to stop** | Rightmost-reach separated 262 boundaries with ZERO overlap and scored 14/14 — then over-split **12 pages** outside the two Beethoven editions it was measured on (La Mer 1 → 16 systems). Two more ink variants and a bracket-only variant failed identically; instrument-label continuity's best variant makes 8 page-level errors against the shipped rule's 3. The mechanism: **orchestral engraving breaks barlines between instrument families, so what crosses a gap is a property of the edition's convention**, not of whether a system ends there. Two editions is not a sample. Kept: bracket-reach 0 is a NECESSARY condition (15/15 true breaks) and so a cheap first filter for some future combined rule. |
+| **Slurs, emitted per measure** (`export.annotate_slurs`) | **held back, then shipped 2026-09-01 in a different form** | The hold was right: cells are cut per MEASURE, so a slur crossing a barline is detected as two arcs, and emitting per measure writes two slurs where the music has one — dynamics alone scored pooled 0.2595; dynamics + slurs 0.2598, `wrong slur` 76 → 97, +24 edits. What was per-measure turned out to be the **pairing**, not the event model, and moving it to the staff shipped as `bae93b1` (0.2263 → 0.2209) — see the Slurs section above. The arc-to-note mapping kept with its tests was indeed the correct half. |
+| **The system-break rule, five attempts** (`benchmarks/omr-system-grouping-2026-08/`) | **all rejected** — later superseded by cue A, the left-edge split (2026-09, shipped default-on; see the September 1 grouping entry) | Rightmost-reach separated 262 boundaries with ZERO overlap and scored 14/14 — then over-split **12 pages** outside the two Beethoven editions it was measured on (La Mer 1 → 16 systems). Two more ink variants and a bracket-only variant failed identically; instrument-label continuity's best variant makes 8 page-level errors against the shipped rule's 3. The mechanism: **orchestral engraving breaks barlines between instrument families, so what crosses a gap is a property of the edition's convention**, not of whether a system ends there. Two editions is not a sample. Kept: bracket-reach 0 is a NECESSARY condition (15/15 true breaks) and so a cheap first filter for some future combined rule. |
 | **The single-dot F-clef veto** | shipped, then **reverted** | It looked like false positives 13 → 5 on the sweep corpora. On the widened unbiased corpus it costs **five real C clefs per false positive removed** (located C clefs 13 → 8). **A sweep corpus is built from the candidates the locator fires on, so it cannot price what a rule costs.** |
 | **`slot_continuity` for the clef** | **dead, structurally** | Beethoven 9 p.60's true system break scores 324 bridged columns against a within-system median near 120 — inverted. And fixing it would gain nothing, because the same slot fails in every system it appears in. |
 | **A conventional cello-and-bass merge** | **rejected a second time** | Beethoven 5 p.2 10/11 → 11/11, but the Pastoral join 10/10 → 5/10 and the corpus 69/69 → 65/69. The span bounds *how many* condensations happen, not *which*. |
@@ -762,8 +814,10 @@ the two-argument form, and check its exit code.
   printed against 8 in the output on the first real-scan page. An engraved control with
   the same music and weights finds 31 of 30, so this is detection, not rhythm. Four
   approaches are closed; the lever is a prepared labeling batch.
-- **Slurs are detected and not exported**, because the per-measure event model has no
-  slur that can span a barline.
+- ~~**Slurs are detected and not exported.**~~ **Fixed 2026-09-01 (`bae93b1`) — see the
+  Slurs section above.** The event model needed nothing; the pairing moved to the staff,
+  in page pixels. What remains under the arcs has the right note indices and the wrong
+  pitches — note recognition, not slur work.
 - **There is no text detection in the pipeline at all.** Text expressions and tempo
   marks are **319 pooled edits — the largest single line in the attribution**, and the
   only large one that is not an export bug. `textDynamic` was the class that caused the
@@ -815,7 +869,7 @@ the two-argument form, and check its exit code.
 | 2026-08-29 | **External truth, and an orchestral benchmark to prove it on.** Dossiers generated from the Gradus MusicXML (97 movements, stored as written pitch, two check tiers that abstain unless the parts join the page), the meter→rhythm loop closed, and `benchmarks/omr-orchestral-e2e/` rendering a Gradus excerpt back to PDF so every note on a conductor's page is known by construction. System grouping fixed by a connectivity veto — gap distance provably cannot separate systems — taking Beethoven's measure count to 8/8 exact. |
 | 2026-08-30 | **A crash, a diagnosis, and three ideas that did not survive contact.** `resegment_fused_measures` asked OpenCV for a 1×0 kernel on one-line staves, so 3 of 13 such pages could not be transcribed at all. Majority-steered re-segmentation, accidental-role key recovery and a foot-of-system dossier anchor were each built, measured and **not shipped**. The part-to-staff join was scored directly for the first time. |
 | 2026-08-31 | **OMR-NED adopted, Surya added as a free label rung, and the contextual pass wired into `transcribe`.** The first accuracy figure here with an outside reference point — pooled **0.3164** — which immediately found that Beethoven scores note recall 1.000 and OMR-NED 0.1958, because flags are emitted where beams are printed and dynamics are never emitted at all. Surya 2 reads the margin as accurately as Claude on everything free ground truth can check, at 89% of the yield and $0; measuring it exposed the margin crop clipping first letters. Part identity finally reaches the exported score, and the `Tr. Alt.` lexicon bug it surfaced was fixed and validated on 1,380 labels across 10 editions. |
-| 2026-09-01 | **Seven OMR-NED fixes — pooled 0.3164 → 0.2263 — and the first end-to-end run on a real scan.** Beams, augmentation dots, dynamics and tuplets were all signal the pipeline had already computed and the exporter dropped or double-counted; the other three were placement — two staff windows locked onto the wrong ink, and cross-staff notes awarded by distance rather than by the ledger ladder and the instrument's range. `wrong note`, 40% of the budget and never opened, was attributed to **rhythm and one staff**, with the scattered residue at 3.3%. Separately: a scan measured end to end for the first time (OMR-NED 0.8706, and half noteheads that the detector cannot see), the clef benchmark widened to 166 staves and the target moved to **labels rather than clef reading**, the system-break rule abandoned after five rejected attempts, and a provenance-attached score library built. Five branches landed. |
+| 2026-09-01 | **Eight OMR-NED fixes — pooled 0.3164 → 0.2209 — and the first end-to-end run on a real scan.** Beams, augmentation dots, dynamics, tuplets and slurs were all signal the pipeline had already computed and the exporter dropped, double-counted or split in two; the other three were placement — two staff windows locked onto the wrong ink, and cross-staff notes awarded by distance rather than by the ledger ladder and the instrument's range. The slur fix (0.2263 → 0.2209) moved the PAIRING to the staff in page pixels rather than changing the event model, and carried its own lesson: merging *without* the notehead pad lowered the ratio while **raising** the edit count — dilution from the metric's symmetric denominator, not recognition. `wrong note`, 40% of the budget and never opened, was attributed to **rhythm and one staff**, with the scattered residue at 3.3%. Separately: a scan measured end to end for the first time (OMR-NED 0.8706, and half noteheads that the detector cannot see), the clef benchmark widened to 166 staves and the target moved to **labels rather than clef reading**, the system-break rule abandoned after five rejected attempts, and a provenance-attached score library built. Five branches landed. |
 
 ---
 
@@ -824,7 +878,7 @@ the two-argument form, and check its exit code.
 The ranked handoff is [`docs/next-steps-omr-2026-09-01.md`](docs/next-steps-omr-2026-09-01.md);
 NOTES.md carries the long-form context for everything below.
 
-The current figure is **0.2263** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.3302), and
+The current figure is **0.2209** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.3185), and
 NOTES.md, CLAUDE.md and `next-steps-omr-2026-09-01.md` now all agree on it — NOTES.md's
 START HERE block was three fixes behind until `6a1b601` and says so itself.
 
@@ -838,9 +892,10 @@ START HERE block was three fixes behind until `6a1b601` and says so itself.
    now: hollow noteheads on scans whose counters have closed.
 3. **Beam level ±1 and lost dots** — the rest of the 452-edit rhythm bucket. Partly
    reachable by widening `_reconcile_measure_to_meter` to move a dot as well as a beam.
-4. **Slurs that can span measures** — `export.annotate_slurs` is written, tested and
-   unwired with its reason measured. Worth ~70 edits once the event model can express a
-   slur outliving a measure.
+4. ~~**Slurs that can span measures**~~ — **shipped 2026-09-01** (`bae93b1`,
+   0.2263 → 0.2209, `wrong slur` 81 → 61, about 38% of the 82-edit slur opportunity).
+   The residue under the arcs is note recognition, not slur work — see the Slurs
+   section above.
 5. **The `count` mechanisms** — 261 edits across three independent causes: seven
    spurious whole noteheads in staff-start measures, a whole staff (C Horn 2) emitting
    zero notes in all seven of its bars, and two flute staves trading a note. **Re-measure
