@@ -664,6 +664,40 @@ Absent entirely where `.venv-surya` is not installed, including the container.
 
 ---
 
+## An optional pass may abstain quietly — it may not fail like a defect quietly
+
+`transcribe` runs two optional enrichments behind `except Exception`, because a
+transcription that succeeded must not be lost to an enrichment that could not
+run. **Not raising is not the same as not telling anyone**, and the gap between
+those cost six weeks: `apply_contextual_analysis` renamed a parameter, the
+caller kept the old name, and the TypeError was filed as an ordinary
+"unavailable" — indistinguishable from the honest abstentions that pass makes
+constantly (no text layer, no five-line geometry, no Surya venv).
+
+**Nothing caught it.** The suite was green. The OMR-NED number did not move —
+contextual's two channels into the export (part names, clef fill) provably do
+not reach the metric on dossier-seeded fixtures, part naming shown by experiment
+to change the score by exactly nothing. The only trace was one stderr line gated
+on `progress`, and `orchestral_eval` runs `progress=False`.
+
+`_optional_pass_failure` now classifies the two:
+
+| | what it means | how loud |
+|---|---|---|
+| abstention (`ImportError`, `FileNotFoundError`, …) | had nothing to work with | quiet unless `progress` |
+| bug (`TypeError`, `AttributeError`, `NameError`, `KeyError`, `IndexError`, `ValueError`) | the code is wrong | **stderr always** |
+
+`error_class` and `looks_like_a_bug` are recorded either way so a benchmark can
+assert on them, and `orchestral_eval` **exits non-zero** when a pass failed like
+a defect. Both swallows route through it, and a test asserts they still do.
+
+⚠️ **The benchmark cannot regress-test contextual by its SCORE.** If that pass
+dies again the pooled number will not move. The seam tests
+(`test_transcribe_helpers.py`) and this guard stand in its place — do not
+assume a stable OMR-NED means the pipeline is intact.
+
+---
+
 ## Instrument identity — three readers, cheapest first
 
 `contextual._labels_for_page` runs them in order and only pays when the free
