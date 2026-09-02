@@ -914,13 +914,13 @@ to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `68be549`: **pooled 0.1364 / 966 edits** (Mahler 0.0455, Beethoven 0.1649, Brahms 0.1709), over 3696 truth + 3385 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.1138 / 822**, measured on `dc74488`.
+Current on the engraved orchestral benchmark, measured on `a62e47a`: **pooled 0.1328 / 942 edits** (Mahler 0.0331, Beethoven 0.1649, Brahms 0.1707), over 3696 truth + 3396 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.1138 / 822**, measured on `dc74488`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler | 0.0455 | 86 | 0.917 | 0.917 | 0.864 |
+| Mahler | 0.0331 | 63 | 0.917 | 0.917 | 1.000 |
 | Beethoven | 0.1649 | 205 | 1.000 | 1.000 | 1.000 |
-| Brahms | 0.1709 | 675 | 0.956 | 0.955 | 0.992 |
+| Brahms | 0.1707 | 674 | 0.956 | 0.955 | 0.992 |
 <!-- accuracy:end -->
 
 **Generated — do not hand-edit, here or anywhere.** `68be549` made this the

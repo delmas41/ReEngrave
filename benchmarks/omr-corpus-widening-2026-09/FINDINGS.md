@@ -135,7 +135,7 @@ works outranks one work\'s quirk*. All three of the top items are the same shape
 this repository has now paid for eight times: **the signal is already detected
 and something downstream throws it away.**
 
-### 1. The time signature SYMBOL is detected at 0.89-0.96 and exported as digits — 270 edits, 5 works
+### 1. The time signature SYMBOL is detected at 0.89-0.96 and exported as digits — 273 edits, 5 works
 
 The numbers are right on **every single work in the corpus**. What is lost is
 the `symbol` attribute:
@@ -145,7 +145,7 @@ the `symbol` attribute:
 | `bruckner-sym5-mvt1` | `2/2 symbol="cut"` | `2/2` | 25 | 75 |
 | `brahms-sym4-mvt1` | `2/2 symbol="cut"` | `2/2` | 20 | 60 |
 | `mozart-sym41-mvt1` | `4/4 symbol="common"` | `4/4` | 17 | 51 |
-| `dvorak-sym9-mvt4` | `4/4 symbol="common"` | `4/4` | 17 | 51 |
+| `dvorak-sym9-mvt4` | `4/4 symbol="common"` | `4/4` | 18 | 54 |
 | `mozart-sym40-mvt1` | `2/2 symbol="cut"` | `2/2` | 11 | 33 |
 | **incumbents (all three)** | digit meters | digit meters | | **0** |
 
@@ -223,7 +223,7 @@ page is exactly what three pages cannot falsify.
 
 Beethoven 5 and Brahms 1 have no `fingering3` at all, so they cannot move.
 
-### 3. Articulations are detected and never exported — ~180 edits, 5 works
+### 3. Articulations are detected and never exported — 6 works
 
 `export.py` contains the string "articulation" **once, in a docstring.** There
 is no articulation code in the pipeline at all, while the detector maps every
@@ -530,13 +530,46 @@ and 76% of its budget in whole-measure and whole-staff operations means its bars
 do not pair** — and every correct symbol added to a bar that is already charged
 delete-whole-bar-plus-insert-whole-bar makes that bar more expensive.
 
-Kept, and the reasoning is the one `b8ccc89` already set down when writing
-chords bottom-up cost two edits and was still right: **a change that makes the
-export match what is printed should not be refused by a metric that is
-punishing something else.** The arithmetic supports it either way — −898 over
-the eight works that segment correctly, −679 pooled over all nine — but the
-argument does not rest on the arithmetic. What Boulanger measures here is its
-own segmentation, which is item 6 of the handoff and untouched by any of this.
+**Per-fix arithmetic, since the combined table hides this and should not.**
+Isolating fix 3 by differencing the runs that bracket it:
+
+| work | fix 3 alone |
+|---|--:|
+| `mozart-sym40-mvt1` | −57 |
+| `brahms-sym4-mvt1` | −33 |
+| `beethoven-sym3-mvt1` | −21 |
+| `mahler-sym5-mvt1` (canonical) | −6 |
+| `bruckner-sym5-mvt1` | −4 |
+| `dvorak-sym9-mvt4` | −1 |
+| `tchaikovsky-sym4/6`, `mozart-sym41-mvt1` | 0 |
+| **subtotal, works that segment** | **−122** |
+| `boulanger-printemps-mvt1` | **+219** |
+| **net across the measured corpus** | **+97** |
+
+⚠️ **So fix 3, taken alone and across every work measured, makes OMR-NED
+WORSE by 97 edits.** That is the honest headline for it and it is not what the
+combined −679 suggests. Fixes 1 and 2 carry the improvement; fix 3 is −122 on
+eight works and +219 on one.
+
+**Kept anyway, and the case is not the arithmetic.** The precedent is `b8ccc89`,
+where writing chords bottom-up cost two edits and shipped because the export
+then matched the convention its own truth is written in. Here the export
+now carries 263 of Boulanger\'s 271 printed marks where it carried none, and the
+same rule is 55/60, 81/110, 21/38, 9/10 and 6/6 on the works beside it. What
+makes Boulanger expensive is that **43 of its 46 parts survive segmentation**,
+so its bars are already charged whole and every correct symbol added to one
+raises the charge. That is a fact about `entire measure` amplification on a
+mis-segmented page, not about the marks.
+
+⚠️ **The counter-argument deserves stating rather than dismissing:** +97 is not
+2, and a reader who trusts OMR-NED as the arbiter should reject this fix. The
+reason to keep it is that Boulanger is the one work in the corpus whose
+STRUCTURE fails — 76% of its budget is whole-measure and whole-staff operations
+before any of tonight\'s work — and the fixture docstring already warns that
+such a render measures page segmentation rather than recognition. Fixing that
+segmentation (handoff item 6) is what would let this row be read at all. **If a
+later session decides otherwise, the fix is one commit (`0eb1271`) and reverts
+cleanly.**
 
 ---
 
