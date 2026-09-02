@@ -11,8 +11,8 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.2263** on the engraved orchestral benchmark (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.3302), down from **0.3164** at the start of
+**Pooled OMR-NED 0.2209** on the engraved orchestral benchmark (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.3185), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
 `benchmarks/omr-ned-2026-08/FINDINGS.md`.
@@ -28,10 +28,15 @@ export together, and the engraved benchmark says nothing about scan robustness.
 | staff window fitted onto a beam | 0.3045 → 0.2716 | `f2e1991` |
 | augmentation dots counted twice | 0.2716 → 0.2624 | `52ba215` |
 | dynamics never exported | 0.2624 → 0.2595 | `89277a2` |
+| tuplets detected and never consumed | 0.2595 → 0.2489 | `d5079d5` |
+| a staff line RUNS (two windows in five did not) | 0.2489 → 0.2449 | `9276122` |
+| ledger notes awarded by distance, not evidence | 0.2449 → 0.2263 | `81446a0` |
+| slurs cut in two by the barline | 0.2263 → 0.2209 | `bae93b1` |
 
-**Three of the four were EXPORT bugs on data the pipeline had already computed
+**Five of the eight were EXPORT bugs on data the pipeline had already computed
 correctly.** Beams detected and dropped, dots detected and counted twice,
-dynamics detected and dropped. None was visible to any metric this repo had
+dynamics detected and dropped, tuplet markers sitting unread in the JSON, slur
+arcs detected and never rejoined. None was visible to any metric this repo had
 before — note recall called the Beethoven page perfect (1.000) throughout.
 
 The lesson worth carrying: when a category is large, check whether the signal
@@ -79,14 +84,35 @@ What it found, ranked, replaces the rest of this list at the top:
   `_reconcile_measure_to_meter` declines correctly because it can move a beam
   and not a dot.
 
-### 2. Slurs that can span measures
+### 2. ~~Slurs that can span measures~~ — DONE 2026-09-01
 
-`export.annotate_slurs` is written and tested and **not wired**, with the reason
-measured in its docstring: cells are cut per MEASURE, so a slur crossing a
-barline is detected as two arcs (118 arcs against 82 true slurs) and emitting
-per measure writes two slurs where the music has one. Wiring it in costs 24
-edits. The arc-to-note mapping is right; what is missing is a slur that can
-outlive a measure in the event model. Worth ~70 edits when it exists.
+**Pooled 0.2263 → 0.2209**, Brahms 0.3302 → **0.3185**, `wrong slur` 81 → 61,
+edits 1584 → 1563. Measured on top of the ledger fix, not before it — the
+earlier 0.2449 → 0.2394 reading was taken on the pre-ledger base and is
+superseded. `benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`.
+
+**The event model needed nothing.** A MusicXML slur may already open in one
+measure and close in another, and LilyPond's `(` `)` never cared about barlines;
+both need only a number meaning the same thing at both ends. What was
+per-measure was the PAIRING, not the model — so it moved to the staff, in page
+pixels, the same move `transcribe._pair_ties_in_staff` makes for ties.
+
+Three things this step is worth carrying:
+
+- **The merge alone was an ARTIFACT.** On the pre-ledger base it moved pooled
+  0.2449 → 0.2436 while edits went UP (1715 → 1724) and `wrong slur` got worse
+  (77 → 86): 74 new predicted symbols diluted a 9-edit loss, because the
+  denominator sums both sides. Always read the edit count beside the ratio.
+- **What made it real was padding the arc box** — a slur is drawn BETWEEN its
+  noteheads, so its ink stops inside both outer centres and an unpadded x-test
+  drops the outer note at each end. Same correction `rhythm._beamed_groups`
+  makes to a beam box. The Contrabass went from `n1 -> n4` in every bar to 7/7
+  exact against a truth of `n0 -> n5`.
+- **A slur-stripped truth scores 0.2171**, so all 82 Brahms slurs are worth 82
+  edits and a perfect reader lands near 0.2121. This took ~38% of that — the
+  same fraction the pre-ledger measurement gave, which is some evidence the two
+  fixes are independent. The residue is NOT slur work: the Cello's remaining
+  errors have the right note indices and the wrong pitches.
 
 ### 3. The `entire measure` bucket, still 22%
 

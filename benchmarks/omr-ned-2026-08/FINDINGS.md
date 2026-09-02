@@ -54,10 +54,22 @@ excerpts, production weights, dossier on:
 > Brahms alone better and the pooled score worse, because a slur crossing a
 > barline is detected as two arcs.
 >
-> Session total: **0.3164 -> 0.2595**, every step found by this metric and
-> invisible to every other number the repo reports. THREE of the four were
+> **Then tuplets** (`d5079d5`), the signal already sitting in the JSON with
+> nothing reading it: **0.2595 -> 0.2489**, Mahler 0.0826 -> 0.0455.
+> **Then the staff windows that did not RUN** (`9276122`): **-> 0.2449**.
+> **Then the slurs, finally shipped** (`72cdc4b`) once the pairing moved to the
+> STAFF and the arc box was padded. **Then the cross-staff ledger fix**
+> (`81446a0`): 0.2449 -> **0.2263**. The slurs, re-measured on top of it:
+> **0.2263 -> 0.2209**, `wrong slur` 81 -> 61.
+> See `SLURS_2026-09-01.md` — and note that the barline merge ALONE lowered the
+> ratio while RAISING the edit count, the symmetry caveat below biting a live
+> conclusion.
+>
+> Session total: **0.3164 -> 0.2209**, every step found by this metric and
+> invisible to every other number the repo reports. FIVE of the eight were
 > EXPORT bugs on data the pipeline had already computed correctly: beams dropped
-> entirely, dots counted twice, dynamics dropped entirely.
+> entirely, dots counted twice, dynamics dropped entirely, tuplet markers never
+> read, slur arcs never rejoined.
 
 Pooled, not averaged — one edit-sum over one symbol-sum, the way the paper
 defines it, so the dense score counts for more.
@@ -126,9 +138,14 @@ weight does not track musical importance.
   `<part>` per (page, system, staff); a Gradus truth has one per instrument.
   Where those disagree the metric charges for it, correctly, but it is not a
   detector number. Read it next to note recall, not instead of it.
-- **It is symmetric.** The denominator sums both sides, so swapping prediction
-  and truth does not change the score — it silently changes which file is
-  parsed strictly. `score_pair` is keyword-only for that reason.
+- **It is symmetric, and that can manufacture a gain.** The denominator sums
+  both sides, so swapping prediction and truth does not change the score — it
+  silently changes which file is parsed strictly. `score_pair` is keyword-only
+  for that reason. The same symmetry means **emitting MORE symbols lowers the
+  ratio even when they make the output worse**: the first cut of the slur merge
+  scored 0.2449 -> 0.2436 while its edits rose 1715 -> 1724 and `wrong slur`
+  rose 77 -> 86. Read `omr_ed` beside `omr_ned`; a ratio that falls while the
+  edit count climbs is dilution, not recognition.
 - **The engraved benchmark says nothing about scan robustness** — same caveat
   the orchestral e2e harness already carries.
 - **Clefs barely register here**: 9 edits out of 2224 (0.4%). That is not a

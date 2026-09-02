@@ -199,12 +199,16 @@ dots are detected correctly and COUNTED TWICE on export: `_duration_to_lily_xml`
 summed `duration_type` ("dotted_quarter") with the `dots` field (1), on a stated
 assumption that only one is ever set. Brahms `wrong dot` **103 → 18**, pooled
 **0.2716 → 0.2624**. An existing test had asserted the wrong behaviour and was
-corrected in place. ✅ **Dynamics are exported now too** (0.2624 → **0.2595**). ⚠️ **Slurs are
-implemented and tested but NOT wired**, on measurement: they improve Brahms
-alone and cost 24 edits overall, because cells are cut per MEASURE so a slur
-crossing a barline becomes two arcs (118 detected against 82 true slurs).
-Wire `export.annotate_slurs` in once slurs can span measures. Still open: text
-expressions and tempo marks, which need text detection we do not have.
+corrected in place. ✅ **Dynamics are exported now too** (0.2624 → **0.2595**).
+✅ **Slurs are SHIPPED** (2026-09-01, `bae93b1`, 0.2263 → **0.2209**,
+`wrong slur` 81 → 61, measured on top of the ledger fix `81446a0`). The pairing moved to the STAFF, in page pixels, which
+rejoins the two arcs a barline cuts — the event model itself needed nothing,
+since a MusicXML slur may already span measures. The half that mattered was
+padding the arc box: a slur is drawn BETWEEN its noteheads, so unpadded it drops
+the outer note at each end. Merging *without* the pad lowered the ratio while
+RAISING the edit count — dilution, not recognition. See
+`benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`. Still open: text expressions
+and tempo marks, which need text detection we do not have.
 
 **One misaligned staff produced two thirds of the pitch errors.** 65 notes are
 replaced page-wide; **42 of them are part 20 alone** and **41 are exactly −4

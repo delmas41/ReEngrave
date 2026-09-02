@@ -450,6 +450,53 @@ page. The fifth carries no marker at all, at any confidence.
 
 ---
 
+## Slurs — paired over the STAFF, because the barline cuts the arc
+
+A slur crossing a barline is **detected as two arcs**, because cells are cut per
+measure — 120 arcs on the Brahms fixture against 82 slurs in the truth. That is
+why `annotate_slurs` sat implemented, tested and unwired from `89277a2` until
+2026-09-01: emitting per measure wrote two slurs where the music has one.
+
+**The event model needed nothing.** A MusicXML slur may already open in one
+measure and close in another, and LilyPond's `(` `)` never cared about barlines;
+both need only a number that means the same thing at both ends. What was
+per-measure was the PAIRING. So `export.annotate_slurs_in_staff` runs once per
+staff in **page pixels** — the only frame shared across cells, the same move
+`transcribe._pair_ties_in_staff` makes to catch ties across a barline — and
+marks the notehead detections, which `group_chords_in_measure` already carries
+into events the way it carries the tie flags.
+
+**Three constants, none of them tuned — each sits in a gap the measurement
+found** (`benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`):
+
+| what it decides | the two clusters | constant |
+|---|---|--:|
+| an arc was CUT by the boundary | 0.00–0.05 spaces vs 1.75 | 0.5 spaces |
+| the two halves are ONE slur | 0.00–0.53 spaces vs 8.05 | 2.0 spaces |
+| a notehead is UNDER the arc | 0.00–0.19 widths vs 0.32 | 0.25 nh widths |
+
+⚠️ **The arc is NARROWER than the run it binds, and that half is what made the
+change real rather than cosmetic.** A slur is drawn *between* its noteheads, so
+its ink stops inside both outer centres; unpadded, the Contrabass read
+`n1 -> n4` in every bar whose truth is `n0 -> n5`. The box is padded exactly as
+`rhythm._beamed_groups` pads a beam box. Merging *without* the pad lowered
+pooled OMR-NED (0.2449 → 0.2436) while **raising** the edit count and the
+`wrong slur` category — the metric's symmetry rewarding extra symbols. With the
+pad, on top of the ledger fix: **0.2263 → 0.2209**, edits 1584 → 1563,
+`wrong slur` 81 → 61, Contrabass 7/7 exact. (The pre-ledger reading of the same
+work was 0.2449 → 0.2394; the step size barely moved.)
+
+**Both ends must land in the same voice**, because MusicXML pairs `<slur>`
+within a `<voice>` stream: 3 of 75 straddled two voices and left both halves
+unpaired, which is malformed rather than merely wrong.
+
+Beethoven and Mahler export **byte-identically** — neither page carries a slur
+the detector reads. A slur-stripped truth scores 0.2171, so this takes ~38% of
+what slurs are worth here; the residue has the right note INDICES and the wrong
+pitches, which is note recognition, not slur work.
+
+---
+
 ## Orchestral end-to-end benchmark
 
 `benchmarks/omr-orchestral-e2e/` — renders an excerpt of a Gradus MXL back to
@@ -588,16 +635,19 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Current on the engraved orchestral benchmark: **pooled 0.2263** (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.3302), from an opening baseline of 0.3164. Full
+Current on the engraved orchestral benchmark: **pooled 0.2209** (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.3185), from an opening baseline of 0.3164. Full
 reading, and the findings it surfaced that note recall is blind to, in
-[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md)
-and
-[WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md).
+[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md),
+[WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)
+and [SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md).
 
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is
-parsed strictly, which is why `score_pair` is keyword-only. (2) A large `entire
+parsed strictly, which is why `score_pair` is keyword-only. **The same symmetry
+rewards emitting MORE symbols**, so a ratio that falls while `omr_ed` RISES is
+dilution, not recognition — the first cut of the slur work did exactly that.
+(2) A large `entire
 measure insert/delete` bucket is amplified, not necessarily severe: a measure
 differing only by a fermata is charged delete-whole-bar + insert-whole-bar. Open
 the op list before believing it. (3) **`wrong note` does not mean wrong
