@@ -29,13 +29,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
 import fitz
-from music21 import converter
+from music21 import converter, expressions
 
 from tools.omr.dossier import find_dossier, summarize
 from tools.omr.export import to_musicxml
@@ -81,14 +82,196 @@ DEFAULT_WORKS = (
 # is a floor built into the instrument, and it went unnoticed for a day of work
 # on the bucket it dominates.
 #
-# So the run says so. Not fixed here, deliberately: making the render complete
-# or the truth smaller both change every historical number, and that is a call
-# for a person, not a side effect of a benchmark run.
+# FIXED 2026-09-02 by COMPLETING THE RENDER, not by shrinking the truth. The
+# truth is what the work IS — the fermatas over those rests are printed in
+# every real edition of Beethoven 5, and a reader should be asked to read them
+# — so the fixture pipeline restores what `musicxml2ly` dropped instead of
+# deleting it from the truth. `_restore_rest_fermatas` re-reads the truth's
+# fermata-on-rest measures and splits the generated `R2*8` runs to attach
+# `\fermata` at exactly those bars (LilyPond ≥ 2.22 takes an articulation on a
+# multi-measure rest directly). Every historical pooled figure predates this
+# and carries a ~105-edit floor the current figures do not — see the
+# discontinuity note beside the fix table in docs/next-steps-omr-2026-09-01.md.
+#
+# `render_shortfall` stays as the guard: it counts truth-vs-render occurrences
+# on every run, so if the restoration ever breaks — or musicxml2ly drops
+# something new — the run says so instead of silently re-growing the floor.
 
 #: (name, how it appears in the truth XML, how it appears in the LilyPond).
 #: Only symbols actually measured to go missing belong here — a speculative
 #: entry would raise a warning nobody can act on.
 RENDER_DROPS = (("fermata", "<fermata", "\\fermata"),)
+
+
+def rest_fermata_ordinals(score) -> dict[int, list[int]]:
+    """part index -> 1-based measure ordinals (within the excerpt) whose
+    whole-measure rest carries a fermata.
+
+    Ordinals count measures of the excerpt in order rather than trusting
+    `Measure.number`, because the LilyPond side counts the same way and the two
+    must agree by construction, pickup numbering conventions notwithstanding.
+    """
+    out: dict[int, list[int]] = {}
+    for p_idx, part in enumerate(score.parts):
+        for ordinal, meas in enumerate(part.getElementsByClass("Measure"),
+                                       start=1):
+            for rest in meas.recurse().getElementsByClass("Rest"):
+                if any(isinstance(e, expressions.Fermata)
+                       for e in rest.expressions):
+                    out.setdefault(p_idx, []).append(ordinal)
+                    break
+    return out
+
+
+# One VoiceOne block per part, in part order. The name must END in VoiceOne so
+# `PartPOneFourVoiceOneLyricsOne` (a lyrics block) and `...VoiceTwo` (a second
+# voice, which would print a duplicate mark) never match.
+_PART_BLOCK_RE = re.compile(r"^Part\w*VoiceOne\s*=", re.M)
+
+# A whole-measure rest run (`R2`, `R2*8`, `R2.`, `R1*3/4`, `R1*3/4*2`) or a bar
+# check. Only uppercase-R runs advance by their count; a bar check advances by
+# one unless a run in the same segment already did.
+_MEASURE_EVENT_RE = re.compile(
+    r"(?P<run>\bR(?P<dur>\d+\.*)(?P<frac>\*\d+/\d+)?(?:\*(?P<count>\d+)(?!\s*/))?)"
+    r"|(?P<bar>\|)"
+)
+
+_BAR_COMMENT_RE = re.compile(r"[ \t]*%[ \t]*(\d+)")
+
+
+def _matching_brace(text: str, open_pos: int) -> int:
+    """Index of the `}` closing the `{` at `open_pos`."""
+    depth = 0
+    for i in range(open_pos, len(text)):
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return i
+    raise RuntimeError("unbalanced braces in generated LilyPond")
+
+
+def _take_markup_postfix(body: str, pos: int) -> tuple[str, int]:
+    """Consume `^\\markup { … }` groups attached after a rest run.
+
+    A split run must keep such an attachment on its FIRST piece — the tempo
+    text over Flute 1's `R2*8` belongs to bar 1, and leaving it after the last
+    piece would silently move it to bar 6.
+    """
+    taken = ""
+    while True:
+        m = re.match(r"\s*[\^_-]\s*\\markup\s*(?=\{)", body[pos:])
+        if not m:
+            return taken, pos
+        brace_open = pos + m.end()
+        brace_close = _matching_brace(body, brace_open)
+        taken += body[pos:brace_close + 1]
+        pos = brace_close + 1
+
+
+def _patch_block(body: str, ordinals: list[int]) -> str:
+    """Attach `\\fermata` to the whole-measure rests at `ordinals` (1-based)."""
+    runs: list[tuple[int, int, re.Match]] = []
+    measure = 1
+    advanced_by_run = False
+    anchored = False
+    for m in _MEASURE_EVENT_RE.finditer(body):
+        if m.group("bar"):
+            if advanced_by_run:
+                advanced_by_run = False
+            else:
+                measure += 1
+            # `| % n` names the measure ABOUT TO START, and musicxml2ly puts
+            # one on every bar check — including one at the end of the header
+            # (`\key es \major | % 1`), which is why the counter cannot simply
+            # advance on `|`: that check precedes measure 1. So the FIRST
+            # comment anchors the counter, and every later one must agree —
+            # any drift means a bar check was missed and a fermata would land
+            # on the wrong bar, which must fail loudly, not quietly.
+            c = _BAR_COMMENT_RE.match(body, m.end())
+            if c:
+                n = int(c.group(1))
+                if not anchored:
+                    measure = n
+                    anchored = True
+                elif measure != n:
+                    raise RuntimeError(
+                        f"measure count drifted: bar comment says {n}, "
+                        f"counter says {measure}"
+                    )
+        else:
+            count = int(m.group("count") or 1)
+            runs.append((measure, measure + count - 1, m, anchored))
+            measure += count
+            advanced_by_run = True
+
+    if ordinals and not anchored:
+        raise RuntimeError(
+            "no `| % n` bar-number comments to anchor the measure count — "
+            "refusing to guess where the fermata bars fall"
+        )
+    edits: list[tuple[int, int, str]] = []
+    for a, b, m, run_anchored in runs:
+        targets = [t for t in ordinals if a <= t <= b]
+        if not targets:
+            continue
+        if not run_anchored:
+            raise RuntimeError(
+                f"a fermata bar ({targets}) falls in a rest run seen before "
+                "the first bar-number comment — its span cannot be trusted"
+            )
+        base = f"R{m.group('dur')}{m.group('frac') or ''}"
+
+        def piece(x: int, y: int) -> str:
+            return base if x == y else f"{base}*{y - x + 1}"
+
+        parts: list[str] = []
+        pos = a
+        for t in targets:
+            if t > pos:
+                parts.append(piece(pos, t - 1))
+            parts.append(base + "\\fermata")
+            pos = t + 1
+        if pos <= b:
+            parts.append(piece(pos, b))
+        postfix, end = _take_markup_postfix(body, m.end())
+        parts[0] += postfix
+        edits.append((m.start(), end, " ".join(parts)))
+
+    placed = sum(1 for a, b, m, _ in runs for t in ordinals if a <= t <= b)
+    if placed != len(ordinals):
+        raise RuntimeError(
+            f"could not place every rest fermata: wanted bars {ordinals}, "
+            f"whole-measure rest runs cover {[(a, b) for a, b, _, _ in runs]}"
+        )
+    for start, end, replacement in sorted(edits, reverse=True):
+        body = body[:start] + replacement + body[end:]
+    return body
+
+
+def _restore_rest_fermatas(ly_text: str,
+                           targets: dict[int, list[int]],
+                           n_parts: int) -> str:
+    """Re-attach the fermatas `musicxml2ly` drops from whole-measure rests."""
+    blocks = list(_PART_BLOCK_RE.finditer(ly_text))
+    if len(blocks) != n_parts:
+        raise RuntimeError(
+            f"found {len(blocks)} VoiceOne part blocks for {n_parts} parts — "
+            "the part->block mapping is positional and cannot be trusted here"
+        )
+    spans: list[tuple[int, int, int]] = []  # (body_start, body_end, part_idx)
+    for p_idx, m in enumerate(blocks):
+        if p_idx not in targets:
+            continue
+        open_pos = ly_text.index("{", m.end())
+        close_pos = _matching_brace(ly_text, open_pos)
+        spans.append((open_pos + 1, close_pos, p_idx))
+    for body_start, body_end, p_idx in sorted(spans, reverse=True):
+        patched = _patch_block(ly_text[body_start:body_end],
+                               sorted(targets[p_idx]))
+        ly_text = ly_text[:body_start] + patched + ly_text[body_end:]
+    return ly_text
 
 
 def render_shortfall(truth_xml: Path, ly: Path) -> list[tuple[str, int, int]]:
@@ -148,6 +331,12 @@ def excerpt(work_id: str, first: int, last: int,
                        check=True, capture_output=True)
         src_ly = ly.read_text()
         src_ly = src_ly.replace("\\header {", "\\header {\n  tagline = ##f")
+        # Put back what musicxml2ly dropped, so the page carries what the
+        # truth claims — see the RENDER_DROPS note above.
+        rest_fermatas = rest_fermata_ordinals(score)
+        if rest_fermatas:
+            src_ly = _restore_rest_fermatas(src_ly, rest_fermatas,
+                                            n_parts=n_parts)
         # PAPER MUST BE SIZED TO THE SCORE, and getting this wrong invalidates
         # the whole measurement. Rendering a 38-part Mahler page on A4 leaves
         # LilyPond ~1.0 staff-space between staves — the page becomes one
