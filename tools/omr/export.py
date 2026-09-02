@@ -329,6 +329,12 @@ def _lily_event(event: dict[str, Any]) -> str:
     # precedes a start on the same note — `sorted` puts "start" first, hence
     # the ordering is handled in `_lily_slur_suffix`.
     slur_suffix = _lily_slur_suffix(event)
+    # Articulations attach to the note they follow, and go INSIDE the slur
+    # marks — LilyPond wants `c4-.(` not `c4(-.`. A rest carries none: the
+    # attach pass only ever gives a mark to a notehead.
+    artic_suffix = "".join(_LILY_ARTICULATION[k]
+                           for k in (event.get("articulations") or [])
+                           if k in _LILY_ARTICULATION)
 
     if event["kind"] == "rest":
         return f"r{lily_suffix}{dot_str}"
@@ -342,9 +348,10 @@ def _lily_event(event: dict[str, Any]) -> str:
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
     if len(pitches) == 1:
-        return f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}{slur_suffix}"
+        return (f"{pitches[0]}{lily_suffix}{dot_str}"
+                f"{tie_suffix}{artic_suffix}{slur_suffix}")
     return (f"<{' '.join(pitches)}>{lily_suffix}{dot_str}"
-            f"{tie_suffix}{slur_suffix}")
+            f"{tie_suffix}{artic_suffix}{slur_suffix}")
 
 
 def _lily_measure(events: list[dict[str, Any]]) -> str:
@@ -526,6 +533,30 @@ def _build_mxl_clef_signs() -> dict[str, tuple[str, int]]:
 
 _MXL_CLEF_SIGN = _build_mxl_clef_signs()
 
+#: `transcribe.articulation_kind` -> the MusicXML element inside
+#: `<notations><articulations>`. Five marks, and DSv2's ten `artic*` classes are
+#: these five on two sides — the side says which notehead the mark belongs to
+#: and is consumed there, not here: MusicXML places the mark by `placement`,
+#: which is engraving, and the pipeline has no opinion about it.
+_MXL_ARTICULATION = {
+    "staccato": "staccato",
+    "staccatissimo": "staccatissimo",
+    "accent": "accent",
+    "marcato": "strong-accent",
+    "tenuto": "tenuto",
+}
+
+#: The same five in LilyPond. Both exporters carry every other mark the
+#: pipeline reads (beams, dots, dynamics, tuplets, slurs), so articulations go
+#: to both; `-.` etc. attach to the note they follow.
+_LILY_ARTICULATION = {
+    "staccato": "-.",
+    "staccatissimo": "-!",
+    "accent": "->",
+    "marcato": "-^",
+    "tenuto": "--",
+}
+
 
 # Suffix → MusicXML <clef-octave-change> value
 # (positive = sounds higher than written; negative = lower)
@@ -681,7 +712,8 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               beam_states: dict[int, str] | None = None,
               slur_states: list[tuple[int, str]] | None = None,
               time_modification: dict[str, int] | None = None,
-              tuplet_state: str | None = None) -> str:
+              tuplet_state: str | None = None,
+              articulations: list[str] | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -741,6 +773,14 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     # <tuplet> follows <slur> in the <notations> content model.
     if tuplet_state:
         notations.append(f'{indent}    <tuplet type="{tuplet_state}" number="1"/>')
+    # <articulations> follows <tuplet>, and is one element wrapping all of the
+    # marks on this note rather than one block each.
+    marks = [_MXL_ARTICULATION[k] for k in (articulations or [])
+             if k in _MXL_ARTICULATION]
+    if marks:
+        notations.append(f"{indent}    <articulations>")
+        notations.extend(f"{indent}      <{m}/>" for m in marks)
+        notations.append(f"{indent}    </articulations>")
     if notations:
         lines.append(f"{indent}  <notations>")
         lines.extend(notations)
@@ -1492,6 +1532,10 @@ def _mxl_voice_events(
                     # note is worth — but the bracket is drawn once.
                     time_modification=time_modification,
                     tuplet_state=(tuplet_state if ni == 0 else None),
+                    # Printed once against the chord, like the beam and the
+                    # slur, and hung off its first <note>.
+                    articulations=(event.get("articulations") if ni == 0
+                                   else None),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.

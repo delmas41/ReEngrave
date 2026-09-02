@@ -222,6 +222,19 @@ def group_chords_in_measure(
         slur_states = _chord_slur_states(group)
         if slur_states:
             event["slur_states"] = slur_states
+        # Articulations ride up the same way. A chord takes one staccato, not
+        # one per notehead: the mark is printed once, against the chord, and
+        # MusicXML hangs it off the chord's first <note>. Duplicates are
+        # removed for that reason and not as tidiness — a double stop whose two
+        # heads both matched the same mark would otherwise export it twice.
+        # Inert on any result whose transcription predates the attach pass.
+        marks: list[str] = []
+        for note in group:
+            for kind in note.get("articulations") or []:
+                if kind not in marks:
+                    marks.append(kind)
+        if marks:
+            event["articulations"] = marks
         events.append(event)
 
     # ── Add rest events ───────────────────────────────────────────────────

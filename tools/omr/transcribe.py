@@ -1888,6 +1888,12 @@ def _detections_for_cell(
     ties_from_prev: set[int] = set()
     _pair_ties_in_cell(dets, ties_to_next, ties_from_prev)
 
+    # Articulations, matched to the notehead they are printed against. Same
+    # shape as the tie pass above and for the same reason: the mark and its
+    # note are separate detections and only geometry joins them.
+    articulations: dict[int, list[str]] = {}
+    _attach_articulations_in_cell(dets, articulations)
+
     # ── Build output dicts. Convert cell-local bbox → page-pixel bbox. ────
     out: list[dict[str, Any]] = []
     cell_x0, cell_y0, cell_x1, cell_y1 = cell.bbox_page_px
@@ -1941,6 +1947,11 @@ def _detections_for_cell(
             if rinfo.get("tuplet"):
                 out_d["tuplet"] = rinfo["tuplet"]
                 out_d["tuplet_group"] = rinfo["tuplet_group"]
+        # Articulations printed against this notehead. Only carried when there
+        # are some, to keep the JSON terser — the same policy as beams, tuplets
+        # and the tie flags below.
+        if id(d) in articulations:
+            out_d["articulations"] = articulations[id(d)]
         # Stem direction for noteheads (Phase 4h voice splitting).
         if id(d) in stem_direction_by_id:
             out_d["stem_direction"] = stem_direction_by_id[id(d)]
@@ -2040,6 +2051,107 @@ def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
                 n_new_pairs += 1
 
     return n_new_pairs
+
+
+#: DSv2's ten articulation classes are five marks on two sides, and the side is
+#: part of the class name rather than something to infer.
+_ARTICULATION_KINDS = frozenset(
+    {"staccato", "staccatissimo", "accent", "marcato", "tenuto"})
+
+#: How far along x a mark may sit from the notehead it belongs to, in NOTEHEAD
+#: WIDTHS — the unit, not the mark's own bounding box, which is the mistake the
+#: augmentation-dot gate made and paid 193 edits for.
+#:
+#: NOT a tuned value. Swept over eight engraved works, scoring each placement
+#: against the truth by index (`benchmarks/omr-corpus-widening-2026-09/probe_articulations.py`):
+#:
+#:     0.30   106 placed, precision 0.962, placement rate 0.486
+#:     0.50   197 placed, precision 0.980, placement rate 0.904
+#:     0.75   197 placed, precision 0.980, placement rate 0.904   <- chosen
+#:     1.00   197 placed, precision 0.980, placement rate 0.904
+#:     1.50   197 placed, precision 0.980, placement rate 0.904
+#:     2.50   197 placed, precision 0.980, placement rate 0.904
+#:
+#: A flat plateau from 0.50 to 2.50, identical to the mark, with a cliff below
+#: it: a mark is x-centred on its notehead to within half a width, and on the
+#: correct side there is nothing else within two and a half. 0.75 sits in the
+#: middle of the plateau rather than on either edge of it.
+_ARTIC_MAX_DX_NOTEHEAD_WIDTHS = 0.75
+
+
+def articulation_kind(class_name: str) -> tuple[str, bool] | None:
+    """`("staccato", True)` for `articStaccatoAbove`. None if not one.
+
+    The bool is whether the mark is printed ABOVE the notehead, which the class
+    name states and geometry then has to agree with — a mark labelled `Above`
+    that sits below every notehead in the cell belongs to none of them.
+    """
+    norm = "".join(ch for ch in (class_name or "").lower() if ch.isalnum())
+    if not norm.startswith("artic"):
+        return None
+    body = norm[len("artic"):]
+    for suffix, above in (("above", True), ("below", False)):
+        if body.endswith(suffix):
+            kind = body[: -len(suffix)]
+            return (kind, above) if kind in _ARTICULATION_KINDS else None
+    return None
+
+
+def _attach_articulations_in_cell(dets, out: dict[int, list[str]]) -> int:
+    """Give each articulation mark to the notehead it is printed against.
+
+    THE SEVENTH SIGNAL DETECTED AND NEVER EXPORTED. `export.py` contained the
+    string "articulation" once, in a docstring, while the detector fired 102
+    staccati on one engraved Mozart 40 page — and musicdiff charged back
+    exactly 102 `insarticulation` edits, 28% of that work's whole budget. The
+    three works the benchmark used to consist of print 0, 2 and 6 of them,
+    which is why nothing saw it.
+
+    The rule is the one the engraving makes true: a staccato or accent is
+    printed directly above or below its notehead, so the mark is matched to the
+    notehead nearest it in X, on the side its own class names, within
+    `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS`. A mark with no notehead on the correct side
+    is left unattached rather than given to the nearest thing available — 21 of
+    218 across the corpus, and abstaining there is why precision is 0.980.
+
+    Mutates `out` (notehead id -> list of MusicXML articulation names) and
+    returns the number of marks placed.
+    """
+    noteheads = [d for d in dets if (d.category or "") == "notehead"]
+    if not noteheads:
+        return 0
+    marks = [(d, k) for d in dets
+             if (k := articulation_kind(d.smufl_name or "")) is not None]
+    if not marks:
+        return 0
+
+    widths = sorted(n.width_canonical for n in noteheads)
+    nh_width = widths[len(widths) // 2] or 1.0
+    limit = nh_width * _ARTIC_MAX_DX_NOTEHEAD_WIDTHS
+
+    placed = 0
+    for mark, (kind, above) in marks:
+        mx = mark.x_canonical + mark.width_canonical / 2.0
+        my = mark.y_canonical + mark.height_canonical / 2.0
+        best = None
+        for n in noteheads:
+            ny = n.y_canonical + n.height_canonical / 2.0
+            # Larger canonical y is LOWER on the page, so a mark printed above
+            # its notehead has the smaller y of the two.
+            if above and my >= ny:
+                continue
+            if not above and my <= ny:
+                continue
+            dx = abs(mx - (n.x_canonical + n.width_canonical / 2.0))
+            if dx > limit:
+                continue
+            if best is None or dx < best[0]:
+                best = (dx, n)
+        if best is None:
+            continue
+        out.setdefault(id(best[1]), []).append(kind)
+        placed += 1
+    return placed
 
 
 def _pair_ties_in_cell(dets, ties_to_next: set, ties_from_prev: set) -> None:

@@ -335,6 +335,51 @@ class TestTimeSignatureSymbol:
         assert "symbol=" not in out
 
 
+class TestArticulations:
+    """Detected on every page and exported from none of them until now.
+
+    Mozart 40 fires exactly 102 `articStaccato*` and was charged exactly 102
+    `insarticulation` edits, 28% of its budget. Both exporters carry every
+    other mark the pipeline reads, so both carry these.
+    """
+
+    @staticmethod
+    def _result(marks):
+        r = _tiny_result()
+        nh = (r["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+              ["detections"][0])
+        nh["articulations"] = marks
+        return r
+
+    def test_musicxml_wraps_the_marks_in_one_articulations_element(self):
+        out = to_musicxml(self._result(["staccato", "accent"]))
+        assert "<articulations>" in out
+        assert "<staccato/>" in out and "<accent/>" in out
+        # One wrapper holding both, not one block per mark.
+        assert out.count("<articulations>") == 1
+
+    def test_marcato_is_musicxmls_strong_accent(self):
+        out = to_musicxml(self._result(["marcato"]))
+        assert "<strong-accent/>" in out
+        assert "<marcato/>" not in out
+
+    def test_a_score_with_no_marks_emits_no_articulations(self):
+        assert "<articulations>" not in to_musicxml(_tiny_result())
+
+    def test_an_unknown_mark_is_dropped_not_guessed(self):
+        out = to_musicxml(self._result(["staccato", "bartok-pizzicato"]))
+        assert "<staccato/>" in out
+        assert "bartok" not in out
+
+    def test_lilypond_carries_them_too(self):
+        out = to_lilypond(self._result(["staccato"]))
+        assert "-." in out
+
+    def test_lilypond_marcato_and_tenuto(self):
+        assert "-^" in to_lilypond(self._result(["marcato"]))
+        assert "--" in to_lilypond(self._result(["tenuto"]))
+
+
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────
 
 

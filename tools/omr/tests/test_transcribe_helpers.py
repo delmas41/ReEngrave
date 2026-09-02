@@ -34,6 +34,7 @@ from tools.omr.transcribe import (
     _stem_direction,
 )
 from tools.omr.types import Staff
+from tools.omr import transcribe as tr
 
 
 class TestResolveClefWeights:
@@ -1228,3 +1229,104 @@ class TestOptionalPassFailureIsLoudAboutBugs:
         assert src.count("_optional_pass_failure(") == 2
         # the old hand-rolled shape, which is what hid the failure
         assert '"reason": f"{type(exc).__name__}: {exc}"' not in src
+
+
+# ─── articulations — the seventh signal detected and never exported ─────────
+#
+# `export.py` contained the string "articulation" once, in a docstring, while
+# the detector fired 102 staccati on one engraved Mozart 40 page and musicdiff
+# charged back exactly 102 `insarticulation` edits — 28% of that work's budget.
+# The three works the benchmark used to consist of print 0, 2 and 6 of them.
+
+
+class TestArticulationKind:
+    @pytest.mark.parametrize("cls, expected", [
+        ("articStaccatoAbove", ("staccato", True)),
+        ("articStaccatoBelow", ("staccato", False)),
+        ("articAccentAbove", ("accent", True)),
+        ("articMarcatoBelow", ("marcato", False)),
+        ("articTenutoAbove", ("tenuto", True)),
+        ("articStaccatissimoBelow", ("staccatissimo", False)),
+    ])
+    def test_reads_the_five_marks_and_their_side(self, cls, expected):
+        assert tr.articulation_kind(cls) == expected
+
+    @pytest.mark.parametrize("cls", [
+        "noteheadBlackOnLine", "fermataAbove", "dynamicF", "", "artic",
+        # DSv2 always names a side; anything without one is not one of ours.
+        "articStaccato",
+        # A mark outside the five we map is refused rather than guessed at.
+        "articSoftAccentAbove",
+    ])
+    def test_refuses_everything_else(self, cls):
+        assert tr.articulation_kind(cls) is None
+
+
+class TestAttachArticulations:
+    """A mark goes to the notehead it is printed against — nearest in X, on the
+    side its own class names. Larger canonical y is LOWER on the page."""
+
+    @staticmethod
+    def _nh(x, y=500):
+        return FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                       x_canonical=x, y_canonical=y,
+                       width_canonical=30, height_canonical=20)
+
+    @staticmethod
+    def _mark(x, y, cls="articStaccatoBelow"):
+        return FakeDet(smufl_name=cls, category="ornament",
+                       x_canonical=x, y_canonical=y,
+                       width_canonical=12, height_canonical=12)
+
+    def test_a_mark_below_goes_to_the_note_above_it(self):
+        nh = self._nh(100)
+        dets = [nh, self._mark(109, 560)]
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(dets, out) == 1
+        assert out[id(nh)] == ["staccato"]
+
+    def test_a_mark_above_goes_to_the_note_below_it(self):
+        nh = self._nh(100)
+        dets = [nh, self._mark(109, 440, "articAccentAbove")]
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(dets, out) == 1
+        assert out[id(nh)] == ["accent"]
+
+    def test_the_side_is_obeyed_not_just_the_distance(self):
+        """A mark labelled `Below` sitting under the only notehead in the cell
+        belongs to it; one labelled `Above` in the same place belongs to
+        nothing here, and is left unattached rather than given to the nearest
+        thing available."""
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(
+            [nh, self._mark(109, 560, "articStaccatoAbove")], out) == 0
+        assert out == {}
+
+    def test_it_picks_the_nearest_notehead_in_x(self):
+        near, far = self._nh(100), self._nh(400)
+        out: dict = {}
+        tr._attach_articulations_in_cell([near, far, self._mark(109, 560)], out)
+        assert out.get(id(near)) == ["staccato"]
+        assert id(far) not in out
+
+    def test_a_mark_too_far_in_x_is_left_unattached(self):
+        """0.75 notehead widths. 21 of 218 marks across the engraved corpus
+        have no notehead on the correct side, and abstaining is why the
+        placement precision is 0.980."""
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(
+            [nh, self._mark(400, 560)], out) == 0
+
+    def test_two_marks_on_one_note_both_land(self):
+        nh = self._nh(100)
+        dets = [nh, self._mark(109, 560),
+                self._mark(109, 440, "articAccentAbove")]
+        out: dict = {}
+        assert tr._attach_articulations_in_cell(dets, out) == 2
+        assert out[id(nh)] == ["staccato", "accent"]
+
+    def test_a_cell_with_no_noteheads_places_nothing(self):
+        out: dict = {}
+        assert tr._attach_articulations_in_cell([self._mark(109, 560)], out) == 0
