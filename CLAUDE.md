@@ -1391,15 +1391,31 @@ complete across passes, not within one. So:
   outlive the model detections they were drawn beside — but a verdict on a
   *model* detection is keyed by detection id and is dropped if that id leaves
   `detections/`, so don't regenerate detections mid-campaign.
+- **An inspected-and-empty cell IS recorded** — this is what makes coverage
+  provable. Tabbing away from a cell in a pass stamps the pass name into a new
+  `inspected_passes: []` field on the verdict and saves, even when nothing was
+  drawn. So a cell that legitimately holds none of this pass's symbols writes
+  `added_detections: []` **plus** `inspected_passes: ["<pass>"]` — distinct
+  from a never-opened cell, which still has no file at all. Coverage for a pass
+  is then every verdict file whose `inspected_passes` contains it: the hollow
+  batch's 48/48 would be 48 files, not 25. (Stamped on the way OUT, not on
+  open, so it means "looked and moved on".) The field is additive and the
+  no-config path never writes it; `_reconcile_with_detections` carries it
+  across a detection regeneration untouched, the same as drawn boxes.
+- **An inspected-empty cell exports as NOTHING, by design.** The YOLO
+  converter's `_is_filled` is False for `added_detections: []` with no decided
+  detection, so a swept-empty cell is counted `n_empty` and emits no label —
+  it is a coverage marker, **not** a background-only training cell, and the
+  converter never reads `inspected_passes` (no converter change was needed;
+  `test_inspected_empty_is_excluded_from_yolo_export` guards it). That is the
+  safe reading mid-campaign: a cell is only background where its own pass drew
+  the symbols around it.
 - **Export only when the set's passes are complete.** Anything unboxed trains
   as background, so exporting after the whites pass alone teaches the model
   that every rest and accidental in those cells is nothing. This is the same
-  fact that forced `verdicts-merged/` in the hollow batch.
-- ⚠️ **An inspected-and-empty cell leaves no trace.** The UI writes a file
-  only once something is decided, so a cell that legitimately holds none of
-  this pass's symbols is indistinguishable from one never opened — hollow
-  coverage was 48/48 while only 25 cells have verdict files. Pass coverage has
-  to be tracked outside the verdicts directory until that gap is closed.
+  fact that forced `verdicts-merged/` in the hollow batch — and now
+  `inspected_passes` is how you tell the passes ARE complete without eyeballing
+  every cell.
 
 A corrupt config, or one naming no class that exists, **refuses to start** with
 a one-line error; an unknown class among usable ones is dropped with a loud

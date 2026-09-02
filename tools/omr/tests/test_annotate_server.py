@@ -843,8 +843,10 @@ def test_pass_mode_does_not_change_the_verdict_schema(
 ) -> None:
     """A pass-drawn box is an ordinary added_detection.
 
-    Nothing about pass mode reaches the file format, so a batch labelled over
-    several passes converts to YOLO labels through the same path as any other.
+    The only pass-specific field is `inspected_passes` (coverage provenance,
+    which the YOLO converter ignores), so a batch labelled over several passes
+    converts to training labels through the same path as any other — the box
+    is a plain added_detection.
     """
     state = pass_client.get("/api/cell/synth-c0/verdict").json()["state"]
     snap = pass_client.get(
@@ -859,8 +861,154 @@ def test_pass_mode_does_not_change_the_verdict_schema(
     saved = json.loads(
         (bench_dir / "verdicts" / "synth-c0.verdict.json").read_text())
     assert set(saved) == {"cell_id", "schema_version", "labeled_at_utc",
-                          "detections", "added_detections"}
+                          "detections", "added_detections", "inspected_passes"}
     assert saved["added_detections"][0]["human_class"] == "noteheadHalfOnLine"
+
+
+# ---------------------------------------------------------------------------
+# Inspected-empty coverage marker
+# ---------------------------------------------------------------------------
+#
+# A single-symbol sweep leaves many cells with nothing to draw — they hold
+# none of the pass's symbols. Before this marker such a cell left NO file, so
+# "swept and empty" was indistinguishable from "never opened" and pass
+# coverage could not be read off the verdicts dir (the hollow batch was 48/48
+# inspected but only 25 files). Navigating away in a pass now stamps the pass
+# name into `inspected_passes` and saves, so the sweep is provable.
+
+
+@pytest.mark.omr_annotate
+def test_new_verdict_seeds_empty_inspected_passes(client: TestClient) -> None:
+    state = client.get("/api/cell/synth-c0/verdict").json()["state"]
+    assert state["inspected_passes"] == []
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_is_written_and_distinct_from_never_opened(
+    pass_client: TestClient, bench_dir: Path
+) -> None:
+    """The POST the client's navigate-away makes on a cell with no boxes."""
+    listing = {c["cell_id"]: c for c in pass_client.get("/api/cells").json()}
+    # synth-c1 is left untouched as the never-opened control.
+    assert listing["synth-c1"]["has_verdict"] is False
+    assert listing["synth-c1"]["inspected_passes"] == []
+    assert not (bench_dir / "verdicts" / "synth-c1.verdict.json").exists()
+
+    # Sweep synth-c0: no boxes, just the inspected stamp (added_detections []).
+    state = pass_client.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["inspected_passes"].append("hollow noteheads")
+    assert pass_client.post(
+        "/api/cell/synth-c0/verdict", json=state).status_code == 200
+
+    saved = json.loads(
+        (bench_dir / "verdicts" / "synth-c0.verdict.json").read_text())
+    assert saved["added_detections"] == []
+    assert saved["inspected_passes"] == ["hollow noteheads"]
+
+    # The two are now distinguishable in the listing.
+    listing = {c["cell_id"]: c for c in pass_client.get("/api/cells").json()}
+    assert listing["synth-c0"]["has_verdict"] is True
+    assert listing["synth-c0"]["inspected_passes"] == ["hollow noteheads"]
+    assert listing["synth-c1"]["has_verdict"] is False
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_survives_a_restart(bench_dir: Path) -> None:
+    (bench_dir / "batch_config.json").write_text(json.dumps(HOLLOW_PASS))
+    c1 = TestClient(create_app(bench_dir))
+    state = c1.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["inspected_passes"].append("hollow noteheads")
+    c1.post("/api/cell/synth-c0/verdict", json=state)
+
+    # A fresh serving session = the labeler restarting the server.
+    reloaded = TestClient(create_app(bench_dir)).get(
+        "/api/cell/synth-c0/verdict").json()
+    assert reloaded["source"] == "v2"
+    assert reloaded["state"]["inspected_passes"] == ["hollow noteheads"]
+    assert reloaded["state"]["added_detections"] == []
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_upgrades_to_boxed_on_a_later_pass(
+    bench_dir: Path
+) -> None:
+    """Drawing a box later must not lose the sweep, nor the sweep the box."""
+    (bench_dir / "batch_config.json").write_text(json.dumps(HOLLOW_PASS))
+    c1 = TestClient(create_app(bench_dir))
+    state = c1.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["inspected_passes"].append("hollow noteheads")
+    c1.post("/api/cell/synth-c0/verdict", json=state)
+
+    # A later visit draws a box and the sweep records a second pass.
+    c2 = TestClient(create_app(bench_dir))
+    st = c2.get("/api/cell/synth-c0/verdict").json()["state"]
+    snap = c2.get("/api/cell/synth-c0/snap",
+                  params={"x": 50, "y": 30, "slot": 0}).json()
+    st["added_detections"].append({
+        "id": "H0", "human_class": snap["class"]["name"],
+        "human_category": snap["class"]["category"],
+        "bbox": snap["bbox"], "notes": "",
+    })
+    st["inspected_passes"].append("whole noteheads")
+    c2.post("/api/cell/synth-c0/verdict", json=st)
+
+    final = TestClient(create_app(bench_dir)).get(
+        "/api/cell/synth-c0/verdict").json()["state"]
+    assert [h["id"] for h in final["added_detections"]] == ["H0"]
+    assert final["inspected_passes"] == ["hollow noteheads", "whole noteheads"]
+
+
+@pytest.mark.omr_annotate
+def test_inspected_passes_deduped_and_coerced(client: TestClient) -> None:
+    payload = {
+        "cell_id": "synth-c0", "schema_version": 2,
+        "detections": [], "added_detections": [],
+        "inspected_passes": ["hollow", "hollow", "", 7, "rests", None],
+    }
+    assert client.post("/api/cell/synth-c0/verdict", json=payload).status_code == 200
+    got = client.get("/api/cell/synth-c0/verdict").json()["state"]
+    assert got["inspected_passes"] == ["hollow", "rests"]
+
+
+@pytest.mark.omr_annotate
+def test_a_plain_verdict_without_the_field_round_trips_empty(
+    client: TestClient
+) -> None:
+    """A payload that omits inspected_passes (any non-pass save) is fine."""
+    payload = {
+        "cell_id": "synth-c0", "schema_version": 2,
+        "detections": [], "added_detections": [],
+    }
+    assert client.post("/api/cell/synth-c0/verdict", json=payload).status_code == 200
+    assert client.get(
+        "/api/cell/synth-c0/verdict").json()["state"]["inspected_passes"] == []
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_is_excluded_from_yolo_export() -> None:
+    """The load-bearing converter contract: a coverage marker is not a label.
+
+    An inspected-empty cell has added_detections [] and no decided detection,
+    so `_is_filled` is False and the converter counts it n_empty and emits no
+    label — it must never become a background-only training cell on the
+    strength of a sweep alone. Adding one box flips it to filled. The
+    converter never reads `inspected_passes`, so this needs no converter
+    change; the test guards that it stays that way.
+    """
+    from tools.omr.training.verdicts_to_yolo_labels import _is_filled
+
+    swept_empty = {
+        "cell_id": "x", "schema_version": 2,
+        "detections": [{"id": "D0", "verdict": None}],
+        "added_detections": [],
+        "inspected_passes": ["hollow noteheads"],
+    }
+    assert _is_filled(swept_empty) is False
+
+    boxed = dict(swept_empty)
+    boxed["added_detections"] = [{"id": "H0", "human_class": "noteheadHalfOnLine",
+                                  "bbox": {"x": 1, "y": 1, "w": 2, "h": 2}}]
+    assert _is_filled(boxed) is True
 
 
 # ---------------------------------------------------------------------------

@@ -452,6 +452,15 @@ li.v-pending .vbadge { background: #aaa; }
   color: #8fc4ff;
 }
 .pass-bar .pass-note { color: #92a4b8; font-size: 11px; }
+.pass-bar .pass-swept {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7fd6a3;
+  padding: 2px 7px;
+  border: 1px solid #2f6b4a;
+  border-radius: 10px;
+  background: #14301f;
+}
 .pass-slot {
   display: inline-flex;
   align-items: center;

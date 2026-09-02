@@ -175,6 +175,19 @@ function renderPassBar() {
     : `pass · ${state.pass.pass_name}`;
   bar.appendChild(name);
 
+  // Feedback on revisit: has THIS cell already been swept by this pass? The
+  // sweep is recorded on the way out, so a first visit shows nothing and a
+  // return shows the tick — the labeler can see a cell is already counted
+  // and does not need re-checking.
+  if (state.verdict && Array.isArray(state.verdict.inspected_passes)
+      && state.verdict.inspected_passes.includes(state.pass.pass_name)) {
+    const swept = document.createElement("span");
+    swept.className = "pass-swept";
+    swept.textContent = "✓ swept";
+    swept.title = "This cell has already been inspected for this pass.";
+    bar.appendChild(swept);
+  }
+
   if (!state.passOverride) {
     state.pass.slots.forEach((slot, i) => {
       const chip = document.createElement("button");
@@ -1118,10 +1131,34 @@ document.addEventListener("keydown", (evt) => {
   }
 });
 
+// Record that the current pass has SWEPT this cell. Returns whether it added
+// anything, so the caller knows a save is now owed. A no-op off a pass bench,
+// so non-pass navigation still writes nothing it did not already.
+//
+// Stamped on the way OUT, not on open: it means "looked and moved on", which
+// is the signal a single-symbol sweep produces on a cell holding none of its
+// symbols — and it is what makes 48/48-inspected provable from the verdicts
+// dir instead of one file per drawn cell. Gated on `state.pass` (a config
+// exists), not passActive(): the escape hatch is a within-pass UI state, and
+// the cell was still inspected for this pass.
+function stampInspectedForPass() {
+  if (!state.pass || !state.verdict) return false;
+  const name = state.pass.pass_name;
+  if (!Array.isArray(state.verdict.inspected_passes)) {
+    state.verdict.inspected_passes = [];
+  }
+  if (state.verdict.inspected_passes.includes(name)) return false;
+  state.verdict.inspected_passes.push(name);
+  return true;
+}
+
 function goToCell(id) {
-  // Flush save first so we don't lose pending edits.
-  if (state.saveState === "idle" && state.saveTimer) {
-    clearTimeout(state.saveTimer);
+  // Stamp the sweep, then flush anything owed before the full-page reload —
+  // a stamp or a pending debounced edit must reach disk or it is lost.
+  const stamped = stampInspectedForPass();
+  const hadTimer = state.saveTimer != null;
+  if (state.saveTimer) { clearTimeout(state.saveTimer); state.saveTimer = null; }
+  if (stamped || hadTimer) {
     save().finally(() => {
       window.location.href = `/cells/${id}`;
     });

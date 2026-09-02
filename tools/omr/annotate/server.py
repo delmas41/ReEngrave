@@ -671,6 +671,13 @@ def _empty_v2_state(cell_id: str, detections: list[dict]) -> dict:
         "labeled_at_utc": None,
         "detections": [_init_detection_v2(d) for d in detections],
         "added_detections": [],
+        # Which single-symbol passes have SWEPT this cell (see server.py's
+        # pass-mode block). Empty is "never inspected in a pass"; a cell that
+        # was inspected and found to hold none of a pass's symbols carries the
+        # pass name here with added_detections still []. That is what makes
+        # 48/48-inspected provable from the verdicts dir rather than a file
+        # per drawn cell only.
+        "inspected_passes": [],
     }
 
 
@@ -749,6 +756,8 @@ def _migrate_v1_to_v2(v1: dict, detections: list[dict]) -> dict:
         "labeled_at_utc": None,
         "detections": v2_detections,
         "added_detections": added,
+        # v1 predates pass mode — a migrated file has been inspected by no pass.
+        "inspected_passes": [],
     }
 
 
@@ -798,6 +807,10 @@ def _reconcile_with_detections(state: dict, detections: list[dict]) -> dict:
         new_dets.append(fresh)
     state["detections"] = new_dets
     state.setdefault("added_detections", [])
+    # Pass-coverage provenance is keyed on nothing but the cell, so it
+    # survives a detection regeneration untouched — the same reason drawn
+    # boxes do. A file saved before pass mode existed simply has none.
+    state.setdefault("inspected_passes", [])
     state["schema_version"] = 2
     state["cell_id"] = state.get("cell_id") or ""
     return state
@@ -812,6 +825,7 @@ def _validate_v2(payload: dict) -> dict:
         "labeled_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "detections": [],
         "added_detections": [],
+        "inspected_passes": _coerce_pass_list(payload.get("inspected_passes")),
     }
     if not out["cell_id"]:
         raise HTTPException(400, detail="cell_id is required")
@@ -847,6 +861,23 @@ def _validate_v2(payload: dict) -> dict:
                 "notes": str(h.get("notes") or ""),
             }
         )
+    return out
+
+
+def _coerce_pass_list(v: Any) -> list[str]:
+    """Normalize inspected_passes: strings, trimmed, de-duplicated in order.
+
+    ``_validate_v2`` drops any key it does not name, so this field only
+    persists because it is coerced here — the same thing that keeps a stray
+    key out is what would have silently dropped this one, which is why it is
+    threaded rather than passed through.
+    """
+    if not isinstance(v, list):
+        return []
+    out: list[str] = []
+    for item in v:
+        if isinstance(item, str) and item.strip() and item not in out:
+            out.append(item)
     return out
 
 
@@ -908,6 +939,7 @@ def _summarize_cell_status(bench: Bench, cell_id: str, vp: Path) -> dict:
             "n_added": 0,
             "has_verdict": False,
             "schema_version": None,
+            "inspected_passes": [],
         }
     try:
         v = json.loads(vp.read_text())
@@ -919,6 +951,7 @@ def _summarize_cell_status(bench: Bench, cell_id: str, vp: Path) -> dict:
             "n_added": 0,
             "has_verdict": True,
             "schema_version": "corrupt",
+            "inspected_passes": [],
         }
     sv = v.get("schema_version", 1)
     if sv == 2:
@@ -931,6 +964,7 @@ def _summarize_cell_status(bench: Bench, cell_id: str, vp: Path) -> dict:
             "n_added": len(v.get("added_detections", [])),
             "has_verdict": True,
             "schema_version": 2,
+            "inspected_passes": _coerce_pass_list(v.get("inspected_passes")),
         }
     vds = v.get("verdicts", [])
     n_decided = sum(1 for x in vds if (x.get("verdict") or "").strip())
@@ -941,6 +975,7 @@ def _summarize_cell_status(bench: Bench, cell_id: str, vp: Path) -> dict:
         "n_added": len(v.get("fn_noteheads", [])),
         "has_verdict": True,
         "schema_version": 1,
+        "inspected_passes": [],
     }
 
 
@@ -1070,6 +1105,7 @@ def create_app(bench: Bench | Path) -> FastAPI:
                     "n_added": status["n_added"],
                     "has_verdict": status["has_verdict"],
                     "schema_version": status["schema_version"],
+                    "inspected_passes": status["inspected_passes"],
                 }
             )
         return out
