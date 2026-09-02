@@ -4,8 +4,11 @@ Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean 
 
 ➡️ **START HERE: [docs/next-steps-omr-2026-09-01.md](docs/next-steps-omr-2026-09-01.md)**
 — accuracy is measurable against an outside standard now (pooled OMR-NED
-**0.2595**, down from 0.3164), the four things it pointed at first are fixed,
-and the ranked residue plus the closed dead ends are in that file.
+**0.2263**, down from 0.3164; the file's own 0.2595 predates the tuplet
+reading, the Violin 1 staff-window slide and the cross-staff ledger fix, and
+its top-ranked item — cross-staff attribution — landed 2026-09-01 as 81446a0).
+The ranked residue plus the closed dead ends are in that file;
+[PROJECT_STATUS.md](PROJECT_STATUS.md) is current through the 09-01 landing.
 
 ---
 
