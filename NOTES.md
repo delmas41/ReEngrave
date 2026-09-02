@@ -14,6 +14,52 @@ day again. The ranked residue plus the closed dead ends are in that file;
 
 ---
 
+## 🚨 NEXT: the same scan page, transcribed twice, gives two different scores (2026-09-02)
+
+Found while measuring the `--direction-text` default, and it outranks what it
+interrupted. Page 84 of the Litolff Beethoven 5 exports **485 lines differently
+between two runs of the SAME configuration** — seven part names shifted by a
+staff (Flute→Oboe, Timpani→Trumpet, Harp→Violin), one clef, and note content.
+
+Four controls, in the order they were run:
+
+| what varied | result |
+|---|--:|
+| the `--direction-text` flag | 485 lines |
+| **nothing** (OFF vs OFF, resident Surya) | **485 lines** |
+| **nothing** (OFF vs OFF, fresh Surya server per run) | **497 lines** |
+| **nothing**, `--no-contextual` — no OCR anywhere | **identical** |
+
+Row two says the flag never did it. Row three rules out state carried across
+requests by the long-lived Surya server. Row four locates it exactly: with no
+OCR in the pipeline two runs agree to the byte — 1302 detections, 640
+noteheads, 238 measures, the same hash over every staff's geometry.
+
+So it is `contextual._labels_for_page`, **which is on by default**
+(`surya_fallback=True`, no flag). Surya resolves 10 margin labels in one run and
+1 in the next; Tesseract fills what it drops, reads the margins differently, and
+the part assignment slides a staff.
+
+⚠️ **This is not "Surya is non-deterministic" yet, and the evidence cannot reach
+that.** Every count above is downstream of the reader.
+`SURYA_BAKEOFF_2026-08-31.md` measured 45 replays as a fixed function of its
+input — with its own recorded caveat that replaying ONE image cannot see a
+shared prompt cache. The test nobody has run is the tight one: **the same crops,
+twice, in one process, compared directly.** Start there.
+
+⚠️ **Second loose end, and it does not fit the story:** the **text-layer** tier
+resolved 1 label in one run and 0 in the next. A PDF's text layer is a fixed
+input and cannot move if the staves are stable — and row four says they are.
+
+⚠️ **Every end-to-end scan figure this project holds came from ONE run**, and
+none of them carries an error bar. The cheapest first step for any of them is to
+run it twice.
+
+Full write-up with all four controls:
+[benchmarks/omr-direction-text-2026-09/NONDETERMINISM_2026-09-02.md](benchmarks/omr-direction-text-2026-09/NONDETERMINISM_2026-09-02.md).
+
+---
+
 ## ➡️ NEXT: the system-break rule is zero-tolerance (found 2026-08-31)
 
 LEGATO's system detector, used as a **miner** over 47 pages, flagged exactly one
