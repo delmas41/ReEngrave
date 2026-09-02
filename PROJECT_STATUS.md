@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED 0.3164 → 0.2209, slurs shipped after all; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
+**Last updated:** 2026-09-01 (accuracy has an outside reference point at last — pooled OMR-NED 0.3164 → 0.1861, slurs shipped after all; the clef benchmark that redirected the work; the first end-to-end run on a real scan; five branches landed)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -64,7 +64,7 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once — builds .venv
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled 0.3164 → 0.2209** on the engraved orchestral benchmark, in two days. Lower is
+**Pooled 0.3164 → 0.1861** on the engraved orchestral benchmark, in two days. Lower is
 better.
 
 | step | pooled | edits | commit |
@@ -77,17 +77,28 @@ better.
 | tuplets detected and never consumed | 0.2489 | 1743 | `d5079d5` |
 | a staff window fitted onto ledger lines | 0.2449 | 1715 | `9276122` |
 | cross-staff notes awarded by distance | 0.2263 | 1584 | `81446a0` |
-| slurs rejoined across the barline that cut them | **0.2209** | 1563 | `bae93b1` |
+| slurs rejoined across the barline that cut them | 0.2209 | 1563 | `bae93b1` |
+| the crop's own edge read as noteheads | 0.2137 | 1508 | `77f796e` |
+| a dot measured against its own bounding box | 0.1917 | 1355 | `b445e66` |
+| a YOLO beam box bounds the stack, not a stroke | **0.1861** | 1315 | `cf559ca` |
 
-Currently Mahler **0.0455**, Beethoven **0.1775**, Brahms **0.3185**.
+Currently Mahler **0.0455**, Beethoven **0.1775**, Brahms **0.2563**.
 
-**Five of the eight were export or resolution bugs on data the pipeline had already
+**Five of the eleven were export or resolution bugs on data the pipeline had already
 computed correctly** — beams, dots, dynamics, tuplets and slurs. The lesson is written down
 because it keeps paying: when a category is large, check whether the signal already
 exists upstream before concluding that detection needs work. `grep -c beam
-tools/omr/export.py` returned 0 while `beam_levels` sat on 271 noteheads. The other
-three were all *placement* — two staff windows fitted onto the wrong ink, and a
-cross-staff rule that resolved contested glyphs by distance.
+tools/omr/export.py` returned 0 while `beam_levels` sat on 271 noteheads. Three more
+were *placement* — two staff windows fitted onto the wrong ink, and a cross-staff
+rule that resolved contested glyphs by distance.
+
+The last three were the same lesson in a third form: **a threshold written in the
+wrong unit.** A notehead clipped by the crop was measured against nothing at all, a
+dot against its own bounding box rather than the staff space, and a stack of beams
+against a box that bounds the stack rather than a stroke. Every one of them was a
+signal already on the page, and none needed the detector, the meter, or a wider
+`_reconcile_measure_to_meter` — which was the recommended lever for the last two and
+is not what was failing.
 
 **Four ways to misread it**, each of which cost real time here:
 
@@ -878,7 +889,7 @@ the two-argument form, and check its exit code.
 The ranked handoff is [`docs/next-steps-omr-2026-09-01.md`](docs/next-steps-omr-2026-09-01.md);
 NOTES.md carries the long-form context for everything below.
 
-The current figure is **0.2209** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.3185), and
+The current figure is **0.1861** (Mahler 0.0455, Beethoven 0.1775, Brahms 0.2563), and
 NOTES.md, CLAUDE.md and `next-steps-omr-2026-09-01.md` now all agree on it — NOTES.md's
 START HERE block was three fixes behind until `6a1b601` and says so itself.
 

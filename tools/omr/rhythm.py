@@ -28,6 +28,9 @@ detections rather than going through stems:
 Augmentation dots (`augmentationDot` from the DSv2 "structural" category)
 are paired to the nearest notehead/rest to their left at roughly the same
 y-position, multiplying that note's duration by 1.5 (1 dot) or 1.75 (2 dots).
+"Roughly the same" is not the same height: a dot belonging to a note ON A LINE
+is printed in the space above it, half a staff space up. See
+`_pair_dots_to_targets`.
 """
 
 from __future__ import annotations
@@ -739,6 +742,23 @@ def _deduplicate_beams(beams: list, line_spacing: float) -> list:
     return kept
 
 
+def _overlaps_any_in_x(box, others) -> bool:
+    """Whether `box`'s x-range meets any of `others`'.
+
+    Used to decide where a YOLO beam still has something to say: a column of
+    the page the CV beam detector has already measured is one it should not
+    speak into. See the beam-list merge in `resolve_rhythms_for_cell`.
+    """
+    x0 = box.x_canonical
+    x1 = x0 + box.width_canonical
+    for other in others:
+        o0 = other.x_canonical
+        o1 = o0 + other.width_canonical
+        if min(x1, o1) > max(x0, o0):
+            return True
+    return False
+
+
 def _stem_for_notehead(nh, stems, max_x_distance: float):
     """Find the stem touching this notehead (classical-CV stems).
 
@@ -918,12 +938,64 @@ def _flag_for_notehead(nh, flags, max_x_distance: float):
     return best
 
 
-def _pair_dots_to_targets(dots, targets) -> dict[int, int]:
+#: How far ABOVE its notehead a dot may sit, in staff spaces.
+#:
+#: A DOT DOES NOT SIT AT ITS NOTE'S HEIGHT, and that is engraving, not error:
+#: a note in a space takes its dot in the same space, and a note ON A LINE
+#: takes its dot in the space ABOVE — half a staff space up. Measured over the
+#: 116 dots of the three benchmark works, the offsets are bimodal exactly as
+#: that predicts: 52 at 0.00 spaces (notes in spaces), 52 at +0.50 (notes on
+#: lines), and nothing between +0.57 and +3.75.
+#:
+#: So the tolerance covers half a space with room, and stays well under one
+#: full space, which is where the NEXT staff position's notehead sits.
+DOT_ABOVE_NOTE_MAX_SPACES = 0.75
+
+#: And how far BELOW, which is a different number because the page is not
+#: symmetric: a dot goes in the space above its note or level with it, never
+#: under it. The two exceptions in that measurement are both the SAME failure
+#: — Brahms's Viola plays double stops, each notehead carrying its own dot, and
+#: the lower dot sits half a space above the lower note AND half a space below
+#: the upper one, equidistant to the pixel. A symmetric window ties, the tie
+#: goes to whichever note was listed first, and the upper note ends up
+#: double-dotted while the lower one loses its dot altogether (measured: 4
+#: notes, `1.5 -> 1.75` and `1.5 -> 0.875`).
+#:
+#: Refusing the downward direction breaks that tie the way the page does. It
+#: gives up the rare engraving where a dot IS printed below its note to dodge
+#: another voice — losing one dot, rather than mis-assigning two notes.
+DOT_BELOW_NOTE_MAX_SPACES = 0.25
+
+
+def _pair_dots_to_targets(dots, targets, line_spacing: float) -> dict[int, int]:
     """Each `augmentationDot` detection is matched to the nearest
     target (notehead or rest) to its LEFT at roughly the same y-position.
     Returns {id(target): dot_count}.
+
+    The vertical tolerance is a fraction of the STAFF SPACE
+    (`DOT_Y_TOLERANCE_SPACES`), not of the dot's own bounding box. It used to
+    be `max(dot.height, 12) * 1.2`, which is a length with no musical meaning:
+    a dot is small and its detected box size is mostly noise, so on a note
+    sitting on a line — where the dot is printed half a space up by convention
+    — the gate landed within a few pixels of the true offset and went either
+    way. Measured on the engraved Brahms 1 benchmark page, 17 dots were
+    detected, correctly placed and thrown away, while their neighbours in the
+    very same part were kept: C Horn 1's dotted half was read as a half in bars
+    1 and 5 and as a dotted half in bars 2, 3, 4 and 6.
+
+    The window is also ASYMMETRIC, because the page is: see
+    `DOT_BELOW_NOTE_MAX_SPACES`. It is what decides a double stop, where the
+    two dots are printed a space apart and the lower one is equidistant from
+    both noteheads.
+
+    The x gate below is the same kind of length and is left alone deliberately:
+    no rejection on that corpus was horizontal (every measured dx is under 0.6
+    staff spaces against a gate of 1.5 or more), so changing it would be an
+    unmeasured change to a rule that is not failing.
     """
     result: dict[int, int] = {}
+    max_above = max(1.0, line_spacing * DOT_ABOVE_NOTE_MAX_SPACES)
+    max_below = max(1.0, line_spacing * DOT_BELOW_NOTE_MAX_SPACES)
     for dot in dots:
         dot_y = dot.y_canonical + dot.height_canonical // 2
         dot_x_left = dot.x_canonical
@@ -935,7 +1007,10 @@ def _pair_dots_to_targets(dots, targets) -> dict[int, int]:
                 # Target must be to the LEFT of the dot.
                 continue
             tgt_y = tgt.y_canonical + tgt.height_canonical // 2
-            if abs(tgt_y - dot_y) > max(dot.height_canonical, 12) * 1.2:
+            # Positive when the dot is ABOVE the note, which is where a dot
+            # belonging to a note on a line is printed.
+            above = tgt_y - dot_y
+            if above > max_above or above < -max_below:
                 continue
             dx = dot_x_left - tgt_x_right
             if dx > max(dot.width_canonical, 12) * 5:
@@ -1223,11 +1298,38 @@ def resolve_rhythms_for_cell(
 
     # Classical-CV stems are pure additive value — the YOLO detector
     # doesn't emit stems at all, so we have no prior anchor to lose.
-    # Classical-CV beams, on the other hand, are MORE conservative than
-    # YOLO's (precise endpoints, fewer false positives) but in practice
-    # miss real beams that YOLO catches. So we UNION the two beam lists
-    # rather than replacing: the loose YOLO bboxes set the broad
-    # coverage, the CV bboxes add coverage where YOLO misses.
+    #
+    # Beams: the CV reading WINS WHERE IT SPEAKS, and YOLO covers the rest.
+    #
+    # Phase 4f unioned the two lists, with the reason in the code: the CV beam
+    # detector was the more conservative of the two and missed strokes YOLO
+    # caught, so the loose YOLO boxes set broad coverage. Half of that is still
+    # true, and all three arrangements were measured rather than argued:
+    #
+    #                    pooled   edits   brahms dur   melody dur   notes losing
+    #                                                                 every beam
+    #     union (4f)     0.1982    1386      0.916        0.778           3
+    #     replace        0.1922    1343      0.929        0.722           7
+    #     this one       0.1928    1348      0.931        0.778           4
+    #
+    # Replacing outright scores best by five edits out of 1348 and gets there by
+    # throwing real beams away — it is the only arm that regresses an authored
+    # fixture, and the only one where notes lose every beam they had. Five edits
+    # is less than one measure's amplification; the beams are the thing.
+    #
+    # The other half is not, and it costs the one measurement the beam pipeline
+    # exists to make: HOW MANY STROKES ARE STACKED. A YOLO beam box does not
+    # bound one stroke, it bounds the whole stack, so its centre lands in the
+    # GAP between two levels. On Brahms's Violin 2 the CV detector reads the two
+    # strokes correctly at canonical y 1112 and 1172 — 60 px apart against a
+    # 35 px clustering tolerance, two levels — and the YOLO box spanning both
+    # contributes a centre at 1142, exactly between them. The run 1112, 1142,
+    # 1172 has no gap wider than the tolerance anywhere in it, so it counts as
+    # one level and three sixteenths are read as three eighths.
+    #
+    # So a YOLO beam is kept only where no CV beam overlaps its x-range. Where
+    # the CV detector has measured a column of the page, its answer stands
+    # alone; where it found nothing, YOLO's coverage is still better than none.
     stems: list = []
     if extra_lines is not None:
         cv_stems = extra_lines.get("stems") or []
@@ -1235,7 +1337,9 @@ def resolve_rhythms_for_cell(
         if cv_stems:
             stems = list(cv_stems)
         if cv_beams:
-            beams = beams + list(cv_beams)
+            beams = list(cv_beams) + [
+                y for y in beams if not _overlaps_any_in_x(y, cv_beams)
+            ]
 
     # Deduplicate beams: if two beam detections overlap heavily in both
     # x AND y, they're the same physical beam (CV + YOLO both fired on
@@ -1246,7 +1350,7 @@ def resolve_rhythms_for_cell(
     # Pair augmentation dots to whichever notehead / rest sits to their left
     # at the same y. (Dots after rests are rarer but real.)
     dot_targets = noteheads + rests
-    dots_by_target_id = _pair_dots_to_targets(aug_dots, dot_targets)
+    dots_by_target_id = _pair_dots_to_targets(aug_dots, dot_targets, line_spacing)
 
     out: dict[int, dict[str, Any]] = {}
 

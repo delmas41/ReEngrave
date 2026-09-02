@@ -152,6 +152,14 @@ def run_work(work_id: str, *, first: int, last: int, work_dir: Path,
                         read_direction_text=direction_text, **opts)
     omr_xml = work_dir / f"{work_id}.omr.musicxml"
     omr_xml.write_text(to_musicxml(result))
+    # The transcription itself, beside the export. Every attribution pass so far
+    # has had to re-run the pipeline to see a detection — a page takes minutes,
+    # so the analysis gets written against a run that is not the one being
+    # scored. The fixtures directory is gitignored scratch, so keeping the JSON
+    # costs nothing and makes the next diagnosis offline and exact.
+    (work_dir / f"{work_id}.omr.json").write_text(
+        json.dumps(result, default=str) + "\n"
+    )
 
     page = result["pages"][0]
     truth_struct = structure(truth_xml)

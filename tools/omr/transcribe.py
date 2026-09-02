@@ -453,6 +453,87 @@ def _correct_notehead_class_by_fill(
 
 
 # ---------------------------------------------------------------------------
+# Ink clipped at a cell's edge is not a notehead (2026-09-01)
+# ---------------------------------------------------------------------------
+#
+# A cell is the staff plus four staff spaces of air above and below
+# (`measure_extractor.PAD_ABOVE_STAFF_LINES`), and on a conductor's page four
+# spaces reaches into whatever the neighbouring staff printed. Whatever is
+# sitting there gets sliced by the crop, and a wide flat sliver of ink is
+# exactly what a hollow notehead looks like.
+#
+# Measured on the engraved Brahms 1 benchmark page, where the truth contains no
+# whole note at all: SEVEN `noteheadWholeInSpace` detections, and every one of
+# them is a fragment flush against a cell's top or bottom edge — no whole
+# notehead was detected anywhere in the interior of any cell. Reading the pixels
+# back says what each one really is:
+#
+#     staff  5 m0   the bowl of the "g" in the word "legato", printed between staves
+#     staff  6 m0   the same "g", one staff down
+#     staff  8 m0   the lower bowl of the "8" of the 6/8 above it
+#     staff 11 m0   the top of Eb Horn 4's notehead, one staff BELOW
+#     staff 11 m2   C Horn 2's dotted half, one staff ABOVE — three times
+#
+# So the fault is geometric, not a header misread: `WRONG_NOTE_ATTRIBUTION`
+# filed these under "the clef and key signature sit in the first bar", which is
+# true of only three of the seven and is not what any of them are.
+#
+# The discriminator is the one thing a notehead cannot vary: it is a staff space
+# tall, because that is what a notehead IS. Measured over the 594 noteheads
+# wholly inside their cell across the three benchmark works, heights run
+# 0.61-1.12 spaces and only three are below 0.80; the fragments run 0.29-0.56.
+# Notes that legitimately touch a cell edge — Flute 1's and Violin 1's F6 — are
+# 0.77-0.99, because a note the crop only grazes is still nearly all there. So
+# the constant below is not tuned to a corpus: it sits in an empty band, and the
+# two groups differ in kind rather than degree.
+# (`benchmarks/omr-ned-2026-08/probe_edge_fragments.py` re-measures this.)
+#
+# Restricted to detections that TOUCH an edge, which is the mechanism. A short
+# notehead in the middle of a cell is some other problem and this must not have
+# an opinion about it. Nothing is reclassified: a fragment is not a smaller
+# notehead, it is not one.
+
+#: Below this fraction of a staff space, an edge-touching notehead is a slice of
+#: something else. It sits in the empty band between the largest fragment (0.56)
+#: and the smallest genuine EDGE-TOUCHING notehead (0.77) on the benchmark.
+_CLIPPED_NOTEHEAD_MAX_SPACES = 0.6
+
+#: How close to the crop boundary counts as touching it. A detection whose box
+#: starts on row 0 was cut by the crop; one a pixel in was not necessarily.
+_CELL_EDGE_TOLERANCE_PX = 1
+
+
+def _drop_clipped_notehead_fragments(
+    dets: list, cell: MeasureCell, *,
+    max_height_spaces: float = _CLIPPED_NOTEHEAD_MAX_SPACES,
+) -> tuple[list, int]:
+    """Drop noteheads that are a sliver of ink cut off by the cell boundary.
+
+    Returns `(kept, n_dropped)`. Abstains — returns everything — when the cell
+    carries no usable staff-line geometry to measure a staff space with.
+    """
+    ys = sorted(cell.staff_line_ys_canonical or [])
+    if len(ys) < 2:
+        return dets, 0
+    spacing = (ys[-1] - ys[0]) / (len(ys) - 1)
+    if spacing <= 0:
+        return dets, 0
+    limit = max_height_spaces * spacing
+    height = cell.image.shape[0]
+    kept, dropped = [], 0
+    for d in dets:
+        if getattr(d, "category", "") == "notehead" and d.height_canonical < limit:
+            top = d.y_canonical
+            bottom = top + d.height_canonical
+            if (top <= _CELL_EDGE_TOLERANCE_PX
+                    or bottom >= height - _CELL_EDGE_TOLERANCE_PX):
+                dropped += 1
+                continue
+        kept.append(d)
+    return kept, dropped
+
+
+# ---------------------------------------------------------------------------
 # Tremolo / arpeggiato / ornament stem-rejection (audit follow-up, 2026-07)
 # ---------------------------------------------------------------------------
 #
@@ -1400,9 +1481,11 @@ def _detections_for_cell(
          e) otherwise leave the pitch diatonic
 
     Returns `(detection_dicts, new_active_clef, new_active_key_sig,
-    new_active_time_sig, clef_source)`, where `clef_source` names which reader
-    supplied a clef IN THIS CELL — "detector", "specialist", "cv_locator", or
-    None when the clef was carried in rather than read here.
+    new_active_time_sig, clef_source, n_clipped_dropped)`, where `clef_source`
+    names which reader supplied a clef IN THIS CELL — "detector", "specialist",
+    "cv_locator", or None when the clef was carried in rather than read here,
+    and `n_clipped_dropped` is how many notehead detections were discarded as
+    ink the crop cut off (`_drop_clipped_notehead_fragments`).
     """
     if clef_overrides is None:
         clef_overrides = []
@@ -1413,6 +1496,11 @@ def _detections_for_cell(
         iou_threshold=iou_threshold,
         agnostic_nms=agnostic_nms,
     )
+
+    # Ink the crop cut in half is not a notehead — see
+    # `_drop_clipped_notehead_fragments`. First, so nothing downstream (pitch,
+    # rhythm, the cross-staff deduper) ever sees a fragment.
+    dets, n_clipped_dropped = _drop_clipped_notehead_fragments(dets, cell)
 
     # ── Clef pass: update active_clef from the highest-confidence clef
     #    detection in this cell, if any. If a clef8 / clef15 octave marker
@@ -1826,7 +1914,8 @@ def _detections_for_cell(
         if id(d) in ties_from_prev:
             out_d["tied_from_prev"] = True
         out.append(out_d)
-    return out, active_clef, active_key_sig, active_time_sig, clef_source
+    return (out, active_clef, active_key_sig, active_time_sig, clef_source,
+            n_clipped_dropped)
 
 
 def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
@@ -3268,6 +3357,11 @@ def transcribe(
         "n_staves_total": 0,
         "n_measures_total": 0,
         "n_detections_total": 0,
+        # How many notehead detections were a sliver of a neighbouring staff's
+        # ink cut by the crop. Kept so a page can be audited for how much the
+        # rule is doing rather than having to re-run it — see
+        # `_drop_clipped_notehead_fragments`.
+        "n_clipped_notehead_fragments_dropped": 0,
         "n_noteheads_total": 0,
         "n_noteheads_pitched_total": 0,
         "n_noteheads_with_duration_total": 0,
@@ -3610,6 +3704,7 @@ def transcribe(
                         active_key_sig,
                         active_time_sig,
                         cell_clef_source,
+                        cell_clipped_dropped,
                     ) = (
                         _detections_for_cell(
                             detector,
@@ -3664,6 +3759,9 @@ def transcribe(
                         "n_detections": len(detections),
                         "detections": detections,
                     })
+                    out["n_clipped_notehead_fragments_dropped"] += (
+                        cell_clipped_dropped
+                    )
                     out["n_detections_total"] += len(detections)
                     out["n_measures_total"] += 1
 

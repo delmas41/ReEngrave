@@ -129,11 +129,14 @@ data/user-labeled/*/labels_pre_cleanup/
 # ultralytics label caches (written next to labels/ during training)
 labels.cache
 
-# musicdiff/OMR-NED lives in its own venv (needs Python >= 3.10; host is 3.9)
-.venv-omrned/
+# musicdiff/OMR-NED lives in its own venv (needs Python >= 3.10; host is 3.9).
+# No trailing slash: a git worktree reaches the venv by symlinking the main
+# checkout's, and a trailing slash matches directories only — so the symlink was
+# offered for commit, pointing at an absolute path outside the repository.
+.venv-omrned
 
 # Surya 2 margin-label reader (Python >= 3.10 + llama.cpp)
-.venv-surya/
+.venv-surya
 
 # Central score library — the PDF/MusicXML store is machine-local (650 MB).
 # Its catalog (data/score-library/catalog.json) IS committed; see that README.

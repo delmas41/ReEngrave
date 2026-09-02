@@ -23,6 +23,8 @@ from tools.omr.rhythm import (
     _flag_duration,
     _intrinsic_notehead_duration,
     _name_for_dots,
+    _overlaps_any_in_x,
+    _pair_dots_to_targets,
     _normalize_class,
     _rest_duration,
     parse_time_signature,
@@ -154,6 +156,136 @@ class TestDotMultiplier:
 
     def test_multiple_dots_prefix(self):
         assert _name_for_dots(2) == "2dotted_"
+
+
+# ─── _pair_dots_to_targets ──────────────────────────────────────────────────
+#
+# A dot does not sit at its note's height. A note in a space takes its dot in
+# the same space; a note ON A LINE takes it in the space ABOVE — half a staff
+# space up, by engraving convention. The tolerance used to be a multiple of the
+# DOT's own box height, which is a length with no musical meaning, and the
+# on-a-line case landed within a few pixels of it and went either way.
+
+
+SPACE = 100  # canonical staff-line spacing on the benchmark pages
+
+
+#: Both helpers place a box by its CENTRE, because centre-to-centre is what the
+#: rule measures and what "half a space above" means on the page.
+def _dot(x, y_centre, w=44, h=42):
+    return FakeDet(smufl_name="augmentationDot", category="structural",
+                   x_canonical=x, y_canonical=y_centre - h // 2,
+                   width_canonical=w, height_canonical=h)
+
+
+def _note(x, y_centre, w=90, h=100):
+    return FakeDet(smufl_name="noteheadBlackOnLine", category="notehead",
+                   x_canonical=x, y_canonical=y_centre - h // 2,
+                   width_canonical=w, height_canonical=h)
+
+
+class TestPairDotsToTargets:
+    def test_note_in_a_space_takes_a_dot_at_its_own_height(self):
+        note = _note(0, 250)
+        dot = _dot(140, 250)
+        assert _pair_dots_to_targets([dot], [note], SPACE) == {id(note): 1}
+
+    def test_note_on_a_line_takes_a_dot_half_a_space_above(self):
+        # The measured case: 54 of the benchmark's 110 dots sit here, at
+        # 0.28-0.57 spaces up, and the old rule kept only some of them.
+        note = _note(0, 250)
+        dot = _dot(140, 250 - SPACE // 2)
+        assert _pair_dots_to_targets([dot], [note], SPACE) == {id(note): 1}
+
+    def test_a_dot_a_full_space_away_is_not_this_note_s(self):
+        # One space up is where the NEXT staff position's notehead sits, so a
+        # dot that far off belongs to something else.
+        note = _note(0, 250)
+        dot = _dot(140, 250 - SPACE)
+        assert _pair_dots_to_targets([dot], [note], SPACE) == {}
+
+    def test_a_dot_below_a_note_is_not_that_note_s(self):
+        # A dot goes in the space ABOVE its note, or level with it. Never under.
+        note = _note(0, 250)
+        dot = _dot(140, 250 + SPACE // 2)
+        assert _pair_dots_to_targets([dot], [note], SPACE) == {}
+
+    def test_a_double_stop_gives_each_note_its_own_dot(self):
+        # Brahms's Viola. Two noteheads a space apart, each with its own dot in
+        # the space above it — so the LOWER dot is equidistant from both notes,
+        # and a symmetric window gives it to whichever was listed first. Then
+        # the upper note is double-dotted and the lower one has no dot at all.
+        upper, lower = _note(0, 700), _note(0, 800)
+        dots = [_dot(140, 650), _dot(140, 750)]
+        assert _pair_dots_to_targets(dots, [upper, lower], SPACE) == {
+            id(upper): 1, id(lower): 1,
+        }
+
+    def test_tolerance_scales_with_the_staff(self):
+        # A cell scaled by width rather than by staff span has a smaller staff,
+        # and the same half-space offset is fewer pixels. Same music, same
+        # answer — which the old rule, measuring against the dot's own box,
+        # could not give.
+        small = 40
+        note = _note(0, 100, w=36, h=40)
+        dot = _dot(56, 100 - small // 2, w=18, h=17)
+        assert _pair_dots_to_targets([dot], [note], small) == {id(note): 1}
+
+    def test_target_must_be_to_the_left(self):
+        note = _note(200, 250)
+        dot = _dot(40, 250)
+        assert _pair_dots_to_targets([dot], [note], SPACE) == {}
+
+    def test_nearer_note_wins(self):
+        far, near = _note(0, 250), _note(300, 250)
+        dot = _dot(420, 250)
+        assert _pair_dots_to_targets([dot], [far, near], SPACE) == {id(near): 1}
+
+    def test_two_dots_on_one_note_count_twice(self):
+        note = _note(0, 250)
+        dots = [_dot(140, 250), _dot(200, 250)]
+        assert _pair_dots_to_targets(dots, [note], SPACE) == {id(note): 2}
+
+    def test_ink_at_a_cell_edge_with_no_note_near_it_pairs_with_nothing(self):
+        # The two outliers in the benchmark: a dot-shaped fragment at the top
+        # of a cell, five spaces from any notehead.
+        note = _note(0, 600)
+        dot = _dot(140, 8, h=17)
+        assert _pair_dots_to_targets([dot], [note], SPACE) == {}
+
+
+# ─── _overlaps_any_in_x — which beam list speaks for a column ───────────────
+#
+# A YOLO beam box bounds the whole STACK of strokes, not one stroke, so its
+# centre lands in the gap between two levels and welds them into one. Where the
+# classical-CV detector has measured a column, its answer stands alone; where it
+# found nothing, YOLO's coverage is still better than none.
+
+
+def _beam(x, w, y=0, h=60):
+    return FakeDet(smufl_name="beam", category="structural",
+                   x_canonical=x, y_canonical=y,
+                   width_canonical=w, height_canonical=h)
+
+
+class TestOverlapsAnyInX:
+    def test_overlapping_box_is_covered(self):
+        assert _overlaps_any_in_x(_beam(200, 400), [_beam(0, 300)])
+
+    def test_disjoint_box_is_not(self):
+        assert not _overlaps_any_in_x(_beam(400, 100), [_beam(0, 300)])
+
+    def test_touching_edges_do_not_count_as_overlap(self):
+        # Abutting spans share no column; the second one is still the only
+        # reading of its own.
+        assert not _overlaps_any_in_x(_beam(300, 100), [_beam(0, 300)])
+
+    def test_empty_others_covers_nothing(self):
+        assert not _overlaps_any_in_x(_beam(0, 100), [])
+
+    def test_any_one_overlap_is_enough(self):
+        others = [_beam(0, 50), _beam(500, 50)]
+        assert _overlaps_any_in_x(_beam(480, 100), others)
 
 
 # ─── _parse_inline_accidental (in transcribe.py, but we test alongside) ─────

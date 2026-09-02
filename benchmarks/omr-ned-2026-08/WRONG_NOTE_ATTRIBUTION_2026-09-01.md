@@ -208,6 +208,10 @@ history of clef thresholds tuned on one corpus and refused by the next.
    `G6/4` three times. The page detects `noteheadWholeInSpace` ×7 and contains
    no whole notes at all; the excerpt's first bar is where the clef and key
    signature sit.
+   ⚠️ **Both halves of that sentence are wrong** — only three of the seven are
+   in a staff-start measure, and none of them is a header misread. See the
+   FIXED section below, which reads the pixels rather than inferring from where
+   the detections landed.
 2. **A whole staff lost.** C Horn 2 has one note in each of its 7 bars in the
    truth and emits **zero** in all seven.
 3. **Two flute staves trading a note.** Flute 2 drops its highest note in 4 of
@@ -444,3 +448,256 @@ Beethoven's +8 is one contested bassoon pair that still resolves the wrong way
 whole note on Flute 1 that predates all of this. The ladder has nothing to say
 there — the note is near both staves — so it rests entirely on the range veto,
 and something in the pair ordering is still reaching it inconsistently.
+## FIXED 2026-09-01 — the seven whole noteheads, which are not what this file said
+
+Pooled **0.2449 → 0.2314**, 1715 edits → 1616. Every one of the 99 is Brahms
+(1416 → **1317**, 0.3657 → **0.3420**); Beethoven and Mahler are unchanged to
+the edit. Its note precision went 0.819 → **0.833** and recall 0.824 → 0.822.
+Tests 1166 → 1173.
+
+**They are not header misreads, and they are not all in staff-start measures.**
+Finding 3 read the mechanism off where the detections landed — three of the
+seven are in bar 1, where the clef and key signature sit, so the clef and key
+signature were blamed. Cropping the page at each detection's own coordinates
+says what they actually are:
+
+| | what the ink is |
+|---|---|
+| staff 5 m1 | the bowl of the **g** in the word *legato*, printed between the staves |
+| staff 6 m1 | the same *legato*, one staff down |
+| staff 8 m1 | the lower bowl of the **8** of the 6/8 printed on the staff ABOVE |
+| staff 11 m1 | the top of Eb Horn 4's notehead, one staff BELOW |
+| staff 11 m3, m4, m7 | C Horn 2's dotted half, one staff ABOVE — the same note three times |
+
+One mechanism, and it is geometric. A cell is the staff plus four staff spaces
+of air (`measure_extractor.PAD_ABOVE_STAFF_LINES`), and on a conductor's page
+four spaces reaches into what the neighbouring staff printed. The crop slices
+whatever is there, and **a wide flat sliver of ink is exactly the shape of a
+hollow notehead**. Nothing about the header is involved; bar 1 is merely where
+this page happens to print a time signature and the word *legato*.
+
+**The discriminator is the one dimension a notehead cannot vary in.** A notehead
+is a staff space tall, because that is what a notehead is. Measured over the
+three works (`benchmarks/omr-ned-2026-08/probe_edge_fragments.py`):
+
+    interior noteheads        594   0.61 - 1.12 spaces, none below 0.60
+    edge-touching, real        10   0.77 - 0.99      a crop that only grazes a note
+    edge-touching, fragments   10   0.29 - 0.56      the seven above, and three more
+                                                     the same crop cut off a black
+                                                     notehead and a half
+
+A 1.4× gap with nothing in it, so the constant is not a tuned one — and the two
+groups are different in kind, not degree: a note the crop merely grazes is still
+almost all there, while a fragment is whatever the boundary left behind.
+
+Deliberately restricted to detections that TOUCH an edge, which is the
+mechanism. A short notehead in the middle of a cell is some other problem and
+this rule must not have an opinion about it. Nothing is reclassified either — a
+fragment is not a smaller notehead, it is not one.
+
+### Where the 99 went, and why it is ten times the seven notes
+
+| part | before | after | |
+|---|--:|--:|---|
+| 11 Eb Horn 3 | 62 | **3** | −59 |
+| 8 Contrabassoon | 55 | **20** | −35 |
+| 5 Bb Clarinet 2 | 53 | 50 | −3 |
+| 15 Timpani | 90 | 87 | −3 |
+| 6 Bassoon 1 | 45 | 43 | −2 |
+| 16 Violin 1 | 177 | 179 | +2 |
+
+Ten detections, 99 edits — because `entire measure insert/delete` amplifies.
+A bar that differs by one spurious note is charged delete-whole-bar plus
+insert-whole-bar, which is the warning `next-steps` gives about that bucket
+working in the useful direction for once: it moved when its cause moved.
+
+### It fires on all three works and changes only one
+
+The run counter (`n_clipped_notehead_fragments_dropped`) reports 2 on Beethoven,
+11 on Mahler and 11 on Brahms, and yet only Brahms moved at all. The reason is
+ordering: the rule runs at detection time, ahead of
+`_dedupe_cross_staff_detections`, and on those two pages every fragment it took
+was one the deduper was going to remove anyway. On Brahms 10 of the 11 survived
+to the export. So the rule is not idle on dense pages — it is mostly redundant
+with a later pass, and the ones it catches that the deduper does not are the
+expensive ones, because a fragment with no rival on another staff is exactly the
+kind the deduper cannot see.
+
+The authored end-to-end fixtures are untouched by construction rather than by
+comparison: the rule fires **zero** times on all three (melody, keyboard,
+ensemble), so their output is identical without needing a stash-and-rerun.
+
+## DIAGNOSED 2026-09-01 — C Horn 2, and why nothing can recover it yet
+
+Finding 3's second mechanism, 50 edits: six `insbar` + six `delbar` + one
+`noteins` + one `notedel`, every bar exporting a measure rest where the truth
+has a tied dotted half.
+
+**The staff is found, the cells are built, and the note is outside them.** Staff
+10 is detected, its seven cells are cut, and each one contains three or four
+`ledgerLine` detections and **no notehead at all**. The ledger lines are in the
+crop; the note they lead down to is not.
+
+C Horn 2 is written in TREBLE clef and plays `C3`, which on a treble staff sits
+**4.5 staff spaces below the bottom line** — half a space past
+`PAD_BELOW_STAFF_LINES = 4`. Measured on the page (dpi 600, spacing 41.5):
+
+    staff 10  bottom line y=5398   cell reaches 4 spaces down → y=5564
+    the notehead's ink            y=5568 - 5609,  centre ≈ 5588
+    staff 11  top line   y=5759    cell reaches 4 spaces up   → y=5593
+
+The note begins four pixels below the last row of its own cell. Sixteen of its
+forty-one rows fall inside the NEXT staff's cell, which is the sliver read there
+as a whole notehead — so mechanism 1 and mechanism 2 were the same note.
+
+**Growing the crop is necessary and not sufficient, by 19 pixels.** With
+`PAD_*_STAFF_LINES = 5` the note lands inside staff 10's cell — and inside staff
+11's as well, since that staff's padding grows too. It is then a contested
+glyph, and `_dedupe_cross_staff_detections` awards it to the nearer five-line
+band:
+
+    centre 5588 → staff 10's band (ends 5398)   190 px
+                → staff 11's band (starts 5759) 171 px    ← wins
+
+REJECTED, and measured rather than argued. At `PAD_*_STAFF_LINES = 5` Brahms
+goes **0.3420 → 0.3732**, 1317 edits → 1445 (+128) — more than twice what C Horn
+2 costs in the first place. The staff is no better off: it still reports zero
+noteheads in all seven bars, while Eb Horn 3 now carries a confident
+`noteheadHalfInSpace` (conf 0.84-0.89) in every one of its seven, which is C
+Horn 2's note taken by the distance rule exactly as the arithmetic above says.
+And the damage is page-wide rather than local: cross-staff duplicates removed
+went 135 → **390**, because a taller crop makes more contested glyphs and the
+rule that resolves them is the one at fault.
+
+Eb Horn 3 takes it, and C Horn 2 is empty again. This is the same conclusion the
+Violin 1 / Timpani section reached from the other direction, and it is the same
+note-in-the-gap geometry: **the only thing on the page that says which staff a
+note in the gap belongs to is its ledger lines**, and staff 10 prints three or
+four of them in every bar. Distance to the nearer band cannot answer it, because
+the engraver opened that gap FOR the ledger notes.
+
+So this staff is blocked on the cross-staff attribution work, with one thing
+worth carrying over to it: **an attribution fix alone will not recover C Horn 2
+either.** Attribution can only choose between cells that hold the note, and
+today no cell holds it. The crop has to reach the note first, and the two
+changes are only worth anything together.
+
+---
+
+## RESOLVED 2026-09-01 — C Horn 2, by the other half landing
+
+`81446a0` (cross-staff notes: read the ledger ladder and the instrument, not the
+distance) recovered this staff outright, and it did it by making **both** of the
+changes the section above said were needed together: the cell pad grows where
+there is unambiguously room, and attribution stopped being a distance test.
+
+C Horn 2 no longer appears in the wrong-note list at all. Brahms's `count`-class
+notes went **96 → 19** across the page, which is this staff plus the two flutes
+of Finding 3's third mechanism.
+
+The prediction that mattered held: growing the crop and fixing attribution are
+worth nothing apart and everything together. It is worth keeping in mind for
+the next note-in-a-gap: the arithmetic that says which way the distance rule
+falls (171 px against 190) was right, and it was right about a rule that no
+longer exists.
+
+## FIXED 2026-09-01 — the rhythm bucket, and neither half needed the meter
+
+Pooled **0.2137 → 0.1861**, 1508 edits → **1315**. All of it is Brahms
+(1201 → 1008, 0.3063 → 0.2563), whose duration rate went 0.889 → **0.931** and
+precision 0.890 → 0.911; Beethoven and Mahler are unchanged to the edit. The
+authored fixtures are identical. Tests 1199 → 1213.
+
+The handoff proposed widening `_reconcile_measure_to_meter` to move a dot as
+well as a beam. **That was the wrong lever twice over.** The reconciler is not
+what was failing; it declines these bars correctly, and it still does. Both
+faults were signals already on the page, thrown away by a threshold written in
+the wrong unit — the same shape as beams, dots, dynamics, tuplets and the crop
+edge before them, and now the seventh and eighth instances of it.
+
+### The dots: measured against the dot's own bounding box
+
+Twelve wrong durations were exactly ×0.667 — a dotted note read undotted — and
+30 of 120 detected `augmentationDot`s never reached a note. The gate was
+`max(dot.height, 12) * 1.2`: a length with no musical meaning, since a dot's box
+is small and its size is mostly detector noise.
+
+What it was being compared against is fixed by engraving. A note in a space
+takes its dot in the same space; a note ON A LINE takes it in the space ABOVE,
+half a staff space up. The gate landed within a few pixels of that offset, so
+the on-a-line case went either way — C Horn 1's dotted half read as a half in
+bars 1 and 5 and as a dotted half in bars 2, 3, 4 and 6, the same note of the
+same part six times. Signed offsets over the 116 dots of the three works:
+
+    +0.00 spaces   52    note in a space, dot level with it
+    +0.50 spaces   52    note on a line, dot in the space above
+    nothing between +0.57 and +3.75
+
+⚠️ **The window has to be ASYMMETRIC, and the first measurement is what said
+so.** A dot goes above its note or level with it, never under. Brahms's Viola
+plays double stops — two noteheads a space apart, each with its own dot — so the
+lower dot sits half a space above the lower note AND half a space below the
+upper one, equidistant to the pixel. A symmetric window ties, the tie goes to
+whichever note was listed first, and the upper note came out double-dotted while
+the lower lost its dot entirely (`1.5 → 1.75`, `1.5 → 0.875`, four notes).
+Refusing the downward direction breaks the tie the way the page does, and gives
+up only the rare engraving that dodges another voice by printing the dot below —
+losing one dot rather than mis-assigning two notes.
+
+### The beams: a YOLO box bounds the STACK, not a stroke
+
+`resolve_rhythms_for_cell`'s docstring has always said the classical-CV beams
+REPLACE the YOLO ones. The code has always unioned them, with its own comment
+giving the Phase-4f reason: CV was then the more conservative detector and
+missed strokes YOLO caught.
+
+What the union costs is the one measurement the beam pipeline exists to make:
+**how many strokes are stacked.** A YOLO beam box does not bound one stroke, it
+bounds the whole stack, so its centre falls in the GAP between two levels. On
+Violin 2 the CV detector reads the two strokes correctly at canonical y 1112 and
+1172 — 60 px apart against a 35 px clustering tolerance, which is two levels —
+and the YOLO box spanning both contributes a centre at 1142, exactly between
+them. The run 1112, 1142, 1172 then has no gap wider than the tolerance anywhere
+in it, so it counts as one level and three sixteenths are read as three eighths.
+
+The Phase-4f reason is still half true, so all three arrangements were measured:
+
+| | pooled | edits | brahms dur | melody dur |
+|---|--:|--:|--:|--:|
+| union (Phase 4f) | 0.1917 | 1355 | 0.916 | 0.778 |
+| replace outright | **0.1855** | **1310** | 0.929 | **0.722** |
+| **kept** | 0.1861 | 1315 | **0.931** | 0.778 |
+
+A YOLO beam is now kept only where no CV beam overlaps its x-range: where the CV
+detector has measured a column of the page its answer stands alone, and where it
+found nothing YOLO's coverage is better than none. Replacing outright scores
+best by five edits out of 1315 and gets there by throwing real beams away — it
+is the only arm that regresses an authored fixture, and the `×4` family (notes
+that lost every beam and read four times too long) goes 4 → 7 under it.
+
+### What is left, and why the reconciler is still right to decline
+
+Thirty-six wrong durations, and the reconciler fires on exactly one of them.
+
+Violin 2's bar is the shape of the residue: a dotted eighth beamed to three
+sixteenths. That is **two beam levels inside one beam group**, and
+`_beam_groups` builds a group out of noteheads that share a `beam_levels` value,
+so it has no way to express "these three are sixteenths and that one is an
+eighth". Re-reading the group as a whole lands on 2.625 beats where the meter
+wants 3.0, and it correctly refuses. Its reach is not one edit short, as the
+handoff supposed — it is one CONCEPT short, and the concept is a group whose
+members can differ.
+
+Underneath that is CV geometry rather than plumbing, which makes it the first
+item in this file's history whose next step is detector work:
+
+- the first two noteheads of that bar have **no stem detected** (4 stems for 6
+  noteheads), so `_beams_attached_to_stem` never runs for them;
+- the fallback pairs a notehead to a beam directly and caps the reach at 5.5
+  staff spaces, and these notes sit high above the staff with long stems — their
+  own beam is 5.9 and 6.1 spaces away. The cap cannot simply be widened: its
+  comment records that a 5.5-space window already swept 183 noteheads into
+  counts of 5, 6, 7 and 8 beams.
+
+So the lever is `line_detection.detect_stems` finding the stems it is missing,
+not a wider tolerance downstream of it.
