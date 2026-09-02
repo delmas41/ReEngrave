@@ -63,21 +63,57 @@ pages where the whole system sits below the bar, and one staff drifting over it
 cannot carry a page. The vote is the mechanism; the threshold only decides who
 gets to vote.
 
-## Common time, and the one that was withheld
+## Common time, and cut common — which is NOT a template
 
 `C` is read, as a single glyph two spaces tall centred on the middle line,
 padded into the same four-space box so the search stays one-dimensional. It is
 easily the strongest reading in the corpus — five common-time pages at 0.745 to
 0.761, against 0.50 to 0.62 for the scanned digit meters.
 
-**Cut common is not**, though its template was built at the same time and sits
-in the symbol library. A C with a stroke through it correlates with any vertical
-ink crossing any rounded blob, and it claimed a meter on seven systems that
-print none — two pages of the Beethoven scan and four systems of a Bach prelude
-— at 0.51 to 0.56, over a threshold of 0.50. No page in the corpus prints a real
-cut-C, so there was nothing to measure the other side of that against. 2/2 is
-still read where it is spelled in digits, which is how the Mahler fixture prints
-it. See `DEFAULT_METERS`.
+**Cut common is read too, as of 2026-09-01, but not by searching for it.** The
+08 work built the `timeSigCutCommon` template and withheld it, on the ground
+that a C with a stroke through it correlates with any vertical ink crossing any
+rounded blob — it claimed a meter on seven systems that print none. What it
+could not know is what the withholding cost, because no page in that corpus
+printed a real cut common. Fifteen of the 97 dossier works open on one, and on
+those pages the reader does not abstain: **it reads `C`**, unanimously, at 0.58
+(Mozart 40, 11 staves of 11) and 0.56 (Brahms 4, 13 of 13), so a 2/2 page ships
+as 4/4 with every bar measured against a meter twice too long.
+
+Adding the template fails BOTH ways and the second is the instructive one
+(`benchmarks/omr-timesig-2026-09/sweep_cutC.json`): nine false systems, and it
+STILL loses to plain `C` on the real cut-common pages. That is not a tuning
+problem. A `C` is a SUBSET of a cut-C's ink, so on a real ¢ both templates match
+and the one with less ink to account for scores higher; NCC does not reward a
+template for the extra ink it explains. No threshold between two scores fixes
+that.
+
+So the question is asked by POSITION instead, the way the clef locator's false
+positives were finally separated: **a cut common is a common with a stroke
+through the middle, and a plain C's middle is hollow** (its aperture faces
+right). Once `C` has won at some x, the centre fifth of the matched box is
+measured over the glyph's own two-space height. Over 87 staves that matched C
+across both corpora (`probe_cut_stroke.py`):
+
+| what the page prints | staves | centre-column fill |
+|---|--:|---|
+| cut common | 24 | **1.00 every one** |
+| common | 57 | 0.00–0.30 |
+| nothing (matched C anyway) | 6 | 0.00–0.48 |
+
+The gap runs 0.48 to 1.00 with nothing in it, and every threshold from 0.50 to
+1.00 gives the same answer — a plateau, which is what a constant read off a gap
+should look like. `cut_stroke_min_fill` sits at 0.75, the middle of it.
+
+**This adds no false-positive surface at all, by construction.** The cut reading
+rides on a `C` that already cleared the threshold and the vote; nothing new
+enters the search, so a page that abstains today still abstains and a page that
+reads 3/4 still reads 3/4. The only outcome that can change is a `C` becoming a
+`C|`. That is why the template stays out of `DEFAULT_METERS` — the 08 measurement
+of what putting it in costs is still correct.
+
+2/2 spelled in digits is read as it always was, which is how the Mahler fixture
+prints it.
 
 ## What it does not read
 
@@ -87,7 +123,7 @@ and will keep whatever the detector says about it.
 from __future__ import annotations
 
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from functools import lru_cache
 from typing import Iterable, Sequence
 
@@ -107,15 +143,13 @@ from tools.omr.types import MeasureCell
 #: `C` is the letter form of 4/4, kept distinct from the digit spelling because
 #: `raw` should say what the page prints.
 #:
-#: **Cut common is deliberately absent.** Its template was built and measured
-#: alongside C on 2026-08-31 and withheld: a C with a stroke through it
-#: correlates with any vertical ink crossing any rounded blob, and it read a
-#: meter on seven systems that print none — Beethoven 5 scan pages 4 and 5, and
-#: four systems of WTC I Prelude 1 — at 0.51 to 0.56, over a threshold of 0.50.
-#: No page in the corpus prints a real cut-C, so there was no evidence for what
-#: a true one scores and no way to separate them. 2/2 spelled as digits is read
-#: (`e2e-mahler`, 38 staves of 38); ¢ abstains. The glyph is in the symbol
-#: library, so restoring it is one line plus the corpus page that justifies it.
+#: **Cut common is deliberately absent, and is read anyway.** Searching for it
+#: was measured twice and refused twice: on 2026-08-31 for reading a meter on
+#: seven systems that print none, and on 2026-09-01 for ALSO losing to plain `C`
+#: on the two pages that really print one — a `C` is a subset of a cut-C's ink,
+#: so the smaller template wins. `_looks_cut` reads the stroke by position after
+#: `C` has won instead, which adds nothing to this list and so adds no way for
+#: the search to go wrong. See the module docstring.
 DEFAULT_METERS: tuple[tuple[int, int, str], ...] = (
     (2, 2, "2/2"), (3, 2, "3/2"), (4, 2, "4/2"),
     (2, 4, "2/4"), (3, 4, "3/4"), (4, 4, "4/4"), (5, 4, "5/4"), (6, 4, "6/4"),
@@ -155,6 +189,17 @@ class TimeSignatureLocatorConfig:
     #: overshoot the top and bottom lines slightly in most faces.
     band_pad_spaces: float = 0.5
 
+    #: Fraction of the matched `C`'s own height that must be inked down its
+    #: centre column for the reading to become a cut common. Read off a gap, not
+    #: tuned: 24 cut staves all measure 1.00 and the highest non-cut of 63
+    #: measures 0.48, and every threshold in 0.50–1.00 gives the same answer.
+    cut_stroke_min_fill: float = 0.75
+
+    #: Width of that centre column, as a fraction of the matched box either side
+    #: of its middle. A stroke is drawn through the centre; the C's own arcs are
+    #: at the edges, so this must stay well clear of them.
+    cut_stroke_centre_frac: float = 0.10
+
     meters: tuple[tuple[int, int], ...] = DEFAULT_METERS
 
 
@@ -173,14 +218,34 @@ class LocatedTimeSignature:
     #: the vote's key, so a page cannot average a C and a 4/4 into one answer.
     raw: str = ""
 
+    @property
+    def symbol(self) -> str | None:
+        """"common" / "cut" when a LETTER form was matched, else None.
+
+        This is the same fact `rhythm.parse_time_signature` sets from a
+        `timeSigCommon` / `timeSigCutCommon` DETECTION, and it is set here on the
+        same terms: the letter glyph itself was matched, so the glyph is what was
+        read. `raw` is not evidence for it — a 4/4 spelled in digits also carries
+        no symbol — which is why this is derived from the letter forms alone and
+        never from the numbers. `export.to_musicxml` writes it as MusicXML's
+        `symbol=` attribute, and musicdiff charges 3 edits per staff when it
+        disagrees with the truth, so dropping it is not cosmetic.
+        """
+        if self.raw not in LETTER_METERS:
+            return None
+        return "cut" if self.raw == "C|" else "common"
+
     def as_dict(self, source: str = "header_reader") -> dict[str, object]:
-        return {
+        out: dict[str, object] = {
             "numerator": self.numerator,
             "denominator": self.denominator,
             "raw": self.raw,
             "source": source,
             "score": round(self.score, 4),
         }
+        if self.symbol is not None:
+            out["symbol"] = self.symbol
+        return out
 
 
 @lru_cache(maxsize=4)
@@ -269,6 +334,43 @@ def _meter_templates(
     return tuple(out)
 
 
+def _looks_cut(
+    strip: np.ndarray,
+    origin: tuple[int, int],
+    shape: tuple[int, int],
+    config: TimeSignatureLocatorConfig,
+) -> bool:
+    """Is there a vertical stroke through the middle of this matched `C`?
+
+    `origin` is the match's `(x, y)` in `strip`, `shape` its `(h, w)`. The
+    template is four staff spaces tall and the letter glyph occupies the middle
+    two of them (`_meter_templates` pads it there), so the glyph's own height is
+    the middle half of the box — which is what the fill is measured over, not the
+    padded box, or the padding would halve every reading.
+
+    A row counts as inked if anything in the centre column is inked, not if the
+    mean is high: the stroke is thin and a degraded print thins it further, while
+    a mean would make the answer depend on stroke weight, which is exactly the
+    kind of quantity the 08 work found moves with the printing rather than the
+    answer (see the ink-coverage discriminator it rejected).
+    """
+    x, y = origin
+    height, width = shape
+    box = strip[y:y + height, x:x + width]
+    if box.size == 0:
+        return False
+    glyph_top = int(round(height * 0.25))
+    glyph_bottom = int(round(height * 0.75))
+    half = config.cut_stroke_centre_frac
+    x0 = int(round(width * (0.5 - half)))
+    x1 = int(round(width * (0.5 + half)))
+    column = box[glyph_top:glyph_bottom, x0:x1]
+    if column.size == 0:
+        return False
+    inked_rows = (column.max(axis=1) > 127).mean()
+    return bool(inked_rows >= config.cut_stroke_min_fill)
+
+
 def locate_time_signature(
     cell: MeasureCell,
     *,
@@ -316,6 +418,7 @@ def locate_time_signature(
         return None
 
     best: LocatedTimeSignature | None = None
+    best_at: tuple[tuple[int, int], tuple[int, int]] | None = None
     for (numerator, denominator, raw), template in _meter_templates(
         config.template_em_px, tuple(config.meters)
     ):
@@ -331,8 +434,18 @@ def locate_time_signature(
                 x_canonical=int(round(location[0] / scale)),
                 raw=raw,
             )
+            best_at = (location, template.shape)
     if best is None or best.score < floor:
         return None
+    # A cut common is a common with a stroke through it, and the stroke is read
+    # by POSITION after the fact rather than searched for — searching for it
+    # loses to plain `C` on real cut-common pages, because a C is a subset of a
+    # cut-C's ink. Nothing new enters the search, so nothing new can be found
+    # where there is no meter at all.
+    if best.raw == "C" and best_at is not None and _looks_cut(
+        strip, best_at[0], best_at[1], config
+    ):
+        best = replace(best, numerator=2, denominator=2, raw="C|")
     return best
 
 
@@ -370,7 +483,7 @@ def vote_system_time_signature(
     winners = [r for r in reads if r is not None
                and (r.numerator, r.denominator, r.raw) == (numerator, denominator, raw)]
     scores = sorted(r.score for r in winners)
-    return {
+    out: dict[str, object] = {
         "numerator": numerator,
         "denominator": denominator,
         "raw": raw,
@@ -379,6 +492,12 @@ def vote_system_time_signature(
         "voters": total,
         "median_score": round(scores[len(scores) // 2], 4),
     }
+    # The glyph is part of the meter and the exporter writes it (MusicXML
+    # `symbol=`); the winners all read the same `raw`, so they all read the same
+    # glyph. See `LocatedTimeSignature.symbol`.
+    if winners[0].symbol is not None:
+        out["symbol"] = winners[0].symbol
+    return out
 
 
 def read_system_time_signatures(
