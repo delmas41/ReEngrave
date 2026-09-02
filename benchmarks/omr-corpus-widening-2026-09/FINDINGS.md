@@ -448,6 +448,27 @@ the pipeline attached a mark to a note, and nothing emitted one.
 
 `wrong articulation` over the batch that holds Mozart 40 fell **102 → 37**.
 
+**Coverage, detected -> attached -> exported**, on the works whose fixtures had
+been regenerated when this was taken:
+
+| work | detected | attached | exported | truth |
+|---|--:|--:|--:|--:|
+| `mozart-sym40-mvt1` | 102 | 101 | 81 | 110 |
+| `brahms-sym4-mvt1` | 58 | 55 | 55 | 60 |
+| `beethoven-sym3-mvt1` | 26 | 21 | 21 | 38 |
+| `dvorak-sym9-mvt4` | 10 | 9 | 9 | 10 |
+| `mahler-sym5-mvt1` | 6 | 6 | 6 | 6 |
+
+Mozart 40\'s 101 → 81 is the chord rule working: its Viola plays divisi double
+stops, both noteheads attach their own staccato, and a chord takes ONE mark.
+
+⚠️ **An articulation on a note the aligner cannot pair buys nothing.**
+`dvorak-sym9-mvt4` exports 9 of its 10 accents correctly and moves by **one
+edit** (240 → 239), because its marks sit in bars already charged as whole-bar
+inserts and deletes. That is the `entire measure` amplification caveat running
+in the unhelpful direction, and it is why the articulation gains are so uneven
+across works — 57 on Mozart 40, 1 on Dvorak, for comparable per-mark accuracy.
+
 **The residue is named, not scattered.** Mozart 40\'s truth carries 96
 `<staccato/>` and **14 `<detached-legato/>`**; the prediction emits 81
 staccato. Detached legato is *portato* — a staccato dot printed UNDER A SLUR —
@@ -456,6 +477,66 @@ detector is right about the glyph and the truth is right about the meaning, and
 nothing between them can bridge that without reading the slur and the dot
 together. The other ~15 are marks with no notehead on the correct side of them,
 which the rule declines by design.
+
+---
+
+### All three fixes, over the whole corpus
+
+| work | before | after | delta |
+|---|--:|--:|--:|
+| `mozart-sym41-mvt1` | 0.5674 / 1562 | **0.3632 / 1051** | **−511** |
+| `brahms-sym4-mvt1` | 0.2849 / 520 | **0.2296 / 427** | −93 |
+| `mozart-sym40-mvt1` | 0.2468 / 363 | **0.1772 / 273** | −90 |
+| `bruckner-sym5-mvt1` | 0.1431 / 284 | **0.1042 / 205** | −79 |
+| `dvorak-sym9-mvt4` | 0.4106 / 294 | **0.3380 / 239** | −55 |
+| `tchaikovsky-sym6-mvt2` | 0.2321 / 328 | **0.1958 / 279** | −49 |
+| `beethoven-sym3-mvt1` | 0.1553 / 252 | **0.1405 / 231** | −21 |
+| `tchaikovsky-sym4-mvt2` | 0.0571 / 88 | 0.0571 / 88 | 0 |
+| `boulanger-printemps-mvt1` | 0.6971 / 5155 | 0.7017 / 5374 | **+219** |
+| **pooled (8, without Boulanger)** | 0.2770 / 3691 | **0.2057 / 2793** | **−898** |
+| pooled (all 9) | 0.4269 / 8846 | **0.3846 / 8167** | −679 |
+
+Note recall and duration rate moved only where the fixes touch rhythm:
+
+| work | recall | duration rate |
+|---|--:|--:|
+| `mozart-sym41-mvt1` | 0.991 → **1.000** | 0.465 → **0.868** |
+| `tchaikovsky-sym6-mvt2` | 0.756 → 0.756 | 0.892 → **0.985** |
+| every other work | unchanged | unchanged |
+
+**The canonical three, measured on the same tree:**
+
+| | before | after |
+|---|--:|--:|
+| `beethoven-sym5-mvt1` | 0.1649 / 205 | 0.1649 / 205 |
+| `brahms-sym1-mvt1` | 0.1709 / 675 | 0.1707 / 674 |
+| `mahler-sym5-mvt1` | 0.0455 / 86 | **0.0331 / 63** |
+| **pooled** | **0.1364 / 966** | **0.1328 / 942** |
+
+### The one regression, kept deliberately — `boulanger-printemps-mvt1` +219
+
+⚠️ **Its articulations are RIGHT and the metric charges for them anyway.** The
+work carries no tuplets at all (0 detections, 0 `<time-modification>` on either
+side), so fix 2 is not involved; the whole +219 is fix 3. And fix 3 reads it
+almost perfectly:
+
+    detected 269   attached 264   exported 263
+    truth 271 articulations:  258 staccato + 13 tenuto
+    pred  263 articulations:  254 staccato +  9 tenuto
+
+263 of 271 marks, with the right kinds in the right proportions, on a work that
+previously emitted zero. Its OMR-NED still rose, because **43 parts against 46
+and 76% of its budget in whole-measure and whole-staff operations means its bars
+do not pair** — and every correct symbol added to a bar that is already charged
+delete-whole-bar-plus-insert-whole-bar makes that bar more expensive.
+
+Kept, and the reasoning is the one `b8ccc89` already set down when writing
+chords bottom-up cost two edits and was still right: **a change that makes the
+export match what is printed should not be refused by a metric that is
+punishing something else.** The arithmetic supports it either way — −898 over
+the eight works that segment correctly, −679 pooled over all nine — but the
+argument does not rest on the arithmetic. What Boulanger measures here is its
+own segmentation, which is item 6 of the handoff and untouched by any of this.
 
 ---
 
