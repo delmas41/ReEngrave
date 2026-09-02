@@ -331,7 +331,8 @@ def detect_stems(
 # ---------------------------------------------------------------------------
 
 
-def _stacked_bar_count(opened, x: int, y: int, w: int, h: int, max_samples: int = 48) -> int:
+def _stacked_bar_count(labels, label: int, x: int, y: int, w: int, h: int,
+                       max_samples: int = 48) -> int:
     """How many beam bars are stacked here, counted as vertical ink runs.
 
     Not from the bounding box's height, which was the old approach and is wrong
@@ -344,8 +345,18 @@ def _stacked_bar_count(opened, x: int, y: int, w: int, h: int, max_samples: int 
     A column through the component crosses each bar exactly once, whatever the
     slope, so counting runs in a column counts bars. The median over sampled
     columns keeps a stem or a notehead crossing the beam from swaying it.
+
+    THE COLUMN MUST BE THIS COMPONENT'S OWN INK, which is why the labels go in
+    rather than the opened image. A sloped beam's bounding box is far taller
+    than the bar, so it reaches over its neighbours: measured on Brahms's Violin
+    2, the primary beam's box (canonical y 1082-1203, 36% filled) covers the
+    lower part of the SECONDARY beam beside it, and 26 of its 51 sampled columns
+    then showed two runs where the component has one bar. The median came out 2,
+    the box was cut into two bands, and a dotted eighth was read as a dotted
+    sixteenth. `_attached_stem_count` below already reads the label mask for the
+    same reason.
     """
-    roi = opened[y:y + h, x:x + w] > 0
+    roi = labels[y:y + h, x:x + w] == label
     if roi.size == 0:
         return 1
     step = max(1, roi.shape[1] // max_samples)
@@ -516,7 +527,7 @@ def detect_beams(
         if attached < min_attached_stems:
             continue
 
-        n_bars = _stacked_bar_count(opened, x, y, w, h)
+        n_bars = _stacked_bar_count(labels, i, x, y, w, h)
         sub_h = max(1, h // n_bars)
         for k in range(n_bars):
             out.append(LineDetection(

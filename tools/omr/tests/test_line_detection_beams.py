@@ -16,7 +16,11 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-from tools.omr.line_detection import detect_beams, detect_stems
+from tools.omr.line_detection import (
+    _stacked_bar_count,
+    detect_beams,
+    detect_stems,
+)
 from tools.omr.types import MeasureCell
 
 
@@ -137,3 +141,60 @@ class TestOnlyFullLengthStemsAnchorABeam:
         cell = _cell(paint)
         assert detect_beams(cell) == []
         assert len(detect_beams(cell, stem_anchor_min_height_lines=1.5)) == 1
+
+
+class TestStackedBarCountReadsItsOwnComponent:
+    """The bar count must read the component's ink, not the box's contents.
+
+    A sloped bar's bounding box is far taller than the bar, so it reaches over
+    whatever lies beside it. On Brahms's Violin 2 — a dotted eighth beamed to
+    three sixteenths — the primary bar's box (canonical y 1082-1203, 36% filled)
+    covered the lower part of the SECONDARY bar, which is a different component.
+    Counting runs in the opened image found two runs in 26 of 51 sampled
+    columns, the median came out 2, the primary was cut into two equal bands,
+    and every note under it gained a beam level.
+
+    Built directly as a label array, because the shape needs a slope steep
+    enough to swallow its neighbour and a horizontal opening erodes exactly
+    that off a synthetic cell.
+    """
+
+    @staticmethod
+    def _labels():
+        # One sloped bar as label 1, and a second bar as label 2 lying inside
+        # label 1's bounding box without touching it.
+        labels = np.zeros((200, 400), dtype=np.int32)
+        for x in range(400):
+            y = 20 + x // 4                 # the sloped primary
+            labels[y:y + 12, x] = 1
+        for x in range(150, 400):
+            y = x // 4                      # the secondary, a clear gap above
+            labels[y:y + 12, x] = 2
+        return labels
+
+    def test_one_sloped_bar_counts_once_despite_a_neighbour_in_its_box(self):
+        labels = self._labels()
+        ys, xs = np.nonzero(labels == 1)
+        x, y = xs.min(), ys.min()
+        w, h = xs.max() - x + 1, ys.max() - y + 1
+        assert _stacked_bar_count(labels, 1, int(x), int(y), int(w), int(h)) == 1
+
+    def test_the_neighbour_lies_inside_that_box(self):
+        # Guards the fixture itself: without the overlap there is nothing to
+        # regress against, and the test above would pass for the wrong reason.
+        labels = self._labels()
+        ys, _ = np.nonzero(labels == 1)
+        ys2, _ = np.nonzero(labels == 2)
+        assert ys2.min() < ys.min() + (ys.max() - ys.min())
+        assert ys2.max() > ys.min()
+        # ...and over MOST of the columns, since the count is a median.
+        _, xs1 = np.nonzero(labels == 1)
+        _, xs2 = np.nonzero(labels == 2)
+        assert len(set(xs2.tolist())) > len(set(xs1.tolist())) / 2
+
+    def test_two_real_bars_in_one_component_still_count_twice(self):
+        labels = np.zeros((200, 400), dtype=np.int32)
+        for x in range(400):
+            labels[40:52, x] = 1
+            labels[90:102, x] = 1           # same component, genuinely stacked
+        assert _stacked_bar_count(labels, 1, 0, 40, 400, 62) == 2
