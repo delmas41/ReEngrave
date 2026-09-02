@@ -86,6 +86,57 @@
         {"ordinal": 0, "instrument": "right hand", "clef": "treble", "fifths": 4},
         {"ordinal": 1, "instrument": "left hand",  "clef": "bass",   "fifths": 4}
       ]
+    },
+    {
+      "id": "beet5-p15",
+      "work": "Beethoven, Symphony No. 5, Op. 67 — first movement, concert C minor (bars 430 and 452)",
+      "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+      "page_index": 15,
+      "dpi": 600,
+      "n_systems": 2,
+      "why_this_page": [
+        "The first ground-truth page that is MID-MOVEMENT, and the first",
+        "carrying three distinct written signatures for one concert key",
+        "INCLUDING natural brass and timpani printing NONE: 3 flats on the",
+        "flutes, oboes, bassoons and every string part, 1 flat on the Bb",
+        "clarinets, and no signature at all on the horns, trumpets and timpani.",
+        "beet5-p2 has that shape at the head of the movement; this page proves",
+        "it recurs where every system merely restates the signature, which is",
+        "where the cross-page vote does its work.",
+        "",
+        "It is also the page roadmap #4b cited as its evidence that key",
+        "signatures go unread, and it had NO per-staff ground truth until",
+        "2026-09-01 — which is why the +4 staves claimed for it in",
+        "benchmarks/omr-keysig-blindspot-2026-08/ were called unverifiable",
+        "there. It is the page on which the vote was caught rejecting three",
+        "CORRECT three-flat readings in favour of a reference set by two",
+        "under-counts; see benchmarks/omr-keysig-from-music-2026-09/PHASE1.md.",
+        "",
+        "PROVENANCE: hand-read by eye off a 500 dpi render of the left margin.",
+        "The image the lower system was read from is kept at benchmarks/",
+        "omr-keysig-from-music-2026-09/crops/beet5_p15_sys1_headers.png so the",
+        "reading can be re-checked without re-rendering. Both systems carry the",
+        "same instrumentation and the same signatures.",
+        "",
+        "The dossier DISAGREES with this print on 3 of the 11 parts: the modern",
+        "MusicXML edition data/dossiers/beethoven-sym5-mvt1.json is generated",
+        "from gives C Trumpet and Timpani written_fifths -3, where the 1870s",
+        "print gives them none. That is an EDITION difference, not an error in",
+        "either, and it is why the dossier cannot stand in for reading a page."
+      ],
+      "staves": [
+        {"ordinal": 0,  "instrument": "Flauti",      "clef": "treble", "fifths": -3},
+        {"ordinal": 1,  "instrument": "Oboi",        "clef": "treble", "fifths": -3},
+        {"ordinal": 2,  "instrument": "Clarinetti in Bb", "clef": "treble", "fifths": -1},
+        {"ordinal": 3,  "instrument": "Fagotti",     "clef": "bass",   "fifths": -3},
+        {"ordinal": 4,  "instrument": "Corni",       "clef": "treble", "fifths": 0},
+        {"ordinal": 5,  "instrument": "Trombe",      "clef": "treble", "fifths": 0},
+        {"ordinal": 6,  "instrument": "Timpani",     "clef": "bass",   "fifths": 0},
+        {"ordinal": 7,  "instrument": "Violino I",   "clef": "treble", "fifths": -3},
+        {"ordinal": 8,  "instrument": "Violino II",  "clef": "treble", "fifths": -3},
+        {"ordinal": 9,  "instrument": "Viola",       "clef": "alto",   "fifths": -3},
+        {"ordinal": 10, "instrument": "Violoncello e Basso", "clef": "bass", "fifths": -3}
+      ]
     }
   ]
 }
