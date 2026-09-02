@@ -264,14 +264,20 @@ class Run:
         return ", ".join(bits)
 
 
-def load_run(work: str, fixtures: Path = FIXTURES) -> Run | None:
+def load_run(work: str, fixtures: Path | None = None) -> Run | None:
     """Read one work's truth and transcription, and export the transcription.
+
+    `fixtures` resolves at CALL time rather than binding `FIXTURES` as a default
+    argument, so pointing the check at another directory — a `--direction-text`
+    run written to its own `--work-dir`, say — works by reassigning the module
+    constant. Bound as a default it silently did not.
 
     Returns `None` when either file is absent. The `.omr.musicxml` is NOT a
     fallback: reading it is the defect this function exists to remove, and a
     silent fallback would reinstate it on exactly the machines where nobody
     would notice.
     """
+    fixtures = FIXTURES if fixtures is None else fixtures
     truth_path = fixtures / f"{work}.musicxml"
     json_path = fixtures / f"{work}.omr.json"
     if not (truth_path.is_file() and json_path.is_file()):
@@ -362,7 +368,8 @@ class Survey:
         return "\n".join(f"  {r.work:22s} {r.configuration}" for r in self.runs)
 
 
-def survey(fixtures: Path = FIXTURES, works: tuple[str, ...] = WORKS) -> Survey:
+def survey(fixtures: Path | None = None,
+           works: tuple[str, ...] = WORKS) -> Survey:
     """Every work on disk, exported here, compared element by element."""
     loaded = {w: load_run(w, fixtures) for w in works}
     runs = [r for r in loaded.values() if r is not None]
