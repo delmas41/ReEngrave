@@ -80,6 +80,12 @@ benchmarks/*/cells/
 # labeled cells above. The dossiers under data/dossiers/ ARE committed, since
 # they depend on an external checkout that may move.
 benchmarks/omr-orchestral-e2e/fixtures/
+# ...and any alternate --work-dir. `orchestral_eval --work-dir` takes an
+# arbitrary path, and a measurement that compares two configurations needs two
+# of them, so the convention is `fixtures-<what>`. Added 2026-09-02 after
+# `git add -A benchmarks/` swept a `fixtures-dirtext` of rendered PDFs and
+# LilyPond into a commit — the pattern above only ever covered the one name.
+benchmarks/omr-orchestral-e2e/fixtures-*/
 benchmarks/omr-end-to-end/fixtures/
 benchmarks/omr-corpus-widening-2026-09/fixtures/
 benchmarks/*/overlays/
