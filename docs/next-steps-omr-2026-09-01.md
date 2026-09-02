@@ -11,8 +11,8 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.1506** on the engraved orchestral benchmark (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.1922), down from **0.3164** at the start of
+**Pooled OMR-NED 0.1439** on the engraved orchestral benchmark (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.1804), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
 `benchmarks/omr-ned-2026-08/FINDINGS.md`.
@@ -37,6 +37,9 @@ export together, and the engraved benchmark says nothing about scan robustness.
 | a YOLO beam box bounds the stack, not a stroke | 0.1917 → 0.1861 | `cf559ca` |
 | a stem capped at 6 staff spaces | 0.1861 → 0.1601 | `50a3920` |
 | a beam bar counted from its neighbour's ink | 0.1601 → 0.1506 | `c62b372` |
+| a chord's members given opposite stem directions | 0.1506 → 0.1505 | `de99318` |
+| ink across the whole bar read as a beam | 0.1505 → 0.1436 | `e4ff44b` |
+| a chord written top-down | 0.1436 → 0.1439 | `b8ccc89` |
 
 **Five of the first eight were EXPORT bugs on data the pipeline had already
 computed correctly.** Beams detected and dropped, dots detected and counted twice,
@@ -152,10 +155,31 @@ What it found, ranked, replaces the rest of this list at the top:
     sampled the opened image inside the component's box rather than the label
     mask, and a sloped bar's box reaches over the bar beside it. The LilyPond
     beam ground truth was one over and is now exact.
-  What is left is 18 wrong durations, 12 of them the **Viola**, whose bars are
-  all `order` class — it plays double stops, and a two-note chord is where
-  voice splitting and duration resolution meet. That is the next thread, and it
-  is not a beam problem.
+- ~~**The Viola's double stops**~~ — **DONE**, pooled 0.1506 → **0.1439**,
+  Brahms 761 → 713 edits, its note recall 0.923 → **0.950**, duration rate
+  0.968 → **0.992**, `exact` measures 76% → **84.4%** and pooled wrong
+  durations 18 → **8**. Beethoven and Mahler unchanged to the edit throughout.
+  Three separate faults, and the `order` class was a symptom of none of them:
+  - **a chord's members were given opposite stem directions.** A double stop is
+    two noteheads on ONE stem, and `_stem_direction` compared each notehead's
+    centre to the stem's midpoint independently — so for any interval wider
+    than the stem is long, the same stem was above the lower note and below the
+    upper one. `voicing` then correctly read the disagreement as divisi and
+    split the chord into two voices. Direction is decided once per stem now.
+  - **ink across the whole bar was read as a beam.** YOLO beams get none of the
+    CV detector's "two stems must end here" test and are used wherever CV is
+    silent — which is where that test refused something. A 19.6 × 0.33-space
+    detection spanning an entire cell halved every duration in Viola bar 2.
+  - **a chord was written top-down.** Both exporters emit `noteheads` in order
+    and MusicXML takes a chord's first note as its representative, so the order
+    is not cosmetic. Sorted bottom-up, as the music and every truth file are.
+  ⚠️ **The last of the three makes OMR-NED two edits WORSE and is still right.**
+  musicdiff sorts a chord's pitches before comparing, so it is indifferent to
+  the convention by construction, while 17 more notes match and 46 leave the
+  `order` class. It is the clearest case yet for this file's own advice to read
+  the metric next to note recall rather than instead of it.
+  The residue is 8 wrong durations: 3 are Mahler's fifth triplet group, which
+  carries no marker at any confidence, and the rest are scattered.
   ⚠️ **A green ground truth is not evidence when the case is outside what it
   engraves.** `benchmarks/omr-phase4-lines` is unchanged at every stem cap tried
   because its music has no long stems.

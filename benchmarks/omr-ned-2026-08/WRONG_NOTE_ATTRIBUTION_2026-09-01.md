@@ -798,3 +798,94 @@ The reconciler is still declining correctly, and still for the structural reason
 given above: a dotted eighth beamed to three sixteenths is two levels inside one
 beam group, and `_beam_groups` builds a group from noteheads that share a
 `beam_levels` value.
+
+---
+
+## FIXED 2026-09-01 — the Viola's double stops, which were three faults
+
+Pooled **0.1506 → 0.1439**, Brahms 761 → 713 edits. The ratio understates it,
+and deliberately so — see the third fault. What moved:
+
+    brahms note recall        0.923 -> 0.950   (463 -> 480 of 505 matched)
+    brahms duration rate      0.968 -> 0.992
+    brahms `exact` measures      76% -> 84.4%
+    `order`-class notes           54 -> 8
+    pooled wrong durations        18 -> 8
+    authored `ensemble` fixture duration rate  0.86 -> 1.000
+
+Beethoven and Mahler are unchanged to the edit through all three changes.
+
+The handoff named this as voice splitting, and the `order` class as its
+signature. The `order` class was a symptom of none of the three faults — it was
+the exporter writing chords top-down, which is the third and smallest of them.
+
+### 1. A chord's members were given opposite stem directions
+
+A double stop is two noteheads on ONE stem. `_stem_direction` compared each
+notehead's centre against the stem's MIDPOINT, one notehead at a time, so for
+any interval wider than the stem is long the same stem came out above the lower
+note and below the upper one:
+
+    bar 1   C4 y=579 -> up     C5 y=306 -> down     an octave
+    bar 7   A♭3 y=754 -> up    C5 y=352 -> down     a tenth
+
+`voicing.group_chords_in_measure` then refused to merge them — correctly, on
+the principle it states, that a real chord shares one physical stem. The chord
+was split into two voices and exported through a `<backup>`. Thirds were
+unaffected, which is why the fault looked intermittent: the stem only straddles
+its chord when the chord is wide.
+
+Direction is now decided once per stem from all the noteheads on it. **The
+metric does not move** — the split-voice representation was pairing at about
+the same cost — so this one ships on the export being right, and on the two
+below being unreadable until it was.
+
+### 2. Ink across the whole bar was read as a beam
+
+Viola bar 2 has no beam in it: a dotted quarter, a quarter, a flagged eighth.
+One YOLO `beam` detection at confidence 0.30 spanning canonical x 1 to 1966 of
+a 1966-wide cell — 19.6 staff spaces long, 0.33 thick, against the half-space
+an engraved beam gets — put a level on all six noteheads and halved the bar.
+
+The CV beam detector would never have kept it: it demands that two stems END at
+a component, which is exactly how it rejects slurs, ties, ledger lines and
+staff-line residue. YOLO beams get no such test, and `rhythm` uses them wherever
+CV is silent — which is precisely where CV's test refused something.
+
+Over the 136 YOLO beam detections of the three works, as a fraction of the cell:
+
+    0.1-0.2  16     0.4-0.5   7     0.7-0.8   1
+    0.2-0.3  65     -------------   0.8-0.9   1
+    0.3-0.4  33     0.5-0.7   0     0.9-1.0  13
+
+121 below 0.5, nothing between 0.5 and 0.7, 15 above — all 15 between 16.8 and
+23.0 spaces long and 0.25 to 0.38 thick, six touching both x edges exactly. The
+authored `ensemble` fixture, whose durations are known by construction, went
+**exact** on this change.
+
+### 3. A chord was written top-down — and this one costs 2 edits
+
+Both exporters emit `event["noteheads"]` in order, and MusicXML takes a chord's
+FIRST note as its representative: the tie, beam and slur marks hang off it. The
+order was whatever the detector returned, so the Viola exported `C5/C4` where
+the music is `C4/C5`. Sorted bottom-up.
+
+⚠️ **This makes pooled OMR-NED two edits WORSE (1018 → 1020) and is still the
+right change**, which is worth stating plainly rather than hiding in a total.
+musicdiff sorts a chord's pitches before comparing (`sortDiatonicAscending`), so
+it is indifferent to the convention by construction; the two edits are one
+chord whose beam mark now hangs off a different member. Meanwhile 17 more notes
+match, 46 leave the `order` class, and 7 wrong durations go away.
+
+It is the clearest case in this file for the advice `next-steps` opens with:
+read OMR-NED next to note recall, not instead of it. A change that makes the
+export match the convention its own truth is written in should not be judged by
+a metric that normalises that convention away.
+
+### What is left
+
+Eight wrong durations pooled. Three are Mahler's fifth triplet group, which
+carries no marker at any confidence and has been known since the tuplet work;
+the other five are scattered across five parts with no shared mechanism — which
+is what the `mixed` bucket looked like when this file started, and at this size
+is the point where attribution stops paying.
