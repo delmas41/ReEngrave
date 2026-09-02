@@ -470,25 +470,32 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     # twelve usable labels from either reader, `12 > 12` false, the cheaper one
     # kept, and the dossier join then anchors six staves instead of nine.
     #
-    # WHAT IS NOT ESTABLISHED, recorded so nobody re-derives a wrong answer:
-    # WHICH label makes the two twelves behave differently. Read the measured
-    # readings before assuming; they have moved between sessions on identical
-    # input, which is itself unexplained.
+    # WHICH label makes the two twelves behave differently, measured 2026-09-01:
+    # exactly ONE, staff 10. Surya reads `Tr. Teq.` -> Trumpet at MEDIUM on the
+    # bare `tr` alias where the page and the paid reader both say `Tr Ten.` ->
+    # Trombone. The other eleven are character-identical. Correcting that one
+    # string reproduces the paid reader's nine dossier clefs exactly; as read it
+    # gives six, the three lost being the trombones.
     #
-    # 2026-09-01, 45 replays of frozen crop bytes across warm, cold, concurrent
-    # x4 and x8, mixed with other pages' crops, and 1/8/16 llama.cpp slots:
-    # staff 10 reads `Tr. Teq.` -> Trumpet at MEDIUM confidence every time, and
-    # that IS a wrong instrument on a trombone staff. An earlier session
-    # recorded `Tr. Ten.` -> Trombone as consistently, on the same commit and
-    # the same crop, and no version of surya, llama.cpp or the GGUF differs.
-    # Staff 0 moved the same way: `'Fl. pic.'` now, `'Fl. fl. pic.'` then.
+    # One character costs three staves because `score_layouts.label_pins` drops
+    # a name claimed by two blocks, and the misread both SPLITS the trombone run
+    # and gives Trumpet a second block — so four pins die, the correct slot-7
+    # trumpet pin among them.
+    #
+    # DO NOT "fix" this by refusing to trust a doubtful label: dropping it
+    # measured 6 dossier clefs -> THREE. An unlabelled staff breaks a run by
+    # design, so the trombones stay unpinned either way, and the recovered
+    # trumpet pin then costs the three string fills. Gating `pinnable` on the
+    # lexicon's confidence is exactly neutral. See RESULTS.md, "JOB B".
     #
     # Surya is NOT load-dependent — that hypothesis was tested and refused, and
     # the disputed character is decided at p=0.991 with a 5.53-nat margin, so
     # batching cannot be what moves it. The only sampled path in surya's client
     # is `_should_retry`, which raises the temperature on a failed or repetitive
     # request; a retry is silent in production because worker stderr is
-    # discarded. See benchmarks/omr-clef-geometry/RESULTS.md, "JOB A".
+    # discarded. An earlier session read staff 10 as `Tr. Ten.` and staff 0 as
+    # `'Fl. fl. pic.'` as consistently as this one reads them otherwise, on the
+    # same commit and the same crop bytes; that remains unexplained. See "JOB A".
     if read and _usable(read) >= _usable(labels):
         # The vision read replaces what the cheap tiers found, so the credit
         # does too — otherwise the summary would name tiers that were overruled.

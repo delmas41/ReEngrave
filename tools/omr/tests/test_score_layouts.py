@@ -241,6 +241,42 @@ class TestLabelPins:
         labels = {0: "Trumpet", 3: "Trumpet"}
         assert label_pins(4, labels, self.PARTS) == []
 
+    def test_one_misread_inside_a_run_costs_four_pins_not_one(self):
+        """The measured beet5-p48 failure, in the smallest shape that shows it.
+
+        Surya reads staff 10's `Tr Ten.` as `Tr. Teq.`, which the lexicon
+        resolves through the bare `tr` alias to Trumpet. That single character
+        does TWO things at once: it splits the trombone run in half, and it
+        gives Trumpet a second block. `claimed[name] == 1` then drops BOTH
+        names, so the correct trumpet pin above dies with them.
+
+        End to end on that page the free path went 10 pins to 8 and the
+        dossier from 9 clefs to 6 — the three lost being exactly the trombones.
+        """
+        from tools.omr.score_layouts import label_pins
+        correct = {0: "Trumpet", 1: "Trombone", 2: "Trombone", 3: "Trombone"}
+        assert label_pins(4, correct, self.PARTS) == [(0, 0), (1, 1)]
+
+        misread = {0: "Trumpet", 1: "Trombone", 2: "Trumpet", 3: "Trombone"}
+        assert label_pins(4, misread, self.PARTS) == []
+
+    def test_abstaining_on_the_doubtful_label_does_not_restore_the_run(self):
+        """And this is why "just don't pin a shaky label" is not the fix.
+
+        An unlabelled staff breaks a run rather than being assumed to belong to
+        it, so dropping the misread — or merely refusing to let it pin —
+        leaves the trombones in two blocks either way. Only the trumpet pin
+        comes back. Measured on beet5-p48: dropping the label took the dossier
+        from 6 clefs to THREE, because the recovered trumpet pin then costs the
+        three string fills; refusing the pin alone was exactly neutral at 6.
+        """
+        from tools.omr.score_layouts import label_pins
+        dropped = {0: "Trumpet", 1: "Trombone", 3: "Trombone"}
+        assert label_pins(4, dropped, self.PARTS) == [(0, 0)]
+
+        misread = {0: "Trumpet", 1: "Trombone", 2: "Trumpet", 3: "Trombone"}
+        assert label_pins(4, misread, self.PARTS, pinnable={0, 1, 3}) == [(0, 0)]
+
     def test_no_pins_leaves_the_alignment_exactly_as_it_was(self):
         from tools.omr.score_layouts import (ScoreLayout, align_to_layout,
                                              align_to_layout_pinned)

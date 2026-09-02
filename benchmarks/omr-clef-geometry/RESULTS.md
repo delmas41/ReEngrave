@@ -2341,3 +2341,97 @@ before assuming staff 0 is the culprit.
   the production path is deterministic.
 * **Declaring the earlier reading a mistake.** It is unreproduced, which is not
   the same thing.
+
+---
+
+## JOB B — it is staff 10, and the obvious fix is worse than the bug
+
+**2026-09-01.** The two twelves on beet5-p48 differ at **exactly one label**, and
+it is not the one the handoff named.
+
+| staff | Surya (free) | Claude (paid) | printed |
+|---|---|---|---|
+| 10 | `'Tr. Teq.'` → **Trumpet**, medium, alias `tr` | `'Tr Ten.'` → Trombone, high, alias `tr ten` | `Tr Ten.` |
+
+The other eleven are character-identical and resolve identically. **Staff 0 is
+not a difference at all today** — both readers return `'Fl. pic.'` → Piccolo,
+high. The `'Fl. fl. pic.'` the previous session recorded as "the one difference
+that does survive checking" is gone, which Job A already showed was going to be
+the case; that session's readings of BOTH staves differ from every reading taken
+since.
+
+### The mechanism, and why one label costs three staves
+
+`score_layouts.label_pins` pins only the first staff of a run of consecutive
+same-named staves, and drops any name **claimed by more than one block**. The
+misread does two things at once:
+
+* it **splits** the trombone run 9–11 into two blocks (9, and 11), and
+* it gives **Trumpet a second block** (7, and 10).
+
+Both names are then claimed twice, so all four brass pins are dropped —
+including the *correct* trumpet pin at slot 7, which the misread never touched.
+
+    correct   pins slot 0->Piccolo … slot 7->Trumpet, slot 8->Timpani, slot 9->Trombone   10 pins
+    misread   pins slot 0->Piccolo … slot 6->Horn,    slot 8->Timpani                      8 pins
+
+### Causal test — only staff 10 changed, free path throughout
+
+| arm | labels | pins | dossier clefs |
+|---|--:|--:|---|
+| as-is, `Tr. Teq.` → Trumpet | 12 | 8 | 6 — staves 4, 5, 8, 14, 15, 16 |
+| **corrected**, `Tr Ten.` → Trombone | 12 | 10 | **9** — and identical to the paid reader's nine |
+| **dropped** (the label abstains) | 11 | 9 | **3** — staves 4, 5, 8 |
+| medium confidence may not pin | 12 | 9 | 6 — unchanged |
+
+Correcting that one string reproduces the paid reader's result exactly, staff
+for staff. **The label is the whole difference between the two twelves.**
+
+### The obvious fix is disproven: abstaining is WORSE than the wrong label
+
+Dropping the doubtful label takes the dossier from 6 to **3**. Two things
+compound:
+
+* an unlabelled staff between two same-named ones **breaks the run by design**,
+  so the trombones stay in two blocks and their pins die anyway; and
+* the slot-7 trumpet pin comes BACK, and having it makes the strings worse —
+  staves 14, 15, 16 (Viola, Cello, Bass) were filled without it and are not
+  filled with it.
+
+**More pins is not better.** This is the same lesson the join benchmark already
+recorded from the other side — a pin fixes a BOUNDARY, and adding a true pin
+re-cuts the spans around it.
+
+Gating pins on the lexicon's own confidence was tried because the signal is
+already there and unused: `dossier.join_parts_to_slots` builds `pinnable` from
+"alias not in `AMBIGUOUS_ALIASES`" and never looks at the match's confidence,
+yet the same alias `tr` returns **high** for slot 7's `'Tr.'` and **medium** for
+slot 10's `'Tr. Teq.'` — medium being the lexicon correctly reporting that it
+matched a prefix and had text left over. Removing medium matches from `pinnable`
+recovers the slot-7 pin without the string loss, and is **exactly neutral at 6**:
+the label still tells the aligner "Trumpet" at slot 10, so the trombones remain
+unreachable. Not shipped — one page cannot justify a change to what may pin, and
+it buys nothing here anyway.
+
+### So the fix is to read the character, and that is a lexicon job with a bar
+
+The lexicon is not at fault. `Tr. Teq.` contains no register word, so the bare
+`tr` alias is the correct match and `medium` is the correct confidence. A repair
+would have to be a fuzzy one — `teq` is one edit from `ten` behind the `tr`
+stem — and this project's standing rule for lexicon changes is validation across
+ten editions with the production margin readers re-run (the `Tr. Alt.` fix was
+held to exactly that: 1380 labels, 27 changed, all 27 correct). That is a session
+of its own, and there is a live counterexample to any general "`Tr.` + unknown
+word → Trombone" rule: `Tr. picc.` is a piccolo TRUMPET.
+
+Production is unaffected either way — the tie at the paid rung already goes to
+the paid reader, so a machine with an API key reads `Tr Ten.` and gets the nine.
+The cost falls on `--assist none`, which is the free path this page is the
+hardest case for.
+
+### Shipped
+
+Two tests in `test_score_layouts.py` carrying the measured numbers
+(`test_one_misread_inside_a_run_costs_four_pins_not_one`,
+`test_abstaining_on_the_doubtful_label_does_not_restore_the_run`), because the
+second one is the counter-intuitive half and nothing guarded it. 1110 tests.

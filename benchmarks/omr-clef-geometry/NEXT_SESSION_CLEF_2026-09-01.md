@@ -23,19 +23,21 @@ opening message, with this file's path.
 > sessions' readings STILL disagree on identical bytes with no version
 > difference, which is unexplained. Full write-up: `RESULTS.md`, "JOB A".
 
-> **JOB B — which label makes two twelves behave differently?** On beet5-p48
-> Surya and the paid vision reader each return 12 usable labels, but Surya's
-> produce 6 dossier fills and vision's 9. The tie is already resolved in the paid
-> reader's favour (shipped), so this is about the cause, not the symptom.
-> **RE-MEASURE THE LABELS FIRST — this job's stated premise is now inverted.**
-> Job A found staff 10 reading `Tr. Teq.` -> **Trumpet at medium confidence** on
-> all 45 reads, which is a wrong instrument on a trombone staff and exactly the
-> poisoned `label_pins` the original report described; staff 0 reads a clean
-> `'Fl. pic.'`. The earlier session measured both the other way round on the
-> same bytes. So run the reader, write down what it actually returns TODAY, and
-> only then start at `score_layouts.label_pins` and `dossier.join_parts_to_slots`
-> — and note that `Tr. Teq.` is a resolved-label fault, not a raw-text one, so
-> the "something downstream reads the RAW TEXT" theory may not be needed at all.
+> **JOB B — DONE 2026-09-01. It is staff 10, and abstaining is worse than the
+> bug.** The two twelves differ at exactly one label: Surya reads `'Tr. Teq.'`
+> -> Trumpet (medium, bare alias `tr`) where the paid reader and the page both
+> say `Tr Ten.` -> Trombone. The other eleven are character-identical, and staff
+> 0 is NOT a difference today — both readers return `'Fl. pic.'`. Mechanism:
+> `label_pins` drops any name claimed by two blocks, and one misread inside the
+> run both splits the trombones AND gives Trumpet a second block, so four pins
+> die from one character, the correct slot-7 trumpet pin among them. Correcting
+> that one string reproduces the paid reader's nine dossier clefs exactly.
+> DISPROVEN, so nobody re-tries it: dropping the doubtful label gives THREE, not
+> nine — an unlabelled staff breaks a run by design, and the recovered trumpet
+> pin then costs the three string fills. Gating pins on the lexicon's own
+> confidence is exactly neutral. The only fix is reading the character, which is
+> a fuzzy-lexicon change and needs the ten-edition validation this project holds
+> those to. Full write-up: `RESULTS.md`, "JOB B".
 
 > **JOB C — the positional default, which is the largest error class.** Seventeen
 > of the ~20 remaining end-to-end errors are a bass or C-clef staff called treble
@@ -184,6 +186,9 @@ The four-item leverage list was worked through and two items are dead. Read
 3. **The part-staff join is NOT broken — it was starved.** The three wrong
    dossier clefs on beet5-p48 are 12/12 correct once the vision reader supplies
    that page's labels. Read this as an instance of item 0, not a separate job.
+   RESOLVED 2026-09-01 (Job B): the starvation is one misread character at staff
+   10, and it costs three staves because `label_pins` drops a name claimed by
+   two blocks. Abstaining on it is measurably worse than the misread.
 4. **The detector's blind 45 staves of 113**, where neither the measure cell nor
    the header crop yields a clef. A training question, and the project has three
    negative results on it already (catalog, domain augmentation, clef
