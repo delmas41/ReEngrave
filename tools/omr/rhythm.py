@@ -28,6 +28,9 @@ detections rather than going through stems:
 Augmentation dots (`augmentationDot` from the DSv2 "structural" category)
 are paired to the nearest notehead/rest to their left at roughly the same
 y-position, multiplying that note's duration by 1.5 (1 dot) or 1.75 (2 dots).
+"Roughly the same" is not the same height: a dot belonging to a note ON A LINE
+is printed in the space above it, half a staff space up. See
+`_pair_dots_to_targets`.
 """
 
 from __future__ import annotations
@@ -918,12 +921,64 @@ def _flag_for_notehead(nh, flags, max_x_distance: float):
     return best
 
 
-def _pair_dots_to_targets(dots, targets) -> dict[int, int]:
+#: How far ABOVE its notehead a dot may sit, in staff spaces.
+#:
+#: A DOT DOES NOT SIT AT ITS NOTE'S HEIGHT, and that is engraving, not error:
+#: a note in a space takes its dot in the same space, and a note ON A LINE
+#: takes its dot in the space ABOVE — half a staff space up. Measured over the
+#: 116 dots of the three benchmark works, the offsets are bimodal exactly as
+#: that predicts: 52 at 0.00 spaces (notes in spaces), 52 at +0.50 (notes on
+#: lines), and nothing between +0.57 and +3.75.
+#:
+#: So the tolerance covers half a space with room, and stays well under one
+#: full space, which is where the NEXT staff position's notehead sits.
+DOT_ABOVE_NOTE_MAX_SPACES = 0.75
+
+#: And how far BELOW, which is a different number because the page is not
+#: symmetric: a dot goes in the space above its note or level with it, never
+#: under it. The two exceptions in that measurement are both the SAME failure
+#: — Brahms's Viola plays double stops, each notehead carrying its own dot, and
+#: the lower dot sits half a space above the lower note AND half a space below
+#: the upper one, equidistant to the pixel. A symmetric window ties, the tie
+#: goes to whichever note was listed first, and the upper note ends up
+#: double-dotted while the lower one loses its dot altogether (measured: 4
+#: notes, `1.5 -> 1.75` and `1.5 -> 0.875`).
+#:
+#: Refusing the downward direction breaks that tie the way the page does. It
+#: gives up the rare engraving where a dot IS printed below its note to dodge
+#: another voice — losing one dot, rather than mis-assigning two notes.
+DOT_BELOW_NOTE_MAX_SPACES = 0.25
+
+
+def _pair_dots_to_targets(dots, targets, line_spacing: float) -> dict[int, int]:
     """Each `augmentationDot` detection is matched to the nearest
     target (notehead or rest) to its LEFT at roughly the same y-position.
     Returns {id(target): dot_count}.
+
+    The vertical tolerance is a fraction of the STAFF SPACE
+    (`DOT_Y_TOLERANCE_SPACES`), not of the dot's own bounding box. It used to
+    be `max(dot.height, 12) * 1.2`, which is a length with no musical meaning:
+    a dot is small and its detected box size is mostly noise, so on a note
+    sitting on a line — where the dot is printed half a space up by convention
+    — the gate landed within a few pixels of the true offset and went either
+    way. Measured on the engraved Brahms 1 benchmark page, 17 dots were
+    detected, correctly placed and thrown away, while their neighbours in the
+    very same part were kept: C Horn 1's dotted half was read as a half in bars
+    1 and 5 and as a dotted half in bars 2, 3, 4 and 6.
+
+    The window is also ASYMMETRIC, because the page is: see
+    `DOT_BELOW_NOTE_MAX_SPACES`. It is what decides a double stop, where the
+    two dots are printed a space apart and the lower one is equidistant from
+    both noteheads.
+
+    The x gate below is the same kind of length and is left alone deliberately:
+    no rejection on that corpus was horizontal (every measured dx is under 0.6
+    staff spaces against a gate of 1.5 or more), so changing it would be an
+    unmeasured change to a rule that is not failing.
     """
     result: dict[int, int] = {}
+    max_above = max(1.0, line_spacing * DOT_ABOVE_NOTE_MAX_SPACES)
+    max_below = max(1.0, line_spacing * DOT_BELOW_NOTE_MAX_SPACES)
     for dot in dots:
         dot_y = dot.y_canonical + dot.height_canonical // 2
         dot_x_left = dot.x_canonical
@@ -935,7 +990,10 @@ def _pair_dots_to_targets(dots, targets) -> dict[int, int]:
                 # Target must be to the LEFT of the dot.
                 continue
             tgt_y = tgt.y_canonical + tgt.height_canonical // 2
-            if abs(tgt_y - dot_y) > max(dot.height_canonical, 12) * 1.2:
+            # Positive when the dot is ABOVE the note, which is where a dot
+            # belonging to a note on a line is printed.
+            above = tgt_y - dot_y
+            if above > max_above or above < -max_below:
                 continue
             dx = dot_x_left - tgt_x_right
             if dx > max(dot.width_canonical, 12) * 5:
@@ -1246,7 +1304,7 @@ def resolve_rhythms_for_cell(
     # Pair augmentation dots to whichever notehead / rest sits to their left
     # at the same y. (Dots after rests are rarer but real.)
     dot_targets = noteheads + rests
-    dots_by_target_id = _pair_dots_to_targets(aug_dots, dot_targets)
+    dots_by_target_id = _pair_dots_to_targets(aug_dots, dot_targets, line_spacing)
 
     out: dict[int, dict[str, Any]] = {}
 
