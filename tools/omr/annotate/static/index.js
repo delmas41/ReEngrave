@@ -15,6 +15,7 @@
 
   summary.textContent =
     `${bench.n_cells} cells · ${bench.n_classes} classes · ` +
+    (bench.pass_name ? `pass: ${bench.pass_name} · ` : ``) +
     `bench: ${bench.root}`;
 
   function statusFor(c) {
