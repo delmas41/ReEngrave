@@ -79,12 +79,22 @@ What it found, ranked, replaces the rest of this list at the top:
   and the instrument's written RANGE (evidence about the part) now decide, with
   distance as the tie-break. The cell pad also had to grow — but only where
   there is unambiguously room, since cell height moves detections.
-- **The bassoon pair Beethoven still gets wrong.** Two adjacent bassoon staves
-  contest one notehead; one bar resolves on the range veto and the identical bar
-  beside it does not. Worth ~8 edits. The ladder cannot help — the note is near
-  both staves — so it is the pair ordering reaching the veto inconsistently.
-- **A spurious whole note on Beethoven's Flute 1 m1**, older than any of this
-  work and never attributed.
+- ~~**The bassoon pair Beethoven still gets wrong.**~~ — **DONE**, pooled
+  0.1506 → **0.1431**, Beethoven note row **81/81, recall 1.000, precision
+  1.000**. NOT verdict ordering, which this entry guessed: the contested C4
+  sits ON the first ledger, `int(distance/spacing)` read 0.994 spacings as
+  needing zero rungs, and the ghost's "better" broken ladder was scored off
+  the C4's own ledger line. Fixed by `_LEDGER_RUNG_EXPECTED_SLACK` (a note on
+  a ledger needs that rung) plus completeness-only ladder verdicts (two
+  broken ladders fall through to range, then distance). See
+  `benchmarks/omr-ned-2026-08/LADDER_EVIDENCE_2026-09-01.md`.
+- ~~**A spurious whole note on Beethoven's Flute 1 m1**~~ — **DONE**, same
+  session: it is the descender bowl of the 'g' in "Allegro con brio", and it
+  had three siblings on Brahms (a "legato" bowl, a key-sig flat's bowl, a
+  bare ledger line). `_drop_unladdered_noteheads`: outside the staff, at
+  least one rung expected, none found, confidence under 0.65 — fakes run
+  0.45-0.53 against 0.76+ for every real outside-staff notehead. Brahms
+  `wrong note` 313 → 275; Mahler and the authored fixtures unchanged.
 - ~~**Seven spurious whole noteheads**~~ — **DONE**, pooled 0.2209 → **0.2137**,
   Brahms 1256 → **1201 edits**, Beethoven and Mahler unchanged to the edit,
   authored fixtures untouched because the rule never fires on them. (It was

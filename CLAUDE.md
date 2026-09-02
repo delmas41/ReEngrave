@@ -903,8 +903,10 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Current on the engraved orchestral benchmark: **pooled 0.1506** (Mahler 0.0455,
-Beethoven 0.1775, Brahms 0.1922), from an opening baseline of 0.3164. Full
+Current on the engraved orchestral benchmark: **pooled 0.1431** (Mahler 0.0455,
+Beethoven 0.1649, Brahms 0.1828), from an opening baseline of 0.3164.
+Beethoven's note row is **81/81, recall and precision 1.000** — the residue
+there is no longer notes. Full
 reading, and the findings it surfaced that note recall is blind to, in
 [benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md),
 [WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md)
@@ -1253,9 +1255,20 @@ apply, in the order a reader uses them:
 1. **The ledger ladder** — about the glyph. A ledger note is joined to its staff
    by an unbroken run of ledger lines; the violin's cells carry three rungs per
    note-column at its own ledger positions and there is not one rung between
-   those notes and the timpani. COMPLETENESS BEFORE COUNT — an unbroken ladder
-   outranks a broken one however long, because a gap is what you see when the
-   rungs belong to something else lying in the way.
+   those notes and the timpani. COMPLETENESS ONLY (2026-09-01, was
+   "completeness before count") — an unbroken ladder outranks anything broken,
+   and two broken ladders are NOT evidence either way, because a found rung can
+   belong to the other staff's note exactly as a gap can: on the Beethoven
+   bassoon pair the ghost's one rung WAS the real C4's own ledger, and counting
+   it beat the real note. Two other traps live here: expected rungs are
+   `int(d/spacing + 0.25)` because a note ON the first ledger measures ~1.0
+   spacings and truncation read 0.994 as needing none (the same note needed its
+   ledger in one bar and not the next, one pixel apart); and a low-confidence
+   outside-staff notehead with NO rung at all is not a note
+   (`_drop_unladdered_noteheads` — the 'g' of "Allegro" as a whole note; fakes
+   0.45-0.53 against 0.76+ for every real one, neither signal sufficient
+   alone). Pooled 0.1506 → **0.1431**, Beethoven notes **81/81 at
+   recall/precision 1.000**. `benchmarks/omr-ned-2026-08/LADDER_EVIDENCE_2026-09-01.md`.
 2. **The instrument's written range** — about the part. Two Beethoven bassoon
    staves contested one notehead and distance kept `A♭1`, MIDI 32, below the
    bassoon's `instruments.written_range` of (34, 72), discarding a C4 inside it.

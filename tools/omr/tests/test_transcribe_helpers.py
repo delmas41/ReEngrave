@@ -14,6 +14,8 @@ from tools.omr.transcribe import (
     _bbox_overlap_area,
     _build_pitch,
     _in_written_range,
+    _dedupe_cross_staff_detections,
+    _drop_unladdered_noteheads,
     _ledger_ladder,
     _pitch_midi,
     _clef_name_from_class,
@@ -931,6 +933,134 @@ class TestLedgerLadder:
         note = self._note(self.TOP - 4.6 * self.SPACING)
         assert _ledger_ladder(note, (self.TOP, self.BOTTOM),
                               self._rungs_above(4)) == (0, 0)
+
+    def test_a_note_on_the_first_ledger_needs_that_rung(self):
+        """The truncation cliff the Beethoven bassoon pair sat on: a note ON
+        the first ledger line measures ~1.0 spacings out, and int() read
+        0.994 as needing NO rungs — so the same note was complete-with-one-
+        rung in one bar and no-claim in the bar beside it, one pixel apart.
+        """
+        for jitter in (-0.006, 0.0, +0.018):
+            note = self._note(self.TOP - (1.0 + jitter) * self.SPACING)
+            assert _ledger_ladder(note, self.BAND,
+                                  self._rungs_above(1)) == (1, 1)
+            # And with the rung missing, that is a BROKEN ladder, not silence.
+            assert _ledger_ladder(note, self.BAND, []) == (0, 0)
+
+
+class TestBrokenLaddersAreNotEvidence:
+    """The bar-7 inversion on the Beethoven bassoon pair: the ghost's one
+    found rung was the real note's own ledger line counted from the wrong
+    staff's anchor, and comparing broken ladders by rung count handed the
+    contest to the ghost. Unless exactly one side's ladder is unbroken the
+    pair must fall through to range/distance.
+    """
+
+    @staticmethod
+    def _page(staff_a_dets, staff_b_dets, ledger_dets=()):
+        def staff(idx, dets):
+            return {"staff_index": idx,
+                    "measures": [{"measure_index": 0,
+                                  "detections": list(dets)}]}
+        extra = {"staff_index": 2,
+                 "measures": [{"measure_index": 0,
+                               "detections": list(ledger_dets)}]}
+        return {"systems": [{"staves": [staff(0, staff_a_dets),
+                                        staff(1, staff_b_dets), extra]}]}
+
+    @staticmethod
+    def _note(y, conf=0.9):
+        box = [50, y - 15, 30, 30]
+        return {"category": "notehead", "class": "noteheadBlackOnLine",
+                "confidence": conf, "bbox": box, "bbox_page": box,
+                "pitch": "C4"}
+
+    @staticmethod
+    def _ledger(y):
+        box = [45, y - 2, 40, 4]
+        return {"category": "other", "class": "ledgerLine",
+                "confidence": 0.9, "bbox": box, "bbox_page": box}
+
+    def test_broken_vs_broken_falls_through_to_distance(self):
+        # Bands 25px apart in spacing terms: staff 0 at 100..200, staff 1 at
+        # 400..500. The ink sits at y=350 — 6 spacings below staff 0 (one
+        # stray rung found at its 5th position, a BROKEN ladder) and 2
+        # spacings above staff 1 (no rungs at all). Counting rungs kept the
+        # far copy; distance keeps the near one.
+        a, b = self._note(350), self._note(350)
+        pg = self._page([a], [b], ledger_dets=[self._ledger(325)])
+        bands = {0: (100, 200, 25), 1: (400, 500, 25), 2: (700, 800, 25)}
+        assert _dedupe_cross_staff_detections(pg, bands) == 1
+        kept = [s["measures"][0]["detections"]
+                for s in pg["systems"][0]["staves"]]
+        assert kept[0] == [] and kept[1] == [b]
+
+    def test_a_complete_ladder_still_wins_over_distance(self):
+        # Same geometry, but staff 0's copy carries EVERY rung it calls for:
+        # the ladder joins it to staff 0 even though staff 1 is nearer.
+        a, b = self._note(350), self._note(350)
+        rungs = [self._ledger(200 + k * 25) for k in range(1, 7)]
+        pg = self._page([a], [b], ledger_dets=rungs)
+        bands = {0: (100, 200, 25), 1: (400, 500, 25), 2: (700, 800, 25)}
+        assert _dedupe_cross_staff_detections(pg, bands) == 1
+        kept = [s["measures"][0]["detections"]
+                for s in pg["systems"][0]["staves"]]
+        assert kept[0] == [a] and kept[1] == []
+
+
+class TestDropUnladderedNoteheads:
+    """A letter bowl between staves is whole, notehead-sized and interior, so
+    the edge-fragment rule cannot see it. What separates it from music is the
+    pairing: no ledger rung where a real outside-staff note hangs on one, AND
+    detector doubt — measured 0.45-0.53 for the four fakes against 0.76+ for
+    every real outside-staff notehead on the three benchmark works.
+    """
+
+    BANDS = {0: (100, 200, 25)}
+
+    @staticmethod
+    def _page(dets):
+        return {"systems": [{"staves": [
+            {"staff_index": 0,
+             "measures": [{"measure_index": 0, "detections": list(dets)}]}]}]}
+
+    @staticmethod
+    def _note(y, conf):
+        box = [50, y - 12, 30, 24]
+        return {"category": "notehead", "class": "noteheadWholeInSpace",
+                "confidence": conf, "bbox": box, "bbox_page": box}
+
+    @staticmethod
+    def _ledger(y):
+        box = [45, y - 2, 40, 4]
+        return {"category": "other", "class": "ledgerLine",
+                "confidence": 0.9, "bbox": box, "bbox_page": box}
+
+    def test_a_doubted_unladdered_outside_notehead_goes(self):
+        pg = self._page([self._note(50, conf=0.53)])
+        assert _drop_unladdered_noteheads(pg, self.BANDS) == 1
+        assert pg["systems"][0]["staves"][0]["measures"][0]["detections"] == []
+
+    def test_confidence_alone_saves_it(self):
+        pg = self._page([self._note(50, conf=0.82)])
+        assert _drop_unladdered_noteheads(pg, self.BANDS) == 0
+
+    def test_one_rung_saves_it(self):
+        pg = self._page([self._note(50, conf=0.53), self._ledger(75)])
+        assert _drop_unladdered_noteheads(pg, self.BANDS) == 0
+
+    def test_inside_the_staff_is_never_touched(self):
+        pg = self._page([self._note(150, conf=0.30)])
+        assert _drop_unladdered_noteheads(pg, self.BANDS) == 0
+
+    def test_just_off_the_edge_expects_no_rung_and_stays(self):
+        # 0.6 spacings out: no ledger position between it and the staff.
+        pg = self._page([self._note(85, conf=0.40)])
+        assert _drop_unladdered_noteheads(pg, self.BANDS) == 0
+
+    def test_abstains_without_spacing(self):
+        pg = self._page([self._note(50, conf=0.40)])
+        assert _drop_unladdered_noteheads(pg, {0: (100, 200)}) == 0
 
 
 class TestContextualCallSeam:

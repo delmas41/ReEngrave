@@ -2160,20 +2160,32 @@ def _measure_rhythm_sum_warning(
 # a third of a space of where that staff's k-th ledger line would be AND
 # overlaps the notehead in x.
 #
-# COMPLETENESS BEFORE COUNT, because that is what makes a ladder a ladder. A
-# note four spaces out with all four rungs present is JOINED to that staff; a
-# note with three of four has a gap in it, and a gap is what you see when the
-# rungs belong to something else that happens to lie in the way. So an unbroken
-# ladder outranks a broken one however many rungs the broken one has, and only
-# between two ladders of the same kind does the count decide. A tie — including
-# nothing found either way, which is most glyphs — falls back to distance, so a
-# page with no ledger lines behaves exactly as before.
+# COMPLETENESS ONLY, because that is what makes a ladder a ladder. A note four
+# spaces out with all four rungs present is JOINED to that staff; a note with
+# three of four has a gap in it, and a gap is what you see when the rungs
+# belong to something else that happens to lie in the way. The same cut runs
+# the other way: one rung found out of three expected is what you see when
+# that one rung belongs to the OTHER staff's note — on the Beethoven bassoon
+# pair, the ghost's single rung was the real C4's own ledger line, counted
+# from the wrong staff's anchor, and comparing broken ladders by rung count
+# handed the contest to the ghost before the range veto was ever consulted.
+# So an unbroken ladder outranks anything broken, and two broken ladders are
+# not evidence either way — the pair falls through to range, then distance,
+# so a page with no ledger lines behaves exactly as before.
 #
 # NOTEHEADS ONLY. A contested accidental or rest has no ladder of its own, and
 # inheriting one from a neighbour is the kind of inference that would need its
 # own measurement.
 _LEDGER_RUNG_Y_TOL_SPACES = 0.35
 _LEDGER_RUNG_MIN_X_OVERLAP = 0.25
+
+#: A note ON the k-th ledger line sits k.0 spacings past the staff edge; a note
+#: in the space above it sits k.5. Truncating the ratio put a note printed ON
+#: the first ledger — 0.994 spacings out on the Beethoven bassoon pair, one
+#: pixel of jitter from 1.018 in the bar beside it — at ZERO expected rungs,
+#: so the same note read as needing its ledger in one bar and not in the next.
+#: 0.25 sits halfway between the two populations a notehead can occupy.
+_LEDGER_RUNG_EXPECTED_SLACK = 0.25
 
 
 # ─── ... and what the INSTRUMENT says about it ──────────────────────────────
@@ -2310,7 +2322,8 @@ def _ledger_ladder(
         anchor, sign = bottom, 1.0
     else:
         return (0, 0)       # inside the staff — no ladder, and none needed
-    n_expected = int(abs(y_centre - anchor) / spacing)
+    n_expected = int(abs(y_centre - anchor) / spacing
+                     + _LEDGER_RUNG_EXPECTED_SLACK)
     if n_expected <= 0:
         return (0, 0)
     tol = _LEDGER_RUNG_Y_TOL_SPACES * spacing
@@ -2445,8 +2458,11 @@ def _dedupe_cross_staff_detections(
                 if is_note and ledgers is not None:
                     ladder_i = _ledger_ladder(di["bbox_page"], bands[si], ledgers)
                     ladder_j = _ledger_ladder(dj["bbox_page"], bands[sj], ledgers)
-                    if ladder_i != ladder_j:
-                        rank, loser = 2, (i if ladder_i < ladder_j else j)
+                    # Completeness alone: a broken ladder is not evidence (its
+                    # rungs may belong to the other staff's note), so unless
+                    # exactly one side is unbroken the pair falls through.
+                    if ladder_i[0] != ladder_j[0]:
+                        rank, loser = 2, (i if ladder_i[0] < ladder_j[0] else j)
                 if loser is None and is_note and ranges:
                     # A veto on the IMPOSSIBLE, not a judgement of the
                     # unlikely: it fires only when one reading falls outside
@@ -2479,6 +2495,75 @@ def _dedupe_cross_staff_detections(
         except ValueError:  # already gone
             pass
     return len(doomed)
+
+
+# ─── A notehead outside the staff must hang on SOMETHING ────────────────────
+#
+# The edge-fragment rule (`_drop_clipped_notehead_fragments`) catches the
+# sliver a crop cuts; a letter bowl printed BETWEEN staves is whole, notehead-
+# sized, and lands in the cell's interior, so it sails past that rule. On the
+# benchmark: the descender bowl of the "g" in "Allegro" read as a whole note
+# on Beethoven's Flute 1, the "legato" between Brahms's oboe staves as a D6, a
+# key-signature flat's bowl as an Ab4, and a bare ledger line as a G2.
+#
+# What separates them is that a real note outside the staff is HELD there —
+# by the ledger ladder the engraver drew for it — and the detector believed
+# in it. Neither signal is enough alone: ledger recall is imperfect, so real
+# notes with ZERO found rungs exist (all at confidence 0.82+ on the three
+# works), and low confidence alone would starve dense pages. Together they
+# separate cleanly: the four fakes run 0.45-0.53, the lowest real outside-
+# staff notehead is 0.76. The constant sits mid-gap.
+#
+# The veto needs ALL of: centre outside the five-line band, at least one rung
+# expected, none found, confidence below the bar. Inside-staff detections are
+# never touched, whatever their confidence.
+_UNLADDERED_NOTEHEAD_MAX_CONF = 0.65
+
+
+def _drop_unladdered_noteheads(
+    page: dict[str, Any],
+    bands: dict[int, tuple[int, ...]],
+    *,
+    max_conf: float = _UNLADDERED_NOTEHEAD_MAX_CONF,
+) -> int:
+    """Drop low-confidence outside-staff noteheads with no ledger ladder.
+
+    Returns how many went. Abstains entirely unless every band carries a
+    spacing — the same gate the dedupe's ladder arbitration uses.
+    """
+    if not bands or not all(len(b) >= 3 for b in bands.values()):
+        return 0
+    ledgers = _ledger_rows(page)
+    n_dropped = 0
+    for sys_ in page.get("systems", []):
+        for staff in sys_.get("staves", []):
+            idx = staff.get("staff_index")
+            if idx not in bands:
+                continue
+            top, bottom, spacing = bands[idx][0], bands[idx][1], bands[idx][2]
+            if spacing <= 0:
+                continue
+            for measure in staff.get("measures", []):
+                dets = measure.get("detections", [])
+                for det in list(dets):
+                    if det.get("category") != "notehead":
+                        continue
+                    if det.get("confidence", 1.0) >= max_conf:
+                        continue
+                    box = det.get("bbox_page")
+                    if not box or len(box) != 4:
+                        continue
+                    y_centre = box[1] + box[3] / 2.0
+                    dist = _distance_to_band(y_centre, top, bottom)
+                    n_expected = int(dist / spacing
+                                     + _LEDGER_RUNG_EXPECTED_SLACK)
+                    if n_expected < 1:
+                        continue
+                    _, found = _ledger_ladder(box, bands[idx], ledgers)
+                    if found == 0:
+                        dets.remove(det)
+                        n_dropped += 1
+    return n_dropped
 
 
 # ---------------------------------------------------------------------------
@@ -3898,6 +3983,13 @@ def transcribe(
             st.staff_index: (st.top_y, st.bottom_y, st.line_spacing_px)
             for st in pws.staves
         }
+        n_unladdered = _drop_unladdered_noteheads(page_dict, _bands)
+        if n_unladdered:
+            page_dict["n_unladdered_noteheads_dropped"] = n_unladdered
+            out["n_unladdered_noteheads_dropped"] = (
+                out.get("n_unladdered_noteheads_dropped", 0) + n_unladdered
+            )
+            out["n_detections_total"] -= n_unladdered
         n_deduped = _dedupe_cross_staff_detections(
             page_dict, _bands, dossier=dossier)
         if n_deduped:
