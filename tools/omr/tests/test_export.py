@@ -888,6 +888,34 @@ class TestSlurExport:
         body = ly[ly.index("("):ly.index(")")]
         assert "|" in body
 
+    def test_slurs_reach_the_stitched_multi_system_path(self):
+        """A part is the same staff on every system, and `_staff_measures_xml`
+        is where those measures are emitted — so that is where the staff-level
+        slur pairing has to run. Every benchmark excerpt is single-system, so
+        nothing else here would notice if the stitched path lost its slurs.
+        """
+        def _sys(n):
+            return {"system_index": n, "n_staves": 3, "staves": [
+                _slur_staff([
+                    [_slur_head(60), _slur_head(80), _slur_arc(66, 100)],
+                    [_slur_head(110), _slur_head(130), _slur_arc(100, 136)],
+                ]),
+                _slur_staff([
+                    [_slur_head(20), _slur_head(60), _slur_arc(26, 66)],
+                    [_slur_head(120), _slur_head(160)],
+                ]),
+                _slur_staff([[_slur_head(20)], [_slur_head(120)]]),
+            ]}
+        result = {"source_pdf": "synthetic.pdf", "pages": [
+            {"page_index": 0, "n_systems": 2, "systems": [_sys(0), _sys(1)]}]}
+        root = ET.fromstring(to_musicxml(result))
+        parts = root.findall("part")
+        assert len(parts) == 3, "the three staves should stitch into three parts"
+        first = [[s.get("type") for s in m.iter("slur")]
+                 for m in parts[0].findall("measure")]
+        # four measures, and the slur still opens in one and closes in the next
+        assert first == [["start"], ["stop"], ["start"], ["stop"]]
+
     def test_a_note_that_ends_one_slur_and_begins_the_next_closes_first(self):
         """LilyPond writes `d)(` — close what arrived, then open what leaves."""
         event = {"kind": "chord", "duration_type": "quarter",
