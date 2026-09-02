@@ -1,10 +1,22 @@
-"""Build the unified `data/user-labeled/catalog.yaml` from all versioned
-labeling sessions.
+"""Build the unified `data/user-labeled/catalog.yaml` from the versioned
+labeling sessions admitted to the catalog membership.
 
 The catalog is a single ultralytics-compatible YOLO data config that
-unions all `vN-DATE-NAME/` subdirectories. Each version contributes its
-own train/val split (held out *within* that version) so that retraining
-sees a stable val set per version while still benefiting from new data.
+unions the `vN-DATE-NAME/` subdirectories listed in
+`<root>/catalog-versions.txt` — NOT every version directory on disk.
+Membership is a recorded training decision: the committed catalog
+deliberately excludes the clef-heavy v5/v6 batches because adding them
+narrows the density prior, the mechanism that collapsed dense-page
+noteheads 2506 → 114 in the clef fine-tune (PROJECT_STATUS.md open
+decision #13). A run with no manifest and no --versions therefore
+REFUSES rather than guessing, and a run with the manifest reproduces the
+recorded membership exactly, listing any on-disk versions it leaves out.
+Admitting a new version is an edit to the manifest — a visible,
+committed diff — never a side effect of rebuilding.
+
+Each version contributes its own train/val split (held out *within* that
+version) so that retraining sees a stable val set per version while
+still benefiting from new data.
 
 Why per-version val splits, not a global one?
   - Holding out a chunk of every session means the val set keeps growing
@@ -120,7 +132,12 @@ def _scan_version_dir(d: Path, val_fraction: float, seed: str) -> VersionSlice:
 
 
 def discover_versions(root: Path) -> list[Path]:
-    """Find all `vN-*/` subdirectories at the top level of `root`."""
+    """Find all `vN-*/` subdirectories at the top level of `root`.
+
+    This is an INVENTORY of what is on disk, not the catalog membership —
+    membership comes from `select_versions` (the catalog-versions.txt
+    manifest or an explicit --versions list).
+    """
     if not root.exists():
         return []
     out: list[Path] = []
@@ -136,6 +153,105 @@ def discover_versions(root: Path) -> list[Path]:
             continue
         out.append(child)
     return out
+
+
+# ---------------------------------------------------------------------------
+# Version membership (catalog-versions.txt)
+# ---------------------------------------------------------------------------
+#
+# Which versions the catalog unions is a training decision with a decision
+# record behind it, not a property of the filesystem. Until 2026-09-02 the
+# committed catalog's v1–v4 membership survived only as long as nobody
+# re-ran this tool (benchmarks/omr-labeling-hollow-2026-08/AUDIT.md) — the
+# same silent-footgun shape as the nc=214 head reset closed in July.
+
+
+CATALOG_VERSIONS_MANIFEST = "catalog-versions.txt"
+
+_DECISION_RECORD = (
+    "PROJECT_STATUS.md open decision #13 and "
+    "benchmarks/omr-labeling-hollow-2026-08/AUDIT.md"
+)
+
+
+def manifest_path(root: Path) -> Path:
+    return root / CATALOG_VERSIONS_MANIFEST
+
+
+def read_versions_manifest(root: Path) -> list[str] | None:
+    """Parse `<root>/catalog-versions.txt`: one version directory name per
+    line, `#` comments and blank lines ignored. None if the file is absent
+    (which `select_versions` treats as an error, not as "take everything").
+    """
+    p = manifest_path(root)
+    if not p.exists():
+        return None
+    names: list[str] = []
+    for raw in p.read_text().splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if line:
+            names.append(line)
+    return names
+
+
+def select_versions(
+    root: Path,
+    requested: list[str] | None,
+) -> tuple[list[Path], list[str], str]:
+    """Resolve the catalog's version membership.
+
+    The members are exactly `requested` (the --versions flag) or, when that
+    is None, the manifest `<root>/catalog-versions.txt`. A root with
+    neither is an error — never a silent union of everything on disk,
+    because the committed membership excludes versions on purpose (v5/v6
+    narrow the density prior; see the decision record).
+
+    Returns (member dirs in membership order, on-disk version names left
+    out, membership source for the summary). Exits when a named version is
+    missing from disk or listed twice — either would build a catalog that
+    does not reproduce the recorded membership.
+    """
+    discovered = discover_versions(root)
+    by_name = {d.name: d for d in discovered}
+    if requested is not None:
+        source = "--versions"
+    else:
+        requested = read_versions_manifest(root)
+        source = str(manifest_path(root))
+        if requested is None:
+            on_disk = "\n".join(f"    {d.name}" for d in discovered) \
+                or "    (none)"
+            raise SystemExit(
+                f"{manifest_path(root)} not found.\n\n"
+                "Catalog membership is a recorded training decision, not an\n"
+                "inventory of what is on disk: the committed catalog.yaml\n"
+                "deliberately excludes the clef-heavy v5/v6 batches, which\n"
+                "narrow the density prior — the mechanism that collapsed\n"
+                f"dense-page noteheads 2506 -> 114. See {_DECISION_RECORD}.\n"
+                "Unioning every version directory would silently reverse\n"
+                "that decision, so this tool refuses to guess.\n\n"
+                "Write the manifest with one version directory name per\n"
+                f"line ('#' comments allowed). Versions on disk under\n"
+                f"{root}:\n{on_disk}\n\n"
+                "Or pass --versions NAME [NAME ...] for a one-off build."
+            )
+    dupes = sorted(n for n, c in Counter(requested).items() if c > 1)
+    if dupes:
+        raise SystemExit(
+            f"version(s) listed more than once in {source}: "
+            + ", ".join(dupes)
+        )
+    missing = [n for n in requested if n not in by_name]
+    if missing:
+        raise SystemExit(
+            f"version(s) named in {source} but not on disk under {root}: "
+            + ", ".join(missing) + "\n"
+            "Refusing to build a catalog that does not reproduce the "
+            "recorded membership."
+        )
+    members = [by_name[n] for n in requested]
+    excluded = [d.name for d in discovered if d.name not in set(requested)]
+    return members, excluded, source
 
 
 # ---------------------------------------------------------------------------
@@ -210,6 +326,14 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", default=Path("data/user-labeled"), type=Path,
                     help="Catalog root containing vN-*/ version dirs.")
+    ap.add_argument("--versions", nargs="+", default=None, metavar="NAME",
+                    help="Explicit version membership for this build "
+                         "(overrides <root>/catalog-versions.txt). Without "
+                         "it, the manifest is REQUIRED and the build "
+                         "reproduces exactly what it lists — membership is "
+                         "a recorded training decision (see "
+                         "PROJECT_STATUS.md open decision #13), so a "
+                         "rebuild never silently widens the catalog.")
     ap.add_argument("--val-fraction", type=float, default=0.15,
                     help="Per-version fraction held out for val "
                          "(default 0.15).")
@@ -256,10 +380,16 @@ def main() -> None:
             f"got {val_fraction!r}"
         )
 
-    version_dirs = discover_versions(root)
+    requested: list[str] | None = None
+    if args.versions is not None:
+        # Accept both space- and comma-separated names.
+        requested = [n for tok in args.versions for n in tok.split(",") if n]
+    version_dirs, excluded_versions, membership_source = select_versions(
+        root, requested,
+    )
     if not version_dirs:
-        print(f"no version directories under {root} — "
-              f"nothing to catalog yet.")
+        print(f"no versions in the catalog membership "
+              f"({membership_source}) — nothing to catalog yet.")
         # Still emit a catalog stub so the path exists. Downstream training
         # will fail-fast with an empty list.
         print("(writing empty catalog stub anyway)")
@@ -343,7 +473,9 @@ def main() -> None:
         "root": str(root),
         "val_fraction": val_fraction,
         "seed": args.seed,
+        "membership_source": membership_source,
         "n_versions": len(slices),
+        "versions_excluded_on_disk": excluded_versions,
         "n_train_images": len(train_paths),
         "n_val_images": len(val_paths),
         "n_classes": nc_main,
@@ -373,11 +505,19 @@ def main() -> None:
 
     # Pretty stdout
     print(f"catalog root:    {root}")
-    print(f"versions found:  {len(slices)}")
+    print(f"membership:      {membership_source}")
+    print(f"versions in catalog: {len(slices)}")
     for s in slices:
         labeler = (s.metadata or {}).get("labeler") or "?"
         print(f"  {s.name}  train={len(s.train_images):>4}  "
               f"val={len(s.val_images):>3}  labeler={labeler}")
+    if excluded_versions:
+        print(f"\nexcluded ({len(excluded_versions)} on disk, not in the "
+              f"membership — deliberate; see {_DECISION_RECORD}):")
+        for name in excluded_versions:
+            print(f"  {name}")
+        print(f"  (to admit one: edit {manifest_path(root)} and rebuild, "
+              f"or pass --versions for a one-off build)")
     print(f"\ntotals:")
     print(f"  train images: {len(train_paths)}")
     print(f"  val images:   {len(val_paths)}")

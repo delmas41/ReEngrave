@@ -1009,7 +1009,7 @@ to collide. So the other three link here, and a new measurement updates this
 paragraph only.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `b3ef9ac`: **pooled 0.1101 / 791 edits** (Mahler 0.0395, Beethoven 0.0727, Brahms 0.1556), over 3696 truth + 3486 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0883 / 647**, measured on `b3ef9ac`.
+Current on the engraved orchestral benchmark, measured on `ecd7edf`: **pooled 0.1101 / 791 edits** (Mahler 0.0395, Beethoven 0.0727, Brahms 0.1556), over 3696 truth + 3486 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0883 / 647**, measured on `ecd7edf`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
@@ -1317,8 +1317,19 @@ python3 -m tools.omr.annotate.server --bench-dir benchmarks/omr-labeling-NEW   #
 python3 -m tools.omr.training.verdicts_to_yolo_labels --verdicts-dir benchmarks/omr-labeling-NEW/verdicts \
     --manifest benchmarks/omr-labeling-NEW/cells.json --version-name v<n>-<date>-<tag> \
     --out-root data/user-labeled --labeler sean --description "..."   # --dry-run first
-python3 -m tools.omr.training.build_catalog_yaml --root data/user-labeled   # unions all versions → catalog.yaml
+python3 -m tools.omr.training.build_catalog_yaml --root data/user-labeled   # unions the versions in catalog-versions.txt → catalog.yaml
 ```
+
+**Which versions the catalog unions is a recorded decision, not a directory
+listing** — `data/user-labeled/catalog-versions.txt` is the membership record,
+and `build_catalog_yaml` refuses to run without it (or an explicit
+`--versions`), so a rebuild reproduces the committed membership exactly and
+can never silently widen it. A freshly converted version is **not**
+auto-included: admitting one means editing the manifest (a committed,
+reviewable diff — `test_training_pipeline.py` pins the membership, so do it
+deliberately). Currently v1–v4 are in; v5/v6 (clef-heavy, narrows the density
+prior) are excluded per PROJECT_STATUS.md open decision #13, and v7 (hollow
+noteheads) is an open training-time decision.
 
 The catalog is **capped at nc=208 by default** (custom-class boxes — barlines, textDynamic — are filtered into `_nc208/` copies) so fine-tuning matches the DSv2 checkpoints' class count; a mismatched `nc` silently re-initializes the classification head (the Phase 3.4 collapse). `train_yolo.py` refuses an nc mismatch unless you pass `--allow-nc-expansion`; `--emit-full-catalog` also writes an uncapped `catalog-214.yaml` for a deliberate future expansion.
 
