@@ -411,16 +411,6 @@ def survey(fixtures: Path | None = None,
                   disagreement=configuration_disagreement(runs), absent=absent)
 
 
-def unexplained(found: Survey | list[tuple[str, int, int]],
-                expected: dict[str, str] | None = None,
-                ) -> list[tuple[str, int, int]]:
-    """The gaps that are not already written down as expected."""
-    if isinstance(found, Survey):
-        return found.unexplained
-    known = KNOWN_GAPS if expected is None else expected
-    return [g for g in found if g[0] not in known]
-
-
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--all", action="store_true",
