@@ -2227,7 +2227,7 @@ Every arm at the production setting (temperature 0.0, top_p 0.1):
 
 | arm | reads | distinct answers |
 |---|--:|--:|
-| serial, warm resident server | 14 | 1 |
+| serial, warm resident server | 15 | 1 |
 | serial, **cold** — server spawned and killed per read | 4 | 1 |
 | concurrent ×4 | 8 | 1 |
 | concurrent ×8 (all slots busy) | 8 | 1 |
