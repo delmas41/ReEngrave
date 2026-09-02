@@ -341,7 +341,8 @@ and its SHARE of the budget climbed, 8.8% when this began to 15.6% now. Every di
 the benchmark is now read exactly and placed on the correct beat; the 7 are
 Mahler's `molto` (never proposed — printed against the staff below it) and the
 `[` / `]` the lexicon refuses because they are not words. `tools/omr/direction_text.py`,
-behind `--direction-text` (off by default; needs `.venv-surya`). Full reading in
+behind `--direction-text` (ON by default since 2026-09-02 — see 4b; needs
+`.venv-surya` or Tesseract). Full reading in
 `benchmarks/omr-direction-text-2026-09/FINDINGS.md`.
 
 It was a genuinely different kind of work, as this entry said — no detections to

@@ -343,11 +343,13 @@ def load_run(work: str, fixtures: Path | None = None) -> Run | None:
 def expected_gaps(runs: list[Run]) -> dict[str, str]:
     """`KNOWN_GAPS`, minus the entries this configuration has spent.
 
-    `words` is explained by "`--direction-text` is off by default". Once the
-    reader has run AND placed something, that explanation is spent, and a
-    missing `<words>` is the recognised-then-dropped shape rather than a flag
-    decision. Placement is the condition rather than merely running, because a
-    reader that ran and accepted nothing has nothing to export.
+    `words` is explained by "the direction reader placed nothing here" — which
+    since 2026-09-02 means `--no-direction-text`, or a machine with no OCR rung,
+    rather than the old default. Once the reader HAS placed something that
+    explanation is spent, and a missing `<words>` is the recognised-then-dropped
+    shape rather than a flag decision. Placement is the condition rather than
+    merely running, because a reader that ran and accepted nothing has nothing
+    to export.
     """
     if any(r.directions_placed for r in runs):
         return {k: v for k, v in KNOWN_GAPS.items() if k not in FLAG_DEPENDENT}
