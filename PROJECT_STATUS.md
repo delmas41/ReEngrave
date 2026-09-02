@@ -37,7 +37,51 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 
 - **September 1 — the system-break rule got its fix after all, and then its end-to-end guard.** The 2026-08 verdict ("five attempts, all rejected, stop") was about threshold-style rules tuned on two editions. What worked was a different question: instead of asking whether ANY ink crosses a gap (the wide window, which stems and measure numbers fake out), a second **narrow scan at the system's shared left edge** — empty at a true boundary even when body ink bridges the wide window (cue A, from the Audiveris "starting column" idea). Union-only, and it may never create a size-1 system. Measured across 964 library pages: **27 over-merged symphony pages fixed : 1 mild residual (Mozart K22) : 0 size-1**, grouping eval **20/23 → 22/23**, default ON (`OMR_LEFT_EDGE_SPLIT=0` reverts). Then the gap in its measurement was closed: the orchestral OMR-NED fixtures are LilyPond renders whose systems are always grouped correctly, so cue A never fired on any measured fixture — `tools/omr/tests/test_left_edge_split_e2e.py` now pins it end to end on **four scanned pages, three publishers**, against hand-read truth (`benchmarks/omr-system-grouping-2026-09/gt/e2e-ground-truth.json`): split on, each page reads its true two systems with every staff carrying the system's full measure row; split off, the pages still merge — and merged, Eroica p.36 reads **10 measures where the page prints 16**, because a barline must span the whole merged block to survive the vote. Full story: [benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md](benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md).
 
-- **September 1, evening — the queue kept landing, and the deltas composed.** Six more branches in one evening, each measured on its base AND re-measured on the merged tree before pushing (the rule the contextual break taught). The count bucket (edge fragments are not noteheads; a dot is not at its note's height; a YOLO beam box bounds the stack, not a stroke), then the stems the last handoff named (a 6-space height cap cut real beamed stems; `_stacked_bar_count` sampled a bounding box instead of the component's own mask), then ledger evidence (rung counts carry 0.25 slack because `int()` truncated a note ON the first ledger; two broken ladders fall through to range then distance; unladdered low-confidence noteheads drop — **Beethoven's note row reached 81/81, recall and precision 1.000, the benchmark's first perfect note row**), then viola double stops (one stem, one voice — and chord notes written bottom-up, a commit that deliberately costs +2 OMR-NED edits because musicdiff sorts chord pitches and cannot see the convention it corrects, while 46 notes leave the `order` class). Then the direction reader met a real scan and the union rung shipped: Surya's silence and one-letter errors are REPAIRED by staff-line-stripped Tesseract, not merely filled — 3 of its 5 scan contributions were refused near-misses (`sempire`, `senpre`) — scan recall 18% → 37% at 17/17 precision, engraved byte-identical, and every accepted word records which rung found it. The direction layer's own contribution was **−144 edits, invariant across seven mains** while the floor moved beneath it: that is what a finished layer looks like standing next to an unfinished pipeline. Finally the number itself was made trustworthy: it lives in ONE place (a merge had auto-merged three of four hand-copies into staleness — a conflict is loud, a clean auto-merge of a duplicated fact is silent), it is generated from a measured record keyed by configuration, and `accuracy_record --check` fails the suite if prose and record disagree. The day's method, stated by the sessions that used it: *the check was evidence about its own coverage, read as evidence about the change* — ask whether the harness contains a case where what you changed would matter; and *an accurate copy and a measurement are different things — only one stays right when the pipeline moves.*
+- **September 1, evening — the queue kept landing, and the deltas composed.** Six more branches in one evening, each measured on its base AND re-measured on the merged tree before pushing (the rule the contextual break taught). The count bucket (edge fragments are not noteheads; a dot is not at its note's height; a YOLO beam box bounds the stack, not a stroke), then the stems the last handoff named (a 6-space height cap cut real beamed stems; `_stacked_bar_count` sampled a bounding box instead of the component's own mask), then ledger evidence (rung counts carry 0.25 slack because `int()` truncated a note ON the first ledger; two broken ladders fall through to range then distance; unladdered low-confidence noteheads drop — **Beethoven's note row reached 81/81, recall and precision 1.000, the benchmark's first perfect note row**), then viola double stops (one stem, one voice — and chord notes written bottom-up, a commit that deliberately costs +2 OMR-NED edits because musicdiff sorts chord pitches and cannot see the convention it corrects, while 46 notes leave the `order` class). Then the direction reader met a real scan and the union rung shipped: Surya's silence and one-letter errors are REPAIRED by staff-line-stripped Tesseract, not merely filled — 3 of its 5 scan contributions were refused near-misses (`sempire`, `senpre`) — scan recall 18% → 37% at 17/17 precision, engraved byte-identical, and every accepted word records which rung found it. (Superseded the next morning — see the September 2 entry: two candidate bugs and two gate bugs later, the same five pages read 44/44.) The direction layer's own contribution was **−144 edits, invariant across seven mains** while the floor moved beneath it: that is what a finished layer looks like standing next to an unfinished pipeline. Finally the number itself was made trustworthy: it lives in ONE place (a merge had auto-merged three of four hand-copies into staleness — a conflict is loud, a clean auto-merge of a duplicated fact is silent), it is generated from a measured record keyed by configuration, and `accuracy_record --check` fails the suite if prose and record disagree. The day's method, stated by the sessions that used it: *the check was evidence about its own coverage, read as evidence about the change* — ask whether the harness contains a case where what you changed would matter; and *an accurate copy and a measurement are different things — only one stays right when the pipeline moves.*
+
+- **September 2 — the scan reader's recall trebled, and the page now decides how many
+  readers it needs.** The 18% recall the first scan measurement found was NOT mostly the
+  OCR's fault, which is what that measurement concluded. Page 22 of the Litolff
+  Beethoven 5 proposed 4 candidates against 7 printed directions and accepted none, and
+  tracing each word through every stage found **two candidate bugs that had been costing
+  words on every page**: `below_spaces` was documented as the reach "when nothing is
+  under it" and implemented as a UNIVERSAL CAP, so a band stopped 3 staff spaces below
+  its staff even where the gap was 7 and the next staff was the only other claimant; and
+  **blanking a detection's bounding box is right for a glyph and wrong for a span** — a
+  slur detected at 24 x 4 staff spaces sat over `sempre` and erased all nine of its
+  components, taking the word from nine pieces of ink to none before any filter saw it.
+  The class space puts a clean gap where the rule now sits: widest glyph 3.2 spaces
+  (notehead, clef), narrowest span 7.7 (pedal bracket), then 24-37 for slurs, staves,
+  beams and multi-measure rests. Nothing is lost by leaving spans in — their ink is
+  thread-thin or enormous, which `min_fill_ratio` and `max_glyph_width_spaces` already
+  refuse, and the fill-ratio test was written for slurs in the first place.
+  Reaching further then exposed two GATE faults, both strings that are garbage whose
+  every token is a real term: one `arco.` came back from the language-model rung as
+  `arco. arco. arco. arco.`, and a scanned `a Tempo.` as `a Tempo. and` because `and`
+  was a connective. **Neither cost a reading** — in every case the other rung had read
+  the same crop correctly, so refusing the bad string is exactly what lets the union
+  reach the right one, and **a stricter gate makes the second rung more valuable, not
+  less.** Page 22: 4 candidates → 13, 0 accepted → **7 of its 7 printed directions**.
+  The five pages: 74 candidates → 129, 17 accepted → **44, every one checked against its
+  own crop by eye, none invented**. Recall against the text layer 18% → **~66%**.
+  Then the second rung's keep was re-asked from scratch rather than assumed to still
+  hold, because everything under it had changed: **Surya alone accepts 23 of the 44**, so
+  the companion rung supplies 21 — worth MORE than when it was adopted, because the band
+  fix handed both rungs many more legible crops and Surya is silent on most of them. It
+  cannot make a reading worse structurally, not by luck: Surya has precedence, so the
+  second rung is consulted only where Surya was empty or refused, and across 129
+  candidates exactly one crop has both accepting different words (`Tempo.` against
+  `, Tempo.`), resolved to the right one. Finally **the page decides how many rungs run**
+  — an engraver emits the notes as vector paths and a scanner emits one raster covering
+  the sheet, and over 3 fixtures and 14 IMSLP editions those populations do not touch
+  (paths 467-2058 against 0-1; image cover 0.00 against 0.86-1.41). ⚠️ **The obvious
+  signal fails**: print noise ought to show as mid-grey pixels a vector render has none
+  of, and it does not separate them at all (0.098-0.216 engraved against 0.009-0.978
+  scanned); embedded fonts are worse, since several scans carry nine for a text layer
+  attached later. The classifier must PROVE born-digital and may only ever drop the
+  SECOND rung, because the two mistakes cost wildly different amounts — a page wrongly
+  called scanned costs 140 ms a crop, one wrongly called engraved loses half its
+  readings silently. Engraved figures did not move through any of it.
 
 - **September 2 — the fixture stopped charging for ink it never printed.** The entire-measure diagnosis had left a decision open: the Beethoven truth carries 36 fermatas, 22 over whole-measure rests, and `musicxml2ly` drops every one of those — 105 edits charged against a page that never showed them, to a perfect reader too. The render was **completed** rather than the truth shrunk (`3f447f7`): the truth is what the work IS, those fermatas are printed in every real edition, and LilyPond takes `\fermata` on a multi-measure rest directly, so the fixture pipeline splits the compressed `R2*8` runs at the truth's fermata bars — anchored on musicxml2ly's own `| % n` comments and refusing to guess when anything disagrees. Shown the marks for the first time, the reader reads **21 of 22**: Beethoven **0.1519 → 0.0727** (191 → 93 edits), pooled **0.1342 → 0.1200**, Mahler and Brahms unchanged to the edit, the entire-measure bucket 130 → 30. Both recorded configurations were re-measured on the fixed fixture; every earlier figure carries the old floor, and the discontinuity is marked where the history is quoted (CLAUDE.md's OMR-NED section, `benchmarks/omr-ned-2026-08/FINDINGS.md`, and the fix table in `docs/next-steps-omr-2026-09-01.md`). On the merge with the same day's printed-accidentals fix the two compose exactly — Beethoven identical to the fermata side, Mahler and Brahms identical to the accidentals side — and both configurations were recorded again on the merge itself.
 
@@ -871,12 +915,13 @@ of the subsystem it touches, not just the patch algebra.
   `df16665`).** The words printed inside a system — `legato`, `Allegro con brio` — are
   read by subtracting every detection from the page's ink, OCRing what is left with
   Surya, and gating the result on a lexicon of musical terms, so the detector is never
-  touched (`textDynamic` remains the class that caused the Phase 3.4 collapse). On the
-  current base: pooled 0.1861 → **0.1624**, edits 1315 → 1171, `wrong direction`
-  **151 → 7** — every direction on the benchmark is read exactly AND placed on the
-  correct beat, and the 7 that remain are Mahler's `molto` (printed against the staff
-  below, so the band never proposes it) and the `[` / `]` the lexicon refuses because
-  they are not words. **Off by default** because it needs `.venv-surya` and spends
+  touched (`textDynamic` remains the class that caused the Phase 3.4 collapse). It takes
+  `wrong direction` **151 → 7** — every direction on the benchmark is read exactly AND
+  placed on the correct beat, and the 7 that remain are Mahler's `molto` (printed
+  against the staff below, so the band never proposes it) and the `[` / `]` the lexicon
+  refuses because they are not words. The pooled figures for both configurations are in
+  CLAUDE.md's OMR-NED section, generated from the accuracy record — not restated here,
+  for the reason `tools/omr/accuracy_record.py` gives. **Off by default** because it needs `.venv-surya` and spends
   ~9 s of OCR on a 21-staff page even with the server resident. ⚠️ The reader's own
   candidate/read/accepted counts are identical on all six bases it has been measured
   on while the pooled delta moved four times — the counts are the invariant, the
@@ -963,8 +1008,8 @@ copies are now pointers.
    this one before working it** — the flute case was the same cross-staff mechanism the
    ledger-ladder fix addressed, so part of this budget may already be gone.
 6. ~~**Text expressions and tempo marks**~~ — **read now, behind `--direction-text`**
-   (shipped 2026-09-01 as `ceb6714`; on the current base 0.1861 → 0.1624,
-   `wrong direction` 151 → 7 — see the limitations entry above). What remains is a
+   (shipped 2026-09-01 as `ceb6714`; `wrong direction` 151 → 7 — see the
+   limitations entry above, and CLAUDE.md for the pooled figures). What remains is a
    default-on decision (the reader needs `.venv-surya` and ~9 s of OCR per dense page),
    not reading work.
 
