@@ -1076,14 +1076,33 @@ re-measured, so the paragraph can never state an 11-work default beside a 3-work
 variant.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `15ca32a`: **pooled 0.1066 / 767 edits** (Mahler 0.0272, Beethoven 0.0727, Brahms 0.1554), over 3696 truth + 3497 predicted symbols, from an opening baseline of 0.3164 on 2026-08-31. With `--direction-text` (off by default, needs `.venv-surya`), **0.0849 / 623**, measured on `15ca32a`.
+Current on the engraved orchestral benchmark, measured on `907abde`: **pooled 0.1399 / 2915 edits** over 11 works (Mahler 5 0.0272 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10175 predicted symbols.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler | 0.0272 | 52 | 0.917 | 0.917 | 1.000 |
-| Beethoven | 0.0727 | 93 | 1.000 | 1.000 | 1.000 |
-| Brahms | 0.1554 | 622 | 0.956 | 0.955 | 0.992 |
+| Mahler 5 | 0.0272 | 52 | 0.917 | 0.917 | 1.000 |
+| Tchaikovsky 4 | 0.0523 | 81 | 0.925 | 0.925 | 1.000 |
+| Beethoven 5 | 0.0727 | 93 | 1.000 | 1.000 | 1.000 |
+| Bruckner 5 | 0.0974 | 193 | 0.962 | 0.962 | 1.000 |
+| Beethoven 3 | 0.1398 | 230 | 0.975 | 0.975 | 1.000 |
+| Mozart 41 | 0.1502 | 439 | 0.991 | 0.991 | 0.947 |
+| Brahms 1 | 0.1554 | 622 | 0.956 | 0.955 | 0.992 |
+| Mozart 40 | 0.1772 | 273 | 0.762 | 0.762 | 0.952 |
+| Tchaikovsky 6 | 0.1916 | 274 | 0.756 | 0.747 | 0.985 |
+| Brahms 4 | 0.2238 | 419 | 0.959 | 0.943 | 0.933 |
+| Dvorak 9 | 0.3380 | 239 | 0.975 | 0.975 | 1.000 |
 <!-- accuracy:end -->
+
+⚠️ **Two rows of that table are not read the way the others are.**
+`dvorak-sym9-mvt4`'s excerpt auto-shrank to **3 bars** against everyone else's
+6-8 (the one-page fit in `excerpt()`), so its denominator is a third of the
+rest and its ratio is the noisiest in the set — it sits at the bottom of the
+table on a third of the evidence. And `mozart-sym40-mvt1`'s note recall is not
+a recognition number: its Viola plays divisi double stops, the truth splits
+them into two voices and the page prints one two-note chord, so ~41% of its
+notes land in `order` bars with **every pitch present on both sides**. Both are
+measured in
+[benchmarks/omr-corpus-widening-2026-09/FINDINGS.md](benchmarks/omr-corpus-widening-2026-09/FINDINGS.md) §5.
 
 **Generated — do not hand-edit, here or anywhere.** `68be549` made this the
 only place the figure is stated; this block makes it the only place it is
