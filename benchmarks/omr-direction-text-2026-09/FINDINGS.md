@@ -54,7 +54,7 @@ adds `len(content)`. Two consequences that shaped everything below:
 
 ## The result
 
-Measured on `main` at `81446a0`, immediately before and after:
+Measured on `main` at `7516768`, immediately before and after — and byte-identical at `81446a0` and `6a1b601`, the two intermediate mains this was rebased through:
 
 | | pooled | edits | `wrong direction` |
 |---|--:|--:|--:|
@@ -75,6 +75,15 @@ to measures that already exist.
 **All 14 of Brahms's directions and Beethoven's one were read exactly right,
 with zero false positives on either page.** Everything left in the 61 is where
 a correctly-read word was attached, not what it says.
+
+What the reader itself reports (`direction_text` in the result JSON), which is
+the number to watch rather than the pooled score — see finding 4 for why:
+
+| work | candidates | read | accepted | refused |
+|---|--:|--:|--:|---|
+| brahms | 17 | 14 | 14 | — |
+| beethoven | 2 | 2 | 1 | `(♩=108)` |
+| mahler | 0 | 0 | 0 | — |
 
 ## Three things the work turned on
 
