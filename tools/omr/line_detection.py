@@ -113,6 +113,54 @@ def _staff_line_spacing(cell) -> float:
 STEM_KERNEL_MARGIN = 0.8
 
 
+# How long a vertical run may be and still be a stem, in staff spaces.
+#
+# A STEM IS AS LONG AS THE MUSIC NEEDS IT TO BE. It runs from its notehead to
+# its beam, so a note sitting two ledger lines above the staff and beamed to
+# notes inside it carries a stem of six spaces or more — ordinary orchestral
+# writing, not an outlier. The old value of 6.0 cut exactly there, and the notes
+# it silently un-stemmed are the ones furthest from their beam.
+#
+# Measured over 8746 candidates on 13 pages of 8 editions (every page of the
+# phase-1 corpus plus the three engraved benchmarks), taking every component
+# that passes every OTHER filter:
+#
+#     2-3 spaces  3130      6-7 spaces   265      10-11 spaces  43
+#     3-4         3087      7-8          290      11-12          9
+#     4-5         1390      ------------------    12-13         43
+#     5-6          365      8-9           25      13-14         43
+#                           9-10           5      14-17         42
+#
+# One population decays smoothly from 2 to 8 spaces and stops; a second one
+# begins around 10 and runs to the height of the cell itself (the per-page
+# maxima are 13.96 on a 14-space cell and 15.98 on a 16-space one). The second
+# population is furniture — a barline or bracket crossing the crop — and the
+# 11x drop between the 7-8 and 8-9 buckets is the sharpest edge in the whole
+# distribution. This constant sits on it.
+#
+# The benchmark agrees with the distribution, which is why the value is not a
+# tuned one — swept end to end on the engraved orchestral set:
+#
+#     cap    pooled   edits    brahms duration rate
+#     6.0    0.1861    1315         0.931            <- before
+#     7.0    0.1601    1136         0.963
+#     8.0    0.1601    1136         0.964            <- chosen
+#     9.0    0.1610    1142         0.963
+#    12.0    0.1610    1142         0.963
+#
+# 7.0 ties 8.0 here and is the worse choice: it sits INSIDE the smooth decay,
+# so it would cut the 290 real stems the corpus has between 7 and 8 spaces on
+# scores this benchmark does not contain. Going the other way costs 6 edits,
+# and the single component that buys is worth knowing — on Brahms it spans
+# canonical y 260-989 against a staff of 537-896, straight through the staff
+# from above it to below. That is a barline, and it is what the cap is for.
+#
+# The stem ground truth (`benchmarks/omr-phase4-lines`, 48 stems engraved by
+# LilyPond at four line thicknesses) is UNCHANGED at every value tried — its
+# music has no long stems, so it cannot speak to this and does not pretend to.
+STEM_MAX_HEIGHT_LINES = 8.0
+
+
 def _drop_paired_strokes(stems, line_spacing: float, gap: float, min_overlap: float):
     """Reject vertical strokes that come in PAIRS, which stems do not.
 
@@ -161,7 +209,7 @@ def detect_stems(
     cell,
     *,
     min_height_lines: float = 2.0,
-    max_height_lines: float = 6.0,
+    max_height_lines: float = STEM_MAX_HEIGHT_LINES,
     max_width_lines: float = 0.6,
     accidental_pair_gap_lines: float = 0.9,
     accidental_pair_overlap: float = 0.6,
@@ -180,7 +228,10 @@ def detect_stems(
          stem.
       5. Filter:
            - height between min/max_height_lines × line_spacing
-             (rejects too-short noise + too-tall full-staff barlines)
+             (rejects too-short noise, and verticals long enough to be a
+             barline or bracket rather than a stem — see
+             `STEM_MAX_HEIGHT_LINES`, which is where the two populations
+             separate)
            - width ≤ max_width_lines × line_spacing
            - not at the cell edges (rejects measure-boundary barlines)
            - aspect ratio ≥ 3:1 vertical (rejects square noise blobs)

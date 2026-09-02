@@ -16,7 +16,11 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from tools.omr.line_detection import STEM_KERNEL_MARGIN, detect_stems
+from tools.omr.line_detection import (
+    STEM_KERNEL_MARGIN,
+    STEM_MAX_HEIGHT_LINES,
+    detect_stems,
+)
 from tools.omr.types import MeasureCell
 
 
@@ -132,3 +136,57 @@ class TestAccidentalStrokesAreNotStems:
     def test_the_rule_can_be_switched_off(self):
         cell = _cell(lambda img: self._sharp(img, 300, 300))
         assert len(detect_stems(cell, drop_accidental_pairs=False)) == 2
+
+
+class TestLongStemsAndBarlines:
+    """A stem is as long as the music needs it to be.
+
+    A note beamed to notes far below it carries a stem of six spaces or more —
+    ordinary orchestral writing. The height cap used to sit at 6.0 and cut
+    exactly there, silently un-stemming the notes furthest from their beam;
+    without a stem, `rhythm._beams_attached_to_stem` never runs for them and
+    the beam level falls back to a distance test that cannot reach.
+
+    What the cap is really for is the other population: a barline or bracket
+    crossing the crop. See `STEM_MAX_HEIGHT_LINES` for the distribution the
+    value sits in.
+
+    These build a cell of a REAL height — the staff plus its padding, 14 staff
+    spaces — because the shared `_cell` above is 7 spaces tall and would clip
+    the very verticals under test.
+    """
+
+    CELL_H = 14 * SPACING
+
+    def _cell_with(self, y0: int, y1: int, width: int = 900) -> MeasureCell:
+        img = np.full((self.CELL_H, width), 255, dtype=np.uint8)
+        img[y0:y1, 395:405] = 0
+        return MeasureCell(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            image=img, image_no_staff=img.copy(),
+            bbox_page_px=(0, 0, width, self.CELL_H),
+            # Staff sits in the middle, four spaces of padding either side.
+            staff_line_ys_canonical=[500, 600, 700, 800, 900],
+            upscale_factor=1.0,
+        )
+
+    def test_a_long_stem_is_kept(self):
+        # 6.3 spaces — the Brahms Violin 2 case, measured at 6.19 and 6.27.
+        found = detect_stems(self._cell_with(300, 300 + int(6.3 * SPACING)))
+        assert len(found) == 1
+        assert found[0].height_canonical / SPACING == pytest.approx(6.3, abs=0.1)
+
+    def test_a_vertical_longer_than_the_cap_is_rejected(self):
+        too_long = int((STEM_MAX_HEIGHT_LINES + 0.5) * SPACING)
+        assert detect_stems(self._cell_with(200, 200 + too_long)) == []
+
+    def test_the_cap_admits_the_whole_music_population(self):
+        # The corpus puts real stems up to ~8 spaces and furniture at 10+.
+        for spaces in (2.0, 3.5, 5.0, 6.5, 7.5):
+            found = detect_stems(self._cell_with(200, 200 + int(spaces * SPACING)))
+            assert len(found) == 1, f"{spaces} spaces was rejected"
+
+    def test_a_barline_through_the_staff_is_still_furniture(self):
+        # Above the staff to below it, like the one component the Brahms page
+        # has between 8 and 9 spaces: y 260-989 against a staff of 537-896.
+        assert detect_stems(self._cell_with(260, 989 + 200)) == []
