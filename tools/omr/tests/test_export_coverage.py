@@ -237,6 +237,20 @@ class TestAPartialSetIsRefusedRatherThanPooled:
         assert ec.survey(fixtures=tmp_path, works=("a", "b")).incomplete is None
 
 
+def test_it_surveys_every_work_the_benchmark_writes():
+    """The check reads whatever the eval left in FIXTURES, so a work in the
+    benchmark and not in WORKS is a fixture nobody looks at. Widening the
+    benchmark from 3 works to 11 on 2026-09-02 is exactly the move that would
+    have left eight of them unsurveyed.
+
+    Deliberately outside `TestTheRepositoryItself`, whose autouse fixture skips
+    when no fixtures are built — this is a fact about the code and holds on a
+    clean checkout.
+    """
+    from tools.omr import accuracy_record as ar
+    assert ec.WORKS == ar.BENCHMARK_WORKS
+
+
 class TestTheRepositoryItself:
 
     @pytest.fixture(autouse=True)
