@@ -240,6 +240,22 @@ _LILY_ACCIDENTAL = {
     "bb": "eses",
 }
 
+#: `transcribe`'s alteration strings -> the MusicXML `<accidental>` vocabulary.
+#:
+#: This is the PRINTED GLYPH, not the pitch. `<alter>` inside `<pitch>` already
+#: carries what sounds, and the two are independent: a natural has `<alter>0</>`
+#: and a drawn natural sign, which is why the element cannot be recovered from
+#: the pitch downstream. All 65 accidentals in the benchmark truth are one of
+#: the first three; the doubles are here because `_parse_inline_accidental`
+#: emits them and a silent drop would be the same bug in miniature.
+_MXL_ACCIDENTAL = {
+    "#":       "sharp",
+    "b":       "flat",
+    "natural": "natural",
+    "##":      "double-sharp",
+    "bb":      "flat-flat",
+}
+
 
 def _pitch_to_lily(pitch: str) -> str | None:
     """'F#4' → "fis'", 'A2' → 'a,', 'C5' → "c''"."""
@@ -677,7 +693,8 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               slur_states: list[tuple[int, str]] | None = None,
               time_modification: dict[str, int] | None = None,
               tuplet_state: str | None = None,
-              fermata: bool = False) -> str:
+              fermata: bool = False,
+              accidental: str | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -710,6 +727,13 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     lines.append(f"{indent}  <type>{xml_type}</type>")
     for _ in range(dots):
         lines.append(f"{indent}  <dot/>")
+    # <accidental> sits after <dot> and before <time-modification>. It is what
+    # the engraver DREW; `<alter>` inside <pitch> is what sounds. The two are
+    # independent — a natural has alter 0 and a printed glyph — which is why
+    # this cannot be derived from the pitch on the way out.
+    _acc = _MXL_ACCIDENTAL.get(accidental or "")
+    if _acc:
+        lines.append(f"{indent}  <accidental>{_acc}</accidental>")
     # <time-modification> sits after <dot> and before <beam>, per the MusicXML
     # DTD's element order. It carries the tuplet RATIO; the <tuplet> in
     # <notations> below is the bracket that draws it, and a reader needs the
@@ -1551,6 +1575,10 @@ def _mxl_voice_events(
                     tuplet_state=(tuplet_state if ni == 0 else None),
                     # A chord takes one fermata, through its first note.
                     fermata=(bool(event.get("fermata")) and ni == 0),
+                    # ...but an accidental belongs to the NOTEHEAD. A chord can
+                    # carry one on any subset of its members, so this is the
+                    # one per-note mark here that must not be first-note-only.
+                    accidental=nh.get("accidental"),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.

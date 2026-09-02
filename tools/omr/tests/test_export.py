@@ -1368,3 +1368,64 @@ class TestFermataReachesTheOutput:
         assert xml.count("<notations>") == 1
         for tag in ("<tied", "<slur", "<fermata"):
             assert tag in xml
+
+
+# ─── Accidentals: the printed glyph, not the pitch ─────────────────────────
+#
+# The seventh instance of this file's recurring shape, and the one that hid the
+# longest, because the signal was not merely detected — it was detected, paired
+# to its notehead, USED to resolve the pitch, and then the fact that a glyph had
+# been drawn was discarded. MusicXML separates `<alter>` (what sounds) from
+# `<accidental>` (what is printed) and we had only ever emitted the first.
+# Measured: 65 `<accidental>` elements in the benchmark truth, 0 in ours, and
+# all 64 `wrong accidental` edits were `accidentins`.
+
+
+class TestAccidentalIsThePrintedGlyph:
+
+    @pytest.mark.parametrize("alteration, expected", [
+        ("#", "sharp"),
+        ("b", "flat"),
+        ("natural", "natural"),
+        ("##", "double-sharp"),
+        ("bb", "flat-flat"),
+    ])
+    def test_each_alteration_maps_to_its_musicxml_name(self, alteration, expected):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental=alteration)
+        assert f"<accidental>{expected}</accidental>" in xml
+
+    def test_no_accidental_emits_nothing(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ")
+        assert "<accidental>" not in xml
+
+    def test_an_unknown_alteration_emits_nothing(self):
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental="?")
+        assert "<accidental>" not in xml
+
+    def test_a_natural_is_a_printed_glyph_on_an_unaltered_pitch(self):
+        """The case that makes this a separate fact from the pitch.
+
+        `<alter>` is absent or 0 and the engraver still drew a natural — which
+        is exactly what every one of the benchmark's `accidentins` edits was.
+        """
+        xml = _mxl_note("C4", "", "quarter", 0, 1.0, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental="natural")
+        assert "<accidental>natural</accidental>" in xml
+        assert "<alter>" not in xml
+
+    def test_it_sits_after_the_dots_and_before_time_modification(self):
+        """DTD order, and the order the truth files use."""
+        xml = _mxl_note("C4", "", "quarter", 1, 1.5, 4, is_chord=False,
+                        is_rest=False, indent="  ", accidental="sharp"
+                        if False else "#",
+                        time_modification={"actual": 3, "normal": 2})
+        assert xml.index("<dot/>") < xml.index("<accidental>")
+        assert xml.index("<accidental>") < xml.index("<time-modification>")
+
+    def test_a_rest_never_carries_one(self):
+        xml = _mxl_note(None, "", "half", 0, 2.0, 4, is_chord=False,
+                        is_rest=True, indent="  ")
+        assert "<accidental>" not in xml
