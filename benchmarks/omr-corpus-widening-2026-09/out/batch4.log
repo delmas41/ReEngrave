@@ -1,0 +1,52 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:5128: MusicXMLWarning: Could not import wedge: Error in getting DynamicWedges
+  warnings.warn(f'Could not import {tag}: {excep}', MusicXMLWarning)
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+boulanger-printemps-mvt1     8    43/46       8/8       736/722      0.783  0.768  0.880  clean
+
+OMR-NED (pooled over 1 scores): 0.6971   [lower is better; 0 = identical]
+  5155 symbol edits over 3969 truth + 3426 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+boulanger-printemps-mvt1         0.6971    5155    3969    3426  entire measure insert/delete
+
+where the edits are (pooled):
+  entire measure insert/delete              2785   54.0%
+  entire staff insert/delete                1124   21.8%
+  wrong note                                 887   17.2%
+  wrong direction                             96    1.9%
+  wrong keysig                                59    1.1%
+  wrong staff group                           37    0.7%
+  (13 more)                                  167    3.2%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/batch4.json

@@ -1,0 +1,215 @@
+[
+  {
+    "work_id": "tchaikovsky-sym6-mvt2",
+    "measures": [
+      1,
+      4
+    ],
+    "truth_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/tchaikovsky-sym6-mvt2.musicxml",
+    "omr_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/tchaikovsky-sym6-mvt2.omr.musicxml",
+    "truth": {
+      "parts": 17,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 86
+    },
+    "omr": {
+      "parts": 17,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 87
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 17
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 86,
+      "omr_notes": 87,
+      "pitch_matched": 65,
+      "pitch_recall": 0.756,
+      "pitch_precision": 0.747,
+      "duration_ok_on_matched": 58,
+      "duration_rate": 0.892
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "direction_text": null,
+    "omr_ned": {
+      "name": "tchaikovsky-sym6-mvt2",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/tchaikovsky-sym6-mvt2.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/tchaikovsky-sym6-mvt2.musicxml",
+      "omr_ned": 0.23213021939136588,
+      "omr_ed": 328,
+      "pred_symbols": 683,
+      "truth_symbols": 730,
+      "categories": {
+        "wrong note": 224,
+        "wrong note head": 4,
+        "wrong flag/beam": 2,
+        "wrong tuplet": 4,
+        "wrong accidental": 5,
+        "wrong clef": 2,
+        "wrong direction": 41,
+        "wrong dynamic": 20,
+        "wrong crescendo": 2,
+        "wrong diminuendo": 1,
+        "wrong slur": 8,
+        "entire measure insert/delete": 5,
+        "wrong staff group": 10
+      }
+    }
+  },
+  {
+    "work_id": "bruckner-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/bruckner-sym5-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-corpus-widening-2026-09/fixtures/bruckner-sym5-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 25,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 105
+    },
+    "omr": {
+      "parts": 25,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 105
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 25
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 105,
+      "omr_notes": 105,
+      "pitch_matched": 101,
+      "pitch_recall": 0.962,
+      "pitch_precision": 0.962,
+      "duration_ok_on_matched": 101,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "direction_text": null,
+    "omr_ned": {
+      "name": "bruckner-sym5-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/bruckner-sym5-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-corpus-widening-2026-09/fixtures/bruckner-sym5-mvt1.musicxml",
+      "omr_ned": 0.1431451612903226,
+      "omr_ed": 284,
+      "pred_symbols": 977,
+      "truth_symbols": 1007,
+      "categories": {
+        "wrong note": 88,
+        "wrong note head": 4,
+        "wrong flag/beam": 2,
+        "wrong accidental": 13,
+        "wrong tie": 2,
+        "wrong articulation": 10,
+        "wrong lyric": 9,
+        "wrong timesig": 75,
+        "wrong direction": 47,
+        "wrong dynamic": 18,
+        "wrong slur": 1,
+        "entire measure insert/delete": 15
+      }
+    }
+  }
+]

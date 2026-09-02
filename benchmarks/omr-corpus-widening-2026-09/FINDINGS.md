@@ -1,0 +1,248 @@
+# Widening the engraved orchestral benchmark — 3 works to ten
+
+**2026-09-01.** Sixteen fixes have been landed against the same three pages
+(`beethoven-sym5-mvt1`, `brahms-sym1-mvt1`, `mahler-sym5-mvt1`), taking pooled
+OMR-NED 0.3164 -> 0.1364. Every one of them was measured on those three and on
+nothing else.
+
+This project's own repeated lesson — *a sweep corpus is built from the
+candidates the locator fires on, so it cannot answer "what does this rule cost
+in the wild"*; *never tune a clef threshold on one edition* — now applies to its
+main benchmark. Nothing measures whether those sixteen fixes generalise even to
+other **engraved** pages, let alone scanned ones.
+
+This file is that measurement.
+
+```bash
+python3 -m tools.omr.training.orchestral_eval --works <ids...> --omr-ned \
+    --work-dir benchmarks/omr-corpus-widening-2026-09/fixtures \
+    --out benchmarks/omr-corpus-widening-2026-09/out/<batch>.json
+```
+
+WARNING: `--works` off the default prints a not-the-benchmark warning; that is
+expected. The canonical figure remains the three-work pooled number in
+CLAUDE.md's OMR-NED section, and nothing here rewrites it. A separate
+`--work-dir` is used throughout so a parallel canonical run cannot collide with
+these fixtures.
+
+## Baseline this was run against
+
+`d7bfc37`, reproduced in this worktree before anything was touched:
+
+    pooled 0.1364, 966 edits   (mahler 0.0455, beethoven 0.1649, brahms 0.1709)
+
+---
+
+## 1. Selection — ten works, and why each one
+
+97 dossiers exist and **all 97 have a source score** under `SCORE_DIR`, so the
+constraint is not availability, it is choosing. Every candidate was ranked on
+the three axes that could plausibly break a fix tuned on three pages: **era /
+composer**, **part count** (the paper size and therefore the staff spacing scale
+with it), and **texture / meter**.
+
+Two rules applied before diversity:
+
+- **Orchestral only** — standing instruction. `h186` (C. P. E. Bach, 2 parts)
+  and `ravel-bolero` (9 parts, labelled in its own dossier "study reduction")
+  are excluded as not conductor's pages.
+- **A near-neighbour control for each incumbent.** `beethoven-sym3-mvt1` and
+  `brahms-sym4-mvt1` are the same composer and idiom as two of the three works
+  every fix was tuned on. If a fix is page-tuned rather than mechanism-true,
+  the near neighbour is where it shows first — a distant composer failing is
+  ambiguous (could be genuinely harder music), a near neighbour failing is not.
+
+| # | work | parts | meter | why this one |
+|---|---|--:|---|---|
+| 1 | `mozart-sym40-mvt1` | 11 | 2/2 | Smallest true orchestra in the corpus. Classical, sparse texture — the opposite end of the density axis from Mahler, and the DPI/imgsz note in CLAUDE.md says sparse and dense pages want different settings. |
+| 2 | `mozart-sym41-mvt1` | 17 | 4/4 | Classical with trumpets and timpani. Same era as 1, half again the parts — isolates part count from era. |
+| 3 | `beethoven-sym3-mvt1` | 19 | 3/4 | **Near-neighbour control** for the incumbent `beethoven-sym5-mvt1`. Same composer, same forces, different meter and key. |
+| 4 | `brahms-sym4-mvt1` | 20 | 2/2 | **Near-neighbour control** for the incumbent `brahms-sym1-mvt1`, which is the worst incumbent row and the one most fixes were aimed at. |
+| 5 | `dvorak-sym9-mvt4` | 19 | 4/4 | New composer, mainstream romantic. Carries `bass_8vb`, a clef family the incumbents do not have. |
+| 6 | `tchaikovsky-sym4-mvt2` | 20 | 2/4 | New composer, romantic. Same meter as Beethoven 5 at a larger part count. |
+| 7 | `tchaikovsky-sym6-mvt2` | 17 | **5/4** | **Odd meter.** `_reconcile_measure_to_meter` and `drop_uncorroborated_meter_changes` are written against a meter; nothing in the benchmark has ever printed a quintuple one. |
+| 8 | `bruckner-sym5-mvt1` | 25 | 2/2 | Late romantic, larger than any incumbent except Mahler, and long-breathed rather than dense — a different way to be big. |
+| 9 | `mahler-sym5-mvt4` | 9 | 4/4 | The Adagietto — **strings and harp only**, no winds. Late-romantic idiom at 9 staves. The composer-matched control for the incumbent Mahler at the opposite extreme of forces. |
+| 10 | `boulanger-printemps-mvt1` | 46 | 3/4 | Impressionist, and the largest score attempted. Paper goes to a2 here (>40 parts), which no incumbent triggers. |
+
+Deliberately **not** chosen: `holst-planets-*` (64 parts) and
+`ravel-bolero-pt2` (95 parts). Beyond a2 the staff spacing question the fixture
+docstring documents ("a4 gave Mahler 1.0 spaces between staves and the page
+became one continuous ladder") re-opens, and a row that measures the fixture's
+paper size rather than the pipeline is worse than no row.
+
+---
+
+## 2. The work table
+
+Nine works ran; **one failed and is recorded as a failure, not fought for**:
+
+    mahler-sym5-mvt4  FAILED: CalledProcessError: Command '['musicxml2ly', '-o',
+      'benchmarks/omr-corpus-widening-2026-09/fixtures/mahler-sym5-mvt4.ly',
+      '.../mahler-sym5-mvt4.musicxml']' returned non-zero exit status 1.
+
+`boulanger-printemps-mvt1` is still running at the time of writing and its row
+is added below when it lands.
+
+| work | bars | parts | OMR-NED | edits | truth | pred | recall | prec | dur |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| `tchaikovsky-sym4-mvt2` | 8 | 20/20 | **0.0571** | 88 | 786 | 755 | 0.925 | 0.925 | 1.000 |
+| `bruckner-sym5-mvt1` | 8 | 25/25 | **0.1431** | 284 | 1007 | 977 | 0.962 | 0.962 | 1.000 |
+| `beethoven-sym3-mvt1` | 8 | 19/19 | **0.1553** | 252 | 882 | 741 | 0.975 | 0.975 | 1.000 |
+| `tchaikovsky-sym6-mvt2` | 4 | 17/17 | **0.2321** | 328 | 730 | 683 | 0.756 | 0.747 | 0.892 |
+| `mozart-sym40-mvt1` | 6 | 11/11 | **0.2468** | 363 | 788 | 683 | 0.762 | 0.762 | 0.952 |
+| `brahms-sym4-mvt1` | 6 | 20/20 | **0.2849** | 520 | 949 | 876 | 0.959 | 0.943 | 0.933 |
+| `dvorak-sym9-mvt4` | 3 | 18/19 | **0.4106** | 294 | 373 | 343 | 0.975 | 0.975 | 1.000 |
+| `mozart-sym41-mvt1` | 6 | 17/17 | **0.5674** | 1562 | 1454 | 1299 | 0.991 | 0.991 | 0.465 |
+| **pooled (8 works)** | | | **0.2770** | 3691 | 6969 | 6357 | | | |
+
+**The headline: the new corpus scores 0.2770 against the incumbents' 0.1364 —
+almost exactly twice the error rate**, on music of the same kind, engraved by
+the same LilyPond from the same kind of source. Whatever the sixteen fixes
+bought, roughly half of it does not appear on a page they were not measured on.
+
+Three readings that matter more than the pooled number:
+
+- **The near-neighbour controls PASS.** `beethoven-sym3-mvt1` scores 0.1553
+  against the incumbent Beethoven 5's 0.1649, with **96.2% of its notes in
+  `exact` measures** and a duration rate of 1.000. `brahms-sym4-mvt1` is 0.2849
+  against Brahms 1's 0.1709 — worse, but its recall is 0.959 and its duration
+  rate 0.933, both close to the incumbent. Nothing in the sixteen fixes is
+  Beethoven-5-shaped or Brahms-1-shaped. That is the single most reassuring
+  result here and it was the thing most worth checking.
+- **`tchaikovsky-sym4-mvt2` at 0.0571 is the best score any work has ever
+  posted on this harness**, incumbents included. A new composer, 20 parts, and
+  a duration rate of 1.000. The pipeline is not fragile in general.
+- **The spread is enormous — 0.0571 to 0.5674, a factor of ten.** The pooled
+  figure over three works was hiding a distribution, not summarising one.
+
+⚠️ **Read `dvorak-sym9-mvt4` with care.** Its excerpt auto-shrank to **3 bars**
+(the one-page fit), so its denominator is a third of everyone else's and its
+ratio is the noisiest in the table. It also reports 18 parts against 19.
+
+---
+
+## 3. Ranked failure modes
+
+Ranked by edits, and by how many works carry them — *a failure on three new
+works outranks one work\'s quirk*. All three of the top items are the same shape
+this repository has now paid for eight times: **the signal is already detected
+and something downstream throws it away.**
+
+### 1. The time signature SYMBOL is detected at 0.89-0.96 and exported as digits — 270 edits, 5 works
+
+The numbers are right on **every single work in the corpus**. What is lost is
+the `symbol` attribute:
+
+| work | truth | prediction | staves | edits |
+|---|---|---|--:|--:|
+| `bruckner-sym5-mvt1` | `2/2 symbol="cut"` | `2/2` | 25 | 75 |
+| `brahms-sym4-mvt1` | `2/2 symbol="cut"` | `2/2` | 20 | 60 |
+| `mozart-sym41-mvt1` | `4/4 symbol="common"` | `4/4` | 17 | 51 |
+| `dvorak-sym9-mvt4` | `4/4 symbol="common"` | `4/4` | 17 | 51 |
+| `mozart-sym40-mvt1` | `2/2 symbol="cut"` | `2/2` | 11 | 33 |
+| **incumbents (all three)** | digit meters | digit meters | | **0** |
+
+It is **exactly 3 edits per staff** — `extrainfoedit`, one op per staff at cost
+3 — which is how the arithmetic closes: Mozart 41 17 staves x 3 = 51 and Mozart
+40 11 x 3 = 33 sum to the 84 the eval reported as `wrong timesig` for batch 1.
+
+**Zero on the incumbents, because all three print digit meters.** Beethoven 5 is
+2/4, Brahms 1 is 6/8, and Mahler 5\'s source does not mark its 2/2 as cut. A
+category worth 270 edits was invisible because three pages happened not to print
+a C or a stroked C.
+
+**The glyph is read, and read well.** `parse_time_signature` returns
+`{"numerator": 2, "denominator": 2, "raw": "C|"}` for cut common and
+`raw: "C"` for common, off `timeSigCutCommon` / `timeSigCommon` detections at
+confidence **0.92-0.96** (Mozart 40, 11 of 11 staves) and **0.89-0.92**
+(Mozart 41, 17 of 17). Two things then discard it:
+
+1. `dossier.apply_meter` replaces the whole dict with
+   `{numerator, denominator, source: "dossier"}` — including on the branch where
+   the detector **agreed** (`if got == want`). `raw` is dropped there.
+2. `export.to_musicxml` emits `<beats>` and `<beat-type>` and never reads `raw`
+   at all, so even Brahms 1 (which keeps `raw: "6/8"`) gains nothing from it.
+
+The division that fixes it is the one the pipeline already believes elsewhere:
+**the dossier knows what the meter IS; only the page can say how it was
+PRINTED.** A cut-common glyph is a property of the edition, not of the work, so
+it cannot come from the dossier — and it does not need to.
+
+### 2. Triplet digits are classified `fingering3` and filtered out — Mozart 41, and it is 57% of its notes
+
+`mozart-sym41-mvt1` has note recall **0.991** and a duration rate of **0.465**:
+the notes are found and pitched correctly and more than half are the wrong
+length. The whole of it is one thing:
+
+    by TRUE duration (wrong / total)
+        1/6 ql   120 / 120     <- every triplet sixteenth on the page
+          1 ql     9 /  91
+
+Dominant ratio **3/2, 70 notes** — a triplet read straight, the signature the
+attribution report named. The truth has 40 triplet groups (`actual-notes 3,
+normal-notes 2`); the prediction emits 11.
+
+**The digits are detected. They are filed under the wrong class:**
+
+    tuplet3     13   category "structural"
+    fingering3  30   category "ornament"     <- dropped
+
+43 detections for 40 printed groups. Correlating them against the truth
+group-by-group: of the **20 cells that contain triplets, 18 carry a detected
+digit**, and exactly **1** detection sits in a cell with no triplet in it. This
+is not a detection failure at all — coverage is 90% — it is a class label.
+
+`rhythm._tuplet_groups` collects digits with
+`if getattr(d, "category", "") != "structural": continue`, so every
+`fingering3` is discarded before the gate that would have judged it.
+
+⚠️ **The incumbent Mahler carries `fingering3: 1`** — its known residue is "the
+fifth triplet group carries no marker at any confidence", and that sentence may
+be wrong in the same way. Beethoven 5 and Brahms 1 have none.
+
+### 3. Articulations are detected and never exported — ~180 edits, 5 works
+
+`export.py` contains the string "articulation" **once, in a docstring.** There
+is no articulation code in the pipeline at all, while the detector maps every
+`artic*` class to category `ornament` and fires freely:
+
+| work | artic detections | `insarticulation` edits |
+|---|--:|--:|
+| `mozart-sym40-mvt1` | **102** (51 above + 51 below) | **102** |
+| `brahms-sym4-mvt1` | 58 | |
+| `beethoven-sym3-mvt1` | 26 | **38** |
+| `dvorak-sym9-mvt4` | 10 | |
+| `mozart-sym41-mvt1` | 4 | |
+| `mahler-sym5-mvt1` (incumbent) | 6 | 6 |
+| `brahms-sym1-mvt1` (incumbent) | 2 | |
+| `beethoven-sym5-mvt1` (incumbent) | **0** | 0 |
+
+Mozart 40 detects **exactly 102** staccato marks and is charged **exactly 102**
+`insarticulation` ops — 28% of that work\'s entire budget, and the single
+largest line in its op list after wrong notes.
+
+Again the incumbents could not show it: 0, 2 and 6 detections across the three
+pages every fix was measured on.
+
+### 4. Smaller, recorded but not yet acted on
+
+- **`tchaikovsky-sym6-mvt2` (5/4) has recall 0.756**, the second-worst in the
+  corpus, and 22 truth time signatures against 17 predicted. The odd meter is
+  the reason it was chosen and it is the only work whose *structure* count
+  disagrees. Not yet attributed.
+- **`mozart-sym40-mvt1` puts 41.5% of its notes in `order` bars**, essentially
+  all of them the Viola\'s divisi double stops (96 notes, 4 of 6 bars). The
+  `order` class was shown to cost nothing directly in the Brahms Viola work;
+  what it costs here is the eval\'s own note recall, which reads 0.762 while
+  every pitch is present.
+- **Margin-label lexicon misses**, all engraved pages with a clean text layer:
+  `'larinetti in B.'` and `'mpani in C-G'` (Mozart) are **leading characters
+  lost**, `'Oboes'` (batch 2) is an English plural absent from
+  `tools/omr/instruments.py`. Cheap, and separate from the three above.
+
+---
+
+## 4. Fixes and refusals
+
+*(in progress)*
