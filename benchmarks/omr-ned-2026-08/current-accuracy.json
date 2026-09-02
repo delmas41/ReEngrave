@@ -2,11 +2,11 @@
   "_comment": "The single source for the CURRENT accuracy figures. Written by `orchestral_eval --omr-ned --record`; propagated into CLAUDE.md by `python3 -m tools.omr.accuracy_record --update`. Do not hand-edit, and do not restate a current figure in another document \u2014 see tools/omr/accuracy_record.py, and 68be549 for why there is only one.",
   "runs": {
     "direction_text": {
-      "pooled": 0.08491208940984053,
-      "edits": 623,
-      "truth_symbols": 3696,
-      "pred_symbols": 3641,
-      "commit": "bc4214d",
+      "pooled": 0.13055264910111292,
+      "edits": 2745,
+      "truth_symbols": 10665,
+      "pred_symbols": 10361,
+      "commit": "44a1745",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -31,15 +31,79 @@
           "pitch_recall": 0.917,
           "pitch_precision": 0.917,
           "duration_rate": 1.0
+        },
+        {
+          "work_id": "mozart-sym40-mvt1",
+          "omr_ned": 0.17715768981181051,
+          "edits": 273,
+          "pitch_recall": 0.762,
+          "pitch_precision": 0.762,
+          "duration_rate": 0.952
+        },
+        {
+          "work_id": "mozart-sym41-mvt1",
+          "omr_ned": 0.14470548178413348,
+          "edits": 425,
+          "pitch_recall": 0.991,
+          "pitch_precision": 0.991,
+          "duration_rate": 0.947
+        },
+        {
+          "work_id": "beethoven-sym3-mvt1",
+          "omr_ned": 0.12936221419975932,
+          "edits": 215,
+          "pitch_recall": 0.975,
+          "pitch_precision": 0.975,
+          "duration_rate": 1.0
+        },
+        {
+          "work_id": "brahms-sym4-mvt1",
+          "omr_ned": 0.22382478632478633,
+          "edits": 419,
+          "pitch_recall": 0.959,
+          "pitch_precision": 0.943,
+          "duration_rate": 0.933
+        },
+        {
+          "work_id": "dvorak-sym9-mvt4",
+          "omr_ned": 0.33804809052333806,
+          "edits": 239,
+          "pitch_recall": 0.975,
+          "pitch_precision": 0.975,
+          "duration_rate": 1.0
+        },
+        {
+          "work_id": "tchaikovsky-sym4-mvt2",
+          "omr_ned": 0.05795235028976175,
+          "edits": 90,
+          "pitch_recall": 0.925,
+          "pitch_precision": 0.925,
+          "duration_rate": 1.0
+        },
+        {
+          "work_id": "tchaikovsky-sym6-mvt2",
+          "omr_ned": 0.1916083916083916,
+          "edits": 274,
+          "pitch_recall": 0.756,
+          "pitch_precision": 0.747,
+          "duration_rate": 0.985
+        },
+        {
+          "work_id": "bruckner-sym5-mvt1",
+          "omr_ned": 0.09411172622043282,
+          "edits": 187,
+          "pitch_recall": 0.962,
+          "pitch_precision": 0.962,
+          "duration_rate": 1.0
         }
       ]
     },
     "no_direction_text": {
-      "pooled": 0.10663144724037259,
-      "edits": 767,
-      "truth_symbols": 3696,
-      "pred_symbols": 3497,
-      "commit": "bc4214d",
+      "pooled": 0.13987523992322456,
+      "edits": 2915,
+      "truth_symbols": 10665,
+      "pred_symbols": 10175,
+      "commit": "44a1745",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -64,8 +128,90 @@
           "pitch_recall": 0.917,
           "pitch_precision": 0.917,
           "duration_rate": 1.0
+        },
+        {
+          "work_id": "mozart-sym40-mvt1",
+          "omr_ned": 0.17715768981181051,
+          "edits": 273,
+          "pitch_recall": 0.762,
+          "pitch_precision": 0.762,
+          "duration_rate": 0.952
+        },
+        {
+          "work_id": "mozart-sym41-mvt1",
+          "omr_ned": 0.1501881628463907,
+          "edits": 439,
+          "pitch_recall": 0.991,
+          "pitch_precision": 0.991,
+          "duration_rate": 0.947
+        },
+        {
+          "work_id": "beethoven-sym3-mvt1",
+          "omr_ned": 0.1398176291793313,
+          "edits": 230,
+          "pitch_recall": 0.975,
+          "pitch_precision": 0.975,
+          "duration_rate": 1.0
+        },
+        {
+          "work_id": "brahms-sym4-mvt1",
+          "omr_ned": 0.22382478632478633,
+          "edits": 419,
+          "pitch_recall": 0.959,
+          "pitch_precision": 0.943,
+          "duration_rate": 0.933
+        },
+        {
+          "work_id": "dvorak-sym9-mvt4",
+          "omr_ned": 0.33804809052333806,
+          "edits": 239,
+          "pitch_recall": 0.975,
+          "pitch_precision": 0.975,
+          "duration_rate": 1.0
+        },
+        {
+          "work_id": "tchaikovsky-sym4-mvt2",
+          "omr_ned": 0.05232558139534884,
+          "edits": 81,
+          "pitch_recall": 0.925,
+          "pitch_precision": 0.925,
+          "duration_rate": 1.0
+        },
+        {
+          "work_id": "tchaikovsky-sym6-mvt2",
+          "omr_ned": 0.1916083916083916,
+          "edits": 274,
+          "pitch_recall": 0.756,
+          "pitch_precision": 0.747,
+          "duration_rate": 0.985
+        },
+        {
+          "work_id": "bruckner-sym5-mvt1",
+          "omr_ned": 0.09742554265522463,
+          "edits": 193,
+          "pitch_recall": 0.962,
+          "pitch_precision": 0.962,
+          "duration_rate": 1.0
         }
       ]
     }
+  },
+  "benchmark": {
+    "name": "orchestral-e2e",
+    "since": "2026-09-02",
+    "works": [
+      "beethoven-sym3-mvt1",
+      "beethoven-sym5-mvt1",
+      "brahms-sym1-mvt1",
+      "brahms-sym4-mvt1",
+      "bruckner-sym5-mvt1",
+      "dvorak-sym9-mvt4",
+      "mahler-sym5-mvt1",
+      "mozart-sym40-mvt1",
+      "mozart-sym41-mvt1",
+      "tchaikovsky-sym4-mvt2",
+      "tchaikovsky-sym6-mvt2"
+    ],
+    "note": "The work set these figures are pooled over. A pooled OMR-NED is a property of this set as much as of the pipeline, so a figure recorded under a different set is a different measurement and not a comparison \u2014 the set widened from 3 works to 11 on 2026-09-02. A record with no `benchmark` key predates that and is pre-boundary by construction."
   }
 }
