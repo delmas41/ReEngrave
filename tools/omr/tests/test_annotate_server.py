@@ -19,7 +19,13 @@ pytest.importorskip("fastapi")
 
 from fastapi.testclient import TestClient
 
-from tools.omr.annotate.server import create_app
+from tools.omr.annotate.server import (
+    _glyph_metrics,
+    _parse_batch_config,
+    click_box_px,
+    create_app,
+    snap_to_staff,
+)
 from tools.omr.annotate.score import run_scorer, parse_verdict_json
 
 
@@ -397,6 +403,612 @@ def test_v1_verdict_file_migrates_to_v2_on_read(
     # fn_noteheads should appear under added_detections with synthesized bbox.
     assert len(state["added_detections"]) == 1
     assert state["added_detections"][0]["human_class"] == "noteheadBlackInSpace"
+
+
+# ---------------------------------------------------------------------------
+# Verdicts accumulate across serving sessions
+# ---------------------------------------------------------------------------
+#
+# This is what makes a multi-pass campaign safe: the same cells are labelled
+# several times over, one symbol kind per sweep, and a later sweep must ADD
+# to what an earlier one drew. If re-serving a batch reset the drawn boxes,
+# every pass but the last would be lost silently — the boxes are irreplaceable
+# human work and nothing downstream would report their absence.
+
+
+@pytest.mark.omr_annotate
+def test_added_detections_survive_a_new_serving_session(bench_dir: Path) -> None:
+    """Re-serving a bench (a fresh create_app) must not reset drawn boxes."""
+    first = create_app(bench_dir)
+    c1 = TestClient(first)
+    state = c1.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["added_detections"].append({
+        "id": "H0", "human_class": "noteheadHalfOnLine",
+        "human_category": "notehead",
+        "bbox": {"x": 40, "y": 20, "w": 12, "h": 10}, "notes": "pass 1",
+    })
+    assert c1.post("/api/cell/synth-c0/verdict", json=state).status_code == 200
+
+    # A second serving session over the same directory — this is literally
+    # what happens when the labeler stops the server and starts it again.
+    c2 = TestClient(create_app(bench_dir))
+    reloaded = c2.get("/api/cell/synth-c0/verdict").json()
+    assert reloaded["source"] == "v2"
+    assert [h["id"] for h in reloaded["state"]["added_detections"]] == ["H0"]
+
+    # Pass 2 appends rather than replacing.
+    state2 = reloaded["state"]
+    state2["added_detections"].append({
+        "id": "H1", "human_class": "restWhole", "human_category": "rest",
+        "bbox": {"x": 70, "y": 25, "w": 9, "h": 5}, "notes": "pass 2",
+    })
+    assert c2.post("/api/cell/synth-c0/verdict", json=state2).status_code == 200
+
+    c3 = TestClient(create_app(bench_dir))
+    final = c3.get("/api/cell/synth-c0/verdict").json()["state"]
+    assert [h["id"] for h in final["added_detections"]] == ["H0", "H1"]
+    assert [h["human_class"] for h in final["added_detections"]] == [
+        "noteheadHalfOnLine", "restWhole"
+    ]
+    # And the pass-1 box is untouched, not merely present.
+    assert final["added_detections"][0]["bbox"] == {"x": 40, "y": 20, "w": 12, "h": 10}
+
+
+@pytest.mark.omr_annotate
+def test_added_detections_survive_when_detections_are_emptied(
+    bench_dir: Path
+) -> None:
+    """Drawn boxes outlive the model detections they were drawn beside.
+
+    Blank-canvas batches empty `detections/` to stubs (that is how the hollow
+    batch was labelled), and a coordinator may regenerate them between passes.
+    Human boxes are keyed on nothing but themselves, so they survive; verdicts
+    on MODEL detections are keyed by detection id and are dropped when that id
+    is gone, which is the documented reconciliation behavior and is pinned
+    here so a change to it is deliberate.
+    """
+    c1 = TestClient(create_app(bench_dir))
+    state = c1.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["detections"][0]["verdict"] = "TP"
+    state["added_detections"].append({
+        "id": "H0", "human_class": "noteheadHalfInSpace",
+        "human_category": "notehead",
+        "bbox": {"x": 40, "y": 20, "w": 12, "h": 10}, "notes": "",
+    })
+    c1.post("/api/cell/synth-c0/verdict", json=state)
+
+    (bench_dir / "detections" / "synth-c0.json").write_text(
+        json.dumps({"cell_id": "synth-c0", "detections": []})
+    )
+    reloaded = TestClient(create_app(bench_dir)).get(
+        "/api/cell/synth-c0/verdict").json()["state"]
+    assert [h["id"] for h in reloaded["added_detections"]] == ["H0"]
+    assert reloaded["detections"] == []
+
+
+# ---------------------------------------------------------------------------
+# Single-symbol pass mode
+# ---------------------------------------------------------------------------
+
+
+HOLLOW_PASS = {
+    "pass_name": "hollow noteheads",
+    "note": "every half or whole notehead the detector missed",
+    "classes": [
+        {
+            "label": "half notehead",
+            "on_line": "noteheadHalfOnLine",
+            "in_space": "noteheadHalfInSpace",
+            "click_box": True,
+        },
+        {
+            "label": "whole notehead",
+            "on_line": "noteheadWholeOnLine",
+            "in_space": "noteheadWholeInSpace",
+            "click_box": True,
+        },
+    ],
+}
+
+
+@pytest.fixture
+def pass_client(bench_dir: Path):
+    """A bench serving the hollow-notehead pass config."""
+    (bench_dir / "batch_config.json").write_text(json.dumps(HOLLOW_PASS))
+    return TestClient(create_app(bench_dir))
+
+
+ALL_CLASSES = {"noteheadHalfOnLine", "noteheadHalfInSpace", "restWhole",
+               "noteheadWholeOnLine", "noteheadWholeInSpace", "rest8th",
+               "noteheadBlackOnLine"}
+
+
+# --- config parsing --------------------------------------------------------
+
+
+@pytest.mark.omr_annotate
+def test_config_plain_class_list() -> None:
+    cfg = _parse_batch_config(
+        {"pass_name": "rests", "classes": ["restWhole", "rest8th"]}, ALL_CLASSES
+    )
+    assert cfg.pass_name == "rests"
+    assert cfg.single is False
+    assert [s.label for s in cfg.slots] == ["restWhole", "rest8th"]
+    assert all(s.kind == "class" for s in cfg.slots)
+    # A rests pass gets no click box: rest height varies with the value.
+    assert all(s.click_box is None for s in cfg.slots)
+
+
+@pytest.mark.omr_annotate
+def test_config_single_class_is_flagged_single() -> None:
+    cfg = _parse_batch_config({"classes": ["restWhole"]}, ALL_CLASSES)
+    assert cfg.single is True
+    assert cfg.slots[0].class_for("on_line") == "restWhole"
+
+
+@pytest.mark.omr_annotate
+def test_config_active_classes_alias_accepted() -> None:
+    cfg = _parse_batch_config({"active_classes": ["restWhole"]}, ALL_CLASSES)
+    assert [s.label for s in cfg.slots] == ["restWhole"]
+
+
+@pytest.mark.omr_annotate
+def test_config_position_pair_is_one_slot() -> None:
+    cfg = _parse_batch_config(HOLLOW_PASS, ALL_CLASSES)
+    assert len(cfg.slots) == 2
+    slot = cfg.slots[0]
+    assert slot.kind == "staff_position_pair"
+    assert slot.label == "half notehead"
+    assert slot.class_for("on_line") == "noteheadHalfOnLine"
+    assert slot.class_for("in_space") == "noteheadHalfInSpace"
+    assert slot.class_names == ["noteheadHalfOnLine", "noteheadHalfInSpace"]
+
+
+@pytest.mark.omr_annotate
+def test_config_unknown_class_is_dropped_with_a_warning() -> None:
+    cfg = _parse_batch_config(
+        {"classes": ["restWhole", "noSuchGlyph"]}, ALL_CLASSES
+    )
+    assert [s.label for s in cfg.slots] == ["restWhole"]
+    assert any("noSuchGlyph" in w for w in cfg.warnings)
+    # Slots are re-indexed over what survived, so the number keys stay 1..n.
+    assert [s.index for s in cfg.slots] == [0]
+
+
+@pytest.mark.omr_annotate
+def test_config_with_no_usable_class_raises() -> None:
+    # Serving the full picker to someone who asked for a pass is the quiet
+    # failure; this is loud instead.
+    with pytest.raises(ValueError):
+        _parse_batch_config({"classes": ["noSuchGlyph"]}, ALL_CLASSES)
+    with pytest.raises(ValueError):
+        _parse_batch_config({"classes": []}, ALL_CLASSES)
+    with pytest.raises(ValueError):
+        _parse_batch_config({"pass_name": "x"}, ALL_CLASSES)
+
+
+@pytest.mark.omr_annotate
+def test_config_click_box_overrides_and_rejects_nonsense() -> None:
+    cfg = _parse_batch_config(
+        {"classes": [{"name": "noteheadHalfOnLine",
+                      "click_box": {"height_spaces": 1.5}}]},
+        ALL_CLASSES,
+    )
+    box = cfg.slots[0].click_box
+    assert box["height_spaces"] == 1.5
+    assert box["source"] == "config"
+    # The aspect still comes from the measurement when it isn't overridden.
+    assert box["aspect"] == pytest.approx(1.19, abs=0.05)
+    for bad in ({"height_spaces": 0}, {"aspect": -1}, "yes"):
+        with pytest.raises(ValueError):
+            _parse_batch_config(
+                {"classes": [{"name": "restWhole", "click_box": bad}]},
+                ALL_CLASSES,
+            )
+
+
+@pytest.mark.omr_annotate
+def test_corrupt_config_fails_at_startup(bench_dir: Path) -> None:
+    (bench_dir / "batch_config.json").write_text("{not json")
+    with pytest.raises(ValueError):
+        create_app(bench_dir)
+
+
+# --- measured geometry -----------------------------------------------------
+
+
+@pytest.mark.omr_annotate
+def test_glyph_metrics_are_measured_from_bravura() -> None:
+    """A notehead is one staff space tall, and the templates say so.
+
+    SMuFL's em box is four staff spaces, so a trimmed template's height over
+    size_px/4 is its height in spaces. If this drifts, the click-box size is
+    no longer the glyph's own size.
+    """
+    half = _glyph_metrics("noteheadHalfOnLine")
+    assert half["source"] == "bravura"
+    assert half["height_spaces"] == pytest.approx(1.0, abs=0.02)
+    assert half["aspect"] == pytest.approx(1.19, abs=0.05)
+    # The staff-position suffix is stripped, so both halves agree.
+    assert _glyph_metrics("noteheadHalfInSpace") == half
+    # A whole note is the same height and visibly wider — the width has to
+    # come from the glyph, not from one number for all noteheads.
+    whole = _glyph_metrics("noteheadWholeOnLine")
+    assert whole["height_spaces"] == pytest.approx(1.0, abs=0.02)
+    assert whole["aspect"] > half["aspect"] + 0.3
+    # A class the library never rendered abstains into the fallback.
+    assert _glyph_metrics("textDynamic")["source"] == "fallback"
+
+
+@pytest.mark.omr_annotate
+def test_snap_to_staff_lines_spaces_and_ledgers() -> None:
+    ys = [10, 20, 30, 40, 50]
+    # Every printed line is an even step and reads on_line.
+    for i, y in enumerate(ys):
+        got = snap_to_staff(ys, y)
+        assert (got["step"], got["position"]) == (2 * i, "on_line")
+        assert got["ledger"] is False
+    # Every space between them is odd and reads in_space.
+    for i in range(4):
+        got = snap_to_staff(ys, ys[i] + 5)
+        assert (got["step"], got["position"]) == (2 * i + 1, "in_space")
+    # Off-grid clicks snap to the nearest position, not the nearest line.
+    assert snap_to_staff(ys, 24)["position"] == "in_space"
+    assert snap_to_staff(ys, 21)["position"] == "on_line"
+    # Ledger territory keeps the parity going in both directions.
+    above = snap_to_staff(ys, 0)
+    assert (above["step"], above["position"], above["ledger"]) == (-2, "on_line", True)
+    assert snap_to_staff(ys, 5)["position"] == "in_space"
+    below = snap_to_staff(ys, 60)
+    assert (below["step"], below["position"], below["ledger"]) == (10, "on_line", True)
+    assert snap_to_staff(ys, 55)["position"] == "in_space"
+
+
+@pytest.mark.omr_annotate
+def test_snap_uses_the_staffs_own_line_positions() -> None:
+    """Real staff lines are not evenly spaced, and the grid must not assume.
+
+    These are the measured lines of beet5-p2-sys0-s2-m3: the gaps run
+    102/101/95/102. Snapping off a single median from the top line would put
+    the 3rd line 4 px out; snapping to the lines themselves cannot.
+    """
+    ys = [400, 502, 603, 698, 800]
+    for i, y in enumerate(ys):
+        got = snap_to_staff(ys, y)
+        assert (got["step"], got["snapped_y"]) == (2 * i, float(y))
+    assert snap_to_staff(ys, 552)["position"] == "in_space"
+    assert snap_to_staff(ys, 100)["spacing"] == pytest.approx(101.5, abs=0.6)
+
+
+@pytest.mark.omr_annotate
+def test_snap_abstains_without_staff_geometry() -> None:
+    assert snap_to_staff([], 20) is None
+    assert snap_to_staff([30], 20) is None
+
+
+@pytest.mark.omr_annotate
+def test_click_box_px_is_centred_and_sized_in_spaces() -> None:
+    box = click_box_px({"height_spaces": 1.0, "aspect": 1.2}, spacing=100,
+                       x=200, y=400)
+    assert (box["w"], box["h"]) == (120, 100)
+    assert (box["x"] + box["w"] / 2, box["y"] + box["h"] / 2) == (200, 400)
+
+
+# --- the palette endpoint --------------------------------------------------
+
+
+@pytest.mark.omr_annotate
+def test_api_pass_inactive_without_a_config(client: TestClient) -> None:
+    body = client.get("/api/pass").json()
+    assert body["active"] is False
+    assert body["slots"] == []
+
+
+@pytest.mark.omr_annotate
+def test_api_pass_serves_the_restricted_palette(pass_client: TestClient) -> None:
+    body = pass_client.get("/api/pass").json()
+    assert body["active"] is True
+    assert body["pass_name"] == "hollow noteheads"
+    assert body["single"] is False
+    assert len(body["slots"]) == 2
+    slot = body["slots"][0]
+    assert slot["kind"] == "staff_position_pair"
+    assert [c["name"] for c in slot["classes"]] == [
+        "noteheadHalfOnLine", "noteheadHalfInSpace"
+    ]
+    assert slot["by_position"]["in_space"]["name"] == "noteheadHalfInSpace"
+    assert slot["click_box"]["height_spaces"] == pytest.approx(1.0, abs=0.02)
+    # The palette is 4 classes, not the whole catalog. That is the point.
+    palette = {c["name"] for s in body["slots"] for c in s["classes"]}
+    assert len(palette) == 4
+
+
+@pytest.mark.omr_annotate
+def test_pass_does_not_shrink_the_class_catalog(pass_client: TestClient) -> None:
+    """The pass is a palette, not a filter on /api/classes.
+
+    The UI still needs every class by name — to render a model detection's own
+    class, and for the explicit escape hatch to the full picker — so the
+    catalog endpoints answer exactly as they do without a config.
+    """
+    assert len(pass_client.get("/api/classes").json()) == 174
+    assert "barline" in pass_client.get("/api/categories").json()["order"]
+    assert pass_client.get("/api/bench").json()["pass_name"] == "hollow noteheads"
+
+
+@pytest.mark.omr_annotate
+def test_bench_reports_no_pass_without_a_config(client: TestClient) -> None:
+    assert client.get("/api/bench").json()["pass_name"] is None
+
+
+# --- click-to-box, end to end through the API ------------------------------
+
+
+@pytest.mark.omr_annotate
+def test_snap_endpoint_places_a_sized_box_and_picks_the_variant(
+    pass_client: TestClient
+) -> None:
+    # The synthetic cell's lines are at 10/20/30/40/50 — spacing 10.
+    on_line = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 50, "y": 30, "slot": 0}).json()
+    assert on_line["available"] is True
+    assert on_line["class"]["name"] == "noteheadHalfOnLine"
+    assert on_line["position"] == "on_line"
+    # One space tall, centred on the snapped line, wider than tall.
+    assert on_line["bbox"]["h"] == 10
+    assert on_line["bbox"]["w"] == 12
+    assert on_line["bbox"]["y"] + on_line["bbox"]["h"] / 2 == 30
+
+    in_space = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 50, "y": 26, "slot": 0}).json()
+    assert in_space["class"]["name"] == "noteheadHalfInSpace"
+    assert in_space["bbox"]["y"] + in_space["bbox"]["h"] / 2 == 25
+
+
+@pytest.mark.omr_annotate
+def test_snap_endpoint_rederives_the_variant_when_a_box_moves(
+    pass_client: TestClient
+) -> None:
+    """Moving a box across the grid changes what it IS, and must say so.
+
+    The UI calls this with the moved box's centre; a box nudged from a line
+    into the space above it is no longer the OnLine variant, and leaving the
+    class behind would be a silent mislabel.
+    """
+    before = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 50, "y": 40, "slot": 0}).json()
+    after = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 50, "y": 35, "slot": 0}).json()
+    assert before["class"]["name"] == "noteheadHalfOnLine"
+    assert after["class"]["name"] == "noteheadHalfInSpace"
+    assert after["step"] == before["step"] - 1
+
+
+@pytest.mark.omr_annotate
+def test_snap_endpoint_uses_the_slots_own_glyph_width(
+    pass_client: TestClient
+) -> None:
+    half = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 50, "y": 30, "slot": 0}).json()
+    whole = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 50, "y": 30, "slot": 1}).json()
+    assert whole["class"]["name"] == "noteheadWholeOnLine"
+    assert whole["bbox"]["h"] == half["bbox"]["h"]
+    assert whole["bbox"]["w"] > half["bbox"]["w"]
+
+
+@pytest.mark.omr_annotate
+def test_snap_endpoint_clamps_to_the_cell(pass_client: TestClient) -> None:
+    at_edge = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 0, "y": 10, "slot": 0}).json()
+    assert at_edge["bbox"]["x"] >= 0
+    assert at_edge["bbox"]["y"] >= 0
+    assert at_edge["bbox"]["x"] + at_edge["bbox"]["w"] <= 100
+
+
+@pytest.mark.omr_annotate
+def test_snap_endpoint_abstains_without_staff_geometry(bench_dir: Path) -> None:
+    manifest = json.loads((bench_dir / "cells.json").read_text())
+    manifest[0]["staff_line_ys_canonical"] = []
+    (bench_dir / "cells.json").write_text(json.dumps(manifest))
+    (bench_dir / "batch_config.json").write_text(json.dumps(HOLLOW_PASS))
+    c = TestClient(create_app(bench_dir))
+    body = c.get("/api/cell/synth-c0/snap",
+                 params={"x": 50, "y": 30, "slot": 0}).json()
+    assert body["available"] is False
+    assert "staff_line_ys" in body["reason"]
+
+
+@pytest.mark.omr_annotate
+def test_snap_endpoint_guards_its_inputs(pass_client: TestClient) -> None:
+    assert pass_client.get(
+        "/api/cell/nope/snap", params={"x": 1, "y": 1}).status_code == 404
+    assert pass_client.get(
+        "/api/cell/synth-c0/snap",
+        params={"x": 1, "y": 1, "slot": 9}).status_code == 404
+
+
+@pytest.mark.omr_annotate
+def test_snap_endpoint_needs_a_pass(client: TestClient) -> None:
+    # No pass configured: there is no palette to snap into. (Kept in its own
+    # test — `client` and `pass_client` share one bench_dir, so a test asking
+    # for both would serve the config to both.)
+    assert client.get(
+        "/api/cell/synth-c0/snap", params={"x": 1, "y": 1}).status_code == 409
+
+
+@pytest.mark.omr_annotate
+def test_pass_mode_does_not_change_the_verdict_schema(
+    pass_client: TestClient, bench_dir: Path
+) -> None:
+    """A pass-drawn box is an ordinary added_detection.
+
+    The only pass-specific field is `inspected_passes` (coverage provenance,
+    which the YOLO converter ignores), so a batch labelled over several passes
+    converts to training labels through the same path as any other — the box
+    is a plain added_detection.
+    """
+    state = pass_client.get("/api/cell/synth-c0/verdict").json()["state"]
+    snap = pass_client.get(
+        "/api/cell/synth-c0/snap", params={"x": 50, "y": 30, "slot": 0}).json()
+    state["added_detections"].append({
+        "id": "H0", "human_class": snap["class"]["name"],
+        "human_category": snap["class"]["category"],
+        "bbox": snap["bbox"], "notes": "",
+    })
+    assert pass_client.post(
+        "/api/cell/synth-c0/verdict", json=state).status_code == 200
+    saved = json.loads(
+        (bench_dir / "verdicts" / "synth-c0.verdict.json").read_text())
+    assert set(saved) == {"cell_id", "schema_version", "labeled_at_utc",
+                          "detections", "added_detections", "inspected_passes"}
+    assert saved["added_detections"][0]["human_class"] == "noteheadHalfOnLine"
+
+
+# ---------------------------------------------------------------------------
+# Inspected-empty coverage marker
+# ---------------------------------------------------------------------------
+#
+# A single-symbol sweep leaves many cells with nothing to draw — they hold
+# none of the pass's symbols. Before this marker such a cell left NO file, so
+# "swept and empty" was indistinguishable from "never opened" and pass
+# coverage could not be read off the verdicts dir (the hollow batch was 48/48
+# inspected but only 25 files). Navigating away in a pass now stamps the pass
+# name into `inspected_passes` and saves, so the sweep is provable.
+
+
+@pytest.mark.omr_annotate
+def test_new_verdict_seeds_empty_inspected_passes(client: TestClient) -> None:
+    state = client.get("/api/cell/synth-c0/verdict").json()["state"]
+    assert state["inspected_passes"] == []
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_is_written_and_distinct_from_never_opened(
+    pass_client: TestClient, bench_dir: Path
+) -> None:
+    """The POST the client's navigate-away makes on a cell with no boxes."""
+    listing = {c["cell_id"]: c for c in pass_client.get("/api/cells").json()}
+    # synth-c1 is left untouched as the never-opened control.
+    assert listing["synth-c1"]["has_verdict"] is False
+    assert listing["synth-c1"]["inspected_passes"] == []
+    assert not (bench_dir / "verdicts" / "synth-c1.verdict.json").exists()
+
+    # Sweep synth-c0: no boxes, just the inspected stamp (added_detections []).
+    state = pass_client.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["inspected_passes"].append("hollow noteheads")
+    assert pass_client.post(
+        "/api/cell/synth-c0/verdict", json=state).status_code == 200
+
+    saved = json.loads(
+        (bench_dir / "verdicts" / "synth-c0.verdict.json").read_text())
+    assert saved["added_detections"] == []
+    assert saved["inspected_passes"] == ["hollow noteheads"]
+
+    # The two are now distinguishable in the listing.
+    listing = {c["cell_id"]: c for c in pass_client.get("/api/cells").json()}
+    assert listing["synth-c0"]["has_verdict"] is True
+    assert listing["synth-c0"]["inspected_passes"] == ["hollow noteheads"]
+    assert listing["synth-c1"]["has_verdict"] is False
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_survives_a_restart(bench_dir: Path) -> None:
+    (bench_dir / "batch_config.json").write_text(json.dumps(HOLLOW_PASS))
+    c1 = TestClient(create_app(bench_dir))
+    state = c1.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["inspected_passes"].append("hollow noteheads")
+    c1.post("/api/cell/synth-c0/verdict", json=state)
+
+    # A fresh serving session = the labeler restarting the server.
+    reloaded = TestClient(create_app(bench_dir)).get(
+        "/api/cell/synth-c0/verdict").json()
+    assert reloaded["source"] == "v2"
+    assert reloaded["state"]["inspected_passes"] == ["hollow noteheads"]
+    assert reloaded["state"]["added_detections"] == []
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_upgrades_to_boxed_on_a_later_pass(
+    bench_dir: Path
+) -> None:
+    """Drawing a box later must not lose the sweep, nor the sweep the box."""
+    (bench_dir / "batch_config.json").write_text(json.dumps(HOLLOW_PASS))
+    c1 = TestClient(create_app(bench_dir))
+    state = c1.get("/api/cell/synth-c0/verdict").json()["state"]
+    state["inspected_passes"].append("hollow noteheads")
+    c1.post("/api/cell/synth-c0/verdict", json=state)
+
+    # A later visit draws a box and the sweep records a second pass.
+    c2 = TestClient(create_app(bench_dir))
+    st = c2.get("/api/cell/synth-c0/verdict").json()["state"]
+    snap = c2.get("/api/cell/synth-c0/snap",
+                  params={"x": 50, "y": 30, "slot": 0}).json()
+    st["added_detections"].append({
+        "id": "H0", "human_class": snap["class"]["name"],
+        "human_category": snap["class"]["category"],
+        "bbox": snap["bbox"], "notes": "",
+    })
+    st["inspected_passes"].append("whole noteheads")
+    c2.post("/api/cell/synth-c0/verdict", json=st)
+
+    final = TestClient(create_app(bench_dir)).get(
+        "/api/cell/synth-c0/verdict").json()["state"]
+    assert [h["id"] for h in final["added_detections"]] == ["H0"]
+    assert final["inspected_passes"] == ["hollow noteheads", "whole noteheads"]
+
+
+@pytest.mark.omr_annotate
+def test_inspected_passes_deduped_and_coerced(client: TestClient) -> None:
+    payload = {
+        "cell_id": "synth-c0", "schema_version": 2,
+        "detections": [], "added_detections": [],
+        "inspected_passes": ["hollow", "hollow", "", 7, "rests", None],
+    }
+    assert client.post("/api/cell/synth-c0/verdict", json=payload).status_code == 200
+    got = client.get("/api/cell/synth-c0/verdict").json()["state"]
+    assert got["inspected_passes"] == ["hollow", "rests"]
+
+
+@pytest.mark.omr_annotate
+def test_a_plain_verdict_without_the_field_round_trips_empty(
+    client: TestClient
+) -> None:
+    """A payload that omits inspected_passes (any non-pass save) is fine."""
+    payload = {
+        "cell_id": "synth-c0", "schema_version": 2,
+        "detections": [], "added_detections": [],
+    }
+    assert client.post("/api/cell/synth-c0/verdict", json=payload).status_code == 200
+    assert client.get(
+        "/api/cell/synth-c0/verdict").json()["state"]["inspected_passes"] == []
+
+
+@pytest.mark.omr_annotate
+def test_inspected_empty_is_excluded_from_yolo_export() -> None:
+    """The load-bearing converter contract: a coverage marker is not a label.
+
+    An inspected-empty cell has added_detections [] and no decided detection,
+    so `_is_filled` is False and the converter counts it n_empty and emits no
+    label — it must never become a background-only training cell on the
+    strength of a sweep alone. Adding one box flips it to filled. The
+    converter never reads `inspected_passes`, so this needs no converter
+    change; the test guards that it stays that way.
+    """
+    from tools.omr.training.verdicts_to_yolo_labels import _is_filled
+
+    swept_empty = {
+        "cell_id": "x", "schema_version": 2,
+        "detections": [{"id": "D0", "verdict": None}],
+        "added_detections": [],
+        "inspected_passes": ["hollow noteheads"],
+    }
+    assert _is_filled(swept_empty) is False
+
+    boxed = dict(swept_empty)
+    boxed["added_detections"] = [{"id": "H0", "human_class": "noteheadHalfOnLine",
+                                  "bbox": {"x": 1, "y": 1, "w": 2, "h": 2}}]
+    assert _is_filled(boxed) is True
 
 
 # ---------------------------------------------------------------------------

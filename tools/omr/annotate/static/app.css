@@ -391,8 +391,16 @@ li.v-pending .vbadge { background: #aaa; }
   flex-direction: column;
 }
 /* `hidden` HTML attribute → really hide it. The `display: flex` rule
-   above otherwise wins over the browser's default `[hidden] { display: none }`. */
-.page-context-overlay[hidden] {
+   above otherwise wins over the browser's default `[hidden] { display: none }`.
+   Every flex element the JS hides needs this, so they are listed together:
+   .page-cell-strip was missing it (visible even for a single-cell page), and
+   the pass-mode elements would each have been visible when switched off —
+   an empty pass bar on every bench with no batch_config.json. */
+.page-context-overlay[hidden],
+.page-cell-strip[hidden],
+.pass-bar[hidden],
+.picker-tabs[hidden],
+.picker-search[hidden] {
   display: none !important;
 }
 .page-context-header {
@@ -424,6 +432,104 @@ li.v-pending .vbadge { background: #aaa; }
 
 /* Page-cell strip: appears under the topbar, lets labeler see + click
    to other cells from the same source page. */
+/* ---- single-symbol pass bar (only when batch_config.json exists) ------- */
+.pass-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  background: #10243a;
+  border-bottom: 2px solid #1976d2;
+  font-size: 12px;
+  color: #dbe7f5;
+}
+.pass-bar .pass-name {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: #8fc4ff;
+}
+.pass-bar .pass-note { color: #92a4b8; font-size: 11px; }
+.pass-bar .pass-swept {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7fd6a3;
+  padding: 2px 7px;
+  border: 1px solid #2f6b4a;
+  border-radius: 10px;
+  background: #14301f;
+}
+.pass-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border: 1px solid #38546f;
+  border-radius: 12px;
+  background: #17324e;
+  color: #cfe2f7;
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+}
+.pass-slot:hover { background: #1e4166; }
+.pass-slot.active {
+  background: #1976d2;
+  border-color: #8fc4ff;
+  color: #fff;
+  font-weight: 700;
+}
+.pass-slot .slot-key {
+  font-weight: 700;
+  opacity: 0.7;
+}
+.pass-slot .slot-click {
+  font-size: 10px;
+  opacity: 0.85;
+}
+.pass-bar .pass-hint {
+  margin-left: auto;
+  color: #9fb4c9;
+  font-size: 11px;
+}
+.pass-bar .pass-escape {
+  font-size: 11px;
+  padding: 3px 8px;
+  border: 1px solid #55636f;
+  border-radius: 3px;
+  background: #22303d;
+  color: #cfe2f7;
+  cursor: pointer;
+}
+.pass-bar .pass-escape:hover { background: #2f4152; }
+.pass-bar.overridden {
+  background: #3a2a10;
+  border-bottom-color: #c79b1c;
+}
+.pass-bar.overridden .pass-name { color: #ffcf6b; }
+.pass-bar.overridden .pass-escape {
+  background: #c79b1c;
+  border-color: #ffcf6b;
+  color: #2a2000;
+  font-weight: 700;
+}
+.picker-escape {
+  padding: 6px 10px;
+  border-top: 1px solid #cdd;
+  background: #eef;
+  text-align: right;
+}
+.picker-escape button {
+  font-size: 11px;
+  padding: 3px 8px;
+  border: 1px solid #99a;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+}
+
 .page-cell-strip {
   padding: 6px 14px;
   background: #2a2d33;

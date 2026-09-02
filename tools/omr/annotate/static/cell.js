@@ -35,6 +35,12 @@ const state = {
   scale: 1.0,            // canvas pixel per canonical pixel
   saveTimer: null,
   saveState: "idle",     // "idle"|"saving"|"saved"|"error"
+  // Single-symbol pass mode. `pass` is /api/pass; inactive on any bench with
+  // no batch_config.json, and then every branch below falls through to the
+  // behavior that was here before.
+  pass: null,
+  passSlot: 0,           // index of the active palette slot (number keys)
+  passOverride: false,   // escape hatch — full catalog, normal picker
 };
 
 const $ = (id) => document.getElementById(id);
@@ -44,17 +50,20 @@ const ctx = canvas.getContext("2d");
 // ---------------------------------------------------------------- load -----
 
 async function load() {
-  const [cell, verdictRes, classes, cats] = await Promise.all([
+  const [cell, verdictRes, classes, cats, passCfg] = await Promise.all([
     fetch(`/api/cell/${cellId}`).then((r) => r.json()),
     fetch(`/api/cell/${cellId}/verdict`).then((r) => r.json()),
     fetch(`/api/classes`).then((r) => r.json()),
     fetch(`/api/categories`).then((r) => r.json()),
+    fetch(`/api/pass`).then((r) => r.json()).catch(() => ({ active: false })),
   ]);
   state.cell = cell;
   state.verdict = verdictRes.state;
   state.classes = classes;
   state.classByName = Object.fromEntries(classes.map((c) => [c.name, c]));
   state.categories = cats;
+  state.pass = passCfg && passCfg.active ? passCfg : null;
+  renderPassBar();
 
   $("cell-title").textContent = cell.cell.cell_id;
   // Position breadcrumb — tells the labeler where on the page they are
@@ -105,6 +114,228 @@ function sizeCanvas() {
   canvas.height = Math.round(img.naturalHeight * scale);
 }
 
+// ------------------------------------------------------------ pass mode ----
+//
+// A pass restricts the palette to the symbol kind this sweep is for. With no
+// batch_config.json on the bench, `state.pass` stays null and every helper
+// here answers false, so the rest of the file behaves exactly as before.
+
+// Is the restricted palette in force right now? False while the labeler has
+// deliberately escaped to the full class list.
+function passActive() {
+  return !!state.pass && !state.passOverride;
+}
+
+function activeSlot() {
+  if (!state.pass) return null;
+  return state.pass.slots[state.passSlot] || null;
+}
+
+// Every class name the pass palette can produce (both halves of any pair).
+function passClassNames() {
+  if (!state.pass) return [];
+  return state.pass.slots.flatMap((s) => s.classes.map((c) => c.name));
+}
+
+// Which slot owns a class — used to re-derive a variant when a box moves.
+function slotForClass(className) {
+  if (!state.pass) return null;
+  return state.pass.slots.find((s) =>
+    s.classes.some((c) => c.name === className)) || null;
+}
+
+function slotIsPair(slot) {
+  return !!slot && slot.kind === "staff_position_pair";
+}
+
+// on_line / in_space, for the overlay tag and color. Only consulted in a
+// pass, so a non-pass bench draws added boxes exactly as it always did.
+function variantOf(className) {
+  if (!className) return null;
+  if (className.endsWith("OnLine")) return "on_line";
+  if (className.endsWith("InSpace")) return "in_space";
+  return null;
+}
+
+function renderPassBar() {
+  const bar = $("pass-bar");
+  if (!bar) return;
+  if (!state.pass) {
+    bar.hidden = true;
+    return;
+  }
+  bar.hidden = false;
+  bar.classList.toggle("overridden", state.passOverride);
+  bar.innerHTML = "";
+
+  const name = document.createElement("span");
+  name.className = "pass-name";
+  name.textContent = state.passOverride
+    ? `all classes (pass: ${state.pass.pass_name})`
+    : `pass · ${state.pass.pass_name}`;
+  bar.appendChild(name);
+
+  // Feedback on revisit: has THIS cell already been swept by this pass? The
+  // sweep is recorded on the way out, so a first visit shows nothing and a
+  // return shows the tick — the labeler can see a cell is already counted
+  // and does not need re-checking.
+  if (state.verdict && Array.isArray(state.verdict.inspected_passes)
+      && state.verdict.inspected_passes.includes(state.pass.pass_name)) {
+    const swept = document.createElement("span");
+    swept.className = "pass-swept";
+    swept.textContent = "✓ swept";
+    swept.title = "This cell has already been inspected for this pass.";
+    bar.appendChild(swept);
+  }
+
+  if (!state.passOverride) {
+    state.pass.slots.forEach((slot, i) => {
+      const chip = document.createElement("button");
+      chip.className = "pass-slot" + (i === state.passSlot ? " active" : "");
+      const clickable = slot.click_box ? " · click" : "";
+      chip.innerHTML =
+        (state.pass.slots.length > 1
+          ? `<span class="slot-key">${i + 1}</span>` : "") +
+        `<span>${slot.label}</span>` +
+        `<span class="slot-click">${clickable}</span>`;
+      chip.title = slot.classes.map((c) => c.name).join(" / ");
+      chip.addEventListener("click", () => selectSlot(i));
+      bar.appendChild(chip);
+    });
+    const hint = document.createElement("span");
+    hint.className = "pass-hint";
+    const slot = activeSlot();
+    hint.textContent = slot && slot.click_box
+      ? "a → draw mode · click places a sized box · drag for a custom one"
+      : "a → draw mode · drag a box; the class is assigned for you";
+    bar.appendChild(hint);
+  } else {
+    const note = document.createElement("span");
+    note.className = "pass-note";
+    note.textContent = "full picker — boxes are NOT auto-assigned";
+    bar.appendChild(note);
+  }
+
+  const esc = document.createElement("button");
+  esc.className = "pass-escape";
+  esc.textContent = state.passOverride
+    ? `↩ back to “${state.pass.pass_name}”`
+    : "⋯ all classes";
+  esc.title = "Leave the restricted palette for one-off oddities";
+  esc.addEventListener("click", togglePassOverride);
+  bar.appendChild(esc);
+}
+
+function togglePassOverride() {
+  state.passOverride = !state.passOverride;
+  renderPassBar();
+  if (state.pickerOpen) renderPicker();
+  renderOverlay();
+}
+
+function selectSlot(i) {
+  if (!state.pass || !state.pass.slots[i]) return;
+  state.passSlot = i;
+  renderPassBar();
+  if (state.pickerOpen) renderPicker();
+}
+
+// Ask the server which class this y lands on. The staff grid lives in Python
+// (tools/omr/annotate/server.py:snap_to_staff) so the tested code is the code
+// that runs — the browser holds no second copy of the arithmetic.
+async function snapAt(x, y, slotIndex) {
+  try {
+    const r = await fetch(
+      `/api/cell/${cellId}/snap?x=${encodeURIComponent(x)}` +
+      `&y=${encodeURIComponent(y)}&slot=${slotIndex}`);
+    if (!r.ok) return null;
+    const j = await r.json();
+    return j.available ? j : null;
+  } catch (e) {
+    console.error("snap failed", e);
+    return null;
+  }
+}
+
+// Commit a box the pass assigned itself: no picker, no scrolling.
+function addPassBox(bbox, className) {
+  const cat = state.classByName[className]?.category || "notehead";
+  const newId = `H${nextHId()}`;
+  state.verdict.added_detections.push({
+    id: newId,
+    human_class: className,
+    human_category: cat,
+    bbox,
+    notes: "",
+  });
+  state.selectedId = newId;
+  markDirty();
+  renderDetectionList();
+  renderOverlay();
+  renderDetail();
+}
+
+// A plain CLICK in a click-box slot: place a box of the class's own measured
+// size, centered on the staff position the click snaps to.
+async function placeClickBox(pt) {
+  const slot = activeSlot();
+  if (!slot || !slot.click_box) return false;
+  const snap = await snapAt(pt.x, pt.y, slot.index);
+  if (!snap || !snap.bbox) return false;
+  addPassBox(clampBbox(snap.bbox), snap.class.name);
+  return true;
+}
+
+// Move or resize a box that was already drawn. Model detections have had
+// this since the start (Fix-bbox); drawn boxes had only delete-and-redraw,
+// which is not good enough once geometry is choosing the class for you — a
+// mis-snapped variant has to be nudgeable.
+//
+// Moving it across the staff grid RE-DERIVES the variant, so the class keeps
+// matching where the box actually sits. Only within its own pass slot: a box
+// whose class the pass does not own keeps the class it has.
+async function reboxAdded(id, bbox, clickPt) {
+  const { kind, obj } = findItem(id);
+  if (kind !== "added" || !obj) return;
+  const slot = slotForClass(obj.human_class);
+  if (clickPt) {
+    // Click-to-replace: same sized box, new position.
+    if (!slot || !slot.click_box) return;
+    const snap = await snapAt(clickPt.x, clickPt.y, slot.index);
+    if (!snap || !snap.bbox) return;
+    obj.bbox = clampBbox(snap.bbox);
+    if (slotIsPair(slot)) obj.human_class = snap.class.name;
+  } else {
+    obj.bbox = bbox;
+    if (slotIsPair(slot)) {
+      const snap = await snapAt(bbox.x + bbox.w / 2, bbox.y + bbox.h / 2,
+                                slot.index);
+      if (snap) obj.human_class = snap.class.name;
+    }
+  }
+  obj.human_category = state.classByName[obj.human_class]?.category
+    || obj.human_category;
+  markDirty();
+  renderDetectionList();
+  renderOverlay();
+  renderDetail();
+}
+
+// A DRAG in a pass: the labeler chose the box, the geometry chooses the
+// variant (for a pair) from where the box's center sits.
+async function commitPassDrag(bbox) {
+  const slot = activeSlot();
+  if (!slot) return false;
+  let className = slot.classes[0].name;
+  if (slotIsPair(slot)) {
+    const snap = await snapAt(bbox.x + bbox.w / 2, bbox.y + bbox.h / 2,
+                              slot.index);
+    if (snap) className = snap.class.name;
+  }
+  addPassBox(bbox, className);
+  return true;
+}
+
 // ---------------------------------------------------------------- render ----
 
 function verdictClass(v) {
@@ -120,7 +351,20 @@ const COLORS = {
   unsure: "#555",
   null: "#888",
   added: "#1976d2",
+  // Staff-position variants get their own colors in a pass, so a mis-snapped
+  // box is visible on the image rather than only in the sidebar.
+  added_on_line: "#1976d2",
+  added_in_space: "#00897b",
 };
+
+// Label an added box in a pass with the variant the geometry chose.
+function addedBoxStyle(h) {
+  if (!state.pass) return { color: COLORS.added, label: h.id };
+  const v = variantOf(h.human_class);
+  if (v === "on_line") return { color: COLORS.added_on_line, label: `${h.id} ·line` };
+  if (v === "in_space") return { color: COLORS.added_in_space, label: `${h.id} ·space` };
+  return { color: COLORS.added, label: h.id };
+}
 
 function renderDetectionList() {
   const ul = $("detection-ul");
@@ -139,7 +383,21 @@ function renderDetectionList() {
   // Helpful hint if the model found no detections in this cell.
   const isEmpty = state.verdict.detections.length === 0
     && state.verdict.added_detections.length === 0;
-  if (isEmpty) {
+  if (isEmpty && passActive()) {
+    const slot = activeSlot();
+    const li = document.createElement("li");
+    li.className = "no-detections-hint";
+    li.innerHTML = `<em>${state.pass.pass_name} — nothing drawn yet.</em><br>
+      Press <kbd>a</kbd>, then ` +
+      (slot && slot.click_box
+        ? `<strong>click each ${slot.label}</strong> — the box is sized and
+           classed for you`
+        : `<strong>drag a box around each ${slot ? slot.label : "one"}</strong>`) +
+      `. <kbd>Esc</kbd> stops, <kbd>Tab</kbd> goes to the next cell.
+       Only this pass's symbols belong here; the rest of the cell is another
+       pass's job.`;
+    ul.appendChild(li);
+  } else if (isEmpty) {
     const li = document.createElement("li");
     li.className = "no-detections-hint";
     li.innerHTML = `<em>No detections — draw them in.</em><br>
@@ -180,7 +438,8 @@ function renderOverlay() {
     drawBox(b, COLORS[d.verdict || "null"], d.id, state.selectedId === d.id);
   }
   for (const h of state.verdict.added_detections) {
-    drawBox(h.bbox, COLORS.added, h.id, state.selectedId === h.id, true);
+    const style = addedBoxStyle(h);
+    drawBox(h.bbox, style.color, style.label, state.selectedId === h.id, true);
   }
   if (state.mode === "draw-bbox" && state.drawStart && state.drawCur) {
     const x = Math.min(state.drawStart.x, state.drawCur.x);
@@ -447,6 +706,25 @@ function renderPicker() {
   const gridEl = $("picker-grid");
   const emptyEl = $("picker-empty");
   const searchInput = $("picker-search-input");
+  const escapeEl = $("picker-escape");
+
+  // In a pass the palette is just this sweep's classes: no tabs to choose
+  // between and nothing to search through. The escape hatch is a button.
+  const restricted = passActive();
+  const searchRow = document.querySelector(".picker-search");
+  if (tabsEl) tabsEl.hidden = restricted;
+  if (searchRow) searchRow.hidden = restricted;
+  if (escapeEl) escapeEl.hidden = !state.pass;
+  if (restricted) {
+    const names = passClassNames();
+    let currentClass = null;
+    const { obj } = findItem(state.pickerFor?.id);
+    if (obj) currentClass = obj.human_corrected_class || obj.human_class
+      || obj.model_predicted_class;
+    renderPickerTiles(gridEl, names, currentClass, false);
+    if (emptyEl) emptyEl.hidden = names.length > 0;
+    return;
+  }
 
   // Reflect current search value in the input (in case it was set
   // programmatically by openPicker or hotkey).
@@ -496,8 +774,15 @@ function renderPicker() {
     currentClass = obj?.human_class;
   }
 
+  renderPickerTiles(gridEl, visible, currentClass, !!state.pickerSearch);
+
+  // Empty-state message when search returns nothing.
+  if (emptyEl) emptyEl.hidden = visible.length > 0;
+}
+
+function renderPickerTiles(gridEl, names, currentClass, showCatTag) {
   gridEl.innerHTML = "";
-  for (const name of visible) {
+  for (const name of names) {
     const cls = state.classByName[name];
     if (!cls) continue;
     const tile = document.createElement("div");
@@ -506,7 +791,7 @@ function renderPicker() {
     if (name === currentClass) tile.classList.add("selected");
     // When searching, also show the source category as a small tag so
     // the labeler knows where each match comes from.
-    const catTag = state.pickerSearch
+    const catTag = showCatTag
       ? `<div class="cat-tag">${cls.category || "?"}</div>`
       : "";
     tile.innerHTML = `
@@ -517,9 +802,6 @@ function renderPicker() {
     tile.addEventListener("click", () => applyClassCorrection(name));
     gridEl.appendChild(tile);
   }
-
-  // Empty-state message when search returns nothing.
-  if (emptyEl) emptyEl.hidden = visible.length > 0;
 }
 
 // ---------------------------------------------------------------- draw -----
@@ -530,10 +812,20 @@ function enterDrawMode(intent) {
   state.drawStart = null;
   state.drawCur = null;
   $("overlay-hint").hidden = false;
-  $("overlay-hint").textContent =
-    intent.kind === "fix-bbox"
-      ? "Click and drag on the image to redraw the bbox. Esc to cancel."
-      : "Click and drag on the image to draw the new detection's bbox. Esc to cancel.";
+  const slot = passActive() ? activeSlot() : null;
+  if (intent.kind === "fix-bbox" || intent.kind === "fix-added-bbox") {
+    $("overlay-hint").textContent =
+      slot && slot.click_box && intent.kind === "fix-added-bbox"
+        ? "Click to move the box, or drag to resize it. Esc to cancel."
+        : "Click and drag on the image to redraw the bbox. Esc to cancel.";
+  } else if (slot) {
+    $("overlay-hint").textContent = slot.click_box
+      ? `${slot.label}: click each one (or drag for a custom box). Esc stops.`
+      : `${slot.label}: drag a box around each one. Esc stops.`;
+  } else {
+    $("overlay-hint").textContent =
+      "Click and drag on the image to draw the new detection's bbox. Esc to cancel.";
+  }
   document.querySelector(".col-overlay").classList.add("drawing");
   canvas.focus();
 }
@@ -596,7 +888,7 @@ canvas.addEventListener("mousemove", (evt) => {
   }
 });
 
-canvas.addEventListener("mouseup", (evt) => {
+canvas.addEventListener("mouseup", async (evt) => {
   if (state.mode !== "draw-bbox" || !state.drawStart) return;
   state.drawCur = canvasToCanonical(evt);
   const x = Math.min(state.drawStart.x, state.drawCur.x);
@@ -604,15 +896,42 @@ canvas.addEventListener("mouseup", (evt) => {
   const w = Math.abs(state.drawCur.x - state.drawStart.x);
   const h = Math.abs(state.drawCur.y - state.drawStart.y);
   if (w < 3 || h < 3) {
-    // Too small — likely a click; ignore and stay in draw mode.
+    // A click, not a drag. In a click-box pass that IS the label: one click
+    // places a correctly-sized box on the staff position it snaps to, and
+    // draw mode stays on for the next one. Otherwise (as before) ignore it.
+    const clickPt = state.drawStart;
+    const clickIntent = state.drawIntent;
     state.drawStart = null;
     state.drawCur = null;
+    if (passActive() && activeSlot()?.click_box) {
+      if (clickIntent.kind === "add-missed") {
+        await placeClickBox(clickPt);
+        renderOverlay();
+        return;
+      }
+      if (clickIntent.kind === "fix-added-bbox") {
+        exitDrawMode();
+        await reboxAdded(clickIntent.id, null, clickPt);
+        return;
+      }
+    }
     renderOverlay();
     return;
   }
   const bbox = clampBbox({ x, y, w, h });
   const intent = state.drawIntent;
   exitDrawMode();
+  if (intent.kind === "fix-added-bbox") {
+    await reboxAdded(intent.id, bbox, null);
+    return;
+  }
+  if (intent.kind === "add-missed" && passActive()) {
+    // A drag in a pass is still auto-assigned — the labeler chose the box,
+    // not the class.
+    await commitPassDrag(bbox);
+    enterDrawMode({ kind: "add-missed" });
+    return;
+  }
   if (intent.kind === "fix-bbox") {
     const { obj } = findItem(intent.id);
     if (obj) {
@@ -692,6 +1011,17 @@ document.addEventListener("keydown", (evt) => {
   }
 
   if (state.pickerOpen) {
+    // In a restricted pass the numbers pick the CLASS, not a category tab —
+    // there are no tabs, and the palette is short enough to be numbered.
+    if (passActive()) {
+      const k = parseInt(evt.key, 10);
+      const names = passClassNames();
+      if (!isNaN(k) && k >= 1 && k <= names.length) {
+        applyClassCorrection(names[k - 1]);
+        evt.preventDefault();
+      }
+      return;
+    }
     // "/" → focus the search box. Works whether the picker is open via a
     // detection-fix-class flow or a draw-new flow.
     if (evt.key === "/") {
@@ -753,6 +1083,17 @@ document.addEventListener("keydown", (evt) => {
     if (state.selectedId) { deleteSelected(); evt.preventDefault(); return; }
   }
 
+  // Number keys select the pass slot (1..n) while the picker is closed —
+  // "which symbol am I drawing now". Nothing bound them before pass mode.
+  if (passActive() && state.pass.slots.length > 1) {
+    const k = parseInt(evt.key, 10);
+    if (!isNaN(k) && k >= 1 && k <= state.pass.slots.length) {
+      selectSlot(k - 1);
+      evt.preventDefault();
+      return;
+    }
+  }
+
   const key = evt.key.toLowerCase();
   if (key === "n") { selectAdjacent(1); evt.preventDefault(); return; }
   if (key === "p") { selectAdjacent(-1); evt.preventDefault(); return; }
@@ -782,13 +1123,42 @@ document.addEventListener("keydown", (evt) => {
   } else if (key === "b" && kind === "detection") {
     enterDrawMode({ kind: "fix-bbox", id: state.selectedId });
     evt.preventDefault();
+  } else if (key === "b" && kind === "added") {
+    // Redraw a box you drew. In a pair slot the variant re-derives from
+    // wherever the new box lands.
+    enterDrawMode({ kind: "fix-added-bbox", id: state.selectedId });
+    evt.preventDefault();
   }
 });
 
+// Record that the current pass has SWEPT this cell. Returns whether it added
+// anything, so the caller knows a save is now owed. A no-op off a pass bench,
+// so non-pass navigation still writes nothing it did not already.
+//
+// Stamped on the way OUT, not on open: it means "looked and moved on", which
+// is the signal a single-symbol sweep produces on a cell holding none of its
+// symbols — and it is what makes 48/48-inspected provable from the verdicts
+// dir instead of one file per drawn cell. Gated on `state.pass` (a config
+// exists), not passActive(): the escape hatch is a within-pass UI state, and
+// the cell was still inspected for this pass.
+function stampInspectedForPass() {
+  if (!state.pass || !state.verdict) return false;
+  const name = state.pass.pass_name;
+  if (!Array.isArray(state.verdict.inspected_passes)) {
+    state.verdict.inspected_passes = [];
+  }
+  if (state.verdict.inspected_passes.includes(name)) return false;
+  state.verdict.inspected_passes.push(name);
+  return true;
+}
+
 function goToCell(id) {
-  // Flush save first so we don't lose pending edits.
-  if (state.saveState === "idle" && state.saveTimer) {
-    clearTimeout(state.saveTimer);
+  // Stamp the sweep, then flush anything owed before the full-page reload —
+  // a stamp or a pending debounced edit must reach disk or it is lost.
+  const stamped = stampInspectedForPass();
+  const hadTimer = state.saveTimer != null;
+  if (state.saveTimer) { clearTimeout(state.saveTimer); state.saveTimer = null; }
+  if (stamped || hadTimer) {
     save().finally(() => {
       window.location.href = `/cells/${id}`;
     });
@@ -843,6 +1213,7 @@ $("btn-add-fn").addEventListener("click", () => {
   enterDrawMode({ kind: "add-missed" });
 });
 $("picker-close").addEventListener("click", closePicker);
+$("picker-escape-btn")?.addEventListener("click", togglePassOverride);
 
 // Picker search — type to filter archetypes across every category.
 (function wirePickerSearch() {
@@ -913,6 +1284,8 @@ document.querySelectorAll(".verdict-buttons button").forEach((b) => {
     } else if (v === "WRONG_BBOX") {
       if (kind === "detection") {
         enterDrawMode({ kind: "fix-bbox", id: state.selectedId });
+      } else if (kind === "added") {
+        enterDrawMode({ kind: "fix-added-bbox", id: state.selectedId });
       }
     } else {
       setVerdict(state.selectedId, v);

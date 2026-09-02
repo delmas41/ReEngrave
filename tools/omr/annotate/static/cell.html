@@ -20,6 +20,11 @@
   </span>
 </header>
 
+<!-- Single-symbol pass bar: only rendered when the bench ships a
+     batch_config.json. Says which pass you are in and which class the next
+     box gets, so it is never a guess. Hidden entirely otherwise. -->
+<div id="pass-bar" class="pass-bar" hidden></div>
+
 <!-- Page-cell strip: shows other cells from the same source page so the
      labeler can see where they are and jump around without going back
      to the global list. Auto-hidden when only one cell on the page. -->
@@ -100,6 +105,11 @@
         <div class="picker-grid" id="picker-grid"></div>
         <div class="picker-empty" id="picker-empty" hidden>
           <em>No archetypes match your search.</em>
+        </div>
+        <!-- Escape hatch out of a restricted pass palette. Deliberately a
+             button and not a hotkey: leaving the pass should be an act. -->
+        <div class="picker-escape" id="picker-escape" hidden>
+          <button id="picker-escape-btn">⋯ show all classes</button>
         </div>
       </div>
     </div>

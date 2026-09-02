@@ -15,16 +15,25 @@
 
   summary.textContent =
     `${bench.n_cells} cells · ${bench.n_classes} classes · ` +
+    (bench.pass_name ? `pass: ${bench.pass_name} · ` : ``) +
     `bench: ${bench.root}`;
 
   function statusFor(c) {
     if (c.schema_version === "corrupt") return "corrupt";
     if (!c.has_verdict) return "untouched";
     if (c.schema_version === 1) return "schema_v1";
-    // "done" = nothing left pending AND at least one label exists — either a
-    // decided model detection or a drawn box (clean-canvas / added-only cells).
-    if (c.n_pending === 0 && (c.n_detections > 0 || c.n_added > 0)) return "done";
-    if (c.n_decided > 0 || c.n_added > 0) return "in-progress";
+    // "done" = nothing left pending AND the cell has been dealt with — either
+    // a decided model detection, a drawn box, or (in a pass) an explicit sweep
+    // that found none of this pass's symbols. Without the last clause an
+    // inspected-empty cell reads "pending" forever, which is the coverage gap
+    // this whole marker closes.
+    const inspected = (c.inspected_passes || []).length > 0;
+    if (c.n_pending === 0 && (c.n_detections > 0 || c.n_added > 0 || inspected)) {
+      return "done";
+    }
+    if (c.n_decided > 0 || c.n_added > 0 || (c.inspected_passes || []).length) {
+      return "in-progress";
+    }
     return "pending";
   }
 
