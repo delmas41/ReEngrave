@@ -772,18 +772,23 @@ Two notes for whoever audits it next:
 | `claude/recognition-improvement-next-2f1709` | **Landed** | Nothing unlanded. |
 | `clef-phase0-eval` | **Labels landed 2026-08-29** | v5, v6, three labeling batches (79 verdicts) and the audit tooling are on `main`. Its code half was redundant, its docs conflict with two months of newer files, and its weights stay unused. The branch is now an archive. |
 | `claude/omr-clef-tenor-fixture` | **Superseded 2026-09-01** | Its one commit — *an F clef's dots stand alone; a C clef's lobes have company* — is the same idea that landed as `bebc50f` (false positives 21 → 13), measured on a wider corpus. The stricter single-dot form was then shipped as `d9c1a58` and **reverted** as `5bd0624`. Archive it. |
-| `claude/omr-dossier-verification-layer-eaf6d0` | **The one open decision** | 4 commits, July. A *parallel* dossier implementation: hand-typed `tools/omr/dossiers/*.json` where `main` generates `data/dossiers/` from the Gradus MusicXML. Slice 1 (meter back-fill + column notation-math) is superseded, but **Phase 2/3 and dossier-steered re-segmentation — acting on a known bar count — have no equivalent on `main`**, whose `resegment_fused_measures` is driven by cross-staff consistency instead. Worth an assessment, not a merge: it has drifted seven weeks and uses a different data model. |
+| `claude/omr-dossier-verification-layer-eaf6d0` | **Superseded — close, archive** | 4 commits, July. A *parallel* dossier implementation: hand-typed `tools/omr/dossiers/*.json` where `main` generates `data/dossiers/` from the Gradus MusicXML. Assessed 2026-09-02 ([docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md)): **all four phases have a shipped `main` equivalent** — this table's 09-01 claim that Phase 2/3 and the re-segmentation had none was stale on the day it was written, since all three equivalents landed 08-28/29. Phase 2 → `dossier.join_parts_to_slots` (handles the condensed systems Phase 2's gate refused) + `clef_correction.py` (`5a146e7`, needs no dossier). Phase 3 → `_flag_measure_count_inconsistency` (`05b5b63`, the branch's own day) + `check_total_measures` (`d0563a6`); its per-edition `pages[]` layout cannot be generated from MusicXML at all. Phase 4 was **cherry-picked outright as `886ac23`** — credited by hash, only the data source swapped — then measured inert (0 of 27 systems steered, `benchmarks/omr-majority-steering-2026-08/`). Nothing remains to port. |
 | `claude/interesting-curran-3ca1b7` | Archive + one live thread | Catalog experiment Phases A–L (concluded; do not retrain from it) **plus** 2026-05-25 `line_detection` improvements still worth a cherry-pick review. Its label-EMITTER half is validated prior art for MXL-guided auto-labeling. |
 | `claude/scoreaug-fair-test-a2928e`, `claude/training-domain-augmentation-a29baf` | Archives | The two **disproven** training experiments. Do not deploy their weights; do not retry the recipes. |
-| `claude/magical-bhabha` | 1 commit (March) | **Real MusicXML measure-level patching in `export_module`** — the #1 web-app TODO. Pre-consolidation code; evaluate against current `export_module`. |
-| `claude/peaceful-kapitsa` | 1 commit (March) | SQLite-backed persistent job queue replacing FastAPI `BackgroundTasks`. Same: pre-consolidation; evaluate or discard. |
+| `claude/magical-bhabha` | 1 commit (March) — **assessed 2026-09-02: port** | **Real MusicXML measure-level patching in `export_module`** — the #1 web-app TODO. The target function is byte-identical to March and 2 of 5 tests in `backend/tests/test_export_module.py` already fail on `main` for want of it. See [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md). |
+| `claude/peaceful-kapitsa` | 1 commit (March) — **assessed 2026-09-02: re-implement fresh** | SQLite-backed persistent job queue replacing FastAPI `BackgroundTasks`. The gap is real but `main.py`/`models.py` drifted +400/+78 lines and the `download` job type's route is gone; deprioritized with the web app. Same doc. |
 | `claude/quizzical-bell` | 1 commit (April) | The parked `/engrave` skill (Claude Vision-only OMR). Superseded; safe to delete. |
 
 **Method note.** `git merge-tree <base> <a> <b>` — the deprecated three-argument
 form — reports no conflict on trees that plainly conflict. It said `clef-phase0-eval`
 merged cleanly; `git merge-tree --write-tree main clef-phase0-eval` correctly
 reports conflicts in `CLAUDE.md`, `tools/omr/README.md` and `transcribe.py`. Use
-the two-argument form, and check its exit code.
+the two-argument form, and check its exit code. And `git cherry` sees only
+*patch-identical* picks: `886ac23` restates `aa28dcb` with its data source swapped —
+says so in its own commit message — and `git cherry` correctly does not mark it,
+which is how this audit's first pass called Phase 4 "no equivalent on `main`."
+A branch's ideas can land without one patch ID matching; read the commit messages
+of the subsystem it touches, not just the patch algebra.
 
 ---
 
@@ -1018,10 +1023,17 @@ copies are now pointers.
     density prior, which is what collapsed dense-page noteheads 2506 → 114 — so it wants
     a measured run behind `wtc_forgetting_eval.py`, not a rebuild. The retrain can no
     longer silently re-trigger the Phase 3.4 head-reset collapse (nc=208 cap + guard).
-14. **Assess `claude/omr-dossier-verification-layer-eaf6d0`** — the last branch with a
-    capability `main` lacks (dossier-steered re-segmentation on a known bar count). Then
-    the two March web-app implementations: measure-level MusicXML patching and the
-    persistent job queue.
+14. **Assess `claude/omr-dossier-verification-layer-eaf6d0`** — **done 2026-09-02,
+    verdict: close** ([docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md)).
+    It was not the last branch with a capability `main` lacks — all four phases have a
+    shipped equivalent (see the branch table), and the one this item named,
+    re-segmentation on a known bar count, was already cherry-picked as `886ac23` and
+    measured inert. **Still open: the two March web-app branches**, assessed in the same
+    doc — measure-level MusicXML patching (**port**: one function region untouched by
+    five months of drift, and 2 of 5 tests in `backend/tests/test_export_module.py`
+    already fail on `main` for want of it) and the persistent job queue
+    (**re-implement fresh, deprioritized**: `main.py` grew 400 lines since the fork and
+    the `download` job type's route no longer exists).
 15. **Ensemble recognition for clef + detail prediction** (Sean flagged, 2026-07-10).
     Partly overtaken — the clef half needed geometry, not an ensemble. **Still open: the
     time-signature half**, and clef/key/time state resets across pages.
