@@ -984,15 +984,32 @@ character count on both sides, so an invented `IIII` costs 4 exactly as a missed
 `legato` costs 6. The lexicon gate is arithmetic, not taste, and a reader that
 guesses trades one for the other at par.
 
+**And a mark on the wrong beat costs DOUBLE** — deleted where we put it,
+inserted where it belongs. `export._direction_slots` therefore attaches a mark
+to the NEAREST NOTE (rests are not candidates; a mark right of every event keeps
+the past-the-end position), which is worth 14 edits over the first-note-at-or-
+past-it rule that shipped first. Rules are compared mark-by-mark with
+`benchmarks/omr-direction-text-2026-09/score_placement_rules.py`, in seconds
+rather than the hour a benchmark run costs — a pooled score cannot see a rule
+that fixes one case and breaks another, which is how the first comparison got it
+wrong.
+
 ### What it does not reach
 
+- **A bar that lost an augmentation dot.** 40 of the 47 remaining edits, and
+  they are not direction faults at all: the word sits on the CORRECT note, and
+  the note sits at the wrong time because an earlier note in the bar reads a
+  quarter where the truth has a dotted quarter. Correcting the offset while the
+  note keeps its duration would put the direction at a time no note occupies.
+  The fix belongs in `_reconcile_measure_to_meter`, which moves a beam level and
+  not a dot.
 - **A direction printed against the staff below it.** Mahler's `molto` sits in a
   4.5-space gap on a 38-staff page and its ink crosses the next staff's top
   line; the band stops clear of that line, so the word is never proposed. Worth
   5 edits, and the fix needs the staff lines traced off the band
   (`header_ink.erase_staff_lines`) rather than a wider band.
 - **Marks that are not words.** `[`, `]`, `(♩=108)` — refused by the lexicon,
-  correctly, and 3 of the 33 remaining edits.
+  correctly, and 2 of the 47 remaining edits.
 - **The letter dynamics.** `f`, `pp`, `sf` are drawn glyphs the detector finds
   and `export.measure_dynamics` already emits. The lexicon deliberately omits
   them so the two readers cannot both claim one mark.

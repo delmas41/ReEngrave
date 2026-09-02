@@ -133,10 +133,8 @@ amplifying.
 
 ### 4. ~~Text expressions and tempo marks~~ — DONE 2026-09-01
 
-Pooled **0.2209 -> 0.2040** on `6f64bfa`, 1563 -> 1473 edits, `wrong direction`
-151 -> 61, and every other category unchanged to the edit. The -90 is the same
-on all four mains this was measured against, which matters more than the
-absolute figure — see FINDINGS. `tools/omr/direction_text.py`,
+Pooled **0.2209 -> 0.2020**, 1563 -> 1459 edits, `wrong direction` 151 -> 47,
+and every other category unchanged to the edit. `tools/omr/direction_text.py`,
 behind `--direction-text` (off by default; needs `.venv-surya`). Full reading in
 `benchmarks/omr-direction-text-2026-09/FINDINGS.md`.
 
@@ -160,9 +158,18 @@ Three things it settled, all in FINDINGS:
 - **The detector reads the `p` of `espr.` as a dynamic `p`, correctly**, and
   subtracting it destroyed the word — on two staves, and only after the
   cross-staff fix changed which detections exist.
-- **Attaching a mark to the NEAREST note rather than the next one was measured
-  and rejected**: +2 on words, −14 on dynamics, because a rest occupies x-space
-  and nearness reaches backwards onto it.
+- **A mark on the wrong beat costs DOUBLE**, and the rule that places it went
+  through a rejection that was itself wrong. Nearest-note scored worse on a
+  POOLED comparison because a rest occupies x-space and nearness reaches
+  backwards onto one — a correct mechanism, and the wrong conclusion: a rest is
+  not a candidate at all. Excluding rests keeps what nearness buys and costs
+  nothing. Worth 14 edits, and only visible once rules were compared MARK BY
+  MARK (`score_placement_rules.py`, seconds per rule) instead of by pooled score.
+- **Two of the three remaining misplaced words are not misplaced.** They sit on
+  the correct note, in a bar whose first note lost its augmentation dot and so
+  sums to 2.5 in a 3.0 bar. 40 of the 47 residual edits, and the fix belongs in
+  `_reconcile_measure_to_meter` — which moves a beam level and not a dot, and
+  says so.
 
 ### 5. Small and known
 

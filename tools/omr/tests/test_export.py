@@ -695,6 +695,46 @@ class TestDynamicsAndSlurs:
         assert _direction_slots([self._ev(100)], [(500, "words", "legato")]) == {
             1: [("words", "legato")]}
 
+    def test_a_mark_right_of_its_note_attaches_to_it_not_the_next(self):
+        """Brahms's `pesante` begins 47 canonical px RIGHT of the note it
+        belongs to. Taking the first note at or PAST its left edge skipped a
+        beat, and musicdiff charged the whole word twice for it."""
+        events = [self._ev(957), self._ev(1145), self._ev(1336),
+                  self._ev(1514), self._ev(1701)]
+        assert _direction_slots(events, [(1383, "words", "pesante")]) == {
+            2: [("words", "pesante")]}
+
+    def test_a_mark_left_of_its_note_still_attaches_to_it(self):
+        """And the opposite bias on the same page: `legato` begins 48 px LEFT
+        of its note. There is no consistent side to lean on."""
+        events = [self._ev(958), self._ev(1517)]
+        assert _direction_slots(events, [(1468, "words", "legato")]) == {
+            1: [("words", "legato")]}
+
+    def test_a_mark_past_every_note_is_not_pulled_back_to_the_only_one(self):
+        """The clause that survived from the old rule, and it earns its place
+        on a MISSED note: Brahms's Bassoon 2 detects one note where the truth
+        has two, and its `legato` is printed under the second. Landing after
+        what we detected is right; snapping back to the one note is not."""
+        assert _direction_slots([self._ev(957)], [(1468, "words", "legato")]) == {
+            1: [("words", "legato")]}
+
+    def test_a_tie_goes_forward(self):
+        events = [self._ev(100), self._ev(200)]
+        assert _direction_slots(events, [(150, "words", "legato")]) == {
+            1: [("words", "legato")]}
+
+    def test_a_bar_of_only_rests_still_takes_its_mark(self):
+        """Rests are not candidates — unless they are all there is, and then
+        nearness among everything is all the rule has left."""
+        def _rest(x):
+            return {"kind": "rest", "x_position": x, "duration_beats": 2.0,
+                    "duration_type": "half", "dots": 0}
+
+        assert _direction_slots([_rest(100), _rest(300)],
+                                [(110, "words", "legato")]) == {
+            0: [("words", "legato")]}
+
     def test_with_no_notes_a_direction_goes_past_the_end(self):
         """An empty measure must not silently swallow its own markings."""
         assert _direction_slots([], [(100, "dynamic", "f")]) == {
