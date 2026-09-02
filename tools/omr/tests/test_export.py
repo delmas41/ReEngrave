@@ -1498,3 +1498,103 @@ class TestAccidentalReachesBothOutputs:
                                {"pitch": "E4"}],
                  "rest": None}
         assert _lily_event(event) == "<c'! e'>4"
+
+
+# ─── Two-voice staves: the absent voice is invisible, not an echo ───────────
+#
+# From Phase 4h until 2026-09-02, a measure where `split_events_into_voices`
+# found only ONE voice fed that voice to BOTH `\new Voice` blocks
+# (`v2_events = voices[0]`), so every note in it printed twice — once per
+# voice, each copy with its voice's forced stem. Measured on the Brahms
+# benchmark page: 4 two-voice staves, 23 such measures, 62 noteheads drawn
+# twice (73 forced-accidental tokens from 54 recorded glyphs, which is how it
+# was noticed). The absent voice now takes a SPACER (`s`, invisible), because
+# the page shows nothing there; a printed rest would be the same bug in rest
+# form. And a lone voice whose stems all point DOWN is the second voice
+# playing alone, so it is routed to `\voiceTwo` — which is what preserves its
+# printed stem direction — 13 of the 23.
+
+from tools.omr.export import (  # noqa: E402  (late, beside the tests that use them)
+    _lily_measure_spacer,
+    _lily_staff_block,
+    _lone_voice_is_the_second,
+)
+
+
+def _nh(x, pitch, stem, dur=("quarter", 1.0)):
+    return {"class": "noteheadBlackOnLine", "category": "notehead",
+            "bbox": [x, 10, 5, 5], "bbox_page": [x, 10, 5, 5],
+            "confidence": 0.9, "pitch": pitch, "duration_beats": dur[1],
+            "duration_type": dur[0], "dots": 0, "stem_direction": stem}
+
+
+def _two_voice_staff(measures):
+    return {"staff_index": 0, "clef": "treble",
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
+            "n_measures": len(measures),
+            "measures": [
+                {"measure_index": i, "bbox_page_px": [0, 0, 100, 50],
+                 "n_detections": len(dets), "detections": dets}
+                for i, dets in enumerate(measures)]}
+
+
+class TestTwoVoiceStaffDoesNotEcho:
+    # A genuinely two-voice measure, to force the staff onto the two-voice
+    # path: four quarters up, four quarters down.
+    SPLIT = ([_nh(x, "C5", "up") for x in (10, 30, 50, 70)]
+             + [_nh(x, "E4", "down") for x in (12, 32, 52, 72)])
+
+    def test_a_single_voice_measure_renders_once(self):
+        # Measure 2 is voice 1 alone: its four notes must appear exactly once.
+        solo = [_nh(x, "G4", "up") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, solo]))
+        assert out.count("g'4 g'4 g'4 g'4") == 1
+        assert "s1 |" in out  # the absent voice, invisible
+
+    def test_the_absent_voice_is_a_spacer_not_a_printed_rest(self):
+        solo = [_nh(x, "G4", "up") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, solo]))
+        v2 = out[out.index("\\voiceTwo"):]
+        assert "s1 |" in v2
+        assert "r1" not in v2  # nothing printed where the page shows nothing
+
+    def test_a_lone_all_stem_down_measure_is_the_second_voice(self):
+        solo_down = [_nh(x, "E4", "down") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, solo_down]))
+        v1 = out[out.index("\\voiceOne"):out.index("\\voiceTwo")]
+        v2 = out[out.index("\\voiceTwo"):]
+        assert "e'4 e'4 e'4 e'4" in v2  # keeps its printed stem direction
+        assert "e'4 e'4 e'4 e'4" not in v1
+        assert "s1 |" in v1
+
+    def test_an_empty_measure_prints_one_rest_not_two(self):
+        out = _lily_staff_block(_two_voice_staff([self.SPLIT, []]))
+        v1 = out[out.index("\\voiceOne"):out.index("\\voiceTwo")]
+        v2 = out[out.index("\\voiceTwo"):]
+        assert "r1 |" in v1   # the page's whole-bar rest, once
+        assert "s1 |" in v2
+
+    def test_single_voice_staves_are_untouched(self):
+        solo = [_nh(x, "G4", "up") for x in (10, 30, 50, 70)]
+        out = _lily_staff_block(_two_voice_staff([solo, solo]))
+        assert "\\voiceOne" not in out and "s1" not in out
+
+    @pytest.mark.parametrize("time_sig, expected", [
+        ({"numerator": 4, "denominator": 4}, "s1"),
+        ({"numerator": 3, "denominator": 4}, "s2."),
+        ({"numerator": 5, "denominator": 4}, "s1*5/4"),
+        (None, "s1"),
+    ])
+    def test_spacer_matches_the_measure_rest_arithmetic(self, time_sig, expected):
+        assert _lily_measure_spacer(time_sig) == expected
+
+    def test_lone_voice_routing_needs_unanimous_down_stems(self):
+        down = [{"kind": "chord", "stem_direction": "down"}]
+        mixed = [{"kind": "chord", "stem_direction": "down"},
+                 {"kind": "chord", "stem_direction": None}]
+        rests_only = [{"kind": "rest"}]
+        assert _lone_voice_is_the_second(down)
+        assert not _lone_voice_is_the_second(mixed)
+        assert not _lone_voice_is_the_second(rests_only)
+        assert not _lone_voice_is_the_second([])
