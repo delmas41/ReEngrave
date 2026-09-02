@@ -40,6 +40,11 @@ The bench dir must contain at least::
       cells/<cell_id>.png      # cell PNGs
       detections/<cell_id>.json   # model detections (run_yolo.py output)
       verdicts/<cell_id>.verdict.json   # this script reads/writes here
+
+It MAY also contain::
+
+      batch_config.json        # single-symbol pass mode — see _load_batch_config
+                               # and CLAUDE.md "Single-symbol pass mode"
 """
 
 from __future__ import annotations
@@ -62,6 +67,10 @@ from PIL import Image
 _HERE = Path(__file__).parent
 _STATIC_DIR = _HERE / "static"
 _ARCHETYPES_DIR = _STATIC_DIR / "archetypes"
+# Bravura template metrics, written by symbol_library/builder.py. Each entry
+# records the TRIMMED glyph's shape, which is what makes it a measurement
+# rather than a guess — see _glyph_metrics().
+_SYMBOL_MANIFEST = _HERE.parent / "symbol_library" / "data" / "manifest.json"
 # The COMMITTED copy, one level up from training/data/. That directory is
 # gitignored wholesale (it is where the multi-GB DeepScoresV2 download lands),
 # so a copy kept inside it exists only on the machine that downloaded the
@@ -251,6 +260,400 @@ def _load_detections(bench: Bench, cell_id: str) -> list[dict]:
         return []
     data = json.loads(p.read_text())
     return data.get("detections", [])
+
+
+# ---------------------------------------------------------------------------
+# Single-symbol pass mode (optional per-batch `batch_config.json`)
+# ---------------------------------------------------------------------------
+#
+# A labelling campaign sweeps the SAME cell set several times, one symbol
+# kind per sweep (hollow noteheads, then rests, then accidentals, …), which
+# is far quicker than deciding every class on every cell. What makes it slow
+# is the picker: 174 classes to scroll for a pass that only ever needs one.
+#
+# So a batch may ship a `batch_config.json` naming the classes this pass is
+# for. It is entirely optional — with no config the server and UI behave
+# exactly as they did before, which is the property the tests pin.
+
+
+_BATCH_CONFIG_NAME = "batch_config.json"
+
+# DSv2 splits several glyphs by where the notehead sits relative to the staff
+# lines. That is GEOMETRY, not appearance — the two variants are the same
+# glyph — so a pass can name the pair and let the click position choose.
+_POSITION_KEYS = ("on_line", "in_space")
+
+# A notehead is one staff space tall. That is the engraving definition, and
+# the Bravura templates agree by construction: SMuFL sets the em box to four
+# staff spaces, and `noteheadHalf` trims to exactly size_px/4 pixels tall at
+# every size the library renders. Overridable per slot in the config.
+_DEFAULT_HEIGHT_SPACES = 1.0
+_FALLBACK_ASPECT = 1.0
+
+
+def _base_glyph_name(class_name: str) -> str:
+    """Strip the DSv2 staff-position suffix: noteheadHalfOnLine → noteheadHalf."""
+    for suffix in ("OnLine", "InSpace"):
+        if class_name.endswith(suffix):
+            return class_name[: -len(suffix)]
+    return class_name
+
+
+_glyph_metrics_cache: dict[str, dict] | None = None
+
+
+def _symbol_metrics() -> dict[str, dict]:
+    """Measured Bravura proportions, keyed by base SMuFL glyph name.
+
+    Read from the symbol library's committed manifest, which records each
+    template's TRIMMED shape [h, w] and the font size it was rendered at.
+    SMuFL's em box is four staff spaces, so ``h / (size_px / 4)`` is the
+    glyph's height in staff spaces and ``w / h`` its aspect. Averaged over
+    the three rendered sizes.
+
+    Measured this way, `noteheadHalf` and `noteheadBlack` come out 1.000
+    spaces tall at aspect 1.167, and `noteheadWhole` 1.000 at 1.722.
+    """
+    global _glyph_metrics_cache
+    if _glyph_metrics_cache is not None:
+        return _glyph_metrics_cache
+    out: dict[str, list[tuple[float, float]]] = {}
+    try:
+        raw = json.loads(_SYMBOL_MANIFEST.read_text())
+    except (OSError, json.JSONDecodeError):
+        _glyph_metrics_cache = {}
+        return _glyph_metrics_cache
+    for e in raw.get("entries", []):
+        shape = e.get("shape") or []
+        size_px = e.get("size_px") or 0
+        name = e.get("smufl_name") or ""
+        if len(shape) != 2 or not size_px or not name:
+            continue
+        h, w = float(shape[0]), float(shape[1])
+        if h <= 0 or w <= 0:
+            continue
+        out.setdefault(name, []).append((h / (size_px / 4.0), w / h))
+    _glyph_metrics_cache = {
+        name: {
+            "height_spaces": sum(v[0] for v in vals) / len(vals),
+            "aspect": sum(v[1] for v in vals) / len(vals),
+        }
+        for name, vals in out.items()
+    }
+    return _glyph_metrics_cache
+
+
+def _glyph_metrics(class_name: str) -> dict:
+    """Default click-box geometry for a class, measured where possible."""
+    m = _symbol_metrics().get(_base_glyph_name(class_name))
+    if m is None:
+        return {
+            "height_spaces": _DEFAULT_HEIGHT_SPACES,
+            "aspect": _FALLBACK_ASPECT,
+            "source": "fallback",
+        }
+    return {
+        "height_spaces": round(m["height_spaces"], 4),
+        "aspect": round(m["aspect"], 4),
+        "source": "bravura",
+    }
+
+
+def _resolve_click_box(spec: Any, class_names: list[str]) -> dict | None:
+    """Turn a slot's ``click_box`` config into concrete geometry.
+
+    ``false``/absent → None (drag-to-draw only, which is what a rests pass
+    wants: a rest's height varies with its value and no fixed box is right).
+    ``true`` → the measured default for the slot's glyph.
+    ``{...}`` → those keys, defaults filling the rest.
+    """
+    if spec is None or spec is False:
+        return None
+    base = _glyph_metrics(class_names[0]) if class_names else {
+        "height_spaces": _DEFAULT_HEIGHT_SPACES,
+        "aspect": _FALLBACK_ASPECT,
+        "source": "fallback",
+    }
+    if spec is True:
+        return base
+    if not isinstance(spec, dict):
+        raise ValueError(f"click_box must be true/false or an object, got {spec!r}")
+    out = dict(base)
+    for key in ("height_spaces", "aspect"):
+        if key in spec:
+            try:
+                out[key] = float(spec[key])
+            except (TypeError, ValueError):
+                raise ValueError(f"click_box.{key} must be a number, got {spec[key]!r}")
+            if out[key] <= 0:
+                raise ValueError(f"click_box.{key} must be positive, got {out[key]}")
+            out["source"] = "config"
+    return out
+
+
+@dataclass(frozen=True)
+class PassSlot:
+    """One palette entry — what a single number key selects."""
+
+    index: int
+    label: str
+    kind: str  # "class" | "staff_position_pair"
+    by_position: dict[str, str]  # {"": name} or {"on_line": …, "in_space": …}
+    click_box: dict | None
+
+    @property
+    def class_names(self) -> list[str]:
+        if self.kind == "staff_position_pair":
+            return [self.by_position[k] for k in _POSITION_KEYS if k in self.by_position]
+        return [self.by_position[""]]
+
+    def class_for(self, position: str) -> str:
+        if self.kind == "staff_position_pair":
+            return self.by_position.get(position, self.class_names[0])
+        return self.by_position[""]
+
+
+@dataclass(frozen=True)
+class PassConfig:
+    pass_name: str
+    note: str
+    slots: list[PassSlot]
+    warnings: list[str]
+
+    @property
+    def single(self) -> bool:
+        return len(self.slots) == 1
+
+
+def _parse_batch_config(raw: dict, known_classes: set[str]) -> PassConfig:
+    """Validate a batch config dict into a PassConfig.
+
+    Raises ValueError on anything malformed. A pass that names no usable
+    class is an error rather than a silent fall-back to the full picker:
+    serving today's UI to someone who asked for a single-symbol pass is the
+    quiet-failure mode this repo has been bitten by before.
+    """
+    if not isinstance(raw, dict):
+        raise ValueError("batch config must be a JSON object")
+    entries = raw.get("classes")
+    if entries is None:
+        entries = raw.get("active_classes")  # accepted alias
+    if not isinstance(entries, list) or not entries:
+        raise ValueError("batch config needs a non-empty `classes` list")
+
+    warnings: list[str] = []
+    slots: list[PassSlot] = []
+
+    def _known(name: str, where: str) -> str | None:
+        if name in known_classes:
+            return name
+        warnings.append(f"{where}: unknown class {name!r} — dropped")
+        return None
+
+    for entry in entries:
+        idx = len(slots)
+        if isinstance(entry, str):
+            name = _known(entry, f"classes[{idx}]")
+            if name is None:
+                continue
+            slots.append(
+                PassSlot(
+                    index=idx,
+                    label=name,
+                    kind="class",
+                    by_position={"": name},
+                    click_box=_resolve_click_box(None, [name]),
+                )
+            )
+            continue
+        if not isinstance(entry, dict):
+            raise ValueError(f"classes[{idx}] must be a string or an object")
+
+        if any(k in entry for k in _POSITION_KEYS):
+            by_position: dict[str, str] = {}
+            for key in _POSITION_KEYS:
+                val = entry.get(key)
+                if val is None:
+                    continue
+                if not isinstance(val, str):
+                    raise ValueError(f"classes[{idx}].{key} must be a class name")
+                name = _known(val, f"classes[{idx}].{key}")
+                if name is not None:
+                    by_position[key] = name
+            if len(by_position) < 2:
+                # One half of the pair survived (or neither) — a pair whose
+                # geometry cannot choose is not a pair.
+                if not by_position:
+                    continue
+                only = next(iter(by_position.values()))
+                warnings.append(
+                    f"classes[{idx}]: only one half of the on_line/in_space pair "
+                    f"resolved — treating {only!r} as a plain class"
+                )
+                slots.append(
+                    PassSlot(
+                        index=idx,
+                        label=str(entry.get("label") or only),
+                        kind="class",
+                        by_position={"": only},
+                        click_box=_resolve_click_box(entry.get("click_box"), [only]),
+                    )
+                )
+                continue
+            names = [by_position[k] for k in _POSITION_KEYS if k in by_position]
+            slots.append(
+                PassSlot(
+                    index=idx,
+                    label=str(entry.get("label") or _base_glyph_name(names[0])),
+                    kind="staff_position_pair",
+                    by_position=by_position,
+                    click_box=_resolve_click_box(entry.get("click_box"), names),
+                )
+            )
+            continue
+
+        name_raw = entry.get("name")
+        if not isinstance(name_raw, str):
+            raise ValueError(
+                f"classes[{idx}] needs `name`, or an `on_line`/`in_space` pair"
+            )
+        name = _known(name_raw, f"classes[{idx}].name")
+        if name is None:
+            continue
+        slots.append(
+            PassSlot(
+                index=idx,
+                label=str(entry.get("label") or name),
+                kind="class",
+                by_position={"": name},
+                click_box=_resolve_click_box(entry.get("click_box"), [name]),
+            )
+        )
+
+    if not slots:
+        raise ValueError(
+            "batch config resolved to no usable classes: "
+            + ("; ".join(warnings) or "none named")
+        )
+    # Re-index so the number keys are 1..n over what actually resolved.
+    slots = [
+        PassSlot(
+            index=i,
+            label=s.label,
+            kind=s.kind,
+            by_position=s.by_position,
+            click_box=s.click_box,
+        )
+        for i, s in enumerate(slots)
+    ]
+    return PassConfig(
+        pass_name=str(raw.get("pass_name") or "labelling pass"),
+        note=str(raw.get("note") or ""),
+        slots=slots,
+        warnings=warnings,
+    )
+
+
+def _load_batch_config(bench: Bench, known_classes: set[str]) -> PassConfig | None:
+    """Read ``<bench>/batch_config.json`` if present. None means no pass mode."""
+    p = bench.root / _BATCH_CONFIG_NAME
+    if not p.exists():
+        return None
+    try:
+        raw = json.loads(p.read_text())
+    except json.JSONDecodeError as e:
+        raise ValueError(f"corrupt {_BATCH_CONFIG_NAME}: {e}") from e
+    return _parse_batch_config(raw, known_classes)
+
+
+# ---------------------------------------------------------------------------
+# Staff geometry — which variant a click lands on
+# ---------------------------------------------------------------------------
+
+
+def _staff_spacing(staff_line_ys: list[float]) -> float | None:
+    """Median gap between adjacent staff lines, in canonical px."""
+    ys = sorted(float(y) for y in staff_line_ys or [])
+    if len(ys) < 2:
+        return None
+    gaps = sorted(ys[i + 1] - ys[i] for i in range(len(ys) - 1))
+    mid = len(gaps) // 2
+    spacing = (
+        gaps[mid] if len(gaps) % 2 else (gaps[mid - 1] + gaps[mid]) / 2.0
+    )
+    return spacing if spacing > 0 else None
+
+
+def snap_to_staff(staff_line_ys: list[float], y: float) -> dict | None:
+    """Snap a y to the nearest half-space position and say what it is.
+
+    Notehead centres sit on a half-space grid: on a line, or in the space
+    between two. Steps count half-spaces down from the TOP line, so an even
+    step is a line and an odd step a space, and the parity keeps working
+    through the ledger positions above and below the staff.
+
+    The grid uses each staff's OWN measured line positions inside the staff
+    (they are not perfectly even — one real cell reads 400/502/603/698/800)
+    and extrapolates outward at the median spacing for ledger territory.
+
+    Returns None when the cell carries no usable staff geometry, which is an
+    abstention: the caller falls back to asking the labeller.
+    """
+    ys = sorted(float(v) for v in staff_line_ys or [])
+    spacing = _staff_spacing(ys)
+    if spacing is None:
+        return None
+    grid: list[tuple[int, float]] = []
+    for i, line_y in enumerate(ys):
+        grid.append((2 * i, line_y))
+        if i + 1 < len(ys):
+            grid.append((2 * i + 1, (line_y + ys[i + 1]) / 2.0))
+    # Ledger territory. The cell is the staff plus a few staff spaces of pad
+    # (measure_extractor.PAD_*_STAFF_LINES), so 12 half-steps each way covers
+    # any crop the extractor produces with room to spare.
+    top_step, top_y = grid[0]
+    bottom_step, bottom_y = grid[-1]
+    for k in range(1, 13):
+        grid.append((top_step - k, top_y - k * spacing / 2.0))
+        grid.append((bottom_step + k, bottom_y + k * spacing / 2.0))
+    step, snapped = min(grid, key=lambda g: abs(g[1] - float(y)))
+    return {
+        "step": step,
+        "snapped_y": round(snapped, 2),
+        "position": "on_line" if step % 2 == 0 else "in_space",
+        "spacing": round(spacing, 2),
+        "ledger": step < 0 or step > bottom_step,
+    }
+
+
+def click_box_px(
+    click_box: dict, spacing: float, x: float, y: float
+) -> dict[str, int]:
+    """Centre a click-box of the slot's measured size on (x, y)."""
+    h = click_box["height_spaces"] * spacing
+    w = h * click_box["aspect"]
+    return {
+        "x": int(round(x - w / 2.0)),
+        "y": int(round(y - h / 2.0)),
+        "w": max(1, int(round(w))),
+        "h": max(1, int(round(h))),
+    }
+
+
+def _clamp_bbox(b: dict[str, int], width: int | None, height: int | None) -> dict:
+    """Keep a box inside the cell image, the way the canvas does."""
+    x, y, w, h = b["x"], b["y"], b["w"], b["h"]
+    if width:
+        x = max(0, min(x, max(0, width - 1)))
+        w = max(1, min(w, width - x))
+    else:
+        x = max(0, x)
+    if height:
+        y = max(0, min(y, max(0, height - 1)))
+        h = max(1, min(h, height - y))
+    else:
+        y = max(0, y)
+    return {"x": x, "y": y, "w": w, "h": h}
 
 
 # ---------------------------------------------------------------------------
@@ -552,6 +955,16 @@ def create_app(bench: Bench | Path) -> FastAPI:
     bench.verdicts_dir.mkdir(parents=True, exist_ok=True)
     manifest = _load_manifest(bench)
     classes, categories = _load_class_catalog()
+    by_class_name = {c["name"]: c for c in classes}
+    pass_config = _load_batch_config(bench, set(by_class_name))
+    if pass_config is not None:
+        print(
+            f"[server] pass mode: {pass_config.pass_name!r} — "
+            f"{len(pass_config.slots)} slot(s): "
+            + ", ".join(s.label for s in pass_config.slots)
+        )
+        for w in pass_config.warnings:
+            print(f"[server] WARN: {_BATCH_CONFIG_NAME}: {w}")
     by_cat_order = [c for c in _CATEGORY_ORDER if categories.get(c)]
     for c in categories:
         if c not in by_cat_order and categories[c]:
@@ -578,6 +991,32 @@ def create_app(bench: Bench | Path) -> FastAPI:
             raise HTTPException(404, detail=f"unknown cell {cell_id}")
         return HTMLResponse(_read_static("cell.html"))
 
+    def _class_payload(name: str) -> dict:
+        cls = by_class_name.get(name, {"name": name, "category": "structural",
+                                       "has_archetype": False})
+        return {
+            "name": name,
+            "category": cls["category"],
+            "has_archetype": cls["has_archetype"],
+            "archetype_url": (
+                f"/static/archetypes/{name}.png" if cls["has_archetype"] else None
+            ),
+        }
+
+    def _slot_payload(slot: PassSlot) -> dict:
+        return {
+            "index": slot.index,
+            "label": slot.label,
+            "kind": slot.kind,
+            "classes": [_class_payload(n) for n in slot.class_names],
+            "by_position": {
+                pos: _class_payload(name)
+                for pos, name in slot.by_position.items()
+                if pos
+            },
+            "click_box": slot.click_box,
+        }
+
     @app.get("/api/bench")
     def api_bench() -> dict:
         return {
@@ -585,6 +1024,27 @@ def create_app(bench: Bench | Path) -> FastAPI:
             "n_cells": len(manifest.ordered_ids),
             "n_classes": len(classes),
             "categories": by_cat_order,
+            "pass_name": pass_config.pass_name if pass_config else None,
+        }
+
+    @app.get("/api/pass")
+    def api_pass() -> dict:
+        """The restricted palette for this batch, or ``active: false``.
+
+        This is where the palette comes from in pass mode. ``/api/classes``
+        deliberately keeps serving the FULL catalog: the UI still needs every
+        class by name (to render a model detection's own class, and for the
+        explicit escape hatch to the full picker).
+        """
+        if pass_config is None:
+            return {"active": False, "slots": []}
+        return {
+            "active": True,
+            "pass_name": pass_config.pass_name,
+            "note": pass_config.note,
+            "single": pass_config.single,
+            "slots": [_slot_payload(s) for s in pass_config.slots],
+            "warnings": pass_config.warnings,
         }
 
     @app.get("/api/cells")
@@ -773,6 +1233,49 @@ def create_app(bench: Bench | Path) -> FastAPI:
         out = bench.verdicts_dir / f"{cell_id}.verdict.json"
         out.write_text(json.dumps(normalized, indent=2))
         return {"ok": True, "saved_at": normalized["labeled_at_utc"]}
+
+    @app.get("/api/cell/{cell_id}/snap")
+    def api_cell_snap(cell_id: str, x: float, y: float, slot: int = 0) -> dict:
+        """Resolve a click (or a moved box's centre) against the staff grid.
+
+        Returns the class the geometry chooses for the pass slot, and — when
+        the slot declares a click box — the box to place. One click, one
+        label. The arithmetic lives here rather than in the browser so it is
+        the tested code that runs, not a second copy of it.
+        """
+        if cell_id not in manifest.by_id:
+            raise HTTPException(404, detail=f"unknown cell {cell_id}")
+        if pass_config is None:
+            raise HTTPException(409, detail="no pass mode configured for this bench")
+        if not 0 <= slot < len(pass_config.slots):
+            raise HTTPException(404, detail=f"no slot {slot}")
+        target = pass_config.slots[slot]
+        entry = manifest.by_id[cell_id]
+        snapped = snap_to_staff(entry.get("staff_line_ys_canonical", []), y)
+        if snapped is None:
+            # No staff geometry on this cell — abstain rather than guess a
+            # variant. The UI falls back to the picker.
+            return {
+                "available": False,
+                "reason": "cell has no staff_line_ys_canonical",
+                "slot": slot,
+            }
+        class_name = target.class_for(snapped["position"])
+        bbox = None
+        if target.click_box is not None:
+            bbox = _clamp_bbox(
+                click_box_px(target.click_box, snapped["spacing"], x,
+                             snapped["snapped_y"]),
+                entry.get("cell_canonical_w"),
+                entry.get("cell_canonical_h"),
+            )
+        return {
+            "available": True,
+            "slot": slot,
+            "class": _class_payload(class_name),
+            "bbox": bbox,
+            **snapped,
+        }
 
     @app.get("/api/cell/{cell_id}/image")
     def api_cell_image(cell_id: str) -> FileResponse:
