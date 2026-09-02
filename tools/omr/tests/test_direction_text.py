@@ -9,6 +9,7 @@ candidate step is pure CV so it can be tested on a drawn image.
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 import cv2
 import numpy as np
@@ -17,6 +18,7 @@ import pytest
 from tools.omr.direction_lexicon import lookup
 from tools.omr.direction_text import (
     BandConfig,
+    page_is_engraved,
     DEFAULT_BAND_CONFIG,
     DirectionText,
     TextCandidate,
@@ -82,6 +84,24 @@ class TestLexicon:
 
     def test_a_long_run_on_is_refused(self):
         assert lookup("legato legato legato legato legato legato legato") is None
+
+    def test_a_word_repeated_immediately_is_a_decoder_repeating_itself(self):
+        """One `arco.` on a scanned page came back from the language-model rung
+        as `arco. arco. arco. arco.`, and every token was a real term. The
+        other rung read the same crop as `arco.`."""
+        assert lookup("arco. arco. arco.") is None
+        assert lookup("sempre sempre") is None
+
+    def test_a_repeat_with_a_connective_between_is_real_music(self):
+        """ADJACENT, not anywhere — `poco a poco` is a marking."""
+        assert lookup("poco a poco") is not None
+        assert lookup("cresc. poco a poco") is not None
+
+    def test_english_glue_is_not_a_connective(self):
+        """`and` was glue once, and its only measured effect was to pass a
+        scanned `a Tempo.` misread as `a Tempo. and`."""
+        assert lookup("a Tempo. and") is None
+        assert lookup("a Tempo.") is not None
 
 
 # ─── letter components ──────────────────────────────────────────────────────
@@ -256,12 +276,28 @@ class TestFindCandidates:
 
     def test_ink_inside_a_detection_is_subtracted(self):
         """Everything the detector found is already accounted for — a page of
-        noteheads must propose nothing."""
+        noteheads must propose nothing. (Glyph-sized boxes: a single 200px box
+        would be five staff spaces wide, which is a span, not a glyph.)"""
         pws = self._page_with_word(text_y=700)
         page_dict = _page_dict(
             [0, 1], [(100, 1000), (1000, 2000)],
-            {0: [{"bbox_page": [290, 690, 200, 60]}]})
+            {0: [{"bbox_page": [290, 690, 110, 60]},
+                 {"bbox_page": [400, 690, 110, 60]}]})
         assert find_candidates(pws, page_dict) == []
+
+    def test_a_span_is_not_blanked_and_does_not_swallow_a_word(self):
+        """A slur's box is the rectangle its arc travels through, mostly paper.
+        On a scanned Beethoven 5 page one detected at 24 x 4 spaces sat over
+        `sempre` and erased all nine of its components. No glyph is that wide —
+        the widest in the class space is a notehead at 3.2 — and a span's own
+        ink is refused downstream by the fill-ratio test instead."""
+        pws = self._page_with_word(text_y=700)
+        page_dict = _page_dict(
+            [0, 1], [(100, 1000), (1000, 2000)],
+            {0: [{"bbox_page": [250, 680, 400, 80], "category": "structural",
+                  "class": "slur"}]})
+        found = find_candidates(pws, page_dict)
+        assert len(found) == 1 and found[0].staff_index == 0
 
     def test_a_dynamic_inside_a_word_is_not_subtracted(self):
         """A dynamic `p` and the `p` of `espr.` are the same letter in the same
@@ -394,6 +430,79 @@ class TestReadDirections:
         out, info = read_directions(pws, page_dict, readers=[])
         assert out == [] and info["n_accepted"] == 0
         assert info["reason"] == "no OCR rung available"
+
+
+class TestPageIsEngraved:
+    """Born-digital pages are asked once, scans twice. The classifier must
+    PROVE vector, because the two mistakes cost wildly different amounts."""
+
+    ROOT = Path(__file__).resolve().parents[3]
+    ENGRAVED = ROOT / "benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.pdf"
+
+    def _page(self, pdf, index=0):
+        z = np.zeros((2, 2, 3), np.uint8)
+        return PageImage(pdf_path=pdf, page_index=index, dpi=600,
+                         rgb=z, binary=z[:, :, 0])
+
+    @pytest.mark.skipif(not ENGRAVED.is_file(), reason="fixture not built")
+    def test_a_vector_page_is_engraved(self):
+        assert page_is_engraved(self._page(self.ENGRAVED)) is True
+
+    def test_a_pdf_that_cannot_be_opened_is_not_engraved(self):
+        """Any doubt answers False: a scan read by one rung loses half its
+        readings silently, and that is the expensive mistake."""
+        assert page_is_engraved(self._page(Path("/nonexistent.pdf"))) is False
+
+    def test_no_path_is_not_engraved(self):
+        assert page_is_engraved(self._page(None)) is False
+
+    @pytest.mark.skipif(not ENGRAVED.is_file(), reason="fixture not built")
+    def test_a_page_index_off_the_end_is_not_engraved(self):
+        assert page_is_engraved(self._page(self.ENGRAVED, 999)) is False
+
+
+class TestReaderSelection:
+    def test_the_env_var_restricts_the_rungs(self, monkeypatch):
+        """The second rung costs ~140 ms a crop. A caller who measures it worth
+        less than that on their own material switches it off here."""
+        from tools.omr.direction_text import default_readers
+
+        monkeypatch.setenv("OMR_DIRECTION_READERS", "surya")
+        assert [n for n, _fn in default_readers()] == ["surya"]
+
+    def test_an_empty_setting_means_every_rung(self, monkeypatch):
+        from tools.omr.direction_text import default_readers
+
+        monkeypatch.setenv("OMR_DIRECTION_READERS", "")
+        assert len(default_readers()) >= 1
+
+    def test_an_explicit_setting_beats_the_classifier(self, monkeypatch):
+        """A caller who names the rungs means it, engraved page or not."""
+        from tools.omr.direction_text import default_readers
+
+        pdf = TestPageIsEngraved.ENGRAVED
+        if not pdf.is_file():
+            pytest.skip("fixture not built")
+        z = np.zeros((2, 2, 3), np.uint8)
+        page = PageImage(pdf_path=pdf, page_index=0, dpi=600,
+                         rgb=z, binary=z[:, :, 0])
+        monkeypatch.setenv("OMR_DIRECTION_READERS", "surya,tesseract")
+        assert len(default_readers(page)) == len(default_readers(None))
+
+    def test_the_first_rung_is_never_dropped(self, monkeypatch):
+        """The classifier may only ever remove the SECOND reader. Dropping the
+        first would leave a page unread rather than merely read once."""
+        from tools.omr.direction_text import default_readers
+
+        pdf = TestPageIsEngraved.ENGRAVED
+        if not pdf.is_file():
+            pytest.skip("fixture not built")
+        monkeypatch.delenv("OMR_DIRECTION_READERS", raising=False)
+        z = np.zeros((2, 2, 3), np.uint8)
+        page = PageImage(pdf_path=pdf, page_index=0, dpi=600,
+                         rgb=z, binary=z[:, :, 0])
+        chosen = [n for n, _fn in default_readers(page)]
+        assert chosen and chosen[0] == "surya"
 
 
 class TestUnionOfRungs:

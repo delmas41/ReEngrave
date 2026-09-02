@@ -36,11 +36,14 @@ sees on the page, and everything else is out of scope by construction.
 gitignored artifacts of WHATEVER CONFIGURATION LAST RAN THE EVAL. That makes the
 three repository tests below depend on something no test controls:
 
-  * a run with `--direction-text` leaves `<words>` in them, so `words` — listed
-    in KNOWN_GAPS as a flag decision — is suddenly emitted, and the
-    staleness test fails;
+  * ~~a run with `--direction-text` leaves `<words>` in them, so `words` —
+    listed in KNOWN_GAPS as a flag decision — is suddenly emitted, and the
+    staleness test fails~~ — CLOSED by `FLAG_DEPENDENT` below, which names the
+    entries whose presence is a flag decision and exempts them from the
+    staleness check. That mode cannot fire again;
   * fixtures predating a fix are missing elements the exporter now writes, and
-    the seven-stay-fixed test fails.
+    the seven-stay-fixed test fails. STILL OPEN, and the reason to read the
+    paragraph below before believing a red.
 
 Both are FALSE REDS: the exporter is healthy and the test is reading a stale or
 differently-configured artifact. That is the failure mode most likely to get a
@@ -51,8 +54,16 @@ than a leftover artifact, which is a design change and wants its own session.
 The cheaper interim fix is a provenance stamp: have `orchestral_eval` record the
 commit and the configuration it ran with beside the fixtures, and have these
 three tests SKIP unless that stamp says "default config, current tree". Neither
-is done. Until one is, a red here means "check what last wrote the fixtures"
+is done, and the remaining mode is staleness — a fixture set older than the
+exporter. Until one lands, a red on `test_the_seven_that_were_fixed_stay_fixed`
+or `test_no_unexplained_export_gap` means "check what last wrote the fixtures"
 before it means "the exporter regressed".
+
+Worth noting for whoever builds the stamp: exempting the flag-dependent entries
+is not the same as skipping, and is better where it applies. A skip switches the
+whole check off for anyone whose last run used a flag; the exemption leaves the
+check running and correct either way. The stamp is still wanted for staleness,
+which no exemption can see.
 
     python3 -m tools.omr.export_coverage        # the report
     python3 -m tools.omr.export_coverage --all  # including what is accepted
@@ -144,6 +155,14 @@ KNOWN_GAPS: dict[str, str] = {
         "it stayed invisible to every forensic hunt."
     ),
 }
+
+
+#: Gaps whose presence in the fixtures depends on a FLAG rather than on the
+#: exporter. `--direction-text` is off by default, so a fixture set regenerated
+#: with it carries <words> and one regenerated without it does not — and both
+#: are correct. The stale-entry check has to skip these or it reports whichever
+#: way the last local run happened to go, which is not a fact about the code.
+FLAG_DEPENDENT: frozenset[str] = frozenset({"words", "metronome"})
 
 
 _ELEMENT = re.compile(r"<([a-z][a-z0-9-]*)[ />]")

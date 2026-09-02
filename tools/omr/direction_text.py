@@ -56,6 +56,7 @@ which measure it is.
 from __future__ import annotations
 
 import logging
+import os
 from dataclasses import dataclass
 from typing import Any, Callable, Sequence
 
@@ -103,8 +104,18 @@ class BandConfig:
     #: three pages above that keeps both real directions and refuses all four
     #: heading blocks, which no vertical reach did.
     above_first_measure_only: bool = True
-    #: How far below a staff to reach when nothing is under it — the last staff
-    #: of a system, where there is no next staff to bound the band.
+    #: How far below a staff to reach WHEN NOTHING BOUNDS THE GAP — the last
+    #: staff on the page, or the last of a system, where the band would
+    #: otherwise run to the paper's edge.
+    #:
+    #: ⚠️ It is NOT a cap on the ordinary case, and it used to be, which cost
+    #: five of the seven printed directions on one scanned page. Inside a
+    #: system the gap between two staves belongs to the upper one entirely —
+    #: there is no other claimant — so the band runs the whole way to the next
+    #: staff. Beethoven 5's Litolff engraving puts 7 staff spaces between some
+    #: staves and prints `arco` and `dolce` 3.5 to 7 spaces down, past a
+    #: 3-space reach. The engraved benchmark never showed it because LilyPond
+    #: sets its directions tight under the staff.
     below_spaces: float = 3.0
     #: Clear of the staff lines themselves by this much, so the band never
     #: contains the line ink it would otherwise have to erase.
@@ -181,6 +192,27 @@ class BandConfig:
     #: also has ink on both sides, and letting the test excuse THOSE would put
     #: the notes back into the very mask that exists to have them taken out.
     inside_word_gap_spaces: float = 0.5
+    #: A detection wider than this is a SPAN, not a glyph, and its bounding box
+    #: is not blanked.
+    #:
+    #: Blanking a box erases everything inside it, which is right for a glyph —
+    #: the box IS the glyph — and wrong for a slur, whose box is the rectangle
+    #: its arc travels through and is mostly paper. On a scanned Beethoven 5
+    #: page a slur detected at 24.2 x 4.0 spaces (confidence 0.48) sat over the
+    #: word `sempre` and erased all nine of its components; the word went from
+    #: nine pieces of ink to none, and no filter downstream ever saw it.
+    #:
+    #: Four spaces sits in a gap the class space puts there. Measured over one
+    #: scanned and one engraved page, the widest box in every GLYPH category:
+    #:
+    #:     notehead 3.2   clef 3.2   dynamic 2.6   flag 1.8   accidental 1.2
+    #:     ---------------------------------------------------------------
+    #:     pedal bracket 7.7   slur 24.2   staff 26.6   beam 37.2   restHBar 36.9
+    #:
+    #: Nothing is lost by leaving the spans in. Their ink is thin or enormous,
+    #: which is exactly what `min_fill_ratio` and `max_glyph_width_spaces`
+    #: refuse — the fill-ratio test was written for slurs in the first place.
+    max_blank_width_spaces: float = 4.0
 
 
 DEFAULT_BAND_CONFIG = BandConfig()
@@ -274,8 +306,10 @@ def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
     notes, and the pipeline has already found them and knows where they are in
     page pixels; subtracting them turns "find the text" into "find the ink".
 
-    The one exception is a `dynamic` sitting inside a run of letters, which is
-    a letter — see `BandConfig.inside_word_gap_spaces`.
+    Two things are NOT blanked, both because a bounding box is the wrong shape
+    for them: a SPAN wider than a glyph can be, whose box is mostly the paper
+    its arc crosses (`max_blank_width_spaces`), and a `dynamic` sitting inside a
+    run of letters, which is a letter (`inside_word_gap_spaces`).
     """
     out = mask.copy()
     pad = int(round(config.detection_pad_spaces * spacing))
@@ -288,6 +322,8 @@ def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
                     if not box or len(box) != 4:
                         continue
                     x, y, w, h = (int(v) for v in box)
+                    if w > config.max_blank_width_spaces * spacing:
+                        continue        # a span, not a glyph — see the config
                     if (det.get("category") == "dynamic"
                             and _is_inside_a_word(mask, (x, y, w, h),
                                                   spacing, config)):
@@ -416,11 +452,17 @@ def _bands_for_page(pws: PageWithStaves,
             bands.append((staff, "above", int(max(0, top)),
                           int(staff.top_y - clear)))
 
-        bottom = staff.bottom_y + config.below_spaces * spacing
-        if following is not None:
-            new_system = following.system_index != staff.system_index
-            bottom = min(bottom, (staff.bottom_y + following.top_y) / 2.0
-                         if new_system else following.top_y - clear)
+        if following is None:
+            # Nothing below: reach a fixed distance rather than to the paper.
+            bottom = staff.bottom_y + config.below_spaces * spacing
+        elif following.system_index != staff.system_index:
+            # Two claimants — split the gap, and still do not run past the
+            # fixed reach into whatever sits between systems.
+            bottom = min(staff.bottom_y + config.below_spaces * spacing,
+                         (staff.bottom_y + following.top_y) / 2.0)
+        else:
+            # One claimant. The whole gap is this staff's, however wide.
+            bottom = following.top_y - clear
         bands.append((staff, "below", int(staff.bottom_y + clear),
                       int(min(bottom, height))))
 
@@ -572,7 +614,56 @@ def crop_for(page: PageImage, candidate: TextCandidate,
 Reader = Callable[[list[np.ndarray]], list[str]]
 
 
-def default_readers() -> list[tuple[str, Reader]]:
+def page_is_engraved(page: PageImage) -> bool:
+    """Is this page born-digital vector, rather than a photograph of paper?
+
+    Cheap enough to ask per page — it reads the PDF's own structure and renders
+    nothing. An engraver emits the notes as VECTOR PATHS; a scanner emits one
+    raster covering the sheet. Measured over the three benchmark fixtures and
+    fourteen IMSLP editions, the two populations do not touch:
+
+                             vector paths   images   image cover
+        engraved  (3)          467-2058        0         0.00
+        scanned  (14)             0-1        1-2      0.86-1.41
+
+    ⚠️ **The obvious signal does not work.** Print noise ought to show up as
+    mid-grey pixels a vector render has none of, and it does not separate them
+    at all: 0.098-0.216 of the engraved pages against 0.009-0.978 of the scans,
+    thoroughly overlapped. Embedded FONTS are no better — several scans carry
+    nine of them, for the OCR text layer someone attached later.
+
+    **Answers False on any doubt, and the asymmetry is the whole design.** A
+    page wrongly called scanned costs about 140 ms a crop; a page wrongly called
+    engraved loses the second reader on material where it supplies half the
+    readings, and loses it silently. So this has to PROVE born-digital — vector
+    paths present and no page-sized raster — and anything else, including a
+    hybrid, a blank page or a PDF it cannot open, is treated as a scan.
+    """
+    pdf_path = getattr(page, "pdf_path", None)
+    if not pdf_path:
+        return False
+    try:
+        import fitz                                          # noqa: PLC0415
+
+        with fitz.open(pdf_path) as doc:
+            index = getattr(page, "page_index", 0)
+            if not 0 <= index < doc.page_count:
+                return False
+            pdf_page = doc[index]
+            if not pdf_page.get_drawings():
+                return False
+            area = abs(pdf_page.rect.width * pdf_page.rect.height) or 1.0
+            for image in pdf_page.get_images(full=True):
+                for rect in pdf_page.get_image_rects(image[0]) or []:
+                    if abs(rect.width * rect.height) / area > 0.5:
+                        return False    # a page-sized raster: scanned, or hybrid
+    except Exception as exc:                                  # noqa: BLE001
+        logger.debug("could not classify %s: %s", pdf_path, exc)
+        return False
+    return True
+
+
+def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
     """The rungs to ask, in precedence order, skipping any that cannot run.
 
     **Both, not one, and the reason is measured rather than tidy.** On 74 crops
@@ -602,20 +693,50 @@ def default_readers() -> list[tuple[str, Reader]]:
     Each rung self-disables when its dependency is absent, so a machine with
     neither degrades to no directions rather than to an error — the same
     contract `staff_labels_surya` has had since it shipped.
+
+    **A born-digital page is asked once, a scan twice.** Given a `page`, the
+    second rung is dropped where `page_is_engraved` can prove the sheet is
+    vector: on the engraved benchmark every accepted reading comes from Surya
+    and Tesseract supplies none of the fifteen, so asking it there buys nothing
+    and costs about 140 ms a crop. On the scan it supplies 21 of 44. The
+    classifier answers False on any doubt, so the expensive direction — a scan
+    read by one rung — needs a positive proof of engraving that a scan cannot
+    produce.
+
+    ⚠️ **That the second rung is worthless on born-digital pages is measured on
+    THREE LilyPond fixtures**, which is a thin basis for a claim about every
+    engraver. It is the reason this only ever drops the rung on a page that
+    proves itself vector, and the reason the report records which rungs ran:
+    a born-digital edition whose font defeats Surya would show up as candidates
+    proposed and not accepted, with `readers` naming only one.
+
+    `OMR_DIRECTION_READERS` overrides all of it — `surya`, `tesseract`, or a
+    comma-separated pair. An explicit choice beats the classifier.
     """
+    wanted = [n.strip().lower()
+              for n in os.environ.get("OMR_DIRECTION_READERS", "").split(",")
+              if n.strip()]
     readers: list[tuple[str, Reader]] = []
-    try:
-        from . import staff_labels_surya
-        if staff_labels_surya.available():
-            readers.append(("surya", staff_labels_surya.read_crops_text))
-    except Exception as exc:                                  # noqa: BLE001
-        logger.debug("surya rung unavailable: %s", exc)
-    try:
-        from . import staff_labels_tesseract
-        if staff_labels_tesseract.available():
-            readers.append(("tesseract", staff_labels_tesseract.read_crops_text))
-    except Exception as exc:                                  # noqa: BLE001
-        logger.debug("tesseract rung unavailable: %s", exc)
+    if not wanted or "surya" in wanted:
+        try:
+            from . import staff_labels_surya
+            if staff_labels_surya.available():
+                readers.append(("surya", staff_labels_surya.read_crops_text))
+        except Exception as exc:                              # noqa: BLE001
+            logger.debug("surya rung unavailable: %s", exc)
+    # Only ever DROP the second rung, and only where the page proves itself
+    # born-digital — never drop the first, which would leave a page unread.
+    engraved = bool(readers) and page is not None and page_is_engraved(page)
+    if not wanted and engraved:
+        return readers
+    if not wanted or "tesseract" in wanted:
+        try:
+            from . import staff_labels_tesseract
+            if staff_labels_tesseract.available():
+                readers.append(
+                    ("tesseract", staff_labels_tesseract.read_crops_text))
+        except Exception as exc:                              # noqa: BLE001
+            logger.debug("tesseract rung unavailable: %s", exc)
     return readers
 
 
@@ -643,8 +764,9 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
         return [], info
 
     if readers is None:
-        readers = default_readers()
+        readers = default_readers(pws.page)
     info["readers"] = [name for name, _fn in readers]
+    info["page_is_engraved"] = page_is_engraved(pws.page)
     if not readers:
         info["reason"] = "no OCR rung available"
         return [], info
