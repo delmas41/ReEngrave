@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import html as html_mod
 import re
 import sys
 import time
@@ -42,21 +43,117 @@ def _get(url: str) -> tuple[str, str]:
         return resp.geturl(), resp.read().decode("utf-8", "replace")
 
 
-def page_title_for(imslp_id: str) -> str:
-    """ReverseLookup 302s to the work page; the title is in the final URL."""
-    final, _ = _get(f"https://imslp.org/wiki/Special:ReverseLookup/{imslp_id}")
+def page_for(imslp_id: str) -> tuple[str, str]:
+    """ReverseLookup 302s to the work page.  Returns (page title, page HTML)."""
+    final, body = _get(f"https://imslp.org/wiki/Special:ReverseLookup/{imslp_id}")
     path = urllib.parse.urlparse(final).path
-    return urllib.parse.unquote(path.rsplit("/", 1)[-1]).replace("_", " ")
+    # Strip the "/wiki/" prefix rather than splitting on the last slash: IMSLP
+    # titles contain slashes ("Symphony No.25 in G minor, K.183/173dB"), and
+    # rsplit turned that one into "173dB (Mozart, Wolfgang Amadeus)" — a title
+    # the API cannot parse, so every such work silently lost its provenance.
+    if path.startswith("/wiki/"):
+        path = path[len("/wiki/"):]
+    return urllib.parse.unquote(path).replace("_", " "), body
 
 
-def wikitext(title: str) -> str:
+def file_name_for(imslp_id: str, html: str) -> dict:
+    """Which of the page's files IS this id.
+
+    The wikitext never mentions the numeric file id, so matching on it there is
+    guesswork — and guessing picked a modern typeset for a 2002 upload.  The
+    rendered page states it: every file sits in ``<div id="IMSLP<id>">`` and
+    links its own ``File:<name>``.  Read that, then use the name as the key.
+    """
+    # Ids render zero-padded on the oldest uploads ("IMSLP00033" for file 33).
+    stripped = str(imslp_id).lstrip("0") or "0"
+    m = re.search(rf'<div id="IMSLP0*{stripped}"(.*?)(?=<div id="IMSLP\d|\Z)', html, re.S)
+    if not m:
+        return {}
+    block = m.group(1)
+    out: dict = {}
+    name = re.search(r'title="File:([^"]+)"', block)
+    if name:
+        # The link title renders underscores as spaces; the wikitext keeps them.
+        out["file_name"] = html_mod.unescape(name.group(1))
+    size = re.search(r"-\s*([\d.]+)\s*MB,\s*([\d]+)\s*pp", block)
+    if size:
+        out["listed_mb"] = float(size.group(1))
+        out["listed_pages"] = int(size.group(2))
+    desc = re.search(r'<span title="Download this file">.*?</span></span>([^<]+)</span>', block, re.S)
+    if desc:
+        out["listed_description"] = html_mod.unescape(desc.group(1)).strip()
+    return out
+
+
+def wikitext(title: str, *, _depth: int = 0) -> str:
+    """Wikitext of a page, following redirects.
+
+    ``action=parse`` returns the REDIRECT STUB rather than the target, so a
+    guessed title that happens to be a redirect yields "#REDIRECT [[...]]" and
+    no file blocks at all — every publisher, editor, scan type and copyright
+    field silently absent while the rendered HTML (which does follow the
+    redirect) still lists the files.  That combination is worse than an error:
+    the ranking runs on HTML-only data and looks like it worked.
+    """
     url = (
         "https://imslp.org/api.php?action=parse&page="
         + urllib.parse.quote(title)
-        + "&prop=wikitext&format=json"
+        + "&prop=wikitext&redirects=1&format=json"
     )
     _, body = _get(url)
-    return json.loads(body)["parse"]["wikitext"]["*"]
+    text = json.loads(body)["parse"]["wikitext"]["*"]
+    m = re.match(r"\s*#REDIRECT\s*\[\[([^\]]+)\]\]", text, re.I)
+    if m and _depth < 3:
+        return wikitext(m.group(1).strip(), _depth=_depth + 1)
+    return text
+
+
+def _name_key(name: str) -> str:
+    """Compare filenames across renderings without merging distinct files.
+
+    MediaWiki shows spaces where the wikitext has underscores and capitalises
+    the first letter, so those two differences must be normalised — but the rest
+    of a filename is CASE-SENSITIVE, and lowercasing it collapsed
+    "Berlioz Symphonie Fantastique.pdf" onto "berlioz symphonie fantastique.pdf".
+    Both exist on the same page, one an autograph manuscript and one the
+    collected edition, and the manuscript won.
+    """
+    name = re.sub(r"[\s_]+", "_", (name or "").strip())
+    return name[:1].upper() + name[1:] if name else ""
+
+
+#: IMSLP names its standard editions with a template instead of free text.  Only
+#: the ones actually seen in this library are listed; anything else renders
+#: generically rather than silently becoming "".
+KNOWN_EDITIONS = {
+    "mozartcomplete": "Breitkopf & Härtel (Mozart's Werke)",
+    "mozartnma": "Bärenreiter (Neue Mozart-Ausgabe)",
+    "beethovencomplete": "Breitkopf & Härtel (Beethoven's Werke)",
+    "bachgesellschaft": "Breitkopf & Härtel (Bach-Gesellschaft Ausgabe)",
+    "brahmscomplete": "Breitkopf & Härtel (Brahms Sämtliche Werke)",
+    "mssau": "Manuscript, autograph",
+    "mss": "Manuscript",
+}
+
+
+def _named_edition(name: str, args: list[str]) -> str:
+    label = KNOWN_EDITIONS.get(name.lower(), name)
+    # Editors write "VIII:<br>Symphonien" inside template args; a tag is not text.
+    args = [re.sub(r"\s+", " ", re.sub(r"</?[^>]+>", " ", _strip_links(a))).strip() for a in args]
+    year = next((a for a in args if re.fullmatch(r"1[5-9]\d{2}|20\d{2}", a)), "")
+    volume = next((a for a in args if a and a != year and not a[:1].isdigit()), "")
+    parts = [label]
+    if volume:
+        parts.append(volume)
+    if year:
+        parts.append(year)
+    return ", ".join(parts)
+
+
+def _strip_links(text: str) -> str:
+    """"[[Edition Peters/Plate Numbers|7188]]" -> "7188"."""
+    text = re.sub(r"\[\[[^|\]]*\|([^\]]*)\]\]", r"\1", text)
+    return re.sub(r"\[\[([^\]]*)\]\]", r"\1", text)
 
 
 def _publisher_template(body: str) -> str:
@@ -67,11 +164,20 @@ def _publisher_template(body: str) -> str:
     Anything unexpected falls back to joining the non-empty fields, so a template
     shape this does not know about degrades to readable text rather than to "".
     """
-    f = [x.strip() for x in body.split("|")]
+    # A nested template ({{HMB|1870|176}} as the date-of-publication reference)
+    # carries its own pipes; splitting through it shifts every later field and
+    # turned a year into a plate number.  Collapse nested braces first.
+    flat = re.sub(r"\{\{[^{}]*\}\}", "<ref>", _strip_links(body))
+    while "{{" in flat:
+        reduced = re.sub(r"\{\{[^{}]*\}\}", "<ref>", flat)
+        if reduced == flat:
+            break
+        flat = reduced
+    f = [x.strip() for x in flat.split("|")]
     f += [""] * (7 - len(f))
     name = f[1] or f[0]
     city, year, plate = f[2], f[4], f[6]
-    parts = [p for p in (name, city, year) if p]
+    parts = [p for p in (name, city, year) if p and p != "<ref>"]
     if plate:
         parts.append(f"plate {plate}")
     if not parts:
@@ -86,6 +192,15 @@ def _clean(value: str) -> str:
     m = re.match(r"\{\{(P|RC)\|(.*?)\}\}\s*$", value, re.S)
     if m:
         return _publisher_template(m.group(2))
+    # {{LinkEd|Knute|Snortum|1960|}} is an editor, given name first.
+    m = re.match(r"\{\{LinkEd\|(.*?)\}\}\s*$", value, re.S | re.I)
+    if m:
+        f = [a.strip() for a in m.group(1).split("|")]
+        name = " ".join(x for x in f[:2] if x)
+        return f"{name} ({f[2]})" if len(f) > 2 and f[2] else name
+    m = re.match(r"\{\{([A-Za-z][A-Za-z0-9]*)\|(.*?)\}\}\s*$", value, re.S)
+    if m:
+        return _named_edition(m.group(1), [a.strip() for a in m.group(2).split("|")])
     value = re.sub(r"\{\{FE\}\}", "First edition", value)
     value = re.sub(r"\[\[[^|\]]*\|([^\]]*)\]\]", r"\1", value)
     value = re.sub(r"\[\[([^\]]*)\]\]", r"\1", value)
@@ -95,7 +210,8 @@ def _clean(value: str) -> str:
 
 
 def file_metadata(imslp_id: str) -> dict:
-    title = page_title_for(imslp_id)
+    title, html = page_for(imslp_id)
+    listed = file_name_for(imslp_id, html)
     text = wikitext(title)
 
     work = re.sub(r"\s*\([^)]*\)\s*$", "", title).strip()
@@ -111,12 +227,13 @@ def file_metadata(imslp_id: str) -> dict:
         "permalink": f"https://imslp.org/wiki/Special:ReverseLookup/{imslp_id}",
         "work_title": work,
         "composer": composer,
+        "file_name": listed.get("file_name", ""),
+        "listed_pages": listed.get("listed_pages"),
+        "listed_description": listed.get("listed_description", ""),
     }
 
-    # Locate the file block whose "File Name N" carries this id's PMLP filename.
-    # The id itself is not in the wikitext, so match via the page's rendered anchor
-    # ordering: every "#fte:imslpfile" block numbers its files, and the download
-    # filename is IMSLP<id>-<File Name>.  Callers pass the PMLP stem when known.
+    # With the id's own filename in hand from the rendered page, the wikitext
+    # block that names it is the right one and no heuristic is involved.
     blocks = text.split("{{#fte:imslp")
     for block in blocks:
         for n in re.findall(r"\|File Name (\d+)\s*=", block):
@@ -133,6 +250,75 @@ def file_metadata(imslp_id: str) -> dict:
                         if raw != val:
                             entry.setdefault("_raw", {})[key] = raw
             out.setdefault("files", []).append(entry)
+
+    wanted = _name_key(out.get("file_name", ""))
+    if wanted:
+        for entry in out.get("files", []):
+            if _name_key(entry.get("file_name", "")) == wanted:
+                out["file"] = entry
+                break
+    return out
+
+
+def page_html(title: str) -> str:
+    _, body = _get("https://imslp.org/wiki/" + urllib.parse.quote(title.replace(" ", "_")))
+    return body
+
+
+def page_files(title: str) -> list[dict]:
+    """Every file on a work page, id-matched to its metadata, in ONE page fetch.
+
+    ``file_metadata`` re-fetches the page for each id, which is wasteful and rude
+    when comparing the twenty editions a popular symphony has.  Same matching
+    rule: the rendered page says which file an id is, the wikitext says what that
+    file is.
+    """
+    html = page_html(title)
+    text = wikitext(title)
+
+    by_name: dict[str, dict] = {}
+    for block in text.split("{{#fte:imslp"):
+        for n in re.findall(r"\|File Name (\d+)\s*=", block):
+            fname = _clean(re.search(rf"\|File Name {n}\s*=([^\n]*)", block).group(1))
+            entry = {"file_name": fname}
+            for field in FIELDS:
+                mm = re.search(
+                    rf"\|{re.escape(field)}(?: {n})?\s*=(.*?)(?=\n\|[A-Z]|\n\}}\}}|\Z)",
+                    block, re.S)
+                if mm and _clean(mm.group(1)):
+                    entry[field.lower().replace(" ", "_").rstrip(".")] = _clean(mm.group(1))
+            by_name[_name_key(fname)] = entry
+
+    # Which section a file sits in ("Full Scores", "Parts", "Arrangements") is
+    # only in the rendered page, and it matters: "Complete Score" appears under
+    # Vocal Scores and Arrangements too, and those are not what we want to OMR.
+    # Take the SPAN of the "Full Scores" heading rather than the nearest heading
+    # above each file: IMSLP nests subsections ("Complete", "Selections") under
+    # it, so the nearest heading is a subsection name and says nothing about
+    # whether the file is a score, a recording or a piano arrangement.
+    # Most works have a "Full Scores" subsection; works with only one kind of
+    # score have a bare "Scores" header instead, and looking only for the former
+    # silently returned nothing for them (Beethoven's first symphony among them).
+    fs_start = html.find('id="Full_Scores"')
+    if fs_start < 0:
+        fs_start = html.find('id="Scores"')
+    fs_end = len(html)
+    if fs_start >= 0:
+        for marker in ('id="Parts"', 'id="Arrangements', 'id="Vocal_Scores"',
+                       'id="Sheet_Music"', 'id="Libretti"'):
+            pos = html.find(marker, fs_start + 1)
+            if pos >= 0:
+                fs_end = min(fs_end, pos)
+
+    out = []
+    for m in re.finditer(r'<div id="IMSLP(\d+)"(.*?)(?=<div id="IMSLP\d|\Z)', html, re.S):
+        fid = m.group(1)
+        listed = file_name_for(fid, html)
+        entry = dict(by_name.get(_name_key(listed.get("file_name", "")), {}))
+        entry.update({k: v for k, v in listed.items() if v})
+        entry["imslp_id"] = fid.lstrip("0") or fid
+        entry["full_score"] = fs_start >= 0 and fs_start < m.start() < fs_end
+        out.append(entry)
     return out
 
 

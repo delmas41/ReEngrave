@@ -255,6 +255,9 @@ from .key_signature_geometry import (
     fit_key_signature,
 )
 from .key_signature_locator import locate_key_signature
+from .key_signature_template import (
+    read_key_signature as read_key_signature_by_template,
+)
 from .key_signature_vote import StaffCandidate, reconcile
 from .staff_header import (
     HEADER_MEASURE_INDEX,
@@ -262,6 +265,7 @@ from .staff_header import (
     header_cells_for_page,
     header_windows_for_page,
 )
+from .time_signature_locator import read_system_time_signatures
 from .rhythm import (
     parse_time_signature,
     resolve_rhythms_for_cell,
@@ -1128,6 +1132,29 @@ def _read_staff_header(
 # detector is silent" rule the CV clef locator follows.
 
 
+#: Weight given to a key signature read against a DEFAULTED clef. Small enough
+#: that `key_signature_vote._trustworthy` can never accept it as a transposing
+#: departure from the system's modal signature — it may only agree.
+DEFAULTED_CLEF_WEIGHT = 0.5
+
+
+def _key_sig_richer(candidate, current) -> bool:
+    """Is `candidate` a fuller key-signature reading than `current`?
+
+    Fuller means more accidentals actually matched to slots. The asymmetry is
+    the one `key_signature_vote` documents: `key_signature_geometry` requires
+    the first slot to be observed and cannot extend past the last observation,
+    so no reader here can invent an accidental, while every one of them can lose
+    one to a broken glyph. Where two readings disagree, the longer is the one to
+    keep — and a reading of nothing never displaces a reading of something.
+    """
+    if candidate is None or not candidate.fifths:
+        return False
+    if current is None:
+        return True
+    return len(candidate.matched_slots) > len(current.matched_slots)
+
+
 def _header_key_signatures(
     pws: PageWithStaves,
     header_cells: dict[int, MeasureCell],
@@ -1188,6 +1215,42 @@ def _header_key_signatures(
                     located = locate_key_signature(cell, clef)
                     read = located.read if located else None
                     source = "cv_locator"
+                # The template reader. It matches the Bravura outlines instead
+                # of reassembling ink into components, which is what the locator
+                # cannot do on a scan whose staff-line removal leaves every
+                # glyph in pieces — measured on Beethoven 5 p.1, where the
+                # locator reads 2 of 12 staves given the correct clef and this
+                # reads 11.
+                #
+                # It speaks ONLY where the other two found nothing, and that
+                # restraint was measured rather than assumed. Letting the FULLER
+                # reading win instead — which the vote's own asymmetry argues
+                # for, since a reader loses accidentals rather than inventing
+                # them — gains 1 staff on Beethoven 5 p.2 and 2 on the Pastoral
+                # and costs a WRONG reading on WTC I p.17, the cleanest page in
+                # the corpus, where the detector was already right. This reader
+                # is the one source here that can over-count, so the asymmetry
+                # the argument rests on does not hold for it. Gaps only.
+                if (read is None or not read.fifths) and cell is not None:
+                    templated = read_key_signature_by_template(cell, clef)
+                    if templated is not None and templated.fifths:
+                        read, source = templated, "template"
+            # No clef was read: the staff is carrying the positional default,
+            # and a signature fitted against a guessed clef is a guess squared
+            # — measured, bass staves defaulted to treble read three flats as
+            # two sharps. That is why every reader above is gated on a real
+            # clef, and this does not lift the gate so much as move who checks
+            # it. The template reader runs against the default, and the reading
+            # is entered with a weight too small to justify a DEPARTURE, so the
+            # vote can only keep it where it agrees with what the rest of the
+            # system printed. A staff whose default clef is wrong disagrees, and
+            # is abstained on exactly as before.
+            if not clef and cell is not None:
+                fallback = _default_clef_for_position(ordinal, len(staves))
+                templated = read_key_signature_by_template(cell, fallback)
+                if templated is not None and templated.fifths:
+                    read, source = templated, "template_default_clef"
+                    unread.pop(staff.staff_index, None)
             if clef and cell is not None and read is None:
                 unread[staff.staff_index] = (
                     "neither the detector's markers nor the CV locator found "
@@ -1198,8 +1261,14 @@ def _header_key_signatures(
                 system_index=system_index,
                 ordinal=ordinal,
                 fifths=read.fifths if read else None,
-                weight=float(len(read.matched_slots)) if read else 0.0,
+                weight=(
+                    DEFAULTED_CLEF_WEIGHT if source == "template_default_clef"
+                    else float(len(read.matched_slots))
+                ) if read else 0.0,
                 source=source if read else "",
+                # The template reader can over-count, so its readings stay on
+                # their own staff — see StaffCandidate.can_carry.
+                can_carry=not source.startswith("template"),
             ))
     result = reconcile(candidates)
     fifths: dict[int, int] = {}
@@ -1295,6 +1364,7 @@ def _detections_for_cell(
     active_time_sig: dict[str, Any] | None,
     clef_reader=None,  # optional secondary YoloDetector — staff-header specialist
     header_cell: MeasureCell | None = None,
+    prefer_header: bool = False,
     skip_key_sig_detection: bool = False,
     read_clef: bool = False,
     clef_reader_conf: float = 0.30,
@@ -1428,15 +1498,55 @@ def _detections_for_cell(
             for d in dets
             if d.category == "notehead"
         ]
+        # `prefer_header`, not merely `header_cell is not None`: the header
+        # cell is now supplied on every staff so the detector fallback below
+        # can use it, and only `_header_cell_beats_measure_cell` decides
+        # whether a reader should look there INSTEAD of the measure cell.
+        use_header = prefer_header and header_cell is not None
         located = locate_clef(
-            header_cell if header_cell is not None else cell,
+            header_cell if use_header else cell,
             # The detector's boxes belong to the measure cell's frame; they only
             # describe the header cell when it IS the measure cell.
-            occupied_boxes=occupied if header_cell is None else None,
+            occupied_boxes=None if use_header else occupied,
         )
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
+
+    # ── The production detector, a second time, on the measured header crop.
+    #
+    #    GAP-FILL ONLY, and it runs after the locator so neither of them loses
+    #    precedence. The detector reads the MEASURE cell above and that stays
+    #    the primary reading — on WTC p.17 the header crop is strictly worse
+    #    for this model, which is why `_header_detections` is pointed at the
+    #    measure cell and why this is a fallback rather than a switch.
+    #
+    #    But a crop that is worse on average is not worse everywhere, and where
+    #    the measure cell yields NOTHING there is nothing to lose. Measured
+    #    over the 113 staves of the hand-read orchestral corpus
+    #    (`probe_detector_reach.py`): the measure cell reads no clef on 45 of
+    #    them, the header crop reads one on 8 of those 45, and **all 8 are
+    #    right** — seven trebles and one C clef the positional default would
+    #    have called treble. It contradicts a measure-cell reading on zero
+    #    staves, because it is never consulted when there is one.
+    #
+    #    Note the header cell is supplied here whatever
+    #    `_header_cell_beats_measure_cell` decided: that gate chooses which
+    #    crop the locator and specialist READ INSTEAD of the measure cell, and
+    #    half of these eight sit on staves it leaves alone.
+    if read_clef and clef_source is None and header_cell is not None:
+        header_clef = _clef_from_dets(
+            detector.detect(
+                header_cell,
+                conf_threshold=conf_threshold,
+                imgsz=imgsz,
+                iou_threshold=iou_threshold,
+                agnostic_nms=agnostic_nms,
+            )
+        )
+        if header_clef is not None:
+            active_clef = header_clef
+            clef_source = "detector_header"
 
     # ── Decoupled staff-header specialist (clef + time-sig override). The
     #    production detector under-detects clefs on real orchestral scans (9%
@@ -1461,7 +1571,8 @@ def _detections_for_cell(
     #    benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md. ──
     if read_clef and clef_reader is not None:
         spec_clef, spec_time_sig = _read_staff_header(
-            clef_reader, header_cell if header_cell is not None else cell,
+            clef_reader,
+            header_cell if (prefer_header and header_cell is not None) else cell,
             conf=clef_reader_conf,
             imgsz=clef_reader_imgsz,
             header_frac=clef_reader_header_frac,
@@ -1698,6 +1809,13 @@ def _detections_for_cell(
             # needs it to know which durations are the fragile ones.
             if rinfo.get("beam_levels"):
                 out_d["beam_levels"] = rinfo["beam_levels"]
+            # Tuplets, same policy: only carried when there is one. `tuplet`
+            # is the ratio the exporters write as <time-modification>;
+            # `tuplet_group` is which bracket it belongs to, so start/stop land
+            # on the right notes without re-deriving the grouping.
+            if rinfo.get("tuplet"):
+                out_d["tuplet"] = rinfo["tuplet"]
+                out_d["tuplet_group"] = rinfo["tuplet_group"]
         # Stem direction for noteheads (Phase 4h voice splitting).
         if id(d) in stem_direction_by_id:
             out_d["stem_direction"] = stem_direction_by_id[id(d)]
@@ -1932,6 +2050,194 @@ def _measure_rhythm_sum_warning(
 # never overlap is byte-identical.
 
 
+# ─── Which staff a LEDGER note belongs to ───────────────────────────────────
+#
+# Distance to the nearer band is the wrong rule for the one case the padding
+# exists for, and the Brahms fixture is that case. Its Violin 1 plays up to B6,
+# five spaces above its own top line, and LilyPond opened the gap above the
+# staff to fit those ledger notes — so the note sits nearer the TIMPANI band
+# above it than its own. Measured: the notehead at y 7392 is 133px below the
+# timpani's band and 188px above the violin's, and exported as `Ab1` on a
+# timpani while Violin 1's bars 3 and 4 came out empty.
+#
+# The physical fact distance ignores is that a ledger note is JOINED to its
+# staff by a ladder of ledger lines, and joined to nothing in the other
+# direction. On that page the violin's cells carry three rungs per note-column
+# at y 7455/7497/7538 — exactly the 3rd/2nd/1st ledger positions above a top
+# line at 7580 — and there is no rung anywhere between the note and the timpani.
+#
+# So read the ladder. A rung counts when a `ledgerLine` detection sits within
+# a third of a space of where that staff's k-th ledger line would be AND
+# overlaps the notehead in x.
+#
+# COMPLETENESS BEFORE COUNT, because that is what makes a ladder a ladder. A
+# note four spaces out with all four rungs present is JOINED to that staff; a
+# note with three of four has a gap in it, and a gap is what you see when the
+# rungs belong to something else that happens to lie in the way. So an unbroken
+# ladder outranks a broken one however many rungs the broken one has, and only
+# between two ladders of the same kind does the count decide. A tie — including
+# nothing found either way, which is most glyphs — falls back to distance, so a
+# page with no ledger lines behaves exactly as before.
+#
+# NOTEHEADS ONLY. A contested accidental or rest has no ladder of its own, and
+# inheriting one from a neighbour is the kind of inference that would need its
+# own measurement.
+_LEDGER_RUNG_Y_TOL_SPACES = 0.35
+_LEDGER_RUNG_MIN_X_OVERLAP = 0.25
+
+
+# ─── ... and what the INSTRUMENT says about it ──────────────────────────────
+#
+# A ladder is evidence about the glyph; an instrument's range is evidence about
+# the part, and a reader uses both. Measured on the engraved Beethoven 5
+# fixture, where the ladder has nothing to say because the note is near the
+# staff:
+#
+#     Bassoon 1 m7   truth C4        read as `Ab1` AND `C4`
+#     Bassoon 2 m7   truth C4        read as nothing
+#
+# Two adjacent bassoon staves contested one notehead, distance awarded it to
+# the upper one, and the reading it kept was `Ab1` — MIDI 32, below the
+# bassoon's written range of (34, 72) — while the reading it discarded was C4,
+# squarely inside it. A player cannot sound the note we chose, and the note we
+# threw away is the one that was printed.
+#
+# `instruments.Instrument.written_range` already carries a generous written
+# range for every instrument in the lexicon. What is missing at this point in
+# the run is WHICH instrument each staff is: the contextual pass names the
+# parts, and it runs after this. So the names come from the DOSSIER instead,
+# on the same terms the rest of the dossier layer uses — only where the page's
+# staff count equals the work's part count, and abstaining otherwise. Without a
+# dossier there is no verdict here and the rule below is exactly what it was.
+#
+# GENEROUS ON PURPOSE. This is a veto on the impossible, not a judgement of the
+# unlikely: it fires only when one reading is outside the range and the other
+# is inside, so a part playing at the edge of its range is never touched.
+
+
+def _pitch_midi(pitch: str | None) -> int | None:
+    """MIDI number for a `C#4`-style pitch name, or None if unparseable."""
+    if not pitch or len(pitch) < 2:
+        return None
+    letter = pitch[0].upper()
+    step = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}.get(letter)
+    if step is None:
+        return None
+    i = 1
+    alter = 0
+    while i < len(pitch) and pitch[i] in "#b":
+        alter += 1 if pitch[i] == "#" else -1
+        i += 1
+    try:
+        octave = int(pitch[i:])
+    except ValueError:
+        return None
+    return (octave + 1) * 12 + step + alter
+
+
+def _in_written_range(pitch: str | None,
+                      rng: tuple[int, int] | None) -> bool | None:
+    """True/False if the pitch is inside the part's range, None if unknown."""
+    if rng is None:
+        return None
+    midi = _pitch_midi(pitch)
+    if midi is None:
+        return None
+    return rng[0] <= midi <= rng[1]
+
+
+def _staff_written_ranges(
+    page: dict[str, Any], dossier: dict[str, Any] | None,
+) -> dict[int, tuple[int, int]]:
+    """staff_index -> the written MIDI range of the part printed on it.
+
+    Empty unless the dossier's part count matches the page's staff count, which
+    is the same join `dossier.slot_facts_for_page` makes and abstains on.
+    """
+    if not dossier:
+        return {}
+    staves = [st for sys_ in page.get("systems", [])
+              for st in sys_.get("staves", [])]
+    facts = slot_facts_for_page(len(staves), dossier)
+    if not facts or len(facts) != len(staves):
+        return {}
+    from .instruments import lookup as lookup_instrument  # noqa: PLC0415
+
+    out: dict[int, tuple[int, int]] = {}
+    for staff, fact in zip(sorted(staves, key=lambda s: s.get("staff_index", 0)),
+                           facts):
+        name = (fact or {}).get("part")
+        if not name:
+            continue
+        match = lookup_instrument(name)
+        rng = getattr(getattr(match, "instrument", None), "written_range", None)
+        if rng:
+            out[staff.get("staff_index")] = tuple(rng)
+    return out
+
+
+def _ledger_rows(page: dict[str, Any]) -> list[tuple[float, float, float]]:
+    """Every ledger-line detection on the page as `(x0, x1, y_centre)`.
+
+    Collected across ALL staves without deduplication: this only ever answers
+    "is there a rung here", so a rung seen from two cells is not a problem.
+    """
+    rows: list[tuple[float, float, float]] = []
+    for sys_ in page.get("systems", []):
+        for staff in sys_.get("staves", []):
+            for measure in staff.get("measures", []):
+                for det in measure.get("detections", []):
+                    if det.get("class") != "ledgerLine":
+                        continue
+                    box = det.get("bbox_page")
+                    if not box or len(box) != 4:
+                        continue
+                    rows.append((box[0], box[0] + box[2], box[1] + box[3] / 2.0))
+    return rows
+
+
+def _ledger_ladder(
+    box: Sequence[float],
+    band: tuple[float, ...],
+    ledgers: Sequence[tuple[float, float, float]],
+) -> tuple[int, int]:
+    """`(complete, rungs)` for the ladder joining this staff to the glyph.
+
+    `complete` is 1 only when EVERY rung the glyph's distance calls for is
+    present, so it sorts an unbroken ladder above a broken one of any length.
+    Both are 0 for a glyph inside the staff, which needs no ladder.
+    """
+    if len(band) < 3:
+        return (0, 0)
+    top, bottom, spacing = band[0], band[1], band[2]
+    if spacing <= 0:
+        return (0, 0)
+    x0, y0, w, h = box[0], box[1], box[2], box[3]
+    y_centre = y0 + h / 2.0
+    if y_centre < top:
+        anchor, sign = top, -1.0
+    elif y_centre > bottom:
+        anchor, sign = bottom, 1.0
+    else:
+        return (0, 0)       # inside the staff — no ladder, and none needed
+    n_expected = int(abs(y_centre - anchor) / spacing)
+    if n_expected <= 0:
+        return (0, 0)
+    tol = _LEDGER_RUNG_Y_TOL_SPACES * spacing
+    min_overlap = _LEDGER_RUNG_MIN_X_OVERLAP * max(1.0, w)
+    found = 0
+    for k in range(1, n_expected + 1):
+        rung_y = anchor + sign * k * spacing
+        for lx0, lx1, ly in ledgers:
+            if abs(ly - rung_y) > tol:
+                continue
+            if min(lx1, x0 + w) - max(lx0, x0) < min_overlap:
+                continue
+            found += 1
+            break
+    return (1 if found == n_expected else 0, found)
+
+
 # Two boxes this far into each other are the same glyph seen from two staves,
 # not two glyphs that happen to touch. Swept over all three orchestral works at
 # 0.25/0.3/0.4/0.5 (benchmarks/omr-orchestral-e2e/DEDUPE_THRESHOLD.md): 0.3 is
@@ -1969,11 +2275,18 @@ def _distance_to_band(y: float, top: float, bottom: float) -> float:
 
 def _dedupe_cross_staff_detections(
     page: dict[str, Any],
-    bands: dict[int, tuple[int, int]],
+    bands: dict[int, tuple[int, ...]],
     *,
     iou_threshold: float = _CROSS_STAFF_DUPLICATE_IOU,
+    dossier: dict[str, Any] | None = None,
 ) -> int:
-    """Drop glyphs claimed by more than one staff. Returns how many went."""
+    """Drop glyphs claimed by more than one staff. Returns how many went.
+
+    `bands` maps a staff index to `(top, bottom)` or `(top, bottom, spacing)`.
+    The spacing is what places a staff's ledger rungs, so a band given without
+    one simply falls back to distance — which is what the rule was before the
+    ledger arbitration and still is for every glyph with no ladder either way.
+    """
     entries: list[tuple[int, dict[str, Any], list[dict[str, Any]]]] = []
     for sys_ in page.get("systems", []):
         for staff in sys_.get("staves", []):
@@ -1993,15 +2306,34 @@ def _dedupe_cross_staff_detections(
         for k in (key - 1, key, key + 1):
             buckets.setdefault(k, []).append(i)
 
-    doomed: set[int] = set()
+    # Rungs are only consultable where every band carries a spacing; otherwise
+    # this is the old distance-only rule, unchanged.
+    ledgers = (_ledger_rows(page)
+               if all(len(b) >= 3 for b in bands.values()) else None)
+    ranges = _staff_written_ranges(page, dossier)
+
+    # PAIRWISE, and a cluster-winner refactor was measured and REJECTED.
+    # Grouping every overlapping copy and letting the group pick one winner is
+    # the tidier formulation and it scored worse — 0.2275 against 0.2263 — for
+    # a reason worth recording: IoU overlap is not transitive, so A-B and B-C
+    # chain A and C into one cluster even where they are genuinely different
+    # glyphs, and the group then throws one of them away. Removing one of each
+    # overlapping PAIR cannot make that mistake.
+    #
+    # STRONGEST VERDICT FIRST, though, which is what pairing alone got wrong.
+    # Deciding pairs in whatever order the buckets produced let an arbitrary
+    # distance call eliminate a copy before a pair that actually KNEW the
+    # answer was ever looked at: measured on Beethoven's two bassoons, one bar
+    # resolved on the range veto and the next, identical in shape, did not.
+    # So every contested pair is judged first, then applied in order of how
+    # much the judgement rests on.
+    verdicts: list[tuple[int, int, int]] = []   # (rank, loser, winner)
     seen: set[tuple[int, int]] = set()
     for idxs in buckets.values():
         for pos_a in range(len(idxs)):
             i = idxs[pos_a]
             for pos_b in range(pos_a + 1, len(idxs)):
                 j = idxs[pos_b]
-                if i in doomed or j in doomed:
-                    continue
                 pair = (i, j) if i < j else (j, i)
                 if pair in seen:
                     continue
@@ -2012,15 +2344,43 @@ def _dedupe_cross_staff_detections(
                     continue
                 if _bbox_iou_xywh(di["bbox_page"], dj["bbox_page"]) <= iou_threshold:
                     continue
-                # Same glyph, two staves. Keep it on the nearer one.
-                ti, bi = bands[si]
-                tj, bj = bands[sj]
-                loser = (
-                    i if _distance_to_band(_bbox_center_y(di), ti, bi)
-                    > _distance_to_band(_bbox_center_y(dj), tj, bj)
-                    else j
-                )
-                doomed.add(loser)
+                # Same glyph, two staves. Three kinds of evidence, in the order
+                # a reader uses them: the LADDER is about this glyph — an
+                # unbroken run of ledger lines physically joins it to a staff;
+                # the RANGE is about the part — a player cannot sound a note
+                # outside it; DISTANCE is the tie-break and, on a page with
+                # neither ledger lines nor a dossier, still the whole rule.
+                is_note = di.get("category") == "notehead"
+                rank, loser = 0, None
+                if is_note and ledgers is not None:
+                    ladder_i = _ledger_ladder(di["bbox_page"], bands[si], ledgers)
+                    ladder_j = _ledger_ladder(dj["bbox_page"], bands[sj], ledgers)
+                    if ladder_i != ladder_j:
+                        rank, loser = 2, (i if ladder_i < ladder_j else j)
+                if loser is None and is_note and ranges:
+                    # A veto on the IMPOSSIBLE, not a judgement of the
+                    # unlikely: it fires only when one reading falls outside
+                    # its part's range and the other falls inside its own, so
+                    # a part playing at the edge of its range is never touched.
+                    fit_i = _in_written_range(di.get("pitch"), ranges.get(si))
+                    fit_j = _in_written_range(dj.get("pitch"), ranges.get(sj))
+                    if fit_i is not None and fit_j is not None and fit_i != fit_j:
+                        rank, loser = 1, (i if not fit_i else j)
+                if loser is None:
+                    ti, bi = bands[si][0], bands[si][1]
+                    tj, bj = bands[sj][0], bands[sj][1]
+                    loser = (
+                        i if _distance_to_band(_bbox_center_y(di), ti, bi)
+                        > _distance_to_band(_bbox_center_y(dj), tj, bj)
+                        else j
+                    )
+                verdicts.append((rank, loser, j if loser == i else i))
+
+    doomed: set[int] = set()
+    for _rank, loser, winner in sorted(verdicts, key=lambda v: -v[0]):
+        if loser in doomed or winner in doomed:
+            continue
+        doomed.add(loser)
 
     for i in sorted(doomed, reverse=True):
         _idx, det, lst = entries[i]
@@ -2091,6 +2451,12 @@ def _beam_groups(detections: list[dict[str, Any]]) -> list[list[dict[str, Any]]]
     beamed = [
         d for d in detections
         if d.get("category") == "notehead" and d.get("beam_levels")
+        # A tuplet note is excluded, not because re-reading its beam level is
+        # meaningless but because `_duration_for_level` re-derives a duration
+        # from beam count and dots alone and would silently drop the tuplet
+        # ratio. The bar sum below still counts the tuplet's scaled durations,
+        # so another group in the same bar can still be arbitrated.
+        and not d.get("tuplet")
     ]
     if not beamed:
         return []
@@ -2842,6 +3208,8 @@ def transcribe(
     active_clef_by_staff: dict[tuple[int, int, int], str | None] = {}
     active_key_sig_by_staff: dict[tuple[int, int, int], dict[str, str]] = {}
     active_time_sig_by_staff: dict[tuple[int, int, int], dict[str, Any] | None] = {}
+    #: The meter in effect, carried onto pages that print none.
+    carried_meter: dict[str, Any] | None = None
 
     # Clef CONTINUITY (Task-2 clef-stability pass). The last EFFECTIVE clef
     # seen at each staff ROLE (vertical position within its system), carried
@@ -3021,10 +3389,22 @@ def transcribe(
                 )
             )
             key_sig_default_unread = "no reader spoke for this staff"
+            # The meter, read from the same header crops and voted across each
+            # system's staves. The detector cannot supply this on a real scan —
+            # on Beethoven 5 p.1 it finds no time-signature digit in any header
+            # and the five it does fire are barline fragments mid-bar, which
+            # `_dominant_detected_meter` then propagates as common time over a
+            # 2/4 page. See tools/omr/time_signature_locator.py.
+            header_meters = read_system_time_signatures(
+                header_cells,
+                {sys_idx: sorted(systems[sys_idx].keys())
+                 for sys_idx in sorted(systems.keys())},
+            )
         else:
             voted_fifths, voted_reasons = {}, {}
             key_sig_unread_reasons = {}
             key_sig_default_unread = "header reading is off (--no-header-reading)"
+            header_meters = {}
 
         # Dossier slot facts for the whole page, used when per-system grouping
         # is too fragmented to join (which is the normal case — see
@@ -3090,9 +3470,17 @@ def transcribe(
                     (p, sys_idx, staff_idx),
                     alterations_for_fifths(seeded_fifths or 0),
                 )
+                # A meter carried over from the previous system, else the one
+                # the header reader voted for THIS system, else unknown. The
+                # carry-over comes first because a system that prints no time
+                # signature is still in the meter the last one established, and
+                # the reader abstains on those systems rather than contradicting
+                # it. A seed is a SEED: any meter the detector reads in the
+                # music replaces it, the same rule the clef locator and the
+                # key-signature vote follow.
                 active_time_sig = active_time_sig_by_staff.get(
                     (p, sys_idx, staff_idx),
-                    None,  # default: unknown — only set when detected
+                    dict(header_meters[sys_idx]) if sys_idx in header_meters else None,
                 )
                 staff_obj = next(
                     (st for st in pws.staves if st.staff_index == staff_idx), None
@@ -3114,16 +3502,22 @@ def transcribe(
                 # Point the clef readers at the measured header only where the
                 # staff-start measure cell actually misses it — see
                 # `_header_cell_beats_measure_cell`.
-                header_cell_for_clef = None
-                if (
+                # The header cell is supplied on EVERY staff, because the
+                # detector's gap-fill pass reads it wherever the measure cell
+                # yielded no clef. The gate decides something narrower: whether
+                # the locator and the specialist should look there INSTEAD of
+                # the measure cell.
+                header_cell_for_clef = (
+                    header_cells.get(staff_idx) if read_headers else None
+                )
+                prefer_header_cell = bool(
                     read_headers
                     and staff_cells
                     and staff_obj is not None
                     and _header_cell_beats_measure_cell(
                         header_windows.get(staff_idx), staff_obj, staff_cells[0]
                     )
-                ):
-                    header_cell_for_clef = header_cells.get(staff_idx)
+                )
 
                 first_cell_effective_clef: str | None = None
                 first_cell_clef_source: str | None = None
@@ -3149,6 +3543,7 @@ def transcribe(
                             active_time_sig=active_time_sig,
                             clef_reader=clef_reader,
                             header_cell=header_cell_for_clef,
+                            prefer_header=prefer_header_cell,
                             skip_key_sig_detection=(
                                 cell_idx == 0 and staff_idx in voted_fifths
                             ),
@@ -3322,9 +3717,11 @@ def transcribe(
         # (4 staff-spaces of padding each way) and on a conductor's score those
         # bands meet. See _dedupe_cross_staff_detections.
         _bands = {
-            st.staff_index: (st.top_y, st.bottom_y) for st in pws.staves
+            st.staff_index: (st.top_y, st.bottom_y, st.line_spacing_px)
+            for st in pws.staves
         }
-        n_deduped = _dedupe_cross_staff_detections(page_dict, _bands)
+        n_deduped = _dedupe_cross_staff_detections(
+            page_dict, _bands, dossier=dossier)
         if n_deduped:
             page_dict["n_cross_staff_duplicates_removed"] = n_deduped
             out["n_cross_staff_duplicates_removed"] = (
@@ -3343,7 +3740,28 @@ def transcribe(
                 out.setdefault("dossier_warnings", []).extend(meter_warnings)
                 page_dict.setdefault("dossier_warnings", []).extend(meter_warnings)
 
-        backfill_page_time_signatures(page_dict)
+        page_meter = backfill_page_time_signatures(page_dict)
+        # A meter, once printed, is in effect until it changes — that is what a
+        # time signature MEANS, and it is printed at the start of a movement and
+        # nowhere else. Everything above works a page at a time, so page 2 of a
+        # 2/4 movement had no meter at all and the exporter fell back to 4/4 on
+        # it. Carry the last page's meter onto a page that read none, tagged so
+        # it is never mistaken for something this page said.
+        if page_meter is None and carried_meter is not None:
+            for system in page_dict.get("systems", []):
+                for staff in system.get("staves", []):
+                    if not staff.get("time_signature"):
+                        staff["time_signature"] = dict(carried_meter)
+                    for measure in staff.get("measures", []):
+                        if not measure.get("time_signature"):
+                            measure["time_signature"] = dict(carried_meter)
+            page_dict["inferred_time_signature"] = dict(carried_meter)
+        elif page_meter is not None:
+            carried_meter = {
+                **{k: v for k, v in page_meter.items()
+                   if k in ("numerator", "denominator", "raw")},
+                "source": "carried_from_previous_page",
+            }
 
         # ── Meter → rhythm feedback ──
         # Runs after the meter is settled (dossier, detected or inferred) and

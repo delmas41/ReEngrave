@@ -302,6 +302,80 @@ ReEngrave/
 
 ---
 
+## The central score library
+
+Every score the project uses lives in one place with its provenance attached:
+`library/` (machine-local, gitignored) plus a **committed** catalog at
+[`data/score-library/catalog.json`](data/score-library/catalog.json). Full
+conventions: [`data/score-library/README.md`](data/score-library/README.md).
+
+**235 editions and 1745 reference encodings**, 6.4 GB, 27 works pairing a PDF
+with ground truth. Before this, the same score existed under four names in four
+trees — `tools/omr/training/data/imslp/`,
+`~/Desktop/gradus-vercel/public/scores/`, and two copies of
+`~/Documents/Gradus-Assets/Scores/`. Importing all of them yielded **1745 unique
+reference files out of 4167+ candidates**; the rest were recorded as extra
+origins on files already held.
+
+The edition half was built from a ranked wantlist
+([`data/score-library/wishlist.md`](data/score-library/wishlist.md)) that scores
+every full score on a work's IMSLP page **for OMR rather than for playing**: a
+real engraving beats a modern typeset, a named publisher beats an anonymous
+upload, and an edition series already held beats one that is not. That last
+bonus picked the Litolff 1870 series for the whole Beethoven cycle unprompted —
+consecutive plates 2765-2773.
+
+```
+library/editions/<composer>/<work>/<composer>--<work>--<edition>--<source>.pdf
+library/reference/<composer>/<work>/<composer>--<work>--<movement>--<source>.mxl
+```
+
+`editions/` is what a reader sees (OMR input); `reference/` is what the notes are
+(ground truth). They join on `work_id`, which is keyed on **genre + number**, not
+the full title — an IMSLP page says "Symphony No.5, Op.67" and a MusicXML header
+says "Symphony No.5", and keying on the title split Beethoven's fifth into two
+works with no edition and no ground truth respectively.
+
+```bash
+python3 -m tools.library.ingest imslp ~/Downloads/IMSLP*.pdf   # provenance from the wiki API
+python3 -m tools.library.ingest musicxml <dir> --source gradus
+python3 -m tools.library.ingest catalog | verify | reorganize | refresh | relink
+python3 -m tools.library.build_wishlist --out data/score-library/wishlist.json
+```
+
+**The legacy paths still work.** ~20 benchmark scripts hard-code
+`tools/omr/training/data/imslp/<work>/pdfs/imslp-<id>/score.pdf` and NOTES.md
+quotes measured numbers from them; those are now symlinks into the store,
+recreated by `relink`. `library_root()` also resolves to the MAIN checkout from
+inside a git worktree, so one machine keeps one store.
+
+**Downloading from IMSLP.** File downloads sit behind a JavaScript redirect gate
+that `curl` cannot pass, so a logged-in browser has to resolve
+`Special:ImagefromIndex/<id>` to its direct file URL; the wiki pages and the
+MediaWiki API are open, which is where all provenance comes from. **Do not try to
+defeat the gate** — pace the requests instead. Practical recipe: drive 3-5 Chrome
+tabs, read the resolved URLs out of the tab list, then fetch them with a delay
+(`FETCH_DELAY`, 12s used for the bulk runs). Nothing tripped a rate limit across
+~230 downloads.
+
+⚠️ **Five ways this silently installed the WRONG file** — case-sensitive
+filenames, redirect stubs blanking all provenance, slashes in titles, regional
+mirrors (`imslp.eu`, `petruccimusiclibrary.ca`) serving HTML, and non-atomic
+writes. Each is described with its symptom in
+[`data/score-library/README.md`](data/score-library/README.md); read that before
+changing the provenance path.
+
+⚠️ **Never trust an embedded composer or movement field.** The Mahler 5 export
+repeats "I. Trauermarsch" as the movement title of *every* movement; one
+collection wrote `Desktop` as the composer of 70 Bach chorales; life dates arrive
+glued to the name (`Bach(1685 - 1750)`) and once made the store grow a composer
+called `1750`. `reorganize` re-derives from the strongest evidence available and
+is idempotent — a hand-supplied name outranks the file's own metadata, which
+outranks a folder name, and a folder name is accepted only if some *other* file's
+metadata independently vouches for it.
+
+---
+
 ## Dossiers — checking a reading against what the work actually is
 
 The five internal-consistency checks can only ask whether a page agrees with
@@ -392,6 +466,62 @@ Every change is recorded as `rhythm_reconciliation` on the measure. On the
 Beethoven 5 opening it re-read three notes from sixteenths to eighths, taking
 the bar from 1.25 to the 2.0 that 2/4 requires — the right answer on the most
 famous bar in the repertoire.
+
+---
+
+## Tuplets
+
+A triplet's noteheads are ORDINARY eighths on the page. The printed value is
+right; the bracket says three of them occupy two's worth of time. So
+`rhythm.resolve_rhythms_for_cell` does not re-read anything — it multiplies
+`duration_beats` by 2/3 and leaves `duration_type` as the written value, which
+is what MusicXML's `<type>` and LilyPond's `8` both want inside a tuplet.
+
+**The signal was already in the JSON and nothing consumed it.** Before
+2026-09-01 `grep -ci tuplet` returned 0 in `export.py`, `rhythm.py` and
+`transcribe.py`, while the Mahler page carried `tuplet3` and `tupletBracket`
+detections and ALL 15 of that work's wrong durations were one triplet figure
+read straight — 87 of its 154 OMR-NED edits. Pooled 0.2595 → **0.2489**,
+Mahler 0.0826 → **0.0455**, duration rate 0.318 → 0.864, with Beethoven and
+Brahms byte-identical.
+
+**Two markers, read differently, because they sit differently on the page.**
+The DIGIT is printed over the middle of its group, so its centre must fall
+inside the group's span. The BRACKET encloses the group, so the group must fall
+inside the BRACKET's span — detected brackets are far wider than the notes they
+cover (one measured at 1846px over a 478px group) and testing a bracket's centre
+rejects every one of them.
+
+**Which notes are in the group is the BEAM box, not the marker.** Same split
+`export.annotate_beams` documents: the marker says a tuplet is there, the beam
+box says how far it reaches. The box is padded by a notehead width because it
+bounds beam INK, which starts at the first stem — unpadded, every stem-up group
+loses its first note.
+
+Deliberately narrow, and it abstains rather than guesses:
+
+- only `tuplet3` → 3:2. `tuplet5`/`6`/`7` are in the DSv2 class space but each
+  needs its own normal-count convention and none of them occurs in anything
+  measured here;
+- the group must have exactly as many notes as the digit claims, so a triplet
+  written quarter-plus-eighth is left alone rather than guessed at;
+- an unnumbered bracket is read as a triplet only over a group of exactly
+  three, and only when it covers exactly one group in the cell;
+- rests inside a group are NOT scaled — pairing a rest to a beam group needs a
+  signal the beam box does not carry;
+- tuplet notes are excluded from `_reconcile_measure_to_meter`'s candidates,
+  because `_duration_for_level` re-derives a duration from beams and dots alone
+  and would silently drop the ratio.
+
+⚠️ **`export._compute_divisions` is an LCM, not a max, and that is load-bearing.**
+A triplet eighth is 1/3 of a quarter; the old power-of-two ladder returned 16 and
+16 thirds is not a whole number, so every triplet would get a rounded
+`<duration>` and a short bar. The LCM of powers of two IS their maximum, so
+scores without tuplets get exactly the old number — verified byte-identical on
+Brahms (8) and the authored fixtures.
+
+Coverage is what the detector gives: 4 of the 5 triplet groups on the Mahler
+page. The fifth carries no marker at all, at any confidence.
 
 ---
 
@@ -533,17 +663,30 @@ out of process in a gitignored `.venv-omrned` and talks JSON — the same shape
 `maestro_bridge.py` uses for node. `tools/omr/_omrned_worker.py` runs INSIDE
 that venv and must never import from `tools.*`.
 
-Baseline on the engraved orchestral benchmark: **pooled 0.3164** (Mahler 0.0785,
-Beethoven 0.1958, Brahms 0.4664). Full reading, and the three findings it
-surfaced that note recall is blind to, in
-[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md).
+Current on the engraved orchestral benchmark: **pooled 0.2263** (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.3302), from an opening baseline of 0.3164. Full
+reading, and the findings it surfaced that note recall is blind to, in
+[benchmarks/omr-ned-2026-08/FINDINGS.md](benchmarks/omr-ned-2026-08/FINDINGS.md)
+and
+[WRONG_NOTE_ATTRIBUTION_2026-09-01.md](benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md).
 
-**Two traps when reading it.** (1) The metric is SYMMETRIC — swapping prediction
-and truth does not change the score, it only changes which file is parsed
-strictly, which is why `score_pair` is keyword-only. (2) A large `entire measure
-insert/delete` bucket is amplified, not necessarily severe: a measure differing
-only by a fermata is charged delete-whole-bar + insert-whole-bar. Open the op
-list before believing it.
+**Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
+prediction and truth does not change the score, it only changes which file is
+parsed strictly, which is why `score_pair` is keyword-only. (2) A large `entire
+measure insert/delete` bucket is amplified, not necessarily severe: a measure
+differing only by a fermata is charged delete-whole-bar + insert-whole-bar. Open
+the op list before believing it. (3) **`wrong note` does not mean wrong
+pitches.** musicdiff maps `noteins`/`notedel` to `wrong note` and
+`pitchnameedit` to a separate `wrong pitch`, which is zero on all three works —
+so `wrong note` counts notes the aligner would not PAIR, and what usually stops
+it pairing is the duration. One misread rhythm costs about eight edits there.
+
+Two tools open a number up rather than restating it:
+
+```bash
+python3 benchmarks/omr-ned-2026-08/attribute_wrong_notes.py   # cause per part
+.venv-omrned/bin/python benchmarks/omr-ned-2026-08/dump_ops.py PRED TRUTH
+```
 
 ---
 
@@ -811,17 +954,91 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 
 - **MusicXML repeat signs are dropped on export** — no `<repeat>` barline emission yet (see NOTES.md item 6; tied to multi-type barline classification, item 5).
 
-- **OMR time-signature detection is unreliable.** The DSv2 model often misclassifies time-sig digits, so this field is `null` for many pages. *(Branch `claude/omr-time-signature-inference-e547f1`, unmerged: `parse_time_signature` now drops left-edge instrument-number misreads; a page meter is back-filled from a dominant detected C/cut-C glyph, else from a per-column beat-sum vote — conservatively, so dense pages still stay `null` rather than guess wrong. See `tools/omr/README.md` → "Time-signature inference".)*
+- **The meter is read from the header by shape, and voted across the system** (2026-08-31). The detector does not read time signatures on real scans — on page 1 of the IMSLP Beethoven 5 it finds *zero* time-signature digits in any header, on a page printing `2` over `4` legibly on all twelve staves. Worse than silence, it used to fill the gap: five `timeSig4` boxes fired on **barline** fragments mid-bar, each became 4/4 via the single-digit guess in `parse_time_signature`, and the page shipped as common time on every staff. `tools/omr/time_signature_locator.py` reads it instead, the way the clef and key signature are read — by geometry. A meter's placement is rigid (numerator in the upper two staff spaces, denominator in the lower two, centred on each other), so the search is one-dimensional: a composite template per candidate meter, built from the Bravura `timeSig0-9` glyphs already in `tools/omr/symbol_library/`, slid along the header window in x. Readings are then **voted across the staves of a system**, because that is where a meter is printed. Measured (`benchmarks/omr-timesig-2026-08/`) over a corpus that is half pages printing no meter at all: **4 correct, 0 wrong, 12 correct abstentions** — across a 600 dpi scan of 19th-century type and LilyPond pages set in a different font from the templates. Beethoven 5 p.1 now emits 2/4 instead of 4/4, and its LilyPond bar-check failures fall 154 → 104. Two discriminators were measured and REJECTED for moving with the printing rather than the answer: ink coverage (separates on the scan, then inverts — engraved TRUE reads score below scanned FALSE ones) and whitespace gutters (no separation at all). `timeSigCommon`/`timeSigCutCommon` have no templates, so common-time pages abstain here and stay with the detector, which reads those two glyphs well.
+
+- **A part is the same staff on every system, not one staff on one system** (2026-08-31). `export.to_musicxml` emitted one `<part>` per (page, system, staff), so a part was never continuous: two pages of a piano prelude came out as **24 parts of 3 bars** instead of 2 parts of 36. That is why OMR-NED could not be read as a recognition score on anything longer than one system, and why `orchestral_eval` capped its excerpts at one page. `export._stitch_slots` now joins staves by ORDINAL across every system and page, and **refuses when the systems disagree about how many staves they have** — printed orchestral scores suppress tacet staves (Beethoven 5 scan p.3 is 11 then 8), and joining those by position would graft one instrument's music onto another; the old per-system parts stand there. Measured on WTC I Fugue 1, two pages, against the Gradus reference: **20 parts → 2**, 3 measures per part → **27** (the reference has 27), OMR-NED **0.9819 → 0.8668**, and the dominant error changes from `entire measure insert/delete` to **`wrong note`** — the metric has stopped measuring the exporter and started measuring the reading. Single-system pages are unaffected. `benchmarks/omr-first-run-2026-08/EXPORT_PARTS.md`.
+
+- **Durations fail on scans because hollow noteheads are invisible, not because the rhythm layer is wrong** (2026-08-31, NOT FIXED — `benchmarks/omr-first-run-2026-08/DURATIONS.md`). Beethoven 5 p.1 prints 68 half notes and the output contains 8; twenty of twenty-six duration errors are a half read as something shorter. The heads are not misclassified, they are **not detected** — at 600 dpi bitonal on this print the half notehead's counter has closed to a thin diagonal sliver inside an otherwise solid head, and a detector trained on clean engraving does not call that hollow. The control settles it: the same music engraved by LilyPond gives 31 hollow detections against 30 real half notes, and pitch recall 0.926 with pitch+duration recall **also 0.926** — every correctly-located note there has the right duration. Four fixes were measured and none shipped: reclassifying by ink fill (nothing to reclassify), counters as enclosed holes (662 candidates for 68 notes), Bravura `noteheadHalf` template matching (15 of 68 at threshold 0.50, none above), and thinning the ink before re-detecting (4 → 9 of 26, while inflating `noteheadWhole` 1 → 5). The lever is a labeling batch through `tools/omr/annotate/`, and ⚠️ **not** ink-degradation augmentation, which is the obvious idea and is already disproven — see the domain-augmentation entry in NOTES.
+
+- **Key-signature accidentals are found by template, not by clustering ink** (2026-08-31). `key_signature_locator` thresholds the header to an ink mask and keeps the accidental-sized connected components — on a scan whose staff-line removal leaves every glyph in pieces, nothing accidental-sized survives: given the CORRECT clef for every staff of Beethoven 5 p.1 it reads **2 of 12**, on a page where eight of the ten it misses print three flats legibly. `tools/omr/key_signature_template.py` slides the Bravura `accidentalFlat`/`accidentalSharp` templates instead and reads **11 of 12** standalone. Two bounds make it work: the search runs only between the **clef** (matched by its own template — the caller knows which clef) and the **meter** (`locate_time_signature`), because a flat's outline correlates with a G clef at 0.57-0.59 against real flats' 0.65-0.76, too close to separate by score. Positions come from the **ink centroid inside the matched box**, not the box centre — box centres leave ±0.5 step of jitter, enough for the fit to read three flats as five. End to end on p.1: key signatures **4/12 → 7/12 correct with 0 wrong**, exact-pitch recall **0.571 → 0.619** against unchanged step recall, so the accidental gap halves; over six pages, staves spoken for 29% → 39%. Curated ground truth unchanged except the Pastoral, **9 → 11 correct, 0 wrong**.
+
+- **Two rules the template reader needed, both found by breaking WTC p.17.** (1) **It may not infer.** `fit_key_signature` recovers slots nothing was detected at, which is right for a reader that only ever loses accidentals; this one can gain a spurious match, and inference compounded five matches into *seven sharps* on a four-sharp page. (2) **It may not carry across systems.** `key_signature_vote` resolves a part by taking the reading with the most accidentals — sound only while every reader under-counts. One staff's spurious fifth sharp was carried onto **every treble staff of all five systems**, taking the page from 10 correct to 5 correct and 5 wrong. `StaffCandidate.can_carry` keeps such a reading on its own staff. ⚠️ **The reader speaks only into GAPS** (where detector and locator both found nothing). Letting the fuller reading win instead is worth +1 on beet5-p2 and +2 on the Pastoral and costs a WRONG reading on the cleanest page in the corpus — priced and refused. Staves with no clef read get the reader against the positional default at `DEFAULTED_CLEF_WEIGHT`, too weak to justify a departure, so the vote can keep it only where it agrees with the system: the clef gate moves from the staff to the page.
+
+- **Common time is read; cut common was measured and withheld** (2026-08-31). `timeSigCommon` and `timeSigCutCommon` were added to `symbol_library/builder.py` and the library rebuilt (every pre-existing template came back byte-identical — the check that mattered, since the clef and key-signature readers share it). A letter meter is one glyph two spaces tall centred on the middle line, padded into the same four-space box so the search stays one-dimensional, and `C` is the strongest reading in the corpus: five common-time pages at 0.745-0.761 against 0.50-0.62 for scanned digit meters. **Cut common is not searched for.** A C with a stroke through it correlates with any vertical ink crossing any rounded blob: with it enabled the sweep claimed a meter on *seven systems that print none*, at 0.51-0.56 over a 0.50 threshold, and no page in the corpus prints a real ¢ to measure the other side against. 2/2 spelled in digits is still read. Corpus total: **8 correct, 0 wrong, 21 correct abstentions.**
+
+- **A barline is a straight line, not a vertical one** (2026-08-31). The IMSLP Beethoven 5 scan is warped — one barline's x drifts monotonically by up to 40 px between the top staff and the bottom, over three times the clustering tolerance — and `_intersystem_connectivity` dropped a *vertical* column at the cluster's mean x, so three real barlines that had passed the vote (9, 12 and 10 of 12 staves) scored 0.27-0.36 against a 0.40 gate and were thrown away. `measure_extractor._barline_x_at` now fits the line to the staves that observed it and probes along it, using **Theil-Sen and not least squares**, because a note stem that joins the cluster votes too and two such among nine still dragged a least-squares fit off the line. Page 1: 17/17 barlines, 0 false, **16 measures of 16**; pages 2-6 unchanged. Also `_spans_system` — the weakest band of a column along the fitted line — rescues barlines on **braced two-staff systems**, where "both staves must agree" fails whenever one hand plays continuously: on WTC I Prelude 1 p.4 the left hand read all four barlines of every system and the right hand, thick with sixteenths, read none of them and 31 of its own stems, so five systems of three bars each came out as ONE bar (now 4,4,4,4,4,4). The gap test is *not* enough there — a fugue's long stem crosses the brace gap and scores 1.00 connectivity — but nothing except a barline runs from the top of the upper staff to the bottom of the lower. The rescue is **additive**: letting the span test filter instead costs every system its opening rule, which often does not span the brace.
+
+- **A meter carries onto pages that print none** (2026-08-31). A time signature is printed at the start of a movement and nowhere else, and everything upstream worked a page at a time — so page 2 of a 2/4 movement had no meter at all and the exporter fell back to 4/4 on it. `transcribe` now carries the last page's meter onto a page that reads none, tagged `source="carried_from_previous_page"` so it can never be mistaken for something that page said. Beethoven 5 scan pages 1-6: the meter went from **page 1 only** to all six. This is also what makes `select_short_bar_cells` work past a movement's first page — without a meter there is no shortfall to rank by.
+
+- **A meter is believed per STAFF, not per measure** (2026-08-31). Once read, a meter is carried onto every later measure of its staff, so counting measures counts one reading many times: on Beethoven 5 scan p.3 a single `timeSig4` at confidence 0.42, on one staff of nineteen, arrived at the page vote as eighteen unanimous votes for common time. `rhythm._dominant_detected_meter` now takes one vote per staff and requires half the page's staves, and `rhythm.drop_uncorroborated_meter_changes` reverts a mid-staff meter CHANGE that only one staff saw — a change is a system-wide event, printed on every staff at the same bar. The guard is worth having alone: without any reader it takes p.1 from a confident 4/4 to an honest silence.
 
 - **Key signatures are read by position; recall is about a half, given the clef.** The header of every staff is now measured (`tools/omr/staff_header.py`) rather than assumed to sit inside the staff-start measure cell — on faded prints it often doesn't, because `Staff.x_start` is the longest ink run on the middle line and that run can begin past the clef. (It can now also begin too far LEFT, in the instrument name, since Phase 1 started bridging broken lines; `_anchor_column` clamps the leftward walk to the staff's own bracket, which took the share of staves whose window actually contains a clef from 186/455 to 233/455 over 26 pages.) Key signatures are then read by fitting accidental *positions* to the slot table for (clef, N) (`key_signature_geometry.py`), so a missed interior accidental is recovered rather than miscounted, and reconciled across staves and systems (`key_signature_vote.py`). Measured on two ground-truth orchestral pages (42 staves), **given the correct clef**: 18 correct, 0 wrong, 16 missed, 8 correct abstentions (34 of the 42 carry a signature). End to end, where the clef must be read, that is 2 staves of 20 on Beethoven 6 p.2 and 0 of 22 on Beethoven 5 p.2. It only seeds staves where the detector found no key-signature accidental at all, so it cannot make a correctly-detected score worse. **It inherits the clef problem**: the slot table is chosen by the clef, and a wrong clef produces wrong signatures rather than abstentions (measured: bass staves defaulted to treble read 3 flats as 2 sharps), so a staff whose clef is only the positional default is skipped. On scans where every staff reads as treble, the key-signature reader stays quiet — the two features improve together. The slot fit also applies to the **detector's own** keySharp/keyFlat markers, and both readings go through the vote. WTC p.17 (E major, clean engraving): counting the markers reads 6/10 staves correctly, fitting their positions 7/10, reconciling across the page **10/10** — each step fixing a different failure (a stray marker; then three staves whose first sharp went undetected, which only the page can recover). Note the readers take different inputs on purpose: the detector reads the staff-start measure cell, the CV locator reads the header window — on the header crop the model finds *zero* key markers at any imgsz, because a letterboxed sliver is outside what it was trained on. The locator anchors its run on the clef specifically — an oversized cluster at the *head* of the window with a clef's height, not merely the largest ink in it — and abstains when there is none; anchoring on a beam or a note group is what let it read ink in the middle of a bar as a signature. All of this is **on by default** — `--no-header-reading` turns it off.
 
 - **Clef reading is geometric, but clef *detection* is still a model weakness.** Which line a clef names is now measured, not classified (`tools/omr/clef_geometry.py`) — alto/tenor/soprano/mezzo/baritone are the same glyph on different lines, so a class label can never separate them, and all ten clefs now flow through pitch resolution and both exporters. A classical-CV C-clef locator (`tools/omr/clef_locator.py`) covers scores where no model sees a clef at all (19th-century C-clef prints: zero detections even at conf 0.03). It runs only where nothing else read a clef, recognises C clefs only, and abstains otherwise. G/F clef *detection* on degraded scans is unimproved. See `benchmarks/omr-clef-geometry/RESULTS.md`.
 
-- **Body text is no longer detected as staves** (fixed 2026-08-28). Row ink-count alone passed the line-length test on justified paragraphs; `staff_detector` now also requires the lines to be *continuous strokes* rather than rows of glyphs (`_line_ink_runs_per_space`). Music tops out at 1.39 runs per staff-space, text starts at 2.02. All music-only scores byte-identical.
+- **A five-line window that locked onto the wrong ink is slid back** (step 3d,
+`staff_detector._refit_misaligned_group`), by TWO signals because the fault has
+two shapes. A window that locked onto a BEAM has an end line far thicker than
+the rest (Brahms's contrabass, 18px against 5px). A window that locked onto
+LEDGER LINES has end lines printed at staff weight that do not RUN — Brahms's
+Violin 1 covered 4% and 6% of the staff's width at a thickness ratio of 1.8,
+invisible to the first test, and sat TWO spaces high, so 35 of its 39 notes came
+out four staff positions low at a cost of 263 OMR-NED edits. Measured over 270
+staves and 5 editions (`benchmarks/omr-phase1-baseline/probe_line_coverage.py`),
+the worse end line's coverage over the staff's median is **0.041–0.112 for the
+six misfitted windows and 0.682 or more for every correctly placed staff** — a
+6× gap with nothing in it, which is why the constant is not a tuned one. It is
+RELATIVE to the staff's own median because a faint scan's real lines only cover
+0.5–0.7. Slides by 1 or 2, never 3 (a window three spaces off shares no line
+with the true staff). ⚠️ **Fixing this uncovered the next problem rather than
+finishing one:** with Violin 1 placed correctly its highest notes fall in the
+gap above its own cell and inside the Timpani's, and are awarded to the timpani
+by `_dedupe_cross_staff_detections`, which resolves a contested glyph by
+distance to the nearer band. See the attribution report.
+
+**Which staff a contested glyph belongs to is decided by CONTEXT, not by
+distance** (`transcribe._dedupe_cross_staff_detections`). A measure cell is cut
+with padding above and below so ledger notes are not sliced off, and on a
+conductor's page those bands overlap, so the same ink is detected once per
+staff. The old rule kept the copy on the NEARER five-line band — which is wrong
+for exactly the case the padding exists for, because an engraver opens the gap
+above a staff *for* its ledger notes and they then sit nearer the staff above.
+Measured on Brahms: Violin 1's `A6`/`B♭6` exported as `A♭1`/`B♭1` on a timpani
+while Violin 1's bars 3 and 4 came out empty. Three kinds of evidence now
+apply, in the order a reader uses them:
+
+1. **The ledger ladder** — about the glyph. A ledger note is joined to its staff
+   by an unbroken run of ledger lines; the violin's cells carry three rungs per
+   note-column at its own ledger positions and there is not one rung between
+   those notes and the timpani. COMPLETENESS BEFORE COUNT — an unbroken ladder
+   outranks a broken one however long, because a gap is what you see when the
+   rungs belong to something else lying in the way.
+2. **The instrument's written range** — about the part. Two Beethoven bassoon
+   staves contested one notehead and distance kept `A♭1`, MIDI 32, below the
+   bassoon's `instruments.written_range` of (34, 72), discarding a C4 inside it.
+   The staff's instrument comes from the DOSSIER (the contextual pass names
+   parts only after this runs), on its usual terms — staff count must equal part
+   count, else it abstains. A veto on the IMPOSSIBLE, never on the unlikely.
+3. **Distance**, unchanged, as the tie-break — and with neither ledger lines nor
+   a dossier it is still the whole rule, so those pages are byte-identical.
+
+⚠️ **The cell pad is 4 spaces or 6, never in between** (`measure_extractor`).
+The arbitration is useless if the note is not in its own staff's cell at all, so
+the pad GROWS where the neighbouring staff is more than 6 spaces away. It must
+not grow otherwise: cell height is coupled to `OMR_IMGSZ`, so it moves
+DETECTIONS and not just crops. Measured — a flat 6 costs Mahler and Beethoven
+(+20, +59) whose staves sit 1.7 and 3.4 apart; bounding it by the gap instead
+starves Mahler's cells of their own stems (duration rate 0.864 → 0.455); and a
+marginal 4.0 → 4.6 growth costs the authored `ensemble` fixture three notes of
+45. Two rewrites were measured and rejected: one-winner-per-cluster scores worse
+(IoU overlap is not transitive, so it chains distinct glyphs together), and
+applying strong verdicts before weak ones changes nothing measurable.
+
+**Body text is no longer detected as staves** (fixed 2026-08-28). Row ink-count alone passed the line-length test on justified paragraphs; `staff_detector` now also requires the lines to be *continuous strokes* rather than rows of glyphs (`_line_ink_runs_per_space`). Music tops out at 1.39 runs per staff-space, text starts at 2.02. All music-only scores byte-identical.
 
 - **End-to-end clef accuracy is 92%, and the detector does most of the work.** Measured 2026-08-29 on 52 hand-read staves (`benchmarks/omr-clef-geometry/eval_pipeline_clefs.py`, `PIPELINE_CLEF_RESULTS.md`): the detector supplies 39 of them at 95% accuracy, the positional default 11 at 82%, the CV locator 2 at 100%. This is the number that matters downstream — a staff carries its clef into every pitch on it and into which slot table its key signature is fitted — and it is much better than the coverage figures below, which are about the CV LOCATOR alone and predate the `imgsz` fix. Every remaining error is a non-treble clef read as treble. A staff that read no clef now takes the clef its own part read in another system when every reading agrees (`contextual._fill_defaulted_clefs`), worth 48/52 → 49/52. With `--dossier`, the work's own parts are joined to the page's slots on the margin LABELS (never on the clefs, which would be circular) and supply the clef where that join is anchored by a label above and below — **50/52 (96%)**. Score-order identity driving clef correction was measured and rejected there: it fixes one staff and breaks another.
 
-- **CV-locator coverage is ~30% on 19th-century prints, ~7% on orchestral, and reading is reliable where it happens.** Coverage is measured by `benchmarks/omr-clef-geometry/probe_clef_rejection.py` (one rejecting branch per header cell); precision by `benchmarks/omr-clef-geometry/check_clef_precision.py` (four corpora — engraved reference sheet, braced piano, a scanned-orchestral spot check, and the hand-read page). **Run both — never one alone**; every promising change in this area has looked like a large gain on one while losing on the other. **The oversized-cluster branch holds most of the rest** — the clef fuses into a cluster bigger than any C clef and the locator stops. Two causes are fixed: the header window fixed the horizontal, and running the ink-fraction test BEFORE the size test fixed *sparse* blockers. The third is diagnosed with a fix written and **off by default** (`ClefLocatorConfig.cluster_y_gap_spaces`): grouping header ink by proximity in both axes stops the movement heading above the staff being strung into the clef's cluster, worth Nottebohm 61 → 72 and Beethoven 5 27 → 33, but of the 19 staves it adds, 5 are bass clefs read as C clefs. **The blocker is `_has_f_clef_dots`**, which is the only thing separating an F clef from a C clef and cannot fire when the dots merge into the clef's body on a degraded print — fix that and the coverage is waiting behind a config default. Scoped in `benchmarks/omr-clef-geometry/NEXT_SESSION_HEADER_CLUSTER.md`; the measurements, ten closed approaches, and two ways the measurements themselves went wrong are in `benchmarks/omr-clef-geometry/RESULTS.md`.
+- **The CV clef locator reads 8 of 24 real C clefs on hand-read orchestral pages, and declines all 163 staves that carry none** (`orchestral-clef-truth.json`, 10 pages / 187 staves / 4 publishers). An earlier 8-of-10 was a four-page sample and flattered it. Do NOT quote `located / all header cells` (58/720 = 8.1% orchestral) as coverage — most orchestral staves are treble or bass and correctly get nothing, so that ratio is not recall. `probe_cluster_too_big.py` is what separates a rejection from a loss: it cross-tabulates each staff's rejecting branch against its hand-read clef. **The fused cluster (`cluster too big`, 52.9% of orchestral header cells) costs 1 C clef against 90 correct refusals — it is a G clef being seven staff spaces tall, not a bug. Do not go after it.** The leading cost is the single-dot veto: turning `dot_single_clear_is_enough` off recovers 5 real C clefs for 1 false positive (recall 8/24 → 13/24) on that hand-read corpus, the opposite of what the sweep corpora said — **a sweep corpus is built from the candidates the locator fires on, so it oversamples staves where it produces something and cannot answer 'what does this rule cost in the wild'.** Branch shares come from `probe_clef_rejection.py` (orchestral scores only); precision from `check_clef_precision.py` (engraved reference sheet, braced piano, a scanned-orchestral spot check, and one SWEEP corpus per edition). **Nottebohm is out of every harness and test — orchestral scores only.** **Run both — never one alone**; every promising change in this area has looked like a large gain on one while losing on the other. Vertical header clustering (`ClefLocatorConfig.cluster_y_gap_spaces`) is **on** as of 2026-08-31 — Nottebohm 69 → 77 located of 206 for one extra false positive, a flat rate, with reference 5/5, coverage 7/9, `eval_score_order` and `eval_pipeline_clefs` (69/69) all unmoved. **A sweep corpus is built from the locator's own reads**, so unlike the older corpora it cannot be blind to what the locator gets wrong: adding a second edition (`mahler5-clef-sweep.json`, Edition Peters) took the reported FALSE POSITIVES from 7 to **48** without a single regression — they were always there. Twenty-four of Mahler's 41 are not misread clefs at all but the stacked instrument numbers Peters prints LEFT of the bracket, a family the Beethoven scan cannot show. **Never tune a clef threshold on one edition**: a tenor symmetry floor separates cleanly on Beethoven (gap +0.015) and is impossible on Mahler (overlap 0.137) — refused, see `clef_symmetry_populations.py`. What worked instead was POSITION, not shape (`require_cluster_on_staff`, shipped): a cluster ending before the staff's own printed lines begin is margin ink — instrument numbers, the brace — and is SKIPPED, not stopped for, so the clef behind it is still found. **FALSE POSITIVES 48 → 21** (Mahler 41 → 14, Beethoven 7 → 7 exactly neutral) for 2 Mahler misses, and Nottebohm coverage went UP 77 → 79 because skipping beats rejecting. **The F-clef dot veto was then fixed by POSITION too, not shape: FALSE POSITIVES 21 → 13 at zero cost.** The dots of a misread bass clef sit PAST the body's right edge (0.94–1.79 w) where a C clef has nothing, so a second, looser reading of the same two dots is admitted only out there (`dot_clear_right_fraction`) — and the real-clef cost is identically 0 for every height and aspect tried, on both editions, where loosening height at the old 0.55w position cost 27 clefs. It is a second tier, so every veto that fired before still fires. **Then a SINGLE clear dot was made enough on its own (`dot_single_clear_is_enough`): FALSE POSITIVES 13 → 5.** Unlike everything else here this is a TRADE, taken deliberately — 8 false positives removed for 20 declined C clefs (sweep misses 8 → 24, Nottebohm located 79 → 77, orchestral misses 5 → 7). It is defensible because a declined C clef leaves its staff on the default it would have had without the locator, while an accepted F clef transposes every note on the staff; no measurement makes it free. `eval_pipeline_clefs` still holds 69/69 (the contextual layer's `slot_continuity` picks up what the locator drops), `eval_score_order`'s read-clefs arm fell 10 named/5 correct to 8/3, and that is a COVERAGE effect, not an accuracy one: La Mer is byte-identical and the whole movement is Beethoven 5 p.15, where the veto removed one right clef (Viola/alto) and one wrong one (Violin/soprano). The 5 that remain are 3 bass + 2 treble; the G clefs are out of a dot veto's reach by construction. The staff's left edge is a horizontal run ≥ 4 spaces, and where that lands more than 4 spaces into the header window the measurement has FAILED (broken lines) and the rule ABSTAINS (`staff_left_max_spaces`) — 173 of 174 sweep staves land under 3.55 spaces, the outlier at 6.77 is the one staff the rule wrongly cost, and it is now recovered: sweep misses 9 → 8 with nothing else moving. Measuring the edge from the BAND profile instead (`staff_header._walk_left`) was built and REFUSED — it swallows the instrument name, and every variant that recovered that clef cost 2–3 false positives. The measurements, the closed approaches, and the ways the measurements themselves went wrong are in `benchmarks/omr-clef-geometry/RESULTS.md`.
 
 - **Orchestral conductor's scores.** The current model was trained predominantly on DSv2 (synthetic) + 60 hand-labeled real cells. Dense conductor's scores (Mahler 5, Debussy La Mer) work but with more false negatives on small dynamics + grace notes. The labeling pipeline (`tools/omr/annotate`) is the path to fixing this.
 

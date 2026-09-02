@@ -15,6 +15,8 @@ from tools.omr.export import (
     annotate_beams,
     annotate_slurs,
     measure_dynamics,
+    _compute_divisions,
+    _tuplet_runs,
     _mxl_note,
     _DURATION_TABLE,
     _dotted_duration_for_beats,
@@ -692,3 +694,173 @@ class TestDynamicsAndSlurs:
         assert xml.count("<notations>") == 1
         assert '<tie type="start"/>' in xml
         assert '<slur number="1" type="start"/>' in xml
+
+
+# ─── Tuplets ────────────────────────────────────────────────────────────────
+
+
+def _tuplet_result():
+    """One 3/4 bar: a half note, then a beamed eighth-note triplet.
+
+    The shape of Mahler 5's opening trumpet call (there in 2/2 with a quarter
+    rest between, dropped here so the fixture is only about the tuplet), which
+    is where the cost of dropping tuplets was measured — 15 wrong durations,
+    all of them a triplet read straight, 87 of that work's 154 OMR-NED edits.
+    """
+    def head(x, pitch, beats, dur_type, tuplet=False):
+        nh = {"category": "notehead", "class": "noteheadBlackInSpace",
+              "pitch": pitch, "duration_beats": beats,
+              "duration_type": dur_type, "dots": 0,
+              "bbox": [x, 100, 30, 20], "bbox_page": [x, 100, 30, 20]}
+        if tuplet:
+            nh["beam_levels"] = 1
+            nh["tuplet"] = {"actual": 3, "normal": 2}
+            nh["tuplet_group"] = 1
+        return nh
+
+    time_sig = {"numerator": 3, "denominator": 4}
+    dets = [
+        head(10, "D#4", 2.0, "half"),
+        head(100, "D#4", 1 / 3, "eighth", tuplet=True),
+        head(160, "D#4", 1 / 3, "eighth", tuplet=True),
+        head(220, "D#4", 1 / 3, "eighth", tuplet=True),
+    ]
+    return {
+        "source_pdf": "synthetic.pdf",
+        "pages": [{
+            "page_index": 0, "n_systems": 1,
+            "systems": [{
+                "system_index": 0, "n_staves": 1,
+                "staves": [{
+                    "staff_index": 0, "clef": "treble",
+                    "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+                    "time_signature": time_sig, "n_measures": 1,
+                    "measures": [{
+                        "measure_index": 0, "bbox_page_px": [0, 0, 300, 50],
+                        "clef": "treble",
+                        "key_signature": {"sharps": 0, "flats": 0,
+                                          "alterations": {}},
+                        "time_signature": time_sig,
+                        "n_detections": len(dets), "detections": dets,
+                    }],
+                }],
+            }],
+        }],
+    }
+
+
+class TestComputeDivisions:
+    """`divisions` is an LCM, not a max, and that is what tuplets need.
+
+    A triplet eighth is 1/3 of a quarter. The old ladder took the largest
+    power of two, and 16 thirds is not a whole number, so every triplet got a
+    rounded `<duration>` and the bar came out the wrong length.
+    """
+
+    @staticmethod
+    def _with_beats(*beats):
+        result = _tiny_result_empty_measure({"numerator": 4, "denominator": 4})
+        measure = result["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        measure["detections"] = [
+            {"category": "notehead", "class": "noteheadBlackInSpace",
+             "pitch": "C4", "duration_beats": b, "duration_type": "eighth",
+             "dots": 0, "bbox": [i * 40, 100, 30, 20]}
+            for i, b in enumerate(beats)
+        ]
+        return result
+
+    @pytest.mark.parametrize("beats, expected", [
+        ((1.0,), 4),
+        ((0.5, 0.25), 4),
+        ((0.125,), 8),
+        ((0.0625,), 16),
+        ((0.03125,), 32),
+    ])
+    def test_plain_note_values_are_unchanged(self, beats, expected):
+        """Every power-of-two denominator: the LCM of powers of two IS their
+        maximum, so scores without tuplets get exactly the old number."""
+        assert _compute_divisions(self._with_beats(*beats)) == expected
+
+    def test_a_third_forces_a_multiple_of_three(self):
+        assert _compute_divisions(self._with_beats(1 / 3)) % 3 == 0
+
+    def test_thirds_and_sixteenths_together(self):
+        """max() would return 16 here and 16 thirds is not an integer."""
+        divisions = _compute_divisions(self._with_beats(1 / 3, 0.0625))
+        assert divisions % 3 == 0 and divisions % 16 == 0
+
+    def test_noise_cannot_blow_divisions_up(self):
+        assert _compute_divisions(self._with_beats(0.4999)) == 4
+
+
+class TestTupletRuns:
+    @staticmethod
+    def _event(group=None):
+        nh = {"pitch": "C4"}
+        if group is not None:
+            nh["tuplet"] = {"actual": 3, "normal": 2}
+            nh["tuplet_group"] = group
+        return {"kind": "chord", "duration_type": "eighth",
+                "duration_beats": 1 / 3, "dots": 0, "noteheads": [nh]}
+
+    def test_one_run(self):
+        events = [self._event(), *[self._event(1) for _ in range(3)]]
+        assert _tuplet_runs(events) == [(1, 3, {"actual": 3, "normal": 2})]
+
+    def test_two_groups_are_two_runs(self):
+        events = [*[self._event(1) for _ in range(3)],
+                  *[self._event(2) for _ in range(3)]]
+        assert [(a, b) for a, b, _ in _tuplet_runs(events)] == [(0, 2), (3, 5)]
+
+    def test_a_plain_note_between_breaks_the_run(self):
+        events = [self._event(1), self._event(), self._event(1)]
+        assert [(a, b) for a, b, _ in _tuplet_runs(events)] == [(0, 0), (2, 2)]
+
+    def test_no_tuplets_no_runs(self):
+        assert _tuplet_runs([self._event(), self._event()]) == []
+
+    def test_a_rest_carries_no_tuplet(self):
+        rest = {"kind": "rest", "duration_type": "quarter",
+                "duration_beats": 1.0, "dots": 0, "noteheads": []}
+        assert _tuplet_runs([rest]) == []
+
+
+class TestTupletExport:
+    def test_musicxml_writes_the_ratio_on_every_note(self):
+        xml = to_musicxml(_tuplet_result())
+        assert xml.count("<time-modification>") == 3
+        assert "<actual-notes>3</actual-notes>" in xml
+        assert "<normal-notes>2</normal-notes>" in xml
+
+    def test_musicxml_brackets_the_run_once(self):
+        xml = to_musicxml(_tuplet_result())
+        assert xml.count('<tuplet type="start" number="1"/>') == 1
+        assert xml.count('<tuplet type="stop" number="1"/>') == 1
+
+    def test_musicxml_keeps_the_written_note_value(self):
+        """A triplet eighth is printed as an eighth; the ratio does the rest."""
+        xml = to_musicxml(_tuplet_result())
+        assert xml.count("<type>eighth</type>") == 3
+
+    def test_musicxml_bar_is_the_right_length(self):
+        """Half + three triplet eighths = 3 quarters, which is the 3/4 bar.
+        Getting `divisions` wrong shows up here and nowhere else: at the old
+        divisions=4 each triplet eighth rounds to 1 unit and the bar is short.
+        """
+        root = ET.fromstring(to_musicxml(_tuplet_result()))
+        divisions = int(root.find(".//divisions").text)
+        total = sum(int(d.text) for d in root.findall(".//note/duration"))
+        assert total == 3 * divisions
+
+    def test_musicxml_parses(self):
+        ET.fromstring(to_musicxml(_tuplet_result()))
+
+    def test_lilypond_wraps_the_run(self):
+        out = to_lilypond(_tuplet_result())
+        assert "\\tuplet 3/2 {" in out
+        assert out.count("\\tuplet") == 1
+
+    def test_lilypond_keeps_the_note_outside_the_run_outside(self):
+        out = to_lilypond(_tuplet_result())
+        line = next(ln for ln in out.splitlines() if "\\tuplet" in ln)
+        assert line.index("dis'2") < line.index("\\tuplet")

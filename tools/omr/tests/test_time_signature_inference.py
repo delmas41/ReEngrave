@@ -243,33 +243,48 @@ _DET_66 = {"numerator": 6, "denominator": 6, "raw": "6/6"}       # implausible (
 
 
 class TestDetectedPropagation:
+    # A meter is printed on every staff of a system, and once read it is carried
+    # onto every later measure of its staff. So the unit of evidence is the
+    # STAFF, not the measure: these fixtures give each witness its own staff,
+    # where they used to stack repeated measures on one. See
+    # `test_one_staff_carrying_a_meter_cannot_speak_for_a_page` for the failure
+    # that forced the change.
+
     def test_common_time_glyph_propagates(self):
-        # C detected on 4 staff-measures, rest null -> propagate 4/4.
-        staff_a = [dict(_measure([], measure_index=0), time_signature=dict(_DET_C))
-                   for _ in range(4)]
-        staff_b = [_measure([], measure_index=0) for _ in range(4)]  # all null
-        page = _page([_system([staff_a]), _system([staff_b])])
-        meter = _dominant_detected_meter(page)
+        # C read on both staves of a two-staff page.
+        staves = [[dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
+                   for i in range(4)] for _ in range(2)]
+        meter = _dominant_detected_meter(_page([_system(staves)]))
         assert meter is not None
         assert meter["raw"] == "C" and meter["source"] == "detected_propagated"
-        assert meter["votes"] == 4
+        assert meter["votes"] == 2
 
     def test_cut_common_glyph_propagates(self):
-        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_CUT))
-              for i in range(3)]
-        meter = _dominant_detected_meter(_page([_system([ms])]))
+        staves = [[dict(_measure([], measure_index=i), time_signature=dict(_DET_CUT))
+                   for i in range(3)] for _ in range(2)]
+        meter = _dominant_detected_meter(_page([_system(staves)]))
         assert meter is not None and meter["raw"] == "C|"
         assert (meter["numerator"], meter["denominator"]) == (2, 2)
 
     def test_plausible_digit_meter_propagates(self):
-        # A real printed digit meter (3/4 on a movement's first page) — now
-        # that left-edge misreads are filtered upstream, this propagates.
-        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_34))
-              for i in range(5)] + [_measure([], measure_index=5) for _ in range(3)]
-        meter = _dominant_detected_meter(_page([_system([ms])]))
+        # A real printed digit meter (3/4 on a movement's first page).
+        staves = [[dict(_measure([], measure_index=i), time_signature=dict(_DET_34))
+                   for i in range(5)] + [_measure([], measure_index=5)]
+                  for _ in range(3)]
+        meter = _dominant_detected_meter(_page([_system(staves)]))
         assert meter is not None
         assert meter["raw"] == "3/4" and meter["source"] == "detected_propagated"
         assert (meter["numerator"], meter["denominator"]) == (3, 4)
+
+    def test_one_staff_carrying_a_meter_cannot_speak_for_a_page(self):
+        # Beethoven 5 scan page 3: ONE `timeSig4` at confidence 0.42, on one
+        # staff of nineteen, carried onto all eighteen of that staff's bars and
+        # arriving as eighteen unanimous votes for common time — on a 2/4 page.
+        # Counting measures, this propagated; counting staves, it cannot.
+        loud = [dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
+                for i in range(18)]
+        quiet = [[_measure([], measure_index=i) for i in range(18)] for _ in range(18)]
+        assert _dominant_detected_meter(_page([_system([loud] + quiet)])) is None
 
     def test_implausible_digit_meters_never_propagate(self):
         # Garbage that could survive upstream filtering (den not power-of-two,
@@ -280,17 +295,22 @@ class TestDetectedPropagation:
             assert _dominant_detected_meter(_page([_system([ms])])) is None, bad
 
     def test_below_min_count_abstains(self):
-        ms = [dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
-              for i in range(2)]  # only 2 < min_count 3
-        assert _dominant_detected_meter(_page([_system([ms])])) is None
+        # One staff of four read a meter: unanimous among the staves that spoke,
+        # and still a minority of the page.
+        loud = [dict(_measure([], measure_index=0), time_signature=dict(_DET_C))]
+        quiet = [[_measure([], measure_index=0)] for _ in range(3)]
+        assert _dominant_detected_meter(_page([_system([loud] + quiet)])) is None
 
     def test_propagation_takes_priority_over_beatsum(self):
         # C detected on 3 measures + 6 clean 3/4-length bars. Detection wins
         # (4/4), beat-sum (which would say 3/4) is not consulted.
-        detected = [dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
-                    for i in range(3)]
-        threes = [_measure(_quarters(3), measure_index=3 + i) for i in range(6)]
-        page = _page([_system([detected + threes])])
+        staves = []
+        for _ in range(2):
+            detected = [dict(_measure([], measure_index=i), time_signature=dict(_DET_C))
+                        for i in range(3)]
+            staves.append(detected + [_measure(_quarters(3), measure_index=3 + i)
+                                      for i in range(6)])
+        page = _page([_system(staves)])
         meter = backfill_page_time_signatures(page)
         assert meter["raw"] == "C" and meter["source"] == "detected_propagated"
         # the null 3/4-length bars got back-filled with the propagated 4/4
@@ -300,7 +320,9 @@ class TestDetectedPropagation:
         # Second call must not re-count the meters the first call back-filled.
         staff = [dict(_measure([], measure_index=0), time_signature=dict(_DET_C))
                  for _ in range(3)] + [_measure([], measure_index=1) for _ in range(3)]
-        page = _page([_system([staff])])
+        other = [dict(_measure([], measure_index=0), time_signature=dict(_DET_C))
+                 for _ in range(3)]
+        page = _page([_system([staff, other])])
         first = backfill_page_time_signatures(page)
         second = backfill_page_time_signatures(page)
         assert first["raw"] == second["raw"] == "C"

@@ -28,6 +28,7 @@ that agrees with its dossier produces an empty list, so a clean run is unchanged
 from __future__ import annotations
 
 import json
+import os
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -407,6 +408,15 @@ def join_parts_to_slots(
     would be circular exactly where it matters. Labels come from `staff_labels`
     via slots, so a name read in one system reaches every system of the page.
 
+    A label does more than score a pair. Where it resolves unambiguously it PINS
+    its part, and the alignment runs only on the spans between pins — because the
+    monotone path is right about score order and wrong about a particular
+    engraving, and it is the margin that knows which. Beethoven 5 p.48 prints the
+    timpani above the trombones where the part list has them below, and without
+    pinning the three trombone staves are unreachable: 12 of 17 staves, against
+    17 of 17 with. See `score_layouts.align_to_layout_pinned` and
+    `benchmarks/omr-part-staff-join-2026-08/RESULTS.md`.
+
     Each entry carries `anchored`: whether that slot lies BETWEEN two labelled
     slots. Measured on Beethoven 5 p.2 and the Pastoral p.2, the join is right
     on 7 of 7 wind staves — including an unlabelled bassoon, pinned by the
@@ -415,8 +425,8 @@ def join_parts_to_slots(
     part is dropped or condensed onto the fourth staff. Between anchors the
     alignment has no room to slip; past the last one it is guessing.
     """
-    from .score_layouts import ScoreLayout, align_to_layout
-    from .instruments import lookup
+    from .score_layouts import ScoreLayout, align_to_layout_pinned
+    from .instruments import AMBIGUOUS_ALIASES, lookup
 
     parts = dossier.get("parts") or []
     if not parts or n_slots <= 0:
@@ -430,20 +440,40 @@ def join_parts_to_slots(
     # "Clarinetti" from the margin are the same instrument to the aligner.
     names = tuple(canonical(p.get("name")) for p in parts)
     layout = ScoreLayout(name=dossier.get("work_id", "dossier"), parts=names)
-    _score, assignment = align_to_layout(
+    # Which labels may PIN. An ambiguous alias may not: `Tp.` is Timpani or
+    # Trumpet and `Basso` is a voice or the contrabasses, and POSITION is what
+    # settles those — which is the one thing a pin takes off the table. The raw
+    # text is the only place that judgement can be made, because canonicalising
+    # has already picked a reading by the time the aligner sees it.
+    #
+    # It is the ALIAS that matched that must be tested, not the label. A margin
+    # reads "Cor. 1. 2." as often as "Cor.", and the two are the same ambiguity;
+    # testing the whole label lets the numbered form through and pins a staff on
+    # a reading the lexicon itself will not commit to. "Corni 1. 2." is left
+    # pinnable, because `corni` is not ambiguous — only the abbreviation is.
+    def unambiguous(text: str | None) -> bool:
+        match = lookup(text or "")
+        return match is not None and match.alias not in AMBIGUOUS_ALIASES
+
+    pinnable = {i for i, v in (labels or {}).items() if unambiguous(v)}
+    absorbed: dict[int, list[int]] = {}
+    assignment, _pins = align_to_layout_pinned(
         layout, n_slots,
         labels={i: canonical(v) for i, v in (labels or {}).items()},
         part_clefs=[p.get("written_clef") for p in parts],
         allow_merge=True,
-        # Indices, not names: this work's parts repeat their names — "Violin 1"
-        # and "Violin 2" are one instrument and two parts — and only the index
-        # says which slot got which.
-        return_indices=True,
+        pinnable=pinnable,
+        absorbed=absorbed,
     )
+    # The assignment is part INDICES, not names: this work's parts repeat their
+    # names — "Violin 1" and "Violin 2" are one instrument and two parts — and
+    # only the index says which slot got which.
 
     anchored: set[int] = set()
     if labels:
-        anchored = set(range(min(labels), max(labels) + 1))
+        last = max(labels)
+        anchored = set(range(min(labels), last + 1))
+        anchored |= _determined_tail(absorbed, last, n_slots, len(parts))
 
     out: list[dict[str, Any] | None] = []
     for slot, index in enumerate(assignment):
@@ -454,6 +484,55 @@ def join_parts_to_slots(
             if part else None
         )
     return out
+
+
+# Whether the staves BELOW the last label may be trusted too. Off by default is
+# not an option here — the question is which rule, and there are three, two of
+# which have been measured and lost.
+# `OMR_TAIL_RULE` overrides it, so the arms can be compared without editing.
+TAIL_RULE = os.environ.get("OMR_TAIL_RULE", "exact")   # "none" | "exact" | "all"
+
+
+def _determined_tail(absorbed: dict[int, list[int]], last_label: int,
+                     n_slots: int, n_parts: int) -> set[int]:
+    """The staves below the last label, when the arithmetic leaves them no freedom.
+
+    Past the last label the alignment is guessing, which is why `anchored` has
+    always stopped there — and why the obvious fix of trusting to the foot of the
+    system was measured and rejected at 50/52 -> 44/52.
+
+    But "guessing" is not one thing. Count what is left: if the staves below the
+    last label are exactly as many as the parts still unassigned above them, a
+    monotone alignment has **one** option. It cannot merge (that would leave a
+    staff empty), extend (same), or skip a part (same). There is nothing left to
+    get wrong, and the earlier rejection was of trusting the tail
+    UNCONDITIONALLY — where the count has slack, the guess is real.
+
+    Measured on the three ground-truth pages: the two exact tails are right on
+    11 of 11 staves (Beethoven 5 p.48's seven, the Pastoral's four), and
+    Beethoven 5 p.2 — whose tail has five staves for seven parts, so two merges
+    are free to land anywhere — is right on four of five and stays gated.
+
+    `absorbed` rather than the assignment, because the count is the whole rule
+    and the assignment cannot express a condensed staff: it reports one part per
+    staff, so the second of a pair looks unconsumed and every tail below a
+    condensation is reported as having one more part available than it has.
+    """
+    tail = list(range(last_label + 1, n_slots))
+    if not tail or TAIL_RULE == "none":
+        return set()
+    if TAIL_RULE == "all":
+        return set(tail)
+    # Every part the staves above the tail actually took — including the ones a
+    # CONDENSED staff absorbed, which the assignment alone does not report. The
+    # Pastoral is the case: its horn staff takes both horn parts, and counting
+    # from the assignment leaves the second one looking available.
+    used = {part for slot, taken in absorbed.items() if slot <= last_label
+            for part in taken}
+    if not used:
+        return set()
+    free = [p for p in range(max(used) + 1, n_parts) if p not in used]
+    return set(tail) if len(tail) == len(free) else set()
 
 
 def slot_facts_for_system(n_staves: int,

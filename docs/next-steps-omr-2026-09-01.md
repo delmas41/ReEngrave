@@ -11,8 +11,8 @@ python3 -m tools.omr.omr_ned --bootstrap                 # once
 python3 -m tools.omr.training.orchestral_eval --omr-ned
 ```
 
-**Pooled OMR-NED 0.2595** on the engraved orchestral benchmark (Mahler 0.0826,
-Beethoven 0.1714, Brahms 0.3730), down from **0.3164** at the start of
+**Pooled OMR-NED 0.2263** on the engraved orchestral benchmark (Mahler 0.0455,
+Beethoven 0.1775, Brahms 0.3302), down from **0.3164** at the start of
 2026-08-31. Lower is better; it is the metric OMR papers report
 (*Sheet Music Benchmark*, ISMIR 2025). Full reading in
 `benchmarks/omr-ned-2026-08/FINDINGS.md`.
@@ -40,18 +40,44 @@ tools/omr/export.py` returned 0 while `beam_levels` sat on 271 noteheads.
 
 ## Ranked next steps
 
-### 1. Attribute `wrong note` — now 44% of the budget, and unexplained
+### 1. Attribute `wrong note` — DONE 2026-09-01, and the answer is SYSTEMATIC
 
-The single largest category, 808 pooled edits. One cause is already known and
-fixed (the Brahms contrabass staff, 42 of that page's 65 wrong pitches). **What
-remains has not been attributed at all.** Do for the residue what
-`BRAHMS_ATTRIBUTION_2026-09-01.md` did for the page: align each part, bucket the
-pitch deltas, and see whether the rest is systematic or scattered. The method is
-in that file and takes about twenty minutes.
+`benchmarks/omr-ned-2026-08/WRONG_NOTE_ATTRIBUTION_2026-09-01.md`. The part of
+the budget that disagrees in no pattern at all is **59 edits, 3.3%**; nothing in
+it argues for detector work. Two things this step corrected on its way:
+`wrong note` is `noteins`/`notedel` and NOT wrong pitches (`wrong pitch` is a
+separate musicdiff category and is zero here), and aligning on pitch names — the
+method in `BRAHMS_ATTRIBUTION_2026-09-01.md` — cannot see a uniformly transposed
+part at all.
 
-Expect the answer to decide everything after it. If the residue is systematic,
-it is another cheap fix; if it is scattered, it is the first thing this session
-found that genuinely argues for detector work.
+What it found, ranked, replaces the rest of this list at the top:
+
+- ~~**Tuplets detected and never consumed**~~ — **DONE**, pooled
+  0.2595 → **0.2489**, Mahler 0.0826 → **0.0455** (154 → 86 edits), Beethoven
+  and Brahms unchanged to the edit, phase-1 layout unchanged, authored fixtures
+  identical. The fifth instance of the beams/dots/dynamics shape, and it was
+  export-and-resolution again: the detections were in the JSON and nothing read
+  them. See the FIXED section of the attribution report.
+- ~~**Brahms Violin 1's staff window is two spaces high**~~ — **DONE**, pooled
+  0.2489 → **0.2449**, Brahms recall 0.800 → 0.824. Coverage went in beside
+  thickness as a second signal and found **five more misfitted windows** across
+  bolero and beet5-p2 that nobody had seen. Net was −28 rather than −86 because
+  it uncovered the next item.
+- ~~**Cross-staff attribution of ledger notes**~~ — **DONE**, pooled
+  0.2449 → **0.2263**, Brahms recall 0.824 → **0.909**. Distance to the nearer
+  band is not how a note is read; the ledger LADDER (evidence about the glyph)
+  and the instrument's written RANGE (evidence about the part) now decide, with
+  distance as the tie-break. The cell pad also had to grow — but only where
+  there is unambiguously room, since cell height moves detections.
+- **The bassoon pair Beethoven still gets wrong.** Two adjacent bassoon staves
+  contest one notehead; one bar resolves on the range veto and the identical bar
+  beside it does not. Worth ~8 edits. The ladder cannot help — the note is near
+  both staves — so it is the pair ordering reaching the veto inconsistently.
+- **A spurious whole note on Beethoven's Flute 1 m1**, older than any of this
+  work and never attributed.
+- **Beam level ±1 and lost dots** — the rest of the 452-edit rhythm bucket.
+  `_reconcile_measure_to_meter` declines correctly because it can move a beam
+  and not a dot.
 
 ### 2. Slurs that can span measures
 

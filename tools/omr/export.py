@@ -323,6 +323,30 @@ def _lily_event(event: dict[str, Any]) -> str:
     return f"<{' '.join(pitches)}>{lily_suffix}{dot_str}{tie_suffix}"
 
 
+def _lily_measure(events: list[dict[str, Any]]) -> str:
+    """One measure of events as LilyPond, with tuplet runs wrapped.
+
+    `\\tuplet 3/2 { c8 c8 c8 }` — the notes keep their WRITTEN value (`8`),
+    which is what `_lily_event` already emits, and the wrapper supplies the
+    ratio. Defined here rather than inside `_lily_event` because a tuplet is a
+    property of a RUN of events and `_lily_event` renders one.
+    """
+    runs = {first: (last, ratio) for first, last, ratio in _tuplet_runs(events)}
+    out: list[str] = []
+    i = 0
+    while i < len(events):
+        run = runs.get(i)
+        if run is None:
+            out.append(_lily_event(events[i]))
+            i += 1
+            continue
+        last, ratio = run
+        inner = " ".join(_lily_event(ev) for ev in events[i:last + 1])
+        out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
+        i = last + 1
+    return " ".join(out)
+
+
 def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     """Render one OMR staff as a LilyPond `\\new Staff { ... }` block.
 
@@ -374,11 +398,11 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             v2_events = voices[1] if len(voices) >= 2 else voices[0] if voices else []
             empty_rest = _lily_measure_rest(m_time)
             v1_lines.append(
-                f"{indent}    " + " ".join(_lily_event(ev) for ev in v1_events)
+                f"{indent}    " + _lily_measure(v1_events)
                 + " |" if v1_events else f"{indent}    {empty_rest} |"
             )
             v2_lines.append(
-                f"{indent}    " + " ".join(_lily_event(ev) for ev in v2_events)
+                f"{indent}    " + _lily_measure(v2_events)
                 + " |" if v2_events else f"{indent}    {empty_rest} |"
             )
         lines.append(f"{indent}  <<")
@@ -395,8 +419,7 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             if not events:
                 lines.append(f"{indent}  {_lily_measure_rest(m_time)} |")
                 continue
-            rendered = " ".join(_lily_event(ev) for ev in events)
-            lines.append(f"{indent}  {rendered} |")
+            lines.append(f"{indent}  {_lily_measure(events)} |")
 
     lines.append(f"{indent}}}")
     return "\n".join(lines)
@@ -506,13 +529,28 @@ def _lcm(a: int, b: int) -> int:
     return a * b // _gcd(a, b)
 
 
+#: Any denominator past this is noise rather than a note value, and letting
+#: one through would blow `divisions` up for the whole score.
+_MAX_DURATION_DENOMINATOR = 64
+
+
 def _compute_divisions(result: dict[str, Any]) -> int:
     """Choose a `divisions` value (durations per quarter note) that makes
     every event's duration a whole-number multiple of 1/divisions.
 
-    We assume the shortest duration we see is 1/64th (1/16 quarter), so
-    divisions=16 covers most music. If we detect 128th notes (1/32 quarter)
-    we go to 32. Always at least 4 (sixteenth-note resolution).
+    LCM, NOT MAX, and that is what tuplets need. The old version searched a
+    power-of-two ladder and took the largest, which cannot represent a third:
+    a triplet eighth is 1/3 of a quarter, `max(16, 12)` is 16, and 16 thirds
+    is not an integer, so every triplet would be rounded to the wrong
+    `<duration>`. Taking the LCM of each duration's own denominator is exact.
+
+    **Output is unchanged for music without tuplets.** Every plain note value
+    has a power-of-two denominator, and the LCM of a set of powers of two is
+    their maximum — the same number the old ladder returned.
+
+    Durations arrive as floats (`round(beats, 6)`), so the denominator comes
+    from `Fraction.limit_denominator` rather than from a tolerance comparison:
+    0.333333 is 1/3 and no float tolerance small enough to be safe would say so.
     """
     divisions = 4
     for page in result.get("pages", []):
@@ -521,13 +559,11 @@ def _compute_divisions(result: dict[str, Any]) -> int:
                 for measure in staff.get("measures", []):
                     for det in measure.get("detections", []):
                         beats = det.get("duration_beats")
-                        if beats is None:
+                        if beats is None or beats <= 0:
                             continue
-                        # Find the smallest D such that beats * D is an int
-                        for D in (4, 8, 16, 32, 64, 128):
-                            if abs(beats * D - round(beats * D)) < 1e-6:
-                                divisions = max(divisions, D)
-                                break
+                        denom = Fraction(beats).limit_denominator(
+                            _MAX_DURATION_DENOMINATOR).denominator
+                        divisions = _lcm(divisions, denom)
     return divisions
 
 
@@ -603,7 +639,9 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               tied_to_next: bool = False,
               tied_from_prev: bool = False,
               beam_states: dict[int, str] | None = None,
-              slur_states: list[tuple[int, str]] | None = None) -> str:
+              slur_states: list[tuple[int, str]] | None = None,
+              time_modification: dict[str, int] | None = None,
+              tuplet_state: str | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -636,6 +674,17 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     lines.append(f"{indent}  <type>{xml_type}</type>")
     for _ in range(dots):
         lines.append(f"{indent}  <dot/>")
+    # <time-modification> sits after <dot> and before <beam>, per the MusicXML
+    # DTD's element order. It carries the tuplet RATIO; the <tuplet> in
+    # <notations> below is the bracket that draws it, and a reader needs the
+    # ratio even where no bracket is printed.
+    if time_modification:
+        lines.append(f"{indent}  <time-modification>")
+        lines.append(f"{indent}    <actual-notes>"
+                     f"{time_modification['actual']}</actual-notes>")
+        lines.append(f"{indent}    <normal-notes>"
+                     f"{time_modification['normal']}</normal-notes>")
+        lines.append(f"{indent}  </time-modification>")
     # <beam> sits after <type>/<dot> and before <notations>, per the MusicXML
     # DTD's element order. Levels ascend, 1 being the primary beam.
     for level in sorted(beam_states or {}):
@@ -649,6 +698,9 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
         notations.append(f'{indent}    <tied type="start"/>')
     for number, kind in (slur_states or []):
         notations.append(f'{indent}    <slur number="{number}" type="{kind}"/>')
+    # <tuplet> follows <slur> in the <notations> content model.
+    if tuplet_state:
+        notations.append(f'{indent}    <tuplet type="{tuplet_state}" number="1"/>')
     if notations:
         lines.append(f"{indent}  <notations>")
         lines.extend(notations)
@@ -878,6 +930,44 @@ def annotate_slurs(events: list[dict[str, Any]],
         events[under[-1]].setdefault("slur_states", []).append((number, "stop"))
 
 
+def _event_tuplet(event: dict[str, Any]) -> tuple[dict[str, int], int] | None:
+    """`({"actual": 3, "normal": 2}, group_id)` for a tuplet event, else None.
+
+    Read off the event's FIRST notehead, the same way `annotate_beams` reads
+    `beam_levels`, so nothing in `voicing` has to learn about tuplets. A rest
+    never carries one — see the note in `rhythm.resolve_rhythms_for_cell`.
+    """
+    heads = event.get("noteheads") or []
+    if not heads:
+        return None
+    ratio = heads[0].get("tuplet")
+    if not ratio:
+        return None
+    return ratio, int(heads[0].get("tuplet_group") or 0)
+
+
+def _tuplet_runs(events: list[dict[str, Any]]) -> list[tuple[int, int, dict[str, int]]]:
+    """Maximal runs of consecutive events sharing one tuplet group.
+
+    Consecutive matters: two triplets in a row are two brackets, and a run
+    broken by a plain note is two runs even inside one group id.
+    """
+    runs: list[tuple[int, int, dict[str, int]]] = []
+    start = None
+    current: tuple[dict[str, int], int] | None = None
+    for i, event in enumerate(events):
+        info = _event_tuplet(event)
+        key = info[1] if info else None
+        prev_key = current[1] if current else None
+        if key is None or key != prev_key:
+            if current is not None and start is not None:
+                runs.append((start, i - 1, current[0]))
+            start, current = (i, info) if info else (None, None)
+    if current is not None and start is not None:
+        runs.append((start, len(events) - 1, current[0]))
+    return runs
+
+
 def _mxl_voice_events(
     events: list[dict[str, Any]],
     voice: int,
@@ -896,10 +986,16 @@ def _mxl_voice_events(
     """
     lines: list[str] = []
     total_dur = 0
+    # Tuplet bracket ends, by event index, so `type="start"`/`"stop"` land on
+    # the run's outer notes rather than on every note in it.
+    tuplet_state_at: dict[int, str] = {}
+    for first, last, _ratio in _tuplet_runs(events):
+        tuplet_state_at[first] = "start"
+        tuplet_state_at[last] = "stop"
     # `<direction>` carries no duration, so it applies where it SITS in the
     # element order — emitted before the first event at or past its x.
     pending = sorted(directions or [])
-    for event in events:
+    for event_index, event in enumerate(events):
         event_x = event.get("x_position")
         while pending and (event_x is None or pending[0][0] <= event_x):
             lines.append(_mxl_direction(pending.pop(0)[1], indent))
@@ -908,6 +1004,9 @@ def _mxl_voice_events(
         )
         beats = event["duration_beats"]
         dur_units = max(1, int(round(beats * divisions)))
+        tuplet_info = _event_tuplet(event)
+        time_modification = tuplet_info[0] if tuplet_info else None
+        tuplet_state = tuplet_state_at.get(event_index)
         tied_to_next = bool(event.get("tied_to_next"))
         tied_from_prev = bool(event.get("tied_from_prev"))
         if event["kind"] == "rest":
@@ -928,6 +1027,10 @@ def _mxl_voice_events(
                     # A chord is beamed and slurred once, through its first note.
                     beam_states=(beam_states if ni == 0 else None),
                     slur_states=(event.get("slur_states") if ni == 0 else None),
+                    # The ratio applies to every chord member — it is what the
+                    # note is worth — but the bracket is drawn once.
+                    time_modification=time_modification,
+                    tuplet_state=(tuplet_state if ni == 0 else None),
                 ))
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.
@@ -936,6 +1039,145 @@ def _mxl_voice_events(
     for _x, word in pending:
         lines.append(_mxl_direction(word, indent))
     return lines, total_dur
+
+
+def _staff_measures_xml(
+    staff: dict[str, Any],
+    divisions: int,
+    start_number: int,
+    state: dict[str, Any],
+) -> list[str]:
+    """One staff's measures as `<measure>` blocks.
+
+    `state` carries the clef, key and time last written, and whether the
+    `<divisions>` have been emitted yet, so that a part stitched from several
+    systems restates an attribute only where it actually CHANGES — which is what
+    MusicXML means by an attribute — instead of once per system. Pass a fresh
+    dict for a part that begins here.
+    """
+    clef = staff.get("clef")
+    key_sig = staff.get("key_signature")
+    time_sig = staff.get("time_signature")
+    out: list[str] = []
+    for m_idx, measure in enumerate(staff.get("measures", [])):
+        m_clef = measure.get("clef") or clef
+        m_key = measure.get("key_signature") or key_sig
+        m_time = measure.get("time_signature") or time_sig
+
+        attrs_clef = m_clef if (m_clef != state.get("clef")) else None
+        attrs_key = m_key if (m_key != state.get("key")) else None
+        attrs_time = m_time if (m_time != state.get("time")) else None
+        include_divisions = not state.get("divisions_written")
+        has_attrs = include_divisions or attrs_clef or attrs_key or attrs_time
+
+        inner = []
+        if has_attrs:
+            inner.append(_mxl_attributes_block(
+                attrs_clef, attrs_key, attrs_time, divisions,
+                "      ", include_divisions,
+            ))
+        state["clef"] = m_clef
+        state["key"] = m_key
+        state["time"] = m_time
+        state["divisions_written"] = True
+
+        events = group_chords_in_measure(measure.get("detections", []))
+        voices = split_events_into_voices(events)
+        # Per voice: interleaved voices would break each other's runs.
+        for _voice_events in voices:
+            annotate_beams(_voice_events, measure.get("detections", []))
+        # Dynamics belong to the staff, not to a voice, so they go on voice 1
+        # rather than being emitted once per voice.
+        _dyn = measure_dynamics(measure.get("detections", []))
+
+        if not events:
+            r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
+            inner.append(_mxl_note(
+                None, "", r_type, r_dots, r_beats, divisions,
+                is_chord=False, is_rest=True, indent="      ", voice=1,
+            ))
+        elif len(voices) == 1:
+            v1_lines, _ = _mxl_voice_events(
+                voices[0], voice=1, divisions=divisions, indent="      ",
+                directions=_dyn,
+            )
+            inner.extend(v1_lines)
+        else:
+            v1_lines, v1_dur = _mxl_voice_events(
+                voices[0], voice=1, divisions=divisions, indent="      ",
+                directions=_dyn,
+            )
+            inner.extend(v1_lines)
+            if v1_dur > 0:
+                inner.append(
+                    "      <backup>\n"
+                    f"        <duration>{v1_dur}</duration>\n"
+                    "      </backup>"
+                )
+            v2_lines, _ = _mxl_voice_events(
+                voices[1], voice=2, divisions=divisions, indent="      ",
+            )
+            inner.extend(v2_lines)
+
+        out.append(
+            f"    <measure number=\"{start_number + m_idx}\">\n"
+            + "\n".join(inner)
+            + "\n    </measure>"
+        )
+    return out
+
+
+def _is_fragmented_row(staves: list[dict[str, Any]]) -> bool:
+    """The layout detector sometimes splits one melodic line into many
+    "staves" of a single measure each (vertically-stacked single-line music).
+    Emitting those as parallel parts would be wrong; they are one part."""
+    return (
+        len(staves) > 2
+        and all(len(s.get("measures", [])) == 1 for s in staves)
+    )
+
+
+def _stitch_slots(result: dict[str, Any]) -> list[list[dict[str, Any]]] | None:
+    """Group every system's staves into continuous parts, or return None.
+
+    A part is not a staff on a system, it is the same staff on every system of
+    the piece — and until this existed the exporter emitted one `<part>` per
+    (page, system, staff), so a two-page piano prelude came out as twenty-four
+    parts rather than two, and `orchestral_eval` had to keep its excerpts down
+    to a single page to stay scoreable at all.
+
+    The join is by ORDINAL: the second staff of one system is the second staff
+    of the next. That is only sound while every system agrees on how many
+    staves it has, so this returns None the moment they do not — which is a
+    real case, not a corner one. Printed orchestral scores suppress tacet
+    staves, and on the Beethoven 5 scan the two systems of a single page hold
+    11 and 8. Joining those by position would silently graft the horn's music
+    onto the trumpet's, so the exporter keeps its old per-system parts there and
+    the caller can see it did from the part names.
+    """
+    systems = [
+        system
+        for page in result.get("pages", [])
+        for system in page.get("systems", [])
+        if system.get("staves")
+    ]
+    if not systems:
+        return None
+    # One system stitches to itself: the measures come out the same and the
+    # per-system path keeps its richer coordinate part names, piano grouping
+    # and fragmented-row handling. Only engage where stitching changes anything.
+    if len(systems) == 1:
+        return None
+    sizes = {len(system["staves"]) for system in systems}
+    if len(sizes) != 1:
+        return None
+    if any(_is_fragmented_row(system["staves"]) for system in systems):
+        return None
+    slots: list[list[dict[str, Any]]] = [[] for _ in range(sizes.pop())]
+    for system in systems:
+        for ordinal, staff in enumerate(system["staves"]):
+            slots[ordinal].append(staff)
+    return slots
 
 
 def to_musicxml(result: dict[str, Any]) -> str:
@@ -961,6 +1203,59 @@ def to_musicxml(result: dict[str, Any]) -> str:
     pg_number = 0  # part-group number — increment per piano pair
     global_measure_num = 0  # cumulative measure counter across systems on every page
 
+    # Stitched path: one part per SLOT, carrying that slot's staff from every
+    # system of the piece. See `_stitch_slots` for when this is not safe.
+    slots = _stitch_slots(result)
+    if slots is not None:
+        systems = [
+            system
+            for page in result.get("pages", [])
+            for system in page.get("systems", [])
+            if system.get("staves")
+        ]
+        is_piano = len(slots) == 2
+        if is_piano:
+            part_list.append(
+                "  <part-group type=\"start\" number=\"1\">\n"
+                "    <group-symbol>brace</group-symbol>\n"
+                "    <group-barline>yes</group-barline>\n"
+                "  </part-group>"
+            )
+        # Where each system's measures begin, so numbering runs on through the
+        # piece rather than restarting per system.
+        starts: list[int] = []
+        running = 1
+        for system in systems:
+            starts.append(running)
+            running += max(len(s.get("measures", [])) for s in system["staves"])
+        for ordinal, slot in enumerate(slots):
+            part_idx += 1
+            part_id = f"P{part_idx}"
+            # Prefer the instrument the contextual pass named, as the
+            # per-system path below does — a slot is the same staff on every
+            # system, so any system's reading names the whole part.
+            instrument = next(
+                (s.get("instrument") for s in slot if s.get("instrument")), None
+            )
+            part_name = instrument if instrument else f"Staff {ordinal}"
+            part_list.append(
+                f"  <score-part id=\"{part_id}\">\n"
+                f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
+                f"  </score-part>"
+            )
+            state: dict[str, Any] = {}
+            measures_xml: list[str] = []
+            for staff, start in zip(slot, starts):
+                measures_xml += _staff_measures_xml(staff, divisions, start, state)
+            parts_xml.append(
+                f"  <part id=\"{part_id}\">\n"
+                + "\n".join(measures_xml)
+                + "\n  </part>"
+            )
+        if is_piano:
+            part_list.append("  <part-group type=\"stop\" number=\"1\"/>")
+        return _score_partwise(result, part_list, parts_xml)
+
     for page in result.get("pages", []):
         for sys_idx, sys_ in enumerate(page.get("systems", [])):
             staves = sys_.get("staves", [])
@@ -973,11 +1268,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
             # When that happens, MusicXML semantics would emit those as
             # parallel parts — which is wrong. Merge them into a single
             # part with sequential measure numbers.
-            is_fragmented_row = (
-                not is_piano
-                and len(staves) > 2
-                and all(len(s.get("measures", [])) == 1 for s in staves)
-            )
+            is_fragmented_row = not is_piano and _is_fragmented_row(staves)
 
             if is_fragmented_row:
                 part_idx += 1
@@ -1108,82 +1399,9 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     f"  </score-part>"
                 )
 
-                clef = staff.get("clef")
-                key_sig = staff.get("key_signature")
-                time_sig = staff.get("time_signature")
-
-                measures_xml = []
-                last_clef = None
-                last_key_sig = None
-                last_time_sig = None
-                for m_idx, measure in enumerate(staff.get("measures", [])):
-                    m_clef = measure.get("clef") or clef
-                    m_key = measure.get("key_signature") or key_sig
-                    m_time = measure.get("time_signature") or time_sig
-
-                    attrs_clef = m_clef if (m_clef != last_clef) else None
-                    attrs_key = m_key if (m_key != last_key_sig) else None
-                    attrs_time = m_time if (m_time != last_time_sig) else None
-                    include_divisions = (m_idx == 0)
-                    has_attrs = (
-                        include_divisions or attrs_clef or attrs_key or attrs_time
-                    )
-
-                    inner = []
-                    if has_attrs:
-                        inner.append(_mxl_attributes_block(
-                            attrs_clef, attrs_key, attrs_time, divisions,
-                            "      ", include_divisions,
-                        ))
-                    last_clef = m_clef
-                    last_key_sig = m_key
-                    last_time_sig = m_time
-
-                    events = group_chords_in_measure(measure.get("detections", []))
-                    voices = split_events_into_voices(events)
-                    # Per voice: interleaved voices would break each other's runs.
-                    for _voice_events in voices:
-                        annotate_beams(_voice_events, measure.get("detections", []))
-                    # Dynamics belong to the staff, not to a voice, so they go
-                    # on voice 1 rather than being emitted once per voice.
-                    _dyn = measure_dynamics(measure.get("detections", []))
-
-                    if not events:
-                        r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
-                        inner.append(_mxl_note(
-                            None, "", r_type, r_dots, r_beats, divisions,
-                            is_chord=False, is_rest=True,
-                            indent="      ", voice=1,
-                        ))
-                    elif len(voices) == 1:
-                        v1_lines, _ = _mxl_voice_events(
-                            voices[0], voice=1, divisions=divisions, indent="      ",
-                            directions=_dyn,
-                        )
-                        inner.extend(v1_lines)
-                    else:
-                        v1_lines, v1_dur = _mxl_voice_events(
-                            voices[0], voice=1, divisions=divisions, indent="      ",
-                            directions=_dyn,
-                        )
-                        inner.extend(v1_lines)
-                        if v1_dur > 0:
-                            inner.append(
-                                "      <backup>\n"
-                                f"        <duration>{v1_dur}</duration>\n"
-                                "      </backup>"
-                            )
-                        v2_lines, _ = _mxl_voice_events(
-                            voices[1], voice=2, divisions=divisions, indent="      ",
-                        )
-                        inner.extend(v2_lines)
-
-                    measure_number_attr = sys_start_num + m_idx
-                    measures_xml.append(
-                        f"    <measure number=\"{measure_number_attr}\">\n"
-                        + "\n".join(inner)
-                        + "\n    </measure>"
-                    )
+                measures_xml = _staff_measures_xml(
+                    staff, divisions, sys_start_num, {},
+                )
 
                 parts_xml.append(
                     f"  <part id=\"{part_id}\">\n"
@@ -1198,6 +1416,12 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 )
             global_measure_num += sys_max_measures
 
+    return _score_partwise(result, part_list, parts_xml)
+
+
+def _score_partwise(
+    result: dict[str, Any], part_list: list[str], parts_xml: list[str]
+) -> str:
     src = result.get("source_pdf") or "OMR transcription"
     work_title = Path(src).name if src else "OMR transcription"
 

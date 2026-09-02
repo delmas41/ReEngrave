@@ -99,8 +99,16 @@ class Instrument:
 # punctuation and part numbers removed), so "Flöten" -> "floten", "Fl." -> "fl".
 INSTRUMENTS: tuple[Instrument, ...] = (
     # ── woodwind ───────────────────────────────────────────────────────────
+    # "fl pic" beside "fl picc": Beethoven 5's fourth movement prints "Fl. Pic."
+    # and the one-c spelling missed, so the staff read as a FLUTE — which is not
+    # a near-miss but a different part, and on a page whose flutes are on the
+    # next staff down it displaces every wind below it. It is flauto piccolo,
+    # the Italian name for the instrument, not a flute-and-piccolo shared staff:
+    # benchmarks/omr-part-staff-join-2026-08/ground-truth-beet5-p48.json shows
+    # the merge count only closes under that reading.
     Instrument("Piccolo", "woodwind", "treble", (74, 108), 12, 0,
-               aliases=("piccolo", "picc", "ottavino", "kleine flote", "petite flute", "fl picc")),
+               aliases=("piccolo", "picc", "ottavino", "kleine flote", "petite flute",
+                        "fl picc", "fl pic")),
     Instrument("Flute", "woodwind", "treble", (59, 96), 0, 0,
                aliases=("flute", "flutes", "flauto", "flauti", "flote", "floten", "fl", "fla", "fl gr")),
     Instrument("Oboe", "woodwind", "treble", (58, 91), 0, 0,
@@ -110,7 +118,8 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         "englischhorn", "c ing", "c a")),
     Instrument("Clarinet", "woodwind", "treble", (50, 91), None, 2,
                aliases=("clarinet", "clarinets", "clarinetto", "clarinetti", "klarinette",
-                        "klarinetten", "clarinette", "clarinettes", "cl", "clar", "kl")),
+                        "klarinetten", "clarinette", "clarinettes", "cl", "clar", "kl",
+                        "klar")),                    # Mahler: "A-Klar."
     Instrument("Bass clarinet", "woodwind", "treble", (38, 79), None, 2,
                # NOT "cl b": on real scores "Cl. B." means clarinet in B-flat far
                # more often than bass clarinet, which is written "B. Cl." / "Bcl".
@@ -122,7 +131,11 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Contrabassoon", "woodwind", "bass", (22, 60), -12, 0,
                aliases=("contrabassoon", "double bassoon", "contrafagotto",
                         "contrafagotte", "kontrafagott", "contrebasson",
-                        "cfag", "kfag")),
+                        # "c fag" as printed, beside the closed-up "cfag":
+                        # normalization keeps the space, so "C. Fag." missed and
+                        # the contrabassoon read as a BASSOON.
+                        "cfag", "kfag", "c fag",
+                        "contraf")),                 # Mahler: "Contraf."
     Instrument("Saxophone", "woodwind", "treble", (49, 89), None, 3,
                aliases=("saxophone", "saxophon", "sax", "sassofono")),
     # Boulanger scores one; without it "Bass Sarrusophone" resolves on the word
@@ -146,7 +159,8 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # right when the prior has no opinion.
     Instrument("Trumpet", "brass", "treble", (52, 84), None, 2,
                aliases=("trumpet", "trumpets", "tromba", "trombe", "trompete", "trompeten",
-                        "trompette", "trompettes", "tr", "tpt", "clarino", "clarini")),
+                        "trompette", "trompettes", "tr", "tpt", "clarino", "clarini",
+                        "tromp")),                   # Mahler: "B-Tromp."
     # `Tr.` is Trombe AND Tromboni, and one page prints both: Beethoven 5
     # (IMSLP984073) p.47 reads `Tr.` over the trumpets and, four staves below,
     # `Tr. Alt. / Tr. Ten. / Tr. Bas.` over the three trombones of the finale.
@@ -155,6 +169,9 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # and key ("Tr. I", "Trombe in C"), never the other way round. These aliases
     # are longer than the bare `tr`, so a register-qualified `Tr.` reads as the
     # trombone it is while a bare one keeps the Trumpet the table names above.
+    # "Tr. Bas." stays the trombone HERE but is listed in AMBIGUOUS_ALIASES,
+    # because tromba bassa is real — position settles it, this row is only the
+    # answer when the prior has no opinion.
     #
     # NOT "tr b": on a real score "Tr. B." is a trumpet in B-flat far more often
     # than a bass trombone, the same trap as "Cl. B." above. A bass TRUMPET does
@@ -183,6 +200,13 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         "kleine trommel", "snare drum", "tamburo militare", "tam tam", "tam-tam", "bass drums", "drums", "drum",
                         # named in the Gradus corpus and unresolved before:
                         "tamtam", "cymbal", "tambourine", "tamburino",
+                        # "Gr. Tr." and "Kl. Tr." are the Grosse and Kleine
+                        # Trommel. They have to out-rank the two-letter "tr"
+                        # (Trompete) and "kl" (Klarinette), which the
+                        # longest-alias-wins index does. Before this, Mahler 5
+                        # p.4 read its bass drum as a TRUMPET and its snare as
+                        # a CLARINET — and the bass drum reading PINNED.
+                        "gr tr", "kl tr",
                         "glockenspiel", "xylophone", "xylophon", "tubular bells",
                         "cloches", "castanets", "cassa")),
 
@@ -213,7 +237,10 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                aliases=("violin", "violins", "violino", "violini", "violine", "violinen",
                         # no bare "v": a single letter matches OCR noise
                         # ("V}a." for Vla. would resolve to Violin).
-                        "violon", "violons", "vl", "vln", "vni")),
+                        # A bare "viol" — "Erste Viol.", "Zweite Viol." The
+                        # alias index matches on word boundaries, so it cannot
+                        # fire inside "violen", "viola" or "violoncelle".
+                        "violon", "violons", "vl", "vln", "vni", "viol")),
     Instrument("Viola", "string", "alto", (48, 88), 0, 0,
                aliases=("viola", "viole", "violas", "violen", "bratsche", "bratschen",
                         "alto viola",
@@ -221,7 +248,8 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Cello", "string", "bass", (36, 81), 0, 0,
                aliases=("cello", "violoncello", "violoncelli", "violoncellos",
                         "violoncelle", "violoncelles", "violoncell",
-                        "celli", "vc", "vcl", "vlc")),
+                        "celli", "vc", "vcl", "vlc",
+                        "vcelle")),                  # Mahler: "Vcelle. get."
     Instrument("Contrabass", "string", "bass", (28, 67), -12, 0,
                aliases=("contrabass", "double bass", "contrabasso", "contrabassi",
                         "contrebasse", "contrebasses", "contrabasses", "kontrabass",
@@ -256,6 +284,12 @@ AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
     "basse": ("Bass voice", "Contrabass"),
     "bass": ("Bass voice", "Contrabass"),
     "bassi": ("Contrabass", "Bass voice"),
+    # "Tr. Bas." is Trombone basso in the Italian tradition and Tromba bassa —
+    # the bass trumpet Wagner and Strauss write for — in the German. The lexicon
+    # reads it as the trombone, which is much the commoner, and listing it here
+    # says the reading is not certain enough to PIN a staff on
+    # (`dossier.join_parts_to_slots`). Position settles it, as it does for `Tp.`.
+    "tr bas": ("Trombone", "Trumpet"),
 }
 
 
@@ -272,7 +306,7 @@ def candidates_for_alias(alias: str) -> tuple["Instrument", ...]:
 
 _STRIP_TOKENS = re.compile(
     r"\b(?:i{1,3}v?|iv|vi{0,3}|[0-9]+|solo|soli|tutti|con|e|und|and|a|due|zu|"
-    r"muta|div|divisi|senza|sord|coll|col)\b"
+    r"muta|div|divisi|get|geteilt|senza|sord|coll|col)\b"
 )
 
 
@@ -285,7 +319,13 @@ def normalize_label(text: str) -> str:
     t = unicodedata.normalize("NFKD", text)
     t = "".join(c for c in t if not unicodedata.combining(c))
     t = t.lower()
-    t = re.sub(r"[.,;:_/\\|()\[\]{}*°º]+", " ", t)
+    # The hyphen is a SEPARATOR, not punctuation to drop silently. German
+    # scores build abbreviations with it constantly — "A-Klar.", "B-Tromp.",
+    # "Es-Klar." — and keeping it defeats the word-boundary match: `kl` inside
+    # `a-klar` is followed by a letter, so nothing fires and the staff reads as
+    # nothing at all. Measured on Mahler 5 p.4, where it costs the clarinets
+    # and the trumpets.
+    t = re.sub(r"[.,;:_/\|()\[\]{}*°º-]+", " ", t)
     t = re.sub(r"\s+", " ", t).strip()
     return t
 

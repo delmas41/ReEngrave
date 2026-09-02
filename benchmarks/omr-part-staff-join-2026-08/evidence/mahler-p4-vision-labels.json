@@ -1,0 +1,43 @@
+{
+  "_about": "Mahler 5 first movement, p.4 (21 staves detected, work has 38 parts). What `staff_labels_vision` returned in one call, model claude-opus-5. VERIFIED AGAINST THE PRINT at 2x: all seventeen are exactly what the margin says. Kept because this page is a breadth test — a German late-romantic score against a corpus that was all Beethoven — and because it is what found eight lexicon failures at once.",
+  "pdf": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/Mahler_5_.pdf",
+  "page_index": 4,
+  "dpi": 400,
+  "work_id": "mahler-sym5-mvt1",
+  "labels_by_staff_ordinal": {
+    "0": "A-Klar.",
+    "1": "Fag.",
+    "2": "Contraf.",
+    "3": "F-Hörner",
+    "5": "B-Tromp.",
+    "7": "Posaunen",
+    "8": "Tuba",
+    "9": "Pauken",
+    "10": "Becken",
+    "11": "Gr. Tr.",
+    "12": "Kl.Tr.",
+    "13": "Tamtam",
+    "14": "Erste Viol.",
+    "15": "Zweite Viol.",
+    "16": "Violen",
+    "17": "Vcelle. get.",
+    "19": "Bäss get."
+  },
+  "what_they_cost_before_the_fix": {
+    "unresolved_entirely": [
+      "A-Klar.",
+      "Contraf.",
+      "B-Tromp.",
+      "Erste Viol.",
+      "Zweite Viol.",
+      "Vcelle. get."
+    ],
+    "resolved_to_the_WRONG_instrument": {
+      "Gr. Tr.": "Trumpet (it is the Grosse Trommel, the bass drum) — and it PINNED",
+      "Kl.Tr.": "Clarinet (it is the Kleine Trommel, the snare)"
+    },
+    "join_before": "12 of 21 staves assigned, several wrongly",
+    "join_after": "21 of 21 assigned and anchored"
+  },
+  "not_scored": "There is no hand-read clef ground truth for this page, so this is a consistency result, not an accuracy one. The labels are verified; the parts they join to are not independently checked."
+}

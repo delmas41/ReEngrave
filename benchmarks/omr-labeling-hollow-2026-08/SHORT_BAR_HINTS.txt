@@ -1,0 +1,53 @@
+How many beats each cell is short of its own meter. A bar missing about
+half its length is the signature of an undetected half note — which is
+what this batch exists to label. The hint is a place to look, not a
+claim: label what the cell shows.
+
+beet5-p2-sys0-s2-m3: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p2-sys0-s3-m6: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p2-sys0-s3-m7: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p2-sys0-s3-m8: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p2-sys0-s7-m1: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p2-sys0-s8-m8: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p2-sys0-s9-m15: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p2-sys0-s0-m15: 2/4, resolved 1 of 2 beats — 1 missing
+beet5-p2-sys0-s3-m11: 2/4, resolved 1 of 2 beats — 1 missing
+beet5-p2-sys0-s3-m14: 2/4, resolved 1 of 2 beats — 1 missing
+beet5-p2-sys0-s6-m15: 2/4, resolved 1 of 2 beats — 1 missing
+beet5-p2-sys0-s7-m2: 2/4, resolved 1 of 2 beats — 1 missing
+beet5-p2-sys0-s8-m2: 2/4, resolved 1 of 2 beats — 1 missing
+beet5-p2-sys0-s9-m10: 2/4, resolved 1 of 2 beats — 1 missing
+beet5-p4-sys1-s14-m0: 4/4, resolved 1 of 4 beats — 3 missing
+beet5-p4-sys1-s14-m2: 4/4, resolved 1 of 4 beats — 3 missing
+beet5-p4-sys1-s14-m1: 4/4, resolved 2 of 4 beats — 2 missing
+beet5-p4-sys1-s15-m1: 2/4, resolved 0.125 of 2 beats — 1.875 missing
+beet5-p4-sys0-s2-m6: 2/4, resolved 0.25 of 2 beats — 1.75 missing
+beet5-p4-sys0-s5-m5: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p4-sys0-s6-m4: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p4-sys0-s6-m5: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p4-sys1-s11-m6: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p4-sys1-s12-m2: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p4-sys1-s15-m8: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p4-sys1-s15-m16: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys0-s0-m3: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys0-s0-m4: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys0-s3-m3: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys0-s6-m1: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys0-s8-m13: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys1-s9-m1: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys1-s9-m2: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys1-s9-m9: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys1-s12-m10: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys1-s13-m8: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys1-s14-m5: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+beet5-p6-sys1-s15-m1: 2/4, resolved 0.5 of 2 beats — 1.5 missing
+bolero-p2-sys1-s18-m2: 3/4, resolved 0.25 of 3 beats — 2.75 missing
+bolero-p2-sys1-s18-m7: 3/4, resolved 0.25 of 3 beats — 2.75 missing
+bolero-p2-sys1-s18-m15: 3/4, resolved 0.25 of 3 beats — 2.75 missing
+bolero-p2-sys1-s18-m16: 3/4, resolved 0.25 of 3 beats — 2.75 missing
+bolero-p2-sys1-s18-m0: 3/4, resolved 0.5 of 3 beats — 2.5 missing
+bolero-p2-sys1-s18-m5: 3/4, resolved 0.5 of 3 beats — 2.5 missing
+bolero-p2-sys1-s18-m9: 3/4, resolved 0.5 of 3 beats — 2.5 missing
+bolero-p2-sys1-s18-m10: 3/4, resolved 0.5 of 3 beats — 2.5 missing
+bolero-p2-sys1-s18-m23: 3/4, resolved 0.5 of 3 beats — 2.5 missing
+bolero-p2-sys1-s18-m24: 3/4, resolved 0.5 of 3 beats — 2.5 missing

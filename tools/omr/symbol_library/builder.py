@@ -74,6 +74,11 @@ SMUFL_TARGETS: list[tuple[str, str]] = [
     ("timeSig7", "time_sig_digit"),
     ("timeSig8", "time_sig_digit"),
     ("timeSig9", "time_sig_digit"),
+    # Common and cut-common. Added 2026-08-31 for `time_signature_locator`,
+    # which could read every meter written as digits and none of the two
+    # written as a letter — and common time is most of the repertoire.
+    ("timeSigCommon", "time_sig_digit"),
+    ("timeSigCutCommon", "time_sig_digit"),
     # Barlines (also produced by Phase 1, but kept for shape-matching parity)
     ("barlineSingle", "barline"),
     ("barlineFinal", "barline"),

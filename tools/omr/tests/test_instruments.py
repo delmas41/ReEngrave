@@ -348,3 +348,71 @@ def test_voice_qualifiers_are_derived_so_no_spelling_is_left_out():
                 assert alias in VOICE_QUALIFIERS, alias
     assert {"alt", "ten", "sopr", "tenore"} <= VOICE_QUALIFIERS
     assert lookup("Coro").instrument.name == "Chorus"
+
+def test_the_qualified_italian_abbreviations_beethoven_5_prints():
+    """Beethoven 5's fourth movement, from its own margin — and every one of
+    these read as a DIFFERENT instrument before, not merely as nothing.
+
+    The trombone forms are the ones that cost: bare "Tr." is Trombe in this
+    tradition, so the alias index (longest first) sent "Tr. Alt." and "Tr. Ten."
+    to the VOICES and "Tr. Bas." to the trumpets, and those three staves carry
+    the alto, tenor and bass clefs the dossier exists to supply.
+    """
+    for label, expected in (("Fl. Pic.", "Piccolo"), ("Fl./Pic.", "Piccolo"),
+                            ("C. Fag.", "Contrabassoon"), ("C.Fag.", "Contrabassoon"),
+                            ("Tr. Alt.", "Trombone"), ("Tr. Ten.", "Trombone"),
+                            ("Tr. Bas.", "Trombone")):
+        assert lookup(label).instrument.name == expected, label
+    # Bare "Tr." is untouched: it is still the trumpets.
+    assert lookup("Tr.").instrument.name == "Trumpet"
+
+
+def test_tromba_bassa_is_why_tr_bas_stays_ambiguous():
+    """"Tr. Bas." is Trombone basso in the Italian tradition and Tromba bassa —
+    the bass trumpet — in the German. The lexicon answers with the commoner
+    reading, and listing it as ambiguous is what stops a staff being PINNED on
+    it (`dossier.join_parts_to_slots`)."""
+    from tools.omr.instruments import (AMBIGUOUS_ALIASES, candidates_for_alias,
+                                       normalize_label)
+    assert normalize_label("Tr. Bas.") == "tr bas"
+    assert "tr bas" in AMBIGUOUS_ALIASES
+    names = [i.name for i in candidates_for_alias("tr bas")]
+    assert names == ["Trombone", "Trumpet"], "lexicon's own answer stays first"
+    # The unqualified forms are NOT ambiguous — there is no tromba alta.
+    assert "tr alt" not in AMBIGUOUS_ALIASES
+    assert "tr ten" not in AMBIGUOUS_ALIASES
+
+
+def test_a_hyphen_separates_words_in_a_printed_label():
+    """German scores build abbreviations with hyphens, and keeping the hyphen
+    defeats the word-boundary match — `kl` inside `a-klar` is followed by a
+    letter, so nothing fires. Measured on Mahler 5 p.4, where it cost the
+    clarinets, the trumpets and the contrabassoon."""
+    from tools.omr.instruments import normalize_label
+    assert normalize_label("A-Klar.") == "a klar"
+    for label, expected in (("A-Klar.", "Clarinet"), ("B-Klar.", "Clarinet"),
+                            ("Es-Klar.", "Clarinet"), ("B-Tromp.", "Trumpet"),
+                            ("F-Hörner", "Horn"), ("Contraf.", "Contrabassoon")):
+        assert lookup(label).instrument.name == expected, label
+
+
+def test_the_german_drums_outrank_the_two_letter_brass():
+    """"Gr. Tr." is the Grosse Trommel and "Kl. Tr." the Kleine Trommel. Before
+    they were listed, Mahler 5 p.4 read its bass drum as a TRUMPET — on the
+    strength of the two-letter `tr` — and its snare as a CLARINET, and the bass
+    drum reading was confident enough to PIN a staff."""
+    assert lookup("Gr. Tr.").instrument.name == "Percussion"
+    assert lookup("Kl.Tr.").instrument.name == "Percussion"
+    assert lookup("Gr.Tr.").instrument.name == "Percussion"
+    # ...without disturbing the bare forms they have to out-rank.
+    assert lookup("Tr.").instrument.name == "Trumpet"
+    assert lookup("Kl.").instrument.name == "Clarinet"
+
+
+def test_the_bare_string_abbreviations_mahler_prints():
+    """"Erste Viol." / "Vcelle. get." — and `viol` must not fire inside the
+    longer string names, which the word-boundary index guarantees."""
+    for label, expected in (("Erste Viol.", "Violin"), ("Zweite Viol.", "Violin"),
+                            ("Vcelle. get.", "Cello"), ("Violen.", "Viola"),
+                            ("Viola", "Viola"), ("Violoncelle.", "Cello")):
+        assert lookup(label).instrument.name == expected, label

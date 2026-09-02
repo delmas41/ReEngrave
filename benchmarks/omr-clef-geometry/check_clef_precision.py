@@ -26,15 +26,43 @@ Three checks, in decreasing order of how much they should be trusted:
              never does. Skipped when the score, which lives in a gitignored
              data directory, is not present.
 
-  coverage   the hand-read Nottebohm page. Real material, real engraving, but
-             twelve staves — too small to steer by on its own, which is what
-             the probe is for.
+  sweep      one per EDITION, and both run every time. Each is every staff the
+             locator LOCATES a C clef on across a page range, read by eye, with
+             the genuine C clefs kept as the counterweight. Before these the
+             COST of a veto change was measurable on the corpora below and its
+             BENEFIT was an anecdote, which is why every change to the F-clef
+             veto stalled.
+
+               beethoven5-clef-sweep.json  91 staves, IMSLP 575951, pages 2-80.
+                                           24 are not C clefs (17 bass, 7 treble).
+               mahler5-clef-sweep.json     105 staves, Edition Peters, pages
+                                           4-220. 41 are not C clefs (17 bass,
+                                           24 treble) — and the 24 are a family
+                                           Beethoven cannot show at all: Peters
+                                           prints the stacked instrument numbers
+                                           left of the bracket, and a stack of
+                                           numerals is glyph-sized and symmetric.
+
+             The second edition is not redundancy. A tenor symmetry floor looked
+             clean on Beethoven alone (real 0.809-0.959 against misreads
+             0.702-0.795) and is impossible on Mahler (real from 0.708, misreads
+             to 0.845). Never tune a clef threshold on one edition; see
+             `clef_symmetry_populations.py`.
+
+ORCHESTRAL SCORES ONLY. A hand-read page of Nottebohm's *Beethovens Studien*
+used to sit here as a `coverage` check, and it is gone: 19th-century vocal-clef
+counterpoint is not the repertoire this project processes, and steering a reader
+by how well it reads material nobody wants read is how a threshold ends up tuned
+for the wrong century. The reference sheet and the piano corpus stay — neither
+is repertoire, both are pure sanity checks: one has answers known by
+construction, the other contains no C clef at all, so any read is a false
+positive.
 
 Both LilyPond sources have to be built first:
 
     cd benchmarks/omr-clef-geometry
     lilypond reference-clefs.ly piano-false-positives.ly
-    python3 check_clef_precision.py --nottebohm /path/to/Nottebohm-...pdf
+    python3 check_clef_precision.py
 
 The reference sheet is read at 600 dpi, the pipeline CLI's default. At 300 the
 engraved tenor clef's wings shrink until the F-clef dot veto mistakes them for
@@ -129,9 +157,20 @@ def check_piano(pdf: Path, dpis: tuple[int, ...]) -> tuple[int, int]:
     return staves, wrong
 
 
-def check_orchestral(pdf: Path, spec_path: Path, dpi: int) -> tuple[int, int, int]:
+def resolve_pdf(spec: dict, fallback: Path) -> Path:
+    """The score a spec is about. Sweep corpora name their own PDF, because
+    they are per-edition; the older specs do not and use the caller's."""
+    raw = spec.get("pdf")
+    if not raw:
+        return fallback
+    path = Path(raw).expanduser()
+    return path if path.is_absolute() else (REPO / path)
+
+
+def check_orchestral(pdf: Path, spec_path: Path, dpi: int,
+                     title: str = "orchestral spot check") -> tuple[int, int, int]:
     spec = json.loads(spec_path.read_text())
-    print(f"\norchestral spot check ({pdf.name}) — {spec['source']}")
+    print(f"\n{title} ({pdf.name}) — {spec['source']}")
     by_page: dict[int, list[dict]] = {}
     for row in spec["staves"]:
         by_page.setdefault(row["page"], []).append(row)
@@ -160,44 +199,29 @@ def check_orchestral(pdf: Path, spec_path: Path, dpi: int) -> tuple[int, int, in
     return found, missed, wrong
 
 
-def check_coverage(pdf: Path, truth_path: Path, dpi: int) -> tuple[int, int, int]:
-    truth = json.loads(truth_path.read_text())
-    print(f"\ncoverage ({pdf.name} page {truth['pdf_page_index']}) — hand-read truth")
-    rows = read_page(pdf, truth["pdf_page_index"], dpi)
-    expected = truth["clefs"]
-    n_c = sum(1 for e in expected if e["clef"] in C_CLEFS)
-    right = wrong = 0
-    for i, want in enumerate(expected):
-        got = rows[i][1] if i < len(rows) else None
-        if got is None:
-            continue
-        if got == want["clef"]:
-            right += 1
-        else:
-            wrong += 1
-            print(f"    FALSE POSITIVE  staff {i}: read {got}, truth {want['clef']}")
-    print(f"  {right}/{n_c} C clefs located   false positives {wrong}")
-    return right, wrong, n_c
-
-
 def main() -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--reference", type=Path, default=HERE / "reference-clefs.pdf")
     ap.add_argument("--piano", type=Path, default=HERE / "piano-false-positives.pdf")
-    ap.add_argument("--nottebohm", type=Path,
-                    default=Path.home() / "Downloads"
-                    / "Nottebohm-Beethovens-Studien-1873.pdf")
-    ap.add_argument("--truth", type=Path, default=HERE / "nottebohm-p46-ground-truth.json")
     ap.add_argument("--orchestral", type=Path,
                     default=REPO / "tools/omr/training/data/imslp"
                     / "beethoven-symphony-5/pdfs/imslp-575951/score.pdf")
     ap.add_argument("--orchestral-spec", type=Path,
                     default=HERE / "beethoven5-clef-spot-check.json")
+    # The corpora the F-clef veto had been missing — one per EDITION, and both
+    # run by default. Each names its own score, so a third edition is one more
+    # file and no code. See the module docstring for what each contains and for
+    # why one of them is not enough.
+    ap.add_argument("--sweep-spec", type=Path, action="append",
+                    help="sweep corpus JSON; repeatable. Each names its own "
+                         "score. Default: every edition.")
     ap.add_argument("--reference-dpi", type=int, default=600)
     ap.add_argument("--dpi", type=int, default=300)
     args = ap.parse_args()
+    sweep_specs = args.sweep_spec or [HERE / "beethoven5-clef-sweep.json",
+                                      HERE / "mahler5-clef-sweep.json"]
 
     missing = [p for p in (args.reference, args.piano) if not p.exists()]
     if missing:
@@ -216,15 +240,22 @@ def main() -> int:
     else:
         print(f"\norchestral spot check — skipped, no score at {args.orchestral}")
         orch_missed = orch_wrong = 0
-    if args.nottebohm.exists():
-        right, cov_wrong, n_c = check_coverage(args.nottebohm, args.truth, args.dpi)
-    else:
-        print(f"\ncoverage — skipped, no PDF at {args.nottebohm}")
-        right, cov_wrong, n_c = 0, 0, 0
-
-    total_wrong = ref_wrong + piano_wrong + cov_wrong + orch_wrong
-    print(f"\nreference {exact}/5 exact | coverage {right}/{n_c} | "
-          f"orchestral misses {orch_missed} | FALSE POSITIVES {total_wrong}")
+    sweep_missed = sweep_wrong = 0
+    for spec_path in sweep_specs:
+        spec = json.loads(spec_path.read_text())
+        pdf = resolve_pdf(spec, args.orchestral)
+        n_bad = sum(1 for row in spec["staves"] if not row["c_clef"])
+        if not pdf.exists():
+            print(f"\n{spec_path.name} — skipped, no score at {pdf}")
+            continue
+        _sf, missed, wrong = check_orchestral(
+            pdf, spec_path, args.dpi,
+            title=f"sweep {spec_path.stem} — {n_bad} staves that must be DECLINED")
+        sweep_missed += missed
+        sweep_wrong += wrong
+    total_wrong = ref_wrong + piano_wrong + orch_wrong + sweep_wrong
+    print(f"\nreference {exact}/5 exact | orchestral misses {orch_missed} | "
+          f"sweep misses {sweep_missed} | FALSE POSITIVES {total_wrong}")
     print("Report these separately. A missed clef costs nothing that was not "
           "already lost;\na wrong one transposes every note on its staff.")
     return 1 if (total_wrong or exact < 5) else 0

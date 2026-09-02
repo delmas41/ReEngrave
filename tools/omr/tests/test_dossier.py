@@ -432,15 +432,38 @@ class TestJoinPartsToSlots:
         assert [f["part"] for f in facts][:3] == ["Violin 1", "Violin 2", "Viola"]
         assert facts[3]["clef"] == "bass"
 
-    def test_slots_past_the_last_label_are_not_anchored(self):
+    def test_a_tail_with_slack_is_not_anchored(self):
         """Between labels the alignment cannot slip; past them it is guessing,
-        and on the two ground-truth pages that is exactly where it goes wrong —
-        the string section, which carries no labels at all."""
+        and on the ground-truth pages that is exactly where it goes wrong — the
+        string section, which carries no labels at all.
+
+        Two staves below the last label and THREE parts left for them: one part
+        has to be dropped or condensed, and nothing says which. That is a real
+        guess and stays gated.
+        """
         from tools.omr.dossier import join_parts_to_slots
 
-        work = self._work(["Flute 1", "Oboe 1", "Violin 1", "Viola"])
+        work = self._work(["Flute 1", "Oboe 1", "Violin 1", "Viola", "Cello"])
         facts = join_parts_to_slots(4, work, {0: "Flute", 1: "Oboe"})
         assert [f["anchored"] for f in facts] == [True, True, False, False]
+
+    def test_a_tail_whose_count_closes_exactly_IS_anchored(self):
+        """...but "past the last label" is not one thing.
+
+        Two staves below the last label and exactly TWO parts left for them. A
+        monotone alignment has one option: it cannot merge, extend or skip
+        without leaving a staff empty. There is nothing left to get wrong, so
+        the tail is trusted — which is what takes Beethoven 5 p.48 from 14 of 17
+        clefs to 17 of 17. Trusting the tail UNCONDITIONALLY is the different,
+        rejected rule (50/52 -> 44/52); see `dossier._determined_tail`.
+        """
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(["Flute 1", "Oboe 1", "Violin 1", "Viola"],
+                          ["treble", "treble", "treble", "alto"])
+        facts = join_parts_to_slots(4, work, {0: "Flute", 1: "Oboe"})
+        assert [f["anchored"] for f in facts] == [True, True, True, True]
+        assert facts[3]["part"] == "Viola" and facts[3]["clef"] == "alto"
 
     def test_no_labels_anchors_nothing(self):
         from tools.omr.dossier import join_parts_to_slots
@@ -448,3 +471,86 @@ class TestJoinPartsToSlots:
         work = self._work(["Flute 1", "Oboe 1"])
         facts = join_parts_to_slots(2, work, {})
         assert all(not f["anchored"] for f in facts if f)
+
+
+class TestJoinPinsOnUnambiguousLabelsOnly:
+    """A pin is a hard constraint, so an ambiguous label must not make one.
+
+    `benchmarks/omr-part-staff-join-2026-08/RESULTS.md`.
+    """
+
+    WORK = {"work_id": "toy", "parts": [
+        {"name": "Trumpet 1", "written_clef": "treble"},
+        {"name": "Trombone 1", "written_clef": "alto"},
+        {"name": "Trombone 2", "written_clef": "tenor"},
+        {"name": "Timpani", "written_clef": "bass"},
+    ]}
+
+    def _join(self, labels):
+        from tools.omr.dossier import join_parts_to_slots
+        return [f["part"] if f else None
+                for f in join_parts_to_slots(4, self.WORK, labels)]
+
+    def test_the_printed_order_beats_the_part_list(self):
+        # Timpani printed ABOVE the trombones, as Beethoven 5 p.48 prints them.
+        # A monotone alignment cannot go back for the trombones once it has
+        # taken the timpani; pinning reaches all four.
+        assert self._join({0: "Tr.", 1: "Timp.", 2: "Tromboni", 3: "Tromboni"}) == [
+            "Trumpet 1", "Timpani", "Trombone 1", "Trombone 2"]
+
+    def test_an_ambiguous_alias_is_tested_after_the_part_numbers(self):
+        # "Cor." is Horn or Trumpet and must not pin. A margin prints the
+        # numbered form as often as the bare one, and testing the whole label
+        # rather than the alias that matched lets "Cor. 1. 2." through.
+        from tools.omr.instruments import AMBIGUOUS_ALIASES, lookup, normalize_label
+        for label in ("Cor.", "Cor. 1. 2."):
+            assert lookup(label).alias in AMBIGUOUS_ALIASES, label
+        assert normalize_label("Cor. 1. 2.") not in AMBIGUOUS_ALIASES, (
+            "the whole label is NOT the thing to test — this is the gap")
+        # And a full name that happens to carry numbers stays pinnable.
+        assert lookup("Corni 1. 2.").alias not in AMBIGUOUS_ALIASES
+
+
+class TestTailCountingSeesCondensedStaves:
+    """The exact-tail rule is a COUNT, so it has to count condensed parts.
+
+    `benchmarks/omr-part-staff-join-2026-08/RESULTS.md` — the Pastoral is the
+    case: five labelled wind staves carry ten parts, two to a staff, leaving
+    exactly five parts for the five string staves. Counting from the assignment
+    alone misses the second of every pair, so the tail reads as five staves
+    chasing six parts and stays gated with the viola unread.
+    """
+
+    def _work(self, names, clefs):
+        return {"work_id": "toy", "parts": [
+            {"name": n, "written_clef": c, "written_fifths": 0}
+            for n, c in zip(names, clefs)]}
+
+    def test_a_condensed_staff_reports_every_part_it_took(self):
+        from tools.omr.score_layouts import ScoreLayout, align_to_layout
+        layout = ScoreLayout("w", ("Flute", "Flute", "Viola"))
+        absorbed: dict[int, list[int]] = {}
+        _score, out = align_to_layout(layout, 2, {0: "Flute", 1: "Viola"},
+                                      allow_merge=True, return_indices=True,
+                                      absorbed=absorbed)
+        # The assignment can only name one part for the condensed staff...
+        assert out == [0, 2]
+        # ...while `absorbed` names both, which is what the count needs.
+        assert sorted(absorbed[0]) == [0, 1]
+        assert absorbed[1] == [2]
+
+    def test_the_tail_below_a_condensation_still_closes(self):
+        """The Pastoral, reduced: two wind pairs on two labelled staves, then
+        three unlabelled string staves for exactly three remaining parts."""
+        from tools.omr.dossier import join_parts_to_slots
+
+        work = self._work(
+            ["Flute 1", "Flute 2", "F Horn 1", "F Horn 2",
+             "Violin 1", "Viola", "Violoncello"],
+            ["treble", "treble", "treble", "treble", "treble", "alto", "bass"])
+        facts = join_parts_to_slots(5, work, {0: "Flute", 1: "Horn"})
+        assert [f["part"] for f in facts] == [
+            "Flute 1", "F Horn 1", "Violin 1", "Viola", "Violoncello"]
+        assert all(f["anchored"] for f in facts), \
+            "the three staves below the last label have exactly three parts left"
+        assert facts[3]["clef"] == "alto", "and that is what supplies the viola"
