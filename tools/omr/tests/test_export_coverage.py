@@ -299,7 +299,24 @@ class TestTheRepositoryItself:
     def test_words_placed_by_the_reader_reach_the_file(self):
         """The other direction of the same question, and the one the old check
         could not ask: when the direction reader HAS placed words, they must
-        come out. That is the seventh-gap shape aimed at the newest layer."""
+        come out. That is the recognised-then-dropped shape aimed at the newest
+        layer.
+
+        ⚠️ WHAT IT CANNOT SEE, because I claimed more for it than it earns.
+        This compares COUNTS over the benchmark, so it fires only where the
+        benchmark contains the failing case. `46e42a4` fixed a real instance of
+        exactly this shape — a measure the detector found NO events in takes the
+        whole-measure-rest path, which never calls the function that emits
+        `<direction>`, dropping directions and dynamics both — and a probe over
+        the three works counts **zero** bars that trigger it, in either
+        configuration. Beethoven's `Allegro con brio` sits on a rests-only bar,
+        which looks like the case and is not: a rest IS an event and the
+        detector finds it. Rests-only is the shape; nothing-at-all is the
+        trigger, and it takes a scan.
+
+        So this guards the count and the unit tests guard the path. A green here
+        is evidence about this corpus's coverage, not about the exporter.
+        """
         if not any(r.directions_placed for r in self.survey.runs):
             pytest.skip("fixtures written without --direction-text")
         assert "words" not in self.survey.missing, (

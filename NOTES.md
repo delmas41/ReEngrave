@@ -55,6 +55,31 @@ input and cannot move if the staves are stable — and row four says they are.
 none of them carries an error bar. The cheapest first step for any of them is to
 run it twice.
 
+**The lead worth following first**, narrowed after the tight Surya test came
+back clean (20 crops, same order / shuffled / a second process — 0 of 20
+differ, so the reader IS a fixed function of its input): if Surya is
+deterministic and the layer beneath is byte-exact, what varies must be whether
+Surya is CALLED SUCCESSFULLY. `contextual.py:386` is
+
+```python
+except Exception as exc:            # noqa: BLE001
+    logger.warning("surya label fallback failed on page %s: %s", ...)
+```
+
+with nothing recorded in the result. An intermittent failure there is
+indistinguishable from the reader legitimately finding nothing — `label_tiers`
+shows `surya: 0` either way and the JSON carries no trace. That is precisely the
+shape `_optional_pass_failure` was built for, and this call site does not use
+it. **Hypothesis, not a finding** — the warning is not in any log I kept. The
+test is cheap: route it through `_optional_pass_failure` (or log at ERROR) and
+run page 84 twice.
+
+⚠️ **The `label_tiers` counter is CONTRIBUTION, not production** — `tiers[0] = 0`
+on line 408 zeroes the text layer's credit when Surya's read wins, the same way
+line 525 does for the vision rung. So the "text layer 1 then 0" above is fully
+explained by Surya's own yield moving, and there is nothing to hunt for in the
+PDF text layer. That was a wrong lead and it is closed.
+
 Full write-up with all four controls:
 [benchmarks/omr-direction-text-2026-09/NONDETERMINISM_2026-09-02.md](benchmarks/omr-direction-text-2026-09/NONDETERMINISM_2026-09-02.md).
 

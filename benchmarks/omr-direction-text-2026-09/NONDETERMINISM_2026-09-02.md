@@ -56,11 +56,22 @@ and a run of notes follow it out.
 behind `--direction-text`. A user transcribing this page twice gets two
 different scores.
 
-⚠️ **The text-layer row is the one to explain before acting.** A PDF's text layer
-is a fixed input and cannot be read 1 in one run and 0 in the next unless
-something about how it is queried moved — and the staves did not move, because
-row four says so. That is unresolved here and it is where the next session
-should start.
+⚠️ ~~**The text-layer row is the one to explain before acting.**~~ **CLOSED, and
+it was a wrong lead.** `label_tiers` is CONTRIBUTION, not production: line 408
+sets `tiers[0] = 0` when Surya's read wins, exactly as line 525 does for the
+vision rung. So a stable text layer reads 1 when Surya is silent and 0 when
+Surya overrules it, with its own output fixed throughout. Nothing to hunt for in
+the PDF.
+
+**What to follow instead.** The tight Surya test has since been run — 20 crops,
+same order, shuffled, and in a second process; 0 of 20 differ — so the reader is
+a fixed function of its input, and the layer beneath is byte-exact by row four.
+What is left is whether Surya is CALLED SUCCESSFULLY, and `contextual.py:386`
+swallows every exception into a `logger.warning` with nothing in the result.
+An intermittent failure there is indistinguishable from the reader finding
+nothing. That is the `_optional_pass_failure` shape, at a call site that does
+not use it. Hypothesis, not a finding — the warning appears in no log kept from
+these runs.
 
 ## What this does NOT say
 
