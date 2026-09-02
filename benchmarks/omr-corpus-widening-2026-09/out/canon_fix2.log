@@ -1,0 +1,62 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/partStaffExporter.py:266: MusicXMLWarning: Got overlapping StaffGroups; will not merge ANY groups.
+  warnings.warn(
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:1730: MusicXMLWarning: 52 does not map to a valid instrument!
+  warnings.warn(MusicXMLWarning(mpe))
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+beethoven-sym5-mvt1        8    18/18       8/8        81/81       1.000  1.000  1.000  meter_disagreement=3
+brahms-sym1-mvt1           7    21/21       7/7       506/505      0.956  0.955  0.992  clean
+mahler-sym5-mvt1           8    38/38       8/8        24/24       0.917  0.917  1.000  slot_clef=2
+
+OMR-NED (pooled over 3 scores): 0.1338   [lower is better; 0 = identical]
+  948 symbol edits over 3696 truth + 3390 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+mahler-sym5-mvt1                 0.0364      69     958     937  entire measure insert/delete
+beethoven-sym5-mvt1              0.1649     205     655     588  entire measure insert/delete
+brahms-sym1-mvt1                 0.1707     674    2083    1865  wrong note
+
+where the edits are (pooled):
+  wrong note                                 231   24.4%
+  wrong flag/beam                            198   20.9%
+  wrong direction                            151   15.9%
+  entire measure insert/delete               130   13.7%
+  wrong accidental                            64    6.8%
+  wrong slur                                  38    4.0%
+  (13 more)                                  136   14.3%
+
+wrote benchmarks/omr-corpus-widening-2026-09/out/canon_fix2.json
