@@ -11,11 +11,12 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
+from tools.omr.voicing import group_chords_in_measure
+
 from tools.omr.export import (
     annotate_beams,
     annotate_slurs_in_staff,
     measure_dynamics,
-    _lift_slur_states,
     _compute_divisions,
     _tuplet_runs,
     _mxl_note,
@@ -847,14 +848,15 @@ class TestSlursAcrossMeasures:
         staff["staff_geometry"] = None
         assert annotate_slurs_in_staff(staff) == 0
 
-    def test_lift_drops_a_slur_whose_two_ends_share_one_chord(self):
-        """A start and a stop on one note is a slur to nowhere."""
+    def test_a_slur_whose_two_ends_share_one_chord_is_dropped(self):
+        """A start and a stop on one note is a slur to nowhere. The drop
+        happens in `group_chords_in_measure`, where the marks are lifted off
+        the noteheads — the same place the tie flags are lifted."""
         head_a, head_b = _slur_head(10), _slur_head(11)
         head_a["slur_states"] = [(1, "start")]
         head_b["slur_states"] = [(1, "stop")]
-        events = [{"kind": "chord", "noteheads": [head_a, head_b]}]
-        _lift_slur_states(events)
-        assert "slur_states" not in events[0]
+        events = group_chords_in_measure([head_a, head_b])
+        assert all("slur_states" not in e for e in events)
 
 
 class TestSlurExport:

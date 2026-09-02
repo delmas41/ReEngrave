@@ -45,6 +45,26 @@ def _is_pitched_notehead(det: dict[str, Any]) -> bool:
     )
 
 
+def _chord_slur_states(group: list[dict[str, Any]]) -> list[tuple[int, str]]:
+    """The slur marks a chord carries, from whichever of its noteheads hold them.
+
+    A slur whose two ends landed in the SAME chord is dropped: a start and a
+    stop on one note spans no time, and MusicXML would carry a slur to nowhere.
+    Marks for different slurs that merely share a note are kept — that is an
+    ordinary elision, `d)(` in LilyPond.
+    """
+    states: list[tuple[int, str]] = []
+    for note in group:
+        for state in note.get("slur_states") or []:
+            if state not in states:
+                states.append(tuple(state))
+    if not states:
+        return []
+    degenerate = ({n for n, kind in states if kind == "start"}
+                  & {n for n, kind in states if kind == "stop"})
+    return [s for s in states if s[0] not in degenerate]
+
+
 def _is_durationed_rest(det: dict[str, Any]) -> bool:
     """Rest with a resolved duration."""
     return (
@@ -167,7 +187,7 @@ def group_chords_in_measure(
         # ties the convention is "if any voice is tied, the chord is tied."
         tied_to_next = any(n.get("tied_to_next") for n in group)
         tied_from_prev = any(n.get("tied_from_prev") for n in group)
-        events.append({
+        event = {
             "kind": "chord",
             "x_position": x_pos,
             "duration_beats": best_beats,
@@ -178,7 +198,16 @@ def group_chords_in_measure(
             "rest": None,
             "tied_to_next": tied_to_next,
             "tied_from_prev": tied_from_prev,
-        })
+        }
+        # Slur marks ride up the same way, and for the same reason: a chord is
+        # slurred once, through its first note. `export.annotate_slurs_in_staff`
+        # writes them onto the noteheads because a slur is paired over the whole
+        # STAFF — the arc crossing a barline is cut in two by the cell boundary.
+        # Inert on any result that pass has not run over.
+        slur_states = _chord_slur_states(group)
+        if slur_states:
+            event["slur_states"] = slur_states
+        events.append(event)
 
     # ── Add rest events ───────────────────────────────────────────────────
     for r in rests:

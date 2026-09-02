@@ -411,7 +411,6 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     per_measure_time_sig: list[dict[str, Any] | None] = []
     for measure in staff.get("measures", []):
         events = group_chords_in_measure(measure.get("detections", []))
-        _lift_slur_states(events)
         per_measure_events.append(events)
         per_measure_time_sig.append(measure.get("time_signature") or time_sig)
         voices = split_events_into_voices(events)
@@ -1141,30 +1140,6 @@ def annotate_slurs_in_staff(staff: dict[str, Any]) -> int:
     return n_marked
 
 
-def _lift_slur_states(events: list[dict[str, Any]]) -> None:
-    """Carry notehead slur marks up onto their event, in place.
-
-    Same convention `group_chords_in_measure` uses for ties: a chord is slurred
-    if any of its noteheads is, and the mark is emitted once through the
-    chord's first note.
-    """
-    for event in events:
-        states: list[tuple[int, str]] = []
-        for head in event.get("noteheads") or []:
-            for state in head.get("slur_states") or []:
-                if state not in states:
-                    states.append(state)
-        if not states:
-            continue
-        # A slur whose two ends landed in the same chord spans no time; a
-        # start and a stop on one note is a slur to nowhere.
-        degenerate = ({n for n, kind in states if kind == "start"}
-                      & {n for n, kind in states if kind == "stop"})
-        states = [s for s in states if s[0] not in degenerate]
-        if states:
-            event["slur_states"] = states
-
-
 def _event_tuplet(event: dict[str, Any]) -> tuple[dict[str, int], int] | None:
     """`({"actual": 3, "normal": 2}, group_id)` for a tuplet event, else None.
 
@@ -1366,7 +1341,6 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
-                        _lift_slur_states(_voice_events)
                     # Dynamics belong to the staff, not to a voice, so they go
                     # on voice 1 rather than being emitted once per voice.
                     _dyn = measure_dynamics(measure.get("detections", []))
@@ -1491,7 +1465,6 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # Per voice: interleaved voices would break each other's runs.
                     for _voice_events in voices:
                         annotate_beams(_voice_events, measure.get("detections", []))
-                        _lift_slur_states(_voice_events)
                     # Dynamics belong to the staff, not to a voice, so they go
                     # on voice 1 rather than being emitted once per voice.
                     _dyn = measure_dynamics(measure.get("detections", []))
