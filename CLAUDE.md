@@ -610,8 +610,33 @@ A triplet eighth is 1/3 of a quarter; the old power-of-two ladder returned 16 an
 scores without tuplets get exactly the old number — verified byte-identical on
 Brahms (8) and the authored fixtures.
 
-Coverage is what the detector gives: 4 of the 5 triplet groups on the Mahler
-page. The fifth carries no marker at all, at any confidence.
+**A triplet digit arrives under two class names, and the class is not evidence
+about which.** DSv2 labels a `3` over a beamed group `tuplet3` and a `3` beside a
+notehead `fingering3` — a POSITIONAL distinction, made by where the digit
+stands, and the detector reproduces it badly on orchestral pages. Measured over
+twelve engraved works (`benchmarks/omr-corpus-widening-2026-09/`): **33
+`fingering3` against 16 `tuplet3`, and all 33 sit in a cell that holds a real
+triplet**; the single detection that does not is a `tuplet3`. So both classes
+are read, and the positional gate above is what keeps that safe — a real
+fingering centred over a beamed group of exactly three would still be misread,
+and no conductor's score in the corpus prints one to price that against.
+
+⚠️ **This corrected a claim that stood here for a day.** The line this replaces
+said Mahler's fifth triplet group "carries no marker at all, at any
+confidence". It carries a `fingering3` at **0.72** — the highest-confidence
+tuplet marker on that page. Nothing was wrong with the reasoning; the three-work
+benchmark simply could not falsify a story about one of its own pages. Mahler
+went 0.0455 → **0.0331** and its duration rate 0.864 → **1.000** when the class
+was admitted, and `tchaikovsky-sym6-mvt2` 0.2321 → 0.1958.
+
+⚠️ **A GROUP IS A SET OF NOTES, NOT A BEAM STROKE.** A sixteenth carries two
+beam strokes, the CV detector finds both, and `_beamed_groups` returned one
+group per box — so the ratio was applied once per stroke and a triplet
+sixteenth came out `(1/4) × (2/3) × (2/3) = 1/9`. Every triplet in the three
+works this benchmark used to consist of is an EIGHTH triplet, one stroke and one
+group, so the fault could not appear there; `mozart-sym41-mvt1` prints 40 groups
+of triplet sixteenths and cost 464 edits for it. Identical member sets are
+collapsed.
 
 ---
 
@@ -682,6 +707,62 @@ Staff contexts. See
 [SYSTEM_BREAK_SLURS_2026-09-01.md](benchmarks/omr-ned-2026-08/SYSTEM_BREAK_SLURS_2026-09-01.md),
 which is mostly about how the FIXTURE had to be built before the fix could be
 measured at all.
+
+---
+
+## Articulations, and the time signature's own glyph
+
+Both shipped 2026-09-01 out of the corpus widening
+(`benchmarks/omr-corpus-widening-2026-09/FINDINGS.md`), and both are the shape
+this project has now paid for eight times: **the signal was detected and
+something downstream threw it away.** Neither needed the detector touched.
+
+**A time signature carries a GLYPH as well as numbers.** `4/4` and a common-time
+`C` are one bar length and two engravings; MusicXML says so with `symbol=`, and
+musicdiff charges the difference at a flat **3 edits per staff** — 25 staves of
+Bruckner 5 is 75 of them. `parse_time_signature` sets `symbol` ("common" /
+"cut") only where a `timeSigCommon` / `timeSigCutCommon` glyph was detected, at
+confidence 0.89-0.96 on the works measured. Worth **273 edits over five works**,
+each delta exactly three times that work's staff count.
+
+⚠️ **`symbol` is not `raw`, and exporting off `raw` would be wrong.**
+`_propagated_meter` SYNTHESISES `raw` from the winning numbers (`"C"` for any
+4/4), so a `raw` of `"C"` is not evidence that a C was printed. Only `symbol`,
+set at the one place the glyph is read, reaches the export.
+
+**The numbers come from the work; the glyph comes from the page.**
+`dossier.apply_meter` used to replace the whole dict — including on the branch
+where the detector AGREED — so the reading was discarded. A dossier is built
+from one MusicXML file and can say a movement is in 2/2; it cannot say whether
+THIS edition set that as a stroked C or as two digits, because that is a fact
+about the engraving. The override now keeps the detected `symbol` where the
+numbers agree, and drops it where they do not: a `timeSigCommon` read on a 3/4
+movement is a misread, and its glyph is as wrong as its numbers.
+
+**Articulations reach both exporters.** `export.py` contained the string
+"articulation" once, in a docstring, while the detector maps all ten DSv2
+`artic*` classes to category `ornament` and fires them freely — Mozart 40
+detects **exactly 102** staccati and was charged **exactly 102**
+`insarticulation` edits. The three works the benchmark used to consist of print
+0, 2 and 6 of them, which is the only reason it survived sixteen fixes.
+
+`transcribe._attach_articulations_in_cell` gives each mark to the notehead
+nearest it in x on the side its own class names, within **0.75 notehead
+widths** — the unit, not the mark's own bounding box, which is the mistake the
+augmentation-dot gate made. Not a tuned constant: swept over eight works and
+scored against the truth, **0.50 through 2.50 are identical** (197 placed, 193
+correct, precision 0.980) with a cliff below at 0.30 (placement 0.486). A mark
+with no notehead on the correct side is left unattached — 21 of 218.
+
+⚠️ **This one makes pooled OMR-NED WORSE by 97 edits and shipped anyway**, which
+is worth stating plainly. It is −122 across the eight works whose pages segment
+correctly and **+219 on `boulanger-printemps-mvt1` alone** — a 46-part score
+that emits 43 parts and spends 76% of its budget on whole-measure and
+whole-staff operations. Its marks are not wrong there: 263 of the 271 printed
+articulations are exported, with the right kinds. What is wrong is that its bars
+do not pair, so every correct symbol added to one raises a charge already being
+levied whole. Same call as `b8ccc89` (chords written bottom-up, +2 edits, still
+right), at a larger number and with the counter-argument recorded beside it.
 
 ---
 
