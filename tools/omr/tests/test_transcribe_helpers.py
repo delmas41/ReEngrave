@@ -472,22 +472,43 @@ class TestMeasureRhythmSumWarning:
 
 class TestStemDirection:
     def test_stem_up_notehead_at_bottom(self):
-        # Stem extends upward — notehead's y_center is BELOW stem's y_mid
+        # The stem projects far above the note and not below it.
         nh = FakeNH(x_canonical=100, y_canonical=180, height_canonical=20)
-        # y_center of notehead = 190
         stem = FakeStem(x_canonical=125, y_canonical=50, height_canonical=140)
-        # y_mid of stem = 50 + 70 = 120
-        # 190 > 120 → stem-up
-        assert _stem_direction(nh, stem) == "up"
+        assert _stem_direction(stem, [nh]) == "up"
 
     def test_stem_down_notehead_at_top(self):
-        # Stem extends downward — notehead's y_center is ABOVE stem's y_mid
+        # ...and here below it and not above.
         nh = FakeNH(x_canonical=100, y_canonical=40, height_canonical=20)
-        # y_center = 50
         stem = FakeStem(x_canonical=125, y_canonical=50, height_canonical=140)
-        # y_mid = 120
-        # 50 < 120 → stem-down
-        assert _stem_direction(nh, stem) == "down"
+        assert _stem_direction(stem, [nh]) == "down"
+
+    def test_a_lone_notehead_may_be_passed_unwrapped(self):
+        nh = FakeNH(x_canonical=100, y_canonical=180, height_canonical=20)
+        stem = FakeStem(x_canonical=125, y_canonical=50, height_canonical=140)
+        assert _stem_direction(stem, nh) == _stem_direction(stem, [nh])
+
+    def test_a_double_stop_gets_ONE_direction(self):
+        """Brahms's Viola: two noteheads an octave apart on one stem.
+
+        Resolved a notehead at a time against the stem's midpoint, the lower
+        note came out `up` and the upper `down` — which reads as divisi, and
+        `voicing` then splits the chord into two voices.
+        """
+        # Stem runs from the lower note up past the upper one.
+        lower = FakeNH(x_canonical=100, y_canonical=560, height_canonical=40)
+        upper = FakeNH(x_canonical=100, y_canonical=290, height_canonical=40)
+        stem = FakeStem(x_canonical=138, y_canonical=180, height_canonical=400)
+        assert _stem_direction(stem, [lower, upper]) == "up"
+        # Both members get the SAME answer, whichever order they arrive in.
+        assert _stem_direction(stem, [upper, lower]) == "up"
+
+    def test_a_stem_down_double_stop_too(self):
+        lower = FakeNH(x_canonical=100, y_canonical=560, height_canonical=40)
+        upper = FakeNH(x_canonical=100, y_canonical=290, height_canonical=40)
+        # Stem hangs below the pair instead.
+        stem = FakeStem(x_canonical=96, y_canonical=300, height_canonical=400)
+        assert _stem_direction(stem, [lower, upper]) == "down"
 
 
 # ─── _bbox_overlap_area / _is_tremolo_or_ornament_det /

@@ -82,6 +82,15 @@ def _bbox_width(det: dict[str, Any]) -> int:
     return det.get("bbox", [0, 0, 0, 0])[2]
 
 
+def _notehead_y(det: dict[str, Any]) -> int:
+    """A notehead's vertical centre in the cell's canonical frame.
+
+    Larger is LOWER on the page, and so lower in pitch.
+    """
+    bbox = det.get("bbox", [0, 0, 0, 0])
+    return bbox[1] + bbox[3] // 2
+
+
 def group_chords_in_measure(
     detections: list[dict[str, Any]],
     *,
@@ -194,7 +203,13 @@ def group_chords_in_measure(
             "duration_type": best_type,
             "dots": best_dots,
             "stem_direction": stem_dir,
-            "noteheads": list(group),
+            # LOWEST NOTE FIRST, which is how a chord is written. MusicXML
+            # takes the first `<note>` of a chord as its representative — the
+            # tie, beam and slur marks all hang off it — and both exporters
+            # emit in this order, so it should be the order the music is read
+            # in rather than the order the detector happened to return. Larger
+            # canonical y is lower on the page and so lower in pitch.
+            "noteheads": sorted(group, key=lambda n: -_notehead_y(n)),
             "rest": None,
             "tied_to_next": tied_to_next,
             "tied_from_prev": tied_from_prev,

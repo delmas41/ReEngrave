@@ -24,6 +24,7 @@ from tools.omr.rhythm import (
     _intrinsic_notehead_duration,
     _name_for_dots,
     _overlaps_any_in_x,
+    _spans_the_whole_cell,
     _pair_dots_to_targets,
     _normalize_class,
     _rest_duration,
@@ -643,3 +644,45 @@ class TestTupletGroups:
         for rec in out.values():
             rec["beam_levels"] = 0
         assert _tuplet_groups(heads, out, dets, beams, nh_width=30) == []
+
+
+# ─── _spans_the_whole_cell — a beam group cannot reach both barlines ────────
+
+
+class TestSpansTheWholeCell:
+    """A beam lives inside its measure; ink that crosses the whole cell is a
+    staff line or a system rule. The CV beam detector rejects that class by
+    requiring two stem ENDS on a component; YOLO beams get no such test and are
+    used wherever CV is silent — which is exactly where CV refused something.
+    """
+
+    class _Cell:
+        def __init__(self, width):
+            self.width = width
+
+    @staticmethod
+    def _beam(width):
+        return FakeDet(smufl_name="beam", category="structural",
+                       x_canonical=0, y_canonical=0,
+                       width_canonical=width, height_canonical=30)
+
+    def test_a_beam_over_part_of_the_bar_is_kept(self):
+        assert not _spans_the_whole_cell(self._beam(500), self._Cell(2000))
+
+    def test_a_beam_over_half_the_bar_is_kept(self):
+        # The widest real one measured is 0.5 of its cell.
+        assert not _spans_the_whole_cell(self._beam(1000), self._Cell(2000))
+
+    def test_ink_across_the_whole_bar_is_not(self):
+        # Brahms's Viola bar 2: 1965 px of a 1966 px cell, 0.33 spaces thick.
+        assert _spans_the_whole_cell(self._beam(1965), self._Cell(1966))
+
+    def test_the_cut_sits_in_the_measured_gap(self):
+        # Nothing at all was measured between 0.5 and 0.7 of a cell.
+        cell = self._Cell(1000)
+        assert not _spans_the_whole_cell(self._beam(500), cell)
+        assert _spans_the_whole_cell(self._beam(700), cell)
+
+    def test_an_unknown_cell_width_keeps_everything(self):
+        assert not _spans_the_whole_cell(self._beam(9999), self._Cell(0))
+        assert not _spans_the_whole_cell(self._beam(9999), None)
