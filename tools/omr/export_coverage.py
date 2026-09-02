@@ -1,10 +1,14 @@
 """Does everything the truth would SHOW survive into our output?
 
-WHY THIS EXISTS. Seven times now the defect has been the same shape: the
-pipeline recognises something correctly and then loses it on the way to the
-file. Beams, augmentation dots, dynamics, tuplet markers, slur arcs, fermatas,
-accidentals — 0.3164 to 0.1242 on the benchmark, and almost none of it from
-making the detector better.
+WHY THIS EXISTS. Seven times on main the defect has been the same shape, and an
+eighth on a branch that has not landed: the pipeline recognises something
+correctly and then loses it on the way to the file. Beams, augmentation dots,
+dynamics, tuplet markers, slur arcs, fermatas, accidentals. Most of the
+benchmark's fall from its 0.3164 opening is those, and almost none of it is a
+better detector. (The CURRENT figure is not restated here; it lives in
+CLAUDE.md's OMR-NED section and nowhere else, for the reason
+`tools/omr/accuracy_record.py` gives. An earlier draft of this paragraph
+quoted 0.1242 and was stale within a day.)
 
 THE LIST, NUMBERED, because the ordinal has been reconstructed from memory
 twice and collided both times. `0eb1271` calls articulations "the seventh time"
