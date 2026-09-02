@@ -118,6 +118,19 @@ fitting (measured as noise); a wrong signature costs more than a missing one,
 so any implementation must abstain by default and be 0-wrong on the existing
 ground-truth corpus. Phase 2 (only if Phase 1 supports it): implement + measure.
 
+### Workstream E — the time-signature issue (opus agent; added mid-session at Sean's request)
+
+Sean: "also consider the time signature issue if it still exists." It half-exists:
+the header template reader (2026-08-31) reads 8 / 0 wrong / 21 correct abstentions
+and the carry + per-staff vote landed, but ~half of *printed* meters still go
+unread, cut-common is withheld, and two questions were never asked: (a) which
+printed meters the candidate list cannot even represent (survey the 97 dossiers'
+meter facts against the locator's candidates — a meter not in the list can never
+be read), and (b) what an unread meter costs downstream (export fallback,
+`_reconcile_measure_to_meter` scope, bar-check failures). Attribution first,
+then only 0-wrong mechanical fixes — a wrong meter poisons every bar of a page,
+so the abstention bar stays where the header layer set it.
+
 ### Workstream D — branch assessment (sonnet agent, anytime)
 
 Read-only assessment of `claude/omr-dossier-verification-layer-eaf6d0` (handoff
