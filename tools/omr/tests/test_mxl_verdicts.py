@@ -431,6 +431,44 @@ def test_server_serves_prefilled_verdicts_and_hints(bench, truth) -> None:
     assert "prefill_status" in other
 
 
+def test_blind_mode_withholds_the_prefill_from_the_ui(bench, truth) -> None:
+    """A pass whose labels will SCORE the pre-fill must not be shown it.
+    `--blind` withholds the hints AND the queue signals (`prefill_status`,
+    the hint counts) — the second matters because "most left for me first"
+    tells the human which cells the pre-fill struggled with. The verdict
+    state is untouched: blind is about what the human SEES, and any pre-fill
+    already written into verdicts/ is still served."""
+    pytest.importorskip("fastapi")
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.server import create_app
+
+    _run(bench, truth, _windows(), write=True)
+    for cid in json.loads((bench / "cells.json").read_text()):
+        (bench / "cells" / f"{cid['cell_id']}.png").write_bytes(b"")
+
+    seeing = TestClient(create_app(bench))
+    blind = TestClient(create_app(bench, blind=True))
+
+    assert seeing.get("/api/cell/fx-p4-sys0-s0-m0").json()["prefill"] is not None
+    assert blind.get("/api/cell/fx-p4-sys0-s0-m0").json()["prefill"] is None
+
+    listed = {c["cell_id"]: c for c in blind.get("/api/cells").json()}
+    c = listed["fx-p4-sys0-s0-m0"]
+    assert c["prefill_status"] is None
+    assert c["n_hints"] == 0 and c["n_hints_missing"] == 0
+    # The human's own progress is still reported — blind hides the reference,
+    # not the labeling state.
+    assert c["n_decided"] == 2 and c["n_pending"] == 2
+    # Same cell set, same order: blind changes what is served, not which.
+    assert ([x["cell_id"] for x in blind.get("/api/cells").json()]
+            == [x["cell_id"] for x in seeing.get("/api/cells").json()])
+    # Saving still works, and the verdict state is unaffected by blindness.
+    state = blind.get("/api/cell/fx-p4-sys0-s0-m2/verdict").json()["state"]
+    assert [a["id"] for a in state["added_detections"]] == ["M0", "M1"]
+    assert blind.post("/api/cell/fx-p4-sys0-s0-m2/verdict", json=state).status_code == 200
+
+
 def test_write_hints_leaves_verdicts_untouched(bench, truth) -> None:
     s = _run(bench, truth, _windows(), write=True, hints_only=True)
     assert s["hints_only"] is True and s["totals"]["written"] == 0

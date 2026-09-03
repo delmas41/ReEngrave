@@ -1758,6 +1758,31 @@ too (20 → 15), while segmentation stays byte-identical. **A batch's hints
 age with the weights**: this one's are a checkpoint stale, and refreshing is
 `--write-hints`, which never touches `verdicts/` or `detections/`.
 
+**Phase C is registered and waiting on labels**
+([PHASE_C_PROTOCOL.md](benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md)):
+25 randomly drawn cells at seed 20260903, with each one's pre-fill status
+and box count recorded **before** any of them was labeled
+([PHASE_C_CELLS.json](benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json)),
+so the population and the prediction are both fixed in advance. Label in
+rank order — **stopping early stays valid**, because the prefix of a shuffle
+is a uniform sample — and 15 cells is ~50 boxes.
+
+⚠️ **A pass whose labels will SCORE the pre-fill must be run BLIND**
+(`annotate.server --blind`, added 2026-09-03): scoring against a human who
+was shown the hints measures agreement with what the human was told. The UI
+draws hints **by default** and every `Tab` is a page load, so the `h` toggle
+resets on each cell — "just press `h`" is not a protocol. `--blind`
+withholds the hints, `prefill_status` AND the queue order, that last one
+because "most left for me first" tells the human which cells the pre-fill
+found hard. Verdicts are untouched.
+
+⚠️ **Every cell of that sample already HAS a verdict file** — from the
+hollow sweep — so an unreached cell is not empty, it holds hollow boxes and
+nothing else. Score with `--score-inspected-for completion` (and the probe's
+`--inspected-for`), or a wider score charges each correctly pre-filled black
+head as a false positive and reports which pass was run. Both tools then
+score exactly the cells that are finished, at any point mid-labeling.
+
 ⚠️ **The five CONFLICTs were then reviewed and NONE is a tremolo
 abbreviation** — the handoff's hypothesis is corrected in place. Three are
 the reference's TIE-SPLITS (one printed dotted-half encoded as tied

@@ -1093,7 +1093,19 @@ def _summarize_cell_status(bench: Bench, cell_id: str, vp: Path) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def create_app(bench: Bench | Path) -> FastAPI:
+def create_app(bench: Bench | Path, *, blind: bool = False) -> FastAPI:
+    """The labeling app. `blind=True` withholds the pre-fill entirely.
+
+    ⚠️ **A blind pass is what makes a pre-fill measurement out-of-sample.**
+    Scoring the pre-fill against a human who was SHOWN its hints measures
+    agreement with what the human was told, not independent truth — and the
+    UI shows hints by default, resets that default on every cell (each `Tab`
+    is a page load), so "just press `h`" is not a protocol. This flag is,
+    because the payload never carries the hints at all. It also drops the
+    queue ORDER and `prefill_status`, which leak the same information one
+    step removed: "most left for me first" is the pre-fill telling the
+    human which cells it found hard.
+    """
     if isinstance(bench, Path):
         bench = Bench(root=bench)
     bench.verdicts_dir.mkdir(parents=True, exist_ok=True)
@@ -1198,7 +1210,7 @@ def create_app(bench: Bench | Path) -> FastAPI:
             entry = manifest.by_id[cid]
             vp = bench.verdicts_dir / f"{cid}.verdict.json"
             status = _summarize_cell_status(bench, cid, vp)
-            pre = _load_prefill(bench, cid)
+            pre = None if blind else _load_prefill(bench, cid)
             out.append(
                 {
                     "cell_id": cid,
@@ -1365,7 +1377,7 @@ def create_app(bench: Bench | Path) -> FastAPI:
             "total": len(manifest.ordered_ids),
             # Reference-driven pre-fill, when `mxl_verdicts` has run on this
             # batch. `hints` draw as ghost markers; nothing here is a label.
-            "prefill": _load_prefill(bench, cell_id),
+            "prefill": None if blind else _load_prefill(bench, cell_id),
         }
 
     @app.get("/api/cell/{cell_id}/verdict")
@@ -1781,6 +1793,16 @@ def main() -> None:
         action="store_true",
         help="Enable uvicorn auto-reload (for editing server.py).",
     )
+    ap.add_argument(
+        "--blind",
+        action="store_true",
+        help=(
+            "Withhold the reference pre-fill entirely: no ghost hints, no "
+            "queue order, no prefill status. Use when the labels are going "
+            "to SCORE the pre-fill — a human shown the hints cannot measure "
+            "them."
+        ),
+    )
     args = ap.parse_args()
 
     bench = _derive_bench(args)
@@ -1792,8 +1814,11 @@ def main() -> None:
     if not bench.detections_dir.exists():
         print(f"[server] WARN: detections dir missing: {bench.detections_dir}")
 
+    if args.blind:
+        print("[server] BLIND: the reference pre-fill is withheld — no hints, "
+              "no queue order. These labels can score it.")
     try:
-        app = create_app(bench)
+        app = create_app(bench, blind=args.blind)
     except ValueError as e:
         # Almost always a hand-edited batch_config.json. Say what is wrong
         # rather than serving the full picker to someone who asked for a pass.

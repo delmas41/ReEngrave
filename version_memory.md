@@ -38,6 +38,39 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   18 recovered / 7 broke → **21 / 4**; the 4 remaining breaks are FINDINGS §4's adjudicated
   displaced-centre artifacts and the one tangent-merge reader miss, all with correct labels.
 
+## 2026-09-03 — Phase C registered: a blind, pre-registered sample to decide admission
+
+The measurement half is Sean's; everything around it is prepared, and two ways the number
+could have come out wrong are now closed by construction.
+
+- **`annotate.server --blind`** withholds the pre-fill from the UI entirely — no ghost hints,
+  no `prefill_status`, no queue order. ⚠️ **A human shown the hints cannot measure them**: the
+  score would report agreement with what the human was told. The existing `h` toggle is not a
+  substitute — hints render by DEFAULT and `Tab` to the next cell is a full page load, so the
+  toggle resets on every cell. The queue order is suppressed too, because "most left for me
+  first" leaks the same information one step removed. Verdict state is untouched; blind is
+  about what the human SEES. 1 new test asserts both payloads and that the cell set and order
+  are unchanged.
+- **`select_phase_c_cells.py` pre-registers the sample** (`PHASE_C_CELLS.json`): seeded
+  (20260903) so it cannot be re-rolled until it flatters something, excluding the six
+  already-complete cells, and recording each cell's pre-fill status, box count and admission
+  tier **before** any labeling — 25 cells, 74 boxes, 73 of them labels-tier. The list is
+  ORDERED and stopping early stays valid (a shuffle's prefix is a uniform sample), which is
+  why 25 are registered when 12–15 is the ask: 15 cells ≈ 50 boxes, 25 ≈ 74.
+  ⚠️ A random sample of orchestral cells is mostly SPARSE bars (1–6 boxes) against ~8 in the
+  six dense ones — that difference IS the bias being corrected. Four cells the pre-fill
+  abstains on are kept in: dropping them would quietly reintroduce the old bias.
+- ⚠️ **Caught before it could produce a damning wrong number: every registered cell already
+  has a verdict file** from the hollow sweep, so an unreached cell is not empty — it holds
+  hollow boxes and nothing else, and scoring every class against it charges each correctly
+  pre-filled black head as a false positive. `probe_admission.py` gained `--inspected-for`
+  (the guard `mxl_verdicts` already had), so both tools score exactly the cells that are
+  finished, at any point mid-labeling. It also gained `--transcription`, because which boxes
+  exist to be scored moves with the weights (Phase B) — score against the reading the sample
+  was registered against.
+- Protocol, including how to read the answer either way:
+  `benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md`.
+
 ## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
 
 - **"Pre-fill precision is downstream of recognition" is now TESTED, and true** — the measured

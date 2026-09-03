@@ -86,7 +86,13 @@ changes week to week.
   labels tier 22/22; still metadata until a random pass re-tests it). Better
   weights then lifted the same measurement to **0.96 exact with no pre-fill
   change** — the clearest evidence yet that this approach improves for free
-  as recognition does, which is the reason to keep investing in it. A batch checked out on a machine
+  as recognition does, which is the reason to keep investing in it. All of
+  those figures come from the same six cells, chosen as the ones the pre-fill
+  decided most, so the deciding measurement is a **pre-registered random
+  sample of 25 cells labeled blind** (the UI can now withhold its own hints,
+  since a human shown them cannot measure them). That sample is registered
+  and waiting on labeling time; it is the step that would turn pre-filled
+  boxes from a review queue into labels. A batch checked out on a machine
   that did not cut it has no cell images (they are gitignored) and shows a
   blank canvas; `tools/omr/annotate/recut_cells.py` re-renders them from the
   manifest, refusing anything whose frame does not match. Where the work stands and
