@@ -19,6 +19,23 @@ python3 -m pytest tools/omr/tests/test_mxl_verdicts.py tools/omr/tests/test_draf
 ```
 Expect all green. If not, stop and paste the output back.
 
+## 0.5 Re-cut the cell images if the batch shows no music
+
+`benchmarks/*/cells/` is gitignored, so a checkout that did not CUT this batch
+has its manifest, its detections and its verdicts and **no images** — the
+annotate server answers 404 for every cell image and the canvas draws nothing.
+The server says so on startup: `WARN: cells dir missing`.
+
+```bash
+python3 -m tools.omr.annotate.recut_cells \
+    --bench-dir benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1 --dry-run
+```
+Then drop `--dry-run`. It re-renders only the ids `cells.json` already holds
+and verifies each against the frame the manifest records; anything that does
+not reproduce aborts the run rather than writing. ⚠️ **Do not fix this by
+re-running the cutter** — `rank_and_trim.py` rewrites `cells.json` and deletes
+PNGs, which can renumber the cell set and orphan every verdict in the batch.
+
 ## 1. Transcribe the batch's three pages (a few minutes)
 
 ```bash

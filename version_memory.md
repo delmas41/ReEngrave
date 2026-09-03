@@ -7,6 +7,30 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **a checked-out batch shows no music, and now there is a tool for it** —
+  `tools/omr/annotate/recut_cells.py`. Sean opened the Brahms batch and got a blank canvas.
+  `benchmarks/*/cells/` is gitignored (`.gitignore:77`) and **no batch has ever had a PNG
+  committed**, so a checkout that did not CUT a batch has its manifest, detections and
+  verdicts and not one image; the server answers 404 for every `/api/cell/{id}/image` and
+  the canvas draws nothing, with the sidebar, hotkeys and hints all working. It affects all
+  six hollow batches, not just Brahms. The tool re-renders only the ids `cells.json` already
+  holds, and **never writes `cells.json` or deletes anything** — the obvious repair, re-running
+  the cutter, is the dangerous one: `rank_and_trim.py` rewrites the manifest and deletes the
+  PNGs it did not keep, so it can renumber the cell set and orphan every verdict in a labeled
+  batch. ⚠️ **The frame is checked, not assumed.** Boxes are stored in the cell's CANONICAL
+  frame, so an image re-cut at a different padding puts every box in the batch somewhere else
+  on it and nothing downstream would say so. The two cutters disagree on padding on purpose
+  and the manifest does not record which was used — but it records `cell_canonical_w`/`_h` and
+  `staff_line_ys_canonical`, so the mode is DERIVED by cutting under each and keeping the one
+  the manifest agrees with; no match, no write (`--allow-partial` to write the rest anyway).
+  33 tests: the decisions with the cut injected, plus an end-to-end suite that cuts a
+  synthesized page, deletes the images and re-cuts them **byte-identically** under both modes.
+  ⚠️ That fixture crowds its staves to ~5 staff spaces on purpose — `measure_extractor` grows
+  the pad where the neighbour is over 6 spaces off, so the first draft (33 spaces apart) had
+  both modes returning the same height and could not have tested the detection at all.
+  Verified against the real Brahms batch here: it refuses with exit 1 and names the one
+  unfound PDF, because the score library is machine-local. Suite: 1752 passed, 4 pre-existing
+  failures (identical with the branch stashed), 2 collection errors from no music21.
 - **merged main's training gate; Brahms hints refreshed** — `origin/main` brought Sean's gate
   run (`ef51612`, `benchmarks/omr-labeling-survey-2026-09/GATE_RESULTS.md`): hollow scan labels
   PASS (half-note detection 8 → 25 on Beethoven, 9 → 23 on held-out Mahler, `with_duration`

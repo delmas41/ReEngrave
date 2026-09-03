@@ -91,10 +91,15 @@ python3 -m tools.omr.training.mxl_verdicts --bench-dir $B \
 
 ## Sean's checklist
 
+- [ ] Re-cut the batch's cell images — they are gitignored, so a checkout
+      that did not cut them shows a blank canvas:
+      `python3 -m tools.omr.annotate.recut_cells --bench-dir
+      benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1 --dry-run`,
+      then without. Never re-run the cutter to fix this; it can orphan the
+      verdicts.
 - [ ] Open the Brahms batch (`python3 -m tools.omr.annotate.server --bench-dir
-      benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1 --port 5051`;
-      cell PNGs are gitignored and must be re-cut on the Mac first, see the
-      runbook) and look at the 4 cells carrying the 5 red `CONFLICT` hints.
+      benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1 --port 5051`)
+      and look at the 4 cells carrying the 5 red `CONFLICT` hints.
 - [ ] Spot-check a handful of black-head and rest confirmations.
 - [ ] Decide whether pre-filled `TP`s can be admitted without a glance
       (the `--score` precision on those is the number that decides it).

@@ -1653,6 +1653,45 @@ admitted without a glance. Until that number exists, treat pre-filled
 verdicts as a queue, not as labels. Guarded by `test_mxl_verdicts.py`,
 `test_draft_windows.py`, `test_measure_align.py`, `test_musicxml_truth.py`.
 
+#### A checked-out batch has no images until you re-cut them
+
+`benchmarks/*/cells/` is gitignored — the PNGs are large and reproducible — so
+a batch arrives on another machine, or in a git worktree, with its `cells.json`,
+its `detections/` and its `verdicts/` intact and **not one image**. The server
+answers 404 for every `/api/cell/{id}/image` and the canvas draws nothing: a
+blank cell page whose sidebar, hotkeys and hints all work, which reads as "the
+batch shows no music". The tell is on startup — `WARN: cells dir missing`.
+
+```bash
+python3 -m tools.omr.annotate.recut_cells --bench-dir <batch> --dry-run   # then without
+```
+
+⚠️ **Do not repair this by re-running the cutter.** A cutter's job is to CHOOSE
+cells: `select_cells_orchestral` samples, and `rank_and_trim.py` rewrites
+`cells.json` and deletes the PNGs it did not keep. Pointing either at a batch
+that has been labeled can renumber the cell set and orphan every verdict in it.
+`recut_cells` never writes `cells.json` and never deletes anything.
+
+⚠️ **The FRAME is what makes this safe, and it is checked rather than assumed.**
+Every saved box — a drawn notehead as much as a model detection — is stored in
+the cell's CANONICAL frame, so an image re-cut at a different padding is not a
+slightly different picture: it is the same music at a different scale, with
+every box in the batch landing somewhere else on it, and nothing downstream
+would say so. The two cutters here disagree on padding on purpose
+(`select_cells_orchestral` patches `PAD_*_STAFF_LINES` to 5.0;
+`cut_candidate_cells.py` keeps the pipeline's own values) and the manifest does
+not record which was used — but it does record `cell_canonical_w`/`_h` and
+`staff_line_ys_canonical`, so the mode is DERIVED by cutting under each and
+keeping the one the manifest already agrees with. No match, no write: a
+mismatch aborts the batch, and `--allow-partial` is needed to write the rest.
+
+Note the modes coincide on a sparse page — `measure_extractor` grows the pad
+where the neighbouring staff is more than 6 spaces off — so they are only
+distinguishable where staves are crowded, which is what
+`test_recut_cells_e2e.py` builds its fixture to be. That suite cuts a
+synthesized page, deletes the images and re-cuts them **byte-identically**
+under both modes.
+
 **Convert finished verdicts → YOLO labels:**
 ```bash
 python3 -m tools.omr.training.verdicts_to_yolo_labels --verdicts-dir benchmarks/omr-labeling-NEW/verdicts \
