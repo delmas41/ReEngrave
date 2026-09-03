@@ -1,7 +1,73 @@
 {
  "cell_id": "beet5hr-p51-sys0-s16-m6",
  "schema_version": 2,
- "detections": [],
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1798,
+    "y": 693,
+    "w": 127,
+    "h": 124
+   },
+   "confidence": 0.8462,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1631,
+    "y": 678,
+    "w": 125,
+    "h": 122
+   },
+   "confidence": 0.7476,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 793,
+    "y": 743,
+    "w": 133,
+    "h": 100
+   },
+   "confidence": 0.6508,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1358,
+    "y": 656,
+    "w": 134,
+    "h": 123
+   },
+   "confidence": 0.6399,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N4",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1210,
+    "y": 680,
+    "w": 124,
+    "h": 126
+   },
+   "confidence": 0.5844,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
  "added_detections": [
   {
    "id": "H0",

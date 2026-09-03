@@ -1,7 +1,34 @@
 {
  "cell_id": "mahler5-p175-sys0-s0-m3",
  "schema_version": 2,
- "detections": [],
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 819,
+    "y": 1021,
+    "w": 126,
+    "h": 97
+   },
+   "confidence": 0.7001,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 997,
+    "y": 915,
+    "w": 142,
+    "h": 99
+   },
+   "confidence": 0.6139,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
  "added_detections": [
   {
    "id": "H0",

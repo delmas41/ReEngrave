@@ -14,6 +14,227 @@
    },
    "confidence": 0.8674,
    "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1169,
+    "y": 393,
+    "w": 41,
+    "h": 28
+   },
+   "confidence": 0.8714,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1352,
+    "y": 391,
+    "w": 41,
+    "h": 30
+   },
+   "confidence": 0.8581,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1261,
+    "y": 377,
+    "w": 41,
+    "h": 36
+   },
+   "confidence": 0.8537,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1925,
+    "y": 349,
+    "w": 44,
+    "h": 37
+   },
+   "confidence": 0.8508,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N4",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1735,
+    "y": 316,
+    "w": 44,
+    "h": 35
+   },
+   "confidence": 0.8473,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N5",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1078,
+    "y": 377,
+    "w": 42,
+    "h": 37
+   },
+   "confidence": 0.841,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N6",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 783,
+    "y": 361,
+    "w": 42,
+    "h": 35
+   },
+   "confidence": 0.8161,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N7",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1635,
+    "y": 348,
+    "w": 43,
+    "h": 37
+   },
+   "confidence": 0.7822,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N8",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 885,
+    "y": 379,
+    "w": 42,
+    "h": 39
+   },
+   "confidence": 0.782,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N9",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1536,
+    "y": 382,
+    "w": 46,
+    "h": 37
+   },
+   "confidence": 0.7471,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N10",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 458,
+    "y": 344,
+    "w": 49,
+    "h": 38
+   },
+   "confidence": 0.7272,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N11",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 973,
+    "y": 361,
+    "w": 41,
+    "h": 37
+   },
+   "confidence": 0.7265,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N12",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 455,
+    "y": 100,
+    "w": 41,
+    "h": 37
+   },
+   "confidence": 0.7236,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N13",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 686,
+    "y": 346,
+    "w": 43,
+    "h": 38
+   },
+   "confidence": 0.6871,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N14",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 453,
+    "y": 71,
+    "w": 42,
+    "h": 37
+   },
+   "confidence": 0.6104,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N15",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 588,
+    "y": 357,
+    "w": 42,
+    "h": 38
+   },
+   "confidence": 0.6056,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N16",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1827,
+    "y": 332,
+    "w": 44,
+    "h": 33
+   },
+   "confidence": 0.555,
+   "notes": "notehead completion (black heads/dots), audited"
   }
  ],
  "added_detections": [

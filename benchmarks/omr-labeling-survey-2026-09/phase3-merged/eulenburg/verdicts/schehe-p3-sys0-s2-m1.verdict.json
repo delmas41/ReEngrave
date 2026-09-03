@@ -34,6 +34,19 @@
     "w": 147,
     "h": 71
    }
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 905,
+    "y": 151,
+    "w": 140,
+    "h": 126
+   },
+   "confidence": 0.6567,
+   "notes": "notehead completion (black heads/dots), audited"
   }
  ],
  "added_detections": [

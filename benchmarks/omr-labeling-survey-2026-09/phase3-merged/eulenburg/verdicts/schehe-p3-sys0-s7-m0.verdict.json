@@ -27,6 +27,19 @@
    },
    "confidence": 0.6749,
    "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 1246,
+    "y": 21,
+    "w": 36,
+    "h": 30
+   },
+   "confidence": 0.8181,
+   "notes": "notehead completion (black heads/dots), audited"
   }
  ],
  "added_detections": [

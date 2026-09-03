@@ -40,6 +40,19 @@
    },
    "confidence": 0.7178,
    "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 881,
+    "y": 344,
+    "w": 127,
+    "h": 100
+   },
+   "confidence": 0.674,
+   "notes": "notehead completion (black heads/dots), audited"
   }
  ],
  "added_detections": [

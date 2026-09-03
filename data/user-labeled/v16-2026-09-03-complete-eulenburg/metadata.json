@@ -1,6 +1,6 @@
 {
   "version_name": "v16-2026-09-03-complete-eulenburg",
-  "created_utc": "2026-09-03T21:49:59+00:00",
+  "created_utc": "2026-09-03T22:07:03+00:00",
   "labeler": "sean",
   "description": "Eulenburg Scheherazade \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
   "source": {
@@ -13,7 +13,7 @@
     "n_cells_with_labels": 55,
     "n_v1_cells": 0,
     "n_v2_cells": 55,
-    "n_tp": 80,
+    "n_tp": 126,
     "n_wrong_cat": 0,
     "n_wrong_bbox": 0,
     "n_fn_added": 170,
@@ -67,12 +67,13 @@
     {
       "cell_id": "schehe-p2-sys0-s0-m4",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 1,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
+        "noteheadBlackOnLine",
         "restWhole"
       ]
     },
@@ -92,12 +93,13 @@
     {
       "cell_id": "schehe-p2-sys0-s11-m4",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 1,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
+        "noteheadBlackOnLine",
         "restWhole"
       ]
     },
@@ -162,7 +164,7 @@
     {
       "cell_id": "schehe-p2-sys0-s5-m4",
       "schema_version": 2,
-      "n_tp": 2,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
@@ -170,19 +172,22 @@
       "classes_written": [
         "dynamicF",
         "dynamicP",
+        "noteheadBlackOnLine",
         "restQuarter"
       ]
     },
     {
       "cell_id": "schehe-p2-sys0-s6-m4",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 18,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
         "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "restQuarter"
       ]
     },
@@ -264,12 +269,14 @@
     {
       "cell_id": "schehe-p3-sys0-s0-m1",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 3,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
+        "augmentationDot",
+        "noteheadBlackOnLine",
         "restWhole",
         "slur"
       ]
@@ -360,7 +367,7 @@
     {
       "cell_id": "schehe-p3-sys0-s2-m1",
       "schema_version": 2,
-      "n_tp": 3,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 4,
@@ -425,12 +432,13 @@
     {
       "cell_id": "schehe-p3-sys0-s3-m5",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 1,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 4,
       "n_fp_dropped": 0,
       "classes_written": [
+        "noteheadBlackInSpace",
         "noteheadWholeOnLine",
         "restHalf",
         "restQuarter"
@@ -466,12 +474,13 @@
     {
       "cell_id": "schehe-p3-sys0-s5-m1",
       "schema_version": 2,
-      "n_tp": 3,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 5,
       "n_fp_dropped": 0,
       "classes_written": [
+        "augmentationDot",
         "noteheadBlackInSpace",
         "noteheadBlackOnLine",
         "noteheadHalfInSpace",
@@ -482,12 +491,13 @@
     {
       "cell_id": "schehe-p3-sys0-s7-m0",
       "schema_version": 2,
-      "n_tp": 2,
+      "n_tp": 3,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
+        "augmentationDot",
         "dynamicF",
         "dynamicM",
         "restWhole"
@@ -496,7 +506,7 @@
     {
       "cell_id": "schehe-p4-sys0-s1-m0",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 8,
@@ -504,6 +514,7 @@
       "classes_written": [
         "dynamicF",
         "keySharp",
+        "noteheadBlackOnLine",
         "restHalf",
         "restQuarter"
       ]
@@ -573,7 +584,7 @@
     {
       "cell_id": "schehe-p4-sys0-s4-m0",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 7,
@@ -581,6 +592,8 @@
       "classes_written": [
         "dynamicF",
         "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "restHalf",
         "restQuarter"
       ]
@@ -604,20 +617,21 @@
     {
       "cell_id": "schehe-p4-sys0-s5-m1",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 2,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 2,
       "n_fp_dropped": 0,
       "classes_written": [
         "dynamicP",
+        "noteheadBlackInSpace",
         "noteheadHalfOnLine"
       ]
     },
     {
       "cell_id": "schehe-p4-sys0-s6-m0",
       "schema_version": 2,
-      "n_tp": 4,
+      "n_tp": 7,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 4,
@@ -625,19 +639,23 @@
       "classes_written": [
         "dynamicF",
         "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "slur"
       ]
     },
     {
       "cell_id": "schehe-p4-sys0-s7-m0",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 6,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 4,
       "n_fp_dropped": 0,
       "classes_written": [
         "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "slur"
       ]
     },
@@ -762,7 +780,7 @@
     {
       "cell_id": "schehe-p4-sys1-s14-m1",
       "schema_version": 2,
-      "n_tp": 3,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 5,
@@ -770,6 +788,7 @@
       "classes_written": [
         "accidentalNatural",
         "dynamicP",
+        "noteheadBlackOnLine",
         "restQuarter",
         "slur"
       ]
@@ -777,14 +796,16 @@
     {
       "cell_id": "schehe-p4-sys1-s15-m3",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 3,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 3,
       "n_fp_dropped": 0,
       "classes_written": [
         "accidentalFlat",
-        "accidentalNatural"
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
       ]
     },
     {

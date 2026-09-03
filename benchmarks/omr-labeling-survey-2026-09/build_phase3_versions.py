@@ -112,10 +112,17 @@ def main():
             else:
                 p = Path(loc, f"{cid}.verdict.json")
                 if p.exists(): prior = list(json.loads(p.read_text()).get("detections") or [])
-            # this round's marks
+            # this round's marks (dynamics/slurs/ties)
             mp2 = Path(batch, "marks-completion", "candidates", f"{cid}.json")
             marks = _det_from_cand(json.loads(mp2.read_text()), prefix="M") if mp2.exists() else []
             for m in marks: m["notes"] = "marks completion (dynamics/slurs/ties), audited"
+            # this round's notehead TOP-UP — black noteheads + dots the earlier
+            # completion rounds missed. Its own overlap check already refused
+            # anything the merged verdict covers, so these never duplicate.
+            np2 = Path(batch, "notehead-completion", "candidates", f"{cid}.json")
+            heads = _det_from_cand(json.loads(np2.read_text()), prefix="N") if np2.exists() else []
+            for h in heads: h["notes"] = "notehead completion (black heads/dots), audited"
+            marks = marks + heads
             if not human and not prior and not marks:
                 continue                       # nothing to train on; emits no label anyway
             if a.write:

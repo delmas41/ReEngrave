@@ -1,7 +1,21 @@
 {
  "cell_id": "schehe-p2-sys0-s11-m4",
  "schema_version": 2,
- "detections": [],
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 432,
+    "y": 377,
+    "w": 43,
+    "h": 34
+   },
+   "confidence": 0.7027,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
  "added_detections": [
   {
    "id": "H0",

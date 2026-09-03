@@ -53,6 +53,45 @@
    },
    "confidence": 0.6219,
    "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 995,
+    "y": 537,
+    "w": 99,
+    "h": 82
+   },
+   "confidence": 0.8147,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1851,
+    "y": 534,
+    "w": 98,
+    "h": 81
+   },
+   "confidence": 0.7922,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1536,
+    "y": 285,
+    "w": 98,
+    "h": 74
+   },
+   "confidence": 0.7428,
+   "notes": "notehead completion (black heads/dots), audited"
   }
  ],
  "added_detections": [

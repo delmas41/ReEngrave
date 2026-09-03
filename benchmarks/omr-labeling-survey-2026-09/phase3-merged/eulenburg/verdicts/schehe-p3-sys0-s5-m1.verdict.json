@@ -34,6 +34,19 @@
     "w": 117,
     "h": 81
    }
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 407,
+    "y": 715,
+    "w": 47,
+    "h": 49
+   },
+   "confidence": 0.603,
+   "notes": "notehead completion (black heads/dots), audited"
   }
  ],
  "added_detections": [

@@ -1,6 +1,6 @@
 {
   "version_name": "v17-2026-09-03-complete-simrock",
-  "created_utc": "2026-09-03T21:49:59+00:00",
+  "created_utc": "2026-09-03T22:07:04+00:00",
   "labeler": "sean",
   "description": "N. Simrock Dvorak 9 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
   "source": {
@@ -13,7 +13,7 @@
     "n_cells_with_labels": 13,
     "n_v1_cells": 0,
     "n_v2_cells": 13,
-    "n_tp": 23,
+    "n_tp": 24,
     "n_wrong_cat": 0,
     "n_wrong_bbox": 0,
     "n_fn_added": 23,
@@ -147,12 +147,13 @@
     {
       "cell_id": "dvorak9-p8-sys1-s17-m9",
       "schema_version": 2,
-      "n_tp": 2,
+      "n_tp": 3,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 2,
       "n_fp_dropped": 0,
       "classes_written": [
+        "augmentationDot",
         "dynamicF",
         "noteheadHalfInSpace",
         "noteheadHalfOnLine"

@@ -1,6 +1,6 @@
 {
   "version_name": "v18-2026-09-03-complete-breitkopf",
-  "created_utc": "2026-09-03T21:49:59+00:00",
+  "created_utc": "2026-09-03T22:07:04+00:00",
   "labeler": "sean",
   "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
   "source": {
@@ -13,7 +13,7 @@
     "n_cells_with_labels": 16,
     "n_v1_cells": 0,
     "n_v2_cells": 16,
-    "n_tp": 44,
+    "n_tp": 45,
     "n_wrong_cat": 0,
     "n_wrong_bbox": 0,
     "n_fn_added": 110,
@@ -52,12 +52,13 @@
     {
       "cell_id": "brahms1-p2-sys0-s2-m2",
       "schema_version": 2,
-      "n_tp": 6,
+      "n_tp": 7,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 2,
       "n_fp_dropped": 0,
       "classes_written": [
+        "augmentationDot",
         "dynamicP",
         "noteheadBlackInSpace",
         "noteheadBlackOnLine",

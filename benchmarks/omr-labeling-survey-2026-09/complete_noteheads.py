@@ -118,7 +118,17 @@ MAX_W_SPACES = 2.0
 MAX_H_SPACES = 1.6
 
 def _staff_space(cell) -> float:
-    ys = sorted(float(y) for y in (getattr(cell, "staff_line_ys", None) or []))
+    """Staff space in canonical px, or 0.0 when the cell has no five-line geometry.
+
+    ⚠️ The field is `staff_line_ys_canonical`. An earlier cut of this guard read
+    `staff_line_ys`, which does not exist on MeasureCell, so getattr returned
+    None, every cell "had no geometry", the guard abstained on all 169
+    candidates and the 394x170 slur arc it was written to catch sailed through.
+    Nothing failed; the only tell was `dropped_size == 0` in the summary. That
+    is why the caller COUNTS abstentions — a guard that abstains silently is
+    indistinguishable from a guard that passed.
+    """
+    ys = sorted(float(y) for y in (getattr(cell, "staff_line_ys_canonical", None) or []))
     return (ys[-1] - ys[0]) / 4 if len(ys) == 5 else 0.0
 
 def size_ok(d, cell) -> bool:
@@ -245,7 +255,9 @@ def main():
                 if not not_lr_edge(d, W): continue
                 if touches_top(d):
                     grand["dropped_topedge"] = grand.get("dropped_topedge", 0) + 1; continue
-                if not size_ok(d, cell):
+                if _staff_space(cell) <= 0:
+                    grand["size_abstain"] = grand.get("size_abstain", 0) + 1
+                elif not size_ok(d, cell):
                     grand["dropped_size"] = grand.get("dropped_size", 0) + 1; continue
                 if ink_fraction(cell, d) < MIN_INK:
                     grand["dropped_ink"] += 1; continue

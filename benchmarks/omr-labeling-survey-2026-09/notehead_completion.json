@@ -21,17 +21,17 @@
   },
   "omr-labeling-hollow2-2026-09-eulenburg-scheherazade": {
    "cells": 55,
-   "kept": 47,
+   "kept": 46,
    "by_family": {
-    "notehead": 44,
+    "notehead": 43,
     "dot": 3
    }
   },
   "omr-labeling-hollow2-2026-09-litolff-hires": {
    "cells": 54,
-   "kept": 79,
+   "kept": 77,
    "by_family": {
-    "notehead": 77,
+    "notehead": 75,
     "dot": 2
    }
   },
@@ -67,18 +67,18 @@
   },
   "omr-labeling-hollow3-2026-09-universal-mahler1": {
    "cells": 37,
-   "kept": 1,
-   "by_family": {
-    "notehead": 1
-   }
+   "kept": 0,
+   "by_family": {}
   }
  },
  "grand": {
   "cells": 280,
-  "kept": 169,
-  "dropped_overlap": 216,
+  "kept": 165,
+  "dropped_overlap": 215,
   "dropped_ink": 0,
   "dropped_conf": 33,
-  "dropped_cull": 0
+  "dropped_cull": 0,
+  "dropped_topedge": 4,
+  "dropped_size": 1
  }
 }

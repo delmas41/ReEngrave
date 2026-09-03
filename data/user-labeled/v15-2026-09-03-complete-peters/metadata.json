@@ -1,6 +1,6 @@
 {
   "version_name": "v15-2026-09-03-complete-peters",
-  "created_utc": "2026-09-03T21:49:59+00:00",
+  "created_utc": "2026-09-03T22:07:03+00:00",
   "labeler": "sean",
   "description": "Edition Peters Mahler 5 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
   "source": {
@@ -13,7 +13,7 @@
     "n_cells_with_labels": 54,
     "n_v1_cells": 0,
     "n_v2_cells": 54,
-    "n_tp": 88,
+    "n_tp": 128,
     "n_wrong_cat": 0,
     "n_wrong_bbox": 0,
     "n_fn_added": 122,
@@ -52,12 +52,13 @@
     {
       "cell_id": "mahler5-p175-sys0-s0-m3",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 2,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
+        "noteheadBlackInSpace",
         "restQuarter"
       ]
     },
@@ -94,13 +95,14 @@
     {
       "cell_id": "mahler5-p175-sys0-s5-m7",
       "schema_version": 2,
-      "n_tp": 2,
+      "n_tp": 3,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 3,
       "n_fp_dropped": 0,
       "classes_written": [
         "dynamicP",
+        "noteheadBlackInSpace",
         "rest8th",
         "restHalf",
         "restQuarter",
@@ -191,12 +193,14 @@
     {
       "cell_id": "mahler5-p175-sys2-s15-m3",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 3,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "restQuarter"
       ]
     },
@@ -264,13 +268,15 @@
     {
       "cell_id": "mahler5-p176-sys1-s10-m4",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 2,
       "n_fp_dropped": 0,
       "classes_written": [
-        "accidentalFlat"
+        "accidentalFlat",
+        "augmentationDot",
+        "noteheadBlackOnLine"
       ]
     },
     {
@@ -308,7 +314,7 @@
     {
       "cell_id": "mahler5-p176-sys1-s12-m0",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 5,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 3,
@@ -316,6 +322,8 @@
       "classes_written": [
         "accidentalFlat",
         "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "restQuarter",
         "slur"
       ]
@@ -352,14 +360,15 @@
     {
       "cell_id": "mahler5-p176-sys1-s8-m3",
       "schema_version": 2,
-      "n_tp": 1,
+      "n_tp": 2,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
         "accidentalFlat",
-        "dynamicF"
+        "dynamicF",
+        "noteheadBlackOnLine"
       ]
     },
     {
@@ -409,7 +418,7 @@
     {
       "cell_id": "mahler5-p177-sys0-s1-m1",
       "schema_version": 2,
-      "n_tp": 2,
+      "n_tp": 10,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 4,
@@ -419,18 +428,22 @@
         "accidentalFlatSmall",
         "accidentalNatural",
         "accidentalNaturalSmall",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "slur"
       ]
     },
     {
       "cell_id": "mahler5-p177-sys0-s1-m5",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 5,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "rest8th"
       ]
     },
@@ -504,14 +517,17 @@
     {
       "cell_id": "mahler5-p177-sys1-s6-m6",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 7,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 5,
       "n_fp_dropped": 0,
       "classes_written": [
         "accidentalNatural",
-        "accidentalSharp"
+        "accidentalSharp",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
       ]
     },
     {
@@ -626,13 +642,14 @@
     {
       "cell_id": "mahler5-p178-sys0-s0-m1",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 1,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 2,
       "n_fp_dropped": 0,
       "classes_written": [
         "accidentalFlat",
+        "noteheadBlackOnLine",
         "restQuarter"
       ]
     },
@@ -652,7 +669,7 @@
     {
       "cell_id": "mahler5-p178-sys0-s1-m0",
       "schema_version": 2,
-      "n_tp": 0,
+      "n_tp": 4,
       "n_wrong_cat": 0,
       "n_wrong_bbox": 0,
       "n_fn_added": 4,
@@ -660,7 +677,9 @@
       "classes_written": [
         "accidentalFlat",
         "accidentalSharp",
-        "keyFlat"
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
       ]
     },
     {
