@@ -1,0 +1,18 @@
+{
+  "pass_name": "hollow noteheads",
+  "note": "Draw every open (hollow) notehead the detector missed. Half notes are slot 1; whole notes slot 2. Click a notehead to place a staff-sized box \u2014 it picks on-line vs in-space for you. HOLLOW_HINTS.txt says how many counter-shaped holes each cell holds (a place to LOOK, not a claim \u2014 a bled p, the eye of an 8, a slur crossing a stem, and tempo/expression TEXT all make holes too). Draw-from-scratch: nothing is pre-labelled.",
+  "classes": [
+    {
+      "label": "half notehead",
+      "on_line": "noteheadHalfOnLine",
+      "in_space": "noteheadHalfInSpace",
+      "click_box": true
+    },
+    {
+      "label": "whole notehead",
+      "on_line": "noteheadWholeOnLine",
+      "in_space": "noteheadWholeInSpace",
+      "click_box": true
+    }
+  ]
+}

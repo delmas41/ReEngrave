@@ -1,0 +1,15 @@
+{
+  "pass_name": "accidentals",
+  "note": "ACCIDENTALS ONLY. Box every flat / sharp / natural in the cell. INLINE accidentals (the ones standing immediately left of a notehead) are accidentalFlat/Sharp/Natural. KEY-SIGNATURE accidentals (the run at the head of a staff-start cell, between clef and meter) are keyFlat/keySharp/keyNatural — that is DSv2's own split, and the base weights were trained on it, so keep the two apart. Box each accidental of a key signature INDIVIDUALLY, not the run as one box. Do NOT box noteheads or rests in this pass; verdicts accumulate across passes. Tab out of a cell with no accidentals: that stamps `accidentals` into inspected_passes and IS the coverage record.",
+  "classes": [
+    { "name": "accidentalFlat",    "label": "flat (inline)" },
+    { "name": "accidentalSharp",   "label": "sharp (inline)" },
+    { "name": "accidentalNatural", "label": "natural (inline)" },
+    { "name": "keyFlat",           "label": "flat (KEY SIG)" },
+    { "name": "keySharp",          "label": "sharp (KEY SIG)" },
+    { "name": "keyNatural",        "label": "natural (KEY SIG)" },
+    { "name": "accidentalDoubleSharp", "label": "double sharp" },
+    { "name": "accidentalDoubleFlat",  "label": "double flat" },
+    { "name": "accidentalFlatSmall",   "label": "small flat (grace/cautionary)" }
+  ]
+}
