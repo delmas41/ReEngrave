@@ -133,6 +133,39 @@ before and after, 206 tests green across the eight related suites.
   has no human-calibrated parity. ⚠️ Metadata only: verdict-writing is unchanged and nothing
   is auto-admitted until the random completion pass prices the tiers out-of-sample.
 
+## 2026-09-03 — the 9 inside-staff snap disagreements diagnosed: ideal staff lines vs tilted scans
+
+- **8 of the 9 flagged inside-staff labels sit in cells whose stored `staff_line_ys_canonical`
+  is 0.25–0.55 staff spaces off the printed lines**, and rebuilding the grid from the printed
+  ink reproduces Sean's class on all 8 (the 9th, beet5hr, is a tangent-note click ambiguity —
+  grid fine). The 3 hand-drawn beet5-p4-s14 disagreements from the 2026-08 batch are the same
+  defect. Record + scripts: `benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`.
+- Cause is **phase-1's staff MODEL, not the cutter**: `Staff.line_ys` is five ideal horizontal
+  rows for the whole staff; the flagged scans' staves tilt/bow 8–17 page px across their
+  width; every measure cell inherits the same constants, so end-of-staff measures carry the
+  full residual. Reproduces byte-for-byte on today's code (modulo the two cutters' deliberate
+  pad difference). `line_wander_px` (7–10 px on every flagged staff) already measures the
+  departure but never reaches cells.json.
+- Campaign audit (all 225 inside-staff added labels vs ink-measured grids): 15 past the
+  0.25 sp flip line; box centres bounded ≤0.25 sp (a near-half-space grid error aliases the
+  box onto the other slot's true position — the CLASS flips, the position stays plausible).
+  **Two silent wrong labels found**: `brahms1-p2-sys1-s20-m6` HalfInSpace→HalfOnLine (in v8;
+  **fixed same day**, `3baadcd` — batch verdict + survey `v8-merged-verdicts` + v8 label line
+  30→28) and `lamer-p5-sys0-s2-m0` WholeOnLine→WholeInSpace (exported in v11 since `780cbf6`,
+  v9–v12 held out of the catalog; fix 32→34 in flight — three copies: batch verdicts, survey
+  `phase2-merged/lamer/verdicts` (v11's export source, a third edit-both trap), v11 labels).
+- **`pitch_resolver` eats the same defect**: on warped scans, end-of-staff measures resolve
+  pitches against a grid up to half a space off — step-off-by-one for whole bars. Engraved
+  benchmark blind (LilyPond pages are straight). Follow-up measurement (landing on
+  `claude/sad-austin-7e16e7`): per-line tracing REFUTED as the fix — it aliases 0.87 sp the
+  wrong way on the worst cell; a rigid 5-comb slide (< 1 spacing) reproduces all 7 flagged
+  cells within 0.04 sp (`OMR_CELL_LINE_TRACE`, default off). Scan e2e cost is 4 edits of 7894
+  because only 0.4% of its cells sit past the flip line vs 8–16% on deeper pages — **that
+  benchmark cannot price the defect**. The recut-compatibility concern DISSOLVED under
+  measurement: flag on/off leaves cell images, bbox and upscale byte-identical (360/360 on the
+  worst page), only the stored grid moves — one frame, two grids; fix = `recut_cells.frame_mismatch`
+  comparing the unlocalized grid. In-staff snap stays frozen (`test_ledger_snap.py`).
+
 ## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
 
 - **The measured handoff's hypothesis ("Breitkopf tremolo abbreviations") is refuted for all
