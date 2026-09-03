@@ -4,8 +4,13 @@ Local OMR system that reads engraved music PDFs and produces structured
 symbol detections. Built around a YOLOv8l detector fine-tuned on
 DeepScoresV2 + a small hand-labeled real-orchestral catalog.
 
-**Current production model:** `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`
-(Phase 3.3, F1 **98.8%** on the 25-cell Bach WTC verdict set).
+**Current production model:** `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`
+— a 1-epoch imgsz-896 + 2x-dense-oversample hollow fine-tune of
+`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (Phase 3.3, F1 **98.8%** on the
+25-cell Bach WTC verdict set, kept as the prior-production backup). Holds dense
+notehead recall (0.941) while lifting scanned half-note detection 8 → 27 and
+duration recall 0.388 → 0.435. See
+`benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md`.
 
 ---
 
@@ -244,6 +249,9 @@ current production weights — see "Known limitations" below.
 {
   "source_pdf": "score.pdf",
   "weights":    "tools/omr/training/data/weights/.../ft-30ep.pt",
+  // why THIS model ran: null when --weights pinned it, else the routing
+  // verdict + per-page evidence (see "Weight routing" below)
+  "weight_routing": { "mode": "routed", "verdict": "scanned", "...": "..." },
   "conf_threshold": 0.25,
   "iou_threshold":  0.5,
   "agnostic_nms":   true,
@@ -1074,7 +1082,21 @@ positional arguments:
 options:
   --out OUT             Output JSON file (default: stdout)
   --pages PAGES         Pages to process: e.g. '0,4,9' or '0-4' (default: all)
-  --weights WEIGHTS     YOLO weights path (default: Phase 3.3, F1 98.8%)
+  --weights WEIGHTS     YOLO weights path. Default: ROUTE by input domain —
+                        scanned PDFs get the production hollow fine-tune
+                        (wins on scans: half-notes 8->27 on beet5-p1),
+                        digitally engraved PDFs get the prior production
+                        checkpoint (wins there: 11-work OMR-NED 0.1399 vs
+                        0.1421). The verdict is WHERE THE INK COMES FROM:
+                        a scan is one full-page raster image, an engraving
+                        is vector drawings (428-2058 paths vs 0-4, the gap
+                        empty over 147 probed pages). Ambiguous input falls
+                        back to the default weights; a missing engraved
+                        file falls back soft. Passing a path pins the model
+                        and skips routing. Env: OMR_WEIGHT_ROUTING=0
+                        disables; OMR_ENGRAVED_WEIGHTS overrides the
+                        engraved file. See
+                        benchmarks/omr-weight-routing-2026-09/FINDINGS.md.
   --clef-weights W      OPTIONAL, and NOT general-purpose weights: this takes a
                         CLEF-SPECIALIST checkpoint (a model fine-tuned to read
                         clefs). You do not need it — header reading is on by
@@ -1208,8 +1230,9 @@ canonical chain (best on the WTC verdict cells):
 | `deepscoresv2-yolov8m-r2-imgsz1280-50ep.pt` | 91.5% | Phase 3.1 |
 | `deepscoresv2-yolov8l-full-100ep.pt` | 96.3% | Phase 3.2 |
 | `deepscoresv2-yolov8l-8shards-100ep.pt` | — | 8-shard subset |
-| **`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`** | **98.8%** | **Phase 3.3 (default)** |
+| `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | 98.8% | Phase 3.3 (prior default; base for the hollow fine-tune) |
 | `deepscoresv2-yolov8l-realft-v1b.pt` | 98.5% | Phase 3.4 (first real-orchestral fine-tune; no improvement on WTC, learned some orchestral signal but not yet adopted) |
+| **`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`** | — | **DEFAULT** — 1-epoch imgsz-896 + 2x-dense hollow fine-tune of the Phase-3.3 weights; dense recall held (0.941), scanned half-notes 8 → 27. See `benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md` |
 
 See `benchmarks/omr-phase3.3/comparison-trained-v3.md` and
 `benchmarks/omr-phase3.4b/comparison-trained-v4.md` for full

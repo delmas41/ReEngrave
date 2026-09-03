@@ -1,0 +1,28 @@
+{
+  "cell_id": "lamer-p4-sys0-s5-m1",
+  "n_hollow": 2,
+  "candidates": [
+    {
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "bbox": {
+        "x": 189,
+        "y": 742,
+        "w": 120,
+        "h": 96
+      },
+      "confidence": 0.8109
+    },
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 426,
+        "y": 705,
+        "w": 100,
+        "h": 96
+      },
+      "confidence": 0.5969
+    }
+  ]
+}

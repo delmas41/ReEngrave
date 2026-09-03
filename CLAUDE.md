@@ -58,12 +58,14 @@ Site runs at **http://localhost**. Backend API at **http://localhost:8000**.
 
 ### OMR weights (required before first run)
 
-The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`, ~88 MB). It's gitignored.
+The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`, ~88 MB). It's gitignored.
 
 ```bash
 # docker-compose mounts /Users/seanjohnson/Desktop/ReEngrave/omr-weights/ → /app/tools/omr/training/data/weights/
 ls /Users/seanjohnson/Desktop/ReEngrave/omr-weights/
-# Should contain: deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+# Should contain: deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt  (current production;
+#   the prior deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt is kept alongside — weight
+#   routing serves it for digitally engraved input, see OMR_WEIGHT_ROUTING)
 ```
 
 If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads and the Gradus / comparison flows.
@@ -182,7 +184,8 @@ ReEngrave/
 │       │   └── data/            # gitignored — DSv2 dataset, fine-tuning shards, weights
 │       └── tests/               # 156 unit tests across Phase 4 modules
 ├── omr-weights/                 # gitignored, mounted into the container
-│   ├── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB — PRODUCTION
+│   ├── deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt      # ~88 MB — PRODUCTION (scans + routing default)
+│   ├── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt         # ~88 MB — engraved-routing target (prior production)
 │   └── deepscoresv2-yolov8l-phase-j-mix-30ep.pt    # from the collapsed catalog run — DO NOT USE
 ├── data/
 │   ├── user-labeled/            # hand-labeled YOLO training data (v1, v2, …) + catalog.yaml
@@ -296,7 +299,9 @@ ReEngrave/
 
 | Env var               | Default | What it tunes |
 |-----------------------|--------:|---|
-| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override weights file path |
+| `OMR_WEIGHTS_PATH`    | _(unset)_ | Pin ONE weights file for every input — this disables scan/engraved weight routing. Unset (the default) lets each run pick weights by input domain; see `OMR_WEIGHT_ROUTING`. |
+| `OMR_WEIGHT_ROUTING`  | `1` (on)  | **On by default since 2026-09-03.** With no pinned weights, each run classifies its input by where the ink comes from — a scanned page is one full-page raster image (total coverage ≥ 0.95 on every scan measured, incl. one tiled into 8 strips), an engraved page is vector drawings (428–2058 paths vs 0–4 on scans, the gap empty over 147 probed pages) — and picks the weights that measured best for that domain: **scans → the hollow fine-tune** (half-notes 8→27 on beet5-p1), **digitally engraved PDFs → the prior production weights** (11-work OMR-NED 0.1399 vs 0.1421 no-direction-text). Blank/ambiguous inputs abstain to the default (scan) weights, and a missing engraved-weights file falls back soft with one stderr line — routing can never fail a run that used to work. Verdict + per-page evidence are recorded in the result JSON as `weight_routing`. Set `0` to disable. Costs ≤ 77 ms per document. Implementation record: `benchmarks/omr-weight-routing-2026-09/FINDINGS.md`; strategy + the vetted process for any future specialist weights (publisher/era forks deferred behind measured triggers): `docs/weight-routing-and-specialization-2026-09-03.md`. |
+| `OMR_ENGRAVED_WEIGHTS`| `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override the engraved-side weights file that routing targets. |
 | `OMR_CLEF_WEIGHTS`    | _(unset)_ | Optional **clef-specialist** weights — a checkpoint fine-tuned to read clefs, **not** general-purpose detection weights. You don't need it: header reading (clef + key signature) is on by default and needs no extra files. When set, a 2nd detector reads each staff's clef from its header and overrides the main clef, which helps on some orchestral scans (decoupled; the main detector still does all symbols). **Pointing this at ordinary weights makes clefs worse.** See `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. CLI: `--clef-weights`. |
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
@@ -1307,7 +1312,7 @@ Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 - `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
 - The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.
 - Phase 4f introduced classical-CV stem and beam detection (morphological opening + connected components) because YOLO bounding boxes are structurally bad at thin lines.
-- Production weights: `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (Phase 3.3, F1 98.8% on 25-cell Bach WTC verdict set).
+- Production weights: `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` — a 1-epoch imgsz-896 + 2x-dense-oversample hollow fine-tune of the prior `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (itself Phase 3.3, F1 98.8% on the 25-cell Bach WTC verdict set). Holds dense notehead recall (0.941) while lifting scanned half-note detection 8 → 27 / duration recall 0.388 → 0.435. See `benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md`. **Since 2026-09-03 weights ROUTE by input domain when not pinned:** scanned PDFs get this file, digitally engraved PDFs get the prior checkpoint, which measures better there (0.1399 vs 0.1421 pooled) — see `OMR_WEIGHT_ROUTING` in the knobs table.
 - Phase 3.4 attempted to add 6 custom classes (barlines, textDynamic) and caused catastrophic forgetting — those classes are now learned via classical CV instead, not YOLO. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
 
 ### Claude Vision OMR notes
@@ -1362,7 +1367,9 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | JWT expiry (480 = 8 hours) |
 | `UPLOAD_DIR` | File upload path (set by docker-compose) |
 | `EXPORT_DIR` | Export output path (set by docker-compose) |
-| `OMR_WEIGHTS_PATH` | YOLO weights path override |
+| `OMR_WEIGHTS_PATH` | Pin one YOLO weights file for every input (disables scan/engraved routing) |
+| `OMR_WEIGHT_ROUTING` | `1` on (default) → pick weights by input domain, scanned vs digitally engraved; `0` pins the default weights. See the OMR knobs table. |
+| `OMR_ENGRAVED_WEIGHTS` | Override the engraved-side weights file used by routing |
 | `OMR_CLEF_WEIGHTS` | Optional clef-**specialist** weights (CLI: `--clef-weights`); default off. Not general-purpose weights — see the OMR knobs table. |
 | `OMR_MAX_PAGES` | Max pages per OMR job (default 5) |
 | `OMR_CONF_THRESHOLD` | YOLO min confidence (default 0.25) |

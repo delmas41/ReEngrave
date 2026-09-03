@@ -1,0 +1,35 @@
+{
+  "cell_id": "mahler1-p2-sys0-s9-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T16:00:22+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 259,
+        "y": 50,
+        "w": 171,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 264,
+        "y": 400,
+        "w": 171,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads"
+  ]
+}

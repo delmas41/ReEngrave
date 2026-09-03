@@ -1,0 +1,19 @@
+{
+  "cell_id": "mahler1-p4-sys0-s13-m0",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 880,
+        "y": 347,
+        "w": 147,
+        "h": 86
+      },
+      "notes": ""
+    }
+  ]
+}

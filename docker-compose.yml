@@ -25,7 +25,7 @@ services:
       UPLOAD_DIR: /app/uploads
       EXPORT_DIR: /app/exports
       # Override default OMR weights path / pipeline knobs by uncommenting:
-      # OMR_WEIGHTS_PATH: /app/tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+      # OMR_WEIGHTS_PATH: /app/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt
       # OMR_MAX_PAGES: 5
       # OMR_CONF_THRESHOLD: 0.25
       # OMR_IMGSZ: 1280

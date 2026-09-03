@@ -1,0 +1,28 @@
+{
+  "cell_id": "mahler1-p5-sys1-s14-m5",
+  "n_hollow": 1,
+  "candidates": [
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 173,
+        "y": 590,
+        "w": 125,
+        "h": 110
+      },
+      "confidence": 0.8636
+    },
+    {
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "bbox": {
+        "x": 734,
+        "y": 715,
+        "w": 55,
+        "h": 66
+      },
+      "confidence": 0.5614
+    }
+  ]
+}

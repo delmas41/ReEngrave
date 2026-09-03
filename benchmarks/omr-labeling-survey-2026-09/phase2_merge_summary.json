@@ -1,0 +1,22 @@
+{
+  "mahler1": {
+    "cells": 37,
+    "hollow": 54,
+    "completion": 15
+  },
+  "elgar1": {
+    "cells": 15,
+    "hollow": 19,
+    "completion": 4
+  },
+  "lamer": {
+    "cells": 11,
+    "hollow": 14,
+    "completion": 14
+  },
+  "tchaikovsky1": {
+    "cells": 18,
+    "hollow": 48,
+    "completion": 0
+  }
+}

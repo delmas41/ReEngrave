@@ -1,0 +1,59 @@
+{
+  "cell_id": "tchaik1-p43-sys1-s13-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T16:32:48+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 525,
+        "y": 204,
+        "w": 72,
+        "h": 60
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 525,
+        "y": 114,
+        "w": 72,
+        "h": 60
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1195,
+        "y": 174,
+        "w": 72,
+        "h": 60
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1185,
+        "y": 84,
+        "w": 72,
+        "h": 60
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads"
+  ]
+}

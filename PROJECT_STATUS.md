@@ -112,6 +112,8 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 
 - **September 2 — the fixture stopped charging for ink it never printed.** The entire-measure diagnosis had left a decision open: the Beethoven truth carries 36 fermatas, 22 over whole-measure rests, and `musicxml2ly` drops every one of those — 105 edits charged against a page that never showed them, to a perfect reader too. The render was **completed** rather than the truth shrunk (`3f447f7`): the truth is what the work IS, those fermatas are printed in every real edition, and LilyPond takes `\fermata` on a multi-measure rest directly, so the fixture pipeline splits the compressed `R2*8` runs at the truth's fermata bars — anchored on musicxml2ly's own `| % n` comments and refusing to guess when anything disagrees. Shown the marks for the first time, the reader reads **21 of 22**: Beethoven **0.1519 → 0.0727** (191 → 93 edits), pooled **0.1342 → 0.1200**, Mahler and Brahms unchanged to the edit, the entire-measure bucket 130 → 30. Both recorded configurations were re-measured on the fixed fixture; every earlier figure carries the old floor, and the discontinuity is marked where the history is quoted (CLAUDE.md's OMR-NED section, `benchmarks/omr-ned-2026-08/FINDINGS.md`, and the fix table in `docs/next-steps-omr-2026-09-01.md`). On the merge with the same day's printed-accidentals fix the two compose exactly — Beethoven identical to the fermata side, Mahler and Brahms identical to the accidentals side — and both configurations were recorded again on the merge itself.
 
+- **September 3 — the weights forked by domain, and the fork got a router.** The hollow fine-tune's ship run (`SHIP_RESULTS.md`: dense recall held at exactly 0.941, scanned half-notes 8 → 27) was the first time the two domains demonstrably wanted **different checkpoints** — it cost a measured +0.0022 pooled on the engraved benchmark because there was one weights slot. Now, when nothing pins the weights, `transcribe()` classifies its input by **where the ink comes from** — a scanned page is one full-page raster image (total coverage ≥ 0.95 on every scan measured), an engraved page is vector drawings (428–2058 paths vs 0–4, the gap empty over 147 probed pages) — and routes: scans keep the hollow fine-tune, digitally engraved input gets back the prior production weights that measure best there (0.1399 vs 0.1421). Explicit weights skip classification, ambiguity abstains to the default, a missing engraved file falls back soft, and the verdict + evidence land in the result JSON as `weight_routing`. Verified by 35 tests and a byte-identity A/B on both sides of the fork; **no benchmark figure moves** (every harness pins weights explicitly), and the recorded engraved headline again describes shipped behavior. **Publisher- and era-specific weights were considered and DEFERRED** behind measured triggers — the strategy record is [docs/weight-routing-and-specialization-2026-09-03.md](docs/weight-routing-and-specialization-2026-09-03.md), the implementation record [benchmarks/omr-weight-routing-2026-09/FINDINGS.md](benchmarks/omr-weight-routing-2026-09/FINDINGS.md).
+
 ---
 
 ## What works today
@@ -797,7 +799,7 @@ The headline NOTES.md idea — *train YOLO from symphony MusicXML × IMSLP editi
 - **Training on it failed, repeatedly.** Phase H (catalog-augmented fine-tune): collapsed. Phase I (fixed a ~50px x-offset in catalog labels): still collapsed. Phase J (mix-mode, briefly promoted): Phase K diagnosed a class-ID collision with DSv2 and the collapse stood. Phase L (slot remap to DSv2-free slots): **still collapsed** on Beethoven 5.
 - **Verdict:** catalog-augmented YOLO training is a dead end with the current recipe. Structural elements (stems/beams/barlines) stay with classical CV; symbol-class improvement comes from **hand-labeling via the annotate UI** (the current June work).
 
-**Loose end:** `omr-weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt` (84 MB, from the collapsed Phase J run) still sits next to the production weights. **Do not use it.** Production remains `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`.
+**Loose end:** `omr-weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt` (84 MB, from the collapsed Phase J run) still sits next to the production weights. **Do not use it.** Production is now `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` (a 1-epoch imgsz-896 + 2x-dense hollow fine-tune of `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`, which is kept as the prior-production backup; see `benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md`).
 
 The branch also carries **post-experiment OMR improvements that may still be valuable** (see "Unmerged work" below).
 
@@ -1006,10 +1008,22 @@ of the subsystem it touches, not just the patch algebra.
 
 ## What's parked / next up
 
-The ranked handoff is [`docs/next-steps-omr-2026-09-02.md`](docs/next-steps-omr-2026-09-02.md)
-(supersedes the 09-01 doc); NOTES.md carries the long-form context for
-everything below. Items below reflect 2026-09-01; where the overnight session
+The ranked handoff is [`docs/next-steps-omr-2026-09-03.md`](docs/next-steps-omr-2026-09-03.md)
+(supersedes 09-02/09-01); NOTES.md carries the long-form context for
+everything below. Items below reflect 2026-09-01; where a later session
 closed or re-priced one, the entry says so inline.
+
+> **2026-09-03 — the hand-labeling → gate → SHIP loop closed (5d81ace).** Sean
+> hand-labeled 194 hollow noteheads across 5 publishers; a gated fine-tune
+> proved it lifts the project's #1 weakness (scan half-notes 8→27) without the
+> dense-page collapse that killed every prior training attempt (dense recall
+> HELD 0.941); a production-matched re-gate (imgsz-896 — 2048 needs a cloud GPU)
+> then **shipped** it as the live detector (`…hollow-ft-2026-09-03.pt`, old
+> weights backed up, revert = `git revert 5d81ace`). Engraved wobble +0.0022,
+> negligible. First time in the project that hand-labeling produced a
+> measurably better *deployed* detector. Phase 2 (4 more publishers) is cut and
+> waiting; the process is documented and cheap to repeat for other symbols.
+> Full record: `benchmarks/omr-labeling-survey-2026-09/{SURVEY_DESIGN,GATE_RESULTS,SHIP_RESULTS}.md`.
 
 The current figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section and nowhere
 else. Restated copies here, in NOTES.md and in the next-steps doc kept going

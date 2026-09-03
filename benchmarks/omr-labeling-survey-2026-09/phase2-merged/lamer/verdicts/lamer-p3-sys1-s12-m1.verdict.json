@@ -1,0 +1,76 @@
+{
+  "cell_id": "lamer-p3-sys1-s12-m1",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "model_bbox": {
+        "x": 586,
+        "y": 433,
+        "w": 67,
+        "h": 59
+      }
+    },
+    {
+      "id": "C1",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 781,
+        "y": 404,
+        "w": 73,
+        "h": 61
+      }
+    },
+    {
+      "id": "C2",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 780,
+        "y": 343,
+        "w": 74,
+        "h": 65
+      }
+    },
+    {
+      "id": "C3",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 646,
+        "y": 192,
+        "w": 65,
+        "h": 50
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1117,
+        "y": 348,
+        "w": 64,
+        "h": 54
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1113,
+        "y": 401,
+        "w": 64,
+        "h": 54
+      },
+      "notes": ""
+    }
+  ]
+}
