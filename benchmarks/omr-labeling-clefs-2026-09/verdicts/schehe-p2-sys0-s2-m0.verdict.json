@@ -1,7 +1,7 @@
 {
   "cell_id": "schehe-p2-sys0-s2-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T21:07:10+00:00",
+  "labeled_at_utc": "2026-09-03T21:39:46+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -51,10 +51,23 @@
         "h": 223
       },
       "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 202,
+        "y": 168,
+        "w": 308,
+        "h": 797
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
     "hollow noteheads",
-    "rests+accidentals"
+    "rests+accidentals",
+    "clefs"
   ]
 }

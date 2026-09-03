@@ -1,7 +1,7 @@
 {
   "cell_id": "beet5hr-p48-sys0-s13-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T20:33:48+00:00",
+  "labeled_at_utc": "2026-09-03T21:38:09+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -51,10 +51,23 @@
         "h": 94
       },
       "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 202,
+        "y": 393,
+        "w": 256,
+        "h": 705
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
     "hollow noteheads",
-    "rests+accidentals"
+    "rests+accidentals",
+    "clefs"
   ]
 }

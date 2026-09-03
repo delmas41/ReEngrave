@@ -1,23 +1,36 @@
 {
- "cell_id": "beet5-p4-sys1-s14-m0",
- "schema_version": 2,
- "labeled_at_utc": "2026-09-02T17:35:22+00:00",
- "detections": [],
- "added_detections": [
-  {
-   "id": "H0",
-   "human_class": "noteheadHalfOnLine",
-   "human_category": "notehead",
-   "bbox": {
-    "x": 1189,
-    "y": 640,
-    "w": 221,
-    "h": 187
-   },
-   "notes": ""
-  }
- ],
- "inspected_passes": [
-  "rests+accidentals"
- ]
+  "cell_id": "beet5-p4-sys1-s14-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:38:00+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1189,
+        "y": 640,
+        "w": 221,
+        "h": 187
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 198,
+        "y": 308,
+        "w": 274,
+        "h": 730
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "rests+accidentals",
+    "clefs"
+  ]
 }
