@@ -29,6 +29,10 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 
 **Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
+**Short project overview (non-technical):** see [PROJECT_BRIEF.md](PROJECT_BRIEF.md).
+
+**Running changelog of changes made:** see [version_memory.md](version_memory.md) — update alongside this file and PROJECT_BRIEF.md after every commit.
+
 ---
 
 ## Running locally

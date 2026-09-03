@@ -1,9 +1,16 @@
 name: Deploy ReEngrave
 
+# Disabled from auto-triggering on push (2026-09-03): every one of the 123
+# runs since this workflow was added has failed. ReEngrave's actual
+# production path is the self-hosted VPS in scripts/deploy.sh /
+# docker-compose.prod.yml, not Vercel/Railway, and the VERCEL_TOKEN /
+# VERCEL_ORG_ID / VERCEL_PROJECT_ID / RAILWAY_TOKEN repo secrets this
+# workflow needs were never configured. Kept for reference / possible future
+# use — trigger manually from the Actions tab if needed. See
+# version_memory.md for the fixes applied alongside this (the backend
+# Docker build context was also wrong).
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -58,9 +65,9 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        working-directory: backend
         run: |
           docker build \
+            -f backend/Dockerfile \
             -t reengrave-backend:${{ github.sha }} \
             -t reengrave-backend:latest \
             .
