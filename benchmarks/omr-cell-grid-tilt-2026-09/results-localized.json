@@ -12,12 +12,12 @@
   "generated_by": "benchmarks/omr-scan-e2e-2026-09/scan_eval.py",
   "pooled_withheld_because": null,
   "pooled": {
-    "omr_ned": 0.7505707762557078,
-    "omr_ed": 7890,
+    "omr_ned": 0.7509039010466223,
+    "omr_ed": 7892,
     "truth_symbols": 6151,
-    "pred_symbols": 4361,
+    "pred_symbols": 4359,
     "categories": {
-      "wrong note": 1688,
+      "wrong note": 1675,
       "wrong note head": 138,
       "wrong flag/beam": 53,
       "wrong dot": 21,
@@ -25,9 +25,9 @@
       "wrong tie": 4,
       "wrong articulation": 4,
       "wrong ornament": 7,
-      "wrong clef": 41,
-      "wrong timesig": 53,
-      "wrong keysig": 141,
+      "wrong clef": 39,
+      "wrong timesig": 51,
+      "wrong keysig": 139,
       "wrong tempo": 4,
       "wrong barline": 4,
       "wrong direction": 216,
@@ -35,7 +35,7 @@
       "wrong crescendo": 1,
       "wrong diminuendo": 6,
       "wrong slur": 55,
-      "entire measure insert/delete": 2713,
+      "entire measure insert/delete": 2734,
       "entire staff insert/delete": 2676
     }
   },
@@ -53,7 +53,7 @@
       ],
       "leading_pickup": false,
       "confidence": "verified",
-      "seconds": 32.7,
+      "seconds": 31.9,
       "truth": {
         "parts": 18,
         "measures": 16,
@@ -96,23 +96,23 @@
           "exact": {
             "truth": 147,
             "omr": 109,
-            "matched": 82,
-            "recall": 0.5578,
-            "precision": 0.7523
+            "matched": 81,
+            "recall": 0.551,
+            "precision": 0.7431
           },
           "step": {
             "truth": 147,
             "omr": 109,
-            "matched": 99,
-            "recall": 0.6735,
-            "precision": 0.9083
+            "matched": 98,
+            "recall": 0.6667,
+            "precision": 0.8991
           },
           "with_duration": {
             "truth": 147,
             "omr": 109,
-            "matched": 64,
-            "recall": 0.4354,
-            "precision": 0.5872
+            "matched": 63,
+            "recall": 0.4286,
+            "precision": 0.578
           }
         },
         "per_staff": [
@@ -176,9 +176,9 @@
             "step": {
               "truth": 18,
               "omr": 11,
-              "matched": 8,
-              "recall": 0.4444,
-              "precision": 0.7273
+              "matched": 7,
+              "recall": 0.3889,
+              "precision": 0.6364
             },
             "with_duration": {
               "truth": 18,
@@ -443,7 +443,7 @@
       ],
       "leading_pickup": false,
       "confidence": "verified",
-      "seconds": 28.6,
+      "seconds": 27.2,
       "truth": {
         "parts": 18,
         "measures": 16,
@@ -486,23 +486,23 @@
           "exact": {
             "truth": 147,
             "omr": 150,
-            "matched": 75,
-            "recall": 0.5102,
-            "precision": 0.5
+            "matched": 74,
+            "recall": 0.5034,
+            "precision": 0.4933
           },
           "step": {
             "truth": 147,
             "omr": 150,
-            "matched": 96,
-            "recall": 0.6531,
-            "precision": 0.64
+            "matched": 95,
+            "recall": 0.6463,
+            "precision": 0.6333
           },
           "with_duration": {
             "truth": 147,
             "omr": 150,
-            "matched": 67,
-            "recall": 0.4558,
-            "precision": 0.4467
+            "matched": 65,
+            "recall": 0.4422,
+            "precision": 0.4333
           }
         },
         "per_staff": [
@@ -679,23 +679,23 @@
             "exact": {
               "truth": 27,
               "omr": 30,
-              "matched": 22,
-              "recall": 0.8148,
-              "precision": 0.7333
+              "matched": 21,
+              "recall": 0.7778,
+              "precision": 0.7
             },
             "step": {
               "truth": 27,
               "omr": 30,
-              "matched": 26,
-              "recall": 0.963,
-              "precision": 0.8667
+              "matched": 25,
+              "recall": 0.9259,
+              "precision": 0.8333
             },
             "with_duration": {
               "truth": 27,
               "omr": 30,
-              "matched": 22,
-              "recall": 0.8148,
-              "precision": 0.7333
+              "matched": 21,
+              "recall": 0.7778,
+              "precision": 0.7
             }
           },
           {
@@ -833,7 +833,7 @@
       ],
       "leading_pickup": false,
       "confidence": "verified",
-      "seconds": 42.4,
+      "seconds": 37.0,
       "truth": {
         "parts": 15,
         "measures": 8,
@@ -1292,7 +1292,7 @@
       ],
       "leading_pickup": false,
       "confidence": "verified",
-      "seconds": 45.5,
+      "seconds": 41.1,
       "truth": {
         "parts": 21,
         "measures": 7,
@@ -1326,9 +1326,9 @@
           "exact": {
             "truth": 505,
             "omr": 460,
-            "matched": 359,
-            "recall": 0.7109,
-            "precision": 0.7804
+            "matched": 360,
+            "recall": 0.7129,
+            "precision": 0.7826
           },
           "step": {
             "truth": 505,
@@ -1725,7 +1725,7 @@
       ],
       "leading_pickup": true,
       "confidence": "verified",
-      "seconds": 44.3,
+      "seconds": 40.3,
       "truth": {
         "parts": 38,
         "measures": 9,
@@ -1758,21 +1758,21 @@
         "name": "mahler-sym5-mvt1-local-p2.tilt",
         "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/sad-austin-7e16e7/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.tilt.omr.musicxml",
         "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/sad-austin-7e16e7/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml",
-        "omr_ned": 0.7101449275362319,
-        "omr_ed": 1176,
-        "pred_symbols": 508,
+        "omr_ned": 0.7122128174123338,
+        "omr_ed": 1178,
+        "pred_symbols": 506,
         "truth_symbols": 1148,
         "categories": {
-          "wrong note": 99,
+          "wrong note": 86,
           "wrong note head": 26,
           "wrong dot": 8,
           "wrong ornament": 1,
-          "wrong clef": 9,
-          "wrong timesig": 36,
-          "wrong keysig": 55,
+          "wrong clef": 7,
+          "wrong timesig": 34,
+          "wrong keysig": 53,
           "wrong direction": 90,
           "wrong dynamic": 2,
-          "entire measure insert/delete": 201,
+          "entire measure insert/delete": 222,
           "entire staff insert/delete": 649
         }
       }

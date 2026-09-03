@@ -52,6 +52,17 @@ CASES = [
     ("editions/beethoven/symphony-5-op67/"
      "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
      47, 0, 14, 0, "beet5hr-p48-sys0-s14-m0", -0.11),
+    # ⚠️ The two SILENT wrong labels (FINDINGS §3) — the cells this work exists
+    # to have prevented, so "it would have caught them" is run here rather than
+    # inferred from the seven above. `brahms1-p2-sys1-s20-m6` is the one that
+    # forced CELL_LINE_MIN_ROWS_COVERED: it fits correctly but covers only 4 of
+    # 5 rows, because that staff's own MODELED spacing is irregular.
+    ("editions/brahms/symphony-1-op68/"
+     "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+     1, 1, 20, 6, "brahms1-p2-sys1-s20-m6 [silent]", -0.40),
+    ("editions/debussy/la-mer-cd-111/"
+     "debussy--la-mer-cd-111--durand-fils--imslp15420.pdf",
+     4, 0, 2, 0, "lamer-p5-sys0-s2-m0 [silent]", -0.45),
 ]
 
 
@@ -94,14 +105,15 @@ def main() -> int:
                               else "DISAGREES")
         rows.append(row)
 
-    print(f"{'cell':30s} {'hand':>6s} {'fitted':>7s} {'delta':>6s} "
-          f"{'cover':>6s}  verdict")
+    print(f"{'cell':34s} {'hand':>6s} {'fitted':>7s} {'delta':>6s} "
+          f"{'rows':>5s} {'cover':>6s}  verdict")
     for r in rows:
         m = r.get("measured_spaces")
         d = r.get("delta_vs_hand")
         m_s = "  —  " if m is None else f"{m:+7.3f}"
         d_s = "  —  " if d is None else f"{d:+6.3f}"
-        print(f"{r['name']:30s} {r['hand_spaces']:+6.2f} {m_s:>7s} {d_s:>6s} "
+        print(f"{r['name']:34s} {r['hand_spaces']:+6.2f} {m_s:>7s} {d_s:>6s} "
+              f"{str(r.get('rows_covered', '—')):>5s} "
               f"{str(r.get('min_row_coverage', '—')):>6s}  "
               f"{r.get('verdict', r.get('error'))}")
 

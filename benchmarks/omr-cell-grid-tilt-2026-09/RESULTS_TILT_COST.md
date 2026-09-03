@@ -11,8 +11,8 @@ designed. This is that measurement.
 **Answer, in one line: the fix is real and the instrument is blind.** Localizing
 each cell's grid onto its own ink recovers every displacement the page probe
 measured by hand, to within 0.04 staff spaces on all seven flagged cells — and
-moves the scan e2e benchmark by **4 edits out of 7894** (pooled 0.7517 →
-0.7506). Not because the defect is small, but because that benchmark reads
+moves the scan e2e benchmark by **2 edits out of 7894** (pooled 0.7517 →
+0.7509). Not because the defect is small, but because that benchmark reads
 **page 1 of five works**, and page 1 of a bound book is where the paper is
 flattest: **0.4% of its 1143 cells** sit past the quarter-space parity-flip
 line, against **16.0%** on the pages the labeling campaign flagged and **8.3%**
@@ -73,15 +73,35 @@ All seven within 0.04 spaces, on two independent rasters and two independent
 methods. **That chain reaches the human labels**: FINDINGS §1 showed the
 ink-measured parity reproduces Sean's class on **8 of 8** geometry cases (the
 9th being a click-vs-head-centre artifact), and this fit reproduces the ink
-measurement — so localizing the grid would have prevented the two silent wrong
-labels §3 found, `brahms1-p2-sys1-s20-m6` and `lamer-p5-sys0-s2-m0`.
+measurement.
+
+⚠️ **The two SILENT wrong labels were then measured directly rather than
+inferred from that chain, and the first attempt got one of them wrong.** They
+are the cases this work exists to have prevented, so "it would have caught
+them" is a claim that has to be run, not reasoned:
+
+| label (FINDINGS §3) | hand | comb fit | rows covered |
+|---|--:|--:|--:|
+| `brahms1-p2-sys1-s20-m6` | −0.40 | −0.436 | 4 of 5 |
+| `lamer-p5-sys0-s2-m0` | −0.45 | −0.407 | 5 of 5 |
+
+Both now reproduce — but under the first gate set, requiring all five rows to
+be inked, **`brahms1-p2-sys1-s20-m6` abstained**, and the abstention was the
+gate's fault rather than the fit's: it fits at −0.436 with coverage
+`[1.00, 1.00, 0.374, 1.00, 1.00]`, because that staff's own MODELED rows are
+unevenly spaced (gaps 27, 22, 33, 28 px at spacing 27.5) so one comb row cannot
+sit on the print at any shift. Phase 1's fit is distorted there, not merely
+displaced, and a rigid comb inherits the distortion. Hence
+`CELL_LINE_MIN_ROWS_COVERED = 4` — four rows agreeing at 1.00 is overwhelming
+evidence of a staff, a beam still covers one, and the narrow-cell alias is
+untouched because it passes coverage on all five rows and is refused by width.
 
 ### Three gates, each earned by something that went wrong
 
 | gate | value | what it refuses |
 |---|--:|---|
 | `CELL_LINE_MAX_SHIFT_SPACES` | 0.75 | a full-spacing alias — bounded **below** one spacing on purpose, which is what makes aliasing unreachable rather than merely unlikely |
-| `CELL_LINE_MIN_ROW_COVERAGE` | 0.45 | a cell with no five-line comb under it — one strong row (a beam, a chord) is not a staff |
+| `CELL_LINE_MIN_ROW_COVERAGE` / `_MIN_ROWS_COVERED` | 0.45 / 4 of 5 | a cell with no staff-line comb under it — one strong row (a beam, a chord) is not a staff |
 | `CELL_LINE_MIN_WIDTH_SPACES` | 4.0 | a cell too narrow to have horizontal evidence |
 | `CELL_LINE_MIN_SHIFT_SPACES` | 0.05 | its own quantization — the comb is scored at integer page rows |
 
@@ -95,6 +115,12 @@ them are Dvořák's brace cells, the system furniture
 `benchmarks/omr-scan-e2e-2026-09/RESULTS.md` §1 measures at 2.2 spaces. With
 the gate in, that page's largest offset falls **0.760 → 0.364**.
 
+The positive side has the same margin: the seven cells whose displacement was
+traced by hand are **9.03, 10.32, 12.23, 12.34, 16.18, 21.98 and 28.82 staff
+spaces** wide, so the narrowest real case clears a 4.0-space gate by 2.25×.
+Nothing in 3.7–9.0 spaces has been observed either way, which is a gap to sit
+in rather than a threshold to tune.
+
 ⚠️ **The minimum-shift gate is what makes the engraved control provable.** On
 the engraved Beethoven fixture — a LilyPond page straight by construction — 32
 of 144 cells answered a non-zero shift and the largest was 0.024 spaces, which
@@ -104,7 +130,7 @@ bit-identical to the flag-off run rather than merely close to it.
 
 ---
 
-## 2. The A/B on the scan benchmark: 4 edits of 7894
+## 2. The A/B on the scan benchmark: 2 edits of 7894
 
 Same tree, one variable, both arms transcribed and scored here — **not
 differenced against the committed 0.7960**, which was measured on an older tree
@@ -118,14 +144,21 @@ change).
 | Beethoven 5 / 575951 | 0.7660 (1375) | 0.7643 (1375) | 0 |
 | Dvořák 9 | 0.4381 (680) | 0.4386 (682) | +2 |
 | Brahms 1 | 0.9209 (3436) | 0.9209 (3436) | 0 |
-| Mahler 5 | 0.7122 (1178) | 0.7101 (1176) | −2 |
-| **pooled** | **0.7517 (7894)** | **0.7506 (7890)** | **−4** |
+| Mahler 5 | 0.7122 (1178) | 0.7122 (1178) | 0 |
+| **pooled** | **0.7517 (7894)** | **0.7509 (7892)** | **−2** |
 
-Category-level it is the same non-event: `entire measure insert/delete` 2731 →
-2713, `wrong note` 1675 → 1688, `wrong keysig` 143 → 141, `wrong clef` 39 → 41.
-**Do not read those as a wash of real effects** — at four net edits over 1143
-cells of which five are past the flip line, this is noise around zero, and the
-honest summary is "no measurable change on this corpus."
+Three of the five rows do not move by a single edit. Category-level, only three
+buckets move at all: `entire measure insert/delete` 2731 → 2734, `wrong keysig`
+143 → 139, `wrong slur` 56 → 55. **Do not read those as a wash of real
+effects** — at two net edits over 1143 cells of which five are past the flip
+line, this is noise around zero, and the honest summary is "no measurable
+change on this corpus."
+
+⚠️ **The arm was re-measured after the gates were added and got SMALLER**, from
+−4 edits to −2 (Mahler's −2 was a pre-gate sub-pixel move, and it was
+noise: the gate that removed it is the one that makes the engraved side
+provable). Both figures round to "nothing", which is the point — but the
+committed number is the one the committed code produces.
 
 ---
 
@@ -210,6 +243,24 @@ pipeline, and `--record` was deliberately not passed.
   affected pages; §1's chain already uses them qualitatively (8 of 8), and
   scoring parity-agreement over all 225 would quantify the fix where it bites.
   The prior session's `audit_labels_vs_measured_grid.py` is the harness.
+- **⚠️ A rigid comb has a ceiling, and one flagged cell is already at it.**
+  FINDINGS §1 found the staff DISPLACED rather than distorted, which is what
+  justifies a single offset, and that holds for the seven cells it traced. But
+  `brahms1-p2-sys1-s20-m6`'s modeled rows are `[5506, 5533, 5555, 5588, 5616]`
+  — gaps 27, 22, 33, 28 at spacing 27.5, irregular by up to 11 px. **That is a
+  phase-1 defect underneath the tilt defect**: the five-row fit is itself
+  distorted, so no rigid slide can put all five rows on the print, and the same
+  bound applies to `refine_staff_lines_in_cell`'s single-offset shape. Four of
+  five rows is enough to LOCATE such a staff, so it is not a blocker — and
+  **measured, it is rare enough not to motivate the richer fix**. Over 93
+  five-line staves on four warped pages of four editions, modeled row spacing
+  is regular: irregularity (max deviation of a gap from the staff's mean gap,
+  as a fraction of it) has median **0.037** and p90 **0.065**, seven staves
+  (7.5%) exceed 0.10, exactly **one** exceeds 0.15 — and that one, at 0.200, is
+  brahms1 s20 itself. So the per-cell *slope* or per-row fit FINDINGS §4
+  floated would be buying a 1%-of-staves case that four-of-five already
+  locates. Not worth it on this evidence; revisit if a publisher turns up whose
+  staves fit irregularly as a rule.
 - **`Staff.line_wander_px` is a usable per-staff flag but understates**, as
   FINDINGS §2 noted: it saturates near a third of a space because that is the
   trace window. `probe_library_tilt_population.py` records it per page beside

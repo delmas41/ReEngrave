@@ -120,15 +120,48 @@ class TestCombFitRecoversTheRamp:
 
 # ─── it abstains rather than dragging the grid onto a glyph ──────────────────
 
+class TestCoverageCountsRowsRatherThanRequiringAllFive:
+    """⚠️ Requiring ALL five rows to be inked threw away a correct answer on
+    one of the two labels this work exists to have prevented.
+
+    `brahms1-p2-sys1-s20-m6` fits at −0.436 spaces against a hand-measured
+    −0.40 with coverage [1.00, 1.00, 0.374, 1.00, 1.00]: the staff's own
+    MODELED rows are unevenly spaced (gaps 27, 22, 33, 28 px at spacing 27.5),
+    so one comb row cannot sit on the print at any shift. Phase 1's fit is
+    distorted there, not merely displaced, and a rigid comb inherits that.
+    """
+
+    def test_a_staff_whose_own_model_has_one_bad_row_still_fits(self):
+        pws = _pws(_draw_staff(ramp_px=12))
+        staff = pws.staves[0]
+        # Displace ONE modeled row off the even grid, as phase 1 did there.
+        staff.line_ys = [100, 120, 133, 160, 180]
+        got = me._cell_line_offset(pws, staff, X_END - 200, X_END - 5)
+        assert got is not None, "four rows agreeing is evidence enough"
+        assert got[1]["rows_covered"] == 4, got[1]
+
+
 class TestAbstains:
-    def test_no_five_line_comb_under_the_cell(self):
+    def test_no_staff_line_comb_under_the_cell(self):
         """One thick horizontal bar — a beam — is a strong single row, not a
-        comb. The coverage test is what tells them apart."""
+        comb. Counting covered rows is what tells them apart, and it still
+        does with the four-of-five rule: a beam covers one."""
         binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
         binary[150:158, 200:400] = 0     # a beam, no staff at all
         pws = _pws(binary)
         got = me._cell_line_offset(pws, pws.staves[0], 200, 400)
         assert got is None, got
+
+    def test_three_rows_is_not_enough(self):
+        """The rule is four of five. Three printed lines under a cell is a
+        fragment, not a staff — and the bound has to bite somewhere.
+        """
+        binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+        for y in NOMINAL_YS[:3]:
+            binary[y - 1:y + 2, X_START:X_END] = 0
+        pws = _pws(binary)
+        assert me._cell_line_offset(
+            pws, pws.staves[0], X_END - 200, X_END - 5) is None
 
     def test_blank_paper(self):
         pws = _pws(np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8))

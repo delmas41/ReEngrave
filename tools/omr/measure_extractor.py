@@ -812,12 +812,26 @@ ENV_CELL_LINE_TRACE = "OMR_CELL_LINE_TRACE"
 # 0.65 spaces of the largest displacement measured.
 CELL_LINE_MAX_SHIFT_SPACES = 0.75
 
-# At the winning shift, this much of the cell's width must be inked at each of
-# the five rows. This is the coherence test that replaces per-line matching's
-# missing one: it asserts that five printed lines really are there, so a cell
-# whose profile is dominated by a beam or a chord — one strong row, not five —
-# abstains instead of dragging its grid onto the glyph.
+# At the winning shift, this much of the cell's width must be inked at
+# `CELL_LINE_MIN_ROWS_COVERED` of the five rows. This is the coherence test
+# that replaces per-line matching's missing one: it asserts that printed staff
+# lines really are there, so a cell whose profile is dominated by a beam or a
+# chord — one strong row, not a comb — abstains instead of dragging its grid
+# onto the glyph.
 CELL_LINE_MIN_ROW_COVERAGE = 0.45
+
+# ⚠️ FOUR OF FIVE, NOT ALL FIVE, and requiring all five threw away a correct
+# answer on one of the two labels this whole thread exists to have prevented.
+# `brahms1-p2-sys1-s20-m6` (FINDINGS §3's second silent wrong label) fits at
+# −0.436 spaces against a hand-measured −0.40, with row coverage
+# [1.00, 1.00, 0.374, 1.00, 1.00] — because the staff's own modeled rows are
+# unevenly spaced (gaps 27, 22, 33, 28 px at spacing 27.5), so one comb row
+# cannot sit on the print at ANY shift. The staff is not merely displaced
+# there; phase 1's fit is itself distorted, and a rigid comb inherits that.
+# Four rows agreeing at 1.00 is overwhelming evidence of a staff either way.
+# This does not reopen the narrow-cell alias, which passes coverage on all
+# five rows and is refused by width instead.
+CELL_LINE_MIN_ROWS_COVERED = 4
 
 # Below this, the fit has measured nothing — the comb is scored at integer
 # page rows, so a one-pixel "displacement" is its own quantization. Measured on
@@ -901,12 +915,14 @@ def _cell_line_offset(
 
     coverage = [float(row_ink[a:b].max()) / cell_width if a < b else 0.0
                 for a, b in bands_at(best_shift)]
-    if min(coverage) < CELL_LINE_MIN_ROW_COVERAGE:
-        return None  # no five-line comb under this cell — see the constant
+    covered = sum(1 for c in coverage if c >= CELL_LINE_MIN_ROW_COVERAGE)
+    if covered < CELL_LINE_MIN_ROWS_COVERED:
+        return None  # no staff-line comb under this cell — see the constants
 
     return best_shift, {
         "offset_px": best_shift,
         "offset_spaces": round(best_shift / spacing, 3),
+        "rows_covered": covered,
         "min_row_coverage": round(min(coverage), 3),
     }
 
