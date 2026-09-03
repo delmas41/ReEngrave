@@ -140,7 +140,23 @@ across the three pages fall 4260 → 2419. The control that settles it is the
 MISSING-hint count, which asks the opposite question — how many notes the
 reference holds that the reading never found. It falls too (20 → 15;
 4 → 3 on the six cells). A detector losing real heads raises that number.
-What it lost was junk, and the pipeline's own filters had been saying so:
+⚠️ **CORRECTED, same day, by the training session's independent finding: that
+sentence was true of NOTEHEADS and over-general about the rest.** The
+hollow-family weights are now known to suppress **rests and accidentals**,
+and the cause is a labeling gap rather than the detector —
+`benchmarks/omr-labeling-survey-2026-09/NEXT_ITERATION.md`: the completion
+pass over these cells labeled only black noteheads and augmentation dots, so
+every rest and accidental in them trained as background. The same signature
+shows in this arm's own numbers, which I reported and did not read: rests
+fall **1380 → 951** across the three pages. And the missing-hint control is
+**weak for rests specifically**, because `prefill_cell` drops rests from the
+alignment on condensed staves (`include_rests=not condensed`) and a
+conductor's page is full of them — so it is a good control for noteheads and
+close to blind for rests. Everything above about noteheads stands; "what it
+lost was junk" does not extend to the rest of the class space.
+
+What it lost in NOTEHEADS was junk, and the pipeline's own filters had been
+saying so:
 unladdered noteheads dropped 1063 → 304, clipped edge fragments 259 → 104.
 Page segmentation is byte-identical between the arms (706 measures, 83
 staves), so this is the detector and nothing else.

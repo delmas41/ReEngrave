@@ -71,10 +71,34 @@ cp batch_config.completion.json batch_config.json   # 14 classes, incl. slur/tie
 ```
 
 Label **every symbol in the image**, not one pass's worth — that is what
-makes a widened score legitimate. Note the batch's active config on the
-labeling Mac has been an older 9-class completion palette missing
-slur/tie/hairpin, so copy the canonical one above rather than restoring
-`batch_config.hollow.json`.
+makes a widened score legitimate.
+
+⚠️ **The palette swap is not housekeeping; it is the difference between
+helping the next training run and harming it.** The batch's ACTIVE config
+was a stale 9-slot completion palette with **no `accidentalNatural`, slur,
+tie or hairpin** — and the six already-complete cells contain 5 naturals, 8
+slurs, 6 ties and 5 hairpins. Labeling under the stale palette would leave
+every one of them unboxed, i.e. **background**, which is exactly the
+mechanism the training session diagnosed for the completeness regression
+(`benchmarks/omr-labeling-survey-2026-09/NEXT_ITERATION.md`: "the completion
+pass only labeled black noteheads + augmentation dots, so rests and
+accidentals were unlabeled background — and 30 epochs learned to suppress
+them"). The 14-slot `batch_config.completion.json` is the one to use.
+
+⚠️ **Even the 14-slot palette is not the whole class space, and the gap is
+not hypothetical.** The six complete cells also contain `keyFlat` ×3,
+`clefG`, `timeSig8`/`timeSig9`, `ornamentTrill`, an
+`accidentalNaturalSmall` and two grace-sized black heads — none of which has
+a slot. Sean labeled them through the **full picker** (the button in the
+pass bar), which is what "complete" requires. Do the same here: anything
+printed that has no number key still gets boxed. Skip only what the campaign
+always skips — staff lines, stems, beams and free text.
+
+**These cells are dual-purpose.** They are the Phase C measurement AND they
+are step 1 of `NEXT_ITERATION.md` for this batch — the rests-and-accidentals
+completion the next cloud run needs. That is why a complete pass here is
+worth more than its measurement alone, and why using the right palette
+matters beyond this benchmark.
 
 ## Scoring it
 

@@ -5,6 +5,34 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — Phase C started, and the training session's finding corrects a Phase B claim
+
+- ⚠️ **CORRECTION to Phase B, from the training session's independent work.** "What it lost was
+  junk" was true of NOTEHEADS and over-general about everything else. `NEXT_ITERATION.md`
+  establishes that the hollow-family weights suppress **rests and accidentals**, and that the
+  cause is a LABELING gap: the completion pass over these cells labeled only black noteheads
+  and augmentation dots, so rests and accidentals trained as background. The same signature is
+  in the Phase B arm's own numbers, reported but not read — **rests fall 1380 → 951**. And the
+  missing-hint control is close to BLIND for rests, because `prefill_cell` drops rests from the
+  alignment on condensed staves and a conductor's page is full of them. The notehead half of
+  Phase B stands unchanged; the generalisation does not.
+- ⚠️ **A palette trap was caught before it could do damage, and it was the difference between
+  helping the next training run and harming it.** The batch's ACTIVE `batch_config.json` was a
+  stale 9-slot completion palette with **no `accidentalNatural`, slur, tie or hairpin** — while
+  the six already-complete cells contain 5 naturals, 8 slurs, 6 ties and 5 hairpins. Labeling
+  Phase C under it would have left all of those as background: precisely the mechanism
+  `NEXT_ITERATION.md` blames for the completeness regression. Swapped to the canonical 14-slot
+  `batch_config.completion.json` (the stale one backed up as `batch_config.stale-9slot.bak`).
+- ⚠️ **Even 14 slots is not the whole class space.** The six complete cells also hold `keyFlat`
+  ×3, `clefG`, `timeSig8`/`9`, `ornamentTrill`, `accidentalNaturalSmall` and two grace-sized
+  black heads — labeled through the FULL PICKER, which is what "complete" means. The protocol
+  now says so explicitly.
+- **The cells are dual-purpose**: Phase C's out-of-sample measurement AND step 1 of
+  `NEXT_ITERATION.md` for this batch (the rests/accidentals completion the next cloud run
+  needs). Serving blind on :5053 from a worktree that has `--blind`; ⚠️ a 5.5-hour-old server
+  on **:5051 is still serving this batch NON-blind with the stale palette in memory** (config
+  is read at startup) — it must not be used for this pass.
+
 ## 2026-09-03 — snap-ledger audit: three hollow labels corrected, all Eulenburg Scheherazade / v8
 
 - The old click-to-box snap extrapolated the parity grid beyond the staff at the staff

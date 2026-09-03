@@ -1756,7 +1756,15 @@ batch's committed transcription was made with the pre-hollow
 unexplained "extra" hints 200 → **58**. ⚠️ Noteheads fall 4260 → 2419 on the
 same pages, and the control that proves this is junk rather than loss is the
 MISSING-hint count — reference notes the reading never found — which falls
-too (20 → 15), while segmentation stays byte-identical. **A batch's hints
+too (20 → 15). ⚠️ **That control is for NOTEHEADS and does not extend to
+the class space** — corrected the same day against the training session's
+finding that hollow-family weights suppress **rests and accidentals**
+because the completion pass left them unlabeled, i.e. background
+([NEXT_ITERATION.md](benchmarks/omr-labeling-survey-2026-09/NEXT_ITERATION.md)).
+This arm shows it too: rests fall 1380 → 951. And the missing-hint control
+is nearly blind to rests by construction, since `prefill_cell` drops them
+from the alignment on condensed staves. Segmentation stays byte-identical
+either way. **A batch's hints
 age with the weights**: this one's are a checkpoint stale, and refreshing is
 `--write-hints`, which never touches `verdicts/` or `detections/`.
 
@@ -1777,6 +1785,18 @@ resets on each cell — "just press `h`" is not a protocol. `--blind`
 withholds the hints, `prefill_status` AND the queue order, that last one
 because "most left for me first" tells the human which cells the pre-fill
 found hard. Verdicts are untouched.
+
+⚠️ **A completion pass's PALETTE is a training decision, not a convenience.**
+The batch's active config was a stale 9-slot palette with no
+`accidentalNatural`, slur, tie or hairpin, while its six complete cells hold
+5 naturals, 8 slurs, 6 ties and 5 hairpins — labeling under it would have
+made every one of them background, which is the exact mechanism
+`NEXT_ITERATION.md` blames for the hollow weights' rest/accidental
+suppression. Use `batch_config.completion.json` (14 slots). And ⚠️ **14 is
+still not the class space**: those cells also hold `keyFlat`, `clefG`,
+`timeSig8`/`9`, `ornamentTrill`, an `accidentalNaturalSmall` and two
+grace-sized heads, all boxed through the FULL PICKER. Complete means
+complete; only staff lines, stems, beams and free text are skipped.
 
 ⚠️ **Every cell of that sample already HAS a verdict file** — from the
 hollow sweep — so an unreached cell is not empty, it holds hollow boxes and
