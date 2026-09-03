@@ -83,7 +83,10 @@ changes week to week.
   follows the reference on exact pairs, tie-split encodings collapse to the
   one printed head, and every pre-filled box carries a labels/queue
   admission tier that `--score` prices (six-cell precision 0.84 → 0.88,
-  labels tier 22/22; still metadata until a random pass re-tests it). A batch checked out on a machine
+  labels tier 22/22; still metadata until a random pass re-tests it). Better
+  weights then lifted the same measurement to **0.96 exact with no pre-fill
+  change** — the clearest evidence yet that this approach improves for free
+  as recognition does, which is the reason to keep investing in it. A batch checked out on a machine
   that did not cut it has no cell images (they are gitignored) and shows a
   blank canvas; `tools/omr/annotate/recut_cells.py` re-renders them from the
   manifest, refusing anything whose frame does not match. Where the work stands and

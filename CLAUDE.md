@@ -1725,6 +1725,20 @@ pre-fill time has no human calibration. ⚠️ **The tiers are metadata**: what
 is written does not change, and nothing is auto-admitted until the random
 completion pass prices the tiers out-of-sample.
 
+⚠️ **MEASURED 2026-09-03 (Phase B): pre-fill precision really is DOWNSTREAM
+of recognition — 0.880 → 0.961 exact from a change of WEIGHTS alone**, no
+pre-fill code touched (`rerun_on_weights.sh`, one arm per checkpoint). The
+batch's committed transcription was made with the pre-hollow
+`imgsz2048-ft-30ep`; re-reading its pages with scan production
+(`hollow-ft-2026-09-03`) also takes kind precision to 1.000, the trustworthy
+`labels` tier from 22 boxes to **44 of ~50**, batch CONFLICTs 4 → **0** and
+unexplained "extra" hints 200 → **58**. ⚠️ Noteheads fall 4260 → 2419 on the
+same pages, and the control that proves this is junk rather than loss is the
+MISSING-hint count — reference notes the reading never found — which falls
+too (20 → 15), while segmentation stays byte-identical. **A batch's hints
+age with the weights**: this one's are a checkpoint stale, and refreshing is
+`--write-hints`, which never touches `verdicts/` or `detections/`.
+
 ⚠️ **The five CONFLICTs were then reviewed and NONE is a tremolo
 abbreviation** — the handoff's hypothesis is corrected in place. Three are
 the reference's TIE-SPLITS (one printed dotted-half encoded as tied

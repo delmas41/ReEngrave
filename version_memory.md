@@ -5,6 +5,36 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
+
+- **"Pre-fill precision is downstream of recognition" is now TESTED, and true** — the measured
+  handoff's structural finding, and the reason Sean kept the approach open. A change of
+  WEIGHTS alone, with no pre-fill code touched, takes the six-cell figure **exact 0.880 →
+  0.961, kind 0.940 → 1.000**, the `labels` tier from 22 boxes to **44 of ~50** (still
+  precision 1.000), batch CONFLICTs 4 → **0**, TP/WRONG_CATEGORY 174/16 → **191/5**, extra
+  hints 200 → **58** and missing hints 20 → **15**.
+- **The arm is not the imgsz-2048 re-ship** — that checkpoint is not blessed yet (the cloud
+  run's directories hold per-epoch files and in-flight gate logs). It is the same shape of
+  change and was already available: the batch's committed `transcription.json` was made with
+  the PRE-hollow `imgsz2048-ft-30ep`, while scan-domain production is now `hollow-ft`.
+  `benchmarks/omr-prefill-admission-2026-09/rerun_on_weights.sh` runs one arm per checkpoint
+  against a symlinked scratch bench (nothing written inside the batch); add the re-ship column
+  when it lands.
+- ⚠️ **The objection is that hollow-ft simply detects less** (noteheads 4260 → 2419 on the same
+  three pages). The control that settles it asks the opposite question — the MISSING-hint
+  count, reference notes the reading never found — and it falls too (20 → 15; 4 → 3 on the six
+  cells), while page segmentation is byte-identical (706 measures, 83 staves). The pipeline's
+  own filters corroborate: unladdered noteheads dropped 1063 → 304, clipped fragments 259 →
+  104. Every channel moves the same way at once, which is what separates a recognition gain
+  from a threshold trade.
+- Both Phase A predictions confirmed: `s2-m2`'s conflict (called "a duplicate detection the
+  re-ship should clean up") is gone, and the labels tier's coverage climbed with the detector.
+- ⚠️ **A batch's hints AGE with the weights.** This batch's committed `prefill/` is a
+  checkpoint stale — the hints being labeled against are the 0.880 set. Refreshing is a
+  re-transcribe plus `mxl_verdicts --write-hints`, which writes `prefill/` only and leaves
+  `verdicts/` and `detections/` untouched (no human work, no detection id disturbed). Left to
+  the batch's owner: it is served live by another session.
+
 ## 2026-09-03 — Phase A of the admission plan lands in the pre-fill
 
 Sean approved the widening plan; its pre-fill half shipped, measured on the six-cell A/B
