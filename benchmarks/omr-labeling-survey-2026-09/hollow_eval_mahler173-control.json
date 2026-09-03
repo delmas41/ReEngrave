@@ -1,0 +1,12 @@
+{
+  "tag": "mahler173-control",
+  "weights": "benchmarks/omr-labeling-survey-2026-09/runs/gate-control/weights/best.pt",
+  "hollow_histogram": {
+    "black_total": 106,
+    "hollow_total": 29,
+    "noteheadWholeInSpace": 2,
+    "noteheadWholeOnLine": 14,
+    "noteheadHalfOnLine": 4,
+    "noteheadHalfInSpace": 9
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "cell_id": "mahler5-p177-sys0-s5-m3",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "model_bbox": {
+        "x": 1264,
+        "y": 601,
+        "w": 130,
+        "h": 95
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 286,
+        "y": 552,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    }
+  ]
+}

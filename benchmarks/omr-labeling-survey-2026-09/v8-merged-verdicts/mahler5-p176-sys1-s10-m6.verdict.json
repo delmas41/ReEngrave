@@ -1,0 +1,42 @@
+{
+  "cell_id": "mahler5-p176-sys1-s10-m6",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 1791,
+        "y": 392,
+        "w": 133,
+        "h": 94
+      }
+    },
+    {
+      "id": "C1",
+      "verdict": "TP",
+      "model_predicted_class": "augmentationDot",
+      "model_bbox": {
+        "x": 1010,
+        "y": 375,
+        "w": 52,
+        "h": 52
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 747,
+        "y": 406,
+        "w": 106,
+        "h": 89
+      },
+      "notes": ""
+    }
+  ]
+}

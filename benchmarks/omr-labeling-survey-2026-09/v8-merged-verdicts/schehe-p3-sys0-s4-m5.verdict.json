@@ -1,0 +1,31 @@
+{
+  "cell_id": "schehe-p3-sys0-s4-m5",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 134,
+        "y": 648,
+        "w": 171,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 151,
+        "y": 950,
+        "w": 171,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ]
+}

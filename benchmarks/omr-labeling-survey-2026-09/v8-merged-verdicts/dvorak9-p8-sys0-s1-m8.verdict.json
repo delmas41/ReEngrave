@@ -1,0 +1,31 @@
+{
+  "cell_id": "dvorak9-p8-sys0-s1-m8",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "augmentationDot",
+      "model_bbox": {
+        "x": 296,
+        "y": 805,
+        "w": 44,
+        "h": 46
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 269,
+        "y": 548,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    }
+  ]
+}

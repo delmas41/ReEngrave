@@ -1,0 +1,64 @@
+{
+  "cell_id": "beet5hr-p48-sys0-s5-m6",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 867,
+        "y": 732,
+        "w": 135,
+        "h": 122
+      }
+    },
+    {
+      "id": "C1",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 153,
+        "y": 722,
+        "w": 136,
+        "h": 130
+      }
+    },
+    {
+      "id": "C2",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackInSpace",
+      "model_bbox": {
+        "x": 460,
+        "y": 804,
+        "w": 131,
+        "h": 83
+      }
+    },
+    {
+      "id": "C3",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 654,
+        "y": 753,
+        "w": 130,
+        "h": 98
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1192,
+        "y": 743,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ]
+}

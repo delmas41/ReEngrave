@@ -1,0 +1,36 @@
+{
+  "tag": "prod",
+  "weights": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+  "hollow_histogram": {
+    "black_total": 120,
+    "hollow_total": 14,
+    "noteheadHalfInSpace": 7,
+    "noteheadWholeInSpace": 6,
+    "noteheadHalfOnLine": 1
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 134,
+      "matched": 88,
+      "recall": 0.5986,
+      "precision": 0.6567
+    },
+    "step": {
+      "truth": 147,
+      "omr": 134,
+      "matched": 103,
+      "recall": 0.7007,
+      "precision": 0.7687
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 134,
+      "matched": 57,
+      "recall": 0.3878,
+      "precision": 0.4254
+    }
+  },
+  "clef_accuracy": "11/12",
+  "measures_omr": 16
+}

@@ -1,0 +1,54 @@
+{
+  "cell_id": "brahms1-p4-sys0-s1-m3",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "augmentationDot",
+      "model_bbox": {
+        "x": 436,
+        "y": 215,
+        "w": 50,
+        "h": 49
+      }
+    },
+    {
+      "id": "C1",
+      "verdict": "TP",
+      "model_predicted_class": "augmentationDot",
+      "model_bbox": {
+        "x": 446,
+        "y": 1114,
+        "w": 53,
+        "h": 53
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 262,
+        "y": 450,
+        "w": 118,
+        "h": 99
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 259,
+        "y": 202,
+        "w": 118,
+        "h": 99
+      },
+      "notes": ""
+    }
+  ]
+}

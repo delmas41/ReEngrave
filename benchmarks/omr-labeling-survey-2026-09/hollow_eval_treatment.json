@@ -1,0 +1,36 @@
+{
+  "tag": "treatment",
+  "weights": "benchmarks/omr-labeling-survey-2026-09/runs/gate-treatment/weights/best.pt",
+  "hollow_histogram": {
+    "black_total": 75,
+    "hollow_total": 26,
+    "noteheadHalfInSpace": 20,
+    "noteheadHalfOnLine": 5,
+    "noteheadWholeOnLine": 1
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 101,
+      "matched": 75,
+      "recall": 0.5102,
+      "precision": 0.7426
+    },
+    "step": {
+      "truth": 147,
+      "omr": 101,
+      "matched": 83,
+      "recall": 0.5646,
+      "precision": 0.8218
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 101,
+      "matched": 67,
+      "recall": 0.4558,
+      "precision": 0.6634
+    }
+  },
+  "clef_accuracy": "8/12",
+  "measures_omr": 16
+}

@@ -1,0 +1,19 @@
+{
+  "cell_id": "dvorak9-p8-sys0-s2-m8",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 268,
+        "y": 443,
+        "w": 122,
+        "h": 102
+      },
+      "notes": ""
+    }
+  ]
+}
