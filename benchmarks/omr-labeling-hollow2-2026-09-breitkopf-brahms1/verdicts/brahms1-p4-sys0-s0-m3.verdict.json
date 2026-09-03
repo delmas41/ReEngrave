@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p4-sys0-s0-m3",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:17:50+00:00",
+  "labeled_at_utc": "2026-09-03T18:06:53+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -25,6 +25,42 @@
         "y": 396,
         "w": 120,
         "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 101,
+        "y": 274,
+        "w": 116,
+        "h": 360
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 422,
+        "y": 173,
+        "w": 83,
+        "h": 82
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 433,
+        "y": 411,
+        "w": 55,
+        "h": 74
       },
       "notes": ""
     }
