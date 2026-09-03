@@ -17,7 +17,7 @@
   "added_detections": [
     {
       "id": "H0",
-      "human_class": "noteheadHalfInSpace",
+      "human_class": "noteheadHalfOnLine",
       "human_category": "notehead",
       "bbox": {
         "x": 189,
@@ -25,7 +25,7 @@
         "w": 119,
         "h": 100
       },
-      "notes": ""
+      "notes": "corrected 2026-09-03: tilted-staff grid error (stored grid -0.40 sp off the printed lines; head centre 0.10 sp off the printed bottom line), see benchmarks/omr-cell-grid-tilt-2026-09"
     }
   ]
 }
