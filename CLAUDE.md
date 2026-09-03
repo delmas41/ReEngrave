@@ -1522,6 +1522,25 @@ the top line would put its third line 4 px out. A cell with no staff geometry
 abstains and the picker opens instead. The arithmetic lives in Python and the
 browser calls `/api/cell/{id}/snap`, so the tested code is the code that runs.
 
+⚠️ **Beyond the staff the grid anchors on MEASURED ledger rungs, not on
+extrapolation** (2026-09-03, `tools/omr/annotate/ledger_grid.py`). Ledger
+pitch is a fact about the engraving — Litolff prints rungs ~1.10× the staff
+spacing, Peters/Breitkopf/Simrock ~0.975×, measured over the 357
+hollow-campaign labels — so extrapolating at the staff spacing mis-suggested
+**38–39% of 2nd-ledger-and-beyond variants against 4.6% inside the staff**
+(Sean's reported defect, and it also planted at least 2 silently-wrong labels
+in v8). The endpoint now reads the rungs off the cell image at the clicked x
+(3.4 ms; bands of long ink spans, white gaps up to 0.9 spaces bridged because
+a whole note's counter splits the one rung printed THROUGH it) and rebuilds
+the outside grid on them: 2nd-ledger agreement 57.4% → 70.2% with the
+in-staff grid untouched (0 changes across all 214 in-staff labels, pinned by
+`test_ledger_snap.py`). A click past an incomplete ladder's reach falls back
+to the old extrapolation — a lone rung steering a deep grid measured worse
+than the constant. A corrected constant pitch cannot work (both signs of
+publisher spread) and wing-recentring measured worse both ways it was tried;
+both are recorded refused in
+[benchmarks/omr-snap-ledger-2026-09/FINDINGS.md](benchmarks/omr-snap-ledger-2026-09/FINDINGS.md).
+
 **The multi-pass campaign rule.** A campaign sweeps the **same cell set**
 several times — whites, then rests, then accidentals — and the set becomes
 complete across passes, not within one. So:

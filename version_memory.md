@@ -133,6 +133,39 @@ steps out; verdict hotkeys unaffected; 52 annotate tests green).
 template-read elements (time signatures first) under the new labeling system,
 detector as an added voter, harness ready-made.
 
+## 2026-09-03 — Labeling UI: the click-to-box snap reads ledger rungs off the page
+
+**Why:** Sean reported the hollow-campaign defect that the single-symbol
+click-to-box sometimes suggested on-line for an in-space note — on ledger
+lines only, never inside the staff. Probing the 357 committed hollow-campaign
+labels confirmed it exactly: wrong-suggestion rate 4.6% inside the staff,
+3.3% at the 1st ledger, **38.1% / 39.3% at the 2nd and beyond**. Mechanism:
+inside the staff the snap grid anchors on the cell's own measured line
+positions, but beyond it extrapolated at the staff spacing — and measured
+ledger pitch is publisher-dependent in BOTH directions (Litolff ~1.10× the
+staff spacing, Peters/Breitkopf/Simrock ~0.975×), so no corrected constant
+can fix it (swept and refused: best variant recovers 3 of 29 wrongs).
+
+**What:** new `tools/omr/annotate/ledger_grid.py` measures the ledger rungs
+printed at the clicked x (thin bands of long ink spans; white gaps up to 0.9
+spaces bridged because a whole note's counter splits the one rung printed
+THROUGH it; the band's peak-span rows are what must be rung-thin), and
+`snap_to_staff` gained an optional `ledger_rungs=` that anchors the outside
+grid on them — line slots on the rungs, spaces on their midpoints, the old
+extrapolation past an incomplete ladder's reach and wherever no rungs were
+read. In-staff behaviour is byte-identical (0 changes across all 214
+in-staff labels) and every failure of the reader is an abstention back to
+the old grid. Measured on the labels: 2nd-ledger agreement 57.4% → 70.2%,
+16 rows recovered vs 7 "broken" — of which visual adjudication showed 2 are
+**wrong labels the old snap itself planted** (Sean accepted a wrong
+suggestion unnoticed; v8 data-quality follow-up), 3 are artifacts of judging
+at stored box centres that sit ON the old grid, 1 real miss, 1 unresolved.
+The unbiased hand-positioned subset: baseline 7/13 → ink 10/13. 3.4 ms per
+click. Guarded by `tools/omr/tests/test_ledger_snap.py` (8 tests: in-staff
+frozen, defect case flips, incomplete ladder abstains, reader reads through
+a hollow head, endpoint end-to-end). Probe + eval + refused alternatives:
+`benchmarks/omr-snap-ledger-2026-09/FINDINGS.md`.
+
 ---
 
 ## 2026-09-03 — Scan vs engraved weight routing (on by default)
