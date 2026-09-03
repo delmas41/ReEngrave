@@ -143,13 +143,23 @@ every one with a usable image):
     in v8.** (Concurrent state, 2026-09-03: the ledger-zone audit on
     `claude/epic-chatterjee-9e8c7d`, commit `7fe2d7b`, corrected THREE
     Scheherazade labels — snap FINDINGS §4's two plus the formerly-unresolved
-    row — and re-exported v8; this brahms label is the one wrong v8 label
-    still standing after that, fix task spawned.)
+    row — and re-exported v8; this brahms label was the one wrong v8 label
+    still standing after that. **FIXED same day**: `3baadcd` on
+    `claude/score-labeling-training-system-iech0i` — batch verdict + survey
+    `v8-merged-verdicts` + the v8 label line, class 30 → 28, decode-verified
+    against the cell, which is 1603×1200, not s21's 1618.)
   - **`lamer-p5-sys0-s2-m0` noteheadWholeOnLine → should be
     noteheadWholeInSpace.** Grid −0.45 sp (the campaign's largest); the whole
     note floats dead-centre in the top space, 0.10 sp off the space slot.
-    hollow3 — **not yet exported to any training version**; correct it before
-    the v9 conversion.
+    ⚠️ An earlier draft of this bullet said hollow3 was "not yet exported" —
+    **stale since `780cbf6`**, which converted hollow3 to **v9–v12** (held out
+    of the catalog): v11-2026-09-03-hollow3-lamer already carries this cell
+    with the wrong class (32). v11's export source is
+    `benchmarks/omr-labeling-survey-2026-09/phase2-merged/lamer/verdicts/` —
+    a THIRD edit-both copy, the same trap as v8-merged-verdicts. The
+    correction (32 → 34, three copies) is in flight with the session that
+    owns the hollow3 verdicts; it must land before v9–v12 enter
+    `catalog-versions.txt`.
   - A third candidate (`mahler1-p4-sys0-s0-m9` HalfInSpace) is a 2 px
     geometric coin toss; the figure is two half-note heads a FOURTH apart
     (line + space — the Mahler 1 fourths motif), which supports Sean's
@@ -176,11 +186,18 @@ every one with a usable image):
   staff's end cells are suspect" (all 7 flagged staves: 7–10 px). It just
   needs to reach cells.json / the annotate server if the labeling UI should
   warn.
-- Before converting hollow3 to a training version, fix the lamer label and
-  re-run the audit on that batch set; before the next training round, fix the
-  brahms1 s20 label in v8. ⚠️ A v8 label fix must edit BOTH the batch verdict
-  and the survey's `benchmarks/omr-labeling-survey-2026-09/v8-merged-verdicts`
-  copy (v8's actual export source), then the `labels/*.txt` line — and must
-  NOT re-run `build_v8.py` (it would pull the later Brahms completion-sweep
-  boxes into v8) nor rebuild the catalog (training reads `labels/*.txt`
-  directly). Learned from the `7fe2d7b` ledger-zone corrections.
+- The brahms1 s20 v8 fix LANDED (`3baadcd`); the lamer fix is in flight (see
+  §3). Remaining gate: **re-run the audit over the hollow3 batch set before
+  v9–v12 enter `catalog-versions.txt`** — they were converted by `780cbf6`
+  and deliberately held out. ⚠️ The general trap, learned from `7fe2d7b` and
+  confirmed on v11: **every exported version has its own merged export
+  source** (v8 → survey `v8-merged-verdicts`, v11 → survey
+  `phase2-merged/lamer/verdicts`), so a label fix edits the BATCH verdict,
+  the version's export-source copy, AND the `labels/*.txt` line — and must
+  NOT re-run the version builder (`build_v8.py` would pull the later Brahms
+  completion-sweep boxes into v8) nor rebuild the catalog (training reads
+  `labels/*.txt` directly). One residue the hand-edit leaves (fix session's
+  finding): the version's `metadata.json` (`per_cell.classes_written`) still
+  records the OLD class — provenance drift only, training unaffected; the
+  clean resolution is a single converter re-run with the version's original
+  arguments once all corrections are on main.

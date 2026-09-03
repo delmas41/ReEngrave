@@ -22,9 +22,10 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   0.25 sp flip line; box centres bounded ≤0.25 sp (a near-half-space grid error aliases the
   box onto the other slot's true position — the CLASS flips, the position stays plausible).
   **Two silent wrong labels found**: `brahms1-p2-sys1-s20-m6` HalfInSpace→HalfOnLine (in v8;
-  fix task spawned — must edit batch verdict + survey `v8-merged-verdicts` + labels .txt, no
-  `build_v8.py` re-run) and `lamer-p5-sys0-s2-m0` WholeOnLine→WholeInSpace (hollow3,
-  unexported — fix before v9).
+  **fixed same day**, `3baadcd` — batch verdict + survey `v8-merged-verdicts` + v8 label line
+  30→28) and `lamer-p5-sys0-s2-m0` WholeOnLine→WholeInSpace (exported in v11 since `780cbf6`,
+  v9–v12 held out of the catalog; fix 32→34 in flight — three copies: batch verdicts, survey
+  `phase2-merged/lamer/verdicts` (v11's export source, a third edit-both trap), v11 labels).
 - **`pitch_resolver` eats the same defect**: on warped scans, end-of-staff measures resolve
   pitches against a grid up to half a space off — step-off-by-one for whole bars. Engraved
   benchmark blind (LilyPond pages are straight). Measurement task spawned; the fix direction
