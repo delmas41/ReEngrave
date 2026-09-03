@@ -5,6 +5,31 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — Scan vs engraved weight routing (on by default)
+
+**Why:** the hollow fine-tune ship left the two domains preferring different
+checkpoints — scans want the hollow weights (half-notes 8→27 on beet5-p1),
+digitally engraved input the prior production weights (11-work OMR-NED 0.1399
+vs 0.1421) — and one weights slot forced one side to pay the other's cost.
+
+**What:** when no weights are pinned (`--weights` / `OMR_WEIGHTS_PATH` /
+`weights=` all absent), `transcribe()` now classifies its input by where the
+ink comes from — a scanned page is one full-page raster image (total coverage
+≥ 0.95 on every scan measured), an engraved page is vector drawings (428–2058
+paths vs 0–4, gap empty over 147 probed pages) — and routes: scanned →
+hollow-ft, engraved → prior production, ambiguous/blank → default. Any scan
+page wins the document verdict (an IMSLP scan behind a digital cover is a
+scan); a missing engraved file falls back soft; explicit choice always skips
+classification. Verdict + evidence recorded in the result JSON as
+`weight_routing`. New: `tools/omr/input_domain.py`,
+`transcribe._route_weights`, env `OMR_WEIGHT_ROUTING` / `OMR_ENGRAVED_WEIGHTS`,
+35 tests. Costs ≤ 77 ms per document. Side effect: default engraved runs use
+the same weights the recorded accuracy headline was measured with, so the
+record describes shipped behavior again. Measurements + A/B verification:
+`benchmarks/omr-weight-routing-2026-09/FINDINGS.md`.
+
+---
+
 ## 2026-09-03 — Diagnosed and addressed the failing `Deploy ReEngrave` GitHub Actions workflow
 
 **Why it was asked:** every one of 123 runs of `.github/workflows/deploy.yml`

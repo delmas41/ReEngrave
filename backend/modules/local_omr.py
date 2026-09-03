@@ -79,25 +79,20 @@ class LocalOmrResult:
 # ---------------------------------------------------------------------------
 
 
-def _weights_path() -> str:
-    """Resolve the YOLO weights path from env or fall back to the
-    in-tree default.
+def _weights_path() -> str | None:
+    """Resolve the YOLO weights path from env; None lets `transcribe()` route
+    by input domain — scanned PDFs get the production hollow fine-tune,
+    digitally engraved PDFs the prior production weights, which measure
+    better there (tools/omr/transcribe._route_weights;
+    benchmarks/omr-weight-routing-2026-09/FINDINGS.md). Setting
+    OMR_WEIGHTS_PATH pins one file for every input and skips routing.
 
-    Local dev: docker-compose mounts the weights file as a volume at
-    /app/tools/omr/training/data/weights/. In production, the same path
-    should be populated either by a Docker volume or by downloading the
-    file at container start.
+    Local dev: docker-compose mounts the weights DIRECTORY as a volume at
+    /app/tools/omr/training/data/weights/, so both routed files are present.
+    In production, the same path should be populated either by a Docker
+    volume or by downloading the files at container start.
     """
-    env_path = os.getenv("OMR_WEIGHTS_PATH", "").strip()
-    if env_path:
-        return env_path
-    # Fall back to the current production default (hollow fine-tune, 2026-09-03;
-    # see tools/omr/transcribe.py DEFAULT_WEIGHTS and
-    # benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md).
-    return str(
-        _REPO_ROOT
-        / "tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
-    )
+    return os.getenv("OMR_WEIGHTS_PATH", "").strip() or None
 
 
 def _max_pages() -> int:
@@ -159,14 +154,21 @@ async def run_local_omr(pdf_path: str, output_dir: str) -> LocalOmrResult:
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     weights = _weights_path()
 
-    if not os.path.isfile(weights):
+    # Fail fast on the one file no run can proceed without: the pinned path
+    # when OMR_WEIGHTS_PATH is set, else the routing default (every
+    # non-engraved verdict lands there, and a missing engraved-weights file
+    # falls back to it — soft by design, so it is not checked here).
+    from tools.omr.transcribe import DEFAULT_WEIGHTS as _DEFAULT_WEIGHTS
+
+    anchor = weights or str(_REPO_ROOT / _DEFAULT_WEIGHTS)
+    if not os.path.isfile(anchor):
         return LocalOmrResult(
             musicxml_path="",
             omr_json_path="",
             confidence_score=0.0,
             measures_count=0,
             error_message=(
-                f"OMR weights not found at {weights}. "
+                f"OMR weights not found at {anchor}. "
                 "Place the file there or set OMR_WEIGHTS_PATH. "
                 "See tools/omr/README.md for download instructions."
             ),
@@ -213,7 +215,7 @@ def _run_omr_blocking(
     *,
     pdf_path: str,
     output_dir: str,
-    weights: str,
+    weights: str | None,
     max_pages: int,
     conf_threshold: float,
     imgsz: int | None,
@@ -240,7 +242,8 @@ def _run_omr_blocking(
 
     logger.info(
         "local_omr: %s → %d pages, weights=%s, conf=%.2f, imgsz=%s, dpi=%d",
-        Path(pdf_path).name, len(pages), Path(weights).name,
+        Path(pdf_path).name, len(pages),
+        Path(weights).name if weights else "auto (scan/engraved routing)",
         conf_threshold, imgsz if imgsz else "per-cell", dpi,
     )
 

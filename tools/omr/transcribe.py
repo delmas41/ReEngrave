@@ -23,6 +23,7 @@ Output schema (JSON):
     {
       "source_pdf": "score.pdf",
       "weights":    "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+      "weight_routing": {"mode": "routed", "verdict": "scanned", ...} | null,
       "conf_threshold": 0.25,
       "n_pages_processed": 3,
       "n_systems_total": 6,
@@ -299,6 +300,19 @@ from .dossier import (
 # weights (deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt) are kept alongside.
 DEFAULT_WEIGHTS = (
     "tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
+)
+
+# Weights for DIGITALLY ENGRAVED input (vector PDFs), used by weight routing
+# when the caller doesn't pin `weights`. The hollow ship run measured the two
+# domains preferring different checkpoints: these prior production weights
+# score 0.1399 pooled on the 11-work engraved benchmark against the hollow
+# fine-tune's 0.1421 (no-direction-text, SHIP_RESULTS.md §4c), while the
+# hollow fine-tune wins on scans (half-notes 8 -> 27 on beet5-p1). Routing
+# lets each domain keep its best-measured weights instead of one slot paying
+# the other's cost. Env override: OMR_ENGRAVED_WEIGHTS; kill switch:
+# OMR_WEIGHT_ROUTING=0. See benchmarks/omr-weight-routing-2026-09/FINDINGS.md.
+ENGRAVED_WEIGHTS = (
+    "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
 )
 
 
@@ -3591,6 +3605,90 @@ def _resolve_clef_weights(clef_weights: str | None) -> str | None:
     return os.environ.get("OMR_CLEF_WEIGHTS") or None
 
 
+def _repo_root() -> Path:
+    """The repo root, derived from this file's own location — so weight
+    routing resolves the same files no matter the caller's working directory
+    (the relative `DEFAULT_WEIGHTS` string only ever resolved from the root)."""
+    return Path(__file__).resolve().parents[2]
+
+
+def _weight_routing_enabled() -> bool:
+    """`OMR_WEIGHT_ROUTING` env, default ON; '0'/'false'/'no'/'off' disable."""
+    raw = os.environ.get("OMR_WEIGHT_ROUTING", "").strip().lower()
+    return raw not in {"0", "false", "no", "off"}
+
+
+def _route_weights(
+    pdf_path: Path,
+    pages: list[int],
+    *,
+    classify: Any = None,
+) -> tuple[str, dict[str, Any]]:
+    """Pick the weights by input domain, for a caller that didn't pin them.
+
+    The two domains measured different best weights on the day the hollow
+    fine-tune shipped (SHIP_RESULTS.md §4b/§4c): scans want `DEFAULT_WEIGHTS`
+    (half-notes 8 -> 27 on beet5-p1), digitally engraved PDFs want
+    `ENGRAVED_WEIGHTS` (11-work OMR-NED 0.1399 vs 0.1421). The verdict comes
+    from `input_domain.classify_pdf_domain` — where the ink comes from, raster
+    image vs vector drawings — over the pages this run will transcribe.
+
+    Every non-engraved outcome lands on `DEFAULT_WEIGHTS`, and the asymmetry
+    is the design: routing an engraved input to the scan weights costs the
+    measured +0.0022 pooled; routing a scan to the engraved weights forfeits
+    the half-note gains. So `unknown` abstains to the default, and an
+    `engraved` verdict whose weights file is missing falls back to the
+    default with one stderr line rather than failing the run.
+
+    Returns `(weights_path, provenance)`; the provenance dict is recorded in
+    the result as `weight_routing` so the JSON says why this model ran.
+    `classify` is injectable for tests (same reason `_resolve_clef_weights`
+    is a seam); default is the real classifier.
+    """
+    default = str(_repo_root() / DEFAULT_WEIGHTS)
+    if not _weight_routing_enabled():
+        return default, {
+            "mode": "disabled",
+            "weights": default,
+            "reason": "OMR_WEIGHT_ROUTING is off -> default weights",
+        }
+
+    from .input_domain import DEFAULT_CLASSIFY_PAGES, ENGRAVED, SCANNED
+    if classify is None:
+        from .input_domain import classify_pdf_domain as classify
+
+    # Any-scan-wins saturates quickly, so the sample is capped the same way
+    # classify_pdf_domain caps its own default page walk.
+    sample = list(pages)[:DEFAULT_CLASSIFY_PAGES]
+    classification = classify(pdf_path, page_indices=sample)
+    prov: dict[str, Any] = {
+        "mode": "routed",
+        "verdict": classification.verdict,
+        "classification": classification.to_dict(),
+    }
+
+    if classification.verdict == ENGRAVED:
+        candidate = (os.environ.get("OMR_ENGRAVED_WEIGHTS", "").strip()
+                     or str(_repo_root() / ENGRAVED_WEIGHTS))
+        if Path(candidate).is_file():
+            prov["weights"] = candidate
+            prov["reason"] = "engraved input -> engraved weights"
+            return candidate, prov
+        prov["weights"] = default
+        prov["reason"] = (f"engraved input, but engraved weights missing at "
+                          f"{candidate} -> default weights")
+        print(f"transcribe: weight routing: engraved weights not found at "
+              f"{candidate}; falling back to default weights",
+              file=sys.stderr, flush=True)
+        return default, prov
+
+    prov["weights"] = default
+    prov["reason"] = ("scanned input -> default (scan-tuned) weights"
+                      if classification.verdict == SCANNED
+                      else "input domain unknown -> default weights")
+    return default, prov
+
+
 def _optional_pass_failure(
     name: str, exc: BaseException, *, progress: bool,
 ) -> dict[str, Any]:
@@ -3673,7 +3771,7 @@ def transcribe(
     *,
     pdf_path: Path,
     pages: list[int],
-    weights: str,
+    weights: str | None = None,
     conf_threshold: float = 0.25,
     imgsz: int | None = None,
     iou_threshold: float = 0.5,
@@ -3721,12 +3819,28 @@ def transcribe(
     OMR_* knob in that module already works. Pass `clef_weights` explicitly to
     override the environment either way (including `clef_weights=""` to force
     it off regardless of what's set).
+
+    `weights=None` (the default) ROUTES by input domain: scanned PDFs get
+    `DEFAULT_WEIGHTS` (the hollow fine-tune, which wins on scans), digitally
+    engraved PDFs get `ENGRAVED_WEIGHTS` (the prior production checkpoint,
+    which wins on engraved input) — see `_route_weights` for the measured
+    rationale. An explicit `weights` path pins the model and skips
+    classification entirely; `OMR_WEIGHT_ROUTING=0` pins everything to
+    `DEFAULT_WEIGHTS`. Either way the result records what ran (`weights`)
+    and, when routing ran, why (`weight_routing`).
     """
     # Lazy-import the YOLO wrapper so this module imports cheaply when the
     # caller doesn't actually need OMR (e.g. when listing pages).
     from .yolo_detector import YoloDetector
 
     clef_weights = _resolve_clef_weights(clef_weights)
+
+    weight_routing: dict[str, Any] | None = None
+    if weights is None:
+        weights, weight_routing = _route_weights(pdf_path, pages)
+        if progress:
+            print(f"  weights routed: {weight_routing.get('verdict', '?')} "
+                  f"-> {Path(weights).name}", flush=True)
 
     detector = YoloDetector(weights, device="auto")
     # Optional decoupled clef specialist (see _detections_for_cell). Loaded
@@ -3736,6 +3850,7 @@ def transcribe(
     out: dict[str, Any] = {
         "source_pdf": str(pdf_path),
         "weights": weights,
+        "weight_routing": weight_routing,
         "clef_weights": clef_weights,
         "locate_c_clefs": locate_c_clefs,
         "read_headers": read_headers,
@@ -4614,8 +4729,16 @@ def main(argv: list[str] | None = None) -> int:
                     help="Output JSON file (default: stdout)")
     ap.add_argument("--pages", default="",
                     help="Pages to process: e.g. '0,4,9' or '0-4' (default: all)")
-    ap.add_argument("--weights", default=DEFAULT_WEIGHTS,
-                    help=f"YOLO weights path (default: {DEFAULT_WEIGHTS})")
+    ap.add_argument("--weights", default=None,
+                    help="YOLO weights path. Default: route by input domain — "
+                         "scanned PDFs get the production (scan-tuned) "
+                         f"weights ({Path(DEFAULT_WEIGHTS).name}), digitally "
+                         "engraved PDFs the prior production weights "
+                         f"({Path(ENGRAVED_WEIGHTS).name}), which measure "
+                         "better there. Passing a path pins the model and "
+                         "skips routing. Env: OMR_WEIGHT_ROUTING=0 disables "
+                         "routing; OMR_ENGRAVED_WEIGHTS overrides the "
+                         "engraved file.")
     ap.add_argument("--clef-weights", default=None,
                     help="OPTIONAL. Path to a CLEF-SPECIALIST checkpoint — a "
                          "model fine-tuned to read clefs. You do not need it: "
@@ -4723,8 +4846,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: PDF not found: {args.pdf}")
         return 2
 
-    if not Path(args.weights).exists():
+    if args.weights is not None and not Path(args.weights).exists():
         print(f"ERROR: weights file not found: {args.weights}")
+        return 2
+    if args.weights is None and not (_repo_root() / DEFAULT_WEIGHTS).exists():
+        # Every non-engraved routing verdict lands on this file, so a routed
+        # run cannot proceed without it — same fail-fast the explicit path
+        # gets. (A missing ENGRAVED_WEIGHTS is soft: the router falls back.)
+        print(f"ERROR: default weights not found: {_repo_root() / DEFAULT_WEIGHTS}"
+              f" (weight routing needs them; pass --weights to pin a file)")
         return 2
 
     # Clef specialist: CLI flag wins, else OMR_CLEF_WEIGHTS env.
@@ -4759,7 +4889,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if not args.quiet:
         print(f"transcribe: {args.pdf.name} ({n_pages} pages, processing {len(pages)})")
-        print(f"  weights:  {args.weights}")
+        print(f"  weights:  {args.weights or 'auto (scan/engraved routing)'}")
         if dossier is not None:
             print(f"  dossier:  {dossier['work_id']} — "
                   f"{dossier['n_parts']} parts, {dossier['total_measures']} "

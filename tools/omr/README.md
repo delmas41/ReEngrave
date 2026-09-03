@@ -249,6 +249,9 @@ current production weights — see "Known limitations" below.
 {
   "source_pdf": "score.pdf",
   "weights":    "tools/omr/training/data/weights/.../ft-30ep.pt",
+  // why THIS model ran: null when --weights pinned it, else the routing
+  // verdict + per-page evidence (see "Weight routing" below)
+  "weight_routing": { "mode": "routed", "verdict": "scanned", "...": "..." },
   "conf_threshold": 0.25,
   "iou_threshold":  0.5,
   "agnostic_nms":   true,
@@ -1079,7 +1082,21 @@ positional arguments:
 options:
   --out OUT             Output JSON file (default: stdout)
   --pages PAGES         Pages to process: e.g. '0,4,9' or '0-4' (default: all)
-  --weights WEIGHTS     YOLO weights path (default: Phase 3.3, F1 98.8%)
+  --weights WEIGHTS     YOLO weights path. Default: ROUTE by input domain —
+                        scanned PDFs get the production hollow fine-tune
+                        (wins on scans: half-notes 8->27 on beet5-p1),
+                        digitally engraved PDFs get the prior production
+                        checkpoint (wins there: 11-work OMR-NED 0.1399 vs
+                        0.1421). The verdict is WHERE THE INK COMES FROM:
+                        a scan is one full-page raster image, an engraving
+                        is vector drawings (428-2058 paths vs 0-4, the gap
+                        empty over 147 probed pages). Ambiguous input falls
+                        back to the default weights; a missing engraved
+                        file falls back soft. Passing a path pins the model
+                        and skips routing. Env: OMR_WEIGHT_ROUTING=0
+                        disables; OMR_ENGRAVED_WEIGHTS overrides the
+                        engraved file. See
+                        benchmarks/omr-weight-routing-2026-09/FINDINGS.md.
   --clef-weights W      OPTIONAL, and NOT general-purpose weights: this takes a
                         CLEF-SPECIALIST checkpoint (a model fine-tuned to read
                         clefs). You do not need it — header reading is on by
