@@ -5,6 +5,39 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — snap-ledger audit: three hollow labels corrected, all Eulenburg Scheherazade / v8
+
+- The old click-to-box snap extrapolated the parity grid beyond the staff at the staff
+  spacing, and real ledger pitch is a fact about the engraving (the snap-ledger work,
+  `benchmarks/omr-snap-ledger-2026-09/FINDINGS.md`, branch `claude/peaceful-shamir-d12e52`) —
+  so some accepted suggestions carried the wrong OnLine/InSpace variant. Every out-of-staff
+  labeled notehead where the rung-anchored snap disagrees with the stored class was
+  re-adjudicated: 26 candidate rows (7 BROKE + 19 STILL WRONG) across the 10 hollow batches,
+  each examined on a rendered crop, the ambiguous ones settled by ink measurement.
+- **Three labels were wrong — all silent acceptances of the old grid's suggestion, all on the
+  Eulenburg Scheherazade batch:** `schehe-p3-sys0-s3-m3` OnLine→InSpace (the head hangs in
+  the space below its single ledger), `schehe-p4-sys0-s2-m0` InSpace→OnLine (the counter is
+  split into two white lobes by the 2nd ledger running through the head), and
+  `schehe-p3-sys0-s3-m0` OnLine→InSpace — FINDINGS §4's "unresolved" row, settled by
+  measurement: one connected counter, the single ledger tangent below the head at 1.25×
+  staff spacing (the wide Eulenburg first gap), and no ink where a second ledger would print.
+- **The other 23 candidates stand**, including every one of Sean's explicit `c`-press
+  overrides. Several were confirmed by ink profile rather than eye alone — e.g.
+  `mahler1-p3-sys0-s11-m5`, where the ledger band runs through the head with 37–55 px wings
+  but both grids read in_space because the cell's manifest staff lines sit ~40 px off the
+  ink at that x (the §6 warped-manifest family).
+- Corrected in BOTH verdict copies — the batch's `verdicts/` and the survey's
+  `v8-merged-verdicts/` that `build_v8.py` derived from them — as class strings only, boxes
+  untouched. Then v8 re-exported with the original converter arguments: the diff is exactly
+  three class ids (32↔34) on unchanged coordinates, plus the metadata timestamp.
+  `build_v8.py` was deliberately NOT re-run (it would silently pull the later Brahms
+  completion-sweep boxes into v8's membership), and the catalog was deliberately NOT rebuilt
+  from the worktree (its committed lists carry main-checkout absolute paths; training reads
+  `labels/*.txt` directly, so the correction is live for the next training run as-is).
+- Eval after the correction (shamir tooling over current verdicts): ink transitions
+  18 recovered / 7 broke → **21 / 4**; the 4 remaining breaks are FINDINGS §4's adjudicated
+  displaced-centre artifacts and the one tangent-merge reader miss, all with correct labels.
+
 ## 2026-09-03 — Phase A of the admission plan lands in the pre-fill
 
 Sean approved the widening plan; its pre-fill half shipped, measured on the six-cell A/B
