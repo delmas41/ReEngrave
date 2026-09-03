@@ -212,14 +212,27 @@ every one with a usable image):
   m12 cell runs 4205–4433. The probes here dodged it by deriving the x-extent
   from the cells; any code that bounds a measurement window by
   `x_start`/`x_end` silently gets nothing for the worst cell on the page.
-- ⚠️ **Enabling per-cell localization needs a DECISION, not a flag flip**:
-  batches store boxes in a frame derived from `staff_line_ys_canonical`, and
-  `recut_cells` derives its padding mode by matching the manifest — with
-  localization on, ten existing labeled batches would mismatch and abort
-  (the designed safe failure, but a hard stop). Either the localization mode
-  must be recorded per batch so recut can reproduce both frames, or the
-  cutting frame stays unlocalized and the corrected grid applies downstream
-  only. Sean's call, before `OMR_CELL_LINE_TRACE` defaults on anywhere.
+- ⚠️ **The recut "decision" this bullet first posed DISSOLVED under
+  measurement** (follow-up session, RESULTS_TILT_COST.md §5): the dvorak page
+  cut twice, flag off and on, 360 cells — cell images **byte-identical
+  360/360**, `bbox_page_px` / dimensions / `upscale_factor` identical
+  360/360, only `staff_line_ys_canonical` differs (227/360). Crop bounds and
+  scale come from `staff.line_ys` / `span_px`, which localization never
+  touches: there are not two frames, there is ONE frame with two grids on
+  it, and saved boxes live in canonical IMAGE coordinates, which do not
+  move. The narrow fix is one comparison in `recut_cells`: `frame_mismatch`
+  must compare the UNLOCALIZED grid — as written it reads grid metadata as
+  if it were frame, and `cell_canonical_h` already distinguishes the two
+  padding modes the check exists to derive. No batch re-cut, no per-batch
+  field. What DOES change under the flag is the labeling UI's snap
+  SUGGESTION, which reads the grid — which is the point: §3's two shipped
+  wrong labels trace to exactly that.
+- ⚠️ **A test trap the localization work paid for** (same session): the
+  localizer reads `page.binary` while `refine_staff_lines_in_cell` reads
+  `cell.image` — a synthetic fixture that inks only the binary hands the
+  refiner blank paper, and its "no move" answer is indistinguishable from
+  agreement; a composition test's flag-off arm was vacuous for exactly this
+  reason. Derive the fixture's RGB from its binary so both readers are fed.
 - The brahms1 s20 v8 fix LANDED (`3baadcd`); the lamer fix is in flight (see
   §3). Remaining gate: **re-run the audit over the hollow3 batch set before
   v9–v12 enter `catalog-versions.txt`** — they were converted by `780cbf6`

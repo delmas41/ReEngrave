@@ -33,9 +33,10 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   wrong way on the worst cell; a rigid 5-comb slide (< 1 spacing) reproduces all 7 flagged
   cells within 0.04 sp (`OMR_CELL_LINE_TRACE`, default off). Scan e2e cost is 4 edits of 7894
   because only 0.4% of its cells sit past the flip line vs 8–16% on deeper pages — **that
-  benchmark cannot price the defect**. Enabling localization changes the frame `recut_cells`
-  reproduces for 10 existing batches: open decision. In-staff snap stays frozen
-  (`test_ledger_snap.py`).
+  benchmark cannot price the defect**. The recut-compatibility concern DISSOLVED under
+  measurement: flag on/off leaves cell images, bbox and upscale byte-identical (360/360 on the
+  worst page), only the stored grid moves — one frame, two grids; fix = `recut_cells.frame_mismatch`
+  comparing the unlocalized grid. In-staff snap stays frozen (`test_ledger_snap.py`).
 
 ## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
 
