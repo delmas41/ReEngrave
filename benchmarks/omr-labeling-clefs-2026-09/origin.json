@@ -1,0 +1,98 @@
+{
+ "beet5-p4-sys1-s14-m0": {
+  "batch": "benchmarks/omr-labeling-hollow-2026-08",
+  "version": "v7-2026-09-02-hollow"
+ },
+ "beet5hr-p48-sys0-s13-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-litolff-hires",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "beet5hr-p48-sys0-s14-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-litolff-hires",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "beet5hr-p49-sys0-s6-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-litolff-hires",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "dvorak9-p8-sys1-s19-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "dvorak9-p8-sys1-s20-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "dvorak9-p8-sys1-s21-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "dvorak9-p8-sys1-s23-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "mahler5-p176-sys0-s5-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-peters-mahler5",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "mahler5-p178-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-peters-mahler5",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "schehe-p2-sys0-s2-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "schehe-p2-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "schehe-p3-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "schehe-p4-sys0-s2-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "schehe-p4-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "schehe-p4-sys0-s8-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade",
+  "version": "v8-2026-09-02-hollow2-5pub"
+ },
+ "mahler1-p2-sys0-s0-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1",
+  "version": "v9-2026-09-03-hollow3-mahler1"
+ },
+ "mahler1-p2-sys0-s12-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1",
+  "version": "v9-2026-09-03-hollow3-mahler1"
+ },
+ "mahler1-p2-sys0-s7-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1",
+  "version": "v9-2026-09-03-hollow3-mahler1"
+ },
+ "mahler1-p4-sys0-s13-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1",
+  "version": "v9-2026-09-03-hollow3-mahler1"
+ },
+ "mahler1-p5-sys0-s6-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1",
+  "version": "v9-2026-09-03-hollow3-mahler1"
+ },
+ "mahler1-p5-sys1-s17-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1",
+  "version": "v9-2026-09-03-hollow3-mahler1"
+ },
+ "lamer-p2-sys0-s5-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-durand-lamer",
+  "version": "v11-2026-09-03-hollow3-lamer"
+ },
+ "lamer-p5-sys0-s2-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-durand-lamer",
+  "version": "v11-2026-09-03-hollow3-lamer"
+ }
+}

@@ -1,0 +1,23 @@
+{
+  "cell_id": "mahler5-p178-sys0-s3-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-02T21:07:47+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1079,
+        "y": 321,
+        "w": 76,
+        "h": 64
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads"
+  ]
+}

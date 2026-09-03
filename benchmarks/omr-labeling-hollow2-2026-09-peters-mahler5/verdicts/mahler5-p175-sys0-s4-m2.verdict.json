@@ -1,7 +1,7 @@
 {
   "cell_id": "mahler5-p175-sys0-s4-m2",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-02T20:51:45+00:00",
+  "labeled_at_utc": "2026-09-03T20:48:07+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -39,7 +39,21 @@
         "h": 153
       },
       "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 895,
+        "y": 266,
+        "w": 110,
+        "h": 293
+      },
+      "notes": ""
     }
   ],
-  "inspected_passes": []
+  "inspected_passes": [
+    "rests+accidentals"
+  ]
 }
