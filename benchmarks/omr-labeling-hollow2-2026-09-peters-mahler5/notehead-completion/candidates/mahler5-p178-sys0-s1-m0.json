@@ -1,0 +1,57 @@
+{
+ "cell_id": "mahler5-p178-sys0-s1-m0",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8236,
+   "ink": 0.9087,
+   "bbox": {
+    "x": 1092,
+    "y": 317,
+    "w": 85,
+    "h": 67
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8174,
+   "ink": 0.7211,
+   "bbox": {
+    "x": 579,
+    "y": 724,
+    "w": 92,
+    "h": 77
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7891,
+   "ink": 0.8558,
+   "bbox": {
+    "x": 1723,
+    "y": 578,
+    "w": 71,
+    "h": 68
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.5695,
+   "ink": 0.851,
+   "bbox": {
+    "x": 792,
+    "y": 511,
+    "w": 83,
+    "h": 62
+   }
+  }
+ ]
+}

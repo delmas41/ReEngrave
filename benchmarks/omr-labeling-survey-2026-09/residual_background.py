@@ -54,7 +54,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--merged", default="benchmarks/omr-labeling-survey-2026-09/phase3-merged")
     ap.add_argument("--human-only", action="store_true",
-                    help="count only human boxes — reproduces the pre-round baseline")
+                    help="count only human boxes as coverage")
+    ap.add_argument("--before", action="store_true",
+                    help="count only the boxes that existed BEFORE round 3 — hollow "
+                         "noteheads and the earlier model completion. Same cells, same "
+                         "detector, same question, so the delta against a default run is "
+                         "a real before/after and not two differently-framed numbers.")
     ap.add_argument("--conf", type=float, default=0.50)
     ap.add_argument("--device", default="mps")
     a = ap.parse_args()
@@ -70,11 +75,21 @@ def main():
             vp = vdir / f"{cid}.verdict.json"
             if not vp.exists(): continue
             v = json.loads(vp.read_text())
+            def _human_ok(b):
+                if not a.before: return True
+                c = (b.get("human_class") or "").lower()
+                # round 3 added rests, accidentals/key sigs and clefs by hand
+                return not ("rest" in c or "accidental" in c
+                            or c.startswith("key") or c.startswith("clef"))
             boxes = [(b["bbox"]["x"], b["bbox"]["y"], b["bbox"]["w"], b["bbox"]["h"])
-                     for b in (v.get("added_detections") or [])]
+                     for b in (v.get("added_detections") or []) if _human_ok(b)]
             if not a.human_only:
-                boxes += [(b["bbox"]["x"], b["bbox"]["y"], b["bbox"]["w"], b["bbox"]["h"])
-                          for b in (v.get("detections") or []) if b.get("verdict") == "TP"]
+                boxes += [(b["model_bbox"]["x"], b["model_bbox"]["y"],
+                           b["model_bbox"]["w"], b["model_bbox"]["h"])
+                          for b in (v.get("detections") or [])
+                          if b.get("verdict") == "TP" and b.get("model_bbox")
+                          # round 3's marks carry an "M" id; the earlier completion "C"
+                          and not (a.before and str(b.get("id", "")).startswith("M"))]
             try:
                 cell = _load_cell_from_manifest(e, root)
                 dets = det.detect(cell, conf_threshold=a.conf, imgsz=None)

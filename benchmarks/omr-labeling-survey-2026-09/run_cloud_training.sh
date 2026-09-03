@@ -20,7 +20,12 @@ BASE_W="weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
 export PYTHONPATH="$(pwd)"
 
 DENSE="v1-2026-05-18-orchestral v2-2026-06-08-beet5 v3-2026-06-09-mahler5 v4-2026-06-10-la-mer"
-HOLLOW="v7-2026-09-02-hollow v8-2026-09-02-hollow2-5pub v9-2026-09-03-hollow3-mahler1 v10-2026-09-03-hollow3-elgar1 v11-2026-09-03-hollow3-lamer"
+# ROUND 3 (2026-09-03): the COMPLETED cells. Same cells as v7-v11, plus hand-
+# labelled rests, accidentals and clefs and audited model dynamics/slurs/ties —
+# 209 cells / 540 boxes -> 280 / 1157. v7-v11 are NOT listed: they label the
+# same images less completely, and training on both teaches that the symbols the
+# incomplete copy omits are background, which is the regression being fixed.
+HOLLOW="v13-2026-09-03-complete-v7-beet5-bolero v14-2026-09-03-complete-litolff v15-2026-09-03-complete-peters v16-2026-09-03-complete-eulenburg v17-2026-09-03-complete-simrock v18-2026-09-03-complete-breitkopf v19-2026-09-03-complete-mahler1 v20-2026-09-03-complete-elgar1 v21-2026-09-03-complete-lamer"
 TCHAIK="v12-2026-09-03-hollow3-tchaikovsky1-lowres"
 
 VERSIONS="$DENSE $HOLLOW"
