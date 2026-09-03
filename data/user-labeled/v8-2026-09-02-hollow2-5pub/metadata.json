@@ -494,7 +494,7 @@
       "n_fp_dropped": 0,
       "classes_written": [
         "augmentationDot",
-        "noteheadHalfInSpace"
+        "noteheadHalfOnLine"
       ]
     },
     {
