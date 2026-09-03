@@ -1,0 +1,9956 @@
+[
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Flauti.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Oboi.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Clarinetti in B.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Fagotti.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Corni in Es.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Trombe inC.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Timpani in C.G.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Violino ].",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Yiolino II.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Viola.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Violoncello.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Basso.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Flauti.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Oboi.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Clarinetti in B.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fagotti.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Corni in Es.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Trombe in C.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Timpani in C.G.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Violino I.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Violino II.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Viola.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Violoncello.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Basso.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 0
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Tp",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Oh.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Oh.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Fag:",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Ob",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Fag:",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Cor",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 20
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Co r.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Tp",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 29
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fag",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cor:",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 39
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "~l. pl C.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "c. Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Timp",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Tr. Bas",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. fl. pic.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C. Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Timp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Fl. \n pic. \n \n \n  \n Fl. \n  \n \n \n  \n Ob. \n  \n \n \n  \n Cl. \n  \n \n \n  \n Fag. \n  \n \n \n  \n C. \n  \n \n \n  \n Fag. \n  \n \n \n  \n Cor. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Tp. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Alt. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Ten. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Bas.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 58
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl. pie.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Oh.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Fag",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Cor",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Tr. Alt",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Tr Ten",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Bas Tr",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. pic.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C. Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. pic.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C. Fag.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tp.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-575951-textlayer",
+  "page_index": 86
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Flauti.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Obol.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Clarinetti in B.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fagotti.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Corni in Es.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Trombe in C.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Timpani in C.G.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Violino I.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Violino II.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Viola.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Violoncello.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Basso.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Oh.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Tp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Tp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 11
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 30
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 39
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. pic.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C. Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Timp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 49
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. pic.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C. Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 58
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. Fig.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fig.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 68
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. pic.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C. Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 77
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl. pir.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Ob.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "C. Fag.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cor.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tr.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tp.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tr. Alt.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tr. Ten.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tr. Bas.",
+  "source": "beethoven5-984073-scan",
+  "page_index": 87
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Cor",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Fag",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Cor,",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Ob",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Fag",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Car",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Cor",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 35
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 44
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "FI.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Fl.   pic.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Tp.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 52
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Tb",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "n.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 61
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl-",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "CI.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "Cor",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 69
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Fl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Ob.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Cl.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Fag.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Cor.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Tr.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Tb.",
+  "source": "beethoven6-504082-textlayer",
+  "page_index": 78
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "H 1b",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Bods",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Tromp.",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Timb.",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Troup.",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Timb.",
+  "source": "debussy-lamer-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Bons",
+  "source": "debussy-lamer-scan",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tromp.",
+  "source": "debussy-lamer-scan",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "freet 2d Harpes",
+  "source": "debussy-lamer-scan",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "2 GRANDES FLÛTES",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "1 PETITE FLÛTE",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "2 HAUTBOIS",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "1 COR ANGLAIS",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "2 CLARINETTES en LA",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "3 BASSONS",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "1 e  et 2 e  CORS chromatiques en FA",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "3 e  et 4 e  CORS chromatiques en FA",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "3 TROMPETTES chromatiques en FA",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "CYMBALES",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "TRIANGLE",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "1 GLOCKENSPIEL (*)",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "VIOLONS",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "ALTOS",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "VIOLONCELLES",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "CONTREBASSES",
+  "source": "debussy-lamer-scan",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "(des fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "fle fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "phb",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Bons",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tromp.",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Gleek.",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "pe Harpe",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "vod Solo",
+  "source": "debussy-lamer-scan",
+  "page_index": 46
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Gods Fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Pte Fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "gib",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "gons",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tromp.",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Trg.",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Glock.",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "re et 2de",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Harpes",
+  "source": "debussy-lamer-scan",
+  "page_index": 61
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cymb.",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Trg.",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "1re",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Harpe",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "2de",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Harpe",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Hons",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Godes fi",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "H th",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "1 st  Bon",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "2 d  of 30 Bons",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Gr. C.",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "velles",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Div.",
+  "source": "debussy-lamer-scan",
+  "page_index": 91
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Gdes Fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Bth",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Bous 1 st  et 2 o",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Bons 1 st  et 20 e",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Se Bon",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 106
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Gloss Fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "4 th  Bon",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "2 nd  Bon",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Cors",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Tromp.",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tlub.",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Cymb.",
+  "source": "debussy-lamer-scan",
+  "page_index": 121
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "gless Fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "p 10  Fl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "R 10",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Cl.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "teret 2 0  Bons",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "3 0  Bon",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "C. Bon",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "3 Tromp.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Cornets",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "3 Tromb.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Tuba",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Timb.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Gr. C.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Cymb.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "T.-T.",
+  "source": "debussy-lamer-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Vier Flöten",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Drei Hoboen",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Drei Klarinetten in A",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Zwei Fagotte",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Contrafagott",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Sechs Hörner in F",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Vier Trompeten in B",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Drei Posaunen",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Tuba",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Pauken Becken",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Grosse Trommel Becken Gr. Trommel) von einem geschlagen",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Kleine Trommel Tamtam",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Erste Violinen",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Zweite Violinen",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Violen",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Violoncelle",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "F-Hörner",
+  "source": "mahler5-local-scan",
+  "page_index": 28
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "B-Tromp.",
+  "source": "mahler5-local-scan",
+  "page_index": 28
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Violen",
+  "source": "mahler5-local-scan",
+  "page_index": 28
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Bässe get.",
+  "source": "mahler5-local-scan",
+  "page_index": 28
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "1 2 3",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "4 Flöten",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Hoboen 1 2 3",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "1",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "B-Klar. 2",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "8",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Fag. 1",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "F-Hörner 2",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Pauken",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Veelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "1 2 3",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "4 Flöten",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "1 2 8 Hoboen",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "1",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "B-Klar.  2",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "8",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Fag.  1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Vcelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 55
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.      4 2253",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "F-Hörner      4 2256",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "F-Tromp.      4 2256",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Posaunen      4 2258",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tuba      4 2258",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Pauken      4 2257",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Gr. Tr.      4 2257",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Erste Viol.      4 2257",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Zweite Viol.      4 2257",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Violen      4 2257",
+  "source": "mahler5-local-scan",
+  "page_index": 82
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Flüten 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag. 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "1 2 3 4",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "F-Hörner 2 4 6",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "in F 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "in B 3 4 Tromp. 3 4",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Posaunen 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Posaune 3 u. Tuba .",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Pauken",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Triangel",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Becken",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Gr. Tr.",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Tamtam",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Zweite Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Violen",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "Voelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 109
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Flöten 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Hoboen 1",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "1",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "2",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Contraf.",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "B-Tromp. 1",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tuba",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Pauken",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Erste Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Vcelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Hoboen 1",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "B-Klar. 1",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Fag. 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Contraf.",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "F-Corno obl.",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "F-Hörner 1 3",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Posaunen 2 3",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Tuba",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "Pauken",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Erste Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "Vcelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 136
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Flötten \n 3 \n 8 \n 4 \n 3 \n 2 \n 1 \n 0 \n \n \n  \n Hoboen \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n A-Klar. \n 3 \n 5 \n 6 \n 7 \n 8 \n 9 \n 10 \n \n \n  \n Fag. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Contraf. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n F-Corno obl. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n F-Hörner \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n \n \n  \n B-Tromp. \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n \n \n  \n Posaunen \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Posaune u. Tuba \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n 9 \n \n \n  \n Pauken \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Glockensp. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Gr. Tr. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Erste Viol. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Zweite Viol. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Violen \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Vcelle. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Bässe \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7",
+  "source": "mahler5-local-scan",
+  "page_index": 163
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Erste Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Zweite Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Violen",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Vcelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Erste Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Zweite Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Violen",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Vcelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Erste Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Zweite Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Violen",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Vcelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Fag. 1 2 3 4 5 6 7 8",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Erste Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Zweite Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Violen",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "Veelle.",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 190
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Flöten 8 4",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "3 4",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "3 4 Fag. 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "3 4",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "3 5",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "3 5 F-Hörner 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "F-Tromp. 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "B-Tromp. 1 2 3 5",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Posaunen 1 2 3 5",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "3 5",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "3 5",
+  "source": "mahler5-local-scan",
+  "page_index": 217
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Fag. 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "1 3 5 6 Contraf.",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "F-Hörner 2 4 6",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "F-Tromp. 2 4",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Posaunen 1 2",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Posaune 3 uTuba",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Pauken",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Gr. Tr.",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Zweite Viol.",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Bässe",
+  "source": "mahler5-local-scan",
+  "page_index": 244
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "TENORE",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Bassi",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Viola",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "CANTO",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "ALTO",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "TENORE",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "BASSO",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Bassi",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 159
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Tromba I II",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Timpani",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Violini",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Viola",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Canto",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Alto",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Tenore",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Basso",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Bassi",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Tromba I II",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Timpani",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Violini",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Viola",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "CANTO",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "ALTO",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "TENORE",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "BASSO",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Bassi",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 254
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "B.",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 286
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "B.",
+  "source": "handel-messiah-leadsheet",
+  "page_index": 286
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "CANTO",
+  "source": "handel-messiah-reduction",
+  "page_index": 84
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "ALTO",
+  "source": "handel-messiah-reduction",
+  "page_index": 84
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "TENORE",
+  "source": "handel-messiah-reduction",
+  "page_index": 84
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "BASSO",
+  "source": "handel-messiah-reduction",
+  "page_index": 84
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "F L",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "H",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "C",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "B",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "3 S",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "4 C",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "T",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "3 T",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "T",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "2 T 3 T C T AM",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "C",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "H",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "1 rs V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "2 ds V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "A",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "C",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "7 Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 21,
+  "text": "1 rs V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 22,
+  "text": "2 ds V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 23,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 24,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 25,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "FLÜTES 2 Grandes Flütes Petites Flütes",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "HAUTBOIS 2 Hautbois Hautb. d'amour Cor Anglais",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "CLARINETTES Petite Cl. en Mi b 2 Cl. en Si b Cl. basse en Si b",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "BASSONS 2 Bassons Contrebasson",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "3 SAXOPHONES Sopranino en Fa Soprano en Si b Ténor en Si b",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "4 CORS en fa",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "TROMPETTES 3 Tromp. en Ut Petite Tromp. en Ré",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "3 TROMBONES",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "TUBA",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "2 TAMBOURS 3 TIMBALES CYMBALES TAM-TAM",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "CELESTA",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "HARPE",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "1 rs  VIOLONS",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "2 ds  VIOLONS",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "ALTOS",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "VIOLONCELLES",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "CONTREBASSES",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Tamb. L",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "1 rs  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "2 ds  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 24,
+  "text": "Velles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 1
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Htb. d’am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "P te Cl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "1 rs V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Htb. d’am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "1 rs V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "Htb. d’am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 21,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 22,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 23,
+  "text": "1 rs V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 24,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 25,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 26,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 27,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 28,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Htb. d'am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "P te  Cl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "1 rs  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "2 ds  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Htb. d'am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "1 rs  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "2 ds  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Velles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Htb. d'am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "1 rs  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 24,
+  "text": "2 ds  V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 26,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 27,
+  "text": "Velles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "surya",
+  "staff_index": 28,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 5
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "tes",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "P Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Celesta",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "1 rs V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "tes",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "P Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 21,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 22,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 23,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 25,
+  "text": "Celesta",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 26,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 28,
+  "text": "1 rs V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 29,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 30,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 31,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 32,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 33,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "p^{\\text{tes}} \\text{ Fl.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "B^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Celesta",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "1^{\\text{rs}} \\text{ V}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "2^{\\text{ds}} \\text{ V}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "V^{\\text{elles}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "\\text{P}^{\\text{tes}} \\text{Fl}.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "\\text{Fl}.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "\\text{Cl.B.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "\\text{B}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "\\text{Cors}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "\\text{Tamb.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "\\text{Celesta}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 26,
+  "text": "\\text{Harpe}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 28,
+  "text": "1^{\\text{rs}} \\text{V}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 29,
+  "text": "2^{\\text{ds}} \\text{V}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 31,
+  "text": "\\text{Altos}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 32,
+  "text": "\\text{V}^{\\text{elles}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 33,
+  "text": "\\text{C.B.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 10
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Htb. d’am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Trb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "1 rs V ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Hauth.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Htb. d'am.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "C.B en",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Trb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "1^{\\text{rs}} \\text{ v}^{\\text{me}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "2^{\\text{ds}} \\text{ v}^{\\text{me}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "v relles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 14
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "P tes Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "rs ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "1 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "\\mathbf{p}^{\\text{ext}} = \\mathbf{f}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "\\mathbf{F}_1",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "\\text{Hautb}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "\\text{Cor A}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "\\text{Clar}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "\\text{CLB}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "\\mathbf{B}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "\\mathbf{C}.\\mathbf{B}^{\\text{ext}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "\\text{Sax.T}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "\\text{Cors}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "\\text{Tromp}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "\\text{Tamb}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "\\text{Harpe}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "\\mathbf{1}^{\\text{rs}} \\mathbf{v}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "\\mathbf{g}^{\\text{ds}} \\mathbf{v}^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "\\text{Altos}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "\\mathbf{v}^{\\text{elles}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "\\mathbf{C}.\\mathbf{B}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 18
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "P tes Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Sax. S ano",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Timb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 22,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 23,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "P^{\\text{test}}  FI.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "FI.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "CLB.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "P^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "C.B^{\\text{on}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Sax, S^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Timb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "1^{\\text{rs}} V^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "2^{\\text{ds}} V^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "V^{\\text{elles}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 23
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "P tes Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Sax. S ano",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Trb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "Tuba",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Timb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "rs ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "1 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 21,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 24,
+  "text": "V elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 25,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "P^{\\text{tes}}  Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "P^{\\text{sns}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "C.B. on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Sax. S. nns",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Trb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Tuba",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Timb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "1^{\\text{ts}}   V^{\\text{nns}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "2^{\\text{ts}}   V^{\\text{nns}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 24,
+  "text": "V^{\\text{elles}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 27
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "P tes Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 2,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "Sax. S ino",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Tuba",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "Timb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "P^{\\text{test}}  File",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "FI",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "CLB.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "P^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Sax. S on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Trb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Tuba",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "2^{\\text{th}} V^{\\text{ons}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "surya",
+  "staff_index": 24,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 31
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "P tes Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 3,
+  "text": "Hautb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 5,
+  "text": "Clar.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 6,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "Sax. S ino",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 12,
+  "text": "Cors",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 13,
+  "text": "P te Tr en Ré",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 16,
+  "text": "Trb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 17,
+  "text": "Tuba",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "Timb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "Harpe",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 22,
+  "text": "rs ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 23,
+  "text": "1 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 24,
+  "text": "ds ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 25,
+  "text": "2 V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 27,
+  "text": "Altos",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 28,
+  "text": "elles",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 29,
+  "text": "V",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 30,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "P^{\\text{ext}} P_1",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "F_1",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "\\text{Hauth}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "\\text{Clar.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "\\text{CLB.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "B^{\\text{ens}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "C.B^{\\text{ens}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "\\text{Sax. S}^{\\text{ens}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "\\text{Sax. T}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "\\text{Cors}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "P^{\\text{e}} \\text{ Tr} \\\\ \\text{en R}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "\\text{Tromp.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "\\text{Trb.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "\\text{Tuba}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "\\text{Timb.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "\\text{Tamb.}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "\\text{Harpe}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "1^{\\text{rs}} \\, {\\rm v}^{\\text{ens}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "2^{\\text{rs}} \\, {\\rm v}^{\\text{ens}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 27,
+  "text": "\\text{Altos}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 29,
+  "text": "{\\rm v}^{\\text{altos}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "surya",
+  "staff_index": 30,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 36
+ },
+ {
+  "reader": "text",
+  "staff_index": 0,
+  "text": "P tes Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 1,
+  "text": "Fl.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 4,
+  "text": "Cor A.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 7,
+  "text": "Cl.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 8,
+  "text": "B ons",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 9,
+  "text": "C.B on",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 10,
+  "text": "Sax. S ino",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 11,
+  "text": "Sax. T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 14,
+  "text": "P te Tr en Ré",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 15,
+  "text": "Tromp.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 18,
+  "text": "Tuba",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 19,
+  "text": "Timb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 20,
+  "text": "Tamb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 21,
+  "text": "T-T.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 22,
+  "text": "Cymb.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 23,
+  "text": "Gr.C.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "text",
+  "staff_index": 34,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "p^{\\text{est}} = 1",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Fl",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "\\text{Hauth}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "\\text{Cor A}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "\\text{Clar}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "\\text{CLB}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "B^{\\text{cos}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "C, B^{\\text{est}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "\\text{Sax S}^{\\text{est}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "\\text{Sax T}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "\\text{Cors}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "p^{\\text{est}} = \\frac{T_r}{R_e}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "\\text{Tromp}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "\\text{Trb}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "\\text{Tuba}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "\\text{Timb}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "\\text{Tamb}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "\\text{TT}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "\\text{Cymb}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "\\text{Gr.C}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "\\text{Harpe}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 27,
+  "text": "1^{\\text{rs}} \\, \\text{v}^{\\text{est}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 28,
+  "text": "2^{\\text{da}} \\, \\text{v}^{\\text{est}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 33,
+  "text": "v^{\\text{est}}",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 34,
+  "text": "C.B.",
+  "source": "ravel-bolero-textlayer",
+  "page_index": 40
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Organ.   Orgel.",
+  "source": "bach-wtc1",
+  "page_index": 164
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Pianoforte.",
+  "source": "bach-wtc1",
+  "page_index": 164
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Organ. Orgel.",
+  "source": "bach-wtc1",
+  "page_index": 164
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Pianoforte.",
+  "source": "bach-wtc1",
+  "page_index": 164
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Flauti.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Oboi.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Clarinetti in A.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fagotti.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Corni I. II. in E.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "Corni III. IV. in C.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "Trombe in E.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Tromboni I. II.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Trombone basso.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Tympani A. E. H.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Violino I.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Violino II.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Viola.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Violoncello.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Contrabasso.",
+  "source": "dvorak9-simrock-scan",
+  "page_index": 4
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "2 Flöten",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "2 Oboen",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "2 Klarinetten in B",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "2 Fagotte",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Kontrafagott",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "in C  \\frac{1}{2}",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "in Es  \\frac{3}{4}",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "2 Trompeten in C",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Pauken in C u. G",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "1. Violine",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "2. Violine",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Bratsche",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Violoncell",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Kontrabaß",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "K-Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "(C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "(Es)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Trpt.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Pk. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "K-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "K-Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "(C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Hr. (Es)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "Pk.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 24,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 26,
+  "text": "K-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 1
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "K-Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "(C) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "(Es)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Trpt. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "K-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "F1.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "K.Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "(C) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "(Es)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Trpt. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "Pk.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 24,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 26,
+  "text": "K.B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 10
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "K-Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "(C) Hr",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "(Es)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Pk.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "1Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "2Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "K-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "F1.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "(C) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "(Es)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "K:B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 20
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (A)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Hr. (E)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "K-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "F1.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Klar. (A)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Hr. (E)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "K-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 29
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Hr. 1. (Es) 2.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "K.-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "F1.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Hr.1. (Es)2.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "K.-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 38
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "K.Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "(C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "(E) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Trpt. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Pos.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Pk.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 48
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "K-Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "(C) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "(E)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Trpt. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Pk.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "K-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": ". (C) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "(E)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "Trpt. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 21,
+  "text": "1.Viol",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 22,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 23,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 24,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 25,
+  "text": "K.-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 57
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "Fl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Hr. 1. (C) 2.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "K.-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "F1.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "Ob.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 14,
+  "text": "K.Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 15,
+  "text": "Hr. 1. (C) 2.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 16,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 17,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 18,
+  "text": "Br.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 19,
+  "text": "Vcl.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 20,
+  "text": "K.-B.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 66
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "K-Fag",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "(C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "(Es) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Trpt. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "Pos.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Pk.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 11,
+  "text": "1.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 76
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "Klar. (B)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "K:Fag.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "(C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "(F) Hr.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Trpt. (C)",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Pos.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Pk.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 12,
+  "text": "1Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 13,
+  "text": "2.Viol.",
+  "source": "brahms1-breitkopf-scan",
+  "page_index": 85
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "I",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Violini II",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "III",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "I",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Viole II",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "III",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "I",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Violoncelli II",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "III",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Contrabasso",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Cembalo",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 0
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "卷之十 卷之十一 卷之十二 卷之八 卷之十三 卷之七 卷之十四 卷之六 卷之十五 卷之五 卷之十六 卷之四 卷之十七 卷之三 卷之十八 卷之二十 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十一 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十七 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十三 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十九 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十二 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十五 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十八 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十六 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之二十四 卷之十九",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 13
+ },
+ {
+  "reader": "surya",
+  "staff_index": 0,
+  "text": "I",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 1,
+  "text": "Violini II",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 2,
+  "text": "III",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 3,
+  "text": "I",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 4,
+  "text": "Viole II",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 5,
+  "text": "III",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 6,
+  "text": "I",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 7,
+  "text": "Violoncelli II",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 8,
+  "text": "III",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 9,
+  "text": "Contrabasso",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ },
+ {
+  "reader": "surya",
+  "staff_index": 10,
+  "text": "Cembalo",
+  "source": "bach-brandenburg3-peters",
+  "page_index": 16
+ }
+]
