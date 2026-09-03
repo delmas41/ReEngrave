@@ -1,0 +1,35 @@
+{
+  "cell_id": "schehe-p3-sys0-s3-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T01:16:00+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 190,
+        "y": 702,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 194,
+        "y": 952,
+        "w": 173,
+        "h": 101
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads"
+  ]
+}
