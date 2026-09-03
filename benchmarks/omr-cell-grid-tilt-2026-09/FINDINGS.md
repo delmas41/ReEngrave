@@ -170,22 +170,56 @@ every one with a usable image):
 - **Do not touch in-staff snap behaviour** — it is measured-correct where the
   stored geometry is correct, and pinned by `test_ledger_snap.py`. The defect
   is in the GEOMETRY the cells store, not in the snapping.
-- The natural fix is at the source: a cell knows its own x-range at cut time
-  and the trace machinery already exists (`measure_staff_line` follows the
-  line column by column) — store per-cell line ys measured over the cell's own
-  x-span, or carry a per-cell slope, instead of the staff-global constants.
-  That would correct the labeling UI and `pitch_resolver` together.
+- ⚠️ **The fix direction this bullet first recommended is REFUTED, and the
+  correction is recorded in place.** An earlier draft said: trace each line to
+  its own ink over the cell's x-span (`measure_staff_line`). The follow-up
+  measurement session (results landing on `claude/sad-austin-7e16e7` as
+  `RESULTS_TILT_COST.md` in this directory, behind `OMR_CELL_LINE_TRACE`,
+  default OFF) built that and it **ALIASES on exactly the worst cells** — the
+  same aliasing §1 documents in the probe: where the residual exceeds half a
+  spacing, each line's "nearest ink" is the NEIGHBOURING line, so dvorak
+  answers +0.32 where truth is −0.55, a correction 0.87 spaces the wrong way.
+  What works is sliding the five rows as **one rigid comb** against the
+  cell's row-ink profile, bounded below one spacing (0.75 sp) — the
+  `header_ink.refine_staff_lines_in_cell` shape generalized to every cell.
+  Aliasing is then unreachable rather than unlikely: a 5-comb moved by a full
+  spacing leaves only 4 rows on lines. All 7 flagged cells reproduce within
+  0.04 sp of this diagnosis' measurements, dvorak's −0.554 included.
 - **The same defect feeds production pitch resolution.** `pitch_resolver`
   reads the same per-cell constants, so on warped scans every note in an
   end-of-staff measure is resolved against a grid up to half a space off —
   step-off-by-one pitches for whole measures (dvorak9-p8-s4-m12 at −0.55 sp is
   past the flip line for EVERY note in the bar). The engraved orchestral
   benchmark cannot see this — LilyPond pages are straight — which fits the
-  scan-vs-engraved error gap. Worth its own measurement before any fix.
+  scan-vs-engraved error gap. **Measured (follow-up session): 4 edits of 7894
+  on the scan benchmark** (pooled 0.7517 → 0.7506, both arms on one tree — do
+  not difference against the committed 0.7960, whose dvorak row scored
+  differently). ⚠️ **That near-null is the instrument, not the defect**: only
+  0.4% of the benchmark's 1143 cells sit past the 0.25 sp flip line, against
+  **16.0% on this diagnosis' six flagged pages and 8.3% over 26 pages sampled
+  deeper into the same editions** — and it is per-page (the benchmark's
+  Brahms page 0 is 0.0%, page 1 is 14.4%). *The scan e2e benchmark cannot
+  price this defect; a null result there is not evidence either way* — the
+  same lesson the eleven-work benchmark's empty-measure section records. The
+  engraved control is a no-op by construction once sub-pixel comb moves are
+  refused (0 of 291 five-line cells move).
 - `line_wander_px ≥ ~0.25·spacing` is a ready-made per-staff flag for "this
   staff's end cells are suspect" (all 7 flagged staves: 7–10 px). It just
   needs to reach cells.json / the annotate server if the labeling UI should
   warn.
+- ⚠️ **`Staff.x_start`/`x_end` can fall well short of the staff's own cells**
+  (follow-up session's finding): dvorak9 p8 s4 records `x_end` 3258 while its
+  m12 cell runs 4205–4433. The probes here dodged it by deriving the x-extent
+  from the cells; any code that bounds a measurement window by
+  `x_start`/`x_end` silently gets nothing for the worst cell on the page.
+- ⚠️ **Enabling per-cell localization needs a DECISION, not a flag flip**:
+  batches store boxes in a frame derived from `staff_line_ys_canonical`, and
+  `recut_cells` derives its padding mode by matching the manifest — with
+  localization on, ten existing labeled batches would mismatch and abort
+  (the designed safe failure, but a hard stop). Either the localization mode
+  must be recorded per batch so recut can reproduce both frames, or the
+  cutting frame stays unlocalized and the corrected grid applies downstream
+  only. Sean's call, before `OMR_CELL_LINE_TRACE` defaults on anywhere.
 - The brahms1 s20 v8 fix LANDED (`3baadcd`); the lamer fix is in flight (see
   §3). Remaining gate: **re-run the audit over the hollow3 batch set before
   v9–v12 enter `catalog-versions.txt`** — they were converted by `780cbf6`

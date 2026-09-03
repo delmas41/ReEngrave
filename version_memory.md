@@ -28,9 +28,14 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   `phase2-merged/lamer/verdicts` (v11's export source, a third edit-both trap), v11 labels).
 - **`pitch_resolver` eats the same defect**: on warped scans, end-of-staff measures resolve
   pitches against a grid up to half a space off — step-off-by-one for whole bars. Engraved
-  benchmark blind (LilyPond pages are straight). Measurement task spawned; the fix direction
-  is per-cell line ys traced over the cell's own x-range at cut time — in-staff snap behaviour
-  itself stays frozen (`test_ledger_snap.py`).
+  benchmark blind (LilyPond pages are straight). Follow-up measurement (landing on
+  `claude/sad-austin-7e16e7`): per-line tracing REFUTED as the fix — it aliases 0.87 sp the
+  wrong way on the worst cell; a rigid 5-comb slide (< 1 spacing) reproduces all 7 flagged
+  cells within 0.04 sp (`OMR_CELL_LINE_TRACE`, default off). Scan e2e cost is 4 edits of 7894
+  because only 0.4% of its cells sit past the flip line vs 8–16% on deeper pages — **that
+  benchmark cannot price the defect**. Enabling localization changes the frame `recut_cells`
+  reproduces for 10 existing batches: open decision. In-staff snap stays frozen
+  (`test_ledger_snap.py`).
 
 ## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
 
