@@ -87,7 +87,7 @@ def _transcription(n_measures_staff0: int = 3) -> dict:
         _measure(0, [
             _det("noteheadBlackInSpace", "C5", 200, 230),         # truth half → WRONG_CATEGORY
             _det("noteheadBlackOnLine", "E5", 500, 130),          # TP
-            _det("noteheadBlackInSpace", "A5", 800, -20),         # not in the reference
+            _det("noteheadBlackInSpace", "C6", 800, -120),        # not in the reference
         ]),
         _measure(1, [_det("restWhole", None, 400, 150, dur=4.0, dtype="whole")]),
         _measure(2, [
@@ -144,7 +144,7 @@ def bench(tmp_path: Path) -> Path:
     dets = {
         "fx-p4-sys0-s0-m0": [_batch_det(0, "noteheadBlackInSpace", 205, 235),
                              _batch_det(1, "noteheadBlackOnLine", 498, 126),
-                             _batch_det(2, "noteheadBlackInSpace", 803, -17),
+                             _batch_det(2, "noteheadBlackInSpace", 803, -117),
                              _batch_det(3, "accidentalSharp", 150, 230, 20, 60)],
         "fx-p4-sys0-s0-m1": [_batch_det(0, "restWhole", 400, 150, 40, 20)],
         "fx-p4-sys0-s0-m2": [],
@@ -189,7 +189,7 @@ def test_matched_heads_become_verdicts_on_the_batch_ids(bench, truth) -> None:
     assert by["D0"]["human_corrected_class"] == "noteheadHalfInSpace"
     assert by["D0"]["human_corrected_category"] == "notehead"
     assert by["D1"]["verdict"] == "TP" and by["D1"]["human_corrected_class"] is None
-    # The A5 the reference does not contain stays PENDING, annotated.
+    # The C6 the reference does not contain stays PENDING, annotated.
     assert by["D2"]["verdict"] is None and "no match" in by["D2"]["notes"]
     # An accidental is not a notehead; untouched.
     assert by["D3"]["verdict"] is None and by["D3"]["notes"] == ""
@@ -211,7 +211,7 @@ def test_missing_and_extra_notes_become_hints(bench, truth) -> None:
     assert missing["bbox"]["y"] + missing["bbox"]["h"] / 2 == pytest.approx(50, abs=1)
     # the frame test's page-1 whole note: A4 sits in the second space (pos 5)
     assert missing["x_estimated"] is True
-    assert kinds["extra"]["label"] == "read A5"
+    assert kinds["extra"]["label"] == "read C6"
 
 
 def test_rests_are_confirmed_too(bench, truth) -> None:
@@ -274,7 +274,8 @@ def test_measure_count_disagreement_abstains_unless_trusted(bench, truth) -> Non
 
 def test_weak_alignment_abstains(bench, truth) -> None:
     # Shift the window so staff 0 measure 0 is compared to reference m3
-    # (D5 D5): nothing lines up with C5 E5 A5 by position either.
+    # (D5 D5): C5 and E5 sit ONE STEP from D5 — near matches, which must
+    # not pass without an exact one, else a wrong bar confirms itself.
     s = _run(bench, truth, _windows(first=3, last=None), write=True)
     c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
     assert c["status"] == "abstained" and "weak alignment" in c["reason"]
@@ -562,7 +563,7 @@ def test_neighbour_staff_heads_do_not_sink_the_alignment(bench, truth) -> None:
     heads still confirm, the 12 stay pending as extra hints."""
     tr = _transcription()
     m0 = tr["pages"][0]["systems"][0]["staves"][0]["measures"][0]
-    m0["detections"] = [d for d in m0["detections"] if d["pitch"] != "A5"]
+    m0["detections"] = [d for d in m0["detections"] if d["pitch"] != "C6"]
     extra = []
     for k in range(6):
         extra.append(_det("noteheadBlackOnLine", "C3", 100 + 120 * k, 780))    # cy 800 → P14
@@ -591,3 +592,57 @@ def test_an_empty_reading_yields_hints_not_an_abstention(bench, truth) -> None:
     c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m1")
     assert c["status"] == "prefilled" and "hints only" in c["reason"]
     assert c["n_hints_missing"] == 2 and c["n_tp"] == 0
+
+
+def test_a_bar_of_rests_only_prefills_with_hints(bench, truth) -> None:
+    """Flute m2 is a whole-measure rest. Read as two stray heads instead of
+    the rest, the bar has nothing to confirm: pre-filled, both heads extra."""
+    tr = _transcription()
+    m1 = tr["pages"][0]["systems"][0]["staves"][0]["measures"][1]
+    m1["detections"] = [_det("noteheadBlackOnLine", "E5", 300, 130),
+                        _det("noteheadBlackInSpace", "C5", 600, 230)]
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=False)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m1")
+    assert c["status"] == "prefilled" and "only rests" in c["reason"]
+    assert c["n_tp"] == 0 and c["n_hints_extra"] == 2
+
+
+def test_one_matched_note_passes_only_when_it_is_the_only_head_in_range(bench, truth) -> None:
+    """Oboe m2 holds B4 C5. Read as C5 alone: 1 of 2, and the one head in
+    range matched → accepted. Read as C5 plus a stray D5 in range: 1 of 2
+    with an unmatched head beside it → abstained."""
+    tr = _transcription()
+    m1 = tr["pages"][0]["systems"][0]["staves"][1]["measures"][1]
+    m1["detections"] = [_det("noteheadHalfInSpace", "C5", 700, 230, dur=2.0, dtype="half")]
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=False)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s1-m1")
+    assert c["status"] == "prefilled" and c["n_tp"] == 1 and c["n_hints_missing"] == 1
+    m1["detections"].append(_det("noteheadBlackInSpace", "D5", 400, 180))
+    s = mv.run(bench, tr, truth, windows, write=False)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s1-m1")
+    assert c["status"] == "abstained"
+
+
+def test_near_matches_fill_in_only_behind_an_exact_one(bench, truth) -> None:
+    """Flute m1 = C5 E5 G5. Read with E5 rounded half a space high (P0
+    instead of P1) and C5 exact: the bar is trusted on the exact C5, E5 is
+    confirmed as a near match and says so in its note."""
+    tr = _transcription()
+    m0 = tr["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+    for d in m0["detections"]:
+        if d["pitch"] == "E5":
+            d["bbox"][1] = 80          # cy 100 → P0 (F5) — one step above E5
+    m0["detections"].append(_det("noteheadBlackInSpace", "G5", 650, 30))   # exact, P-1
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=True)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
+    assert c["status"] == "prefilled"
+    assert c["alignment"]["exact_notes"] == 2 and c["alignment"]["matched_notes"] == 3
+    pre = json.loads((bench / "prefill" / "fx-p4-sys0-s0-m0.json").read_text())
+    by_pitch = {d["truth"]["pitch"]: d for d in pre["decisions"]}
+    assert by_pitch["E5"]["near"] is True and by_pitch["C5"]["near"] is False
+    v = _verdict(bench, "fx-p4-sys0-s0-m0")
+    notes = [d["notes"] for d in v["detections"]] + [a["notes"] for a in v["added_detections"]]
+    assert sum("one step off" in n for n in notes) == 1

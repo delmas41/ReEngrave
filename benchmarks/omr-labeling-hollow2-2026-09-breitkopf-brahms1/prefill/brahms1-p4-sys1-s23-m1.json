@@ -1,0 +1,94 @@
+{
+  "cell_id": "brahms1-p4-sys1-s23-m1",
+  "status": "prefilled",
+  "reason": "",
+  "measure_number": 49,
+  "parts": [
+    16
+  ],
+  "alignment": {
+    "n_truth": 2,
+    "n_pred": 1,
+    "matched": 1,
+    "n_truth_notes": 2,
+    "matched_notes": 1,
+    "exact_notes": 1,
+    "near_pairs": [],
+    "n_pred_in_range": 1,
+    "strength": 0.5,
+    "strength_exact": 0.5,
+    "match": "position",
+    "truth_keys": [
+      "P-9",
+      "P-9"
+    ],
+    "pred_keys": [
+      "P-9"
+    ],
+    "pairs": [
+      [
+        1,
+        0
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 1978,
+      "batch_w": 1978,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 1,
+  "n_wrong_category": 0,
+  "n_added": 1,
+  "n_hints_missing": 1,
+  "n_hints_extra": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "Ab6",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "Ab6",
+        "duration_type": "dotted_quarter",
+        "detection_index": 0
+      },
+      "bbox": {
+        "x": 935,
+        "y": 91,
+        "w": 124,
+        "h": 106
+      },
+      "detection_id": "M0",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "missing",
+      "label": "A6 quarter.",
+      "class": "noteheadBlackInSpace",
+      "pitch": "A6",
+      "type": "quarter",
+      "dots": 1,
+      "onset_ql": 0.0,
+      "bbox": {
+        "x": 237,
+        "y": 98,
+        "w": 120,
+        "h": 100
+      },
+      "x_estimated": true
+    }
+  ]
+}

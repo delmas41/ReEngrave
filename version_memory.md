@@ -5,6 +5,12 @@ where one exists. Update this file with every commit.
 
 ## 2026-09-03
 
+- **pre-fill run on the Brahms 1 batch from this session** (inputs pushed by Sean): 51 of 56
+  cells pre-filled, 179 TP, 15 relabels, 22 missing-note hints, 5 abstentions all on the right
+  bar. Three fixes on the way: a weighted LCS that tolerates a half-space of rounding but needs
+  at least one EXACT match before near ones count (a wrong bar's notes often sit a step away);
+  recall over the reference's NOTES, not its rests; a rests-only bar pre-fills with hints instead
+  of abstaining. `prefill/` (hints only) committed into the batch so labeling can start.
 - **pre-fill: the gate is recall of the reference, and neighbours' heads stay out of the
   alignment** — a flute bar of 4 reference notes read 21 heads, 17 of them the oboe's and
   piccolo's from the cell's padding (positions 7 spaces off the staff); only heads within the

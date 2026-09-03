@@ -6,6 +6,7 @@ from __future__ import annotations
 import pytest
 
 from tools.omr.training.measure_align import (
+    Token,
     align_tokens,
     detection_position,
     event_tokens,
@@ -190,3 +191,24 @@ def test_position_match_falls_back_to_steps_without_geometry() -> None:
     d = _det("noteheadBlackOnLine", "G3", 10)
     al = align_tokens(truth_tokens(truth), event_tokens(_events(d), line_ys=None))
     assert al.matched == 1 and truth_tokens(truth)[0].key == "G3"
+
+
+def test_alignment_tolerates_a_half_space_of_rounding_but_prefers_exact() -> None:
+    """Sean's p3-sys0-s5-m5: truth P13 P6 P10 P3 P10 P3, read P13 P5 P10 P2
+    P9 P2 — every upper note's box centre rounded half a space high."""
+    lines = [100.0, 200.0, 300.0, 400.0, 500.0]
+    def tk(key, i):
+        return Token(key=key, pitch=None, is_rest=False, duration_ql=None, type=None,
+                     dots=0, onset_ql=None, ref=None, index=i)
+    truth = [tk(k, i) for i, k in enumerate(["P13", "P6", "P10", "P3", "P10", "P3"])]
+    pred = [tk(k, i) for i, k in enumerate(["P13", "P5", "P10", "P2", "P9", "P2"])]
+    al = align_tokens(truth, pred)
+    assert al.pairs == [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+    assert align_tokens(truth, pred, tolerance=0).matched == 2
+    # An exact candidate wins over a near one: truth P4, read P5 then P4.
+    truth = [tk("P4", 0)]
+    pred = [tk("P5", 0), tk("P4", 1)]
+    assert align_tokens(truth, pred).pairs == [(0, 1)]
+    # Tolerance never crosses a rest or a step key.
+    assert align_tokens([tk("R", 0)], [tk("P8", 0)]).matched == 0
+    assert align_tokens([tk("G3", 0)], [tk("A3", 0)]).matched == 0

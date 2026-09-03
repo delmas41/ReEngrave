@@ -25,7 +25,6 @@ too — both need the pipeline's clef to have been right.
 
 from __future__ import annotations
 
-import difflib
 import re
 from dataclasses import dataclass, field
 from typing import Any
@@ -180,6 +179,8 @@ class Alignment:
     pred_unmatched: list[int] = field(default_factory=list)
     n_truth: int = 0
     n_pred: int = 0
+    # Pairs matched only within the position tolerance (never on an exact key).
+    near_pairs: list[tuple[int, int]] = field(default_factory=list)
 
     @property
     def matched(self) -> int:
@@ -194,17 +195,70 @@ class Alignment:
         return self.matched / denom
 
 
-def align_tokens(truth: list[Token], pred: list[Token]) -> Alignment:
-    """Longest common subsequence over token keys. Order-preserving, so a
-    note can only match a note the reading placed in the same relative
-    position — a transposed bar or a bar from the wrong measure matches
-    little and the strength gate in the caller refuses it."""
-    matcher = difflib.SequenceMatcher(a=[t.key for t in truth],
-                                      b=[p.key for p in pred], autojunk=False)
+def _position_of_key(key: str) -> int | None:
+    if key.startswith("P"):
+        try:
+            return int(key[1:])
+        except ValueError:
+            return None
+    return None
+
+
+def _match_weight(a: str, b: str, tolerance: int) -> int:
+    """2 for an exact key match, 1 for two positions within `tolerance`
+    half-steps, 0 otherwise. A head's box centre on a scan can round half a
+    space off — `P6` read as `P5` — and an exact key would lose the whole
+    note; the lower weight keeps an exact match preferred wherever one
+    exists."""
+    if a == b:
+        return 2
+    if tolerance <= 0:
+        return 0
+    pa, pb = _position_of_key(a), _position_of_key(b)
+    if pa is None or pb is None:
+        return 0
+    return 1 if abs(pa - pb) <= tolerance else 0
+
+
+def align_tokens(truth: list[Token], pred: list[Token], *, tolerance: int = 1) -> Alignment:
+    """Weighted longest common subsequence over token keys — order-
+    preserving, so a note can only match a note the reading placed in the
+    same relative position: a transposed bar or a bar from the wrong measure
+    matches little and the caller's gate refuses it. An exact key match
+    scores 2, a position within `tolerance` scores 1, so the alignment
+    takes the exact pairing when one exists."""
+    n, m = len(truth), len(pred)
+    if n == 0 or m == 0:
+        return Alignment(pairs=[], truth_unmatched=list(range(n)),
+                         pred_unmatched=list(range(m)), n_truth=n, n_pred=m)
+    ta = [t.key for t in truth]
+    pb = [p.key for p in pred]
+    score = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        row, prev = score[i], score[i - 1]
+        for j in range(1, m + 1):
+            best = prev[j] if prev[j] >= row[j - 1] else row[j - 1]
+            w = _match_weight(ta[i - 1], pb[j - 1], tolerance)
+            if w and prev[j - 1] + w > best:
+                best = prev[j - 1] + w
+            row[j] = best
     pairs: list[tuple[int, int]] = []
-    for block in matcher.get_matching_blocks():
-        for k in range(block.size):
-            pairs.append((block.a + k, block.b + k))
+    near: list[tuple[int, int]] = []
+    i, j = n, m
+    while i > 0 and j > 0:
+        w = _match_weight(ta[i - 1], pb[j - 1], tolerance)
+        if w and score[i][j] == score[i - 1][j - 1] + w:
+            pairs.append((i - 1, j - 1))
+            if w == 1:
+                near.append((i - 1, j - 1))
+            i -= 1
+            j -= 1
+        elif score[i - 1][j] >= score[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
+    pairs.reverse()
+    near.reverse()
     tm = {a for a, _ in pairs}
     pm = {b for _, b in pairs}
     return Alignment(
@@ -213,6 +267,7 @@ def align_tokens(truth: list[Token], pred: list[Token]) -> Alignment:
         pred_unmatched=[j for j in range(len(pred)) if j not in pm],
         n_truth=len(truth),
         n_pred=len(pred),
+        near_pairs=near,
     )
 
 

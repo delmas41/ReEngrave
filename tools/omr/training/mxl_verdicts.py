@@ -410,6 +410,23 @@ def _x_estimates(missing: list[Token], matched_x: list[tuple[float, float]],
     return out
 
 
+def _bar_is_trusted(exact: int, matched: int, n_notes: int, in_range: int,
+                    min_strength: float) -> bool:
+    """Whether the alignment says this is the right bar, well enough read
+    to confirm boxes from.
+
+    At least one EXACT match, always — near matches alone would let a bar
+    from the wrong measure pass whenever its notes sit a step from the
+    reading's. Then either the exact matches reach the recall floor (and
+    number at least two, or account for every head the reading placed in
+    range), or exact plus near matches cover almost all of the bar."""
+    if n_notes == 0 or exact == 0:
+        return False
+    if exact / n_notes >= min_strength and (exact >= 2 or exact >= in_range):
+        return True
+    return matched / n_notes >= 0.8
+
+
 def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
                  truth: TruthScore, batch_dets: list[dict], *,
                  match: str = "position", min_strength: float = DEFAULT_MIN_STRENGTH,
@@ -502,8 +519,21 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
                    truth_unmatched=al_sub.truth_unmatched,
                    pred_unmatched=[i for i in range(len(p_tokens))
                                    if i not in {in_range[pj] for _, pj in al_sub.pairs}],
-                   n_truth=len(t_tokens), n_pred=len(p_tokens))
-    recall = (al.matched / al.n_truth) if al.n_truth else None
+                   n_truth=len(t_tokens), n_pred=len(p_tokens),
+                   near_pairs=[(ti, in_range[pj]) for ti, pj in al_sub.near_pairs])
+    near_set = set(al.near_pairs)
+    # Recall is over the reference's NOTES. Rests are aligned and confirmed
+    # when found, but a rest the detector missed says nothing about whether
+    # this is the right bar, and rest recall on a scan is poor. EXACT
+    # matches are what say this is the right bar; near matches (a head
+    # rounded half a space off) only fill in once an exact one vouches.
+    truth_note_idx = [i for i, t in enumerate(t_tokens) if not t.is_rest]
+    matched_notes = sum(1 for ti, _ in al.pairs if not t_tokens[ti].is_rest)
+    exact_notes = sum(1 for pr in al.pairs if not t_tokens[pr[0]].is_rest and pr not in near_set)
+    n_notes = len(truth_note_idx)
+    recall = (matched_notes / n_notes) if n_notes else None
+    recall_exact = (exact_notes / n_notes) if n_notes else None
+    read_notes_in_range = sum(1 for i in in_range if not p_tokens[i].is_rest)
     # Is the batch's cell the same bar as the transcription's measure? The
     # batch was cut by its own segmentation run; if a barline moved between
     # then and now, the widths disagree once both are put on the same scale.
@@ -514,8 +544,11 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     width_ratio = round(b_w / (t_w * fm.sy), 3) if t_w and fm.sy else None
     out.alignment = {
         "n_truth": al.n_truth, "n_pred": al.n_pred, "matched": al.matched,
+        "n_truth_notes": len(truth_note_idx), "matched_notes": matched_notes,
+        "exact_notes": exact_notes, "near_pairs": al.near_pairs,
         "n_pred_in_range": len(in_range),
         "strength": None if recall is None else round(recall, 3),
+        "strength_exact": None if recall_exact is None else round(recall_exact, 3),
         "match": cell_match,
         "truth_keys": [t.key for t in t_tokens],
         "pred_keys": [t.key for t in p_tokens],
@@ -538,24 +571,28 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
 
     if not p_tokens and t_tokens:
         out.reason = "no notes in the reading — hints only"
-    elif not t_tokens:
-        # Nothing to confirm; every read head stays pending, marked extra.
-        out.reason = ("reference has no notes in this bar" if p_tokens
+    elif not truth_note_idx:
+        # Nothing to confirm — an empty bar, or rests only. Every read head
+        # stays pending, marked extra; a matched rest is still confirmed.
+        out.reason = ("reference has only rests in this bar" if t_tokens
+                      else "reference has no notes in this bar" if p_tokens
                       else "nothing to align — reference and reading both empty")
-    elif recall is not None and (recall < min_strength or al.matched < min(2, al.n_truth)):
-        # The gate is RECALL of the reference — did the reading find the
-        # notes the bar holds — not a share of the longer side, because extra
-        # heads cost nothing (they stay pending) while a missed bar costs a
-        # wrong verdict.
+    elif recall is not None and not _bar_is_trusted(
+            exact_notes, matched_notes, n_notes, read_notes_in_range, min_strength):
+        # The gate is RECALL of the reference's notes — did the reading find
+        # the notes the bar holds — not a share of the longer side, because
+        # extra heads cost nothing (they stay pending) while a missed bar
+        # costs a wrong verdict.
         out.status = "abstained"
-        out.reason = (f"weak alignment: {al.matched} of {al.n_truth} reference notes matched"
-                      f" ({len(in_range)} of {al.n_pred} read heads in the bar's range)")
+        out.reason = (f"weak alignment: {matched_notes} of {n_notes} reference notes matched, "
+                      f"{exact_notes} exactly ({read_notes_in_range} of {al.n_pred} read heads "
+                      f"in the bar's range)")
         return out
 
     matched_x: list[tuple[float, float]] = []
     matched_pred: set[int] = set()
 
-    def _decide(pt: Token, tt: Token) -> None:
+    def _decide(pt: Token, tt: Token, near: bool = False) -> None:
         det = pt.ref
         if det is None:
             return
@@ -574,6 +611,8 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
                 f"{'.' * tn.dots} m{number}"
         if verdict == "WRONG_CATEGORY":
             label += f" → {want}"
+        if near:
+            label += " (≈ one step off)"
         bbox = fm.box(det.get("bbox", [0, 0, 0, 0]))
         matched_x.append((tt.onset_ql or 0.0, bbox["x"] + bbox["w"] / 2))
         # Which batch detection is this box?
@@ -590,7 +629,7 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
             if v > best_iou:
                 best_id, best_iou = bd["id"], v
         decision = {
-            "verdict": verdict, "class": want, "category": category,
+            "verdict": verdict, "class": want, "category": category, "near": near,
             "truth": {"pitch": tn.pitch, "type": tn.type, "dots": tn.dots,
                       "duration_ql": tn.duration_ql, "onset_ql": tn.onset_ql},
             "read": {"class": cls, "pitch": det.get("pitch"),
@@ -619,7 +658,7 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
 
     for ti, pi in al.pairs:
         matched_pred.add(pi)
-        _decide(p_tokens[pi], t_tokens[ti])
+        _decide(p_tokens[pi], t_tokens[ti], near=(ti, pi) in near_set)
 
     # Predicted tokens the reference does not account for: pending, with a
     # note on the batch detection they sit on, and an "extra" hint.
@@ -887,7 +926,8 @@ def _print_summary(summary: dict) -> None:
               "measure are the same bar):")
         for c in abstained:
             al = c.get("alignment") or {}
-            strength = "" if al.get("strength") is None else f"  {al['matched']}/{al['n_truth']} of truth"
+            strength = ("" if al.get("strength") is None
+                        else f"  {al.get('matched_notes', al['matched'])}/{al.get('n_truth_notes', al['n_truth'])} notes")
             g = al.get("geometry") or {}
             wr = g.get("width_ratio")
             print(f"    {c['cell_id']}  m{c.get('measure_number')}{strength}"

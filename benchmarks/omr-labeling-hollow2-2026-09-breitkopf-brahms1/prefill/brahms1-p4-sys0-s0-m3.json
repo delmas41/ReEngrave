@@ -1,0 +1,155 @@
+{
+  "cell_id": "brahms1-p4-sys0-s0-m3",
+  "status": "prefilled",
+  "reason": "",
+  "measure_number": 41,
+  "parts": [
+    0,
+    1
+  ],
+  "alignment": {
+    "n_truth": 2,
+    "n_pred": 6,
+    "matched": 1,
+    "n_truth_notes": 2,
+    "matched_notes": 1,
+    "exact_notes": 1,
+    "near_pairs": [],
+    "n_pred_in_range": 1,
+    "strength": 0.5,
+    "strength_exact": 0.5,
+    "match": "position",
+    "truth_keys": [
+      "P-3",
+      "P-7"
+    ],
+    "pred_keys": [
+      "P15",
+      "P11",
+      "P5",
+      "P3",
+      "P-7",
+      "P6"
+    ],
+    "pairs": [
+      [
+        1,
+        4
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 1643,
+      "batch_w": 1643,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 1,
+  "n_wrong_category": 0,
+  "n_added": 1,
+  "n_hints_missing": 1,
+  "n_hints_extra": 5,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadHalfInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "F6",
+        "type": "half",
+        "dots": 1,
+        "duration_ql": 3.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadHalfInSpace",
+        "pitch": "F6",
+        "duration_type": "dotted_half",
+        "detection_index": 2
+      },
+      "bbox": {
+        "x": 236,
+        "y": 178,
+        "w": 153,
+        "h": 118
+      },
+      "detection_id": "M0",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read Eb3",
+      "bbox": {
+        "x": 0,
+        "y": 1307,
+        "w": 28,
+        "h": 58
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read Bb3",
+      "bbox": {
+        "x": 0,
+        "y": 1098,
+        "w": 30,
+        "h": 54
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read Ab4",
+      "bbox": {
+        "x": 0,
+        "y": 803,
+        "w": 35,
+        "h": 83
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read C5",
+      "bbox": {
+        "x": 0,
+        "y": 723,
+        "w": 36,
+        "h": 73
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read G4",
+      "bbox": {
+        "x": 1617,
+        "y": 880,
+        "w": 26,
+        "h": 73
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "missing",
+      "label": "B5 half.",
+      "class": "noteheadHalfInSpace",
+      "pitch": "B5",
+      "type": "half",
+      "dots": 1,
+      "onset_ql": 0.0,
+      "bbox": {
+        "x": 186,
+        "y": 398,
+        "w": 120,
+        "h": 100
+      },
+      "x_estimated": true
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "cell_id": "brahms1-p3-sys1-s18-m1",
+  "status": "prefilled",
+  "reason": "reference has only rests in this bar",
+  "measure_number": 30,
+  "parts": [
+    8
+  ],
+  "alignment": {
+    "n_truth": 1,
+    "n_pred": 2,
+    "matched": 0,
+    "n_truth_notes": 0,
+    "matched_notes": 0,
+    "exact_notes": 0,
+    "near_pairs": [],
+    "n_pred_in_range": 2,
+    "strength": null,
+    "strength_exact": null,
+    "match": "position",
+    "truth_keys": [
+      "R"
+    ],
+    "pred_keys": [
+      "P7",
+      "P3"
+    ],
+    "pairs": [],
+    "geometry": {
+      "transcription_w": 1949,
+      "batch_w": 1948,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 0,
+  "n_wrong_category": 0,
+  "n_added": 0,
+  "n_hints_missing": 1,
+  "n_hints_extra": 2,
+  "written": false,
+  "decisions": [],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read F4",
+      "bbox": {
+        "x": 1920,
+        "y": 722,
+        "w": 27,
+        "h": 77
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read C5",
+      "bbox": {
+        "x": 1920,
+        "y": 508,
+        "w": 27,
+        "h": 73
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "missing",
+      "label": "rest",
+      "class": "restWhole",
+      "pitch": null,
+      "type": null,
+      "dots": 0,
+      "onset_ql": 0.0,
+      "bbox": {
+        "x": 232,
+        "y": 550,
+        "w": 120,
+        "h": 100
+      },
+      "x_estimated": true
+    }
+  ]
+}

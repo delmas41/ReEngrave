@@ -1,0 +1,181 @@
+{
+  "cell_id": "brahms1-p4-sys1-s15-m0",
+  "status": "prefilled",
+  "reason": "",
+  "measure_number": 48,
+  "parts": [
+    2,
+    3
+  ],
+  "alignment": {
+    "n_truth": 4,
+    "n_pred": 5,
+    "matched": 2,
+    "n_truth_notes": 4,
+    "matched_notes": 2,
+    "exact_notes": 2,
+    "near_pairs": [],
+    "n_pred_in_range": 5,
+    "strength": 0.5,
+    "strength_exact": 0.5,
+    "match": "position",
+    "truth_keys": [
+      "P5",
+      "P7",
+      "P-2",
+      "P2"
+    ],
+    "pred_keys": [
+      "P7",
+      "P6",
+      "P5",
+      "P2",
+      "P-2"
+    ],
+    "pairs": [
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 2,
+  "n_wrong_category": 0,
+  "n_added": 2,
+  "n_hints_missing": 2,
+  "n_hints_extra": 3,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "A4",
+        "type": "quarter",
+        "dots": 0,
+        "duration_ql": 1.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "Ab4",
+        "duration_type": "quarter",
+        "detection_index": 11
+      },
+      "bbox": {
+        "x": 850,
+        "y": 422,
+        "w": 87,
+        "h": 59
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "A5",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "Ab5",
+        "duration_type": "dotted_quarter",
+        "detection_index": 4
+      },
+      "bbox": {
+        "x": 1376,
+        "y": 166,
+        "w": 103,
+        "h": 76
+      },
+      "detection_id": "M1",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read F4",
+      "bbox": {
+        "x": 851,
+        "y": 503,
+        "w": 93,
+        "h": 74
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read G4",
+      "bbox": {
+        "x": 852,
+        "y": 470,
+        "w": 97,
+        "h": 41
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read Db5",
+      "bbox": {
+        "x": 1383,
+        "y": 313,
+        "w": 91,
+        "h": 76
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "missing",
+      "label": "F4 quarter",
+      "class": "noteheadBlackInSpace",
+      "pitch": "F4",
+      "type": "quarter",
+      "dots": 0,
+      "onset_ql": 0.0,
+      "bbox": {
+        "x": 850,
+        "y": 505,
+        "w": 87,
+        "h": 72
+      },
+      "x_estimated": true
+    },
+    {
+      "kind": "missing",
+      "label": "D5 quarter.",
+      "class": "noteheadBlackOnLine",
+      "pitch": "D5",
+      "type": "quarter",
+      "dots": 1,
+      "onset_ql": 1.5,
+      "bbox": {
+        "x": 980,
+        "y": 324,
+        "w": 87,
+        "h": 72
+      },
+      "x_estimated": true
+    }
+  ]
+}

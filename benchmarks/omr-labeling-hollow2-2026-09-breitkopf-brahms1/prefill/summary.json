@@ -1,0 +1,3840 @@
+{
+  "generated_at_utc": "2026-09-03T05:46:59+00:00",
+  "bench": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "truth": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/reference.mxl",
+  "match": "position",
+  "min_strength": 0.5,
+  "min_iou": 0.3,
+  "trust_measure_counts": false,
+  "hints_only": true,
+  "pass_classes": [
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadWholeInSpace",
+    "noteheadWholeOnLine"
+  ],
+  "totals": {
+    "cells": 56,
+    "prefilled": 51,
+    "abstained": 5,
+    "skipped": 0,
+    "written": 0,
+    "n_tp": 179,
+    "n_wrong_category": 15,
+    "n_added": 194,
+    "n_hints_missing": 22,
+    "n_hints_extra": 200
+  },
+  "cells": [
+    {
+      "cell_id": "brahms1-p2-sys0-s0-m1",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 9,
+      "parts": [
+        0,
+        1
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 21,
+        "matched": 3,
+        "n_truth_notes": 4,
+        "matched_notes": 3,
+        "exact_notes": 2,
+        "near_pairs": [
+          [
+            2,
+            13
+          ]
+        ],
+        "n_pred_in_range": 14,
+        "strength": 0.75,
+        "strength_exact": 0.5,
+        "match": "position",
+        "truth_keys": [
+          "P4",
+          "P-1",
+          "P-9",
+          "P-3"
+        ],
+        "pred_keys": [
+          "P7",
+          "P5",
+          "P3",
+          "P1",
+          "P7",
+          "P5",
+          "P2",
+          "P5",
+          "P3",
+          "P11",
+          "P4",
+          "P-1",
+          "P7",
+          "P-10",
+          "P15",
+          "P8",
+          "P7",
+          "P6",
+          "P4",
+          "P3",
+          "P1"
+        ],
+        "pairs": [
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            2,
+            13
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 0,
+      "n_added": 3,
+      "n_hints_missing": 1,
+      "n_hints_extra": 18,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s1-m1",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 9,
+      "parts": [
+        2,
+        3
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 20,
+        "matched": 4,
+        "n_truth_notes": 4,
+        "matched_notes": 4,
+        "exact_notes": 4,
+        "near_pairs": [],
+        "n_pred_in_range": 16,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P4",
+          "P-1",
+          "P-2",
+          "P4"
+        ],
+        "pred_keys": [
+          "P7",
+          "P6",
+          "P2",
+          "P1",
+          "P1",
+          "P4",
+          "P4",
+          "P-1",
+          "P-2",
+          "P7",
+          "P-2",
+          "P3",
+          "P4",
+          "P5",
+          "P9",
+          "P7",
+          "P5",
+          "P4",
+          "P3",
+          "P1"
+        ],
+        "pairs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            2,
+            10
+          ],
+          [
+            3,
+            17
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 4,
+      "n_wrong_category": 0,
+      "n_added": 4,
+      "n_hints_missing": 0,
+      "n_hints_extra": 16,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s1-m5",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 13,
+      "parts": [
+        2,
+        3
+      ],
+      "alignment": {
+        "n_truth": 2,
+        "n_pred": 3,
+        "matched": 2,
+        "n_truth_notes": 2,
+        "matched_notes": 2,
+        "exact_notes": 2,
+        "near_pairs": [],
+        "n_pred_in_range": 3,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P2",
+          "P8"
+        ],
+        "pred_keys": [
+          "P2",
+          "P2",
+          "P8"
+        ],
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 2,
+      "n_wrong_category": 0,
+      "n_added": 2,
+      "n_hints_missing": 0,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s2-m2",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 10,
+      "parts": [
+        4,
+        5
+      ],
+      "alignment": {
+        "n_truth": 3,
+        "n_pred": 12,
+        "matched": 3,
+        "n_truth_notes": 3,
+        "matched_notes": 3,
+        "exact_notes": 2,
+        "near_pairs": [
+          [
+            2,
+            8
+          ]
+        ],
+        "n_pred_in_range": 8,
+        "strength": 1.0,
+        "strength_exact": 0.667,
+        "match": "position",
+        "truth_keys": [
+          "P4",
+          "P4",
+          "P4"
+        ],
+        "pred_keys": [
+          "P4",
+          "P4",
+          "P6",
+          "P6",
+          "P6",
+          "P7",
+          "P6",
+          "P5",
+          "P3",
+          "P1",
+          "P0",
+          "P-1"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            8
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1949,
+          "batch_w": 1949,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 2,
+      "n_added": 3,
+      "n_hints_missing": 0,
+      "n_hints_extra": 9,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s2-m5",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 13,
+      "parts": [
+        4,
+        5
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 4,
+        "matched": 3,
+        "n_truth_notes": 4,
+        "matched_notes": 3,
+        "exact_notes": 3,
+        "near_pairs": [],
+        "n_pred_in_range": 4,
+        "strength": 0.75,
+        "strength_exact": 0.75,
+        "match": "position",
+        "truth_keys": [
+          "P8",
+          "P1",
+          "P8",
+          "P1"
+        ],
+        "pred_keys": [
+          "P1",
+          "P8",
+          "P1",
+          "P8"
+        ],
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 0,
+      "n_added": 3,
+      "n_hints_missing": 1,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s3-m4",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 12,
+      "parts": [
+        6,
+        7
+      ],
+      "alignment": {
+        "n_truth": 12,
+        "n_pred": 19,
+        "matched": 10,
+        "n_truth_notes": 12,
+        "matched_notes": 10,
+        "exact_notes": 9,
+        "near_pairs": [
+          [
+            7,
+            11
+          ]
+        ],
+        "n_pred_in_range": 16,
+        "strength": 0.833,
+        "strength_exact": 0.75,
+        "match": "position",
+        "truth_keys": [
+          "P2",
+          "P-2",
+          "P0",
+          "P-1",
+          "P-1",
+          "P2",
+          "P-1",
+          "P2",
+          "P3",
+          "P-2",
+          "P5",
+          "P3"
+        ],
+        "pred_keys": [
+          "P-2",
+          "P8",
+          "P2",
+          "P7",
+          "P0",
+          "P-1",
+          "P0",
+          "P-1",
+          "P2",
+          "P2",
+          "P-1",
+          "P3",
+          "P5",
+          "P3",
+          "P9",
+          "P8",
+          "P7",
+          "P5",
+          "P3"
+        ],
+        "pairs": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            5,
+            9
+          ],
+          [
+            6,
+            10
+          ],
+          [
+            7,
+            11
+          ],
+          [
+            8,
+            13
+          ],
+          [
+            10,
+            17
+          ],
+          [
+            11,
+            18
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 10,
+      "n_wrong_category": 0,
+      "n_added": 10,
+      "n_hints_missing": 2,
+      "n_hints_extra": 9,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s3-m6",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 14,
+      "parts": [
+        6,
+        7
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 5,
+        "matched": 4,
+        "n_truth_notes": 6,
+        "matched_notes": 4,
+        "exact_notes": 4,
+        "near_pairs": [],
+        "n_pred_in_range": 5,
+        "strength": 0.667,
+        "strength_exact": 0.667,
+        "match": "position",
+        "truth_keys": [
+          "P3",
+          "P-4",
+          "P-1",
+          "P-4",
+          "P4",
+          "P-4"
+        ],
+        "pred_keys": [
+          "P3",
+          "P-4",
+          "P-1",
+          "P-1",
+          "P4"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 1,
+      "n_added": 4,
+      "n_hints_missing": 2,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s9-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 8,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 10,
+        "n_pred": 14,
+        "matched": 9,
+        "n_truth_notes": 10,
+        "matched_notes": 9,
+        "exact_notes": 9,
+        "near_pairs": [],
+        "n_pred_in_range": 11,
+        "strength": 0.9,
+        "strength_exact": 0.9,
+        "match": "position",
+        "truth_keys": [
+          "P-3",
+          "P-2",
+          "P1",
+          "P0",
+          "P-2",
+          "P-4",
+          "P0",
+          "P0",
+          "P1",
+          "P0"
+        ],
+        "pred_keys": [
+          "P7",
+          "P6",
+          "P2",
+          "P1",
+          "P-2",
+          "P1",
+          "P0",
+          "P-2",
+          "P-4",
+          "P0",
+          "P0",
+          "P14",
+          "P1",
+          "P0"
+        ],
+        "pairs": [
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            5,
+            8
+          ],
+          [
+            6,
+            9
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            8,
+            12
+          ],
+          [
+            9,
+            13
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 9,
+      "n_wrong_category": 0,
+      "n_added": 9,
+      "n_hints_missing": 1,
+      "n_hints_extra": 5,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s9-m5",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 13,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 8,
+        "matched": 5,
+        "n_truth_notes": 4,
+        "matched_notes": 4,
+        "exact_notes": 4,
+        "near_pairs": [],
+        "n_pred_in_range": 8,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P9",
+          "P2",
+          "P2",
+          "P2",
+          "R"
+        ],
+        "pred_keys": [
+          "P7",
+          "P1",
+          "P9",
+          "P2",
+          "P2",
+          "P2",
+          "R",
+          "R"
+        ],
+        "pairs": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            7
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 4,
+      "n_wrong_category": 1,
+      "n_added": 5,
+      "n_hints_missing": 0,
+      "n_hints_extra": 3,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s10-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 11,
+      "parts": [
+        17
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 14,
+        "matched": 5,
+        "n_truth_notes": 5,
+        "matched_notes": 5,
+        "exact_notes": 5,
+        "near_pairs": [],
+        "n_pred_in_range": 10,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P5",
+          "P7",
+          "P7",
+          "P6",
+          "P7"
+        ],
+        "pred_keys": [
+          "P7",
+          "P5",
+          "P1",
+          "P5",
+          "P6",
+          "P0",
+          "P-1",
+          "P7",
+          "P0",
+          "P7",
+          "R",
+          "P6",
+          "P7",
+          "R"
+        ],
+        "pairs": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            2,
+            9
+          ],
+          [
+            3,
+            11
+          ],
+          [
+            4,
+            12
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2029,
+          "batch_w": 2029,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 5,
+      "n_wrong_category": 0,
+      "n_added": 5,
+      "n_hints_missing": 0,
+      "n_hints_extra": 9,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s19-m0",
+      "status": "prefilled",
+      "reason": "reference has no notes in this bar",
+      "measure_number": 15,
+      "parts": [
+        9,
+        10
+      ],
+      "alignment": {
+        "n_truth": 0,
+        "n_pred": 10,
+        "matched": 0,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 10,
+        "strength": null,
+        "strength_exact": null,
+        "match": "step",
+        "truth_keys": [],
+        "pred_keys": [
+          "F6",
+          "D4",
+          "E4",
+          "A4",
+          "B4",
+          "C5",
+          "C5",
+          "E5",
+          "F5",
+          "G5"
+        ],
+        "pairs": [],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2047,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 10,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s20-m6",
+      "status": "prefilled",
+      "reason": "reference has no notes in this bar",
+      "measure_number": 21,
+      "parts": [
+        13,
+        14
+      ],
+      "alignment": {
+        "n_truth": 0,
+        "n_pred": 1,
+        "matched": 0,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 1,
+        "strength": null,
+        "strength_exact": null,
+        "match": "step",
+        "truth_keys": [],
+        "pred_keys": [
+          "F4"
+        ],
+        "pairs": [],
+        "geometry": {
+          "transcription_w": 1604,
+          "batch_w": 1603,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s21-m6",
+      "status": "abstained",
+      "reason": "weak alignment: 1 of 6 reference notes matched, 0 exactly (1 of 2 read heads in the bar's range)",
+      "measure_number": 21,
+      "parts": [
+        15
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 2,
+        "matched": 1,
+        "n_truth_notes": 6,
+        "matched_notes": 1,
+        "exact_notes": 0,
+        "near_pairs": [
+          [
+            5,
+            0
+          ]
+        ],
+        "n_pred_in_range": 1,
+        "strength": 0.167,
+        "strength_exact": 0.0,
+        "match": "position",
+        "truth_keys": [
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8"
+        ],
+        "pred_keys": [
+          "P7",
+          "P1"
+        ],
+        "pairs": [
+          [
+            5,
+            0
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1618,
+          "batch_w": 1618,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s22-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 15,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 7,
+        "matched": 4,
+        "n_truth_notes": 3,
+        "matched_notes": 3,
+        "exact_notes": 3,
+        "near_pairs": [],
+        "n_pred_in_range": 5,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "R",
+          "P7",
+          "P8",
+          "P7"
+        ],
+        "pred_keys": [
+          "R",
+          "P-1",
+          "P7",
+          "P7",
+          "P8",
+          "P7",
+          "P1"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2047,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 4,
+      "n_wrong_category": 0,
+      "n_added": 4,
+      "n_hints_missing": 0,
+      "n_hints_extra": 3,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s23-m2",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 17,
+      "parts": [
+        17
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 9,
+        "matched": 5,
+        "n_truth_notes": 5,
+        "matched_notes": 5,
+        "exact_notes": 5,
+        "near_pairs": [],
+        "n_pred_in_range": 9,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P10",
+          "P8",
+          "P8",
+          "P8",
+          "P9"
+        ],
+        "pred_keys": [
+          "P10",
+          "P9",
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "R",
+          "P9",
+          "P9"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            8
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 5,
+      "n_wrong_category": 0,
+      "n_added": 5,
+      "n_hints_missing": 0,
+      "n_hints_extra": 4,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s24-m2",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 17,
+      "parts": [
+        18
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 6,
+        "matched": 6,
+        "n_truth_notes": 6,
+        "matched_notes": 6,
+        "exact_notes": 6,
+        "near_pairs": [],
+        "n_pred_in_range": 6,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P9",
+          "P4",
+          "P4",
+          "P4",
+          "P5",
+          "P8"
+        ],
+        "pred_keys": [
+          "P9",
+          "P4",
+          "P4",
+          "P4",
+          "P5",
+          "P8"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 6,
+      "n_wrong_category": 0,
+      "n_added": 6,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s25-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 18,
+      "parts": [
+        19
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 10,
+        "matched": 6,
+        "n_truth_notes": 6,
+        "matched_notes": 6,
+        "exact_notes": 6,
+        "near_pairs": [],
+        "n_pred_in_range": 10,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P6",
+          "P6",
+          "P5",
+          "P4",
+          "P4",
+          "P3"
+        ],
+        "pred_keys": [
+          "P5",
+          "P6",
+          "P5",
+          "R",
+          "P6",
+          "P5",
+          "P4",
+          "P4",
+          "R",
+          "P3"
+        ],
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 6,
+      "n_wrong_category": 0,
+      "n_added": 6,
+      "n_hints_missing": 0,
+      "n_hints_extra": 4,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s26-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 15,
+      "parts": [
+        20
+      ],
+      "alignment": {
+        "n_truth": 7,
+        "n_pred": 7,
+        "matched": 6,
+        "n_truth_notes": 6,
+        "matched_notes": 6,
+        "exact_notes": 5,
+        "near_pairs": [
+          [
+            1,
+            1
+          ]
+        ],
+        "n_pred_in_range": 6,
+        "strength": 1.0,
+        "strength_exact": 0.833,
+        "match": "position",
+        "truth_keys": [
+          "R",
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8"
+        ],
+        "pred_keys": [
+          "P3",
+          "P7",
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8"
+        ],
+        "pairs": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2047,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 5,
+      "n_wrong_category": 1,
+      "n_added": 6,
+      "n_hints_missing": 1,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s26-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 18,
+      "parts": [
+        20
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 9,
+        "matched": 6,
+        "n_truth_notes": 6,
+        "matched_notes": 6,
+        "exact_notes": 6,
+        "near_pairs": [],
+        "n_pred_in_range": 9,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P6",
+          "P6",
+          "P5",
+          "P4",
+          "P4",
+          "P3"
+        ],
+        "pred_keys": [
+          "P6",
+          "P6",
+          "P5",
+          "P2",
+          "P4",
+          "P4",
+          "P4",
+          "P3",
+          "P2"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 6,
+      "n_wrong_category": 0,
+      "n_added": 6,
+      "n_hints_missing": 0,
+      "n_hints_extra": 3,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s1-m0",
+      "status": "prefilled",
+      "reason": "reference has no notes in this bar",
+      "measure_number": 23,
+      "parts": [
+        2,
+        3
+      ],
+      "alignment": {
+        "n_truth": 0,
+        "n_pred": 7,
+        "matched": 0,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 7,
+        "strength": null,
+        "strength_exact": null,
+        "match": "step",
+        "truth_keys": [],
+        "pred_keys": [
+          "D4",
+          "D4",
+          "F4",
+          "A4",
+          "C5",
+          "E5",
+          "E5"
+        ],
+        "pairs": [],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 7,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s3-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 26,
+      "parts": [
+        6,
+        7
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 11,
+        "matched": 6,
+        "n_truth_notes": 6,
+        "matched_notes": 6,
+        "exact_notes": 4,
+        "near_pairs": [
+          [
+            3,
+            4
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "n_pred_in_range": 8,
+        "strength": 1.0,
+        "strength_exact": 0.667,
+        "match": "position",
+        "truth_keys": [
+          "P-2",
+          "P-4",
+          "P-2",
+          "P-4",
+          "P-1",
+          "P-3"
+        ],
+        "pred_keys": [
+          "P-2",
+          "P-4",
+          "P-5",
+          "P-2",
+          "P-5",
+          "P-1",
+          "P-4",
+          "P7",
+          "P5",
+          "P3",
+          "P1"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 6,
+      "n_wrong_category": 0,
+      "n_added": 6,
+      "n_hints_missing": 0,
+      "n_hints_extra": 5,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s4-m5",
+      "status": "abstained",
+      "reason": "weak alignment: 2 of 6 reference notes matched, 0 exactly (2 of 4 read heads in the bar's range)",
+      "measure_number": 28,
+      "parts": [
+        8
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 4,
+        "matched": 2,
+        "n_truth_notes": 6,
+        "matched_notes": 2,
+        "exact_notes": 0,
+        "near_pairs": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            2
+          ]
+        ],
+        "n_pred_in_range": 2,
+        "strength": 0.333,
+        "strength_exact": 0.0,
+        "match": "position",
+        "truth_keys": [
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8"
+        ],
+        "pred_keys": [
+          "P7",
+          "P2",
+          "P7",
+          "P1"
+        ],
+        "pairs": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            2
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s5-m4",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 27,
+      "parts": [
+        9,
+        10
+      ],
+      "alignment": {
+        "n_truth": 2,
+        "n_pred": 8,
+        "matched": 2,
+        "n_truth_notes": 2,
+        "matched_notes": 2,
+        "exact_notes": 2,
+        "near_pairs": [],
+        "n_pred_in_range": 7,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P13",
+          "P6"
+        ],
+        "pred_keys": [
+          "P13",
+          "P6",
+          "P5",
+          "P9",
+          "P7",
+          "P6",
+          "P5",
+          "P2"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            5
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 1,
+      "n_added": 2,
+      "n_hints_missing": 0,
+      "n_hints_extra": 6,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s5-m5",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 28,
+      "parts": [
+        9,
+        10
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 6,
+        "matched": 6,
+        "n_truth_notes": 6,
+        "matched_notes": 6,
+        "exact_notes": 2,
+        "near_pairs": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ]
+        ],
+        "n_pred_in_range": 6,
+        "strength": 1.0,
+        "strength_exact": 0.333,
+        "match": "position",
+        "truth_keys": [
+          "P13",
+          "P6",
+          "P10",
+          "P3",
+          "P10",
+          "P3"
+        ],
+        "pred_keys": [
+          "P13",
+          "P5",
+          "P10",
+          "P2",
+          "P9",
+          "P2"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 6,
+      "n_wrong_category": 0,
+      "n_added": 6,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s8-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 26,
+      "parts": [
+        15
+      ],
+      "alignment": {
+        "n_truth": 1,
+        "n_pred": 6,
+        "matched": 1,
+        "n_truth_notes": 1,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 1,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P8"
+        ],
+        "pred_keys": [
+          "P-1",
+          "P8",
+          "P15",
+          "P13",
+          "P14",
+          "P-1"
+        ],
+        "pairs": [
+          [
+            0,
+            1
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 0,
+      "n_added": 1,
+      "n_hints_missing": 0,
+      "n_hints_extra": 5,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s9-m1",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 24,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 12,
+        "n_pred": 13,
+        "matched": 12,
+        "n_truth_notes": 12,
+        "matched_notes": 12,
+        "exact_notes": 12,
+        "near_pairs": [],
+        "n_pred_in_range": 13,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P6",
+          "P1",
+          "P-1",
+          "P1",
+          "P6",
+          "P1",
+          "P-1",
+          "P1",
+          "P-1",
+          "P-6",
+          "P-1",
+          "P-6"
+        ],
+        "pred_keys": [
+          "P6",
+          "P1",
+          "P-1",
+          "P1",
+          "P6",
+          "P1",
+          "P-1",
+          "P1",
+          "P-1",
+          "P-6",
+          "P7",
+          "P-1",
+          "P-6"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            8,
+            8
+          ],
+          [
+            9,
+            9
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            12
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 12,
+      "n_wrong_category": 0,
+      "n_added": 12,
+      "n_hints_missing": 0,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s9-m4",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 27,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 3,
+        "n_pred": 4,
+        "matched": 3,
+        "n_truth_notes": 3,
+        "matched_notes": 3,
+        "exact_notes": 2,
+        "near_pairs": [
+          [
+            0,
+            1
+          ]
+        ],
+        "n_pred_in_range": 4,
+        "strength": 1.0,
+        "strength_exact": 0.667,
+        "match": "position",
+        "truth_keys": [
+          "P-5",
+          "P-6",
+          "P-6"
+        ],
+        "pred_keys": [
+          "P-6",
+          "P-6",
+          "P-6",
+          "P-6"
+        ],
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 0,
+      "n_added": 3,
+      "n_hints_missing": 0,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s12-m2",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 25,
+      "parts": [
+        19
+      ],
+      "alignment": {
+        "n_truth": 3,
+        "n_pred": 6,
+        "matched": 2,
+        "n_truth_notes": 3,
+        "matched_notes": 2,
+        "exact_notes": 2,
+        "near_pairs": [],
+        "n_pred_in_range": 2,
+        "strength": 0.667,
+        "strength_exact": 0.667,
+        "match": "position",
+        "truth_keys": [
+          "P-2",
+          "P-2",
+          "P-2"
+        ],
+        "pred_keys": [
+          "P1",
+          "P-6",
+          "P9",
+          "P-2",
+          "P9",
+          "P-2"
+        ],
+        "pairs": [
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            5
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 2,
+      "n_wrong_category": 0,
+      "n_added": 2,
+      "n_hints_missing": 1,
+      "n_hints_extra": 4,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s13-m1",
+      "status": "prefilled",
+      "reason": "reference has only rests in this bar",
+      "measure_number": 24,
+      "parts": [
+        20
+      ],
+      "alignment": {
+        "n_truth": 1,
+        "n_pred": 1,
+        "matched": 1,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 1,
+        "strength": null,
+        "strength_exact": null,
+        "match": "position",
+        "truth_keys": [
+          "R"
+        ],
+        "pred_keys": [
+          "R"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 0,
+      "n_added": 1,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s13-m4",
+      "status": "abstained",
+      "reason": "weak alignment: 3 of 6 reference notes matched, 1 exactly (3 of 4 read heads in the bar's range)",
+      "measure_number": 27,
+      "parts": [
+        20
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 4,
+        "matched": 3,
+        "n_truth_notes": 6,
+        "matched_notes": 3,
+        "exact_notes": 1,
+        "near_pairs": [
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            2
+          ]
+        ],
+        "n_pred_in_range": 3,
+        "strength": 0.5,
+        "strength_exact": 0.167,
+        "match": "position",
+        "truth_keys": [
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8",
+          "P8"
+        ],
+        "pred_keys": [
+          "P8",
+          "P7",
+          "P7",
+          "P1"
+        ],
+        "pairs": [
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            2
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys1-s18-m1",
+      "status": "prefilled",
+      "reason": "reference has only rests in this bar",
+      "measure_number": 30,
+      "parts": [
+        8
+      ],
+      "alignment": {
+        "n_truth": 1,
+        "n_pred": 2,
+        "matched": 0,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 2,
+        "strength": null,
+        "strength_exact": null,
+        "match": "position",
+        "truth_keys": [
+          "R"
+        ],
+        "pred_keys": [
+          "P7",
+          "P3"
+        ],
+        "pairs": [],
+        "geometry": {
+          "transcription_w": 1949,
+          "batch_w": 1948,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 1,
+      "n_hints_extra": 2,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys1-s18-m2",
+      "status": "prefilled",
+      "reason": "reference has only rests in this bar",
+      "measure_number": 31,
+      "parts": [
+        8
+      ],
+      "alignment": {
+        "n_truth": 1,
+        "n_pred": 6,
+        "matched": 1,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 6,
+        "strength": null,
+        "strength_exact": null,
+        "match": "position",
+        "truth_keys": [
+          "R"
+        ],
+        "pred_keys": [
+          "R",
+          "P8",
+          "P7",
+          "P5",
+          "P3",
+          "P1"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1831,
+          "batch_w": 1831,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 0,
+      "n_added": 1,
+      "n_hints_missing": 0,
+      "n_hints_extra": 5,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys1-s23-m0",
+      "status": "abstained",
+      "reason": "weak alignment: 0 of 1 reference notes matched, 0 exactly (0 of 6 read heads in the bar's range)",
+      "measure_number": 29,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 6,
+        "matched": 4,
+        "n_truth_notes": 1,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 5,
+        "strength": 0.0,
+        "strength_exact": 0.0,
+        "match": "position",
+        "truth_keys": [
+          "P-8",
+          "R",
+          "R",
+          "R",
+          "R"
+        ],
+        "pred_keys": [
+          "R",
+          "R",
+          "P6",
+          "R",
+          "R",
+          "R"
+        ],
+        "pairs": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys1-s23-m5",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 34,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 1,
+        "n_pred": 4,
+        "matched": 1,
+        "n_truth_notes": 1,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 4,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P3"
+        ],
+        "pred_keys": [
+          "P4",
+          "P3",
+          "P3",
+          "P3"
+        ],
+        "pairs": [
+          [
+            0,
+            3
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1873,
+          "batch_w": 1872,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 1,
+      "n_added": 1,
+      "n_hints_missing": 0,
+      "n_hints_extra": 3,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p3-sys1-s27-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 29,
+      "parts": [
+        20
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 8,
+        "matched": 3,
+        "n_truth_notes": 1,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 4,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P8",
+          "R",
+          "R",
+          "R",
+          "R"
+        ],
+        "pred_keys": [
+          "P2",
+          "P1",
+          "P3",
+          "R",
+          "P8",
+          "P3",
+          "R",
+          "R"
+        ],
+        "pairs": [
+          [
+            0,
+            4
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            4,
+            7
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 2,
+      "n_added": 3,
+      "n_hints_missing": 2,
+      "n_hints_extra": 5,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s0-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 41,
+      "parts": [
+        0,
+        1
+      ],
+      "alignment": {
+        "n_truth": 2,
+        "n_pred": 6,
+        "matched": 1,
+        "n_truth_notes": 2,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 1,
+        "strength": 0.5,
+        "strength_exact": 0.5,
+        "match": "position",
+        "truth_keys": [
+          "P-3",
+          "P-7"
+        ],
+        "pred_keys": [
+          "P15",
+          "P11",
+          "P5",
+          "P3",
+          "P-7",
+          "P6"
+        ],
+        "pairs": [
+          [
+            1,
+            4
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1643,
+          "batch_w": 1643,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 0,
+      "n_added": 1,
+      "n_hints_missing": 1,
+      "n_hints_extra": 5,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s1-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 38,
+      "parts": [
+        2,
+        3
+      ],
+      "alignment": {
+        "n_truth": 3,
+        "n_pred": 3,
+        "matched": 3,
+        "n_truth_notes": 3,
+        "matched_notes": 3,
+        "exact_notes": 3,
+        "near_pairs": [],
+        "n_pred_in_range": 3,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P10",
+          "P-2",
+          "P-4"
+        ],
+        "pred_keys": [
+          "P10",
+          "P-2",
+          "P-4"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 0,
+      "n_added": 3,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s1-m3",
+      "status": "abstained",
+      "reason": "weak alignment: 1 of 2 reference notes matched, 1 exactly (6 of 8 read heads in the bar's range)",
+      "measure_number": 41,
+      "parts": [
+        2,
+        3
+      ],
+      "alignment": {
+        "n_truth": 2,
+        "n_pred": 8,
+        "matched": 1,
+        "n_truth_notes": 2,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 6,
+        "strength": 0.5,
+        "strength_exact": 0.5,
+        "match": "position",
+        "truth_keys": [
+          "P-3",
+          "P2"
+        ],
+        "pred_keys": [
+          "P7",
+          "P3",
+          "P2",
+          "P1",
+          "P-1",
+          "P-7",
+          "P2",
+          "P1"
+        ],
+        "pairs": [
+          [
+            1,
+            6
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1673,
+          "batch_w": 1673,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s2-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 38,
+      "parts": [
+        4,
+        5
+      ],
+      "alignment": {
+        "n_truth": 3,
+        "n_pred": 3,
+        "matched": 3,
+        "n_truth_notes": 3,
+        "matched_notes": 3,
+        "exact_notes": 3,
+        "near_pairs": [],
+        "n_pred_in_range": 3,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P9",
+          "P4",
+          "P2"
+        ],
+        "pred_keys": [
+          "P9",
+          "P4",
+          "P2"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 0,
+      "n_added": 3,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s3-m8",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 46,
+      "parts": [
+        6,
+        7
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 12,
+        "matched": 4,
+        "n_truth_notes": 4,
+        "matched_notes": 4,
+        "exact_notes": 4,
+        "near_pairs": [],
+        "n_pred_in_range": 12,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P8",
+          "P1",
+          "P5",
+          "P-2"
+        ],
+        "pred_keys": [
+          "P3",
+          "P8",
+          "P1",
+          "P4",
+          "P2",
+          "P1",
+          "P4",
+          "P0",
+          "P-1",
+          "P5",
+          "P-2",
+          "P7"
+        ],
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            2,
+            9
+          ],
+          [
+            3,
+            10
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1865,
+          "batch_w": 1865,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 4,
+      "n_wrong_category": 0,
+      "n_added": 4,
+      "n_hints_missing": 0,
+      "n_hints_extra": 8,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s9-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 41,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 9,
+        "n_pred": 13,
+        "matched": 8,
+        "n_truth_notes": 9,
+        "matched_notes": 8,
+        "exact_notes": 8,
+        "near_pairs": [],
+        "n_pred_in_range": 13,
+        "strength": 0.889,
+        "strength_exact": 0.889,
+        "match": "position",
+        "truth_keys": [
+          "P13",
+          "P4",
+          "P9",
+          "P-1",
+          "P4",
+          "P-1",
+          "P0",
+          "P1",
+          "P2"
+        ],
+        "pred_keys": [
+          "P13",
+          "P9",
+          "P4",
+          "P-1",
+          "P4",
+          "P-1",
+          "P0",
+          "P1",
+          "P2",
+          "P2",
+          "P8",
+          "P2",
+          "P1"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            8,
+            11
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1643,
+          "batch_w": 1643,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 8,
+      "n_wrong_category": 0,
+      "n_added": 8,
+      "n_hints_missing": 1,
+      "n_hints_extra": 5,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s10-m5",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 43,
+      "parts": [
+        17
+      ],
+      "alignment": {
+        "n_truth": 12,
+        "n_pred": 18,
+        "matched": 12,
+        "n_truth_notes": 12,
+        "matched_notes": 12,
+        "exact_notes": 11,
+        "near_pairs": [
+          [
+            0,
+            0
+          ]
+        ],
+        "n_pred_in_range": 16,
+        "strength": 1.0,
+        "strength_exact": 0.917,
+        "match": "position",
+        "truth_keys": [
+          "P10",
+          "P8",
+          "P10",
+          "P8",
+          "P10",
+          "P8",
+          "P10",
+          "P8",
+          "P10",
+          "P8",
+          "P10",
+          "P8"
+        ],
+        "pred_keys": [
+          "P11",
+          "P8",
+          "P10",
+          "P8",
+          "P10",
+          "P8",
+          "R",
+          "P10",
+          "P8",
+          "P10",
+          "P10",
+          "P8",
+          "P10",
+          "P10",
+          "P8",
+          "P9",
+          "P5",
+          "P4"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            9,
+            11
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            11,
+            14
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1714,
+          "batch_w": 1713,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 12,
+      "n_wrong_category": 0,
+      "n_added": 12,
+      "n_hints_missing": 0,
+      "n_hints_extra": 6,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s12-m2",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 40,
+      "parts": [
+        19
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 10,
+        "matched": 4,
+        "n_truth_notes": 1,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 5,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "R",
+          "P11",
+          "R",
+          "R"
+        ],
+        "pred_keys": [
+          "P5",
+          "R",
+          "R",
+          "P11",
+          "R",
+          "R",
+          "P8",
+          "P7",
+          "P5",
+          "P3"
+        ],
+        "pairs": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1876,
+          "batch_w": 1876,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 2,
+      "n_wrong_category": 2,
+      "n_added": 4,
+      "n_hints_missing": 0,
+      "n_hints_extra": 6,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s13-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 41,
+      "parts": [
+        20
+      ],
+      "alignment": {
+        "n_truth": 3,
+        "n_pred": 5,
+        "matched": 3,
+        "n_truth_notes": 1,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 5,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "R",
+          "P8",
+          "R"
+        ],
+        "pred_keys": [
+          "R",
+          "P8",
+          "R",
+          "R",
+          "R"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1643,
+          "batch_w": 1643,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 2,
+      "n_added": 3,
+      "n_hints_missing": 0,
+      "n_hints_extra": 2,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s15-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 48,
+      "parts": [
+        2,
+        3
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 5,
+        "matched": 2,
+        "n_truth_notes": 4,
+        "matched_notes": 2,
+        "exact_notes": 2,
+        "near_pairs": [],
+        "n_pred_in_range": 5,
+        "strength": 0.5,
+        "strength_exact": 0.5,
+        "match": "position",
+        "truth_keys": [
+          "P5",
+          "P7",
+          "P-2",
+          "P2"
+        ],
+        "pred_keys": [
+          "P7",
+          "P6",
+          "P5",
+          "P2",
+          "P-2"
+        ],
+        "pairs": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 2,
+      "n_wrong_category": 0,
+      "n_added": 2,
+      "n_hints_missing": 2,
+      "n_hints_extra": 3,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s15-m7",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 55,
+      "parts": [
+        2,
+        3
+      ],
+      "alignment": {
+        "n_truth": 6,
+        "n_pred": 12,
+        "matched": 6,
+        "n_truth_notes": 6,
+        "matched_notes": 6,
+        "exact_notes": 6,
+        "near_pairs": [],
+        "n_pred_in_range": 12,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P5",
+          "P3",
+          "P4",
+          "P7",
+          "P5",
+          "P4"
+        ],
+        "pred_keys": [
+          "P5",
+          "P3",
+          "P7",
+          "P4",
+          "P3",
+          "P5",
+          "P4",
+          "P3",
+          "P7",
+          "P5",
+          "P4",
+          "P1"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            4,
+            9
+          ],
+          [
+            5,
+            10
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1465,
+          "batch_w": 1465,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 5,
+      "n_wrong_category": 1,
+      "n_added": 6,
+      "n_hints_missing": 0,
+      "n_hints_extra": 6,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s17-m7",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 55,
+      "parts": [
+        6,
+        7
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 4,
+        "matched": 3,
+        "n_truth_notes": 4,
+        "matched_notes": 3,
+        "exact_notes": 3,
+        "near_pairs": [],
+        "n_pred_in_range": 4,
+        "strength": 0.75,
+        "strength_exact": 0.75,
+        "match": "position",
+        "truth_keys": [
+          "P11",
+          "P4",
+          "P2",
+          "P-5"
+        ],
+        "pred_keys": [
+          "P5",
+          "P11",
+          "P4",
+          "P2"
+        ],
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1465,
+          "batch_w": 1465,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 0,
+      "n_added": 3,
+      "n_hints_missing": 1,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s18-m1",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 49,
+      "parts": [
+        8
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 9,
+        "matched": 5,
+        "n_truth_notes": 5,
+        "matched_notes": 5,
+        "exact_notes": 5,
+        "near_pairs": [],
+        "n_pred_in_range": 9,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P2",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "pred_keys": [
+          "P7",
+          "P3",
+          "P0",
+          "P2",
+          "P2",
+          "P3",
+          "P4",
+          "P4",
+          "P5"
+        ],
+        "pairs": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            4,
+            8
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1978,
+          "batch_w": 1978,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 5,
+      "n_wrong_category": 0,
+      "n_added": 5,
+      "n_hints_missing": 0,
+      "n_hints_extra": 4,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s18-m2",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 50,
+      "parts": [
+        8
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 11,
+        "matched": 5,
+        "n_truth_notes": 5,
+        "matched_notes": 5,
+        "exact_notes": 5,
+        "near_pairs": [],
+        "n_pred_in_range": 7,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P4",
+          "P4",
+          "P5",
+          "P6",
+          "P7"
+        ],
+        "pred_keys": [
+          "P8",
+          "P7",
+          "P1",
+          "P-1",
+          "P-1",
+          "P4",
+          "P4",
+          "P5",
+          "P0",
+          "P6",
+          "P7"
+        ],
+        "pairs": [
+          [
+            0,
+            5
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            9
+          ],
+          [
+            4,
+            10
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 5,
+      "n_wrong_category": 0,
+      "n_added": 5,
+      "n_hints_missing": 0,
+      "n_hints_extra": 6,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s19-m0",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 48,
+      "parts": [
+        9,
+        10
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 5,
+        "matched": 4,
+        "n_truth_notes": 4,
+        "matched_notes": 4,
+        "exact_notes": 4,
+        "near_pairs": [],
+        "n_pred_in_range": 5,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P2",
+          "P0",
+          "P2",
+          "P0"
+        ],
+        "pred_keys": [
+          "P2",
+          "P0",
+          "P2",
+          "P0",
+          "P0"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 4,
+      "n_wrong_category": 0,
+      "n_added": 4,
+      "n_hints_missing": 0,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s20-m0",
+      "status": "prefilled",
+      "reason": "nothing to align \u2014 reference and reading both empty",
+      "measure_number": 48,
+      "parts": [
+        11,
+        12
+      ],
+      "alignment": {
+        "n_truth": 0,
+        "n_pred": 0,
+        "matched": 0,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 0,
+        "strength": null,
+        "strength_exact": null,
+        "match": "step",
+        "truth_keys": [],
+        "pred_keys": [],
+        "pairs": [],
+        "geometry": {
+          "transcription_w": 2048,
+          "batch_w": 2048,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 0,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s22-m1",
+      "status": "prefilled",
+      "reason": "reference has only rests in this bar",
+      "measure_number": 49,
+      "parts": [
+        15
+      ],
+      "alignment": {
+        "n_truth": 1,
+        "n_pred": 1,
+        "matched": 0,
+        "n_truth_notes": 0,
+        "matched_notes": 0,
+        "exact_notes": 0,
+        "near_pairs": [],
+        "n_pred_in_range": 1,
+        "strength": null,
+        "strength_exact": null,
+        "match": "position",
+        "truth_keys": [
+          "R"
+        ],
+        "pred_keys": [
+          "P12"
+        ],
+        "pairs": [],
+        "geometry": {
+          "transcription_w": 1978,
+          "batch_w": 1978,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 0,
+      "n_wrong_category": 0,
+      "n_added": 0,
+      "n_hints_missing": 1,
+      "n_hints_extra": 1,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s23-m1",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 49,
+      "parts": [
+        16
+      ],
+      "alignment": {
+        "n_truth": 2,
+        "n_pred": 1,
+        "matched": 1,
+        "n_truth_notes": 2,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 1,
+        "strength": 0.5,
+        "strength_exact": 0.5,
+        "match": "position",
+        "truth_keys": [
+          "P-9",
+          "P-9"
+        ],
+        "pred_keys": [
+          "P-9"
+        ],
+        "pairs": [
+          [
+            1,
+            0
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1978,
+          "batch_w": 1978,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 1,
+      "n_wrong_category": 0,
+      "n_added": 1,
+      "n_hints_missing": 1,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s24-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 51,
+      "parts": [
+        17
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 7,
+        "matched": 5,
+        "n_truth_notes": 3,
+        "matched_notes": 3,
+        "exact_notes": 3,
+        "near_pairs": [],
+        "n_pred_in_range": 6,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P4",
+          "P-1",
+          "R",
+          "R",
+          "P-2"
+        ],
+        "pred_keys": [
+          "P4",
+          "P-1",
+          "R",
+          "R",
+          "P-2",
+          "P8",
+          "P3"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1319,
+          "batch_w": 1318,
+          "y_scale": 1.0,
+          "width_ratio": 0.999
+        }
+      },
+      "n_tp": 5,
+      "n_wrong_category": 0,
+      "n_added": 5,
+      "n_hints_missing": 0,
+      "n_hints_extra": 2,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s24-m9",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 57,
+      "parts": [
+        17
+      ],
+      "alignment": {
+        "n_truth": 4,
+        "n_pred": 3,
+        "matched": 3,
+        "n_truth_notes": 2,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 3,
+        "strength": 0.5,
+        "strength_exact": 0.5,
+        "match": "position",
+        "truth_keys": [
+          "P4",
+          "R",
+          "R",
+          "P-5"
+        ],
+        "pred_keys": [
+          "P4",
+          "R",
+          "R"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1423,
+          "batch_w": 1423,
+          "y_scale": 1.0,
+          "width_ratio": 1.0
+        }
+      },
+      "n_tp": 3,
+      "n_wrong_category": 0,
+      "n_added": 3,
+      "n_hints_missing": 1,
+      "n_hints_extra": 0,
+      "written": false
+    },
+    {
+      "cell_id": "brahms1-p4-sys1-s27-m3",
+      "status": "prefilled",
+      "reason": "",
+      "measure_number": 51,
+      "parts": [
+        20
+      ],
+      "alignment": {
+        "n_truth": 5,
+        "n_pred": 5,
+        "matched": 3,
+        "n_truth_notes": 1,
+        "matched_notes": 1,
+        "exact_notes": 1,
+        "near_pairs": [],
+        "n_pred_in_range": 3,
+        "strength": 1.0,
+        "strength_exact": 1.0,
+        "match": "position",
+        "truth_keys": [
+          "P8",
+          "R",
+          "R",
+          "R",
+          "R"
+        ],
+        "pred_keys": [
+          "P8",
+          "P3",
+          "R",
+          "P3",
+          "R"
+        ],
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "geometry": {
+          "transcription_w": 1319,
+          "batch_w": 1318,
+          "y_scale": 1.0,
+          "width_ratio": 0.999
+        }
+      },
+      "n_tp": 2,
+      "n_wrong_category": 1,
+      "n_added": 3,
+      "n_hints_missing": 2,
+      "n_hints_extra": 2,
+      "written": false
+    }
+  ]
+}
