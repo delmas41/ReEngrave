@@ -1,0 +1,35 @@
+{
+  "cell_id": "beet5hr-p51-sys0-s12-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T02:20:49+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 211,
+        "y": 653,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 546,
+        "y": 653,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads"
+  ]
+}

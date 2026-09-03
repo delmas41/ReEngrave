@@ -1,56 +1,76 @@
 # ReEngrave — Project Brief
 
-**One line:** turn a scanned PDF of a music score into correct MusicXML / LilyPond,
-using an in-house YOLOv8 + classical-CV OMR pipeline, checked against reference
-encodings and, where needed, a human.
+**Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
+**Status:** Active development, personal-use scope
 
-**Owner:** Sean (sole user; personal-use scope re-affirmed 2026-05-24).
-**Reference docs:** [CLAUDE.md](CLAUDE.md) (how everything works, the current
-accuracy figure), [PROJECT_STATUS.md](PROJECT_STATUS.md) (narrative snapshot),
-[NOTES.md](NOTES.md) (backlog), [version_memory.md](version_memory.md)
-(running change list).
+## What it is
 
-## Why it exists
+ReEngrave takes a scanned PDF of a music score, runs optical music
+recognition (OMR) to produce MusicXML, then checks the result — either
+against itself (theory rules), against a known-good reference score, or
+against the original PDF page-by-page with Claude Vision — and lets a human
+accept, reject, or edit each flagged difference. The corrected score exports
+as MusicXML, LilyPond, or an engraved PDF.
 
-Published OMR fails on real orchestral scans. The project measures that
-failure with a metric other people report (OMR-NED, via musicdiff), fixes the
-pipeline one evidenced fault at a time, and never lands a change without a
-number on both sides.
+Full technical reference, architecture, and the day-to-day working notes
+live in [CLAUDE.md](CLAUDE.md). This brief is the short version: what the
+project is for and where it stands, not how the code works.
 
-## What is built
+## The two things being built
 
-- **OMR pipeline** (`tools/omr/`): staff and measure segmentation, YOLO symbol
-  detection, classical-CV stems and beams, header readers for clef, key and
-  meter by geometry, rhythm and voicing, contextual part naming, and exporters
-  to MusicXML and LilyPond. CLI: `python3 -m tools.omr.transcribe score.pdf`.
-- **Ground truth and benchmarks**: an eleven-work engraved orchestral benchmark
-  (`benchmarks/omr-orchestral-e2e/`), a five-page scan benchmark
-  (`benchmarks/omr-scan-e2e-2026-09/`), dossiers for 97 works, and a central
-  score library of 235 editions and 1745 reference encodings
-  (`data/score-library/`).
-- **Hand-labeling tooling** (`tools/omr/annotate/`): triage, draw-from-scratch
-  and single-symbol pass modes, verdict files that convert to YOLO labels
-  (`data/user-labeled/`, versions v1–v7).
-- **Web app** (`backend/`, `frontend/`): upload, OMR, vision diff review,
-  export; auth and Stripe wired but no longer the optimization target.
+1. **A web app** (FastAPI + React, Docker Compose) — upload a PDF, run OMR,
+   review diffs, export. Auth and a Stripe payment gate are wired in but not
+   the optimization target: Sean is the only user, so new work should
+   minimize complexity and cost rather than build for a wider audience.
+2. **An in-house OMR pipeline** (`tools/omr/`) — YOLOv8l + classical CV,
+   fine-tuned on DeepScoresV2. This is where most of the recent engineering
+   effort has gone: reading orchestral conductor's scores accurately is
+   hard, and the project has been steadily closing the gap between "reads
+   an engraved page" and "reads a real 19th-century scan."
 
-## Where the work is now (2026-09-02)
+A third, optional piece — the **Maestro theory layer**
+(`tools/maestro_bridge/`) — adds harmony/rhythm validation and pitch
+re-ranking against music-theory rules. Host-side only, off by default.
 
-- Engraved benchmark: pooled OMR-NED **0.1306 / 2745 edits** over 11 works.
-- Scan domain: hollow noteheads are the top lever; a five-batch labeling
-  campaign is cut, one batch labeled.
-- MXL-guided auto-labeling is **built and unit-tested, not yet measured on a
-  real batch**: `tools/omr/training/mxl_verdicts.py` confirms or relabels the
-  detector's boxes from the reference and queues the rest for a human. The
-  first measurement (`--score` on the Mahler 5 / Peters batch) decides whether
-  its `TP`s can be admitted without review. Inventory and plan:
-  [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
+## How progress is measured
 
-## Rules of the road
+The project adopted **OMR-NED** (the metric used in published OMR research)
+in August 2026 so its accuracy numbers are comparable to outside work, not
+just to its own history. The current figure and the benchmark it's measured
+on are documented in one place — the OMR-NED section of CLAUDE.md — and a
+test fails if that figure drifts out of sync with the recorded JSON. Don't
+requote it elsewhere; link to that section instead.
 
-- Every change is measured on the benchmark before and after; refused ideas
-  are recorded with their numbers.
-- The accuracy figure lives in one generated place (CLAUDE.md, from
-  `benchmarks/omr-ned-2026-08/current-accuracy.json`).
-- Hand-labeled verdicts are irreplaceable; commit them.
-- Training runs are gated on `tools/omr/training/wtc_forgetting_eval.py`.
+## Where things stand
+
+See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the current snapshot (updated
+most recently 2026-09-02) and [NOTES.md](NOTES.md) for the backlog of
+research ideas not yet scheduled. Both are living documents — check them at
+the start of a session rather than trusting this brief for anything that
+changes week to week.
+
+## Where the work is now (2026-09-03)
+
+- Engraved benchmark: pooled OMR-NED **0.1306 / 2745 edits** over 11 works
+  (the figure lives in CLAUDE.md's OMR-NED section; do not requote it).
+- Scan domain: hollow noteheads are the top lever. All five round-2
+  hollow-notehead batches are labeled (Phase 1 of the labeling survey
+  complete); the gated training run is next.
+- MXL-guided auto-labeling (`tools/omr/training/mxl_verdicts.py`) is built,
+  unit-tested, and measured once on the Brahms 1 / Breitkopf batch: 51 of 56
+  cells pre-filled. Its hollow-notehead signal on that print is weak because
+  the reference spells out tremolo abbreviations as repeated eighths where
+  the page prints one hollow head; see `version_memory.md` for the numbers.
+  Inventory and plan: [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
+
+## Running it
+
+- **Web app:** `docker compose up -d` → http://localhost
+- **CLI:** `python3 -m tools.omr.transcribe score.pdf` — no Docker needed
+- **Production:** a self-hosted VPS via `scripts/deploy.sh` +
+  `docker-compose.prod.yml` (Traefik, Let's Encrypt). This is the deploy
+  path actually in use — see the note in `version_memory.md` about the
+  unused/disabled GitHub Actions Vercel+Railway workflow.
+
+Full setup and environment variables: CLAUDE.md → "Running locally" and
+"Environment variables".

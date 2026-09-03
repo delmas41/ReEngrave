@@ -29,7 +29,9 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 
 **Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
-**Short brief and running change list:** [PROJECT_BRIEF.md](PROJECT_BRIEF.md) and [version_memory.md](version_memory.md) — update both with every commit. Labeling / training-system status as of 2026-09-02: [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
+**Short project overview (non-technical):** see [PROJECT_BRIEF.md](PROJECT_BRIEF.md).
+
+**Running changelog of changes made:** see [version_memory.md](version_memory.md) — update alongside this file and PROJECT_BRIEF.md after every commit. Labeling / training-system status as of 2026-09-02: [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
 
 ---
 
