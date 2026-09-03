@@ -75,6 +75,26 @@ ink-measured parity reproduces Sean's class on **8 of 8** geometry cases (the
 9th being a click-vs-head-centre artifact), and this fit reproduces the ink
 measurement.
 
+### ✅ The strongest evidence for the comb is where the two methods DISAGREE
+
+Cross-checked independently on review of this work (different code, different
+method: the `#7` probes' own per-line matcher against this comb). Six of seven
+cells agree within 0.063 spaces. The seventh, `dvorak9-p8-sys0-s4-m12`, differs
+by **−1.004 spaces — exactly one line spacing**, and that is not a
+disagreement: it is the per-line matcher aliasing, the failure FINDINGS §1
+already documents on this very cell ("reads +0.45 on lines 0–3 and −0.52 on
+line 4 — that is ALIASING"). Against the *adjudicated* truth of −0.55 the comb
+reads −0.554.
+
+So the two methods part company on one cell, by precisely the quantum that
+names the fault, and the comb is the one that lands on the truth there. **A
+mechanism agreeing with an alternative everywhere proves only that both are
+consistent; agreeing where the alternative is independently known to fail is
+what distinguishes them.** This is recorded here rather than left in the PR
+review thread it was raised in, for the reason this repo keeps rediscovering:
+the tree outranks the ledger, and a finding in a review comment is a finding
+on its way to being lost.
+
 ⚠️ **The two SILENT wrong labels were then measured directly rather than
 inferred from that chain, and the first attempt got one of them wrong.** They
 are the cases this work exists to have prevented, so "it would have caught
