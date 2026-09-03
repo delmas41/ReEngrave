@@ -104,6 +104,15 @@ That bounds every single-offset repair — this diagnosis' suggestion,
 SEPARATE phase-1 defect sitting underneath the tilt one. It is also not
 academic: this is the cell carrying one of §3's two silent wrong labels.
 
+**But the bound is narrow, which is why it is not worth building for.**
+Measured over 93 five-line staves on four warped pages of four editions
+(`RESULTS_TILT_COST.md` §5): modeled-spacing irregularity — max gap deviation
+over mean gap — has median **0.037**, p90 **0.065**, seven staves past 0.10,
+and exactly **one past 0.15**, s20 itself at 0.200. So distortion is roughly
+**1% of staves**, four-of-five row coverage is enough to locate them anyway,
+and the per-cell slope or per-row fit floated below is not yet worth the
+complexity. Re-open that only if a corpus turns up where the tail is fatter.
+
 Signs differ per staff (brahms/dvorak rise rightward, mahler/beet5hr fall,
 schehe bows at the left), so this is per-staff tilt/bow of the scan, not a
 global rotation the deskew could remove. mahler1-p4 s0 and s1 — two adjacent
