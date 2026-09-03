@@ -75,7 +75,8 @@ def _det(cls: str, pitch: str | None, x: int, y: int, *, dur: float | None = 1.0
 
 
 def _measure(idx: int, dets: list[dict]) -> dict:
-    return {"measure_index": idx, "bbox_page_px": [idx * 1000, 0, 1000, 600],
+    # bbox_page_px is [x0, y0, x1, y1] — the measure's page box, not [x, y, w, h].
+    return {"measure_index": idx, "bbox_page_px": [idx * 1000, 0, idx * 1000 + 1000, 600],
             "staff_line_ys_canonical": LINES, "upscale_factor": 1.0, "clef": "treble",
             "detections": dets}
 
@@ -277,6 +278,7 @@ def test_weak_alignment_abstains(bench, truth) -> None:
     s = _run(bench, truth, _windows(first=3, last=None), write=True)
     c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
     assert c["status"] == "abstained" and "weak alignment" in c["reason"]
+    assert c["alignment"]["geometry"]["width_ratio"] == pytest.approx(1.0)
 
 
 def test_reading_with_no_notes_yields_hints_only(bench, truth) -> None:
@@ -552,3 +554,40 @@ def test_percussion_part_falls_back_to_step_keys_on_both_sides(tmp_path: Path) -
     assert c["status"] == "prefilled" and c["alignment"]["match"] == "step"
     assert c["alignment"]["truth_keys"] == ["G3", "B3"] and c["alignment"]["pairs"] == [(0, 0), (1, 1)]
     assert c["alignment"]["geometry"]["width_ratio"] == pytest.approx(1.0)
+
+
+def test_neighbour_staff_heads_do_not_sink_the_alignment(bench, truth) -> None:
+    """A flute bar of 3 reference notes read with 12 extra heads from the
+    staves above and below (positions far outside the staff): the 3 real
+    heads still confirm, the 12 stay pending as extra hints."""
+    tr = _transcription()
+    m0 = tr["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+    m0["detections"] = [d for d in m0["detections"] if d["pitch"] != "A5"]
+    extra = []
+    for k in range(6):
+        extra.append(_det("noteheadBlackOnLine", "C3", 100 + 120 * k, 780))    # cy 800 → P14
+        extra.append(_det("noteheadBlackInSpace", "C7", 120 + 120 * k, -520))  # cy -500 → P-12
+    m0["detections"].extend(extra)
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=True)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
+    assert c["status"] == "prefilled"
+    assert c["alignment"]["matched"] == 2 and c["alignment"]["n_truth"] == 3
+    assert c["alignment"]["n_pred"] == 14 and c["alignment"]["n_pred_in_range"] == 2
+    assert c["n_hints_extra"] == 12
+    v = _verdict(bench, "fx-p4-sys0-s0-m0")
+    by = {d["id"]: d for d in v["detections"]}
+    assert by["D0"]["verdict"] == "WRONG_CATEGORY" and by["D1"]["verdict"] == "TP"
+
+
+def test_an_empty_reading_yields_hints_not_an_abstention(bench, truth) -> None:
+    """Flute staff condensed to parts [0, 1]: truth m2 is B4 C5 (part 1) with
+    the rests dropped; the reading of that bar is one whole rest, which a
+    condensed bar ignores. Nothing to align — the two notes become hints."""
+    tr = _transcription()
+    rows = [dict(_windows()[0], staves=[{"name": "Fl", "parts": [0, 1]}, {"name": "Ob", "parts": [1]}])]
+    windows = mv.load_windows(_windows_file(bench.parent, rows))
+    s = mv.run(bench, tr, truth, windows, write=True)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m1")
+    assert c["status"] == "prefilled" and "hints only" in c["reason"]
+    assert c["n_hints_missing"] == 2 and c["n_tp"] == 0

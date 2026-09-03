@@ -257,11 +257,11 @@ def frame_map(measure: dict, entry: dict) -> FrameMap:
     if len(t_lines) >= 5 and len(b_lines) >= 5 and t_lines[-1] > t_lines[0]:
         fm.sy = (b_lines[-1] - b_lines[0]) / (t_lines[-1] - t_lines[0])
         fm.ty0, fm.by0 = float(t_lines[0]), float(b_lines[0])
-    bp = measure.get("bbox_page_px")
+    bp = measure.get("bbox_page_px")      # [x0, y0, x1, y1] in page pixels
     up = measure.get("upscale_factor")
     b_w = entry.get("cell_canonical_w")
     if bp and up and b_w:
-        t_w = bp[2] * up
+        t_w = (bp[2] - bp[0]) * up
         if t_w > 0:
             fm.sx = b_w / t_w
     elif fm.sy != 1.0:
@@ -485,18 +485,37 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     width = int(entry.get("cell_canonical_w") or 0)
 
     out = CellPrefill(cell_id, "prefilled", measure_number=number, parts=list(spec.parts))
-    al = align_tokens(t_tokens, p_tokens)
+    # A cell is cut with air above and below its staff, and on a conductor's
+    # page that air holds the neighbours' notes — a flute bar of 4 notes read
+    # 21 heads, with positions 7 spaces below the staff. Only heads within
+    # the reference's own vertical range (plus a step either side) take part
+    # in the alignment; the rest stay pending and become "extra" hints.
+    in_range = list(range(len(p_tokens)))
+    if cell_match == "position":
+        t_pos = [int(t.key[1:]) for t in t_tokens if t.key.startswith("P")]
+        if t_pos:
+            lo, hi = min(t_pos) - 2, max(t_pos) + 2
+            in_range = [i for i, t in enumerate(p_tokens)
+                        if not t.key.startswith("P") or lo <= int(t.key[1:]) <= hi]
+    al_sub = align_tokens(t_tokens, [p_tokens[i] for i in in_range])
+    al = Alignment(pairs=[(ti, in_range[pj]) for ti, pj in al_sub.pairs],
+                   truth_unmatched=al_sub.truth_unmatched,
+                   pred_unmatched=[i for i in range(len(p_tokens))
+                                   if i not in {in_range[pj] for _, pj in al_sub.pairs}],
+                   n_truth=len(t_tokens), n_pred=len(p_tokens))
+    recall = (al.matched / al.n_truth) if al.n_truth else None
     # Is the batch's cell the same bar as the transcription's measure? The
     # batch was cut by its own segmentation run; if a barline moved between
     # then and now, the widths disagree once both are put on the same scale.
-    bp = measure.get("bbox_page_px") or [0, 0, 0, 0]
+    bp = measure.get("bbox_page_px") or [0, 0, 0, 0]   # [x0, y0, x1, y1]
     up = measure.get("upscale_factor") or 1.0
-    t_w = bp[2] * up
+    t_w = (bp[2] - bp[0]) * up
     b_w = float(entry.get("cell_canonical_w") or 0)
     width_ratio = round(b_w / (t_w * fm.sy), 3) if t_w and fm.sy else None
     out.alignment = {
         "n_truth": al.n_truth, "n_pred": al.n_pred, "matched": al.matched,
-        "strength": None if al.strength is None else round(al.strength, 3),
+        "n_pred_in_range": len(in_range),
+        "strength": None if recall is None else round(recall, 3),
         "match": cell_match,
         "truth_keys": [t.key for t in t_tokens],
         "pred_keys": [t.key for t in p_tokens],
@@ -519,12 +538,19 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
 
     if not p_tokens and t_tokens:
         out.reason = "no notes in the reading — hints only"
-    elif al.strength is not None and (al.strength < min_strength or al.matched == 0):
+    elif not t_tokens:
+        # Nothing to confirm; every read head stays pending, marked extra.
+        out.reason = ("reference has no notes in this bar" if p_tokens
+                      else "nothing to align — reference and reading both empty")
+    elif recall is not None and (recall < min_strength or al.matched < min(2, al.n_truth)):
+        # The gate is RECALL of the reference — did the reading find the
+        # notes the bar holds — not a share of the longer side, because extra
+        # heads cost nothing (they stay pending) while a missed bar costs a
+        # wrong verdict.
         out.status = "abstained"
-        out.reason = f"weak alignment: {al.matched} of {max(al.n_truth, al.n_pred)} matched"
+        out.reason = (f"weak alignment: {al.matched} of {al.n_truth} reference notes matched"
+                      f" ({len(in_range)} of {al.n_pred} read heads in the bar's range)")
         return out
-    elif al.strength is None:
-        out.reason = "nothing to align — reference and reading both empty"
 
     matched_x: list[tuple[float, float]] = []
     matched_pred: set[int] = set()
@@ -861,7 +887,7 @@ def _print_summary(summary: dict) -> None:
               "measure are the same bar):")
         for c in abstained:
             al = c.get("alignment") or {}
-            strength = "" if al.get("strength") is None else f"  {al['matched']}/{max(al['n_truth'], al['n_pred'])}"
+            strength = "" if al.get("strength") is None else f"  {al['matched']}/{al['n_truth']} of truth"
             g = al.get("geometry") or {}
             wr = g.get("width_ratio")
             print(f"    {c['cell_id']}  m{c.get('measure_number')}{strength}"

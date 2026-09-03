@@ -5,6 +5,12 @@ where one exists. Update this file with every commit.
 
 ## 2026-09-03
 
+- **pre-fill: the gate is recall of the reference, and neighbours' heads stay out of the
+  alignment** — a flute bar of 4 reference notes read 21 heads, 17 of them the oboe's and
+  piccolo's from the cell's padding (positions 7 spaces off the staff); only heads within the
+  reference's own vertical range align, and a bar passes when ≥ 50% of its reference notes
+  (and at least 2) are found. Also fixed: `bbox_page_px` is `[x0, y0, x1, y1]`, not
+  `[x, y, w, h]` — the x-scale into the batch frame and the width check were wrong.
 - **pre-fill: diagnostics for the abstentions** — `--debug-cell` prints both token sequences
   and the geometry for a cell; every cell records a width ratio that says whether the batch
   cell and the transcription measure are the same bar (the batch was cut by a separate
