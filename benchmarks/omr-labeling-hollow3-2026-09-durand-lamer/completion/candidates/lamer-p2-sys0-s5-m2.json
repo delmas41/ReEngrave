@@ -1,0 +1,50 @@
+{
+  "cell_id": "lamer-p2-sys0-s5-m2",
+  "n_hollow": 1,
+  "candidates": [
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 1595,
+        "y": 1026,
+        "w": 89,
+        "h": 58
+      },
+      "confidence": 0.8775
+    },
+    {
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "bbox": {
+        "x": 202,
+        "y": 944,
+        "w": 92,
+        "h": 75
+      },
+      "confidence": 0.8634
+    },
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 704,
+        "y": 967,
+        "w": 92,
+        "h": 78
+      },
+      "confidence": 0.8546
+    },
+    {
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "bbox": {
+        "x": 1164,
+        "y": 1005,
+        "w": 99,
+        "h": 79
+      },
+      "confidence": 0.8264
+    }
+  ]
+}

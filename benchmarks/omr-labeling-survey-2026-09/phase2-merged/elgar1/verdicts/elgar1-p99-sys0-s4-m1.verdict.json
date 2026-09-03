@@ -1,0 +1,19 @@
+{
+  "cell_id": "elgar1-p99-sys0-s4-m1",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 248,
+        "y": 448,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ]
+}

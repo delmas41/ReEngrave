@@ -1,0 +1,61 @@
+{
+  "cell_id": "mahler1-p4-sys0-s7-m6",
+  "n_hollow": 2,
+  "candidates": [
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 623,
+        "y": 690,
+        "w": 122,
+        "h": 112
+      },
+      "confidence": 0.7961
+    },
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 154,
+        "y": 789,
+        "w": 119,
+        "h": 100
+      },
+      "confidence": 0.7741
+    },
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 152,
+        "y": 696,
+        "w": 122,
+        "h": 97
+      },
+      "confidence": 0.7628
+    },
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 620,
+        "y": 584,
+        "w": 128,
+        "h": 117
+      },
+      "confidence": 0.6837
+    },
+    {
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "bbox": {
+        "x": 983,
+        "y": 604,
+        "w": 57,
+        "h": 63
+      },
+      "confidence": 0.5672
+    }
+  ]
+}

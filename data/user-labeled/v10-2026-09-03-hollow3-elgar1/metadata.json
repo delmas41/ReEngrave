@@ -1,0 +1,221 @@
+{
+  "version_name": "v10-2026-09-03-hollow3-elgar1",
+  "created_utc": "2026-09-03T16:56:37+00:00",
+  "labeler": "sean",
+  "description": "Novello (London, English, imslp56155) Elgar 1 hollow noteheads \u2014 Phase 2",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-survey-2026-09/phase2-merged/elgar1/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-survey-2026-09/phase2-merged/elgar1/detections",
+    "manifest": "benchmarks/omr-labeling-survey-2026-09/phase2-merged/elgar1/elgar1-cells.json",
+    "weights_for_class_names": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 15,
+    "n_v1_cells": 0,
+    "n_v2_cells": 15,
+    "n_tp": 4,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 19,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "augmentationDot",
+    "noteheadBlackInSpace",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "elgar1-p100-sys0-s16-m6",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p100-sys0-s3-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p100-sys0-s9-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p100-sys0-s9-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p101-sys0-s10-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p102-sys0-s20-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p102-sys0-s24-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p103-sys0-s23-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p104-sys0-s23-m3",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p105-sys0-s23-m17",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p105-sys0-s24-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p105-sys0-s26-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p99-sys0-s18-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p99-sys0-s22-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p99-sys0-s4-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    }
+  ]
+}

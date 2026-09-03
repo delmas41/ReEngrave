@@ -1,0 +1,31 @@
+{
+  "cell_id": "mahler1-p1-sys0-s12-m8",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 126,
+        "y": 250,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 469,
+        "y": 250,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ]
+}

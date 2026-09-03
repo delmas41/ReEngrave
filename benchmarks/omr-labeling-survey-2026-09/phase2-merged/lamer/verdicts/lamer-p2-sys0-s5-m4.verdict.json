@@ -1,0 +1,19 @@
+{
+  "cell_id": "lamer-p2-sys0-s5-m4",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 209,
+        "y": 604,
+        "w": 121,
+        "h": 71
+      },
+      "notes": ""
+    }
+  ]
+}

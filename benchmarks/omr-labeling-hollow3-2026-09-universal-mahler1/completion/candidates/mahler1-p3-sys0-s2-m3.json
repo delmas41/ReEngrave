@@ -1,0 +1,17 @@
+{
+  "cell_id": "mahler1-p3-sys0-s2-m3",
+  "n_hollow": 1,
+  "candidates": [
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 984,
+        "y": 942,
+        "w": 118,
+        "h": 112
+      },
+      "confidence": 0.7208
+    }
+  ]
+}

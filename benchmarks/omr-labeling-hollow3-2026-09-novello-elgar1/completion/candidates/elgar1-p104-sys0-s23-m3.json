@@ -1,0 +1,39 @@
+{
+  "cell_id": "elgar1-p104-sys0-s23-m3",
+  "n_hollow": 2,
+  "candidates": [
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 637,
+        "y": 1092,
+        "w": 134,
+        "h": 108
+      },
+      "confidence": 0.8613
+    },
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 227,
+        "y": 986,
+        "w": 131,
+        "h": 115
+      },
+      "confidence": 0.7296
+    },
+    {
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "bbox": {
+        "x": 422,
+        "y": 1022,
+        "w": 37,
+        "h": 42
+      },
+      "confidence": 0.7077
+    }
+  ]
+}

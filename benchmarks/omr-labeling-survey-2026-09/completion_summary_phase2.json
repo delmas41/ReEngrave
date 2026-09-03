@@ -1,0 +1,487 @@
+{
+  "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+  "conf": 0.5,
+  "device": "cpu",
+  "batches": {
+    "omr-labeling-hollow3-2026-09-durand-lamer": {
+      "cells_completed": 11,
+      "kept_by_class": {
+        "noteheadBlackInSpace": 6,
+        "noteheadBlackOnLine": 8
+      },
+      "total_kept": 14,
+      "per_cell": {
+        "lamer-p2-sys0-s2-m1": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "lamer-p2-sys0-s4-m3": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "lamer-p2-sys0-s5-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "lamer-p2-sys0-s5-m2": {
+          "n_hollow": 1,
+          "n_candidates": 4,
+          "classes": [
+            "noteheadBlackInSpace",
+            "noteheadBlackOnLine"
+          ]
+        },
+        "lamer-p2-sys0-s5-m4": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "lamer-p3-sys1-s12-m1": {
+          "n_hollow": 2,
+          "n_candidates": 4,
+          "classes": [
+            "noteheadBlackInSpace",
+            "noteheadBlackOnLine"
+          ]
+        },
+        "lamer-p3-sys1-s14-m2": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "lamer-p4-sys0-s3-m4": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "lamer-p4-sys0-s5-m1": {
+          "n_hollow": 2,
+          "n_candidates": 2,
+          "classes": [
+            "noteheadBlackInSpace",
+            "noteheadBlackOnLine"
+          ]
+        },
+        "lamer-p5-sys0-s2-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "lamer-p5-sys0-s5-m2": {
+          "n_hollow": 2,
+          "n_candidates": 4,
+          "classes": [
+            "noteheadBlackInSpace",
+            "noteheadBlackOnLine"
+          ]
+        }
+      }
+    },
+    "omr-labeling-hollow3-2026-09-jurgenson-tchaikovsky1": {
+      "cells_completed": 18,
+      "kept_by_class": {},
+      "total_kept": 0,
+      "per_cell": {
+        "tchaik1-p41-sys0-s1-m2": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p42-sys1-s15-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p42-sys1-s15-m4": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p42-sys1-s15-m6": {
+          "n_hollow": 4,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p42-sys1-s16-m7": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys0-s1-m1": {
+          "n_hollow": 4,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys0-s1-m3": {
+          "n_hollow": 4,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys0-s2-m0": {
+          "n_hollow": 3,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys0-s3-m0": {
+          "n_hollow": 4,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys0-s3-m2": {
+          "n_hollow": 4,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys1-s10-m0": {
+          "n_hollow": 3,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys1-s12-m0": {
+          "n_hollow": 3,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p43-sys1-s13-m0": {
+          "n_hollow": 4,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p44-sys0-s0-m4": {
+          "n_hollow": 3,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p44-sys0-s0-m5": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p44-sys0-s8-m4": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p44-sys1-s10-m1": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "tchaik1-p45-sys1-s11-m1": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        }
+      }
+    },
+    "omr-labeling-hollow3-2026-09-novello-elgar1": {
+      "cells_completed": 15,
+      "kept_by_class": {
+        "noteheadBlackInSpace": 3,
+        "augmentationDot": 1
+      },
+      "total_kept": 4,
+      "per_cell": {
+        "elgar1-p100-sys0-s16-m6": {
+          "n_hollow": 1,
+          "n_candidates": 1,
+          "classes": [
+            "noteheadBlackInSpace"
+          ]
+        },
+        "elgar1-p100-sys0-s3-m6": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p100-sys0-s9-m1": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p100-sys0-s9-m2": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p101-sys0-s10-m9": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p102-sys0-s20-m4": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p102-sys0-s24-m6": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p103-sys0-s23-m5": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p104-sys0-s23-m3": {
+          "n_hollow": 2,
+          "n_candidates": 3,
+          "classes": [
+            "augmentationDot",
+            "noteheadBlackInSpace"
+          ]
+        },
+        "elgar1-p105-sys0-s23-m17": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p105-sys0-s24-m4": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p105-sys0-s26-m8": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p99-sys0-s18-m2": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p99-sys0-s22-m2": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "elgar1-p99-sys0-s4-m1": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        }
+      }
+    },
+    "omr-labeling-hollow3-2026-09-universal-mahler1": {
+      "cells_completed": 37,
+      "kept_by_class": {
+        "noteheadBlackInSpace": 8,
+        "noteheadBlackOnLine": 5,
+        "augmentationDot": 2
+      },
+      "total_kept": 15,
+      "per_cell": {
+        "mahler1-p1-sys0-s1-m2": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p1-sys0-s12-m8": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p1-sys0-s14-m1": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p1-sys0-s2-m7": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p1-sys0-s7-m6": {
+          "n_hollow": 4,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p1-sys0-s7-m9": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p1-sys0-s8-m5": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s0-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s1-m9": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s11-m2": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s11-m8": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s12-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s7-m0": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s9-m6": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p2-sys0-s9-m7": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p3-sys0-s11-m5": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p3-sys0-s2-m3": {
+          "n_hollow": 1,
+          "n_candidates": 1,
+          "classes": [
+            "noteheadBlackInSpace"
+          ]
+        },
+        "mahler1-p3-sys0-s6-m3": {
+          "n_hollow": 1,
+          "n_candidates": 6,
+          "classes": [
+            "noteheadBlackInSpace",
+            "noteheadBlackOnLine"
+          ]
+        },
+        "mahler1-p3-sys0-s7-m5": {
+          "n_hollow": 1,
+          "n_candidates": 1,
+          "classes": [
+            "noteheadBlackOnLine"
+          ]
+        },
+        "mahler1-p4-sys0-s0-m9": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s1-m9": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s12-m1": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s12-m6": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s13-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s16-m5": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s4-m7": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s6-m5": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p4-sys0-s7-m6": {
+          "n_hollow": 2,
+          "n_candidates": 5,
+          "classes": [
+            "augmentationDot",
+            "noteheadBlackInSpace"
+          ]
+        },
+        "mahler1-p5-sys0-s5-m1": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p5-sys0-s6-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p5-sys0-s6-m2": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p5-sys0-s7-m5": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p5-sys0-s8-m1": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p5-sys1-s14-m5": {
+          "n_hollow": 1,
+          "n_candidates": 2,
+          "classes": [
+            "augmentationDot",
+            "noteheadBlackInSpace"
+          ]
+        },
+        "mahler1-p5-sys1-s15-m1": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p5-sys1-s15-m2": {
+          "n_hollow": 2,
+          "n_candidates": 0,
+          "classes": []
+        },
+        "mahler1-p5-sys1-s17-m0": {
+          "n_hollow": 1,
+          "n_candidates": 0,
+          "classes": []
+        }
+      }
+    }
+  },
+  "grand_kept_by_class": {
+    "noteheadBlackInSpace": 17,
+    "noteheadBlackOnLine": 13,
+    "augmentationDot": 3
+  },
+  "grand_cells": 81,
+  "grand_total_kept": 33
+}

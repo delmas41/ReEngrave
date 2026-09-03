@@ -1,0 +1,17 @@
+{
+  "cell_id": "elgar1-p100-sys0-s16-m6",
+  "n_hollow": 1,
+  "candidates": [
+    {
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "bbox": {
+        "x": 1318,
+        "y": 1230,
+        "w": 141,
+        "h": 125
+      },
+      "confidence": 0.7114
+    }
+  ]
+}

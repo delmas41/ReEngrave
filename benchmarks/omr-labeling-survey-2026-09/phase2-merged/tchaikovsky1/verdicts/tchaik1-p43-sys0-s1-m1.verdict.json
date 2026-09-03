@@ -1,0 +1,55 @@
+{
+  "cell_id": "tchaik1-p43-sys0-s1-m1",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 184,
+        "y": 547,
+        "w": 109,
+        "h": 92
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 195,
+        "y": 184,
+        "w": 109,
+        "h": 92
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 926,
+        "y": 138,
+        "w": 109,
+        "h": 92
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 926,
+        "y": 498,
+        "w": 109,
+        "h": 92
+      },
+      "notes": ""
+    }
+  ]
+}

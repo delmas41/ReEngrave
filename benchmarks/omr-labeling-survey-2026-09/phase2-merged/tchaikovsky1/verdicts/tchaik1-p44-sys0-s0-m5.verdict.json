@@ -1,0 +1,31 @@
+{
+  "cell_id": "tchaik1-p44-sys0-s0-m5",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 53,
+        "y": 139,
+        "w": 153,
+        "h": 90
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 63,
+        "y": 274,
+        "w": 153,
+        "h": 90
+      },
+      "notes": ""
+    }
+  ]
+}
