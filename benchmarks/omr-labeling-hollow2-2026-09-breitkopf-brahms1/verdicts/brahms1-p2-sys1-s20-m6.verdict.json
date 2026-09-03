@@ -1,0 +1,23 @@
+{
+  "cell_id": "brahms1-p2-sys1-s20-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T03:15:48+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 189,
+        "y": 699,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads"
+  ]
+}
