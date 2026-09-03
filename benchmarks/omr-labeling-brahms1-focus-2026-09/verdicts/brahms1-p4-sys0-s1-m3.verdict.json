@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p4-sys0-s1-m3",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:18:01+00:00",
+  "labeled_at_utc": "2026-09-03T21:43:11+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -25,6 +25,18 @@
         "y": 202,
         "w": 118,
         "h": 99
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 109,
+        "y": 87,
+        "w": 109,
+        "h": 326
       },
       "notes": ""
     }

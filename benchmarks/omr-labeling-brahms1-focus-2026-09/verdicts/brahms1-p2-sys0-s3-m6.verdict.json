@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p2-sys0-s3-m6",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:15:34+00:00",
+  "labeled_at_utc": "2026-09-03T21:42:48+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -15,9 +15,22 @@
         "h": 92
       },
       "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1245,
+        "y": 540,
+        "w": 119,
+        "h": 270
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }
