@@ -237,6 +237,12 @@ class Bench:
     def verdicts_dir(self) -> Path:
         return self.root / "verdicts"
 
+    @property
+    def prefill_dir(self) -> Path:
+        """Per-cell output of `training.mxl_verdicts` — the reference-driven
+        pre-fill. Optional: a batch without it behaves exactly as before."""
+        return self.root / "prefill"
+
 
 @dataclass
 class ManifestCache:
@@ -260,6 +266,31 @@ def _load_detections(bench: Bench, cell_id: str) -> list[dict]:
         return []
     data = json.loads(p.read_text())
     return data.get("detections", [])
+
+
+def _load_prefill(bench: Bench, cell_id: str) -> dict | None:
+    """The pre-fill record for a cell (status, reason, alignment, hints), or
+    None where `mxl_verdicts` never ran. Hints are READ-ONLY markers: the
+    reference says a note belongs here and the reading found none. They are
+    never labels — the human draws the box, or decides there is nothing."""
+    p = bench.prefill_dir / f"{cell_id}.json"
+    if not p.exists():
+        return None
+    try:
+        raw = json.loads(p.read_text())
+    except json.JSONDecodeError:
+        return None
+    hints = [h for h in raw.get("hints", []) if isinstance(h, dict)]
+    return {
+        "status": raw.get("status"),
+        "reason": raw.get("reason", ""),
+        "measure_number": raw.get("measure_number"),
+        "alignment": raw.get("alignment", {}),
+        "n_tp": raw.get("n_tp", 0),
+        "n_wrong_category": raw.get("n_wrong_category", 0),
+        "n_added": raw.get("n_added", 0),
+        "hints": hints,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -1089,6 +1120,7 @@ def create_app(bench: Bench | Path) -> FastAPI:
             entry = manifest.by_id[cid]
             vp = bench.verdicts_dir / f"{cid}.verdict.json"
             status = _summarize_cell_status(bench, cid, vp)
+            pre = _load_prefill(bench, cid)
             out.append(
                 {
                     "cell_id": cid,
@@ -1106,6 +1138,11 @@ def create_app(bench: Bench | Path) -> FastAPI:
                     "has_verdict": status["has_verdict"],
                     "schema_version": status["schema_version"],
                     "inspected_passes": status["inspected_passes"],
+                    # Queue mode: how much the reference left for the human.
+                    "prefill_status": pre["status"] if pre else None,
+                    "n_hints": len(pre["hints"]) if pre else 0,
+                    "n_hints_missing": (sum(1 for h in pre["hints"] if h.get("kind") == "missing")
+                                        if pre else 0),
                 }
             )
         return out
@@ -1248,6 +1285,9 @@ def create_app(bench: Bench | Path) -> FastAPI:
             "page_cells": same_page_cells,     # for the topbar strip
             "index": idx,
             "total": len(manifest.ordered_ids),
+            # Reference-driven pre-fill, when `mxl_verdicts` has run on this
+            # batch. `hints` draw as ghost markers; nothing here is a label.
+            "prefill": _load_prefill(bench, cell_id),
         }
 
     @app.get("/api/cell/{cell_id}/verdict")

@@ -1,0 +1,55 @@
+{
+  "cell_id": "brahms1-p2-sys1-s20-m6",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 21,
+  "parts": [
+    13,
+    14
+  ],
+  "alignment": {
+    "n_truth": 0,
+    "n_pred": 1,
+    "matched": 0,
+    "n_truth_notes": 0,
+    "matched_notes": 0,
+    "exact_notes": 0,
+    "near_pairs": [],
+    "n_pred_in_range": 1,
+    "strength": null,
+    "strength_exact": null,
+    "match": "step",
+    "truth_keys": [],
+    "pred_keys": [
+      "F4"
+    ],
+    "pairs": [],
+    "geometry": {
+      "transcription_w": 1604,
+      "batch_w": 1603,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 0,
+  "n_wrong_category": 0,
+  "n_added": 0,
+  "n_hints_missing": 0,
+  "n_hints_extra": 1,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read F4",
+      "bbox": {
+        "x": 165,
+        "y": 693,
+        "w": 158,
+        "h": 124
+      },
+      "class": "noteheadHalfOnLine"
+    }
+  ]
+}

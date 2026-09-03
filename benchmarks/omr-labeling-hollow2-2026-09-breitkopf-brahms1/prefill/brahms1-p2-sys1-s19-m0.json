@@ -1,0 +1,163 @@
+{
+  "cell_id": "brahms1-p2-sys1-s19-m0",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 15,
+  "parts": [
+    9,
+    10
+  ],
+  "alignment": {
+    "n_truth": 0,
+    "n_pred": 10,
+    "matched": 0,
+    "n_truth_notes": 0,
+    "matched_notes": 0,
+    "exact_notes": 0,
+    "near_pairs": [],
+    "n_pred_in_range": 10,
+    "strength": null,
+    "strength_exact": null,
+    "match": "step",
+    "truth_keys": [],
+    "pred_keys": [
+      "F6",
+      "D4",
+      "E4",
+      "A4",
+      "B4",
+      "C5",
+      "C5",
+      "E5",
+      "F5",
+      "G5"
+    ],
+    "pairs": [],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2047,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 0,
+  "n_wrong_category": 0,
+  "n_added": 0,
+  "n_hints_missing": 0,
+  "n_hints_extra": 10,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read F6",
+      "bbox": {
+        "x": 407,
+        "y": 0,
+        "w": 42,
+        "h": 41
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read D4",
+      "bbox": {
+        "x": 2028,
+        "y": 559,
+        "w": 18,
+        "h": 44
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read E4",
+      "bbox": {
+        "x": 2026,
+        "y": 532,
+        "w": 20,
+        "h": 35
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read A4",
+      "bbox": {
+        "x": 2029,
+        "y": 425,
+        "w": 17,
+        "h": 45
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read B4",
+      "bbox": {
+        "x": 2026,
+        "y": 393,
+        "w": 19,
+        "h": 35
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read C5",
+      "bbox": {
+        "x": 2027,
+        "y": 363,
+        "w": 19,
+        "h": 37
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read C5",
+      "bbox": {
+        "x": 2028,
+        "y": 342,
+        "w": 18,
+        "h": 31
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read E5",
+      "bbox": {
+        "x": 2029,
+        "y": 293,
+        "w": 17,
+        "h": 34
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read F5",
+      "bbox": {
+        "x": 2028,
+        "y": 261,
+        "w": 16,
+        "h": 25
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read G5",
+      "bbox": {
+        "x": 2028,
+        "y": 231,
+        "w": 17,
+        "h": 28
+      },
+      "class": "noteheadBlackOnLine"
+    }
+  ]
+}

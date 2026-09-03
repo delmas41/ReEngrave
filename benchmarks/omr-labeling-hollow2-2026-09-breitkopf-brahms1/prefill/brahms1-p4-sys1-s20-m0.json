@@ -1,0 +1,41 @@
+{
+  "cell_id": "brahms1-p4-sys1-s20-m0",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 48,
+  "parts": [
+    11,
+    12
+  ],
+  "alignment": {
+    "n_truth": 0,
+    "n_pred": 0,
+    "matched": 0,
+    "n_truth_notes": 0,
+    "matched_notes": 0,
+    "exact_notes": 0,
+    "near_pairs": [],
+    "n_pred_in_range": 0,
+    "strength": null,
+    "strength_exact": null,
+    "match": "step",
+    "truth_keys": [],
+    "pred_keys": [],
+    "pairs": [],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 0,
+  "n_wrong_category": 0,
+  "n_added": 0,
+  "n_hints_missing": 0,
+  "n_hints_extra": 0,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [],
+  "hints": []
+}

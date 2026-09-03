@@ -1,0 +1,212 @@
+{
+  "cell_id": "brahms1-p2-sys0-s3-m6",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 14,
+  "parts": [
+    6,
+    7
+  ],
+  "alignment": {
+    "n_truth": 6,
+    "n_pred": 5,
+    "matched": 4,
+    "n_truth_notes": 6,
+    "matched_notes": 4,
+    "exact_notes": 4,
+    "near_pairs": [],
+    "n_pred_in_range": 5,
+    "strength": 0.667,
+    "strength_exact": 0.667,
+    "match": "position",
+    "truth_keys": [
+      "P3",
+      "P-4",
+      "P-1",
+      "P-4",
+      "P4",
+      "P-4"
+    ],
+    "pred_keys": [
+      "P3",
+      "P-4",
+      "P-1",
+      "P-1",
+      "P4"
+    ],
+    "pairs": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 3,
+  "n_wrong_category": 0,
+  "n_added": 3,
+  "n_hints_missing": 2,
+  "n_hints_extra": 1,
+  "n_conflicts": 1,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "E3",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "Eb3",
+        "duration_type": "eighth",
+        "detection_index": 14
+      },
+      "bbox": {
+        "x": 198,
+        "y": 632,
+        "w": 126,
+        "h": 107
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "Bb3",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 0.5
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "Bb3",
+        "duration_type": "eighth",
+        "detection_index": 5
+      },
+      "bbox": {
+        "x": 1002,
+        "y": 445,
+        "w": 119,
+        "h": 98
+      },
+      "detection_id": "M1",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "Db3",
+        "type": "quarter",
+        "dots": 0,
+        "duration_ql": 1.0,
+        "onset_ql": 2.0
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "Db3",
+        "duration_type": "quarter",
+        "detection_index": 3
+      },
+      "bbox": {
+        "x": 1386,
+        "y": 673,
+        "w": 124,
+        "h": 111
+      },
+      "detection_id": "M2",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "conflict",
+      "label": "noteheadHalfOnLine vs E4 eighth",
+      "bbox": {
+        "x": 192,
+        "y": 308,
+        "w": 145,
+        "h": 110
+      },
+      "class": "noteheadHalfOnLine",
+      "pitch": "E4",
+      "type": "eighth"
+    },
+    {
+      "kind": "extra",
+      "label": "read Bb3",
+      "bbox": {
+        "x": 524,
+        "y": 445,
+        "w": 124,
+        "h": 108
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "missing",
+      "label": "E4 quarter.",
+      "class": "noteheadBlackOnLine",
+      "pitch": "E4",
+      "type": "quarter",
+      "dots": 1,
+      "tremolo_run": null,
+      "onset_ql": 0.5,
+      "bbox": {
+        "x": 1006,
+        "y": 317,
+        "w": 110,
+        "h": 92
+      },
+      "x_estimated": true
+    },
+    {
+      "kind": "missing",
+      "label": "E4 quarter",
+      "class": "noteheadBlackOnLine",
+      "pitch": "E4",
+      "type": "quarter",
+      "dots": 0,
+      "tremolo_run": null,
+      "onset_ql": 2.0,
+      "bbox": {
+        "x": 1208,
+        "y": 317,
+        "w": 110,
+        "h": 92
+      },
+      "x_estimated": true
+    }
+  ]
+}

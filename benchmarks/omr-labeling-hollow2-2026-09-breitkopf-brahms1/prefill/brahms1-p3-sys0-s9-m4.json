@@ -1,0 +1,161 @@
+{
+  "cell_id": "brahms1-p3-sys0-s9-m4",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 27,
+  "parts": [
+    16
+  ],
+  "alignment": {
+    "n_truth": 3,
+    "n_pred": 4,
+    "matched": 3,
+    "n_truth_notes": 3,
+    "matched_notes": 3,
+    "exact_notes": 2,
+    "near_pairs": [
+      [
+        0,
+        1
+      ]
+    ],
+    "n_pred_in_range": 4,
+    "strength": 1.0,
+    "strength_exact": 0.667,
+    "match": "position",
+    "truth_keys": [
+      "P-5",
+      "P-6",
+      "P-6"
+    ],
+    "pred_keys": [
+      "P-6",
+      "P-6",
+      "P-6",
+      "P-6"
+    ],
+    "pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 3,
+  "n_wrong_category": 0,
+  "n_added": 3,
+  "n_hints_missing": 0,
+  "n_hints_extra": 1,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": true,
+      "truth": {
+        "pitch": "D6",
+        "type": "quarter",
+        "dots": 0,
+        "duration_ql": 1.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "E6",
+        "duration_type": "eighth",
+        "detection_index": 0
+      },
+      "bbox": {
+        "x": 657,
+        "y": 194,
+        "w": 125,
+        "h": 106
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "Eb6",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 1.0
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "E6",
+        "duration_type": "quarter",
+        "detection_index": 3
+      },
+      "bbox": {
+        "x": 1004,
+        "y": 194,
+        "w": 124,
+        "h": 99
+      },
+      "detection_id": "M1",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "E6",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 2.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "E6",
+        "duration_type": "eighth",
+        "detection_index": 4
+      },
+      "bbox": {
+        "x": 1664,
+        "y": 195,
+        "w": 118,
+        "h": 97
+      },
+      "detection_id": "M2",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read E6",
+      "bbox": {
+        "x": 227,
+        "y": 231,
+        "w": 121,
+        "h": 92
+      },
+      "class": "noteheadBlackInSpace"
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "cell_id": "brahms1-p4-sys0-s2-m0",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 38,
+  "parts": [
+    4,
+    5
+  ],
+  "alignment": {
+    "n_truth": 3,
+    "n_pred": 3,
+    "matched": 3,
+    "n_truth_notes": 3,
+    "matched_notes": 3,
+    "exact_notes": 3,
+    "near_pairs": [],
+    "n_pred_in_range": 3,
+    "strength": 1.0,
+    "strength_exact": 1.0,
+    "match": "position",
+    "truth_keys": [
+      "P9",
+      "P4",
+      "P2"
+    ],
+    "pred_keys": [
+      "P9",
+      "P4",
+      "P2"
+    ],
+    "pairs": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 3,
+  "n_wrong_category": 0,
+  "n_added": 3,
+  "n_hints_missing": 0,
+  "n_hints_extra": 0,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "D4",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "D4",
+        "duration_type": "eighth",
+        "detection_index": 13
+      },
+      "bbox": {
+        "x": 871,
+        "y": 630,
+        "w": 98,
+        "h": 90
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "B4",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "B4",
+        "duration_type": "dotted_eighth",
+        "detection_index": 7
+      },
+      "bbox": {
+        "x": 1639,
+        "y": 435,
+        "w": 107,
+        "h": 89
+      },
+      "detection_id": "M1",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "D5",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "D5",
+        "duration_type": "dotted_eighth",
+        "detection_index": 11
+      },
+      "bbox": {
+        "x": 1638,
+        "y": 347,
+        "w": 107,
+        "h": 73
+      },
+      "detection_id": "M2",
+      "iou": null
+    }
+  ],
+  "hints": []
+}

@@ -85,6 +85,7 @@ async function load() {
 
   await loadImage();
   renderDetectionList();
+  renderHintsPanel();
   renderOverlay();
   selectFirstPending();
 }
@@ -441,12 +442,101 @@ function renderOverlay() {
     const style = addedBoxStyle(h);
     drawBox(h.bbox, style.color, style.label, state.selectedId === h.id, true);
   }
+  renderHintsOverlay();
   if (state.mode === "draw-bbox" && state.drawStart && state.drawCur) {
     const x = Math.min(state.drawStart.x, state.drawCur.x);
     const y = Math.min(state.drawStart.y, state.drawCur.y);
     const w = Math.abs(state.drawCur.x - state.drawStart.x);
     const h = Math.abs(state.drawCur.y - state.drawStart.y);
     drawBox({ x, y, w, h }, "#1976d2", "», dragging", true, false, [4, 4]);
+  }
+}
+
+// ---------------------------------------------------------------- hints ---
+//
+// Ghost markers from the reference-driven pre-fill (`mxl_verdicts`). A
+// "missing" hint says the reference has a note here that the reading never
+// found — its pitch and value are known, its x is ESTIMATED from the
+// neighbours, so the marker is a dotted outline and a name, never a box the
+// converter would export. An "extra" hint marks a note the reading found
+// that the reference does not contain. Neither is a label; the human still
+// draws or decides. Toggle with `h`.
+
+const HINT_COLORS = { missing: "#8e6c00", extra: "#9e9e9e", conflict: "#b00020" };
+
+function hintsFor() {
+  const pre = state.cell && state.cell.prefill;
+  return pre && Array.isArray(pre.hints) ? pre.hints : [];
+}
+
+function renderHintsOverlay() {
+  if (state.hideHints) return;
+  const s = state.scale;
+  for (const h of hintsFor()) {
+    const b = h.bbox;
+    if (!b) continue;
+    const color = HINT_COLORS[h.kind] || "#888";
+    const cx = (b.x + b.w / 2) * s;
+    const cy = (b.y + b.h / 2) * s;
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([2, 3]);
+    if (h.kind === "missing") {
+      // An ellipse the size of a notehead, at the staff position the pitch
+      // names — the y is exact, the x is a guess and the dashes say so.
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, Math.max(4, (b.w / 2) * s), Math.max(3, (b.h / 2) * s), 0, 0, Math.PI * 2);
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(cx - 6, cy - 6); ctx.lineTo(cx + 6, cy + 6);
+      ctx.moveTo(cx + 6, cy - 6); ctx.lineTo(cx - 6, cy + 6);
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.font = "10px ui-monospace, monospace";
+    ctx.fillStyle = color;
+    ctx.fillText(`? ${h.label}`, b.x * s, Math.max(10, b.y * s - 3));
+    ctx.restore();
+  }
+}
+
+function renderHintsPanel() {
+  const panel = $("hints-panel");
+  const ul = $("hints-ul");
+  if (!panel || !ul) return;
+  const pre = state.cell && state.cell.prefill;
+  const hints = hintsFor();
+  if (!pre) {
+    panel.hidden = true;
+    return;
+  }
+  panel.hidden = false;
+  const head = $("hints-head");
+  if (head) {
+    const al = pre.alignment || {};
+    const meas = pre.measure_number != null ? `m${pre.measure_number} · ` : "";
+    head.textContent =
+      `${meas}${pre.status}` +
+      (pre.reason ? ` — ${pre.reason}` : "") +
+      (al.matched != null ? ` · matched ${al.matched}/${Math.max(al.n_truth || 0, al.n_pred || 0)}` : "") +
+      (pre.n_tp || pre.n_wrong_category
+        ? ` · confirmed ${pre.n_tp || 0}, relabelled ${pre.n_wrong_category || 0}` : "");
+  }
+  ul.innerHTML = "";
+  for (const h of hints) {
+    const li = document.createElement("li");
+    li.className = `hint hint-${h.kind}`;
+    li.textContent = (h.kind === "missing" ? "missing: " : h.kind === "conflict" ? "CONFLICT: " : "extra: ") + h.label +
+      (h.class ? ` (${h.class})` : "") + (h.x_estimated ? " · x approx." : "");
+    ul.appendChild(li);
+  }
+  if (!hints.length) {
+    const li = document.createElement("li");
+    li.className = "muted";
+    li.textContent = "nothing missing, nothing extra";
+    ul.appendChild(li);
   }
 }
 
@@ -1113,6 +1203,11 @@ document.addEventListener("keydown", (evt) => {
     setVerdict(state.selectedId, "FP");
     advanceToNextPending();
     evt.preventDefault();
+  } else if (key === "h") {
+    // Reference hints on/off. They are markers, not boxes; hiding them never
+    // changes the verdict.
+    state.hideHints = !state.hideHints;
+    renderOverlay();
   } else if (key === "u" && kind === "detection") {
     setVerdict(state.selectedId, "unsure");
     advanceToNextPending();

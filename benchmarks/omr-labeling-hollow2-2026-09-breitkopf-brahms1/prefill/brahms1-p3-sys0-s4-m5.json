@@ -1,0 +1,70 @@
+{
+  "cell_id": "brahms1-p3-sys0-s4-m5",
+  "status": "abstained",
+  "reason": "weak alignment: 2 of 6 reference notes matched, 0 exactly (2 of 4 read heads in the bar's range)",
+  "measure_number": 28,
+  "parts": [
+    8
+  ],
+  "alignment": {
+    "n_truth": 6,
+    "n_pred": 4,
+    "matched": 2,
+    "n_truth_notes": 6,
+    "matched_notes": 2,
+    "exact_notes": 0,
+    "near_pairs": [
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "n_pred_in_range": 2,
+    "strength": 0.333,
+    "strength_exact": 0.0,
+    "match": "position",
+    "truth_keys": [
+      "P8",
+      "P8",
+      "P8",
+      "P8",
+      "P8",
+      "P8"
+    ],
+    "pred_keys": [
+      "P7",
+      "P2",
+      "P7",
+      "P1"
+    ],
+    "pairs": [
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 0,
+  "n_wrong_category": 0,
+  "n_added": 0,
+  "n_hints_missing": 0,
+  "n_hints_extra": 0,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [],
+  "hints": []
+}

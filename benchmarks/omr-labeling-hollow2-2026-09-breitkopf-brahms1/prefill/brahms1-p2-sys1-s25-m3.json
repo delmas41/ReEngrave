@@ -1,0 +1,291 @@
+{
+  "cell_id": "brahms1-p2-sys1-s25-m3",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 18,
+  "parts": [
+    19
+  ],
+  "alignment": {
+    "n_truth": 6,
+    "n_pred": 10,
+    "matched": 6,
+    "n_truth_notes": 6,
+    "matched_notes": 6,
+    "exact_notes": 6,
+    "near_pairs": [],
+    "n_pred_in_range": 10,
+    "strength": 1.0,
+    "strength_exact": 1.0,
+    "match": "position",
+    "truth_keys": [
+      "P6",
+      "P6",
+      "P5",
+      "P4",
+      "P4",
+      "P3"
+    ],
+    "pred_keys": [
+      "P5",
+      "P6",
+      "P5",
+      "R",
+      "P6",
+      "P5",
+      "P4",
+      "P4",
+      "R",
+      "P3"
+    ],
+    "pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        5,
+        9
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 6,
+  "n_wrong_category": 0,
+  "n_added": 6,
+  "n_hints_missing": 0,
+  "n_hints_extra": 4,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "B2",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "B2",
+        "duration_type": "eighth",
+        "detection_index": 12
+      },
+      "bbox": {
+        "x": 206,
+        "y": 597,
+        "w": 124,
+        "h": 82
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "B2",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 0.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "B2",
+        "duration_type": "eighth",
+        "detection_index": 2
+      },
+      "bbox": {
+        "x": 450,
+        "y": 581,
+        "w": 120,
+        "h": 96
+      },
+      "detection_id": "M1",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "C3",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 1.0
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "C3",
+        "duration_type": "eighth",
+        "detection_index": 3
+      },
+      "bbox": {
+        "x": 700,
+        "y": 529,
+        "w": 127,
+        "h": 93
+      },
+      "detection_id": "M2",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "D3",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "D3",
+        "duration_type": "eighth",
+        "detection_index": 4
+      },
+      "bbox": {
+        "x": 1031,
+        "y": 476,
+        "w": 127,
+        "h": 105
+      },
+      "detection_id": "M3",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "D3",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 2.0
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "D3",
+        "duration_type": "eighth",
+        "detection_index": 0
+      },
+      "bbox": {
+        "x": 1283,
+        "y": 474,
+        "w": 130,
+        "h": 106
+      },
+      "detection_id": "M4",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "Eb3",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 2.5
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "E3",
+        "duration_type": "eighth",
+        "detection_index": 7
+      },
+      "bbox": {
+        "x": 1731,
+        "y": 443,
+        "w": 117,
+        "h": 83
+      },
+      "detection_id": "M5",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read C#3",
+      "bbox": {
+        "x": 133,
+        "y": 556,
+        "w": 58,
+        "h": 47
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read C3",
+      "bbox": {
+        "x": 208,
+        "y": 568,
+        "w": 119,
+        "h": 68
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read rest",
+      "bbox": {
+        "x": 333,
+        "y": 332,
+        "w": 75,
+        "h": 51
+      },
+      "class": "restWhole"
+    },
+    {
+      "kind": "extra",
+      "label": "read rest",
+      "bbox": {
+        "x": 1634,
+        "y": 759,
+        "w": 109,
+        "h": 53
+      },
+      "class": "restWhole"
+    }
+  ]
+}

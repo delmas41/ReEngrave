@@ -1,0 +1,77 @@
+{
+  "cell_id": "brahms1-p3-sys0-s13-m1",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 24,
+  "parts": [
+    20
+  ],
+  "alignment": {
+    "n_truth": 1,
+    "n_pred": 1,
+    "matched": 1,
+    "n_truth_notes": 0,
+    "matched_notes": 0,
+    "exact_notes": 0,
+    "near_pairs": [],
+    "n_pred_in_range": 1,
+    "strength": null,
+    "strength_exact": null,
+    "match": "position",
+    "truth_keys": [
+      "R"
+    ],
+    "pred_keys": [
+      "R"
+    ],
+    "pairs": [
+      [
+        0,
+        0
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 1,
+  "n_wrong_category": 0,
+  "n_added": 1,
+  "n_hints_missing": 0,
+  "n_hints_extra": 0,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "restWhole",
+      "category": "rest",
+      "near": false,
+      "truth": {
+        "pitch": null,
+        "type": null,
+        "dots": 0,
+        "duration_ql": 3.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "restWhole",
+        "pitch": null,
+        "duration_type": "whole",
+        "detection_index": 2
+      },
+      "bbox": {
+        "x": 993,
+        "y": 285,
+        "w": 82,
+        "h": 30
+      },
+      "detection_id": "M0",
+      "iou": null
+    }
+  ],
+  "hints": []
+}

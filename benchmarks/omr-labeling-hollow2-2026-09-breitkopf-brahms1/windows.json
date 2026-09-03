@@ -1,0 +1,1322 @@
+[
+  {
+    "row_id": "brahms-sym1-mvt1-317803-p1-draft-p1",
+    "work_id": "brahms--symphony-1",
+    "edition": {
+      "catalog_path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+      "imslp_id": "317803",
+      "publisher_as_catalogued": "Breitkopf & Hartel (Brahms Samtliche Werke)",
+      "raster": "~5276x6940 ccitt bitonal @~533ppi (dimensions vary per page), page 711.6x936.3 pt",
+      "has_text_layer": false
+    },
+    "reference": {
+      "catalog_path": "reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+      "movement": "mvt1",
+      "n_parts": 21,
+      "n_measures": 513,
+      "meter_at_start": "6/8"
+    },
+    "page": {
+      "pdf_page_index": 1,
+      "n_systems": 2,
+      "n_staves": 27
+    },
+    "window": {
+      "first_ref_measure": 8,
+      "last_ref_measure": 22,
+      "established_by": "draft_windows.py \u2014 chained from the base row and the transcription's measure counts; NOT verified",
+      "confidence": "draft"
+    },
+    "staves": [
+      {
+        "name": "2 Floten",
+        "parts": [
+          0,
+          1
+        ],
+        "read_as": "Flute",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Oboen",
+        "parts": [
+          2,
+          3
+        ],
+        "read_as": "Oboe",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Klarinetten in B",
+        "parts": [
+          4,
+          5
+        ],
+        "read_as": "Clarinet",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Fagotte",
+        "parts": [
+          6,
+          7
+        ],
+        "read_as": "Bassoon",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Kontrafagott",
+        "parts": [
+          8
+        ],
+        "read_as": "Bassoon",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "4 Horner in C 1./2.",
+        "parts": [
+          9,
+          10
+        ],
+        "read_as": "Horn",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "4 Horner in Es 3./4.",
+        "parts": [
+          11,
+          12
+        ],
+        "read_as": "Trumpet",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Trompeten in C",
+        "parts": [
+          13,
+          14
+        ],
+        "read_as": "Trumpet",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "Pauken in C u.G",
+        "parts": [
+          15
+        ],
+        "read_as": "Timpani",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "1. Violine",
+        "parts": [
+          16
+        ],
+        "read_as": "Violin",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2. Violine",
+        "parts": [
+          17
+        ],
+        "read_as": "Violin",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Bratsche",
+        "parts": [
+          18
+        ],
+        "read_as": "Viola",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Violoncell",
+        "parts": [
+          19
+        ],
+        "read_as": "Cello",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Kontrabass",
+        "parts": [
+          20
+        ],
+        "read_as": "Contrabass",
+        "source": "label",
+        "paired_by": "position"
+      }
+    ],
+    "systems": {
+      "0": [
+        {
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ],
+          "read_as": "Flute",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ],
+          "read_as": "Oboe",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ],
+          "read_as": "Clarinet",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrafagott",
+          "parts": [
+            8
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ],
+          "read_as": "Horn",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in Es 3./4.",
+          "parts": [
+            11,
+            12
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "Pauken in C u.G",
+          "parts": [
+            15
+          ],
+          "read_as": "Timpani",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "1. Violine",
+          "parts": [
+            16
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2. Violine",
+          "parts": [
+            17
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Bratsche",
+          "parts": [
+            18
+          ],
+          "read_as": "Viola",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Violoncell",
+          "parts": [
+            19
+          ],
+          "read_as": "Cello",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrabass",
+          "parts": [
+            20
+          ],
+          "read_as": "Contrabass",
+          "source": "label",
+          "paired_by": "position"
+        }
+      ],
+      "1": [
+        {
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ],
+          "read_as": "Flute",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ],
+          "read_as": "Oboe",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ],
+          "read_as": "Clarinet",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "Kontrafagott",
+          "parts": [
+            8
+          ],
+          "read_as": "Bassoon",
+          "paired_by": "order"
+        },
+        {
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ],
+          "read_as": "Horn",
+          "source": "score_order",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "Pauken in C u.G",
+          "parts": [
+            15
+          ],
+          "read_as": "Timpani",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "1. Violine",
+          "parts": [
+            16
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "2. Violine",
+          "parts": [
+            17
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "Bratsche",
+          "parts": [
+            18
+          ],
+          "read_as": "Viola",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "Violoncell",
+          "parts": [
+            19
+          ],
+          "read_as": "Cello",
+          "source": "label",
+          "paired_by": "instrument"
+        },
+        {
+          "name": "Kontrabass",
+          "parts": [
+            20
+          ],
+          "read_as": "Contrabass",
+          "source": "label",
+          "paired_by": "instrument"
+        }
+      ]
+    },
+    "confidence": "draft",
+    "check": [
+      "first_ref_measure 8 is chained from the previous page's measure count \u2014 confirm on the page",
+      "system 0: staff 4: placed as 'Kontrafagott' by position, but the margin read 'Bassoon' \u2014 confirm on the page",
+      "system 0: staff 6: placed as '4 Horner in Es 3./4.' by position, but the margin read 'Trumpet' \u2014 confirm on the page",
+      "system 1: staff 18: placed as 'Kontrafagott' by ORDER (the reader said 'Bassoon'; it is the only unused entry between its neighbours) \u2014 confirm on the page"
+    ]
+  },
+  {
+    "row_id": "brahms-sym1-mvt1-317803-p1-draft-p2",
+    "work_id": "brahms--symphony-1",
+    "edition": {
+      "catalog_path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+      "imslp_id": "317803",
+      "publisher_as_catalogued": "Breitkopf & Hartel (Brahms Samtliche Werke)",
+      "raster": "~5276x6940 ccitt bitonal @~533ppi (dimensions vary per page), page 711.6x936.3 pt",
+      "has_text_layer": false
+    },
+    "reference": {
+      "catalog_path": "reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+      "movement": "mvt1",
+      "n_parts": 21,
+      "n_measures": 513,
+      "meter_at_start": "6/8"
+    },
+    "page": {
+      "pdf_page_index": 2,
+      "n_systems": 2,
+      "n_staves": 28
+    },
+    "window": {
+      "first_ref_measure": 23,
+      "last_ref_measure": 37,
+      "established_by": "draft_windows.py \u2014 chained from the base row and the transcription's measure counts; NOT verified",
+      "confidence": "draft"
+    },
+    "staves": [
+      {
+        "name": "2 Floten",
+        "parts": [
+          0,
+          1
+        ],
+        "read_as": "Flute",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Oboen",
+        "parts": [
+          2,
+          3
+        ],
+        "read_as": "Oboe",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Klarinetten in B",
+        "parts": [
+          4,
+          5
+        ],
+        "read_as": "Clarinet",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Fagotte",
+        "parts": [
+          6,
+          7
+        ],
+        "read_as": "Bassoon",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Kontrafagott",
+        "parts": [
+          8
+        ],
+        "read_as": "Bassoon",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "4 Horner in C 1./2.",
+        "parts": [
+          9,
+          10
+        ],
+        "read_as": "Horn",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "4 Horner in Es 3./4.",
+        "parts": [
+          11,
+          12
+        ],
+        "read_as": "Trumpet",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Trompeten in C",
+        "parts": [
+          13,
+          14
+        ],
+        "read_as": "Trumpet",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "Pauken in C u.G",
+        "parts": [
+          15
+        ],
+        "read_as": "Timpani",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "1. Violine",
+        "parts": [
+          16
+        ],
+        "read_as": "Violin",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2. Violine",
+        "parts": [
+          17
+        ],
+        "read_as": "Violin",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Bratsche",
+        "parts": [
+          18
+        ],
+        "read_as": "Viola",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Violoncell",
+        "parts": [
+          19
+        ],
+        "read_as": "Cello",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Kontrabass",
+        "parts": [
+          20
+        ],
+        "read_as": "Contrabass",
+        "source": "label",
+        "paired_by": "position"
+      }
+    ],
+    "systems": {
+      "0": [
+        {
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ],
+          "read_as": "Flute",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ],
+          "read_as": "Oboe",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ],
+          "read_as": "Clarinet",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrafagott",
+          "parts": [
+            8
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ],
+          "read_as": "Horn",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in Es 3./4.",
+          "parts": [
+            11,
+            12
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "Pauken in C u.G",
+          "parts": [
+            15
+          ],
+          "read_as": "Timpani",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "1. Violine",
+          "parts": [
+            16
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2. Violine",
+          "parts": [
+            17
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Bratsche",
+          "parts": [
+            18
+          ],
+          "read_as": "Viola",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Violoncell",
+          "parts": [
+            19
+          ],
+          "read_as": "Cello",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrabass",
+          "parts": [
+            20
+          ],
+          "read_as": "Contrabass",
+          "source": "label",
+          "paired_by": "position"
+        }
+      ],
+      "1": [
+        {
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ],
+          "read_as": "Flute",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ],
+          "read_as": "Oboe",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ],
+          "read_as": "Clarinet",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrafagott",
+          "parts": [
+            8
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ],
+          "read_as": "Horn",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in Es 3./4.",
+          "parts": [
+            11,
+            12
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "Pauken in C u.G",
+          "parts": [
+            15
+          ],
+          "read_as": "Timpani",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "1. Violine",
+          "parts": [
+            16
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2. Violine",
+          "parts": [
+            17
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Bratsche",
+          "parts": [
+            18
+          ],
+          "read_as": "Viola",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Violoncell",
+          "parts": [
+            19
+          ],
+          "read_as": "Cello",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrabass",
+          "parts": [
+            20
+          ],
+          "read_as": "Contrabass",
+          "source": "label",
+          "paired_by": "position"
+        }
+      ]
+    },
+    "confidence": "draft",
+    "check": [
+      "first_ref_measure 23 is chained from the previous page's measure count \u2014 confirm on the page",
+      "system 0: staff 4: placed as 'Kontrafagott' by position, but the margin read 'Bassoon' \u2014 confirm on the page",
+      "system 0: staff 6: placed as '4 Horner in Es 3./4.' by position, but the margin read 'Trumpet' \u2014 confirm on the page",
+      "system 1: staff 18: placed as 'Kontrafagott' by position, but the margin read 'Bassoon' \u2014 confirm on the page",
+      "system 1: staff 20: placed as '4 Horner in Es 3./4.' by position, but the margin read 'Trumpet' \u2014 confirm on the page"
+    ]
+  },
+  {
+    "row_id": "brahms-sym1-mvt1-317803-p1-draft-p3",
+    "work_id": "brahms--symphony-1",
+    "edition": {
+      "catalog_path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+      "imslp_id": "317803",
+      "publisher_as_catalogued": "Breitkopf & Hartel (Brahms Samtliche Werke)",
+      "raster": "~5276x6940 ccitt bitonal @~533ppi (dimensions vary per page), page 711.6x936.3 pt",
+      "has_text_layer": false
+    },
+    "reference": {
+      "catalog_path": "reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+      "movement": "mvt1",
+      "n_parts": 21,
+      "n_measures": 513,
+      "meter_at_start": "6/8"
+    },
+    "page": {
+      "pdf_page_index": 3,
+      "n_systems": 2,
+      "n_staves": 28
+    },
+    "window": {
+      "first_ref_measure": 38,
+      "last_ref_measure": 58,
+      "established_by": "draft_windows.py \u2014 chained from the base row and the transcription's measure counts; NOT verified",
+      "confidence": "draft"
+    },
+    "staves": [
+      {
+        "name": "2 Floten",
+        "parts": [
+          0,
+          1
+        ],
+        "read_as": "Flute",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Oboen",
+        "parts": [
+          2,
+          3
+        ],
+        "read_as": "Oboe",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Klarinetten in B",
+        "parts": [
+          4,
+          5
+        ],
+        "read_as": "Clarinet",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Fagotte",
+        "parts": [
+          6,
+          7
+        ],
+        "read_as": "Bassoon",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Kontrafagott",
+        "parts": [
+          8
+        ],
+        "read_as": "Bassoon",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "4 Horner in C 1./2.",
+        "parts": [
+          9,
+          10
+        ],
+        "read_as": "Horn",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "4 Horner in Es 3./4.",
+        "parts": [
+          11,
+          12
+        ],
+        "read_as": "Trumpet",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "2 Trompeten in C",
+        "parts": [
+          13,
+          14
+        ],
+        "read_as": "Trumpet",
+        "source": "score_order",
+        "paired_by": "position"
+      },
+      {
+        "name": "Pauken in C u.G",
+        "parts": [
+          15
+        ],
+        "read_as": "Timpani",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "1. Violine",
+        "parts": [
+          16
+        ],
+        "read_as": "Violin",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "2. Violine",
+        "parts": [
+          17
+        ],
+        "read_as": "Violin",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Bratsche",
+        "parts": [
+          18
+        ],
+        "read_as": "Viola",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Violoncell",
+        "parts": [
+          19
+        ],
+        "read_as": "Cello",
+        "source": "label",
+        "paired_by": "position"
+      },
+      {
+        "name": "Kontrabass",
+        "parts": [
+          20
+        ],
+        "read_as": "Contrabass",
+        "source": "label",
+        "paired_by": "position"
+      }
+    ],
+    "systems": {
+      "0": [
+        {
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ],
+          "read_as": "Flute",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ],
+          "read_as": "Oboe",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ],
+          "read_as": "Clarinet",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrafagott",
+          "parts": [
+            8
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ],
+          "read_as": "Horn",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in Es 3./4.",
+          "parts": [
+            11,
+            12
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "Pauken in C u.G",
+          "parts": [
+            15
+          ],
+          "read_as": "Timpani",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "1. Violine",
+          "parts": [
+            16
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2. Violine",
+          "parts": [
+            17
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Bratsche",
+          "parts": [
+            18
+          ],
+          "read_as": "Viola",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Violoncell",
+          "parts": [
+            19
+          ],
+          "read_as": "Cello",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrabass",
+          "parts": [
+            20
+          ],
+          "read_as": "Contrabass",
+          "source": "label",
+          "paired_by": "position"
+        }
+      ],
+      "1": [
+        {
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ],
+          "read_as": "Flute",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ],
+          "read_as": "Oboe",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ],
+          "read_as": "Clarinet",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrafagott",
+          "parts": [
+            8
+          ],
+          "read_as": "Bassoon",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ],
+          "read_as": "Horn",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "4 Horner in Es 3./4.",
+          "parts": [
+            11,
+            12
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ],
+          "read_as": "Trumpet",
+          "source": "score_order",
+          "paired_by": "position"
+        },
+        {
+          "name": "Pauken in C u.G",
+          "parts": [
+            15
+          ],
+          "read_as": "Timpani",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "1. Violine",
+          "parts": [
+            16
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "2. Violine",
+          "parts": [
+            17
+          ],
+          "read_as": "Violin",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Bratsche",
+          "parts": [
+            18
+          ],
+          "read_as": "Viola",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Violoncell",
+          "parts": [
+            19
+          ],
+          "read_as": "Cello",
+          "source": "label",
+          "paired_by": "position"
+        },
+        {
+          "name": "Kontrabass",
+          "parts": [
+            20
+          ],
+          "read_as": "Contrabass",
+          "source": "label",
+          "paired_by": "position"
+        }
+      ]
+    },
+    "confidence": "draft",
+    "check": [
+      "first_ref_measure 38 is chained from the previous page's measure count \u2014 confirm on the page",
+      "system 0: staff 4: placed as 'Kontrafagott' by position, but the margin read 'Bassoon' \u2014 confirm on the page",
+      "system 0: staff 6: placed as '4 Horner in Es 3./4.' by position, but the margin read 'Trumpet' \u2014 confirm on the page",
+      "system 1: staff 18: placed as 'Kontrafagott' by position, but the margin read 'Bassoon' \u2014 confirm on the page",
+      "system 1: staff 20: placed as '4 Horner in Es 3./4.' by position, but the margin read 'Trumpet' \u2014 confirm on the page"
+    ]
+  }
+]

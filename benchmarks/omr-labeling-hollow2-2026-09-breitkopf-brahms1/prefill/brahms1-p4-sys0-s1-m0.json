@@ -1,0 +1,144 @@
+{
+  "cell_id": "brahms1-p4-sys0-s1-m0",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 38,
+  "parts": [
+    2,
+    3
+  ],
+  "alignment": {
+    "n_truth": 3,
+    "n_pred": 3,
+    "matched": 3,
+    "n_truth_notes": 3,
+    "matched_notes": 3,
+    "exact_notes": 3,
+    "near_pairs": [],
+    "n_pred_in_range": 3,
+    "strength": 1.0,
+    "strength_exact": 1.0,
+    "match": "position",
+    "truth_keys": [
+      "P10",
+      "P-2",
+      "P-4"
+    ],
+    "pred_keys": [
+      "P10",
+      "P-2",
+      "P-4"
+    ],
+    "pairs": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 3,
+  "n_wrong_category": 0,
+  "n_added": 3,
+  "n_hints_missing": 0,
+  "n_hints_extra": 0,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "C4",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "C4",
+        "duration_type": "eighth",
+        "detection_index": 1
+      },
+      "bbox": {
+        "x": 868,
+        "y": 647,
+        "w": 100,
+        "h": 76
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "A5",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "A5",
+        "duration_type": "dotted_quarter",
+        "detection_index": 8
+      },
+      "bbox": {
+        "x": 1645,
+        "y": 192,
+        "w": 92,
+        "h": 87
+      },
+      "detection_id": "M1",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "C6",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "Cb6",
+        "duration_type": "dotted_quarter",
+        "detection_index": 2
+      },
+      "bbox": {
+        "x": 1635,
+        "y": 103,
+        "w": 103,
+        "h": 66
+      },
+      "detection_id": "M2",
+      "iou": null
+    }
+  ],
+  "hints": []
+}

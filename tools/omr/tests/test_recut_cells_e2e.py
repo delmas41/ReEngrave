@@ -1,0 +1,164 @@
+"""End-to-end: a real cut, thrown away, and re-cut from the manifest alone.
+
+The unit tests inject the cut, so they pin the tool's decisions but say
+nothing about whether a re-cut actually REPRODUCES a batch. That is the whole
+claim, and it needs real phase 1 on a real page: render, detect staves, find
+barlines, extract and canonicalize cells. The page is synthesized here rather
+than taken from the score library, which is machine-local and gitignored — so
+this runs anywhere the pipeline's own dependencies are installed.
+
+⚠️ The staves are deliberately ~5 staff spaces apart. `measure_extractor`
+GROWS the pad where the neighbouring staff is further than 6 spaces away
+(CLAUDE.md, "the cell pad is 4 spaces or 6, never in between"), so on a sparse
+page the two padding modes produce the SAME frame and a fixture built that way
+cannot tell them apart — the first draft of this file had staves 33 spaces
+apart and both modes returned h=1209. Crowding them is what makes the padding
+mode observable, and therefore what makes the mode-detection testable at all.
+"""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+pytest.importorskip("skimage", reason="pipeline needs scikit-image")
+pytest.importorskip("pymupdf", reason="fixture needs PyMuPDF to draw a page")
+
+from tools.omr.annotate import recut_cells as rc  # noqa: E402
+
+
+DPI = 300
+
+
+def _draw_page(path: Path) -> None:
+    import pymupdf
+
+    doc = pymupdf.open()
+    page = doc.new_page(width=612, height=792)
+
+    def staff(y0: float) -> None:
+        for i in range(5):
+            y = y0 + i * 6
+            page.draw_line(pymupdf.Point(60, y), pymupdf.Point(550, y), width=0.6)
+        for bx in (60, 220, 380, 550):
+            page.draw_line(pymupdf.Point(bx, y0), pymupdf.Point(bx, y0 + 24), width=0.9)
+        for nx in (120, 180, 280, 340, 440):
+            page.draw_circle(pymupdf.Point(nx, y0 + 12), 2.6, fill=(0, 0, 0))
+
+    for y in (200, 254, 308, 362):   # ~5 staff spaces apart — see the module note
+        staff(y)
+    doc.save(str(path))
+    doc.close()
+
+
+@pytest.fixture(scope="module")
+def page_pdf(tmp_path_factory) -> Path:
+    p = tmp_path_factory.mktemp("synth") / "page.pdf"
+    _draw_page(p)
+    return p
+
+
+def _build_batch(bench: Path, pdf: Path, mode: str) -> list[dict]:
+    """Cut the page and record it the way the real cutters record a batch."""
+    from tools.omr.annotate.select_cells_orchestral import _save_cell_png
+
+    cells_dir = bench / "cells"
+    cells_dir.mkdir(parents=True, exist_ok=True)
+    manifest = []
+    for c in rc.cut_page(pdf, 0, dpi=DPI, mode=mode):
+        cid = f"synth-p1-sys{c.system_index}-s{c.staff_index}-m{c.measure_index}"
+        _save_cell_png(c, cells_dir / f"{cid}.png", no_staff=False)
+        # The real cutters save the staff-line-removed variant beside it, and
+        # so does the re-cut; a fixture that skips it reports 12 spurious
+        # extra files rather than the difference it is looking for.
+        if c.image_no_staff is not None:
+            _save_cell_png(c, cells_dir / f"{cid}_nostaff.png", no_staff=True)
+        manifest.append({
+            "cell_id": cid,
+            "pdf": str(pdf),
+            "page": 0,
+            "system_index": c.system_index,
+            "staff_index": c.staff_index,
+            "measure_index": c.measure_index,
+            "cell_canonical_w": c.width,
+            "cell_canonical_h": c.height,
+            "staff_line_ys_canonical": list(c.staff_line_ys_canonical),
+        })
+    (bench / "cells.json").write_text(json.dumps(manifest, indent=2))
+    return manifest
+
+
+def _png_bytes(bench: Path) -> dict[str, bytes]:
+    return {p.name: p.read_bytes() for p in sorted((bench / "cells").glob("*.png"))}
+
+
+@pytest.mark.parametrize("mode", ["pipeline", "orchestral"])
+def test_a_deleted_batch_is_recut_byte_identically(tmp_path, page_pdf, mode):
+    bench = tmp_path / f"batch-{mode}"
+    manifest = _build_batch(bench, page_pdf, mode)
+    assert len(manifest) >= 8, "fixture should produce a few cells per staff"
+
+    before = _png_bytes(bench)
+    for p in (bench / "cells").glob("*.png"):
+        p.unlink()
+    assert _png_bytes(bench) == {}
+
+    report = rc.recut(bench, repo_root=tmp_path, dpi=DPI, log=lambda *_: None)
+
+    assert report.clean, (report.missing, report.mismatched)
+    assert sorted(report.written) == sorted(e["cell_id"] for e in manifest)
+    # The claim in full: not merely "some image", the SAME image.
+    assert _png_bytes(bench) == before
+
+
+def test_the_padding_mode_is_recovered_from_the_manifest(tmp_path, page_pdf):
+    # The two modes frame this page differently, and nothing records which was
+    # used — the manifest's own numbers are the only evidence.
+    pipe = rc.cut_page(page_pdf, 0, dpi=DPI, mode="pipeline")[0].height
+    orch = rc.cut_page(page_pdf, 0, dpi=DPI, mode="orchestral")[0].height
+    assert pipe != orch, "fixture cannot distinguish the modes"
+
+    for mode in ("pipeline", "orchestral"):
+        bench = tmp_path / f"m-{mode}"
+        _build_batch(bench, page_pdf, mode)
+        report = rc.recut(bench, repo_root=tmp_path, dpi=DPI, dry_run=True,
+                          log=lambda *_: None)
+        assert report.clean
+        assert set(report.modes.values()) == {mode}
+
+
+def test_a_manifest_frame_that_does_not_match_the_page_is_refused(tmp_path, page_pdf):
+    bench = tmp_path / "tampered"
+    manifest = _build_batch(bench, page_pdf, "pipeline")
+    for p in (bench / "cells").glob("*.png"):
+        p.unlink()
+    # One cell claims a frame no padding mode produces — the shape of a batch
+    # cut by code that has since changed. Nothing may be written.
+    manifest[0]["cell_canonical_h"] = int(manifest[0]["cell_canonical_h"]) + 40
+    (bench / "cells.json").write_text(json.dumps(manifest, indent=2))
+
+    report = rc.recut(bench, repo_root=tmp_path, dpi=DPI, log=lambda *_: None)
+
+    assert not report.clean
+    assert [cid for cid, _ in report.mismatched] == [manifest[0]["cell_id"]]
+    assert report.written == []
+    assert _png_bytes(bench) == {}, "a refusal writes nothing at all"
+
+
+def test_allow_partial_writes_the_rest_when_one_cell_is_tampered(tmp_path, page_pdf):
+    bench = tmp_path / "partial"
+    manifest = _build_batch(bench, page_pdf, "pipeline")
+    for p in (bench / "cells").glob("*.png"):
+        p.unlink()
+    bad = manifest[0]["cell_id"]
+    manifest[0]["cell_canonical_h"] = int(manifest[0]["cell_canonical_h"]) + 40
+    (bench / "cells.json").write_text(json.dumps(manifest, indent=2))
+
+    report = rc.recut(bench, repo_root=tmp_path, dpi=DPI, allow_partial=True,
+                      log=lambda *_: None)
+
+    assert bad not in report.written
+    assert len(report.written) == len(manifest) - 1
+    assert f"{bad}.png" not in _png_bytes(bench)

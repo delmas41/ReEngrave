@@ -1,0 +1,114 @@
+{
+  "cell_id": "brahms1-p3-sys1-s23-m5",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 34,
+  "parts": [
+    16
+  ],
+  "alignment": {
+    "n_truth": 1,
+    "n_pred": 4,
+    "matched": 1,
+    "n_truth_notes": 1,
+    "matched_notes": 1,
+    "exact_notes": 1,
+    "near_pairs": [],
+    "n_pred_in_range": 4,
+    "strength": 1.0,
+    "strength_exact": 1.0,
+    "match": "position",
+    "truth_keys": [
+      "P3"
+    ],
+    "pred_keys": [
+      "P4",
+      "P3",
+      "P3",
+      "P3"
+    ],
+    "pairs": [
+      [
+        0,
+        3
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 1873,
+      "batch_w": 1872,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 0,
+  "n_wrong_category": 1,
+  "n_added": 1,
+  "n_hints_missing": 0,
+  "n_hints_extra": 3,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "WRONG_CATEGORY",
+      "class": "noteheadHalfOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "C5",
+        "type": "half",
+        "dots": 1,
+        "duration_ql": 3.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "C5",
+        "duration_type": "quarter",
+        "detection_index": 3
+      },
+      "bbox": {
+        "x": 335,
+        "y": 720,
+        "w": 46,
+        "h": 46
+      },
+      "detection_id": "M0",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read B4",
+      "bbox": {
+        "x": 0,
+        "y": 730,
+        "w": 30,
+        "h": 96
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read C5",
+      "bbox": {
+        "x": 0,
+        "y": 699,
+        "w": 29,
+        "h": 91
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read C5",
+      "bbox": {
+        "x": 148,
+        "y": 693,
+        "w": 143,
+        "h": 107
+      },
+      "class": "noteheadHalfInSpace"
+    }
+  ]
+}

@@ -32,6 +32,207 @@ measured triggers reopen them, and the checklist future specialist weights
 must pass — is recorded in
 [docs/weight-routing-and-specialization-2026-09-03.md](docs/weight-routing-and-specialization-2026-09-03.md).
 
+## 2026-09-03 — pre-fill / labeling-system work
+
+- **the pre-fill has a number: precision 0.84 exact / 0.94 kind** — Sean labeled six Brahms
+  cells COMPLETELY by hand (every symbol, not just hollow heads) and `--score --score-classes
+  all` scored 50 pre-filled boxes against 94 human ones, 42 exactly right. Recall (0.447) is
+  meaningless and always will be: the pre-fill proposes only noteheads. Diagnosed box by box,
+  the 8 errors are **concentrated, not diffuse** — 2 grace notes (IoU 0.73-0.80, right place,
+  wrong size), 3 on-line/in-space flips (IoU 0.31-0.41, box half a notehead off) and 3
+  unmatched, with six of the eight inside two of the six cells; excluding grace, 44/50 = 0.88.
+  ⚠️ The sample is BIASED by my own cell choice — ranked by how much the pre-fill decided, so
+  the densest bars, where alignment slips most; n=50 gives ~0.71-0.93 at 95%. **Verdict: a
+  queue, not labels, today** — and the structural finding is that **six of eight errors are the
+  DETECTION's placement**, which the pre-fill inherits, so its precision is downstream of
+  recognition and should rise with the imgsz-2048 re-ship untouched.
+- **grace notes are a ceiling, not a bug, and two plausible fixes were refuted by measurement**
+  — the transcription holds **0 `Small` detections on any page** and the reference **0 grace
+  notes in 28,579**, so neither source knows. First guess (the pre-fill overwrote a `Small` the
+  detector gave) is false: `expected_head_class` already preserves size. Second guess
+  (`include_grace=True` so `<grace/>` supplies it) was implemented, **changed nothing**, and was
+  **reverted** rather than kept — it alters alignment for every cell and bought nothing
+  measurable. ⚠️ Recorded because `truth_tokens` justifies the skip on the grounds that "the
+  detector labels them `*Small`", which is FALSE on a scan and makes the skip harmful on the
+  first reference that does carry grace notes. Untried route: geometry — a grace head is
+  smaller than its neighbours (41×38 against 51-83 in the same cell).
+  Full writeup, the checklist state and six ideas for widening this:
+  `docs/handoff-2026-09-03-prefill-measured.md`.
+- **`--score` can now be widened past the batch's own pass, and refuses to be widened
+  misleadingly** — chasing the open checklist item "can pre-filled TPs be admitted without a
+  glance". Running `--score` on the Brahms batch answers **precision 0.60, recall 0.333 — over
+  5 pre-filled boxes against 9 human ones, in the four hollow-notehead classes only**, because
+  scoring was hard-filtered to the batch's `batch_config` pass. That batch is a single-symbol
+  hollow sweep, so the black heads and rests that make up the bulk of the 179 confirmations are
+  not in the comparison and no way of running it could put them there. `--score-classes
+  pass|all|<list>` widens it; ⚠️ **and widening is refused** unless `--cells` or
+  `--score-inspected-for PASS` restricts it to cells a human actually swept for those classes.
+  The trap is silent and would have looked like a verdict on the pre-fill: a hollow-only pass
+  drew no black noteheads, so scoring every class against it charges each correctly pre-filled
+  black head as a false positive, and the precision that comes out measures which pass the
+  human ran. `inspected_passes` is the evidence used, since it is stamped on the way out of a
+  cell and so means "looked and moved on" even where nothing was drawn. The default is
+  byte-identical to before (pinned by a test comparing it to the explicit `pass` spec), and the
+  report line now always names the classes and cell selection the number covers. 8 new tests,
+  191 green across the pre-fill, annotate and training suites.
+  **So the deciding number still needs Sean:** a handful of cells labeled COMPLETELY, then
+  `--score --score-classes all --score-inspected-for <that pass>`.
+- **a checked-out batch shows no music, and now there is a tool for it** —
+  `tools/omr/annotate/recut_cells.py`. Sean opened the Brahms batch and got a blank canvas.
+  `benchmarks/*/cells/` is gitignored (`.gitignore:77`) and **no batch has ever had a PNG
+  committed**, so a checkout that did not CUT a batch has its manifest, detections and
+  verdicts and not one image; the server answers 404 for every `/api/cell/{id}/image` and
+  the canvas draws nothing, with the sidebar, hotkeys and hints all working. It affects all
+  six hollow batches, not just Brahms. The tool re-renders only the ids `cells.json` already
+  holds, and **never writes `cells.json` or deletes anything** — the obvious repair, re-running
+  the cutter, is the dangerous one: `rank_and_trim.py` rewrites the manifest and deletes the
+  PNGs it did not keep, so it can renumber the cell set and orphan every verdict in a labeled
+  batch. ⚠️ **The frame is checked, not assumed.** Boxes are stored in the cell's CANONICAL
+  frame, so an image re-cut at a different padding puts every box in the batch somewhere else
+  on it and nothing downstream would say so. The two cutters disagree on padding on purpose
+  and the manifest does not record which was used — but it records `cell_canonical_w`/`_h` and
+  `staff_line_ys_canonical`, so the mode is DERIVED by cutting under each and keeping the one
+  the manifest agrees with; no match, no write (`--allow-partial` to write the rest anyway).
+  33 tests: the decisions with the cut injected, plus an end-to-end suite that cuts a
+  synthesized page, deletes the images and re-cuts them **byte-identically** under both modes.
+  ⚠️ That fixture crowds its staves to ~5 staff spaces on purpose — `measure_extractor` grows
+  the pad where the neighbour is over 6 spaces off, so the first draft (33 spaces apart) had
+  both modes returning the same height and could not have tested the detection at all.
+  Verified against the real Brahms batch here: it refuses with exit 1 and names the one
+  unfound PDF, because the score library is machine-local. Suite: 1752 passed, 4 pre-existing
+  failures (identical with the branch stashed), 2 collection errors from no music21.
+- **merged main's training gate; Brahms hints refreshed** — `origin/main` brought Sean's gate
+  run (`ef51612`, `benchmarks/omr-labeling-survey-2026-09/GATE_RESULTS.md`): hollow scan labels
+  PASS (half-note detection 8 → 25 on Beethoven, 9 → 23 on held-out Mahler, `with_duration`
+  recall 0.388 → 0.456); the dense-page narrowing belongs to the imgsz-640 fine-tune recipe,
+  not the labels, so **v8 stays out of the catalog** until an imgsz-matched fine-tune re-gates.
+  Zero conflicts with the branch. Then `prefill/` on the Brahms 1 / Breitkopf batch was
+  re-written with `--write-hints` so the committed hints carry the tremolo / tremolando
+  collapse and the red `CONFLICT` hints (it had been written from `73f9970`, before either):
+  all 57 files changed, totals identical to the handoff (179 TP, 10 relabels, 189 added, 22
+  missing, 200 extra, 5 conflicts — on **4 cells**, one carrying two), 5 abstentions unchanged.
+  ⚠️ The handoff's re-run command passed `--work-id brahms-sym1-mvt1` and the CLI refused it
+  with "no usable window rows": the window rows carry the LIBRARY id `brahms--symphony-1`,
+  not the dossier id. The runbook's form (no `--work-id`, one work per file) is right; the
+  handoff is corrected. 124 tests green across the pre-fill, drafter and annotate suites.
+- **session handoff written** — `docs/handoff-2026-09-03-prefill-session.md`: what the branch
+  built, the seven rules the pre-fill decides by, what is measured (Brahms 1: 51 of 56, 5
+  conflicts) and what is not (black heads and rests), Sean's checklist, and the environment
+  notes for a fresh cloud session. CLAUDE.md and PROJECT_BRIEF.md point at it. This session
+  ran out of context and closes here; the next one starts from that file.
+- **pre-fill: tremolando — two pitches alternating collapse to two heads** — Sean: "Tremolo
+  and tremolando". A reference run `A B A B …` (≥4 equal values, two pitches) is the page's
+  two-pitch tremolando: two heads, each written with the FIGURE's full value (a bar of
+  alternating sixteenths prints two whole notes joined by beams, not two halves). `tremolo_runs`
+  now reports a run's kind (`single` / `pair`); `collapse_tremolo_runs` emits one synthetic
+  note for a single-pitch run and two for a pair, each `duration_ql = total/2` with the type of
+  the full total, and only where the reading placed ≤1 head at each of the run's positions —
+  a page that printed the alternation out is left as written. Same conflict rule as the
+  single-pitch case. Brahms 1 dry run unchanged (51 of 56, 5 conflicts); 56 tests green.
+- **pre-fill: the READING decides whether a run is abbreviated; a hollow-vs-black conflict goes
+  to the human** — Sean's proposal: keep labeling a tremolo head as the hollow head it is (the
+  class space already has `tremolo1-5`/`tremoloMark` for the strokes) and let the MXL side
+  reconcile. Now a run of ≥3 repeated notes (any value: three eighths as much as six) is
+  collapsed to one note of its total value only where the reading placed ≤1 head at that
+  staff position, and left as written where the page printed them out. A black head read where
+  the collapsed reference says hollow is relabelled (the scan's usual miss); a HOLLOW head read
+  where the reference says black is neither trusted nor overruled — the detection stays pending
+  with `CONFLICT` in its note and a red hint. Brahms 1: 51 of 56, 5 conflicts for Sean's eyes.
+- **pre-fill: tremolo abbreviations, and the first score against Sean's boxes** — Sean had
+  labeled all four remaining hollow batches on main (55 Brahms verdict files, 14 hollow boxes).
+  Scored: of the pre-fill's hollow boxes 3 agreed, and where it disagreed the reference spells
+  a tremolo out as six repeated eighths where the page prints one hollow head with slashes —
+  the pre-fill had even relabelled two correctly detected hollow heads to black. A run of ≥3
+  repeated notes adding to a half or more is now ONE unit: a hollow head read over it keeps
+  its class (note says why), the run counts once for recall, and a missed run becomes one
+  hint typed as the abbreviation (`6× eighth → half.`). Brahms 1: 52 of 56 pre-filled.
+- **pre-fill run on the Brahms 1 batch from this session** (inputs pushed by Sean): 51 of 56
+  cells pre-filled, 179 TP, 15 relabels, 22 missing-note hints, 5 abstentions all on the right
+  bar. Three fixes on the way: a weighted LCS that tolerates a half-space of rounding but needs
+  at least one EXACT match before near ones count (a wrong bar's notes often sit a step away);
+  recall over the reference's NOTES, not its rests; a rests-only bar pre-fills with hints instead
+  of abstaining. `prefill/` (hints only) committed into the batch so labeling can start.
+- **pre-fill: the gate is recall of the reference, and neighbours' heads stay out of the
+  alignment** — a flute bar of 4 reference notes read 21 heads, 17 of them the oboe's and
+  piccolo's from the cell's padding (positions 7 spaces off the staff); only heads within the
+  reference's own vertical range align, and a bar passes when ≥ 50% of its reference notes
+  (and at least 2) are found. Also fixed: `bbox_page_px` is `[x0, y0, x1, y1]`, not
+  `[x, y, w, h]` — the x-scale into the batch frame and the width check were wrong.
+- **pre-fill: diagnostics for the abstentions** — `--debug-cell` prints both token sequences
+  and the geometry for a cell; every cell records a width ratio that says whether the batch
+  cell and the transcription measure are the same bar (the batch was cut by a separate
+  segmentation run). A reference part with no clef (percussion) falls back to step keys on
+  BOTH sides. Second Brahms run: 29 of 56 pre-filled.
+- **training: pre-fill aligns on STAFF POSITION, not pitch** — the reference's written clef
+  (now parsed by `musicxml_truth`, per note) places each truth note; a detection's position
+  comes from its box. Sean's first Brahms 1 run: 26 of 56 cells pre-filled, 30 abstained with
+  `0 of N matched` — the misread-clef signature. `--match step|exact` kept as options; the
+  summary now lists abstained cells with their match ratio.
+
+## 2026-09-02 — pre-fill / labeling-system work (this branch)
+
+- **training: draft fills an unnamed staff by ORDER** — on a shorter system, a staff the reader
+  could not name takes the only unused base entry between its paired neighbours (Sean's page 1
+  bottom system: the Kontrafagott between the Fagotte and the Hörner); two candidates → still
+  empty for the human. Brahms 1 batch draft now needs no hand edits.
+- **training: page-global staff numbering** — `transcribe` numbers `staff_index` across the
+  page; the draft summed bars per index across systems (page 1 of the Brahms batch came out
+  as 7 bars instead of 15) and the pre-fill joined a staff to the row by index. Both now go by
+  position within the system; a full-lineup system pairs by position with the reader's word as
+  a cross-check only. Found on Sean's first real draft of the Brahms 1 batch.
+- **training: `draft_windows.py` + `--write-hints`** — window rows are drafted from the
+  transcription and a base benchmark row (measure window chained page by page, staves paired
+  to parts by instrument name, everything marked `draft` with a `check` list); hints-only
+  mode writes `prefill/` without touching `verdicts/`. Runbook for the first real-batch
+  measurement (Brahms 1 / Breitkopf): `docs/runbook-prefill-brahms1.md`. Finding: the Mahler
+  batch cannot be scored — the library has no Adagietto reference.
+- **training: MXL-guided verdict pre-fill** — `tools/omr/training/mxl_verdicts.py`
+  (+ `measure_align.py`, `musicxml_truth.py`): the detector's boxes are confirmed or
+  relabelled by the reference encoding through per-measure sequence alignment; unmatched
+  detections stay pending, unmatched reference notes become ghost hints. Annotate server
+  serves `<bench>/prefill/`; the cell list gains a queue order and the cell page a hints
+  layer (`h`). `--score` measures the pre-fill against human verdicts. 43 new tests, full
+  annotate + training suites green. Not yet run on a real batch — that measurement is
+  Sean's next step on the Mahler 5 / Peters hollow batch.
+- **docs: status brief, project brief, version memory** — consolidated where
+  the labeling campaign, the movement-start data, the score-library ingest and
+  the MXL-guided auto-label training system stand; created `PROJECT_BRIEF.md`
+  and this file. No code change.
+- `6a17de7` docs: export-gap ordinal moves out of prose into the numbered list.
+- `b5b7db3` / `0a6382c` / `d282371` **eleven-work benchmark landed** — headline
+  3 → 11 works; `0.1306 / 2745` default (reader on), `0.1399 / 2915` reader off,
+  both on `44a1745`; boundary stamped and checked by `accuracy_record`.
+- `52e9945` labeling: Mahler 5 Adagietto (Peters) hollow batch — 49 boxes, 55/56 cells.
+- `2a8bf79` labeling survey: symbol × publisher-family plan; scope decision
+  PROVE-IT-FIRST (finish the 280 cut cells, one gated training run, extend only if it holds).
+- `54d19da` labeling: `batch_config.json` (single-symbol hollow pass) on all five round-2 batches.
+- `44a1745` scan-e2e: `works.json` pinned the direction reader off while claiming defaults; now pins `null`.
+- `fb4c500` … `59c1eca` labeling: hollow-notehead round 2 cut — five 56-cell batches
+  (Peters, Eulenburg, Litolff 4×, Breitkopf, Simrock); enclosed-counter ranker replaces
+  meter shortfall (did not transfer).
+- `fa9853a` labeling: round-1 hollow batch landed as `data/user-labeled/v7-2026-09-02-hollow`
+  (24 cells / 28 boxes); 116 of 117 model pre-labels were false.
+- `2b900c4` annotate: `inspected_passes` stamp — a swept-empty cell is provably distinct from a never-opened one.
+- `eb3530c` / `9b3cec4` / `6cad993` / `9998390` annotate UI: single-symbol pass mode —
+  click places a measured, staff-snapped box; tests 18 → 52.
+- `96df4fb` / `a907e41` / `f238ce9` export: a bar with no detected notes still carries its
+  `<direction>` and dynamics (eighth detected-then-dropped gap). Neutral on engraved pages by construction.
+- `4952005` direction text ON by default (−144 edits, stable across seven mains).
+- `de09383` / `fc073f2` finding: same scan page transcribed twice differs; isolated to
+  `contextual._labels_for_page`; geometry bit-identical with contextual off.
+- `d3d5ec5` export_coverage surveys all eleven works.
+- `bc4214d` gitignore: alternate `--work-dir` fixtures are scratch.
+
+## 2026-09-01 — pre-fill / labeling-system work (this branch)
+
+- Overnight generalization session: engraved corpus widened 3 → 10 (opened at ~2× the
+  incumbents' error), first five-row scan benchmark (pooled 0.7960), cut-common meter
+  bug fixed (3 wrong → 0), two key-signature vote bugs fixed, fermata render completed
+  in the Beethoven fixture (0.1519 → 0.0727). See `docs/overnight-2026-09-01-summary.md`.
+- Evening queue: edge fragments, dot height, YOLO beam stack, stem cap, beam-bar mask,
+  ledger evidence (Beethoven 81/81), viola double stops, slurs paired per staff,
+  Tesseract union rung, accuracy figure made single-sourced.
+
 ---
 
 ## 2026-09-03 — Diagnosed and addressed the failing `Deploy ReEngrave` GitHub Actions workflow

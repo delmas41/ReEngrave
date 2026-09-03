@@ -1,0 +1,124 @@
+{
+  "cell_id": "brahms1-p2-sys0-s1-m5",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 13,
+  "parts": [
+    2,
+    3
+  ],
+  "alignment": {
+    "n_truth": 2,
+    "n_pred": 3,
+    "matched": 2,
+    "n_truth_notes": 2,
+    "matched_notes": 2,
+    "exact_notes": 2,
+    "near_pairs": [],
+    "n_pred_in_range": 3,
+    "strength": 1.0,
+    "strength_exact": 1.0,
+    "match": "position",
+    "truth_keys": [
+      "P2",
+      "P8"
+    ],
+    "pred_keys": [
+      "P2",
+      "P2",
+      "P8"
+    ],
+    "pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 2,
+  "n_wrong_category": 0,
+  "n_added": 2,
+  "n_hints_missing": 0,
+  "n_hints_extra": 1,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "Db5",
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 0.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "Db5",
+        "duration_type": "eighth",
+        "detection_index": 5
+      },
+      "bbox": {
+        "x": 1066,
+        "y": 404,
+        "w": 126,
+        "h": 106
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "E4",
+        "type": "quarter",
+        "dots": 0,
+        "duration_ql": 1.0,
+        "onset_ql": 2.0
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "E4",
+        "duration_type": "eighth",
+        "detection_index": 1
+      },
+      "bbox": {
+        "x": 1450,
+        "y": 677,
+        "w": 121,
+        "h": 109
+      },
+      "detection_id": "M1",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read Db5",
+      "bbox": {
+        "x": 572,
+        "y": 404,
+        "w": 123,
+        "h": 110
+      },
+      "class": "noteheadBlackOnLine"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "cell_id": "brahms1-p4-sys0-s13-m3",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 41,
+  "parts": [
+    20
+  ],
+  "alignment": {
+    "n_truth": 3,
+    "n_pred": 5,
+    "matched": 3,
+    "n_truth_notes": 1,
+    "matched_notes": 1,
+    "exact_notes": 1,
+    "near_pairs": [],
+    "n_pred_in_range": 5,
+    "strength": 1.0,
+    "strength_exact": 1.0,
+    "match": "position",
+    "truth_keys": [
+      "R",
+      "P8",
+      "R"
+    ],
+    "pred_keys": [
+      "R",
+      "P8",
+      "R",
+      "R",
+      "R"
+    ],
+    "pairs": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 1643,
+      "batch_w": 1643,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 1,
+  "n_wrong_category": 2,
+  "n_added": 3,
+  "n_hints_missing": 0,
+  "n_hints_extra": 2,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "WRONG_CATEGORY",
+      "class": "restQuarter",
+      "category": "rest",
+      "near": false,
+      "truth": {
+        "pitch": null,
+        "type": "quarter",
+        "dots": 1,
+        "duration_ql": 1.5,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "rest8th",
+        "pitch": null,
+        "duration_type": "eighth",
+        "detection_index": 9
+      },
+      "bbox": {
+        "x": 526,
+        "y": 512,
+        "w": 121,
+        "h": 197
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "TP",
+      "class": "noteheadBlackOnLine",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "G2",
+        "type": "eighth",
+        "dots": 0,
+        "duration_ql": 0.5,
+        "onset_ql": 1.5
+      },
+      "read": {
+        "class": "noteheadBlackOnLine",
+        "pitch": "G2",
+        "duration_type": "quarter",
+        "detection_index": 0
+      },
+      "bbox": {
+        "x": 721,
+        "y": 736,
+        "w": 145,
+        "h": 121
+      },
+      "detection_id": "M1",
+      "iou": null
+    },
+    {
+      "verdict": "WRONG_CATEGORY",
+      "class": "restQuarter",
+      "category": "rest",
+      "near": false,
+      "truth": {
+        "pitch": null,
+        "type": "quarter",
+        "dots": 0,
+        "duration_ql": 1.0,
+        "onset_ql": 2.0
+      },
+      "read": {
+        "class": "rest8th",
+        "pitch": null,
+        "duration_type": "eighth",
+        "detection_index": 4
+      },
+      "bbox": {
+        "x": 1275,
+        "y": 512,
+        "w": 122,
+        "h": 195
+      },
+      "detection_id": "M2",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read rest",
+      "bbox": {
+        "x": 892,
+        "y": 576,
+        "w": 69,
+        "h": 213
+      },
+      "class": "restQuarter"
+    },
+    {
+      "kind": "extra",
+      "label": "read rest",
+      "bbox": {
+        "x": 1012,
+        "y": 499,
+        "w": 123,
+        "h": 206
+      },
+      "class": "rest8th"
+    }
+  ]
+}

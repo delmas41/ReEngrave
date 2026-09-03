@@ -1,0 +1,138 @@
+{
+  "cell_id": "brahms1-p3-sys1-s18-m2",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 31,
+  "parts": [
+    8
+  ],
+  "alignment": {
+    "n_truth": 1,
+    "n_pred": 6,
+    "matched": 1,
+    "n_truth_notes": 0,
+    "matched_notes": 0,
+    "exact_notes": 0,
+    "near_pairs": [],
+    "n_pred_in_range": 6,
+    "strength": null,
+    "strength_exact": null,
+    "match": "position",
+    "truth_keys": [
+      "R"
+    ],
+    "pred_keys": [
+      "R",
+      "P8",
+      "P7",
+      "P5",
+      "P3",
+      "P1"
+    ],
+    "pairs": [
+      [
+        0,
+        0
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 1831,
+      "batch_w": 1831,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 1,
+  "n_wrong_category": 0,
+  "n_added": 1,
+  "n_hints_missing": 0,
+  "n_hints_extra": 5,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "restWhole",
+      "category": "rest",
+      "near": false,
+      "truth": {
+        "pitch": null,
+        "type": null,
+        "dots": 0,
+        "duration_ql": 3.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "restWhole",
+        "pitch": null,
+        "duration_type": "whole",
+        "detection_index": 0
+      },
+      "bbox": {
+        "x": 849,
+        "y": 509,
+        "w": 149,
+        "h": 55
+      },
+      "detection_id": "M0",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read E4",
+      "bbox": {
+        "x": 1802,
+        "y": 784,
+        "w": 29,
+        "h": 80
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read F4",
+      "bbox": {
+        "x": 1802,
+        "y": 707,
+        "w": 29,
+        "h": 89
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read A4",
+      "bbox": {
+        "x": 1800,
+        "y": 582,
+        "w": 31,
+        "h": 98
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read C5",
+      "bbox": {
+        "x": 1802,
+        "y": 515,
+        "w": 29,
+        "h": 82
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read E5",
+      "bbox": {
+        "x": 1802,
+        "y": 410,
+        "w": 29,
+        "h": 86
+      },
+      "class": "noteheadBlackInSpace"
+    }
+  ]
+}

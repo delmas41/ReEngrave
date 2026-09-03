@@ -49,6 +49,34 @@ research ideas not yet scheduled. Both are living documents — check them at
 the start of a session rather than trusting this brief for anything that
 changes week to week.
 
+## Where the work is now (2026-09-03)
+
+- Engraved benchmark: pooled OMR-NED **0.1306 / 2745 edits** over 11 works
+  (the figure lives in CLAUDE.md's OMR-NED section; do not requote it).
+- Scan domain: hollow noteheads are the top lever. All five round-2
+  hollow-notehead batches are labeled, and the gated training run (Sean,
+  2026-09-02) says the labels **work** — half-note detection 8 → 25 — while
+  the dense-page narrowing is the fine-tune recipe's, not the labels'. v8
+  stays out of the catalog until an imgsz-matched fine-tune re-gates it
+  (`benchmarks/omr-labeling-survey-2026-09/GATE_RESULTS.md`).
+- MXL-guided auto-labeling (`tools/omr/training/mxl_verdicts.py`) is built,
+  unit-tested, and measured once on the Brahms 1 / Breitkopf batch: 51 of 56
+  cells pre-filled. Its hollow-notehead signal on that print is weak because
+  the reference spells out tremolo abbreviations as repeated eighths where
+  the page prints one hollow head; see `version_memory.md` for the numbers.
+  Inventory and plan: [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
+- Tremolo and tremolando abbreviations are reconciled by the reading (one
+  head for a repeated pitch, two for an alternating pair) and a hollow-vs-black
+  disagreement is routed to the human as a `CONFLICT` — the committed Brahms
+  hints carry both (5 conflicts on 4 cells). Measured against a complete
+  human pass on six cells: **precision 0.84**, so the pre-fill is a queue
+  rather than labels for now — six of its eight errors are detection box
+  placement, which means its accuracy rises as recognition does. A batch checked out on a machine
+  that did not cut it has no cell images (they are gitignored) and shows a
+  blank canvas; `tools/omr/annotate/recut_cells.py` re-renders them from the
+  manifest, refusing anything whose frame does not match. Where the work stands and
+  Sean's checklist: [docs/handoff-2026-09-03-prefill-session.md](docs/handoff-2026-09-03-prefill-session.md).
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

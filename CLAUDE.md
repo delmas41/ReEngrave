@@ -31,7 +31,7 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 
 **Short project overview (non-technical):** see [PROJECT_BRIEF.md](PROJECT_BRIEF.md).
 
-**Running changelog of changes made:** see [version_memory.md](version_memory.md) — update alongside this file and PROJECT_BRIEF.md after every commit.
+**Running changelog of changes made:** see [version_memory.md](version_memory.md) — update alongside this file and PROJECT_BRIEF.md after every commit. Labeling / training-system status as of 2026-09-02: [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md). Session handoff for the pre-fill work, 2026-09-03: [docs/handoff-2026-09-03-prefill-session.md](docs/handoff-2026-09-03-prefill-session.md) — read it first in a fresh session.
 
 ---
 
@@ -1560,6 +1560,190 @@ A corrupt config, or one naming no class that exists, **refuses to start** with
 a one-line error; an unknown class among usable ones is dropped with a loud
 warning. Serving the full picker to someone who asked for a pass would be the
 quiet failure.
+
+#### Pre-fill verdicts from the reference (2026-09-02)
+
+When the batch's pages have a reference encoding in the score library, the
+reference can decide most of the verdicts before a human opens the batch.
+**The detector places the boxes; the reference confirms or relabels them** —
+`tools/omr/training/mxl_verdicts.py`. This is the REVERSE of the closed
+MXL→bounding-box path (F1 0.064): nothing is placed in pixel space from the
+file. The transcription already carries per-measure detections with a pitch
+and a duration each; the reference measure is a note sequence too; the two are
+aligned (`measure_align.py`, a longest-common-subsequence) and every pair is a
+verdict on a box that already has coordinates. ⚠️ **The alignment key is
+STAFF POSITION, not pitch** (2026-09-03): the reference note's position comes
+from its pitch and the written clef the MusicXML carries, the detection's from
+its box against the staff lines, and the pipeline's own clef reading is used by
+neither. The first real run (Brahms 1 / Breitkopf, 56 cells) abstained on 30
+cells with `0 of N matched` under step matching — the scan's bass and alto
+staves read as treble, every pitch on them off by a constant, every box in the
+right place. `--match step` / `exact` remain for engraved pages where the clef
+is trusted. The truth is read by
+`musicxml_truth.py`, stdlib only — it handles `.mxl`, chords, `<backup>`,
+pickups numbered 0 — so the pre-fill runs anywhere the JSON opens, no music21.
+
+```bash
+python3 -m tools.omr.transcribe score.pdf --pages 174-177 --out out.json
+python3 -m tools.omr.training.mxl_verdicts \
+    --bench-dir benchmarks/omr-labeling-NEW --transcription out.json \
+    --truth library/reference/<composer>/<work>/<file>.mxl \
+    --windows windows.json --work-id <work_id> --dry-run      # then --write
+python3 -m tools.omr.training.mxl_verdicts ... --score            # against human verdicts
+```
+
+| the reference and the reading say | verdict written |
+|---|---|
+| half note ↔ `noteheadBlackOnLine` | `WRONG_CATEGORY` → `noteheadHalfOnLine` (position and size kept) |
+| quarter ↔ `noteheadBlackInSpace` | `TP` |
+| a head the batch has no detection for | an added box `M<n>` (a draw-from-scratch batch gets its labels this way) |
+| a detected head the reference lacks | left **pending**, annotated — the human decides |
+| a reference note the reading never found | a **hint**: dotted ghost at the pitch's staff position, x estimated; never a label |
+
+**Three joins, each abstaining rather than guessing.** (1) Page ↔ reference
+measures: a hand-verified window row — the shape of
+`benchmarks/omr-scan-e2e-2026-09/works.json` (`page.pdf_page_index`,
+`window.first_ref_measure`, `staves[i].parts`); these rows are the
+"movement start" facts, and a file holding several editions must be narrowed
+with `--work-id` / `--row-id` or it refuses — and `work_id` there is the
+score LIBRARY's id (`brahms--symphony-1`, what the row carries), not the
+dossier's (`brahms-sym1-mvt1`); the wrong one is refused as "no usable window
+rows", not silently matched to nothing. A file holding one work needs neither. Global measure = window start +
+this staff's measures in earlier systems + measure index; a staff whose count
+across the page disagrees with the window abstains (`--trust-measure-counts`
+overrides). (2) Staff ↔ parts: a system whose staff count differs from the
+row's abstains whole; a condensed staff (`parts: [0, 1]`) merges its parts
+with unisons collapsed and rests dropped. (3) Alignment strength ≥ 0.5 of the
+longer side, else the cell abstains — a bar from the wrong measure matches a
+few notes by chance.
+
+Verdicts land on the BATCH's own detection ids, matched by overlap after the
+transcription's cell frame is mapped onto the batch's through the two staffs'
+line positions. Provenance goes in `notes` (`mxl_prefill: C5 half m12`), the
+field the server keeps on save. A verdict file that already carries human work
+is **never overwritten** without `--force`. Per-cell records go to
+`<bench>/prefill/`, which the annotate UI reads: the cell list gains a
+**queue order** ("most left for me first" = pending detections + missing-note
+hints, abstained cells on top) and the cell page draws the hints (`h`
+toggles). Noteheads with a pitch and no duration — a head whose stem the CV
+never found, which on a scan is exactly the head worth confirming — are
+aligned as single-note events rather than dropped with the voicing.
+
+**The window rows are DRAFTED, not typed** (`tools/omr/training/draft_windows.py`):
+given the batch's transcription and a hand-verified base row for an earlier
+page of the same edition, it chains the measure window page by page: a page's
+bars are the SUM of its systems' counts (each system's count is the mode
+across its staves, and a staff that disagrees with its own system is
+flagged). A system printing as many staves as the base row is the full
+lineup and is paired by POSITION — the margin reader's word is only a
+cross-check there, because it turns `Kontrafagott` into `Bassoon` and
+`Hörner in Es` into `Trumpet` on the Breitkopf Brahms — while a shorter
+system (tacet staves suppressed) is paired by instrument name in order of
+appearance. ⚠️ `staff_index` is numbered across the PAGE, not per system
+(system 1's staves continue the count), so both the draft and the pre-fill
+join a staff to the row by its position within its system, never by index.
+Every drafted row carries `"confidence": "draft"` and a `check` list; the
+human confirms the first measure of each page against the print and fills
+`parts` for any staff of a shorter system whose instrument was not read.
+
+`--write-hints` writes `prefill/` (hints and queue order in the UI) and
+leaves `verdicts/` alone, so a batch can be labeled WITH the hints while the
+labels stay independent — which is what `--score` then measures.
+
+⚠️ **`--score` compares over the batch's OWN pass classes**, which is why the
+Brahms number cannot answer the question it was meant to. That batch is a
+hollow-notehead sweep, so its verdicts contain hollow boxes and nothing else:
+scoring reports **precision 0.60 / recall 0.333 over 5 pre-filled boxes against
+9 human ones**, and the black heads and rests — the bulk of the 179
+confirmations — are not in it and never can be. `--score-classes all` (or a
+comma list) widens the comparison, and **refuses** unless `--cells` or
+`--score-inspected-for PASS` restricts it to cells a human actually swept for
+those classes. Without that restriction the number is not a weak result for the
+pre-fill but a measurement of which pass was run: a hollow sweep drew no black
+noteheads, so every correctly pre-filled black head would be charged as a false
+positive. So the deciding number needs a handful of cells labeled COMPLETELY,
+then `--score --score-classes all --score-inspected-for <that pass>`.
+
+⚠️ **MEASURED 2026-09-03: precision 0.84 exact / 0.94 kind**, over 50
+pre-filled boxes against 94 human ones, on six Brahms cells labeled
+COMPLETELY by hand. Read precision, never recall — the pre-fill proposes only
+noteheads and a complete human pass boxes slurs, hairpins and rests too. The
+eight errors are **concentrated, not diffuse**: 2 grace notes, 3 on-line /
+in-space flips and 3 unmatched, with six of the eight in two of the six cells.
+Excluding the grace ceiling, 44/50 = 0.88. ⚠️ The sample is BIASED — those
+cells were chosen as the ones the pre-fill decided most, i.e. the densest bars,
+where alignment slips most; n=50 gives roughly a 0.71–0.93 interval.
+
+**So pre-filled TPs are a queue, not labels — today.** That is a statement
+about the current detector, not about the approach: **six of the eight errors
+are the DETECTION's box placement**, which the pre-fill inherits and cannot
+improve, so pre-fill precision is downstream of recognition and should rise
+with it untouched.
+
+⚠️ **A grace note cannot be labelled from either source, and this is a
+ceiling rather than a bug.** The transcription holds **0 `Small` detections on
+any page** — a grace head is read as an ordinary notehead — and the reference
+holds **0 grace notes in 28,579**, because this encoding does not record them.
+Two plausible fixes were tried and refuted: `expected_head_class` already
+preserves the detector's size, and including grace notes in the alignment
+changed nothing and was reverted. ⚠️ Note that `truth_tokens`' docstring
+justifies skipping grace notes because "the detector labels them `*Small`" —
+**false on a scan**, and it makes the skip actively harmful the moment a
+reference DOES carry `<grace/>`, since the grace detection then pairs with the
+next real note. The untried route is geometry: a grace head is smaller than
+its neighbours (41×38 against 51–83 in the same cell).
+
+Full reading, with the ideas for widening this:
+[docs/handoff-2026-09-03-prefill-measured.md](docs/handoff-2026-09-03-prefill-measured.md).
+
+⚠️ **Not yet measured beyond one work.** The Mahler 5 / Peters batch cannot
+be the one: the library holds Mahler 5 movements 1-3 and the batch is the
+Adagietto (movement 4). The Brahms 1 / Breitkopf batch can — same PDF as the
+scan benchmark's `brahms-sym1-mvt1-317803-p1` row, reference on disk. The
+runbook is [docs/runbook-prefill-brahms1.md](docs/runbook-prefill-brahms1.md);
+the precision `--score` prints there decides whether pre-filled `TP`s can be
+admitted without a glance. Until that number exists, treat pre-filled
+verdicts as a queue, not as labels. Guarded by `test_mxl_verdicts.py`,
+`test_draft_windows.py`, `test_measure_align.py`, `test_musicxml_truth.py`.
+
+#### A checked-out batch has no images until you re-cut them
+
+`benchmarks/*/cells/` is gitignored — the PNGs are large and reproducible — so
+a batch arrives on another machine, or in a git worktree, with its `cells.json`,
+its `detections/` and its `verdicts/` intact and **not one image**. The server
+answers 404 for every `/api/cell/{id}/image` and the canvas draws nothing: a
+blank cell page whose sidebar, hotkeys and hints all work, which reads as "the
+batch shows no music". The tell is on startup — `WARN: cells dir missing`.
+
+```bash
+python3 -m tools.omr.annotate.recut_cells --bench-dir <batch> --dry-run   # then without
+```
+
+⚠️ **Do not repair this by re-running the cutter.** A cutter's job is to CHOOSE
+cells: `select_cells_orchestral` samples, and `rank_and_trim.py` rewrites
+`cells.json` and deletes the PNGs it did not keep. Pointing either at a batch
+that has been labeled can renumber the cell set and orphan every verdict in it.
+`recut_cells` never writes `cells.json` and never deletes anything.
+
+⚠️ **The FRAME is what makes this safe, and it is checked rather than assumed.**
+Every saved box — a drawn notehead as much as a model detection — is stored in
+the cell's CANONICAL frame, so an image re-cut at a different padding is not a
+slightly different picture: it is the same music at a different scale, with
+every box in the batch landing somewhere else on it, and nothing downstream
+would say so. The two cutters here disagree on padding on purpose
+(`select_cells_orchestral` patches `PAD_*_STAFF_LINES` to 5.0;
+`cut_candidate_cells.py` keeps the pipeline's own values) and the manifest does
+not record which was used — but it does record `cell_canonical_w`/`_h` and
+`staff_line_ys_canonical`, so the mode is DERIVED by cutting under each and
+keeping the one the manifest already agrees with. No match, no write: a
+mismatch aborts the batch, and `--allow-partial` is needed to write the rest.
+
+Note the modes coincide on a sparse page — `measure_extractor` grows the pad
+where the neighbouring staff is more than 6 spaces off — so they are only
+distinguishable where staves are crowded, which is what
+`test_recut_cells_e2e.py` builds its fixture to be. That suite cuts a
+synthesized page, deletes the images and re-cuts them **byte-identically**
+under both modes.
 
 **Convert finished verdicts → YOLO labels:**
 ```bash

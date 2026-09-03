@@ -1,0 +1,127 @@
+{
+  "cell_id": "brahms1-p3-sys0-s1-m0",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 23,
+  "parts": [
+    2,
+    3
+  ],
+  "alignment": {
+    "n_truth": 0,
+    "n_pred": 7,
+    "matched": 0,
+    "n_truth_notes": 0,
+    "matched_notes": 0,
+    "exact_notes": 0,
+    "near_pairs": [],
+    "n_pred_in_range": 7,
+    "strength": null,
+    "strength_exact": null,
+    "match": "step",
+    "truth_keys": [],
+    "pred_keys": [
+      "D4",
+      "D4",
+      "F4",
+      "A4",
+      "C5",
+      "E5",
+      "E5"
+    ],
+    "pairs": [],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 0,
+  "n_wrong_category": 0,
+  "n_added": 0,
+  "n_hints_missing": 0,
+  "n_hints_extra": 7,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read D4",
+      "bbox": {
+        "x": 2030,
+        "y": 441,
+        "w": 18,
+        "h": 44
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read D4",
+      "bbox": {
+        "x": 2031,
+        "y": 425,
+        "w": 17,
+        "h": 44
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read F4",
+      "bbox": {
+        "x": 2031,
+        "y": 383,
+        "w": 17,
+        "h": 42
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read Abb4",
+      "bbox": {
+        "x": 2028,
+        "y": 330,
+        "w": 20,
+        "h": 41
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read Cb5",
+      "bbox": {
+        "x": 2030,
+        "y": 264,
+        "w": 18,
+        "h": 38
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read Eb5",
+      "bbox": {
+        "x": 2030,
+        "y": 223,
+        "w": 18,
+        "h": 45
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read Eb5",
+      "bbox": {
+        "x": 2028,
+        "y": 212,
+        "w": 20,
+        "h": 39
+      },
+      "class": "noteheadBlackInSpace"
+    }
+  ]
+}

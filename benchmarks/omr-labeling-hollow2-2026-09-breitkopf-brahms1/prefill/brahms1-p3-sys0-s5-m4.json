@@ -1,0 +1,184 @@
+{
+  "cell_id": "brahms1-p3-sys0-s5-m4",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
+  "measure_number": 27,
+  "parts": [
+    9,
+    10
+  ],
+  "alignment": {
+    "n_truth": 2,
+    "n_pred": 8,
+    "matched": 2,
+    "n_truth_notes": 2,
+    "matched_notes": 2,
+    "exact_notes": 2,
+    "near_pairs": [],
+    "n_pred_in_range": 7,
+    "strength": 1.0,
+    "strength_exact": 1.0,
+    "match": "position",
+    "truth_keys": [
+      "P13",
+      "P6"
+    ],
+    "pred_keys": [
+      "P13",
+      "P6",
+      "P5",
+      "P9",
+      "P7",
+      "P6",
+      "P5",
+      "P2"
+    ],
+    "pairs": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        5
+      ]
+    ],
+    "geometry": {
+      "transcription_w": 2048,
+      "batch_w": 2048,
+      "y_scale": 1.0,
+      "width_ratio": 1.0
+    }
+  },
+  "n_tp": 1,
+  "n_wrong_category": 1,
+  "n_added": 2,
+  "n_hints_missing": 0,
+  "n_hints_extra": 6,
+  "n_conflicts": 0,
+  "written": false,
+  "decisions": [
+    {
+      "verdict": "TP",
+      "class": "noteheadHalfInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "G3",
+        "type": "half",
+        "dots": 1,
+        "duration_ql": 3.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadHalfInSpace",
+        "pitch": "G3",
+        "duration_type": "dotted_half",
+        "detection_index": 0
+      },
+      "bbox": {
+        "x": 226,
+        "y": 839,
+        "w": 130,
+        "h": 93
+      },
+      "detection_id": "M0",
+      "iou": null
+    },
+    {
+      "verdict": "WRONG_CATEGORY",
+      "class": "noteheadHalfInSpace",
+      "category": "notehead",
+      "near": false,
+      "truth": {
+        "pitch": "G4",
+        "type": "half",
+        "dots": 1,
+        "duration_ql": 3.0,
+        "onset_ql": 0.0
+      },
+      "read": {
+        "class": "noteheadBlackInSpace",
+        "pitch": "G4",
+        "duration_type": "quarter",
+        "detection_index": 2
+      },
+      "bbox": {
+        "x": 2025,
+        "y": 580,
+        "w": 23,
+        "h": 57
+      },
+      "detection_id": "M1",
+      "iou": null
+    }
+  ],
+  "hints": [
+    {
+      "kind": "extra",
+      "label": "read G4",
+      "bbox": {
+        "x": 216,
+        "y": 572,
+        "w": 118,
+        "h": 58
+      },
+      "class": "noteheadWholeInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read A4",
+      "bbox": {
+        "x": 220,
+        "y": 524,
+        "w": 118,
+        "h": 68
+      },
+      "class": "noteheadWholeOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read D4",
+      "bbox": {
+        "x": 2027,
+        "y": 672,
+        "w": 21,
+        "h": 51
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read F4",
+      "bbox": {
+        "x": 2026,
+        "y": 620,
+        "w": 22,
+        "h": 54
+      },
+      "class": "noteheadBlackOnLine"
+    },
+    {
+      "kind": "extra",
+      "label": "read A4",
+      "bbox": {
+        "x": 2025,
+        "y": 497,
+        "w": 23,
+        "h": 63
+      },
+      "class": "noteheadBlackInSpace"
+    },
+    {
+      "kind": "extra",
+      "label": "read D5",
+      "bbox": {
+        "x": 2027,
+        "y": 402,
+        "w": 21,
+        "h": 50
+      },
+      "class": "noteheadBlackInSpace"
+    }
+  ]
+}
