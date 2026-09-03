@@ -17,6 +17,8 @@ from tools.omr.training.measure_align import (
     merge_truth_parts,
     on_line_or_in_space,
     staff_y_for_pitch,
+    tremolo_runs,
+    abbreviation_type,
     truth_tokens,
 )
 from tools.omr.training.musicxml_truth import TruthNote
@@ -212,3 +214,20 @@ def test_alignment_tolerates_a_half_space_of_rounding_but_prefers_exact() -> Non
     # Tolerance never crosses a rest or a step key.
     assert align_tokens([tk("R", 0)], [tk("P8", 0)]).matched == 0
     assert align_tokens([tk("G3", 0)], [tk("A3", 0)]).matched == 0
+
+
+def test_tremolo_runs_and_their_abbreviation() -> None:
+    six = [_tn("G2", k * 0.5, 0.5, "eighth") for k in range(6)]
+    runs = tremolo_runs(six)
+    assert len(runs) == 6 and runs[id(six[0])][:3] == (0, 6, 3.0) and runs[id(six[5])][0] == 5
+    assert runs[id(six[5])][3] == id(six[0])
+    assert abbreviation_type(3.0) == ("half", 1) and abbreviation_type(4.0) == ("whole", 0)
+    assert abbreviation_type(2.5) is None
+    # Two eighths are not a run; a change of pitch breaks one; a rest breaks one.
+    assert tremolo_runs(six[:2]) == {}
+    mixed = six[:3] + [_tn("A2", 1.5, 0.5, "eighth")] + six[4:]
+    assert set(v[1] for v in tremolo_runs(mixed).values()) == set()   # 3 eighths = 1.5 < half
+    four = [_tn("C4", k * 0.5, 0.5, "eighth") for k in range(4)]
+    assert tremolo_runs(four)[id(four[0])][:3] == (0, 4, 2.0)
+    broken = four[:2] + [_tn(None, 1.0, 0.5, "eighth", rest=True)] + four[2:]
+    assert tremolo_runs(broken) == {}

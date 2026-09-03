@@ -70,6 +70,7 @@ from ..voicing import group_chords_in_measure
 from .measure_align import (
     Alignment,
     Token,
+    abbreviation_type,
     align_tokens,
     event_tokens,
     expected_head_class,
@@ -79,6 +80,7 @@ from .measure_align import (
     on_line_or_in_space,
     parse_head_class,
     staff_y_for_pitch,
+    tremolo_runs,
     truth_tokens,
 )
 from .musicxml_truth import TruthNote, TruthScore, load_truth
@@ -527,10 +529,20 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     # this is the right bar, and rest recall on a scan is poor. EXACT
     # matches are what say this is the right bar; near matches (a head
     # rounded half a space off) only fill in once an exact one vouches.
+    # A tremolo run — six eighths the page prints as one hollow head with
+    # slashes — is ONE unit for recall: one head can only match one of them.
+    runs = tremolo_runs(notes)
+    def _unit(i: int):
+        r = runs.get(id(t_tokens[i].ref))
+        return ("run", r[3]) if r else ("note", i)
     truth_note_idx = [i for i, t in enumerate(t_tokens) if not t.is_rest]
-    matched_notes = sum(1 for ti, _ in al.pairs if not t_tokens[ti].is_rest)
-    exact_notes = sum(1 for pr in al.pairs if not t_tokens[pr[0]].is_rest and pr not in near_set)
-    n_notes = len(truth_note_idx)
+    units = {_unit(i) for i in truth_note_idx}
+    matched_units = {_unit(ti) for ti, _ in al.pairs if not t_tokens[ti].is_rest}
+    exact_units = {_unit(pr[0]) for pr in al.pairs
+                   if not t_tokens[pr[0]].is_rest and pr not in near_set}
+    matched_notes = len(matched_units)
+    exact_notes = len(exact_units)
+    n_notes = len(units)
     recall = (matched_notes / n_notes) if n_notes else None
     recall_exact = (exact_notes / n_notes) if n_notes else None
     read_notes_in_range = sum(1 for i in in_range if not p_tokens[i].is_rest)
@@ -544,7 +556,7 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     width_ratio = round(b_w / (t_w * fm.sy), 3) if t_w and fm.sy else None
     out.alignment = {
         "n_truth": al.n_truth, "n_pred": al.n_pred, "matched": al.matched,
-        "n_truth_notes": len(truth_note_idx), "matched_notes": matched_notes,
+        "n_truth_notes": n_notes, "n_truth_tokens": len(truth_note_idx), "matched_notes": matched_notes,
         "exact_notes": exact_notes, "near_pairs": al.near_pairs,
         "n_pred_in_range": len(in_range),
         "strength": None if recall is None else round(recall, 3),
@@ -609,7 +621,19 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
         verdict = "TP" if want == cls else "WRONG_CATEGORY"
         label = f"{NOTE_TAG}: {'rest' if tn.rest else tn.pitch} {tn.type or '?'}" \
                 f"{'.' * tn.dots} m{number}"
-        if verdict == "WRONG_CATEGORY":
+        run = runs.get(id(tn))
+        parsed = parse_head_class(cls)
+        if run and parsed and parsed[0] != "Black":
+            # The reference spells a tremolo out; the page abbreviates it to
+            # one hollow head and the detector read exactly that. The
+            # reference cannot vouch for the head's KIND here — keep the
+            # detector's class and say why.
+            verdict, want = "TP", cls
+            abbr = abbreviation_type(run[2])
+            label = (f"{NOTE_TAG}: {tn.pitch} {run[1]}× {tn.type or '?'} m{number} — printed as "
+                     f"{'a ' + abbr[0] + '.' * abbr[1] if abbr else 'one head'} with tremolo "
+                     f"strokes? class kept as read")
+        elif verdict == "WRONG_CATEGORY":
             label += f" → {want}"
         if near:
             label += " (≈ one step off)"
@@ -685,8 +709,22 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     missing = [t_tokens[ti] for ti in al.truth_unmatched]
     xs = _x_estimates(missing, matched_x, length, width)
     half_space = ((b_lines[-1] - b_lines[0]) / 4.0) if len(b_lines) >= 5 else 0.0
+    matched_run_ids = {runs[id(t_tokens[ti].ref)][3]
+                       for ti, _ in al.pairs if id(t_tokens[ti].ref) in runs}
     for t in missing:
         tn: TruthNote = t.ref
+        run = runs.get(id(tn))
+        hint_type, hint_dots, run_note = tn.type, tn.dots, ""
+        if run:
+            # One hint per run, on its first note, typed as the abbreviation
+            # the page most likely prints; none at all if any note of the run
+            # already matched a head.
+            if run[0] != 0 or run[3] in matched_run_ids:
+                continue
+            abbr = abbreviation_type(run[2])
+            if abbr:
+                hint_type, hint_dots = abbr
+            run_note = f" ({run[1]}× {tn.type or '?'} in the reference — tremolo?)"
         if tn.rest:
             want_cls = expected_rest_class(tn)
             y = ((b_lines[0] + b_lines[-1]) / 2.0) if len(b_lines) >= 5 else None
@@ -694,9 +732,9 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
         else:
             y = staff_y_for_pitch(tn.pitch, clef, b_lines)
             pos = on_line_or_in_space(tn.pitch, clef)
-            kind = head_kind_for_type(tn.type)
+            kind = head_kind_for_type(hint_type)
             want_cls = f"notehead{kind}{pos}" if pos else None
-            label = f"{tn.pitch} {tn.type or '?'}{'.' * tn.dots}"
+            label = f"{tn.pitch} {hint_type or '?'}{'.' * hint_dots}{run_note}"
         h = int(round(half_space)) if half_space else 0
         w = int(round(half_space * 1.2)) if half_space else 0
         x = xs.get(t.index)
@@ -704,7 +742,8 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
         if x is not None and y is not None and h:
             bbox = {"x": int(round(x - w / 2)), "y": int(round(y - h / 2)), "w": w, "h": h}
         out.hints.append({"kind": "missing", "label": label, "class": want_cls,
-                          "pitch": tn.pitch, "type": tn.type, "dots": tn.dots,
+                          "pitch": tn.pitch, "type": hint_type, "dots": hint_dots,
+                          "tremolo_run": run[1] if run else None,
                           "onset_ql": tn.onset_ql, "bbox": bbox,
                           "x_estimated": True})
 

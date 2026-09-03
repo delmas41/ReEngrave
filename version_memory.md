@@ -7,6 +7,14 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **pre-fill: tremolo abbreviations, and the first score against Sean's boxes** — Sean had
+  labeled all four remaining hollow batches on main (55 Brahms verdict files, 14 hollow boxes).
+  Scored: of the pre-fill's hollow boxes 3 agreed, and where it disagreed the reference spells
+  a tremolo out as six repeated eighths where the page prints one hollow head with slashes —
+  the pre-fill had even relabelled two correctly detected hollow heads to black. A run of ≥3
+  repeated notes adding to a half or more is now ONE unit: a hollow head read over it keeps
+  its class (note says why), the run counts once for recall, and a missed run becomes one
+  hint typed as the abbreviation (`6× eighth → half.`). Brahms 1: 52 of 56 pre-filled.
 - **pre-fill run on the Brahms 1 batch from this session** (inputs pushed by Sean): 51 of 56
   cells pre-filled, 179 TP, 15 relabels, 22 missing-note hints, 5 abstentions all on the right
   bar. Three fixes on the way: a weighted LCS that tolerates a half-space of rounding but needs

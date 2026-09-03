@@ -135,6 +135,47 @@ def detection_position(det: dict[str, Any], line_ys: list[float] | None) -> int 
     return int(round((cy - line_ys[0]) / half))
 
 
+def tremolo_runs(notes: list[TruthNote], *, min_len: int = 3,
+                 min_total_ql: float = 2.0) -> dict[int, tuple[int, int, float, int]]:
+    """Runs of repeated notes an engraver may print as ONE hollow head with
+    tremolo strokes: at least `min_len` consecutive notes of the same pitch
+    and value, no rest or other pitch between them, adding up to at least a
+    half note. The reference spells them out (six eighths); the Breitkopf
+    Brahms prints a dotted half with two slashes, which the detector — and a
+    labeler — sees as one hollow head. Returns `id(note)` → (index in run,
+    run length, total quarter-length) for every note in such a run; the fourth element is the run id — the
+    first note's `id`, shared by every member."""
+    out: dict[int, tuple[int, int, float, int]] = {}
+    seq = [n for n in notes if not n.grace]
+    i = 0
+    while i < len(seq):
+        n = seq[i]
+        j = i + 1
+        if not n.rest and n.pitch and n.duration_ql > 0:
+            while (j < len(seq) and not seq[j].rest and seq[j].pitch == n.pitch
+                   and abs(seq[j].duration_ql - n.duration_ql) < 1e-6
+                   and not seq[j].chord):
+                j += 1
+        length = j - i
+        total = length * n.duration_ql if not n.rest else 0.0
+        if length >= min_len and total >= min_total_ql:
+            for k in range(length):
+                out[id(seq[i + k])] = (k, length, total, id(seq[i]))
+        i = j if j > i else i + 1
+    return out
+
+
+def abbreviation_type(total_ql: float) -> tuple[str, int] | None:
+    """The written value a tremolo of `total_ql` quarter-lengths would take:
+    (type, dots). None where no single note value fits."""
+    table = {2.0: ("half", 0), 3.0: ("half", 1), 4.0: ("whole", 0), 6.0: ("whole", 1),
+             8.0: ("breve", 0)}
+    for ql, tv in table.items():
+        if abs(total_ql - ql) < 1e-6:
+            return tv
+    return None
+
+
 def event_tokens(events: list[dict[str, Any]], *, match: str = "position",
                  include_rests: bool = True,
                  line_ys: list[float] | None = None) -> list[Token]:

@@ -646,3 +646,69 @@ def test_near_matches_fill_in_only_behind_an_exact_one(bench, truth) -> None:
     v = _verdict(bench, "fx-p4-sys0-s0-m0")
     notes = [d["notes"] for d in v["detections"]] + [a["notes"] for a in v["added_detections"]]
     assert sum("one step off" in n for n in notes) == 1
+
+
+TREMOLO_TRUTH = """<?xml version="1.0" encoding="UTF-8"?>
+<score-partwise version="3.1">
+  <part-list><score-part id="P1"><part-name>Contrabass</part-name></score-part></part-list>
+  <part id="P1">
+    <measure number="1">
+      <attributes><divisions>2</divisions><clef><sign>F</sign><line>4</line></clef></attributes>
+      <note><pitch><step>G</step><octave>2</octave></pitch><duration>1</duration><type>eighth</type></note>
+      <note><pitch><step>G</step><octave>2</octave></pitch><duration>1</duration><type>eighth</type></note>
+      <note><pitch><step>G</step><octave>2</octave></pitch><duration>1</duration><type>eighth</type></note>
+      <note><pitch><step>G</step><octave>2</octave></pitch><duration>1</duration><type>eighth</type></note>
+      <note><pitch><step>G</step><octave>2</octave></pitch><duration>1</duration><type>eighth</type></note>
+      <note><pitch><step>G</step><octave>2</octave></pitch><duration>1</duration><type>eighth</type></note>
+    </measure>
+  </part>
+</score-partwise>
+"""
+
+
+def _tremolo_bench(tmp_path: Path):
+    b = tmp_path / "bench"
+    for d in ("cells", "detections", "verdicts"):
+        (b / d).mkdir(parents=True)
+    (b / "cells.json").write_text(json.dumps([_cell("fx-p4-sys0-s0-m0", 0, 0)]))
+    (b / "detections" / "fx-p4-sys0-s0-m0.json").write_text(
+        json.dumps({"cell_id": "fx-p4-sys0-s0-m0", "detections": []}))
+    tp = tmp_path / "trem.musicxml"
+    tp.write_text(TREMOLO_TRUTH)
+    rows = [{"row_id": "fx", "page": {"pdf_page_index": 3},
+             "window": {"first_ref_measure": 1, "last_ref_measure": 1},
+             "staves": [{"name": "Kontrabass", "parts": [0]}]}]
+    return b, load_truth(tp), mv.load_windows(_windows_file(tmp_path, rows))
+
+
+def test_a_tremolo_run_keeps_the_hollow_head_the_detector_read(tmp_path: Path) -> None:
+    """Sean's p2-sys1-s21-m6: the reference holds six G2 eighths, the page
+    one dotted half with slashes, and the detector read a half head on the
+    bottom line (G2 in bass = P8). One head against six notes is a full
+    match, not 1 of 6, and its class is kept rather than relabelled black."""
+    b, truth, windows = _tremolo_bench(tmp_path)
+    d = _det("noteheadHalfOnLine", "G2", 300, 480, dur=2.0, dtype="half")   # cy 500 → P8
+    tr = {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
+        {"staff_index": 0, "clef": "bass", "n_measures": 1, "measures": [_measure(0, [d])]}]}]}]}
+    s = mv.run(b, tr, truth, windows, write=True)
+    c = s["cells"][0]
+    assert c["status"] == "prefilled"
+    assert c["alignment"]["n_truth_notes"] == 1 and c["alignment"]["matched_notes"] == 1
+    v = _verdict(b, "fx-p4-sys0-s0-m0")
+    added = v["added_detections"]
+    assert len(added) == 1 and added[0]["human_class"] == "noteheadHalfOnLine"
+    assert "tremolo" in added[0]["notes"] and "class kept" in added[0]["notes"]
+    assert c["n_wrong_category"] == 0 and c["n_hints_missing"] == 0
+
+
+def test_a_tremolo_run_the_reading_missed_is_one_hollow_hint(tmp_path: Path) -> None:
+    b, truth, windows = _tremolo_bench(tmp_path)
+    tr = {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
+        {"staff_index": 0, "clef": "bass", "n_measures": 1, "measures": [_measure(0, [])]}]}]}]}
+    s = mv.run(b, tr, truth, windows, write=True)
+    c = s["cells"][0]
+    assert c["status"] == "prefilled" and c["n_hints_missing"] == 1
+    pre = json.loads((b / "prefill" / "fx-p4-sys0-s0-m0.json").read_text())
+    h = pre["hints"][0]
+    assert h["type"] == "half" and h["dots"] == 1 and h["tremolo_run"] == 6
+    assert h["class"] == "noteheadHalfOnLine" and "tremolo" in h["label"]
