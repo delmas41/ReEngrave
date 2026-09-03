@@ -412,7 +412,7 @@ def _x_estimates(missing: list[Token], matched_x: list[tuple[float, float]],
 
 def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
                  truth: TruthScore, batch_dets: list[dict], *,
-                 match: str = "step", min_strength: float = DEFAULT_MIN_STRENGTH,
+                 match: str = "position", min_strength: float = DEFAULT_MIN_STRENGTH,
                  min_iou: float = DEFAULT_MIN_IOU,
                  trust_measure_counts: bool = False) -> CellPrefill:
     cell_id = entry["cell_id"]
@@ -468,11 +468,15 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     t_tokens = truth_tokens(notes, match=match, include_rests=not condensed)
     detections = measure.get("detections", [])
     events = _events_with_orphans(detections)
-    p_tokens = event_tokens(events, match=match, include_rests=not condensed)
+    p_tokens = event_tokens(events, match=match, include_rests=not condensed,
+                            line_ys=measure.get("staff_line_ys_canonical"))
     det_index = {id(d): i for i, d in enumerate(detections)}
 
     fm = frame_map(measure, entry)
-    clef = measure.get("clef") or staff.get("clef") or entry.get("clef")
+    # The clef for placing hints: the reference's written clef first (a fact
+    # about the part), the pipeline's reading only where the file names none.
+    truth_clef = next((n.clef for n in notes if n.clef), None)
+    clef = truth_clef or measure.get("clef") or staff.get("clef") or entry.get("clef")
     b_lines = entry.get("staff_line_ys_canonical") or []
     width = int(entry.get("cell_canonical_w") or 0)
 
@@ -721,7 +725,7 @@ def _has_human_content(state: dict) -> bool:
 
 def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, WindowRow], *,
         write: bool = False, hints_only: bool = False, force: bool = False, score: bool = False,
-        match: str = "step", min_strength: float = DEFAULT_MIN_STRENGTH,
+        match: str = "position", min_strength: float = DEFAULT_MIN_STRENGTH,
         min_iou: float = DEFAULT_MIN_IOU, trust_measure_counts: bool = False,
         cells: list[str] | None = None) -> dict:
     manifest = json.loads((bench / "cells.json").read_text())
@@ -834,6 +838,13 @@ def _print_summary(summary: dict) -> None:
             reasons[c["reason"]] = reasons.get(c["reason"], 0) + 1
     for r, n in sorted(reasons.items(), key=lambda kv: -kv[1]):
         print(f"  {n:4d}  {r}")
+    abstained = [c for c in summary["cells"] if c["status"] == "abstained"]
+    if abstained:
+        print("  abstained cells:")
+        for c in abstained:
+            al = c.get("alignment") or {}
+            strength = "" if al.get("strength") is None else f"  {al['matched']}/{max(al['n_truth'], al['n_pred'])}"
+            print(f"    {c['cell_id']}  m{c.get('measure_number')}{strength}")
     if "score" in summary:
         s = summary["score"]
         print(f"score over {s['cells_scored']} cells with human verdicts"
@@ -860,7 +871,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="overwrite verdict files that already carry human work")
     ap.add_argument("--score", action="store_true",
                     help="compare against human verdicts already in the batch")
-    ap.add_argument("--match", choices=("step", "exact"), default="step")
+    ap.add_argument("--match", choices=("position", "step", "exact"), default="position",
+                    help="position: staff position from the reference clef vs the box (default, "
+                         "immune to a misread clef); step: step+octave; exact: the spelling too")
     ap.add_argument("--min-strength", type=float, default=DEFAULT_MIN_STRENGTH)
     ap.add_argument("--min-iou", type=float, default=DEFAULT_MIN_IOU)
     ap.add_argument("--trust-measure-counts", action="store_true",

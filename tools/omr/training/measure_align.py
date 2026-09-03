@@ -13,10 +13,14 @@ the labeling UI boxes. A chord contributes one token per notehead, lowest
 pitch first on both sides (`voicing.group_chords_in_measure` already orders
 them that way; truth chords are sorted here to match).
 
-Matching is on the STEP by default (`E4` for E4, Eb4 and E#4 alike): the
-notehead box is the same whichever accidental precedes it, and a scan whose
-key signature was misread spells every note on the staff wrong while placing
-every notehead right. `match="exact"` demands the spelling too.
+Matching is on STAFF POSITION by default: the reference note's position
+comes from its pitch and the WRITTEN CLEF the reference file carries, and
+the detection's from its box against the staff lines — neither side uses
+the pipeline's clef reading. On a scan the pipeline often calls a bass or
+alto staff treble, which spells every pitch on that staff wrong while placing
+every notehead right; matched this way the boxes still confirm. `match="step"`
+compares step + octave (accidental ignored) and `match="exact"` the spelling
+too — both need the pipeline's clef to have been right.
 """
 
 from __future__ import annotations
@@ -56,7 +60,11 @@ def _pitch_key(pitch: str | None, match: str) -> str:
     return f"{m.group(1)}{m.group(2)}" if m else pitch
 
 
-def truth_tokens(notes: list[TruthNote], *, match: str = "step",
+def _position_key(position: int | None, fallback: str) -> str:
+    return f"P{position}" if position is not None else fallback
+
+
+def truth_tokens(notes: list[TruthNote], *, match: str = "position",
                  include_rests: bool = True, include_grace: bool = False) -> list[Token]:
     """Tokens for one truth measure, in onset order, chords lowest-first.
 
@@ -75,6 +83,9 @@ def truth_tokens(notes: list[TruthNote], *, match: str = "step",
             key = "R"
         elif n.unpitched:
             key = "X"
+        elif match == "position":
+            # Falls back to the step key where the reference names no clef.
+            key = _position_key(staff_position(n.pitch, n.clef), _pitch_key(n.pitch, "step"))
         else:
             key = _pitch_key(n.pitch, match)
         out.append(Token(key=key, pitch=n.pitch, is_rest=n.rest,
@@ -111,11 +122,28 @@ def merge_truth_parts(measures: list[list[TruthNote]]) -> list[TruthNote]:
     return merged
 
 
-def event_tokens(events: list[dict[str, Any]], *, match: str = "step",
-                 include_rests: bool = True) -> list[Token]:
+def detection_position(det: dict[str, Any], line_ys: list[float] | None) -> int | None:
+    """Half-steps from the top line, down positive, of a detection's box
+    centre on a staff whose canonical line positions are `line_ys` — the
+    same arithmetic `pitch_resolver` used, without its clef."""
+    if not line_ys or len(line_ys) < 5 or line_ys[-1] <= line_ys[0]:
+        return None
+    bbox = det.get("bbox")
+    if not bbox or len(bbox) < 4:
+        return None
+    cy = bbox[1] + bbox[3] / 2.0
+    half = (line_ys[-1] - line_ys[0]) / 8.0
+    return int(round((cy - line_ys[0]) / half))
+
+
+def event_tokens(events: list[dict[str, Any]], *, match: str = "position",
+                 include_rests: bool = True,
+                 line_ys: list[float] | None = None) -> list[Token]:
     """Tokens for one predicted measure from `voicing.group_chords_in_measure`
     output. `ref` is the notehead or rest DETECTION DICT itself — the same
-    object that sits in `measure["detections"]`, so identity maps it back."""
+    object that sits in `measure["detections"]`, so identity maps it back.
+    `line_ys` (the measure's canonical staff lines) is what `position`
+    matching reads the box against; without it the step key is used."""
     out: list[Token] = []
     for ev in events:
         if ev.get("kind") == "rest":
@@ -128,7 +156,12 @@ def event_tokens(events: list[dict[str, Any]], *, match: str = "step",
                              onset_ql=None, ref=r, index=len(out)))
             continue
         for nh in ev.get("noteheads", []):
-            out.append(Token(key=_pitch_key(nh.get("pitch"), match), pitch=nh.get("pitch"),
+            if match == "position":
+                key = _position_key(detection_position(nh, line_ys),
+                                    _pitch_key(nh.get("pitch"), "step"))
+            else:
+                key = _pitch_key(nh.get("pitch"), match)
+            out.append(Token(key=key, pitch=nh.get("pitch"),
                              is_rest=False, duration_ql=ev.get("duration_beats"),
                              type=ev.get("duration_type"), dots=ev.get("dots", 0),
                              onset_ql=None, ref=nh, index=len(out)))
@@ -283,21 +316,30 @@ def _clef_anchor(clef: str | None) -> tuple[str, int] | None:
     return _PITCH_CYCLE[idx % 7], octave + idx // 7 + shift
 
 
+def staff_position(pitch: str | None, clef: str | None) -> int | None:
+    """Half-steps from the TOP line, down positive, where a written pitch
+    sits in this clef: 0 is the top line, 8 the bottom line, negative is
+    above the staff. None when the clef is unknown or the pitch unparseable."""
+    if not pitch:
+        return None
+    m = re.match(r"^([A-G])[#b]*(-?\d+)$", pitch)
+    anchor = _clef_anchor(clef)
+    if not m or anchor is None:
+        return None
+    return _diatonic_index(*anchor) - _diatonic_index(m.group(1), int(m.group(2)))
+
+
 def staff_y_for_pitch(pitch: str | None, clef: str | None,
                       line_ys: list[float]) -> float | None:
     """Canonical y of a written pitch's notehead centre on a staff whose five
     line positions are `line_ys` (top first). None when the clef is unknown
     or the pitch does not parse."""
-    if not pitch or not line_ys or len(line_ys) < 5:
+    if not line_ys or len(line_ys) < 5:
         return None
-    m = re.match(r"^([A-G])[#b]*(-?\d+)$", pitch)
-    if not m:
-        return None
-    anchor = _clef_anchor(clef)
-    if anchor is None:
+    position = staff_position(pitch, clef)
+    if position is None:
         return None
     half = (line_ys[-1] - line_ys[0]) / 8.0
-    position = _diatonic_index(*anchor) - _diatonic_index(m.group(1), int(m.group(2)))
     return line_ys[0] + position * half
 
 
@@ -305,11 +347,7 @@ def on_line_or_in_space(pitch: str | None, clef: str | None) -> str | None:
     """Whether a written pitch sits ON a line or IN a space for this clef —
     even half-steps from the top line are lines, odd are spaces, and the
     parity keeps working through the ledger positions."""
-    if not pitch:
+    position = staff_position(pitch, clef)
+    if position is None:
         return None
-    m = re.match(r"^([A-G])[#b]*(-?\d+)$", pitch)
-    anchor = _clef_anchor(clef)
-    if not m or anchor is None:
-        return None
-    position = _diatonic_index(*anchor) - _diatonic_index(m.group(1), int(m.group(2)))
     return "OnLine" if position % 2 == 0 else "InSpace"

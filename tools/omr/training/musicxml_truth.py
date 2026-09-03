@@ -71,6 +71,7 @@ class TruthNote:
     tie_stop: bool
     unpitched: bool
     measure_rest: bool           # <rest measure="yes"/>
+    clef: str | None = None      # written clef in force ("treble", "bass", "alto", "treble_8vb", …)
 
     @property
     def step_key(self) -> str:
@@ -258,9 +259,46 @@ def _parse_note(el: ET.Element, onset_div: float, divisions: int) -> TruthNote:
     )
 
 
-def _parse_measure(el: ET.Element, divisions: int) -> tuple[TruthMeasure, int]:
-    """Parse one <measure>. Returns the measure and the divisions in force
-    at its end (a <divisions> change persists into later measures)."""
+_CLEF_NAME = {
+    ("G", 1): "french", ("G", 2): "treble",
+    ("F", 3): "varbaritone", ("F", 4): "bass", ("F", 5): "subbass",
+    ("C", 1): "soprano", ("C", 2): "mezzosoprano", ("C", 3): "alto",
+    ("C", 4): "tenor", ("C", 5): "baritone",
+}
+_DEFAULT_LINE = {"G": 2, "F": 4, "C": 3}
+_OCTAVE_SUFFIX = {1: "_8va", -1: "_8vb", 2: "_15ma", -2: "_15mb"}
+
+
+def clef_name(sign: str | None, line: int | None, octave_change: int = 0) -> str | None:
+    """MusicXML <clef> → the pipeline's clef name (LilyPond's, the keys of
+    `clef_geometry.CLEF_TO_FAMILY_LINE`). Percussion / TAB / none → None."""
+    if not sign or sign.upper() not in _DEFAULT_LINE:
+        return None
+    sign = sign.upper()
+    name = _CLEF_NAME.get((sign, line if line is not None else _DEFAULT_LINE[sign]))
+    if name is None:
+        return None
+    return name + _OCTAVE_SUFFIX.get(octave_change, "")
+
+
+def _clef_from_attributes(attrs: ET.Element, current: str | None) -> str | None:
+    """The clef an <attributes> block sets for the part's first staff, or
+    `current` when it sets none."""
+    for c in attrs.findall("clef"):
+        number = c.get("number")
+        if number not in (None, "1"):
+            continue
+        oc = c.find("clef-octave-change")
+        return clef_name(_text(c.find("sign")) or None,
+                         _int(c.find("line"), 0) or None,
+                         _int(oc, 0) if oc is not None else 0)
+    return current
+
+
+def _parse_measure(el: ET.Element, divisions: int,
+                   clef: str | None = None) -> tuple[TruthMeasure, int, str | None]:
+    """Parse one <measure>. Returns the measure, the divisions and the clef
+    in force at its end (both persist into later measures)."""
     raw = el.get("number", "")
     measure = TruthMeasure(
         number_raw=raw,
@@ -277,6 +315,7 @@ def _parse_measure(el: ET.Element, divisions: int) -> tuple[TruthMeasure, int]:
             if d is not None:
                 divisions = max(1, _int(d, divisions))
                 measure.divisions = divisions
+            clef = _clef_from_attributes(child, clef)
         elif tag == "backup":
             cursor -= _int(child.find("duration"), 0)
         elif tag == "forward":
@@ -285,13 +324,14 @@ def _parse_measure(el: ET.Element, divisions: int) -> tuple[TruthMeasure, int]:
             is_chord = child.find("chord") is not None
             onset = last_onset if is_chord else cursor
             note = _parse_note(child, onset, divisions)
+            note.clef = clef
             measure.notes.append(note)
             if not is_chord:
                 last_onset = cursor
                 if not note.grace:
                     cursor += _int(child.find("duration"), 0)
     measure.notes.sort(key=lambda n: (n.onset_ql, n.rest, n.octave or 0, n.step or ""))
-    return measure, divisions
+    return measure, divisions, clef
 
 
 def load_truth(path: str | Path) -> TruthScore:
@@ -307,11 +347,12 @@ def load_truth(path: str | Path) -> TruthScore:
     for pi, part_el in enumerate(e for e in root if _strip_ns(e.tag) == "part"):
         pid = part_el.get("id", f"P{pi + 1}")
         divisions = 1
+        clef: str | None = None
         measures: list[TruthMeasure] = []
         for m_el in part_el:
             if _strip_ns(m_el.tag) != "measure":
                 continue
-            m, divisions = _parse_measure(m_el, divisions)
+            m, divisions, clef = _parse_measure(m_el, divisions, clef)
             measures.append(m)
         parts.append(TruthPart(index=pi, part_id=pid, name=names.get(pid, pid),
                                measures=measures))

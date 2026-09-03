@@ -21,7 +21,7 @@ TWO_PARTS = """<?xml version="1.0" encoding="UTF-8"?>
   </part-list>
   <part id="P1">
     <measure number="0" implicit="yes">
-      <attributes><divisions>2</divisions></attributes>
+      <attributes><divisions>2</divisions><clef><sign>G</sign><line>2</line></clef></attributes>
       <note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>quarter</type></note>
     </measure>
     <measure number="1">
@@ -39,7 +39,7 @@ TWO_PARTS = """<?xml version="1.0" encoding="UTF-8"?>
   </part>
   <part id="P2">
     <measure number="0" implicit="yes">
-      <attributes><divisions>4</divisions></attributes>
+      <attributes><divisions>4</divisions><clef><sign>F</sign><line>4</line></clef></attributes>
       <note><rest/><duration>4</duration><type>quarter</type></note>
     </measure>
     <measure number="1">
@@ -50,6 +50,7 @@ TWO_PARTS = """<?xml version="1.0" encoding="UTF-8"?>
       <note><pitch><step>A</step><octave>3</octave></pitch><duration>16</duration><type>whole</type><voice>2</voice></note>
     </measure>
     <measure number="2">
+      <attributes><clef><sign>C</sign><line>4</line><clef-octave-change>-1</clef-octave-change></clef></attributes>
       <forward><duration>8</duration></forward>
       <note><pitch><step>D</step><octave>4</octave></pitch><duration>8</duration><type>half</type></note>
     </measure>
@@ -141,3 +142,19 @@ def test_timewise_is_refused(tmp_path: Path) -> None:
     p.write_text('<?xml version="1.0"?><score-timewise/>')
     with pytest.raises(ValueError):
         load_truth(p)
+
+
+def test_written_clef_is_carried_onto_every_note(score_path: Path) -> None:
+    s = load_truth(score_path)
+    assert {n.clef for m in s.part(0).measures for n in m.notes} == {"treble"}
+    va = s.part(1)
+    assert {n.clef for n in va.by_number()[1].notes} == {"bass"}       # persists from m0
+    assert {n.clef for n in va.by_number()[2].notes} == {"tenor_8vb"}  # changed mid-part
+
+
+def test_clef_name_table() -> None:
+    from tools.omr.training.musicxml_truth import clef_name
+    assert clef_name("G", 2) == "treble" and clef_name("F", 4) == "bass"
+    assert clef_name("C", 3) == "alto" and clef_name("C", None) == "alto"
+    assert clef_name("G", 2, -1) == "treble_8vb"
+    assert clef_name("percussion", None) is None and clef_name(None, None) is None

@@ -7,7 +7,9 @@ import pytest
 
 from tools.omr.training.measure_align import (
     align_tokens,
+    detection_position,
     event_tokens,
+    staff_position,
     expected_head_class,
     expected_rest_class,
     head_kind_for_type,
@@ -22,7 +24,7 @@ pytestmark = pytest.mark.omr_training
 
 
 def _tn(pitch: str | None, onset: float, dur: float, ntype: str, *, rest=False,
-        grace=False, dots=0, measure_rest=False) -> TruthNote:
+        grace=False, dots=0, measure_rest=False, clef=None) -> TruthNote:
     step = octave = None
     alter = 0
     if pitch:
@@ -33,7 +35,7 @@ def _tn(pitch: str | None, onset: float, dur: float, ntype: str, *, rest=False,
                      octave=octave, type=ntype, dots=dots, rest=rest, chord=False,
                      grace=grace, voice="1", tuplet_actual=None, tuplet_normal=None,
                      tie_start=False, tie_stop=False, unpitched=False,
-                     measure_rest=measure_rest)
+                     measure_rest=measure_rest, clef=clef)
 
 
 def _det(cls: str, pitch: str | None, x: int, **extra) -> dict:
@@ -58,26 +60,26 @@ def _events(*dets: dict) -> list[dict]:
 
 def test_step_key_ignores_the_accidental_and_exact_does_not() -> None:
     notes = [_tn("F#4", 0, 1, "quarter"), _tn("Bb3", 1, 1, "quarter")]
-    assert [t.key for t in truth_tokens(notes)] == ["F4", "B3"]
+    assert [t.key for t in truth_tokens(notes, match="step")] == ["F4", "B3"]
     assert [t.key for t in truth_tokens(notes, match="exact")] == ["F#4", "Bb3"]
     dets = [_det("noteheadBlackOnLine", "F4", 10), _det("noteheadBlackInSpace", "B3", 40)]
-    assert [t.key for t in event_tokens(_events(*dets))] == ["F4", "B3"]
+    assert [t.key for t in event_tokens(_events(*dets), match="step")] == ["F4", "B3"]
     assert [t.key for t in event_tokens(_events(*dets), match="exact")] == ["F4", "B3"]
 
 
 def test_grace_notes_are_skipped_and_rests_can_be() -> None:
     notes = [_tn("C5", 0, 0, "16th", grace=True), _tn("C5", 0, 1, "quarter"),
              _tn(None, 1, 1, "quarter", rest=True)]
-    assert [t.key for t in truth_tokens(notes)] == ["C5", "R"]
-    assert [t.key for t in truth_tokens(notes, include_rests=False)] == ["C5"]
+    assert [t.key for t in truth_tokens(notes, match="step")] == ["C5", "R"]
+    assert [t.key for t in truth_tokens(notes, match="step", include_rests=False)] == ["C5"]
 
 
 def test_alignment_returns_pairs_and_the_leftovers() -> None:
     truth = truth_tokens([_tn("C4", 0, 1, "quarter"), _tn("E4", 1, 2, "half"),
-                          _tn("G4", 3, 1, "quarter")])
+                          _tn("G4", 3, 1, "quarter")], match="step")
     pred = event_tokens(_events(_det("noteheadBlackOnLine", "C4", 10),
                                 _det("noteheadBlackInSpace", "A4", 40),
-                                _det("noteheadBlackInSpace", "G4", 70)))
+                                _det("noteheadBlackInSpace", "G4", 70)), match="step")
     al = align_tokens(truth, pred)
     assert al.pairs == [(0, 0), (2, 2)]
     assert al.truth_unmatched == [1]
@@ -89,16 +91,16 @@ def test_alignment_returns_pairs_and_the_leftovers() -> None:
 
 
 def test_alignment_is_order_preserving() -> None:
-    truth = truth_tokens([_tn("C4", 0, 1, "quarter"), _tn("G4", 1, 1, "quarter")])
+    truth = truth_tokens([_tn("C4", 0, 1, "quarter"), _tn("G4", 1, 1, "quarter")], match="step")
     pred = event_tokens(_events(_det("noteheadBlackOnLine", "G4", 10),
-                                _det("noteheadBlackOnLine", "C4", 40)))
+                                _det("noteheadBlackOnLine", "C4", 40)), match="step")
     al = align_tokens(truth, pred)
     assert al.matched == 1  # one of the two, never both crossed
 
 
 def test_empty_sides_have_no_strength() -> None:
     assert align_tokens([], []).strength is None
-    al = align_tokens(truth_tokens([_tn("C4", 0, 1, "quarter")]), [])
+    al = align_tokens(truth_tokens([_tn("C4", 0, 1, "quarter")], match="step"), [])
     assert al.strength == 0.0 and al.truth_unmatched == [0]
 
 
@@ -153,3 +155,38 @@ def test_staff_position_abstains_without_a_clef() -> None:
     assert staff_y_for_pitch("E4", "percussion", [1, 2, 3, 4, 5]) is None
     assert staff_y_for_pitch("E4", "treble", []) is None
     assert on_line_or_in_space(None, "treble") is None
+
+
+def test_staff_position_counts_half_steps_from_the_top_line() -> None:
+    assert staff_position("F5", "treble") == 0
+    assert staff_position("E4", "treble") == 8
+    assert staff_position("G5", "treble") == -1
+    assert staff_position("G3", "bass") == 1
+    assert staff_position("C4", "alto") == 4
+    assert staff_position("C4", None) is None
+
+
+def test_position_match_survives_a_misread_clef() -> None:
+    """The reference says bass clef, G3 then B3. The pipeline called the
+    staff treble and spelled the heads B4 and D5 — wrong pitches, right
+    boxes. On step keys nothing matches; on positions both do."""
+    lines = [100.0, 200.0, 300.0, 400.0, 500.0]
+    truth = [_tn("G3", 0, 2, "half", clef="bass"), _tn("B3", 2, 2, "half", clef="bass")]
+    d1 = _det("noteheadBlackOnLine", "B4", 10)
+    d1["bbox"] = [10, 130, 40, 40]      # centre y 150 → position 1 (G3 in bass)
+    d2 = _det("noteheadBlackInSpace", "D5", 60)
+    d2["bbox"] = [60, 30, 40, 40]       # centre y 50 → position -1 (B3 in bass)
+    step = align_tokens(truth_tokens(truth, match="step"),
+                        event_tokens(_events(d1, d2), match="step"))
+    assert step.matched == 0
+    pos = align_tokens(truth_tokens(truth),
+                       event_tokens(_events(d1, d2), line_ys=lines))
+    assert pos.pairs == [(0, 0), (1, 1)]
+    assert detection_position(d1, lines) == 1 and detection_position(d2, lines) == -1
+
+
+def test_position_match_falls_back_to_steps_without_geometry() -> None:
+    truth = [_tn("G3", 0, 2, "half")]               # no clef in the reference
+    d = _det("noteheadBlackOnLine", "G3", 10)
+    al = align_tokens(truth_tokens(truth), event_tokens(_events(d), line_ys=None))
+    assert al.matched == 1 and truth_tokens(truth)[0].key == "G3"

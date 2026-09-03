@@ -3,6 +3,14 @@
 Newest first. One entry per commit or merged arc, with the measured effect
 where one exists. Update this file with every commit.
 
+## 2026-09-03
+
+- **training: pre-fill aligns on STAFF POSITION, not pitch** — the reference's written clef
+  (now parsed by `musicxml_truth`, per note) places each truth note; a detection's position
+  comes from its box. Sean's first Brahms 1 run: 26 of 56 cells pre-filled, 30 abstained with
+  `0 of N matched` — the misread-clef signature. `--match step|exact` kept as options; the
+  summary now lists abstained cells with their match ratio.
+
 ## 2026-09-02
 
 - **training: draft fills an unnamed staff by ORDER** — on a shorter system, a staff the reader

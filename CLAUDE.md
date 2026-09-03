@@ -1561,9 +1561,16 @@ reference can decide most of the verdicts before a human opens the batch.
 MXL→bounding-box path (F1 0.064): nothing is placed in pixel space from the
 file. The transcription already carries per-measure detections with a pitch
 and a duration each; the reference measure is a note sequence too; the two are
-aligned (`measure_align.py`, a longest-common-subsequence on step + octave, so
-a misread key signature does not unmatch a correctly placed head) and every
-pair is a verdict on a box that already has coordinates. The truth is read by
+aligned (`measure_align.py`, a longest-common-subsequence) and every pair is a
+verdict on a box that already has coordinates. ⚠️ **The alignment key is
+STAFF POSITION, not pitch** (2026-09-03): the reference note's position comes
+from its pitch and the written clef the MusicXML carries, the detection's from
+its box against the staff lines, and the pipeline's own clef reading is used by
+neither. The first real run (Brahms 1 / Breitkopf, 56 cells) abstained on 30
+cells with `0 of N matched` under step matching — the scan's bass and alto
+staves read as treble, every pitch on them off by a constant, every box in the
+right place. `--match step` / `exact` remain for engraved pages where the clef
+is trusted. The truth is read by
 `musicxml_truth.py`, stdlib only — it handles `.mxl`, chords, `<backup>`,
 pickups numbered 0 — so the pre-fill runs anywhere the JSON opens, no music21.
 

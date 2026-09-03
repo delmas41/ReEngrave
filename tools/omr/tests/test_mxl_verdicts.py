@@ -30,7 +30,7 @@ TRUTH = """<?xml version="1.0" encoding="UTF-8"?>
   </part-list>
   <part id="P1">
     <measure number="1">
-      <attributes><divisions>2</divisions></attributes>
+      <attributes><divisions>2</divisions><clef><sign>G</sign><line>2</line></clef></attributes>
       <note><pitch><step>C</step><octave>5</octave></pitch><duration>4</duration><type>half</type></note>
       <note><pitch><step>E</step><octave>5</octave></pitch><duration>2</duration><type>quarter</type></note>
       <note><pitch><step>G</step><octave>5</octave></pitch><duration>2</duration><type>quarter</type></note>
@@ -45,7 +45,7 @@ TRUTH = """<?xml version="1.0" encoding="UTF-8"?>
   </part>
   <part id="P2">
     <measure number="1">
-      <attributes><divisions>2</divisions></attributes>
+      <attributes><divisions>2</divisions><clef><sign>G</sign><line>2</line></clef></attributes>
       <note><pitch><step>A</step><octave>4</octave></pitch><duration>8</duration><type>whole</type></note>
     </measure>
     <measure number="2">
@@ -84,20 +84,20 @@ def _transcription(n_measures_staff0: int = 3) -> dict:
     # Staff 0 = Flute, staff 1 = Oboe. Canonical == page frame (upscale 1.0).
     s0 = [
         _measure(0, [
-            _det("noteheadBlackInSpace", "C5", 200, 280),         # truth half → WRONG_CATEGORY
-            _det("noteheadBlackOnLine", "E5", 500, 180),          # TP
-            _det("noteheadBlackInSpace", "A5", 800, 30),          # not in the reference
+            _det("noteheadBlackInSpace", "C5", 200, 230),         # truth half → WRONG_CATEGORY
+            _det("noteheadBlackOnLine", "E5", 500, 130),          # TP
+            _det("noteheadBlackInSpace", "A5", 800, -20),         # not in the reference
         ]),
         _measure(1, [_det("restWhole", None, 400, 150, dur=4.0, dtype="whole")]),
         _measure(2, [
-            _det("noteheadHalfInSpace", "D5", 300, 230, dur=2.0, dtype="half"),   # TP
-            _det("noteheadBlackInSpace", "D5", 700, 230, dur=None, dtype=None),   # stemless orphan
+            _det("noteheadHalfInSpace", "D5", 300, 180, dur=2.0, dtype="half"),   # TP
+            _det("noteheadBlackInSpace", "D5", 700, 180, dur=None, dtype=None),   # stemless orphan
         ]),
     ][:n_measures_staff0]
     s1 = [
         _measure(0, [_det("noteheadBlackInSpace", "A4", 400, 330, dur=4.0, dtype="whole")]),
-        _measure(1, [_det("noteheadBlackOnLine", "B4", 300, 300, dur=2.0, dtype="half"),
-                     _det("noteheadHalfInSpace", "C5", 700, 280, dur=2.0, dtype="half")]),
+        _measure(1, [_det("noteheadBlackOnLine", "B4", 300, 280, dur=2.0, dtype="half"),
+                     _det("noteheadHalfInSpace", "C5", 700, 230, dur=2.0, dtype="half")]),
         _measure(2, []),
     ]
     return {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
@@ -141,14 +141,14 @@ def bench(tmp_path: Path) -> Path:
     ]
     (b / "cells.json").write_text(json.dumps(cells))
     dets = {
-        "fx-p4-sys0-s0-m0": [_batch_det(0, "noteheadBlackInSpace", 205, 285),
-                             _batch_det(1, "noteheadBlackOnLine", 498, 176),
-                             _batch_det(2, "noteheadBlackInSpace", 803, 33),
-                             _batch_det(3, "accidentalSharp", 150, 280, 20, 60)],
+        "fx-p4-sys0-s0-m0": [_batch_det(0, "noteheadBlackInSpace", 205, 235),
+                             _batch_det(1, "noteheadBlackOnLine", 498, 126),
+                             _batch_det(2, "noteheadBlackInSpace", 803, -17),
+                             _batch_det(3, "accidentalSharp", 150, 230, 20, 60)],
         "fx-p4-sys0-s0-m1": [_batch_det(0, "restWhole", 400, 150, 40, 20)],
         "fx-p4-sys0-s0-m2": [],
         "fx-p4-sys0-s1-m0": [_batch_det(0, "noteheadBlackInSpace", 800, 660, 80, 80)],
-        "fx-p4-sys0-s1-m1": [_batch_det(0, "noteheadBlackOnLine", 300, 300)],
+        "fx-p4-sys0-s1-m1": [_batch_det(0, "noteheadBlackOnLine", 300, 280)],
     }
     for cid, ds in dets.items():
         (b / "detections" / f"{cid}.json").write_text(json.dumps({"cell_id": cid, "detections": ds}))
@@ -208,6 +208,7 @@ def test_missing_and_extra_notes_become_hints(bench, truth) -> None:
     assert missing["pitch"] == "G5" and missing["class"] == "noteheadBlackInSpace"
     # y from the pitch on the treble staff: G5 is the space ABOVE the top line.
     assert missing["bbox"]["y"] + missing["bbox"]["h"] / 2 == pytest.approx(50, abs=1)
+    # the frame test's page-1 whole note: A4 sits in the second space (pos 5)
     assert missing["x_estimated"] is True
     assert kinds["extra"]["label"] == "read A5"
 
@@ -272,7 +273,7 @@ def test_measure_count_disagreement_abstains_unless_trusted(bench, truth) -> Non
 
 def test_weak_alignment_abstains(bench, truth) -> None:
     # Shift the window so staff 0 measure 0 is compared to reference m3
-    # (D5 D5): only nothing lines up with C5 E5 A5.
+    # (D5 D5): nothing lines up with C5 E5 A5 by position either.
     s = _run(bench, truth, _windows(first=3, last=None), write=True)
     c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
     assert c["status"] == "abstained" and "weak alignment" in c["reason"]
@@ -303,7 +304,7 @@ def test_human_work_is_never_overwritten_without_force(bench, truth) -> None:
     human = {"cell_id": cid, "schema_version": 2, "detections": [],
              "added_detections": [{"id": "H0", "human_class": "noteheadHalfInSpace",
                                    "human_category": "notehead",
-                                   "bbox": {"x": 200, "y": 280, "w": 40, "h": 40}, "notes": ""}],
+                                   "bbox": {"x": 200, "y": 230, "w": 40, "h": 40}, "notes": ""}],
              "inspected_passes": []}
     (bench / "verdicts" / f"{cid}.verdict.json").write_text(json.dumps(human))
     s = _run(bench, truth, _windows(), write=True)
@@ -321,7 +322,7 @@ def test_score_against_human_verdicts(bench, truth) -> None:
     human = {"cell_id": cid, "schema_version": 2, "detections": [],
              "added_detections": [
                  {"id": "H0", "human_class": "noteheadHalfInSpace", "human_category": "notehead",
-                  "bbox": {"x": 296, "y": 226, "w": 44, "h": 44}, "notes": ""},
+                  "bbox": {"x": 296, "y": 176, "w": 44, "h": 44}, "notes": ""},
                  {"id": "H1", "human_class": "noteheadWholeOnLine", "human_category": "notehead",
                   "bbox": {"x": 900, "y": 100, "w": 40, "h": 40}, "notes": ""}],
              "inspected_passes": ["hollow noteheads"]}
@@ -480,3 +481,47 @@ def test_staff_disagreeing_with_its_system_abstains(bench, truth) -> None:
     assert by["fx-p4-sys0-s1-m0"]["status"] == "abstained"
     assert "its system reads 3" in by["fx-p4-sys0-s1-m0"]["reason"]
     assert by["fx-p4-sys0-s0-m0"]["status"] == "prefilled"
+
+
+BASS_TRUTH = """<?xml version="1.0" encoding="UTF-8"?>
+<score-partwise version="3.1">
+  <part-list><score-part id="P1"><part-name>Cello</part-name></score-part></part-list>
+  <part id="P1">
+    <measure number="1">
+      <attributes><divisions>2</divisions><clef><sign>F</sign><line>4</line></clef></attributes>
+      <note><pitch><step>G</step><octave>3</octave></pitch><duration>4</duration><type>half</type></note>
+      <note><pitch><step>B</step><octave>3</octave></pitch><duration>4</duration><type>half</type></note>
+    </measure>
+  </part>
+</score-partwise>
+"""
+
+
+def test_a_misread_clef_still_confirms_the_boxes(tmp_path: Path) -> None:
+    """The scan's cello staff was read as treble: G3 and B3 came out as B4
+    and D5. Their boxes are right, and the reference clef says where G3 and
+    B3 sit — so by position both heads are confirmed and relabelled hollow."""
+    b = tmp_path / "bench"
+    for d in ("cells", "detections", "verdicts"):
+        (b / d).mkdir(parents=True)
+    (b / "cells.json").write_text(json.dumps([_cell("fx-p4-sys0-s0-m0", 0, 0)]))
+    (b / "detections" / "fx-p4-sys0-s0-m0.json").write_text(
+        json.dumps({"cell_id": "fx-p4-sys0-s0-m0", "detections": []}))
+    tp = tmp_path / "bass.musicxml"
+    tp.write_text(BASS_TRUTH)
+    truth = load_truth(tp)
+    d1 = _det("noteheadBlackOnLine", "B4", 200, 130, dur=1.0)   # cy 150 → pos 1 = G3 in bass
+    d2 = _det("noteheadBlackInSpace", "D5", 600, 30, dur=1.0)   # cy 50 → pos -1 = B3 in bass
+    tr = {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
+        {"staff_index": 0, "clef": "treble", "n_measures": 1, "measures": [_measure(0, [d1, d2])]}]}]}]}
+    rows = [{"row_id": "fx", "page": {"pdf_page_index": 3},
+             "window": {"first_ref_measure": 1, "last_ref_measure": 1},
+             "staves": [{"name": "Violoncell", "parts": [0]}]}]
+    windows = mv.load_windows(_windows_file(tmp_path, rows))
+    s_step = mv.run(b, tr, truth, windows, write=False, match="step")
+    assert s_step["cells"][0]["status"] == "abstained"
+    s_pos = mv.run(b, tr, truth, windows, write=True)
+    c = s_pos["cells"][0]
+    assert c["status"] == "prefilled" and c["n_wrong_category"] == 2 and c["n_added"] == 2
+    v = _verdict(b, "fx-p4-sys0-s0-m0")
+    assert [a["human_class"] for a in v["added_detections"]] == ["noteheadHalfOnLine", "noteheadHalfInSpace"]
