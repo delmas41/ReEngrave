@@ -465,27 +465,44 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
                            measure_number=number, parts=list(spec.parts))
 
     condensed = len(spec.parts) > 1
-    t_tokens = truth_tokens(notes, match=match, include_rests=not condensed)
+    truth_clef = next((n.clef for n in notes if n.clef), None)
+    # Position keys need a clef on the reference side; where the file names
+    # none (percussion, or no <clef> at all) BOTH sides fall back to step
+    # keys, else a position on one side can never meet a step on the other.
+    cell_match = match if (match != "position" or truth_clef) else "step"
+    t_tokens = truth_tokens(notes, match=cell_match, include_rests=not condensed)
     detections = measure.get("detections", [])
     events = _events_with_orphans(detections)
-    p_tokens = event_tokens(events, match=match, include_rests=not condensed,
+    p_tokens = event_tokens(events, match=cell_match, include_rests=not condensed,
                             line_ys=measure.get("staff_line_ys_canonical"))
     det_index = {id(d): i for i, d in enumerate(detections)}
 
     fm = frame_map(measure, entry)
     # The clef for placing hints: the reference's written clef first (a fact
     # about the part), the pipeline's reading only where the file names none.
-    truth_clef = next((n.clef for n in notes if n.clef), None)
     clef = truth_clef or measure.get("clef") or staff.get("clef") or entry.get("clef")
     b_lines = entry.get("staff_line_ys_canonical") or []
     width = int(entry.get("cell_canonical_w") or 0)
 
     out = CellPrefill(cell_id, "prefilled", measure_number=number, parts=list(spec.parts))
     al = align_tokens(t_tokens, p_tokens)
+    # Is the batch's cell the same bar as the transcription's measure? The
+    # batch was cut by its own segmentation run; if a barline moved between
+    # then and now, the widths disagree once both are put on the same scale.
+    bp = measure.get("bbox_page_px") or [0, 0, 0, 0]
+    up = measure.get("upscale_factor") or 1.0
+    t_w = bp[2] * up
+    b_w = float(entry.get("cell_canonical_w") or 0)
+    width_ratio = round(b_w / (t_w * fm.sy), 3) if t_w and fm.sy else None
     out.alignment = {
         "n_truth": al.n_truth, "n_pred": al.n_pred, "matched": al.matched,
         "strength": None if al.strength is None else round(al.strength, 3),
-        "match": match,
+        "match": cell_match,
+        "truth_keys": [t.key for t in t_tokens],
+        "pred_keys": [t.key for t in p_tokens],
+        "pairs": al.pairs,
+        "geometry": {"transcription_w": round(t_w), "batch_w": round(b_w),
+                     "y_scale": round(fm.sy, 3), "width_ratio": width_ratio},
     }
 
     # Verdict state on the batch's own detections.
@@ -840,11 +857,23 @@ def _print_summary(summary: dict) -> None:
         print(f"  {n:4d}  {r}")
     abstained = [c for c in summary["cells"] if c["status"] == "abstained"]
     if abstained:
-        print("  abstained cells:")
+        print("  abstained cells (width ratio ≈ 1.0 means the batch cell and the transcription "
+              "measure are the same bar):")
         for c in abstained:
             al = c.get("alignment") or {}
             strength = "" if al.get("strength") is None else f"  {al['matched']}/{max(al['n_truth'], al['n_pred'])}"
-            print(f"    {c['cell_id']}  m{c.get('measure_number')}{strength}")
+            g = al.get("geometry") or {}
+            wr = g.get("width_ratio")
+            print(f"    {c['cell_id']}  m{c.get('measure_number')}{strength}"
+                  + (f"  width ratio {wr}" if wr is not None else ""))
+    for c in summary["cells"]:
+        if c["cell_id"] in summary.get("debug_cells", []):
+            al = c.get("alignment") or {}
+            print(f"  --- {c['cell_id']}  m{c.get('measure_number')}  {c['status']}: {c['reason']}")
+            print(f"      match: {al.get('match')}  geometry: {al.get('geometry')}")
+            print(f"      truth ({al.get('n_truth')}): {' '.join(al.get('truth_keys', []))}")
+            print(f"      read  ({al.get('n_pred')}): {' '.join(al.get('pred_keys', []))}")
+            print(f"      pairs: {al.get('pairs')}")
     if "score" in summary:
         s = summary["score"]
         print(f"score over {s['cells_scored']} cells with human verdicts"
@@ -883,6 +912,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--row-id", action="append", default=None,
                     help="keep only this window row (repeatable)")
     ap.add_argument("--cells", nargs="*", default=None, help="restrict to these cell ids")
+    ap.add_argument("--debug-cell", action="append", default=None,
+                    help="print both token sequences and the geometry for this cell (repeatable)")
     args = ap.parse_args(argv)
 
     transcription = json.loads(args.transcription.read_text())
@@ -898,6 +929,7 @@ def main(argv: list[str] | None = None) -> int:
                   score=args.score, match=args.match, min_strength=args.min_strength,
                   min_iou=args.min_iou, trust_measure_counts=args.trust_measure_counts,
                   cells=args.cells)
+    summary["debug_cells"] = list(args.debug_cell or [])
     _print_summary(summary)
     if not write:
         print("(dry run — nothing written; add --write, or --write-hints for the UI only)")

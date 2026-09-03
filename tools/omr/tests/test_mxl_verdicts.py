@@ -525,3 +525,30 @@ def test_a_misread_clef_still_confirms_the_boxes(tmp_path: Path) -> None:
     assert c["status"] == "prefilled" and c["n_wrong_category"] == 2 and c["n_added"] == 2
     v = _verdict(b, "fx-p4-sys0-s0-m0")
     assert [a["human_class"] for a in v["added_detections"]] == ["noteheadHalfOnLine", "noteheadHalfInSpace"]
+
+
+def test_percussion_part_falls_back_to_step_keys_on_both_sides(tmp_path: Path) -> None:
+    xml = BASS_TRUTH.replace("<sign>F</sign><line>4</line>", "<sign>percussion</sign>")
+    tp = tmp_path / "perc.musicxml"
+    tp.write_text(xml)
+    truth = load_truth(tp)
+    assert truth.part(0).measures[0].notes[0].clef is None
+    b = tmp_path / "bench"
+    for d in ("cells", "detections", "verdicts"):
+        (b / d).mkdir(parents=True)
+    (b / "cells.json").write_text(json.dumps([_cell("fx-p4-sys0-s0-m0", 0, 0)]))
+    (b / "detections" / "fx-p4-sys0-s0-m0.json").write_text(
+        json.dumps({"cell_id": "fx-p4-sys0-s0-m0", "detections": []}))
+    d1 = _det("noteheadBlackOnLine", "G3", 200, 130, dur=2.0, dtype="half")
+    d2 = _det("noteheadBlackInSpace", "B3", 600, 30, dur=2.0, dtype="half")
+    tr = {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
+        {"staff_index": 0, "clef": "bass", "n_measures": 1, "measures": [_measure(0, [d1, d2])]}]}]}]}
+    rows = [{"row_id": "fx", "page": {"pdf_page_index": 3},
+             "window": {"first_ref_measure": 1, "last_ref_measure": 1},
+             "staves": [{"name": "Pauken", "parts": [0]}]}]
+    windows = mv.load_windows(_windows_file(tmp_path, rows))
+    s = mv.run(b, tr, truth, windows, write=False)
+    c = s["cells"][0]
+    assert c["status"] == "prefilled" and c["alignment"]["match"] == "step"
+    assert c["alignment"]["truth_keys"] == ["G3", "B3"] and c["alignment"]["pairs"] == [(0, 0), (1, 1)]
+    assert c["alignment"]["geometry"]["width_ratio"] == pytest.approx(1.0)

@@ -5,6 +5,11 @@ where one exists. Update this file with every commit.
 
 ## 2026-09-03
 
+- **pre-fill: diagnostics for the abstentions** — `--debug-cell` prints both token sequences
+  and the geometry for a cell; every cell records a width ratio that says whether the batch
+  cell and the transcription measure are the same bar (the batch was cut by a separate
+  segmentation run). A reference part with no clef (percussion) falls back to step keys on
+  BOTH sides. Second Brahms run: 29 of 56 pre-filled.
 - **training: pre-fill aligns on STAFF POSITION, not pitch** — the reference's written clef
   (now parsed by `musicxml_truth`, per note) places each truth note; a detection's position
   comes from its box. Sean's first Brahms 1 run: 26 of 56 cells pre-filled, 30 abstained with
