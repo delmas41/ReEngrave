@@ -136,31 +136,50 @@ def detection_position(det: dict[str, Any], line_ys: list[float] | None) -> int 
 
 
 def tremolo_runs(notes: list[TruthNote], *, min_len: int = 3,
-                 min_total_ql: float = 2.0) -> dict[int, tuple[int, int, float, int]]:
-    """Runs of repeated notes an engraver may print as ONE hollow head with
-    tremolo strokes: at least `min_len` consecutive notes of the same pitch
-    and value, no rest or other pitch between them, adding up to at least a
-    half note. The reference spells them out (six eighths); the Breitkopf
-    Brahms prints a dotted half with two slashes, which the detector — and a
-    labeler — sees as one hollow head. Returns `id(note)` → (index in run,
-    run length, total quarter-length) for every note in such a run; the fourth element is the run id — the
-    first note's `id`, shared by every member."""
-    out: dict[int, tuple[int, int, float, int]] = {}
+                 min_total_ql: float = 2.0) -> dict[int, tuple[int, int, float, int, str]]:
+    """Runs of repeated notes an engraver may print as one or two heads with
+    tremolo strokes. Two shapes:
+
+    - **tremolo** — the same pitch and value at least `min_len` times in a
+      row (six eighths → a dotted half with two slashes);
+    - **tremolando** — two pitches alternating, A B A B …, at least four
+      notes of one value (eight sixteenths → two half heads joined by
+      strokes, each written with the figure's full value).
+
+    No rest, other pitch or chord may interrupt. Returns `id(note)` →
+    (index in run, run length, total quarter-length, run id, kind) for every
+    note in such a run; the run id is the first note's `id`, shared by every
+    member, and kind is "single" or "pair"."""
+    out: dict[int, tuple[int, int, float, int, str]] = {}
     seq = [n for n in notes if not n.grace]
     i = 0
     while i < len(seq):
         n = seq[i]
         j = i + 1
+        kind = "single"
         if not n.rest and n.pitch and n.duration_ql > 0:
             while (j < len(seq) and not seq[j].rest and seq[j].pitch == n.pitch
                    and abs(seq[j].duration_ql - n.duration_ql) < 1e-6
                    and not seq[j].chord):
                 j += 1
+            if j == i + 1 and i + 1 < len(seq):
+                # Not a repeat — is it an alternation with the next note?
+                m = seq[i + 1]
+                if (not m.rest and m.pitch and m.pitch != n.pitch and not m.chord
+                        and abs(m.duration_ql - n.duration_ql) < 1e-6):
+                    k = i + 2
+                    while (k < len(seq) and not seq[k].rest and not seq[k].chord
+                           and seq[k].pitch == (n.pitch if (k - i) % 2 == 0 else m.pitch)
+                           and abs(seq[k].duration_ql - n.duration_ql) < 1e-6):
+                        k += 1
+                    if k - i >= 4:
+                        j, kind = k, "pair"
         length = j - i
         total = length * n.duration_ql if not n.rest else 0.0
-        if length >= min_len and total >= min_total_ql:
+        floor = min_len if kind == "single" else 4
+        if length >= floor and total >= min_total_ql:
             for k in range(length):
-                out[id(seq[i + k])] = (k, length, total, id(seq[i]))
+                out[id(seq[i + k])] = (k, length, total, id(seq[i]), kind)
         i = j if j > i else i + 1
     return out
 
@@ -213,12 +232,33 @@ def collapse_tremolo_runs(notes: list[TruthNote], read_positions: list[int] | No
             continue
         done.add(r[3])
         abbr = abbreviation_type(r[2])
-        out.append(TruthNote(
-            onset_ql=n.onset_ql, duration_ql=r[2], pitch=n.pitch, step=n.step, alter=n.alter,
-            octave=n.octave, type=abbr[0] if abbr else None, dots=abbr[1] if abbr else 0,
-            rest=False, chord=n.chord, grace=False, voice=n.voice, tuplet_actual=None,
-            tuplet_normal=None, tie_start=False, tie_stop=False, unpitched=n.unpitched,
-            measure_rest=False, clef=n.clef, tremolo_of=r[1]))
+
+        def synth(src: TruthNote, duration: float) -> TruthNote:
+            return TruthNote(
+                onset_ql=src.onset_ql, duration_ql=duration, pitch=src.pitch, step=src.step,
+                alter=src.alter, octave=src.octave, type=abbr[0] if abbr else None,
+                dots=abbr[1] if abbr else 0, rest=False, chord=src.chord, grace=False,
+                voice=src.voice, tuplet_actual=None, tuplet_normal=None, tie_start=False,
+                tie_stop=False, unpitched=src.unpitched, measure_rest=False, clef=src.clef,
+                tremolo_of=r[1])
+
+        if r[4] == "pair":
+            # Two heads, each written with the figure's full value; the
+            # second is the run's second note. Both positions must be
+            # printed as one head each, else the page wrote the notes out.
+            second = next((m for m in notes if id(m) in runs and runs[id(m)][3] == r[3]
+                           and runs[id(m)][0] == 1), None)
+            pos2 = staff_position(second.pitch, second.clef) if second else None
+            if read_positions is not None and pos2 is not None and \
+                    sum(1 for rp in read_positions if abs(rp - pos2) <= 1) >= 2:
+                out.append(n)
+                done.discard(r[3])
+                continue
+            out.append(synth(n, r[2] / 2))
+            if second is not None:
+                out.append(synth(second, r[2] / 2))
+            continue
+        out.append(synth(n, r[2]))
     return out
 
 

@@ -7,6 +7,15 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **pre-fill: tremolando — two pitches alternating collapse to two heads** — Sean: "Tremolo
+  and tremolando". A reference run `A B A B …` (≥4 equal values, two pitches) is the page's
+  two-pitch tremolando: two heads, each written with the FIGURE's full value (a bar of
+  alternating sixteenths prints two whole notes joined by beams, not two halves). `tremolo_runs`
+  now reports a run's kind (`single` / `pair`); `collapse_tremolo_runs` emits one synthetic
+  note for a single-pitch run and two for a pair, each `duration_ql = total/2` with the type of
+  the full total, and only where the reading placed ≤1 head at each of the run's positions —
+  a page that printed the alternation out is left as written. Same conflict rule as the
+  single-pitch case. Brahms 1 dry run unchanged (51 of 56, 5 conflicts); 56 tests green.
 - **pre-fill: the READING decides whether a run is abbreviated; a hollow-vs-black conflict goes
   to the human** — Sean's proposal: keep labeling a tremolo head as the hollow head it is (the
   class space already has `tremolo1-5`/`tremoloMark` for the strokes) and let the MXL side

@@ -221,6 +221,7 @@ def test_tremolo_runs_and_their_abbreviation() -> None:
     six = [_tn("G2", k * 0.5, 0.5, "eighth") for k in range(6)]
     runs = tremolo_runs(six)
     assert len(runs) == 6 and runs[id(six[0])][:3] == (0, 6, 3.0) and runs[id(six[5])][0] == 5
+    assert runs[id(six[0])][4] == "single"
     assert runs[id(six[5])][3] == id(six[0])
     assert abbreviation_type(3.0) == ("half", 1) and abbreviation_type(4.0) == ("whole", 0)
     assert abbreviation_type(2.5) is None
@@ -244,3 +245,19 @@ def test_collapse_follows_the_reading() -> None:
     three = [_tn("C4", k * 0.5, 0.5, "eighth", clef="treble") for k in range(3)]
     q = collapse_tremolo_runs(three, [10])
     assert len(q) == 1 and (q[0].type, q[0].dots) == ("quarter", 1)  # a dotted-quarter tremolo
+
+
+def test_a_tremolando_collapses_to_two_heads_of_the_full_value() -> None:
+    """Eight alternating sixteenths C4 E4 (2.0 ql) print as two half heads
+    joined by strokes — and the reading, one head at each position."""
+    alt = [_tn("C4" if k % 2 == 0 else "E4", k * 0.25, 0.25, "16th", clef="treble")
+           for k in range(8)]
+    runs = tremolo_runs(alt, min_total_ql=0.0)
+    assert len(runs) == 8 and runs[id(alt[0])][4] == "pair" and runs[id(alt[7])][:3] == (7, 8, 2.0)
+    two = collapse_tremolo_runs(alt, [10, 8])      # C4 = P10, E4 = P8 in treble
+    assert [(n.pitch, n.type, n.dots, n.tremolo_of) for n in two] == \
+        [("C4", "half", 0, 8), ("E4", "half", 0, 8)]
+    # Printed out (four heads at the C4 position): left as written.
+    assert len(collapse_tremolo_runs(alt, [10, 10, 10, 10, 8, 8, 8, 8])) == 8
+    # Three alternating notes are a melody, not a tremolando.
+    assert tremolo_runs(alt[:3], min_total_ql=0.0) == {}
