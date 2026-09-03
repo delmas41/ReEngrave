@@ -5,6 +5,32 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — the 9 inside-staff snap disagreements diagnosed: ideal staff lines vs tilted scans
+
+- **8 of the 9 flagged inside-staff labels sit in cells whose stored `staff_line_ys_canonical`
+  is 0.25–0.55 staff spaces off the printed lines**, and rebuilding the grid from the printed
+  ink reproduces Sean's class on all 8 (the 9th, beet5hr, is a tangent-note click ambiguity —
+  grid fine). The 3 hand-drawn beet5-p4-s14 disagreements from the 2026-08 batch are the same
+  defect. Record + scripts: `benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`.
+- Cause is **phase-1's staff MODEL, not the cutter**: `Staff.line_ys` is five ideal horizontal
+  rows for the whole staff; the flagged scans' staves tilt/bow 8–17 page px across their
+  width; every measure cell inherits the same constants, so end-of-staff measures carry the
+  full residual. Reproduces byte-for-byte on today's code (modulo the two cutters' deliberate
+  pad difference). `line_wander_px` (7–10 px on every flagged staff) already measures the
+  departure but never reaches cells.json.
+- Campaign audit (all 225 inside-staff added labels vs ink-measured grids): 15 past the
+  0.25 sp flip line; box centres bounded ≤0.25 sp (a near-half-space grid error aliases the
+  box onto the other slot's true position — the CLASS flips, the position stays plausible).
+  **Two silent wrong labels found**: `brahms1-p2-sys1-s20-m6` HalfInSpace→HalfOnLine (in v8;
+  fix task spawned — must edit batch verdict + survey `v8-merged-verdicts` + labels .txt, no
+  `build_v8.py` re-run) and `lamer-p5-sys0-s2-m0` WholeOnLine→WholeInSpace (hollow3,
+  unexported — fix before v9).
+- **`pitch_resolver` eats the same defect**: on warped scans, end-of-staff measures resolve
+  pitches against a grid up to half a space off — step-off-by-one for whole bars. Engraved
+  benchmark blind (LilyPond pages are straight). Measurement task spawned; the fix direction
+  is per-cell line ys traced over the cell's own x-range at cut time — in-staff snap behaviour
+  itself stays frozen (`test_ledger_snap.py`).
+
 ## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
 
 - **The measured handoff's hypothesis ("Breitkopf tremolo abbreviations") is refuted for all
