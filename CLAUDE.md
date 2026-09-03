@@ -1051,6 +1051,46 @@ the voice instruments' own aliases, which also fixes `Fl. Alt.`, `Cl. Alt.` and
 `Trb. Tenore`. Validated on 1380 margin labels across 10 editions —
 [LEXICON_TR_ALT_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/LEXICON_TR_ALT_2026-08-31.md).
 
+**The same shape again, 2026-09-03, and the same answer: DERIVE the cross
+product.** A contrabassoon is printed as a BASSOON name with a contra- qualifier
+— four languages of noun against four of qualifier plus the abbreviations a
+crowded margin uses — so its spellings are a cross product and the hand-list held
+six of about twenty-five. ⚠️ **The missing ones did not abstain**: the bassoon
+noun inside them matches on its own, so `Contra-Fagott` and `Cont. Fag.` read as
+**Bassoon** and `C. Fagotto` as Bassoon at HIGH confidence. `_CONTRA_ALIASES` is
+now generated from `_BASSOON_ALIASES`; `contraf` stays listed apart, being a
+truncation rather than qualifier-plus-noun. **This does not loosen the gate** —
+every generated string still has to appear word-bounded and exact.
+
+⚠️ **The reported string was not where the damage was.** `Contrafagott` on a
+Mahler scan is what got noticed *because it abstained*; measured over 1422 real
+margin labels the live cost was **ten staves of the scan benchmark's own Brahms 1
+/ Breitkopf**, whose `K. Fag.` read as Bassoon on a page that also prints two
+real bassoon staves. Fix the family the reported string belongs to, not the
+string.
+
+**Two more decisions recorded there.** (1) **The OCR fold belongs in the
+lexicon, admitted on RARITY**: `_OCR_FOLD` gained `y → v` (a printed `Violino`
+read as `Yiolino`) because `y` occurs in only `tympani` and `xylophone`, both of
+which resolve on the exact pass before the fold runs. Common-letter pairs —
+`a/u`, `b/h`, `c/e`, `n/m` — are **refused by name**, at the priced cost of
+`Fug.`→`Fag.`, `Oh.`→`Ob.` and Mahler's `Veelle.`; a gated single-substitution
+matcher was prototyped, measured collision-free and **not adopted**. (2)
+**Reader markup belongs to the reader.** Surya writes a stacked part number as
+`\frac{1}{2}`, which survives normalization and dilutes `coverage`; that is
+folded in `staff_labels_surya._plain_text`, not in the lexicon, because LaTeX is
+the reader's output format. It changes **zero** resolutions on 1422 labels — the
+Brahms strings are the two HORN staves and the page prints `Hörner` once braced
+across them, so abstaining is right and no lexicon can recover them.
+
+Validation harness, and the one to use for any future lexicon change (MusicXML
+part names cannot see a margin-abbreviation fix):
+[benchmarks/omr-lexicon-2026-09/FINDINGS.md](benchmarks/omr-lexicon-2026-09/FINDINGS.md)
+— `read_margin_labels.py` dumps what the readers actually emit, `resolve_labels.py`
+replays a dump through two revisions' lexicons. Still open there: `Hr.` and
+`Trpt.` resolve to nothing on 18 Brahms labels, and a whole system margin can
+arrive as ONE label and resolve to *Piccolo*.
+
 ---
 
 ## OMR-NED — the metric other people also report

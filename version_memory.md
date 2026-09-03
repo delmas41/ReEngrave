@@ -5,6 +5,47 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — three margin labels the lexicon dropped, and three different faults
+
+- `scan_eval.py` over the five verified scan rows produced three strings
+  `instruments.lookup` could not match. Each turned out to be a different kind of fault, and
+  only one was a lexicon bug. Full reading:
+  [benchmarks/omr-lexicon-2026-09/FINDINGS.md](benchmarks/omr-lexicon-2026-09/FINDINGS.md).
+- **`Contrafagott` was one hole in a family of ~25.** A contrabassoon is printed as a BASSOON
+  name with a contra- qualifier, and both halves vary independently (four languages of noun ×
+  four of qualifier × the abbreviations a crowded margin uses), so the spellings are a CROSS
+  PRODUCT and the hand-list held six. ⚠️ The missing ones did not ABSTAIN — the bassoon noun
+  inside them matched on its own, so `Contra-Fagott` read as **Bassoon** and `C. Fagotto` as
+  Bassoon at HIGH confidence, enough to pin a staff to the wrong part. `_CONTRA_ALIASES` is now
+  DERIVED from the bassoon's own aliases (the `VOICE_QUALIFIERS` move); `contraf` stays listed
+  apart as a truncation. Matching is not loosened — every generated string still has to appear
+  word-bounded and exact.
+- **The live cost was on the scan benchmark's own Brahms edition, not on Mahler.** Breitkopf
+  abbreviates Kontrafagott `K. Fag.`, and ten of those staves were reading as Bassoon on a page
+  that also prints two real bassoon staves. The reported `Contrafagott` was the cousin that
+  happened to abstain and therefore got noticed.
+- **`Yiolino II.` was already fixed and unmerged** on `claude/zen-panini-fdc5ae` (`6bfed41`,
+  2026-09-02) — merged rather than rebuilt. Its decision: the OCR fold belongs in the lexicon,
+  admitted on RARITY not plausibility (`y` occurs only in `tympani`/`xylophone`, both of which
+  resolve on the exact pass), and common-letter pairs (a/u, b/h, c/e, n/m) are refused by name
+  at a priced cost of two real corpus reads.
+- **`in C \frac{1}{2}` was not a lexicon fault.** Surya writes a STACKED part number as a LaTeX
+  fraction; the digits are part numbers `normalize_label` already drops, the control word is not
+  and it dilutes `coverage`. Folded at the READER (`staff_labels_surya._plain_text`), because
+  LaTeX is Surya's output format and `_surya_worker` already unwraps that worker's HTML at the
+  same boundary. ⚠️ Measured over 1422 labels it changes **zero** resolutions — the two Brahms
+  strings are the HORN staves, and the page prints `Hörner` once braced across them, so
+  abstaining is correct and no lexicon can recover them.
+- **Validation, three corpora** (`benchmarks/omr-lexicon-2026-09/`): 1 of 1271 reference part
+  names changes; every committed reader benchmark is unchanged to the count; **12 of 1422 real
+  margin labels across 13 editions change, all in the intended direction**. New harness:
+  `read_margin_labels.py` (dump what the readers emit), `resolve_labels.py` (replay a dump
+  through two revisions' lexicons), `reference_part_names.py`.
+- **Found and NOT fixed, each its own bug:** `Hr.` and `Trpt.` resolve to nothing on 18 Brahms
+  labels; a whole system margin can arrive as ONE label and resolve to Piccolo.
+
+---
+
 ## 2026-09-03 — snap-ledger audit: three hollow labels corrected, all Eulenburg Scheherazade / v8
 
 - The old click-to-box snap extrapolated the parity grid beyond the staff at the staff
