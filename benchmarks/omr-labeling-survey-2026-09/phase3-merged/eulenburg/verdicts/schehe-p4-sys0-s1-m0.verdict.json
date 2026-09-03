@@ -1,0 +1,117 @@
+{
+ "cell_id": "schehe-p4-sys0-s1-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 775,
+    "y": 604,
+    "w": 153,
+    "h": 188
+   },
+   "confidence": 0.8854,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 369,
+    "y": 188,
+    "w": 89,
+    "h": 185
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 468,
+    "y": 291,
+    "w": 89,
+    "h": 215
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 564,
+    "y": 150,
+    "w": 99,
+    "h": 192
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 677,
+    "y": 274,
+    "w": 85,
+    "h": 181
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1344,
+    "y": 263,
+    "w": 68,
+    "h": 178
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1159,
+    "y": 547,
+    "w": 62,
+    "h": 161
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1340,
+    "y": 509,
+    "w": 52,
+    "h": 192
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "restHalf",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1508,
+    "y": 380,
+    "w": 126,
+    "h": 44
+   },
+   "notes": ""
+  }
+ ]
+}

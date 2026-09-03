@@ -1,0 +1,43 @@
+{
+ "cell_id": "beet5hr-p48-sys0-s2-m6",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 646,
+    "y": 599,
+    "w": 159,
+    "h": 297
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restHalf",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1150,
+    "y": 734,
+    "w": 206,
+    "h": 85
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 37,
+    "y": 440,
+    "w": 129,
+    "h": 301
+   },
+   "notes": ""
+  }
+ ]
+}

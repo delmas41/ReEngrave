@@ -1,0 +1,33 @@
+{
+ "cell_id": "schehe-p2-sys0-s6-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 346,
+    "y": 18,
+    "w": 63,
+    "h": 83
+   },
+   "confidence": 0.8674,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1166,
+    "y": 127,
+    "w": 24,
+    "h": 82
+   },
+   "notes": ""
+  }
+ ]
+}

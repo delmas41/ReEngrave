@@ -1,0 +1,37 @@
+{
+ "cell_id": "beet5-p4-sys0-s6-m5",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "D1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "human_corrected_class": null,
+   "model_predicted_category": "notehead",
+   "human_corrected_category": null,
+   "model_bbox": {
+    "x": 343,
+    "y": 299,
+    "w": 68,
+    "h": 90
+   },
+   "human_bbox": null,
+   "confidence": 0.31841394305229187,
+   "notes": "pre-label confirmed by agent visual audit 2026-09-02"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 159,
+    "y": 544,
+    "w": 176,
+    "h": 186
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "cell_id": "schehe-p3-sys0-s0-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 300,
+    "y": 1090,
+    "w": 574,
+    "h": 122
+   },
+   "confidence": 0.6148,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 696,
+    "y": 691,
+    "w": 165,
+    "h": 52
+   },
+   "notes": ""
+  }
+ ]
+}

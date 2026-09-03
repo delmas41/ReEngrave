@@ -1,0 +1,69 @@
+{
+ "cell_id": "brahms1-p2-sys1-s20-m6",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 353,
+    "y": 788,
+    "w": 47,
+    "h": 49
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 197,
+    "y": 959,
+    "w": 213,
+    "h": 193
+   },
+   "confidence": 0.7824,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 33,
+    "y": 958,
+    "w": 224,
+    "h": 195
+   },
+   "confidence": 0.677,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 189,
+    "y": 699,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 189,
+    "y": 699,
+    "w": 119,
+    "h": 100
+   },
+   "notes": "corrected 2026-09-03: tilted-staff grid error (stored grid -0.40 sp off the printed lines; head centre 0.10 sp off the printed bottom line), see benchmarks/omr-cell-grid-tilt-2026-09"
+  }
+ ]
+}

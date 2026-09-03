@@ -1,0 +1,78 @@
+{
+ "cell_id": "schehe-p3-sys0-s3-m3",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1670,
+    "y": 809,
+    "w": 116,
+    "h": 111
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1309,
+    "y": 761,
+    "w": 130,
+    "h": 105
+   }
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 190,
+    "y": 702,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 194,
+    "y": 952,
+    "w": 173,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 10,
+    "y": 606,
+    "w": 128,
+    "h": 293
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1518,
+    "y": 708,
+    "w": 112,
+    "h": 300
+   },
+   "notes": ""
+  }
+ ]
+}

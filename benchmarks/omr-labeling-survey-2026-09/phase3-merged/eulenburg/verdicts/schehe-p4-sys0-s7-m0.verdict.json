@@ -1,0 +1,69 @@
+{
+ "cell_id": "schehe-p4-sys0-s7-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1629,
+    "y": 211,
+    "w": 317,
+    "h": 157
+   },
+   "confidence": 0.6413,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 397,
+    "y": 274,
+    "w": 85,
+    "h": 194
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 503,
+    "y": 380,
+    "w": 78,
+    "h": 191
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 605,
+    "y": 229,
+    "w": 72,
+    "h": 192
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 704,
+    "y": 369,
+    "w": 96,
+    "h": 161
+   },
+   "notes": ""
+  }
+ ]
+}

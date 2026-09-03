@@ -1,0 +1,31 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s2-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 985,
+    "y": 482,
+    "w": 123,
+    "h": 233
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1583,
+    "y": 482,
+    "w": 103,
+    "h": 233
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,117 @@
+{
+ "cell_id": "schehe-p3-sys0-s14-m2",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1324,
+    "y": 911,
+    "w": 139,
+    "h": 103
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1329,
+    "y": 1,
+    "w": 141,
+    "h": 83
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 428,
+    "y": 711,
+    "w": 52,
+    "h": 101
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 160,
+    "y": 37,
+    "w": 109,
+    "h": 189
+   },
+   "confidence": 0.8192,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 162,
+    "y": 962,
+    "w": 149,
+    "h": 190
+   },
+   "confidence": 0.7443,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 975,
+    "y": 889,
+    "w": 439,
+    "h": 205
+   },
+   "confidence": 0.7048,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1008,
+    "y": 0,
+    "w": 406,
+    "h": 160
+   },
+   "confidence": 0.6666,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 233,
+    "y": 750,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 941,
+    "y": 750,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ]
+}

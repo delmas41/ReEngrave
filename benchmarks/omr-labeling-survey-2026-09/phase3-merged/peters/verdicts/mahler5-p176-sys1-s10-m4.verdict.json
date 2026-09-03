@@ -1,0 +1,31 @@
+{
+ "cell_id": "mahler5-p176-sys1-s10-m4",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 274,
+    "y": 442,
+    "w": 73,
+    "h": 219
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1376,
+    "y": 910,
+    "w": 98,
+    "h": 275
+   },
+   "notes": ""
+  }
+ ]
+}

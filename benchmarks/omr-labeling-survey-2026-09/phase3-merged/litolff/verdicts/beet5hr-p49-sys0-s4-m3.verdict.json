@@ -1,0 +1,91 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s4-m3",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 819,
+    "y": 907,
+    "w": 114,
+    "h": 292
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1645,
+    "y": 302,
+    "w": 97,
+    "h": 283
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1407,
+    "y": 406,
+    "w": 140,
+    "h": 169
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 592,
+    "y": 904,
+    "w": 143,
+    "h": 201
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "restHalf",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1180,
+    "y": 936,
+    "w": 143,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 744,
+    "y": 562,
+    "w": 104,
+    "h": 257
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1115,
+    "y": 419,
+    "w": 107,
+    "h": 247
+   },
+   "notes": ""
+  }
+ ]
+}

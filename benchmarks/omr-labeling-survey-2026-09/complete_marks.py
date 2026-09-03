@@ -132,6 +132,7 @@ MIN_INK = 0.02
 # complete_cells_phase2.py uses — stable across re-runs because it keys on the
 # cell and the box, never on an index.
 EXPLICIT_CULL = [
+    ('schehe-p4-sys1-s14-m1', 'dynamicP', 514, 0, 115, 92),  # staircase of clipped edge ink, not a 'p' (round-3 audit)
     ('mahler1-p5-sys0-s7-m5', 'dynamicP', 947, 873, 109, 133),  # schleppen — pp inside the word
     ('mahler1-p5-sys1-s17-m0', 'dynamicP', 849, 793, 100, 110),  # sempre — pr
     ('mahler1-p1-sys0-s8-m5', 'dynamicP', 416, 1064, 146, 152),  # sempre — mpr

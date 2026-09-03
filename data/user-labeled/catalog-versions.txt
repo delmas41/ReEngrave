@@ -32,5 +32,38 @@ v1-2026-05-18-orchestral
 v2-2026-06-08-beet5
 v3-2026-06-09-mahler5
 v4-2026-06-10-la-mer
-v7-2026-09-02-hollow
-v8-2026-09-02-hollow2-5pub
+
+# ADMITTED 2026-09-03 (round 3) — v13-v21 SUPERSEDE v7 and v8, which are now
+# REMOVED from this list. They are the same cells, completed: the round-3
+# passes added rests, accidentals and clefs by hand and audited model dynamics,
+# slurs and ties, taking the SAME batches from 209 cells / 540 boxes to
+# 280 cells / 1157 boxes (+114%).
+#
+# Why the old versions come OUT rather than sitting alongside: v7 and v8 cover
+# the same cells with LESS labeling, and leaving them in would train the model
+# on both a complete and an incomplete labeling of the same image — the
+# incomplete copy teaching that the rests and accidentals it omits are
+# background, which is the exact regression this round exists to fix.
+#
+# v9-v11 (hollow3 Mahler 1 / Elgar 1 / La mer) were never admitted; their cells
+# are carried into v19/v20/v21 completed. v12 (Jurgenson Tchaikovsky 1, low-res)
+# stays out on the cloud ablation that measured it HALVING the half-note gain —
+# its cells complete to zero black noteheads because the blur defeats the
+# detector. v5/v6 (clef-heavy) stay out as before.
+#
+# ⚠️ These versions store IMAGE COPIES, not symlinks (--no-symlink). v8 was
+# unhealable precisely because it symlinked into a gitignored batch dir and 111
+# of its 122 source PNGs later vanished; a copy cannot rot that way, and it also
+# survives a plain tar to the cloud box.
+#
+# See benchmarks/omr-labeling-survey-2026-09/ROUND3_COMPLETENESS.md.
+
+v13-2026-09-03-complete-v7-beet5-bolero
+v14-2026-09-03-complete-litolff
+v15-2026-09-03-complete-peters
+v16-2026-09-03-complete-eulenburg
+v17-2026-09-03-complete-simrock
+v18-2026-09-03-complete-breitkopf
+v19-2026-09-03-complete-mahler1
+v20-2026-09-03-complete-elgar1
+v21-2026-09-03-complete-lamer

@@ -1,0 +1,19 @@
+{
+ "cell_id": "schehe-p2-sys0-s11-m4",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1118,
+    "y": 150,
+    "w": 51,
+    "h": 18
+   },
+   "notes": ""
+  }
+ ]
+}

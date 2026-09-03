@@ -1,0 +1,89 @@
+{
+ "cell_id": "brahms1-p2-sys0-s3-m6",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 367,
+    "y": 301,
+    "w": 44,
+    "h": 45
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1386,
+    "y": 673,
+    "w": 124,
+    "h": 111
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 524,
+    "y": 445,
+    "w": 124,
+    "h": 108
+   }
+  },
+  {
+   "id": "C3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1002,
+    "y": 445,
+    "w": 119,
+    "h": 98
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 325,
+    "y": 176,
+    "w": 1619,
+    "h": 127
+   },
+   "confidence": 0.7732,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 225,
+    "y": 316,
+    "w": 110,
+    "h": 92
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1245,
+    "y": 540,
+    "w": 119,
+    "h": 270
+   },
+   "notes": ""
+  }
+ ]
+}

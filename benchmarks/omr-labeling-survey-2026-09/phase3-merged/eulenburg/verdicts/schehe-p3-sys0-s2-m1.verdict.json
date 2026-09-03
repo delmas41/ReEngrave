@@ -1,0 +1,89 @@
+{
+ "cell_id": "schehe-p3-sys0-s2-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 395,
+    "y": 209,
+    "w": 48,
+    "h": 48
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 394,
+    "y": 1137,
+    "w": 54,
+    "h": 47
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 910,
+    "y": 1120,
+    "w": 147,
+    "h": 71
+   }
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 174,
+    "y": 200,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 179,
+    "y": 398,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1143,
+    "y": 411,
+    "w": 104,
+    "h": 304
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1343,
+    "y": 414,
+    "w": 81,
+    "h": 304
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,194 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s2-m2",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 988,
+    "y": 216,
+    "w": 126,
+    "h": 117
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1801,
+    "y": 443,
+    "w": 122,
+    "h": 110
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1321,
+    "y": 589,
+    "w": 133,
+    "h": 121
+   }
+  },
+  {
+   "id": "C3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1607,
+    "y": 445,
+    "w": 124,
+    "h": 104
+   }
+  },
+  {
+   "id": "C4",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1008,
+    "y": 582,
+    "w": 123,
+    "h": 118
+   }
+  },
+  {
+   "id": "C5",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1806,
+    "y": 649,
+    "w": 119,
+    "h": 98
+   }
+  },
+  {
+   "id": "C6",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1323,
+    "y": 481,
+    "w": 131,
+    "h": 101
+   }
+  },
+  {
+   "id": "C7",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1615,
+    "y": 653,
+    "w": 120,
+    "h": 91
+   }
+  },
+  {
+   "id": "C8",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 1788,
+    "y": 1051,
+    "w": 41,
+    "h": 40
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 355,
+    "y": 117,
+    "w": 612,
+    "h": 152
+   },
+   "confidence": 0.8582,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1392,
+    "y": 331,
+    "w": 263,
+    "h": 101
+   },
+   "confidence": 0.8096,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 410,
+    "y": 1365,
+    "w": 254,
+    "h": 76
+   },
+   "confidence": 0.7871,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 215,
+    "y": 234,
+    "w": 111,
+    "h": 93
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 229,
+    "y": 606,
+    "w": 111,
+    "h": 93
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1159,
+    "y": 424,
+    "w": 123,
+    "h": 253
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1480,
+    "y": 598,
+    "w": 103,
+    "h": 223
+   },
+   "notes": ""
+  }
+ ]
+}

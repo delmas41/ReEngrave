@@ -1,0 +1,82 @@
+{
+ "cell_id": "mahler5-p177-sys0-s1-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 334,
+    "y": 0,
+    "w": 547,
+    "h": 155
+   },
+   "confidence": 0.8588,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1198,
+    "y": 49,
+    "w": 606,
+    "h": 196
+   },
+   "confidence": 0.766,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1434,
+    "y": 352,
+    "w": 100,
+    "h": 339
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 962,
+    "y": 116,
+    "w": 113,
+    "h": 284
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalNaturalSmall",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 19,
+    "y": 546,
+    "w": 88,
+    "h": 261
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "accidentalFlatSmall",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 801,
+    "y": 520,
+    "w": 93,
+    "h": 206
+   },
+   "notes": ""
+  }
+ ]
+}

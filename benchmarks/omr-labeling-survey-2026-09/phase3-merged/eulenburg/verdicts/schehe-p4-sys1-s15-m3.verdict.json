@@ -1,0 +1,43 @@
+{
+ "cell_id": "schehe-p4-sys1-s15-m3",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 64,
+    "y": 646,
+    "w": 114,
+    "h": 320
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 727,
+    "y": 194,
+    "w": 116,
+    "h": 203
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 405,
+    "y": 377,
+    "w": 114,
+    "h": 220
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,837 @@
+{
+  "version_name": "v16-2026-09-03-complete-eulenburg",
+  "created_utc": "2026-09-03T21:49:59+00:00",
+  "labeler": "sean",
+  "description": "Eulenburg Scheherazade \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/eulenburg/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/eulenburg/detections",
+    "manifest": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/eulenburg/eulenburg-cells.json",
+    "weights_for_class_names": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 55,
+    "n_v1_cells": 0,
+    "n_v2_cells": 55,
+    "n_tp": 80,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 170,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "accidentalFlat",
+    "accidentalNatural",
+    "accidentalNaturalSmall",
+    "accidentalSharp",
+    "augmentationDot",
+    "clefF",
+    "clefG",
+    "dynamicF",
+    "dynamicM",
+    "dynamicP",
+    "keyFlat",
+    "keySharp",
+    "noteheadBlackInSpace",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadWholeInSpace",
+    "noteheadWholeOnLine",
+    "restHalf",
+    "restQuarter",
+    "restWhole",
+    "slur"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "schehe-p2-sys0-s0-m2",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNaturalSmall",
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s0-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s10-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s11-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s2-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefG",
+        "keyFlat",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s2-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s2-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefF",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s5-m4",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "dynamicP",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s6-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s8-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s9-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys1-s12-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys1-s16-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys1-s16-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys1-s18-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s0-m1",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s0-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s14-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s14-m2",
+      "schema_version": 2,
+      "n_tp": 7,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s14-m3",
+      "schema_version": 2,
+      "n_tp": 5,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "accidentalSharp",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s17-m1",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s17-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s2-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefG",
+        "dynamicF",
+        "dynamicM",
+        "keySharp",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m3",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "augmentationDot",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine",
+        "restHalf",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s4-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s4-m5",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s5-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s7-m0",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "dynamicM",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s1-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "keySharp",
+        "restHalf",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s2-m0",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefG",
+        "dynamicF",
+        "keySharp",
+        "noteheadWholeInSpace",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s2-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefF",
+        "keySharp",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s3-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s4-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "keySharp",
+        "restHalf",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s5-m0",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "keySharp",
+        "restHalf",
+        "restQuarter",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s5-m1",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s6-m0",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "keySharp",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s7-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "keySharp",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s8-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s10-m2",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s10-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "augmentationDot",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s10-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s11-m1",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s11-m2",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s11-m5",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s13-m5",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s14-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "dynamicP",
+        "restQuarter",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s15-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s16-m3",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s9-m1",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "dynamicP",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s9-m2",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "dynamicP",
+        "noteheadWholeOnLine",
+        "restWhole"
+      ]
+    }
+  ]
+}

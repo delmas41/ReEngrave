@@ -1,0 +1,45 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s3-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1386,
+    "y": 1117,
+    "w": 498,
+    "h": 143
+   },
+   "confidence": 0.8826,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 998,
+    "y": 475,
+    "w": 100,
+    "h": 264
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1593,
+    "y": 482,
+    "w": 93,
+    "h": 236
+   },
+   "notes": ""
+  }
+ ]
+}

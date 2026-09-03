@@ -62,16 +62,23 @@ BATCHES = {
 # HALVING the half-note gain — its low-res cells complete to zero black
 # noteheads, so the blur defeats the detector. Defer low-res to its own method.
 
-def _det_from_cand(rec):
-    """A completion candidate -> a decided TP detection, the v8/v9-v12 shape."""
+def _det_from_cand(rec, prefix="C"):
+    """A completion candidate -> a decided TP detection in the SCHEMA-V2 shape.
+
+    ⚠️ The keys are `model_predicted_class` and `model_bbox`, NOT `smufl_name`
+    and `bbox`. verdicts_to_yolo_labels reads only the former pair; writing the
+    latter produces a verdict file that parses, counts, and emits NOTHING.
+    Caught by diffing merged boxes against emitted label lines — 445 model boxes
+    silently dropped, which would have given the retrained mix LESS completion
+    than v8 while every count in this script looked right.
+    """
     out = []
     for i, c in enumerate(rec.get("candidates") or []):
         out.append({
-            "id": c.get("id") or f"C{i}",
-            "smufl_name": c["smufl_name"],
-            "category": c.get("category"),
-            "bbox": c["bbox"],
+            "id": c.get("id") or f"{prefix}{i}",
             "verdict": "TP",
+            "model_predicted_class": c["smufl_name"],
+            "model_bbox": c["bbox"],
             "confidence": c.get("confidence"),
             "notes": c.get("notes") or "model completion, audited",
         })
@@ -107,7 +114,7 @@ def main():
                 if p.exists(): prior = list(json.loads(p.read_text()).get("detections") or [])
             # this round's marks
             mp2 = Path(batch, "marks-completion", "candidates", f"{cid}.json")
-            marks = _det_from_cand(json.loads(mp2.read_text())) if mp2.exists() else []
+            marks = _det_from_cand(json.loads(mp2.read_text()), prefix="M") if mp2.exists() else []
             for m in marks: m["notes"] = "marks completion (dynamics/slurs/ties), audited"
             if not human and not prior and not marks:
                 continue                       # nothing to train on; emits no label anyway
