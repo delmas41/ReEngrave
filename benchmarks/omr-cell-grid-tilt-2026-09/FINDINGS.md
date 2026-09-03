@@ -90,6 +90,20 @@ the ends:
 | schehe p4 s3 | **+7** → −1 | +6 (m0, LEFT end) | 22.0 | 7.0 |
 | beet5hr p48 s14 | −4.5 → +9 | −4 (m0) | 30.8 | 8.0 |
 
+⚠️ **"Displaced, not distorted" holds for the seven staves traced above — and
+`brahms1-p2-sys1-s20` is a counterexample at the level of phase-1's MODEL.**
+Found by the follow-up session when its comb fit abstained on that cell, and
+confirmed here from the stored geometry: its `staff_line_ys_canonical` is
+`[400, 498, 578, 698, 800]` — gaps `98, 80, 120, 102` against a ~100 px
+spacing, a spread of **0.4 staff spaces** — while its neighbour s21 reads
+`99, 99, 103, 99`. Phase 1's five-line fit is IRREGULAR there, not merely
+offset, so no rigid five-row comb can seat every row on the print at any
+shift (the follow-up's fit covers 4 rows at 1.00 and the third at 0.37).
+That bounds every single-offset repair — this diagnosis' suggestion,
+`refine_staff_lines_in_cell`'s shape, and the comb alike — and it is a
+SEPARATE phase-1 defect sitting underneath the tilt one. It is also not
+academic: this is the cell carrying one of §3's two silent wrong labels.
+
 Signs differ per staff (brahms/dvorak rise rightward, mahler/beet5hr fall,
 schehe bows at the left), so this is per-staff tilt/bow of the scan, not a
 global rotation the deskew could remove. mahler1-p4 s0 and s1 — two adjacent
@@ -246,5 +260,21 @@ every one with a usable image):
   `labels/*.txt` directly). One residue the hand-edit leaves (fix session's
   finding): the version's `metadata.json` (`per_cell.classes_written`) still
   records the OLD class — provenance drift only, training unaffected; the
-  clean resolution is a single converter re-run with the version's original
-  arguments once all corrections are on main.
+  clean resolution was believed to be a single converter re-run with the
+  version's original arguments. ⚠️ **MEASURED 2026-09-03: that resolution is
+  DESTRUCTIVE for v8, and silently.** The converter copies each cell's PNG
+  from the batch's `cells/` directory, which is gitignored and largely
+  deleted since (`feedback_cells_not_reproducible`: labeled cell PNGs are NOT
+  regenerable). Of v8's 122 cells, **11 source PNGs still exist and 111 do
+  not** — Peters 34, Eulenburg 32, Litolff 32, Simrock 13 — so a re-run
+  writes an 11-cell version over a 122-cell one, exits 0, and says only
+  `cells written: 11`. (v11's 11 cells all survive, so v11 alone is
+  reproducible; its re-run was verified byte-identical in `labels/`.) Both
+  versions were instead healed FROM THE LABELS by
+  `tools/omr/training/heal_version_metadata.py`, which touches neither
+  labels nor images and refuses to write changes outside the cells you name.
+  Validated against the converter on v11: identical `classes_used_in_this_version`
+  and identical `per_cell`. **v8 and v11 are now healed and all of
+  v5/v6/v8/v9/v10/v11/v12 re-audit clean** (v1–v4/v7 need a weights file
+  that is not on this machine; the parallel audit covered them by catalog
+  names and found v1/v2 stale by an unrelated, pre-existing mechanism).

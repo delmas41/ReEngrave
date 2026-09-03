@@ -1872,6 +1872,8 @@ noteheads) is an open training-time decision.
 
 The catalog is **capped at nc=208 by default** (custom-class boxes — barlines, textDynamic — are filtered into `_nc208/` copies) so fine-tuning matches the DSv2 checkpoints' class count; a mismatched `nc` silently re-initializes the classification head (the Phase 3.4 collapse). `train_yolo.py` refuses an nc mismatch unless you pass `--allow-nc-expansion`; `--emit-full-catalog` also writes an uncapped `catalog-214.yaml` for a deliberate future expansion.
 
+⚠️ **NEVER "just re-run the converter" on an EXISTING version.** It copies each cell's PNG out of the batch's gitignored `cells/` directory, and those are not regenerable (phase-1 has drifted) and are largely gone: measured 2026-09-03, **11 of v8's 122 source PNGs still exist**, so a re-run silently writes an 11-cell version over the 122-cell one and exits 0. To correct a mislabeled class after export, hand-edit the class id in `labels/<cell>.txt` (coordinates do not move), the batch verdict, AND the version's own merged export source — then heal the version's `metadata.json`, which still records the old class, with `python3 -m tools.omr.training.heal_version_metadata --version data/user-labeled/<version> --expect-cells <cell_id> --write` (re-derives the class fields from the labels; never touches labels or images).
+
 **Then COMMIT the results** (labeling runs in the main checkout, and verdicts are irreplaceable human work — don't leave them sitting untracked):
 
 ```bash
