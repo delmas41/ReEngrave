@@ -26,7 +26,11 @@ classification. Verdict + evidence recorded in the result JSON as
 35 tests. Costs ≤ 77 ms per document. Side effect: default engraved runs use
 the same weights the recorded accuracy headline was measured with, so the
 record describes shipped behavior again. Measurements + A/B verification:
-`benchmarks/omr-weight-routing-2026-09/FINDINGS.md`.
+`benchmarks/omr-weight-routing-2026-09/FINDINGS.md`. The strategy decision —
+why exactly ONE fork, why publisher/era weights are deferred and what
+measured triggers reopen them, and the checklist future specialist weights
+must pass — is recorded in
+[docs/weight-routing-and-specialization-2026-09-03.md](docs/weight-routing-and-specialization-2026-09-03.md).
 
 ---
 
