@@ -139,6 +139,71 @@ def test_ocr_folded_matches_are_low_confidence():
     assert m.ocr_folded and m.confidence == "low"
 
 
+def test_v_read_as_y_folds_to_the_string_it_is():
+    """A printed "Violino II." OCR'd as "Yiolino II." — a V read as Y, surfaced
+    2026-09-02 in a labelling batch. `y` folds to `v` the way the i/l/1 stroke
+    group folds to `i`: rare enough in the vocabulary to be collision-free, and
+    the whole V->Y family comes with it."""
+    for label, expected in (("Yiolino II.", "Violin"), ("Yiola", "Viola"),
+                            ("Yioloncello", "Cello"), ("Yni", "Violin")):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == expected, f"{label!r} -> {m.instrument.name}"
+        # a match that needed the fold is a guess, so it is demoted like any other
+        assert m.ocr_folded and m.confidence == "low", label
+
+
+def test_the_two_y_instruments_resolve_before_the_fold_runs():
+    """Folding y->v is safe only because `tympani` and `xylophone` — the sole
+    aliases carrying a `y` — resolve on the EXACT pass, before the fold is ever
+    reached. So they keep their high confidence and are never folded."""
+    for label, expected in (("Tympani", "Timpani"), ("Xylophone", "Percussion")):
+        m = lookup(label)
+        assert m.instrument.name == expected, label
+        assert not m.ocr_folded and m.confidence == "high", label
+
+
+def test_the_ocr_fold_is_only_the_reviewed_rare_confusions():
+    """The fold set is deliberately small: the i/l/1 stroke group, o/0, and v/y.
+
+    COMMON-letter confusions are refused — folding a/u, b/h, c/e or n/m would
+    merge distinct names and widen what garbage resolves, and a folded match
+    still PINS a staff to a part (`dossier.join_parts_to_slots` pins on any
+    unambiguous alias, folded or not). The margin corpora's own unread reads
+    `Oh.`->`Ob.` (b/h) and `Fug.`->`Fag.` (a/u) are left unread rather than
+    bought at that price. See
+    benchmarks/omr-margin-labels-2026-08/OCR_CONFUSIONS_2026-09-02.md.
+
+    Pinned so a new fold cannot be added without landing here and justifying it.
+    The alias<->alias check below is a true invariant but NOT sufficient on its
+    own: a common-letter fold does its damage by pulling GARBLED reads onto an
+    alias, not by merging two aliases, so measured against this vocabulary a/u
+    and b/h both score zero here — which is exactly why the set is pinned."""
+    import re as _re
+    from tools.omr.instruments import _OCR_FOLD, _fold_ocr, INSTRUMENTS
+
+    sources = {chr(k) for k in _OCR_FOLD}
+    assert sources == set("l1|!}{][0y"), f"fold sources changed: {sorted(sources)}"
+    for common in "aubhcenm":
+        assert common not in sources, f"{common!r} must not be folded"
+
+    # The fold must not make one instrument's alias collide with another's when
+    # it did not already (pre-existing substring nesting like flute<petite flute
+    # is handled by the longest-alias-first index, so only NET-NEW counts).
+    owner = {a: inst.name for inst in INSTRUMENTS for a in inst.aliases}
+
+    def word_sub(needle, hay):
+        return _re.search(rf"(?<![a-z]){_re.escape(needle)}(?![a-z])", hay) is not None
+
+    for a in owner:
+        for b in owner:
+            if owner[a] == owner[b]:
+                continue
+            if word_sub(_fold_ocr(a), _fold_ocr(b)) and not word_sub(a, b):
+                raise AssertionError(
+                    f"fold makes {a!r}({owner[a]}) collide with {b!r}({owner[b]})")
+
+
 def test_alias_buried_in_garbage_is_demoted():
     m = lookup("vc. '- eB-")
     assert m.instrument.name == "Cello"
