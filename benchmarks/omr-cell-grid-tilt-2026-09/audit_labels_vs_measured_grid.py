@@ -1,7 +1,14 @@
 """Campaign-wide audit: every INSIDE-STAFF click-placed label vs the grid
 measured from the cell's own printed lines at that label's x.
 
-For each added notehead label in the 10 hollow batches whose centre sits
+HOLLOW3 GATE RE-RUN (2026-09-03): restricted to the four hollow3 batches,
+paths made repo-root-relative (the original on claude/objective-chatelet-c060e5
+hardcoded the main checkout + the peaceful-shamir-d12e52 worktree and swept all
+10 hollow batches). Cell images come from the batches' own cells/ when present,
+else from the v9-v12 export copies in data/user-labeled/ — the same PNGs the
+labeling UI served, copied by the converter at 780cbf6.
+
+For each added notehead label whose centre sits
 inside the staff band (same zone rule as the probe):
   - measure printed line bands at cx (2.8-spacing window, >=70% fill, thin),
   - match to stored lines within 0.55 spacing; need >=3 matched, fill the
@@ -23,29 +30,23 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-MAIN = Path("/Users/seanjohnson/Desktop/ReEngrave")
-SHAMIR = MAIN / ".claude/worktrees/peaceful-shamir-d12e52"
+ROOT = Path(__file__).resolve().parents[2]
 
 BATCHES = [
-    "benchmarks/omr-labeling-hollow-2026-08",
-    "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
-    "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade",
-    "benchmarks/omr-labeling-hollow2-2026-09-litolff-hires",
-    "benchmarks/omr-labeling-hollow2-2026-09-peters-mahler5",
-    "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9",
     "benchmarks/omr-labeling-hollow3-2026-09-durand-lamer",
     "benchmarks/omr-labeling-hollow3-2026-09-jurgenson-tchaikovsky1",
     "benchmarks/omr-labeling-hollow3-2026-09-novello-elgar1",
     "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1",
 ]
 
-VDIRS = [MAIN / "data/user-labeled/v8-2026-09-02-hollow2-5pub/images",
-         MAIN / "data/user-labeled/v7-2026-09-02-hollow/images"]
+VDIRS = [ROOT / "data/user-labeled/v9-2026-09-03-hollow3-mahler1/images",
+         ROOT / "data/user-labeled/v10-2026-09-03-hollow3-elgar1/images",
+         ROOT / "data/user-labeled/v11-2026-09-03-hollow3-lamer/images",
+         ROOT / "data/user-labeled/v12-2026-09-03-hollow3-tchaikovsky1-lowres/images"]
 
 
 def find_image(batch_rel: str, cell_id: str) -> Path | None:
-    cands = [MAIN / batch_rel / "cells" / f"{cell_id}.png",
-             SHAMIR / batch_rel / "cells" / f"{cell_id}.png"]
+    cands = [ROOT / batch_rel / "cells" / f"{cell_id}.png"]
     cands += [v / f"{cell_id}.png" for v in VDIRS]
     for c in cands:
         if c.exists():
@@ -54,10 +55,9 @@ def find_image(batch_rel: str, cell_id: str) -> Path | None:
 
 
 def load_json_either(rel: str):
-    for root in (MAIN, SHAMIR):
-        p = root / rel
-        if p.exists():
-            return json.loads(p.read_text())
+    p = ROOT / rel
+    if p.exists():
+        return json.loads(p.read_text())
     return None
 
 
@@ -109,13 +109,10 @@ def main() -> None:
             continue
         man = {e["cell_id"]: e for e in man}
         vdir = None
-        for root in (MAIN, SHAMIR):
-            for name in ("verdicts-merged", "verdicts"):
-                d = root / b / name
-                if d.is_dir():
-                    vdir = d
-                    break
-            if vdir:
+        for name in ("verdicts-merged", "verdicts"):
+            d = ROOT / b / name
+            if d.is_dir():
+                vdir = d
                 break
         for vf in sorted(vdir.glob("*.verdict.json")):
             v = json.loads(vf.read_text())

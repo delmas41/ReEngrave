@@ -157,9 +157,11 @@ every one with a usable image):
     with the wrong class (32). v11's export source is
     `benchmarks/omr-labeling-survey-2026-09/phase2-merged/lamer/verdicts/` —
     a THIRD edit-both copy, the same trap as v8-merged-verdicts. The
-    correction (32 → 34, three copies) is in flight with the session that
-    owns the hollow3 verdicts; it must land before v9–v12 enter
-    `catalog-versions.txt`.
+    correction (32 → 34, three copies) landed as `c827279` on
+    `claude/peaceful-shamir-d12e52` and was cherry-picked into the gate
+    re-run's branch (§5), which confirmed it: the cell still tops the
+    campaign's grid-error list (−0.45 sp) and its label now agrees with the
+    measured grid.
   - A third candidate (`mahler1-p4-sys0-s0-m9` HalfInSpace) is a 2 px
     geometric coin toss; the figure is two half-note heads a FOURTH apart
     (line + space — the Mahler 1 fourths motif), which supports Sean's
@@ -186,10 +188,11 @@ every one with a usable image):
   staff's end cells are suspect" (all 7 flagged staves: 7–10 px). It just
   needs to reach cells.json / the annotate server if the labeling UI should
   warn.
-- The brahms1 s20 v8 fix LANDED (`3baadcd`); the lamer fix is in flight (see
-  §3). Remaining gate: **re-run the audit over the hollow3 batch set before
-  v9–v12 enter `catalog-versions.txt`** — they were converted by `780cbf6`
-  and deliberately held out. ⚠️ The general trap, learned from `7fe2d7b` and
+- The brahms1 s20 v8 fix LANDED (`3baadcd`); the lamer fix LANDED (`c827279`,
+  confirmed by §5's re-run). The remaining gate — **re-run the audit over the
+  hollow3 batch set before v9–v12 enter `catalog-versions.txt`** (they were
+  converted by `780cbf6` and deliberately held out) — was run 2026-09-03 and
+  PASSED; see §5. ⚠️ The general trap, learned from `7fe2d7b` and
   confirmed on v11: **every exported version has its own merged export
   source** (v8 → survey `v8-merged-verdicts`, v11 → survey
   `phase2-merged/lamer/verdicts`), so a label fix edits the BATCH verdict,
@@ -201,3 +204,59 @@ every one with a usable image):
   records the OLD class — provenance drift only, training unaffected; the
   clean resolution is a single converter re-run with the version's original
   arguments once all corrections are on main.
+
+## 5. The hollow3 gate re-run — PASSED (2026-09-03)
+
+Run in the `busy-curran-b250c5` worktree over the four hollow3 batches
+(`universal-mahler1`, `novello-elgar1`, `jurgenson-tchaikovsky1`,
+`durand-lamer`) at their v9–v12 state: batch `verdicts/` after `c827279`
+(cherry-picked), whose `added_detections` were first verified identical to
+the survey `phase2-merged/*/verdicts` export sources — the copies differ only
+in `inspected_passes` / `labeled_at_utc` (and a few model-`detections`
+lists), never in a human label. `audit_labels_vs_measured_grid.py` was
+re-pointed for this run: repo-root-relative, the four batches, and cell
+images from the **v9–v12 `images/` export copies** (the batches' own
+gitignored `cells/` are absent in a fresh worktree; the export copies are the
+same PNGs the labeling UI served, copied by the converter at `780cbf6`, and
+they covered every audited cell — 0 lacked images, every one matched its
+manifest's canonical height).
+
+**68 inside-staff added-notehead labels; |grid error| median 0.053 sp, p90
+0.196, max 0.451; 5 labels past the 0.25 sp flip line; box centres ≤ 0.246 sp
+from the true slot (none past 0.25). Exactly 1 of 68 disagrees with the
+measured grid, and adjudication on the ink says the LABEL is right — zero
+label changes.**
+
+- The 1 disagreement is `mahler1-p4-sys0-s0-m9` `noteheadHalfInSpace`
+  (grid +0.25 sp, margin 2.1 px) — §3's "third candidate", the 2 px coin
+  toss. The prior adjudication argued from the fourths motif; this run
+  measured the ink. The head's counter is **one unbroken hole** (108×64 px —
+  no printed line crosses it), centroid y 874.7 against the measured space
+  slot at 872.5 — **2.2 px off the space slot**, 52 px from the measured
+  line. Its partner head in the same figure straddles the printed line at
+  723 (counter split by the line). So the pair reads line + space, a fourth
+  apart — Sean's classes are correct on both, and the flag is the box-centre
+  artifact §3 predicted: both boxes snapped onto the displaced STORED grid
+  (747/847, exactly 1.0 spacing apart — a parity-impossible separation for
+  the true fourth), so the InSpace box lands 24.1 px from the measured line
+  slot vs 26.2 px from the measured space slot. Box centres stay valid as
+  training boxes (0.24 sp off the true slot, inside the campaign bound); the
+  class is what the audit protects, and the class is right.
+- `lamer-p5-sys0-s2-m0` — the campaign's largest grid error, 0.451 sp —
+  now AGREES: the audit itself confirms `c827279`.
+- The other >0.25 sp rows (`mahler1-p3-sys0-s7-m5` 0.379,
+  `mahler1-p4-sys0-s1-m9` ×2 0.324) are §1's adjudicated overrides, and the
+  re-run confirms their classes agree with the measured grid.
+- **Decode verification, all three copies:** every one of the four batches'
+  **135 added noteheads** (inside- and outside-staff) appears in its
+  version's `labels/*.txt` at the same normalized position and the correct
+  class id under the converter's committed 208-name vocabulary
+  (`deepscoresv2_208_classes.json`: HalfOnLine 28, HalfInSpace 30,
+  WholeOnLine 32, WholeInSpace 34) — 135/135, including the corrected v11
+  lamer line. ⚠️ Do not decode-check against `DEEPSCORES_V2_CLASSES`
+  indices — the trained vocab sits 4 ids below it for the notehead block,
+  and the first pass of this check "failed" 135/135 on exactly that.
+
+**The grid-tilt gate on v9–v12 is cleared.** Admitting them to
+`catalog-versions.txt` remains a training-time decision (the same open call
+as v7, PROJECT_STATUS #13 for v5/v6) — but no longer blocked on this audit.

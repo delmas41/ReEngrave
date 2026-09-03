@@ -5,7 +5,25 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
-## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
+## 2026-09-03 — Grid-tilt gate on v9–v12: the hollow3 audit re-run PASSES, zero label changes
+
+- The gate `benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md` §4 required — re-run the
+  inside-staff grid audit over the four hollow3 batches before v9–v12 enter
+  `catalog-versions.txt` — is done and recorded as §5. **68 inside-staff added-notehead
+  labels, 1 disagreement with the ink-measured grid, and the ink says the label is right**:
+  `mahler1-p4-sys0-s0-m9`'s InSpace half has an unbroken counter centred 2.2 px off the
+  measured space slot (no printed line crosses it), so the 2.1 px flag is the predicted
+  box-centre snap artifact, not a wrong class. The audit also independently confirms both
+  earlier corrections: `lamer-p5-sys0-s2-m0` (cherry-picked `c827279`) still carries the
+  campaign's largest grid error (0.451 sp) and now agrees.
+- **Decode check, all three copies: 135/135.** Every added notehead in the four batch
+  verdict sets appears in v9–v12 `labels/*.txt` at the same position and correct class id —
+  under the converter's committed `deepscoresv2_208_classes.json` vocabulary (28/30/32/34
+  for the hollow block), NOT `DEEPSCORES_V2_CLASSES` indices, which sit 4 higher and made
+  the first pass of the check "fail" 135/135.
+- The audit script was re-pointed for worktree use (repo-root-relative, the four hollow3
+  batches, images from the v9–v12 `images/` export copies — a fresh checkout has no batch
+  `cells/`). v9–v12 admission is now purely a training-time decision.
 
 - **"Pre-fill precision is downstream of recognition" is now TESTED, and true** — the measured
   handoff's structural finding, and the reason Sean kept the approach open. A change of
