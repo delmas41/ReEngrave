@@ -88,6 +88,13 @@ async function load() {
   renderHintsPanel();
   renderOverlay();
   selectFirstPending();
+  if (passActive()) {
+    // A pass opens ready to label: clicking a symbol places its box
+    // immediately, no per-cell "a" / add-missed step (Sean, 2026-09-03).
+    // Esc still steps out for this cell, and the keyboard verdict keys
+    // never check the draw mode, so a triage-style pass loses nothing.
+    enterDrawMode({ kind: "add-missed" });
+  }
 }
 
 function loadImage() {

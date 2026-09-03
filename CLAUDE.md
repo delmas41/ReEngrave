@@ -1486,8 +1486,10 @@ is one of:
 | `{"on_line": …, "in_space": …}` | a **staff-position pair** — one slot, and the click's y picks which |
 
 Number keys `1`–`n` select the slot; a **single**-slot palette needs no key at
-all. `a` enters draw mode as always, but the class is now **assigned for you**
-— no picker opens. Both halves of a pair draw in different colors with a
+all. **A pass opens every cell already in draw mode** (since 2026-09-03): just
+click the symbols — no per-cell `a` step; `Esc` steps out for that cell, and
+the verdict hotkeys work regardless. `a` re-enters draw mode as always, and
+the class is **assigned for you** — no picker opens. Both halves of a pair draw in different colors with a
 `·line` / `·space` tag, so a mis-snap is visible on the image; `b` on a drawn
 box redraws it (that only ever worked on model detections), and moving one
 across the staff grid **re-derives** its variant. The full 174-class picker is

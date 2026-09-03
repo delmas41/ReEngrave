@@ -25,6 +25,35 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   six cells, not a claim; the out-of-sample test is a random completion pass scored by
   `probe_admission.py`, which reproduces the recorded 50/42/47 before it prices any policy.
 
+---
+
+## 2026-09-03 — The labeling survey widens: inventory, grace selector, click-first passes
+
+**Why:** Sean's direction — extend the proven single-symbol × publisher
+campaign toward every score element, with click-to-box as the standard.
+
+**What:** (1) `benchmarks/omr-labeling-survey-2026-09/symbol_inventory.py`
+generates `INVENTORY.md` — all 208 catalog classes + classless elements, each
+with an owner (detector / CV / template-reader / specialist-slot / parked),
+labeled-box counts, and publisher coverage; 106 detector-owned classes have
+zero boxes, and the `numeral*` family surfaced as genuinely unassessed.
+(2) `grace_score.py` — survey Row 2's selector (small solid head near a full
+head, all thresholds in staff spaces, PROVISIONAL until first real labels) —
+plus the honest first measurement in `GRACE_SELECTOR_2026-09-03.md`: the
+280-cell hollow pool cannot validate it (top-ranked candidates are fragments
+and dots), because cells selected FOR sparse sustained bars anti-correlate
+with ornamentation; next step is a cut from grace-rich movements.
+(3) The single-symbol pass UI now opens every cell **already in draw mode** —
+click the symbols directly, no per-cell "add missed" step (`cell.js`; Esc
+steps out; verdict hotkeys unaffected; 52 annotate tests green).
+(4) NOTES.md gained the 🅿️ PARKED item Sean asked not to lose: re-try the
+template-read elements (time signatures first) under the new labeling system,
+detector as an added voter, harness ready-made.
+
+---
+
+## 2026-09-03 — Scan vs engraved weight routing (on by default)
+
 **Why:** the hollow fine-tune ship left the two domains preferring different
 checkpoints — scans want the hollow weights (half-notes 8→27 on beet5-p1),
 digitally engraved input the prior production weights (11-work OMR-NED 0.1399
