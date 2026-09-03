@@ -748,3 +748,98 @@ def test_a_tremolo_run_the_reading_missed_is_one_hollow_hint(tmp_path: Path) -> 
     h = pre["hints"][0]
     assert h["type"] == "half" and h["dots"] == 1 and h["tremolo_run"] == 6
     assert h["class"] == "noteheadHalfOnLine" and "tremolo" in h["label"]
+
+
+# ------------------------------------------------- scoring beyond the pass
+
+
+def _hollow_config(bench: Path) -> None:
+    (bench / "batch_config.json").write_text(json.dumps({
+        "pass_name": "hollow noteheads", "classes": [
+            {"on_line": "noteheadHalfOnLine", "in_space": "noteheadHalfInSpace"},
+            {"on_line": "noteheadWholeOnLine", "in_space": "noteheadWholeInSpace"}]}))
+
+
+def _hollow_only_human(bench: Path, cid: str, *, swept: list[str]) -> None:
+    """A single-symbol pass: the human drew ONE hollow head and nothing else."""
+    (bench / "verdicts" / f"{cid}.verdict.json").write_text(json.dumps({
+        "cell_id": cid, "schema_version": 2, "detections": [],
+        "added_detections": [
+            {"id": "H0", "human_class": "noteheadHalfInSpace", "human_category": "notehead",
+             "bbox": {"x": 296, "y": 176, "w": 44, "h": 44}, "notes": ""}],
+        "inspected_passes": swept}))
+
+
+def test_score_classes_defaults_to_the_batchs_own_pass(bench, truth) -> None:
+    _hollow_config(bench)
+    _hollow_only_human(bench, "fx-p4-sys0-s0-m2", swept=["hollow noteheads"])
+    default = _run(bench, truth, _windows(), write=False, score=True)
+    explicit = _run(bench, truth, _windows(), write=False, score=True,
+                    score_classes=mv.SCORE_CLASSES_PASS)
+    assert default["score"] == explicit["score"]
+    assert default["score_widened_beyond_pass"] is False
+
+
+def test_widening_the_score_is_refused_without_cells_swept_for_it(bench, truth) -> None:
+    # The trap this guard exists for: the human's hollow-only pass drew no
+    # black noteheads, so scoring every class would charge each correctly
+    # pre-filled black head as a false positive and report a precision that
+    # measures which pass was run, not the pre-fill.
+    _hollow_config(bench)
+    _hollow_only_human(bench, "fx-p4-sys0-s0-m2", swept=["hollow noteheads"])
+    with pytest.raises(ValueError, match="widens beyond"):
+        _run(bench, truth, _windows(), write=False, score=True,
+             score_classes=mv.SCORE_CLASSES_ALL)
+
+
+def test_widening_is_allowed_when_restricted_to_a_completed_sweep(bench, truth) -> None:
+    _hollow_config(bench)
+    cid = "fx-p4-sys0-s0-m2"
+    _hollow_only_human(bench, cid, swept=["hollow noteheads", "completion"])
+    s = _run(bench, truth, _windows(), write=False, score=True,
+             score_classes=mv.SCORE_CLASSES_ALL, score_inspected_for="completion")
+    assert s["score_widened_beyond_pass"] is True
+    assert s["score_inspected_for"] == "completion"
+    assert s["pass_classes"] is None                     # every class
+    assert s["score"]["cells_scored"] == 1
+
+
+def test_a_cell_not_swept_for_the_named_pass_is_left_out_of_the_score(bench, truth) -> None:
+    _hollow_config(bench)
+    _hollow_only_human(bench, "fx-p4-sys0-s0-m2", swept=["hollow noteheads"])
+    s = _run(bench, truth, _windows(), write=False, score=True,
+             score_classes=mv.SCORE_CLASSES_ALL, score_inspected_for="completion")
+    assert s["score"]["cells_scored"] == 0
+    assert s["score"]["n_prefill"] == 0
+
+
+def test_an_explicit_cell_list_also_unlocks_the_wider_score(bench, truth) -> None:
+    _hollow_config(bench)
+    cid = "fx-p4-sys0-s0-m2"
+    _hollow_only_human(bench, cid, swept=["hollow noteheads"])
+    s = _run(bench, truth, _windows(), write=False, score=True,
+             score_classes=mv.SCORE_CLASSES_ALL, cells=[cid])
+    assert s["score"]["cells_scored"] == 1
+
+
+def test_a_narrower_explicit_class_list_is_not_a_widening(bench, truth) -> None:
+    _hollow_config(bench)
+    _hollow_only_human(bench, "fx-p4-sys0-s0-m2", swept=["hollow noteheads"])
+    s = _run(bench, truth, _windows(), write=False, score=True,
+             score_classes="noteheadHalfInSpace,noteheadHalfOnLine")
+    assert s["score_widened_beyond_pass"] is False
+    assert s["pass_classes"] == ["noteheadHalfInSpace", "noteheadHalfOnLine"]
+
+
+def test_a_batch_with_no_config_can_be_scored_over_everything(bench, truth) -> None:
+    # No batch_config means no pass was declared, so "all" takes nothing away
+    # and there is nothing to warn about.
+    _hollow_only_human(bench, "fx-p4-sys0-s0-m2", swept=[])
+    s = _run(bench, truth, _windows(), write=False, score=True,
+             score_classes=mv.SCORE_CLASSES_ALL)
+    assert s["score_widened_beyond_pass"] is False
+
+
+def test_an_empty_score_classes_spec_is_refused(bench, truth) -> None:
+    with pytest.raises(ValueError):
+        mv.resolve_score_classes(bench, " , ")

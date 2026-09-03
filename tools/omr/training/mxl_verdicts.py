@@ -802,6 +802,46 @@ def pass_classes(bench: Path) -> set[str] | None:
     return out or None
 
 
+SCORE_CLASSES_PASS = "pass"
+SCORE_CLASSES_ALL = "all"
+
+
+def resolve_score_classes(bench: Path, spec: str) -> tuple[set[str] | None, bool]:
+    """Which classes `--score` compares over, and whether that WIDENS the pass.
+
+    Returns (classes, wider). `classes` of None means "every class".
+
+    ⚠️ Widening is the dangerous direction, and the danger is silent. A
+    single-symbol batch's verdicts contain ONLY that pass's boxes — a hollow
+    sweep draws no black noteheads — so scoring a wider set against them
+    counts every correctly pre-filled black head as a false positive. The
+    number that comes out is not a weak result for the pre-fill; it is a
+    measurement of which pass the human happened to run, and it looks like a
+    damning verdict. Hence `wider`, and the caller's refusal to use it
+    without cells that were actually swept for these classes.
+    """
+    declared = pass_classes(bench)
+    if spec == SCORE_CLASSES_PASS:
+        return declared, False
+    if spec == SCORE_CLASSES_ALL:
+        return None, declared is not None
+    chosen = {c.strip() for c in spec.split(",") if c.strip()}
+    if not chosen:
+        raise ValueError("--score-classes was given no usable class name")
+    wider = declared is not None and not chosen <= declared
+    return chosen, wider
+
+
+def cell_was_swept_for(human_state: dict, pass_name: str) -> bool:
+    """Did this cell's human actually LOOK for the pass being scored?
+
+    `inspected_passes` is stamped on the way out of a cell, so it means
+    "looked and moved on" — which is exactly the claim a wider score needs,
+    and it is recorded even for a cell that legitimately held nothing.
+    """
+    return pass_name in (human_state.get("inspected_passes") or [])
+
+
 def score_cell(cp: CellPrefill, human_state: dict, classes: set[str] | None,
                min_iou: float = DEFAULT_MIN_IOU) -> dict:
     human = _human_boxes(human_state)
@@ -846,7 +886,8 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
         write: bool = False, hints_only: bool = False, force: bool = False, score: bool = False,
         match: str = "position", min_strength: float = DEFAULT_MIN_STRENGTH,
         min_iou: float = DEFAULT_MIN_IOU, trust_measure_counts: bool = False,
-        cells: list[str] | None = None) -> dict:
+        cells: list[str] | None = None, score_classes: str = SCORE_CLASSES_PASS,
+        score_inspected_for: str | None = None) -> dict:
     manifest = json.loads((bench / "cells.json").read_text())
     if cells:
         wanted = set(cells)
@@ -860,7 +901,16 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
         pre_dir.mkdir(parents=True, exist_ok=True)
     if write_verdicts:
         ver_dir.mkdir(parents=True, exist_ok=True)
-    classes = pass_classes(bench)
+    classes, wider = resolve_score_classes(bench, score_classes)
+    if score and wider and not (cells or score_inspected_for):
+        raise ValueError(
+            "--score-classes widens beyond this batch's own pass, and its verdicts "
+            "hold only that pass's boxes — so every correctly pre-filled symbol of "
+            "another kind would count as a false positive and the precision would "
+            "measure the labeling pass, not the pre-fill. Restrict to cells that "
+            "were swept for these classes: --cells <ids>, or --score-inspected-for "
+            "<pass name>."
+        )
 
     results: list[dict] = []
     totals = {"cells": 0, "prefilled": 0, "abstained": 0, "skipped": 0, "written": 0,
@@ -889,7 +939,9 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
             except json.JSONDecodeError:
                 existing = None
 
-        if score and existing is not None and cp.status == "prefilled":
+        if (score and existing is not None and cp.status == "prefilled"
+                and (score_inspected_for is None
+                     or cell_was_swept_for(existing, score_inspected_for))):
             s = score_cell(cp, existing, classes, min_iou)
             for k in ("n_prefill", "n_human", "matched_exact", "matched_kind"):
                 score_tot[k] += s[k]
@@ -929,6 +981,9 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
         "trust_measure_counts": trust_measure_counts,
         "hints_only": hints_only,
         "pass_classes": sorted(classes) if classes else None,
+        "score_classes": score_classes,
+        "score_widened_beyond_pass": wider,
+        "score_inspected_for": score_inspected_for,
         "totals": totals,
         "cells": results,
     }
@@ -981,9 +1036,17 @@ def _print_summary(summary: dict) -> None:
             print(f"      pairs: {al.get('pairs')}")
     if "score" in summary:
         s = summary["score"]
-        print(f"score over {s['cells_scored']} cells with human verdicts"
-              + (f" (classes {summary['pass_classes']})" if summary.get("pass_classes") else "")
-              + f": prefill {s['n_prefill']} boxes, human {s['n_human']} boxes")
+        scope = (f"classes {summary['pass_classes']}" if summary.get("pass_classes")
+                 else "ALL classes")
+        if summary.get("score_inspected_for"):
+            scope += f", cells swept for {summary['score_inspected_for']!r}"
+        print(f"score over {s['cells_scored']} cells with human verdicts "
+              f"({scope}): prefill {s['n_prefill']} boxes, human {s['n_human']} boxes")
+        if summary.get("score_widened_beyond_pass"):
+            print("  NOTE: scored beyond the batch's own pass — the number is only "
+                  "meaningful for cells swept for these classes.")
+        if s["cells_scored"] == 0:
+            print("  no cells scored: none carried human verdicts matching the selection.")
         print(f"  precision exact {s['precision_exact']}  kind {s['precision_kind']}   "
               f"recall exact {s['recall_exact']}  kind {s['recall_kind']}")
 
@@ -1005,6 +1068,15 @@ def main(argv: list[str] | None = None) -> int:
                     help="overwrite verdict files that already carry human work")
     ap.add_argument("--score", action="store_true",
                     help="compare against human verdicts already in the batch")
+    ap.add_argument("--score-classes", default=SCORE_CLASSES_PASS,
+                    help="which classes --score compares over: 'pass' (default, the batch's "
+                         "own batch_config classes), 'all', or a comma-separated list. "
+                         "Widening past the batch's pass needs --cells or "
+                         "--score-inspected-for, because a single-symbol batch's verdicts "
+                         "hold only that pass's boxes")
+    ap.add_argument("--score-inspected-for", default=None, metavar="PASS",
+                    help="score only cells whose verdict records this pass in "
+                         "inspected_passes — i.e. cells a human actually swept for it")
     ap.add_argument("--match", choices=("position", "step", "exact"), default="position",
                     help="position: staff position from the reference clef vs the box (default, "
                          "immune to a misread clef); step: step+octave; exact: the spelling too")
@@ -1028,12 +1100,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"no usable window rows in {args.windows}", file=sys.stderr)
         return 2
     write = bool((args.write or args.write_hints) and not args.dry_run)
-    summary = run(args.bench_dir, transcription, truth, windows,
-                  write=write, hints_only=bool(args.write_hints and not args.write),
-                  force=args.force,
-                  score=args.score, match=args.match, min_strength=args.min_strength,
-                  min_iou=args.min_iou, trust_measure_counts=args.trust_measure_counts,
-                  cells=args.cells)
+    try:
+        summary = run(args.bench_dir, transcription, truth, windows,
+                      write=write, hints_only=bool(args.write_hints and not args.write),
+                      force=args.force,
+                      score=args.score, match=args.match, min_strength=args.min_strength,
+                      min_iou=args.min_iou, trust_measure_counts=args.trust_measure_counts,
+                      cells=args.cells, score_classes=args.score_classes,
+                      score_inspected_for=args.score_inspected_for)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
     summary["debug_cells"] = list(args.debug_cell or [])
     _print_summary(summary)
     if not write:

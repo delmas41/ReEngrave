@@ -7,6 +7,25 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **`--score` can now be widened past the batch's own pass, and refuses to be widened
+  misleadingly** — chasing the open checklist item "can pre-filled TPs be admitted without a
+  glance". Running `--score` on the Brahms batch answers **precision 0.60, recall 0.333 — over
+  5 pre-filled boxes against 9 human ones, in the four hollow-notehead classes only**, because
+  scoring was hard-filtered to the batch's `batch_config` pass. That batch is a single-symbol
+  hollow sweep, so the black heads and rests that make up the bulk of the 179 confirmations are
+  not in the comparison and no way of running it could put them there. `--score-classes
+  pass|all|<list>` widens it; ⚠️ **and widening is refused** unless `--cells` or
+  `--score-inspected-for PASS` restricts it to cells a human actually swept for those classes.
+  The trap is silent and would have looked like a verdict on the pre-fill: a hollow-only pass
+  drew no black noteheads, so scoring every class against it charges each correctly pre-filled
+  black head as a false positive, and the precision that comes out measures which pass the
+  human ran. `inspected_passes` is the evidence used, since it is stamped on the way out of a
+  cell and so means "looked and moved on" even where nothing was drawn. The default is
+  byte-identical to before (pinned by a test comparing it to the explicit `pass` spec), and the
+  report line now always names the classes and cell selection the number covers. 8 new tests,
+  191 green across the pre-fill, annotate and training suites.
+  **So the deciding number still needs Sean:** a handful of cells labeled COMPLETELY, then
+  `--score --score-classes all --score-inspected-for <that pass>`.
 - **a checked-out batch shows no music, and now there is a tool for it** —
   `tools/omr/annotate/recut_cells.py`. Sean opened the Brahms batch and got a blank canvas.
   `benchmarks/*/cells/` is gitignored (`.gitignore:77`) and **no batch has ever had a PNG

@@ -1643,6 +1643,20 @@ human confirms the first measure of each page against the print and fills
 leaves `verdicts/` alone, so a batch can be labeled WITH the hints while the
 labels stay independent — which is what `--score` then measures.
 
+⚠️ **`--score` compares over the batch's OWN pass classes**, which is why the
+Brahms number cannot answer the question it was meant to. That batch is a
+hollow-notehead sweep, so its verdicts contain hollow boxes and nothing else:
+scoring reports **precision 0.60 / recall 0.333 over 5 pre-filled boxes against
+9 human ones**, and the black heads and rests — the bulk of the 179
+confirmations — are not in it and never can be. `--score-classes all` (or a
+comma list) widens the comparison, and **refuses** unless `--cells` or
+`--score-inspected-for PASS` restricts it to cells a human actually swept for
+those classes. Without that restriction the number is not a weak result for the
+pre-fill but a measurement of which pass was run: a hollow sweep drew no black
+noteheads, so every correctly pre-filled black head would be charged as a false
+positive. So the deciding number needs a handful of cells labeled COMPLETELY,
+then `--score --score-classes all --score-inspected-for <that pass>`.
+
 ⚠️ **Not yet measured on a real batch.** The Mahler 5 / Peters batch cannot
 be the one: the library holds Mahler 5 movements 1-3 and the batch is the
 Adagietto (movement 4). The Brahms 1 / Breitkopf batch can — same PDF as the
