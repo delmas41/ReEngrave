@@ -15,7 +15,7 @@ moves the scan e2e benchmark by **2 edits out of 7894** (pooled 0.7517 →
 0.7509). Not because the defect is small, but because that benchmark reads
 **page 1 of five works**, and page 1 of a bound book is where the paper is
 flattest: **0.4% of its 1143 cells** sit past the quarter-space parity-flip
-line, against **16.0%** on the pages the labeling campaign flagged and **8.3%**
+line, against **16.3%** on the pages the labeling campaign flagged and **8.7%**
 across 26 pages sampled deeper into the same editions. *A corpus that cannot
 express a fault cannot price it.*
 
@@ -96,7 +96,7 @@ displaced, and a rigid comb inherits the distortion. Hence
 evidence of a staff, a beam still covers one, and the narrow-cell alias is
 untouched because it passes coverage on all five rows and is refused by width.
 
-### Three gates, each earned by something that went wrong
+### Four gates, each earned by something that went wrong
 
 | gate | value | what it refuses |
 |---|--:|---|
@@ -172,8 +172,8 @@ different slot, so every note in the cell can resolve one step off:
 | corpus | pages | cells | past flip | share |
 |---|--:|--:|--:|--:|
 | scan e2e benchmark | 6 | 1143 | 5 | **0.4%** |
-| pages the campaign flagged (control) | 6 | 1116 | 179 | **16.0%** |
-| sampled deeper into the same editions | 26 | 4097 | 340 | **8.3%** |
+| pages the campaign flagged (control) | 6 | 1116 | 182 | **16.3%** |
+| sampled deeper into the same editions | 26 | 4097 | 357 | **8.7%** |
 
 **It is per-page, and adjacent pages disagree wildly** — which is what warp in a
 bound scan looks like, and is why sampling page 1 is not sampling the domain:
