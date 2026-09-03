@@ -118,6 +118,36 @@ batch.
 **What a pass covered is in `inspected_passes`. A palette listing a class only
 means someone COULD have boxed it.**
 
+## Closing measurement — 68.1% → 23.5%
+
+`residual_background.py`, one fixed detector over the same 280 cells, asking per
+BOX whether each detection is covered by anything in the merged verdict:
+
+| stage | uncovered detections |
+|---|--:|
+| before round 3 (`--before`) | 923 / 1355 = **68.1%** |
+| + human rests, accidentals, clefs + model dynamics/slurs/ties | 486 = **35.9%** |
+| + audited black-notehead top-up | **319 = 23.5%** |
+
+Black noteheads fell **200 → 22** uncovered, which is what the top-up was for.
+
+**The residue, and what is honest to say about it.** What remains is slurs 75,
+clefs 29, ties 27, dynamics 17, timeSig 11, flags 10.
+
+⚠️ **This is an UPPER BOUND, not a defect count.** Detector output is not truth
+in either direction, and some uncovered detections are false positives that
+SHOULD train as background — clefG measured ~60% precision in the spot check,
+so a good share of those 29 are ink that is not a clef, and the round's own
+`sempre`-as-dynamic family is the worked example of a detection that must stay
+unlabelled. The number is meaningful as a before/after delta on one detector,
+never as an absolute.
+
+The slur/tie residue is partly deliberate: `complete_marks.py` sets per-family
+confidence floors FROM the spot check (slur 0.60, tie 0.75), so lower-confidence
+real arcs are left rather than admitted at a precision the audit did not
+support. Whether that trade is right is a question for the next round's
+measurement, not a thing to guess at now.
+
 ## What is NOT done
 
 - The cloud re-run has not been spent. Gate on BOTH axes — beet5-p1 hollow (note
