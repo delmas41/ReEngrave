@@ -19,6 +19,7 @@ from tools.omr.training.measure_align import (
     staff_y_for_pitch,
     tremolo_runs,
     abbreviation_type,
+    collapse_tremolo_runs,
     truth_tokens,
 )
 from tools.omr.training.musicxml_truth import TruthNote
@@ -231,3 +232,15 @@ def test_tremolo_runs_and_their_abbreviation() -> None:
     assert tremolo_runs(four)[id(four[0])][:3] == (0, 4, 2.0)
     broken = four[:2] + [_tn(None, 1.0, 0.5, "eighth", rest=True)] + four[2:]
     assert tremolo_runs(broken) == {}
+
+
+def test_collapse_follows_the_reading() -> None:
+    six = [_tn("G2", k * 0.5, 0.5, "eighth", clef="bass") for k in range(6)]   # P8 in bass
+    one = collapse_tremolo_runs(six, [8])
+    assert len(one) == 1 and one[0].tremolo_of == 6 and (one[0].type, one[0].dots) == ("half", 1)
+    assert one[0].duration_ql == 3.0 and one[0].pitch == "G2" and one[0].clef == "bass"
+    assert len(collapse_tremolo_runs(six, [8, 8, 8])) == 6            # printed out
+    assert len(collapse_tremolo_runs(six, [])) == 1                   # nothing read: still one note
+    three = [_tn("C4", k * 0.5, 0.5, "eighth", clef="treble") for k in range(3)]
+    q = collapse_tremolo_runs(three, [10])
+    assert len(q) == 1 and (q[0].type, q[0].dots) == ("quarter", 1)  # a dotted-quarter tremolo

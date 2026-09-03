@@ -72,6 +72,7 @@ class TruthNote:
     unpitched: bool
     measure_rest: bool           # <rest measure="yes"/>
     clef: str | None = None      # written clef in force ("treble", "bass", "alto", "treble_8vb", …)
+    tremolo_of: int = 0          # >0 on a synthetic note standing for that many repeated notes
 
     @property
     def step_key(self) -> str:

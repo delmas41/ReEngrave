@@ -462,7 +462,7 @@ function renderOverlay() {
 // that the reference does not contain. Neither is a label; the human still
 // draws or decides. Toggle with `h`.
 
-const HINT_COLORS = { missing: "#8e6c00", extra: "#9e9e9e" };
+const HINT_COLORS = { missing: "#8e6c00", extra: "#9e9e9e", conflict: "#b00020" };
 
 function hintsFor() {
   const pre = state.cell && state.cell.prefill;
@@ -528,7 +528,7 @@ function renderHintsPanel() {
   for (const h of hints) {
     const li = document.createElement("li");
     li.className = `hint hint-${h.kind}`;
-    li.textContent = (h.kind === "missing" ? "missing: " : "extra: ") + h.label +
+    li.textContent = (h.kind === "missing" ? "missing: " : h.kind === "conflict" ? "CONFLICT: " : "extra: ") + h.label +
       (h.class ? ` (${h.class})` : "") + (h.x_estimated ? " · x approx." : "");
     ul.appendChild(li);
   }

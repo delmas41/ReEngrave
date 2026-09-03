@@ -70,8 +70,8 @@ from ..voicing import group_chords_in_measure
 from .measure_align import (
     Alignment,
     Token,
-    abbreviation_type,
     align_tokens,
+    collapse_tremolo_runs,
     event_tokens,
     expected_head_class,
     expected_rest_class,
@@ -80,7 +80,6 @@ from .measure_align import (
     on_line_or_in_space,
     parse_head_class,
     staff_y_for_pitch,
-    tremolo_runs,
     truth_tokens,
 )
 from .musicxml_truth import TruthNote, TruthScore, load_truth
@@ -327,6 +326,7 @@ class CellPrefill:
             "n_added": len(self.added),
             "n_hints_missing": sum(1 for h in self.hints if h["kind"] == "missing"),
             "n_hints_extra": sum(1 for h in self.hints if h["kind"] == "extra"),
+            "n_conflicts": sum(1 for h in self.hints if h["kind"] == "conflict"),
         }
 
 
@@ -489,12 +489,19 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     # none (percussion, or no <clef> at all) BOTH sides fall back to step
     # keys, else a position on one side can never meet a step on the other.
     cell_match = match if (match != "position" or truth_clef) else "step"
-    t_tokens = truth_tokens(notes, match=cell_match, include_rests=not condensed)
     detections = measure.get("detections", [])
     events = _events_with_orphans(detections)
     p_tokens = event_tokens(events, match=cell_match, include_rests=not condensed,
                             line_ys=measure.get("staff_line_ys_canonical"))
     det_index = {id(d): i for i, d in enumerate(detections)}
+    # A tremolo the reference spells out is one head where the page
+    # abbreviates it; the reading says which bars do. Decided before the
+    # tokens are cut, so everything downstream sees one note of the run's
+    # total value.
+    read_positions = ([int(t.key[1:]) for t in p_tokens if t.key.startswith("P")]
+                      if cell_match == "position" else None)
+    notes = collapse_tremolo_runs(notes, read_positions)
+    t_tokens = truth_tokens(notes, match=cell_match, include_rests=not condensed)
 
     fm = frame_map(measure, entry)
     # The clef for placing hints: the reference's written clef first (a fact
@@ -529,20 +536,10 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     # this is the right bar, and rest recall on a scan is poor. EXACT
     # matches are what say this is the right bar; near matches (a head
     # rounded half a space off) only fill in once an exact one vouches.
-    # A tremolo run — six eighths the page prints as one hollow head with
-    # slashes — is ONE unit for recall: one head can only match one of them.
-    runs = tremolo_runs(notes)
-    def _unit(i: int):
-        r = runs.get(id(t_tokens[i].ref))
-        return ("run", r[3]) if r else ("note", i)
     truth_note_idx = [i for i, t in enumerate(t_tokens) if not t.is_rest]
-    units = {_unit(i) for i in truth_note_idx}
-    matched_units = {_unit(ti) for ti, _ in al.pairs if not t_tokens[ti].is_rest}
-    exact_units = {_unit(pr[0]) for pr in al.pairs
-                   if not t_tokens[pr[0]].is_rest and pr not in near_set}
-    matched_notes = len(matched_units)
-    exact_notes = len(exact_units)
-    n_notes = len(units)
+    matched_notes = sum(1 for ti, _ in al.pairs if not t_tokens[ti].is_rest)
+    exact_notes = sum(1 for pr in al.pairs if not t_tokens[pr[0]].is_rest and pr not in near_set)
+    n_notes = len(truth_note_idx)
     recall = (matched_notes / n_notes) if n_notes else None
     recall_exact = (exact_notes / n_notes) if n_notes else None
     read_notes_in_range = sum(1 for i in in_range if not p_tokens[i].is_rest)
@@ -556,7 +553,7 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     width_ratio = round(b_w / (t_w * fm.sy), 3) if t_w and fm.sy else None
     out.alignment = {
         "n_truth": al.n_truth, "n_pred": al.n_pred, "matched": al.matched,
-        "n_truth_notes": n_notes, "n_truth_tokens": len(truth_note_idx), "matched_notes": matched_notes,
+        "n_truth_notes": n_notes, "matched_notes": matched_notes,
         "exact_notes": exact_notes, "near_pairs": al.near_pairs,
         "n_pred_in_range": len(in_range),
         "strength": None if recall is None else round(recall, 3),
@@ -619,25 +616,38 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
         if want is None:
             return
         verdict = "TP" if want == cls else "WRONG_CATEGORY"
+        trem = f" ({tn.tremolo_of}× repeated in the reference — tremolo abbreviation)" \
+            if tn.tremolo_of else ""
         label = f"{NOTE_TAG}: {'rest' if tn.rest else tn.pitch} {tn.type or '?'}" \
-                f"{'.' * tn.dots} m{number}"
-        run = runs.get(id(tn))
+                f"{'.' * tn.dots} m{number}{trem}"
+        bbox = fm.box(det.get("bbox", [0, 0, 0, 0]))
         parsed = parse_head_class(cls)
-        if run and parsed and parsed[0] != "Black":
-            # The reference spells a tremolo out; the page abbreviates it to
-            # one hollow head and the detector read exactly that. The
-            # reference cannot vouch for the head's KIND here — keep the
-            # detector's class and say why.
-            verdict, want = "TP", cls
-            abbr = abbreviation_type(run[2])
-            label = (f"{NOTE_TAG}: {tn.pitch} {run[1]}× {tn.type or '?'} m{number} — printed as "
-                     f"{'a ' + abbr[0] + '.' * abbr[1] if abbr else 'one head'} with tremolo "
-                     f"strokes? class kept as read")
-        elif verdict == "WRONG_CATEGORY":
+        if (verdict == "WRONG_CATEGORY" and parsed and parsed[0] != "Black"
+                and head_kind_for_type(tn.type) == "Black"):
+            # The detector read a HOLLOW head where the reference has a black
+            # one. The reverse (a hollow head read black) is the scan's
+            # commonest miss and is relabelled freely; this direction is the
+            # two sources disagreeing about the page, and a hollow reading is
+            # rarely invented. Neither side gets the verdict: the head stays
+            # pending with the disagreement written on it.
+            matched_x.append((tt.onset_ql or 0.0, bbox["x"] + bbox["w"] / 2))
+            note = (f"{NOTE_TAG}: CONFLICT — reference says {tn.pitch} {tn.type or '?'}"
+                    f"{'.' * tn.dots}{trem}, detector read {cls}; decide on the page")
+            for bd in batch_dets:
+                if bd["id"] in claimed:
+                    continue
+                bb = {"x": bd.get("x", 0), "y": bd.get("y", 0), "w": bd.get("w", 0), "h": bd.get("h", 0)}
+                if iou(bbox, bb) >= min_iou:
+                    by_id[bd["id"]]["notes"] = note
+                    claimed.add(bd["id"])
+                    break
+            out.hints.append({"kind": "conflict", "label": f"{cls} vs {tn.pitch} {tn.type or '?'}",
+                              "bbox": bbox, "class": cls, "pitch": tn.pitch, "type": tn.type})
+            return
+        if verdict == "WRONG_CATEGORY":
             label += f" → {want}"
         if near:
             label += " (≈ one step off)"
-        bbox = fm.box(det.get("bbox", [0, 0, 0, 0]))
         matched_x.append((tt.onset_ql or 0.0, bbox["x"] + bbox["w"] / 2))
         # Which batch detection is this box?
         best_id, best_iou = None, 0.0
@@ -709,22 +719,10 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     missing = [t_tokens[ti] for ti in al.truth_unmatched]
     xs = _x_estimates(missing, matched_x, length, width)
     half_space = ((b_lines[-1] - b_lines[0]) / 4.0) if len(b_lines) >= 5 else 0.0
-    matched_run_ids = {runs[id(t_tokens[ti].ref)][3]
-                       for ti, _ in al.pairs if id(t_tokens[ti].ref) in runs}
     for t in missing:
         tn: TruthNote = t.ref
-        run = runs.get(id(tn))
-        hint_type, hint_dots, run_note = tn.type, tn.dots, ""
-        if run:
-            # One hint per run, on its first note, typed as the abbreviation
-            # the page most likely prints; none at all if any note of the run
-            # already matched a head.
-            if run[0] != 0 or run[3] in matched_run_ids:
-                continue
-            abbr = abbreviation_type(run[2])
-            if abbr:
-                hint_type, hint_dots = abbr
-            run_note = f" ({run[1]}× {tn.type or '?'} in the reference — tremolo?)"
+        hint_type, hint_dots = tn.type, tn.dots
+        run_note = f" ({tn.tremolo_of}× repeated in the reference — tremolo?)" if tn.tremolo_of else ""
         if tn.rest:
             want_cls = expected_rest_class(tn)
             y = ((b_lines[0] + b_lines[-1]) / 2.0) if len(b_lines) >= 5 else None
@@ -743,7 +741,7 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
             bbox = {"x": int(round(x - w / 2)), "y": int(round(y - h / 2)), "w": w, "h": h}
         out.hints.append({"kind": "missing", "label": label, "class": want_cls,
                           "pitch": tn.pitch, "type": hint_type, "dots": hint_dots,
-                          "tremolo_run": run[1] if run else None,
+                          "tremolo_run": tn.tremolo_of or None,
                           "onset_ql": tn.onset_ql, "bbox": bbox,
                           "x_estimated": True})
 
@@ -867,7 +865,7 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
     results: list[dict] = []
     totals = {"cells": 0, "prefilled": 0, "abstained": 0, "skipped": 0, "written": 0,
               "n_tp": 0, "n_wrong_category": 0, "n_added": 0,
-              "n_hints_missing": 0, "n_hints_extra": 0}
+              "n_hints_missing": 0, "n_hints_extra": 0, "n_conflicts": 0}
     score_tot = {"n_prefill": 0, "n_human": 0, "matched_exact": 0, "matched_kind": 0,
                  "cells_scored": 0}
 
@@ -917,7 +915,8 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
         totals["cells"] += 1
         totals[cp.status] = totals.get(cp.status, 0) + 1
         totals["written"] += int(written)
-        for k in ("n_tp", "n_wrong_category", "n_added", "n_hints_missing", "n_hints_extra"):
+        for k in ("n_tp", "n_wrong_category", "n_added", "n_hints_missing", "n_hints_extra",
+                  "n_conflicts"):
             totals[k] += summ[k]
 
     summary = {
@@ -952,7 +951,8 @@ def _print_summary(summary: dict) -> None:
     print(f"cells {t['cells']}: prefilled {t['prefilled']}, abstained {t['abstained']}, "
           f"skipped {t['skipped']}, written {t['written']}")
     print(f"  TP {t['n_tp']}  WRONG_CATEGORY {t['n_wrong_category']}  added {t['n_added']}  "
-          f"hints: missing {t['n_hints_missing']}, extra {t['n_hints_extra']}")
+          f"hints: missing {t['n_hints_missing']}, extra {t['n_hints_extra']}, "
+          f"conflicts {t.get('n_conflicts', 0)}")
     reasons: dict[str, int] = {}
     for c in summary["cells"]:
         if c["status"] != "prefilled":

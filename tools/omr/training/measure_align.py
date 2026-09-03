@@ -168,12 +168,58 @@ def tremolo_runs(notes: list[TruthNote], *, min_len: int = 3,
 def abbreviation_type(total_ql: float) -> tuple[str, int] | None:
     """The written value a tremolo of `total_ql` quarter-lengths would take:
     (type, dots). None where no single note value fits."""
-    table = {2.0: ("half", 0), 3.0: ("half", 1), 4.0: ("whole", 0), 6.0: ("whole", 1),
-             8.0: ("breve", 0)}
+    table = {0.5: ("eighth", 0), 0.75: ("eighth", 1), 1.0: ("quarter", 0), 1.5: ("quarter", 1),
+             2.0: ("half", 0), 3.0: ("half", 1), 4.0: ("whole", 0), 6.0: ("whole", 1),
+             8.0: ("breve", 0), 12.0: ("breve", 1)}
     for ql, tv in table.items():
         if abs(total_ql - ql) < 1e-6:
             return tv
     return None
+
+
+def collapse_tremolo_runs(notes: list[TruthNote], read_positions: list[int] | None,
+                          *, min_len: int = 3) -> list[TruthNote]:
+    """Where the PAGE abbreviates a run of repeated notes to one head, make
+    the reference say one note too.
+
+    The reference spells a tremolo out — six eighths — and the page prints a
+    dotted half with slashes. Which of the two this bar does is decided by
+    the READING: a run at whose staff position the reading placed at most
+    one head is collapsed into one synthetic note of the run's total value
+    (`tremolo_of` = the count); a run the reading shows as several heads is
+    left as written, because the page printed them out. Any run of three or
+    more qualifies, at any value — a dotted quarter's three eighths print as
+    one black head with slashes just as a half's six do.
+    """
+    runs = tremolo_runs(notes, min_len=min_len, min_total_ql=0.0)
+    if not runs:
+        return notes
+    out: list[TruthNote] = []
+    done: set[int] = set()
+    for n in notes:
+        r = runs.get(id(n))
+        if r is None:
+            out.append(n)
+            continue
+        if r[3] in done:
+            continue
+        pos = staff_position(n.pitch, n.clef)
+        if read_positions is None or pos is None:
+            heads_here = len(read_positions or [])
+        else:
+            heads_here = sum(1 for rp in read_positions if abs(rp - pos) <= 1)
+        if heads_here >= 2:
+            out.append(n)        # printed out; later members follow unchanged
+            continue
+        done.add(r[3])
+        abbr = abbreviation_type(r[2])
+        out.append(TruthNote(
+            onset_ql=n.onset_ql, duration_ql=r[2], pitch=n.pitch, step=n.step, alter=n.alter,
+            octave=n.octave, type=abbr[0] if abbr else None, dots=abbr[1] if abbr else 0,
+            rest=False, chord=n.chord, grace=False, voice=n.voice, tuplet_actual=None,
+            tuplet_normal=None, tie_start=False, tie_stop=False, unpitched=n.unpitched,
+            measure_rest=False, clef=n.clef, tremolo_of=r[1]))
+    return out
 
 
 def event_tokens(events: list[dict[str, Any]], *, match: str = "position",

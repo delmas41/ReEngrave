@@ -7,6 +7,15 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **pre-fill: the READING decides whether a run is abbreviated; a hollow-vs-black conflict goes
+  to the human** — Sean's proposal: keep labeling a tremolo head as the hollow head it is (the
+  class space already has `tremolo1-5`/`tremoloMark` for the strokes) and let the MXL side
+  reconcile. Now a run of ≥3 repeated notes (any value: three eighths as much as six) is
+  collapsed to one note of its total value only where the reading placed ≤1 head at that
+  staff position, and left as written where the page printed them out. A black head read where
+  the collapsed reference says hollow is relabelled (the scan's usual miss); a HOLLOW head read
+  where the reference says black is neither trusted nor overruled — the detection stays pending
+  with `CONFLICT` in its note and a red hint. Brahms 1: 51 of 56, 5 conflicts for Sean's eyes.
 - **pre-fill: tremolo abbreviations, and the first score against Sean's boxes** — Sean had
   labeled all four remaining hollow batches on main (55 Brahms verdict files, 14 hollow boxes).
   Scored: of the pre-fill's hollow boxes 3 agreed, and where it disagreed the reference spells

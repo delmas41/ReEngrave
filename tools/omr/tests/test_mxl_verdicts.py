@@ -681,11 +681,11 @@ def _tremolo_bench(tmp_path: Path):
     return b, load_truth(tp), mv.load_windows(_windows_file(tmp_path, rows))
 
 
-def test_a_tremolo_run_keeps_the_hollow_head_the_detector_read(tmp_path: Path) -> None:
+def test_a_tremolo_run_collapses_to_the_one_head_the_page_prints(tmp_path: Path) -> None:
     """Sean's p2-sys1-s21-m6: the reference holds six G2 eighths, the page
     one dotted half with slashes, and the detector read a half head on the
-    bottom line (G2 in bass = P8). One head against six notes is a full
-    match, not 1 of 6, and its class is kept rather than relabelled black."""
+    bottom line (G2 in bass = P8). The run is one note of the run's value,
+    so the head is confirmed — and, read black, would be relabelled hollow."""
     b, truth, windows = _tremolo_bench(tmp_path)
     d = _det("noteheadHalfOnLine", "G2", 300, 480, dur=2.0, dtype="half")   # cy 500 → P8
     tr = {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
@@ -697,8 +697,44 @@ def test_a_tremolo_run_keeps_the_hollow_head_the_detector_read(tmp_path: Path) -
     v = _verdict(b, "fx-p4-sys0-s0-m0")
     added = v["added_detections"]
     assert len(added) == 1 and added[0]["human_class"] == "noteheadHalfOnLine"
-    assert "tremolo" in added[0]["notes"] and "class kept" in added[0]["notes"]
-    assert c["n_wrong_category"] == 0 and c["n_hints_missing"] == 0
+    assert "6× repeated" in added[0]["notes"] and c["n_wrong_category"] == 0
+    # Read as a black head, the same bar relabels it to the hollow head the page prints.
+    d["class"] = "noteheadBlackOnLine"
+    s = mv.run(b, tr, truth, windows, write=True, force=True)
+    v = _verdict(b, "fx-p4-sys0-s0-m0")
+    assert v["added_detections"][0]["human_class"] == "noteheadHalfOnLine"
+    assert s["cells"][0]["n_wrong_category"] == 1
+
+
+def test_a_run_the_page_prints_out_is_not_collapsed(tmp_path: Path) -> None:
+    b, truth, windows = _tremolo_bench(tmp_path)
+    dets = [_det("noteheadBlackOnLine", "G2", 100 + 120 * k, 480, dur=0.5, dtype="eighth")
+            for k in range(6)]
+    tr = {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
+        {"staff_index": 0, "clef": "bass", "n_measures": 1, "measures": [_measure(0, dets)]}]}]}]}
+    s = mv.run(b, tr, truth, windows, write=True)
+    c = s["cells"][0]
+    assert c["alignment"]["n_truth_notes"] == 6 and c["n_tp"] == 6
+
+
+def test_a_hollow_reading_against_a_black_reference_is_left_to_the_human(bench, truth) -> None:
+    """Flute m1 = C5 half, E5 quarter, G5 quarter. E5 read as a HALF head:
+    the reference says black, the detector says hollow — pending, with the
+    disagreement on the detection and a conflict hint; the C5 half is still
+    relabelled (black read, hollow truth — the common direction)."""
+    tr = _transcription()
+    m0 = tr["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+    for d in m0["detections"]:
+        if d["pitch"] == "E5":
+            d["class"] = "noteheadHalfOnLine"
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=True)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
+    assert c["status"] == "prefilled" and c["n_conflicts"] == 1
+    v = _verdict(bench, "fx-p4-sys0-s0-m0")
+    by = {d["id"]: d for d in v["detections"]}
+    assert by["D1"]["verdict"] is None and "CONFLICT" in by["D1"]["notes"]
+    assert by["D0"]["verdict"] == "WRONG_CATEGORY"
 
 
 def test_a_tremolo_run_the_reading_missed_is_one_hollow_hint(tmp_path: Path) -> None:
