@@ -1,0 +1,31 @@
+{
+  "cell_id": "mahler5-p177-sys1-s11-m7",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 285,
+        "y": 350,
+        "w": 118,
+        "h": 99
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 293,
+        "y": 701,
+        "w": 118,
+        "h": 99
+      },
+      "notes": ""
+    }
+  ]
+}

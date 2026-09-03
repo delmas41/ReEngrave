@@ -1,0 +1,12 @@
+{
+  "tag": "mahler173-treatment",
+  "weights": "benchmarks/omr-labeling-survey-2026-09/runs/gate-treatment/weights/best.pt",
+  "hollow_histogram": {
+    "hollow_total": 38,
+    "noteheadHalfOnLine": 11,
+    "black_total": 101,
+    "noteheadWholeOnLine": 10,
+    "noteheadWholeInSpace": 5,
+    "noteheadHalfInSpace": 12
+  }
+}

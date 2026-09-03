@@ -1,0 +1,19 @@
+{
+  "cell_id": "brahms1-p3-sys0-s13-m4",
+  "schema_version": 2,
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 253,
+        "y": 638,
+        "w": 102,
+        "h": 86
+      },
+      "notes": ""
+    }
+  ]
+}

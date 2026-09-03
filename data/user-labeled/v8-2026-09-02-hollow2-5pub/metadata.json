@@ -1,0 +1,1653 @@
+{
+  "version_name": "v8-2026-09-02-hollow2-5pub",
+  "created_utc": "2026-09-03T03:53:19+00:00",
+  "labeler": "sean",
+  "description": "hollow noteheads (194: 102 half + 92 whole) across 5 publishers (Litolff/Peters/Eulenburg/Breitkopf/Simrock) + audited model-completed black noteheads/dots (198)",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-survey-2026-09/v8-merged-verdicts",
+    "detections_dir": "benchmarks/omr-labeling-survey-2026-09/detections",
+    "manifest": "benchmarks/omr-labeling-survey-2026-09/v8-combined-cells.json",
+    "weights_for_class_names": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 122,
+    "n_v1_cells": 0,
+    "n_v2_cells": 122,
+    "n_tp": 198,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 194,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "augmentationDot",
+    "noteheadBlackInSpace",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadWholeInSpace",
+    "noteheadWholeOnLine"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "beet5hr-p48-sys0-s1-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s13-m0",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s14-m0",
+      "schema_version": 2,
+      "n_tp": 6,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s15-m5",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s4-m2",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s4-m8",
+      "schema_version": 2,
+      "n_tp": 7,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s5-m5",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s5-m6",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s7-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s7-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s7-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p48-sys0-s7-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p49-sys0-s1-m6",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadHalfInSpace",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p49-sys0-s2-m2",
+      "schema_version": 2,
+      "n_tp": 9,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p49-sys0-s6-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p49-sys0-s6-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p49-sys0-s7-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s12-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s12-m4",
+      "schema_version": 2,
+      "n_tp": 11,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s13-m2",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s13-m3",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s13-m4",
+      "schema_version": 2,
+      "n_tp": 11,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s15-m2",
+      "schema_version": 2,
+      "n_tp": 6,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s16-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s2-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s2-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s4-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s6-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s6-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s6-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s7-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5hr-p51-sys0-s7-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s2-m2",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p2-sys0-s3-m6",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s20-m6",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p2-sys1-s21-m6",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s13-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s4-m5",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s5-m4",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p3-sys0-s8-m3",
+      "schema_version": 2,
+      "n_tp": 7,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p3-sys1-s23-m5",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s0-m3",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "brahms1-p4-sys0-s1-m3",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p7-sys1-s25-m8",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p7-sys1-s26-m3",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s1-m8",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s2-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s4-m12",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s9-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s15-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s17-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s17-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s19-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s20-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s21-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s23-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys0-s4-m2",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys0-s4-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys0-s6-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys1-s11-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys1-s12-m7",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys1-s13-m6",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys0-s3-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys0-s4-m2",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys0-s5-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys0-s5-m5",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys1-s10-m6",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys1-s11-m5",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys1-s13-m3",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys1-s14-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys2-s18-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p176-sys2-s20-m6",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys0-s5-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys1-s10-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys1-s10-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys1-s11-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys1-s7-m6",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys1-s9-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys2-s14-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys2-s16-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p177-sys2-s16-m6",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys1-s10-m1",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys1-s11-m4",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys2-s16-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys2-s16-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys2-s17-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys2-s19-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys2-s20-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p178-sys2-s20-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s0-m2",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s2-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s2-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p2-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s14-m2",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s14-m3",
+      "schema_version": 2,
+      "n_tp": 5,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s17-m1",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackOnLine",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s17-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s2-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m3",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s3-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s4-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s4-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p3-sys0-s5-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s2-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s2-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s3-m4",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s5-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys0-s8-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s10-m2",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s10-m3",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s10-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s11-m1",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s11-m2",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s11-m5",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s13-m5",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s16-m3",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s9-m1",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "schehe-p4-sys1-s9-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    }
+  ]
+}

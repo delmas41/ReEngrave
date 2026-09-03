@@ -1,0 +1,31 @@
+{
+  "cell_id": "brahms1-p2-sys1-s20-m6",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "augmentationDot",
+      "model_bbox": {
+        "x": 353,
+        "y": 788,
+        "w": 47,
+        "h": 49
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 189,
+        "y": 699,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "cell_id": "schehe-p4-sys1-s11-m2",
+  "schema_version": 2,
+  "detections": [
+    {
+      "id": "C0",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 993,
+        "y": 1332,
+        "w": 75,
+        "h": 46
+      }
+    },
+    {
+      "id": "C1",
+      "verdict": "TP",
+      "model_predicted_class": "noteheadBlackOnLine",
+      "model_bbox": {
+        "x": 1094,
+        "y": 1331,
+        "w": 73,
+        "h": 56
+      }
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 243,
+        "y": 399,
+        "w": 167,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 277,
+        "y": 800,
+        "w": 167,
+        "h": 98
+      },
+      "notes": ""
+    }
+  ]
+}
