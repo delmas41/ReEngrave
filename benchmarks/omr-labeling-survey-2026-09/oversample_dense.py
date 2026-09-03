@@ -44,10 +44,13 @@ def main() -> None:
     out_lines = dense * args.factor + hollow  # order does not matter; ultralytics shuffles
 
     root = args.catalog.parent
-    new_train = root / f"_catalog_train_{args.factor}xdense.txt"
+    new_train = (root / f"_catalog_train_{args.factor}xdense.txt").resolve()
     new_train.write_text("\n".join(out_lines) + "\n")
 
     new_cat = dict(cat)
+    # ABSOLUTE train path: ultralytics joins a relative train with the yaml's
+    # `path:` key (which build_catalog_yaml sets absolute), doubling it. An
+    # absolute train path is used as-is. `val` is already absolute from build.
     new_cat["train"] = str(new_train)
     new_yaml = root / f"catalog-{args.factor}xdense.yaml"
     new_yaml.write_text(yaml.safe_dump(new_cat, sort_keys=False))
