@@ -1,0 +1,5 @@
+# Minimal deps for the cloud imgsz-2048 hollow fine-tune. The rented box's base
+# image should already have a CUDA torch (use a pytorch/cuda image on vast.ai);
+# ultralytics pulls the rest.
+ultralytics>=8.4.50,<8.5.0
+pyyaml
