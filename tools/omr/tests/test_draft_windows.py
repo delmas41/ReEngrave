@@ -58,8 +58,12 @@ def test_windows_chain_and_staves_pair_by_instrument(tmp_path: Path) -> None:
     sys0 = rows[0]["systems"]["0"]
     assert [s["parts"] for s in sys0] == [[0, 1], [2, 3], [4, 5], [6]]
     sys1 = rows[0]["systems"]["1"]
-    assert [s["parts"] for s in sys1] == [[0, 1], [6], []]
-    assert any("no instrument read" in c for c in rows[0]["check"])
+    # The unread third staff sits AFTER 1. Violine with two unused entries
+    # left (2. Violine and nothing else after it... 2. Violine only) — one
+    # candidate, so the order names it.
+    assert [s["parts"] for s in sys1] == [[0, 1], [6], [7]]
+    assert sys1[2]["paired_by"] == "order"
+    assert any("by ORDER" in c for c in rows[0]["check"])
     # Page 2: one staff reads 5 where its system reads 6 — flagged, the
     # system's count wins (bars 15..20).
     assert w2["last_ref_measure"] == 20
@@ -117,3 +121,36 @@ def test_full_lineup_pairs_by_position_and_cross_checks_the_reader() -> None:
     assert len(flagged) == 2
     assert "Kontrafagott" in flagged[0] and "Bassoon" in flagged[0]
     assert "Trumpet" in flagged[1]
+
+
+def test_short_system_places_the_kontrafagott_by_order() -> None:
+    """Sean's page 1, bottom system: 13 staves, horns 3/4 resting. The
+    reader calls the Kontrafagott a bassoon and the bassoon entry is used;
+    it is the only unused entry between the Fagotte and the Hörner."""
+    base = dict(BASE, staves=[{"name": "2 Floten", "parts": [0, 1]},
+                             {"name": "2 Fagotte", "parts": [6, 7]},
+                             {"name": "Kontrafagott", "parts": [8]},
+                             {"name": "4 Horner in C 1./2.", "parts": [9, 10]},
+                             {"name": "4 Horner in Es 3./4.", "parts": [11, 12]},
+                             {"name": "2 Trompeten in C", "parts": [13, 14]}])
+    tr = {"pages": [{"page_index": 1, "systems": [{"system_index": 0, "staves": [
+        _staff(0, 7, "Flute"), _staff(1, 7, "Bassoon"), _staff(2, 7, "Bassoon"),
+        _staff(3, 7, "Horn"), _staff(4, 7, "Trumpet")]}]}]}
+    rows = dw.draft(tr, base)
+    specs = rows[0]["systems"]["0"]
+    assert [s["parts"] for s in specs] == [[0, 1], [6, 7], [8], [9, 10], [13, 14]]
+    assert specs[2]["paired_by"] == "order"
+    assert not any("fill in" in c for c in rows[0]["check"])
+
+
+def test_order_fill_abstains_when_two_entries_could_fit() -> None:
+    base = dict(BASE, staves=[{"name": "2 Floten", "parts": [0, 1]},
+                             {"name": "2 Oboen", "parts": [2, 3]},
+                             {"name": "2 Klarinetten in B", "parts": [4, 5]},
+                             {"name": "1. Violine", "parts": [16]}])
+    tr = {"pages": [{"page_index": 1, "systems": [{"system_index": 0, "staves": [
+        _staff(0, 7, "Flute"), _staff(1, 7, None), _staff(2, 7, "Violin")]}]}]}
+    rows = dw.draft(tr, base)
+    specs = rows[0]["systems"]["0"]
+    assert specs[1]["parts"] == []           # oboe or clarinet — not for the tool to say
+    assert any("fill in" in c for c in rows[0]["check"])

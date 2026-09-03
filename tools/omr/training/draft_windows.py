@@ -144,13 +144,50 @@ def _draft_system(staves: list[dict], base_staves: list[dict]) -> tuple[list[dic
             used[canon] = k + 1
             out.append({"name": b.get("name", inst_read), "parts": list(b.get("parts", [])),
                         "read_as": inst_read, "source": st.get("instrument_source"),
-                        "paired_by": "instrument"})
+                        "paired_by": "instrument", "_staff_index": st.get("staff_index")})
         else:
-            out.append({"name": inst_read or "?", "parts": [], "read_as": inst_read})
-            checks.append(f"staff {st.get('staff_index')}: "
-                          + (f"no base entry left for {canon!r}" if canon else "no instrument read")
-                          + " — fill in `parts` by hand")
+            out.append({"name": inst_read or "?", "parts": [], "read_as": inst_read,
+                        "_staff_index": st.get("staff_index"),
+                        "_reason": (f"no base entry left for {canon!r}" if canon
+                                    else "no instrument read")})
+    _fill_by_order(out, base_staves, checks)
+    for o in out:
+        reason = o.pop("_reason", None)
+        if reason and not o["parts"]:
+            checks.append(f"staff {o.get('_staff_index', '?')}: {reason} — fill in `parts` by hand")
+        o.pop("_staff_index", None)
     return out, checks
+
+
+def _fill_by_order(out: list[dict], base_staves: list[dict], checks: list[str]) -> None:
+    """A staff the reader could not name still has a PLACE: between its
+    paired neighbours. When exactly one base entry lies between the
+    neighbours' base positions and is not used elsewhere, the print's own
+    order names it (the Kontrafagott between the Fagotte and the Hörner).
+    Anything less determined stays empty for the human."""
+    base_index = {id(b): i for i, b in enumerate(base_staves)}
+    by_parts = {tuple(b.get("parts", [])): i for i, b in enumerate(base_staves)}
+    used = {by_parts[tuple(o["parts"])] for o in out if o["parts"] and tuple(o["parts"]) in by_parts}
+    for k, o in enumerate(out):
+        if o["parts"]:
+            continue
+        prev_i = next((by_parts.get(tuple(out[j]["parts"])) for j in range(k - 1, -1, -1)
+                       if out[j]["parts"]), -1)
+        next_i = next((by_parts.get(tuple(out[j]["parts"])) for j in range(k + 1, len(out))
+                       if out[j]["parts"]), len(base_staves))
+        if prev_i is None or next_i is None:
+            continue
+        between = [i for i in range(prev_i + 1, next_i) if i not in used]
+        if len(between) != 1:
+            continue
+        b = base_staves[between[0]]
+        used.add(between[0])
+        o.update({"name": b.get("name", ""), "parts": list(b.get("parts", [])),
+                  "paired_by": "order"})
+        o.pop("_reason", None)
+        checks.append(f"staff {o.get('_staff_index', '?')}: placed as {b.get('name')!r} by ORDER "
+                      f"(the reader said {o.get('read_as')!r}; it is the only unused entry between "
+                      f"its neighbours) — confirm on the page")
 
 
 def draft(transcription: dict, base: dict, *, first_measure: int | None = None) -> list[dict]:

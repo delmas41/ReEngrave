@@ -5,6 +5,10 @@ where one exists. Update this file with every commit.
 
 ## 2026-09-02
 
+- **training: draft fills an unnamed staff by ORDER** — on a shorter system, a staff the reader
+  could not name takes the only unused base entry between its paired neighbours (Sean's page 1
+  bottom system: the Kontrafagott between the Fagotte and the Hörner); two candidates → still
+  empty for the human. Brahms 1 batch draft now needs no hand edits.
 - **training: page-global staff numbering** — `transcribe` numbers `staff_index` across the
   page; the draft summed bars per index across systems (page 1 of the Brahms batch came out
   as 7 bars instead of 15) and the pre-fill joined a staff to the row by index. Both now go by
