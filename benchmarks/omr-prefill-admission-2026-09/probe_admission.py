@@ -16,7 +16,7 @@ computes (or can derive from what it holds):
 
 It recomputes the pre-fill LIVE through mxl_verdicts' own functions and
 replicates score_cell's greedy IoU matching per box, so the pooled numbers
-must reproduce the recorded --score run exactly (asserted).  Read-only.
+must match a live --score run of the same cells.  Read-only.
 
 Run from the repo root:
     python3 benchmarks/omr-prefill-admission-2026-09/probe_admission.py
@@ -149,7 +149,8 @@ def main() -> int:
     kd = sum(1 for r in rows if r["kind"])
     nh = "?"
     print(f"reproduction: prefill={n} exact={ex} kind={kd} "
-          f"(the recorded 2026-09-03 run: 50 / 42 / 47)")
+          f"(recorded 2026-09-03 BEFORE the reference-variant fix: 50 / 42 / 47; "
+          f"44 exact once it landed)")
     print()
     print("errors (not exact):")
     for r in rows:

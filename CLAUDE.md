@@ -1596,7 +1596,7 @@ python3 -m tools.omr.training.mxl_verdicts ... --score            # against huma
 
 | the reference and the reading say | verdict written |
 |---|---|
-| half note ↔ `noteheadBlackOnLine` | `WRONG_CATEGORY` → `noteheadHalfOnLine` (position and size kept) |
+| half note ↔ `noteheadBlackOnLine` | `WRONG_CATEGORY` → `noteheadHalfOnLine` (size kept; on an EXACT pair the on-line/in-space variant follows the reference's own position — 2026-09-03, fixed 2 of 3 flips, zero regressions) |
 | quarter ↔ `noteheadBlackInSpace` | `TP` |
 | a head the batch has no detection for | an added box `M<n>` (a draw-from-scratch batch gets its labels this way) |
 | a detected head the reference lacks | left **pending**, annotated — the human decides |
@@ -1714,16 +1714,34 @@ reaches 37/37 in-sample at 0.74 coverage; that is a ceiling demonstration on
 n=50 biased cells, not a claim — the out-of-sample test is a random
 completion pass scored by the same probe.
 
+**Shipped into the pre-fill 2026-09-03 (Phase A):** the variant rule and
+size veto above, a tie-chain collapse (below), and an **admission tier on
+every decision** — `admission: labels|queue` with `admission_reasons`
+(near match, variant corrected, grace-sized, or the cell-level demotion: any
+flip demotes its whole cell), priced by `--score` as a per-tier table.
+Six-cell A/B: exact **0.84 → 0.88**, kind unchanged, labels tier
+**22/22 = 1.000** at 0.44 coverage — stricter than the probe's 0.74 because
+pre-fill time has no human calibration. ⚠️ **The tiers are metadata**: what
+is written does not change, and nothing is auto-admitted until the random
+completion pass prices the tiers out-of-sample.
+
 ⚠️ **The five CONFLICTs were then reviewed and NONE is a tremolo
 abbreviation** — the handoff's hypothesis is corrected in place. Three are
 the reference's TIE-SPLITS (one printed dotted-half encoded as tied
 fragments; the human's hollow boxes were already right), two are accidental
 glyphs (a flat's loop, a natural) the detector misread as hollow heads over
-empty-and-correct human verdicts. So a within-measure tie chain needs the
-same reconcile-by-the-reading collapse tremolo already gets — collapse to
-one head of the summed value only where the reading placed one head — which
-turns all three into confirmations. The two accidental fakes are the same
-family as the probe's phantom TPs: false detections the alignment can claim.
+empty-and-correct human verdicts. So a within-measure tie chain now gets the
+same reconcile-by-the-reading collapse tremolo has
+(`measure_align.collapse_tie_chains`, 2026-09-03): a chain collapses to one
+head of the summed value only where the reading placed at most one head at
+its position, may begin tied in from the previous bar and end tied onward,
+and abstains where the total fits no single written value (2.5 beats IS
+printed as tied heads). Measured on the batch: `s3-m6` resolved (conflict
+and both blank-paper hints gone); `s2-m2` STAYS a conflict because the
+reading shows two heads at the position — a duplicate detection, the gate's
+honest answer until the re-ship cleans it up. The two accidental fakes are
+the same family as the probe's phantom TPs: false detections the alignment
+can claim.
 [benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md](benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md).
 
 ⚠️ **Not yet measured beyond one work.** The Mahler 5 / Peters batch cannot

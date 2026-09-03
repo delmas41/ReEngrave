@@ -80,3 +80,21 @@ Two of the three error families also confirm the structural claim from the
 measured handoff: the flips and phantoms are the DETECTION's placement, so
 the whole curve should shift up with the imgsz-2048 re-ship with no pre-fill
 change — re-measure with this probe when the new weights land.
+
+## Shipped, same day (Phase A)
+
+The mechanisms above landed in the pre-fill itself (see version_memory.md
+2026-09-03): the variant follows the matched reference note on exact pairs,
+within-measure tie chains collapse by the reading — a fifth signal, found by
+the conflict review, using the same gate tremolo has — every decision now
+carries an admission tier (`labels` / `queue` with reasons, a flip demoting
+its whole cell), and `--score` prices the tiers. Six-cell A/B: **exact
+0.840 → 0.880**, kind unchanged, and the built-in labels tier reads
+**22/22 = 1.000 at 0.44 coverage** — stricter than P7 above because at
+pre-fill time there is no human-calibrated parity, so any detected flip
+demotes its cell. Batch conflicts 5 → 4: `s3-m6`'s tie chain resolved
+(both blank-paper hints gone); `s2-m2` stays a conflict because the READING
+shows two heads at the position — a duplicate detection the re-ship should
+clean up, at which point it resolves itself; the two accidental-glyph
+conflicts remain deliberately. The tiers are still metadata: nothing is
+auto-admitted until the random completion pass re-prices them out-of-sample.

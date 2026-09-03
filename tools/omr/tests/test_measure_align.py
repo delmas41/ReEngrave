@@ -19,6 +19,7 @@ from tools.omr.training.measure_align import (
     staff_y_for_pitch,
     tremolo_runs,
     abbreviation_type,
+    collapse_tie_chains,
     collapse_tremolo_runs,
     truth_tokens,
 )
@@ -28,7 +29,8 @@ pytestmark = pytest.mark.omr_training
 
 
 def _tn(pitch: str | None, onset: float, dur: float, ntype: str, *, rest=False,
-        grace=False, dots=0, measure_rest=False, clef=None) -> TruthNote:
+        grace=False, dots=0, measure_rest=False, clef=None,
+        tie_start=False, tie_stop=False) -> TruthNote:
     step = octave = None
     alter = 0
     if pitch:
@@ -38,7 +40,7 @@ def _tn(pitch: str | None, onset: float, dur: float, ntype: str, *, rest=False,
     return TruthNote(onset_ql=onset, duration_ql=dur, pitch=pitch, step=step, alter=alter,
                      octave=octave, type=ntype, dots=dots, rest=rest, chord=False,
                      grace=grace, voice="1", tuplet_actual=None, tuplet_normal=None,
-                     tie_start=False, tie_stop=False, unpitched=False,
+                     tie_start=tie_start, tie_stop=tie_stop, unpitched=False,
                      measure_rest=measure_rest, clef=clef)
 
 
@@ -261,3 +263,61 @@ def test_a_tremolando_collapses_to_two_heads_of_the_full_value() -> None:
     assert len(collapse_tremolo_runs(alt, [10, 10, 10, 10, 8, 8, 8, 8])) == 8
     # Three alternating notes are a melody, not a tremolando.
     assert tremolo_runs(alt[:3], min_total_ql=0.0) == {}
+
+
+def test_a_tie_chain_collapses_to_the_one_printed_head() -> None:
+    """The Brahms 1 shape: one printed dotted half encoded as tied
+    eighth + quarter + dotted-quarter. The reading placed one head at the
+    position, so the reference becomes one note of the summed value."""
+    frags = [_tn("Bb4", 0.0, 0.5, "eighth", clef="treble", tie_start=True),
+             _tn("Bb4", 0.5, 1.0, "quarter", clef="treble", tie_start=True, tie_stop=True),
+             _tn("Bb4", 1.5, 1.5, "quarter", dots=1, clef="treble", tie_stop=True)]
+    one = collapse_tie_chains(frags, [4])          # Bb4 = P4 in treble
+    assert len(one) == 1 and one[0].tied_of == 3
+    assert (one[0].type, one[0].dots, one[0].duration_ql) == ("half", 1, 3.0)
+    assert not one[0].tie_start and not one[0].tie_stop
+    # The reading shows two heads there: the page printed the tie out.
+    assert len(collapse_tie_chains(frags, [4, 4])) == 3
+
+
+def test_a_tie_with_no_single_written_value_stays_as_written() -> None:
+    """2.5 beats has no glyph, so the page prints two tied heads — never
+    collapsed, even where the reading found only one of them."""
+    frags = [_tn("C5", 0.0, 1.0, "quarter", clef="treble", tie_start=True),
+             _tn("C5", 1.0, 1.5, "quarter", dots=1, clef="treble", tie_stop=True)]
+    assert len(collapse_tie_chains(frags, [3])) == 2
+
+
+def test_a_lone_cross_barline_tie_fragment_is_never_touched() -> None:
+    tied_in = [_tn("C5", 0.0, 2.0, "half", clef="treble", tie_stop=True)]
+    assert collapse_tie_chains(tied_in, [3]) == tied_in
+    tied_on = [_tn("C5", 0.0, 2.0, "half", clef="treble", tie_start=True)]
+    assert collapse_tie_chains(tied_on, [3]) == tied_on
+
+
+def test_a_chain_tied_in_from_the_previous_bar_still_collapses() -> None:
+    """A note held over the barline, split again inside this bar: the arc
+    from the previous bar does not change this bar's one printed head."""
+    frags = [_tn("C5", 0.0, 1.0, "quarter", clef="treble", tie_start=True, tie_stop=True),
+             _tn("C5", 1.0, 1.0, "quarter", clef="treble", tie_stop=True)]
+    one = collapse_tie_chains(frags, [3])
+    assert len(one) == 1
+    assert (one[0].type, one[0].duration_ql, one[0].tied_of) == ("half", 2.0, 2)
+
+
+def test_a_reattacked_pitch_does_not_join_the_chain() -> None:
+    notes = [_tn("C5", 0.0, 1.0, "quarter", clef="treble", tie_start=True),
+             _tn("C5", 1.0, 1.0, "quarter", clef="treble", tie_stop=True),
+             _tn("C5", 2.0, 2.0, "half", clef="treble")]
+    out = collapse_tie_chains(notes, [3])
+    assert len(out) == 2 and out[0].tied_of == 2
+    assert out[1].type == "half" and out[1].tied_of == 0
+
+
+def test_expected_head_class_takes_the_callers_variant() -> None:
+    assert expected_head_class("half", "noteheadBlackInSpace") == "noteheadHalfInSpace"
+    assert expected_head_class("half", "noteheadBlackInSpace",
+                               variant="OnLine") == "noteheadHalfOnLine"
+    # Size stays the detector's even when the variant is corrected.
+    assert expected_head_class("quarter", "noteheadBlackInSpaceSmall",
+                               variant="OnLine") == "noteheadBlackOnLineSmall"

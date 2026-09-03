@@ -78,7 +78,12 @@ changes week to week.
   measurement (`benchmarks/omr-prefill-admission-2026-09/`) showed the eight
   errors are separable by three cheap signals (cell parity consistency, a
   small-head veto, the reference's own line/space variant) — in-sample the
-  clean subset reaches 37/37 at 74% coverage, pending an unbiased re-test. A batch checked out on a machine
+  clean subset reaches 37/37 at 74% coverage, pending an unbiased re-test.
+  The first half of that plan now lives in the pre-fill itself: the variant
+  follows the reference on exact pairs, tie-split encodings collapse to the
+  one printed head, and every pre-filled box carries a labels/queue
+  admission tier that `--score` prices (six-cell precision 0.84 → 0.88,
+  labels tier 22/22; still metadata until a random pass re-tests it). A batch checked out on a machine
   that did not cut it has no cell images (they are gitignored) and shows a
   blank canvas; `tools/omr/annotate/recut_cells.py` re-renders them from the
   manifest, refusing anything whose frame does not match. Where the work stands and

@@ -262,6 +262,82 @@ def collapse_tremolo_runs(notes: list[TruthNote], read_positions: list[int] | No
     return out
 
 
+def collapse_tie_chains(notes: list[TruthNote],
+                        read_positions: list[int] | None) -> list[TruthNote]:
+    """Where the ENCODING splits one printed note into tied fragments, make
+    the reference say one note too.
+
+    A reference may write a dotted half as eighth + quarter + quarter, tied
+    at every joint — a fact about the encoding's beat-splitting, not about
+    the page, which prints ONE hollow head (measured on the Brahms 1 /
+    Breitkopf batch: 3 of its first 5 CONFLICTs were exactly this shape).
+    As with `collapse_tremolo_runs`, the READING decides which the page did:
+    a chain at whose staff position the reading placed at most one head
+    becomes one synthetic note of the summed value (`tied_of` = the fragment
+    count); a chain the reading shows as several heads is left as written.
+    A chain whose total fits no single written value is also left as
+    written, because a tie the engraver had no value for — 2.5 beats — IS
+    printed as tied heads. A chain may begin on a fragment tied FROM the
+    previous bar and end on one tied INTO the next (the arc does not change
+    this bar's printed value); a lone cross-barline fragment with no
+    in-measure joint is a printed head and is never touched. Chains are per
+    (voice, pitch): a chord's members tie, and collapse, independently.
+    """
+    chains: list[list[int]] = []
+    open_chains: dict[tuple[str, str], list[int]] = {}
+    for i, n in enumerate(notes):
+        if n.rest or n.grace or not n.pitch:
+            continue
+        k = (n.voice, n.pitch)
+        cur = open_chains.get(k)
+        if cur is not None:
+            prev = notes[cur[-1]]
+            if (prev.tie_start and n.tie_stop
+                    and abs((prev.onset_ql + prev.duration_ql) - n.onset_ql) < 1e-6):
+                cur.append(i)
+                if not n.tie_start:
+                    chains.append(cur)
+                    del open_chains[k]
+                continue
+            if len(cur) >= 2:
+                chains.append(cur)
+            del open_chains[k]
+        if n.tie_start:
+            open_chains[k] = [i]
+    for cur in open_chains.values():    # tied onward into the next bar
+        if len(cur) >= 2:
+            chains.append(cur)
+    if not chains:
+        return notes
+    drop: set[int] = set()
+    synth_at: dict[int, TruthNote] = {}
+    for chain in chains:
+        first = notes[chain[0]]
+        total = sum(notes[i].duration_ql for i in chain)
+        abbr = abbreviation_type(total)
+        if abbr is None:
+            continue
+        pos = staff_position(first.pitch, first.clef)
+        if read_positions is None or pos is None:
+            heads_here = len(read_positions or [])
+        else:
+            heads_here = sum(1 for rp in read_positions if abs(rp - pos) <= 1)
+        if heads_here >= 2:
+            continue
+        synth_at[chain[0]] = TruthNote(
+            onset_ql=first.onset_ql, duration_ql=total, pitch=first.pitch,
+            step=first.step, alter=first.alter, octave=first.octave,
+            type=abbr[0], dots=abbr[1], rest=False, chord=first.chord,
+            grace=False, voice=first.voice, tuplet_actual=None,
+            tuplet_normal=None, tie_start=False, tie_stop=False,
+            unpitched=first.unpitched, measure_rest=False, clef=first.clef,
+            tied_of=len(chain))
+        drop.update(chain[1:])
+    if not synth_at:
+        return notes
+    return [synth_at.get(i, n) for i, n in enumerate(notes) if i not in drop]
+
+
 def event_tokens(events: list[dict[str, Any]], *, match: str = "position",
                  include_rests: bool = True,
                  line_ys: list[float] | None = None) -> list[Token]:
@@ -436,16 +512,22 @@ def parse_head_class(cls: str | None) -> tuple[str, str, bool] | None:
     return m.group(1), m.group(2), bool(m.group(3))
 
 
-def expected_head_class(ntype: str | None, current_class: str | None) -> str | None:
-    """The class the truth says a matched notehead box carries, keeping the
-    position (`OnLine`/`InSpace`) and size the detector read — only the KIND
-    is something the reference can vouch for. None when the current class is
-    not a notehead class at all."""
+def expected_head_class(ntype: str | None, current_class: str | None,
+                        variant: str | None = None) -> str | None:
+    """The class the truth says a matched notehead box carries. The KIND
+    always comes from the truth's written value, and the SIZE always from
+    the detector — the only side that saw whether the head is small. The
+    position variant (`OnLine`/`InSpace`) is the detector's unless the
+    caller passes `variant`: on an EXACTLY-paired note the reference knows
+    it too — its staff position is the pairing key — and measured 2026-09-03
+    the reference's variant fixed 2 of 3 on-line/in-space flips with zero
+    regressions (benchmarks/omr-prefill-admission-2026-09/FINDINGS.md).
+    None when the current class is not a notehead class at all."""
     parsed = parse_head_class(current_class)
     if parsed is None:
         return None
     _, position, small = parsed
-    return f"notehead{head_kind_for_type(ntype)}{position}{'Small' if small else ''}"
+    return f"notehead{head_kind_for_type(ntype)}{variant or position}{'Small' if small else ''}"
 
 
 def expected_rest_class(note: TruthNote) -> str | None:

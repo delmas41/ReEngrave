@@ -5,6 +5,38 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — Phase A of the admission plan lands in the pre-fill
+
+Sean approved the widening plan; its pre-fill half shipped, measured on the six-cell A/B
+before and after, 206 tests green across the eight related suites.
+
+- **The on-line/in-space variant follows the reference on exact pairs**
+  (`expected_head_class(..., variant=)`, wired in `_decide`): the alignment key IS the
+  reference's staff position, so on an exactly-paired note the reference knows the variant at
+  the confidence of the pairing itself. Near pairs keep the detector's variant — measured, all
+  six near matches were exact-correct and the truth's parity is wrong there by construction.
+  Fixes 2 of 3 flips (six-cell exact **0.84 → 0.88**, kind unchanged), and it repairs the
+  misread-clef case's variant along the way (both cello heads sit in bass-staff SPACES; the
+  treble misreading had implied OnLine). Two test fixtures carried musically impossible
+  variant/pitch pairs (E5 "OnLine", D5 "InSpace" in treble) that the new rule exposed —
+  fixed to what the pitches actually print.
+- **Within-measure tie chains collapse by the reading** (`measure_align.collapse_tie_chains`,
+  run before the tremolo collapse): tied fragments become one head of the summed value only
+  where the reading placed ≤ 1 head at the position; a chain may enter tied from the previous
+  bar and leave tied onward; a total with no single written value (2.5 beats) is left as
+  written because the page prints it as tied heads. On the batch: conflicts 5 → 4 and missing
+  hints 22 → 20 — `s3-m6` resolved (its two hints pointed at blank paper); `s2-m2` STAYS
+  because the reading shows TWO heads at the position (a duplicate detection) and the gate
+  believes the reading — Phase B's re-ship is the expected resolver. The two accidental-glyph
+  conflicts remain deliberately.
+- **Every decision now carries an admission tier** — `admission: labels|queue` +
+  `admission_reasons` (near match / variant corrected / grace-sized head < 0.85× the cell's
+  median in both dims / cell-level: any flip demotes its whole cell) — and `--score` prints a
+  per-tier table. Six-cell result: **labels tier 22/22 = 1.000 exact** at 0.44 coverage,
+  queue 28 at 0.786. Stricter than the probe's 0.74-coverage composite because pre-fill time
+  has no human-calibrated parity. ⚠️ Metadata only: verdict-writing is unchanged and nothing
+  is auto-admitted until the random completion pass prices the tiers out-of-sample.
+
 ## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
 
 - **The measured handoff's hypothesis ("Breitkopf tremolo abbreviations") is refuted for all
