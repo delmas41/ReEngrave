@@ -4,8 +4,13 @@ Local OMR system that reads engraved music PDFs and produces structured
 symbol detections. Built around a YOLOv8l detector fine-tuned on
 DeepScoresV2 + a small hand-labeled real-orchestral catalog.
 
-**Current production model:** `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`
-(Phase 3.3, F1 **98.8%** on the 25-cell Bach WTC verdict set).
+**Current production model:** `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`
+— a 1-epoch imgsz-896 + 2x-dense-oversample hollow fine-tune of
+`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (Phase 3.3, F1 **98.8%** on the
+25-cell Bach WTC verdict set, kept as the prior-production backup). Holds dense
+notehead recall (0.941) while lifting scanned half-note detection 8 → 27 and
+duration recall 0.388 → 0.435. See
+`benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md`.
 
 ---
 
@@ -1208,8 +1213,9 @@ canonical chain (best on the WTC verdict cells):
 | `deepscoresv2-yolov8m-r2-imgsz1280-50ep.pt` | 91.5% | Phase 3.1 |
 | `deepscoresv2-yolov8l-full-100ep.pt` | 96.3% | Phase 3.2 |
 | `deepscoresv2-yolov8l-8shards-100ep.pt` | — | 8-shard subset |
-| **`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`** | **98.8%** | **Phase 3.3 (default)** |
+| `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | 98.8% | Phase 3.3 (prior default; base for the hollow fine-tune) |
 | `deepscoresv2-yolov8l-realft-v1b.pt` | 98.5% | Phase 3.4 (first real-orchestral fine-tune; no improvement on WTC, learned some orchestral signal but not yet adopted) |
+| **`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`** | — | **DEFAULT** — 1-epoch imgsz-896 + 2x-dense hollow fine-tune of the Phase-3.3 weights; dense recall held (0.941), scanned half-notes 8 → 27. See `benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md` |
 
 See `benchmarks/omr-phase3.3/comparison-trained-v3.md` and
 `benchmarks/omr-phase3.4b/comparison-trained-v4.md` for full

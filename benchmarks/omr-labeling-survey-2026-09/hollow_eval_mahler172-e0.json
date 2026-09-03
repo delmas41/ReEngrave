@@ -1,0 +1,11 @@
+{
+  "tag": "mahler172-e0",
+  "weights": "benchmarks/omr-labeling-survey-2026-09/runs/hollow-ft-2026-09-03.stripped.pt",
+  "hollow_histogram": {
+    "black_total": 189,
+    "hollow_total": 32,
+    "noteheadHalfInSpace": 13,
+    "noteheadHalfOnLine": 18,
+    "noteheadWholeInSpace": 1
+  }
+}

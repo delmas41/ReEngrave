@@ -22,7 +22,7 @@ Output schema (JSON):
 
     {
       "source_pdf": "score.pdf",
-      "weights":    "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+      "weights":    "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
       "conf_threshold": 0.25,
       "n_pages_processed": 3,
       "n_systems_total": 6,
@@ -291,10 +291,14 @@ from .dossier import (
 )
 
 
-# Default weights — Phase 3.3, F1 98.8% on the 25 verdict cells.
-# Keep this in sync with the latest "production" weights.
+# Default weights — hollow fine-tune (2026-09-03): imgsz-896 + 2x-dense-oversample,
+# 1 epoch from the imgsz-2048 production checkpoint. Holds dense notehead recall
+# at 0.941 (= the prior production weights) while lifting scanned half-note
+# detection 8 -> 27 and duration recall 0.388 -> 0.435 on Beethoven 5 p.1.
+# See benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md. Prior production
+# weights (deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt) are kept alongside.
 DEFAULT_WEIGHTS = (
-    "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+    "tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
 )
 
 

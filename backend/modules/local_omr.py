@@ -91,10 +91,12 @@ def _weights_path() -> str:
     env_path = os.getenv("OMR_WEIGHTS_PATH", "").strip()
     if env_path:
         return env_path
-    # Fall back to the default the retrospective documented.
+    # Fall back to the current production default (hollow fine-tune, 2026-09-03;
+    # see tools/omr/transcribe.py DEFAULT_WEIGHTS and
+    # benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md).
     return str(
         _REPO_ROOT
-        / "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+        / "tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
     )
 
 

@@ -1,0 +1,12 @@
+{
+  "tag": "mahler172-prod",
+  "weights": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+  "hollow_histogram": {
+    "black_total": 214,
+    "hollow_total": 49,
+    "noteheadHalfInSpace": 14,
+    "noteheadWholeInSpace": 5,
+    "noteheadHalfOnLine": 22,
+    "noteheadWholeOnLine": 8
+  }
+}

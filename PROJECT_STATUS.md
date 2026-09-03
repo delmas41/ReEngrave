@@ -797,7 +797,7 @@ The headline NOTES.md idea — *train YOLO from symphony MusicXML × IMSLP editi
 - **Training on it failed, repeatedly.** Phase H (catalog-augmented fine-tune): collapsed. Phase I (fixed a ~50px x-offset in catalog labels): still collapsed. Phase J (mix-mode, briefly promoted): Phase K diagnosed a class-ID collision with DSv2 and the collapse stood. Phase L (slot remap to DSv2-free slots): **still collapsed** on Beethoven 5.
 - **Verdict:** catalog-augmented YOLO training is a dead end with the current recipe. Structural elements (stems/beams/barlines) stay with classical CV; symbol-class improvement comes from **hand-labeling via the annotate UI** (the current June work).
 
-**Loose end:** `omr-weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt` (84 MB, from the collapsed Phase J run) still sits next to the production weights. **Do not use it.** Production remains `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`.
+**Loose end:** `omr-weights/deepscoresv2-yolov8l-phase-j-mix-30ep.pt` (84 MB, from the collapsed Phase J run) still sits next to the production weights. **Do not use it.** Production is now `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` (a 1-epoch imgsz-896 + 2x-dense hollow fine-tune of `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`, which is kept as the prior-production backup; see `benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md`).
 
 The branch also carries **post-experiment OMR improvements that may still be valuable** (see "Unmerged work" below).
 

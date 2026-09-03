@@ -58,12 +58,13 @@ Site runs at **http://localhost**. Backend API at **http://localhost:8000**.
 
 ### OMR weights (required before first run)
 
-The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`, ~88 MB). It's gitignored.
+The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`, ~88 MB). It's gitignored.
 
 ```bash
 # docker-compose mounts /Users/seanjohnson/Desktop/ReEngrave/omr-weights/ → /app/tools/omr/training/data/weights/
 ls /Users/seanjohnson/Desktop/ReEngrave/omr-weights/
-# Should contain: deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+# Should contain: deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt  (current production;
+#   the prior deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt is kept alongside as a backup)
 ```
 
 If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads and the Gradus / comparison flows.
@@ -182,7 +183,8 @@ ReEngrave/
 │       │   └── data/            # gitignored — DSv2 dataset, fine-tuning shards, weights
 │       └── tests/               # 156 unit tests across Phase 4 modules
 ├── omr-weights/                 # gitignored, mounted into the container
-│   ├── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt   # ~88 MB — PRODUCTION
+│   ├── deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt      # ~88 MB — PRODUCTION (hollow fine-tune)
+│   ├── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt         # ~88 MB — prior production / backup
 │   └── deepscoresv2-yolov8l-phase-j-mix-30ep.pt    # from the collapsed catalog run — DO NOT USE
 ├── data/
 │   ├── user-labeled/            # hand-labeled YOLO training data (v1, v2, …) + catalog.yaml
@@ -296,7 +298,7 @@ ReEngrave/
 
 | Env var               | Default | What it tunes |
 |-----------------------|--------:|---|
-| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override weights file path |
+| `OMR_WEIGHTS_PATH`    | `tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` | Override weights file path |
 | `OMR_CLEF_WEIGHTS`    | _(unset)_ | Optional **clef-specialist** weights — a checkpoint fine-tuned to read clefs, **not** general-purpose detection weights. You don't need it: header reading (clef + key signature) is on by default and needs no extra files. When set, a 2nd detector reads each staff's clef from its header and overrides the main clef, which helps on some orchestral scans (decoupled; the main detector still does all symbols). **Pointing this at ordinary weights makes clefs worse.** See `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. CLI: `--clef-weights`. |
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
 | `OMR_CONF_THRESHOLD`  | `0.25`  | Min YOLO detection confidence |
@@ -1307,7 +1309,7 @@ Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 - `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
 - The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.
 - Phase 4f introduced classical-CV stem and beam detection (morphological opening + connected components) because YOLO bounding boxes are structurally bad at thin lines.
-- Production weights: `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (Phase 3.3, F1 98.8% on 25-cell Bach WTC verdict set).
+- Production weights: `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` — a 1-epoch imgsz-896 + 2x-dense-oversample hollow fine-tune of the prior `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (itself Phase 3.3, F1 98.8% on the 25-cell Bach WTC verdict set). Holds dense notehead recall (0.941) while lifting scanned half-note detection 8 → 27 / duration recall 0.388 → 0.435. See `benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md`.
 - Phase 3.4 attempted to add 6 custom classes (barlines, textDynamic) and caused catastrophic forgetting — those classes are now learned via classical CV instead, not YOLO. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
 
 ### Claude Vision OMR notes

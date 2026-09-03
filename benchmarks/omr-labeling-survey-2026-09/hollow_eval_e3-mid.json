@@ -1,0 +1,36 @@
+{
+  "tag": "e3-mid",
+  "weights": "runs/detect/benchmarks/omr-labeling-survey-2026-09/runs/ship-896-run/weights/epoch2.pt",
+  "hollow_histogram": {
+    "black_total": 69,
+    "hollow_total": 31,
+    "noteheadHalfOnLine": 6,
+    "noteheadHalfInSpace": 24,
+    "noteheadWholeInSpace": 1
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 100,
+      "matched": 63,
+      "recall": 0.4286,
+      "precision": 0.63
+    },
+    "step": {
+      "truth": 147,
+      "omr": 100,
+      "matched": 82,
+      "recall": 0.5578,
+      "precision": 0.82
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 100,
+      "matched": 60,
+      "recall": 0.4082,
+      "precision": 0.6
+    }
+  },
+  "clef_accuracy": "11/12",
+  "measures_omr": 16
+}

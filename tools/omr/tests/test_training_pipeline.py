@@ -535,7 +535,7 @@ def test_catalog_versions_flag_overrides_manifest(tmp_path: Path):
     assert [v["name"] for v in summary["versions"]] == ["v2-2026-01-02-b"]
 
 
-def test_committed_catalog_membership_is_v1_through_v4():
+def test_committed_catalog_membership_is_v1_through_v4_plus_hollow():
     """Pin the committed membership AND that the manifest reproduces the
     committed catalog exactly.
 
@@ -544,6 +544,10 @@ def test_committed_catalog_membership_is_v1_through_v4():
     decision #13, rebuild the catalog so _catalog_summary.json matches, and
     update this pin, all in the same commit. If you did NOT change the
     manifest on purpose, put it back.
+
+    v7 + v8 (hollow scan cells) were admitted 2026-09-03 with the shipping
+    hollow fine-tune — see benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md.
+    v5/v6 (clef) remain excluded.
     """
     from tools.omr.training.build_catalog_yaml import (
         read_versions_manifest,
@@ -556,6 +560,8 @@ def test_committed_catalog_membership_is_v1_through_v4():
         "v2-2026-06-08-beet5",
         "v3-2026-06-09-mahler5",
         "v4-2026-06-10-la-mer",
+        "v7-2026-09-02-hollow",
+        "v8-2026-09-02-hollow2-5pub",
     ]
     assert read_versions_manifest(root) == committed
 
@@ -570,10 +576,9 @@ def test_committed_catalog_membership_is_v1_through_v4():
     assert [d.name for d in members] == committed
     assert source.endswith("catalog-versions.txt")
     # The recorded exclusions are on disk and stay out (PROJECT_STATUS.md
-    # #13 for v5/v6; the hollow batch's entry is an open training-time
-    # decision — benchmarks/omr-labeling-hollow-2026-08/AUDIT.md).
-    for parked in ("v5-2026-07-12-clef", "v6-2026-07-13-clef-diverse",
-                   "v7-2026-09-02-hollow"):
+    # #13 — v5/v6 clef cells narrow the density prior). v7 was admitted
+    # 2026-09-03 with the hollow fine-tune, so it is no longer excluded.
+    for parked in ("v5-2026-07-12-clef", "v6-2026-07-13-clef-diverse"):
         assert (root / parked).is_dir()
         assert parked in excluded
 
