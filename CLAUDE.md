@@ -1714,6 +1714,18 @@ reaches 37/37 in-sample at 0.74 coverage; that is a ceiling demonstration on
 n=50 biased cells, not a claim — the out-of-sample test is a random
 completion pass scored by the same probe.
 
+⚠️ **The five CONFLICTs were then reviewed and NONE is a tremolo
+abbreviation** — the handoff's hypothesis is corrected in place. Three are
+the reference's TIE-SPLITS (one printed dotted-half encoded as tied
+fragments; the human's hollow boxes were already right), two are accidental
+glyphs (a flat's loop, a natural) the detector misread as hollow heads over
+empty-and-correct human verdicts. So a within-measure tie chain needs the
+same reconcile-by-the-reading collapse tremolo already gets — collapse to
+one head of the summed value only where the reading placed one head — which
+turns all three into confirmations. The two accidental fakes are the same
+family as the probe's phantom TPs: false detections the alignment can claim.
+[benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md](benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md).
+
 ⚠️ **Not yet measured beyond one work.** The Mahler 5 / Peters batch cannot
 be the one: the library holds Mahler 5 movements 1-3 and the batch is the
 Adagietto (movement 4). The Brahms 1 / Breitkopf batch can — same PDF as the

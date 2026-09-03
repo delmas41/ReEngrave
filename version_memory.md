@@ -5,6 +5,27 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
+
+- **The measured handoff's hypothesis ("Breitkopf tremolo abbreviations") is refuted for all
+  five conflicts**, corrected in place in that handoff and recorded with the evidence in
+  `benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md`. Three
+  conflicts (2 on `s2-m2`, 1 on `s3-m6`) are the REFERENCE's tie-splits — one printed
+  dotted-half encoded as tied eighth+quarter+quarter, `<tie>` on every fragment, no
+  `<tremolo>` — so the hollow heads Sean had already boxed are right and the aligner was
+  fighting fragments (its two "missing" hints on `s3-m6` point at blank paper). Two
+  (`s26-m0`, `s15-m7`) are a flat's loop and a natural sign the base transcription misread as
+  hollow noteheads, over already-empty (correct) human verdicts. **Nothing needs re-clicking.**
+- Actionable residue: **tie chains need the reconcile-by-the-reading collapse tremolo already
+  gets** (collapse to one summed-value head only where the reading placed one head) — that
+  turns the three tie conflicts into confirmations. The two accidental fakes are the same
+  family as the admission probe's phantom TPs.
+- The optional `tremolo1`–`5` labeling pass gets **no support from this sample** — zero strokes
+  in the four cells; parked until a batch shows strokes the detector mishandles.
+- batch_config on Sean's Mac: the ACTIVE file is a STALE 9-class completion palette
+  (pre-`fd28a76`, missing slur/tie/hairpins); continuing completion work needs
+  `cp batch_config.completion.json batch_config.json` + server restart, not the hollow restore.
+
 ## 2026-09-03 — PR #5 landed; pre-fill admission signals measured
 
 - **PR #5 (the pre-fill / labeling-system branch) is merged into main** — the branch had gone

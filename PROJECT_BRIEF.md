@@ -68,7 +68,10 @@ changes week to week.
 - Tremolo and tremolando abbreviations are reconciled by the reading (one
   head for a repeated pitch, two for an alternating pair) and a hollow-vs-black
   disagreement is routed to the human as a `CONFLICT` — the committed Brahms
-  hints carry both (5 conflicts on 4 cells). Measured against a complete
+  hints carry both (5 conflicts on 4 cells; all five reviewed 2026-09-03 and
+  none is live — three are the reference's tie-split fragments of one printed
+  note, two are accidental glyphs misdetected as heads, and the existing
+  human verdicts were already right on every cell). Measured against a complete
   human pass on six cells: **precision 0.84**, so the pre-fill is a queue
   rather than labels for now — six of its eight errors are detection box
   placement, which means its accuracy rises as recognition does. A follow-up
