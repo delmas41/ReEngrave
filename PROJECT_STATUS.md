@@ -1006,10 +1006,22 @@ of the subsystem it touches, not just the patch algebra.
 
 ## What's parked / next up
 
-The ranked handoff is [`docs/next-steps-omr-2026-09-02.md`](docs/next-steps-omr-2026-09-02.md)
-(supersedes the 09-01 doc); NOTES.md carries the long-form context for
-everything below. Items below reflect 2026-09-01; where the overnight session
+The ranked handoff is [`docs/next-steps-omr-2026-09-03.md`](docs/next-steps-omr-2026-09-03.md)
+(supersedes 09-02/09-01); NOTES.md carries the long-form context for
+everything below. Items below reflect 2026-09-01; where a later session
 closed or re-priced one, the entry says so inline.
+
+> **2026-09-03 — the hand-labeling → gate → SHIP loop closed (5d81ace).** Sean
+> hand-labeled 194 hollow noteheads across 5 publishers; a gated fine-tune
+> proved it lifts the project's #1 weakness (scan half-notes 8→27) without the
+> dense-page collapse that killed every prior training attempt (dense recall
+> HELD 0.941); a production-matched re-gate (imgsz-896 — 2048 needs a cloud GPU)
+> then **shipped** it as the live detector (`…hollow-ft-2026-09-03.pt`, old
+> weights backed up, revert = `git revert 5d81ace`). Engraved wobble +0.0022,
+> negligible. First time in the project that hand-labeling produced a
+> measurably better *deployed* detector. Phase 2 (4 more publishers) is cut and
+> waiting; the process is documented and cheap to repeat for other symbols.
+> Full record: `benchmarks/omr-labeling-survey-2026-09/{SURVEY_DESIGN,GATE_RESULTS,SHIP_RESULTS}.md`.
 
 The current figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section and nowhere
 else. Restated copies here, in NOTES.md and in the next-steps doc kept going
