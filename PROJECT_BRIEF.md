@@ -71,7 +71,11 @@ changes week to week.
   hints carry both (5 conflicts on 4 cells). Measured against a complete
   human pass on six cells: **precision 0.84**, so the pre-fill is a queue
   rather than labels for now — six of its eight errors are detection box
-  placement, which means its accuracy rises as recognition does. A batch checked out on a machine
+  placement, which means its accuracy rises as recognition does. A follow-up
+  measurement (`benchmarks/omr-prefill-admission-2026-09/`) showed the eight
+  errors are separable by three cheap signals (cell parity consistency, a
+  small-head veto, the reference's own line/space variant) — in-sample the
+  clean subset reaches 37/37 at 74% coverage, pending an unbiased re-test. A batch checked out on a machine
   that did not cut it has no cell images (they are gitignored) and shows a
   blank canvas; `tools/omr/annotate/recut_cells.py` re-renders them from the
   manifest, refusing anything whose frame does not match. Where the work stands and

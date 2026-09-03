@@ -1696,6 +1696,22 @@ its neighbours (41×38 against 51–83 in the same cell).
 Full reading, with the ideas for widening this:
 [docs/handoff-2026-09-03-prefill-measured.md](docs/handoff-2026-09-03-prefill-measured.md).
 
+⚠️ **Which signals separate the 8 errors was then measured, and the
+aligner's own confidence is the wrong axis**
+([benchmarks/omr-prefill-admission-2026-09/FINDINGS.md](benchmarks/omr-prefill-admission-2026-09/FINDINGS.md)):
+all six `near` matches are exact-correct (filtering them LOWERS precision,
+0.840 → 0.818) and `strength_exact` ranks the cleanest cell (0.333) below
+every error cell (0.75–0.917). What separates: per-cell PARITY CONSISTENCY
+(do the exact-correct boxes agree on one diatonic-parity → line/space
+mapping — the one inconsistent cell holds 4 of the 8 errors), a size veto
+for grace heads (< 0.85× the cell's median in both dimensions, 2/2 caught
+for 1 deferred), and re-deriving the on-line/in-space VARIANT from the
+matched reference note instead of the detector (fixes 2 of 3 flips, breaks
+nothing — the alignment key already trusts that position). The composite
+reaches 37/37 in-sample at 0.74 coverage; that is a ceiling demonstration on
+n=50 biased cells, not a claim — the out-of-sample test is a random
+completion pass scored by the same probe.
+
 ⚠️ **Not yet measured beyond one work.** The Mahler 5 / Peters batch cannot
 be the one: the library holds Mahler 5 movements 1-3 and the batch is the
 Adagietto (movement 4). The Brahms 1 / Breitkopf batch can — same PDF as the

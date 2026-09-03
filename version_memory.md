@@ -5,7 +5,25 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
-## 2026-09-03 — Scan vs engraved weight routing (on by default)
+## 2026-09-03 — PR #5 landed; pre-fill admission signals measured
+
+- **PR #5 (the pre-fill / labeling-system branch) is merged into main** — the branch had gone
+  CONFLICTING against main after the weight-routing commits; the one conflict was
+  `version_memory.md` (both sides' 2026-09-03 entries, resolved as a union, weight routing
+  first), 196 tests green on the merged tree, merged as `711d3ff`. The main checkout on Sean's
+  Mac still sits on the branch (now behind); `git pull` there when the cloud training session
+  is done with it.
+- **The pre-fill's 8 errors were separated by signals already in the records**
+  (`benchmarks/omr-prefill-admission-2026-09/`): the aligner's own confidence is the WRONG
+  admission axis — all six `near` matches are exact-correct (filtering them lowers precision
+  0.840 → 0.818) and `strength_exact` ranks the cleanest cell below every error cell. What
+  works: per-cell parity consistency (the one inconsistent cell holds 4 of 8 errors), a
+  < 0.85×-median size veto (2/2 grace heads deferred for 1 good box), and re-deriving the
+  on-line/in-space variant from the matched reference note rather than the detector (fixes
+  2 of 3 flips, zero regressions — the alignment key already trusts that position). Composite:
+  **37/37 exact at 0.74 coverage, in-sample** — a ceiling demonstration on the same biased
+  six cells, not a claim; the out-of-sample test is a random completion pass scored by
+  `probe_admission.py`, which reproduces the recorded 50/42/47 before it prices any policy.
 
 **Why:** the hollow fine-tune ship left the two domains preferring different
 checkpoints — scans want the hollow weights (half-notes 8→27 on beet5-p1),
