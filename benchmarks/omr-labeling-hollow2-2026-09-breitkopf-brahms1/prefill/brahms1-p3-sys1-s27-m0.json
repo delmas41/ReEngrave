@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p3-sys1-s27-m0",
-  "status": "prefilled",
-  "reason": "",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 29,
   "parts": [
     20
@@ -61,6 +61,7 @@
   "n_added": 3,
   "n_hints_missing": 2,
   "n_hints_extra": 5,
+  "n_conflicts": 0,
   "written": false,
   "decisions": [
     {
@@ -208,6 +209,7 @@
       "pitch": null,
       "type": "eighth",
       "dots": 0,
+      "tremolo_run": null,
       "onset_ql": 0.5,
       "bbox": {
         "x": 963,
@@ -224,6 +226,7 @@
       "pitch": null,
       "type": "eighth",
       "dots": 0,
+      "tremolo_run": null,
       "onset_ql": 1.0,
       "bbox": {
         "x": 1091,

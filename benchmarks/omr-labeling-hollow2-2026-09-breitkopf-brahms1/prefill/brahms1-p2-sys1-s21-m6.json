@@ -1,34 +1,29 @@
 {
   "cell_id": "brahms1-p2-sys1-s21-m6",
   "status": "abstained",
-  "reason": "weak alignment: 1 of 6 reference notes matched, 0 exactly (1 of 2 read heads in the bar's range)",
+  "reason": "weak alignment: 1 of 1 reference notes matched, 0 exactly (1 of 2 read heads in the bar's range)",
   "measure_number": 21,
   "parts": [
     15
   ],
   "alignment": {
-    "n_truth": 6,
+    "n_truth": 1,
     "n_pred": 2,
     "matched": 1,
-    "n_truth_notes": 6,
+    "n_truth_notes": 1,
     "matched_notes": 1,
     "exact_notes": 0,
     "near_pairs": [
       [
-        5,
+        0,
         0
       ]
     ],
     "n_pred_in_range": 1,
-    "strength": 0.167,
+    "strength": 1.0,
     "strength_exact": 0.0,
     "match": "position",
     "truth_keys": [
-      "P8",
-      "P8",
-      "P8",
-      "P8",
-      "P8",
       "P8"
     ],
     "pred_keys": [
@@ -37,7 +32,7 @@
     ],
     "pairs": [
       [
-        5,
+        0,
         0
       ]
     ],
@@ -53,6 +48,7 @@
   "n_added": 0,
   "n_hints_missing": 0,
   "n_hints_extra": 0,
+  "n_conflicts": 0,
   "written": false,
   "decisions": [],
   "hints": []

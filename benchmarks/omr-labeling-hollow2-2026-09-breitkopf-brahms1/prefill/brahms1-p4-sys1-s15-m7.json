@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p4-sys1-s15-m7",
-  "status": "prefilled",
-  "reason": "",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 55,
   "parts": [
     2,
@@ -75,10 +75,11 @@
     }
   },
   "n_tp": 5,
-  "n_wrong_category": 1,
-  "n_added": 6,
+  "n_wrong_category": 0,
+  "n_added": 5,
   "n_hints_missing": 0,
   "n_hints_extra": 6,
+  "n_conflicts": 1,
   "written": false,
   "decisions": [
     {
@@ -109,33 +110,6 @@
       "iou": null
     },
     {
-      "verdict": "WRONG_CATEGORY",
-      "class": "noteheadBlackInSpace",
-      "category": "notehead",
-      "near": false,
-      "truth": {
-        "pitch": "Cb5",
-        "type": "quarter",
-        "dots": 0,
-        "duration_ql": 1.0,
-        "onset_ql": 0.0
-      },
-      "read": {
-        "class": "noteheadHalfInSpace",
-        "pitch": "C5",
-        "duration_type": "half",
-        "detection_index": 13
-      },
-      "bbox": {
-        "x": 897,
-        "y": 500,
-        "w": 90,
-        "h": 102
-      },
-      "detection_id": "M1",
-      "iou": null
-    },
-    {
       "verdict": "TP",
       "class": "noteheadBlackOnLine",
       "category": "notehead",
@@ -159,7 +133,7 @@
         "w": 134,
         "h": 117
       },
-      "detection_id": "M2",
+      "detection_id": "M1",
       "iou": null
     },
     {
@@ -186,7 +160,7 @@
         "w": 26,
         "h": 90
       },
-      "detection_id": "M3",
+      "detection_id": "M2",
       "iou": null
     },
     {
@@ -213,7 +187,7 @@
         "w": 26,
         "h": 87
       },
-      "detection_id": "M4",
+      "detection_id": "M3",
       "iou": null
     },
     {
@@ -240,11 +214,24 @@
         "w": 26,
         "h": 87
       },
-      "detection_id": "M5",
+      "detection_id": "M4",
       "iou": null
     }
   ],
   "hints": [
+    {
+      "kind": "conflict",
+      "label": "noteheadHalfInSpace vs Cb5 quarter",
+      "bbox": {
+        "x": 897,
+        "y": 500,
+        "w": 90,
+        "h": 102
+      },
+      "class": "noteheadHalfInSpace",
+      "pitch": "Cb5",
+      "type": "quarter"
+    },
     {
       "kind": "extra",
       "label": "read C5",

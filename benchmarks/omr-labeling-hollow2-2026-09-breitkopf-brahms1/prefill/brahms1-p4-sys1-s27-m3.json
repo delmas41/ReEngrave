@@ -58,6 +58,7 @@
   "n_added": 3,
   "n_hints_missing": 2,
   "n_hints_extra": 2,
+  "n_conflicts": 0,
   "written": false,
   "decisions": [
     {
@@ -172,6 +173,7 @@
       "pitch": null,
       "type": "eighth",
       "dots": 0,
+      "tremolo_run": null,
       "onset_ql": 0.5,
       "bbox": {
         "x": 318,
@@ -188,6 +190,7 @@
       "pitch": null,
       "type": "eighth",
       "dots": 0,
+      "tremolo_run": null,
       "onset_ql": 1.0,
       "bbox": {
         "x": 473,

@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p2-sys0-s2-m2",
-  "status": "prefilled",
-  "reason": "",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 10,
   "parts": [
     4,
@@ -65,66 +65,13 @@
     }
   },
   "n_tp": 1,
-  "n_wrong_category": 2,
-  "n_added": 3,
+  "n_wrong_category": 0,
+  "n_added": 1,
   "n_hints_missing": 0,
   "n_hints_extra": 9,
+  "n_conflicts": 2,
   "written": false,
   "decisions": [
-    {
-      "verdict": "WRONG_CATEGORY",
-      "class": "noteheadBlackOnLine",
-      "category": "notehead",
-      "near": false,
-      "truth": {
-        "pitch": "Bb4",
-        "type": "eighth",
-        "dots": 0,
-        "duration_ql": 0.5,
-        "onset_ql": 0.0
-      },
-      "read": {
-        "class": "noteheadWholeOnLine",
-        "pitch": "B4",
-        "duration_type": "whole",
-        "detection_index": 9
-      },
-      "bbox": {
-        "x": 188,
-        "y": 567,
-        "w": 144,
-        "h": 77
-      },
-      "detection_id": "M0",
-      "iou": null
-    },
-    {
-      "verdict": "WRONG_CATEGORY",
-      "class": "noteheadBlackOnLine",
-      "category": "notehead",
-      "near": false,
-      "truth": {
-        "pitch": "Bb4",
-        "type": "quarter",
-        "dots": 0,
-        "duration_ql": 1.0,
-        "onset_ql": 0.5
-      },
-      "read": {
-        "class": "noteheadHalfOnLine",
-        "pitch": "B4",
-        "duration_type": "dotted_half",
-        "detection_index": 15
-      },
-      "bbox": {
-        "x": 189,
-        "y": 525,
-        "w": 158,
-        "h": 107
-      },
-      "detection_id": "M1",
-      "iou": null
-    },
     {
       "verdict": "TP",
       "class": "noteheadBlackInSpace",
@@ -149,11 +96,37 @@
         "w": 36,
         "h": 80
       },
-      "detection_id": "M2",
+      "detection_id": "M0",
       "iou": null
     }
   ],
   "hints": [
+    {
+      "kind": "conflict",
+      "label": "noteheadWholeOnLine vs Bb4 eighth",
+      "bbox": {
+        "x": 188,
+        "y": 567,
+        "w": 144,
+        "h": 77
+      },
+      "class": "noteheadWholeOnLine",
+      "pitch": "Bb4",
+      "type": "eighth"
+    },
+    {
+      "kind": "conflict",
+      "label": "noteheadHalfOnLine vs Bb4 quarter",
+      "bbox": {
+        "x": 189,
+        "y": 525,
+        "w": 158,
+        "h": 107
+      },
+      "class": "noteheadHalfOnLine",
+      "pitch": "Bb4",
+      "type": "quarter"
+    },
     {
       "kind": "extra",
       "label": "read G4",

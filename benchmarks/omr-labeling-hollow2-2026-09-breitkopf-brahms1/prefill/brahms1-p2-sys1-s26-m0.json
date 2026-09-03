@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p2-sys1-s26-m0",
-  "status": "prefilled",
-  "reason": "",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 15,
   "parts": [
     20
@@ -75,39 +75,13 @@
     }
   },
   "n_tp": 5,
-  "n_wrong_category": 1,
-  "n_added": 6,
+  "n_wrong_category": 0,
+  "n_added": 5,
   "n_hints_missing": 1,
   "n_hints_extra": 1,
+  "n_conflicts": 1,
   "written": false,
   "decisions": [
-    {
-      "verdict": "WRONG_CATEGORY",
-      "class": "noteheadBlackInSpace",
-      "category": "notehead",
-      "near": true,
-      "truth": {
-        "pitch": "Gb2",
-        "type": "eighth",
-        "dots": 0,
-        "duration_ql": 0.5,
-        "onset_ql": 0.5
-      },
-      "read": {
-        "class": "noteheadHalfInSpace",
-        "pitch": "A2",
-        "duration_type": "half",
-        "detection_index": 11
-      },
-      "bbox": {
-        "x": 530,
-        "y": 460,
-        "w": 75,
-        "h": 86
-      },
-      "detection_id": "M0",
-      "iou": null
-    },
     {
       "verdict": "TP",
       "class": "noteheadBlackOnLine",
@@ -132,7 +106,7 @@
         "w": 94,
         "h": 79
       },
-      "detection_id": "M1",
+      "detection_id": "M0",
       "iou": null
     },
     {
@@ -159,7 +133,7 @@
         "w": 102,
         "h": 79
       },
-      "detection_id": "M2",
+      "detection_id": "M1",
       "iou": null
     },
     {
@@ -186,7 +160,7 @@
         "w": 96,
         "h": 78
       },
-      "detection_id": "M3",
+      "detection_id": "M2",
       "iou": null
     },
     {
@@ -213,7 +187,7 @@
         "w": 89,
         "h": 72
       },
-      "detection_id": "M4",
+      "detection_id": "M3",
       "iou": null
     },
     {
@@ -240,11 +214,24 @@
         "w": 91,
         "h": 79
       },
-      "detection_id": "M5",
+      "detection_id": "M4",
       "iou": null
     }
   ],
   "hints": [
+    {
+      "kind": "conflict",
+      "label": "noteheadHalfInSpace vs Gb2 eighth",
+      "bbox": {
+        "x": 530,
+        "y": 460,
+        "w": 75,
+        "h": 86
+      },
+      "class": "noteheadHalfInSpace",
+      "pitch": "Gb2",
+      "type": "eighth"
+    },
     {
       "kind": "extra",
       "label": "read Eb3",
@@ -263,6 +250,7 @@
       "pitch": null,
       "type": "eighth",
       "dots": 0,
+      "tremolo_run": null,
       "onset_ql": 0.0,
       "bbox": {
         "x": 267,

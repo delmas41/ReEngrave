@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p3-sys0-s13-m1",
-  "status": "prefilled",
-  "reason": "reference has only rests in this bar",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 24,
   "parts": [
     20
@@ -42,6 +42,7 @@
   "n_added": 1,
   "n_hints_missing": 0,
   "n_hints_extra": 0,
+  "n_conflicts": 0,
   "written": false,
   "decisions": [
     {

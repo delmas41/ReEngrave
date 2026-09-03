@@ -51,6 +51,7 @@
   "n_added": 0,
   "n_hints_missing": 0,
   "n_hints_extra": 0,
+  "n_conflicts": 0,
   "written": false,
   "decisions": [],
   "hints": []

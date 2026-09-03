@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-03T05:46:59+00:00",
+  "generated_at_utc": "2026-09-03T07:23:09+00:00",
   "bench": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
   "truth": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/reference.mxl",
   "match": "position",
@@ -15,21 +15,22 @@
   ],
   "totals": {
     "cells": 56,
-    "prefilled": 51,
+    "prefilled": 1,
     "abstained": 5,
-    "skipped": 0,
+    "skipped": 50,
     "written": 0,
     "n_tp": 179,
-    "n_wrong_category": 15,
-    "n_added": 194,
+    "n_wrong_category": 10,
+    "n_added": 189,
     "n_hints_missing": 22,
-    "n_hints_extra": 200
+    "n_hints_extra": 200,
+    "n_conflicts": 5
   },
   "cells": [
     {
       "cell_id": "brahms1-p2-sys0-s0-m1",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 9,
       "parts": [
         0,
@@ -107,12 +108,13 @@
       "n_added": 3,
       "n_hints_missing": 1,
       "n_hints_extra": 18,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s1-m1",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 9,
       "parts": [
         2,
@@ -188,12 +190,13 @@
       "n_added": 4,
       "n_hints_missing": 0,
       "n_hints_extra": 16,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s1-m5",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 13,
       "parts": [
         2,
@@ -242,12 +245,13 @@
       "n_added": 2,
       "n_hints_missing": 0,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s2-m2",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 10,
       "parts": [
         4,
@@ -311,16 +315,17 @@
         }
       },
       "n_tp": 1,
-      "n_wrong_category": 2,
-      "n_added": 3,
+      "n_wrong_category": 0,
+      "n_added": 1,
       "n_hints_missing": 0,
       "n_hints_extra": 9,
+      "n_conflicts": 2,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s2-m5",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 13,
       "parts": [
         4,
@@ -376,12 +381,13 @@
       "n_added": 3,
       "n_hints_missing": 1,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s3-m4",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 12,
       "parts": [
         6,
@@ -493,12 +499,13 @@
       "n_added": 10,
       "n_hints_missing": 2,
       "n_hints_extra": 9,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s3-m6",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 14,
       "parts": [
         6,
@@ -557,16 +564,17 @@
         }
       },
       "n_tp": 3,
-      "n_wrong_category": 1,
-      "n_added": 4,
+      "n_wrong_category": 0,
+      "n_added": 3,
       "n_hints_missing": 2,
       "n_hints_extra": 1,
+      "n_conflicts": 1,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s9-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 8,
       "parts": [
         16
@@ -661,12 +669,13 @@
       "n_added": 9,
       "n_hints_missing": 1,
       "n_hints_extra": 5,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s9-m5",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 13,
       "parts": [
         16
@@ -734,12 +743,13 @@
       "n_added": 5,
       "n_hints_missing": 0,
       "n_hints_extra": 3,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys0-s10-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 11,
       "parts": [
         17
@@ -813,12 +823,13 @@
       "n_added": 5,
       "n_hints_missing": 0,
       "n_hints_extra": 9,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s19-m0",
-      "status": "prefilled",
-      "reason": "reference has no notes in this bar",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 15,
       "parts": [
         9,
@@ -862,12 +873,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 10,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s20-m6",
-      "status": "prefilled",
-      "reason": "reference has no notes in this bar",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 21,
       "parts": [
         13,
@@ -902,39 +914,35 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s21-m6",
       "status": "abstained",
-      "reason": "weak alignment: 1 of 6 reference notes matched, 0 exactly (1 of 2 read heads in the bar's range)",
+      "reason": "weak alignment: 1 of 1 reference notes matched, 0 exactly (1 of 2 read heads in the bar's range)",
       "measure_number": 21,
       "parts": [
         15
       ],
       "alignment": {
-        "n_truth": 6,
+        "n_truth": 1,
         "n_pred": 2,
         "matched": 1,
-        "n_truth_notes": 6,
+        "n_truth_notes": 1,
         "matched_notes": 1,
         "exact_notes": 0,
         "near_pairs": [
           [
-            5,
+            0,
             0
           ]
         ],
         "n_pred_in_range": 1,
-        "strength": 0.167,
+        "strength": 1.0,
         "strength_exact": 0.0,
         "match": "position",
         "truth_keys": [
-          "P8",
-          "P8",
-          "P8",
-          "P8",
-          "P8",
           "P8"
         ],
         "pred_keys": [
@@ -943,7 +951,7 @@
         ],
         "pairs": [
           [
-            5,
+            0,
             0
           ]
         ],
@@ -959,12 +967,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s22-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 15,
       "parts": [
         16
@@ -1026,12 +1035,13 @@
       "n_added": 4,
       "n_hints_missing": 0,
       "n_hints_extra": 3,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s23-m2",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 17,
       "parts": [
         17
@@ -1100,12 +1110,13 @@
       "n_added": 5,
       "n_hints_missing": 0,
       "n_hints_extra": 4,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s24-m2",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 17,
       "parts": [
         18
@@ -1176,12 +1187,13 @@
       "n_added": 6,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s25-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 18,
       "parts": [
         19
@@ -1256,12 +1268,13 @@
       "n_added": 6,
       "n_hints_missing": 0,
       "n_hints_extra": 4,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s26-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 15,
       "parts": [
         20
@@ -1335,16 +1348,17 @@
         }
       },
       "n_tp": 5,
-      "n_wrong_category": 1,
-      "n_added": 6,
+      "n_wrong_category": 0,
+      "n_added": 5,
       "n_hints_missing": 1,
       "n_hints_extra": 1,
+      "n_conflicts": 1,
       "written": false
     },
     {
       "cell_id": "brahms1-p2-sys1-s26-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 18,
       "parts": [
         20
@@ -1418,12 +1432,13 @@
       "n_added": 6,
       "n_hints_missing": 0,
       "n_hints_extra": 3,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s1-m0",
-      "status": "prefilled",
-      "reason": "reference has no notes in this bar",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 23,
       "parts": [
         2,
@@ -1464,12 +1479,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 7,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s3-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 26,
       "parts": [
         6,
@@ -1555,6 +1571,7 @@
       "n_added": 6,
       "n_hints_missing": 0,
       "n_hints_extra": 5,
+      "n_conflicts": 0,
       "written": false
     },
     {
@@ -1622,12 +1639,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s5-m4",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 27,
       "parts": [
         9,
@@ -1681,12 +1699,13 @@
       "n_added": 2,
       "n_hints_missing": 0,
       "n_hints_extra": 6,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s5-m5",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 28,
       "parts": [
         9,
@@ -1775,12 +1794,13 @@
       "n_added": 6,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s8-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 26,
       "parts": [
         15
@@ -1826,12 +1846,13 @@
       "n_added": 1,
       "n_hints_missing": 0,
       "n_hints_extra": 5,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s9-m1",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 24,
       "parts": [
         16
@@ -1939,12 +1960,13 @@
       "n_added": 12,
       "n_hints_missing": 0,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s9-m4",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 27,
       "parts": [
         16
@@ -2003,12 +2025,13 @@
       "n_added": 3,
       "n_hints_missing": 0,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s12-m2",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 25,
       "parts": [
         19
@@ -2060,12 +2083,13 @@
       "n_added": 2,
       "n_hints_missing": 1,
       "n_hints_extra": 4,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys0-s13-m1",
-      "status": "prefilled",
-      "reason": "reference has only rests in this bar",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 24,
       "parts": [
         20
@@ -2106,6 +2130,7 @@
       "n_added": 1,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
@@ -2177,12 +2202,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys1-s18-m1",
-      "status": "prefilled",
-      "reason": "reference has only rests in this bar",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 30,
       "parts": [
         8
@@ -2219,12 +2245,13 @@
       "n_added": 0,
       "n_hints_missing": 1,
       "n_hints_extra": 2,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys1-s18-m2",
-      "status": "prefilled",
-      "reason": "reference has only rests in this bar",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 31,
       "parts": [
         8
@@ -2270,6 +2297,7 @@
       "n_added": 1,
       "n_hints_missing": 0,
       "n_hints_extra": 5,
+      "n_conflicts": 0,
       "written": false
     },
     {
@@ -2337,12 +2365,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys1-s23-m5",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 34,
       "parts": [
         16
@@ -2386,12 +2415,13 @@
       "n_added": 1,
       "n_hints_missing": 0,
       "n_hints_extra": 3,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p3-sys1-s27-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 29,
       "parts": [
         20
@@ -2451,12 +2481,13 @@
       "n_added": 3,
       "n_hints_missing": 2,
       "n_hints_extra": 5,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s0-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 41,
       "parts": [
         0,
@@ -2504,12 +2535,13 @@
       "n_added": 1,
       "n_hints_missing": 1,
       "n_hints_extra": 5,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s1-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 38,
       "parts": [
         2,
@@ -2563,6 +2595,7 @@
       "n_added": 3,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
@@ -2618,12 +2651,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s2-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 38,
       "parts": [
         4,
@@ -2677,12 +2711,13 @@
       "n_added": 3,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s3-m8",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 46,
       "parts": [
         6,
@@ -2750,12 +2785,13 @@
       "n_added": 4,
       "n_hints_missing": 0,
       "n_hints_extra": 8,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s9-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 41,
       "parts": [
         16
@@ -2844,12 +2880,13 @@
       "n_added": 8,
       "n_hints_missing": 1,
       "n_hints_extra": 5,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s10-m5",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 43,
       "parts": [
         17
@@ -2967,12 +3004,13 @@
       "n_added": 12,
       "n_hints_missing": 0,
       "n_hints_extra": 6,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s12-m2",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 40,
       "parts": [
         19
@@ -3037,12 +3075,13 @@
       "n_added": 4,
       "n_hints_missing": 0,
       "n_hints_extra": 6,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys0-s13-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 41,
       "parts": [
         20
@@ -3097,12 +3136,13 @@
       "n_added": 3,
       "n_hints_missing": 0,
       "n_hints_extra": 2,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s15-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 48,
       "parts": [
         2,
@@ -3155,12 +3195,13 @@
       "n_added": 2,
       "n_hints_missing": 2,
       "n_hints_extra": 3,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s15-m7",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 55,
       "parts": [
         2,
@@ -3234,16 +3275,17 @@
         }
       },
       "n_tp": 5,
-      "n_wrong_category": 1,
-      "n_added": 6,
+      "n_wrong_category": 0,
+      "n_added": 5,
       "n_hints_missing": 0,
       "n_hints_extra": 6,
+      "n_conflicts": 1,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s17-m7",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 55,
       "parts": [
         6,
@@ -3299,12 +3341,13 @@
       "n_added": 3,
       "n_hints_missing": 1,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s18-m1",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 49,
       "parts": [
         8
@@ -3373,12 +3416,13 @@
       "n_added": 5,
       "n_hints_missing": 0,
       "n_hints_extra": 4,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s18-m2",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 50,
       "parts": [
         8
@@ -3449,12 +3493,13 @@
       "n_added": 5,
       "n_hints_missing": 0,
       "n_hints_extra": 6,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s19-m0",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 48,
       "parts": [
         9,
@@ -3515,12 +3560,13 @@
       "n_added": 4,
       "n_hints_missing": 0,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s20-m0",
-      "status": "prefilled",
-      "reason": "nothing to align \u2014 reference and reading both empty",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 48,
       "parts": [
         11,
@@ -3553,12 +3599,13 @@
       "n_added": 0,
       "n_hints_missing": 0,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s22-m1",
-      "status": "prefilled",
-      "reason": "reference has only rests in this bar",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 49,
       "parts": [
         15
@@ -3594,12 +3641,13 @@
       "n_added": 0,
       "n_hints_missing": 1,
       "n_hints_extra": 1,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s23-m1",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 49,
       "parts": [
         16
@@ -3641,12 +3689,13 @@
       "n_added": 1,
       "n_hints_missing": 1,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s24-m3",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 51,
       "parts": [
         17
@@ -3713,12 +3762,13 @@
       "n_added": 5,
       "n_hints_missing": 0,
       "n_hints_extra": 2,
+      "n_conflicts": 0,
       "written": false
     },
     {
       "cell_id": "brahms1-p4-sys1-s24-m9",
-      "status": "prefilled",
-      "reason": "",
+      "status": "skipped",
+      "reason": "verdict file already carries human work (use --force)",
       "measure_number": 57,
       "parts": [
         17
@@ -3772,6 +3822,7 @@
       "n_added": 3,
       "n_hints_missing": 1,
       "n_hints_extra": 0,
+      "n_conflicts": 0,
       "written": false
     },
     {
@@ -3834,6 +3885,7 @@
       "n_added": 3,
       "n_hints_missing": 2,
       "n_hints_extra": 2,
+      "n_conflicts": 0,
       "written": false
     }
   ]

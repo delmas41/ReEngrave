@@ -1598,7 +1598,10 @@ measures: a hand-verified window row — the shape of
 `benchmarks/omr-scan-e2e-2026-09/works.json` (`page.pdf_page_index`,
 `window.first_ref_measure`, `staves[i].parts`); these rows are the
 "movement start" facts, and a file holding several editions must be narrowed
-with `--work-id` / `--row-id` or it refuses. Global measure = window start +
+with `--work-id` / `--row-id` or it refuses — and `work_id` there is the
+score LIBRARY's id (`brahms--symphony-1`, what the row carries), not the
+dossier's (`brahms-sym1-mvt1`); the wrong one is refused as "no usable window
+rows", not silently matched to nothing. A file holding one work needs neither. Global measure = window start +
 this staff's measures in earlier systems + measure index; a staff whose count
 across the page disagrees with the window abstains (`--trust-measure-counts`
 overrides). (2) Staff ↔ parts: a system whose staff count differs from the

@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p3-sys1-s18-m1",
-  "status": "prefilled",
-  "reason": "reference has only rests in this bar",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 30,
   "parts": [
     8
@@ -38,6 +38,7 @@
   "n_added": 0,
   "n_hints_missing": 1,
   "n_hints_extra": 2,
+  "n_conflicts": 0,
   "written": false,
   "decisions": [],
   "hints": [
@@ -70,6 +71,7 @@
       "pitch": null,
       "type": null,
       "dots": 0,
+      "tremolo_run": null,
       "onset_ql": 0.0,
       "bbox": {
         "x": 232,

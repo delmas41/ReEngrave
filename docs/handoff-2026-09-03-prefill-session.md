@@ -77,14 +77,16 @@ committed `prefill/` is hints only):
 - The Mahler 5 / Peters batch cannot be scored: the library holds
   movements 1–3 and the batch is the Adagietto.
 
-The committed `prefill/` predates the conflict hints (written from
-`73f9970`). Re-run with `--write-hints` to refresh it:
+The committed `prefill/` was refreshed on 2026-09-03 and carries the
+tremolo collapse and the conflict hints. To refresh it again (from the repo
+root — the module path needs it, and the window rows' `work_id` is the
+library's `brahms--symphony-1`, so pass no `--work-id`):
 
 ```bash
-cd benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1
-python3 -m tools.omr.training.mxl_verdicts --bench-dir . \
-    --transcription transcription.json --truth reference.mxl \
-    --windows windows.json --work-id brahms-sym1-mvt1 --write-hints
+B=benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1
+python3 -m tools.omr.training.mxl_verdicts --bench-dir $B \
+    --transcription $B/transcription.json --truth $B/reference.mxl \
+    --windows $B/windows.json --write-hints
 ```
 
 ## Sean's checklist
@@ -92,13 +94,14 @@ python3 -m tools.omr.training.mxl_verdicts --bench-dir . \
 - [ ] Open the Brahms batch (`python3 -m tools.omr.annotate.server --bench-dir
       benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1 --port 5051`;
       cell PNGs are gitignored and must be re-cut on the Mac first, see the
-      runbook) and look at the 5 red `CONFLICT` cells.
+      runbook) and look at the 4 cells carrying the 5 red `CONFLICT` hints.
 - [ ] Spot-check a handful of black-head and rest confirmations.
 - [ ] Decide whether pre-filled `TP`s can be admitted without a glance
       (the `--score` precision on those is the number that decides it).
 - [ ] Optional later pass: box tremolo strokes as `tremolo1`–`tremolo5`.
-- [ ] Gated training run on v7 + the four new hollow batches (needs the
-      Mac / GPU; `catalog-versions.txt` is the membership record).
+- [x] Gated training run on v7 + the four new hollow batches — done on main
+      (`ef51612`, PASS on the labels; v8 held out of the catalog until an
+      imgsz-matched fine-tune re-gates it).
 - [ ] Merge PR #5 when satisfied.
 
 ## Environment notes for the cloud session

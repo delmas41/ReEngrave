@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p2-sys0-s3-m6",
-  "status": "prefilled",
-  "reason": "",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 14,
   "parts": [
     6,
@@ -60,10 +60,11 @@
     }
   },
   "n_tp": 3,
-  "n_wrong_category": 1,
-  "n_added": 4,
+  "n_wrong_category": 0,
+  "n_added": 3,
   "n_hints_missing": 2,
   "n_hints_extra": 1,
+  "n_conflicts": 1,
   "written": false,
   "decisions": [
     {
@@ -94,33 +95,6 @@
       "iou": null
     },
     {
-      "verdict": "WRONG_CATEGORY",
-      "class": "noteheadBlackOnLine",
-      "category": "notehead",
-      "near": false,
-      "truth": {
-        "pitch": "E4",
-        "type": "eighth",
-        "dots": 0,
-        "duration_ql": 0.5,
-        "onset_ql": 0.0
-      },
-      "read": {
-        "class": "noteheadHalfOnLine",
-        "pitch": "Eb4",
-        "duration_type": "dotted_half",
-        "detection_index": 7
-      },
-      "bbox": {
-        "x": 192,
-        "y": 308,
-        "w": 145,
-        "h": 110
-      },
-      "detection_id": "M1",
-      "iou": null
-    },
-    {
       "verdict": "TP",
       "class": "noteheadBlackInSpace",
       "category": "notehead",
@@ -144,7 +118,7 @@
         "w": 119,
         "h": 98
       },
-      "detection_id": "M2",
+      "detection_id": "M1",
       "iou": null
     },
     {
@@ -171,11 +145,24 @@
         "w": 124,
         "h": 111
       },
-      "detection_id": "M3",
+      "detection_id": "M2",
       "iou": null
     }
   ],
   "hints": [
+    {
+      "kind": "conflict",
+      "label": "noteheadHalfOnLine vs E4 eighth",
+      "bbox": {
+        "x": 192,
+        "y": 308,
+        "w": 145,
+        "h": 110
+      },
+      "class": "noteheadHalfOnLine",
+      "pitch": "E4",
+      "type": "eighth"
+    },
     {
       "kind": "extra",
       "label": "read Bb3",
@@ -194,6 +181,7 @@
       "pitch": "E4",
       "type": "quarter",
       "dots": 1,
+      "tremolo_run": null,
       "onset_ql": 0.5,
       "bbox": {
         "x": 1006,
@@ -210,6 +198,7 @@
       "pitch": "E4",
       "type": "quarter",
       "dots": 0,
+      "tremolo_run": null,
       "onset_ql": 2.0,
       "bbox": {
         "x": 1208,

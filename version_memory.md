@@ -7,6 +7,20 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **merged main's training gate; Brahms hints refreshed** — `origin/main` brought Sean's gate
+  run (`ef51612`, `benchmarks/omr-labeling-survey-2026-09/GATE_RESULTS.md`): hollow scan labels
+  PASS (half-note detection 8 → 25 on Beethoven, 9 → 23 on held-out Mahler, `with_duration`
+  recall 0.388 → 0.456); the dense-page narrowing belongs to the imgsz-640 fine-tune recipe,
+  not the labels, so **v8 stays out of the catalog** until an imgsz-matched fine-tune re-gates.
+  Zero conflicts with the branch. Then `prefill/` on the Brahms 1 / Breitkopf batch was
+  re-written with `--write-hints` so the committed hints carry the tremolo / tremolando
+  collapse and the red `CONFLICT` hints (it had been written from `73f9970`, before either):
+  all 57 files changed, totals identical to the handoff (179 TP, 10 relabels, 189 added, 22
+  missing, 200 extra, 5 conflicts — on **4 cells**, one carrying two), 5 abstentions unchanged.
+  ⚠️ The handoff's re-run command passed `--work-id brahms-sym1-mvt1` and the CLI refused it
+  with "no usable window rows": the window rows carry the LIBRARY id `brahms--symphony-1`,
+  not the dossier id. The runbook's form (no `--work-id`, one work per file) is right; the
+  handoff is corrected. 124 tests green across the pre-fill, drafter and annotate suites.
 - **session handoff written** — `docs/handoff-2026-09-03-prefill-session.md`: what the branch
   built, the seven rules the pre-fill decides by, what is measured (Brahms 1: 51 of 56, 5
   conflicts) and what is not (black heads and rests), Sean's checklist, and the environment

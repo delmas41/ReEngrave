@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p4-sys0-s0-m3",
-  "status": "prefilled",
-  "reason": "",
+  "status": "skipped",
+  "reason": "verdict file already carries human work (use --force)",
   "measure_number": 41,
   "parts": [
     0,
@@ -49,6 +49,7 @@
   "n_added": 1,
   "n_hints_missing": 1,
   "n_hints_extra": 5,
+  "n_conflicts": 0,
   "written": false,
   "decisions": [
     {
@@ -142,6 +143,7 @@
       "pitch": "B5",
       "type": "half",
       "dots": 1,
+      "tremolo_run": null,
       "onset_ql": 0.0,
       "bbox": {
         "x": 186,
