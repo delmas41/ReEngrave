@@ -7,6 +7,11 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **session handoff written** — `docs/handoff-2026-09-03-prefill-session.md`: what the branch
+  built, the seven rules the pre-fill decides by, what is measured (Brahms 1: 51 of 56, 5
+  conflicts) and what is not (black heads and rests), Sean's checklist, and the environment
+  notes for a fresh cloud session. CLAUDE.md and PROJECT_BRIEF.md point at it. This session
+  ran out of context and closes here; the next one starts from that file.
 - **pre-fill: tremolando — two pitches alternating collapse to two heads** — Sean: "Tremolo
   and tremolando". A reference run `A B A B …` (≥4 equal values, two pitches) is the page's
   two-pitch tremolando: two heads, each written with the FIGURE's full value (a bar of

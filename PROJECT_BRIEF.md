@@ -62,6 +62,10 @@ changes week to week.
   the reference spells out tremolo abbreviations as repeated eighths where
   the page prints one hollow head; see `version_memory.md` for the numbers.
   Inventory and plan: [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
+- Tremolo and tremolando abbreviations are reconciled by the reading (one
+  head for a repeated pitch, two for an alternating pair) and a hollow-vs-black
+  disagreement is routed to the human as a `CONFLICT`. Where the work stands and
+  Sean's checklist: [docs/handoff-2026-09-03-prefill-session.md](docs/handoff-2026-09-03-prefill-session.md).
 
 ## Running it
 
