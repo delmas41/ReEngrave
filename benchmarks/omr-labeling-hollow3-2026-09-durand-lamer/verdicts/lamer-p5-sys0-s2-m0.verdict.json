@@ -39,6 +39,18 @@
     "h": 41
    },
    "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "clefG",
+   "human_category": "clef",
+   "bbox": {
+    "x": 144,
+    "y": 174,
+    "w": 198,
+    "h": 523
+   },
+   "notes": ""
   }
  ],
  "inspected_passes": [

@@ -27,10 +27,23 @@
     "h": 99
    },
    "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "clefG",
+   "human_category": "clef",
+   "bbox": {
+    "x": 169,
+    "y": 200,
+    "w": 278,
+    "h": 758
+   },
+   "notes": ""
   }
  ],
  "inspected_passes": [
   "hollow noteheads",
-  "rests+accidentals"
+  "rests+accidentals",
+  "clefs"
  ]
 }
