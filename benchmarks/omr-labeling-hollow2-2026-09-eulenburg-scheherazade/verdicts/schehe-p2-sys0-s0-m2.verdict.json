@@ -1,7 +1,7 @@
 {
   "cell_id": "schehe-p2-sys0-s0-m2",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:01:39+00:00",
+  "labeled_at_utc": "2026-09-03T21:06:42+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -27,9 +27,22 @@
         "h": 98
       },
       "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalNaturalSmall",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 121,
+        "y": 299,
+        "w": 79,
+        "h": 223
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

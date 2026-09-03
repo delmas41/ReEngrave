@@ -1,10 +1,60 @@
 {
   "cell_id": "schehe-p4-sys0-s6-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:20:31+00:00",
+  "labeled_at_utc": "2026-09-03T21:21:05+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 400,
+        "y": 232,
+        "w": 92,
+        "h": 192
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 503,
+        "y": 362,
+        "w": 85,
+        "h": 165
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 598,
+        "y": 205,
+        "w": 86,
+        "h": 175
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 694,
+        "y": 342,
+        "w": 89,
+        "h": 167
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

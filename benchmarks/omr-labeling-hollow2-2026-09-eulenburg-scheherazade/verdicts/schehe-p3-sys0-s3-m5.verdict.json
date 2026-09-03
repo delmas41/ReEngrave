@@ -1,7 +1,7 @@
 {
   "cell_id": "schehe-p3-sys0-s3-m5",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:16:39+00:00",
+  "labeled_at_utc": "2026-09-03T21:14:38+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -15,9 +15,46 @@
         "h": 101
       },
       "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 403,
+        "y": 463,
+        "w": 94,
+        "h": 274
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 672,
+        "y": 434,
+        "w": 103,
+        "h": 298
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "restHalf",
+      "human_category": "rest",
+      "bbox": {
+        "x": 900,
+        "y": 557,
+        "w": 149,
+        "h": 63
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

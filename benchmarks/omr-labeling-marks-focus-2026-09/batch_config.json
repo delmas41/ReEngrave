@@ -1,0 +1,24 @@
+{
+  "pass_name": "rests+accidentals",
+  "note": "RESTS AND ACCIDENTALS — box every one of them in the cell, and nothing else. These are the two families the 30-epoch cloud run learned to SUPPRESS, because the earlier completion pass boxed only black noteheads and dots and left these as background. Number keys 1-5 are the rest values, 6-8 the inline accidentals, 9 the multi-measure rest bar; the rarer ones (key-signature accidentals, 32nd/64th rests, double accidentals) are clickable in the pass bar. KEY-SIGNATURE accidentals — the run between clef and meter at the head of a staff-start cell — go under keyFlat/keySharp/keyNatural, NOT the inline classes: that is DSv2's own split and the base weights were trained on it. Box each accidental of a key signature individually. Leave noteheads, slurs, ties, hairpins and dots alone — the hollow pass already drew the hollow heads and verdicts accumulate. Tab out of a cell holding none of these: that stamps the pass into inspected_passes and IS the coverage record.",
+  "classes": [
+    { "name": "restQuarter",       "label": "quarter rest" },
+    { "name": "restWhole",         "label": "whole rest (hangs UNDER line 4)" },
+    { "name": "rest8th",           "label": "8th rest" },
+    { "name": "restHalf",          "label": "half rest (sits ON line 3)" },
+    { "name": "rest16th",          "label": "16th rest" },
+    { "name": "accidentalFlat",    "label": "flat" },
+    { "name": "accidentalSharp",   "label": "sharp" },
+    { "name": "accidentalNatural", "label": "natural" },
+    { "name": "restHBar",          "label": "multi-measure rest bar" },
+    { "name": "keyFlat",           "label": "KEY-SIG flat" },
+    { "name": "keySharp",          "label": "KEY-SIG sharp" },
+    { "name": "keyNatural",        "label": "KEY-SIG natural" },
+    { "name": "rest32nd",          "label": "32nd rest" },
+    { "name": "rest64th",          "label": "64th rest" },
+    { "name": "restDoubleWhole",   "label": "breve rest" },
+    { "name": "accidentalDoubleSharp", "label": "double sharp" },
+    { "name": "accidentalDoubleFlat",  "label": "double flat" },
+    { "name": "accidentalFlatSmall",   "label": "small flat (cautionary)" }
+  ]
+}
