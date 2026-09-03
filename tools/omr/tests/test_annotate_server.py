@@ -10,6 +10,7 @@ guard the v1 markdown / .verdict.json parsing path against regressions.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -22,6 +23,7 @@ from fastapi.testclient import TestClient
 from tools.omr.annotate.server import (
     _glyph_metrics,
     _parse_batch_config,
+    _version_static_refs,
     click_box_px,
     create_app,
     snap_to_staff,
@@ -165,6 +167,97 @@ def test_cell_page_renders(client: TestClient) -> None:
 def test_cell_page_unknown_cell_is_404(client: TestClient) -> None:
     resp = client.get("/cells/does-not-exist")
     assert resp.status_code == 404
+
+
+# ---------------------------------------------------------------------------
+# Static-asset cache-busting
+# ---------------------------------------------------------------------------
+#
+# The served HTML references its css/js by bare name (/static/cell.js). A
+# browser or proxy that cached cell.js kept serving the OLD labeling UI after
+# a UI change until a manual hard refresh — a recurring papercut in live
+# labeling sessions. The server appends ?v=<content-hash> to those URLs so a
+# stale copy is never reused; these pin that it happens, that a changed file
+# moves the tag, and that assets still serve (the query mustn't break them).
+
+
+def _asset_v(html: str, name: str) -> str | None:
+    """The ?v= tag on a /static/<name> reference in served HTML, or None."""
+    m = re.search(rf'/static/{re.escape(name)}\?v=([0-9a-f]+)"', html)
+    return m.group(1) if m else None
+
+
+@pytest.mark.omr_annotate
+def test_index_html_carries_versioned_asset_urls(client: TestClient) -> None:
+    body = client.get("/").text
+    # The bare reference the existing tests assert on is still a substring,
+    # but it now carries a non-empty content-hash query string.
+    assert "/static/index.js" in body
+    assert _asset_v(body, "index.js")
+    assert _asset_v(body, "app.css")
+
+
+@pytest.mark.omr_annotate
+def test_cell_html_carries_versioned_asset_urls(client: TestClient) -> None:
+    body = client.get("/cells/synth-c0").text
+    assert "/static/cell.js" in body
+    assert _asset_v(body, "cell.js")
+    assert _asset_v(body, "app.css")
+    # app.css is one file, so both pages tag it identically.
+    assert _asset_v(body, "app.css") == _asset_v(client.get("/").text, "app.css")
+
+
+@pytest.mark.omr_annotate
+def test_versioned_asset_url_still_serves_the_file(client: TestClient) -> None:
+    """The ?v= query must not stop StaticFiles from serving the asset."""
+    tag = _asset_v(client.get("/cells/synth-c0").text, "cell.js")
+    assert tag
+    plain = client.get("/static/cell.js")
+    versioned = client.get(f"/static/cell.js?v={tag}")
+    assert plain.status_code == 200
+    assert versioned.status_code == 200
+    # Same bytes either way — the query is a cache key, not a content selector.
+    assert versioned.content == plain.content
+
+
+@pytest.mark.omr_annotate
+def test_changed_static_file_changes_the_version_tag(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A changed file yields a changed tag; unchanged content is stable.
+
+    Exercises the real regex + hash path against a throwaway _STATIC_DIR so it
+    never has to mutate the committed static files.
+    """
+    import tools.omr.annotate.server as srv
+
+    static = tmp_path / "static"
+    static.mkdir()
+    (static / "app.css").write_text("/* v1 */")
+    monkeypatch.setattr(srv, "_STATIC_DIR", static)
+
+    html = '<link rel="stylesheet" href="/static/app.css">'
+    tag1 = _asset_v(srv._version_static_refs(html), "app.css")
+    assert tag1
+    # Stable: identical content must not bust caches needlessly.
+    assert _asset_v(srv._version_static_refs(html), "app.css") == tag1
+
+    (static / "app.css").write_text("/* v2 — changed */")
+    tag2 = _asset_v(srv._version_static_refs(html), "app.css")
+    assert tag2 and tag2 != tag1
+
+
+@pytest.mark.omr_annotate
+def test_missing_static_file_is_left_untagged(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A reference whose file doesn't exist is passed through unchanged."""
+    import tools.omr.annotate.server as srv
+
+    monkeypatch.setattr(srv, "_STATIC_DIR", tmp_path)
+    out = _version_static_refs('<script src="/static/nope.js"></script>')
+    assert out == '<script src="/static/nope.js"></script>'
+    assert "?v=" not in out
 
 
 @pytest.mark.omr_annotate

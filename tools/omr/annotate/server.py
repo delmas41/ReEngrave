@@ -50,8 +50,10 @@ It MAY also contain::
 from __future__ import annotations
 
 import argparse
+import hashlib
 import io
 import json
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -1018,13 +1020,13 @@ def create_app(bench: Bench | Path) -> FastAPI:
 
     @app.get("/", response_class=HTMLResponse)
     def index_page() -> HTMLResponse:
-        return HTMLResponse(_read_static("index.html"))
+        return HTMLResponse(_version_static_refs(_read_static("index.html")))
 
     @app.get("/cells/{cell_id}", response_class=HTMLResponse)
     def cell_page(cell_id: str) -> HTMLResponse:
         if cell_id not in manifest.by_id:
             raise HTTPException(404, detail=f"unknown cell {cell_id}")
-        return HTMLResponse(_read_static("cell.html"))
+        return HTMLResponse(_version_static_refs(_read_static("cell.html")))
 
     def _class_payload(name: str) -> dict:
         cls = by_class_name.get(name, {"name": name, "category": "structural",
@@ -1566,6 +1568,46 @@ def _resolve_cell_png(
 # changes.)
 def _read_static(name: str) -> str:
     return (_STATIC_DIR / name).read_text()
+
+
+# Local /static asset URLs in the served HTML (the css/js <link>/<script>
+# tags). Stops at ? so an already-tagged URL is left alone (idempotent).
+_STATIC_REF_RE = re.compile(
+    r'(?P<attr>\b(?:href|src)=")(?P<url>/static/(?P<name>[^"?#]+))"'
+)
+
+
+def _asset_version(name: str) -> str | None:
+    """Short content hash of ``_STATIC_DIR/name``, or None if it's missing.
+
+    A content hash (not mtime) so the tag is a pure function of the bytes: a
+    changed file always changes the tag, and a git checkout that preserves an
+    old mtime can't leave it stale.
+    """
+    try:
+        data = (_STATIC_DIR / name).read_bytes()
+    except OSError:
+        return None
+    return hashlib.sha256(data).hexdigest()[:10]
+
+
+def _version_static_refs(html: str) -> str:
+    """Append ``?v=<content-hash>`` to local /static asset URLs in served HTML.
+
+    Cache-busting: a browser (or proxy) that cached cell.js under its bare name
+    kept serving the old UI after a labeling-UI change until a manual hard
+    refresh. The version query makes the URL change with the file, so a stale
+    copy is never reused. Computed per request, the same way ``_read_static``
+    re-reads the HTML, so editing a static file busts its cache on reload with
+    no server restart. A reference whose file is missing is left untouched.
+    """
+    def _sub(m: "re.Match[str]") -> str:
+        ver = _asset_version(m.group("name"))
+        if ver is None:
+            return m.group(0)
+        return f'{m.group("attr")}{m.group("url")}?v={ver}"'
+
+    return _STATIC_REF_RE.sub(_sub, html)
 
 
 # ---------------------------------------------------------------------------
