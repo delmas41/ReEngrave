@@ -707,7 +707,7 @@ def _has_human_content(state: dict) -> bool:
 
 
 def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, WindowRow], *,
-        write: bool = False, force: bool = False, score: bool = False,
+        write: bool = False, hints_only: bool = False, force: bool = False, score: bool = False,
         match: str = "step", min_strength: float = DEFAULT_MIN_STRENGTH,
         min_iou: float = DEFAULT_MIN_IOU, trust_measure_counts: bool = False,
         cells: list[str] | None = None) -> dict:
@@ -719,9 +719,11 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
     det_dir = bench / "detections"
     ver_dir = bench / "verdicts"
     pre_dir = bench / PREFILL_DIR
+    write_verdicts = write and not hints_only
     if write:
-        ver_dir.mkdir(parents=True, exist_ok=True)
         pre_dir.mkdir(parents=True, exist_ok=True)
+    if write_verdicts:
+        ver_dir.mkdir(parents=True, exist_ok=True)
     classes = pass_classes(bench)
 
     results: list[dict] = []
@@ -763,7 +765,7 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
             if existing is not None and _has_human_content(existing) and not force:
                 cp.status = "skipped"
                 cp.reason = "verdict file already carries human work (use --force)"
-            elif write:
+            elif write_verdicts:
                 vp.write_text(json.dumps(cp.verdict_state, indent=2))
                 written = True
 
@@ -788,6 +790,7 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
         "min_strength": min_strength,
         "min_iou": min_iou,
         "trust_measure_counts": trust_measure_counts,
+        "hints_only": hints_only,
         "pass_classes": sorted(classes) if classes else None,
         "totals": totals,
         "cells": results,
@@ -836,6 +839,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--windows", required=True, type=Path,
                     help="window rows (works.json shape): page ↔ reference measures, staff ↔ parts")
     ap.add_argument("--write", action="store_true", help="write verdicts/ and prefill/")
+    ap.add_argument("--write-hints", action="store_true",
+                    help="write prefill/ only (hints + queue order in the UI), leaving verdicts/ "
+                         "untouched — so a human's labels stay independent for --score")
     ap.add_argument("--dry-run", action="store_true", help="report only (the default)")
     ap.add_argument("--force", action="store_true",
                     help="overwrite verdict files that already carry human work")
@@ -859,14 +865,18 @@ def main(argv: list[str] | None = None) -> int:
     if not windows:
         print(f"no usable window rows in {args.windows}", file=sys.stderr)
         return 2
+    write = bool((args.write or args.write_hints) and not args.dry_run)
     summary = run(args.bench_dir, transcription, truth, windows,
-                  write=bool(args.write and not args.dry_run), force=args.force,
+                  write=write, hints_only=bool(args.write_hints and not args.write),
+                  force=args.force,
                   score=args.score, match=args.match, min_strength=args.min_strength,
                   min_iou=args.min_iou, trust_measure_counts=args.trust_measure_counts,
                   cells=args.cells)
     _print_summary(summary)
-    if not args.write or args.dry_run:
-        print("(dry run — nothing written; add --write)")
+    if not write:
+        print("(dry run — nothing written; add --write, or --write-hints for the UI only)")
+    elif summary["hints_only"]:
+        print("(hints only — prefill/ written, verdicts/ untouched)")
     return 0
 
 

@@ -1610,12 +1610,28 @@ toggles). Noteheads with a pitch and no duration — a head whose stem the CV
 never found, which on a scan is exactly the head worth confirming — are
 aligned as single-note events rather than dropped with the voicing.
 
-⚠️ **Not yet measured on a real batch.** `--score` exists for exactly that:
-run it on the Mahler 5 / Peters hollow batch (49 human boxes) and the
-precision it prints decides whether pre-filled `TP`s can be admitted without
-a glance. Until that number exists, treat pre-filled verdicts as a queue, not
-as labels. Guarded by `test_mxl_verdicts.py`, `test_measure_align.py`,
-`test_musicxml_truth.py`.
+**The window rows are DRAFTED, not typed** (`tools/omr/training/draft_windows.py`):
+given the batch's transcription and a hand-verified base row for an earlier
+page of the same edition, it chains the measure window page by page from the
+staves' measure counts (mode across staves, disagreement flagged) and pairs
+each system's staves with the base row's entries by instrument name, in
+order of appearance. Every drafted row carries `"confidence": "draft"` and a
+`check` list; the human confirms the first measure of each page against the
+print and fills `parts` for any staff whose instrument was not read.
+
+`--write-hints` writes `prefill/` (hints and queue order in the UI) and
+leaves `verdicts/` alone, so a batch can be labeled WITH the hints while the
+labels stay independent — which is what `--score` then measures.
+
+⚠️ **Not yet measured on a real batch.** The Mahler 5 / Peters batch cannot
+be the one: the library holds Mahler 5 movements 1-3 and the batch is the
+Adagietto (movement 4). The Brahms 1 / Breitkopf batch can — same PDF as the
+scan benchmark's `brahms-sym1-mvt1-317803-p1` row, reference on disk. The
+runbook is [docs/runbook-prefill-brahms1.md](docs/runbook-prefill-brahms1.md);
+the precision `--score` prints there decides whether pre-filled `TP`s can be
+admitted without a glance. Until that number exists, treat pre-filled
+verdicts as a queue, not as labels. Guarded by `test_mxl_verdicts.py`,
+`test_draft_windows.py`, `test_measure_align.py`, `test_musicxml_truth.py`.
 
 **Convert finished verdicts → YOLO labels:**
 ```bash

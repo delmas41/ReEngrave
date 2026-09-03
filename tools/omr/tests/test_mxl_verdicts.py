@@ -425,3 +425,10 @@ def test_server_serves_prefilled_verdicts_and_hints(bench, truth) -> None:
     # A batch with no prefill directory reports nothing, as before.
     other = cells["fx-p4-sys0-s1-m1"]
     assert "prefill_status" in other
+
+
+def test_write_hints_leaves_verdicts_untouched(bench, truth) -> None:
+    s = _run(bench, truth, _windows(), write=True, hints_only=True)
+    assert s["hints_only"] is True and s["totals"]["written"] == 0
+    assert (bench / "prefill" / "fx-p4-sys0-s0-m0.json").exists()
+    assert not list((bench / "verdicts").glob("*.json"))

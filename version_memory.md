@@ -5,6 +5,12 @@ where one exists. Update this file with every commit.
 
 ## 2026-09-02
 
+- **training: `draft_windows.py` + `--write-hints`** — window rows are drafted from the
+  transcription and a base benchmark row (measure window chained page by page, staves paired
+  to parts by instrument name, everything marked `draft` with a `check` list); hints-only
+  mode writes `prefill/` without touching `verdicts/`. Runbook for the first real-batch
+  measurement (Brahms 1 / Breitkopf): `docs/runbook-prefill-brahms1.md`. Finding: the Mahler
+  batch cannot be scored — the library has no Adagietto reference.
 - **training: MXL-guided verdict pre-fill** — `tools/omr/training/mxl_verdicts.py`
   (+ `measure_align.py`, `musicxml_truth.py`): the detector's boxes are confirmed or
   relabelled by the reference encoding through per-measure sequence alignment; unmatched
