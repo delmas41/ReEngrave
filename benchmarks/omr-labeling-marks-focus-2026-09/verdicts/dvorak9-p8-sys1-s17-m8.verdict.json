@@ -1,7 +1,7 @@
 {
   "cell_id": "dvorak9-p8-sys1-s17-m8",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:23:11+00:00",
+  "labeled_at_utc": "2026-09-03T21:30:05+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -30,6 +30,7 @@
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

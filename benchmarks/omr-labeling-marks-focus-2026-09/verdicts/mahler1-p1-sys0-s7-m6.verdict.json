@@ -1,7 +1,7 @@
 {
   "cell_id": "mahler1-p1-sys0-s7-m6",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T15:58:35+00:00",
+  "labeled_at_utc": "2026-09-03T21:30:25+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -54,6 +54,7 @@
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "cell_id": "elgar1-p100-sys0-s9-m2",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T16:20:56+00:00",
+  "labeled_at_utc": "2026-09-03T21:33:14+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -30,6 +30,7 @@
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

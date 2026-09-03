@@ -1,23 +1,48 @@
 {
-  "cell_id": "lamer-p5-sys0-s2-m0",
-  "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T16:38:21+00:00",
-  "detections": [],
-  "added_detections": [
-    {
-      "id": "H0",
-      "human_class": "noteheadWholeOnLine",
-      "human_category": "notehead",
-      "bbox": {
-        "x": 748,
-        "y": 330,
-        "w": 104,
-        "h": 61
-      },
-      "notes": ""
-    }
-  ],
-  "inspected_passes": [
-    "hollow noteheads"
-  ]
+ "cell_id": "lamer-p5-sys0-s2-m0",
+ "schema_version": 2,
+ "labeled_at_utc": "2026-09-03T16:38:21+00:00",
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 748,
+    "y": 330,
+    "w": 104,
+    "h": 61
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 345,
+    "y": 335,
+    "w": 82,
+    "h": 164
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1241,
+    "y": 578,
+    "w": 136,
+    "h": 41
+   },
+   "notes": ""
+  }
+ ],
+ "inspected_passes": [
+  "hollow noteheads",
+  "rests+accidentals"
+ ]
 }

@@ -1,6 +1,6 @@
 {
  "pass_name": "clefs",
- "note": "CLEFS ONLY. Every one of these cells is the first measure of a staff, so each prints a clef at its left edge. Box the clef glyph and nothing else. Pick the slot by WHICH CLEF IS DRAWN, not by which line it sits on \u2014 clefC covers alto/tenor/soprano and the line is read geometrically downstream. If a cell somehow shows no clef, Tab past it; that still records the sweep. These 24 cells are gathered from eight batches into one place; a merge script writes the boxes back to the batch each came from (origin.json). DSv2 also has clefCAlto/clefCTenor, but plain clefC is what v1-v4 used (8 boxes) and the line is measured downstream by clef_geometry, so stay on clefC. The little 8 under a treble clef is its OWN class (clef8) \u2014 box it separately if the print has one.",
+ "note": "CLEFS ONLY. Every cell here is the first measure of a staff, so each prints a clef at its left edge. Box the clef glyph and nothing else. Pick the slot by WHICH CLEF IS DRAWN, not which line it sits on \u2014 clefC covers alto/tenor/soprano and the line is measured downstream by clef_geometry. The little 8 under a treble clef is its own class. If a cell shows no clef, Tab past it; that still records the sweep. These cells are gathered from several batches into one place and a merge script writes the boxes back home.",
  "classes": [
   {
    "name": "clefG",

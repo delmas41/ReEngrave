@@ -1,7 +1,7 @@
 {
   "cell_id": "beet5-p4-sys1-s14-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-02T17:35:22+00:00",
+  "labeled_at_utc": "2026-09-03T21:28:27+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -16,5 +16,8 @@
       },
       "notes": ""
     }
+  ],
+  "inspected_passes": [
+    "rests+accidentals"
   ]
 }

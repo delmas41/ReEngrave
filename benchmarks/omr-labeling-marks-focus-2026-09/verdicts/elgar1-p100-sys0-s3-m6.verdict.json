@@ -1,7 +1,7 @@
 {
   "cell_id": "elgar1-p100-sys0-s3-m6",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T16:20:38+00:00",
+  "labeled_at_utc": "2026-09-03T21:33:12+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -15,9 +15,22 @@
         "h": 100
       },
       "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 908,
+        "y": 869,
+        "w": 151,
+        "h": 84
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }
