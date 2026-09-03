@@ -481,3 +481,88 @@ def test_the_bare_string_abbreviations_mahler_prints():
                             ("Vcelle. get.", "Cello"), ("Violen.", "Viola"),
                             ("Viola", "Viola"), ("Violoncelle.", "Cello")):
         assert lookup(label).instrument.name == expected, label
+
+
+def test_a_contra_qualifier_is_not_ignored_beside_a_bassoon_noun():
+    """A contrabassoon is printed as a BASSOON name with a contra- qualifier,
+    and the missing spellings did not abstain — the noun matched on its own and
+    the qualifier was dropped, so `Contra-Fagott` and `Cont. Fag.` read as
+    Bassoon and `C. Fagotto` as Bassoon at HIGH confidence, which is enough to
+    pin a staff to the wrong part.
+
+    Surfaced 2026-09-03 by `Contrafagott` on the Mahler 5 scan (scan_eval.py),
+    which was one hole in a family of about twenty."""
+    for label in ("Contrafagott", "Kontrafagott", "Contrafagotto", "Contrafagotti",
+                  "Contrafagotte", "Kontrafagotte", "Kontrafagotti",
+                  "Contra-Fagott", "Kontra-Fagott", "Contra Fagotto",
+                  "C. Fagotto", "C.Fag.", "Contrafag.", "Kontrafag.",
+                  "Contrabassoon", "Contra Bassoon", "Double Bassoon",
+                  "Contrebasson", "Contrabasson", "Contre-basson",
+                  "Cfg.", "Kfg.", "Cont. Fag.", "Contra Fg.", "Contraf."):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Contrabassoon", f"{label!r} -> {m.instrument.name}"
+
+
+def test_the_plain_bassoon_is_untouched_by_the_contra_family():
+    """The generated aliases are all LONGER than the bassoon alias inside them,
+    so the longest-first index keeps an unqualified bassoon a bassoon."""
+    for label in ("Fagotto", "Fagotti", "Fagott", "Fagotte", "Fag.", "Fg.",
+                  "2 Fagotti", "Fag. I", "Bassoon", "Basson", "Bassons",
+                  "Fagotti in B", "Fag. II."):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Bassoon", f"{label!r} -> {m.instrument.name}"
+
+
+def test_the_contra_aliases_are_derived_so_no_spelling_is_left_out():
+    """DERIVED from the bassoon's own aliases, the move `VOICE_QUALIFIERS`
+    makes: a hand-list of a cross product is a bug with a slow fuse, and this
+    one had six of its twenty-odd members.
+
+    Pinned in both directions — every generated string is a real prefix plus a
+    real bassoon stem, and every hand-listed alias the derivation replaced is
+    still in the set — so a prefix cannot be added or a stem dropped without
+    landing here."""
+    from tools.omr.instruments import (_BASSOON_ALIASES, _CONTRA_ALIASES,
+                                       _CONTRA_PREFIXES, INSTRUMENTS)
+
+    # every previously hand-listed spelling survives the derivation
+    for alias in ("contrabassoon", "double bassoon", "contrafagotto",
+                  "contrafagotte", "kontrafagott", "contrebasson",
+                  "cfag", "kfag", "c fag"):
+        assert alias in _CONTRA_ALIASES, alias
+
+    # and nothing else got in: each is prefix + optional space + bassoon stem
+    for alias in _CONTRA_ALIASES:
+        assert any(alias in (p + s + stem for s in ("", " "))
+                   for p in _CONTRA_PREFIXES for stem in _BASSOON_ALIASES), alias
+
+    cbsn = next(i for i in INSTRUMENTS if i.name == "Contrabassoon")
+    # `contraf` is a TRUNCATION, not qualifier-plus-noun, so it is listed apart
+    assert set(cbsn.aliases) == set(_CONTRA_ALIASES) | {"contraf"}
+
+
+def test_the_contra_aliases_collide_with_no_other_instrument():
+    """160 generated strings is a lot of new vocabulary, and the thing that
+    makes it safe is that not one of them is word-contained in — or contains —
+    another instrument's alias. `contrabassoon` sits inside no `contrabass`
+    match because the word-boundary index refuses a letter on either side, and
+    the longest-first order settles the rest."""
+    import re as _re
+    from tools.omr.instruments import _CONTRA_ALIASES, INSTRUMENTS
+
+    others = {a: inst.name for inst in INSTRUMENTS
+              if inst.name != "Contrabassoon" for a in inst.aliases}
+
+    def word_sub(needle: str, hay: str) -> bool:
+        return _re.search(rf"(?<![a-z]){_re.escape(needle)}(?![a-z])", hay) is not None
+
+    for alias in _CONTRA_ALIASES:
+        for other, owner in others.items():
+            # a bassoon stem inside a contra alias is the POINT — the longer
+            # alias wins — so only an exact collision or a foreign owner counts
+            if owner == "Bassoon" and alias.endswith(other):
+                continue
+            assert not word_sub(other, alias), f"{other!r} ({owner}) fires inside {alias!r}"
+            assert not word_sub(alias, other), f"{alias!r} fires inside {other!r} ({owner})"
