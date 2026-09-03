@@ -6,7 +6,7 @@
   "added_detections": [
     {
       "id": "H0",
-      "human_class": "noteheadWholeInSpace",
+      "human_class": "noteheadWholeOnLine",
       "human_category": "notehead",
       "bbox": {
         "x": 985,

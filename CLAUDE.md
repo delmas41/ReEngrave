@@ -1522,6 +1522,25 @@ the top line would put its third line 4 px out. A cell with no staff geometry
 abstains and the picker opens instead. The arithmetic lives in Python and the
 browser calls `/api/cell/{id}/snap`, so the tested code is the code that runs.
 
+⚠️ **Beyond the staff the grid anchors on MEASURED ledger rungs, not on
+extrapolation** (2026-09-03, `tools/omr/annotate/ledger_grid.py`). Ledger
+pitch is a fact about the engraving — Litolff prints rungs ~1.10× the staff
+spacing, Peters/Breitkopf/Simrock ~0.975×, measured over the 357
+hollow-campaign labels — so extrapolating at the staff spacing mis-suggested
+**38–39% of 2nd-ledger-and-beyond variants against 4.6% inside the staff**
+(Sean's reported defect, and it also planted at least 2 silently-wrong labels
+in v8). The endpoint now reads the rungs off the cell image at the clicked x
+(3.4 ms; bands of long ink spans, white gaps up to 0.9 spaces bridged because
+a whole note's counter splits the one rung printed THROUGH it) and rebuilds
+the outside grid on them: 2nd-ledger agreement 57.4% → 70.2% with the
+in-staff grid untouched (0 changes across all 214 in-staff labels, pinned by
+`test_ledger_snap.py`). A click past an incomplete ladder's reach falls back
+to the old extrapolation — a lone rung steering a deep grid measured worse
+than the constant. A corrected constant pitch cannot work (both signs of
+publisher spread) and wing-recentring measured worse both ways it was tried;
+both are recorded refused in
+[benchmarks/omr-snap-ledger-2026-09/FINDINGS.md](benchmarks/omr-snap-ledger-2026-09/FINDINGS.md).
+
 **The multi-pass campaign rule.** A campaign sweeps the **same cell set**
 several times — whites, then rests, then accidentals — and the set becomes
 complete across passes, not within one. So:
@@ -1596,7 +1615,7 @@ python3 -m tools.omr.training.mxl_verdicts ... --score            # against huma
 
 | the reference and the reading say | verdict written |
 |---|---|
-| half note ↔ `noteheadBlackOnLine` | `WRONG_CATEGORY` → `noteheadHalfOnLine` (position and size kept) |
+| half note ↔ `noteheadBlackOnLine` | `WRONG_CATEGORY` → `noteheadHalfOnLine` (size kept; on an EXACT pair the on-line/in-space variant follows the reference's own position — 2026-09-03, fixed 2 of 3 flips, zero regressions) |
 | quarter ↔ `noteheadBlackInSpace` | `TP` |
 | a head the batch has no detection for | an added box `M<n>` (a draw-from-scratch batch gets its labels this way) |
 | a detected head the reference lacks | left **pending**, annotated — the human decides |
@@ -1714,16 +1733,73 @@ reaches 37/37 in-sample at 0.74 coverage; that is a ceiling demonstration on
 n=50 biased cells, not a claim — the out-of-sample test is a random
 completion pass scored by the same probe.
 
+**Shipped into the pre-fill 2026-09-03 (Phase A):** the variant rule and
+size veto above, a tie-chain collapse (below), and an **admission tier on
+every decision** — `admission: labels|queue` with `admission_reasons`
+(near match, variant corrected, grace-sized, or the cell-level demotion: any
+flip demotes its whole cell), priced by `--score` as a per-tier table.
+Six-cell A/B: exact **0.84 → 0.88**, kind unchanged, labels tier
+**22/22 = 1.000** at 0.44 coverage — stricter than the probe's 0.74 because
+pre-fill time has no human calibration. ⚠️ **The tiers are metadata**: what
+is written does not change, and nothing is auto-admitted until the random
+completion pass prices the tiers out-of-sample.
+
+⚠️ **MEASURED 2026-09-03 (Phase B): pre-fill precision really is DOWNSTREAM
+of recognition — 0.880 → 0.961 exact from a change of WEIGHTS alone**, no
+pre-fill code touched (`rerun_on_weights.sh`, one arm per checkpoint). The
+batch's committed transcription was made with the pre-hollow
+`imgsz2048-ft-30ep`; re-reading its pages with scan production
+(`hollow-ft-2026-09-03`) also takes kind precision to 1.000, the trustworthy
+`labels` tier from 22 boxes to **44 of ~50**, batch CONFLICTs 4 → **0** and
+unexplained "extra" hints 200 → **58**. ⚠️ Noteheads fall 4260 → 2419 on the
+same pages, and the control that proves this is junk rather than loss is the
+MISSING-hint count — reference notes the reading never found — which falls
+too (20 → 15), while segmentation stays byte-identical. **A batch's hints
+age with the weights**: this one's are a checkpoint stale, and refreshing is
+`--write-hints`, which never touches `verdicts/` or `detections/`.
+
+**Phase C is registered and waiting on labels**
+([PHASE_C_PROTOCOL.md](benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md)):
+25 randomly drawn cells at seed 20260903, with each one's pre-fill status
+and box count recorded **before** any of them was labeled
+([PHASE_C_CELLS.json](benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json)),
+so the population and the prediction are both fixed in advance. Label in
+rank order — **stopping early stays valid**, because the prefix of a shuffle
+is a uniform sample — and 15 cells is ~50 boxes.
+
+⚠️ **A pass whose labels will SCORE the pre-fill must be run BLIND**
+(`annotate.server --blind`, added 2026-09-03): scoring against a human who
+was shown the hints measures agreement with what the human was told. The UI
+draws hints **by default** and every `Tab` is a page load, so the `h` toggle
+resets on each cell — "just press `h`" is not a protocol. `--blind`
+withholds the hints, `prefill_status` AND the queue order, that last one
+because "most left for me first" tells the human which cells the pre-fill
+found hard. Verdicts are untouched.
+
+⚠️ **Every cell of that sample already HAS a verdict file** — from the
+hollow sweep — so an unreached cell is not empty, it holds hollow boxes and
+nothing else. Score with `--score-inspected-for completion` (and the probe's
+`--inspected-for`), or a wider score charges each correctly pre-filled black
+head as a false positive and reports which pass was run. Both tools then
+score exactly the cells that are finished, at any point mid-labeling.
+
 ⚠️ **The five CONFLICTs were then reviewed and NONE is a tremolo
 abbreviation** — the handoff's hypothesis is corrected in place. Three are
 the reference's TIE-SPLITS (one printed dotted-half encoded as tied
 fragments; the human's hollow boxes were already right), two are accidental
 glyphs (a flat's loop, a natural) the detector misread as hollow heads over
-empty-and-correct human verdicts. So a within-measure tie chain needs the
-same reconcile-by-the-reading collapse tremolo already gets — collapse to
-one head of the summed value only where the reading placed one head — which
-turns all three into confirmations. The two accidental fakes are the same
-family as the probe's phantom TPs: false detections the alignment can claim.
+empty-and-correct human verdicts. So a within-measure tie chain now gets the
+same reconcile-by-the-reading collapse tremolo has
+(`measure_align.collapse_tie_chains`, 2026-09-03): a chain collapses to one
+head of the summed value only where the reading placed at most one head at
+its position, may begin tied in from the previous bar and end tied onward,
+and abstains where the total fits no single written value (2.5 beats IS
+printed as tied heads). Measured on the batch: `s3-m6` resolved (conflict
+and both blank-paper hints gone); `s2-m2` STAYS a conflict because the
+reading shows two heads at the position — a duplicate detection, the gate's
+honest answer until the re-ship cleans it up. The two accidental fakes are
+the same family as the probe's phantom TPs: false detections the alignment
+can claim.
 [benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md](benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md).
 
 ⚠️ **Not yet measured beyond one work.** The Mahler 5 / Peters batch cannot

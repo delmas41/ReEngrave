@@ -1,6 +1,6 @@
 {
   "version_name": "v8-2026-09-02-hollow2-5pub",
-  "created_utc": "2026-09-03T03:53:19+00:00",
+  "created_utc": "2026-09-03T19:57:44+00:00",
   "labeler": "sean",
   "description": "hollow noteheads (194: 102 half + 92 whole) across 5 publishers (Litolff/Peters/Eulenburg/Breitkopf/Simrock) + audited model-completed black noteheads/dots (198)",
   "source": {
@@ -1352,6 +1352,7 @@
       "n_fp_dropped": 0,
       "classes_written": [
         "augmentationDot",
+        "noteheadWholeInSpace",
         "noteheadWholeOnLine"
       ]
     },
@@ -1367,7 +1368,7 @@
         "noteheadBlackInSpace",
         "noteheadBlackOnLine",
         "noteheadHalfInSpace",
-        "noteheadWholeOnLine"
+        "noteheadWholeInSpace"
       ]
     },
     {
@@ -1447,7 +1448,7 @@
       "n_fp_dropped": 0,
       "classes_written": [
         "augmentationDot",
-        "noteheadWholeInSpace"
+        "noteheadWholeOnLine"
       ]
     },
     {

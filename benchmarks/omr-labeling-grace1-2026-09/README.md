@@ -40,3 +40,15 @@ Cut with `select_cells_orchestral` (600 dpi default); cell PNGs are
 gitignored and live in the worktree that cut them
 (`weight-generalization-publishers-548504`); `recut_cells.py` can
 re-materialize them from `cells.json` if frames still agree.
+
+## RESULT (2026-09-03, same day): 0 grace notes in 104 cells — sweep complete
+
+Sean swept every cell: **103 inspected-empty verdicts, 0 boxes.** The zero is
+the sampling's, not the works': the references place Mahler 5 mvt1's 273
+graces in just **65 of 415 measures** (dense runs mm.28–30, 67–68, 90–101,
+278–289; heaviest parts Kleine Trommel 53, Violoncelle 29, Bässe 28) and
+Mozart 40 mvt1's 27 in **six measures** (100–101, 298…). Eight random cells
+per ~150-cell page is a 3–5% sample against ornaments concentrated in 2–3
+staves of a few measures — expected hits ≈ 0. Superseded by
+`omr-labeling-grace2-2026-09`: cut EVERY cell on the candidate pages, locate
+the target measures by cumulative measure count, serve exactly those cells.

@@ -16,7 +16,7 @@ computes (or can derive from what it holds):
 
 It recomputes the pre-fill LIVE through mxl_verdicts' own functions and
 replicates score_cell's greedy IoU matching per box, so the pooled numbers
-must reproduce the recorded --score run exactly (asserted).  Read-only.
+must match a live --score run of the same cells.  Read-only.
 
 Run from the repo root:
     python3 benchmarks/omr-prefill-admission-2026-09/probe_admission.py
@@ -66,17 +66,38 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--bench-dir", type=Path, default=DEFAULT_BENCH)
     ap.add_argument("--cells", nargs="*", default=COMPLETION_CELLS)
+    ap.add_argument("--transcription", type=Path, default=None,
+                    help="the reading to score (default: the batch's own). Which "
+                         "boxes exist to be scored moves with the weights — see "
+                         "FINDINGS.md 'Phase B' — so score against the same "
+                         "reading a sample was registered against.")
+    ap.add_argument("--inspected-for", default=None, metavar="PASS",
+                    help="skip cells whose verdict does not record this pass in "
+                         "inspected_passes. ⚠️ Use it whenever the cell list may "
+                         "contain cells that were only swept for a NARROWER pass: "
+                         "their verdicts hold that pass's boxes and nothing else, "
+                         "so scoring every class against them charges each "
+                         "correctly pre-filled box of another kind as a false "
+                         "positive — the same trap mxl_verdicts refuses outright.")
     args = ap.parse_args()
     bench = args.bench_dir
 
-    transcription = json.loads((bench / "transcription.json").read_text())
+    tpath = args.transcription or (bench / "transcription.json")
+    transcription = json.loads(tpath.read_text())
     truth = mv.load_truth(bench / "reference.mxl")
     windows = mv.load_windows(bench / "windows.json")
     manifest = {e["cell_id"]: e for e in json.loads((bench / "cells.json").read_text())}
     ctx_by_key = mv.index_transcription(transcription)
 
     rows: list[dict] = []
+    skipped: list[str] = []
     for cid in args.cells:
+        if args.inspected_for:
+            vp = bench / "verdicts" / f"{cid}.verdict.json"
+            state = json.loads(vp.read_text()) if vp.exists() else {}
+            if args.inspected_for not in (state.get("inspected_passes") or []):
+                skipped.append(cid)
+                continue
         entry = manifest[cid]
         key = (entry.get("page"), entry.get("system_index"),
                entry.get("staff_index"), entry.get("measure_index"))
@@ -147,9 +168,15 @@ def main() -> int:
     n = len(rows)
     ex = sum(1 for r in rows if r["exact"])
     kd = sum(1 for r in rows if r["kind"])
-    nh = "?"
+    if skipped:
+        print(f"skipped {len(skipped)} cell(s) not swept for {args.inspected_for!r}: "
+              + ", ".join(skipped))
+    if not rows:
+        print("no cells to score — every cell given was skipped or holds no pre-fill.")
+        return 0
     print(f"reproduction: prefill={n} exact={ex} kind={kd} "
-          f"(the recorded 2026-09-03 run: 50 / 42 / 47)")
+          f"(recorded 2026-09-03 BEFORE the reference-variant fix: 50 / 42 / 47; "
+          f"44 exact once it landed)")
     print()
     print("errors (not exact):")
     for r in rows:

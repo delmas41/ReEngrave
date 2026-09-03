@@ -38,10 +38,23 @@ import numpy as np
 
 # Head-shaped ink, in staff spaces (the measurement band is deliberately
 # wider than the decision bands so --measure can SEE both populations).
-FILL_MIN = 0.55          # solid oval; slur/beam fragments and brackets fail
-ASPECT_MIN, ASPECT_MAX = 0.95, 2.4
-MEASURE_H = (0.30, 1.40)
-GRACE_H = (0.45, 0.78)   # grace ~0.6x of a 1.0-space head; floor cuts dots
+#
+# CALIBRATED 2026-09-03 against the first 30 labeled grace heads
+# (benchmarks/omr-labeling-grace2-2026-09, Mahler 5 / Peters): the ink
+# components under Sean's boxes measure h 0.56-1.34 spaces (the >1.0 tail is
+# beamed grace RUNS — the opening cannot detach a small head from its thin
+# grace stem, so a run arrives as ONE component), aspect 0.54-1.44 (mostly
+# BELOW 1: taller than wide, same merging), fill 0.53-0.85. The original
+# convention bands (0.45-0.78 / aspect >= 0.95) passed only 2 of the 30.
+# Chosen by cell-level confusion against those labels (variant A of three
+# measured): GRACE_H (0.50, 0.95) + aspect >= 0.50 scores RECALL 1.00 (all
+# 15 labeled grace cells fire) at precision 0.19; the original convention
+# bands scored recall 0.53. Widening past 0.95 only adds false positives —
+# cells holding a merged run always also hold a <= 0.95 component.
+FILL_MIN = 0.50          # measured min 0.53
+ASPECT_MIN, ASPECT_MAX = 0.50, 2.4   # merged head+stem is taller than wide
+MEASURE_H = (0.30, 1.60)
+GRACE_H = (0.50, 0.95)   # single grace heads measure 0.56-0.94 here
 FULL_H = (0.85, 1.30)
 HOST_MAX_SPACES = 3.0    # a grace head must stand near a full head
 
