@@ -68,7 +68,10 @@ changes week to week.
 - Tremolo and tremolando abbreviations are reconciled by the reading (one
   head for a repeated pitch, two for an alternating pair) and a hollow-vs-black
   disagreement is routed to the human as a `CONFLICT` — the committed Brahms
-  hints carry both (5 conflicts on 4 cells). A batch checked out on a machine
+  hints carry both (5 conflicts on 4 cells). Measured against a complete
+  human pass on six cells: **precision 0.84**, so the pre-fill is a queue
+  rather than labels for now — six of its eight errors are detection box
+  placement, which means its accuracy rises as recognition does. A batch checked out on a machine
   that did not cut it has no cell images (they are gitignored) and shows a
   blank canvas; `tools/omr/annotate/recut_cells.py` re-renders them from the
   manifest, refusing anything whose frame does not match. Where the work stands and

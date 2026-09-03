@@ -1657,7 +1657,39 @@ noteheads, so every correctly pre-filled black head would be charged as a false
 positive. So the deciding number needs a handful of cells labeled COMPLETELY,
 then `--score --score-classes all --score-inspected-for <that pass>`.
 
-⚠️ **Not yet measured on a real batch.** The Mahler 5 / Peters batch cannot
+⚠️ **MEASURED 2026-09-03: precision 0.84 exact / 0.94 kind**, over 50
+pre-filled boxes against 94 human ones, on six Brahms cells labeled
+COMPLETELY by hand. Read precision, never recall — the pre-fill proposes only
+noteheads and a complete human pass boxes slurs, hairpins and rests too. The
+eight errors are **concentrated, not diffuse**: 2 grace notes, 3 on-line /
+in-space flips and 3 unmatched, with six of the eight in two of the six cells.
+Excluding the grace ceiling, 44/50 = 0.88. ⚠️ The sample is BIASED — those
+cells were chosen as the ones the pre-fill decided most, i.e. the densest bars,
+where alignment slips most; n=50 gives roughly a 0.71–0.93 interval.
+
+**So pre-filled TPs are a queue, not labels — today.** That is a statement
+about the current detector, not about the approach: **six of the eight errors
+are the DETECTION's box placement**, which the pre-fill inherits and cannot
+improve, so pre-fill precision is downstream of recognition and should rise
+with it untouched.
+
+⚠️ **A grace note cannot be labelled from either source, and this is a
+ceiling rather than a bug.** The transcription holds **0 `Small` detections on
+any page** — a grace head is read as an ordinary notehead — and the reference
+holds **0 grace notes in 28,579**, because this encoding does not record them.
+Two plausible fixes were tried and refuted: `expected_head_class` already
+preserves the detector's size, and including grace notes in the alignment
+changed nothing and was reverted. ⚠️ Note that `truth_tokens`' docstring
+justifies skipping grace notes because "the detector labels them `*Small`" —
+**false on a scan**, and it makes the skip actively harmful the moment a
+reference DOES carry `<grace/>`, since the grace detection then pairs with the
+next real note. The untried route is geometry: a grace head is smaller than
+its neighbours (41×38 against 51–83 in the same cell).
+
+Full reading, with the ideas for widening this:
+[docs/handoff-2026-09-03-prefill-measured.md](docs/handoff-2026-09-03-prefill-measured.md).
+
+⚠️ **Not yet measured beyond one work.** The Mahler 5 / Peters batch cannot
 be the one: the library holds Mahler 5 movements 1-3 and the batch is the
 Adagietto (movement 4). The Brahms 1 / Breitkopf batch can — same PDF as the
 scan benchmark's `brahms-sym1-mvt1-317803-p1` row, reference on disk. The

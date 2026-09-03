@@ -7,6 +7,30 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-03 — pre-fill / labeling-system work (this branch)
 
+- **the pre-fill has a number: precision 0.84 exact / 0.94 kind** — Sean labeled six Brahms
+  cells COMPLETELY by hand (every symbol, not just hollow heads) and `--score --score-classes
+  all` scored 50 pre-filled boxes against 94 human ones, 42 exactly right. Recall (0.447) is
+  meaningless and always will be: the pre-fill proposes only noteheads. Diagnosed box by box,
+  the 8 errors are **concentrated, not diffuse** — 2 grace notes (IoU 0.73-0.80, right place,
+  wrong size), 3 on-line/in-space flips (IoU 0.31-0.41, box half a notehead off) and 3
+  unmatched, with six of the eight inside two of the six cells; excluding grace, 44/50 = 0.88.
+  ⚠️ The sample is BIASED by my own cell choice — ranked by how much the pre-fill decided, so
+  the densest bars, where alignment slips most; n=50 gives ~0.71-0.93 at 95%. **Verdict: a
+  queue, not labels, today** — and the structural finding is that **six of eight errors are the
+  DETECTION's placement**, which the pre-fill inherits, so its precision is downstream of
+  recognition and should rise with the imgsz-2048 re-ship untouched.
+- **grace notes are a ceiling, not a bug, and two plausible fixes were refuted by measurement**
+  — the transcription holds **0 `Small` detections on any page** and the reference **0 grace
+  notes in 28,579**, so neither source knows. First guess (the pre-fill overwrote a `Small` the
+  detector gave) is false: `expected_head_class` already preserves size. Second guess
+  (`include_grace=True` so `<grace/>` supplies it) was implemented, **changed nothing**, and was
+  **reverted** rather than kept — it alters alignment for every cell and bought nothing
+  measurable. ⚠️ Recorded because `truth_tokens` justifies the skip on the grounds that "the
+  detector labels them `*Small`", which is FALSE on a scan and makes the skip harmful on the
+  first reference that does carry grace notes. Untried route: geometry — a grace head is
+  smaller than its neighbours (41×38 against 51-83 in the same cell).
+  Full writeup, the checklist state and six ideas for widening this:
+  `docs/handoff-2026-09-03-prefill-measured.md`.
 - **`--score` can now be widened past the batch's own pass, and refuses to be widened
   misleadingly** — chasing the open checklist item "can pre-filled TPs be admitted without a
   glance". Running `--score` on the Brahms batch answers **precision 0.60, recall 0.333 — over
