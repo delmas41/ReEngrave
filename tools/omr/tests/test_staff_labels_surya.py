@@ -347,3 +347,61 @@ def test_keep_alive_is_off_unless_asked(monkeypatch):
         assert reloaded.KEEP_ALIVE is False
     finally:
         importlib.reload(staff_labels_surya)
+
+
+# ── Surya's LaTeX markup for a stacked part number ──────────────────────────
+
+class TestPlainText:
+    """Surya writes a STACKED pair of numerals as a LaTeX fraction, because a
+    stack is what the page prints. Breitkopf's Brahms 1 puts the horn part
+    numbers "1." over "2." beside "in C" and the reader returns
+    `in C \\frac{1}{2}` — surfaced 2026-09-03 by scan_eval.py.
+
+    The digits are part numbers and `instruments.normalize_label` already drops
+    those; the CONTROL WORD is not a number and survives into the matched
+    string, where it dilutes `coverage` and demotes a correct read.
+    """
+
+    def test_a_stacked_part_number_stops_demoting_the_instrument_beside_it(self):
+        assert staff_labels_surya._plain_text("Hörner in C  \\frac{1}{2}") \
+            == "Hörner in C 1 2"
+        for markup, plain in (("Clar. \\frac{1}{2}", "Clar. 1 2"),
+                              ("Fag. \\dfrac{1}{2}", "Fag. 1 2"),
+                              ("Fl. \\tfrac{3}{4}", "Fl. 3 4")):
+            assert staff_labels_surya._plain_text(markup) == plain
+            before, after = lookup(markup), lookup(plain)
+            assert before.instrument.name == after.instrument.name
+            assert before.confidence == "medium" and after.confidence == "high"
+
+    def test_ocr_damage_inside_the_braces_is_folded_too(self):
+        """`\\frac{3｜4}` — one brace pair and a fullwidth bar for the rule. The
+        markup is removed and the digits kept as plain tokens rather than the
+        numerator/denominator split being relied on."""
+        assert staff_labels_surya._plain_text("in Es  \\frac{3｜4}") == "in Es 3 4"
+        # ...and it still names no instrument, which is the right answer: the
+        # noun is printed once, braced across the pair of horn staves.
+        assert lookup("in Es 3 4") is None
+
+    def test_a_string_without_markup_is_returned_untouched(self):
+        """The braces and bars are stripped only where the control word is,
+        because `instruments._OCR_FOLD` reads a `|` as an `i` — a part number
+        `II.` comes back as `||.` often enough that deleting bars everywhere
+        would cost more than the markup does."""
+        for text in ("Tr. Alt.", "Vl. II.", "Cor. || .", "2 Clarinetti in B",
+                     "Vcelle. get.", "{Fl.}"):
+            assert staff_labels_surya._plain_text(text) == text
+
+    def test_the_fold_is_applied_to_what_the_reader_returns(self, monkeypatch):
+        """Folding at the boundary, not at the call site, is what makes the raw
+        `StaffLabel.text` a human reads back the label rather than the markup."""
+        monkeypatch.setattr(staff_labels_surya, "interpreter", lambda: "/bin/false")
+
+        def fake_run(*_args, **_kwargs):
+            return types.SimpleNamespace(
+                returncode=0, stderr="",
+                stdout='{"systems": [{"labels": {"3": "H\\u00f6rner in C \\\\frac{1}{2}"}}]}')
+
+        monkeypatch.setattr(staff_labels_surya.subprocess, "run", fake_run)
+        crop = types.SimpleNamespace(png=b"", staff_indices=[3], tick_ys=(1.0,),
+                                     gutter_px=0)
+        assert staff_labels_surya.read_crops_surya([crop]) == [{3: "Hörner in C 1 2"}]
