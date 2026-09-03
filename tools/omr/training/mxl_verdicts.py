@@ -60,6 +60,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -202,25 +203,26 @@ def index_transcription(result: dict) -> dict[tuple[int, int, int, int], dict]:
     return out
 
 
-def measures_before(page: dict, system_index: int, staff_index: int) -> int:
-    """Measures this staff ordinal has printed in EARLIER systems of the page."""
-    n = 0
-    for sys_ in page.get("systems", []):
-        if sys_.get("system_index", 0) >= system_index:
-            continue
-        for staff in sys_.get("staves", []):
-            if staff.get("staff_index") == staff_index:
-                n += staff.get("n_measures", len(staff.get("measures", [])))
-    return n
+def system_measure_count(system: dict) -> int:
+    """The bar count a system prints — the mode across its staves. Every
+    staff of a system spans the same bars; one that reads differently has a
+    barline error."""
+    counts = [st.get("n_measures", len(st.get("measures", []))) for st in system.get("staves", [])]
+    if not counts:
+        return 0
+    return Counter(counts).most_common(1)[0][0]
 
 
-def measures_on_page(page: dict, staff_index: int) -> int:
-    n = 0
-    for sys_ in page.get("systems", []):
-        for staff in sys_.get("staves", []):
-            if staff.get("staff_index") == staff_index:
-                n += staff.get("n_measures", len(staff.get("measures", [])))
-    return n
+def measures_before(page: dict, system_index: int) -> int:
+    """Bars printed in EARLIER systems of the page. `staff_index` is
+    numbered across the page, so this never follows a staff index from one
+    system into the next — it sums each earlier system's own count."""
+    return sum(system_measure_count(sys_) for sys_ in page.get("systems", [])
+               if sys_.get("system_index", 0) < system_index)
+
+
+def measures_on_page(page: dict) -> int:
+    return sum(system_measure_count(sys_) for sys_ in page.get("systems", []))
 
 
 # --------------------------------------------------------------------------
@@ -423,23 +425,34 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     sys_idx = system.get("system_index", 0)
     staff_idx = staff.get("staff_index", 0)
     specs = row.staves_for_system(sys_idx)
-    n_staves = len(system.get("staves", []))
+    sys_staves = system.get("staves", [])
+    n_staves = len(sys_staves)
     if len(specs) != n_staves:
         return CellPrefill(cell_id, "abstained",
                            f"system {sys_idx} has {n_staves} staves, the window row names {len(specs)}")
-    if staff_idx >= len(specs) or not specs[staff_idx].parts:
-        return CellPrefill(cell_id, "abstained", f"staff {staff_idx} names no parts")
-    spec = specs[staff_idx]
+    # `staff_index` is numbered across the PAGE; the row's staff list is
+    # top-to-bottom WITHIN the system, so join on the position in the system.
+    position = next((i for i, st in enumerate(sys_staves) if st is staff), None)
+    if position is None or position >= len(specs) or not specs[position].parts:
+        return CellPrefill(cell_id, "abstained",
+                           f"staff {staff_idx} (position {position} in system {sys_idx}) names no parts")
+    spec = specs[position]
 
+    sys_count = system_measure_count(system)
+    own_count = staff.get("n_measures", len(staff.get("measures", [])))
+    if own_count != sys_count and not trust_measure_counts:
+        return CellPrefill(cell_id, "abstained",
+                           f"staff reads {own_count} bars, its system reads {sys_count}",
+                           parts=list(spec.parts))
     expected = row.n_measures
-    if expected is not None and not row.systems:
-        got = measures_on_page(page, staff_idx)
+    if expected is not None:
+        got = measures_on_page(page)
         if got != expected and not trust_measure_counts:
             return CellPrefill(cell_id, "abstained",
-                               f"staff reads {got} measures on the page, window has {expected}",
+                               f"page reads {got} bars across its systems, window has {expected}",
                                parts=list(spec.parts))
 
-    number = row.first_ref_measure + measures_before(page, sys_idx, staff_idx) \
+    number = row.first_ref_measure + measures_before(page, sys_idx) \
         + int(measure.get("measure_index", 0))
     if row.last_ref_measure is not None and number > row.last_ref_measure:
         return CellPrefill(cell_id, "abstained",

@@ -264,7 +264,7 @@ def test_measure_count_disagreement_abstains_unless_trusted(bench, truth) -> Non
     rows = _windows(first=1, last=4)   # window says 4 bars, staff 0 reads 3
     s = _run(bench, truth, rows, write=True)
     st0 = [c for c in s["cells"] if "-s0-" in c["cell_id"]]
-    assert all(c["status"] == "abstained" and "measures" in c["reason"] for c in st0)
+    assert all(c["status"] == "abstained" and "window has 4" in c["reason"] for c in st0)
     s2 = _run(bench, truth, rows, write=True, trust_measure_counts=True)
     st0 = [c for c in s2["cells"] if "-s0-" in c["cell_id"]]
     assert all(c["status"] == "prefilled" for c in st0)
@@ -432,3 +432,51 @@ def test_write_hints_leaves_verdicts_untouched(bench, truth) -> None:
     assert s["hints_only"] is True and s["totals"]["written"] == 0
     assert (bench / "prefill" / "fx-p4-sys0-s0-m0.json").exists()
     assert not list((bench / "verdicts").glob("*.json"))
+
+
+def test_two_systems_number_measures_across_the_page(bench, truth) -> None:
+    """A second system's staves are numbered after the first's on the page;
+    their measure numbers continue from the first system's bar count."""
+    tr = _transcription()
+    page = tr["pages"][0]
+    first = page["systems"][0]
+    # Split staff 0's three measures: measures 0-1 in system 0, measure 2
+    # alone in system 1 as page-level staff 2.
+    s0 = first["staves"][0]
+    tail = s0["measures"][2:]
+    s0["measures"] = s0["measures"][:2]
+    s0["n_measures"] = 2
+    s1 = first["staves"][1]
+    s1["measures"] = s1["measures"][:2]
+    s1["n_measures"] = 2
+    for m in tail:
+        m["measure_index"] = 0
+    page["systems"].append({"system_index": 1, "staves": [
+        {"staff_index": 2, "clef": "treble", "n_measures": 1, "measures": tail},
+        {"staff_index": 3, "clef": "treble", "n_measures": 1,
+         "measures": [_measure(0, [])]},
+    ]})
+    cells = json.loads((bench / "cells.json").read_text())
+    cells.append(dict(_cell("fx-p4-sys1-s2-m0", 2, 0), system_index=1))
+    (bench / "cells.json").write_text(json.dumps(cells))
+    (bench / "detections" / "fx-p4-sys1-s2-m0.json").write_text(
+        json.dumps({"cell_id": "fx-p4-sys1-s2-m0", "detections": []}))
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=True)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys1-s2-m0")
+    assert c["status"] == "prefilled" and c["measure_number"] == 3
+    v = _verdict(bench, "fx-p4-sys1-s2-m0")
+    assert {a["human_class"] for a in v["added_detections"]} == {"noteheadHalfInSpace"}
+
+
+def test_staff_disagreeing_with_its_system_abstains(bench, truth) -> None:
+    tr = _transcription()
+    st = tr["pages"][0]["systems"][0]["staves"][1]
+    st["measures"] = st["measures"][:2]
+    st["n_measures"] = 2                      # staff 1 reads 2 bars, the system 3
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=False)
+    by = {c["cell_id"]: c for c in s["cells"]}
+    assert by["fx-p4-sys0-s1-m0"]["status"] == "abstained"
+    assert "its system reads 3" in by["fx-p4-sys0-s1-m0"]["reason"]
+    assert by["fx-p4-sys0-s0-m0"]["status"] == "prefilled"

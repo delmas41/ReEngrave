@@ -5,6 +5,11 @@ where one exists. Update this file with every commit.
 
 ## 2026-09-02
 
+- **training: page-global staff numbering** — `transcribe` numbers `staff_index` across the
+  page; the draft summed bars per index across systems (page 1 of the Brahms batch came out
+  as 7 bars instead of 15) and the pre-fill joined a staff to the row by index. Both now go by
+  position within the system; a full-lineup system pairs by position with the reader's word as
+  a cross-check only. Found on Sean's first real draft of the Brahms 1 batch.
 - **training: `draft_windows.py` + `--write-hints`** — window rows are drafted from the
   transcription and a base benchmark row (measure window chained page by page, staves paired
   to parts by instrument name, everything marked `draft` with a `check` list); hints-only

@@ -1612,12 +1612,20 @@ aligned as single-note events rather than dropped with the voicing.
 
 **The window rows are DRAFTED, not typed** (`tools/omr/training/draft_windows.py`):
 given the batch's transcription and a hand-verified base row for an earlier
-page of the same edition, it chains the measure window page by page from the
-staves' measure counts (mode across staves, disagreement flagged) and pairs
-each system's staves with the base row's entries by instrument name, in
-order of appearance. Every drafted row carries `"confidence": "draft"` and a
-`check` list; the human confirms the first measure of each page against the
-print and fills `parts` for any staff whose instrument was not read.
+page of the same edition, it chains the measure window page by page: a page's
+bars are the SUM of its systems' counts (each system's count is the mode
+across its staves, and a staff that disagrees with its own system is
+flagged). A system printing as many staves as the base row is the full
+lineup and is paired by POSITION — the margin reader's word is only a
+cross-check there, because it turns `Kontrafagott` into `Bassoon` and
+`Hörner in Es` into `Trumpet` on the Breitkopf Brahms — while a shorter
+system (tacet staves suppressed) is paired by instrument name in order of
+appearance. ⚠️ `staff_index` is numbered across the PAGE, not per system
+(system 1's staves continue the count), so both the draft and the pre-fill
+join a staff to the row by its position within its system, never by index.
+Every drafted row carries `"confidence": "draft"` and a `check` list; the
+human confirms the first measure of each page against the print and fills
+`parts` for any staff of a shorter system whose instrument was not read.
 
 `--write-hints` writes `prefill/` (hints and queue order in the UI) and
 leaves `verdicts/` alone, so a batch can be labeled WITH the hints while the

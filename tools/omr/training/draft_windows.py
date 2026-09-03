@@ -72,22 +72,62 @@ def _base_row(path: Path, row_id: str | None, work_id: str | None) -> dict:
     return row
 
 
-def _page_measure_count(page: dict) -> tuple[int, dict[int, int]]:
-    """Measures on the page per staff ordinal (summed across systems), and
-    the mode — the count most staves agree on."""
-    per_staff: Counter[int] = Counter()
+def system_measure_count(system: dict) -> int:
+    """The bar count a system prints — the mode across its staves. A system
+    is one row of bars, so every staff in it has the same count; a staff
+    that differs has a barline error, not a different length."""
+    counts = [st.get("n_measures", len(st.get("measures", []))) for st in system.get("staves", [])]
+    if not counts:
+        return 0
+    return Counter(counts).most_common(1)[0][0]
+
+
+def _page_measure_count(page: dict) -> tuple[int, list[str]]:
+    """Measures on the page = the sum of its systems' counts. `staff_index`
+    is numbered across the PAGE (system 1's staves continue the count), so
+    counts are never summed per staff across systems. Returns the total and
+    the staves that disagree with their own system."""
+    total = 0
+    disagree: list[str] = []
     for sys_ in page.get("systems", []):
+        mode = system_measure_count(sys_)
+        total += mode
         for st in sys_.get("staves", []):
-            per_staff[st.get("staff_index", 0)] += st.get("n_measures", len(st.get("measures", [])))
-    if not per_staff:
-        return 0, {}
-    mode = Counter(per_staff.values()).most_common(1)[0][0]
-    return mode, dict(per_staff)
+            n = st.get("n_measures", len(st.get("measures", [])))
+            if n != mode:
+                disagree.append(f"system {sys_.get('system_index')} staff {st.get('staff_index')} "
+                                f"reads {n} bars, its system {mode}")
+    return total, disagree
 
 
 def _draft_system(staves: list[dict], base_staves: list[dict]) -> tuple[list[dict], list[str]]:
-    """Pair this system's staves with the base row's entries by instrument,
-    in order of appearance within an instrument."""
+    """Pair this system's staves with the base row's entries.
+
+    When the system prints as many staves as the base row, it is the full
+    lineup and the pairing is POSITIONAL — top to bottom, the same order —
+    and the read instrument is only a cross-check, reported where it
+    disagrees. A margin reader that turns `Kontrafagott` into `Bassoon`
+    must not move a staff the print already placed.
+
+    A shorter system (tacet staves suppressed) is paired by instrument, in
+    order of appearance within an instrument; a staff whose instrument was
+    not read, or whose instrument's entries are used up, gets `parts: []`
+    for the human.
+    """
+    if len(staves) == len(base_staves):
+        out: list[dict] = []
+        checks: list[str] = []
+        for st, b in zip(staves, base_staves):
+            inst_read = st.get("instrument")
+            out.append({"name": b.get("name", ""), "parts": list(b.get("parts", [])),
+                        "read_as": inst_read, "source": st.get("instrument_source"),
+                        "paired_by": "position"})
+            want = _canonical(b.get("name"))
+            got = _canonical(inst_read) if inst_read else None
+            if got is not None and want is not None and got != want:
+                checks.append(f"staff {st.get('staff_index')}: placed as {b.get('name')!r} by position, "
+                              f"but the margin read {inst_read!r} — confirm on the page")
+        return out, checks
     base_by_inst: dict[str | None, list[dict]] = {}
     for b in base_staves:
         base_by_inst.setdefault(_canonical(b.get("name")), []).append(b)
@@ -103,7 +143,8 @@ def _draft_system(staves: list[dict], base_staves: list[dict]) -> tuple[list[dic
             b = pool[k]
             used[canon] = k + 1
             out.append({"name": b.get("name", inst_read), "parts": list(b.get("parts", [])),
-                        "read_as": inst_read, "source": st.get("instrument_source")})
+                        "read_as": inst_read, "source": st.get("instrument_source"),
+                        "paired_by": "instrument"})
         else:
             out.append({"name": inst_read or "?", "parts": [], "read_as": inst_read})
             checks.append(f"staff {st.get('staff_index')}: "
@@ -131,14 +172,11 @@ def draft(transcription: dict, base: dict, *, first_measure: int | None = None) 
     cursor = first_measure
     for page in pages:
         pidx = page.get("page_index")
-        mode, per_staff = _page_measure_count(page)
+        mode, disagree = _page_measure_count(page)
         checks: list[str] = [
             f"first_ref_measure {cursor} is chained from the previous page's measure count — "
             "confirm on the page"]
-        disagree = {s: n for s, n in per_staff.items() if n != mode}
-        if disagree:
-            checks.append(f"{len(disagree)} of {len(per_staff)} staves read a different measure "
-                          f"count than the mode {mode}: {disagree}")
+        checks.extend(disagree)
         systems: dict[str, list[dict]] = {}
         for sys_ in page.get("systems", []):
             specs, sys_checks = _draft_system(sys_.get("staves", []), base_staves)
