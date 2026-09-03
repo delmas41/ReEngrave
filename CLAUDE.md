@@ -1087,9 +1087,17 @@ Validation harness, and the one to use for any future lexicon change (MusicXML
 part names cannot see a margin-abbreviation fix):
 [benchmarks/omr-lexicon-2026-09/FINDINGS.md](benchmarks/omr-lexicon-2026-09/FINDINGS.md)
 — `read_margin_labels.py` dumps what the readers actually emit, `resolve_labels.py`
-replays a dump through two revisions' lexicons. Still open there: `Hr.` and
-`Trpt.` resolve to nothing on 18 Brahms labels, and a whole system margin can
-arrive as ONE label and resolve to *Piccolo*.
+replays a dump through two revisions' lexicons.
+
+**`Hr.` / `Trpt.` were fixed the same day, once measured** — 0 collisions
+against the other 409 aliases and the 1271-name reference corpus, 24 of the
+1422-label dump move and all 24 are Brahms 1's own horn/trumpet staves.
+⚠️ The instrument NAME is right in every case; the transposition offset is
+exact only where the key TRAILS the alias (`Hr. (E)` → -4), because
+`_parse_bare_key` has only ever read the token AFTER a match — `(C) Hr.`
+falls back to the positional default, the same pre-existing limit `A-Klar.`
+has had since 2026-08-31. Still open: a whole system margin can arrive as
+ONE label and resolve to *Piccolo*.
 
 ---
 

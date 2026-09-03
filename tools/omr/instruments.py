@@ -183,7 +183,14 @@ INSTRUMENTS: tuple[Instrument, ...] = (
 
     # ── brass ──────────────────────────────────────────────────────────────
     Instrument("Horn", "brass", "treble", (41, 77), None, 1,
-               aliases=("horn", "horns", "corno", "corni", "horner", "cor", "cors", "hn")),
+               # "hr" is the German/English abbreviation (Hörner) — safe as a
+               # bare 2-letter alias because the word-boundary index refuses a
+               # letter on either side, so it cannot fire inside "hrf" (Harp)
+               # or any other alias. Measured 2026-09-03 over 1422 real margin
+               # labels: 16 hits, all Brahms 1 / Breitkopf horn staves, 0
+               # collisions with anything else.
+               aliases=("horn", "horns", "corno", "corni", "horner", "cor", "cors",
+                        "hn", "hr")),
     # NOT "tp": in the German/Italian orchestral convention these scores use,
     # "Tr." is Trombe (trumpets) and "Tp." on the staff below it is Timpani —
     # measured on Beethoven 1 (imslp-00074 p40), whose system reads
@@ -196,8 +203,13 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # table still has to name one instrument, and names the reading that is
     # right when the prior has no opinion.
     Instrument("Trumpet", "brass", "treble", (52, 84), None, 2,
+               # "trpt" is a distinct 4-letter abbreviation from "tpt" above —
+               # not a typo of it, a different printed shorthand ("Trpt." on
+               # Brahms 1 / Breitkopf) — and unambiguous: 0 collisions over
+               # every alias in this table and over 1422 real margin labels,
+               # where it fires only on that edition's trumpet staves.
                aliases=("trumpet", "trumpets", "tromba", "trombe", "trompete", "trompeten",
-                        "trompette", "trompettes", "tr", "tpt", "clarino", "clarini",
+                        "trompette", "trompettes", "tr", "tpt", "trpt", "clarino", "clarini",
                         "tromp")),                   # Mahler: "B-Tromp."
     # `Tr.` is Trombe AND Tromboni, and one page prints both: Beethoven 5
     # (IMSLP984073) p.47 reads `Tr.` over the trumpets and, four staves below,

@@ -5,6 +5,33 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — `Hr.` / `Trpt.`: the largest gap the lexicon sweep found, closed
+
+- The lexicon sweep two entries below left `Hr.` and `Trpt.` open on purpose —
+  "that is a third lexicon change and it deserves the same multi-edition
+  measurement rather than a ride on this one." Measured separately, same day:
+  `hr` (German/English *Hörner*) and `trpt` (a distinct 4-letter shorthand from
+  the `tpt` already in the table, not a typo of it) are **0/409** collisions
+  against every existing alias and **0/1271** touches on the reference
+  part-name corpus.
+- Against the same 1422-label margin dump: **24 labels, 13 distinct strings,
+  all Brahms 1 / Breitkopf horn and trumpet staves** — the true count; the "18"
+  first reported was a `.most_common(12)` display truncation, not the real one.
+  Every committed reader benchmark (`results*.json`, `score_readers.py`) is
+  byte-identical to before.
+- ⚠️ **The instrument NAME is right in all 13 strings; the transposition
+  offset is exact only where the printed key TRAILS the abbreviation**
+  (`Hr. (E)` → fifths_offset -4, correct). `(C) Hr.` — key BEFORE the noun —
+  falls back to Horn's positional default, because `_parse_bare_key` has only
+  ever read the token AFTER a match. **Not a new gap**: `A-Klar.` has resolved
+  to Clarinet with its default transposition rather than a parsed one since
+  2026-08-31, for every key-taking instrument in the table. The dossier join
+  pins on the unambiguous NAME, not the offset, so this doesn't cost a pin.
+- `benchmarks/omr-lexicon-2026-09/FINDINGS.md` and `CLAUDE.md`'s "Instrument
+  identity" section both updated in place rather than restated.
+
+---
+
 ## 2026-09-03 — three margin labels the lexicon dropped, and three different faults
 
 - `scan_eval.py` over the five verified scan rows produced three strings

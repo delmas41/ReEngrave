@@ -278,16 +278,45 @@ Nothing in the lexicon can recover that — see §3.
 
 ---
 
-## Found here and NOT fixed — each is its own bug with its own corpus
+## `Hr.` / `Trpt.` — fixed the same day, once measured
 
-**`Hr.` and `Trpt.` resolve to nothing**, and they are the largest gap this
-sweep turned up: on Brahms 1 / Breitkopf, **18 labels** across the sampled pages
-(`Trpt. (C)` ×7, `(C) Hr.` ×4, `Hr. (E)` ×2, `Hr. 1. (C) 2.` ×2, `Trpt.`,
-`Hr. (Es)`, `(C) Hr`). Every one is a horn or trumpet staff behaving as
-unlabelled. They look safe to add — `hr` cannot fire inside `hrf` (Harp) because
-the index matches on word boundaries, and `trpt` is four characters and
-unambiguous — but that is a *third* lexicon change and it deserves the same
-multi-edition measurement rather than a ride on this one.
+The largest gap this sweep turned up was left open at first ("that is a third
+lexicon change and it deserves the same multi-edition measurement rather than a
+ride on this one"). Measured separately and shipped:
+
+`hr` (German/English *Hörner*) and `trpt` — a distinct 4-letter shorthand from
+the `tpt` already in the table, not a typo of it — were **0/409** collisions
+against every existing alias, in both directions, and **0/1271** touches on the
+reference part-name corpus. Against the same 1422-label margin dump: **24
+labels, 13 distinct strings, 0 outside the Brahms 1 / Breitkopf horn and
+trumpet staves** — more than the 18 first estimated, because that number was a
+`.most_common(12)` truncation, not the real count:
+
+```
+   7x  'Trpt. (C)'        1x  'Trpt.'           2x  'Hr. (E)'
+   4x  '(C) Hr.'          1x  'Hr. (Es)'        1x  '(E) Hr.'
+   2x  'Hr. 1. (C) 2.'    1x  '(C) Hr'          1x  '(Es) Hr.'
+   1x  'Hr. 1. (Es) 2.'   1x  '. (C) Hr.'       1x  '(F) Hr.'
+   1x  'Hr.1. (Es)2.'
+```
+
+⚠️ **The transposition offset is exact only when the key TRAILS the alias.**
+`Hr. (E)` parses to fifths_offset **-4** (E horn) correctly, because
+`_parse_bare_key` reads the token after the matched alias. `(C) Hr.` — key
+BEFORE the noun — falls back to Horn's positional default instead of reading
+the parenthetical, and so does any trailing key with a stray part-number after
+it (`Hr. 1. (C) 2.`, numeral eats the trailing-key regex's anchor). **This is
+not new**: `A-Klar.` has resolved to Clarinet with its DEFAULT transposition,
+not a parsed one, since 2026-08-31 — `_parse_bare_key` has only ever looked
+after the alias, for every key-taking instrument in the table. Adding `hr` /
+`trpt` inherits that limit rather than introducing it. The instrument NAME is
+right in all 13 strings, which is what a dossier join pins on
+(`unambiguous()`, not the offset); fixing the leading-key case is its own
+change, with its own corpus, same as everything else in this file.
+
+---
+
+## Found here and NOT fixed — each is its own bug with its own corpus
 
 **A whole margin can arrive as ONE label**, and it resolves to whichever
 instrument the index reaches first: Beethoven 5's `'Fl. \n pic. \n ... Tr. \n

@@ -566,3 +566,57 @@ def test_the_contra_aliases_collide_with_no_other_instrument():
                 continue
             assert not word_sub(other, alias), f"{other!r} ({owner}) fires inside {alias!r}"
             assert not word_sub(alias, other), f"{alias!r} fires inside {other!r} ({owner})"
+
+
+def test_hr_and_trpt_resolve_to_the_instrument_they_abbreviate():
+    """Breitkopf's Brahms 1 prints horn and trumpet staves as `Hr.` and
+    `Trpt.` — surfaced 2026-09-03 by scan_eval.py, 24 labels across 13 real
+    strings, every one abstaining before this. `hr` is the German/English
+    horn abbreviation (Hörner); `trpt` is a distinct 4-letter trumpet
+    shorthand, not a typo of the `tpt` already in the table."""
+    for label in ("Hr.", "(C) Hr.", "(C) Hr", "(E) Hr.", "(Es) Hr.", "(F) Hr.",
+                  ". (C) Hr.", "Hr. (E)", "Hr. (Es)", "Hr. 1. (C) 2.",
+                  "Hr. 1. (Es) 2.", "Hr.1. (Es)2."):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Horn", f"{label!r} -> {m.instrument.name}"
+    for label in ("Trpt.", "Trpt. (C)"):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Trumpet", f"{label!r} -> {m.instrument.name}"
+
+
+def test_hr_and_trpt_collide_with_no_other_alias():
+    """`hr` cannot fire inside `hrf` (Harp) or `chor` (Chorus) — the
+    word-boundary index refuses a letter on either side. Checked against the
+    whole table, both directions, the same shape as the contra-alias test."""
+    import re as _re
+    from tools.omr.instruments import INSTRUMENTS
+
+    owner = {a: inst.name for inst in INSTRUMENTS for a in inst.aliases}
+
+    def word_sub(needle: str, hay: str) -> bool:
+        return _re.search(rf"(?<![a-z]){_re.escape(needle)}(?![a-z])", hay) is not None
+
+    for new, new_owner in (("hr", "Horn"), ("trpt", "Trumpet")):
+        for other, other_owner in owner.items():
+            if other == new:
+                continue
+            assert not word_sub(new, other), f"{new!r} fires inside {other!r} ({other_owner})"
+            assert not word_sub(other, new), f"{other!r} ({other_owner}) fires inside {new!r}"
+
+
+def test_a_trailing_key_after_hr_or_trpt_is_read_a_leading_one_is_not():
+    """The bare-key parser only ever looked at what comes AFTER the alias
+    (`_parse_bare_key`), a pre-existing limit shared by every key-taking
+    instrument in this table — `A-Klar.` resolves to Clarinet with its
+    default transposition, not with a parsed one, for the identical reason.
+    Adding `hr`/`trpt` inherits that limit rather than introducing it:
+    trailing keys resolve exactly, leading ones fall back to the instrument's
+    positional default. Both are pinned so a future change to the parser is
+    measured against both cases, not just the one that already worked."""
+    trailing = lookup("Hr. (E)")
+    assert trailing.instrument.name == "Horn" and trailing.fifths_offset == -4
+    leading = lookup("(E) Hr.")
+    assert leading.instrument.name == "Horn"
+    assert leading.fifths_offset == leading.instrument.default_fifths_offset
