@@ -37,3 +37,15 @@ grace HEADS only (0.62-space box), never the slash/stem/flag; Esc steps
 out; Tab records an inspected-empty cell. These verdicts are the first
 grace ground truth in the project — they calibrate `grace_score.py`'s
 provisional bands and the pre-fill's grace-size veto.
+
+## RESULT (2026-09-03): 30 grace boxes in 15 cells — targeting verified, bands calibrated
+
+Sean swept 152/153 cells: **30 grace heads labeled across 15 cells**, all in
+the regions the eyes + reference predicted (p6 sys0 s0/s1/s9/s11/s12 ords
+7–8; p5 sys0 s1/s2/s17/s19 ord 5). All boxes click-placed (no manual
+drags); snap variants 15 on-line / 15 in-space. The labels recalibrated
+`grace_score.py` — selector recall on these cells went 0.53 → **1.00**
+(details in `../omr-labeling-survey-2026-09/GRACE_SELECTOR_2026-09-03.md`).
+⚠️ Conversion to YOLO labels WAITS for the campaign rule: these cells have
+had one pass; everything unboxed would train as background. A completion
+pass (the pre-fill tooling) comes first.

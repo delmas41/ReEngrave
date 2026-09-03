@@ -74,3 +74,34 @@ python3 benchmarks/omr-labeling-survey-2026-09/grace_score.py \
     --repo /Users/seanjohnson/Desktop/ReEngrave \
     --annotate-top 8 --out-dir /tmp/grace-audit <batch>/cells.json
 ```
+
+## CALIBRATED (2026-09-03, same day): the first 30 labeled graces re-cut the bands
+
+Sean's sitting on `omr-labeling-grace2-2026-09` (eye-verified cells) produced
+**30 grace boxes in 15 cells, 152/153 cells inspected** — the project's first
+grace ground truth, exactly where the eyes and the reference said (the ★
+figures at printed mm.39–40; the mm.28–30 bassoon + divisi-bass run). All 30
+boxes are click-placed at the derived size; variants split 15
+`OnLineSmall` / 15 `InSpaceSmall`.
+
+Measuring the ink components under those boxes with the scorer's own
+pipeline: **h 0.56–1.34 spaces, aspect 0.54–1.44, fill 0.53–0.85.** Two of
+the provisional convention bands were wrong, for one mechanism: the opening
+cannot detach a small head from its thin grace stem/beam, so grace ink
+arrives taller than wide (aspect < 1) and beamed runs arrive as single
+components above 1.0 space. The original bands passed **2 of 30**.
+
+Cell-level confusion of three re-cut variants against the labels:
+
+| bands | TP | FP | FN | TN | P | R |
+|---|--:|--:|--:|--:|--:|--:|
+| original (0.45–0.78, aspect ≥ 0.95) | 8 | 17 | 7 | 120 | 0.32 | 0.53 |
+| **A: 0.50–0.95, aspect ≥ 0.50 (SHIPPED)** | **15** | 62 | **0** | 75 | 0.19 | **1.00** |
+| B: 0.50–1.40, aspect ≥ 0.50 | 15 | 88 | 0 | 49 | 0.15 | 1.00 |
+| C: B minus full-shaped components | 15 | 74 | 0 | 63 | 0.17 | 1.00 |
+
+Variant A ships: for a cell RANKER, recall 1.00 is the property that
+matters, and widening past 0.95 only adds false positives — a cell holding a
+merged run always also holds a ≤ 0.95 component. Calibration set: one
+edition (Peters), 30 boxes — re-measure when a second publisher's graces are
+labeled.
