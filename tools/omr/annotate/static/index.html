@@ -24,6 +24,13 @@
     <label class="search">Find:
       <input type="text" id="filter-search" placeholder="cell id substring">
     </label>
+    <label>Order:
+      <select id="sort-order">
+        <option value="manifest">Batch order</option>
+        <option value="queue">Queue — most left for me first</option>
+        <option value="hints">Most reference hints first</option>
+      </select>
+    </label>
     <span class="counts" id="counts"></span>
   </div>
   <div id="cell-table-wrap">
@@ -37,6 +44,7 @@
           <th>Detections</th>
           <th>Decided</th>
           <th>Added</th>
+          <th title="expected-but-missing notes the reference names (mxl_verdicts)">Hints</th>
           <th>Status</th>
         </tr>
       </thead>

@@ -5,6 +5,14 @@ where one exists. Update this file with every commit.
 
 ## 2026-09-02
 
+- **training: MXL-guided verdict pre-fill** — `tools/omr/training/mxl_verdicts.py`
+  (+ `measure_align.py`, `musicxml_truth.py`): the detector's boxes are confirmed or
+  relabelled by the reference encoding through per-measure sequence alignment; unmatched
+  detections stay pending, unmatched reference notes become ghost hints. Annotate server
+  serves `<bench>/prefill/`; the cell list gains a queue order and the cell page a hints
+  layer (`h`). `--score` measures the pre-fill against human verdicts. 43 new tests, full
+  annotate + training suites green. Not yet run on a real batch — that measurement is
+  Sean's next step on the Mahler 5 / Peters hollow batch.
 - **docs: status brief, project brief, version memory** — consolidated where
   the labeling campaign, the movement-start data, the score-library ingest and
   the MXL-guided auto-label training system stand; created `PROJECT_BRIEF.md`

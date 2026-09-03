@@ -6,6 +6,7 @@
   const summary = document.getElementById("bench-summary");
   const filterStatus = document.getElementById("filter-status");
   const filterSearch = document.getElementById("filter-search");
+  const sortOrder = document.getElementById("sort-order");
   const counts = document.getElementById("counts");
 
   const [bench, cells] = await Promise.all([
@@ -49,13 +50,33 @@
     return true;
   }
 
+  // Queue mode. "What is left for me" on a cell is its pending detections
+  // plus the reference hints (notes the reference names that the reading
+  // never found — each one is a box the human may have to draw). A cell the
+  // pre-fill ABSTAINED on counts every detection as left, because nothing
+  // there was decided by anyone. Ties fall back to batch order so the queue
+  // is stable between reloads.
+  function workLeft(c) {
+    const hints = c.n_hints_missing || 0;
+    if (c.prefill_status === "abstained") return c.n_detections + hints + 0.5;
+    return c.n_pending + hints;
+  }
+
+  function ordered() {
+    const idx = new Map(cells.map((c, i) => [c.cell_id, i]));
+    const mode = sortOrder ? sortOrder.value : "manifest";
+    if (mode === "manifest") return cells;
+    const key = mode === "hints" ? (c) => c.n_hints || 0 : workLeft;
+    return [...cells].sort((a, b) => key(b) - key(a) || idx.get(a.cell_id) - idx.get(b.cell_id));
+  }
+
   function render() {
     tbody.innerHTML = "";
     let shown = 0;
     let totalDecided = 0;
     let totalDetections = 0;
     let totalDone = 0;
-    for (const c of cells) {
+    for (const c of ordered()) {
       totalDecided += c.n_decided;
       totalDetections += c.n_detections;
       const status = statusFor(c);
@@ -73,6 +94,9 @@
         <td>${c.n_detections}</td>
         <td>${c.n_decided}/${c.n_detections}</td>
         <td>${c.n_added}</td>
+        <td title="${c.prefill_status ? `pre-fill: ${c.prefill_status}` : `no pre-fill`}">${
+          c.prefill_status ? (c.n_hints_missing || 0) : ""
+        }${c.prefill_status === "abstained" ? " ⚠" : ""}</td>
         <td><span class="status-badge status-${status}">${status}</span></td>
       `;
       tbody.appendChild(tr);
@@ -86,5 +110,6 @@
 
   filterStatus.addEventListener("change", render);
   filterSearch.addEventListener("input", render);
+  if (sortOrder) sortOrder.addEventListener("change", render);
   render();
 })();

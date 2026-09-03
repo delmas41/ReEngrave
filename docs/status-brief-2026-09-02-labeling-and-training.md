@@ -138,17 +138,17 @@ not the closed path, and most of its parts are already built.
 | Cells cut per measure, served to the UI | ✅ | `annotate/select_cells_orchestral.py`, `run_yolo.py` | — |
 | Page ↔ reference measure window | 🟡 hand rows only | `omr-scan-e2e-2026-09/works.json` (5 rows) | needs your rows (§3); derive later pages from movement starts |
 | Part ↔ staff join | 🟡 | `dossier.join_parts_to_slots` (abstains unless counts match), contextual part naming | condensed/divisi pages abstain — those cells go to the human queue |
-| Note-sequence alignment truth ↔ prediction | 🟡 | `training/end_to_end_eval.align()` (LCS on pitch+duration, per part) | runs per part, returns no detection ids; needs a per-measure variant that returns which *detection* matched which truth note |
+| Note-sequence alignment truth ↔ prediction | ✅ built 2026-09-02 evening | `training/measure_align.py` (per measure, returns the detection each truth note matched); `training/musicxml_truth.py` (stdlib reader) | — |
 | Verdict schema with a pending state | ✅ | `annotate/server.py` (`TP / FP / WRONG_CATEGORY / WRONG_BBOX / unsure`, `verdict: None` = pending, `n_pending` per cell) | — |
 | Proximity matcher between detection sets | ✅ | `annotate/port_verdicts_to_yolo.py` | the pattern to reuse for truth↔detection |
-| **Verdict pre-fill writer** | ❌ | — | new: TP for matches; `WRONG_CATEGORY` when truth says half/whole and the detector said black; `unsure` for unmatched detections; a *missing-note hint* for truth notes with no detection |
-| Human queue in the UI | 🟡 | `n_pending` counted, pass mode, `inspected_passes` | sort/filter cells by pending count; render missing-note hints (expected pitch/duration at an approximate x) |
+| **Verdict pre-fill writer** | ✅ built 2026-09-02 evening | `training/mxl_verdicts.py` | measure on a real batch (`--score`) |
+| Human queue in the UI | ✅ built 2026-09-02 evening | annotate server `prefill/`, queue order, hints layer (`h`) | — |
 | Verdicts → YOLO labels | ✅ | `training/verdicts_to_yolo_labels.py` | — |
 | Forgetting gate | ✅ | `training/wtc_forgetting_eval.py` | — |
 | Rendered truth with exact coordinates | ❌ | Verovio SVG is rendered in `claude_vision.py` but never parsed | optional later: element-id boxes for engraved pages |
 | Scan ↔ engraved image registration | ❌ | — | not needed on this design |
 
-### What has to be built (in order)
+### What has to be built (in order) — steps 1–3 landed the same evening; step 4 is next
 
 1. **`tools/omr/training/mxl_verdicts.py`** — given a transcription JSON, the
    reference MXL, and a page↔measure window: per (staff, measure) align the
@@ -199,7 +199,7 @@ two venvs.
 |--:|---|---|
 | 1 | Sean (local) | ingest today's downloads, commit `catalog.json` |
 | 2 | Sean (local) | four hollow batches, one sitting each |
-| 3 | this session | build §5 steps 1–3 on `claude/score-labeling-training-system-iech0i`, with fixture tests |
+| 3 | this session | ✅ built §5 steps 1–3 on `claude/score-labeling-training-system-iech0i`, 43 fixture tests |
 | 4 | Sean (local) | `works.json` rows for the six works in §3 |
 | 5 | Sean (local) | run the pre-fill on the Mahler batch, report precision (§5 step 4) |
 | 6 | Sean (GPU) | gated training run; then the catalog decision |

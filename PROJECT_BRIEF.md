@@ -39,9 +39,12 @@ number on both sides.
 - Engraved benchmark: pooled OMR-NED **0.1306 / 2745 edits** over 11 works.
 - Scan domain: hollow noteheads are the top lever; a five-batch labeling
   campaign is cut, one batch labeled.
-- Next system to build: MXL-guided auto-labeling — the detector places boxes,
-  the reference MXL confirms or relabels them, unmatched blobs go to a human
-  queue. Inventory and plan: [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
+- MXL-guided auto-labeling is **built and unit-tested, not yet measured on a
+  real batch**: `tools/omr/training/mxl_verdicts.py` confirms or relabels the
+  detector's boxes from the reference and queues the rest for a human. The
+  first measurement (`--score` on the Mahler 5 / Peters batch) decides whether
+  its `TP`s can be admitted without review. Inventory and plan:
+  [docs/status-brief-2026-09-02-labeling-and-training.md](docs/status-brief-2026-09-02-labeling-and-training.md).
 
 ## Rules of the road
 

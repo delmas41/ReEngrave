@@ -1,0 +1,874 @@
+"""Pre-fill labeling verdicts from a reference MusicXML.
+
+    python3 -m tools.omr.training.mxl_verdicts \\
+        --bench-dir benchmarks/omr-labeling-NEW \\
+        --transcription out.json --truth reference.mxl --windows windows.json \\
+        --dry-run            # report only; add --write to save verdicts
+
+The detector places the boxes; the reference confirms or relabels them.
+
+This is the reverse of the closed MXL→bounding-box path (F1 0.064): nothing
+here is placed in pixel space from the file. `transcribe` has already turned
+the page into per-measure detections with a pitch and a duration on each,
+and `voicing.group_chords_in_measure` has already ordered them into events.
+The reference measure is a note sequence too. Align the two sequences
+(`measure_align`) and every match is a verdict on a box that already has
+coordinates:
+
+    truth half note  ↔ detected noteheadBlackOnLine  → WRONG_CATEGORY → noteheadHalfOnLine
+    truth quarter    ↔ detected noteheadBlackInSpace → TP
+    detected head with no truth match                → left PENDING for the human
+    truth note with no detected match                → a HINT (ghost marker) in the UI
+
+Three joins have to hold before any of that is trusted, and each abstains
+rather than guesses:
+
+1. **Page ↔ reference measures** — from a hand-verified window row (the shape
+   of `benchmarks/omr-scan-e2e-2026-09/works.json`): which reference measure
+   the page's first measure is, and which parts each printed staff carries.
+   Global measure number = window start + measures on this staff in earlier
+   systems + measure index. When the staff's measure count across the page
+   disagrees with the window's length the cell is abstained unless
+   `--trust-measure-counts` (a barline error shifts every bar after it).
+2. **Staff ↔ parts** — the row's `staves[i].parts`. A system whose staff
+   count differs from the row's staff count abstains whole.
+3. **Alignment strength** — matched tokens over the longer side must reach
+   `--min-strength` (default 0.5). A bar from the wrong measure matches a
+   few notes by chance; the gate refuses it.
+
+Then the verdicts are written onto the BATCH's own detection ids (the
+`detections/<cell>.json` the UI serves), matched by overlap after mapping
+the transcription's cell frame onto the batch's cell frame through the two
+staffs' line positions. A confirmed notehead the batch has no detection for
+becomes an added box (id `M<n>`, so it never collides with a human's `H<n>`),
+which is how a draw-from-scratch batch gets its labels. Provenance goes in
+each entry's `notes`, the one field the server preserves on save.
+
+`--score` compares the pre-fill against verdicts a human already saved in
+the batch — precision and recall of the pre-filled boxes against the human
+boxes — which is the number that decides whether pre-filled labels can be
+admitted without review. Restricted to the pass's classes when the batch
+carries a `batch_config.json`.
+
+Output, per cell, in `<bench>/prefill/<cell>.json`: status, reason, the
+alignment, the decisions, the hints. `<bench>/prefill/summary.json` totals
+them. The annotate server reads the hints from there.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+from ..voicing import group_chords_in_measure
+from .measure_align import (
+    Alignment,
+    Token,
+    align_tokens,
+    event_tokens,
+    expected_head_class,
+    expected_rest_class,
+    head_kind_for_type,
+    merge_truth_parts,
+    on_line_or_in_space,
+    parse_head_class,
+    staff_y_for_pitch,
+    truth_tokens,
+)
+from .musicxml_truth import TruthNote, TruthScore, load_truth
+
+PREFILL_DIR = "prefill"
+DEFAULT_MIN_STRENGTH = 0.5
+DEFAULT_MIN_IOU = 0.3
+NOTE_TAG = "mxl_prefill"
+
+
+# --------------------------------------------------------------------------
+# Window rows
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class StaffSpec:
+    name: str
+    parts: list[int]
+
+
+@dataclass
+class WindowRow:
+    pdf_page_index: int
+    first_ref_measure: int
+    last_ref_measure: int | None
+    staves: list[StaffSpec]
+    row_id: str = ""
+    # Optional per-system override: {system_index: [StaffSpec, ...]} for pages
+    # whose systems print different staff sets (tacet suppression).
+    systems: dict[int, list[StaffSpec]] = field(default_factory=dict)
+
+    def staves_for_system(self, system_index: int) -> list[StaffSpec]:
+        return self.systems.get(system_index, self.staves)
+
+    @property
+    def n_measures(self) -> int | None:
+        if self.last_ref_measure is None:
+            return None
+        return self.last_ref_measure - self.first_ref_measure + 1
+
+
+def _staff_specs(raw: Any) -> list[StaffSpec]:
+    out: list[StaffSpec] = []
+    for s in raw or []:
+        if isinstance(s, dict):
+            out.append(StaffSpec(name=str(s.get("name", "")),
+                                 parts=[int(p) for p in s.get("parts", [])]))
+        else:
+            out.append(StaffSpec(name=str(s), parts=[]))
+    return out
+
+
+def load_windows(path: str | Path, *, work_id: str | None = None,
+                 row_ids: list[str] | None = None) -> dict[int, WindowRow]:
+    """Rows keyed by 0-based PDF page index. Accepts the scan benchmark's
+    `works.json` (a list, or `{"rows": [...]}`), including its
+    `"same-as:<row_id>"` staves references.
+
+    One page index means one page of ONE edition, so a file holding several
+    editions must be narrowed with `work_id` and/or `row_ids` — otherwise a
+    later edition's page 1 silently replaces an earlier one's, and the
+    pre-fill would read one score's page against another's parts."""
+    raw = json.loads(Path(path).read_text())
+    rows = raw.get("rows", raw) if isinstance(raw, dict) else raw
+    by_id: dict[str, dict] = {r.get("row_id", f"row{i}"): r for i, r in enumerate(rows)}
+    wanted = set(row_ids) if row_ids else None
+    out: dict[int, WindowRow] = {}
+    for rid, r in by_id.items():
+        if work_id is not None and r.get("work_id") != work_id:
+            continue
+        if wanted is not None and rid not in wanted:
+            continue
+        page = r.get("page") or {}
+        window = r.get("window") or {}
+        if "pdf_page_index" not in page or "first_ref_measure" not in window:
+            continue
+        staves_raw = r.get("staves")
+        hops = 0
+        while isinstance(staves_raw, str) and staves_raw.startswith("same-as:") and hops < 10:
+            staves_raw = (by_id.get(staves_raw[len("same-as:"):]) or {}).get("staves")
+            hops += 1
+        systems: dict[int, list[StaffSpec]] = {}
+        for k, v in (r.get("systems") or {}).items():
+            systems[int(k)] = _staff_specs(v)
+        key = int(page["pdf_page_index"])
+        if key in out:
+            raise ValueError(
+                f"two window rows for page {key} ({out[key].row_id!r} and {rid!r}) — "
+                "narrow with work_id / row_ids so one edition is selected")
+        out[key] = WindowRow(
+            pdf_page_index=int(page["pdf_page_index"]),
+            first_ref_measure=int(window["first_ref_measure"]),
+            last_ref_measure=(int(window["last_ref_measure"])
+                              if window.get("last_ref_measure") is not None else None),
+            staves=_staff_specs(staves_raw),
+            row_id=rid,
+            systems=systems,
+        )
+    return out
+
+
+# --------------------------------------------------------------------------
+# Transcription lookup
+# --------------------------------------------------------------------------
+
+
+def index_transcription(result: dict) -> dict[tuple[int, int, int, int], dict]:
+    """(page_index, system_index, staff_index, measure_index) → context dict
+    with the page, system, staff and measure dicts."""
+    out: dict[tuple[int, int, int, int], dict] = {}
+    for page in result.get("pages", []):
+        p = page.get("page_index")
+        for sys_ in page.get("systems", []):
+            s = sys_.get("system_index")
+            for staff in sys_.get("staves", []):
+                st = staff.get("staff_index")
+                for m in staff.get("measures", []):
+                    out[(p, s, st, m.get("measure_index"))] = {
+                        "page": page, "system": sys_, "staff": staff, "measure": m,
+                    }
+    return out
+
+
+def measures_before(page: dict, system_index: int, staff_index: int) -> int:
+    """Measures this staff ordinal has printed in EARLIER systems of the page."""
+    n = 0
+    for sys_ in page.get("systems", []):
+        if sys_.get("system_index", 0) >= system_index:
+            continue
+        for staff in sys_.get("staves", []):
+            if staff.get("staff_index") == staff_index:
+                n += staff.get("n_measures", len(staff.get("measures", [])))
+    return n
+
+
+def measures_on_page(page: dict, staff_index: int) -> int:
+    n = 0
+    for sys_ in page.get("systems", []):
+        for staff in sys_.get("staves", []):
+            if staff.get("staff_index") == staff_index:
+                n += staff.get("n_measures", len(staff.get("measures", [])))
+    return n
+
+
+# --------------------------------------------------------------------------
+# Frames and overlap
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class FrameMap:
+    """Transcription canonical cell → batch canonical cell. y through the
+    staff lines, x through the cell widths; identity when either side
+    lacks geometry."""
+    sx: float = 1.0
+    sy: float = 1.0
+    tx0: float = 0.0
+    bx0: float = 0.0
+    ty0: float = 0.0
+    by0: float = 0.0
+
+    def box(self, bbox: list[float]) -> dict[str, int]:
+        x, y, w, h = bbox
+        X = self.bx0 + (x - self.tx0) * self.sx
+        Y = self.by0 + (y - self.ty0) * self.sy
+        return {"x": int(round(X)), "y": int(round(Y)),
+                "w": int(round(w * self.sx)), "h": int(round(h * self.sy))}
+
+
+def frame_map(measure: dict, entry: dict) -> FrameMap:
+    t_lines = measure.get("staff_line_ys_canonical") or []
+    b_lines = entry.get("staff_line_ys_canonical") or []
+    fm = FrameMap()
+    if len(t_lines) >= 5 and len(b_lines) >= 5 and t_lines[-1] > t_lines[0]:
+        fm.sy = (b_lines[-1] - b_lines[0]) / (t_lines[-1] - t_lines[0])
+        fm.ty0, fm.by0 = float(t_lines[0]), float(b_lines[0])
+    bp = measure.get("bbox_page_px")
+    up = measure.get("upscale_factor")
+    b_w = entry.get("cell_canonical_w")
+    if bp and up and b_w:
+        t_w = bp[2] * up
+        if t_w > 0:
+            fm.sx = b_w / t_w
+    elif fm.sy != 1.0:
+        fm.sx = fm.sy
+    return fm
+
+
+def iou(a: dict, b: dict) -> float:
+    ax1, ay1 = a["x"] + a["w"], a["y"] + a["h"]
+    bx1, by1 = b["x"] + b["w"], b["y"] + b["h"]
+    iw = min(ax1, bx1) - max(a["x"], b["x"])
+    ih = min(ay1, by1) - max(a["y"], b["y"])
+    if iw <= 0 or ih <= 0:
+        return 0.0
+    inter = iw * ih
+    union = a["w"] * a["h"] + b["w"] * b["h"] - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _centre_inside(a: dict, b: dict) -> bool:
+    cx, cy = a["x"] + a["w"] / 2, a["y"] + a["h"] / 2
+    return b["x"] <= cx <= b["x"] + b["w"] and b["y"] <= cy <= b["y"] + b["h"]
+
+
+def _category_of(cls: str | None) -> str:
+    if parse_head_class(cls):
+        return "notehead"
+    if cls and cls.startswith("rest"):
+        return "rest"
+    return "other"
+
+
+# --------------------------------------------------------------------------
+# Per-cell decision
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class CellPrefill:
+    cell_id: str
+    status: str                       # prefilled | abstained | skipped
+    reason: str = ""
+    measure_number: int | None = None
+    parts: list[int] = field(default_factory=list)
+    alignment: dict = field(default_factory=dict)
+    decisions: list[dict] = field(default_factory=list)   # on batch detection ids
+    added: list[dict] = field(default_factory=list)       # new boxes
+    hints: list[dict] = field(default_factory=list)
+    verdict_state: dict | None = None
+
+    def summary(self) -> dict:
+        return {
+            "cell_id": self.cell_id,
+            "status": self.status,
+            "reason": self.reason,
+            "measure_number": self.measure_number,
+            "parts": self.parts,
+            "alignment": self.alignment,
+            "n_tp": sum(1 for d in self.decisions if d["verdict"] == "TP"),
+            "n_wrong_category": sum(1 for d in self.decisions if d["verdict"] == "WRONG_CATEGORY"),
+            "n_added": len(self.added),
+            "n_hints_missing": sum(1 for h in self.hints if h["kind"] == "missing"),
+            "n_hints_extra": sum(1 for h in self.hints if h["kind"] == "extra"),
+        }
+
+
+def _init_detection(d: dict) -> dict:
+    """The shape `annotate.server._init_detection_v2` writes, replicated so
+    this module does not import FastAPI. Pinned by a test that serves the
+    file back through the server unchanged."""
+    return {
+        "id": d["id"],
+        "verdict": None,
+        "model_predicted_class": d.get("smufl_name", ""),
+        "human_corrected_class": None,
+        "model_predicted_category": d.get("category", ""),
+        "human_corrected_category": None,
+        "model_bbox": {"x": int(d.get("x", 0)), "y": int(d.get("y", 0)),
+                       "w": int(d.get("w", 0)), "h": int(d.get("h", 0))},
+        "human_bbox": None,
+        "confidence": float(d.get("confidence", 0.0)),
+        "notes": "",
+    }
+
+
+def _events_with_orphans(detections: list[dict]) -> list[dict]:
+    """`voicing.group_chords_in_measure` keeps only noteheads that carry BOTH
+    a pitch and a duration — a head whose stem the CV never found has no
+    duration and would vanish from the alignment, and on a scan those are
+    exactly the heads worth confirming. They are appended as one-note events
+    at their own x, so the reference can still vouch for the box."""
+    events = group_chords_in_measure(detections)
+    placed = {id(nh) for ev in events for nh in ev.get("noteheads", [])}
+    for d in detections:
+        if d.get("category") != "notehead" or d.get("pitch") is None or id(d) in placed:
+            continue
+        bbox = d.get("bbox", [0, 0, 0, 0])
+        events.append({"kind": "chord", "x_position": bbox[0] + bbox[2] // 2,
+                       "duration_beats": None, "duration_type": None, "dots": 0,
+                       "noteheads": [d], "rest": None, "orphan": True})
+    events.sort(key=lambda e: e.get("x_position", 0))
+    return events
+
+
+def _truth_notes_for(truth: TruthScore, parts: list[int], number: int) -> list[TruthNote] | None:
+    """Notes of `number` across `parts`, merged for a shared staff. None
+    when a part lacks that measure."""
+    per_part: list[list[TruthNote]] = []
+    for pi in parts:
+        if pi < 0 or pi >= len(truth.parts):
+            return None
+        m = truth.part(pi).by_number().get(number)
+        if m is None:
+            return None
+        per_part.append(m.notes)
+    if not per_part:
+        return None
+    return merge_truth_parts(per_part)
+
+
+def _measure_length(notes: list[TruthNote]) -> float:
+    end = 0.0
+    for n in notes:
+        end = max(end, n.onset_ql + n.duration_ql)
+    return end
+
+
+def _x_estimates(missing: list[Token], matched_x: list[tuple[float, float]],
+                 length: float, width: int) -> dict[int, float]:
+    """An approximate batch-frame x for each missing truth token, from the
+    onsets of its matched neighbours; falling back to onset as a fraction of
+    the bar across the cell's inner 70%."""
+    matched_x = sorted(matched_x)
+    out: dict[int, float] = {}
+    for t in missing:
+        o = t.onset_ql or 0.0
+        before = [(on, x) for on, x in matched_x if on <= o]
+        after = [(on, x) for on, x in matched_x if on > o]
+        if before and after:
+            (o0, x0), (o1, x1) = before[-1], after[0]
+            f = (o - o0) / (o1 - o0) if o1 > o0 else 0.0
+            out[t.index] = x0 + f * (x1 - x0)
+        else:
+            frac = (o / length) if length > 0 else 0.0
+            out[t.index] = width * (0.15 + 0.7 * min(1.0, max(0.0, frac)))
+    return out
+
+
+def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
+                 truth: TruthScore, batch_dets: list[dict], *,
+                 match: str = "step", min_strength: float = DEFAULT_MIN_STRENGTH,
+                 min_iou: float = DEFAULT_MIN_IOU,
+                 trust_measure_counts: bool = False) -> CellPrefill:
+    cell_id = entry["cell_id"]
+    if row is None:
+        return CellPrefill(cell_id, "abstained", "no window row for this page")
+    if ctx is None:
+        return CellPrefill(cell_id, "abstained", "cell not in the transcription")
+
+    page, system, staff, measure = ctx["page"], ctx["system"], ctx["staff"], ctx["measure"]
+    sys_idx = system.get("system_index", 0)
+    staff_idx = staff.get("staff_index", 0)
+    specs = row.staves_for_system(sys_idx)
+    n_staves = len(system.get("staves", []))
+    if len(specs) != n_staves:
+        return CellPrefill(cell_id, "abstained",
+                           f"system {sys_idx} has {n_staves} staves, the window row names {len(specs)}")
+    if staff_idx >= len(specs) or not specs[staff_idx].parts:
+        return CellPrefill(cell_id, "abstained", f"staff {staff_idx} names no parts")
+    spec = specs[staff_idx]
+
+    expected = row.n_measures
+    if expected is not None and not row.systems:
+        got = measures_on_page(page, staff_idx)
+        if got != expected and not trust_measure_counts:
+            return CellPrefill(cell_id, "abstained",
+                               f"staff reads {got} measures on the page, window has {expected}",
+                               parts=list(spec.parts))
+
+    number = row.first_ref_measure + measures_before(page, sys_idx, staff_idx) \
+        + int(measure.get("measure_index", 0))
+    if row.last_ref_measure is not None and number > row.last_ref_measure:
+        return CellPrefill(cell_id, "abstained",
+                           f"measure {number} lies past the window end {row.last_ref_measure}",
+                           measure_number=number, parts=list(spec.parts))
+    notes = _truth_notes_for(truth, spec.parts, number)
+    if notes is None:
+        return CellPrefill(cell_id, "abstained",
+                           f"reference has no measure {number} for parts {spec.parts}",
+                           measure_number=number, parts=list(spec.parts))
+
+    condensed = len(spec.parts) > 1
+    t_tokens = truth_tokens(notes, match=match, include_rests=not condensed)
+    detections = measure.get("detections", [])
+    events = _events_with_orphans(detections)
+    p_tokens = event_tokens(events, match=match, include_rests=not condensed)
+    det_index = {id(d): i for i, d in enumerate(detections)}
+
+    fm = frame_map(measure, entry)
+    clef = measure.get("clef") or staff.get("clef") or entry.get("clef")
+    b_lines = entry.get("staff_line_ys_canonical") or []
+    width = int(entry.get("cell_canonical_w") or 0)
+
+    out = CellPrefill(cell_id, "prefilled", measure_number=number, parts=list(spec.parts))
+    al = align_tokens(t_tokens, p_tokens)
+    out.alignment = {
+        "n_truth": al.n_truth, "n_pred": al.n_pred, "matched": al.matched,
+        "strength": None if al.strength is None else round(al.strength, 3),
+        "match": match,
+    }
+
+    # Verdict state on the batch's own detections.
+    state = {
+        "cell_id": cell_id,
+        "schema_version": 2,
+        "labeled_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "detections": [_init_detection(d) for d in batch_dets],
+        "added_detections": [],
+        "inspected_passes": [],
+    }
+    by_id = {d["id"]: d for d in state["detections"]}
+    claimed: set[str] = set()
+
+    if not p_tokens and t_tokens:
+        out.reason = "no notes in the reading — hints only"
+    elif al.strength is not None and (al.strength < min_strength or al.matched == 0):
+        out.status = "abstained"
+        out.reason = f"weak alignment: {al.matched} of {max(al.n_truth, al.n_pred)} matched"
+        return out
+    elif al.strength is None:
+        out.reason = "nothing to align — reference and reading both empty"
+
+    matched_x: list[tuple[float, float]] = []
+    matched_pred: set[int] = set()
+
+    def _decide(pt: Token, tt: Token) -> None:
+        det = pt.ref
+        if det is None:
+            return
+        tn: TruthNote = tt.ref
+        cls = det.get("class")
+        if pt.is_rest:
+            want = expected_rest_class(tn)
+            category = "rest"
+        else:
+            want = expected_head_class(tn.type, cls)
+            category = "notehead"
+        if want is None:
+            return
+        verdict = "TP" if want == cls else "WRONG_CATEGORY"
+        label = f"{NOTE_TAG}: {'rest' if tn.rest else tn.pitch} {tn.type or '?'}" \
+                f"{'.' * tn.dots} m{number}"
+        if verdict == "WRONG_CATEGORY":
+            label += f" → {want}"
+        bbox = fm.box(det.get("bbox", [0, 0, 0, 0]))
+        matched_x.append((tt.onset_ql or 0.0, bbox["x"] + bbox["w"] / 2))
+        # Which batch detection is this box?
+        best_id, best_iou = None, 0.0
+        for bd in batch_dets:
+            if bd["id"] in claimed:
+                continue
+            if (bd.get("category") or _category_of(bd.get("smufl_name"))) != category:
+                continue
+            bb = {"x": bd.get("x", 0), "y": bd.get("y", 0), "w": bd.get("w", 0), "h": bd.get("h", 0)}
+            v = iou(bbox, bb)
+            if v < min_iou and not (v > 0 and (_centre_inside(bbox, bb) or _centre_inside(bb, bbox))):
+                continue
+            if v > best_iou:
+                best_id, best_iou = bd["id"], v
+        decision = {
+            "verdict": verdict, "class": want, "category": category,
+            "truth": {"pitch": tn.pitch, "type": tn.type, "dots": tn.dots,
+                      "duration_ql": tn.duration_ql, "onset_ql": tn.onset_ql},
+            "read": {"class": cls, "pitch": det.get("pitch"),
+                     "duration_type": det.get("duration_type"),
+                     "detection_index": det_index.get(id(det))},
+            "bbox": bbox,
+        }
+        if best_id is not None:
+            claimed.add(best_id)
+            entry_v = by_id[best_id]
+            entry_v["verdict"] = verdict
+            entry_v["notes"] = label
+            if verdict == "WRONG_CATEGORY":
+                entry_v["human_corrected_class"] = want
+                entry_v["human_corrected_category"] = category
+            decision.update({"detection_id": best_id, "iou": round(best_iou, 3)})
+        else:
+            mid = f"M{len(state['added_detections'])}"
+            state["added_detections"].append({
+                "id": mid, "human_class": want, "human_category": category,
+                "bbox": bbox, "notes": label,
+            })
+            decision.update({"detection_id": mid, "iou": None})
+            out.added.append({"id": mid, "class": want, "bbox": bbox})
+        out.decisions.append(decision)
+
+    for ti, pi in al.pairs:
+        matched_pred.add(pi)
+        _decide(p_tokens[pi], t_tokens[ti])
+
+    # Predicted tokens the reference does not account for: pending, with a
+    # note on the batch detection they sit on, and an "extra" hint.
+    for pi in al.pred_unmatched:
+        pt = p_tokens[pi]
+        det = pt.ref
+        if det is None:
+            continue
+        bbox = fm.box(det.get("bbox", [0, 0, 0, 0]))
+        what = "rest" if pt.is_rest else (pt.pitch or "?")
+        note = f"{NOTE_TAG}: read {what}, no match in the reference m{number}"
+        for bd in batch_dets:
+            if bd["id"] in claimed:
+                continue
+            bb = {"x": bd.get("x", 0), "y": bd.get("y", 0), "w": bd.get("w", 0), "h": bd.get("h", 0)}
+            if iou(bbox, bb) >= min_iou:
+                by_id[bd["id"]]["notes"] = note
+                break
+        out.hints.append({"kind": "extra", "label": f"read {what}", "bbox": bbox,
+                          "class": det.get("class")})
+
+    # Truth tokens the reading has no note for: ghost markers.
+    length = _measure_length(notes)
+    missing = [t_tokens[ti] for ti in al.truth_unmatched]
+    xs = _x_estimates(missing, matched_x, length, width)
+    half_space = ((b_lines[-1] - b_lines[0]) / 4.0) if len(b_lines) >= 5 else 0.0
+    for t in missing:
+        tn: TruthNote = t.ref
+        if tn.rest:
+            want_cls = expected_rest_class(tn)
+            y = ((b_lines[0] + b_lines[-1]) / 2.0) if len(b_lines) >= 5 else None
+            label = f"rest {tn.type or ''}".strip()
+        else:
+            y = staff_y_for_pitch(tn.pitch, clef, b_lines)
+            pos = on_line_or_in_space(tn.pitch, clef)
+            kind = head_kind_for_type(tn.type)
+            want_cls = f"notehead{kind}{pos}" if pos else None
+            label = f"{tn.pitch} {tn.type or '?'}{'.' * tn.dots}"
+        h = int(round(half_space)) if half_space else 0
+        w = int(round(half_space * 1.2)) if half_space else 0
+        x = xs.get(t.index)
+        bbox = None
+        if x is not None and y is not None and h:
+            bbox = {"x": int(round(x - w / 2)), "y": int(round(y - h / 2)), "w": w, "h": h}
+        out.hints.append({"kind": "missing", "label": label, "class": want_cls,
+                          "pitch": tn.pitch, "type": tn.type, "dots": tn.dots,
+                          "onset_ql": tn.onset_ql, "bbox": bbox,
+                          "x_estimated": True})
+
+    out.verdict_state = state
+    return out
+
+
+# --------------------------------------------------------------------------
+# Scoring against human verdicts already in the batch
+# --------------------------------------------------------------------------
+
+
+def _human_boxes(state: dict) -> list[dict]:
+    out: list[dict] = []
+    for d in state.get("detections", []):
+        v = d.get("verdict")
+        if v == "TP":
+            out.append({"class": d.get("model_predicted_class"), "bbox": d.get("model_bbox")})
+        elif v == "WRONG_CATEGORY":
+            out.append({"class": d.get("human_corrected_class"), "bbox": d.get("model_bbox")})
+        elif v == "WRONG_BBOX":
+            out.append({"class": d.get("model_predicted_class"),
+                        "bbox": d.get("human_bbox") or d.get("model_bbox")})
+    for h in state.get("added_detections", []):
+        if str(h.get("id", "")).startswith("M"):
+            continue  # a previous pre-fill, not a human
+        out.append({"class": h.get("human_class"), "bbox": h.get("bbox")})
+    return [b for b in out if b["bbox"] and b["class"]]
+
+
+def _prefill_boxes(cp: CellPrefill) -> list[dict]:
+    return [{"class": d["class"], "bbox": d["bbox"]} for d in cp.decisions]
+
+
+def _kind(cls: str | None) -> str | None:
+    p = parse_head_class(cls)
+    if p:
+        return p[0]
+    return cls
+
+
+def pass_classes(bench: Path) -> set[str] | None:
+    cfg = bench / "batch_config.json"
+    if not cfg.exists():
+        return None
+    try:
+        raw = json.loads(cfg.read_text())
+    except json.JSONDecodeError:
+        return None
+    out: set[str] = set()
+    for c in raw.get("classes", raw.get("active_classes", [])) or []:
+        if isinstance(c, str):
+            out.add(c)
+        elif isinstance(c, dict):
+            for k in ("name", "on_line", "in_space"):
+                if c.get(k):
+                    out.add(str(c[k]))
+    return out or None
+
+
+def score_cell(cp: CellPrefill, human_state: dict, classes: set[str] | None,
+               min_iou: float = DEFAULT_MIN_IOU) -> dict:
+    human = _human_boxes(human_state)
+    pre = _prefill_boxes(cp)
+    if classes is not None:
+        human = [b for b in human if b["class"] in classes]
+        pre = [b for b in pre if b["class"] in classes]
+    used: set[int] = set()
+    exact = kind = 0
+    for p in pre:
+        best, best_i = 0.0, None
+        for i, h in enumerate(human):
+            if i in used:
+                continue
+            v = iou(p["bbox"], h["bbox"])
+            if v >= min_iou and v > best:
+                best, best_i = v, i
+        if best_i is not None:
+            used.add(best_i)
+            if human[best_i]["class"] == p["class"]:
+                exact += 1
+            if _kind(human[best_i]["class"]) == _kind(p["class"]):
+                kind += 1
+    return {"n_prefill": len(pre), "n_human": len(human),
+            "matched_exact": exact, "matched_kind": kind}
+
+
+# --------------------------------------------------------------------------
+# Driver
+# --------------------------------------------------------------------------
+
+
+def _has_human_content(state: dict) -> bool:
+    if any(d.get("verdict") for d in state.get("detections", [])):
+        return True
+    if any(not str(h.get("id", "")).startswith("M") for h in state.get("added_detections", [])):
+        return True
+    return bool(state.get("inspected_passes"))
+
+
+def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, WindowRow], *,
+        write: bool = False, force: bool = False, score: bool = False,
+        match: str = "step", min_strength: float = DEFAULT_MIN_STRENGTH,
+        min_iou: float = DEFAULT_MIN_IOU, trust_measure_counts: bool = False,
+        cells: list[str] | None = None) -> dict:
+    manifest = json.loads((bench / "cells.json").read_text())
+    if cells:
+        wanted = set(cells)
+        manifest = [e for e in manifest if e["cell_id"] in wanted]
+    ctx_by_key = index_transcription(transcription)
+    det_dir = bench / "detections"
+    ver_dir = bench / "verdicts"
+    pre_dir = bench / PREFILL_DIR
+    if write:
+        ver_dir.mkdir(parents=True, exist_ok=True)
+        pre_dir.mkdir(parents=True, exist_ok=True)
+    classes = pass_classes(bench)
+
+    results: list[dict] = []
+    totals = {"cells": 0, "prefilled": 0, "abstained": 0, "skipped": 0, "written": 0,
+              "n_tp": 0, "n_wrong_category": 0, "n_added": 0,
+              "n_hints_missing": 0, "n_hints_extra": 0}
+    score_tot = {"n_prefill": 0, "n_human": 0, "matched_exact": 0, "matched_kind": 0,
+                 "cells_scored": 0}
+
+    for entry in manifest:
+        cid = entry["cell_id"]
+        key = (entry.get("page"), entry.get("system_index"), entry.get("staff_index"),
+               entry.get("measure_index"))
+        ctx = ctx_by_key.get(key)
+        row = windows.get(int(entry.get("page", -1)))
+        dp = det_dir / f"{cid}.json"
+        batch_dets = json.loads(dp.read_text()).get("detections", []) if dp.exists() else []
+        cp = prefill_cell(entry, ctx, row, truth, batch_dets, match=match,
+                          min_strength=min_strength, min_iou=min_iou,
+                          trust_measure_counts=trust_measure_counts)
+
+        vp = ver_dir / f"{cid}.verdict.json"
+        existing: dict | None = None
+        if vp.exists():
+            try:
+                existing = json.loads(vp.read_text())
+            except json.JSONDecodeError:
+                existing = None
+
+        if score and existing is not None and cp.status == "prefilled":
+            s = score_cell(cp, existing, classes, min_iou)
+            for k in ("n_prefill", "n_human", "matched_exact", "matched_kind"):
+                score_tot[k] += s[k]
+            score_tot["cells_scored"] += 1
+            cp.alignment["score"] = s
+
+        written = False
+        if cp.status == "prefilled" and cp.verdict_state is not None:
+            if existing is not None and _has_human_content(existing) and not force:
+                cp.status = "skipped"
+                cp.reason = "verdict file already carries human work (use --force)"
+            elif write:
+                vp.write_text(json.dumps(cp.verdict_state, indent=2))
+                written = True
+
+        summ = cp.summary()
+        summ["written"] = written
+        if write:
+            (pre_dir / f"{cid}.json").write_text(json.dumps({
+                **summ, "decisions": cp.decisions, "hints": cp.hints,
+            }, indent=2))
+        results.append(summ)
+        totals["cells"] += 1
+        totals[cp.status] = totals.get(cp.status, 0) + 1
+        totals["written"] += int(written)
+        for k in ("n_tp", "n_wrong_category", "n_added", "n_hints_missing", "n_hints_extra"):
+            totals[k] += summ[k]
+
+    summary = {
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "bench": str(bench),
+        "truth": truth.path,
+        "match": match,
+        "min_strength": min_strength,
+        "min_iou": min_iou,
+        "trust_measure_counts": trust_measure_counts,
+        "pass_classes": sorted(classes) if classes else None,
+        "totals": totals,
+        "cells": results,
+    }
+    if score:
+        n_pre, n_hum = score_tot["n_prefill"], score_tot["n_human"]
+        summary["score"] = {
+            **score_tot,
+            "precision_exact": round(score_tot["matched_exact"] / n_pre, 3) if n_pre else None,
+            "precision_kind": round(score_tot["matched_kind"] / n_pre, 3) if n_pre else None,
+            "recall_exact": round(score_tot["matched_exact"] / n_hum, 3) if n_hum else None,
+            "recall_kind": round(score_tot["matched_kind"] / n_hum, 3) if n_hum else None,
+        }
+    if write:
+        (pre_dir / "summary.json").write_text(json.dumps(summary, indent=2))
+    return summary
+
+
+def _print_summary(summary: dict) -> None:
+    t = summary["totals"]
+    print(f"cells {t['cells']}: prefilled {t['prefilled']}, abstained {t['abstained']}, "
+          f"skipped {t['skipped']}, written {t['written']}")
+    print(f"  TP {t['n_tp']}  WRONG_CATEGORY {t['n_wrong_category']}  added {t['n_added']}  "
+          f"hints: missing {t['n_hints_missing']}, extra {t['n_hints_extra']}")
+    reasons: dict[str, int] = {}
+    for c in summary["cells"]:
+        if c["status"] != "prefilled":
+            reasons[c["reason"]] = reasons.get(c["reason"], 0) + 1
+    for r, n in sorted(reasons.items(), key=lambda kv: -kv[1]):
+        print(f"  {n:4d}  {r}")
+    if "score" in summary:
+        s = summary["score"]
+        print(f"score over {s['cells_scored']} cells with human verdicts"
+              + (f" (classes {summary['pass_classes']})" if summary.get("pass_classes") else "")
+              + f": prefill {s['n_prefill']} boxes, human {s['n_human']} boxes")
+        print(f"  precision exact {s['precision_exact']}  kind {s['precision_kind']}   "
+              f"recall exact {s['recall_exact']}  kind {s['recall_kind']}")
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("--bench-dir", required=True, type=Path)
+    ap.add_argument("--transcription", required=True, type=Path,
+                    help="transcribe JSON covering the batch's pages")
+    ap.add_argument("--truth", required=True, type=Path, help="reference .musicxml / .mxl")
+    ap.add_argument("--windows", required=True, type=Path,
+                    help="window rows (works.json shape): page ↔ reference measures, staff ↔ parts")
+    ap.add_argument("--write", action="store_true", help="write verdicts/ and prefill/")
+    ap.add_argument("--dry-run", action="store_true", help="report only (the default)")
+    ap.add_argument("--force", action="store_true",
+                    help="overwrite verdict files that already carry human work")
+    ap.add_argument("--score", action="store_true",
+                    help="compare against human verdicts already in the batch")
+    ap.add_argument("--match", choices=("step", "exact"), default="step")
+    ap.add_argument("--min-strength", type=float, default=DEFAULT_MIN_STRENGTH)
+    ap.add_argument("--min-iou", type=float, default=DEFAULT_MIN_IOU)
+    ap.add_argument("--trust-measure-counts", action="store_true",
+                    help="pre-fill even where the staff's measure count disagrees with the window")
+    ap.add_argument("--work-id", default=None,
+                    help="keep only window rows of this work_id (a works.json holds several)")
+    ap.add_argument("--row-id", action="append", default=None,
+                    help="keep only this window row (repeatable)")
+    ap.add_argument("--cells", nargs="*", default=None, help="restrict to these cell ids")
+    args = ap.parse_args(argv)
+
+    transcription = json.loads(args.transcription.read_text())
+    truth = load_truth(args.truth)
+    windows = load_windows(args.windows, work_id=args.work_id, row_ids=args.row_id)
+    if not windows:
+        print(f"no usable window rows in {args.windows}", file=sys.stderr)
+        return 2
+    summary = run(args.bench_dir, transcription, truth, windows,
+                  write=bool(args.write and not args.dry_run), force=args.force,
+                  score=args.score, match=args.match, min_strength=args.min_strength,
+                  min_iou=args.min_iou, trust_measure_counts=args.trust_measure_counts,
+                  cells=args.cells)
+    _print_summary(summary)
+    if not args.write or args.dry_run:
+        print("(dry run — nothing written; add --write)")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
