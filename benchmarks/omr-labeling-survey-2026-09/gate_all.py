@@ -30,12 +30,12 @@ def nh_recall(model_block):
     return (rc[0], rc[1], rc[0] / rc[1] if rc[1] else 0.0)
 
 
-def run_forgetting(prod, ckpt, tag):
+def run_forgetting(prod, ckpt, tag, device="cpu"):
     out = BENCH / f"gate_forgetting_{tag}.json"
     cmd = [sys.executable, "-m", "tools.omr.training.wtc_forgetting_eval",
            "--prod", str(prod), "--ft", str(ckpt),
            "--cells-dir", str(CELLS), "--detections-dir", str(DETS),
-           "--verdicts-dir", str(VERD), "--device", "cpu",
+           "--verdicts-dir", str(VERD), "--device", device,
            "--imgsz", "1280", "--match", "center",
            "--json-out", str(out)]
     print(f"[forgetting {tag}] running ...", flush=True)
@@ -46,8 +46,8 @@ def run_forgetting(prod, ckpt, tag):
     return d
 
 
-def run_hollow(weights, tag, pdf, page):
-    env = dict(os.environ, OMR_DEVICE="cpu")
+def run_hollow(weights, tag, pdf, page, device="cpu"):
+    env = dict(os.environ, OMR_DEVICE=device)
     cmd = [sys.executable, str(BENCH / "hollow_eval.py"),
            "--weights", str(weights), "--tag", tag,
            "--pdf", str(pdf), "--page", str(page), "--stem", "beet5-p1", "--score"]
@@ -68,6 +68,10 @@ def main():
     ap.add_argument("--page", type=int, default=1)
     ap.add_argument("--skip-forgetting", action="store_true")
     ap.add_argument("--skip-hollow", action="store_true")
+    ap.add_argument("--device", default="cpu",
+                    help="cpu (default, matches the documented baseline) or mps "
+                         "(Mac GPU free once training is off-box; production is "
+                         "re-measured on the same device so the comparison is fair)")
     args = ap.parse_args()
 
     ckpts = []
@@ -80,13 +84,13 @@ def main():
     prod_hollow = None
 
     if not args.skip_hollow:
-        prod_hollow = run_hollow(args.prod, "prod", args.beet5_pdf, args.page)
+        prod_hollow = run_hollow(args.prod, "prod", args.beet5_pdf, args.page, args.device)
 
     for tag, path in ckpts:
         if not Path(path).exists():
             print(f"!! missing checkpoint {tag}: {path}"); continue
-        forget = None if args.skip_forgetting else run_forgetting(args.prod, path, tag)
-        hollow = None if args.skip_hollow else run_hollow(path, tag, args.beet5_pdf, args.page)
+        forget = None if args.skip_forgetting else run_forgetting(args.prod, path, tag, args.device)
+        hollow = None if args.skip_hollow else run_hollow(path, tag, args.beet5_pdf, args.page, args.device)
         if forget and prod_forget is None:
             prod_forget = forget["production"]
         rows.append({"tag": tag, "path": path, "forget": forget, "hollow": hollow})
