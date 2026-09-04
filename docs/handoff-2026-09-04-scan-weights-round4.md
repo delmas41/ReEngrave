@@ -116,9 +116,18 @@ augmentation measured augmented 0.122 < clean 0.384 < production 0.652.
    what the existing scan/engraved router already does structurally.
 
 **Cheap to test:** an imgsz-512 run is 30 epochs in **2.7 minutes**; 2048 is 28
-minutes. Sweep checkpoints for 320/512/768/1024/2048 are pulled to
-`/tmp/sweep-ckpts/` (`best_<size>.pt`, `e1_<size>.pt`), 896 was queued and may
-not have finished.
+minutes (batch 16 vs 2). So a method sweep costs pennies — rent, test, destroy.
+
+**Sweep checkpoints are preserved at `omr-weights/round4-sweep/`** (gitignored,
+2.2 GB, survives reboot):
+
+    best_320.pt best_512.pt best_768.pt best_1024.pt best_2048.pt   (30 epochs)
+    e1_320.pt e1_512.pt                                             (1 epoch)
+    r4_2048_e5.pt r4_512_e5.pt                                      (the gated ones)
+
+⚠️ `e1_768.pt` is 241 MB against the others' 335 MB — a TRUNCATED transfer.
+Do not use it. 896 was queued behind 1408 and never ran; the box is destroyed,
+so re-run it if wanted (~4 min).
 
 ## 6. How to run the gate
 
@@ -155,3 +164,18 @@ and symlink `.venv-surya`.
   the tool's rate as an upper bound, adjudicate by eye.
 - **Brahms 1 batch** is shared with another session; its verdicts were merged
   here additively. Check `inspected_passes` before assuming a pass ran.
+
+
+## 8. Cost and instances
+
+Total spend **$0.74** of a $10 budget. Three instances were rented: the first
+(France) trained rounds 3-4; the second (Delaware) was destroyed unused because
+its `ssh5` proxy refused connections before key exchange while the instance
+reported "running" — a broken host, not an auth or boot problem; the third
+(BC Canada) ran the imgsz sweep. **All three are destroyed — nothing is
+billing.**
+
+⚠️ Two rent attempts failed with `no_such_ask` — offers taken between listing
+and click. Sean's vast.ai session had also silently logged out at one point.
+Verify on the Instances page that you got the machine you picked; the offer
+list re-sorts under you.
