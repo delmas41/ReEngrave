@@ -5,6 +5,23 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — Design note: position grammar over the mark alphabet
+
+Sean's observation (ties/slurs, then accents/hairpins and tenuto/ledger
+lines) generalized into a written principle:
+[docs/position-grammar-confusables-2026-09-04.md](docs/position-grammar-confusables-2026-09-04.md).
+Engraved music reuses a tiny mark alphabet — dot, stroke, wedge, arc, bowl,
+digit — and identity is position grammar over the staff lattice, not shape;
+the detector proposes ink events with a class PRIOR, a downstream layer
+assigns or vetoes identity. Nine shipped precedents cited with their numbers;
+six design rules (class space stays 208 / families closed under
+confusability / veto-impossible-first / anchors before grammar /
+matches-nothing-is-an-output / never tune positionally on one edition); an
+inventory of the confusable families with measured discriminators; and the
+next six opportunities each tied to an existing measured hook. First
+consumer: the round-6 specialist/labeling campaign via family closures and
+adjudication-batch shape.
+
 ## 2026-09-04 — Scan weights: the round-5 head-graft candidate SHIPPED
 
 **Why:** rounds 3–5 of the scan-weights campaign established that fine-tuning
