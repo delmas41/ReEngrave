@@ -1,0 +1,50 @@
+{
+ "cells": 30,
+ "conf": 0.25,
+ "baseline": "prod",
+ "counts": {
+  "prod": {
+   "clefG": 12,
+   "clefF": 9,
+   "staff": 27,
+   "keyFlat": 3,
+   "tie": 19,
+   "noteheadHalfInSpace": 1,
+   "noteheadHalfOnLine": 5,
+   "noteheadBlackInSpace": 142,
+   "noteheadBlackOnLine": 125,
+   "flag8thDown": 9,
+   "dynamicF": 2,
+   "noteheadWholeInSpace": 1,
+   "keySharp": 7,
+   "timeSig8": 1,
+   "timeSig3": 1,
+   "dynamicP": 5,
+   "beam": 126,
+   "restQuarter": 7,
+   "rest8th": 12,
+   "restHalf": 4,
+   "augmentationDot": 12,
+   "accidentalSharp": 15,
+   "accidentalNatural": 8,
+   "flag8thUp": 5,
+   "ledgerLine": 31,
+   "accidentalFlat": 3,
+   "articAccentBelow": 1,
+   "ornamentTrill": 1
+  },
+  "rehbase_e2": {
+   "noteheadBlackOnLine": 133,
+   "noteheadHalfInSpace": 2,
+   "noteheadHalfOnLine": 4,
+   "noteheadBlackInSpace": 140,
+   "dynamicP": 4,
+   "timeSig8": 1,
+   "keySharp": 7,
+   "timeSig9": 1,
+   "timeSig3": 1,
+   "timeSig2": 1,
+   "dynamicF": 2
+  }
+ }
+}
