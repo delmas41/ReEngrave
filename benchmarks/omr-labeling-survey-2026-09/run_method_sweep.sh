@@ -20,6 +20,20 @@
 #              restores 69/31. This is the control the last session never ran
 #              — 896 was queued behind 1408 when the box was destroyed — and
 #              the only arm that isolates "same recipe, better labels".
+#   plain2     no teacher at the 2x dense ratio — the MATCHED control for
+#              `distill` and `rehearsal`, which run at 2x because the teacher
+#              boxes are what they vary. Without it, "rehearsal at 2x" would
+#              only ever be comparable to "no teacher at 6x", and the dense
+#              ratio and the teacher would move together.
+#   distill25  the ALL scope built at the teacher's conf 0.25 instead of 0.50 —
+#              the pipeline's OWN operating threshold, so the student is asked
+#              to reproduce what production actually emits rather than only its
+#              confident half. 3417 teacher boxes against distill's 1423, and
+#              it is the only arm that gets the never-labeled structural
+#              classes to a real count (beam 450, ledgerLine 350, tie 336).
+#              It also inherits the most false positives, which is the trade.
+#   distill6 /  the two rehearsal scopes at the 6x ratio, so each also has a
+#   rehearsal6  same-ratio partner among the plain arms.
 #   dense6     the same 6x ratio for 5 epochs, no teacher. Separates "more of
 #              the dense base" from "the teacher speaks", because v1 and v2
 #              carry beam, ledgerLine, slur and tie boxes of their own and
@@ -90,7 +104,7 @@ train () {
 }
 
 ARMS=("$@")
-[ ${#ARMS[@]} -eq 0 ] && ARMS=(prod896 nowarmup gentle distill rehearsal dense6 freeze lowlr distill2048 reh2048 rehfreeze)
+[ ${#ARMS[@]} -eq 0 ] && ARMS=(prod896 nowarmup gentle distill distill25 rehearsal plain2 distill6 distill25_6 rehearsal6 dense6 freeze lowlr distill2048 reh2048 rehfreeze)
 
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader || true
 
@@ -130,6 +144,21 @@ case "$arm" in
   distill)
     build_catalog data/user-labeled-distill cat-dis 2
     train distill cat-dis/catalog-2xdense.yaml 896 16 5 '{"save_period": 1}' ;;
+  distill25)
+    build_catalog data/user-labeled-distill25 cat-d25 2
+    train distill25 cat-d25/catalog-2xdense.yaml 896 16 5 '{"save_period": 1}' ;;
+  distill25_6)
+    build_catalog data/user-labeled-distill25 cat-d25 6
+    train distill25_6 cat-d25/catalog-6xdense.yaml 896 16 5 '{"save_period": 1}' ;;
+  plain2)
+    build_catalog data/user-labeled cat-plain 2
+    train plain2 cat-plain/catalog-2xdense.yaml 896 16 5 '{"save_period": 1}' ;;
+  distill6)
+    build_catalog data/user-labeled-distill cat-dis 6
+    train distill6 cat-dis/catalog-6xdense.yaml 896 16 5 '{"save_period": 1}' ;;
+  rehearsal6)
+    build_catalog data/user-labeled-rehearsal cat-reh 6
+    train rehearsal6 cat-reh/catalog-6xdense.yaml 896 16 5 '{"save_period": 1}' ;;
   distill2048)
     build_catalog data/user-labeled-distill cat-dis 3
     train distill2048 cat-dis/catalog-3xdense.yaml 2048 4 5 '{"save_period": 1}' ;;

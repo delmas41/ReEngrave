@@ -75,8 +75,14 @@ def main() -> int:
     if a.baseline:
         specs.insert(0, a.baseline)
     if a.ckpts_dir:
+        # ⚠️ Tag from the path RELATIVE to --ckpts-dir, not from two parents up.
+        # A sweep laid out <dir>/<arm>/<epoch>.pt gives every arm the same
+        # grandparent, so the old tag collided across arms and the dedupe below
+        # silently kept only the alphabetically first one — a table that looked
+        # like five epochs of a sweep and was one arm.
         for f in sorted(a.ckpts_dir.rglob("*.pt")):
-            specs.append(f"{f.parent.parent.name}-{f.stem}={f}")
+            rel = f.relative_to(a.ckpts_dir).with_suffix("")
+            specs.append(f"{'-'.join(rel.parts)}={f}")
     if not specs:
         ap.error("nothing to probe")
 

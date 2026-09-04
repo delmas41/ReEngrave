@@ -1,0 +1,91 @@
+# Catalog membership — the version directories build_catalog_yaml unions
+# into catalog.yaml. One directory name per line; '#' comments allowed.
+#
+# THIS LIST IS A TRAINING DECISION, NOT AN INVENTORY. Versions on disk but
+# not listed here are excluded ON PURPOSE:
+#
+#   v5-2026-07-12-clef, v6-2026-07-13-clef-diverse — 62 clef-heavy cells.
+#     Adding them narrows the density prior, the mechanism that collapsed
+#     dense-page noteheads 2506 -> 114 in the clef fine-tune. Entry wants a
+#     measured run behind wtc_forgetting_eval.py, not a rebuild.
+#     See PROJECT_STATUS.md, open decision #13.
+#
+# Admitting a version is deliberate: add its line here, rebuild the
+# catalog, and commit the manifest edit together with the regenerated
+# catalog files (test_training_pipeline.py pins the membership, so the
+# change is loud by design).
+#
+# ADMITTED 2026-09-03 — v7 + v8 (hollow-notehead scan cells, 5 publishers).
+# The measured shipping run behind wtc_forgetting_eval.py that the v5/v6/v7
+# discipline asked for: at imgsz-896 + 2x-dense-oversample, 1 epoch from the
+# production checkpoint, dense notehead recall HELD at 0.941 while scanned
+# half-note detection rose 8 -> 27 and duration recall 0.388 -> 0.435. The
+# shipped weights (deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt) come from that
+# run. v5/v6 (clef) stay excluded — they were not part of it.
+# See benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md and GATE_RESULTS.md.
+# NOTE: the shipped recipe oversampled the dense base 2x and used only the first
+# epoch; this manifest records catalog MEMBERSHIP (v7+v8 admitted), while the
+# oversample factor and epoch count are training-time knobs documented in
+# SHIP_RESULTS.md, not properties of the catalog.
+
+v1-2026-05-18-orchestral
+v2-2026-06-08-beet5
+v3-2026-06-09-mahler5
+v4-2026-06-10-la-mer
+
+# ADMITTED 2026-09-03 (round 3) — v13-v21 SUPERSEDE v7 and v8, which are now
+# REMOVED from this list. They are the same cells, completed: the round-3
+# passes added rests, accidentals and clefs by hand and audited model dynamics,
+# slurs and ties, taking the SAME batches from 209 cells / 540 boxes to
+# 280 cells / 1157 boxes (+114%).
+#
+# Why the old versions come OUT rather than sitting alongside: v7 and v8 cover
+# the same cells with LESS labeling, and leaving them in would train the model
+# on both a complete and an incomplete labeling of the same image — the
+# incomplete copy teaching that the rests and accidentals it omits are
+# background, which is the exact regression this round exists to fix.
+#
+# v9-v11 (hollow3 Mahler 1 / Elgar 1 / La mer) were never admitted; their cells
+# are carried into v19/v20/v21 completed. v12 (Jurgenson Tchaikovsky 1, low-res)
+# stays out on the cloud ablation that measured it HALVING the half-note gain —
+# its cells complete to zero black noteheads because the blur defeats the
+# detector. v5/v6 (clef-heavy) stay out as before.
+#
+# ⚠️ These versions store IMAGE COPIES, not symlinks (--no-symlink). v8 was
+# unhealable precisely because it symlinked into a gitignored batch dir and 111
+# of its 122 source PNGs later vanished; a copy cannot rot that way, and it also
+# survives a plain tar to the cloud box.
+#
+# See benchmarks/omr-labeling-survey-2026-09/ROUND3_COMPLETENESS.md.
+
+v13-2026-09-03-complete-v7-beet5-bolero
+v14-2026-09-03-complete-litolff
+v15-2026-09-03-complete-peters
+v16-2026-09-03-complete-eulenburg
+v17-2026-09-03-complete-simrock
+v18-2026-09-03-complete-breitkopf
+v19-2026-09-03-complete-mahler1
+v20-2026-09-03-complete-elgar1
+v21-2026-09-03-complete-lamer
+
+# ADMITTED 2026-09-04 (round 4) — v22, and it is the DIRECT ANSWER to round 3's
+# gate failure. Round 3's scan-e2e regression was one page: Simrock/Dvorak,
+# +0.155, on the publisher with THIRTEEN sparse cells against Litolff's and
+# Peters' 54. The measured mechanism was that the fine-tune emitted ZERO slurs,
+# ties, accidentals and augmentation dots there, because Simrock's 13 cells
+# contributed 1 accidental box and 0 rests — the hollow batches selected sparse,
+# hollow-notehead-bearing cells, so there was nothing else in them to learn.
+#
+# v22 is 110 cells chosen the opposite way (rank_by_suppressed.py ranks a
+# 360-cell pool by rest/accidental/slur/tie content, noteheads only as a
+# tie-break) and drawn from scratch with the rich palette. 759 boxes, 7.0 per
+# cell, 33 classes, and a distribution that matches the corpus that works:
+#
+#            notehead  accid  slur/tie  dynamic  rest  clef
+#   v22           42%    15%       10%      10%    9%    4%
+#   v1-v4       44.3%   9.8%      5.8%     8.1% 11.4%  2.8%
+#   v7-v8       92.4%      0         0        0     0     0
+#
+# 38 ties and 37 slurs, the family production misses worst (0.26 coverage
+# against truth on the scan benchmark).
+v22-2026-09-04-simrock-dense
