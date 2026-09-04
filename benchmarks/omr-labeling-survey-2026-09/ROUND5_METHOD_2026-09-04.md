@@ -206,6 +206,59 @@ ship** — the live scan-slot repoint is Sean's call.
    (`download_dataset.py` + `prepare_yolo_data.py`, tens of GB, best done
    straight onto a rented box), and that is a separate decision.
 
+## 4b. Per-symbol specialists — and the labels for them already exist
+
+Sean's question, and the right architecture: one detector per symbol, swept over
+the page. The literal form is too slow — inference cost is linear, so 20
+specialists turns a 2.5-minute page into 50 minutes — but the graft IS that
+ensemble compiled into one set of weights: train per symbol, keep only that
+symbol's head rows, transplant. One forward pass, N specialists' knowledge, and
+the collapse stops mattering because the collapsed rows are exactly the ones
+thrown away.
+
+**The training data is already there.** For a single-symbol model, every symbol
+the labeler skipped is genuinely background — the incompleteness that wrecked
+the 208-class model is CORRECT supervision here. `probe_specialist_corpora.py`
+joins `inspected_passes` to the pass palettes and reports, per class, how many
+training cells were swept for it:
+
+| specialist | swept cells | positive boxes |
+|---|--:|--:|
+| rests (whole/half/quarter/8th) | **424** | 319 |
+| accidentals + key signatures | **424** | 481 |
+| hollow noteheads (already proven) | 398 | 412 |
+| black noteheads | 325 | 968 |
+| clefs (G/F/C) | 187 | 97 |
+| **ties** | 164 | **132** |
+| slurs | 164 | 115 |
+| augmentation dots | 164 | 136 |
+| dynamics + hairpins | 109-164 | 162 |
+
+**30 specialists are trainable with no new labeling**, and the two worst
+measured gaps against truth are both on the list: ties (271 printed / 60 read —
+worst ratio) and rests (972 / 577 — biggest absolute hole). The hollow
+specialist that produced this round's win had 398 cells and 412 boxes, so both
+are in the range that already worked.
+
+Needing a pass: articulations, flags, tuplet digits, tremolo — they appear only
+in the 161 old triage cells. ⚠️ `beam` and `ledgerLine` also appear there and
+must NOT be hand-labelled; a human cannot bbox a thin line, and the teacher
+route exists for exactly them.
+
+⚠️ **"424 swept cells" is mostly negatives** — a cell counts as swept when a
+pass palette covers the class, whether or not it holds one. That is right for
+training and it means column two, not column one, is the binding constraint.
+
+⚠️ **The composability claim was TESTED AT `freeze=10` AND DID NOT HOLD.** If a
+frozen backbone kept the features still, a restored row should return to the
+base's behaviour — `ledgerLine` should read ~57. The frozen graft reads **10**,
+against the unfrozen graft's 11. No improvement. The reason is that `freeze=10`
+pins the backbone and leaves the NECK (layers 10-21, where multi-scale fusion
+happens) trainable, so the features the head sees still moved. The real test is
+**`freeze=22`** — everything except `model.22` — which makes the features
+bit-identical to the base by construction and is one ~2-minute GPU arm. Until
+that is run, treat multi-specialist grafting as unproven rather than as the plan.
+
 ## 5. Rig faults worth not repeating
 
 * **v2/v3/v4 store their cell images as SYMLINKS** into the labeling batch dirs;
