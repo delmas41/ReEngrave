@@ -63,7 +63,10 @@ def read_versions(root: Path) -> list[str]:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--ft", type=Path, required=True)
+    ap.add_argument("--ft", type=Path, default=None,
+                    help="the fine-tune to graft FROM. Not needed "
+                         "with --import-rows, which carries the "
+                         "rows already.")
     ap.add_argument("--base", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--labels-root", type=Path,
@@ -95,6 +98,16 @@ def main() -> int:
                          "back. Shift for a threshold move p0 -> p1 is "
                          "logit(p1) - logit(p0): 0.25 -> 0.45 is 0.90, "
                          "0.25 -> 0.60 is 1.50.")
+    ap.add_argument("--export-rows", type=Path, default=None,
+                    help="write ONLY the kept classes' head rows to this .npz "
+                         "and exit. A specialist's knowledge of its own symbol "
+                         "lives in those rows and nowhere else, so this is the "
+                         "whole transferable artifact — ~20 KB against an 88 MB "
+                         "checkpoint, which matters when the rented box's "
+                         "uplink is the bottleneck. Pair with --import-rows.")
+    ap.add_argument("--import-rows", type=Path, default=None,
+                    help="graft rows exported by --export-rows onto --base. "
+                         "--ft is not needed and is ignored.")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
@@ -123,9 +136,55 @@ def main() -> int:
           f"{sorted({names[i] for i in kept})}")
     print(f"classes RESTORED from the base ({len(restore)})")
 
+    import numpy as np
+
+    if a.import_rows:
+        base = torch.load(str(a.base), map_location="cpu", weights_only=False)
+        base_sd = base["model"].state_dict()
+        blob = np.load(str(a.import_rows))
+        idx = [int(i) for i in blob["class_ids"]]
+        moved = 0
+        for layer in CLS_LAYERS:
+            for suffix in ("weight", "bias"):
+                k = f"{layer}.{suffix}"
+                arr = torch.from_numpy(blob[k])
+                for n, c in enumerate(idx):
+                    base_sd[k][c] = arr[n]
+                    moved += 1
+        if a.bias_shift:
+            for layer in CLS_LAYERS:
+                for c in idx:
+                    base_sd[f"{layer}.bias"][c] -= a.bias_shift
+        print(f"imported {moved} rows for {len(idx)} classes "
+              f"({[names[i] for i in idx]}) at bias shift {a.bias_shift}")
+        if a.dry_run:
+            return 0
+        base["model"].load_state_dict(base_sd)
+        a.out.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(base, str(a.out))
+        print("wrote ->", a.out)
+        return 0
+
+    if a.ft is None:
+        print("--ft is required unless --import-rows is given")
+        return 2
     ft = torch.load(str(a.ft), map_location="cpu", weights_only=False)
-    base = torch.load(str(a.base), map_location="cpu", weights_only=False)
     ft_sd = ft["model"].state_dict()
+
+    if a.export_rows:
+        out = {"class_ids": np.asarray(kept, dtype=np.int32)}
+        for layer in CLS_LAYERS:
+            for suffix in ("weight", "bias"):
+                k = f"{layer}.{suffix}"
+                out[k] = ft_sd[k][kept].clone().numpy()
+        a.export_rows.parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(str(a.export_rows), **out)
+        sz = a.export_rows.stat().st_size
+        print(f"exported {len(kept)} classes' rows "
+              f"({[names[i] for i in kept]}) -> {a.export_rows} ({sz/1024:.0f} KB)")
+        return 0
+
+    base = torch.load(str(a.base), map_location="cpu", weights_only=False)
     base_sd = base["model"].state_dict()
 
     moved = 0
