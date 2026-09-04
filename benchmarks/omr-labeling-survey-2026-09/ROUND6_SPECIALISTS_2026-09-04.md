@@ -44,7 +44,16 @@ features and drop in exactly. A 5-family composite built in seconds
 | rests (e0, frz) | rest8th 12 → **0**, restQuarter 7 → **0** |
 | accidentals (e0, frz) | accidentalSharp 15 → **0**, accidentalNatural 8 → **0** |
 | hollow (e0/e4, frz/free) | survives — 28 classes, 0 collapsed |
-| slurs (e0, frz) | survives |
+| slurs (e0, frz) | "survives" — ⚠️ see below |
+
+⚠️ **The slurs "survival" is screen blindness, not survival.** Production reads
+**0 slurs on the 30 held-out dense cells** (checked in the inventory JSON), so
+a suppressed slur class cannot show up there — the cells are Beethoven
+orchestral bars with almost no slurs. Given the slurs corpus has the WORST
+residue of all (61% of teacher-visible slurs unboxed), the honest reading is
+that only **hollow** demonstrably survives, and every specialist whose corpus
+fails the residue test should be presumed suppressed until screened on cells
+that actually contain its symbol.
 
 Epoch 0 with a frozen backbone+neck is ~10 optimizer steps touching only the
 head — and the class still zeroes. Not drift, not warmup, not scale: the LABELS.
@@ -60,7 +69,9 @@ human boxes:
 | hollow | 398 | 318 | 444 | 126 | 28% |
 | ties | 164 | 102 | 245 | **143** | **58%** |
 
-(remaining families' rows land in `specialist_residual.json` when the probe
+| slurs | 164 | 67 | 172 | **105** | **61%** |
+
+(rests and accidentals land in `specialist_residual.json` when the probe
 finishes.)
 
 **58% of the ties the teacher can see in the ties corpus are unboxed.** The
