@@ -157,3 +157,10 @@ labels.cache
 # report JSON beside the builder is what carries the provenance.
 data/user-labeled-rehearsal/
 data/user-labeled-distill/
+
+# Specialist training roots are build products of
+# benchmarks/omr-labeling-survey-2026-09/build_specialist_versions.py — they
+# carve per-symbol corpora out of data/user-labeled/ and are regenerated from
+# the committed verdicts, pass configs and builder. specialist.json beside each
+# one carries the provenance.
+data/specialist-*/
