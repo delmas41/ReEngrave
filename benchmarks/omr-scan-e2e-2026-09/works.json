@@ -1391,6 +1391,8 @@
       "row_id": "bach-brandenburg3-mvt1-468678-p1",
       "work_id": "bach--concerto-3",
       "label": "Bach Brandenburg 3 / Edition Peters / 300 dpi, +1 numbering — COMPLETION of the parked row",
+      "pooled": false,
+      "pooled_note": "STRESS ROW — excluded from the default pooled figure (Sean's decision, 2026-09-04). The pipeline shatters this page (~6 'systems', 122 detected measures against a true 10), so its OMR-NED measures page-structure parsing rather than recognition; pooled, it contributed ~19% of the 11-row edit budget and charged recognition improvements as regressions (the graft found 326 more real symbols here and paid +358 edits — whole-measure amplification on a shattered page). Same call, same signature as boulanger-printemps-mvt1 in the engraved benchmark. The row still runs and reports per-row on every default invocation; the fragments align with the instrument choirs (3 Vni / 3 Vle / 3 Vc / Cb / Cembalo), so it doubles as the tracked stress metric for choir-grouped system layouts. Re-admit it to the pool when its segmentation reads ~10 measures — with a boundary note, since pool membership changes what the pooled figure means.",
       "edition": {
         "catalog_path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
         "imslp_id": "468678",

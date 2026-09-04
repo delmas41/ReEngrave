@@ -227,3 +227,15 @@ Provenance details, each verified during the runs:
 
 Result JSONs beside this file: `results-widened-hollowft.json`,
 `results-widened-graft.json`.
+
+---
+
+## Addendum, same day: Bach excluded from the default pool
+
+Sean decided the open question above: the Bach stress row is now
+`"pooled": false` in works.json, and `scan_eval.py` computes the default
+pooled figure over pooled rows only (stress rows still run and report
+per-row). **The canonical baselines are therefore this doc's 10-row column:
+hollow-ft 0.8457 / 29081, production graft 0.8387 / 29082.** The 11-row
+readings above remain the record for Bach's eventual re-admission. Decision
+rationale: VERIFICATION.md, same date.

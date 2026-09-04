@@ -243,3 +243,26 @@ enters the default pool, and the baseline record therefore states the pooled
 figure BOTH with and without it — whether Bach keeps pool membership is an
 open decision for Sean (the Boulanger precedent: a structure-failure row can
 dominate a pool and turn it into a segmentation metric).
+
+---
+
+## 2026-09-04 — Bach excluded from the default pool (Sean's decision)
+
+The Bach stress row stays in works.json, verified and runnable, and is now
+marked `"pooled": false`: `scan_eval.py` runs and reports it per-row on every
+default invocation but keeps it out of the pooled figure. Why: the pipeline
+shatters the page (~6 "systems", 122 detected measures against a true 10), so
+its OMR-NED measures page-structure parsing rather than recognition; pooled,
+it contributed ~19% of the 11-row edit budget and CHARGED recognition
+improvements as regressions (the graft found 326 more real symbols there and
+paid +358 edits — whole-measure amplification on a shattered page). Same
+call, same signature as boulanger-printemps-mvt1 in the engraved benchmark.
+
+**The canonical scan-gate baselines are therefore the 10-row readings** from
+WIDENED_BASELINE_2026-09-04.md: prior-prod (hollow-ft) **0.8457 / 29081**,
+production (hollow-graft-shift09) **0.8387 / 29082**. The 11-row readings
+stay recorded there for the row's eventual re-admission — which happens when
+its segmentation reads ~10 measures, with a boundary note, since pool
+membership changes what the pooled figure means. The fragments align with
+the instrument choirs (3 Vni / 3 Vle / 3 Vc / Cb / Cembalo), so the row
+doubles as the tracked stress metric for choir-grouped system layouts.

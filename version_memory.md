@@ -5,6 +5,24 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — Scan gate: widened 5 → 11 rows; Bach excluded from the pool
+
+Six Sean-verified rows promoted (commit `84a5ccac`; drafting on branch
+`claude/scan-gate-rows`, stories in scan-e2e VERIFICATION.md), the first
+widened baselines measured for both checkpoints (merge `04eb8050`,
+WIDENED_BASELINE_2026-09-04.md — the ship decision HOLDS on the deeper
+gate), and then, at Sean's decision, the Bach stress row was excluded from
+the default pooled figure via a new `"pooled": false` row flag in works.json
++ scan_eval.py support (stress rows run and report per-row, never pool).
+Rationale: its OMR-NED measures page-structure parsing (122 detected
+measures vs 10) and whole-measure amplification there charges recognition
+improvements as regressions — the Boulanger call, repeated. **Canonical
+scan-gate baselines: prior-prod (hollow-ft) 0.8457 / 29081; production
+(hollow-graft-shift09) 0.8387 / 29082, over 10 pooled rows.** All pre-widening
+figures (0.7517 / 0.7493) are 5-row history; no comparison crosses either
+boundary. Validation: the pool-exclusion logic re-scored the committed
+widened-graft fixtures and reproduced the recorded 10-row figures.
+
 ## 2026-09-04 — Design note: position grammar over the mark alphabet
 
 Sean's observation (ties/slurs, then accents/hairpins and tenuto/ledger
