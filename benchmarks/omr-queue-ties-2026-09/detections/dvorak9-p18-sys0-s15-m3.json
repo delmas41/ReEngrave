@@ -1,0 +1,18 @@
+{
+ "cell_id": "dvorak9-p18-sys0-s15-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 4,
+    "y": 485,
+    "w": 1964,
+    "h": 133
+   },
+   "confidence": 0.394,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

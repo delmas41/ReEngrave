@@ -70,9 +70,13 @@ human boxes:
 | ties | 164 | 102 | 245 | **143** | **58%** |
 
 | slurs | 164 | 67 | 172 | **105** | **61%** |
+| rests | 424 | 226 | 385 | 159 | 41% |
+| accidentals | 424 | 223 | 376 | 153 | 41% |
 
-(rests and accidentals land in `specialist_residual.json` when the probe
-finishes.)
+(full table also at `specialist_residual.txt`.) The line between the one
+family that survives training and the four that die runs between **28% and
+41%** residue — hollow, the one sweep that was audited and completed, is the
+only one under it.
 
 **58% of the ties the teacher can see in the ties corpus are unboxed.** The
 `inspected_passes` stamp says a human swept the cell for ties; the ink says
@@ -94,8 +98,11 @@ ceiling of 58% on the corpus's own subject is disqualifying either way.
 2. **The path to a working specialist is teacher-reconciliation of its corpus**:
    run the teacher over the family's cells, surface disagreements (teacher-sees
    / human-didn't-box) for a human to adjudicate — the same reconcile-and-audit
-   pattern the pre-fill work already built for noteheads. For ties that is ~143
-   candidate boxes to look at, an hour, not a campaign.
+   pattern the pre-fill work already built for noteheads. For ties that is **188
+   pending boxes over 104 cells** (built: `benchmarks/omr-queue-ties-2026-09`,
+   `build_family_queue.py`) — an hour at :5050, not a campaign. The batch
+   carries the 102 existing human boxes pre-marked TP, so the post-triage
+   export IS the complete family corpus with no merge step.
 3. **Hollow's specialist survives**, consistent with it being the one family
    whose sweep was audited and completed. It is also redundant — round 5's
    candidate already carries its rows.

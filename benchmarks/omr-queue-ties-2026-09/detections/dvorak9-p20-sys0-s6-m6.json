@@ -1,0 +1,44 @@
+{
+ "cell_id": "dvorak9-p20-sys0-s6-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 0,
+    "y": 422,
+    "w": 2042,
+    "h": 52
+   },
+   "confidence": 0.488,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 16,
+    "y": 21,
+    "w": 2028,
+    "h": 77
+   },
+   "confidence": 0.302,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D2",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 3,
+    "y": 549,
+    "w": 2041,
+    "h": 116
+   },
+   "confidence": 0.263,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}
