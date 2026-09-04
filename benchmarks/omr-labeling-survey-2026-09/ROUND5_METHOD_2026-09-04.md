@@ -145,6 +145,32 @@ recall 0.435 -> 0.558, so many of the new heads are right and musicdiff charges
 the ones that are not. **Recall bought with precision — axis 1's metric rewards
 it and axis 2's charges it, on the same change.**
 
+## 3b. A per-class confidence floor clears axis 2
+
+Grafting onto PRODUCTION instead of onto the base measures **0.7577** against
+the base graft's 0.7572 — no difference — which locates the cost exactly: it is
+not the 201 restored classes, it is the seven grafted ones over-firing. The
+pipeline has one global `conf_threshold`, so the floor goes into the weights:
+subtracting `logit(p1) - logit(p0)` from a kept class's bias IS raising that
+class's threshold from p0 to p1 (`merge_class_head.py --bias-shift`; 0.25 ->
+0.45 is 0.90).
+
+| | OMR-NED | edits | predicted |
+|---|--:|--:|--:|
+| production | 0.7517 | 7894 | 4350 |
+| graft, no floor | 0.7577 | 8038 | 4457 |
+| **graft + shift 0.9** | **0.7493** | **7872** | 4355 |
+
+Four of five rows improve — Mahler -0.0240, Dvorak -0.0076, Beethoven/575951
+-0.0034, Brahms -0.0018 — and Beethoven/984073's regression halves (+0.0428 ->
++0.0228).
+
+⚠️ **Axis 2 alone does not make this a ship candidate.** The floor gives back
+some of the half-noteheads axis 1 rewards, by construction. A checkpoint that
+clears axis 2 by discarding the gain it exists to deliver is production with
+extra steps, so axis 1 and axis 3 must be re-run ON THE SHIFTED CHECKPOINT
+before any of this counts.
+
 ## 4. What the next session should do
 
 1. **Graft onto PRODUCTION, not onto the pre-hollow base.** Production is the
