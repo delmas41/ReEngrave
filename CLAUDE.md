@@ -1929,6 +1929,31 @@ cleanly (that whole rest: 2.13 × 0.72 spaces, aspect 2.97:1, against a median n
 1.19 × 1.00 at 1.19:1), and it sat INSIDE the staff where no parity check reaches. Both
 auditors write nothing — every hit is a candidate for a human.
 
+⚠️ **THE RAW FLAG RATE IS AN UPPER BOUND, NOT THE DEFECT RATE — measured
+2026-09-03 on a genuine out-of-sample batch (Simrock/Dvořák 9, labeled after
+the tool existed): 7 of 102 ledger-zone labels flagged (6.9%, matching the
+Brahms rate), but adjudicated by hand ONLY 1 was real — true rate ~0.9%.**
+The 6 false positives share one mechanism: a printed LEDGER LINE survives
+staff-line removal and print-merges into the SAME connected component as
+its neighbouring notehead, pulling `blob_centre`'s centroid toward the rung
+by up to a full half-step. **Five candidate fixes were tried against both
+the Brahms corrections and the Simrock false positives and NONE
+generalises** — including the literal fix proposed for it, which resolves
+Simrock 4/4 and breaks Brahms 0/6, because it only has room to work where
+the human's box carries generous padding around the head, a labeling
+convention that differs across batches and is recorded nowhere. Do not
+re-try a box-relative geometric fix without reading
+[LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md](benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md)
+"The rung-merge failure mode" first — it has the numbers. `blob_centre` now
+reports the winning component's height/width in staff spaces alongside
+every parity suspect, as context only: width alone does NOT separate a
+rung-merge (Simrock's four measure 1.91–2.14sp) from a normal label (40 of
+Brahms's 76 ledger-zone labels, all uncontested, measure the same). **Every
+candidate still needs a human looking at the actual ink against the known
+step positions** — the standard both the Brahms corrections and the
+Simrock false positives were settled by, and the only thing that has
+worked twice.
+
 **Then COMMIT the results** (labeling runs in the main checkout, and verdicts are irreplaceable human work — don't leave them sitting untracked):
 
 ```bash

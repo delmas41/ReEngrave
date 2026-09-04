@@ -67,8 +67,36 @@ REST_MIN_ASPECT = 2.0
 HEAD_MAX_ASPECT = 1.8
 
 
-def blob_centre(im: np.ndarray, cx: float, cy: float, sp: float) -> float | None:
-    """y of the notehead-sized ink blob nearest (cx, cy) on a nostaff image."""
+def blob_centre(im: np.ndarray, cx: float, cy: float, sp: float) -> tuple[float, float, float] | None:
+    """(y, height_sp, width_sp) of the notehead-sized ink blob nearest (cx, cy)
+    on a nostaff image.
+
+    ⚠️ **This centroid is WRONG whenever a ledger rung print-merges into the
+    same connected component as the head** (measured 2026-09-03, on the
+    Simrock/Dvořák 9 batch, an out-of-sample test the scanned-weights session
+    ran): the rung's own mass pulls the centroid toward it, by up to a full
+    half-step — enough to flip the reported parity. `height_sp`/`width_sp`
+    are returned so a caller can show them alongside a flagged label, but
+    ⚠️ **do not use them to auto-reject or auto-correct** — five candidate
+    fixes were tried and measured against BOTH the 6 confirmed-correct Brahms
+    corrections and the Simrock false positives, and none generalises:
+    a size cutof (width > ~1.8-2.0sp) looks discriminating on the 4 Simrock
+    false positives alone, but 40 of 76 Brahms ledger-zone labels — all
+    independently uncontested — ALSO measure above 1.8sp, so the same cutoff
+    that would catch Simrock's rung-merges flags most of Brahms's clean
+    labels too. A tighter width filtered directly on the box ("keep only
+    rows whose local ink run is under some multiple of the head's width")
+    resolves the Simrock cases 4/4 but breaks all 6 Brahms cases, because it
+    only has room to detect the rung's excess where the human's drawn BOX
+    has generous padding around the head — Simrock's boxes do, Brahms's do
+    not, and the filter silently degenerates to plain box-centroid (already
+    known unreliable) wherever it doesn't. See
+    LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md "The rung-merge failure mode" for
+    the full comparison. The safe use of `height_sp`/`width_sp` is what this
+    docstring is doing right now: telling the next person not to trust a
+    number here without looking at the actual ink, the same way this one
+    was found.
+    """
     x0, x1 = int(max(0, cx - 1.1 * sp)), int(min(im.shape[1], cx + 1.1 * sp))
     y0, y1 = int(max(0, cy - 1.1 * sp)), int(min(im.shape[0], cy + 1.1 * sp))
     if x1 <= x0 or y1 <= y0:
@@ -79,12 +107,13 @@ def blob_centre(im: np.ndarray, cx: float, cy: float, sp: float) -> float | None
         yy, xx = np.nonzero(lab == i)
         if len(yy) < 0.15 * sp * sp:
             continue
-        if (yy.max() - yy.min()) > 1.8 * sp or (xx.max() - xx.min()) > 2.2 * sp:
+        h_px, w_px = yy.max() - yy.min(), xx.max() - xx.min()
+        if h_px > 1.8 * sp or w_px > 2.2 * sp:
             continue
         d = abs(yy.mean() + y0 - cy) + abs(xx.mean() + x0 - cx)
         if best is None or d < best[0]:
-            best = (d, yy.mean() + y0)
-    return None if best is None else best[1]
+            best = (d, yy.mean() + y0, h_px / sp, w_px / sp)
+    return None if best is None else (best[1], best[2], best[3])
 
 
 def audit_batch(batch: Path) -> dict:
@@ -140,16 +169,17 @@ def audit_batch(batch: Path) -> dict:
             n_ledger += 1
             if im is None:
                 continue
-            by = blob_centre(im, cx, cy, sp)
-            if by is None:
+            r = blob_centre(im, cx, cy, sp)
+            if r is None:
                 continue
+            by, h_sp, w_sp = r
             step = (by - ys[0]) / (sp / 2.0)
             off = abs(step - round(step))
             measured = "OnLine" if round(step) % 2 == 0 else "InSpace"
             stored = "OnLine" if cls.endswith("OnLine") else "InSpace"
             if measured != stored and off < MAX_OFF_GRID:
                 parity_sus.append((cid, cls, cls.replace(stored, measured),
-                                   step, off, abs(by - cy)))
+                                   step, off, abs(by - cy), h_sp, w_sp))
     return {"batch": batch.name, "n_labels": n_labels, "n_ledger": n_ledger,
             "n_noimg": n_noimg, "parity": parity_sus, "shape": shape_sus}
 
@@ -184,10 +214,14 @@ def main() -> int:
               f"parity-suspect={len(r['parity'])} shape-suspect={len(r['shape'])}{note}")
     print(f"\nTOTAL: {tot_l} human labels, {tot_led} in the ledger zone")
     if tot_p:
-        print(f"\nLEDGER-ZONE PARITY suspects ({len(tot_p)}) — measured on the ink, not the box:")
-        for cid, cls, to, step, off, dy in sorted(tot_p, key=lambda r: r[4]):
+        print(f"\nLEDGER-ZONE PARITY suspects ({len(tot_p)}) — measured on the ink, not the box.")
+        print("⚠️ h_sp/w_sp are context, not a verdict — width alone does NOT separate a real "
+              "rung-merge from a normal label (measured: 40 of 76 Brahms ledger-zone labels, "
+              "all uncontested, also exceed 1.8sp wide). Every row here is a candidate for a "
+              "HUMAN to look at the actual ink, per LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md.")
+        for cid, cls, to, step, off, dy, h_sp, w_sp in sorted(tot_p, key=lambda r: r[4]):
             print(f"  {cid:30} {cls:22} -> {to:22} step={step:6.2f} "
-                  f"off-grid={off:.2f} box_is_{dy:.0f}px_from_ink")
+                  f"off-grid={off:.2f} box_is_{dy:.0f}px_from_ink  blob={h_sp:.2f}x{w_sp:.2f}sp")
     if tot_s:
         print(f"\nSHAPE-vs-CLASS suspects ({len(tot_s)}) — a parity audit cannot see these:")
         for cid, cls, geom, why in tot_s:

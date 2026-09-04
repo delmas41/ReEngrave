@@ -5,6 +5,36 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — the ledger-zone auditor's raw flag rate is an UPPER BOUND, not the defect rate
+
+The scanned-weights session ran the auditor on Simrock/Dvořák 9 (110 cells, labeled entirely
+after the tool existed — a genuine out-of-sample test) and reported it flagged 7 of 102
+ledger-zone labels (6.9%, matching Brahms). Adjudicated by hand: 6 false positives, 1 real —
+**true rate ~0.9%, an order of magnitude below the raw flag**. The one real error was worth
+having; nobody would have looked for it otherwise.
+
+- **The false-positive mechanism, independently reproduced on the actual pixels**: a printed
+  ledger line survives staff-line removal and print-merges into the SAME connected component
+  as the notehead beside it, pulling `blob_centre`'s centroid toward the rung by up to a full
+  half-step — enough to flip the reported parity. Confirmed by rendering cells with the exact
+  known step positions overlaid (no algorithm, just pixels against arithmetic) — the same
+  standard the 6 Brahms corrections were already held to.
+- **Five candidate fixes were tried against BOTH the Brahms corrections and the Simrock false
+  positives; none generalises.** The literal fix as proposed (filter rows by local ink-run vs.
+  a multiple of box width) resolves Simrock 4/4 and breaks Brahms 0/6 — traced to WHY: it only
+  has room to detect the rung's excess where the human's box carries generous padding around
+  the head, and that convention differs by batch/labeler with no record of which is which.
+  A width-based reject flag looks clean on the 4 known Simrock false positives but also flags
+  40 of Brahms's 76 ledger-zone labels, all independently uncontested — width alone does not
+  discriminate. Numbers for all five in `LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md`.
+- **Shipped: `blob_centre` now returns the winning component's height/width in staff spaces**,
+  printed alongside every parity suspect — context for a human, explicitly NOT a filter or a
+  reweighting (no decision logic changed; the corrected Brahms batch still reports 0 suspects).
+- **Standing recommendation, now on two independent adjudications**: every candidate needs a
+  human looking at the actual ink against the known staff/ledger positions. Read a raw flag
+  rate as an upper bound on the true rate, not the rate itself, when the campaign-wide 19
+  parity candidates are eventually adjudicated.
+
 ## 2026-09-03 — auditing the labels: ledger-zone parity and shape-vs-class
 
 Sean's 49-cell completion pass was audited before it went to training; 7 labels were corrected
