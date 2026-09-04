@@ -224,8 +224,8 @@
   },
   "rows": [
     {
-      "tag": "r4e5",
-      "path": "/tmp/ckpt-r4/epoch4.pt",
+      "tag": "d25graft",
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/round5-merged/distill25e0_hollowgraft.pt",
       "forget": {
         "production": {
           "weights": "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
@@ -415,23 +415,443 @@
           ]
         },
         "fine_tuned": {
-          "weights": "epoch4.pt",
+          "weights": "distill25e0_hollowgraft.pt",
           "n_cells": 18,
-          "tp": 217,
-          "fp": 27,
-          "fn": 14,
-          "precision": 0.889344262295082,
-          "recall": 0.9393939393939394,
-          "f1": 0.9136842105263159,
+          "tp": 228,
+          "fp": 318,
+          "fn": 3,
+          "precision": 0.4175824175824176,
+          "recall": 0.987012987012987,
+          "f1": 0.5868725868725869,
           "pred_cats": {
-            "notehead": 238,
-            "key": 4,
-            "other": 1,
+            "notehead": 286,
+            "beam": 136,
+            "other": 48,
+            "key": 6,
+            "clef": 6,
+            "time": 1,
+            "rest": 19,
+            "dynamic": 1,
+            "slur": 10,
+            "accidental": 14,
+            "tie": 10,
+            "flag": 5,
+            "aug": 3,
             "articulation": 1
           },
           "rec_by_cat": {
             "notehead": [
-              217,
+              220,
+              220
+            ],
+            "rest": [
+              5,
+              5
+            ],
+            "flag": [
+              2,
+              5
+            ],
+            "accidental": [
+              1,
+              1
+            ]
+          },
+          "per_cell": [
+            {
+              "cell": "wtc-p10-sys0-s0-m0",
+              "tp": 6,
+              "fp": 24,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.2
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m1",
+              "tp": 6,
+              "fp": 8,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.42857142857142855
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m2",
+              "tp": 6,
+              "fp": 8,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.42857142857142855
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m3",
+              "tp": 6,
+              "fp": 12,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.3333333333333333
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m4",
+              "tp": 6,
+              "fp": 6,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.5
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m0",
+              "tp": 9,
+              "fp": 13,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4090909090909091
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m1",
+              "tp": 14,
+              "fp": 18,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4375
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m2",
+              "tp": 18,
+              "fp": 21,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.46153846153846156
+            },
+            {
+              "cell": "wtc-p5-sys0-s1-m0",
+              "tp": 10,
+              "fp": 14,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4166666666666667
+            },
+            {
+              "cell": "wtc-p5-sys0-s1-m1",
+              "tp": 14,
+              "fp": 20,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4117647058823529
+            },
+            {
+              "cell": "wtc-p5-sys0-s1-m2",
+              "tp": 15,
+              "fp": 20,
+              "fn": 1,
+              "rec": 0.9375,
+              "prec": 0.42857142857142855
+            },
+            {
+              "cell": "wtc-p5-sys1-s2-m0",
+              "tp": 21,
+              "fp": 24,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4666666666666667
+            },
+            {
+              "cell": "wtc-p5-sys1-s2-m1",
+              "tp": 19,
+              "fp": 18,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.5135135135135135
+            },
+            {
+              "cell": "wtc-p5-sys1-s3-m0",
+              "tp": 14,
+              "fp": 19,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.42424242424242425
+            },
+            {
+              "cell": "wtc-p5-sys1-s3-m1",
+              "tp": 16,
+              "fp": 27,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.37209302325581395
+            },
+            {
+              "cell": "wtc-p5-sys2-s4-m0",
+              "tp": 15,
+              "fp": 25,
+              "fn": 2,
+              "rec": 0.8823529411764706,
+              "prec": 0.375
+            },
+            {
+              "cell": "wtc-p5-sys2-s4-m1",
+              "tp": 14,
+              "fp": 16,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4666666666666667
+            },
+            {
+              "cell": "wtc-p5-sys2-s4-m2",
+              "tp": 19,
+              "fp": 25,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4318181818181818
+            }
+          ]
+        }
+      },
+      "hollow": {
+        "tag": "d25graft",
+        "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/round5-merged/distill25e0_hollowgraft.pt",
+        "hollow_histogram": {
+          "black_total": 86,
+          "hollow_total": 46,
+          "noteheadHalfOnLine": 8,
+          "noteheadHalfInSpace": 36,
+          "noteheadWholeInSpace": 2
+        },
+        "pooled": {
+          "exact": {
+            "truth": 147,
+            "omr": 132,
+            "matched": 89,
+            "recall": 0.6054,
+            "precision": 0.6742
+          },
+          "step": {
+            "truth": 147,
+            "omr": 132,
+            "matched": 109,
+            "recall": 0.7415,
+            "precision": 0.8258
+          },
+          "with_duration": {
+            "truth": 147,
+            "omr": 132,
+            "matched": 82,
+            "recall": 0.5578,
+            "precision": 0.6212
+          }
+        },
+        "clef_accuracy": "12/12",
+        "measures_omr": 16
+      }
+    },
+    {
+      "tag": "d25raw",
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/round5-sweep/distill25/epoch0.pt",
+      "forget": {
+        "production": {
+          "weights": "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+          "n_cells": 18,
+          "tp": 215,
+          "fp": 242,
+          "fn": 16,
+          "precision": 0.47045951859956237,
+          "recall": 0.9307359307359307,
+          "f1": 0.625,
+          "pred_cats": {
+            "notehead": 244,
+            "clef": 6,
+            "tie": 7,
+            "other": 38,
+            "beam": 112,
+            "rest": 14,
+            "slur": 8,
+            "accidental": 17,
+            "aug": 6,
+            "flag": 4,
+            "articulation": 1
+          },
+          "rec_by_cat": {
+            "notehead": [
+              207,
+              220
+            ],
+            "rest": [
+              5,
+              5
+            ],
+            "flag": [
+              2,
+              5
+            ],
+            "accidental": [
+              1,
+              1
+            ]
+          },
+          "per_cell": [
+            {
+              "cell": "wtc-p10-sys0-s0-m0",
+              "tp": 6,
+              "fp": 13,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.3157894736842105
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m1",
+              "tp": 3,
+              "fp": 2,
+              "fn": 3,
+              "rec": 0.5,
+              "prec": 0.6
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m2",
+              "tp": 3,
+              "fp": 0,
+              "fn": 3,
+              "rec": 0.5,
+              "prec": 1.0
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m3",
+              "tp": 1,
+              "fp": 0,
+              "fn": 5,
+              "rec": 0.16666666666666666,
+              "prec": 1.0
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m4",
+              "tp": 4,
+              "fp": 1,
+              "fn": 2,
+              "rec": 0.6666666666666666,
+              "prec": 0.8
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m0",
+              "tp": 9,
+              "fp": 11,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.45
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m1",
+              "tp": 14,
+              "fp": 10,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.5833333333333334
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m2",
+              "tp": 18,
+              "fp": 20,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.47368421052631576
+            },
+            {
+              "cell": "wtc-p5-sys0-s1-m0",
+              "tp": 9,
+              "fp": 15,
+              "fn": 1,
+              "rec": 0.9,
+              "prec": 0.375
+            },
+            {
+              "cell": "wtc-p5-sys0-s1-m1",
+              "tp": 14,
+              "fp": 16,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4666666666666667
+            },
+            {
+              "cell": "wtc-p5-sys0-s1-m2",
+              "tp": 15,
+              "fp": 16,
+              "fn": 1,
+              "rec": 0.9375,
+              "prec": 0.4838709677419355
+            },
+            {
+              "cell": "wtc-p5-sys1-s2-m0",
+              "tp": 21,
+              "fp": 24,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.4666666666666667
+            },
+            {
+              "cell": "wtc-p5-sys1-s2-m1",
+              "tp": 19,
+              "fp": 20,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.48717948717948717
+            },
+            {
+              "cell": "wtc-p5-sys1-s3-m0",
+              "tp": 14,
+              "fp": 19,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.42424242424242425
+            },
+            {
+              "cell": "wtc-p5-sys1-s3-m1",
+              "tp": 16,
+              "fp": 25,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.3902439024390244
+            },
+            {
+              "cell": "wtc-p5-sys2-s4-m0",
+              "tp": 16,
+              "fp": 19,
+              "fn": 1,
+              "rec": 0.9411764705882353,
+              "prec": 0.45714285714285713
+            },
+            {
+              "cell": "wtc-p5-sys2-s4-m1",
+              "tp": 14,
+              "fp": 11,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.56
+            },
+            {
+              "cell": "wtc-p5-sys2-s4-m2",
+              "tp": 19,
+              "fp": 20,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.48717948717948717
+            }
+          ]
+        },
+        "fine_tuned": {
+          "weights": "epoch0.pt",
+          "n_cells": 18,
+          "tp": 220,
+          "fp": 90,
+          "fn": 11,
+          "precision": 0.7096774193548387,
+          "recall": 0.9523809523809523,
+          "f1": 0.8133086876155269,
+          "pred_cats": {
+            "notehead": 285,
+            "key": 6,
+            "dynamic": 1,
+            "other": 17,
+            "articulation": 1
+          },
+          "rec_by_cat": {
+            "notehead": [
+              220,
               220
             ],
             "rest": [
@@ -451,98 +871,98 @@
             {
               "cell": "wtc-p10-sys0-s0-m0",
               "tp": 6,
+              "fp": 15,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.2857142857142857
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m1",
+              "tp": 6,
+              "fp": 4,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.6
+            },
+            {
+              "cell": "wtc-p10-sys0-s0-m2",
+              "tp": 6,
               "fp": 7,
               "fn": 0,
               "rec": 1.0,
               "prec": 0.46153846153846156
             },
             {
-              "cell": "wtc-p10-sys0-s0-m1",
-              "tp": 5,
-              "fp": 1,
-              "fn": 1,
-              "rec": 0.8333333333333334,
-              "prec": 0.8333333333333334
-            },
-            {
-              "cell": "wtc-p10-sys0-s0-m2",
-              "tp": 4,
-              "fp": 0,
-              "fn": 2,
-              "rec": 0.6666666666666666,
-              "prec": 1.0
-            },
-            {
               "cell": "wtc-p10-sys0-s0-m3",
               "tp": 6,
-              "fp": 0,
+              "fp": 9,
               "fn": 0,
               "rec": 1.0,
-              "prec": 1.0
+              "prec": 0.4
             },
             {
               "cell": "wtc-p10-sys0-s0-m4",
               "tp": 6,
-              "fp": 0,
+              "fp": 5,
               "fn": 0,
               "rec": 1.0,
-              "prec": 1.0
+              "prec": 0.5454545454545454
             },
             {
               "cell": "wtc-p5-sys0-s0-m0",
               "tp": 9,
-              "fp": 1,
+              "fp": 3,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 0.75
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m1",
+              "tp": 13,
+              "fp": 3,
+              "fn": 1,
+              "rec": 0.9285714285714286,
+              "prec": 0.8125
+            },
+            {
+              "cell": "wtc-p5-sys0-s0-m2",
+              "tp": 18,
+              "fp": 2,
               "fn": 0,
               "rec": 1.0,
               "prec": 0.9
             },
             {
-              "cell": "wtc-p5-sys0-s0-m1",
-              "tp": 13,
-              "fp": 1,
-              "fn": 1,
-              "rec": 0.9285714285714286,
-              "prec": 0.9285714285714286
-            },
-            {
-              "cell": "wtc-p5-sys0-s0-m2",
-              "tp": 18,
-              "fp": 0,
-              "fn": 0,
-              "rec": 1.0,
-              "prec": 1.0
-            },
-            {
               "cell": "wtc-p5-sys0-s1-m0",
               "tp": 8,
-              "fp": 2,
+              "fp": 4,
               "fn": 2,
               "rec": 0.8,
-              "prec": 0.8
+              "prec": 0.6666666666666666
             },
             {
               "cell": "wtc-p5-sys0-s1-m1",
               "tp": 14,
-              "fp": 2,
+              "fp": 6,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.875
+              "prec": 0.7
             },
             {
               "cell": "wtc-p5-sys0-s1-m2",
               "tp": 14,
-              "fp": 1,
+              "fp": 3,
               "fn": 2,
               "rec": 0.875,
-              "prec": 0.9333333333333333
+              "prec": 0.8235294117647058
             },
             {
               "cell": "wtc-p5-sys1-s2-m0",
               "tp": 21,
-              "fp": 0,
+              "fp": 2,
               "fn": 0,
               "rec": 1.0,
-              "prec": 1.0
+              "prec": 0.9130434782608695
             },
             {
               "cell": "wtc-p5-sys1-s2-m1",
@@ -555,26 +975,26 @@
             {
               "cell": "wtc-p5-sys1-s3-m0",
               "tp": 14,
-              "fp": 3,
+              "fp": 7,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.8235294117647058
+              "prec": 0.6666666666666666
             },
             {
               "cell": "wtc-p5-sys1-s3-m1",
               "tp": 15,
-              "fp": 2,
+              "fp": 9,
               "fn": 1,
               "rec": 0.9375,
-              "prec": 0.8823529411764706
+              "prec": 0.625
             },
             {
               "cell": "wtc-p5-sys2-s4-m0",
               "tp": 14,
-              "fp": 2,
+              "fp": 4,
               "fn": 3,
               "rec": 0.8235294117647058,
-              "prec": 0.875
+              "prec": 0.7777777777777778
             },
             {
               "cell": "wtc-p5-sys2-s4-m1",
@@ -587,46 +1007,45 @@
             {
               "cell": "wtc-p5-sys2-s4-m2",
               "tp": 19,
-              "fp": 2,
+              "fp": 4,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.9047619047619048
+              "prec": 0.8260869565217391
             }
           ]
         }
       },
       "hollow": {
-        "tag": "r4e5",
-        "weights": "/tmp/ckpt-r4/epoch4.pt",
+        "tag": "d25raw",
+        "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/round5-sweep/distill25/epoch0.pt",
         "hollow_histogram": {
-          "black_total": 75,
-          "hollow_total": 39,
-          "noteheadHalfOnLine": 22,
-          "noteheadHalfInSpace": 12,
-          "noteheadWholeOnLine": 3,
+          "black_total": 87,
+          "hollow_total": 46,
+          "noteheadHalfOnLine": 8,
+          "noteheadHalfInSpace": 36,
           "noteheadWholeInSpace": 2
         },
         "pooled": {
           "exact": {
             "truth": 147,
-            "omr": 114,
-            "matched": 97,
-            "recall": 0.6599,
-            "precision": 0.8509
+            "omr": 133,
+            "matched": 98,
+            "recall": 0.6667,
+            "precision": 0.7368
           },
           "step": {
             "truth": 147,
-            "omr": 114,
-            "matched": 97,
-            "recall": 0.6599,
-            "precision": 0.8509
+            "omr": 133,
+            "matched": 105,
+            "recall": 0.7143,
+            "precision": 0.7895
           },
           "with_duration": {
             "truth": 147,
-            "omr": 114,
-            "matched": 89,
-            "recall": 0.6054,
-            "precision": 0.7807
+            "omr": 133,
+            "matched": 88,
+            "recall": 0.5986,
+            "precision": 0.6617
           }
         },
         "clef_accuracy": "9/12",
