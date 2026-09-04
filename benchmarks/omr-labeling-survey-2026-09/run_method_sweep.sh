@@ -26,7 +26,19 @@
 #              oversampling them IS a rehearsal of a sort.
 #   freeze     backbone frozen (freeze=10). Preserves the base's features by
 #              construction; tests whether the drift is in the features.
-#   lowlr      lr0=1e-5, no warmup. optimizer=auto chose AdamW at 4.7e-05.
+#   lowlr      lr0=1e-5 held flat (lrf=1). optimizer=auto chose AdamW at
+#              4.7e-05.
+#   nowarmup   default LR, but warmup OFF. The arithmetic that makes this the
+#              first suspect: one epoch of this corpus is ~31 optimizer steps
+#              at batch 16, and 31 steps at 4.7e-05 cannot zero a class — yet
+#              imgsz512 e1 already reads no ties, slurs or whole rests. What
+#              CAN do it in 31 steps is ultralytics' warmup, which drives BIAS
+#              parameters at `warmup_bias_lr` 0.1 for the first
+#              `warmup_epochs` 3.0 — so a 1-5 epoch fine-tune is ENTIRELY
+#              warmup, and the classification biases of every class the corpus
+#              does not contain get pushed down at 2000x the nominal rate.
+#              `warmup_epochs: 0, warmup_bias_lr: 0`.
+#   gentle     nowarmup and lowlr together.
 #   rehearsal  teacher-completed labels, PASS scope (build_rehearsal_versions.py
 #              --scope pass) — the base speaks for every class no pass stamped
 #              on that cell ever looked for, so those classes are refreshed
@@ -78,7 +90,7 @@ train () {
 }
 
 ARMS=("$@")
-[ ${#ARMS[@]} -eq 0 ] && ARMS=(prod896 distill rehearsal dense6 freeze lowlr distill2048 reh2048 rehfreeze)
+[ ${#ARMS[@]} -eq 0 ] && ARMS=(prod896 nowarmup gentle distill rehearsal dense6 freeze lowlr distill2048 reh2048 rehfreeze)
 
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader || true
 
@@ -91,12 +103,20 @@ case "$arm" in
     build_catalog data/user-labeled cat-plain 6
     train dense6 cat-plain/catalog-6xdense.yaml 896 16 5 '{"save_period": 1}' ;;
   freeze)
-    build_catalog data/user-labeled cat-plain 2
-    train freeze cat-plain/catalog-2xdense.yaml 896 16 5 '{"save_period": 1, "freeze": 10}' ;;
+    build_catalog data/user-labeled cat-plain 6
+    train freeze cat-plain/catalog-6xdense.yaml 896 16 5 '{"save_period": 1, "freeze": 10}' ;;
   lowlr)
-    build_catalog data/user-labeled cat-plain 2
-    train lowlr cat-plain/catalog-2xdense.yaml 896 16 5 \
-      '{"save_period": 1, "lr0": 1e-5, "lrf": 1.0, "warmup_epochs": 0.0, "optimizer": "AdamW"}' ;;
+    build_catalog data/user-labeled cat-plain 6
+    train lowlr cat-plain/catalog-6xdense.yaml 896 16 5 \
+      '{"save_period": 1, "lr0": 1e-5, "lrf": 1.0, "optimizer": "AdamW"}' ;;
+  nowarmup)
+    build_catalog data/user-labeled cat-plain 6
+    train nowarmup cat-plain/catalog-6xdense.yaml 896 16 5 \
+      '{"save_period": 1, "warmup_epochs": 0.0, "warmup_bias_lr": 0.0}' ;;
+  gentle)
+    build_catalog data/user-labeled cat-plain 6
+    train gentle cat-plain/catalog-6xdense.yaml 896 16 5 \
+      '{"save_period": 1, "warmup_epochs": 0.0, "warmup_bias_lr": 0.0, "lr0": 1e-5, "lrf": 1.0, "optimizer": "AdamW"}' ;;
   rehearsal)
     build_catalog data/user-labeled-rehearsal cat-reh 2
     train rehearsal cat-reh/catalog-2xdense.yaml 896 16 5 '{"save_period": 1}' ;;

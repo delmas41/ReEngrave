@@ -367,6 +367,19 @@ def main() -> int:
     if not a.dry_run:
         shutil.copy2(a.root / "catalog-versions.txt", a.out / "catalog-versions.txt")
         print("wrote ->", a.out)
+
+    # ⚠️ A silent no-op is this tool's realistic failure mode and it already
+    # happened once: the stamps live in the labeling batches, not in the merged
+    # verdict trees a version is built from, so the first run read zero of them,
+    # treated all 591 cells as unstamped, wrote a byte-identical copy of the
+    # corpus and exited 0. A rehearsal root that rehearses nothing is not a
+    # conservative arm, it is the control arm wearing its name.
+    if sum(added.values()) == 0:
+        print("\nERROR: zero teacher boxes. The output is a copy of the input, "
+              "not a rehearsal arm. Check that the pass stamps were found "
+              "(the line above says how many cells carry one) and that the "
+              "teacher checkpoint loaded.", file=sys.stderr)
+        return 1
     return 0
 
 
