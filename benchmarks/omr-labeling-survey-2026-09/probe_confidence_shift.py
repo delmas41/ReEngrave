@@ -54,6 +54,30 @@ def main() -> int:
                          "with that --tag (e.g. prodbase r4).")
     ap.add_argument("--cuts", nargs="+", type=float,
                     default=[0.05, 0.10, 0.15, 0.20, 0.25, 0.35, 0.50])
+    ap.add_argument("--gate", metavar="BASELINE_TAG", default=None,
+                    help="GATE AXIS 3 — class-space survival. Compare every "
+                         "other arm's class inventory against this one's and "
+                         "exit non-zero if a class the baseline reads often "
+                         "has collapsed. A checkpoint can hold note recall and "
+                         "still take a pipeline rule off the air: "
+                         "rhythm.resolve_rhythms_for_cell consumes YOLO `beam` "
+                         "and the ledger-ladder arbitration consumes "
+                         "`ledgerLine`, and both went dark on every round-3/4 "
+                         "candidate with nothing failing.")
+    ap.add_argument("--gate-floor", type=int, default=20,
+                    help="only classes the baseline reads at least this often "
+                         "are gated — a class it barely reads cannot collapse "
+                         "informatively.")
+    ap.add_argument("--gate-ratio", type=float, default=0.25,
+                    help="a gated class must survive at this fraction of the "
+                         "baseline's count.")
+    ap.add_argument("--gate-exempt", nargs="*", default=["staff", "restWhole"],
+                    help="classes whose collapse is not a loss. `staff` is "
+                         "classical CV's by project policy, and production's "
+                         "396 `restWhole` over five orchestral pages is the "
+                         "documented slur-arc false-positive mode, not whole "
+                         "rests. Everything else must survive or be argued "
+                         "about explicitly.")
     a = ap.parse_args()
 
     works = json.loads((BENCH / "works.json").read_text())
@@ -90,9 +114,37 @@ def main() -> int:
             "median_conf": round(statistics.median(confs), 4) if confs else None,
             "mean_conf": round(statistics.fmean(confs), 4) if confs else None,
             "top_classes_at_0.25": dict(by_class_at_25.most_common(15)),
+            # the FULL inventory — the gate reads this, never the top-15, or a
+            # class that collapses out of the printed list is invisible to it.
+            "_all_classes_at_0.25": dict(by_class_at_25),
         }
 
-    print(json.dumps(out, indent=1))
+    print(json.dumps({k: {kk: vv for kk, vv in v.items()
+                          if kk != "_all_classes_at_0.25"}
+                      for k, v in out.items()}, indent=1))
+
+    if a.gate:
+        base = out.get(a.gate)
+        if base is None:
+            print(f"GATE: baseline arm {a.gate!r} has no fixtures", file=sys.stderr)
+            return 2
+        failures = []
+        for tag, arm in out.items():
+            if tag == a.gate:
+                continue
+            for cls, n in base["_all_classes_at_0.25"].items():
+                if n < a.gate_floor or cls in a.gate_exempt:
+                    continue
+                got = arm["_all_classes_at_0.25"].get(cls, 0)
+                if got < n * a.gate_ratio:
+                    failures.append((tag, cls, n, got))
+        if failures:
+            print("\nGATE AXIS 3 — CLASS-SPACE SURVIVAL: FAIL", file=sys.stderr)
+            for tag, cls, n, got in failures:
+                print(f"  {tag:12s} {cls:22s} baseline {n:4d} -> {got:4d}",
+                      file=sys.stderr)
+            return 1
+        print("\nGATE AXIS 3 — CLASS-SPACE SURVIVAL: pass")
     return 0
 
 
