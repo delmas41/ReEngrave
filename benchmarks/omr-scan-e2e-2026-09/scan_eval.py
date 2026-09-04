@@ -175,7 +175,10 @@ def run_pipeline(row: dict, pdf: Path, protocol: dict, *,
     result = transcribe(
         pdf_path=pdf,
         pages=[page],
-        weights=str(DEFAULT_WEIGHTS),
+        # OMR_SCAN_EVAL_WEIGHTS lets an A/B arm score a candidate scan checkpoint
+        # against the shipped scan weights; unset = DEFAULT_WEIGHTS (the shipped
+        # scan slot). Pair with --tag so the arms land in separate fixtures.
+        weights=str(os.getenv("OMR_SCAN_EVAL_WEIGHTS", "").strip() or DEFAULT_WEIGHTS),
         dpi=protocol["dpi"],
         conf_threshold=protocol["conf_threshold"],
         imgsz=protocol["imgsz"],
