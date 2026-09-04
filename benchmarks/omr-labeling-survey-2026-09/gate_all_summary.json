@@ -186,11 +186,46 @@
       }
     ]
   },
-  "production_hollow": null,
+  "production_hollow": {
+    "tag": "prod",
+    "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+    "hollow_histogram": {
+      "hollow_total": 30,
+      "noteheadWholeInSpace": 3,
+      "black_total": 79,
+      "noteheadHalfOnLine": 6,
+      "noteheadHalfInSpace": 21
+    },
+    "pooled": {
+      "exact": {
+        "truth": 147,
+        "omr": 109,
+        "matched": 83,
+        "recall": 0.5646,
+        "precision": 0.7615
+      },
+      "step": {
+        "truth": 147,
+        "omr": 109,
+        "matched": 95,
+        "recall": 0.6463,
+        "precision": 0.8716
+      },
+      "with_duration": {
+        "truth": 147,
+        "omr": 109,
+        "matched": 64,
+        "recall": 0.4354,
+        "precision": 0.5872
+      }
+    },
+    "clef_accuracy": "11/12",
+    "measures_omr": 16
+  },
   "rows": [
     {
-      "tag": "e30",
-      "path": "/tmp/ckpt-round3/last.pt",
+      "tag": "r4e5",
+      "path": "/tmp/ckpt-r4/epoch4.pt",
       "forget": {
         "production": {
           "weights": "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
@@ -380,26 +415,23 @@
           ]
         },
         "fine_tuned": {
-          "weights": "last.pt",
+          "weights": "epoch4.pt",
           "n_cells": 18,
-          "tp": 220,
-          "fp": 54,
-          "fn": 11,
-          "precision": 0.8029197080291971,
-          "recall": 0.9523809523809523,
-          "f1": 0.8712871287128713,
+          "tp": 217,
+          "fp": 27,
+          "fn": 14,
+          "precision": 0.889344262295082,
+          "recall": 0.9393939393939394,
+          "f1": 0.9136842105263159,
           "pred_cats": {
-            "notehead": 249,
-            "dynamic": 4,
-            "key": 1,
-            "aug": 6,
-            "accidental": 11,
-            "rest": 2,
-            "other": 1
+            "notehead": 238,
+            "key": 4,
+            "other": 1,
+            "articulation": 1
           },
           "rec_by_cat": {
             "notehead": [
-              220,
+              217,
               220
             ],
             "rest": [
@@ -419,34 +451,34 @@
             {
               "cell": "wtc-p10-sys0-s0-m0",
               "tp": 6,
-              "fp": 8,
+              "fp": 7,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.42857142857142855
+              "prec": 0.46153846153846156
             },
             {
               "cell": "wtc-p10-sys0-s0-m1",
-              "tp": 6,
-              "fp": 0,
-              "fn": 0,
-              "rec": 1.0,
-              "prec": 1.0
+              "tp": 5,
+              "fp": 1,
+              "fn": 1,
+              "rec": 0.8333333333333334,
+              "prec": 0.8333333333333334
             },
             {
               "cell": "wtc-p10-sys0-s0-m2",
-              "tp": 6,
+              "tp": 4,
               "fp": 0,
-              "fn": 0,
-              "rec": 1.0,
+              "fn": 2,
+              "rec": 0.6666666666666666,
               "prec": 1.0
             },
             {
               "cell": "wtc-p10-sys0-s0-m3",
               "tp": 6,
-              "fp": 2,
+              "fp": 0,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.75
+              "prec": 1.0
             },
             {
               "cell": "wtc-p10-sys0-s0-m4",
@@ -459,10 +491,10 @@
             {
               "cell": "wtc-p5-sys0-s0-m0",
               "tp": 9,
-              "fp": 2,
+              "fp": 1,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.8181818181818182
+              "prec": 0.9
             },
             {
               "cell": "wtc-p5-sys0-s0-m1",
@@ -475,50 +507,50 @@
             {
               "cell": "wtc-p5-sys0-s0-m2",
               "tp": 18,
-              "fp": 4,
+              "fp": 0,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.8181818181818182
+              "prec": 1.0
             },
             {
               "cell": "wtc-p5-sys0-s1-m0",
               "tp": 8,
-              "fp": 4,
+              "fp": 2,
               "fn": 2,
               "rec": 0.8,
-              "prec": 0.6666666666666666
+              "prec": 0.8
             },
             {
               "cell": "wtc-p5-sys0-s1-m1",
               "tp": 14,
-              "fp": 4,
-              "fn": 0,
-              "rec": 1.0,
-              "prec": 0.7777777777777778
-            },
-            {
-              "cell": "wtc-p5-sys0-s1-m2",
-              "tp": 14,
-              "fp": 5,
-              "fn": 2,
-              "rec": 0.875,
-              "prec": 0.7368421052631579
-            },
-            {
-              "cell": "wtc-p5-sys1-s2-m0",
-              "tp": 21,
-              "fp": 3,
+              "fp": 2,
               "fn": 0,
               "rec": 1.0,
               "prec": 0.875
             },
             {
+              "cell": "wtc-p5-sys0-s1-m2",
+              "tp": 14,
+              "fp": 1,
+              "fn": 2,
+              "rec": 0.875,
+              "prec": 0.9333333333333333
+            },
+            {
+              "cell": "wtc-p5-sys1-s2-m0",
+              "tp": 21,
+              "fp": 0,
+              "fn": 0,
+              "rec": 1.0,
+              "prec": 1.0
+            },
+            {
               "cell": "wtc-p5-sys1-s2-m1",
               "tp": 18,
-              "fp": 4,
+              "fp": 2,
               "fn": 1,
               "rec": 0.9473684210526315,
-              "prec": 0.8181818181818182
+              "prec": 0.9
             },
             {
               "cell": "wtc-p5-sys1-s3-m0",
@@ -531,39 +563,75 @@
             {
               "cell": "wtc-p5-sys1-s3-m1",
               "tp": 15,
-              "fp": 4,
+              "fp": 2,
               "fn": 1,
               "rec": 0.9375,
-              "prec": 0.7894736842105263
+              "prec": 0.8823529411764706
             },
             {
               "cell": "wtc-p5-sys2-s4-m0",
               "tp": 14,
-              "fp": 4,
+              "fp": 2,
               "fn": 3,
               "rec": 0.8235294117647058,
-              "prec": 0.7777777777777778
+              "prec": 0.875
             },
             {
               "cell": "wtc-p5-sys2-s4-m1",
               "tp": 13,
-              "fp": 2,
+              "fp": 1,
               "fn": 1,
               "rec": 0.9285714285714286,
-              "prec": 0.8666666666666667
+              "prec": 0.9285714285714286
             },
             {
               "cell": "wtc-p5-sys2-s4-m2",
               "tp": 19,
-              "fp": 4,
+              "fp": 2,
               "fn": 0,
               "rec": 1.0,
-              "prec": 0.8260869565217391
+              "prec": 0.9047619047619048
             }
           ]
         }
       },
-      "hollow": null
+      "hollow": {
+        "tag": "r4e5",
+        "weights": "/tmp/ckpt-r4/epoch4.pt",
+        "hollow_histogram": {
+          "black_total": 75,
+          "hollow_total": 39,
+          "noteheadHalfOnLine": 22,
+          "noteheadHalfInSpace": 12,
+          "noteheadWholeOnLine": 3,
+          "noteheadWholeInSpace": 2
+        },
+        "pooled": {
+          "exact": {
+            "truth": 147,
+            "omr": 114,
+            "matched": 97,
+            "recall": 0.6599,
+            "precision": 0.8509
+          },
+          "step": {
+            "truth": 147,
+            "omr": 114,
+            "matched": 97,
+            "recall": 0.6599,
+            "precision": 0.8509
+          },
+          "with_duration": {
+            "truth": 147,
+            "omr": 114,
+            "matched": 89,
+            "recall": 0.6054,
+            "precision": 0.7807
+          }
+        },
+        "clef_accuracy": "9/12",
+        "measures_omr": 16
+      }
     }
   ]
 }

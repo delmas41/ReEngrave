@@ -1,0 +1,37 @@
+{
+  "tag": "r4e5",
+  "weights": "/tmp/ckpt-r4/epoch4.pt",
+  "hollow_histogram": {
+    "black_total": 75,
+    "hollow_total": 39,
+    "noteheadHalfOnLine": 22,
+    "noteheadHalfInSpace": 12,
+    "noteheadWholeOnLine": 3,
+    "noteheadWholeInSpace": 2
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 114,
+      "matched": 97,
+      "recall": 0.6599,
+      "precision": 0.8509
+    },
+    "step": {
+      "truth": 147,
+      "omr": 114,
+      "matched": 97,
+      "recall": 0.6599,
+      "precision": 0.8509
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 114,
+      "matched": 89,
+      "recall": 0.6054,
+      "precision": 0.7807
+    }
+  },
+  "clef_accuracy": "9/12",
+  "measures_omr": 16
+}
