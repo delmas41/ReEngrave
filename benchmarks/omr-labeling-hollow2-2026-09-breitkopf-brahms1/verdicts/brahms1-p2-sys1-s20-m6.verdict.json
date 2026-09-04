@@ -27,10 +27,71 @@
     "h": 100
    },
    "notes": "corrected 2026-09-03: tilted-staff grid error (stored grid -0.40 sp off the printed lines; head centre 0.10 sp off the printed bottom line), see benchmarks/omr-cell-grid-tilt-2026-09"
+  },
+  {
+   "id": "H1",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 712,
+    "y": 348,
+    "w": 171,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 325,
+    "y": 750,
+    "w": 100,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 289,
+    "y": 816,
+    "w": 1293,
+    "h": 153
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "dynamicLetterP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 48,
+    "y": 945,
+    "w": 198,
+    "h": 214
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "dynamicLetterP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 238,
+    "y": 955,
+    "w": 177,
+    "h": 206
+   },
+   "notes": ""
   }
  ],
  "inspected_passes": [
   "hollow noteheads",
-  "rests+accidentals"
+  "rests+accidentals",
+  "completion"
  ]
 }

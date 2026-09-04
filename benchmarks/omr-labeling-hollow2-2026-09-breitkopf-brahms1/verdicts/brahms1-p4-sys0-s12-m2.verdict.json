@@ -1,10 +1,120 @@
 {
-  "cell_id": "brahms1-p4-sys0-s12-m2",
-  "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:18:08+00:00",
-  "detections": [],
-  "added_detections": [],
-  "inspected_passes": [
-    "hollow noteheads"
-  ]
+ "cell_id": "brahms1-p4-sys0-s12-m2",
+ "schema_version": 2,
+ "labeled_at_utc": "2026-09-03T03:18:08+00:00",
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 746,
+    "y": 889,
+    "w": 117,
+    "h": 98
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 539,
+    "y": 507,
+    "w": 137,
+    "h": 179
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1046,
+    "y": 510,
+    "w": 172,
+    "h": 182
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1425,
+    "y": 514,
+    "w": 135,
+    "h": 178
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 276,
+    "y": 445,
+    "w": 103,
+    "h": 310
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "articStaccatissimoAbove",
+   "human_category": "ornament",
+   "bbox": {
+    "x": 786,
+    "y": 457,
+    "w": 66,
+    "h": 79
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "repeatDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 44,
+    "y": 498,
+    "w": 88,
+    "h": 85
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "repeatDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 38,
+    "y": 601,
+    "w": 84,
+    "h": 88
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "dynamicLetterF",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 460,
+    "y": 896,
+    "w": 254,
+    "h": 285
+   },
+   "notes": ""
+  }
+ ],
+ "inspected_passes": [
+  "hollow noteheads",
+  "completion"
+ ]
 }

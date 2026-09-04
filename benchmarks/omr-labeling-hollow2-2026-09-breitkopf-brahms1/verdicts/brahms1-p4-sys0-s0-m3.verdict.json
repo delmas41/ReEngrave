@@ -67,6 +67,7 @@
  ],
  "inspected_passes": [
   "hollow noteheads",
-  "rests+accidentals"
+  "rests+accidentals",
+  "completion"
  ]
 }

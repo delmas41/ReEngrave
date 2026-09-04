@@ -1,10 +1,144 @@
 {
-  "cell_id": "brahms1-p4-sys1-s19-m0",
-  "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:18:14+00:00",
-  "detections": [],
-  "added_detections": [],
-  "inspected_passes": [
-    "hollow noteheads"
-  ]
+ "cell_id": "brahms1-p4-sys1-s19-m0",
+ "schema_version": 2,
+ "labeled_at_utc": "2026-09-03T03:18:14+00:00",
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 843,
+    "y": 252,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 849,
+    "y": 323,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1383,
+    "y": 252,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1379,
+    "y": 323,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1485,
+    "y": 216,
+    "w": 72,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1499,
+    "y": 288,
+    "w": 72,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 998,
+    "y": 356,
+    "w": 113,
+    "h": 147
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1173,
+    "y": 362,
+    "w": 99,
+    "h": 130
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1412,
+    "y": 109,
+    "w": 619,
+    "h": 120
+   },
+   "notes": ""
+  },
+  {
+   "id": "H9",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1443,
+    "y": 393,
+    "w": 591,
+    "h": 110
+   },
+   "notes": ""
+  },
+  {
+   "id": "H10",
+   "human_class": "clefG",
+   "human_category": "clef",
+   "bbox": {
+    "x": 109,
+    "y": 154,
+    "w": 209,
+    "h": 554
+   },
+   "notes": ""
+  }
+ ],
+ "inspected_passes": [
+  "hollow noteheads",
+  "completion"
+ ]
 }

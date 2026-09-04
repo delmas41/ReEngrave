@@ -1,7 +1,7 @@
 {
- "cell_id": "brahms1-p4-sys0-s13-m3",
+ "cell_id": "brahms1-p4-sys1-s27-m3",
  "schema_version": 2,
- "labeled_at_utc": "2026-09-03T03:18:09+00:00",
+ "labeled_at_utc": "2026-09-04T00:07:11+00:00",
  "detections": [],
  "added_detections": [
   {
@@ -9,10 +9,10 @@
    "human_class": "noteheadBlackOnLine",
    "human_category": "notehead",
    "bbox": {
-    "x": 747,
+    "x": 178,
     "y": 750,
-    "w": 118,
-    "h": 99
+    "w": 120,
+    "h": 101
    },
    "notes": ""
   },
@@ -21,10 +21,10 @@
    "human_class": "rest8th",
    "human_category": "rest",
    "bbox": {
-    "x": 521,
-    "y": 502,
-    "w": 143,
-    "h": 184
+    "x": 425,
+    "y": 497,
+    "w": 129,
+    "h": 201
    },
    "notes": ""
   },
@@ -33,10 +33,10 @@
    "human_class": "rest8th",
    "human_category": "rest",
    "bbox": {
-    "x": 1007,
-    "y": 505,
-    "w": 140,
-    "h": 181
+    "x": 603,
+    "y": 504,
+    "w": 139,
+    "h": 191
    },
    "notes": ""
   },
@@ -45,10 +45,10 @@
    "human_class": "rest8th",
    "human_category": "rest",
    "bbox": {
-    "x": 1267,
+    "x": 1109,
     "y": 513,
-    "w": 126,
-    "h": 184
+    "w": 134,
+    "h": 198
    },
    "notes": ""
   },
@@ -57,52 +57,25 @@
    "human_class": "restQuarter",
    "human_category": "rest",
    "bbox": {
-    "x": 233,
-    "y": 417,
-    "w": 137,
-    "h": 332
+    "x": 841,
+    "y": 440,
+    "w": 114,
+    "h": 319
    },
    "notes": ""
   },
   {
    "id": "H5",
-   "human_class": "dynamicLetterF",
-   "human_category": "dynamic",
-   "bbox": {
-    "x": 491,
-    "y": 891,
-    "w": 247,
-    "h": 349
-   },
-   "notes": ""
-  },
-  {
-   "id": "H6",
-   "human_class": "dynamicLetterF",
-   "human_category": "dynamic",
-   "bbox": {
-    "x": 642,
-    "y": 911,
-    "w": 271,
-    "h": 323
-   },
-   "notes": ""
-  },
-  {
-   "id": "H7",
    "human_class": "articStaccatoBelow",
    "human_category": "ornament",
    "bbox": {
-    "x": 763,
-    "y": 889,
-    "w": 52,
-    "h": 57
+    "x": 180,
+    "y": 891,
+    "w": 86,
+    "h": 60
    },
    "notes": ""
   }
  ],
- "inspected_passes": [
-  "hollow noteheads",
-  "completion"
- ]
+ "inspected_passes": []
 }

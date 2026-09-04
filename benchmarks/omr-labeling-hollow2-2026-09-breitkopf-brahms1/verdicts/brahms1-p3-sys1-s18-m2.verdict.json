@@ -1,10 +1,24 @@
 {
-  "cell_id": "brahms1-p3-sys1-s18-m2",
-  "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:16:59+00:00",
-  "detections": [],
-  "added_detections": [],
-  "inspected_passes": [
-    "hollow noteheads"
-  ]
+ "cell_id": "brahms1-p3-sys1-s18-m2",
+ "schema_version": 2,
+ "labeled_at_utc": "2026-09-03T03:16:59+00:00",
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 834,
+    "y": 501,
+    "w": 211,
+    "h": 71
+   },
+   "notes": ""
+  }
+ ],
+ "inspected_passes": [
+  "hollow noteheads",
+  "completion"
+ ]
 }
