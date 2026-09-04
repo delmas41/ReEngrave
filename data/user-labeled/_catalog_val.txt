@@ -55,8 +55,17 @@
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v17-2026-09-03-complete-simrock/images/dvorak9-p8-sys1-s15-m9.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v17-2026-09-03-complete-simrock/images/dvorak9-p8-sys1-s17-m8.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p2-sys0-s3-m6.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p2-sys0-s9-m5.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p2-sys1-s19-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p2-sys1-s26-m3.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p3-sys1-s23-m0.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p3-sys1-s23-m5.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys0-s1-m3.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys0-s3-m8.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys1-s18-m1.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys1-s19-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys1-s20-m0.png
+/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys1-s23-m1.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v19-2026-09-03-complete-mahler1/images/mahler1-p1-sys0-s1-m2.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v19-2026-09-03-complete-mahler1/images/mahler1-p2-sys0-s1-m9.png
 /Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v19-2026-09-03-complete-mahler1/images/mahler1-p2-sys0-s9-m7.png

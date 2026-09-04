@@ -1,0 +1,19 @@
+{
+ "cell_id": "brahms1-p3-sys0-s13-m1",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 981,
+    "y": 274,
+    "w": 106,
+    "h": 41
+   },
+   "notes": ""
+  }
+ ]
+}

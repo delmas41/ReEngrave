@@ -18,7 +18,7 @@
   },
   {
    "id": "H1",
-   "human_class": "noteheadBlackInSpace",
+   "human_class": "noteheadBlackOnLine",
    "human_category": "notehead",
    "bbox": {
     "x": 876,
@@ -26,7 +26,7 @@
     "w": 120,
     "h": 101
    },
-   "notes": ""
+   "notes": " | corrected by Sean 2026-09-03 (ledger-zone variant)"
   },
   {
    "id": "H2",

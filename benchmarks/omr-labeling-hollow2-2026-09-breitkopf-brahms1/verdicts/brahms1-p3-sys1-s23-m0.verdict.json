@@ -6,7 +6,7 @@
  "added_detections": [
   {
    "id": "H0",
-   "human_class": "noteheadBlackOnLine",
+   "human_class": "noteheadBlackInSpace",
    "human_category": "notehead",
    "bbox": {
     "x": 824,
@@ -14,7 +14,7 @@
     "w": 82,
     "h": 69
    },
-   "notes": ""
+   "notes": " | corrected by Sean 2026-09-03 (ledger-zone variant)"
   },
   {
    "id": "H1",

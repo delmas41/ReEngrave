@@ -113,7 +113,7 @@
   },
   {
    "id": "H9",
-   "human_class": "noteheadBlackOnLine",
+   "human_class": "noteheadBlackInSpace",
    "human_category": "notehead",
    "bbox": {
     "x": 1446,
@@ -121,7 +121,7 @@
     "w": 103,
     "h": 75
    },
-   "notes": ""
+   "notes": " | corrected by Sean 2026-09-03 (ledger-zone variant)"
   },
   {
    "id": "H10",
@@ -137,7 +137,7 @@
   },
   {
    "id": "H11",
-   "human_class": "noteheadBlackOnLine",
+   "human_class": "noteheadBlackInSpace",
    "human_category": "notehead",
    "bbox": {
     "x": 1751,
@@ -145,7 +145,7 @@
     "w": 95,
     "h": 82
    },
-   "notes": ""
+   "notes": " | corrected by Sean 2026-09-03 (ledger-zone variant)"
   },
   {
    "id": "H12",

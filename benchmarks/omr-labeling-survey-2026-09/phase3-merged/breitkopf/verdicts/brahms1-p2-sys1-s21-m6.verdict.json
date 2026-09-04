@@ -100,6 +100,42 @@
     "h": 99
    },
    "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 350,
+    "y": 652,
+    "w": 99,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "dynamicLetterP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 46,
+    "y": 870,
+    "w": 203,
+    "h": 205
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "dynamicLetterP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 238,
+    "y": 867,
+    "w": 181,
+    "h": 222
+   },
+   "notes": ""
   }
  ]
 }

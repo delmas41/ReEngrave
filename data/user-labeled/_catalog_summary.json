@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-03T22:07:17+00:00",
+  "generated_utc": "2026-09-04T00:36:42+00:00",
   "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled",
   "val_fraction": 0.15,
   "seed": "reengrave",
@@ -15,8 +15,8 @@
     "v8-2026-09-02-hollow2-5pub",
     "v9-2026-09-03-hollow3-mahler1"
   ],
-  "n_train_images": 371,
-  "n_val_images": 70,
+  "n_train_images": 402,
+  "n_val_images": 79,
   "n_classes": 208,
   "n_classes_full_vocab": 214,
   "n_boxes_dropped_over_nc": 83,
@@ -122,12 +122,12 @@
     {
       "name": "v18-2026-09-03-complete-breitkopf",
       "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf",
-      "n_train_images": 13,
-      "n_val_images": 3,
+      "n_train_images": 44,
+      "n_val_images": 12,
       "metadata_present": true,
       "labeler": "sean",
-      "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
-      "created_utc": "2026-09-03T22:07:04+00:00"
+      "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells (incl. Sean's 56-measure completion sweep; 4 ledger-zone variant corrections 2026-09-03)",
+      "created_utc": "2026-09-04T00:36:08+00:00"
     },
     {
       "name": "v19-2026-09-03-complete-mahler1",
