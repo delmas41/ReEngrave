@@ -5,7 +5,7 @@
  "added_detections": [
   {
    "id": "H0",
-   "human_class": "noteheadBlackOnLine",
+   "human_class": "noteheadBlackInSpace",
    "human_category": "notehead",
    "bbox": {
     "x": 664,
@@ -13,7 +13,7 @@
     "w": 80,
     "h": 68
    },
-   "notes": ""
+   "notes": " | ledger-zone adjudication 2026-09-04: head rows centre at step +8.93 -> InSpace"
   },
   {
    "id": "H1",

@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-04T16:22:16+00:00",
+  "generated_utc": "2026-09-04T16:36:17+00:00",
   "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled",
   "val_fraction": 0.15,
   "seed": "reengrave",
@@ -166,8 +166,8 @@
       "n_val_images": 17,
       "metadata_present": true,
       "labeler": "sean",
-      "description": "N. Simrock Dvorak 9 \u2014 110 DENSE cells selected for suppressed-class content, drawn from scratch with the rich palette. Round 4: the publisher whose scan-e2e row regressed hardest (13 sparse cells before).",
-      "created_utc": "2026-09-04T16:21:53+00:00"
+      "description": "N. Simrock Dvorak 9 \u2014 110 dense cells drawn from scratch; 1 ledger-zone parity correction after adjudicating 7 audit candidates (6 were false positives)",
+      "created_utc": "2026-09-04T16:35:55+00:00"
     }
   ]
 }

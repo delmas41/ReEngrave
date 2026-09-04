@@ -1,8 +1,8 @@
 {
   "version_name": "v22-2026-09-04-simrock-dense",
-  "created_utc": "2026-09-04T16:21:53+00:00",
+  "created_utc": "2026-09-04T16:35:55+00:00",
   "labeler": "sean",
-  "description": "N. Simrock Dvorak 9 \u2014 110 DENSE cells selected for suppressed-class content, drawn from scratch with the rich palette. Round 4: the publisher whose scan-e2e row regressed hardest (13 sparse cells before).",
+  "description": "N. Simrock Dvorak 9 \u2014 110 dense cells drawn from scratch; 1 ledger-zone parity correction after adjudicating 7 audit candidates (6 were false positives)",
   "source": {
     "verdicts_dir": "benchmarks/omr-labeling-survey-2026-09/phase4-merged/simrock-new/verdicts",
     "detections_dir": "benchmarks/omr-labeling-survey-2026-09/phase4-merged/simrock-new/detections",

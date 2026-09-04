@@ -25,7 +25,7 @@ DENSE="v1-2026-05-18-orchestral v2-2026-06-08-beet5 v3-2026-06-09-mahler5 v4-202
 # 209 cells / 540 boxes -> 280 / 1157. v7-v11 are NOT listed: they label the
 # same images less completely, and training on both teaches that the symbols the
 # incomplete copy omits are background, which is the regression being fixed.
-HOLLOW="v13-2026-09-03-complete-v7-beet5-bolero v14-2026-09-03-complete-litolff v15-2026-09-03-complete-peters v16-2026-09-03-complete-eulenburg v17-2026-09-03-complete-simrock v18-2026-09-03-complete-breitkopf v19-2026-09-03-complete-mahler1 v20-2026-09-03-complete-elgar1 v21-2026-09-03-complete-lamer"
+HOLLOW="v13-2026-09-03-complete-v7-beet5-bolero v14-2026-09-03-complete-litolff v15-2026-09-03-complete-peters v16-2026-09-03-complete-eulenburg v17-2026-09-03-complete-simrock v18-2026-09-03-complete-breitkopf v19-2026-09-03-complete-mahler1 v20-2026-09-03-complete-elgar1 v21-2026-09-03-complete-lamer v22-2026-09-04-simrock-dense"
 TCHAIK="v12-2026-09-03-hollow3-tchaikovsky1-lowres"
 
 VERSIONS="$DENSE $HOLLOW"
