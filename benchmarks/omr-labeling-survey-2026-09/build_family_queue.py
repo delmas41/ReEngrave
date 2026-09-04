@@ -70,18 +70,32 @@ def iou(a, b):
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--family", required=True, choices=sorted(FAMILIES))
+    ap.add_argument("--family", required=True, action="append",
+                    choices=sorted(FAMILIES),
+                    help="repeatable — several families make ONE combined "
+                         "pass over the union of their corpora. Ties+slurs "
+                         "belong together: the arc is one visual object and "
+                         "the teacher confuses the two classes, so a tie "
+                         "candidate refused in a ties-only pass loses its "
+                         "slur identity silently.")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--spec-root", type=Path, default=None,
-                    help="specialist corpus (default data/specialist-<family>)")
+                    help="specialist corpus (single family only; default "
+                         "data/specialist-<family>)")
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--iou", type=float, default=0.20)
     ap.add_argument("--device", default="mps")
     a = ap.parse_args()
 
-    fam = FAMILIES[a.family]
-    want = set(fam["classes"])
-    spec = a.spec_root or (REPO / "data" / f"specialist-{a.family}")
+    fams = [FAMILIES[f] for f in a.family]
+    classes = [c for f in fams for c in f["classes"]]
+    want = set(classes)
+    labels_txt = " / ".join(f["label"] for f in fams)
+    if a.spec_root and len(a.family) > 1:
+        print("--spec-root only makes sense with a single family")
+        return 2
+    specs = [a.spec_root] if a.spec_root else [
+        REPO / "data" / f"specialist-{f}" for f in a.family]
     names = json.loads((REPO / "tools/omr/training/deepscoresv2_208_classes.json")
                        .read_text())
 
@@ -110,10 +124,18 @@ def main() -> int:
     (a.out / "detections").mkdir(parents=True)
     (a.out / "verdicts").mkdir()
 
+    # union the corpora: cell_id -> [label file per family that has it].
+    # The same cell appears in several corpora with DIFFERENT rows (each
+    # corpus filters to its own family), so all of them are read.
+    by_cell: dict[str, list[Path]] = collections.defaultdict(list)
+    for spec in specs:
+        for lab in sorted(spec.glob("v*/labels/*.txt")):
+            by_cell[lab.stem].append(lab)
+
     manifest_rows = []
     n_tp = n_pending = 0
-    for lab in sorted(spec.glob("v*/labels/*.txt")):
-        cid = lab.stem
+    for cid, labs in sorted(by_cell.items()):
+        lab = labs[0]
         entry = mans.get(cid)
         if entry is None:
             print(f"  WARN no manifest entry for {cid} — skipped")
@@ -124,22 +146,28 @@ def main() -> int:
             continue
         h, w = img.shape[:2]
         human = []
-        for line in lab.read_text().splitlines():
-            p = line.split()
-            if len(p) == 5:
-                i = int(p[0])
-                cx, cy, bw, bh = (float(x) for x in p[1:])
-                human.append((names[i] if i < len(names) else f"cls{i}",
-                              (cx - bw / 2) * w, (cy - bh / 2) * h, bw * w, bh * h))
+        seen_rows = set()
+        for lf in labs:
+            for line in lf.read_text().splitlines():
+                p = line.split()
+                if len(p) == 5 and line.strip() not in seen_rows:
+                    seen_rows.add(line.strip())
+                    i = int(p[0])
+                    cx, cy, bw, bh = (float(x) for x in p[1:])
+                    human.append((names[i] if i < len(names) else f"cls{i}",
+                                  (cx - bw / 2) * w, (cy - bh / 2) * h,
+                                  bw * w, bh * h))
         ys = entry.get("staff_line_ys_canonical") or []
         cell = _Cell(ys, img)
         dets = []
         did = 0
         for cls, x, y, bw, bh in human:      # the human's boxes, pre-decided
-            dets.append({"id": f"D{did}", "model_class": cls,
-                         "model_category": "queue",
-                         "model_bbox": {"x": int(x), "y": int(y),
-                                        "w": int(bw), "h": int(bh)},
+            # the annotate server reads the FLAT run_yolo schema —
+            # smufl_name / category / x,y,w,h — not a nested bbox
+            dets.append({"id": f"D{did}", "smufl_name": cls,
+                         "category": "structural",
+                         "x": int(x), "y": int(y),
+                         "w": int(bw), "h": int(bh),
                          "confidence": 1.0})
             did += 1
         n_human = did
@@ -154,13 +182,11 @@ def main() -> int:
                    or (b[0] <= bcx <= b[0] + b[2] and b[1] <= bcy <= b[1] + b[3])
                    for b in hb):
                 continue
-            dets.append({"id": f"D{did}", "model_class": d.smufl_name,
-                         "model_category": "queue",
-                         "model_bbox": {"x": d.x_canonical, "y": d.y_canonical,
-                                        "w": d.width_canonical,
-                                        "h": d.height_canonical},
-                         "confidence": round(d.confidence, 3),
-                         "notes": "teacher: unmatched by any human box"})
+            dets.append({"id": f"D{did}", "smufl_name": d.smufl_name,
+                         "category": "structural",
+                         "x": d.x_canonical, "y": d.y_canonical,
+                         "w": d.width_canonical, "h": d.height_canonical,
+                         "confidence": round(d.confidence, 3)})
             did += 1
         if did == n_human == 0:
             continue                         # nothing to decide, nothing to keep
@@ -179,11 +205,13 @@ def main() -> int:
         manifest_rows.append(entry)
 
     (a.out / "cells.json").write_text(json.dumps(manifest_rows, indent=1))
+    pass_name = "+".join(a.family) + "-reconcile"
     (a.out / "batch_config.json").write_text(json.dumps(
-        {"pass_name": f"{a.family}-reconcile",
-         "note": f"adjudicate the teacher's unmatched {fam['label']} boxes: "
-                 f"t = real, f = not. Draw any {fam['label']} BOTH missed.",
-         "classes": fam["classes"]}, indent=1))
+        {"pass_name": pass_name,
+         "note": f"adjudicate the teacher's unmatched {labels_txt} boxes: "
+                 f"t = real, f = not (fix the class with c if it is the "
+                 f"OTHER arc). Draw any {labels_txt} BOTH missed.",
+         "classes": classes}, indent=1))
     print(f"{len(manifest_rows)} cells, {n_tp} human boxes pre-marked TP, "
           f"{n_pending} teacher candidates PENDING -> {a.out}")
     print(f"next: python3 -m tools.omr.annotate.recut_cells --bench-dir {a.out}")

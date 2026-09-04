@@ -1,0 +1,85 @@
+{
+ "cell_id": "dvorak9-p12-sys1-s17-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 48,
+   "y": 242,
+   "w": 221,
+   "h": 109,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 38,
+   "y": 604,
+   "w": 170,
+   "h": 89,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 1,
+   "y": 410,
+   "w": 2046,
+   "h": 69,
+   "confidence": 0.573
+  },
+  {
+   "id": "D3",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 5,
+   "y": 577,
+   "w": 2043,
+   "h": 90,
+   "confidence": 0.52
+  },
+  {
+   "id": "D4",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 3,
+   "y": 0,
+   "w": 2045,
+   "h": 115,
+   "confidence": 0.513
+  },
+  {
+   "id": "D5",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 2,
+   "y": 473,
+   "w": 2044,
+   "h": 97,
+   "confidence": 0.446
+  },
+  {
+   "id": "D6",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 2,
+   "y": 524,
+   "w": 2046,
+   "h": 143,
+   "confidence": 0.443
+  },
+  {
+   "id": "D7",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 3,
+   "y": 752,
+   "w": 2045,
+   "h": 104,
+   "confidence": 0.282
+  }
+ ]
+}

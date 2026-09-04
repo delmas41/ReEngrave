@@ -1,0 +1,28 @@
+{
+  "cell_id": "brahms1-p3-sys1-s23-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:24:39+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 194,
+        "y": 430,
+        "w": 1653,
+        "h": 231
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

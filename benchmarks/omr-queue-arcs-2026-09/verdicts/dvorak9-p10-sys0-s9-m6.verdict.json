@@ -1,0 +1,45 @@
+{
+  "cell_id": "dvorak9-p10-sys0-s9-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:28:22+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 764,
+        "y": 1243,
+        "w": 720,
+        "h": 157
+      },
+      "human_bbox": null,
+      "confidence": 0.841,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 4,
+        "y": 838,
+        "w": 1812,
+        "h": 79
+      },
+      "human_bbox": null,
+      "confidence": 0.462,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}
