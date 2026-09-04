@@ -86,11 +86,22 @@ def main() -> int:
         tag, _, path = spec.partition("=")
         if tag in out:
             continue
-        det = YoloDetector(path, device=a.device)
-        counts = collections.Counter()
-        for c in cells:
-            for d in det.detect(c, conf_threshold=a.conf, imgsz=imgsz_for_cell(c)):
-                counts[d.smufl_name] += 1
+        # ⚠️ A truncated checkpoint is a real thing on disk here — the round-4
+        # sweep's `e1_768.pt` is 241 MB against its siblings' 335 and the
+        # handoff says not to use it. Skip it loudly rather than dying on it,
+        # because a sweep screen that aborts on file 7 of 12 has told you
+        # nothing about files 8-12.
+        try:
+            det = YoloDetector(path, device=a.device)
+            counts = collections.Counter()
+            for c in cells:
+                for d in det.detect(c, conf_threshold=a.conf,
+                                    imgsz=imgsz_for_cell(c)):
+                    counts[d.smufl_name] += 1
+        except Exception as exc:  # noqa: BLE001 — any load failure
+            print(f"  {tag:26s} SKIPPED — will not load ({type(exc).__name__}: "
+                  f"{str(exc)[:90]})")
+            continue
         out[tag] = dict(counts)
         order.append(tag)
         print(f"  {tag:26s} {sum(counts.values()):5d} detections, "
