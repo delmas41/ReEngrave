@@ -1954,6 +1954,28 @@ step positions** — the standard both the Brahms corrections and the
 Simrock false positives were settled by, and the only thing that has
 worked twice.
 
+**A third check, and the first needing no image at all: edge fragments.**
+`transcribe._drop_clipped_notehead_fragments` already screens the
+DETECTOR's output for a notehead-shaped sliver flush against a cell's crop
+boundary — the neighbouring staff's ink bleeding into this cell's padding —
+but had never been applied to HAND-DRAWN labels, which face the identical
+ambiguous ink. Found live in the training corpus (v3-2026-06-09-mahler5,
+v4-2026-06-10-la-mer, both in `catalog-versions.txt`, both in the round-4
+run): two `notehead*` labels at 0.52–0.54sp tall — inside the measured
+fragment band (0.29–0.56sp), under the genuine floor (0.60+). ⚠️ **Height
+alone reads "rest"; WHERE in the cell settles it.** Both boxes sit flush
+against the cell's own top edge, capturing only the tip of a much larger
+shape that belongs to the staff above — not a symbol in this measure, so
+the likely correction is delete, not relabel. `audit_ledger_zone_labels.py`
+now checks this third: a sub-0.6sp notehead label whose bbox is within
+`CELL_EDGE_TOLERANCE_SPACES` (0.5sp — hand-drawn boxes leave 0.07–0.28sp
+of margin, unlike a model's box which is 1px-flush) of the cell's own top
+or bottom. Manifest-only, so it reaches every batch, including the four
+`hollow2-2026-09` batches with no re-cut `cells/`. Validated the same way:
+finds exactly the 2 known cases and **adds zero false positives across the
+full 1666-label campaign**. Credit: scanned-weights session, both for the
+two live cells and for the missing WHERE-in-the-cell field.
+
 **Then COMMIT the results** (labeling runs in the main checkout, and verdicts are irreplaceable human work — don't leave them sitting untracked):
 
 ```bash

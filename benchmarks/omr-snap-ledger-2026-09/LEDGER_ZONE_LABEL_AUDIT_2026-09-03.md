@@ -141,3 +141,61 @@ python3 benchmarks/omr-snap-ledger-2026-09/audit_ledger_zone_labels.py \
 
 The Simrock batch is the honest next test: same publisher family, drawn
 from scratch, and not one of the batches any of this was developed on.
+
+## Edge fragments — a third check, and the first that needs no image at all
+
+`transcribe._drop_clipped_notehead_fragments` already screens the
+DETECTOR's output for ink a cell's own crop cut off — a notehead-shaped
+sliver flush against the top or bottom of the rendered cell, which is
+usually the neighbouring staff's ink bleeding into this cell's padding
+(`PAD_ABOVE_STAFF_LINES` / `PAD_BELOW_STAFF_LINES` = 4 staff spaces each
+side). Its discriminator was measured once, on model output, and never
+applied to hand-drawn labels — which face the identical ambiguous ink and
+have never been checked. Found live in the training corpus, 2026-09-03, by
+the scanned-weights session: two `notehead*` labels in **v3-2026-06-09-
+mahler5** and **v4-2026-06-10-la-mer**, both in `catalog-versions.txt` and
+in the round-4 training run at the time — `mahler5-p175-sys4-s12-m4` at
+0.54sp and `debussy-la-mer-p105-...-s4-m1` at 0.52sp, both well inside the
+measured fragment band (0.29–0.56sp) and under the genuine-notehead floor
+(0.60+).
+
+⚠️ **A first read of these two by height alone concluded "rest"** — half a
+space tall, roughly two wide, fits a whole/half rest shape. Rendered
+crops settle it differently: in both cases the labeled box captures only a
+thin sliver at the very top of the cell, of a much larger dark shape cut
+off by the crop, sitting entirely above the cell's own staff. That is the
+signature of the ORIGINAL discriminator's mechanism exactly — not a
+misclassified rest, but ink from the system above that isn't a symbol in
+this measure at all. The decisive fact was WHERE in the cell the box sits,
+which height alone does not carry; the scanned-weights session's first
+pass measured height only and got the class wrong before checking position
+and reaching the same conclusion this session's rendered crops did.
+
+**The check, `audit_ledger_zone_labels.py`'s third**: a `notehead*` label
+under `CLIPPED_NOTEHEAD_MAX_SPACES` (0.6sp) tall, whose own bbox touches
+the cell's top or bottom edge. ⚠️ **The edge tolerance is NOT the original
+1px** — that only holds for a MODEL's box, which wraps exactly the ink the
+crop left it, flush to row 0. A hand-drawn box has no such guarantee: the
+two live cases sit 7px (0.07sp) and 22px (0.28sp) from the cell's true
+edge, because the human drew a small margin around the visible sliver
+rather than tracing it to the pixel. `CELL_EDGE_TOLERANCE_SPACES = 0.5`
+covers both with room to spare, while still meaning "near the cell's own
+boundary" rather than "anywhere in the padding" (a cell's total padding
+band is ~4sp on a side).
+
+**No image is needed** — manifest geometry only (`cell_canonical_h`,
+`staff_line_ys_canonical`, the label's own bbox) — so this check reaches
+every batch, including the four `hollow2-2026-09` batches whose
+`cells/` was never re-cut on this machine and that the parity check
+(needs `*_nostaff.png`) cannot see at all.
+
+**Validated both ways, same as the other two checks**: run over the two
+batches that hold the known cases, it finds exactly those two and nothing
+else. Run over the full campaign (1666 labels, 15 batches, 8 of them never
+part of any of this tool's development), it finds **exactly the same two
+and adds zero** — no new false positives anywhere, including the 556-label
+corrected Brahms batch and the 1666-label campaign total.
+
+Credit for finding the two live cells, and for the missing field
+(WHERE in the cell, not just its height) that settled what they are: the
+scanned-weights session.

@@ -5,6 +5,33 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
+
+Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —
+both in `catalog-versions.txt`, both in the round-4 training run at the time — at 0.52sp and
+0.54sp tall, inside the measured clipped-fragment band (0.29–0.56sp, from
+`transcribe._drop_clipped_notehead_fragments`) and under the genuine-notehead floor (0.60+).
+That discriminator was measured once, on the DETECTOR's output, and had never been applied to
+hand-drawn labels — which see the identical ambiguous ink.
+
+- ⚠️ **Height alone reads "rest"; WHERE in the cell is the fact that settles it.** A first pass
+  measured height only and concluded both were rests. Rendered crops (both sessions,
+  independently) show the labeled box capturing only a thin sliver at the cell's own TOP edge,
+  of a much larger shape that belongs to the staff ABOVE — not a symbol in this measure at all.
+  Likely correction: delete, not relabel. Sean's call — the cells are the reference corpus.
+- **Shipped as the auditor's third check**, needing no image at all (manifest geometry only:
+  `cell_canonical_h`, staff lines, the label's own bbox) — the first of the three that reaches
+  the four `hollow2-2026-09` batches whose `cells/` was never re-cut on this machine.
+  ⚠️ **The edge tolerance is NOT the original 1px** (that only holds for a model's box, which is
+  pixel-flush with the crop cut) — a hand-drawn box leaves 0.07–0.28sp of margin around the
+  visible sliver, so the check uses `CELL_EDGE_TOLERANCE_SPACES = 0.5`.
+- **Validated exactly like the other two**: finds the 2 known cases and nothing else on their
+  batches; run over the full campaign (1666 labels, 15 batches, 8 never part of this tool's
+  development) it finds the SAME two and adds **zero** false positives, including the corrected
+  Brahms batch.
+- Credit: scanned-weights session, for finding the two live cells and for the missing
+  WHERE-in-the-cell field that corrected their own first (height-only) read.
+
 ## 2026-09-03 — the ledger-zone auditor's raw flag rate is an UPPER BOUND, not the defect rate
 
 The scanned-weights session ran the auditor on Simrock/Dvořák 9 (110 cells, labeled entirely

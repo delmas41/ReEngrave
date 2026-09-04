@@ -26,6 +26,23 @@ batch (a whole rest labeled `noteheadBlackInSpace`), sitting INSIDE the
 staff, so neither parity auditor would ever have found it. Credit to the
 scanned-weights session for this discriminator.
 
+**(3) Edge fragments.** A notehead-shaped label sitting in the cell's own
+padding, cut off by the crop — the same fault `transcribe._drop_clipped_
+notehead_fragments` already screens the DETECTOR's output for, applied
+here for the first time to HAND-DRAWN labels, which face the identical
+ambiguous ink and have never been checked. Found live in the training
+corpus (v3-2026-06-09-mahler5, v4-2026-06-10-la-mer, 2026-09-03): two
+`notehead*` labels at 0.51–0.54 staff spaces tall — inside the measured
+fragment band (0.29–0.56 sp) and well under the genuine-notehead floor
+(0.60+) — each with its box touching the cell's own top or bottom edge.
+Rendered crops confirmed both are the clipped tip of ink from the
+NEIGHBOURING staff's system, not a symbol in this measure at all — so the
+right correction is likely delete, not relabel. Needs no image (manifest
+geometry only), so it also reaches the batches this file's other two
+checks cannot (`_nostaff.png` missing). Credit: scanned-weights session,
+who found the two live cells and the missing WHERE-in-the-cell field that
+settled it after an initial height-only read called them rests.
+
 Read-only: it writes nothing and changes no label.
 
     python3 benchmarks/omr-snap-ledger-2026-09/audit_ledger_zone_labels.py \
@@ -65,6 +82,22 @@ INSIDE_PAD = 0.25
 # it is a flag for a human, not a classifier.
 REST_MIN_ASPECT = 2.0
 HEAD_MAX_ASPECT = 1.8
+# `transcribe._CLIPPED_NOTEHEAD_MAX_SPACES` — an exact port of an already
+# measured, already-shipped discriminator (fragments run 0.29-0.56sp,
+# genuine edge-touching noteheads 0.77+), applied here to HAND-DRAWN labels
+# for the first time. No image needed: manifest geometry only.
+CLIPPED_NOTEHEAD_MAX_SPACES = 0.6
+# ⚠️ The ORIGINAL discriminator's edge test is 1px, because a MODEL's box
+# wraps exactly the ink the crop left it (the ink is cut off at row 0, so
+# the box starts there too). A HAND-DRAWN box has no such guarantee — the
+# two live cases this was built to catch sit 7px/100sp=0.07sp and
+# 22px/79.75sp=0.28sp from the cell's true edge, not 1px, because the human
+# drew a small margin around the visible sliver rather than tracing it
+# exactly. So the edge test here is in STAFF SPACES, generous enough for
+# that drawing slack (checked against both known cases) while still
+# meaning "near the cell's own boundary": a genuine mid-cell short note (a
+# different, unrelated problem) would not land here by chance.
+CELL_EDGE_TOLERANCE_SPACES = 0.5
 
 
 def blob_centre(im: np.ndarray, cx: float, cy: float, sp: float) -> tuple[float, float, float] | None:
@@ -121,7 +154,7 @@ def audit_batch(batch: Path) -> dict:
     if not man_p.exists() or not vdir.exists():
         return {}
     man = {e["cell_id"]: e for e in json.loads(man_p.read_text())}
-    parity_sus, shape_sus = [], []
+    parity_sus, shape_sus, edge_sus = [], [], []
     n_ledger = n_labels = n_noimg = 0
     for vf in sorted(vdir.glob("*.verdict.json")):
         try:
@@ -159,6 +192,17 @@ def audit_batch(batch: Path) -> dict:
             elif cls.startswith("rest") and aspect <= 1.0 and h_sp <= 1.4:
                 shape_sus.append((cid, cls, f"{w_sp:.2f}x{h_sp:.2f}sp aspect {aspect:.2f}:1",
                                   "notehead-shaped box labeled a rest?"))
+            # (3) edge fragments — a notehead-labeled box, too short to be one,
+            # with its own top or bottom touching the cell's crop boundary.
+            # Uses the LABEL's own bbox height (h_sp above), computed before
+            # the ledger-parity block below reassigns h_sp/w_sp from the blob.
+            cell_h = entry.get("cell_canonical_h")
+            if cls.startswith("notehead") and cell_h and h_sp < CLIPPED_NOTEHEAD_MAX_SPACES:
+                top, bottom = bb["y"], bb["y"] + bb["h"]
+                tol_px = CELL_EDGE_TOLERANCE_SPACES * sp
+                if top <= tol_px or bottom >= cell_h - tol_px:
+                    edge = "top" if top <= tol_px else "bottom"
+                    edge_sus.append((cid, cls, h_sp, edge))
             # (1) ledger-zone parity
             if not (cls.startswith("notehead")
                     and (cls.endswith("OnLine") or cls.endswith("InSpace"))):
@@ -181,7 +225,8 @@ def audit_batch(batch: Path) -> dict:
                 parity_sus.append((cid, cls, cls.replace(stored, measured),
                                    step, off, abs(by - cy), h_sp, w_sp))
     return {"batch": batch.name, "n_labels": n_labels, "n_ledger": n_ledger,
-            "n_noimg": n_noimg, "parity": parity_sus, "shape": shape_sus}
+            "n_noimg": n_noimg, "parity": parity_sus, "shape": shape_sus,
+            "edge": edge_sus}
 
 
 def main() -> int:
@@ -202,16 +247,18 @@ def main() -> int:
     tot_l = tot_led = 0
     tot_p: list = []
     tot_s: list = []
+    tot_e: list = []
     for b in batches:
         r = audit_batch(b)
         if not r:
             print(f"  (skipped {b}: no cells.json/verdicts)")
             continue
         tot_l += r["n_labels"]; tot_led += r["n_ledger"]
-        tot_p += r["parity"]; tot_s += r["shape"]
+        tot_p += r["parity"]; tot_s += r["shape"]; tot_e += r["edge"]
         note = f"  ⚠️ {r['n_noimg']} cells had no _nostaff image" if r["n_noimg"] else ""
         print(f"{r['batch']:52} labels={r['n_labels']:>4} ledger-zone={r['n_ledger']:>4} "
-              f"parity-suspect={len(r['parity'])} shape-suspect={len(r['shape'])}{note}")
+              f"parity-suspect={len(r['parity'])} shape-suspect={len(r['shape'])} "
+              f"edge-suspect={len(r['edge'])}{note}")
     print(f"\nTOTAL: {tot_l} human labels, {tot_led} in the ledger zone")
     if tot_p:
         print(f"\nLEDGER-ZONE PARITY suspects ({len(tot_p)}) — measured on the ink, not the box.")
@@ -226,7 +273,15 @@ def main() -> int:
         print(f"\nSHAPE-vs-CLASS suspects ({len(tot_s)}) — a parity audit cannot see these:")
         for cid, cls, geom, why in tot_s:
             print(f"  {cid:30} {cls:22} {geom:28} {why}")
-    if not tot_p and not tot_s:
+    if tot_e:
+        print(f"\nEDGE-FRAGMENT suspects ({len(tot_e)}) — a notehead label under "
+              f"{CLIPPED_NOTEHEAD_MAX_SPACES}sp tall, touching the cell's own crop "
+              "boundary. Likely ink from the NEIGHBOURING staff, not this measure — "
+              "the correction is probably delete, not relabel. Manifest-only; needs "
+              "no image.")
+        for cid, cls, h_sp, edge in sorted(tot_e, key=lambda r: r[2]):
+            print(f"  {cid:30} {cls:22} h={h_sp:.2f}sp  touches cell's {edge} edge")
+    if not tot_p and not tot_s and not tot_e:
         print("\nno suspects.")
     print("\n(read-only: nothing was written; each hit is a candidate for a human, "
           "not an automatic correction)")
