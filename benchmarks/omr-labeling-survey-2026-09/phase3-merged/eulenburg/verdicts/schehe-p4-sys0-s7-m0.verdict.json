@@ -1,0 +1,134 @@
+{
+ "cell_id": "schehe-p4-sys0-s7-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1629,
+    "y": 211,
+    "w": 317,
+    "h": 157
+   },
+   "confidence": 0.6413,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1540,
+    "y": 328,
+    "w": 99,
+    "h": 79
+   },
+   "confidence": 0.8227,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 995,
+    "y": 658,
+    "w": 93,
+    "h": 75
+   },
+   "confidence": 0.8129,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1172,
+    "y": 468,
+    "w": 97,
+    "h": 82
+   },
+   "confidence": 0.7929,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1850,
+    "y": 668,
+    "w": 92,
+    "h": 66
+   },
+   "confidence": 0.6728,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N4",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1699,
+    "y": 471,
+    "w": 96,
+    "h": 78
+   },
+   "confidence": 0.6099,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 397,
+    "y": 274,
+    "w": 85,
+    "h": 194
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 503,
+    "y": 380,
+    "w": 78,
+    "h": 191
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 605,
+    "y": 229,
+    "w": 72,
+    "h": 192
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 704,
+    "y": 369,
+    "w": 96,
+    "h": 161
+   },
+   "notes": ""
+  }
+ ]
+}

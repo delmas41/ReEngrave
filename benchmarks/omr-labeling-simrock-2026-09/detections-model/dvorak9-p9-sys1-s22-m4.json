@@ -1,0 +1,57 @@
+{
+  "cell_id": "dvorak9-p9-sys1-s22-m4",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 208,
+      "y": 1142,
+      "w": 76,
+      "h": 164,
+      "x_center": 246,
+      "y_center": 1224,
+      "confidence": 0.7410144209861755,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 946,
+      "y": 594,
+      "w": 132,
+      "h": 43,
+      "x_center": 1012,
+      "y_center": 615,
+      "confidence": 0.6978577375411987,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 1,
+      "y": 184,
+      "w": 2047,
+      "h": 36,
+      "x_center": 1024,
+      "y_center": 202,
+      "confidence": 0.5530164241790771,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 11,
+      "y": 1097,
+      "w": 2033,
+      "h": 38,
+      "x_center": 1027,
+      "y_center": 1116,
+      "confidence": 0.6066675186157227,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "cell_id": "dvorak9-p15-sys0-s22-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "brace",
+      "category": "structural",
+      "x": 0,
+      "y": 451,
+      "w": 71,
+      "h": 949,
+      "x_center": 35,
+      "y_center": 925,
+      "confidence": 0.6731582880020142,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 226,
+      "y": 0,
+      "w": 317,
+      "h": 316,
+      "x_center": 384,
+      "y_center": 158,
+      "confidence": 0.7748488187789917,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "clefCTenor",
+      "category": "clef",
+      "x": 266,
+      "y": 507,
+      "w": 246,
+      "h": 420,
+      "x_center": 389,
+      "y_center": 717,
+      "confidence": 0.6105124354362488,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "clefCAlto",
+      "category": "clef",
+      "x": 267,
+      "y": 507,
+      "w": 250,
+      "h": 417,
+      "x_center": 392,
+      "y_center": 715,
+      "confidence": 0.6776559352874756,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "clefCTenor",
+      "category": "clef",
+      "x": 265,
+      "y": 730,
+      "w": 254,
+      "h": 201,
+      "x_center": 392,
+      "y_center": 830,
+      "confidence": 0.5139422416687012,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "clefCTenor",
+      "category": "clef",
+      "x": 265,
+      "y": 641,
+      "w": 280,
+      "h": 288,
+      "x_center": 405,
+      "y_center": 785,
+      "confidence": 0.5100144147872925,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 633,
+      "y": 425,
+      "w": 118,
+      "h": 289,
+      "x_center": 692,
+      "y_center": 569,
+      "confidence": 0.8301519155502319,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 1043,
+      "y": 198,
+      "w": 254,
+      "h": 253,
+      "x_center": 1170,
+      "y_center": 324,
+      "confidence": 0.8344147801399231,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1603,
+      "y": 609,
+      "w": 136,
+      "h": 63,
+      "x_center": 1671,
+      "y_center": 640,
+      "confidence": 0.6711381077766418,
+      "pitch": null
+    }
+  ]
+}

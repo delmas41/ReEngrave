@@ -1,0 +1,57 @@
+{
+ "cell_id": "dvorak9-p8-sys0-s9-m8",
+ "candidates": [
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.905,
+   "ink": 0.4013,
+   "bbox": {
+    "x": 59,
+    "y": 824,
+    "w": 235,
+    "h": 250
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8543,
+   "ink": 0.4138,
+   "bbox": {
+    "x": 167,
+    "y": 820,
+    "w": 228,
+    "h": 252
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.787,
+   "ink": 0.4526,
+   "bbox": {
+    "x": 38,
+    "y": 28,
+    "w": 229,
+    "h": 268
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7728,
+   "ink": 0.467,
+   "bbox": {
+    "x": 125,
+    "y": 30,
+    "w": 232,
+    "h": 267
+   }
+  }
+ ]
+}

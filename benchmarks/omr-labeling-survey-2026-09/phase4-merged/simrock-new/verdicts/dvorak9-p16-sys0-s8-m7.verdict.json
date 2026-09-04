@@ -1,0 +1,19 @@
+{
+ "cell_id": "dvorak9-p16-sys0-s8-m7",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 648,
+    "y": 620,
+    "w": 113,
+    "h": 59
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "cell_id": "schehe-p3-sys0-s14-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 407,
+    "y": 181,
+    "w": 65,
+    "h": 161
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 486,
+    "y": 291,
+    "w": 68,
+    "h": 167
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 568,
+    "y": 137,
+    "w": 68,
+    "h": 184
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 660,
+    "y": 263,
+    "w": 75,
+    "h": 154
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1494,
+    "y": 318,
+    "w": 137,
+    "h": 31
+   },
+   "notes": ""
+  }
+ ]
+}

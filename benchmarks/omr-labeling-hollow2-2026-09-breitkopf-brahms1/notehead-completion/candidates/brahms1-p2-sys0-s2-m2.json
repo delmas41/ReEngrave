@@ -1,0 +1,18 @@
+{
+ "cell_id": "brahms1-p2-sys0-s2-m2",
+ "candidates": [
+  {
+   "smufl_name": "augmentationDot",
+   "category": "structural",
+   "family": "dot",
+   "confidence": 0.6787,
+   "ink": 0.7864,
+   "bbox": {
+    "x": 388,
+    "y": 513,
+    "w": 53,
+    "h": 50
+   }
+  }
+ ]
+}

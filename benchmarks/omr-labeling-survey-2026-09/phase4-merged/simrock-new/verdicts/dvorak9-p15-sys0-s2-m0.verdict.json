@@ -1,0 +1,115 @@
+{
+ "cell_id": "dvorak9-p15-sys0-s2-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "clefG",
+   "human_category": "clef",
+   "bbox": {
+    "x": 212,
+    "y": 299,
+    "w": 284,
+    "h": 746
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 649,
+    "y": 309,
+    "w": 119,
+    "h": 277
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 560,
+    "y": 483,
+    "w": 119,
+    "h": 277
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 972,
+    "y": 299,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 989,
+    "y": 510,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 774,
+    "y": 159,
+    "w": 257,
+    "h": 95
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 741,
+    "y": 647,
+    "w": 272,
+    "h": 127
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1054,
+    "y": 121,
+    "w": 674,
+    "h": 124
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1025,
+    "y": 656,
+    "w": 706,
+    "h": 112
+   },
+   "notes": ""
+  }
+ ]
+}

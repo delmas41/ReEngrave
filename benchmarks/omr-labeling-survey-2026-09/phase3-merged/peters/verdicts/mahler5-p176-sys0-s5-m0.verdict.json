@@ -1,0 +1,57 @@
+{
+ "cell_id": "mahler5-p176-sys0-s5-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 773,
+    "y": 626,
+    "w": 107,
+    "h": 131
+   },
+   "confidence": 0.5986,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 719,
+    "y": 144,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 421,
+    "y": 369,
+    "w": 95,
+    "h": 209
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "clefF",
+   "human_category": "clef",
+   "bbox": {
+    "x": 133,
+    "y": 243,
+    "w": 274,
+    "h": 338
+   },
+   "notes": ""
+  }
+ ]
+}

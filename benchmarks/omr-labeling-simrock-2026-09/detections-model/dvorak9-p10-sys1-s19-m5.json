@@ -1,0 +1,57 @@
+{
+  "cell_id": "dvorak9-p10-sys1-s19-m5",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 597,
+      "y": 663,
+      "w": 33,
+      "h": 35,
+      "x_center": 613,
+      "y_center": 680,
+      "confidence": 0.5992176532745361,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 944,
+      "y": 1264,
+      "w": 131,
+      "h": 46,
+      "x_center": 1009,
+      "y_center": 1287,
+      "confidence": 0.7564076781272888,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 947,
+      "y": 586,
+      "w": 131,
+      "h": 46,
+      "x_center": 1012,
+      "y_center": 609,
+      "confidence": 0.7952964305877686,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 958,
+      "y": 10,
+      "w": 132,
+      "h": 42,
+      "x_center": 1024,
+      "y_center": 31,
+      "confidence": 0.8146185874938965,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+ "cell_id": "mahler1-p3-sys0-s2-m3",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 984,
+    "y": 942,
+    "w": 118,
+    "h": 112
+   },
+   "confidence": 0.7208,
+   "notes": "model completion, audited"
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 678,
+    "y": 1109,
+    "w": 174,
+    "h": 209
+   },
+   "confidence": 0.8496,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicS",
+   "model_bbox": {
+    "x": 658,
+    "y": 1165,
+    "w": 78,
+    "h": 90
+   },
+   "confidence": 0.788,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1019,
+    "y": 1087,
+    "w": 328,
+    "h": 79
+   },
+   "confidence": 0.771,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 1281,
+    "y": 1177,
+    "w": 97,
+    "h": 168
+   },
+   "confidence": 0.7681,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M4",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 1307,
+    "y": 1178,
+    "w": 121,
+    "h": 124
+   },
+   "confidence": 0.6939,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1294,
+    "y": 973,
+    "w": 101,
+    "h": 84
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 82,
+    "y": 550,
+    "w": 82,
+    "h": 202
+   },
+   "notes": ""
+  }
+ ]
+}

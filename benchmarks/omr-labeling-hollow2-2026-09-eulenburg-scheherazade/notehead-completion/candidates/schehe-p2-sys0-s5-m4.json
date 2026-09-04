@@ -1,0 +1,31 @@
+{
+ "cell_id": "schehe-p2-sys0-s5-m4",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8673,
+   "ink": 0.7886,
+   "bbox": {
+    "x": 454,
+    "y": 225,
+    "w": 45,
+    "h": 35
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.659,
+   "ink": 0.8368,
+   "bbox": {
+    "x": 453,
+    "y": 308,
+    "w": 42,
+    "h": 34
+   }
+  }
+ ]
+}

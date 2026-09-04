@@ -1,0 +1,70 @@
+{
+  "cell_id": "dvorak9-p14-sys1-s24-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefF",
+      "category": "clef",
+      "x": 240,
+      "y": 468,
+      "w": 258,
+      "h": 303,
+      "x_center": 369,
+      "y_center": 619,
+      "confidence": 0.8775888085365295,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "slur",
+      "category": "structural",
+      "x": 1005,
+      "y": 1250,
+      "w": 295,
+      "h": 121,
+      "x_center": 1152,
+      "y_center": 1310,
+      "confidence": 0.8947070837020874,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1241,
+      "y": 1319,
+      "w": 123,
+      "h": 108,
+      "x_center": 1302,
+      "y_center": 1373,
+      "confidence": 0.862708568572998,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1301,
+      "y": 570,
+      "w": 123,
+      "h": 52,
+      "x_center": 1362,
+      "y_center": 596,
+      "confidence": 0.8060986399650574,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 1416,
+      "y": 1358,
+      "w": 39,
+      "h": 43,
+      "x_center": 1435,
+      "y_center": 1379,
+      "confidence": 0.8049488067626953,
+      "pitch": null
+    }
+  ]
+}

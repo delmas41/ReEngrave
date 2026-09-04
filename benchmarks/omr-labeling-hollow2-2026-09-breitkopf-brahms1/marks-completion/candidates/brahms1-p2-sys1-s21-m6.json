@@ -1,0 +1,57 @@
+{
+ "cell_id": "brahms1-p2-sys1-s21-m6",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8324,
+   "ink": 0.5051,
+   "bbox": {
+    "x": 43,
+    "y": 878,
+    "w": 196,
+    "h": 188
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7868,
+   "ink": 0.5746,
+   "bbox": {
+    "x": 205,
+    "y": 882,
+    "w": 171,
+    "h": 183
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7381,
+   "ink": 0.5618,
+   "bbox": {
+    "x": 211,
+    "y": 124,
+    "w": 203,
+    "h": 190
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.6242,
+   "ink": 0.4723,
+   "bbox": {
+    "x": 36,
+    "y": 123,
+    "w": 218,
+    "h": 192
+   }
+  }
+ ]
+}

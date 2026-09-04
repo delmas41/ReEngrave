@@ -1,10 +1,24 @@
 {
   "cell_id": "mahler5-p177-sys0-s1-m5",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-02T21:01:29+00:00",
+  "labeled_at_utc": "2026-09-03T20:56:04+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 818,
+        "y": 494,
+        "w": 141,
+        "h": 194
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

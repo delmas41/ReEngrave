@@ -222,6 +222,71 @@ could have come out wrong are now closed by construction.
   was registered against.
 - Protocol, including how to read the answer either way:
   `benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md`.
+---
+
+## 2026-09-03 — Round 3: completing the training cells (540 → 1322 boxes)
+
+- **The next-iteration plan's diagnosis was a minority of the problem, and measuring first
+  caught it.** `NEXT_ITERATION.md` said the 30-epoch cloud regression came from rests and
+  accidentals left unboxed. Running the production detector over the 198 cells that emit a
+  YOLO label and bucketing every detection by whether ANY pass had covered its class:
+  **41.2% (377 of 916) sat in never-boxed classes** — dynamics 165, slurs 99, ties 26,
+  clefs 29 — against 73 for rests+accidentals. **Dynamics + slurs are 3.6× the named gap.**
+  Labeling only what the plan named would have spent the GPU and hit the same wall.
+- **Work split by which labeler is good at which family**, not one method for everything:
+  Sean hand-labeled rests, accidentals and clefs (the round-2 audit measured the model
+  FP-prone exactly there); an audited model completion did dynamics, slurs and ties
+  (spot-checked 8/8 real per class) and later a black-notehead top-up. **760 human boxes
+  over 493 cells**, audited crop-by-crop with **zero label errors found**.
+- **Closing measurement, same 280 cells and same detector as the opening one:
+  uncovered ink 68.1% → 35.9%.** It also named the next gap rather than just scoring —
+  41% of the residue was black noteheads, unevenly covered (80 boxed on Litolff, ONE across
+  25 cells of v7), which is the dominant class training as background. Topped up.
+- **v13–v21 supersede v7/v8 in `catalog-versions.txt`.** 209 cells / 540 boxes → **280 /
+  1322 (+145%)**. The old versions come OUT rather than sitting alongside: they label the
+  same images less completely, and training on both teaches that the symbols the incomplete
+  copy omits are background — the regression being fixed.
+
+### Three bugs, each caught by diffing rather than by a clean-looking run
+
+- ⚠️ **The converter silently dropped all 445 model boxes.** `verdicts_to_yolo_labels` reads
+  a schema-v2 detection as `model_predicted_class` + `model_bbox`; the merge wrote
+  `smufl_name` + `bbox`, the shape the completion CANDIDATES use. The file parsed, the cells
+  counted, 911 of 1157 boxes were emitted, and the retrained mix would have carried LESS
+  completion than v8 while the round looked like progress. Fixed; now verified per version
+  as merged == emitted.
+- ⚠️ **A config is not a coverage record.** Brahms 1 was left to the session holding it,
+  whose palette lists rests and accidentals. Its VERDICTS showed 55 cells stamped
+  `hollow noteheads` and **zero stamped for any completion pass** — so its 11 cells in v8
+  would have re-imported the exact background bug through the one batch nobody swept.
+  What a pass covered is in `inspected_passes`; a palette only says what someone COULD box.
+- ⚠️ **A guard that abstains silently is indistinguishable from a guard that passed.** A new
+  size guard read `cell.staff_line_ys`; the field is `staff_line_ys_canonical`. getattr
+  returned None, every cell registered as "no geometry", the guard abstained on all 169
+  candidates and let through the 394×170 slur arc it was written to catch. Nothing errored;
+  the only tell was `dropped_size: 0` where a small positive number belonged. The abstention
+  path now COUNTS instead of returning True.
+
+### Also
+
+- **Sweeping cells that cannot become training data.** A cell only trains if it carries a
+  box (`_is_filled` is false for an inspected-empty cell, which emits no label and is not
+  used as background either). Pooling only box-carrying cells cut the remaining sweep from
+  328 cells to 152 with identical signal.
+- ⚠️ **Scan degradation has TWO directions and a naive probe sees one.** Asked whether a
+  batch was a bad scan, ink density, fragmentation and staff-line continuity all said
+  mid-pack — they only detect decay by BREAKING. This corpus decays by BLOOMING, and **a
+  bloomed staff line is perfectly CONTINUOUS, so it scores WELL on continuity while being
+  unreadable.** Every batch here is bloomed (lines at 0.20–0.27 of a staff space against a
+  clean 0.08–0.12).
+- **The three works asked for cannot be benchmark rows.** Mahler 1, Elgar 1 and La mer have
+  edition PDFs and ZERO reference encodings. Of the 27 works pairing a PDF with truth, every
+  one is German-published except Holst/Goodwin & Tabb, Tchaikovsky 4/Jurgenson and
+  Tchaikovsky 4/Heugel — drafted in `works-draft-nongerman.json`, held out of `works.json`
+  because scan_eval refuses a pooled figure while any row is `first_pass`. ⚠️ **The training
+  set covers Universal, Novello and Durand and this benchmark cannot validate them.**
+
+---
 
 ## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
 

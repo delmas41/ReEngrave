@@ -1,0 +1,69 @@
+{
+ "cell_id": "schehe-p3-sys0-s3-m5",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 153,
+    "y": 610,
+    "w": 140,
+    "h": 100
+   },
+   "confidence": 0.6197,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 140,
+    "y": 1002,
+    "w": 173,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 403,
+    "y": 463,
+    "w": 94,
+    "h": 274
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 672,
+    "y": 434,
+    "w": 103,
+    "h": 298
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "restHalf",
+   "human_category": "rest",
+   "bbox": {
+    "x": 900,
+    "y": 557,
+    "w": 149,
+    "h": 63
+   },
+   "notes": ""
+  }
+ ]
+}

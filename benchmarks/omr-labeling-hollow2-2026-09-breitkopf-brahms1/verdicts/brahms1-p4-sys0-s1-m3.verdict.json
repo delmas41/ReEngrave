@@ -63,6 +63,18 @@
         "h": 327
       },
       "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 109,
+        "y": 87,
+        "w": 109,
+        "h": 326
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [

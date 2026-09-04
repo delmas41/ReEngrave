@@ -1,0 +1,79 @@
+{
+ "cell_id": "dvorak9-p12-sys0-s12-m3",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 207,
+    "y": 802,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1099,
+    "y": 702,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 77,
+    "y": 713,
+    "w": 100,
+    "h": 279
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "dynamicF",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 90,
+    "y": 954,
+    "w": 234,
+    "h": 293
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "dynamicDiminuendoHairpin",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 982,
+    "y": 968,
+    "w": 955,
+    "h": 157
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "slur",
+   "human_category": "structural",
+   "bbox": {
+    "x": 214,
+    "y": 811,
+    "w": 1011,
+    "h": 264
+   },
+   "notes": ""
+  }
+ ]
+}

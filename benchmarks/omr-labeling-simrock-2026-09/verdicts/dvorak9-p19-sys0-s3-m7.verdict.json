@@ -1,0 +1,107 @@
+{
+  "cell_id": "dvorak9-p19-sys0-s3-m7",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T15:35:54+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 278,
+        "y": 374,
+        "w": 114,
+        "h": 96
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 268,
+        "y": 470,
+        "w": 114,
+        "h": 96
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1215,
+        "y": 374,
+        "w": 114,
+        "h": 96
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1218,
+        "y": 470,
+        "w": 114,
+        "h": 96
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 35,
+        "y": 351,
+        "w": 88,
+        "h": 238
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 141,
+        "y": 303,
+        "w": 88,
+        "h": 238
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 841,
+        "y": 579,
+        "w": 95,
+        "h": 163
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1617,
+        "y": 579,
+        "w": 95,
+        "h": 163
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

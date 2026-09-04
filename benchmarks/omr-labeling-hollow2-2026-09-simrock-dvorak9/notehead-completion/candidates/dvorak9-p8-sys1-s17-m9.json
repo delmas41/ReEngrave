@@ -1,0 +1,18 @@
+{
+ "cell_id": "dvorak9-p8-sys1-s17-m9",
+ "candidates": [
+  {
+   "smufl_name": "augmentationDot",
+   "category": "structural",
+   "family": "dot",
+   "confidence": 0.6063,
+   "ink": 0.8386,
+   "bbox": {
+    "x": 751,
+    "y": 1172,
+    "w": 50,
+    "h": 28
+   }
+  }
+ ]
+}

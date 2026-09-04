@@ -1,0 +1,37 @@
+{
+  "cell_id": "mahler1-p5-sys1-s17-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:41:12+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 723,
+        "y": 633,
+        "w": 86,
+        "h": 72
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 140,
+        "y": 390,
+        "w": 243,
+        "h": 307
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads",
+    "rests+accidentals",
+    "clefs"
+  ]
+}
