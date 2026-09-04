@@ -1,10 +1,72 @@
 {
   "cell_id": "brahms1-p3-sys0-s1-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:16:15+00:00",
+  "labeled_at_utc": "2026-09-03T23:35:44+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 79,
+        "y": 120,
+        "w": 160,
+        "h": 420
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 280,
+        "y": 198,
+        "w": 69,
+        "h": 185
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 342,
+        "y": 133,
+        "w": 61,
+        "h": 151
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "keyFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 397,
+        "y": 236,
+        "w": 68,
+        "h": 154
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1248,
+        "y": 267,
+        "w": 96,
+        "h": 37
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "completion"
   ]
 }
