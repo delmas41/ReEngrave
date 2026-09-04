@@ -165,11 +165,31 @@ Four of five rows improve — Mahler -0.0240, Dvorak -0.0076, Beethoven/575951
 -0.0034, Brahms -0.0018 — and Beethoven/984073's regression halves (+0.0428 ->
 +0.0228).
 
-⚠️ **Axis 2 alone does not make this a ship candidate.** The floor gives back
-some of the half-noteheads axis 1 rewards, by construction. A checkpoint that
-clears axis 2 by discarding the gain it exists to deliver is production with
-extra steps, so axis 1 and axis 3 must be re-run ON THE SHIFTED CHECKPOINT
-before any of this counts.
+⚠️ **Axis 2 alone is not a ship signal, and 1.5 scoring better than 0.9 was the
+warning.** The floor works by believing fewer half-noteheads — exactly the
+detection axis 1 rewards — so a large enough shift walks back to production and
+scores well for having stopped trying. Re-running axis 1 and axis 3 on the
+shifted checkpoints is what separates them:
+
+| checkpoint | half | hollow | with-dur R | exact R | step R | dense R | axis 2 | classes |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| production | 27 | 30 | 0.4354 | 0.5646 | 0.6463 | 0.941 | 0.7517 | 28 |
+| graft, no floor | 44 | 46 | 0.5578 | 0.6054 | 0.7415 | 1.000 | 0.7577 ✗ | 28 |
+| **graft + shift 0.9** | **31** | **31** | **0.5102** | **0.5782** | **0.6939** | **1.000** | **0.7493** | **28, 0 collapsed** |
+| graft + shift 1.5 | 17 | 17 | 0.4558 | 0.5306 | 0.6259 | 1.000 | 0.7420 | 27, 0 collapsed |
+
+**Shift 1.5 reads SEVENTEEN half-noteheads against production's 27** and its
+exact recall falls below production's (0.5306 vs 0.5646). It has the best
+axis-2 number in the table and it is the worst checkpoint in it — the floor has
+gone past the false positives and into the true ones. Had axis 2 been read
+alone, this is the arm that would have shipped.
+
+**`d25e0_graftprod_shift0.9.pt` beats production on every measure of all three
+axes**: half-noteheads 27 → 31, pitch+duration recall 0.4354 → 0.5102, exact
+0.5646 → 0.5782, step 0.6463 → 0.6939, dense notehead recall 0.941 → 1.000,
+pooled OMR-NED 0.7517 → 0.7493, class space 28 with 0 collapsed. It is the first
+checkpoint in three rounds to clear all three, and **it is a candidate, not a
+ship** — the live scan-slot repoint is Sean's call.
 
 ## 4. What the next session should do
 
