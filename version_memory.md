@@ -5,6 +5,43 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — Phase C ANSWERED: pre-filled boxes are a queue, not labels
+
+Sean labeled **49 cells completely and blind** in one sitting — the 25 pre-registered plus 24
+more. The pre-registered analysis is the committed one and it is negative.
+
+- **Pre-registered 25: exact 0.838, `labels` tier 0.849** over 74 boxes. Other 24 (also
+  out-of-sample, not pre-registered): 1.000 over 67. **Pooled out-of-sample 0.915 over 141.**
+  In-sample six, where the tiers were fitted: 0.961 / labels 1.000. The bar was set in advance
+  at ≳0.97; every honest reading is under it, so **the queue reading stands — now on
+  out-of-sample evidence rather than caution.** The in-sample 1.000 was six dense cells
+  describing themselves.
+- ⚠️ **The Phase A admission tiers were fitted to those six cells' error MODES, and a random
+  sample fails differently** — every policy lands 0.815–0.859 because the signals never fire:
+  `near` 0 on all 12 errors, `parity_ok` 1 on 10, `small` 0 on 11. Nothing for a confidence
+  band to separate. This is what pre-registration is for.
+- **The 12 errors:** 6 line/space flips where the box centre sits 23–51 px (¼–½ staff space)
+  off the hand-drawn box — both detector and reference name the position from a MISPLACED box
+  while the human labels the ink; **4 rest VALUE disagreements** (`restQuarter` vs the human's
+  `rest8th` at IoU 0.65–0.82 — same glyph, reference duration vs printed); 1 whole-rest read as
+  a notehead; 1 unmatched grace-sized box. **Rests are the weak class and were invisible
+  before**: out-of-sample noteheads **0.943**, rests **0.722** (0.500 on the registered set's
+  ten). The six dense cells print almost no rests.
+- ⚠️ **Phase A's reference-variant rule is a NO-OP under `hollow-ft`** — 0 overrides across all
+  141 boxes, because the detector's variant already agrees with the reference. It earned its
+  keep on the older weights (2 of 3 flips) and costs nothing, but it is not holding the number
+  up and cannot fix a flip caused by a misplaced box.
+- **Two alternative explanations ruled out before reporting:** the blind server's access log
+  shows all 49 cells saved through it (no hint contamination), and for every error there is NO
+  human box of the pre-fill's class overlapping the pre-fill box (so the greedy IoU-0.3 matcher
+  is not stealing a neighbour). The 0.838-vs-1.000 split between the two halves is real and
+  unexplained by box geometry (110×101 vs 112×112 px) or labeling order (fully interleaved,
+  16:06–17:05 vs 16:09–17:06).
+- **The 49 completely-labeled cells are this session's real yield** — blind, complete, and
+  exactly the rests-and-accidentals completeness `NEXT_ITERATION.md` step 1 asks for on this
+  batch. Re-conversion into a training version belongs to the labeling/training session
+  (`data/user-labeled/` is theirs).
+
 ## 2026-09-03 — Phase C started, and the training session's finding corrects a Phase B claim
 
 - ⚠️ **CORRECTION to Phase B, from the training session's independent work.** "What it lost was

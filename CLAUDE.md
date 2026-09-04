@@ -1768,14 +1768,33 @@ either way. **A batch's hints
 age with the weights**: this one's are a checkpoint stale, and refreshing is
 `--write-hints`, which never touches `verdicts/` or `detections/`.
 
-**Phase C is registered and waiting on labels**
-([PHASE_C_PROTOCOL.md](benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md)):
-25 randomly drawn cells at seed 20260903, with each one's pre-fill status
-and box count recorded **before** any of them was labeled
-([PHASE_C_CELLS.json](benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json)),
-so the population and the prediction are both fixed in advance. Label in
-rank order — **stopping early stays valid**, because the prefix of a shuffle
-is a uniform sample — and 15 cells is ~50 boxes.
+⚠️⚠️ **PHASE C ANSWERED IT, 2026-09-03: pre-filled boxes are NOT admissible
+as labels, and the in-sample 1.000 did not survive contact with a random
+sample.** Sean labeled 49 cells completely and blind — the 25 pre-registered
+at seed 20260903 ([PHASE_C_CELLS.json](benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json),
+status and box counts recorded BEFORE labeling) plus 24 more. The committed
+analysis, the pre-registered 25: **exact 0.838, `labels` tier 0.849** over
+74 boxes. The other 24 scored 1.000, so pooled out-of-sample is **0.915 over
+141 boxes** — every honest reading is under the 0.97 bar that was set in
+advance. **The queue reading stands, now on evidence rather than caution.**
+
+⚠️ **The Phase A tiers were fitted to the six cells' error MODES and the
+random sample fails differently** — every admission policy lands between
+0.815 and 0.859, because `near` is 0 on all 12 errors, `parity_ok` is 1 on
+10 of them and `small` is 0 on 11. There is nothing for a band to separate.
+Six errors are line/space flips where the BOX sits ¼–½ a staff space off the
+hand-drawn one (so both detector and reference name a position from a
+misplaced box while the human labels the ink); **four are rest VALUE
+disagreements** — `restQuarter` against a human's `rest8th` at IoU 0.65–0.82,
+the same glyph, the reference's duration against the printed one. Rests are
+the weak class and were invisible before: out-of-sample noteheads **0.943**,
+rests **0.722**. ⚠️ The reference-variant rule from Phase A is a **no-op**
+under `hollow-ft` (0 overrides on 141 boxes) — it earned its keep on the
+older weights and costs nothing, but it is not holding the number up.
+Contamination and scorer artifacts were both ruled out: the blind server's
+log shows all 49 cells saved through it, and no error box has a human box of
+its own class overlapping it. Full reading:
+[FINDINGS.md](benchmarks/omr-prefill-admission-2026-09/FINDINGS.md) "Phase C".
 
 ⚠️ **A pass whose labels will SCORE the pre-fill must be run BLIND**
 (`annotate.server --blind`, added 2026-09-03): scoring against a human who
