@@ -1,0 +1,37 @@
+{
+  "pass_name": "draw-rich",
+  "note": "DRAW FROM SCRATCH, everything in the cell. Slot 1 (black notehead) is already selected and the cell opens in draw mode, so a bare CLICK places a correctly-sized black notehead and the staff grid decides on-line vs in-space for you. Number keys 1-9 switch slot; the rest are one click in this bar. Every click-to-place size is MEASURED — noteheads, accidentals and rests from the Bravura templates, clefs and key-signature accidentals and dynamics from Sean's own 300+ hand-drawn boxes, the augmentation dot from 246 detector boxes (0.47 spaces, NOT the 1.0 square the fallback gives). SLURS AND TIES ARE DRAG, deliberately: their aspect ratio measures 3.4 and 3.8, so no fixed box is right. An arc cut by the barline is drawn as two arcs and each half gets its own box — the exporter pairs them across the staff, so labelling the visible fragment is correct, not a compromise. Use the Page context button when an arc runs off the edge. SKIP staff lines, stems, beams and free text.",
+  "classes": [
+    { "label": "BLACK notehead", "on_line": "noteheadBlackOnLine", "in_space": "noteheadBlackInSpace", "click_box": true },
+    { "name": "accidentalFlat",    "label": "flat",    "click_box": true },
+    { "name": "accidentalSharp",   "label": "sharp",   "click_box": true },
+    { "name": "accidentalNatural", "label": "natural", "click_box": true },
+    { "name": "slur", "label": "slur (drag)" },
+    { "name": "tie",  "label": "tie (drag)" },
+    { "name": "restQuarter", "label": "quarter rest", "click_box": true },
+    { "name": "rest8th",     "label": "8th rest",     "click_box": true },
+    { "label": "HALF notehead", "on_line": "noteheadHalfOnLine", "in_space": "noteheadHalfInSpace", "click_box": true },
+
+    { "label": "WHOLE notehead", "on_line": "noteheadWholeOnLine", "in_space": "noteheadWholeInSpace", "click_box": true },
+    { "name": "rest16th",  "label": "16th rest",  "click_box": true },
+    { "name": "restHalf",  "label": "half rest",  "click_box": true },
+    { "name": "restWhole", "label": "whole rest", "click_box": true },
+    { "name": "restHBar",  "label": "multi-measure rest (drag)" },
+    { "name": "augmentationDot", "label": "aug. dot", "click_box": { "height_spaces": 0.47, "aspect": 1.02 } },
+
+    { "name": "keyFlat",    "label": "KEY-SIG flat",    "click_box": { "height_spaces": 2.80, "aspect": 0.43 } },
+    { "name": "keySharp",   "label": "KEY-SIG sharp",   "click_box": { "height_spaces": 2.65, "aspect": 0.44 } },
+    { "name": "keyNatural", "label": "KEY-SIG natural", "click_box": { "height_spaces": 2.71, "aspect": 0.44 } },
+
+    { "name": "dynamicP", "label": "dynamic  p", "click_box": { "height_spaces": 2.16, "aspect": 0.90 } },
+    { "name": "dynamicF", "label": "dynamic  f", "click_box": { "height_spaces": 2.93, "aspect": 0.80 } },
+    { "name": "dynamicS", "label": "dynamic  s", "click_box": { "height_spaces": 2.20, "aspect": 0.80 } },
+    { "name": "dynamicM", "label": "dynamic  m", "click_box": { "height_spaces": 1.60, "aspect": 1.30 } },
+    { "name": "dynamicCrescendoHairpin", "label": "cresc. hairpin (drag)" },
+    { "name": "dynamicDiminuendoHairpin", "label": "dim. hairpin (drag)" },
+
+    { "name": "clefG", "label": "treble clef", "click_box": { "height_spaces": 7.54, "aspect": 0.38 } },
+    { "name": "clefF", "label": "bass clef",   "click_box": { "height_spaces": 4.14, "aspect": 0.81 } },
+    { "name": "clefC", "label": "C clef",      "click_box": { "height_spaces": 4.38, "aspect": 0.67 } }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "cell_id": "brahms1-p16-sys1-s14-m8",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 178,
+      "y": 1306,
+      "w": 165,
+      "h": 94,
+      "x_center": 260,
+      "y_center": 1353,
+      "confidence": 0.822685718536377,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 193,
+      "y": 539,
+      "w": 155,
+      "h": 127,
+      "x_center": 270,
+      "y_center": 602,
+      "confidence": 0.7384454011917114,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 384,
+      "y": 1290,
+      "w": 44,
+      "h": 46,
+      "x_center": 406,
+      "y_center": 1313,
+      "confidence": 0.777193546295166,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "arpeggiato",
+      "category": "ornament",
+      "x": 624,
+      "y": 1210,
+      "w": 125,
+      "h": 190,
+      "x_center": 686,
+      "y_center": 1305,
+      "confidence": 0.5561001300811768,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 761,
+      "y": 529,
+      "w": 119,
+      "h": 266,
+      "x_center": 820,
+      "y_center": 662,
+      "confidence": 0.6635081768035889,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 755,
+      "y": 1305,
+      "w": 165,
+      "h": 95,
+      "x_center": 837,
+      "y_center": 1352,
+      "confidence": 0.7973955273628235,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 951,
+      "y": 1284,
+      "w": 52,
+      "h": 51,
+      "x_center": 977,
+      "y_center": 1309,
+      "confidence": 0.7120621204376221,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 869,
+      "y": 1154,
+      "w": 519,
+      "h": 134,
+      "x_center": 1128,
+      "y_center": 1221,
+      "confidence": 0.6093271374702454,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 1140,
+      "y": 595,
+      "w": 113,
+      "h": 213,
+      "x_center": 1196,
+      "y_center": 701,
+      "confidence": 0.5883113741874695,
+      "pitch": null
+    }
+  ]
+}

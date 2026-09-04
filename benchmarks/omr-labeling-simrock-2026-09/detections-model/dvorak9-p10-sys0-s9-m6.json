@@ -1,0 +1,18 @@
+{
+  "cell_id": "dvorak9-p10-sys0-s9-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "slur",
+      "category": "structural",
+      "x": 764,
+      "y": 1243,
+      "w": 720,
+      "h": 157,
+      "x_center": 1124,
+      "y_center": 1321,
+      "confidence": 0.8407897353172302,
+      "pitch": null
+    }
+  ]
+}

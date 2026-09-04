@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-04T00:36:42+00:00",
+  "generated_utc": "2026-09-04T05:27:48+00:00",
   "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled",
   "val_fraction": 0.15,
   "seed": "reengrave",
@@ -126,8 +126,8 @@
       "n_val_images": 12,
       "metadata_present": true,
       "labeler": "sean",
-      "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells (incl. Sean's 56-measure completion sweep; 4 ledger-zone variant corrections 2026-09-03)",
-      "created_utc": "2026-09-04T00:36:08+00:00"
+      "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells incl. Sean's 56-measure sweep; 7 ledger-parity corrections (4 from Sean, 3 from the mxl-prefill audit), all re-verified",
+      "created_utc": "2026-09-04T05:27:47+00:00"
     },
     {
       "name": "v19-2026-09-03-complete-mahler1",

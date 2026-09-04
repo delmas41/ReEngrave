@@ -1,0 +1,96 @@
+{
+  "cell_id": "dvorak9-p9-sys1-s23-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 228,
+      "y": 1224,
+      "w": 79,
+      "h": 141,
+      "x_center": 267,
+      "y_center": 1294,
+      "confidence": 0.6065027713775635,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 221,
+      "y": 537,
+      "w": 97,
+      "h": 278,
+      "x_center": 269,
+      "y_center": 676,
+      "confidence": 0.8272251486778259,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 4,
+      "y": 0,
+      "w": 2041,
+      "h": 57,
+      "x_center": 1024,
+      "y_center": 28,
+      "confidence": 0.5822428464889526,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 1077,
+      "y": 598,
+      "w": 120,
+      "h": 181,
+      "x_center": 1137,
+      "y_center": 688,
+      "confidence": 0.83597332239151,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 1307,
+      "y": 949,
+      "w": 227,
+      "h": 233,
+      "x_center": 1420,
+      "y_center": 1065,
+      "confidence": 0.6675112247467041,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1502,
+      "y": 812,
+      "w": 135,
+      "h": 116,
+      "x_center": 1569,
+      "y_center": 870,
+      "confidence": 0.8715390563011169,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "flag8thUp",
+      "category": "flag",
+      "x": 1629,
+      "y": 541,
+      "w": 105,
+      "h": 341,
+      "x_center": 1681,
+      "y_center": 711,
+      "confidence": 0.5833962559700012,
+      "pitch": null
+    }
+  ]
+}

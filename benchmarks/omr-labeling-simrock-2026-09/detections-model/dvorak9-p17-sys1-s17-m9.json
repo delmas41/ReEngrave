@@ -1,0 +1,96 @@
+{
+  "cell_id": "dvorak9-p17-sys1-s17-m9",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "x": 91,
+      "y": 195,
+      "w": 83,
+      "h": 211,
+      "x_center": 132,
+      "y_center": 300,
+      "confidence": 0.8906415700912476,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "x": 220,
+      "y": 512,
+      "w": 83,
+      "h": 256,
+      "x_center": 261,
+      "y_center": 640,
+      "confidence": 0.743704080581665,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 210,
+      "y": 435,
+      "w": 114,
+      "h": 85,
+      "x_center": 267,
+      "y_center": 477,
+      "confidence": 0.7170718908309937,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 212,
+      "y": 280,
+      "w": 117,
+      "h": 96,
+      "x_center": 270,
+      "y_center": 328,
+      "confidence": 0.8529860973358154,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "ledgerLine",
+      "category": "structural",
+      "x": 187,
+      "y": 320,
+      "w": 186,
+      "h": 26,
+      "x_center": 280,
+      "y_center": 333,
+      "confidence": 0.5007359981536865,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 642,
+      "y": 515,
+      "w": 91,
+      "h": 175,
+      "x_center": 687,
+      "y_center": 602,
+      "confidence": 0.8703286647796631,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 955,
+      "y": 452,
+      "w": 83,
+      "h": 233,
+      "x_center": 996,
+      "y_center": 568,
+      "confidence": 0.843506395816803,
+      "pitch": null
+    }
+  ]
+}

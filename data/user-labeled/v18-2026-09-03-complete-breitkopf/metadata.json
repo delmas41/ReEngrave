@@ -1,8 +1,8 @@
 {
   "version_name": "v18-2026-09-03-complete-breitkopf",
-  "created_utc": "2026-09-04T00:36:08+00:00",
+  "created_utc": "2026-09-04T05:27:47+00:00",
   "labeler": "sean",
-  "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells (incl. Sean's 56-measure completion sweep; 4 ledger-zone variant corrections 2026-09-03)",
+  "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells incl. Sean's 56-measure sweep; 7 ledger-parity corrections (4 from Sean, 3 from the mxl-prefill audit), all re-verified",
   "source": {
     "verdicts_dir": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/breitkopf/verdicts",
     "detections_dir": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/breitkopf/detections",
@@ -594,7 +594,7 @@
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
-        "noteheadBlackInSpace"
+        "restWhole"
       ]
     },
     {
@@ -783,6 +783,7 @@
         "clefCAlto",
         "dynamicLetterF",
         "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
         "rest8th",
         "tie"
       ]

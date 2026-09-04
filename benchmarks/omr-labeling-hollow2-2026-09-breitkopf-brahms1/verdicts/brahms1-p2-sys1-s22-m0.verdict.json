@@ -30,7 +30,7 @@
   },
   {
    "id": "H2",
-   "human_class": "noteheadBlackInSpace",
+   "human_class": "noteheadBlackOnLine",
    "human_category": "notehead",
    "bbox": {
     "x": 1624,
@@ -38,7 +38,7 @@
     "w": 79,
     "h": 66
    },
-   "notes": ""
+   "notes": " | ledger-parity audit 2026-09-03 (mxl-prefill session), verified here"
   },
   {
    "id": "H3",
