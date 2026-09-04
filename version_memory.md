@@ -5,6 +5,56 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — round 5: the fine-tune deletes CLASSES, and the fix is head surgery
+
+- **"Every fine-tune degrades the base" turned out to mean whole class families going to
+  exactly zero.** Not suppression and not a threshold artifact — every fine-tune's MEDIAN
+  CONFIDENCE IS HIGHER than production's (0.669-0.698 vs 0.604) while raw detections fall
+  3204 → 806-1365. tie 249→0, slur 184→0, beam 188→0, augmentationDot 150→0,
+  accidentalFlat 80→0, restWhole 396→0, ledgerLine 288→14, with noteheads holding at
+  80-100%. The corpus is the mechanism: 3871 human boxes contain **0 `beam` and 5
+  `ledgerLine`**, and only 164 of 591 cells ever saw a rich palette.
+- ⚠️ **`beam` and `ledgerLine` are CONSUMED by the pipeline**, against what the labeling
+  policy assumed. `rhythm.resolve_rhythms_for_cell` keeps a YOLO beam wherever no CV beam
+  overlaps (worth 0.1917 → 0.1861) and the ledger-ladder arbitration reads `ledgerLine`
+  detections directly (0.1506 → 0.1431). Both rules were dead on every round-3/4/5
+  candidate, silently, because neither has a test that fails when its input vanishes.
+  That is now gate axis 3.
+- ⚠️ **`restWhole` was nearly exempted from that gate on prose.** 396 over five pages
+  reads as absurd and the round-2 audit names it a slur-arc false-positive mode. Counted:
+  those pages carry **801 resting bars** and production reads 108/88/11/96/93 — under the
+  printed count on every page. The exemption is gone.
+- **ELEVEN METHOD ARMS, ALL DEAD.** The 896 ship's recipe on the new labels (the control
+  round 4 never ran), warmup off, warmup off + lr 1e-5, low LR, a frozen backbone, a
+  matched no-teacher control, and teacher rehearsal in both scopes at conf 0.50 and 0.25.
+  The pre-hollow BASE loses nothing, so it is caused by the fine-tune, not inherited.
+  **More labeling will not fix it** — round 4 tested that by hand (3%) and round 5 tested
+  the perfect version with 3417 teacher boxes (nothing).
+- **The fix is surgery.** A YOLOv8 head is per-class in exactly one place —
+  `model.22.cv3.{0,1,2}.2`, one weight row and one bias per class — so
+  `merge_class_head.py` restores the base's rows for classes the corpus does not teach,
+  and `--bias-shift` bakes a per-class confidence floor into the rows that stay. Seconds
+  on a Mac, no GPU.
+- **`d25e0_graftprod_shift0.9.pt` beats production on every measure of ALL THREE AXES** —
+  half-noteheads 27 → 31, pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782,
+  step 0.6463 → 0.6939, dense notehead recall 0.941 → 1.000, pooled scan-e2e OMR-NED
+  0.7517 → **0.7493**, class space 28 with 0 collapsed. First candidate in three rounds
+  to clear all three. **Not shipped — the live repoint is Sean's call.**
+- ⚠️ **Shift 1.5 has the best axis-2 number (0.7420) and is the worst checkpoint in the
+  table** — 17 half-noteheads against production's 27, exact recall below production's.
+  The floor went past the false positives into the true ones. Read alone, axis 2 would
+  have shipped it.
+- Rig faults worth not repeating: **v2/v3/v4 store cell images as SYMLINKS** (a `cp -R`
+  into a cloud tarball ships 101 of 136 dense cells as dangling links, skipped as
+  "corrupt image/label"); never overwrite a running bash script; the 208-class space has
+  **40 duplicated names**; 2× dense oversampling is now 43/57 hollow-MAJORITY and the
+  ship's 69/31 ratio needs **6×**.
+- GPU spend **$0.37**, box destroyed. Full account:
+  `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`; handoff
+  `docs/handoff-2026-09-04-round5-class-collapse.md`.
+
+---
+
 ## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
 
 Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —
