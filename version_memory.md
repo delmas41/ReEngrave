@@ -5,6 +5,46 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — Scan weights: the round-5 head-graft candidate SHIPPED
+
+**Why:** rounds 3–5 of the scan-weights campaign established that fine-tuning
+on the ~750-cell scan-label corpus deletes whole classes — tie/slur/beam/
+augmentationDot/accidentalFlat/restWhole/ledgerLine go to exactly zero — under
+every method tried (eleven arms: the ship's own recipe, no-warmup, low LR,
+freeze, plain controls, teacher rehearsal/distillation at two confidences).
+The fix that survived is surgery, not training: keep only the hollow
+fine-tune's seven notehead-class head rows (`model.22.cv3.{0,1,2}.2` is the
+only per-class place in a YOLOv8 head), graft them onto production, and bake a
+per-class confidence floor into those rows' biases (`--bias-shift 0.9` ≈
+raising only those classes' threshold 0.25 → 0.45, since the pipeline has one
+global threshold).
+
+**What:** `transcribe.DEFAULT_WEIGHTS` — the scan side of weight routing —
+now points at `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`
+(byte-identical to `omr-weights/round5-merged/d25e0_graftprod_shift0.9.pt`,
+sha256 `2cb6eb3e…3126`; copies in both `omr-weights/` and
+`tools/omr/training/data/weights/`). The engraved side (`ENGRAVED_WEIGHTS`)
+is untouched. First checkpoint in three rounds to beat the 09-03 production
+on every measure of all three gate axes: half-noteheads 27 → 31,
+pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782, dense notehead
+recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 with 4 of 5
+rows improving, 28 classes held with 0 collapsed; element counts move toward
+truth on ties (60 → 97 of 271) and rests (577 → 589 of 972). The ship was
+gated on a fresh determinism probe: the scan-e2e harness is byte-deterministic
+(identical outputs across runs, worktrees and days — noise floor exactly
+0.0000), so the delta is a real property of the weights. Sean approved the
+ship 2026-09-04.
+
+**Records:** `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`
+(lands with branch `claude/scan-weights-round4-continue-074940`) and
+`benchmarks/omr-scan-e2e-2026-09/DETERMINISM_2026-09-04.md` (branch
+`claude/scan-e2e-determinism`). The prior scan production
+(`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`) stays on disk under its own
+name — in-flight benchmark branches that pin "production" by explicit path
+are unaffected, and their recorded 0.7517 baseline still names that file. The
+web-app container picks the repoint up on its next
+`docker compose build backend`.
+
 ## 2026-09-03 — Scan vs engraved weight routing (on by default)
 
 **Why:** the hollow fine-tune ship left the two domains preferring different

@@ -22,7 +22,7 @@ Output schema (JSON):
 
     {
       "source_pdf": "score.pdf",
-      "weights":    "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+      "weights":    "deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
       "weight_routing": {"mode": "routed", "verdict": "scanned", ...} | null,
       "conf_threshold": 0.25,
       "n_pages_processed": 3,
@@ -292,14 +292,22 @@ from .dossier import (
 )
 
 
-# Default weights — hollow fine-tune (2026-09-03): imgsz-896 + 2x-dense-oversample,
-# 1 epoch from the imgsz-2048 production checkpoint. Holds dense notehead recall
-# at 0.941 (= the prior production weights) while lifting scanned half-note
-# detection 8 -> 27 and duration recall 0.388 -> 0.435 on Beethoven 5 p.1.
-# See benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md. Prior production
-# weights (deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt) are kept alongside.
+# Default weights — hollow head-graft + confidence floor (2026-09-04). NOT a
+# training run: rounds 3-5 measured that fine-tuning on the scan-label corpus
+# DELETES whole classes (tie/slur/beam/augmentationDot/... -> exactly 0) under
+# every method tried, so this ship keeps only the hollow fine-tune's seven
+# notehead-class head rows, grafts them onto the 09-03 production, and bakes a
+# per-class confidence floor into those rows' biases (bias-shift 0.9 =
+# threshold 0.25 -> 0.45). Beats the 09-03 hollow-ft on all three gate axes:
+# half-noteheads 27 -> 31, pitch+duration recall 0.435 -> 0.510, dense recall
+# 0.941 -> 1.000, scan-e2e pooled 0.7517 -> 0.7493 on a byte-deterministic
+# harness, 28 classes with 0 collapsed. Record: ROUND5_METHOD_2026-09-04.md in
+# benchmarks/omr-labeling-survey-2026-09/ (lands with branch
+# claude/scan-weights-round4-continue-074940). The 09-03 hollow-ft and the
+# imgsz-2048 checkpoint are kept alongside.
 DEFAULT_WEIGHTS = (
-    "tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
+    "tools/omr/training/data/weights/"
+    "deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt"
 )
 
 # Weights for DIGITALLY ENGRAVED input (vector PDFs), used by weight routing
