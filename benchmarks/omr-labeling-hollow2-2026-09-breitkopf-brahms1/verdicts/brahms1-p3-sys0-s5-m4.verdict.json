@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p3-sys0-s5-m4",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:16:36+00:00",
+  "labeled_at_utc": "2026-09-03T23:37:32+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -27,9 +27,82 @@
         "h": 84
       },
       "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 361,
+        "y": 504,
+        "w": 84,
+        "h": 84
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 365,
+        "y": 842,
+        "w": 84,
+        "h": 84
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 380,
+        "y": 414,
+        "w": 1630,
+        "h": 75
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 14,
+        "y": 441,
+        "w": 225,
+        "h": 92
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 349,
+        "y": 909,
+        "w": 1678,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 0,
+        "y": 947,
+        "w": 297,
+        "h": 55
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "completion"
   ]
 }

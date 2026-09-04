@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p3-sys0-s8-m3",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:16:45+00:00",
+  "labeled_at_utc": "2026-09-03T23:37:57+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -15,9 +15,22 @@
         "h": 72
       },
       "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 361,
+        "y": 505,
+        "w": 72,
+        "h": 72
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "completion"
   ]
 }
