@@ -18,6 +18,8 @@ from tools.omr.export import (
     annotate_fermatas,
     annotate_slurs_in_slot,
     annotate_slurs_in_staff,
+    annotate_wedges_in_slot,
+    annotate_wedges_in_staff,
     measure_dynamics,
     _compute_divisions,
     _direction_slots,
@@ -31,6 +33,7 @@ from tools.omr.export import (
     _lily_event,
     _lily_key_for_sig,
     _lily_measure_rest,
+    _lily_wedge_plan,
     _measure_rest_beats,
     _mxl_measure_rest,
     _parse_pitch,
@@ -1806,3 +1809,259 @@ class TestTwoVoiceStaffDoesNotEcho:
         assert not _lone_voice_is_the_second(mixed)
         assert not _lone_voice_is_the_second(rests_only)
         assert not _lone_voice_is_the_second([])
+
+
+# ─── Hairpins: the ninth export gap ─────────────────────────────────────────
+
+
+def _hairpin(x0, x1, kind="crescendo", y=60):
+    """One `dynamicCrescendoHairpin` / `dynamicDiminuendoHairpin` detection.
+
+    Drawn BELOW the staff at y=60, which is where an engraver puts one, and
+    deliberately in the SPACE BETWEEN noteheads rather than over them — that is
+    the geometry `_wedge_anchors` exists for.
+    """
+    cls = ("dynamicCrescendoHairpin" if kind == "crescendo"
+           else "dynamicDiminuendoHairpin")
+    return {"category": "dynamic", "class": cls, "confidence": 0.9,
+            "bbox": [x0, y, x1 - x0, 8], "bbox_page": [x0, y, x1 - x0, 8]}
+
+
+def _wedge_states(staff):
+    """Every hairpin mark on the staff, as (measure, x, number, kind)."""
+    out = []
+    for m_idx, measure in enumerate(staff["measures"]):
+        for det in measure["detections"]:
+            for number, kind in det.get("wedge_states") or []:
+                out.append((m_idx, det["bbox_page"][0], number, kind))
+    return sorted(out)
+
+
+class TestHairpins:
+    """`<wedge>` is the NINTH recognised-then-dropped element, and the first
+    one whose detection is partial rather than complete — so unlike the eight
+    before it, wiring the exporter cannot make the reading complete.
+
+    ⚠️ The pairing is NOT the slur pairing with a different class name. A slur
+    is drawn OVER its notes and a hairpin BETWEEN them, so an overlap test
+    finds nothing: measured on the Mahler 5 fixture, the only benchmark page
+    whose hairpins the detector reads, it scores 0 of 4.
+    """
+
+    def test_a_hairpin_between_two_notes_marks_them_both(self):
+        # noteheads centred at 15 and 75; the hairpin's ink is the gap between,
+        # ending within reach of the note it is drawn up to
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        assert annotate_wedges_in_staff(staff) == 1
+        assert _wedge_states(staff) == [
+            (0, 10, 1, "crescendo"), (0, 70, 1, "stop"),
+        ]
+
+    def test_the_kind_travels_from_the_detected_class(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68, "diminuendo"),
+        ]])
+        annotate_wedges_in_staff(staff)
+        assert (0, 10, 1, "diminuendo") in _wedge_states(staff)
+
+    def test_a_hairpin_under_ONE_long_note_starts_and_stops_on_it(self):
+        """Two of the three hairpins in the Mahler truth do exactly this: the
+        note fills the bar and the hairpin is drawn in the space it leaves. A
+        `<wedge>` start, one `<note>`, a `<wedge>` stop is a legal MusicXML
+        hairpin, so the degenerate case is kept rather than dropped."""
+        staff = _slur_staff([
+            [_slur_head(10), _hairpin(30, 90)],
+            [_slur_head(110)],
+        ])
+        assert annotate_wedges_in_staff(staff) == 1
+        assert _wedge_states(staff) == [
+            (0, 10, 1, "crescendo"), (0, 10, 1, "stop"),
+        ]
+
+    def test_a_staff_the_detector_found_no_notes_in_exports_nothing(self):
+        """Three of the four hairpins detected on the Mahler page sit on a
+        staff with zero noteheads — a hairpin needs a note at each end and
+        there is none to have. A ceiling of the anchoring, not a bug in it."""
+        staff = _slur_staff([[_hairpin(30, 60)]])
+        assert annotate_wedges_in_staff(staff) == 0
+        assert _wedge_states(staff) == []
+
+    def test_a_crescendo_is_never_continued_by_a_diminuendo(self):
+        """`<` then `>` at one barline is a hairpin turning around, which is
+        the commonest shape there is. Both halves are clipped by the boundary
+        exactly as one split hairpin would be, so only the CLASS keeps them
+        apart — joining them would report one long crescendo where the page
+        prints two marks."""
+        staff = _slur_staff([
+            [_slur_head(10), _slur_head(60), _hairpin(70, 100, "crescendo")],
+            [_slur_head(110), _slur_head(160), _hairpin(100, 130, "diminuendo")],
+        ])
+        assert annotate_wedges_in_staff(staff) == 2
+        kinds = {kind for _m, _x, _n, kind in _wedge_states(staff)}
+        assert kinds == {"crescendo", "diminuendo", "stop"}
+
+    def test_two_halves_of_one_hairpin_at_a_barline_are_ONE_wedge(self):
+        staff = _slur_staff([
+            [_slur_head(10), _hairpin(30, 100)],
+            [_slur_head(190), _hairpin(100, 185)],
+        ])
+        assert annotate_wedges_in_staff(staff) == 1
+        assert _wedge_states(staff) == [
+            (0, 10, 1, "crescendo"), (1, 190, 1, "stop"),
+        ]
+
+    def test_overlapping_hairpins_take_distinct_numbers(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_head(50), _slur_head(70),
+            _hairpin(21, 33), _hairpin(41, 53, "diminuendo"),
+        ]])
+        assert annotate_wedges_in_staff(staff) == 2
+        assert {n for _m, _x, n, _k in _wedge_states(staff)} == {1, 2}
+
+    def test_running_twice_does_not_stack_marks(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        annotate_wedges_in_staff(staff)
+        first = _wedge_states(staff)
+        annotate_wedges_in_staff(staff)
+        assert _wedge_states(staff) == first
+
+    def test_a_staff_with_no_five_line_geometry_abstains(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        staff["staff_geometry"] = None
+        assert annotate_wedges_in_staff(staff) == 0
+
+    def test_the_search_does_not_reach_past_the_neighbouring_measure(self):
+        """A staff that rests for bars must not donate an anchor from the far
+        side of them. The window is the hairpin's own measures plus one."""
+        staff = _slur_staff([
+            [_slur_head(10)],
+            [],
+            [],
+            [_hairpin(330, 360)],
+        ])
+        assert annotate_wedges_in_staff(staff) == 0
+
+    def test_marks_ride_up_onto_the_event(self):
+        """`group_chords_in_measure` lifts them the way it lifts slur marks,
+        so the exporters see them on the event and not on the notehead."""
+        head = _slur_head(10)
+        head["wedge_states"] = [(1, "crescendo")]
+        events = group_chords_in_measure([head])
+        assert events[0]["wedge_states"] == [(1, "crescendo")]
+
+    def test_musicxml_opens_before_the_note_and_closes_after_it(self):
+        """Not a style choice: music21 attaches a `crescendo` to the NEXT note
+        it parses and a `stop` to the LAST note it parsed, so the element order
+        IS the pair of notes the wedge spans — which is what musicdiff scores.
+        """
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        xml = to_musicxml({"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]})
+        body = xml[xml.index("<measure"):]
+        first_note = body.index("<note>")
+        assert body.index('type="crescendo"') < first_note
+        assert body.index('type="stop"') > body.rindex("</note>")
+
+    def test_lilypond_writes_the_post_events(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68, "diminuendo"),
+        ]])
+        ly = to_lilypond({"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]})
+        assert "\\>" in ly and "\\!" in ly
+
+    def test_lilypond_refuses_a_hairpin_under_one_note(self):
+        """`c4\\<\\!` is not a hairpin LilyPond can draw, so the degenerate case
+        MusicXML keeps is dropped here — at the limit, rather than upstream of
+        both exporters."""
+        lane = [{"wedge_states": [(1, "crescendo"), (1, "stop")]}]
+        assert _lily_wedge_plan(lane) == {}
+
+    def test_lilypond_drops_the_second_of_two_overlapping_hairpins(self):
+        """LilyPond has no `number=` level: a second `\\<` before the first
+        `\\!` is an error, so an overlapping span is dropped rather than
+        written."""
+        lane = [{"wedge_states": [(1, "crescendo")]},
+                {"wedge_states": [(2, "crescendo")]},
+                {"wedge_states": [(1, "stop")]},
+                {"wedge_states": [(2, "stop")]}]
+        plan = _lily_wedge_plan(lane)
+        assert plan == {id(lane[0]): "\\<", id(lane[2]): "\\!"}
+
+    def test_lilypond_keeps_a_hairpin_that_merely_TOUCHES_the_next(self):
+        """A note that ends one hairpin and begins the next takes `\\!\\<`,
+        which is ordinary LilyPond — touching is not overlapping."""
+        lane = [{"wedge_states": [(1, "crescendo")]},
+                {"wedge_states": [(1, "stop"), (1, "diminuendo")]},
+                {"wedge_states": [(1, "stop")]}]
+        plan = _lily_wedge_plan(lane)
+        assert plan[id(lane[1])] == "\\!\\>"
+
+    def test_lilypond_drops_a_hairpin_whose_ends_are_in_different_lanes(self):
+        """`_lone_voice_is_the_second` routes a measure's lone voice to
+        \\voiceTwo PER MEASURE, so a wedge spanning two measures can find its
+        ends in different LilyPond voices. There is no way to write that."""
+        one = [{"wedge_states": [(1, "crescendo")]}]
+        two = [{"wedge_states": [(1, "stop")]}]
+        assert _lily_wedge_plan(one) == {}
+        assert _lily_wedge_plan(two) == {}
+
+
+# ─── A bar with no notes still carries its marks ────────────────────────────
+
+
+class TestEmptyMeasureDirections:
+    """A measure the detector found no events in takes the whole-measure-rest
+    path, which never calls `_mxl_voice_events` — the only `<direction>`
+    emitter — so its dynamics and words were computed and thrown away.
+
+    ⚠️ **Engraved pages cannot reach this branch**, which is why the orchestral
+    benchmark never saw it: they have notes in every bar. It takes a scan,
+    where a staff rests through a bar that still carries a mark — 2 such
+    measures across the five verified rows of the scan benchmark, 0 across
+    every engraved work. These tests are the only thing that guards it.
+    """
+
+    @staticmethod
+    def _staff_with_one_empty_bar(dets):
+        staff = _slur_staff([dets])
+        return {"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]}
+
+    def test_a_dynamic_survives_a_bar_with_no_notes(self):
+        ff = [{"category": "dynamic", "class": "dynamicF", "confidence": 0.9,
+               "bbox": [x, 40, 8, 10], "bbox_page": [x, 40, 8, 10]}
+              for x in (20, 30)]
+        xml = to_musicxml(self._staff_with_one_empty_bar(ff))
+        assert "<ff/>" in xml
+
+    def test_a_word_survives_a_bar_with_no_notes(self):
+        staff = _slur_staff([[]])
+        staff["measures"][0]["direction_texts"] = [
+            {"text": "sempre", "x_page": 20}]
+        staff["measures"][0]["upscale_factor"] = 1.0
+        xml = to_musicxml({"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]})
+        assert "<words>sempre</words>" in xml
+
+    def test_the_mark_comes_BEFORE_the_rest(self):
+        """It lands at offset 0 of the bar. There is no event to place it
+        against — that is what makes the bar empty — so the start of the bar is
+        the only defensible answer."""
+        ff = [{"category": "dynamic", "class": "dynamicP", "confidence": 0.9,
+               "bbox": [20, 40, 8, 10], "bbox_page": [20, 40, 8, 10]}]
+        xml = to_musicxml(self._staff_with_one_empty_bar(ff))
+        assert xml.index("<p/>") < xml.index("<rest/>")
+
+    def test_a_bar_with_no_marks_is_unchanged(self):
+        xml = to_musicxml(self._staff_with_one_empty_bar([]))
+        assert "<direction" not in xml
+        assert "<rest/>" in xml

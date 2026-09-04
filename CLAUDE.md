@@ -721,6 +721,103 @@ measured at all.
 
 ---
 
+## Hairpins — a slur is drawn OVER its notes, a hairpin BETWEEN them
+
+The **ninth** recognised-then-dropped element (2026-09-03), and the first that
+is not purely an export fix. `dynamicCrescendoHairpin` and
+`dynamicDiminuendoHairpin` fired freely and nothing downstream mentioned either
+class, so `<wedge>` was absent from every file the exporter had ever written.
+
+**The pairing is the slur pairing with one part replaced.** A hairpin is cut in
+two by the same per-measure cell crop, so it reuses
+`_merge_arcs_across_barlines`, `_voice_of_notehead` and the `number=` allocator
+unchanged. ⚠️ **What it cannot reuse is `_noteheads_under`, and that is the
+finding.** A slur is drawn over its notes; a hairpin is drawn in the space
+BETWEEN them. On the Mahler 5 fixture the Trumpet's diminuendo spans page x
+5922-6068 in a bar whose only notehead spans 5817-5897 — not one pixel of
+overlap — and an overlap test scores **0 of 4**. So `_wedge_anchors` reads the
+edges as pointers instead, and the start rule was **measured against the truth's
+own spans**, because the obvious one is wrong: the ink begins slightly BEFORE
+the note it starts on (26 px left of it, 105 px right of the previous note, on
+Tchaikovsky 6), so "the last note at or before the edge" reaches back past the
+answer. Nearest-either-side pairs **4 of 8** truth hairpins and gets all 4
+exactly right; before-the-edge pairs 1.
+
+**Emitting it is not reading it, and the gap between those is where the rest
+went.** Nine boxes detected over the eleven works, five exported, four correct:
+
+- **3 of Mahler's 4 land on the staff BELOW the one that prints them**, which
+  has zero detected noteheads. A hairpin is drawn in the gap under its staff and
+  `_dedupe_cross_staff_detections` awards a contested glyph to the nearer
+  five-line band — the same failure this file already records for ledger
+  noteheads, in the same function, and a hairpin has no ledger ladder to
+  arbitrate with; **fixed the same day**, below;
+- Brahms 4's one confident detection (0.91) abstains because the note the truth
+  starts it on was never detected; the one hairpin we get WRONG there is a
+  679×24 px box at confidence **0.28**, which is a line.
+
+Measured, export-only A/B over the same stored transcriptions: engraved pooled
+**0.1306 → 0.1304**, 2745 → 2742 edits (Mahler −1, Tchaikovsky 6 −3, Brahms 4
++1, the other eight byte-identical), `wrong crescendo` 3 → 1 and `wrong
+diminuendo` 5 → 4.
+
+⚠️ **THE STAFF-ATTRIBUTION FAULT WAS FIXED THE SAME DAY, and it was distance's
+fault specifically, not the ladder rule's.** A hairpin prints in the gap under
+its own staff, so a contested copy's centre sits roughly midway between the two
+staves bracketing that gap — measured, the three misattributed detections were
+only 5-62 px nearer staff 18's top than staff 17's bottom, against 25 px the
+other way for the one correctly kept, close enough that distance is nearly a
+coin flip. What actually separates them is that staff 17 carries a notehead in
+every one of those bars and staff 18 carries none anywhere on the page — the
+same shape as the pitch-range veto, keyed on presence rather than pitch, and it
+has to be a SEPARATE tier because a hairpin has no ledger ladder for the
+existing note-vs-note evidence to run on. `_WEDGE_HAIRPIN_CLASSES` names the
+two wedge classes so the veto cannot leak into `dynamicF`-style point dynamics,
+which are not anchored to a notehead the way a wedge is. Where both contested
+staves carry a note — the case a "prefer the staff above" convention would be
+for — nothing in this corpus exercises it, so distance is still the whole rule
+there, exactly as before. Effect: Mahler's four hairpins all land on the
+Trumpet staff that prints them, taking the **eleven-work total from 5 of 8
+truth hairpins exported to 7**, controlled A/B pooled **0.1304 → 0.1299**,
+2742 → 2733 edits, all nine of them Mahler's. ⚠️ **A from-scratch full rebuild
+reproduces the categorical result** — same staff, same measures, `wrong
+crescendo`/`wrong diminuendo` land at the identical 1/3 — **but not the same
+pooled edit count** (Mahler 42 → 50 there): the same four boxes' confidences
+moved between runs on byte-identical code (0.83 → 0.69 on the widest one),
+detector-level jitter unrelated to this fix that touches other symbols on the
+page too. The controlled A/B isolates the fix from that noise on purpose;
+FINDINGS.md §6 has both figures and why they disagree.
+`TestHairpinDedupePrefersTheStaffWithNotes`
+(`tools/omr/tests/test_transcribe_helpers.py`) pins the veto and its two
+fall-through cases. Full reading, including why "prefer above" did not ship:
+[benchmarks/omr-hairpins-2026-09/FINDINGS.md](benchmarks/omr-hairpins-2026-09/FINDINGS.md)
+§6.
+
+⚠️ **THE SCAN BENCHMARK CANNOT PRICE THIS.** Its truth carries **20 hairpins**
+across the five verified rows and the detector fires on **none** — zero
+detections of either class on any of the five pages — so the scan arm is
+byte-identical by construction, verified rather than assumed. On scans this is a
+DETECTION problem and the export change is not addressed to it; the lever is the
+labeling pipeline, and both classes are already in the DSv2 class space.
+
+**LilyPond gets less than MusicXML, deliberately.** `\<` … `\!` are post-events
+on notes, so the anchors serve — but a hairpin under ONE long note (`c4\<\!`),
+a second hairpin opened before the first closes (there is no `number=` level),
+and one whose ends fall in different LilyPond lanes are each dropped by
+`_lily_wedge_plan` rather than approximated, because an unterminated `\<` is a
+compile warning and a wrongly drawn hairpin. The lane case is not the
+transcription's voices: `_lone_voice_is_the_second` routes a lone voice to
+`\voiceTwo` PER MEASURE, so `_lily_staff_block` now fixes the lanes ONCE, before
+rendering, and the planner sees the lanes the renderer will use. Touching is not
+overlapping — `e'4\!\>` is ordinary and is kept.
+
+Full reading:
+[benchmarks/omr-hairpins-2026-09/FINDINGS.md](benchmarks/omr-hairpins-2026-09/FINDINGS.md),
+including why the stop-rule constant is weaker than the ones around it (its
+plateau is real and nothing in the corpus exercises it).
+
+---
+
 ## Articulations, and the time signature's own glyph
 
 Both shipped 2026-09-01 out of the corpus widening
@@ -889,7 +986,7 @@ the question in both directions:
 | pred (`--direction-text`) | our export having one — the same shape | ~1 | **20** |
 | either | a bar carrying a mark and **nothing at all** — the TRIGGER | 0 | **0** |
 
-The bug it is about (`46e42a4`): a measure with no detected events takes the
+The bug it is about: a measure with no detected events takes the
 whole-measure-rest path, which never calls `_mxl_voice_events` — the only
 `<direction>` emitter — so placed directions AND dynamics are computed and then
 discarded. **The trigger is the DETECTOR finding nothing**, which is why the
@@ -898,8 +995,24 @@ path and its marks survive. Widening multiplied the near-misses sixfold (the
 `P1 m1` tempo mark over a resting first part, in Beethoven 5, Brahms 4, Bruckner
 5, Dvorak 9, Mozart 40 and Tchaikovsky 6) and added **not one** triggering bar.
 
+⚠️ **AND THE FIX WAS NOT IN THE TREE UNTIL 2026-09-03, though this paragraph
+said it was.** Commit `a907e41` (and its duplicate `46e42a4`) describes it in
+full — "Both export sites had it", "Both are covered by tests now" — and its
+diff is ONE FILE, a Surya determinism probe; `git log --all -S 'directions=_dyn'
+-- tools/omr/export.py` finds the hunk on no branch, and
+`test_direction_text.py` had no test for the case. It was found by reading the
+branch rather than the log, while wiring hairpins into the same two export
+sites, and closed in `export._mxl_empty_measure` with the unit tests the message
+had promised. **THE TREE OUTRANKS THE LEDGER**, including a ledger written as a
+commit message inside it. Measured on the scan benchmark, where the trigger
+actually occurs: **2 bars** carry marks and no events, both dynamics, and
+recovering them costs **+10 edits** (0.7517 → 0.7525) — every one of them
+`entire measure insert/delete`, because both bars were already charged whole.
+Same call as the articulation ship.
+
 So: **the eleven-work benchmark does not guard that fix.** Its unit tests in
-`test_direction_text.py` are the only thing that does. The pred row is measured
+`test_export.py` (`TestEmptyMeasureDirections`) are the only thing that does.
+The pred row is measured
 under `--direction-text`, which emits strictly more marks than a default run and
 therefore has strictly more chances to trigger — a zero there is a zero for the
 default configuration too. The likeliest future source of a real triggering bar
@@ -1211,9 +1324,12 @@ reader would SEE come out".
 
 `KNOWN_GAPS` is an inventory rather than a suppression list — every element we
 knowingly drop, with its reason and its size — and anything not on it fails.
-Two open items are recorded there now: **accents** (Mahler's truth has 6, the
-detector finds exactly 6, nothing consumes them) and **hairpins** (6 in the
-truth, 4 detected).
+**And an entry that has been CLOSED must leave it**, or the list stops
+describing the exporter and starts describing its history:
+`test_the_inventory_has_no_stale_entries` is what enforces that, and it is what
+took `wedge` out on 2026-09-03 (see *Hairpins* above). The one open item now is
+**accents** — Mahler's truth has 6, the detector finds exactly 6, nothing
+consumes them.
 
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is
