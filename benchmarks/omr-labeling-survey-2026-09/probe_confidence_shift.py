@@ -71,13 +71,20 @@ def main() -> int:
     ap.add_argument("--gate-ratio", type=float, default=0.25,
                     help="a gated class must survive at this fraction of the "
                          "baseline's count.")
-    ap.add_argument("--gate-exempt", nargs="*", default=["staff", "restWhole"],
-                    help="classes whose collapse is not a loss. `staff` is "
-                         "classical CV's by project policy, and production's "
-                         "396 `restWhole` over five orchestral pages is the "
-                         "documented slur-arc false-positive mode, not whole "
-                         "rests. Everything else must survive or be argued "
-                         "about explicitly.")
+    ap.add_argument("--gate-exempt", nargs="*", default=["staff"],
+                    help="classes whose collapse is not a loss. Only `staff`, "
+                         "which classical CV owns by project policy. ⚠️ An "
+                         "earlier version of this list also exempted "
+                         "`restWhole` on the grounds that production's 396 "
+                         "over five pages must be the documented slur-arc "
+                         "false-positive mode. Counted against the truth "
+                         "files that is wrong in the other direction: those "
+                         "five pages carry 801 resting bars (194 / 194 / 18 / "
+                         "99 / 296 measure rests), and production reads 108 / "
+                         "88 / 11 / 96 / 93 — UNDER the printed count on every "
+                         "page, never over. Whole rests are a real loss here, "
+                         "and the exemption was an assumption that survived "
+                         "one paragraph of prose and no arithmetic.")
     a = ap.parse_args()
 
     works = json.loads((BENCH / "works.json").read_text())

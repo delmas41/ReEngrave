@@ -188,15 +188,17 @@ def main() -> int:
                          "pre-filter and residual_background both use.")
     ap.add_argument("--iou", type=float, default=0.20)
     ap.add_argument("--scope", choices=("pass", "all"), default="pass",
-                    help="'pass' (default) keeps a teacher box only where no "
-                         "pass stamped on that cell looked for its class — the "
-                         "conservative reading, a human's silence inside a "
-                         "swept class is a decision. 'all' keeps every teacher "
-                         "box that no human box overlaps, on every cell "
-                         "including the unstamped v1-v4: full distillation "
-                         "with human corrections layered on top. The two are "
-                         "separate arms because they differ in what they "
-                         "assume a blank patch of a swept cell MEANS.")
+                    help="'pass' (default) keeps a teacher box only for a "
+                         "class this cell has no human box of AND no stamped "
+                         "pass looked for — the conservative reading, in which "
+                         "a human's silence inside a class they swept is a "
+                         "decision. 'all' keeps every teacher box no human box "
+                         "already claims, on every cell including the "
+                         "unstamped v1-v4: full distillation with human "
+                         "corrections layered on top. The two differ in what "
+                         "they assume a blank patch of a swept cell MEANS, "
+                         "which is exactly the open question — so they are "
+                         "separate arms and not a tuning knob.")
     ap.add_argument("--device", default="mps")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--report", type=Path, default=None)
@@ -260,10 +262,16 @@ def main() -> int:
 
             # --- what did a pass look for in THIS cell? --------------------
             stamps = sorted(stamps_by_cell.get(cid, ()))
-            covered = {names[c] for c, *_ in human if 0 <= c < len(names)}
+            # ⚠️ In 'all' scope the human-class rule comes off too, not just
+            # the palette. Leaving it on made the two scopes near-identical
+            # (v14: +68 vs +70 boxes) — because most silencing came from "this
+            # cell already has a box of that class", not from the palette — and
+            # two arms that measure the same thing are one arm.
+            covered = ({names[c] for c, *_ in human if 0 <= c < len(names)}
+                       if a.scope == "pass" else set())
             if a.scope == "pass":
-                for s in stamps:
-                    covered |= palettes.get(s, set())
+                for st in stamps:
+                    covered |= palettes.get(st, set())
             no_stamp = not stamps and a.scope == "pass"
             if no_stamp:
                 n_nostamp += 1
@@ -289,7 +297,15 @@ def main() -> int:
                         continue
                     box = (d.x_canonical, d.y_canonical,
                            d.width_canonical, d.height_canonical)
-                    if any(iou(box, hb) > a.iou for hb in human_boxes):
+                    # Overlap OR centre-inside, the same "covered" test
+                    # residual_background.py uses — a teacher box the human has
+                    # already claimed never becomes a second label, whatever
+                    # the two call it.
+                    bcx, bcy = box[0] + box[2] / 2, box[1] + box[3] / 2
+                    if any(iou(box, hb) > a.iou
+                           or (hb[0] <= bcx <= hb[0] + hb[2]
+                               and hb[1] <= bcy <= hb[1] + hb[3])
+                           for hb in human_boxes):
                         over_human[cls] += 1
                         continue
                     extra.append((cnum,

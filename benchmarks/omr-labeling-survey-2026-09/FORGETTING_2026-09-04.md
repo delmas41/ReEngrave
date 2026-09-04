@@ -63,14 +63,21 @@ a rich or full palette. On most cells a slur, a tie, a beam or a ledger line is
 **background**, and the loss teaches exactly that. Completing the labels within
 the classes a pass covers cannot reach it.
 
-⚠️ **Not all of the 3204 is signal, and the table must not be read as one.**
-`restWhole` at 396 over five pages is far more whole rests than five orchestral
-pages print — the round-2 audit already named `restWhole` on slur arcs as a
-production false-positive mode — and `staff` (89) is a class project policy
-deliberately leaves to classical CV. A checkpoint reading fewer of those is not
-worse for it. The rows that carry the loss are the ones the handoff's own
-element-count table pins against truth: **tie (truth 227, production 58,
-fine-tune 0), slur (202 / 147 / 0), accidental (85 / 79 / 0)**.
+⚠️ **Not all of the 3204 is signal — but less of it is noise than the first
+reading of this table assumed.** `staff` (89) is a class project policy
+deliberately leaves to classical CV, so a checkpoint reading fewer is not worse
+for it. `restWhole` at 396 looked like the same case — the round-2 audit names
+`restWhole` on slur arcs as a production false-positive mode, and 396 whole
+rests over five pages reads as absurd — and it was **exempted from the gate on
+that reasoning before anyone counted**. Counted, it is wrong in the other
+direction. The five truth files carry **801 resting bars** (194 / 194 / 18 / 99
+/ 296) and production reads **108 / 88 / 11 / 96 / 93** — under the printed
+count on every page, never over. Whole rests are a real loss here and the
+exemption is gone; `staff` is the only one left.
+
+The rows the handoff's own element-count table already pinned against truth
+carry the rest: **tie (truth 227, production 58, fine-tune 0), slur (202 / 147 /
+0), accidental (85 / 79 / 0)**.
 
 ## ⚠️ Two of the dead classes are CONSUMED by the pipeline, against the
 ## labeling policy's assumption

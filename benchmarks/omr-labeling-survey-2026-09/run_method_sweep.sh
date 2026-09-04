@@ -2,15 +2,28 @@
 # Round 5 — a METHOD sweep, not a data sweep. Runs ON THE RENTED BOX.
 #
 # Rounds 3 and 4 established that the labels are not the blocker: completing
-# them moved predicted symbols 3262 -> 3364 against production's 4350, and
-# every fine-tune — one epoch at any image size — suppresses detection. So this
-# sweep varies HOW the model is trained, holding the data fixed except for the
-# one arm that is about the data's silence rather than its content.
+# them moved predicted symbols 3262 -> 3364 against production's 4350. Round 5
+# step 1 then measured WHAT is lost (FORGETTING_2026-09-04.md): not confidence —
+# every fine-tune's median confidence is HIGHER than production's — but whole
+# class families at exactly zero. tie 249 -> 0, slur 184 -> 0, beam 188 -> 0,
+# augmentationDot 150 -> 0, accidentalFlat 80 -> 0, ledgerLine 288 -> 14, while
+# noteheads and dynamics — the two families the campaign swept — hold at
+# 80-100%. So this sweep varies HOW the model is trained, and the two data arms
+# in it are about the corpus's SILENCE rather than its content.
 #
-#   prod896    the production recipe (imgsz 896, 2x dense) on the ROUND-4 data.
-#              The control the last session never ran — 896 was queued behind
-#              1408 when the box was destroyed — and the only arm that isolates
-#              "same recipe, better labels".
+#   prod896    the production recipe (imgsz 896) on the ROUND-4 data, at the
+#              ship's DENSE RATIO rather than its dense FACTOR. The 896 ship
+#              oversampled 2x and got 70% dense / 30% hollow because it had 119
+#              hollow cells; rounds 3-4 have 359, so 2x there is 43/57 and the
+#              hollow cells are the MAJORITY — the density-prior narrowing that
+#              collapsed dense noteheads 2506 -> 114 in the clef fine-tune. 6x
+#              restores 69/31. This is the control the last session never ran
+#              — 896 was queued behind 1408 when the box was destroyed — and
+#              the only arm that isolates "same recipe, better labels".
+#   dense6     the same 6x ratio for 5 epochs, no teacher. Separates "more of
+#              the dense base" from "the teacher speaks", because v1 and v2
+#              carry beam, ledgerLine, slur and tie boxes of their own and
+#              oversampling them IS a rehearsal of a sort.
 #   freeze     backbone frozen (freeze=10). Preserves the base's features by
 #              construction; tests whether the drift is in the features.
 #   lowlr      lr0=1e-5, no warmup. optimizer=auto chose AdamW at 4.7e-05.
@@ -23,8 +36,10 @@
 #              everywhere except where a human corrected it — which is exactly
 #              "production, plus the hollow noteheads it misses", stated as a
 #              training target.
-#   reh2048    rehearsal at the native training scale.
-#   rehfreeze  both anti-forgetting levers at once.
+#   reh2048 /  the two rehearsal scopes at the native imgsz-2048 training
+#   distill2048  scale, which held dense recall over 30 epochs where 896
+#              collapsed after one.
+#   rehfreeze  rehearsal and a frozen backbone at once.
 #
 # save_period=1 throughout: the shipping lever on this project has twice been
 # WHICH EPOCH, not which recipe.
@@ -63,15 +78,18 @@ train () {
 }
 
 ARMS=("$@")
-[ ${#ARMS[@]} -eq 0 ] && ARMS=(prod896 distill rehearsal freeze lowlr distill2048 reh2048 rehfreeze)
+[ ${#ARMS[@]} -eq 0 ] && ARMS=(prod896 distill rehearsal dense6 freeze lowlr distill2048 reh2048 rehfreeze)
 
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader || true
 
 for arm in "${ARMS[@]}"; do
 case "$arm" in
   prod896)
-    build_catalog data/user-labeled cat-plain 2
-    train prod896 cat-plain/catalog-2xdense.yaml 896 16 3 '{"save_period": 1}' ;;
+    build_catalog data/user-labeled cat-plain 6
+    train prod896 cat-plain/catalog-6xdense.yaml 896 16 3 '{"save_period": 1}' ;;
+  dense6)
+    build_catalog data/user-labeled cat-plain 6
+    train dense6 cat-plain/catalog-6xdense.yaml 896 16 5 '{"save_period": 1}' ;;
   freeze)
     build_catalog data/user-labeled cat-plain 2
     train freeze cat-plain/catalog-2xdense.yaml 896 16 5 '{"save_period": 1, "freeze": 10}' ;;
