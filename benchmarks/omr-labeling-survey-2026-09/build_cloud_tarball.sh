@@ -23,10 +23,18 @@ cp "$SURVEY/oversample_dense.py" "$SURVEY/run_method_sweep.sh" \
    "$SURVEY/requirements-cloud.txt" "$STAGE/"
 cp "$MAIN/omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt" "$STAGE/weights/"
 
-# the two data roots — plain (round-4 labels) and rehearsal (teacher-completed)
-cp -R data/user-labeled "$STAGE/data/user-labeled"
-[ -d data/user-labeled-rehearsal ] && \
-  cp -R data/user-labeled-rehearsal "$STAGE/data/user-labeled-rehearsal"
+# The data roots. ⚠️ `cp -RL`, dereferencing, is load-bearing: v2/v3/v4 store
+# their cell images as SYMLINKS into `benchmarks/omr-labeling-*/cells/` (only v1
+# and the round-3 versions are copies), so a plain `cp -R` ships 101 of the 136
+# dense-base cells as links to paths that do not exist on the rented box.
+# ultralytics then skips them as "corrupt image/label" and trains on a mix with
+# three quarters of its dense base missing — silently, in a warning stream
+# thousands of lines long. The dense base is what carries the class breadth this
+# whole round is about.
+for root in data/user-labeled data/user-labeled-rehearsal \
+            data/user-labeled-distill data/user-labeled-distill25; do
+  [ -d "$root" ] && cp -RL "$root" "$STAGE/$root"
+done
 # the non-admitted versions are dead weight in the tarball
 for d in "$STAGE"/data/user-labeled*/v*; do
   v="$(basename "$d")"
