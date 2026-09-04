@@ -1,0 +1,67 @@
+{
+ "cell_id": "dvorak9-p13-sys1-s17-m6",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 144,
+    "y": 451,
+    "w": 117,
+    "h": 98
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 793,
+    "y": 788,
+    "w": 112,
+    "h": 59
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 346,
+    "y": 214,
+    "w": 1329,
+    "h": 206
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "dynamicP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 4,
+    "y": 892,
+    "w": 191,
+    "h": 213
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "dynamicP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 184,
+    "y": 892,
+    "w": 191,
+    "h": 213
+   },
+   "notes": ""
+  }
+ ]
+}

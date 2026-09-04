@@ -1,0 +1,59 @@
+{
+  "cell_id": "dvorak9-p9-sys0-s5-m10",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T16:17:52+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 232,
+        "y": 498,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 232,
+        "y": 850,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1448,
+        "y": 650,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1102,
+        "y": 614,
+        "w": 100,
+        "h": 171
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

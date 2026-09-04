@@ -67,3 +67,25 @@ v18-2026-09-03-complete-breitkopf
 v19-2026-09-03-complete-mahler1
 v20-2026-09-03-complete-elgar1
 v21-2026-09-03-complete-lamer
+
+# ADMITTED 2026-09-04 (round 4) — v22, and it is the DIRECT ANSWER to round 3's
+# gate failure. Round 3's scan-e2e regression was one page: Simrock/Dvorak,
+# +0.155, on the publisher with THIRTEEN sparse cells against Litolff's and
+# Peters' 54. The measured mechanism was that the fine-tune emitted ZERO slurs,
+# ties, accidentals and augmentation dots there, because Simrock's 13 cells
+# contributed 1 accidental box and 0 rests — the hollow batches selected sparse,
+# hollow-notehead-bearing cells, so there was nothing else in them to learn.
+#
+# v22 is 110 cells chosen the opposite way (rank_by_suppressed.py ranks a
+# 360-cell pool by rest/accidental/slur/tie content, noteheads only as a
+# tie-break) and drawn from scratch with the rich palette. 759 boxes, 7.0 per
+# cell, 33 classes, and a distribution that matches the corpus that works:
+#
+#            notehead  accid  slur/tie  dynamic  rest  clef
+#   v22           42%    15%       10%      10%    9%    4%
+#   v1-v4       44.3%   9.8%      5.8%     8.1% 11.4%  2.8%
+#   v7-v8       92.4%      0         0        0     0     0
+#
+# 38 ties and 37 slurs, the family production misses worst (0.26 coverage
+# against truth on the scan benchmark).
+v22-2026-09-04-simrock-dense

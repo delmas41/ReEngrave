@@ -1,10 +1,10 @@
 {
-  "generated_utc": "2026-09-04T05:27:48+00:00",
+  "generated_utc": "2026-09-04T16:22:16+00:00",
   "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled",
   "val_fraction": 0.15,
   "seed": "reengrave",
   "membership_source": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/catalog-versions.txt",
-  "n_versions": 13,
+  "n_versions": 14,
   "versions_excluded_on_disk": [
     "v10-2026-09-03-hollow3-elgar1",
     "v11-2026-09-03-hollow3-lamer",
@@ -15,8 +15,8 @@
     "v8-2026-09-02-hollow2-5pub",
     "v9-2026-09-03-hollow3-mahler1"
   ],
-  "n_train_images": 402,
-  "n_val_images": 79,
+  "n_train_images": 495,
+  "n_val_images": 96,
   "n_classes": 208,
   "n_classes_full_vocab": 214,
   "n_boxes_dropped_over_nc": 83,
@@ -158,6 +158,16 @@
       "labeler": "sean",
       "description": "Durand La mer \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
       "created_utc": "2026-09-03T22:07:04+00:00"
+    },
+    {
+      "name": "v22-2026-09-04-simrock-dense",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v22-2026-09-04-simrock-dense",
+      "n_train_images": 93,
+      "n_val_images": 17,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "N. Simrock Dvorak 9 \u2014 110 DENSE cells selected for suppressed-class content, drawn from scratch with the rich palette. Round 4: the publisher whose scan-e2e row regressed hardest (13 sparse cells before).",
+      "created_utc": "2026-09-04T16:21:53+00:00"
     }
   ]
 }
