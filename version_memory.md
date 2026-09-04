@@ -5,6 +5,36 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-03 — auditing the labels: ledger-zone parity and shape-vs-class
+
+Sean's 49-cell completion pass was audited before it went to training; 7 labels were corrected
+(committed with the labels in `4003743`). The two checks that found them are now a tool,
+`benchmarks/omr-snap-ledger-2026-09/audit_ledger_zone_labels.py`, because neither is covered by
+the inside-staff parity auditor and both generalise.
+
+- **Ledger-zone parity — measure the INK, never the BOX.** Out-of-staff noteheads are where the
+  click-to-box snap extrapolates the grid past the staff. Brahms: **6 suspect of 76 ledger-zone
+  labels (~8%)** against **0** inside-staff parity errors. ⚠️ A click-placed box inherits the
+  slot the snap chose, so its centre is biased toward the grid that placed it — the
+  scanned-weights session checked three of these at box centres, read the opposite parity on
+  two, and was wrong on both; rendering the cells with the grid drawn showed a printed line
+  through each head. Ink inside the HUMAN's box says the human is always right, ink inside the
+  PRE-FILL's box says the pre-fill is always right; only the blob on `*_nostaff.png` is
+  evidence. (Same trap already recorded from the snap-ledger work — and walked into anyway.)
+- **Shape vs class — a parity audit is blind to a wrong KIND.** The whole rest labeled
+  `noteheadBlackInSpace` measured **2.13 × 0.72 spaces, aspect 2.97:1** against a median black
+  notehead of **1.19 × 1.00, 1.19:1** (n=189), and sits INSIDE the staff, so no parity auditor
+  could reach it. Discriminator credit: the scanned-weights session.
+- **Validated both ways**: run on the pre-correction verdicts the tool reproduces exactly the 7
+  hand-made corrections (6 parity + 1 shape); on the corrected ones, 0.
+- **Campaign-wide (1666 human labels, 275 ledger-zone): 19 parity + 3 shape CANDIDATES**, i.e.
+  **6.9% of ledger-zone labels** — corroborating the Brahms 8% on eight batches the method was
+  never tuned on. ⚠️ Candidates for a human, not corrections: the tool writes nothing, and
+  `box_is_Npx_from_ink` is the row-level sanity check (a large value means the blob found may
+  not be the labeled glyph — `beet5-p6-sys0-s8-m13` at 106px is the weakest row).
+- ⚠️ **Run it from the MAIN checkout.** `cells/*.png` are gitignored, so from a worktree every
+  cell abstains — the same trap that makes `verdicts_to_yolo_labels` silently report 0 classes.
+
 ## 2026-09-03 — Phase C ANSWERED: pre-filled boxes are a queue, not labels
 
 Sean labeled **49 cells completely and blind** in one sitting — the 25 pre-registered plus 24

@@ -1915,6 +1915,20 @@ The catalog is **capped at nc=208 by default** (custom-class boxes — barlines,
 
 ⚠️ **NEVER "just re-run the converter" on an EXISTING version.** It copies each cell's PNG out of the batch's gitignored `cells/` directory, and those are not regenerable (phase-1 has drifted) and are largely gone: measured 2026-09-03, **11 of v8's 122 source PNGs still exist**, so a re-run silently writes an 11-cell version over the 122-cell one and exits 0. To correct a mislabeled class after export, hand-edit the class id in `labels/<cell>.txt` (coordinates do not move), the batch verdict, AND the version's own merged export source — then heal the version's `metadata.json`, which still records the old class, with `python3 -m tools.omr.training.heal_version_metadata --version data/user-labeled/<version> --expect-cells <cell_id> --write` (re-derives the class fields from the labels; never touches labels or images).
 
+**AUDIT a finished pass before it reaches training.** Two failure modes, neither visible to
+the other's check, both found on the Brahms completion pass and now tooled
+(`benchmarks/omr-snap-ledger-2026-09/audit_ledger_zone_labels.py`, plus
+`benchmarks/omr-cell-grid-tilt-2026-09/audit_labels_vs_measured_grid.py` for inside-staff
+parity). ⚠️ **LEDGER-ZONE PARITY: measure the INK, never the BOX** — a click-placed box
+inherits the slot the snap chose, so its centre is biased toward the grid that placed it, and
+ink-inside-the-box "confirms" whichever box you measure. Use the blob on `*_nostaff.png`.
+Rate: **6 of 76 ledger-zone labels (~8%) on Brahms, 19 of 275 (6.9%) campaign-wide, against 0
+inside-staff parity errors.** ⚠️ **SHAPE-vs-CLASS: a parity audit cannot see a wrong KIND** —
+a rest labeled a notehead has no parity to be wrong about; the box geometry separates them
+cleanly (that whole rest: 2.13 × 0.72 spaces, aspect 2.97:1, against a median notehead's
+1.19 × 1.00 at 1.19:1), and it sat INSIDE the staff where no parity check reaches. Both
+auditors write nothing — every hit is a candidate for a human.
+
 **Then COMMIT the results** (labeling runs in the main checkout, and verdicts are irreplaceable human work — don't leave them sitting untracked):
 
 ```bash
