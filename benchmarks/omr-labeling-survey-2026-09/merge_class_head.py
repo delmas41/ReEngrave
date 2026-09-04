@@ -83,6 +83,18 @@ def main() -> int:
                          "`slur` at 68 and 176 …) because DSv2 carries two "
                          "naming families, and keeping only one index would "
                          "leave the class half-fine-tuned.")
+    ap.add_argument("--bias-shift", type=float, default=0.0,
+                    help="subtract this from the BIAS of every KEPT class — a "
+                         "per-class confidence floor baked into the weights, "
+                         "because the pipeline has one global conf_threshold "
+                         "and the grafted classes are the only ones that need "
+                         "a different one. The graft's whole axis-2 cost is "
+                         "extra half-noteheads on the two Beethoven rows "
+                         "(`wrong note head` 30 -> 72), which is recall bought "
+                         "with precision; this is the dial that sells some "
+                         "back. Shift for a threshold move p0 -> p1 is "
+                         "logit(p1) - logit(p0): 0.25 -> 0.45 is 0.90, "
+                         "0.25 -> 0.60 is 1.50.")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
@@ -132,6 +144,17 @@ def main() -> int:
                 moved += 1
     print(f"restored {moved} per-class parameter rows across "
           f"{len(CLS_LAYERS)} head scales")
+
+    if a.bias_shift:
+        for layer in CLS_LAYERS:
+            k = f"{layer}.bias"
+            for c in kept:
+                ft_sd[k][c] -= a.bias_shift
+        print(f"shifted the bias of {len(kept)} kept classes by "
+              f"-{a.bias_shift} across {len(CLS_LAYERS)} scales — a "
+              f"conf 0.25 detection of those classes now needs "
+              f"~{1/(1+pow(2.718281828, -(a.bias_shift + -1.0986))):.2f} "
+              f"of the pre-shift score")
 
     if a.dry_run:
         return 0
