@@ -280,7 +280,8 @@ def propose_clef(staff: dict[str, Any], instrument: Instrument) -> ClefProposal 
 
 
 def _restate_measure(measure: dict[str, Any], delta: int,
-                     staff_key_sig: dict[str, Any] | None) -> int:
+                     staff_key_sig: dict[str, Any] | None,
+                     staff_alterations: dict[str, int] | None = None) -> int:
     """Restate one measure's notehead pitches by `delta` diatonic steps.
 
     The same rules `apply_proposal` always used, factored so a per-measure
@@ -288,10 +289,19 @@ def _restate_measure(measure: dict[str, Any], delta: int,
     accidental is kept as written, everything else takes the key signature's
     alteration for its NEW letter, and `pitch_candidates` are dropped because
     they were ranked against the old clef's reading.
+
+    `staff_alterations`, when given, replaces the staff-level alteration
+    source (see `_restatement_alterations`); a measure whose own key signature
+    differs from the staff's — a genuine mid-staff key change — still uses its
+    own.
     """
     detections = measure.get("detections", [])
     explicit = _explicit_accidentals(detections)
-    alterations = _key_alterations(measure.get("key_signature") or staff_key_sig)
+    m_ks = measure.get("key_signature")
+    if staff_alterations is not None and (m_ks is None or m_ks == staff_key_sig):
+        alterations = staff_alterations
+    else:
+        alterations = _key_alterations(m_ks or staff_key_sig)
     changed = 0
     for i, det in enumerate(detections):
         if det.get("category") != "notehead" or det.get("pitch") is None:
@@ -304,19 +314,71 @@ def _restate_measure(measure: dict[str, Any], delta: int,
     return changed
 
 
-def apply_proposal(staff: dict[str, Any], proposal: ClefProposal) -> int:
+def _restatement_alterations(
+    staff: dict[str, Any],
+    system_staves: list[dict[str, Any]] | None,
+    instrument: Instrument | None,
+) -> dict[str, int] | None:
+    """The alteration source a RESTATEMENT should use for this staff.
+
+    Measured on 575951-p1's viola: the override restated every letter
+    correctly and OMR-NED still rose by 2, because the staff's own signature
+    was read as 1 flat, REJECTED by the cross-page vote ("differs from the
+    system's 3 flats"), and carried as zero — so every restated E/A/B lost
+    the flat C minor gives it. The staff's own reading is trusted where it
+    was READ (`key_signature_read`); where it was not, a CONCERT-PITCH,
+    non-percussion instrument takes the majority signature among the
+    system's staves that WERE read — the same fact the vote's rejection
+    reason already cites. Transposing staves (clarinet in B, horns) are
+    excluded because their written key legitimately differs from the
+    system's, and timpani because the convention writes them unsigned.
+
+    Returns None to mean "no opinion — use the old sourcing".
+    """
+    if staff.get("key_signature_read"):
+        return None
+    if instrument is None or instrument.chromatic != 0 \
+            or instrument.family == "percussion":
+        return None
+    if not system_staves:
+        return None
+    tally: dict[str, tuple[int, dict[str, Any]]] = {}
+    for other in system_staves:
+        if other is staff or not other.get("key_signature_read"):
+            continue
+        ks = other.get("key_signature")
+        if not isinstance(ks, dict):
+            continue
+        key = f"{ks.get('sharps', 0)}#{ks.get('flats', 0)}b"
+        n, _ = tally.get(key, (0, ks))
+        tally[key] = (n + 1, ks)
+    if not tally:
+        return None
+    _, majority_ks = max(tally.values(), key=lambda t: t[0])
+    return _key_alterations(majority_ks)
+
+
+def apply_proposal(staff: dict[str, Any], proposal: ClefProposal, *,
+                   system_staves: list[dict[str, Any]] | None = None,
+                   instrument: Instrument | None = None) -> int:
     """Restate every pitch on the staff under the proposed clef, in place.
 
     Returns the number of noteheads restated. `pitch_candidates` are dropped
     rather than shifted: they exist for M4 re-ranking against the OLD clef's
     reading and would be misleading once the clef changes.
+
+    `system_staves` + `instrument`, when given, let an UNREAD key signature be
+    replaced by the system majority for the restatement — see
+    `_restatement_alterations`. Callers that omit them get the old sourcing.
     """
     delta = clef_diatonic_shift(proposal.from_clef, proposal.to_clef)
     if delta is None:
         return 0
+    staff_alts = _restatement_alterations(staff, system_staves, instrument)
     changed = 0
     for measure in staff.get("measures", []):
-        changed += _restate_measure(measure, delta, staff.get("key_signature"))
+        changed += _restate_measure(
+            measure, delta, staff.get("key_signature"), staff_alts)
         if measure.get("clef") == proposal.from_clef:
             measure["clef"] = proposal.to_clef
     staff["clef"] = proposal.to_clef
@@ -426,6 +488,8 @@ def veto_implausible_clef_changes(
                 carried = measures[0].get("clef")
                 if carried not in _CLEF_ANCHORS:
                     continue
+                staff_alts = _restatement_alterations(
+                    staff, system.get("staves"), instrument)
                 vetoed: list[dict[str, Any]] = []
                 restated = 0
                 for m_idx in range(1, len(measures)):
@@ -439,7 +503,8 @@ def veto_implausible_clef_changes(
                             carried = m_clef
                             continue
                         restated += _restate_measure(
-                            measure, delta, staff.get("key_signature"))
+                            measure, delta, staff.get("key_signature"),
+                            staff_alts)
                         measure["clef"] = carried
                         vetoed.append({"measure_index": m_idx,
                                        "from_clef": carried, "to_clef": m_clef})
@@ -537,7 +602,11 @@ def correct_clefs_from_instruments(
                 if overridden:
                     record["override"] = "treble_misread"
                 if do_apply:
-                    record["noteheads_restated"] = apply_proposal(staff, proposal)
+                    record["noteheads_restated"] = apply_proposal(
+                        staff, proposal,
+                        system_staves=(system.get("staves")
+                                       if treble_override else None),
+                        instrument=(instrument if treble_override else None))
                 staff["clef_proposal"] = record
                 records.append(record)
     return records

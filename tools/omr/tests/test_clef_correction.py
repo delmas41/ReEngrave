@@ -540,3 +540,80 @@ def test_the_env_flag_reaches_direct_contextual_callers(monkeypatch):
     from tools.omr.contextual import apply_contextual_analysis
     sig = inspect.signature(apply_contextual_analysis)
     assert sig.parameters["instrument_clef_default"].default is None
+
+
+# ── restatement alteration sourcing (the 575951-p1 lesson) ──────────────────
+#
+# The override restated every letter correctly and OMR-NED still ROSE by 2:
+# the staff's own signature read 1 flat, the vote rejected it ("differs from
+# the system's 3 flats"), zero was carried — and every restated E/A/B lost the
+# flat C minor gives it. An UNREAD signature on a concert-pitch staff now
+# takes the system majority among READ staves; read signatures, transposing
+# instruments and percussion keep their own.
+
+def _sibling(flats, read=True, staff_index=1):
+    return {"staff_index": staff_index, "clef": "treble",
+            "key_signature": {"sharps": 0, "flats": flats},
+            "key_signature_read": read, "measures": []}
+
+
+def _viola_treble_A4s(read_key=False):
+    staff = _staff(["A4"] * 12, extra=[_clef_det("clefG")],
+                   key_signature={"sharps": 0, "flats": 0})
+    staff["clef_source"] = "detector"
+    staff["key_signature_read"] = read_key
+    staff["measures"][0]["key_signature"] = staff["key_signature"]
+    return staff
+
+
+def _page_with_siblings(staff, *siblings):
+    return {"page_index": 0,
+            "systems": [{"system_index": 0, "staves": [staff, *siblings]}]}
+
+
+class TestRestatementAlterations:
+    def test_unread_signature_takes_the_system_majority(self):
+        staff = _viola_treble_A4s(read_key=False)
+        page = _page_with_siblings(staff, _sibling(3, staff_index=1),
+                                   _sibling(3, staff_index=2))
+        correct_clefs_from_instruments(
+            [page], {0: VIOLA}, {(0, 0, 0): 0}, apply=True,
+            treble_override=True, instrument_source_by_slot={0: "label"})
+        # A4 under treble → B3 under alto, and the system's 3 flats flat it.
+        assert staff["measures"][0]["detections"][0]["pitch"] == "Bb3"
+
+    def test_a_read_signature_outranks_the_majority(self):
+        staff = _viola_treble_A4s(read_key=True)   # its own 0 flats WAS read
+        page = _page_with_siblings(staff, _sibling(3, staff_index=1),
+                                   _sibling(3, staff_index=2))
+        correct_clefs_from_instruments(
+            [page], {0: VIOLA}, {(0, 0, 0): 0}, apply=True,
+            treble_override=True, instrument_source_by_slot={0: "label"})
+        assert staff["measures"][0]["detections"][0]["pitch"] == "B3"
+
+    def test_percussion_never_takes_the_majority(self):
+        """Timpani are conventionally written unsigned — the system's flats
+        must not be forced onto them."""
+        from tools.omr.clef_correction import _restatement_alterations
+        TIMPANI = lookup("Pauken").instrument
+        staff = {"staff_index": 0, "key_signature": {"sharps": 0, "flats": 0},
+                 "key_signature_read": False, "measures": []}
+        siblings = [_sibling(3, staff_index=1), _sibling(3, staff_index=2)]
+        assert _restatement_alterations(
+            staff, [staff, *siblings], TIMPANI) is None
+
+    def test_a_transposing_staff_keeps_its_own(self):
+        from tools.omr.clef_correction import _restatement_alterations
+        CLARINET = lookup("Cl.").instrument
+        assert CLARINET.chromatic != 0
+        staff = {"staff_index": 0, "key_signature": {"sharps": 0, "flats": 0},
+                 "key_signature_read": False, "measures": []}
+        assert _restatement_alterations(
+            staff, [staff, _sibling(3, staff_index=1)], CLARINET) is None
+
+    def test_no_read_siblings_means_no_opinion(self):
+        from tools.omr.clef_correction import _restatement_alterations
+        staff = {"staff_index": 0, "key_signature": {"sharps": 0, "flats": 0},
+                 "key_signature_read": False, "measures": []}
+        assert _restatement_alterations(
+            staff, [staff, _sibling(3, read=False, staff_index=1)], VIOLA) is None
