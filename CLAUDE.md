@@ -1631,7 +1631,14 @@ measures: a hand-verified window row — the shape of
 with `--work-id` / `--row-id` or it refuses — and `work_id` there is the
 score LIBRARY's id (`brahms--symphony-1`, what the row carries), not the
 dossier's (`brahms-sym1-mvt1`); the wrong one is refused as "no usable window
-rows", not silently matched to nothing. A file holding one work needs neither. Global measure = window start +
+rows", not silently matched to nothing. A file holding one work needs neither.
+⚠️ **`--work-id` is not always narrow enough**: since the 2026-09-04 widening
+(`2d414de0`) this file holds ONE work in TWO editions whose page windows
+overlap — Beethoven 5's edition 984073 p.1 and edition 575951 p.2 are both
+`pdf_page_index` 1 — so that work refuses on `--work-id` alone and needs
+`--row-id`. The refusal is the point: a page index means one page of one
+edition, and picking silently would read one scan's page against the other's
+window. Global measure = window start +
 this staff's measures in earlier systems + measure index; a staff whose count
 across the page disagrees with the window abstains (`--trust-measure-counts`
 overrides). (2) Staff ↔ parts: a system whose staff count differs from the
