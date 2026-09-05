@@ -14,6 +14,8 @@ import pytest
 from tools.omr.voicing import group_chords_in_measure
 
 from tools.omr.export import (
+    measure_directions,
+    _mxl_direction,
     annotate_beams,
     arbitrate_arcs_across_staves,
     annotate_fermatas,
@@ -273,6 +275,142 @@ def _tiny_result_empty_measure(time_sig):
             }],
         }],
     }
+
+
+class TestEventlessMeasureKeepsItsMarks:
+    """A bar we found nothing in still carries the marks printed over it.
+
+    The whole-measure-rest branch never calls `_mxl_voice_events` — the only
+    other `<direction>` emitter — so `measure_directions()` was computed and
+    then dropped. ⚠️ The engraved orchestral benchmark provably CANNOT catch
+    this (an engraved page puts an event in every bar; 0 directions reach the
+    branch over the canonical eleven works), and real scans can: 14 dynamics
+    over 11 hand-verified scanned pages. These tests stand in its place.
+    See `benchmarks/omr-dynamics-band-2026-09/`.
+    """
+
+    @staticmethod
+    def _with(dets=(), words=()):
+        r = _tiny_result_empty_measure({"numerator": 4, "denominator": 4})
+        m = r["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        m["detections"] = list(dets)
+        m["n_detections"] = len(m["detections"])
+        if words:
+            m["direction_texts"] = [
+                {"text": w, "x_page": 10 + 10 * i} for i, w in enumerate(words)
+            ]
+        return r
+
+    @staticmethod
+    def _letter(cls, x):
+        return {"class": cls, "category": "dynamic", "confidence": 0.9,
+                "bbox": [x, 40, 10, 12]}
+
+    def test_the_measure_still_has_no_events(self):
+        """The premise: a dynamic letter is not an event, so this bar takes the
+        whole-measure-rest path. If that stops being true these tests stop
+        testing anything."""
+        r = self._with([self._letter("dynamicF", 10)])
+        m = r["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        assert group_chords_in_measure(m["detections"]) == []
+
+    def test_a_dynamic_survives_a_bar_with_no_events(self):
+        out = to_musicxml(self._with([self._letter("dynamicF", 10)]))
+        assert "<dynamics>" in out and "<f/>" in out
+        assert "<rest/>" in out, "the whole-measure rest must still be emitted"
+
+    def test_the_letters_still_join_into_one_word(self):
+        out = to_musicxml(self._with(
+            [self._letter("dynamicF", 10), self._letter("dynamicF", 22)]))
+        assert "<ff/>" in out
+        assert out.count("<dynamics>") == 1
+
+    def test_a_direction_word_survives_too(self):
+        """Same branch, same loss — dynamics were simply the measurable half."""
+        out = to_musicxml(self._with(words=["legato"]))
+        assert "<words>legato</words>" in out
+        assert "<rest/>" in out
+
+    def test_the_direction_precedes_the_rest(self):
+        """`<direction>` carries no duration, so it applies where it SITS."""
+        out = to_musicxml(self._with([self._letter("dynamicF", 10)]))
+        assert out.index("<dynamics>") < out.index("<rest/>")
+
+    def test_marks_are_emitted_in_x_order(self):
+        out = to_musicxml(self._with(
+            [self._letter("dynamicP", 90)], words=["legato"]))
+        assert out.index("<words>legato</words>") < out.index("<dynamics>")
+
+    def test_an_eventless_bar_with_no_marks_is_unchanged(self):
+        """The fix must be additive: a plain empty bar exports as before."""
+        assert "<direction" not in to_musicxml(self._with())
+
+    def test_a_fermata_over_the_whole_measure_rest_survives(self):
+        """The same branch, one layer down: a fermata attaches to an EVENT, and
+        this bar has none, so the rest was built without one. `annotate_fermatas`
+        already says a fermata on an orchestral page is usually over a whole-bar
+        REST — so this is the commonest fermata, not an edge case. Found by
+        `score_translation`: Beethoven 5 detected 36, truth 36, exported 35.
+        """
+        r = self._with([{"class": "fermataAbove", "category": "ornament",
+                         "confidence": 0.93, "bbox": [40, 5, 20, 14]}])
+        out = to_musicxml(r)
+        assert "<fermata" in out
+        assert "<rest/>" in out
+
+    def test_a_bar_with_no_fermata_gets_none(self):
+        assert "<fermata" not in to_musicxml(self._with())
+
+    def test_both_musicxml_emitters_carry_the_fermata_too(self):
+        """⚠️ ANTI-DRIFT: this file emits a measure in more than one place.
+
+        The eventless branch is now `_mxl_empty_measure` (main's shape, which
+        also builds the rest); the fermata is threaded through it. Asserts on
+        the SOURCE, because a behavioural test only ever exercises whichever
+        path its fixture happens to take.
+        """
+        import inspect
+
+        import tools.omr.export as export_mod
+
+        src = inspect.getsource(export_mod).splitlines()
+        checked = 0
+        for i, line in enumerate(src):
+            if line.strip() != "if not events:":
+                continue
+            body = "\n".join(src[i:i + 8])
+            if "_mxl_empty_measure" not in body:
+                continue          # the LilyPond branch
+            checked += 1
+            assert "measure_has_fermata" in body, (
+                f"the eventless-measure branch at line {i + 1} drops its fermata")
+        assert checked == 2, f"expected 2 MusicXML emitters, found {checked}"
+
+    def test_both_musicxml_emitters_call_it(self):
+        """⚠️ ANTI-DRIFT for the directions, same reasoning.
+
+        `_mxl_empty_measure` came from main and supersedes the
+        `_mxl_directions_only` this branch had built for the same defect —
+        independently, and a third duplication in one day. Theirs also
+        constructs the rest, so it is the better encapsulation; this branch's
+        unique part was the FERMATA, which is threaded through it above.
+        """
+        import inspect
+
+        import tools.omr.export as export_mod
+
+        src = inspect.getsource(export_mod).splitlines()
+        checked = 0
+        for i, line in enumerate(src):
+            if line.strip() != "if not events:":
+                continue
+            body = "\n".join(src[i:i + 8])
+            if "_mxl_empty_measure" not in body:
+                continue
+            checked += 1
+        assert checked == 2, (
+            "both MusicXML emitters must route an eventless bar through "
+            f"`_mxl_empty_measure`; found {checked}")
 
 
 class TestEmptyMeasurePadding:
