@@ -82,11 +82,26 @@ def build():
         raise SystemExit(f"no corpus; run build_calibration_corpus.py ({CACHE})")
     recs = []
     pages = 0
+    join = Counter()
     for p in blobs:
         b = json.loads(p.read_text())
         pages += 1
         # Label truth, keyed by the staff_index the reader used.
         truth = {l["staff_index"]: l for l in b["labels"] if l.get("instrument")}
+        # ⚠️ JOIN INTEGRITY. The labels come from a SECOND `detect_staves` call
+        # (build_calibration_corpus.read_labels) and are keyed on ITS
+        # staff_index. If the two calls disagree about the staff set, every
+        # record joins to the wrong label or to none -- and a total failure to
+        # join looks exactly like "this page had no labels", i.e. a clean
+        # negative. Counted per page and asserted below, never assumed.
+        idx_in_result = {s.get("staff_index")
+                         for _, staves in staves_of(b["result"]) for s in staves}
+        join["label_staves"] += len(truth)
+        join["result_staves"] += len(idx_in_result)
+        join["joined"] += len(set(truth) & idx_in_result)
+        join["label_only"] += len(set(truth) - idx_in_result)
+        if not (set(truth) & idx_in_result) and truth:
+            join["pages_with_zero_join"] += 1
         for sys_idx, staves in staves_of(b["result"]):
             n = len(staves)
             clefs = {i: s["clef"] for i, s in enumerate(staves)
@@ -116,7 +131,7 @@ def build():
                     "set_size": len(union[i]),
                     "truth_in_set": bool(acceptable(t["instrument"]) & union[i]),
                 })
-    return recs, pages
+    return recs, pages, join
 
 
 def override_eligible(r):
@@ -149,10 +164,19 @@ def estimate(train, feats):
 
 
 def main():
-    recs, pages = build()
+    recs, pages, join = build()
     for r in recs:
         r["ok"] = bool(r["derived"]) and r["derived"] in r["TRUTH_acceptable"]
     print(f"corpus pages {pages}   staff records with label truth {len(recs)}")
+    print(f"JOIN INTEGRITY  label staves {join['label_staves']}  "
+          f"result staves {join['result_staves']}  joined {join['joined']}  "
+          f"label-only {join['label_only']}  "
+          f"pages joining nothing {join['pages_with_zero_join']}")
+    if join["label_staves"] and join["joined"] / join["label_staves"] < 0.5:
+        raise SystemExit(
+            "REFUSING to report: fewer than half the read labels join to a "
+            "staff in the transcription. The two detect_staves calls disagree, "
+            "and every figure below would be a measurement of that.")
     print(f"  by house: "
           f"{ {h: sum(1 for r in recs if r['house'] == h) for h in sorted({r['house'] for r in recs})} }")
     print(f"  by plate: {len({(r['house'], r['plate']) for r in recs})} plates")
