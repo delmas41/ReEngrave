@@ -36,7 +36,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+from collections import Counter
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -1192,17 +1194,342 @@ _SLUR_ARC_PAD_NOTEHEADS = 0.25
 
 def _staff_arcs_by_measure(
     measures: list[dict[str, Any]],
+    cls: str = "slur",
 ) -> list[list[list[int]]]:
-    """Each measure's slur arcs, in page pixels, left to right."""
+    """Each measure's arcs of one class, in page pixels, left to right."""
     out = []
     for measure in measures:
         out.append(sorted(
             (d["bbox_page"] for d in measure.get("detections", [])
-             if d.get("category") == "structural" and d.get("class") == "slur"
+             if d.get("category") == "structural" and d.get("class") == cls
              and len(d.get("bbox_page") or ()) == 4),
             key=lambda b: b[0],
         ))
     return out
+
+
+# ---------------------------------------------------------------------------
+# Arc reclassification (OMR_ARC_RECLASS, default OFF) — tie vs slur is
+# POSITION, not shape
+# ---------------------------------------------------------------------------
+# A tie and a slur are the SAME GLYPH; what separates them is the notes they
+# connect (docs/position-grammar-confusables-2026-09-04.md §2 ARC). The
+# detector's class is therefore a prior, and two configurations refute it
+# outright:
+#
+#   * an arc classed `slur` whose ends land on exactly two ADJACENT
+#     SAME-PITCH noteheads is a tie — the duration-semantic reading, and the
+#     safer error where the print alone cannot decide (a two-note phrasing
+#     slur on a repeated pitch is undecidable; default to tie);
+#   * an arc classed `tie` that spans MORE than two note events, or whose two
+#     heads carry DIFFERENT pitches, cannot be a tie — a tie joins two
+#     adjacent notes of one pitch by definition.
+#
+# R3 shape (veto the impossible, reclass only when decisive, abstain
+# otherwise): everything not in those two configurations keeps the
+# detector's class. Off by default until priced on BOTH benchmark families.
+
+#: Every veto fired since the last `reset_arc_reclass_stats()`, by rule.
+#: A debug surface for benchmarks and tests, not part of the export result.
+ARC_RECLASS_STATS: Counter = Counter()
+
+
+def reset_arc_reclass_stats() -> None:
+    ARC_RECLASS_STATS.clear()
+
+
+def _arc_reclass_enabled() -> bool:
+    """`OMR_ARC_RECLASS=1` turns the veto on; anything else leaves it off."""
+    return os.environ.get("OMR_ARC_RECLASS", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _event_order_of_noteheads(
+    measures: list[dict[str, Any]],
+) -> dict[int, tuple[int, int]]:
+    """`id(notehead) -> (voice index, event ordinal)` over a whole staff run.
+
+    The ordinal counts EVERY event in the voice — rests included — in playing
+    order across the flattened measure sequence, so two heads are ADJACENT
+    exactly when nothing (note or rest) sounds between them in their voice:
+    ordinals one apart. A tie cannot cross a rest, which is why the rest has
+    to spend an ordinal. The one thing this cannot see is a measure the
+    detector left EMPTY between the two heads — no event, no ordinal — and a
+    same-pitch pair straddling one would read as adjacent; such a measure
+    exports as a whole rest, so the conversion there is wrong but rare, and
+    it is priced by the A/B rather than guarded against.
+
+    Same per-measure voice-index assumption as `_voice_of_notehead`, of which
+    this is the ordered variant.
+    """
+    order: dict[int, tuple[int, int]] = {}
+    counters: dict[int, int] = {}
+    for measure in measures:
+        events = group_chords_in_measure(measure.get("detections", []))
+        for v_idx, voice_events in enumerate(split_events_into_voices(events)):
+            for event in voice_events:
+                ordinal = counters.get(v_idx, 0)
+                counters[v_idx] = ordinal + 1
+                for head in event.get("noteheads") or []:
+                    order[id(head)] = (v_idx, ordinal)
+    return order
+
+
+def _pitch_step(pitch: str | None) -> str | None:
+    """`"F4"` for `"F#4"` — the staff POSITION, spelling stripped.
+
+    The tie→slur veto compares steps and never spelled pitches, measured
+    rather than assumed: on the engraved A/B every losing veto was a
+    same-step pair differing only in accidental — `F#4 -> F4`, `C#5 -> C5` —
+    which is the accidental-EXPIRY artifact, not a different note. The
+    canonical tie crosses a barline, the far head does not restate its
+    accidental (the tie carries it), and `pitch_resolver` spells that head
+    from the key signature alone. Vetoing on the spelling inherits that
+    limitation; the step is what the flanked position actually says. Same
+    key the pre-fill alignment moved to for the same reason (CLAUDE.md:
+    "the alignment key is STAFF POSITION, not pitch"). The winning vetoes
+    were all genuinely step-apart (`F#5 -> G5`, `B5 -> C6`) and survive.
+    """
+    if not pitch:
+        return None
+    octave = pitch.rstrip()
+    letter = octave[0]
+    digits = "".join(ch for ch in octave if ch.isdigit() or ch == "-")
+    return f"{letter}{digits}"
+
+
+def _tie_flank_pair(
+    arc_bp: list[int],
+    staff_heads: list[dict[str, Any]],
+) -> tuple[dict[str, Any], dict[str, Any]] | None:
+    """The (start, stop) noteheads this tie arc flanks, or None.
+
+    A MIRROR of `transcribe._pair_ties_in_staff`'s pairing relation, on the
+    same `bbox_page` data: start = the head whose x-centre sits at or left of
+    the arc's left edge, nearest, within 3 of its own widths; stop likewise on
+    the right; both within a y-tolerance of 3 average head heights. Mirrored
+    rather than imported because `transcribe` drags the whole detection stack
+    in with it, and pinned against the original by
+    `test_export.TestArcReclass.test_flank_pair_mirrors_transcribes_pairing`.
+
+    A tie arc FLANKS its heads — it spans the gap between them — which is why
+    slur coverage (`_noteheads_under`, centres inside the box) is the wrong
+    question for finding them.
+    """
+    if not staff_heads:
+        return None
+    tx0, ty0, tw, th = arc_bp
+    tie_left, tie_right = tx0, tx0 + tw
+    tie_yc = ty0 + th / 2.0
+    avg_h = sum(h["bbox_page"][3] for h in staff_heads) / len(staff_heads)
+    y_tol = max(avg_h * 3, 30)
+    best_left = best_right = None
+    best_left_dx = best_right_dx = float("inf")
+    for det in staff_heads:
+        bp = det["bbox_page"]
+        xc = bp[0] + bp[2] / 2.0
+        yc = bp[1] + bp[3] / 2.0
+        if abs(yc - tie_yc) > y_tol:
+            continue
+        dx_left = tie_left - xc
+        if 0 <= dx_left < bp[2] * 3 and dx_left < best_left_dx:
+            best_left, best_left_dx = det, dx_left
+        dx_right = xc - tie_right
+        if 0 <= dx_right < bp[2] * 3 and dx_right < best_right_dx:
+            best_right, best_right_dx = det, dx_right
+    if best_left is None or best_right is None or best_left is best_right:
+        return None
+    return best_left, best_right
+
+
+def _tie_arc_impossibility(
+    arc: list[int],
+    staff_heads: list[dict[str, Any]],
+    order: dict[int, tuple[int, int]],
+) -> tuple[str, tuple[dict[str, Any], dict[str, Any]] | None] | None:
+    """Why this tie arc cannot be a tie, or None to let it stand.
+
+    Returns `(reason, flanked_pair_or_None)`. Vetoing a PAIRED arc also
+    clears the tie flags its pairing set — recorded in `arc_reclass_removed`
+    so the next annotate pass can restore them — or the reclassed slur would
+    export beside a residual tie. Only the mirror pair's flags are touched: a
+    chained tie shares heads with its neighbours, and clearing any wider
+    would damage arcs this veto never looked at.
+    """
+    ax, _ay, aw, _ah = arc
+    under = [h for h in staff_heads
+             if ax <= h["bbox_page"][0] + h["bbox_page"][2] / 2.0 <= ax + aw]
+    pair = _tie_flank_pair(arc, staff_heads)
+    if pair is not None:
+        left, right = pair
+        reason = None
+        sl, sr = _pitch_step(left.get("pitch")), _pitch_step(right.get("pitch"))
+        if sl and sr and sl != sr:
+            reason = "tie_to_slur_flagged_diff_pitch"
+        else:
+            ol, orr = order.get(id(left)), order.get(id(right))
+            if ol and orr and ol[0] == orr[0]:
+                between = {order[id(h)][1] for h in under
+                           if id(h) in order and order[id(h)][0] == ol[0]}
+                between -= {ol[1], orr[1]}
+                if between:
+                    reason = "tie_to_slur_flagged_span"
+        if reason:
+            for det, key in ((left, "tied_to_next"), (right, "tied_from_prev")):
+                if det.get(key):
+                    det.pop(key, None)
+                    det.setdefault("arc_reclass_removed", []).append(key)
+            return reason, pair
+        return None
+    # The arc never paired, so no tie exports for it today; reclass only where
+    # its own span is decisively slur-shaped. A real tie spans a GAP and
+    # covers nothing.
+    by_voice: dict[int, set[int]] = {}
+    for h in under:
+        vo = order.get(id(h))
+        if vo is not None:
+            by_voice.setdefault(vo[0], set()).add(vo[1])
+    if any(len(events) > 2 for events in by_voice.values()):
+        return "tie_to_slur_unpaired_span", None
+    if len(under) == 2:
+        a, b = under
+        sa, sb = _pitch_step(a.get("pitch")), _pitch_step(b.get("pitch"))
+        va, vb = order.get(id(a)), order.get(id(b))
+        if (sa and sb and sa != sb and va is not None and vb is not None
+                and va[0] == vb[0] and va[1] != vb[1]):
+            return "tie_to_slur_unpaired_diff_pitch", None
+    return None
+
+
+def _slur_pieces_for_vetoed_tie(
+    arc: list[int],
+    pair: tuple[dict[str, Any], dict[str, Any]] | None,
+    m_idx: int,
+    measures: list[dict[str, Any]],
+    staff_of: list[int],
+) -> list[tuple[int, list[int]]]:
+    """The slur arc(s) a vetoed tie arc becomes, as (measure, bbox) pieces.
+
+    A tie arc FLANKS its two heads — it spans the gap between them — while
+    slur coverage (`_noteheads_under`) asks which head centres sit UNDER the
+    ink. Moved unchanged, a vetoed flanking arc covers nothing and the
+    promised slur silently degrades to a bare deletion. So a PAIRED arc is
+    widened to reach both flanked centres; and because coverage is read per
+    measure, a widened arc crossing a cell boundary is split AT that boundary
+    into the two fragments the engraver would have printed had it been a slur
+    — which the ordinary barline merge then rejoins. An UNPAIRED arc keeps
+    its own span: its covered run is already what the slur should bind.
+
+    Pieces are fresh lists, never the detection's own `bbox_page` — that is
+    the pipeline's output and must not be widened in place.
+    """
+    ax, ay, aw, ah = arc
+    if pair is None:
+        return [(m_idx, [ax, ay, aw, ah])]
+    centres = [h["bbox_page"][0] + h["bbox_page"][2] / 2.0 for h in pair]
+    wx0 = min(ax, min(centres))
+    wx1 = max(ax + aw, max(centres))
+    home = staff_of[m_idx]
+    pieces: list[tuple[int, list[int]]] = []
+    for j, measure in enumerate(measures):
+        if staff_of[j] != home:
+            continue
+        box = measure.get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        x0 = max(wx0, float(box[0]))
+        x1 = min(wx1, float(box[2]))
+        if x1 > x0:
+            pieces.append((j, [x0, ay, x1 - x0, ah]))
+    # A staff whose cells the span never intersects (no usable bbox_page_px)
+    # still gets the widened arc in its own measure, uncut.
+    return pieces or [(m_idx, [wx0, ay, wx1 - wx0, ah])]
+
+
+def _reclass_tie_arcs_in_run(
+    measures: list[dict[str, Any]],
+    staff_of: list[int],
+    per_measure_arcs: list[list[list[int]]],
+    order: dict[int, tuple[int, int]],
+) -> int:
+    """Move impossibly-configured tie arcs into the slur pool, in place.
+
+    A moved arc then rides the ordinary slur machinery — barline merging,
+    voice constraint, numbering — exactly as if the detector had classed it
+    `slur`. Flank pairing is bounded to each arc's OWN staff, the way
+    `_pair_ties_in_staff` is: page x overlaps between systems, and a head
+    from another system inside the dx window would alias.
+    """
+    tie_arcs = _staff_arcs_by_measure(measures, cls="tie")
+    if not any(tie_arcs):
+        return 0
+    heads_by_staff: dict[int, list[dict[str, Any]]] = {}
+    for m_idx, measure in enumerate(measures):
+        s = staff_of[m_idx]
+        for det in measure.get("detections", []):
+            bp = det.get("bbox_page")
+            if det.get("category") == "notehead" and bp and len(bp) == 4:
+                heads_by_staff.setdefault(s, []).append(det)
+    n = 0
+    dirty: set[int] = set()
+    for m_idx, arcs in enumerate(tie_arcs):
+        staff_heads = heads_by_staff.get(staff_of[m_idx], [])
+        for arc in arcs:
+            verdict = _tie_arc_impossibility(arc, staff_heads, order)
+            if verdict is None:
+                continue
+            reason, pair = verdict
+            ARC_RECLASS_STATS[reason] += 1
+            for j, piece in _slur_pieces_for_vetoed_tie(
+                    arc, pair, m_idx, measures, staff_of):
+                per_measure_arcs[j].append(piece)
+                dirty.add(j)
+            n += 1
+    for j in dirty:
+        per_measure_arcs[j].sort(key=lambda b: b[0])
+    return n
+
+
+def _slur_covers_a_tie(
+    covered: list[tuple[int, float, dict[str, Any]]],
+    order: dict[int, tuple[int, int]],
+) -> bool:
+    """Is this slur-classed arc the tie configuration — exactly two covered
+    heads, adjacent events of one voice, one pitch? Chords defend themselves:
+    a covered chord member brings its mates into `covered` (they share x), so
+    the count passes two and the answer is False."""
+    if len(covered) != 2:
+        return False
+    a, b = covered[0][2], covered[1][2]
+    if a is b:
+        return False
+    pa, pb = a.get("pitch"), b.get("pitch")
+    if not pa or pa != pb:
+        return False
+    oa, ob = order.get(id(a)), order.get(id(b))
+    return (oa is not None and ob is not None
+            and oa[0] == ob[0] and abs(oa[1] - ob[1]) == 1)
+
+
+def _convert_slur_to_tie(
+    covered: list[tuple[int, float, dict[str, Any]]],
+    order: dict[int, tuple[int, int]],
+) -> None:
+    """Mark the two covered heads as a tied pair, earlier event first.
+
+    Only flags actually ADDED are recorded in `arc_reclass_added`, so the
+    restore in `annotate_slurs_in_slot` can take the export back to what the
+    transcription said — a pair the transcription had already tied loses
+    nothing either way.
+    """
+    a, b = covered[0][2], covered[1][2]
+    if order[id(a)][1] > order[id(b)][1]:
+        a, b = b, a
+    for det, key in ((a, "tied_to_next"), (b, "tied_from_prev")):
+        if not det.get(key):
+            det[key] = True
+            det.setdefault("arc_reclass_added", []).append(key)
+    ARC_RECLASS_STATS["slur_to_tie"] += 1
 
 
 def _resumes_after_system_break(
@@ -1418,10 +1745,18 @@ def annotate_slurs_in_slot(staves: list[dict[str, Any]]) -> int:
     carries into events, the way it carries the tie flags.
     """
     # Idempotent: exporting a result twice must not stack two marks per note.
+    # The same sweep takes back whatever an earlier ARC-RECLASS pass changed —
+    # tie flags it added come off, tie flags it removed go back on — so a
+    # flag-off export after a flag-on one (or a re-export under either) starts
+    # from what the transcription itself said.
     for staff in staves:
         for measure in staff.get("measures", []):
             for det in measure.get("detections", []):
                 det.pop("slur_states", None)
+                for key in det.pop("arc_reclass_added", None) or ():
+                    det.pop(key, None)
+                for key in det.pop("arc_reclass_removed", None) or ():
+                    det[key] = True
     # Without a staff's own line spacing there is no unit to measure a boundary
     # in, and a rule in raw pixels would mean a different thing on every page.
     # Such a staff is skipped, and it also ENDS the chain — nothing is joined
@@ -1448,8 +1783,9 @@ def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
     measures: list[dict[str, Any]] = []
     spacings: list[float] = []
     tops: list[float | None] = []
+    staff_of: list[int] = []
     breaks: set[int] = set()
-    for staff in staves:
+    for s_idx, staff in enumerate(staves):
         geom = staff["staff_geometry"]
         lines = geom.get("line_ys_page")
         if measures:
@@ -1461,10 +1797,19 @@ def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
             measures.append(measure)
             spacings.append(float(geom["line_spacing_px"]))
             tops.append(float(min(lines)) if lines else None)
+            staff_of.append(s_idx)
     if not measures:
         return 0
 
     per_measure_arcs = _staff_arcs_by_measure(measures)
+    reclass = _arc_reclass_enabled()
+    order: dict[int, tuple[int, int]] = {}
+    if reclass:
+        order = _event_order_of_noteheads(measures)
+        # Tie arcs the grammar refutes join the slur pool BEFORE merging, so
+        # a reclassed arc gets the same barline treatment a slur-classed one
+        # would have had.
+        _reclass_tie_arcs_in_run(measures, staff_of, per_measure_arcs, order)
     if not any(per_measure_arcs):
         return 0
 
@@ -1473,6 +1818,13 @@ def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
     for segments in _merge_arcs_across_barlines(
             measures, per_measure_arcs, spacings, tops, frozenset(breaks)):
         covered = _noteheads_under(measures, segments)
+        # Two adjacent same-pitch heads and nothing else under the (merged)
+        # arc: the tie configuration, whatever the detector called it — and
+        # the merge matters, because the CANONICAL tie crosses a barline and
+        # arrives here as two slur fragments.
+        if reclass and _slur_covers_a_tie(covered, order):
+            _convert_slur_to_tie(covered, order)
+            continue
         # A slur needs two notes to join. One or none leaves an unpaired
         # <slur type="start">, which makes the file invalid rather than
         # merely wrong.
