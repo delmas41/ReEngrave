@@ -397,9 +397,14 @@ def test_windows_accept_the_scan_benchmark_file() -> None:
     # third page), and a hardcoded list makes every widening look like a
     # regression in a test that is not about the row set at all.
     dvorak = mv.load_windows(path, work_id="dvorak--symphony-9")
-    on_file = sorted(r["page"]["pdf_page_index"]
-                     for r in json.loads(path.read_text())["rows"]
-                     if r["work_id"] == "dvorak--symphony-9")
+    # Mirror the loader's own tolerance for the file's shape (bare list or
+    # {"rows": [...]}, and rows that may omit work_id) — a test stricter about
+    # the shape than the code under test is a future false alarm of exactly the
+    # kind this fix exists to stop.
+    raw = json.loads(path.read_text())
+    rows_on_file = raw.get("rows", raw) if isinstance(raw, dict) else raw
+    on_file = sorted(r["page"]["pdf_page_index"] for r in rows_on_file
+                     if r.get("work_id") == "dvorak--symphony-9")
     assert sorted(dvorak) == on_file and len(on_file) >= 2
     # … and `same-as:` references resolve to the row they name even when the
     # named row is OUTSIDE the narrowed selection (both 575951 rows point at
