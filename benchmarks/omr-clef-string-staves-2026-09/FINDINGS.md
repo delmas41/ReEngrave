@@ -151,19 +151,58 @@ clef change (see §2), out of reach of ANY staff-level lever. The remaining
 ~1,100+ of family C is walled behind print that names no string staff, and
 that is a finding about the PLATE, not about clef logic or the reader.
 
-## 6. Next (in order)
+## 6. The implemented candidate — `OMR_INSTRUMENT_CLEF_DEFAULT`, default OFF
 
-1. Finalize the reachability count: verify mahler-p2 s16 truth (does the
-   viola sound in the window; is the truth clef alto), estimate the
-   brahms-p2 bassoon/timpani stake, look at the p2 margin crops to say
-   whether the string labels are printed-but-unread (reader-fixable) or not
-   printed (nothing to read).
-2. If A+B justify implementation: flag `OMR_INSTRUMENT_CLEF_DEFAULT`
-   (default OFF, flag-off byte-identical), A/B on the 10-row pool with
+Implemented in `tools/omr/clef_correction.py` + threaded through
+`contextual.apply_contextual_analysis` (param `instrument_clef_default`,
+`None` = read the env, so `eval_pipeline_clefs`' direct call runs the same
+configuration a transcription would) and `transcribe._contextual_call_kwargs`.
+Flag off: no new code path executes and no new JSON key is written — the
+default output is byte-identical by construction, pinned by
+`test_flag_off_is_the_shipped_behavior` and verified against a recorded
+fixture (a re-transcription of dvorak-p5 at the base commit reproduces the
+`scan-rebaseline` fixture's pages/contextual/direction blocks exactly, so the
+recorded widened-graft results ARE the flag-off arm).
+
+**Tier 1 — the treble override** (extends `correct_clefs_from_instruments`).
+A staff whose clef WAS read may be re-clefed only when every one of these
+holds; each gate is a staff in this pool that earned it:
+
+| gate | the staff that earned it |
+|---|---|
+| the clef in effect is **treble** — never any other read clef | brahms-p1 s12: cello reads TENOR correctly against a bass convention, register fit ties 1.0/1.0 — any non-treble override flips a correct staff. Treble-only is the measured `score_layouts` asymmetry (−0.3 vs −1.5) |
+| **uniformly** treble across the staff's measures | a mixed staff belongs to tier 2; one header delta would shift the other clef's measures too |
+| instrument named by a READ margin label (`instrument_source == "label"`) | the p2 violas: score-order names them "Violin" — the loop-closing failure measured on Beethoven 5 p.15 |
+| instrument in `TREBLE_OVERRIDE_INSTRUMENTS` = (Viola, Bassoon, Timpani) | strictly the verified damage sites; Cello/Contrabass deliberately absent (no treble-misread site; the pool's one cello error is one the convention AGREES with) |
+| proposal == the instrument's `default_clef` != treble | the wind-misread trap self-excludes: every recorded lexicon misread lands on a treble-default instrument, and a treble default can never propose |
+| register fit not worse (propose_clef's own rule) | — |
+
+⚠️ A confidence ceiling on the treble read was measured and REFUSED: misread
+trebles score 0.34 / 0.72 while a correct label-named treble scores 0.61
+(mahler-p3 s11) — no threshold separates them, and per the recorded lesson a
+clef threshold must never be tuned on one edition.
+
+**Tier 2 — the mid-staff change veto** (`veto_implausible_clef_changes`).
+`MID_STAFF_CHANGE_VETOES` = {(Violin, treble→bass), (Viola, alto→bass)} —
+strictly the verified sites. A vetoed change's measures are restated back
+under the carried clef (same key-signature-aware restatement the proposals
+use, factored into `_restate_measure`); an accepted change (cello→tenor,
+viola→treble) resets the carried clef and stands. Label-named staves only.
+
+44 unit tests in `test_clef_correction.py` pin every gate and both tables.
+
+## 7. Verification protocol (in flight)
+
+1. Scan pool A/B: recorded `results-widened-graft.json` (= flag off, see
+   determinism note above) vs a full `--tag .clefdef-on` run with
    `OMR_SCAN_EVAL_WEIGHTS` pinned to
-   `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`, engraved
-   11-work benchmark firings counted, `eval_pipeline_clefs` 69/69 and 50/52
-   held, unit tests for every abstain rule above (score-order gate,
-   treble-only gate, tenor-protection, mid-staff veto instrument table).
-3. Either way: record the `clef_source` provenance bug (§3) — candidate
-   one-line fix in the furniture dropper, plus a seam test.
+   `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`. Per-row edits;
+   rows without label-named firings must be byte-identical.
+2. Engraved 11-work benchmark with the flag ON — firings counted (expected:
+   none; engraved clefs detect well and label quality is text-layer).
+3. `eval_pipeline_clefs` `--contextual` and `--dossier` arms, flag off vs on
+   — the 69/69 and 50/52 readings must hold.
+4. The `clef_source` provenance bug (§3) is recorded here and left unfixed on
+   this branch — it is default-path behavior, and this branch must not change
+   defaults. Candidate one-line fix: refresh `clef_source` alongside the
+   clef in the furniture dropper's lead-drop branch, plus a seam test.
