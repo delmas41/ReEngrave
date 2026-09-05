@@ -377,14 +377,25 @@ def test_windows_accept_the_scan_benchmark_file() -> None:
     # Several editions share a page index: the file must be narrowed.
     with pytest.raises(ValueError):
         mv.load_windows(path)
+    # Since the 2026-09 widening, work_id alone is not narrow enough for a
+    # work held in two editions whose page windows overlap: Beethoven 5's
+    # edition 984073 p.1 and edition 575951 p.2 are both pdf_page_index 1,
+    # and picking one silently would read one scan's page against the
+    # other's window. The refusal is the designed behavior.
+    with pytest.raises(ValueError):
+        mv.load_windows(path, work_id="beethoven--symphony-5")
     rows = mv.load_windows(path, row_ids=["beethoven-sym5-mvt1-984073-p1"])
     assert list(rows) == [1]
     row = rows[1]
     assert row.first_ref_measure == 1 and row.last_ref_measure == 16
     assert len(row.staves) == 12 and row.staves[0].parts == [0, 1]
-    # `same-as:` references resolve to the row they name.
-    both = mv.load_windows(path, work_id="beethoven--symphony-5")
+    # `same-as:` references resolve to the row they name — the 575951 rows
+    # borrow their staves from the 984073 twins (same Litolff plate).
+    both = mv.load_windows(path, row_ids=["beethoven-sym5-mvt1-575951-p1",
+                                          "beethoven-sym5-mvt1-575951-p2"])
+    assert sorted(both) == [0, 1]
     assert all(r.staves for r in both.values())
+    assert len(both[0].staves) == 12 and both[0].staves[0].parts == [0, 1]
 
 
 # ---------------------------------------------------------------- the UI
