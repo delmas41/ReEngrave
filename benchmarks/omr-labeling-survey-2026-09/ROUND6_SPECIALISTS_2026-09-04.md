@@ -117,3 +117,11 @@ fine but its full checkpoint could not be pulled — the box's uplink degraded t
 (`freeze22_e0_all.npz`, all 119 classes), so the checkpoint is reconstructable
 onto the base up to the box-regression branch. Not blocking: the per-family frz
 arms answer the composability question more directly, and did.
+
+⚠️ **Both halves of this are now closed** (`ROUND7_FREEZE22_2026-09-05.md`).
+The transfer failure was the *method*, not the box — a whole-file `scp` reports
+success on a truncated file, and splitting into 8 MB chunks with a per-chunk
+`md5sum` manifest pulled a later checkpoint byte-identical first try. And a
+`freeze=22` arm run from PRODUCTION on the round-4 mix **collapses 8 classes**,
+because `freeze=22` freezes everything except `model.22` — the one layer where
+class deletion lives. The freeze family is retired.

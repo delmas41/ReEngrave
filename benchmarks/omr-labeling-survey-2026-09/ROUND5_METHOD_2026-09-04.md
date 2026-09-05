@@ -259,6 +259,16 @@ happens) trainable, so the features the head sees still moved. The real test is
 bit-identical to the base by construction and is one ~2-minute GPU arm. Until
 that is run, treat multi-specialist grafting as unproven rather than as the plan.
 
+⚠️ **`freeze=22` WAS RUN AND IT FAILS TOO** (2026-09-05,
+`ROUND7_FREEZE22_2026-09-05.md`): from PRODUCTION on the round-4 mix it
+collapses **8 classes** — worse than the unfrozen graft's raw. The proposal
+above is refuted, and the reason retires the whole family rather than this
+value of it: `freeze=22` pins layers 0-21 and leaves **`model.22`** trainable,
+which is the one layer where per-class deletion lives (this same section
+locates it at `model.22.cv3.{0,1,2}.2`). A freeze cannot reach the failure,
+because the failure is downstream of everything a freeze can pin. **The head
+must be EDITED, not trained** — which is what the graft does.
+
 ## 5. Rig faults worth not repeating
 
 * **v2/v3/v4 store their cell images as SYMLINKS** into the labeling batch dirs;
