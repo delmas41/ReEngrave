@@ -239,3 +239,56 @@ TBD — run in flight.
 - **anchor OR veto** as the e2e arm: best gauntlet recall (0.767) but it
   re-admits both families' leaks at once (78 fakes) and its precision
   (0.462) sits below every composed arm; nothing it adds is priced.
+
+---
+
+## ⚠️ SUPERSEDED BASELINES AND A PARTIAL COLLISION (recorded 2026-09-05)
+
+Flagged by the dashboard session and **verified against the git tree**, not
+taken on report. Two things happened on main while rounds 8-9 ran, and both
+change how this document must be read.
+
+**1. Every baseline quoted above is stale.** The reconciliation (PR #15,
+`fd40d358`) moved the engraved figure to **0.1125 / 2367** (`c378412f`) and
+the scan gate from 11 rows to **20 rows, 0.8444 / 74,968**. So round 9's
+engraved claim — "0.1306 -> 0.1301, an improvement of 12 edits" — is a
+comparison against a number that no longer exists, and the ~180 edits the
+reconciled tree gained on engraved dwarf it. **No figure in this document
+survives the boundary; all of it is same-tree A/B on a branch that predates
+the ships.**
+
+**2. Half of this round's mechanism has already landed, independently.**
+`79d5a29f` / merge `b5f91c71` — "an arc belongs to the staff whose noteheads
+it hugs" — gives arcs the cross-staff arbitration noteheads have, and ships
+`OMR_ARC_ATTRIBUTION` with modes `move` (DEFAULT ON), `drop`, `off`. Its
+`drop` mode is, in substance, this round's anchor rejection arrived at from
+the export side. It was worth 2,473 -> 2,371 edits on its own.
+
+**What that leaves genuinely un-duplicated here**, and it is not nothing:
+
+- **The jag family.** Attribution is *comparative* — it asks which staff
+  explains an arc better — so it cannot see a jagged staff-line remnant
+  INSIDE one staff's own band, where there is no rival to lose to. The CV
+  curvature gates close that family completely (0 of 72). This round measured
+  that shape and position own *different* fake families, and the landed work
+  covers only the position half.
+- **The Litolff flat-tie recovery.** Anchors ADMITTING an arc that shape
+  refused (relaxed rise floor, +45 ties / +36 slurs across the scan rows) is
+  a gain, not a rejection; attribution only ever moves or drops.
+- **Detection-time vs export-time.** This round arbitrates before pairing;
+  attribution arbitrates after. An arc dropped at detection never enters the
+  pairing machinery at all.
+
+**So the round is not void, but its numbers are, and its headline claim —
+"the first arc change to improve BOTH families" — must be withdrawn:** the
+landed attribution got to the engraved improvement first, by a different
+route. What survives is the shape-half and the recovery-half, and both need
+re-measuring on the reconciled tree WITH `OMR_ARC_ATTRIBUTION` at its shipped
+default, which is the only honest way to ask what CV arcs still add.
+
+**Process note, recorded because it is the recurring one** (see the
+check-base-before-building memory): round 9 was spawned from a branch tip
+without re-checking `origin/main`, and the arc-attribution merge had landed
+hours earlier. The cost was not wasted compute — the jag/bleed split is a
+real finding — but a re-measurement that could have been avoided by one
+`git log origin/main` before launching.
