@@ -5,6 +5,27 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — The widened scan gate prices the tilt fix: −233 edits, on the exposure
+
+The measured-but-unshipped `OMR_CELL_LINE_TRACE` (cell-grid localization, the
+rigid comb) was A/B'd on the widened 11-row scan gate — the first tree holding
+both the gate and the flag (`claude/tilt-pricing-widened` = `0487be1f` merged
+with `claude/tilt-crosscheck`). The old benchmark's null was the corpus: the
+widened pool carries **8.6%** of cells past the parity-flip line (was 0.4%),
+and the flag is worth **pooled 0.8387 → 0.8345, −233 edits**, −217 of them on
+exactly the three tilted rows, zero-exposure row unchanged to the edit,
+engraved control byte-identical, exact-pitch recall +4.8pts on the most
+exposed edition. Verdict + tables:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md` —
+recommendation is default-ON with no domain gating; the flag stays OFF until
+Sean decides. The named ship prerequisite also landed (`be884ff8`):
+`recut_cells.frame_mismatch` compares the frame's own (unlocalized) grid,
+accepts either dialect a manifest can speak, and `_nostaff.png` — which IS
+grid-derived — is re-erased on the manifest's authority, all pinned by three
+tests on a page that provably localizes.
+
+---
+
 ## 2026-09-04 — Scan gate: widened 5 → 11 rows; Bach excluded from the pool
 
 Six Sean-verified rows promoted (commit `84a5ccac`; drafting on branch
