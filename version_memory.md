@@ -5,6 +5,22 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — Choir-grouping cues SHIPPED default-ON; Bach re-admitted to the pool
+
+Sean's coupled call. `OMR_CHOIR_GROUPING` defaults ON
+(`system_grouping._choir_grouping_enabled`, opt-out 0/false/no/off): cue B
+(pair-local left-edge merge) + cue C (grouped-system open-score guard),
+diagnosed and priced on `claude/bach-choir-grouping` — Bach 6→2 systems
+[12,12], 122→11 cells vs true 10, row 0.9241→0.8152; byte-identical on the
+10 pooled scan rows, the 11-work engraved benchmark, and the boulanger
+canary; 969-page probe hand-adjudicated 10/10 changed pages toward truth, 0
+false merges. The Bach row's `pooled` flag flips back to true in the same
+event — a BENCHMARK BOUNDARY: the pool is 11 rows under the composed
+default config (tilt ON × choir ON) from the re-stamp onward, and no pooled
+figure crosses the boundary. The re-stamp run (one fresh default-config
+pass, all 11 rows, graft weights) stamps the new canonical figure; recorded
+in the addendum beside WIDENED_BASELINE_2026-09-04.md when it lands.
+
 ## 2026-09-04 — Cell-grid localization SHIPPED default-ON (the tilt fix)
 
 Sean's call, same day the widened gate priced it: `OMR_CELL_LINE_TRACE` now

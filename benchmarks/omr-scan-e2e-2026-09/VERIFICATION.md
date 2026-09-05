@@ -266,3 +266,18 @@ its segmentation reads ~10 measures, with a boundary note, since pool
 membership changes what the pooled figure means. The fragments align with
 the instrument choirs (3 Vni / 3 Vle / 3 Vc / Cb / Cembalo), so the row
 doubles as the tracked stress metric for choir-grouped system layouts.
+
+---
+
+## 2026-09-05 — Bach re-admitted to the pool (Sean's decision, coupled ship)
+
+`OMR_CHOIR_GROUPING` shipped default-ON and the Bach row's `pooled` flag
+flipped back to true in the same event. The exclusion rationale no longer
+holds: under the cues the page reads 2 systems [12,12] and 11 cells against
+the true 10 (the +1 a pre-existing barline defect present in both arms), so
+its errors are recognition-shaped. ⚠️ **Benchmark boundary:** from the
+re-stamped baseline onward the pool is ELEVEN rows under the composed
+default config (tilt localization ON × choir cues ON); every earlier pooled
+figure (10-row 0.8387/0.8345 included) is on the other side of the boundary
+and is never compared across it. The re-stamp run's figures are recorded in
+the second baseline addendum beside WIDENED_BASELINE_2026-09-04.md.

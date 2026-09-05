@@ -206,8 +206,14 @@ CHOIR_MERGE_MIN_CROSS = 1
 
 
 def _choir_grouping_enabled() -> bool:
-    return os.environ.get("OMR_CHOIR_GROUPING", "0").strip().lower() in (
-        "1", "true", "yes", "on",
+    """ON by default since 2026-09-05 (Sean's call, coupled with Bach's pool
+    re-admission). All five guards green when priced: byte-identical on the
+    10 pooled scan rows, the 11-work engraved benchmark and the boulanger
+    canary; 969-page library probe hand-adjudicated 10/10 changed pages
+    toward truth, 0 false merges. Set 0/false/no/off to disable.
+    benchmarks/omr-choir-grouping-2026-09/FINDINGS.md."""
+    return os.environ.get("OMR_CHOIR_GROUPING", "").strip().lower() not in (
+        "0", "false", "no", "off",
     )
 
 

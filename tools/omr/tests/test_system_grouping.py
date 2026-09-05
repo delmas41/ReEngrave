@@ -656,12 +656,20 @@ def test_cue_b_never_touches_a_multi_column_break():
     assert [s.system_index for s in out] == [0, 1]
 
 
-def test_cue_b_is_off_by_default(monkeypatch):
+def test_cue_b_is_on_by_default(monkeypatch):
+    # Shipped default-ON 2026-09-05, coupled with Bach's pool re-admission.
     monkeypatch.delenv("OMR_CHOIR_GROUPING", raising=False)
     img, staves = _choir_page()
     out, _ = assign_systems(img, staves, left_edge_split=False)
+    assert [s.system_index for s in out] == [0] * 6 + [1] * 6
+
+
+def test_cue_b_explicit_off_restores_the_old_grouping(monkeypatch):
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "0")
+    img, staves = _choir_page()
+    out, _ = assign_systems(img, staves, left_edge_split=False)
     sys2 = {s.system_index for s in out if s.staff_index >= 6}
-    assert len(sys2) > 1, "flag unset means cue B must not run"
+    assert len(sys2) > 1, "explicit 0 means cue B must not run"
 
 
 def test_cue_b_env_flag_enables(monkeypatch):

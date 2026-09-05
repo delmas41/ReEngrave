@@ -755,10 +755,10 @@ def _choir_barred_page_with_unison_stems():
 
 
 def test_open_score_flip_accepts_unison_stems_without_cue_c(monkeypatch):
-    """The disease, pinned: flag off, the unconnected stem columns outnumber
-    the five true barlines, the gate flips to open-score mode and the stems
-    stand."""
-    monkeypatch.delenv("OMR_CHOIR_GROUPING", raising=False)
+    """The disease, pinned: flag off (explicit opt-out since the 2026-09-05
+    default flip), the unconnected stem columns outnumber the five true
+    barlines, the gate flips to open-score mode and the stems stand."""
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "0")
     pws = detect_barlines(_choir_barred_page_with_unison_stems())
     xs = sorted(b.x for b in pws.barlines)
     assert len(xs) > 5, f"expected stem columns to be accepted, got {xs}"
