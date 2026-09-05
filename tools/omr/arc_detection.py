@@ -196,6 +196,10 @@ def apply_arc_cv(dets: list, cell, mode: str | None = None) -> list:
                  if (getattr(d, "smufl_name", "") or "").lower() in ("tie", "slur")]
     arc_ids = {id(d) for d in arcs_yolo}
     others = [d for d in dets if id(d) not in arc_ids]
+    # In pure veto mode a cell with no detector arcs has nothing to
+    # arbitrate — skip the CV pass (it costs ~66 ms per cell).
+    if mode == "veto" and not arcs_yolo:
+        return dets
     cv_arcs = detect_arcs(cell)
     if mode == "replace":
         return others + cv_arcs
