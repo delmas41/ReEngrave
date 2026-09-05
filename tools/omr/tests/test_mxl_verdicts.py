@@ -382,9 +382,13 @@ def test_windows_accept_the_scan_benchmark_file() -> None:
     row = rows[1]
     assert row.first_ref_measure == 1 and row.last_ref_measure == 16
     assert len(row.staves) == 12 and row.staves[0].parts == [0, 1]
-    # `same-as:` references resolve to the row they name.
-    both = mv.load_windows(path, work_id="beethoven--symphony-5")
-    assert all(r.staves for r in both.values())
+    # `same-as:` resolves to the row it names — narrowed by ROW, not by work:
+    # this work is held in two editions whose pages collide on index (984073
+    # p.2 and 575951 p.2 are both pdf page 1), so `work_id` alone is as
+    # ambiguous as the unnarrowed file and is refused the same way.
+    twin = mv.load_windows(path, row_ids=["beethoven-sym5-mvt1-575951-p1"])
+    assert list(twin) == [0]
+    assert [s.parts for s in twin[0].staves] == [s.parts for s in row.staves]
 
 
 # ---------------------------------------------------------------- the UI
