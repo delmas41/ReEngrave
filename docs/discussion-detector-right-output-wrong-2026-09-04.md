@@ -50,12 +50,27 @@ Candidates with evidence today:
 
 The symbol is read correctly and given to the wrong staff, part, or note. The
 cross-staff notehead arbitration (ledger ladder → range veto → distance) fixed
-this for notes; the beam session just exposed it for **arcs**: ~150 edits on
-Brahms 1 from four slur/tie arcs that are the *Violin's*, caught in the
-Timpani's cell padding and exported there — verified against the rendered
-page. Arcs never got the arbitration notes got. **This is the top open
-candidate, already scoped.** Margin labels had the same shape (`Tr. Alt.` →
-Alto, a singer) before the lexicon fix.
+this for notes; the arc case was then worked (2026-09-04, arc-attribution
+session, merged `b5f91c71`: 0.1176 → 0.1127) and it **split this class in
+two**. The beam session's hypothesis — the neighbour's arcs caught in the
+padding, a duplicate resolved wrong — was WRONG: the Brahms arcs are the
+*lower* staff's, drawn high where its ledger notes live, and the Timpani's
+grown pad swallowed them while Violin 1's own cell never contained them. **The
+arc existed only in the wrong staff — there was no duplicate to arbitrate**, so
+no duplicate-resolution rule could ever have seen it. The two subclasses need
+different machinery:
+
+- **3a. Duplicated, wrong winner** — both owners detect it; arbitration picks
+  (notes, solved).
+- **3b. Captured only by the wrong owner** — the pad reaches it, the true owner
+  never sees it; the fix is a comparative ownership test on the evidence the
+  symbol binds (an arc hugs its noteheads — `OMR_ARC_ATTRIBUTION`, shipped).
+
+The session also recorded a textbook metric trap: the `drop` variant scored
+BETTER pooled (2,388 vs 2,371) by deleting 12 real slurs — the symmetric
+metric's under-prediction reward — and was refused on an arc-count-vs-truth
+control. Margin labels had the class-3 shape too (`Tr. Alt.` → Alto) before
+the lexicon fix.
 
 ### 4. Class-role mismatch — right detection, wrong consumer
 
@@ -117,7 +132,12 @@ implementations answer one question.
    give arcs the arbitration notes already have.
 2. **Conservation audit in `export_coverage`** — the guard for the class the
    beam bug lived in.
-3. **Tie-pairing attribution** (29 edits, unattributed — cheap to open).
+3. ~~Tie-pairing attribution~~ — **attributed by the arc session**: 12 of 18
+   `tieins` are excerpt-boundary artifacts a perfect reader would also be
+   charged for (the truth's last bar opens a tie whose partner is outside the
+   window — a FIXTURE honesty issue, not a defect); 8 of 10 `tiedel` are one
+   system-wide invented tie (Mozart 41 m5, eight parts at once), upstream in
+   tie pairing, left open with coordinates.
 4. **Voice-model translation on divisi** (largest known class-2 budget; hard —
    the convention question, not a bug hunt).
 5. **Re-measure accidental-role recovery** on the widened corpus.

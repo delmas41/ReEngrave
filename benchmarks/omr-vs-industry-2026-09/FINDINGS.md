@@ -189,3 +189,28 @@ lineups, tacet suppression) before believing any single mechanism.
 
 Standing at end of day: **engraved ahead (0.1176 vs 0.1252, recorded on
 `bc58defb`); scans behind on the widened pool (0.8345 vs 0.7919).**
+
+---
+
+# Addendum 3 — where the widened scan pool's ground was lost, per category
+
+Full-category re-score over the same 10 rows (`categories-audiveris-scan11.json`),
+split by page position. The +915 deficit is NOT reading:
+
+| slice | entire staff (ours/audi) | everything else, net |
+|---|--:|--:|
+| first pages (5) | 2,676 / 2,676 — **identical** | −529 (we lead on reading) |
+| added p2/p3 pages (5) | **5,491 / 2,900 (+2,591)** | −1,147 (we lead on reading MORE) |
+
+On the added pages we beat Audiveris in every major reading category — wrong
+note −316, note head −300, beams −74, directions −83, measures −200 — and lose
+the pool on **one structural bucket**: `entire staff insert/delete`. Audiveris
+matches the truth's staff/part structure on later pages far better than we do;
+each staff of ours that pairs with nothing is charged whole-staff delete plus
+whole-staff insert. The mechanism family is what changes past a movement's
+opening — tacet suppression, different lineups, the part-stitching seam — the
+condensation territory, not the detector and not the reading layers. Smaller
+counter-currents: key signatures +113 and dots +57 against us pool-wide.
+
+**Next scan lever, sharply posed:** attribute which staves fail to pair on the
+five p2/p3 rows. One sitting likely explains most of the 2,591.
