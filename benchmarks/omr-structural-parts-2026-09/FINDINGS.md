@@ -121,3 +121,58 @@ supply a Trumpet's **2** players against a printed truth of **1**. The oracle
 arm does not exhibit this because it reads printed truth. **So Phase 2's count
 source must abstain where the staff's IDENTITY is unconfirmed, not merely where
 the count is ambiguous.** Recorded as a design constraint before building.
+
+---
+
+## Why slot stitch is a gain overall and a loss on the headline bucket
+
+Asked by Sean 2026-09-05; answered from `arms20-part1.json` / `arms20-oracle.json`
+rather than by reasoning. **The two effects are unrelated: the structural
+buckets are a REPRICING that nearly cancels, and the actual gain is note
+alignment.**
+
+Only 3 of 20 rows change (the ones where the ordinal join refuses). Pooled over
+those three, parts collapse 19 → 11, 19 → 11, 27 → 14:
+
+| category | base | stitch | Δ |
+|---|--:|--:|--:|
+| entire staff insert/delete | 892 | 3,756 | **+2,864** |
+| entire measure insert/delete | 8,124 | 5,427 | **−2,697** |
+| **wrong note** | 2,720 | 2,228 | **−492** |
+| wrong note head | 520 | 626 | +106 |
+| everything else | ~510 | ~489 | ≈ −23 |
+| **total** | **12,768** | **12,526** | **−242** |
+
+**1. The ES/EM swap is the same failure, repriced.** `entire staff` is charged
+by the CONTENT of the unmatched part. Fragments are SHORT — a fragmented page
+gives each part one system's worth of music — so an unmatched fragment costs
+little at part level and most of its damage lands in `entire measure` (8,124).
+Stitching produces FEWER, LONGER parts, so when a stitched part fails to pair
+with its truth part the whole thing is charged at once. ES +2,864 against EM
+−2,697 nets **+167**: the same unmatched music, moved from many cheap
+measure-charges to a few expensive part-charges.
+
+**2. The real gain is `wrong note` −492**, which is recognition, not
+bookkeeping. A continuous part lets the aligner pair notes ACROSS the system
+boundary instead of restarting at each system. That −492 is what pays for the
++167 and produces the −242.
+
+**3. The decisive control: the ES penalty REVERSES SIGN once the parts can
+pair.** Same stitching code, both directions measured:
+
+| | ES without stitch | ES with stitch | Δ |
+|---|--:|--:|--:|
+| no count source | 17,520 | 20,384 | **+2,864** |
+| oracle count source | 6,292 | 5,400 | **−892** |
+
+So stitching does not damage the headline bucket; **fragmentation was hiding a
+pairing failure in a cheaper bucket, and stitching exposes it until the split
+lets the parts actually match.** This is the corollary above stated at full
+strength: reading structural work off `entire staff` alone does not merely
+under-count fragmentation, it inverts the sign of this change.
+
+**Consequence for the default decision.** "Flip with a count source or not at
+all" is not a stylistic preference — it is what the arithmetic says: alone,
+stitch trades +167 of repricing for −492 of alignment and nets a rounding error
+while making the most-read bucket 16% worse; paired, the same code takes ES
+DOWN and contributes −2,009 beyond its standalone value.
