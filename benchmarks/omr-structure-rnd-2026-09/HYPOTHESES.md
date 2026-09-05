@@ -13,6 +13,41 @@ Read with [`benchmarks/omr-staff-identity-2026-09/FINDINGS.md`](../omr-staff-ide
 
 ---
 
+## THE REFRAME — a signal too weak to NAME a staff can be strong enough to MATCH it
+
+**Stated first because it is the general principle, not a motivation for one
+hypothesis.** Placed here at the coordinator's direction, 2026-09-05.
+
+The nine-signal audit scored **every** signal against **absolute** truth: is
+this staff's instrument the right one? S3 0.645, S5 0.784, S4 0.819, S1 0.982 at
+coverage 0.710. Those are the numbers that closed identity as "labels remain the
+binding constraint."
+
+But continuity does not ask what a staff **is**. It asks whether **these two
+staves are the same one**, and that question is immune to precisely the errors
+that cap the absolute numbers:
+
+> **A systematic misreading repeats across systems.** A staff misread as treble
+> in system 1 is misread as treble in system 2 — and still matches itself. A
+> clef reader that is 0.848 accurate is far more than 0.848 reliable as a
+> *pairwise agreement* feature, because its errors are correlated between the
+> two things being compared, not independent. The same holds for a range
+> envelope, a key-signature offset, a gap fingerprint, or a bracket index.
+
+⚠️ **No measurement in the settled negatives scores any signal this way.** That
+is a genuine gap in the audit rather than a disagreement with it: the audit
+answered the question it asked, correctly, and this is a different question.
+
+⚠️ **And the reframe cuts both ways — the same correlation that helps can
+blind.** A signal whose error is correlated across systems agrees with itself
+whether or not it is right, so **agreement between systems is not evidence that
+either reading is correct.** That is the class-6 shape (`instrument` fields
+agreeing at 99/99 positions *because* they were assigned by the join), and it is
+why §H1 below insists on a *raw per-system* substrate rather than a derived one.
+Use the correlation for matching; never read it as corroboration.
+
+---
+
 ## Four framing results that reorder everything below
 
 These are read out of the existing measurements, not derived here. Each one
@@ -139,23 +174,75 @@ candidate. The aligner is *free at that point* — `contextual` has already run 
   high-confidence lookup") is a *different* fix, refused for gutting
   `resolve_ambiguous_label`. This changes no resolution logic; it emits a flag.
 
-**Cheapest experiment (~1 day, no detector time):** on the 20-row corpus,
-for every row where `_stitch_slots` succeeds, compute the slot join and
-cross-tabulate agreement against `works.json`. **Positives: beethoven p4 in both
-editions. Negatives: beethoven p2 ×2, dvořák p7, brahms p3, brahms p4.** Kill
-criterion, stated in advance: **it must flag both p4 rows and neither brahms
-row** — the two the shape detector false-positived. Anything less is the
-0.500 coin flip again.
+**Pre-registered kill criterion:** it must flag **both** Beethoven p4 rows and
+**neither** Brahms row — the two the bracket-shape detector false-positived on
+at precision 0.500. Anything less is that coin flip again.
+
+### ⚠️ MEASURED 2026-09-05, BEFORE BUILDING: H1 AS WRITTEN IS REFUTED
+
+`probe_reference_roster.py`, over the 20-row set. **The exact denominators,
+which my first report got wrong:** 20 rows — **8** where the ordinal join
+succeeds (not 7), **3** where it refuses, **9** single-system. 11 multi-system
+rows, not 4; that figure came from the older 11-row `..graft09` set.
+
+**On all 8 succeeding rows the slot join is IDENTICAL to the ordinal join** —
+every system reads `0,1,2,…,n−1`, **including both Beethoven p4 rows.** The
+aligner does not see the mis-join. There is nothing to cross-tabulate.
+
+**Why, derived from the fixture rather than guessed.** `label_tiers` on
+`984073-p4` records **13 labels over 22 staff positions**, `unresolved_labels`
+empty, `ambiguous_labels_resolved: 1`. Thirteen is exactly 6 + 6 + 1 — the
+labels workstream's own reading, positions 0–5 named identically in both systems
+plus `Tp.` at system 2 position 6 and **nothing at system 1 position 6**. So:
+
+1. `build_reference` picks **one system** as the roster, breaking ties by "most
+   resolved labels" — system 2 has 7, system 1 has 6, so **system 2 wins and
+   slot 6 is `Timpani`**;
+2. system 1 then aligns against it. Its position 6 carries **no label**, and
+   `SCORE_LABEL_CONFLICT` requires **both** sides to be named. **A staff that
+   prints nothing is silent, not contradictory** — so no conflict is available,
+   group and position scores decide, and the DP takes the diagonal.
+
+> ⚠️ **The aligner is structurally incapable of detecting a mis-join caused by
+> staff SUPPRESSION, and suppression is the only thing that causes one.** Its
+> single hard negative needs two names to contradict; the suppressed staff is by
+> construction the one with no name. This is not a threshold to tune.
+
+⚠️ **Status of that derivation: ARITHMETIC + documented behaviour, not
+observed.** The transcription retains the resolved instrument, never the raw
+margin string, so the per-staff label dict `slots.align` actually received is
+not on disk. The one probe that would confirm it is a re-run of the label ladder
+dumping `labels_per_page`; it needs OCR time and has not been run. The `13 =
+6+6+1` arithmetic agrees with three independent prior readings, which is
+corroboration and — by this document's own reframe — **not proof.**
+
+### H1′ — the surviving form: build the roster as a UNION over systems
+
+The defect is in `build_reference`, not in `align`. A single system cannot be
+the roster when **different systems suppress different staves**, which is
+exactly Beethoven 5 p.4: system 1 prints no Timpani, system 2 merges
+Violoncello and Basso into `Bassi`. Both count 11; the union is **12**.
+
+The DP already supports what this needs — `align` allows deletions on the
+reference side, so each system simply gaps the slot it does not print. **Only
+`build_reference` changes.** Paired with H7 (a "this staff prints nothing"
+field) the silent case becomes an *informative* one.
+
+⚠️ Its own risk, stated in advance: a union roster is longer than any observed
+system, so `_looks_merged` and `REFERENCE_MAX_SIZE_RATIO` — guards written to
+stop a *merged* system becoming a 24-slot roster on Beethoven 9 — are exactly
+what a union roster resembles. Any union must be reconciled with those guards,
+not bolted past them.
 
 **Worth if true:** the only position-independent mis-join detector with a
 credible substrate; closes the class-6 case that three methods found and none
-can act on. **Edits: ~0 today** (F4) — this is a correctness and
-prospective-safety result, and the structural-parts FINDINGS already names it as
-a design constraint for any future count source ("must abstain where the staff's
-IDENTITY is unconfirmed").
+can act on. **Edits: ~0 today** (F4) — a correctness and prospective-safety
+result, and the structural-parts FINDINGS already names it as a design
+constraint for any future count source ("must abstain where the staff's IDENTITY
+is unconfirmed").
 
-⚠️ **n = 7 rows.** State that before running, not after. This cannot ship on
-7 rows; it can be *refuted* on 7 rows, which is what makes it cheap.
+⚠️ **n = 8 rows, of which the positives are 2 (one page, two editions).** This
+can be *refuted* on 8 rows; it cannot ship on them.
 
 ---
 
@@ -237,9 +324,14 @@ central argument of this whole document:
 
 **Cheapest experiment (~half a day, no detector time):** from committed
 transcriptions, extract per-system gap vectors and register vectors; measure
-whether the true correspondence maximises agreement, on the four multi-system
-rows, **before** touching `_pair_score`. Kill criterion: if the true pairing is
-not the argmax on rows where labels are absent, the features are noise.
+whether the true correspondence maximises agreement, on the **11 multi-system
+rows** (corrected 2026-09-05 — "four" was the older 11-row `..graft09` set;
+`staff_geometry` is present on all 396 staves), **before** touching
+`_pair_score`. Kill criterion: if the true pairing is not the argmax on rows
+where labels are absent, the features are noise.
+
+⚠️ **Run this only AFTER H1′, at the coordinator's direction** — as its control,
+not beside it, so H1′'s number is not contaminated by new `_pair_score` terms.
 
 **Worth if true:** makes the aligner work on Litolff/Simrock continuation
 systems where its dominant term is silent — the population H2 also targets, by a
