@@ -45,12 +45,40 @@ CORRECTNESS ONE. Ceiling on coverage 0.793 -> up to 0.980; ceiling on the 20
 current errors is -4. Eighty per cent of the errors are positions where NO
 layout puts the truth there at all -- Trombone x5 (Simrock), Horn x5, Viola x3,
 Contrabassoon x3, Timpani x2, Bassoon x2 -- and no constraint prunes toward an
-answer that is not in the set. The residual is a score-order VOCABULARY and
-ALIGNMENT problem and is not reachable by adding evidence tiers.
+answer that is not in the set.
 
 Read this bound before building any tier. Clef, written range, bracket family
 and uniqueness all prune; pruning is worth up to +37 coverage and at most -4
 errors on this corpus.
+
+⚠️⚠️ CORRECTED 2026-09-05 — AND THE CORRECTION IS ABOUT THIS PROBE'S OWN FRAME.
+An earlier version of the paragraph above continued "the residual is a
+score-order VOCABULARY and ALIGNMENT problem", leaving vocabulary as a live
+diagnosis. `probe_vocabulary_vs_alignment.py` separates them and vocabulary is
+**effectively zero**: of the 61 staves the namer does not get right,
+
+    ALIGNMENT SLIP  50  (0.820)   in the layout AND in the right relative order
+    ORDER CONFLICT   9  (0.148)   in the layout, out of order (Horn x5, Trombone x4)
+    VOCABULARY GAP   2  (0.033)   and BOTH are the `Basso`->`Bass voice`
+                                  ambiguous-alias scorer artifact, so the true
+                                  vocabulary gap is ZERO.
+
+The two probes are consistent, and reconciling them is the finding. THIS probe
+asks whether the truth is in the union of what layouts place **AT THAT INDEX**;
+that is an INDEX-BOUND question, and it answers 0.200 on wrong staves. The
+other asks whether the truth is in the layout **IN THE RIGHT RELATIVE ORDER**,
+ignoring indices, and answers 0.820. Both are true: the instrument is in the
+layout, in order, and NOT AT THAT INDEX. What the 0.200 measured was index
+sensitivity — the positional penalty in `score_layouts._pair_score` — not a
+missing instrument. Contrabassoon x5, which this file lists as "no layout puts
+the truth there", is in `late-romantic-large` all along.
+
+⚠️ SO THE "COVERAGE NOT CORRECTNESS" CONCLUSION IS CONDITIONAL ON THE CURRENT
+ALIGNMENT, and that is a limitation of this measurement rather than a property
+of constraint propagation. The candidate sets were built on top of the very
+defect the other probe diagnoses; repair the alignment and the sets are
+redrawn, so the -4 ceiling would have to be re-measured. Do not quote it as a
+bound on CSPs in general.
 """
 from __future__ import annotations
 
