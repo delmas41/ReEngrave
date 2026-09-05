@@ -194,9 +194,26 @@ the edit gain. This removes the scan-only scoping constraint that round 8's
 result imposed: `anchor` is the first arc change measured to help BOTH
 families.
 
-⚠️ The engraved number for `anchor+cv` was still running when this was
-written — a mode that changes emission on engraved pages cannot be scoped
-without it.
+`anchor+cv` then landed at **0.1302 / 2734 edits** (pred 10340) — within one
+edit of `anchor`, and also better than the 0.1306 / 2745 baseline. So BOTH
+modes improve BOTH families, and the engraved side does not discriminate
+between them: the choice between them is a scan-side inventory-vs-edits
+question, not a scoping one.
+
+| mode | scan pooled | scan edits | scan ties /805 | engraved pooled | engraved edits |
+|---|--:|--:|--:|--:|--:|
+| baseline | 0.8535 | 35817 | 420 | 0.1306 | 2745 |
+| `anchor` | **0.8533** | **35743** | 353 | **0.1301** | **2733** |
+| `anchor+cv` | 0.8534 | 35779 | **398** | 0.1302 | 2734 |
+
+**Recommendation on the mode, when this is re-priced for a flip:**
+`anchor+cv`. The two are separated by 1 engraved edit and 36 scan edits —
+inside the noise of what a composed-tree re-run will move — while the
+inventory gap is 45 ties, and tie inventory is the thing the whole arc
+thread exists to fix (production reads 97 of 271 on the older measure; the
+truth here holds 805 and flag-off emits 420). Buying 45 real ties for 36
+edits is the trade this project has taken before and recorded as right
+(the articulation ship: +97 pooled edits for 263 correctly-placed marks).
 
 ⚠️ **No flip is priced yet even so.** These are same-tree A/B numbers on a
 branch that PREDATES the tilt and choir-grouping ships; the canonical scan
