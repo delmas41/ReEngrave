@@ -1,0 +1,8828 @@
+{
+ "n": 234,
+ "acquired": 172,
+ "rows": [
+  {
+   "acquired": true,
+   "hit_page": 5,
+   "hit_yield": 0.6666666666666666,
+   "hit_staves": 15,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 2,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 1,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 15,
+     "labels": 12,
+     "named": 10,
+     "yield": 0.6666666666666666
+    }
+   ],
+   "work_id": "bach--concerto-1",
+   "house": "Eulenburg",
+   "publisher": "Edition Eulenburg, Leipzig, plate E.E. 3311",
+   "composer": "bach",
+   "pages": 24,
+   "seconds": 9.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 18,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 9,
+     "named": 9,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "bach--concerto-2",
+   "house": "other/unknown",
+   "publisher": "BachComplete, XIX, 1871",
+   "composer": "bach",
+   "pages": 26,
+   "seconds": 7.1
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 3,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 23,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "bach--concerto-3",
+   "house": "Peters",
+   "publisher": "''Edition Peters Nr.4412''",
+   "composer": "bach",
+   "pages": 24,
+   "seconds": 23.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.4444444444444444,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 18,
+     "labels": 9,
+     "named": 8,
+     "yield": 0.4444444444444444
+    },
+    {
+     "page": 5,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "bach--concerto-4",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, 1851, plate 3429",
+   "composer": "bach",
+   "pages": 42,
+   "seconds": 18.2
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "bach--concerto-5",
+   "house": "Breitkopf",
+   "publisher": "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)",
+   "composer": "bach",
+   "pages": 38,
+   "seconds": 12.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3125,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 16,
+     "labels": 7,
+     "named": 5,
+     "yield": 0.3125
+    },
+    {
+     "page": 3,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "bach--concerto-6",
+   "house": "Peters",
+   "publisher": "''Edition Peters Nr.4415''",
+   "composer": "bach",
+   "pages": 24,
+   "seconds": 26.2
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "bach--das-wohltemperierte-klavier-i",
+   "house": "other/unknown",
+   "publisher": "Knute Snortum, 2024.",
+   "composer": "bach",
+   "pages": 115,
+   "seconds": 20.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.9375,
+   "hit_staves": 16,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 15,
+     "named": 15,
+     "yield": 0.9375
+    }
+   ],
+   "work_id": "bach--mass-in-b-minor",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1899, plate Part-B. 629",
+   "composer": "bach",
+   "pages": 274,
+   "seconds": 7.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8947368421052632,
+   "hit_staves": 19,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 9,
+     "named": 7,
+     "yield": 0.3888888888888889
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 9,
+     "named": 7,
+     "yield": 0.3888888888888889
+    },
+    {
+     "page": 0,
+     "staves": 19,
+     "labels": 17,
+     "named": 17,
+     "yield": 0.8947368421052632
+    }
+   ],
+   "work_id": "bach--matthauspassion",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 2654",
+   "composer": "bach",
+   "pages": 336,
+   "seconds": 16.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 24,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 22,
+     "named": 11,
+     "yield": 0.4583333333333333
+    },
+    {
+     "page": 2,
+     "staves": 24,
+     "labels": 22,
+     "named": 12,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "bach--suite-3",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig",
+   "composer": "bach",
+   "pages": 27,
+   "seconds": 17.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.9333333333333333,
+   "hit_staves": 15,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 14,
+     "named": 14,
+     "yield": 0.9333333333333333
+    }
+   ],
+   "work_id": "beach--symphony-in-e-minor-op32-gaelic",
+   "house": "other/unknown",
+   "publisher": "Arthur P. Schmidt, Boston, 1897, plate S. 436",
+   "composer": "beach",
+   "pages": 219,
+   "seconds": 6.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 1.0,
+   "hit_staves": 15,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 15,
+     "named": 15,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "beethoven--coriolan",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Bonn, 1847, plate 4615",
+   "composer": "beethoven",
+   "pages": 58,
+   "seconds": 7.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 1.0,
+   "hit_staves": 14,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 14,
+     "labels": 14,
+     "named": 14,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "beethoven--egmont",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate PB 4",
+   "composer": "beethoven",
+   "pages": 82,
+   "seconds": 7.2
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    }
+   ],
+   "work_id": "beethoven--missa-solemnis",
+   "house": "Schott",
+   "publisher": "Schott, Mainz, 1827, plate 2546",
+   "composer": "beethoven",
+   "pages": 303,
+   "seconds": 0.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7391304347826086,
+   "hit_staves": 23,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 23,
+     "labels": 20,
+     "named": 17,
+     "yield": 0.7391304347826086
+    }
+   ],
+   "work_id": "beethoven--piano-concerto-3",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+   "composer": "beethoven",
+   "pages": 76,
+   "seconds": 8.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7272727272727273,
+   "hit_staves": 22,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 20,
+     "named": 16,
+     "yield": 0.7272727272727273
+    }
+   ],
+   "work_id": "beethoven--piano-concerto-4",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+   "composer": "beethoven",
+   "pages": 68,
+   "seconds": 8.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.5882352941176471,
+   "hit_staves": 17,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 12,
+     "named": 10,
+     "yield": 0.5882352941176471
+    }
+   ],
+   "work_id": "beethoven--piano-concerto-5",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+   "composer": "beethoven",
+   "pages": 88,
+   "seconds": 6.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6,
+   "hit_staves": 20,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 12,
+     "named": 12,
+     "yield": 0.6
+    }
+   ],
+   "work_id": "beethoven--symphony-1",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+   "composer": "beethoven",
+   "pages": 43,
+   "seconds": 5.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.5555555555555556,
+   "hit_staves": 18,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5555555555555556
+    }
+   ],
+   "work_id": "beethoven--symphony-2",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2766",
+   "composer": "beethoven",
+   "pages": 61,
+   "seconds": 5.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.55,
+   "hit_staves": 20,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 12,
+     "named": 11,
+     "yield": 0.55
+    }
+   ],
+   "work_id": "beethoven--symphony-3",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+   "composer": "beethoven",
+   "pages": 89,
+   "seconds": 5.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.5294117647058824,
+   "hit_staves": 17,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 10,
+     "named": 9,
+     "yield": 0.5294117647058824
+    }
+   ],
+   "work_id": "beethoven--symphony-4",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2768",
+   "composer": "beethoven",
+   "pages": 73,
+   "seconds": 5.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6363636363636364,
+   "hit_staves": 22,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 14,
+     "named": 14,
+     "yield": 0.6363636363636364
+    }
+   ],
+   "work_id": "beethoven--symphony-5",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "composer": "beethoven",
+   "pages": 87,
+   "seconds": 6.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 1.0,
+   "hit_staves": 12,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 12,
+     "labels": 12,
+     "named": 12,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "beethoven--symphony-5",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "composer": "beethoven",
+   "pages": 88,
+   "seconds": 6.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.5,
+   "hit_staves": 20,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "beethoven--symphony-6",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+   "composer": "beethoven",
+   "pages": 79,
+   "seconds": 5.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6,
+   "hit_staves": 20,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 12,
+     "named": 12,
+     "yield": 0.6
+    }
+   ],
+   "work_id": "beethoven--symphony-7",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+   "composer": "beethoven",
+   "pages": 89,
+   "seconds": 6.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6363636363636364,
+   "hit_staves": 22,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 14,
+     "named": 14,
+     "yield": 0.6363636363636364
+    }
+   ],
+   "work_id": "beethoven--symphony-8",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2772",
+   "composer": "beethoven",
+   "pages": 63,
+   "seconds": 6.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6153846153846154,
+   "hit_staves": 13,
+   "hit_named": 8,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 13,
+     "labels": 8,
+     "named": 8,
+     "yield": 0.6153846153846154
+    }
+   ],
+   "work_id": "beethoven--symphony-9",
+   "house": "Litolff",
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+   "composer": "beethoven",
+   "pages": 189,
+   "seconds": 4.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.6666666666666666,
+   "hit_staves": 18,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 12,
+     "named": 12,
+     "yield": 0.6666666666666666
+    }
+   ],
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "composer": "beethoven",
+   "pages": 64,
+   "seconds": 13.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 5,
+   "hit_yield": 0.8421052631578947,
+   "hit_staves": 19,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 19,
+     "labels": 17,
+     "named": 16,
+     "yield": 0.8421052631578947
+    }
+   ],
+   "work_id": "berlioz--harold-en-italie",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, 1899, plate E.E. 3623",
+   "composer": "berlioz",
+   "pages": 212,
+   "seconds": 10.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8,
+   "hit_staves": 20,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 20,
+     "named": 16,
+     "yield": 0.8
+    }
+   ],
+   "work_id": "berlioz--le-carnaval-romain",
+   "house": "other/unknown",
+   "publisher": "BerliozComplete, II, 1901",
+   "composer": "berlioz",
+   "pages": 45,
+   "seconds": 9.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5263157894736842,
+   "hit_staves": 19,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 3,
+     "named": 2,
+     "yield": 0.11764705882352941
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 19,
+     "labels": 14,
+     "named": 10,
+     "yield": 0.5263157894736842
+    }
+   ],
+   "work_id": "berlioz--symphony-fantastique",
+   "house": "other/unknown",
+   "publisher": "BerliozComplete, I, 1900",
+   "composer": "berlioz",
+   "pages": 148,
+   "seconds": 18.8
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.47619047619047616,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 21,
+     "labels": 15,
+     "named": 10,
+     "yield": 0.47619047619047616
+    },
+    {
+     "page": 0,
+     "staves": 27,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 3,
+     "staves": 20,
+     "labels": 13,
+     "named": 2,
+     "yield": 0.1
+    },
+    {
+     "page": 5,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 26,
+     "labels": 18,
+     "named": 8,
+     "yield": 0.3076923076923077
+    }
+   ],
+   "work_id": "bizet--suite-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 25133",
+   "composer": "bizet",
+   "pages": 54,
+   "seconds": 263.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6153846153846154,
+   "hit_staves": 26,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 26,
+     "named": 16,
+     "yield": 0.6153846153846154
+    }
+   ],
+   "work_id": "bizet--symphony-in-c-major",
+   "house": "Universal",
+   "publisher": "Universal Edition, Vienna, 1935, plate U.E. 10687",
+   "composer": "bizet",
+   "pages": 89,
+   "seconds": 9.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 3,
+   "hit_yield": 0.7222222222222222,
+   "hit_staves": 18,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 18,
+     "labels": 13,
+     "named": 13,
+     "yield": 0.7222222222222222
+    }
+   ],
+   "work_id": "borodin--in-the-steppes-of-central-asia",
+   "house": "other/unknown",
+   "publisher": "D. Rahter, Hamburg, plate 2202",
+   "composer": "borodin",
+   "pages": 20,
+   "seconds": 30.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.9375,
+   "hit_staves": 16,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 15,
+     "named": 15,
+     "yield": 0.9375
+    }
+   ],
+   "work_id": "borodin--symphony-2",
+   "house": "Peters",
+   "publisher": "V. Bessel & Co., St. Petersburg, 1888, plate 671",
+   "composer": "borodin",
+   "pages": 156,
+   "seconds": 7.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.27586206896551724,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 9,
+     "named": 4,
+     "yield": 0.2
+    },
+    {
+     "page": 2,
+     "staves": 21,
+     "labels": 9,
+     "named": 4,
+     "yield": 0.19047619047619047
+    },
+    {
+     "page": 0,
+     "staves": 29,
+     "labels": 26,
+     "named": 8,
+     "yield": 0.27586206896551724
+    },
+    {
+     "page": 3,
+     "staves": 20,
+     "labels": 3,
+     "named": 3,
+     "yield": 0.15
+    },
+    {
+     "page": 5,
+     "staves": 30,
+     "labels": 10,
+     "named": 5,
+     "yield": 0.16666666666666666
+    },
+    {
+     "page": 8,
+     "staves": 20,
+     "labels": 7,
+     "named": 4,
+     "yield": 0.2
+    },
+    {
+     "page": 12,
+     "staves": 21,
+     "labels": 6,
+     "named": 4,
+     "yield": 0.19047619047619047
+    }
+   ],
+   "work_id": "boulanger--faust-et-helene",
+   "house": "Ricordi",
+   "publisher": "Ricordi, Paris",
+   "composer": "boulanger",
+   "pages": 99,
+   "seconds": 43.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8421052631578947,
+   "hit_staves": 19,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 18,
+     "named": 16,
+     "yield": 0.8421052631578947
+    }
+   ],
+   "work_id": "brahms--academic-festival-overture",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1881, plate 8187",
+   "composer": "brahms",
+   "pages": 69,
+   "seconds": 8.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8235294117647058,
+   "hit_staves": 17,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 1,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 14,
+     "labels": 2,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 17,
+     "labels": 15,
+     "named": 14,
+     "yield": 0.8235294117647058
+    }
+   ],
+   "work_id": "brahms--ein-deutsches-requiem",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "composer": "brahms",
+   "pages": 190,
+   "seconds": 117.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.9230769230769231,
+   "hit_staves": 26,
+   "hit_named": 24,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 26,
+     "named": 24,
+     "yield": 0.9230769230769231
+    }
+   ],
+   "work_id": "brahms--piano-concerto-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "composer": "brahms",
+   "pages": 91,
+   "seconds": 8.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8,
+   "hit_staves": 15,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 13,
+     "named": 12,
+     "yield": 0.8
+    }
+   ],
+   "work_id": "brahms--piano-concerto-2",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1882, plate 8263",
+   "composer": "brahms",
+   "pages": 159,
+   "seconds": 6.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8888888888888888,
+   "hit_staves": 27,
+   "hit_named": 24,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 27,
+     "labels": 27,
+     "named": 24,
+     "yield": 0.8888888888888888
+    }
+   ],
+   "work_id": "brahms--symphony-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "composer": "brahms",
+   "pages": 86,
+   "seconds": 8.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.84,
+   "hit_staves": 25,
+   "hit_named": 21,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 25,
+     "labels": 25,
+     "named": 21,
+     "yield": 0.84
+    }
+   ],
+   "work_id": "brahms--symphony-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "composer": "brahms",
+   "pages": 86,
+   "seconds": 8.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 2,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 2,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    }
+   ],
+   "work_id": "brahms--symphony-2",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1878, plate 8028",
+   "composer": "brahms",
+   "pages": 73,
+   "seconds": 0.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8846153846153846,
+   "hit_staves": 26,
+   "hit_named": 23,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 26,
+     "labels": 23,
+     "named": 23,
+     "yield": 0.8846153846153846
+    }
+   ],
+   "work_id": "brahms--symphony-3",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "composer": "brahms",
+   "pages": 86,
+   "seconds": 15.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8181818181818182,
+   "hit_staves": 22,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 21,
+     "named": 18,
+     "yield": 0.8181818181818182
+    }
+   ],
+   "work_id": "brahms--symphony-4",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "composer": "brahms",
+   "pages": 99,
+   "seconds": 7.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 5,
+   "hit_yield": 0.875,
+   "hit_staves": 16,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 16,
+     "labels": 15,
+     "named": 14,
+     "yield": 0.875
+    }
+   ],
+   "work_id": "brahms--tragic-overture",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1881, plate 8189",
+   "composer": "brahms",
+   "pages": 73,
+   "seconds": 6.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8571428571428571,
+   "hit_staves": 14,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 14,
+     "labels": 14,
+     "named": 12,
+     "yield": 0.8571428571428571
+    }
+   ],
+   "work_id": "brahms--variations-on-a-theme-by-haydn",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1874, plate 7395",
+   "composer": "brahms",
+   "pages": 85,
+   "seconds": 6.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 3,
+   "hit_yield": 0.9285714285714286,
+   "hit_staves": 14,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 14,
+     "labels": 14,
+     "named": 13,
+     "yield": 0.9285714285714286
+    }
+   ],
+   "work_id": "brahms--violin-concerto",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1879, plate 8133",
+   "composer": "brahms",
+   "pages": 207,
+   "seconds": 7.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8,
+   "hit_staves": 15,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 14,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 15,
+     "labels": 15,
+     "named": 12,
+     "yield": 0.8
+    }
+   ],
+   "work_id": "bruckner--symphony-1",
+   "house": "Universal",
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "composer": "bruckner",
+   "pages": 170,
+   "seconds": 14.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 12,
+   "hit_yield": 0.8571428571428571,
+   "hit_staves": 14,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 3,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 14,
+     "labels": 14,
+     "named": 12,
+     "yield": 0.8571428571428571
+    }
+   ],
+   "work_id": "bruckner--symphony-3",
+   "house": "other/unknown",
+   "publisher": "Wiener Philharmonischer Verlag, Vienna, plate W.Ph.V. 196",
+   "composer": "bruckner",
+   "pages": 222,
+   "seconds": 9.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7058823529411765,
+   "hit_staves": 17,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 17,
+     "named": 12,
+     "yield": 0.7058823529411765
+    }
+   ],
+   "work_id": "bruckner--symphony-4",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 3636",
+   "composer": "bruckner",
+   "pages": 231,
+   "seconds": 8.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.6842105263157895,
+   "hit_staves": 19,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 8,
+     "named": 6,
+     "yield": 0.25
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 15,
+     "named": 7,
+     "yield": 0.4375
+    },
+    {
+     "page": 0,
+     "staves": 19,
+     "labels": 13,
+     "named": 13,
+     "yield": 0.6842105263157895
+    }
+   ],
+   "work_id": "bruckner--symphony-5",
+   "house": "other/unknown",
+   "publisher": "BrucknerAGA, 1935",
+   "composer": "bruckner",
+   "pages": 180,
+   "seconds": 21.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7058823529411765,
+   "hit_staves": 17,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 19,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 17,
+     "labels": 17,
+     "named": 12,
+     "yield": 0.7058823529411765
+    }
+   ],
+   "work_id": "bruckner--symphony-6",
+   "house": "Universal",
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "composer": "bruckner",
+   "pages": 166,
+   "seconds": 15.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7058823529411765,
+   "hit_staves": 17,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 17,
+     "named": 12,
+     "yield": 0.7058823529411765
+    }
+   ],
+   "work_id": "bruckner--symphony-7",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, 1926, plate E.E. 3637",
+   "composer": "bruckner",
+   "pages": 167,
+   "seconds": 7.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8235294117647058,
+   "hit_staves": 17,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 17,
+     "named": 14,
+     "yield": 0.8235294117647058
+    }
+   ],
+   "work_id": "bruckner--symphony-8",
+   "house": "Universal",
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "composer": "bruckner",
+   "pages": 223,
+   "seconds": 8.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8823529411764706,
+   "hit_staves": 17,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 17,
+     "named": 15,
+     "yield": 0.8823529411764706
+    }
+   ],
+   "work_id": "bruckner--symphony-9",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, plate 10399",
+   "composer": "bruckner",
+   "pages": 155,
+   "seconds": 8.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5454545454545454,
+   "hit_staves": 22,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 17,
+     "named": 12,
+     "yield": 0.5454545454545454
+    }
+   ],
+   "work_id": "bruckner--te-deum",
+   "house": "Eulenburg",
+   "publisher": "Eulenburg, Leipzig, plate E.E. 4278",
+   "composer": "bruckner",
+   "pages": 33,
+   "seconds": 9.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.56,
+   "hit_staves": 25,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 25,
+     "labels": 20,
+     "named": 14,
+     "yield": 0.56
+    }
+   ],
+   "work_id": "chabrier--espana",
+   "house": "other/unknown",
+   "publisher": "Enoch, Fr\u00e8res & Costallat, Paris, 1884, plate E. F. & C. 891",
+   "composer": "chabrier",
+   "pages": 64,
+   "seconds": 9.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8333333333333334,
+   "hit_staves": 18,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 15,
+     "named": 8,
+     "yield": 0.4444444444444444
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 16,
+     "named": 7,
+     "yield": 0.4375
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 17,
+     "named": 15,
+     "yield": 0.8333333333333334
+    }
+   ],
+   "work_id": "chaminade--concertino-pour-flute",
+   "house": "other/unknown",
+   "publisher": "Enoch & Cie., Paris, 1902, plate E. & C. 6683",
+   "composer": "chaminade",
+   "pages": 46,
+   "seconds": 22.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.5714285714285714,
+   "hit_staves": 21,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 21,
+     "labels": 15,
+     "named": 12,
+     "yield": 0.5714285714285714
+    }
+   ],
+   "work_id": "chausson--poeme",
+   "house": "other/unknown",
+   "publisher": "Catalog Part.B. 2051.",
+   "composer": "chausson",
+   "pages": 34,
+   "seconds": 7.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.9444444444444444,
+   "hit_staves": 18,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 18,
+     "named": 17,
+     "yield": 0.9444444444444444
+    }
+   ],
+   "work_id": "coleridge-taylor--ballade-op33",
+   "house": "Novello",
+   "publisher": "Novello, London",
+   "composer": "coleridge-taylor",
+   "pages": 63,
+   "seconds": 13.2
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 6,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 9,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 6,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 3,
+     "staves": 6,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 9,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 9,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 8,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "debussy--la-boite-a-joujoux",
+   "house": "Durand",
+   "publisher": "Durand et Cie., Paris, 1913, plate D. & F. 8935",
+   "composer": "debussy",
+   "pages": 48,
+   "seconds": 24.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7727272727272727,
+   "hit_staves": 22,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 9,
+     "named": 4,
+     "yield": 0.21052631578947367
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 9,
+     "named": 2,
+     "yield": 0.1
+    },
+    {
+     "page": 0,
+     "staves": 22,
+     "labels": 19,
+     "named": 17,
+     "yield": 0.7727272727272727
+    }
+   ],
+   "work_id": "debussy--la-mer",
+   "house": "Durand",
+   "publisher": "Durand & Fils, Paris, plate D. & F. 6532, 6838",
+   "composer": "debussy",
+   "pages": 137,
+   "seconds": 20.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.75,
+   "hit_staves": 16,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 13,
+     "named": 12,
+     "yield": 0.75
+    }
+   ],
+   "work_id": "debussy--nocturnes",
+   "house": "other/unknown",
+   "publisher": "E. Fromont, Paris, plate E. 1415\u20131417 F.",
+   "composer": "debussy",
+   "pages": 112,
+   "seconds": 7.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 8,
+   "hit_yield": 0.5,
+   "hit_staves": 12,
+   "hit_named": 6,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 14,
+     "labels": 8,
+     "named": 3,
+     "yield": 0.21428571428571427
+    },
+    {
+     "page": 8,
+     "staves": 12,
+     "labels": 9,
+     "named": 6,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "debussy--prelude-a-l-apres-midi-d-un-faune",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, London, plate E.E. 6012}}{{USA-C-nonotice-U",
+   "composer": "debussy",
+   "pages": 43,
+   "seconds": 11.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.76,
+   "hit_staves": 25,
+   "hit_named": 19,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 25,
+     "labels": 12,
+     "named": 8,
+     "yield": 0.32
+    },
+    {
+     "page": 2,
+     "staves": 27,
+     "labels": 14,
+     "named": 12,
+     "yield": 0.4444444444444444
+    },
+    {
+     "page": 0,
+     "staves": 25,
+     "labels": 24,
+     "named": 19,
+     "yield": 0.76
+    }
+   ],
+   "work_id": "dukas--l-apprenti-sorcier",
+   "house": "Durand",
+   "publisher": "Durand & Fils, Paris, plate D. & F. 5302}}<br>''Reissue (Stu",
+   "composer": "dukas",
+   "pages": 74,
+   "seconds": 23.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.6470588235294118,
+   "hit_staves": 17,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 17,
+     "labels": 17,
+     "named": 11,
+     "yield": 0.6470588235294118
+    }
+   ],
+   "work_id": "dvorak--cello-concerto",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1896, plate 10548",
+   "composer": "dvorak",
+   "pages": 76,
+   "seconds": 15.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3333333333333333,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 15,
+     "labels": 5,
+     "named": 5,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 3,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "dvorak--serenade-for-strings",
+   "house": "Bote",
+   "publisher": "Bote & Bock, Berlin, 1879, plate 12,137",
+   "composer": "dvorak",
+   "pages": 50,
+   "seconds": 28.9
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 11,
+     "labels": 1,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 13,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 14,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "dvorak--slavonic-dances",
+   "house": "other/unknown",
+   "publisher": "''Schirmer's Library of Musical Classics'', Vols.1028-29",
+   "composer": "dvorak",
+   "pages": 89,
+   "seconds": 26.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8666666666666667,
+   "hit_staves": 15,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 14,
+     "named": 13,
+     "yield": 0.8666666666666667
+    }
+   ],
+   "work_id": "dvorak--symphony-6",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1888, plate 8215",
+   "composer": "dvorak",
+   "pages": 140,
+   "seconds": 7.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8,
+   "hit_staves": 15,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 15,
+     "labels": 14,
+     "named": 12,
+     "yield": 0.8
+    }
+   ],
+   "work_id": "dvorak--symphony-7",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1885, plate 8604",
+   "composer": "dvorak",
+   "pages": 136,
+   "seconds": 15.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "dvorak--symphony-8",
+   "house": "Novello",
+   "publisher": "Novello, Ewer & Co., London, 1892, plate 9231",
+   "composer": "dvorak",
+   "pages": 182,
+   "seconds": 13.1
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 30,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 30,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "dvorak--symphony-9",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "composer": "dvorak",
+   "pages": 80,
+   "seconds": 14.4
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 3,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "elgar--cello-concerto",
+   "house": "Novello",
+   "publisher": "Novello & Co., London, 1921, plate 14737",
+   "composer": "elgar",
+   "pages": 104,
+   "seconds": 156.4
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 13,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 13,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 13,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "elgar--introduction-and-allegro",
+   "house": "Novello",
+   "publisher": "Novello and Co., London, 1905, plate 12130",
+   "composer": "elgar",
+   "pages": 61,
+   "seconds": 9.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 12,
+   "hit_yield": 0.52,
+   "hit_staves": 25,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 24,
+     "labels": 9,
+     "named": 8,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 8,
+     "staves": 24,
+     "labels": 11,
+     "named": 8,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 12,
+     "staves": 25,
+     "labels": 14,
+     "named": 13,
+     "yield": 0.52
+    }
+   ],
+   "work_id": "elgar--symphony-1",
+   "house": "Novello",
+   "publisher": "Novello & Co., London, 1908",
+   "composer": "elgar",
+   "pages": 172,
+   "seconds": 437.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.38461538461538464,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 25,
+     "labels": 10,
+     "named": 7,
+     "yield": 0.28
+    },
+    {
+     "page": 8,
+     "staves": 26,
+     "labels": 13,
+     "named": 10,
+     "yield": 0.38461538461538464
+    },
+    {
+     "page": 12,
+     "staves": 27,
+     "labels": 12,
+     "named": 10,
+     "yield": 0.37037037037037035
+    }
+   ],
+   "work_id": "elgar--symphony-2",
+   "house": "Novello",
+   "publisher": "Novello & Co., London, 1911",
+   "composer": "elgar",
+   "pages": 188,
+   "seconds": 20.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8181818181818182,
+   "hit_staves": 22,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 19,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 22,
+     "labels": 20,
+     "named": 18,
+     "yield": 0.8181818181818182
+    }
+   ],
+   "work_id": "elgar--variations-on-an-original-theme-enigma",
+   "house": "Novello",
+   "publisher": "Novello & Co., London, 1899",
+   "composer": "elgar",
+   "pages": 128,
+   "seconds": 15.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 1.0,
+   "hit_staves": 12,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 12,
+     "labels": 12,
+     "named": 12,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "farrenc--symphony-2",
+   "house": "other/unknown",
+   "publisher": "Pierre-Antoine Renioult, 2025.",
+   "composer": "farrenc",
+   "pages": 202,
+   "seconds": 6.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.9166666666666666,
+   "hit_staves": 12,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 12,
+     "labels": 12,
+     "named": 11,
+     "yield": 0.9166666666666666
+    }
+   ],
+   "work_id": "farrenc--symphony-3",
+   "house": "other/unknown",
+   "publisher": "John S. Shaw, 2024.",
+   "composer": "farrenc",
+   "pages": 92,
+   "seconds": 5.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7333333333333333,
+   "hit_staves": 15,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 14,
+     "named": 6,
+     "yield": 0.3157894736842105
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 15,
+     "labels": 13,
+     "named": 11,
+     "yield": 0.7333333333333333
+    }
+   ],
+   "work_id": "faure--pelleas-et-melisande",
+   "house": "Peters",
+   "publisher": "Edition Peters, Leipzig, 1979, plate E.P. 13066",
+   "composer": "faure",
+   "pages": 63,
+   "seconds": 231.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7391304347826086,
+   "hit_staves": 23,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 23,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 23,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 23,
+     "labels": 21,
+     "named": 17,
+     "yield": 0.7391304347826086
+    }
+   ],
+   "work_id": "faure--requiem-op48",
+   "house": "other/unknown",
+   "publisher": "J. Hamelle, Paris, 1901, plate J. 4650 H",
+   "composer": "faure",
+   "pages": 128,
+   "seconds": 16.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8947368421052632,
+   "hit_staves": 19,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 6,
+     "labels": 3,
+     "named": 1,
+     "yield": 0.16666666666666666
+    },
+    {
+     "page": 2,
+     "staves": 19,
+     "labels": 19,
+     "named": 17,
+     "yield": 0.8947368421052632
+    }
+   ],
+   "work_id": "franck--le-chasseur-maudit",
+   "house": "Eulenburg",
+   "publisher": "Eulenburg, London, plate E.E. 3684",
+   "composer": "franck",
+   "pages": 118,
+   "seconds": 15.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7777777777777778,
+   "hit_staves": 18,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 18,
+     "named": 14,
+     "yield": 0.7777777777777778
+    }
+   ],
+   "work_id": "franck--symphony-in-d-minor",
+   "house": "other/unknown",
+   "publisher": "Hamelle, Paris, 1890, plate J. 3059 H",
+   "composer": "franck",
+   "pages": 152,
+   "seconds": 8.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7,
+   "hit_staves": 20,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 14,
+     "named": 14,
+     "yield": 0.7
+    }
+   ],
+   "work_id": "glazunov--symphony-5",
+   "house": "other/unknown",
+   "publisher": "M.P. Belaieff, Leipzig, 1896, plate 1332",
+   "composer": "glazunov",
+   "pages": 145,
+   "seconds": 7.4
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 8,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "grieg--holberg-suite",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, 1884, plate 6827",
+   "composer": "grieg",
+   "pages": 22,
+   "seconds": 18.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.65,
+   "hit_staves": 20,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 20,
+     "named": 13,
+     "yield": 0.65
+    }
+   ],
+   "work_id": "grieg--piano-concerto",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, plate 7367, 9156",
+   "composer": "grieg",
+   "pages": 80,
+   "seconds": 7.7
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "grieg--suite-1",
+   "house": "Peters",
+   "publisher": "Edition Peters, Leipzig, 1888, plate 7188",
+   "composer": "grieg",
+   "pages": 44,
+   "seconds": 15.8
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.2,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 2,
+     "named": 2,
+     "yield": 0.125
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 15,
+     "labels": 3,
+     "named": 3,
+     "yield": 0.2
+    },
+    {
+     "page": 8,
+     "staves": 15,
+     "labels": 3,
+     "named": 3,
+     "yield": 0.2
+    },
+    {
+     "page": 12,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "handel--messiah",
+   "house": "other/unknown",
+   "publisher": "",
+   "composer": "handel",
+   "pages": 287,
+   "seconds": 22.2
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.25,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 15,
+     "labels": 1,
+     "named": 1,
+     "yield": 0.06666666666666667
+    },
+    {
+     "page": 8,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 12,
+     "labels": 4,
+     "named": 3,
+     "yield": 0.25
+    }
+   ],
+   "work_id": "handel--messiah",
+   "house": "other/unknown",
+   "publisher": "",
+   "composer": "handel",
+   "pages": 251,
+   "seconds": 24.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8666666666666667,
+   "hit_staves": 15,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 15,
+     "named": 13,
+     "yield": 0.8666666666666667
+    }
+   ],
+   "work_id": "handel--music-for-the-royal-fireworks",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig",
+   "composer": "handel",
+   "pages": 49,
+   "seconds": 9.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.4166666666666667,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 8,
+     "named": 7,
+     "yield": 0.35
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 24,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.4166666666666667
+    },
+    {
+     "page": 5,
+     "staves": 24,
+     "labels": 1,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 24,
+     "labels": 1,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "handel--water-music",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 24433/H.W. 47 18",
+   "composer": "handel",
+   "pages": 66,
+   "seconds": 27.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.75,
+   "hit_staves": 16,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 16,
+     "named": 12,
+     "yield": 0.75
+    }
+   ],
+   "work_id": "haydn--cello-concerto-2",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig",
+   "composer": "haydn",
+   "pages": 48,
+   "seconds": 7.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.9,
+   "hit_staves": 20,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 25,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 20,
+     "labels": 20,
+     "named": 18,
+     "yield": 0.9
+    }
+   ],
+   "work_id": "haydn--die-schopfung-hob-xxi-2",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig",
+   "composer": "haydn",
+   "pages": 245,
+   "seconds": 16.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 20,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "haydn--symphony-100",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1857, plate 9507",
+   "composer": "haydn",
+   "pages": 101,
+   "seconds": 5.9
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "haydn--symphony-101",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 8874",
+   "composer": "haydn",
+   "pages": 73,
+   "seconds": 11.1
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "haydn--symphony-102",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1857, plate 9508",
+   "composer": "haydn",
+   "pages": 64,
+   "seconds": 11.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 22,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 11,
+     "named": 11,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "haydn--symphony-103",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1854, plate 8871",
+   "composer": "haydn",
+   "pages": 59,
+   "seconds": 7.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 22,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 11,
+     "named": 11,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "haydn--symphony-104",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1854, plate 8872",
+   "composer": "haydn",
+   "pages": 57,
+   "seconds": 5.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7142857142857143,
+   "hit_staves": 14,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 14,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.7142857142857143
+    }
+   ],
+   "work_id": "haydn--symphony-45",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 3660",
+   "composer": "haydn",
+   "pages": 45,
+   "seconds": 5.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 16,
+   "hit_named": 8,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 16,
+     "labels": 8,
+     "named": 8,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "haydn--symphony-88",
+   "house": "other/unknown",
+   "publisher": "LinkWork, Sinfonien und Quartette, 1874",
+   "composer": "haydn",
+   "pages": 40,
+   "seconds": 11.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 22,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 22,
+     "labels": 11,
+     "named": 11,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "haydn--symphony-92",
+   "house": "Breitkopf",
+   "publisher": "''Breitkopf & H\u00e4rtels Orchester-Bibliothek'' (No.4378)",
+   "composer": "haydn",
+   "pages": 46,
+   "seconds": 14.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 20,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "haydn--symphony-94",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 8876",
+   "composer": "haydn",
+   "pages": 54,
+   "seconds": 6.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 19,
+     "labels": 3,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "haydn--symphony-95",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 9150",
+   "composer": "haydn",
+   "pages": 51,
+   "seconds": 125.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5263157894736842,
+   "hit_staves": 19,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 19,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5263157894736842
+    }
+   ],
+   "work_id": "haydn--symphony-96",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig",
+   "composer": "haydn",
+   "pages": 40,
+   "seconds": 18.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.45454545454545453,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.45454545454545453
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "haydn--symphony-99",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 8873",
+   "composer": "haydn",
+   "pages": 55,
+   "seconds": 20.4
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3333333333333333,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 15,
+     "labels": 5,
+     "named": 5,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 3,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 21,
+     "labels": 5,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "holst--st-paul-s-suite-op29-2",
+   "house": "other/unknown",
+   "publisher": "Goodwin & Tabb, London, 1922",
+   "composer": "holst",
+   "pages": 21,
+   "seconds": 30.2
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.48,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 32,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 29,
+     "labels": 18,
+     "named": 10,
+     "yield": 0.3448275862068966
+    },
+    {
+     "page": 5,
+     "staves": 29,
+     "labels": 16,
+     "named": 13,
+     "yield": 0.4482758620689655
+    },
+    {
+     "page": 8,
+     "staves": 25,
+     "labels": 16,
+     "named": 12,
+     "yield": 0.48
+    },
+    {
+     "page": 12,
+     "staves": 26,
+     "labels": 18,
+     "named": 11,
+     "yield": 0.4230769230769231
+    }
+   ],
+   "work_id": "holst--the-planets",
+   "house": "other/unknown",
+   "publisher": "Goodwin & Tabb, London, 1921",
+   "composer": "holst",
+   "pages": 190,
+   "seconds": 37.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 8,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 8,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 7,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 9,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 9,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 8,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "kirchhoff--l-abc-musical",
+   "house": "other/unknown",
+   "publisher": "",
+   "composer": "kirchhoff",
+   "pages": 33,
+   "seconds": 26.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8235294117647058,
+   "hit_staves": 17,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 15,
+     "named": 14,
+     "yield": 0.8235294117647058
+    }
+   ],
+   "work_id": "lalo--symphony-espagnole",
+   "house": "Durand",
+   "publisher": "Durand, Schoenewerk & Cie., Paris, plate D.S. & Cie. 2135",
+   "composer": "lalo",
+   "pages": 147,
+   "seconds": 7.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8846153846153846,
+   "hit_staves": 26,
+   "hit_named": 23,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 24,
+     "named": 23,
+     "yield": 0.8846153846153846
+    }
+   ],
+   "work_id": "mahler--das-lied-von-der-erde-gmw-49",
+   "house": "Universal",
+   "publisher": "Universal Edition, Vienna, 1912, plate U.E. 3637",
+   "composer": "mahler",
+   "pages": 145,
+   "seconds": 9.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7272727272727273,
+   "hit_staves": 11,
+   "hit_named": 8,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 14,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 11,
+     "labels": 10,
+     "named": 8,
+     "yield": 0.7272727272727273
+    }
+   ],
+   "work_id": "mahler--lieder-eines-fahrenden-gesellen-gmw-10",
+   "house": "other/unknown",
+   "publisher": "Josef Weinberger, Vienna, 1897",
+   "composer": "mahler",
+   "pages": 57,
+   "seconds": 11.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6875,
+   "hit_staves": 16,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 13,
+     "named": 11,
+     "yield": 0.6875
+    }
+   ],
+   "work_id": "mahler--symphony-1",
+   "house": "Universal",
+   "publisher": "Universal Edition, Vienna, 1906, plate U.E. 2931",
+   "composer": "mahler",
+   "pages": 169,
+   "seconds": 6.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8636363636363636,
+   "hit_staves": 22,
+   "hit_named": 19,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 22,
+     "named": 19,
+     "yield": 0.8636363636363636
+    }
+   ],
+   "work_id": "mahler--symphony-2",
+   "house": "other/unknown",
+   "publisher": "Friedrich Hofmeister, Leipzig, 1897",
+   "composer": "mahler",
+   "pages": 209,
+   "seconds": 12.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 12,
+   "hit_yield": 0.5625,
+   "hit_staves": 16,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 18,
+     "labels": 13,
+     "named": 8,
+     "yield": 0.4444444444444444
+    },
+    {
+     "page": 8,
+     "staves": 19,
+     "labels": 15,
+     "named": 5,
+     "yield": 0.2631578947368421
+    },
+    {
+     "page": 12,
+     "staves": 16,
+     "labels": 15,
+     "named": 9,
+     "yield": 0.5625
+    }
+   ],
+   "work_id": "mahler--symphony-3",
+   "house": "Universal",
+   "publisher": "Universal Edition, Vienna, 1906, plate U.E. 2939",
+   "composer": "mahler",
+   "pages": 233,
+   "seconds": 26.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8333333333333334,
+   "hit_staves": 18,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 17,
+     "named": 15,
+     "yield": 0.8333333333333334
+    }
+   ],
+   "work_id": "mahler--symphony-4",
+   "house": "Universal",
+   "publisher": "Universal Edition, Vienna, 1911, plate U.E. 2944",
+   "composer": "mahler",
+   "pages": 125,
+   "seconds": 8.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8947368421052632,
+   "hit_staves": 19,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 17,
+     "named": 17,
+     "yield": 0.8947368421052632
+    }
+   ],
+   "work_id": "mahler--symphony-5",
+   "house": "other/unknown",
+   "publisher": "",
+   "composer": "mahler",
+   "pages": 245,
+   "seconds": 7.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7419354838709677,
+   "hit_staves": 31,
+   "hit_named": 23,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 31,
+     "labels": 28,
+     "named": 23,
+     "yield": 0.7419354838709677
+    }
+   ],
+   "work_id": "mahler--symphony-6",
+   "house": "other/unknown",
+   "publisher": "C.F. Kahnt Nachfolger, Leipzig, 1906, plate 4526",
+   "composer": "mahler",
+   "pages": 263,
+   "seconds": 12.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 8,
+   "hit_yield": 0.6,
+   "hit_staves": 20,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 15,
+     "named": 8,
+     "yield": 0.47058823529411764
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 19,
+     "labels": 16,
+     "named": 9,
+     "yield": 0.47368421052631576
+    },
+    {
+     "page": 5,
+     "staves": 20,
+     "labels": 20,
+     "named": 7,
+     "yield": 0.35
+    },
+    {
+     "page": 8,
+     "staves": 20,
+     "labels": 16,
+     "named": 12,
+     "yield": 0.6
+    }
+   ],
+   "work_id": "mahler--symphony-7",
+   "house": "Bote",
+   "publisher": "Bote & Bock, Berlin, 1909, plate B. & B. 16867",
+   "composer": "mahler",
+   "pages": 259,
+   "seconds": 35.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.5862068965517241,
+   "hit_staves": 29,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 29,
+     "labels": 23,
+     "named": 17,
+     "yield": 0.5862068965517241
+    }
+   ],
+   "work_id": "mahler--symphony-9",
+   "house": "Universal",
+   "publisher": "Universal Edition, Vienna, 1912, plate U.E. 3395",
+   "composer": "mahler",
+   "pages": 180,
+   "seconds": 9.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8,
+   "hit_staves": 15,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 13,
+     "named": 12,
+     "yield": 0.8
+    }
+   ],
+   "work_id": "mendelssohn--a-midsummer-night-s-dream-incidental-music",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, plate 6056",
+   "composer": "mendelssohn",
+   "pages": 141,
+   "seconds": 7.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 16,
+     "labels": 1,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mendelssohn--die-hebriden",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 5543",
+   "composer": "mendelssohn",
+   "pages": 54,
+   "seconds": 127.2
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mendelssohn--symphony-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part. B. 59",
+   "composer": "mendelssohn",
+   "pages": 64,
+   "seconds": 16.8
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 13,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 13,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 13,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mendelssohn--symphony-3",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1842, plate 6823",
+   "composer": "mendelssohn",
+   "pages": 244,
+   "seconds": 11.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 3,
+   "hit_yield": 0.9230769230769231,
+   "hit_staves": 13,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 13,
+     "labels": 13,
+     "named": 12,
+     "yield": 0.9230769230769231
+    }
+   ],
+   "work_id": "mendelssohn--symphony-4",
+   "house": "other/unknown",
+   "publisher": "MendelssohnComplete, 1877",
+   "composer": "mendelssohn",
+   "pages": 69,
+   "seconds": 10.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 1.0,
+   "hit_staves": 14,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 14,
+     "labels": 14,
+     "named": 14,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "mendelssohn--symphony-5",
+   "house": "other/unknown",
+   "publisher": "MendelssohnComplete, 1877",
+   "composer": "mendelssohn",
+   "pages": 94,
+   "seconds": 7.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 1.0,
+   "hit_staves": 12,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 12,
+     "labels": 12,
+     "named": 12,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "mendelssohn--violin-concerto",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate P.B. 480",
+   "composer": "mendelssohn",
+   "pages": 57,
+   "seconds": 7.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 18,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 9,
+     "named": 9,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--clarinet-concerto-in-a-major",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XII, Bd.2, No.20, 1881",
+   "composer": "mozart",
+   "pages": 58,
+   "seconds": 12.7
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--die-zauberflote",
+   "house": "Simrock",
+   "publisher": "N. Simrock, Bonn, plate 1092",
+   "composer": "mozart",
+   "pages": 375,
+   "seconds": 9.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--don-giovanni",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1801",
+   "composer": "mozart",
+   "pages": 593,
+   "seconds": 8.8
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.26666666666666666,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 4,
+     "named": 4,
+     "yield": 0.26666666666666666
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 16,
+     "labels": 4,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--eine-kleine-nachtmusik",
+   "house": "other/unknown",
+   "publisher": "Wiener Philharmonischer Verlag, Vienna, plate W.Ph.V. 366",
+   "composer": "mozart",
+   "pages": 21,
+   "seconds": 126.5
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--le-nozze-di-figaro",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), V, Bd.8, No.17, 1879",
+   "composer": "mozart",
+   "pages": 427,
+   "seconds": 12.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5789473684210527,
+   "hit_staves": 19,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 19,
+     "labels": 11,
+     "named": 11,
+     "yield": 0.5789473684210527
+    }
+   ],
+   "work_id": "mozart--piano-concerto-20",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI: Concerte f\u00fcr das P",
+   "composer": "mozart",
+   "pages": 56,
+   "seconds": 12.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.9166666666666666,
+   "hit_staves": 12,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 12,
+     "labels": 11,
+     "named": 11,
+     "yield": 0.9166666666666666
+    }
+   ],
+   "work_id": "mozart--piano-concerto-21",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI, Bd.3, No.21, 1878",
+   "composer": "mozart",
+   "pages": 56,
+   "seconds": 14.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 18,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 9,
+     "named": 9,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--piano-concerto-23",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI, Bd.4, No.23, 1879",
+   "composer": "mozart",
+   "pages": 54,
+   "seconds": 12.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.9230769230769231,
+   "hit_staves": 13,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 13,
+     "labels": 12,
+     "named": 12,
+     "yield": 0.9230769230769231
+    }
+   ],
+   "work_id": "mozart--piano-concerto-24",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI, Bd.4, No.24, 1879",
+   "composer": "mozart",
+   "pages": 64,
+   "seconds": 13.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--requiem-in-d-minor",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1812, plate 1821",
+   "composer": "mozart",
+   "pages": 131,
+   "seconds": 15.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3333333333333333,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 6,
+     "named": 6,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 3,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--symphony-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.1, No.1, 1879",
+   "composer": "mozart",
+   "pages": 12,
+   "seconds": 23.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3333333333333333,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 21,
+     "labels": 7,
+     "named": 7,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 3,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 21,
+     "labels": 7,
+     "named": 7,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 12,
+     "staves": 21,
+     "labels": 7,
+     "named": 7,
+     "yield": 0.3333333333333333
+    }
+   ],
+   "work_id": "mozart--symphony-25",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.2, No.25, 1880",
+   "composer": "mozart",
+   "pages": 19,
+   "seconds": 30.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 16,
+   "hit_named": 8,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 16,
+     "labels": 8,
+     "named": 8,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-25",
+   "house": "other/unknown",
+   "publisher": "B\u00e4renreiter (Neue Mozart-Ausgabe), IV, 1960",
+   "composer": "mozart",
+   "pages": 20,
+   "seconds": 13.5
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3333333333333333,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 6,
+     "named": 6,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 3,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 18,
+     "labels": 6,
+     "named": 6,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 12,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--symphony-29",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.2, No.29, 1880",
+   "composer": "mozart",
+   "pages": 24,
+   "seconds": 30.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 22,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 22,
+     "labels": 11,
+     "named": 11,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-31",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.2,",
+   "composer": "mozart",
+   "pages": 40,
+   "seconds": 14.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--symphony-33",
+   "house": "Breitkopf",
+   "publisher": "''Breitkopf & H\u00e4rtel's Partitur-Bibliothek'' (Nr. 119)",
+   "composer": "mozart",
+   "pages": 32,
+   "seconds": 16.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7647058823529411,
+   "hit_staves": 17,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 17,
+     "named": 13,
+     "yield": 0.7647058823529411
+    }
+   ],
+   "work_id": "mozart--symphony-34",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, London, 1956, plate E.E. 6087}}{{Urtext",
+   "composer": "mozart",
+   "pages": 76,
+   "seconds": 7.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 22,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 22,
+     "labels": 22,
+     "named": 11,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-35",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.35, 1880",
+   "composer": "mozart",
+   "pages": 36,
+   "seconds": 122.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 18,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 9,
+     "named": 9,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-36",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.36, 1880",
+   "composer": "mozart",
+   "pages": 44,
+   "seconds": 11.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 20,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 20,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-38",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.38, 1880",
+   "composer": "mozart",
+   "pages": 40,
+   "seconds": 11.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 20,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 20,
+     "labels": 20,
+     "named": 10,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-39",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.39, 1880",
+   "composer": "mozart",
+   "pages": 44,
+   "seconds": 16.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3333333333333333,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 6,
+     "named": 6,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 3,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--symphony-4",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.1,",
+   "composer": "mozart",
+   "pages": 10,
+   "seconds": 23.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 22,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 22,
+     "labels": 11,
+     "named": 11,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-40",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3,",
+   "composer": "mozart",
+   "pages": 49,
+   "seconds": 11.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 20,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 20,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-41",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3,",
+   "composer": "mozart",
+   "pages": 56,
+   "seconds": 14.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 20,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 1,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 20,
+     "labels": 10,
+     "named": 10,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "mozart--symphony-41",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3,",
+   "composer": "mozart",
+   "pages": 56,
+   "seconds": 16.4
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.35294117647058826,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 17,
+     "labels": 6,
+     "named": 6,
+     "yield": 0.35294117647058826
+    },
+    {
+     "page": 3,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mozart--symphony-5",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.1,",
+   "composer": "mozart",
+   "pages": 9,
+   "seconds": 24.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.9473684210526315,
+   "hit_staves": 19,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 19,
+     "labels": 19,
+     "named": 18,
+     "yield": 0.9473684210526315
+    }
+   ],
+   "work_id": "mussorgsky--night-on-bald-mountain",
+   "house": "Peters",
+   "publisher": "V. Bessel & Co., St. Petersburg, 1886, plate 1538",
+   "composer": "mussorgsky",
+   "pages": 65,
+   "seconds": 8.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "mussorgsky--pictures-at-an-exhibition",
+   "house": "Augener",
+   "publisher": "Augener, London, 1914, plate 14816",
+   "composer": "mussorgsky",
+   "pages": 48,
+   "seconds": 13.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.43478260869565216,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 2,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 22,
+     "labels": 16,
+     "named": 5,
+     "yield": 0.22727272727272727
+    },
+    {
+     "page": 8,
+     "staves": 22,
+     "labels": 18,
+     "named": 7,
+     "yield": 0.3181818181818182
+    },
+    {
+     "page": 12,
+     "staves": 23,
+     "labels": 22,
+     "named": 10,
+     "yield": 0.43478260869565216
+    }
+   ],
+   "work_id": "nielsen--symphony-4",
+   "house": "other/unknown",
+   "publisher": "Wilhelm Hansen, Leipzig, 1916, plate 16557",
+   "composer": "nielsen",
+   "pages": 120,
+   "seconds": 31.9
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    }
+   ],
+   "work_id": "nielsen--symphony-5",
+   "house": "other/unknown",
+   "publisher": "NielsenComplete, II, 1998",
+   "composer": "nielsen",
+   "pages": 190,
+   "seconds": 3.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 1.0,
+   "hit_staves": 12,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 12,
+     "labels": 12,
+     "named": 12,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "prokofiev--symphony-1",
+   "house": "other/unknown",
+   "publisher": "Editions Russes de Musique, Paris, 1925, plate R.M.V. 419",
+   "composer": "prokofiev",
+   "pages": 97,
+   "seconds": 5.9
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "rachmaninoff--isle-of-the-dead",
+   "house": "other/unknown",
+   "publisher": "A. Gutheil, Moscow, 1909, plate A. 9048 G.",
+   "composer": "rachmaninoff",
+   "pages": 73,
+   "seconds": 14.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7647058823529411,
+   "hit_staves": 17,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 19,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 17,
+     "labels": 14,
+     "named": 13,
+     "yield": 0.7647058823529411
+    }
+   ],
+   "work_id": "rachmaninoff--piano-concerto-2",
+   "house": "other/unknown",
+   "publisher": "A. Gutheil, Moscow, 1901, plate A. 8102 G",
+   "composer": "rachmaninoff",
+   "pages": 114,
+   "seconds": 15.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7894736842105263,
+   "hit_staves": 19,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 18,
+     "named": 15,
+     "yield": 0.7894736842105263
+    }
+   ],
+   "work_id": "rachmaninoff--symphony-2",
+   "house": "other/unknown",
+   "publisher": "A. Gutheil, Moscow, 1908, plate A. 8899 G",
+   "composer": "rachmaninoff",
+   "pages": 231,
+   "seconds": 8.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6923076923076923,
+   "hit_staves": 26,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 24,
+     "named": 18,
+     "yield": 0.6923076923076923
+    }
+   ],
+   "work_id": "ravel--bolero",
+   "house": "other/unknown",
+   "publisher": "2016.",
+   "composer": "ravel",
+   "pages": 41,
+   "seconds": 11.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.42424242424242425,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 25,
+     "labels": 19,
+     "named": 5,
+     "yield": 0.2
+    },
+    {
+     "page": 12,
+     "staves": 33,
+     "labels": 24,
+     "named": 14,
+     "yield": 0.42424242424242425
+    }
+   ],
+   "work_id": "ravel--daphnis-et-chloe",
+   "house": "Durand",
+   "publisher": "Durand, Paris, plate D. et F. 7937",
+   "composer": "ravel",
+   "pages": 321,
+   "seconds": 24.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.68,
+   "hit_staves": 25,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 25,
+     "labels": 22,
+     "named": 17,
+     "yield": 0.68
+    }
+   ],
+   "work_id": "ravel--la-valse",
+   "house": "Durand",
+   "publisher": "Durand & Cie., Paris, 1921, plate D. & F. 9885",
+   "composer": "ravel",
+   "pages": 134,
+   "seconds": 11.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.1,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 10,
+     "labels": 1,
+     "named": 1,
+     "yield": 0.1
+    },
+    {
+     "page": 5,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 10,
+     "labels": 1,
+     "named": 1,
+     "yield": 0.1
+    },
+    {
+     "page": 12,
+     "staves": 12,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "ravel--le-tombeau-de-couperin",
+   "house": "Durand",
+   "publisher": "Durand & Cie., Paris, 1918, plate D. & F. 9569",
+   "composer": "ravel",
+   "pages": 34,
+   "seconds": 18.8
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.45454545454545453,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 15,
+     "labels": 8,
+     "named": 5,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 8,
+     "staves": 22,
+     "labels": 17,
+     "named": 10,
+     "yield": 0.45454545454545453
+    },
+    {
+     "page": 12,
+     "staves": 15,
+     "labels": 12,
+     "named": 6,
+     "yield": 0.4
+    }
+   ],
+   "work_id": "ravel--rapsodie-espagnole",
+   "house": "Durand",
+   "publisher": "Durand & Fils, Paris, 1908, plate D. & F. 7128",
+   "composer": "ravel",
+   "pages": 94,
+   "seconds": 23.8
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.4074074074074074,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 30,
+     "labels": 13,
+     "named": 6,
+     "yield": 0.2
+    },
+    {
+     "page": 12,
+     "staves": 27,
+     "labels": 16,
+     "named": 11,
+     "yield": 0.4074074074074074
+    }
+   ],
+   "work_id": "respighi--fontane-di-roma",
+   "house": "Ricordi",
+   "publisher": "Ricordi, Milan, plate 117463",
+   "composer": "respighi",
+   "pages": 72,
+   "seconds": 20.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.625,
+   "hit_staves": 16,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 15,
+     "named": 8,
+     "yield": 0.4
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 16,
+     "labels": 12,
+     "named": 10,
+     "yield": 0.625
+    }
+   ],
+   "work_id": "respighi--pini-di-roma",
+   "house": "Ricordi",
+   "publisher": "G. Ricordi & C., Milan, 1925, plate P.R. 439",
+   "composer": "respighi",
+   "pages": 67,
+   "seconds": 17.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.9444444444444444,
+   "hit_staves": 18,
+   "hit_named": 17,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 17,
+     "named": 17,
+     "yield": 0.9444444444444444
+    }
+   ],
+   "work_id": "rimsky-korsakov--capriccio-espagnol",
+   "house": "other/unknown",
+   "publisher": "M.P. Belaieff, Leipzig, plate 3220",
+   "composer": "rimsky-korsakov",
+   "pages": 95,
+   "seconds": 7.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8333333333333334,
+   "hit_staves": 18,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 19,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 15,
+     "named": 15,
+     "yield": 0.8333333333333334
+    }
+   ],
+   "work_id": "rimsky-korsakov--scheherazade",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, plate 2957*",
+   "composer": "rimsky-korsakov",
+   "pages": 257,
+   "seconds": 121.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.9130434782608695,
+   "hit_staves": 23,
+   "hit_named": 21,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 23,
+     "labels": 22,
+     "named": 21,
+     "yield": 0.9130434782608695
+    }
+   ],
+   "work_id": "rossini--guillaume-tell",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel, Leipzig",
+   "composer": "rossini",
+   "pages": 51,
+   "seconds": 16.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 8,
+   "hit_yield": 1.0,
+   "hit_staves": 16,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 16,
+     "labels": 16,
+     "named": 16,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "rossini--il-barbiere-di-siviglia",
+   "house": "other/unknown",
+   "publisher": "Wiener Philharmonischer Verlag, Vienna, plate W.Ph.V. 17",
+   "composer": "rossini",
+   "pages": 50,
+   "seconds": 10.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7692307692307693,
+   "hit_staves": 13,
+   "hit_named": 10,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 13,
+     "labels": 12,
+     "named": 10,
+     "yield": 0.7692307692307693
+    }
+   ],
+   "work_id": "saint-saens--cello-concerto-1",
+   "house": "Durand",
+   "publisher": "Durand, Schoenewerk & Cie., Paris, 1874, plate D.S. & Cie. 1",
+   "composer": "saint-saens",
+   "pages": 74,
+   "seconds": 7.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.782608695652174,
+   "hit_staves": 23,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 13,
+     "labels": 5,
+     "named": 2,
+     "yield": 0.15384615384615385
+    },
+    {
+     "page": 2,
+     "staves": 19,
+     "labels": 7,
+     "named": 5,
+     "yield": 0.2631578947368421
+    },
+    {
+     "page": 0,
+     "staves": 23,
+     "labels": 22,
+     "named": 18,
+     "yield": 0.782608695652174
+    }
+   ],
+   "work_id": "saint-saens--danse-macabre",
+   "house": "Durand",
+   "publisher": "Durand, Schoenewerk et Cie., Paris, 1875, plate D. S. & Cie.",
+   "composer": "saint-saens",
+   "pages": 52,
+   "seconds": 20.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.4444444444444444,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 18,
+     "labels": 16,
+     "named": 8,
+     "yield": 0.4444444444444444
+    },
+    {
+     "page": 8,
+     "staves": 18,
+     "labels": 14,
+     "named": 8,
+     "yield": 0.4444444444444444
+    },
+    {
+     "page": 12,
+     "staves": 18,
+     "labels": 16,
+     "named": 8,
+     "yield": 0.4444444444444444
+    }
+   ],
+   "work_id": "saint-saens--le-carnaval-des-animaux",
+   "house": "Durand",
+   "publisher": "Durand, Paris, plate D. & F. 10,154",
+   "composer": "saint-saens",
+   "pages": 65,
+   "seconds": 24.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7857142857142857,
+   "hit_staves": 14,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 14,
+     "labels": 12,
+     "named": 11,
+     "yield": 0.7857142857142857
+    }
+   ],
+   "work_id": "saint-saens--piano-concerto-2",
+   "house": "Durand",
+   "publisher": "Durand, Schoenewerk et Cie., Paris, 1875, plate D. S. & Cie.",
+   "composer": "saint-saens",
+   "pages": 111,
+   "seconds": 14.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.6363636363636364,
+   "hit_staves": 22,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 18,
+     "named": 14,
+     "yield": 0.6363636363636364
+    }
+   ],
+   "work_id": "saint-saens--symphony-3",
+   "house": "Durand",
+   "publisher": "Durand & Schoenewerk, Paris, 1886, plate D.S. 3700",
+   "composer": "saint-saens",
+   "pages": 178,
+   "seconds": 9.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 1.0,
+   "hit_staves": 18,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 18,
+     "named": 18,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "schubert--rosamunde",
+   "house": "other/unknown",
+   "publisher": "SchubertComplete, XV: Dramatische Musik, Band 4, 1893",
+   "composer": "schubert",
+   "pages": 46,
+   "seconds": 8.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 1.0,
+   "hit_staves": 12,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 24,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 12,
+     "labels": 12,
+     "named": 12,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "schubert--symphony-3",
+   "house": "other/unknown",
+   "publisher": "SchubertComplete, I, 1884",
+   "composer": "schubert",
+   "pages": 49,
+   "seconds": 13.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 1.0,
+   "hit_staves": 13,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 13,
+     "labels": 13,
+     "named": 13,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "schubert--symphony-4",
+   "house": "other/unknown",
+   "publisher": "SchubertComplete, I, 1884",
+   "composer": "schubert",
+   "pages": 60,
+   "seconds": 13.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 16,
+   "hit_named": 8,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 16,
+     "labels": 8,
+     "named": 8,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "schubert--symphony-5",
+   "house": "other/unknown",
+   "publisher": "SchubertComplete, I, 1885",
+   "composer": "schubert",
+   "pages": 48,
+   "seconds": 12.9
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 28,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 28,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 28,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "schubert--symphony-8",
+   "house": "Breitkopf",
+   "publisher": "''Breitkopf & H\u00e4rtel's Partitur-Bibliothek'' (Part B. 154)|P",
+   "composer": "schubert",
+   "pages": 36,
+   "seconds": 15.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.9285714285714286,
+   "hit_staves": 14,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 14,
+     "labels": 13,
+     "named": 13,
+     "yield": 0.9285714285714286
+    }
+   ],
+   "work_id": "schubert--symphony-9",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1850, plate 7954",
+   "composer": "schubert",
+   "pages": 324,
+   "seconds": 8.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5294117647058824,
+   "hit_staves": 17,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 17,
+     "labels": 12,
+     "named": 9,
+     "yield": 0.5294117647058824
+    }
+   ],
+   "work_id": "schumann--cello-concerto",
+   "house": "other/unknown",
+   "publisher": "SchumannComplete, III: Concerte und Concertst\u00fccke f\u00fcr Orches",
+   "composer": "schumann",
+   "pages": 40,
+   "seconds": 14.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.9285714285714286,
+   "hit_staves": 14,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 14,
+     "labels": 13,
+     "named": 13,
+     "yield": 0.9285714285714286
+    }
+   ],
+   "work_id": "schumann--piano-concerto",
+   "house": "other/unknown",
+   "publisher": "SchumannComplete, III: Concerte und Concertst\u00fccke f\u00fcr Orches",
+   "composer": "schumann",
+   "pages": 93,
+   "seconds": 14.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.6190476190476191,
+   "hit_staves": 21,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 21,
+     "labels": 13,
+     "named": 13,
+     "yield": 0.6190476190476191
+    }
+   ],
+   "work_id": "schumann--piano-concerto",
+   "house": "other/unknown",
+   "publisher": "Shu-Yu Chang, 2019.",
+   "composer": "schumann",
+   "pages": 106,
+   "seconds": 8.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "schumann--symphony-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 8545",
+   "composer": "schumann",
+   "pages": 218,
+   "seconds": 14.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.9285714285714286,
+   "hit_staves": 14,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 14,
+     "labels": 13,
+     "named": 13,
+     "yield": 0.9285714285714286
+    }
+   ],
+   "work_id": "schumann--symphony-2",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, 1887, plate 7085",
+   "composer": "schumann",
+   "pages": 141,
+   "seconds": 313.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.6923076923076923,
+   "hit_staves": 13,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 13,
+     "labels": 13,
+     "named": 9,
+     "yield": 0.6923076923076923
+    }
+   ],
+   "work_id": "schumann--symphony-3",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, 1887, plate 7086",
+   "composer": "schumann",
+   "pages": 93,
+   "seconds": 7.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 1.0,
+   "hit_staves": 15,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 15,
+     "named": 15,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "schumann--symphony-4",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1891, plate Part.B. 159",
+   "composer": "schumann",
+   "pages": 91,
+   "seconds": 6.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8333333333333334,
+   "hit_staves": 18,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 18,
+     "named": 15,
+     "yield": 0.8333333333333334
+    }
+   ],
+   "work_id": "sibelius--finlandia",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1905, plate Part.B. 1781",
+   "composer": "sibelius",
+   "pages": 24,
+   "seconds": 14.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8888888888888888,
+   "hit_staves": 18,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 25,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 17,
+     "named": 16,
+     "yield": 0.8888888888888888
+    }
+   ],
+   "work_id": "sibelius--symphony-1",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1902, plate 30747/Part.B. 173",
+   "composer": "sibelius",
+   "pages": 160,
+   "seconds": 15.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.875,
+   "hit_staves": 16,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 16,
+     "labels": 16,
+     "named": 14,
+     "yield": 0.875
+    }
+   ],
+   "work_id": "sibelius--symphony-2",
+   "house": "Breitkopf",
+   "publisher": "(Breitkopf und H\u00e4rtel from 1905)",
+   "composer": "sibelius",
+   "pages": 143,
+   "seconds": 14.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.8,
+   "hit_staves": 15,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 12,
+     "named": 12,
+     "yield": 0.8
+    }
+   ],
+   "work_id": "sibelius--symphony-5",
+   "house": "other/unknown",
+   "publisher": "Wilhelm Hansen, Copenhagen, 1921, plate 17539",
+   "composer": "sibelius",
+   "pages": 134,
+   "seconds": 5.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.5,
+   "hit_staves": 18,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 18,
+     "labels": 12,
+     "named": 9,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "sibelius--symphony-7",
+   "house": "other/unknown",
+   "publisher": "Wilhelm Hansen, Copenhagen, 1925, plate 18658",
+   "composer": "sibelius",
+   "pages": 74,
+   "seconds": 11.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.4,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 25,
+     "labels": 16,
+     "named": 10,
+     "yield": 0.4
+    },
+    {
+     "page": 5,
+     "staves": 25,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 25,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 25,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "sibelius--the-swan-of-tuonela-op22-2",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel, Leipzig, 1901, plate K.F.W.48/Part.B. 16",
+   "composer": "sibelius",
+   "pages": 20,
+   "seconds": 20.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6,
+   "hit_staves": 20,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 15,
+     "named": 12,
+     "yield": 0.6
+    }
+   ],
+   "work_id": "sibelius--violin-concerto",
+   "house": "other/unknown",
+   "publisher": "Schlesinger (Lienau), Berlin, 1905, plate S. 9336",
+   "composer": "sibelius",
+   "pages": 65,
+   "seconds": 7.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7857142857142857,
+   "hit_staves": 14,
+   "hit_named": 11,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 16,
+     "labels": 1,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 14,
+     "labels": 13,
+     "named": 11,
+     "yield": 0.7857142857142857
+    }
+   ],
+   "work_id": "smetana--ma-vlast-jb-1-112",
+   "house": "Eulenburg",
+   "publisher": "P2, Eulenburg",
+   "composer": "smetana",
+   "pages": 496,
+   "seconds": 9.6
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    }
+   ],
+   "work_id": "smetana--prodana-nevesta-jb-1-100",
+   "house": "other/unknown",
+   "publisher": "SNKLHU, Prague, 1953, plate H. 1100}}<br>{{urtext",
+   "composer": "smetana",
+   "pages": 647,
+   "seconds": 3.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8260869565217391,
+   "hit_staves": 23,
+   "hit_named": 19,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 23,
+     "labels": 19,
+     "named": 19,
+     "yield": 0.8260869565217391
+    }
+   ],
+   "work_id": "smyth--the-wreckers",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 18684",
+   "composer": "smyth",
+   "pages": 50,
+   "seconds": 10.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7037037037037037,
+   "hit_staves": 27,
+   "hit_named": 19,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 27,
+     "labels": 26,
+     "named": 19,
+     "yield": 0.7037037037037037
+    }
+   ],
+   "work_id": "strauss--also-sprach-zarathustra",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, 1920, plate E.E. 3506",
+   "composer": "strauss",
+   "pages": 159,
+   "seconds": 10.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8260869565217391,
+   "hit_staves": 23,
+   "hit_named": 19,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 23,
+     "labels": 22,
+     "named": 19,
+     "yield": 0.8260869565217391
+    }
+   ],
+   "work_id": "strauss--don-juan",
+   "house": "other/unknown",
+   "publisher": "Jos. Aibl Verlag, Munich, plate R. 2640",
+   "composer": "strauss",
+   "pages": 96,
+   "seconds": 9.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.625,
+   "hit_staves": 24,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 24,
+     "labels": 21,
+     "named": 15,
+     "yield": 0.625
+    }
+   ],
+   "work_id": "strauss--don-quixote",
+   "house": "other/unknown",
+   "publisher": "Jos. Aibl Verlag, Munich, 1898, plate R. 2885",
+   "composer": "strauss",
+   "pages": 94,
+   "seconds": 11.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 28,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 28,
+     "labels": 22,
+     "named": 14,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "strauss--ein-heldenleben",
+   "house": "other/unknown",
+   "publisher": "F.E.C. Leuckart, Leipzig, 1899, plate F.E.C.L. 5200",
+   "composer": "strauss",
+   "pages": 139,
+   "seconds": 9.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.5,
+   "hit_staves": 18,
+   "hit_named": 9,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 12,
+     "named": 9,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "strauss--eine-alpensinfonie",
+   "house": "other/unknown",
+   "publisher": "F.E.C. Leuckart, Leipzig, 1915, plate F.E.C.L. 7529}}<br>''R",
+   "composer": "strauss",
+   "pages": 160,
+   "seconds": 7.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.5,
+   "hit_staves": 26,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 23,
+     "named": 13,
+     "yield": 0.5
+    }
+   ],
+   "work_id": "strauss--elektra",
+   "house": "other/unknown",
+   "publisher": "Adolph F\u00fcrstner, Berlin, 1916, plate A. 5650 5661 F",
+   "composer": "strauss",
+   "pages": 366,
+   "seconds": 9.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7307692307692307,
+   "hit_staves": 26,
+   "hit_named": 19,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 26,
+     "labels": 24,
+     "named": 19,
+     "yield": 0.7307692307692307
+    }
+   ],
+   "work_id": "strauss--till-eulenspiegels-lustige-streiche",
+   "house": "other/unknown",
+   "publisher": "Joseph Aibl, Munich, 1896, plate 2832",
+   "composer": "strauss",
+   "pages": 60,
+   "seconds": 10.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.6521739130434783,
+   "hit_staves": 23,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 23,
+     "labels": 22,
+     "named": 15,
+     "yield": 0.6521739130434783
+    }
+   ],
+   "work_id": "strauss--tod-und-verklarung",
+   "house": "other/unknown",
+   "publisher": "Josesph Aibl, Munich, 1891, plate 2676",
+   "composer": "strauss",
+   "pages": 90,
+   "seconds": 10.2
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.7222222222222222,
+   "hit_staves": 18,
+   "hit_named": 13,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 15,
+     "named": 13,
+     "yield": 0.7222222222222222
+    }
+   ],
+   "work_id": "stravinsky--petrushka",
+   "house": "other/unknown",
+   "publisher": "*",
+   "composer": "stravinsky",
+   "pages": 151,
+   "seconds": 6.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 8,
+   "hit_yield": 0.7586206896551724,
+   "hit_staves": 29,
+   "hit_named": 22,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 29,
+     "labels": 25,
+     "named": 22,
+     "yield": 0.7586206896551724
+    }
+   ],
+   "work_id": "stravinsky--the-firebird-ballet",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, 1911, plate 34920",
+   "composer": "stravinsky",
+   "pages": 180,
+   "seconds": 13.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.7692307692307693,
+   "hit_staves": 26,
+   "hit_named": 20,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 26,
+     "labels": 2,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 26,
+     "labels": 22,
+     "named": 20,
+     "yield": 0.7692307692307693
+    }
+   ],
+   "work_id": "tchaikovsky--1812-overture",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, 1882, plate 4592",
+   "composer": "tchaikovsky",
+   "pages": 73,
+   "seconds": 474.8
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.8888888888888888,
+   "hit_staves": 18,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 16,
+     "named": 16,
+     "yield": 0.8888888888888888
+    }
+   ],
+   "work_id": "tchaikovsky--piano-concerto-1",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, plate 2590",
+   "composer": "tchaikovsky",
+   "pages": 154,
+   "seconds": 7.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.95,
+   "hit_staves": 20,
+   "hit_named": 19,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 20,
+     "labels": 19,
+     "named": 19,
+     "yield": 0.95
+    }
+   ],
+   "work_id": "tchaikovsky--romeo-and-juliet-overture-fantasia",
+   "house": "Bote",
+   "publisher": "Ed. Bote & G. Bock, Berlin, 1881, plate 9325",
+   "composer": "tchaikovsky",
+   "pages": 111,
+   "seconds": 8.0
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.3333333333333333,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 5,
+     "named": 5,
+     "yield": 0.3333333333333333
+    },
+    {
+     "page": 2,
+     "staves": 14,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 15,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "tchaikovsky--serenade-for-string-orchestra",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, 1881, plate 4411",
+   "composer": "tchaikovsky",
+   "pages": 66,
+   "seconds": 25.8
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "tchaikovsky--swan-lake-ballet",
+   "house": "other/unknown",
+   "publisher": "(#535915)",
+   "composer": "tchaikovsky",
+   "pages": 642,
+   "seconds": 6.4
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.46153846153846156,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 26,
+     "labels": 13,
+     "named": 12,
+     "yield": 0.46153846153846156
+    },
+    {
+     "page": 8,
+     "staves": 26,
+     "labels": 13,
+     "named": 1,
+     "yield": 0.038461538461538464
+    },
+    {
+     "page": 12,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "tchaikovsky--symphony-1",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, 1875, plate 2519",
+   "composer": "tchaikovsky",
+   "pages": 123,
+   "seconds": 459.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7058823529411765,
+   "hit_staves": 17,
+   "hit_named": 12,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 17,
+     "labels": 17,
+     "named": 12,
+     "yield": 0.7058823529411765
+    }
+   ],
+   "work_id": "tchaikovsky--symphony-2",
+   "house": "Peters",
+   "publisher": "Bessel, St. Petersburg, 1881, plate 379",
+   "composer": "tchaikovsky",
+   "pages": 181,
+   "seconds": 8.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 1.0,
+   "hit_staves": 16,
+   "hit_named": 16,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 16,
+     "named": 16,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "tchaikovsky--symphony-4",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, plate 3376",
+   "composer": "tchaikovsky",
+   "pages": 226,
+   "seconds": 7.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.9523809523809523,
+   "hit_staves": 21,
+   "hit_named": 20,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 21,
+     "labels": 21,
+     "named": 20,
+     "yield": 0.9523809523809523
+    }
+   ],
+   "work_id": "tchaikovsky--symphony-5",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf & H\u00e4rtel, Leipzig, 1930, plate 30388/Part.B. 3347",
+   "composer": "tchaikovsky",
+   "pages": 164,
+   "seconds": 9.3
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7142857142857143,
+   "hit_staves": 21,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 21,
+     "labels": 16,
+     "named": 15,
+     "yield": 0.7142857142857143
+    }
+   ],
+   "work_id": "tchaikovsky--symphony-6",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part.B. 4959",
+   "composer": "tchaikovsky",
+   "pages": 159,
+   "seconds": 8.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 8,
+   "hit_yield": 0.8235294117647058,
+   "hit_staves": 17,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 8,
+     "staves": 17,
+     "labels": 14,
+     "named": 14,
+     "yield": 0.8235294117647058
+    }
+   ],
+   "work_id": "tchaikovsky--symphony-6",
+   "house": "Eulenburg",
+   "publisher": "Eulenburg, Leipzig, plate 3892",
+   "composer": "tchaikovsky",
+   "pages": 224,
+   "seconds": 8.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.7777777777777778,
+   "hit_staves": 18,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 18,
+     "labels": 18,
+     "named": 14,
+     "yield": 0.7777777777777778
+    }
+   ],
+   "work_id": "tchaikovsky--the-nutcracker-suite",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, 1892, plate 17668",
+   "composer": "tchaikovsky",
+   "pages": 120,
+   "seconds": 8.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 0.8181818181818182,
+   "hit_staves": 22,
+   "hit_named": 18,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 22,
+     "labels": 19,
+     "named": 18,
+     "yield": 0.8181818181818182
+    }
+   ],
+   "work_id": "tchaikovsky--the-sleeping-beauty-suite",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, plate 25237",
+   "composer": "tchaikovsky",
+   "pages": 89,
+   "seconds": 14.6
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.9333333333333333,
+   "hit_staves": 15,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 15,
+     "labels": 15,
+     "named": 14,
+     "yield": 0.9333333333333333
+    }
+   ],
+   "work_id": "tchaikovsky--violin-concerto",
+   "house": "other/unknown",
+   "publisher": "P. Jurgenson, Moscow, 1888, plate 3338",
+   "composer": "tchaikovsky",
+   "pages": 120,
+   "seconds": 6.4
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.75,
+   "hit_staves": 20,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 20,
+     "labels": 18,
+     "named": 15,
+     "yield": 0.75
+    }
+   ],
+   "work_id": "verdi--requiem",
+   "house": "Eulenburg",
+   "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 4864",
+   "composer": "verdi",
+   "pages": 285,
+   "seconds": 7.7
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.125,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 0,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 3,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 5,
+     "staves": 8,
+     "labels": 1,
+     "named": 1,
+     "yield": 0.125
+    },
+    {
+     "page": 8,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 12,
+     "staves": 10,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "vidal--178-basses",
+   "house": "other/unknown",
+   "publisher": "Univerzitet umetnosti u Beogradu, Belgrade",
+   "composer": "vidal",
+   "pages": 138,
+   "seconds": 11.4
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.0,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 29,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 3,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 26,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 28,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 28,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "wagner--die-meistersinger-von-nurnberg-wwv-96",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig",
+   "composer": "wagner",
+   "pages": 40,
+   "seconds": 28.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.875,
+   "hit_staves": 24,
+   "hit_named": 21,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 22,
+     "named": 21,
+     "yield": 0.875
+    }
+   ],
+   "work_id": "wagner--siegfried-idyll-wwv-103",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part.-B. 2426",
+   "composer": "wagner",
+   "pages": 21,
+   "seconds": 7.7
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.6086956521739131,
+   "hit_staves": 23,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 23,
+     "labels": 23,
+     "named": 14,
+     "yield": 0.6086956521739131
+    }
+   ],
+   "work_id": "wagner--tannhauser-wwv-70",
+   "house": "Peters",
+   "publisher": "C.F. Peters, Leipzig, 1920, plate 10352",
+   "composer": "wagner",
+   "pages": 415,
+   "seconds": 8.3
+  },
+  {
+   "acquired": false,
+   "best_yield": 0.21052631578947367,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 22,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 27,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 19,
+     "labels": 5,
+     "named": 4,
+     "yield": 0.21052631578947367
+    },
+    {
+     "page": 3,
+     "staves": 17,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 5,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 8,
+     "staves": 21,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 12,
+     "staves": 25,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    }
+   ],
+   "work_id": "wagner--tristan-und-isolde-wwv-90",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1860, plate 10000",
+   "composer": "wagner",
+   "pages": 439,
+   "seconds": 27.0
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.9333333333333333,
+   "hit_staves": 15,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 15,
+     "named": 14,
+     "yield": 0.9333333333333333
+    }
+   ],
+   "work_id": "weber--der-freischutz",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part. B. 1688",
+   "composer": "weber",
+   "pages": 41,
+   "seconds": 7.1
+  },
+  {
+   "acquired": true,
+   "hit_page": 2,
+   "hit_yield": 0.9333333333333333,
+   "hit_staves": 15,
+   "hit_named": 14,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 0,
+     "named": 0,
+     "reason": "too few staves"
+    },
+    {
+     "page": 2,
+     "staves": 15,
+     "labels": 15,
+     "named": 14,
+     "yield": 0.9333333333333333
+    }
+   ],
+   "work_id": "weber--oberon-j-306",
+   "house": "Breitkopf",
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate O.B. 4732",
+   "composer": "weber",
+   "pages": 22,
+   "seconds": 7.5
+  },
+  {
+   "acquired": true,
+   "hit_page": 0,
+   "hit_yield": 1.0,
+   "hit_staves": 15,
+   "hit_named": 15,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 18,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 2,
+     "staves": 16,
+     "labels": 0,
+     "named": 0,
+     "yield": 0.0
+    },
+    {
+     "page": 0,
+     "staves": 15,
+     "labels": 15,
+     "named": 15,
+     "yield": 1.0
+    }
+   ],
+   "work_id": "williams--fantasia-on-a-theme-by-thomas-tallis",
+   "house": "other/unknown",
+   "publisher": "Goodwin & Tabb, London, 1921",
+   "composer": "vaughan-williams",
+   "pages": 19,
+   "seconds": 14.9
+  },
+  {
+   "acquired": true,
+   "hit_page": 1,
+   "hit_yield": 0.875,
+   "hit_staves": 24,
+   "hit_named": 21,
+   "tried": [
+    {
+     "page": 1,
+     "staves": 24,
+     "labels": 24,
+     "named": 21,
+     "yield": 0.875
+    }
+   ],
+   "work_id": "williams--the-lark-ascending",
+   "house": "other/unknown",
+   "publisher": "Oxford University Press, London, 1925",
+   "composer": "vaughan-williams",
+   "pages": 24,
+   "seconds": 8.0
+  }
+ ]
+}

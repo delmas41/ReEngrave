@@ -155,6 +155,13 @@ Output schema (JSON):
                   },
                   "time_signature": {"numerator": 4, "denominator": 4, "raw": "4/4"},
                                             # null if no time-sig markers seen
+                  "group_index": 0,         # bracket block within the system
+                                            # (winds | brass | strings). The
+                                            # PAGE's own family grouping.
+                                            # ⚠️ PRECISE BUT UNDER-RECALLED
+                                            # (22/22 precise, 22/39 recalled):
+                                            # anchor a family boundary where
+                                            # present, ABSTAIN where absent.
                   "staff_geometry": {       # the five lines every geometric
                                             # reading above was measured
                                             # against. null when the staff was
@@ -4220,6 +4227,25 @@ def transcribe(
                     "time_signature": None,
                     # The lines every reading above was measured against.
                     "staff_geometry": _staff_geometry(staff_obj),
+                    # The bracket block this staff sits in, as `staff_detector`
+                    # grouped it — the PAGE's own statement of family grouping,
+                    # and the only one that needs no lexicon and no template.
+                    #
+                    # It lived on the `Staff` dataclass and never reached the
+                    # dict, so every consumer downstream of a transcription saw
+                    # 0 of 396 staves carrying it
+                    # (`benchmarks/omr-staff-identity-layer-2026-09/
+                    # probe_relational_context.py`). Emitting it is additive:
+                    # nothing reads it yet, and a staff whose block could not be
+                    # determined serialises `None` rather than a guess.
+                    #
+                    # ⚠️ Measured properties a consumer must respect: bracket
+                    # blocks are PRECISE and UNDER-RECALLED (22/22 precise,
+                    # 22/39 recalled; family purity 0.872 within-block against
+                    # 0.039 page-wide). So they may ANCHOR a family boundary
+                    # where present and must ABSTAIN where absent — never
+                    # assign.
+                    "group_index": getattr(staff_obj, "group_index", None),
                     "n_measures": len(staff_cells),
                     "measures": [],
                 }

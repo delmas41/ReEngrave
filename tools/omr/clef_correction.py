@@ -479,6 +479,23 @@ def veto_implausible_clef_changes(
     prior), and the recorded rule stands: position-deduced identity must not
     drive clef correction.
 
+    ⚠️ THAT PREDICTION WAS CONFIRMED INDEPENDENTLY, TWICE OVER, IN 2026-09.
+    A held-out identity arm — margin labels hidden, prediction from clef and
+    score order alone — reproduced this exact failure without knowing the
+    sentence above existed: **Viola read as Violin, three times**, the largest
+    single error family it produced
+    (`benchmarks/omr-staff-identity-layer-2026-09/probe_heldout_identity.py`).
+    And when a score-order identity supply was admitted to the UNGATED fill
+    path next door, it regressed a row by NAMING a staff wrongly rather than
+    abstaining (`price_clef_consumer.py`, mahler p5 +2 edits). A wrong derived
+    identity is not merely uncertain: where the score-order prior is wrong, the
+    truth is in its candidate set only 20% of the time, so it is confidently
+    elsewhere. **Do not widen this gate on the strength of a precision figure
+    alone** — precision is not what makes an override safe, calibration at the
+    threshold is, and no calibrated probability exists for this yet
+    (`probe_calibration.py`: neither P(name) nor P(set) calibrates, and the top
+    bin promises 0.989 while delivering 0.692).
+
     Returns one record per staff acted on.
     """
     records: list[dict[str, Any]] = []
