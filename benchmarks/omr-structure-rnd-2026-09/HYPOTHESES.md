@@ -180,41 +180,69 @@ at precision 0.500. Anything less is that coin flip again.
 
 ### ⚠️ MEASURED 2026-09-05, BEFORE BUILDING: H1 AS WRITTEN IS REFUTED
 
-`probe_reference_roster.py`, over the 20-row set. **The exact denominators,
-which my first report got wrong:** 20 rows — **8** where the ordinal join
-succeeds (not 7), **3** where it refuses, **9** single-system. 11 multi-system
-rows, not 4; that figure came from the older 11-row `..graft09` set.
+`probe_reference_roster.py`, `probe_union_guards.py`, over the 20-row set. No
+detector time.
 
-**On all 8 succeeding rows the slot join is IDENTICAL to the ordinal join** —
-every system reads `0,1,2,…,n−1`, **including both Beethoven p4 rows.** The
-aligner does not see the mis-join. There is nothing to cross-tabulate.
+#### OBSERVED — and this alone closes H1
 
-**Why, derived from the fixture rather than guessed.** `label_tiers` on
-`984073-p4` records **13 labels over 22 staff positions**, `unresolved_labels`
-empty, `ambiguous_labels_resolved: 1`. Thirteen is exactly 6 + 6 + 1 — the
-labels workstream's own reading, positions 0–5 named identically in both systems
-plus `Tp.` at system 2 position 6 and **nothing at system 1 position 6**. So:
+**On all 8 rows where the ordinal join succeeds, the slot join is IDENTICAL to
+it** — every system reads `0,1,2,…,n−1`, **including both Beethoven p4 rows.**
+The aligner does not see the mis-join. There is nothing to cross-tabulate, so
+the pre-registered kill criterion cannot even be evaluated. **H1 is closed
+empirically; nothing further is needed to close it.**
 
-1. `build_reference` picks **one system** as the roster, breaking ties by "most
-   resolved labels" — system 2 has 7, system 1 has 6, so **system 2 wins and
-   slot 6 is `Timpani`**;
-2. system 1 then aligns against it. Its position 6 carries **no label**, and
-   `SCORE_LABEL_CONFLICT` requires **both** sides to be named. **A staff that
-   prints nothing is silent, not contradictory** — so no conflict is available,
-   group and position scores decide, and the DP takes the diagonal.
+#### INFERRED — the mechanism, which is NOT measured and must not be quoted as if it were
 
-> ⚠️ **The aligner is structurally incapable of detecting a mis-join caused by
-> staff SUPPRESSION, and suppression is the only thing that causes one.** Its
-> single hard negative needs two names to contradict; the suppressed staff is by
-> construction the one with no name. This is not a threshold to tune.
+`label_tiers` on `984073-p4` records **13 labels over 22 staff positions**,
+`unresolved_labels` empty, `ambiguous_labels_resolved: 1`. Thirteen is exactly
+6 + 6 + 1 — matching the labels workstream's reading, positions 0–5 named
+identically in both systems plus `Tp.` at system 2 position 6 and nothing at
+system 1 position 6. From that plus the code's documented behaviour:
 
-⚠️ **Status of that derivation: ARITHMETIC + documented behaviour, not
-observed.** The transcription retains the resolved instrument, never the raw
-margin string, so the per-staff label dict `slots.align` actually received is
-not on disk. The one probe that would confirm it is a re-run of the label ladder
-dumping `labels_per_page`; it needs OCR time and has not been run. The `13 =
-6+6+1` arithmetic agrees with three independent prior readings, which is
-corroboration and — by this document's own reframe — **not proof.**
+1. `build_reference` picks **one system** as the roster, ties going to "most
+   resolved labels" — so system 2 (7) beats system 1 (6) and slot 6 is
+   `Timpani`;
+2. system 1's position 6 carries **no label**, and `SCORE_LABEL_CONFLICT`
+   requires **both** sides named. **A staff that prints nothing is silent, not
+   contradictory** — no conflict is available, group and position decide, and
+   the DP takes the diagonal.
+
+> ⚠️ **STATUS: ARITHMETIC + DOCUMENTED BEHAVIOUR. NOT OBSERVED. DO NOT PROMOTE
+> THIS TO A MEASURED RESULT IN ANY LATER SUMMARY.** The transcription retains
+> the resolved instrument, never the raw margin string, so the per-staff label
+> dict `slots.align` actually received is not on disk. Three independent
+> readings agreeing is **corroboration**, and this document's own reframe says
+> corroboration is not proof.
+>
+> The confirming probe — re-run the ladder, dump `labels_per_page` — is
+> **named and deliberately UNRUN**, at the coordinator's direction: H1′ does not
+> depend on it, and the time is better spent on H1′ than on proving why a dead
+> hypothesis is dead.
+
+---
+
+## ⚠️ THE CORRECTED CENSUS — put here so a later reader finds it
+
+**My first report said 7 succeeding rows and 4 multi-system rows. Both were
+wrong**, and both came from the older **11-row `..graft09`** set in the main
+checkout rather than the **20-row gate**, which lives ONLY in
+`.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/`,
+suffix `.reconciliation.omr.json`. This is the third time in one day that this
+repo has hit that exact trap. Regenerate with `probe_union_guards.py`.
+
+| | count |
+|---|--:|
+| rows | **20** |
+| staves | **396** |
+| multi-system rows | **11** |
+| ordinal join SUCCEEDS (H1/H1′ test set) | **8** |
+| ordinal join REFUSES (slot-stitch territory) | **3** |
+| single-system (continuity silent) | **9** |
+| rows with **more than two** systems | **0** |
+
+⚠️ That last row is a real limit on anything measured here: every multi-system
+row on this corpus has **exactly two** systems, so a progressive multi-system
+union can only ever be exercised two-at-a-time.
 
 ### H1′ — the surviving form: build the roster as a UNION over systems
 
@@ -228,11 +256,41 @@ reference side, so each system simply gaps the slot it does not print. **Only
 `build_reference` changes.** Paired with H7 (a "this staff prints nothing"
 field) the silent case becomes an *informative* one.
 
-⚠️ Its own risk, stated in advance: a union roster is longer than any observed
-system, so `_looks_merged` and `REFERENCE_MAX_SIZE_RATIO` — guards written to
-stop a *merged* system becoming a 24-slot roster on Beethoven 9 — are exactly
-what a union roster resembles. Any union must be reconciled with those guards,
-not bolted past them.
+#### The guard check, run FIRST — `probe_union_guards.py`
+
+A guard written for one reason and firing for another is how the tenor symmetry
+floor and the cap-at-2 both went wrong, so this was checked before anything was
+measured.
+
+**Finding: the guards target a different OBJECT, and a union does not trip
+them — provided the union is taken over the already-filtered candidate pool.**
+
+* `REFERENCE_MAX_SIZE_RATIO` and `_looks_merged` both filter **candidate
+  systems** — they decide which *observed* system may become the roster. Their
+  stated purpose is a **phase-1 segmentation failure**: a merged "system" that
+  is two systems concatenated, ~2× its neighbours, which on Beethoven 9 became
+  a 24-slot reference listing Flute..Trumpet twice.
+* A union roster is **not a candidate system**. It is constructed *after*
+  filtering. So the guards keep doing exactly their job, unchanged, upstream of
+  the union.
+* Measured: on **0 of 20 rows** does a union's lower bound (the largest system)
+  exceed the 2× median cap. The legitimate union on p4 is **12 against a max of
+  11** — plus one, nowhere near a doubling.
+
+⚠️ **The residual risk is real and is recorded rather than dismissed.**
+`_looks_merged` is label-based and is documented as **blind without labels** —
+"a 24-staff concatenation of two 12-staff systems slipped through and became a
+24-slot reference of entirely unlabelled parts". If a merged system survives
+into the pool, a union incorporates its duplicated staves and inflates the
+roster. That harm is comparable to today's (where the merged system simply *is*
+the roster), not new — but it is not removed either.
+
+**One thing the union form makes AVAILABLE that a single-system roster cannot
+have:** a union whose size exceeds the largest observed system by more than a
+small margin is itself evidence of a bad merge or a bad correspondence — a
+self-check with no analogue today. ⚠️ Any such bound must be **read off measured
+data, not chosen**; it is named here as an opportunity, and is not a proposed
+constant.
 
 **Worth if true:** the only position-independent mis-join detector with a
 credible substrate; closes the class-6 case that three methods found and none
