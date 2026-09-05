@@ -1237,20 +1237,20 @@ re-measured, so the paragraph can never state an 11-work default beside a 3-work
 variant.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `bc58defb`: **pooled 0.1176 / 2473 edits** over 11 works (Mahler 5 0.0220 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10365 predicted symbols. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1268 / 2643**, measured on `bc58defb`.
+Current on the engraved orchestral benchmark, measured on `c378412f`: **pooled 0.1125 / 2367 edits** over 11 works (Mahler 5 0.0209 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10380 predicted symbols. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1268 / 2643**, measured on `bc58defb`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler 5 | 0.0220 | 42 | 0.917 | 0.917 | 1.000 |
+| Mahler 5 | 0.0209 | 40 | 0.917 | 0.917 | 1.000 |
 | Beethoven 5 | 0.0332 | 43 | 1.000 | 1.000 | 1.000 |
 | Tchaikovsky 4 | 0.0444 | 69 | 0.925 | 0.925 | 1.000 |
 | Bruckner 5 | 0.0931 | 185 | 0.962 | 0.962 | 1.000 |
+| Brahms 1 | 0.0943 | 390 | 0.956 | 0.955 | 0.992 |
 | Mozart 41 | 0.1025 | 301 | 0.991 | 0.991 | 0.947 |
-| Brahms 1 | 0.1186 | 490 | 0.956 | 0.955 | 0.992 |
 | Beethoven 3 | 0.1294 | 215 | 0.975 | 0.975 | 1.000 |
 | Mozart 40 | 0.1415 | 218 | 0.762 | 0.762 | 0.952 |
-| Tchaikovsky 6 | 0.1888 | 270 | 0.756 | 0.747 | 0.985 |
-| Brahms 4 | 0.2138 | 401 | 0.959 | 0.943 | 0.933 |
+| Tchaikovsky 6 | 0.1855 | 266 | 0.756 | 0.747 | 0.985 |
+| Brahms 4 | 0.2136 | 401 | 0.959 | 0.943 | 0.933 |
 | Dvorak 9 | 0.3380 | 239 | 0.975 | 0.975 | 1.000 |
 <!-- accuracy:end -->
 
