@@ -1,0 +1,183 @@
+# Choir-grouped system layouts — why the Bach Brandenburg 3 page shatters, and a flag-gated candidate
+
+2026-09-04, branch `claude/bach-choir-grouping` (off `0487be1f`). The scan
+benchmark's stress row (`bach-brandenburg3-mvt1-468678-p1`, works.json
+`pooled: false`) reads a true 2-systems-of-12 page as **6 "systems"**
+(12 / 3 / 3 / 3 / 1 / 2) and **122 measure-cells against a true 10** —
+OMR-NED 0.9241 / 6735 edits on the graft weights
+(WIDENED_BASELINE_2026-09-04.md). Structural charges are the row's whole
+score, and the fragments align exactly with the instrument choirs
+(3 Violini / 3 Viole / 3 Violoncelli / Contrabasso / Cembalo pair), so the
+question this benchmark answers: **is this a layout family the grouping rule
+does not understand, and what exactly fails?**
+
+Everything below is measured on the actual page ink
+(`probe_bach_gaps.py` → `probe_bach_gaps.json`; page rendered at the
+pipeline's own 600 dpi, 4682×6554, 24 staves found, spacing median 22.75 px —
+"sp" below means staff spaces).
+
+## Phase 1 — diagnosis
+
+### 1. The engraving really is choir-barred: interior barlines stop at choir edges
+
+Full-width crossing profiles (same 0.8-coverage test and 0.6 sp closing as
+`gap_bridging_counts`, scanned over the whole page width) per adjacent-staff
+gap. Interior barlines live at x ≈ 1170 / 1985 / 2795 / 3605 / 4460
+(system 1) and ≈ 1160 / 1980 / 2790 / 3620 / 4458 (system 2):
+
+| gap | pair | kind | interior-barline columns crossing? | what crosses instead |
+|---|---|---|---|---|
+| 2 | Vni III → Vle I (sys 1) | choir edge | **none** | left-edge complex only (x 816–845) |
+| 5 | Vle III → Vc I (sys 1) | choir edge | **none** | x 812–843 |
+| 8 | Vc III → Cb (sys 1) | choir edge | **none** | x 814–841 |
+| 9 | Cb → Cembalo RH (sys 1) | block edge | **none** | x 836–843 only (8 columns) |
+| 14 | Vni III → Vle I (sys 2) | choir edge | **none** | x 198–227 (18 columns) |
+| 17 | Vle III → Vc I (sys 2) | choir edge | **none** | x 196–225 (22) |
+| 20 | Vc III → Cb (sys 2) | choir edge | **none** | x 198–225 (18) |
+| 21 | Cb → Cembalo RH (sys 2) | block edge | **none** | x 222–227 only (6) |
+| 12, 13, 15, 16, 18, 19, 22 | within-choir (sys 2) | — | **yes** (every bar position) | plus the left-edge complex |
+
+So the layout convention is real: **this Peters engraving draws every
+interior barline per choir** — through the three violins, through the three
+violas, through the celli, through the Cembalo pair — and through nothing
+between. Both systems are barred this way (system 1's choir gaps 2/5/8/9 have
+no interior crossings either).
+
+### 2. But the page still carries a system-spanning signal, at raw coverage 1.0
+
+Zoomed inspection of the left edge (`bach_gap14_zoom` crop; raw per-column
+coverage measured in the gap bands) — three vertical rules stand at the left
+of every system, listed left → right with system-2 x-positions (system-1
+counterparts in parentheses):
+
+| rule | x (sys 2) | (sys 1) | spans |
+|---|---|---|---|
+| per-choir rule at the staff start | 182–187 | (798–803) | its own choir only |
+| thick string-block bracket | 200–211 | (820–831) | Vni I through Cb — crosses the three choir gaps, stops at the Cembalo |
+| thin **systemic barline** | 222–227 | (840–847) | **every gap of the system, Cb → Cembalo included** — raw coverage 0.95–1.00 |
+
+The connectivity rule's premise — "every gap inside a system is crossed by
+ink" — **holds on this page**. Nothing about choir-barring needed a new kind
+of evidence.
+
+### 3. What fails is the scan WINDOW: the page-median anchor on a bimodally-indented page
+
+`_robust_x_window` anchors the wide scan window on the **median `x_start`
+across the page's staves**, by design robust to single broken staves. This
+page's `x_start`s are **bimodal**, not outlier-contaminated: system 1 is
+indented for full instrument names (x_start 792–836, twelve staves), system 2
+is full-width (178–200, twelve staves). The median, 450, lands in the empty
+land between the modes, and the window becomes **[359, 4554]**:
+
+- system 1's left-edge complex (798–847) is **inside** the window → its choir
+  gaps read wide counts 20–68 (all of it left-complex columns) → **system 1
+  held**;
+- system 2's left-edge complex (178–227) is **outside** the window → its
+  choir gaps read **wide = 0** → four breaks, exactly at gaps 14 / 17 / 20 /
+  21 → **3 / 3 / 3 / 1 / 2**.
+
+Per-gap evidence (`wide` = shipped `gap_bridging_counts`; `full` = same test
+over the whole width):
+
+```
+[11] s11->s12  gap 9.4sp  wide=0  full=0    <- the TRUE system break: nothing crosses, anywhere
+[14] s14->s15  gap 7.3sp  wide=0  full=18   <- bracket+barline cross at x 198-227, window starts at 359
+[17] s17->s18  gap 7.3sp  wide=0  full=22
+[20] s20->s21  gap 7.1sp  wide=0  full=18
+[21] s21->s22  gap 9.2sp  wide=0  full=6    <- systemic barline only (the bracket stops at Cb)
+```
+
+Gap size confirms it cannot be the discriminator here (the design's original
+point): the true break is 9.4 sp while *within-system* gaps run up to 9.3 sp
+(sys 1 Cb→Cembalo) and 10.3 sp (the Cembalo pair's own internal gap, held
+together by its own barlines).
+
+**Cue A (`OMR_LEFT_EDGE_SPLIT`) is inert here, for the same root cause**: its
+narrow band is anchored on the same poisoned median (band [404, 552] — empty
+land), every gap reads left = 0, and its gate fails 0/18. It did not cause
+the shatter; it also cannot see anything on this page.
+
+Failure classification, in the assignment's terms: **(c)** — the choir-barred
+convention is real (a layout family, not a freak), but the rule already owns
+the right signal for it; the defect is the **page-global window anchor**,
+which assumes indentation is unimodal. On pages whose interior barlines are
+drawn through the whole system, a poisoned window is masked (interior
+barlines sit mid-page, inside any window) — which is why the engraved
+benchmark and the other ten scan rows never see this. The family that
+shatters = choir-barred interior barlines × per-system indentation
+difference. A fully choir-barred page with *uniform* indentation is fine
+under the current rule (its left complex sits at the median).
+
+### 4. The secondary failure: 122 measure-cells, mechanically
+
+Once grouping broke, each fragment vets barline candidates on its own:
+
+- **3-staff fragments** (Vni, Vle, Vc): vote threshold is n−1 = 2, and in
+  this tutti the parts share one rhythm, so stem columns align across the
+  fragment and pass the vote. None of them crosses the two inter-staff gaps,
+  so `barlines_cross_gaps` reads `n_connected*2 >= len(vote_passed)` false →
+  **open-score mode** (the adaptive rule for one-staff-per-voice engravings,
+  measure_extractor.py) → the votes stand alone → every aligned stem column
+  is a "barline". Measured widths of the resulting "bars" on staff 12:
+  69–140 px ≈ one beat, against ~810 px true bars → **28 / 29 / 25** cells.
+- **1-staff fragment** (Cb): `_intersystem_connectivity` returns 1.0 for
+  single-staff systems by construction → vote-only → **24** cells.
+- **2-staff fragment** (Cembalo): both staves must agree; **10** cells.
+- The intact system 1 reads **6** (one spurious split at x=1518 inside
+  printed bar 1 — a pre-existing, unrelated defect of the barline layer).
+
+6+28+29+25+24+10 = **122**. No new mechanism: fragments lack the height that
+makes the connectivity vet discriminate, which is the regime the vote tiers
+were built for. Fixing the grouping fixes this wholesale.
+
+### 5. What a candidate cue would see (measured on this page)
+
+A **pair-local left band** — the cue-A band geometry
+(−2.0 / +4.5 sp, the measured plateau for where the left-edge complex sits
+relative to `x_start`) but anchored at `min(upper.x_start, lower.x_start)`
+of the pair itself rather than the page median:
+
+```
+wrongly-broken gaps:  [14]=18  [17]=22  [20]=18  [21]=6   columns crossing
+the true break:       [11]=0
+```
+
+Clean separation on this page, including the weakest rescue (the Cembalo
+gap, whose only witness is the 6-px systemic barline). Fail-safe behavior
+observed at gap 2 (sys 1): staff 2's `x_start` is broken leftward (700
+against its neighbours' ~792), the anchor follows it, the band misses the
+complex and reads 0 — which merely declines to rescue a gap that was never
+broken. A mis-anchored band can only *fail to merge*, never split.
+
+## Phase 2 — the candidate rule (`OMR_CHOIR_GROUPING`, default OFF)
+
+**Cue B — pair-local left-edge merge**, `tools/omr/system_grouping.py`, the
+mirror of cue A and additive in the opposite direction (merge-only, as cue A
+is split-only):
+
+> A gap the wide rule broke for lack of evidence (`bridging == 0`, x-overlap
+> intact) is re-examined in a narrow band anchored at the PAIR's own shared
+> left edge. If near-solid columns cross the whole gap there — the system
+> bracket or systemic barline, the same physical objects cue A reads the
+> absence of — the break is cancelled.
+
+Design properties, in the house terms:
+
+- **Union-only**: it can only merge gaps the wide rule broke; it cannot
+  split, cannot touch multi-column breaks (x-overlap ≤ 0.5 is excluded),
+  and a band that finds nothing changes nothing — flag ON is byte-identical
+  on any page where it never fires.
+- **Constants are inherited, not tuned**: the band geometry (−2.0/+4.5 sp)
+  and the 0.8-coverage / 0.6-sp-closing test are cue A's, measured in
+  `benchmarks/omr-system-grouping-2026-09/fix/PHASE1_RESULTS.md` (flat for
+  RIGHT ≥ 3) — the same physical object measured from the other side. The
+  min-crossing threshold is read off the probe population (below).
+- **Order**: cue B runs before cue A, so cue A retains the last word on
+  splits at the left edge where its gate passes — a wrong cue-B merge on a
+  page with a healthy left-barline population is re-splittable by cue A.
+- `bridging[]` is left untouched, so `_assign_groups` sees 0 at the merged
+  gaps and marks them group boundaries — which is the true structure
+  (choirs are bracket groups of one system).
+
+Guard results land in this file as they are measured; nothing in this
+section asserts an outcome that has not been run yet.
