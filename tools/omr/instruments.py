@@ -95,6 +95,46 @@ class Instrument:
     aliases: tuple[str, ...] = field(default_factory=tuple)
 
 
+# A CONTRABASSOON IS PRINTED AS A BASSOON NAME WITH A CONTRA- QUALIFIER, and
+# the two halves vary independently — four languages of noun (fagotto / fagott /
+# basson / bassoon, each with its own plural and abbreviation) against four
+# languages of qualifier plus the abbreviations a crowded margin actually uses
+# ("C. Fag.", "Cfg.", "Cont. Fag."). The spellings are therefore a CROSS
+# PRODUCT, and hand-listing it covered six of the two dozen a real score prints.
+#
+# That is not a cosmetic shortfall. The missing spellings do not ABSTAIN — the
+# bassoon noun inside them matches on its own and the qualifier is ignored, so
+# `Contra-Fagott` and `Cont. Fag.` read as **Bassoon**, and `C. Fagotto` as
+# Bassoon at HIGH confidence, which is enough to pin a staff to the wrong part
+# in `dossier.join_parts_to_slots`. It is the same failure the `C. Fag.` comment
+# below already records, one spelling at a time.
+#
+# So the set is DERIVED from the bassoon's own aliases, the move
+# `VOICE_QUALIFIERS` makes for the same reason: a hand-list of a cross product
+# is a bug with a slow fuse. This does NOT loosen matching — every generated
+# string still has to appear in the label, word-bounded, exactly. It completes
+# the vocabulary; it does not widen the gate.
+#
+# The prefixes are only the ones real scores print. `ctr`/`ktr` are plausible
+# and unevidenced, so they are left out rather than guessed at.
+_BASSOON_ALIASES = ("bassoon", "bassoons", "fagotto", "fagotti", "fagott",
+                    "fagotte", "basson", "bassons", "fag", "fg")
+
+_CONTRA_PREFIXES = ("contra", "kontra", "contre", "cont", "kont", "double",
+                    "c", "k")
+
+#: Both spacings, because normalization keeps the space a printed "C. Fag."
+#: leaves behind while "Cfg." has none. Order does not matter — `_ALIAS_INDEX`
+#: sorts every alias longest-first, which is what makes a generated
+#: "contrafagott" beat the plain "fagott" inside it.
+_CONTRA_ALIASES: tuple[str, ...] = tuple(dict.fromkeys(
+    prefix + sep + stem
+    for prefix in _CONTRA_PREFIXES
+    for stem in _BASSOON_ALIASES
+    for sep in ("", " ")
+))
+
+
 # Aliases are matched after normalization (accents stripped, lowercased,
 # punctuation and part numbers removed), so "Flöten" -> "floten", "Fl." -> "fl".
 INSTRUMENTS: tuple[Instrument, ...] = (
@@ -126,16 +166,14 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                aliases=("bass clarinet", "clarinetto basso", "bassklarinette",
                         "clarinette basse", "b cl", "bcl")),
     Instrument("Bassoon", "woodwind", "bass", (34, 72), 0, 0,
-               aliases=("bassoon", "bassoons", "fagotto", "fagotti", "fagott", "fagotte",
-                        "basson", "bassons", "fag", "fg")),
+               aliases=_BASSOON_ALIASES),
+    # `_CONTRA_ALIASES` regenerates every spelling that used to be hand-listed
+    # here — including "c fag" beside the closed-up "cfag", the pair whose
+    # absence once read a contrabassoon as a BASSOON. `contraf` is kept
+    # separately because it is a TRUNCATION rather than qualifier-plus-noun, so
+    # no cross product produces it.
     Instrument("Contrabassoon", "woodwind", "bass", (22, 60), -12, 0,
-               aliases=("contrabassoon", "double bassoon", "contrafagotto",
-                        "contrafagotte", "kontrafagott", "contrebasson",
-                        # "c fag" as printed, beside the closed-up "cfag":
-                        # normalization keeps the space, so "C. Fag." missed and
-                        # the contrabassoon read as a BASSOON.
-                        "cfag", "kfag", "c fag",
-                        "contraf")),                 # Mahler: "Contraf."
+               aliases=_CONTRA_ALIASES + ("contraf",)),   # Mahler: "Contraf."
     Instrument("Saxophone", "woodwind", "treble", (49, 89), None, 3,
                aliases=("saxophone", "saxophon", "sax", "sassofono")),
     # Boulanger scores one; without it "Bass Sarrusophone" resolves on the word
@@ -145,7 +183,14 @@ INSTRUMENTS: tuple[Instrument, ...] = (
 
     # ── brass ──────────────────────────────────────────────────────────────
     Instrument("Horn", "brass", "treble", (41, 77), None, 1,
-               aliases=("horn", "horns", "corno", "corni", "horner", "cor", "cors", "hn")),
+               # "hr" is the German/English abbreviation (Hörner) — safe as a
+               # bare 2-letter alias because the word-boundary index refuses a
+               # letter on either side, so it cannot fire inside "hrf" (Harp)
+               # or any other alias. Measured 2026-09-03 over 1422 real margin
+               # labels: 16 hits, all Brahms 1 / Breitkopf horn staves, 0
+               # collisions with anything else.
+               aliases=("horn", "horns", "corno", "corni", "horner", "cor", "cors",
+                        "hn", "hr")),
     # NOT "tp": in the German/Italian orchestral convention these scores use,
     # "Tr." is Trombe (trumpets) and "Tp." on the staff below it is Timpani —
     # measured on Beethoven 1 (imslp-00074 p40), whose system reads
@@ -158,8 +203,13 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # table still has to name one instrument, and names the reading that is
     # right when the prior has no opinion.
     Instrument("Trumpet", "brass", "treble", (52, 84), None, 2,
+               # "trpt" is a distinct 4-letter abbreviation from "tpt" above —
+               # not a typo of it, a different printed shorthand ("Trpt." on
+               # Brahms 1 / Breitkopf) — and unambiguous: 0 collisions over
+               # every alias in this table and over 1422 real margin labels,
+               # where it fires only on that edition's trumpet staves.
                aliases=("trumpet", "trumpets", "tromba", "trombe", "trompete", "trompeten",
-                        "trompette", "trompettes", "tr", "tpt", "clarino", "clarini",
+                        "trompette", "trompettes", "tr", "tpt", "trpt", "clarino", "clarini",
                         "tromp")),                   # Mahler: "B-Tromp."
     # `Tr.` is Trombe AND Tromboni, and one page prints both: Beethoven 5
     # (IMSLP984073) p.47 reads `Tr.` over the trumpets and, four staves below,
@@ -377,12 +427,31 @@ _ALIAS_INDEX: tuple[tuple[str, Instrument], ...] = tuple(
 )
 
 
-# Characters OCR routinely swaps on printed score margins. Only the
-# unambiguous families: the i/l/1 stroke group and o/0. Deliberately NOT c/e —
-# folding those would merge distinct instrument names.
+# Characters OCR routinely swaps on printed score margins. Only the RARE
+# confusions: the i/l/1 stroke group, o/0, and v/y. A fold is applied to both
+# the alias and the candidate and then matched as a word-bounded substring, so
+# it is safe only where the folded character does not distinguish real
+# instrument names — which is why the SET is deliberately small.
+#
+# `y -> v` is the one added after the others (a printed "Violino II." read as
+# "Yiolino II.", surfaced 2026-09-02 in labelling). It is safe for the same
+# reason the stroke group is: `y` is rare in the vocabulary — only `tympani`
+# and `xylophone` carry one, and both resolve on the EXACT pass before the fold
+# ever runs — so folding it collides with nothing. Measured: zero collisions
+# over all 260 aliases and every margin-label corpus truth string, and it
+# resolves the whole V->Y family (Yiolino/Yiola/Yioloncello/Yni).
+#
+# Deliberately NOT the COMMON-letter confusions — c/e, a/u, b/h, n/m. Folding
+# those merges distinct names and widens what garbage resolves, and a wrong
+# resolution PINS a staff to the wrong part (`dossier.join_parts_to_slots`
+# pins on any unambiguous alias, folded or not). The cost is real and specific:
+# the margin corpora's own unrecovered reads `Oh.`->`Ob.` and `Fug.`->`Fag.`
+# would need exactly b/h and a/u, and are left unread rather than bought at that
+# price. See benchmarks/omr-margin-labels-2026-08/OCR_CONFUSIONS_2026-09-02.md.
 _OCR_FOLD = str.maketrans({
     "l": "i", "1": "i", "|": "i", "!": "i", "}": "i", "{": "i", "]": "i", "[": "i",
     "0": "o",
+    "y": "v",
 })
 
 
