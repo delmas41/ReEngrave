@@ -60,8 +60,12 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   same corpus) and its clef item **re-framed**: KC-3 showed `clef_correction`'s
   FILL path reaches 34 of 396 staves because it fires only where no clef was
   read, so the reachable question is the OVERRIDE gate, whose
-  `sources.get(slot) == "label"` conjunct is unsatisfiable on scans. A conjunct
-  swap, not a score.
+  `sources.get(slot) == "label"` conjunct is unsatisfiable on scans. ⚠️ The
+  "just swap the conjunct" framing was WITHDRAWN the same day on merging with
+  Sean's own handoff, which carries held-out evidence that the label gate earns
+  its keep; what survives is that `clef_register_warning` names no instrument
+  and so does not carry that hazard — and that its REACH must be measured
+  before its accuracy.
 - Written at a path another agent can be pointed at:
   [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
 

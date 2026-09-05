@@ -1212,7 +1212,13 @@ clef item is re-framed — KC-3 showed `clef_correction`'s FILL reaches only 34 
 documented ceiling is clefs read WRONG. The reachable question is the OVERRIDE
 gate (`clef_correction.py:594-601`), whose `sources.get(slot) == "label"`
 conjunct is unsatisfiable on scans — and `clef_register_warning` needs no label.
-A conjunct swap, not a score. Cross-session note, written for another agent to
+⚠️ **That last step is a REACH question, not a scoring one, and the framing
+"just swap the conjunct" was withdrawn on 2026-09-05**: the label conjunct has
+held-out evidence behind it (the p2 violas read as Violin ×3), so it is not
+arbitrary. What survives is narrower — `clef_register_warning` names no
+instrument, so that hazard does not apply to it, and it fires on staves that
+HAVE a clef, the population the ungated path cannot see. Measure the reach
+before the accuracy. Cross-session note, written for another agent to
 open: [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
 
 ⚠️ **Nothing in that document is a benchmark result.** The weights were absent
