@@ -1,0 +1,78 @@
+{
+ "cell_id": "mahler5-p177-sys1-s7-m6",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 526,
+    "y": 545,
+    "w": 143,
+    "h": 115
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 543,
+    "y": 40,
+    "w": 40,
+    "h": 42
+   }
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 884,
+    "y": 850,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 251,
+    "y": 502,
+    "w": 113,
+    "h": 188
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 395,
+    "y": 436,
+    "w": 119,
+    "h": 326
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 718,
+    "y": 740,
+    "w": 113,
+    "h": 263
+   },
+   "notes": ""
+  }
+ ]
+}

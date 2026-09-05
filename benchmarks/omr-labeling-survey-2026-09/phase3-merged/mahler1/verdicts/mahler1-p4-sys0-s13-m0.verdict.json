@@ -1,0 +1,43 @@
+{
+ "cell_id": "mahler1-p4-sys0-s13-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 880,
+    "y": 347,
+    "w": 147,
+    "h": 86
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 540,
+    "y": 475,
+    "w": 89,
+    "h": 216
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "clefC",
+   "human_category": "clef",
+   "bbox": {
+    "x": 226,
+    "y": 427,
+    "w": 239,
+    "h": 376
+   },
+   "notes": ""
+  }
+ ]
+}

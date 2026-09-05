@@ -1,7 +1,7 @@
 {
   "cell_id": "mahler5-p176-sys1-s11-m5",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-02T21:00:20+00:00",
+  "labeled_at_utc": "2026-09-03T20:52:57+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -15,9 +15,34 @@
         "h": 100
       },
       "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 28,
+        "y": 833,
+        "w": 100,
+        "h": 309
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 992,
+        "y": 516,
+        "w": 102,
+        "h": 264
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

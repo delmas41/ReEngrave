@@ -1,0 +1,95 @@
+{
+ "cell_id": "dvorak9-p19-sys1-s25-m2",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 255,
+   "y": 78,
+   "w": 301,
+   "h": 150,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 772,
+   "y": 123,
+   "w": 290,
+   "h": 178,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1675,
+   "y": 47,
+   "w": 331,
+   "h": 212,
+   "confidence": 1.0
+  },
+  {
+   "id": "D3",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1189,
+   "y": 14,
+   "w": 238,
+   "h": 163,
+   "confidence": 1.0
+  },
+  {
+   "id": "D4",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1652,
+   "y": 977,
+   "w": 250,
+   "h": 144,
+   "confidence": 0.855
+  },
+  {
+   "id": "D5",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 712,
+   "y": 1028,
+   "w": 261,
+   "h": 140,
+   "confidence": 0.853
+  },
+  {
+   "id": "D6",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1250,
+   "y": 991,
+   "w": 266,
+   "h": 89,
+   "confidence": 0.668
+  },
+  {
+   "id": "D7",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 339,
+   "y": 1036,
+   "w": 254,
+   "h": 45,
+   "confidence": 0.482
+  },
+  {
+   "id": "D8",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 341,
+   "y": 1032,
+   "w": 255,
+   "h": 97,
+   "confidence": 0.299
+  }
+ ]
+}

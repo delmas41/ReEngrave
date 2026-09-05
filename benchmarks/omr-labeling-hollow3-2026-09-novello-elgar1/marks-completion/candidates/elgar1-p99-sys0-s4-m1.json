@@ -1,0 +1,44 @@
+{
+ "cell_id": "elgar1-p99-sys0-s4-m1",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.872,
+   "ink": 0.6353,
+   "bbox": {
+    "x": 367,
+    "y": 910,
+    "w": 156,
+    "h": 162
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8707,
+   "ink": 0.3446,
+   "bbox": {
+    "x": 117,
+    "y": 838,
+    "w": 189,
+    "h": 215
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.6462,
+   "ink": 0.5205,
+   "bbox": {
+    "x": 236,
+    "y": 911,
+    "w": 171,
+    "h": 155
+   }
+  }
+ ]
+}

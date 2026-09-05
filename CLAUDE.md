@@ -1465,7 +1465,7 @@ python3 -m tools.omr.annotate.server --bench-dir benchmarks/omr-labeling-NEW   #
 
 **What to box vs skip:**
 - **BOX** the symbols YOLO detects: noteheads, rests, accidentals, clefs, flags, dynamics (`p`/`f`/hairpins), ornaments, articulations, augmentation dots, ties, slurs, time-sig digits.
-- **SKIP** classical-CV structural elements — **staff lines (`staff`), stems (`stem`), beams (`beam`)**: detected by classical CV upstream (`staff_detector`, `line_detection`), 0 in all prior labels, and YOLO can't bbox thin lines. They become background.
+- **SKIP** classical-CV structural elements — **staff lines (`staff`), stems (`stem`), beams (`beam`)**: detected by classical CV upstream (`staff_detector`, `line_detection`), 0 in all prior labels, and YOLO can't bbox thin lines. They become background. ⚠️ **"They become background" is not free, and on 2026-09-04 it was measured costing whole classes.** Anything left unboxed on an image you train on is taught to be nothing — there is no "unknown" in the loss — and a fine-tune on this corpus takes `beam` and `ledgerLine` to ZERO within one epoch. Both are **consumed by the pipeline**: `rhythm.resolve_rhythms_for_cell` keeps a YOLO beam wherever no CV beam overlaps its x-range (worth pooled 0.1917 → 0.1861) and `transcribe`'s ledger-ladder arbitration reads `ledgerLine` detections directly (0.1506 → 0.1431), so on every round-3/4/5 candidate both rules were dead, silently. **Do not fix this by hand-labeling them** — a human still cannot bbox a thin line. The escape is the TEACHER drawing them (`build_rehearsal_versions.py`) or restoring their head rows after training (`merge_class_head.py`). `stem` and `staff` are genuinely CV-only and cost nothing; `beam` and `ledgerLine` are not. See `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`.
 - **SKIP** free text — "sempre", "dolce", tempo marks, instrument names, rehearsal letters: no class exists (`textDynamic` is only for *dynamic* words like cresc./dim.).
 - **Barlines** (`barlineSingle`) OK to box (collected toward a future barline class); ledger lines low-value.
 - **Ink-bleed / mostly-FP cells are GOOD** — dropped FPs become hard-negative background that suppresses bleed hallucinations. Don't `f` every blob: confirm real notes, leave bleed **pending** (pending and FP convert identically → no label). Too bled to read → skip the cell.
@@ -1911,6 +1911,38 @@ distinguishable where staves are crowded, which is what
 `test_recut_cells_e2e.py` builds its fixture to be. That suite cuts a
 synthesized page, deletes the images and re-cuts them **byte-identically**
 under both modes.
+
+#### ⚠️ A fine-tune on this corpus DELETES CLASSES — gate for it
+
+Measured 2026-09-04 over eleven method arms
+(`benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`).
+Fine-tuning the 208-class detector on ~600 narrow cells does not merely
+"degrade" it: **whole class families go to exactly zero at full notehead
+strength** — tie 249→0, slur 184→0, beam 188→0, augmentationDot 150→0,
+accidentalFlat 80→0, restWhole 396→0 on the 5-page scan benchmark.
+
+**It is not a confidence shift** — every fine-tune's median confidence is HIGHER
+than production's. **It is not the labels** — completing them moved the number
+3%, and handing the model 3417 teacher-drawn boxes did not help either. **It is
+not a hyper-parameter** — warmup off, `warmup_bias_lr=0`, lr 1e-5, a frozen
+backbone and the shipped 896 recipe all collapse identically. The corpus
+contains ~30 of 208 classes, so the other ~178 see only negative gradient.
+
+    # seconds, on 30 held-out dense cells — run this BEFORE the slow gates
+    python3 benchmarks/omr-labeling-survey-2026-09/probe_class_inventory.py \
+        --baseline prod=<production.pt> --ckpts-dir <sweep-dir>
+    # gate axis 3 on the scan benchmark, from raw JSONs scan_eval already wrote
+    python3 benchmarks/omr-labeling-survey-2026-09/probe_confidence_shift.py \
+        --arms prodbase <tag> --gate prodbase
+
+**The repair is head surgery, not retraining.** A YOLOv8 head is per-class in
+exactly one place — `model.22.cv3.{0,1,2}.2`, a 1×1 conv with one weight row and
+one bias per class — so `merge_class_head.py` puts the base's rows back for
+every class the corpus does not teach, and `--bias-shift` bakes a per-class
+confidence floor into the rows that stay (the pipeline has only one global
+`conf_threshold`). ⚠️ The 208-class space has **40 duplicated names**
+(`augmentationDot` at 40 and 159, `clefG` at 5 and 141) because DSv2 carries two
+naming families; `--keep` keeps every index of a name.
 
 **Convert finished verdicts → YOLO labels:**
 ```bash

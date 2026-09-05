@@ -1,0 +1,92 @@
+{
+  "cell_id": "brahms1-p4-sys0-s1-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:25:25+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1691,
+        "y": 13,
+        "w": 322,
+        "h": 57
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1688,
+        "y": 753,
+        "w": 358,
+        "h": 126
+      },
+      "human_bbox": null,
+      "confidence": 0.52,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1686,
+        "y": 822,
+        "w": 360,
+        "h": 99
+      },
+      "human_bbox": null,
+      "confidence": 0.445,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1683,
+        "y": 821,
+        "w": 363,
+        "h": 100
+      },
+      "human_bbox": null,
+      "confidence": 0.363,
+      "notes": ""
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1665,
+        "y": 0,
+        "w": 144,
+        "h": 34
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

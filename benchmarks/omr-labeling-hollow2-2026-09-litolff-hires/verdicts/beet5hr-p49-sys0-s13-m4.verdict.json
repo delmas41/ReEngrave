@@ -1,10 +1,48 @@
 {
   "cell_id": "beet5hr-p49-sys0-s13-m4",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:28:44+00:00",
+  "labeled_at_utc": "2026-09-03T20:39:30+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 822,
+        "y": 617,
+        "w": 103,
+        "h": 279
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restHalf",
+      "human_category": "rest",
+      "bbox": {
+        "x": 166,
+        "y": 739,
+        "w": 148,
+        "h": 75
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1370,
+        "y": 922,
+        "w": 100,
+        "h": 380
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

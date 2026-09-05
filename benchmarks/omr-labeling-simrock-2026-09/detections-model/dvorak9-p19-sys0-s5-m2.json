@@ -1,0 +1,122 @@
+{
+  "cell_id": "dvorak9-p19-sys0-s5-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 0,
+      "y": 238,
+      "w": 188,
+      "h": 235,
+      "x_center": 94,
+      "y_center": 355,
+      "confidence": 0.823477566242218,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 64,
+      "y": 1005,
+      "w": 222,
+      "h": 231,
+      "x_center": 175,
+      "y_center": 1120,
+      "confidence": 0.8715203404426575,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 71,
+      "y": 229,
+      "w": 233,
+      "h": 239,
+      "x_center": 187,
+      "y_center": 348,
+      "confidence": 0.8239704370498657,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 225,
+      "y": 590,
+      "w": 130,
+      "h": 105,
+      "x_center": 290,
+      "y_center": 642,
+      "confidence": 0.8350605964660645,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 176,
+      "y": 991,
+      "w": 233,
+      "h": 243,
+      "x_center": 292,
+      "y_center": 1112,
+      "confidence": 0.8884804844856262,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 993,
+      "y": 601,
+      "w": 105,
+      "h": 194,
+      "x_center": 1045,
+      "y_center": 698,
+      "confidence": 0.7935895323753357,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "x": 1549,
+      "y": 669,
+      "w": 100,
+      "h": 320,
+      "x_center": 1599,
+      "y_center": 829,
+      "confidence": 0.725209653377533,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1545,
+      "y": 592,
+      "w": 127,
+      "h": 104,
+      "x_center": 1608,
+      "y_center": 644,
+      "confidence": 0.6128320693969727,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "x": 1551,
+      "y": 1,
+      "w": 118,
+      "h": 291,
+      "x_center": 1610,
+      "y_center": 146,
+      "confidence": 0.6346043944358826,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+ "cell_id": "brahms1-p2-sys1-s19-m0",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 68,
+   "y": 311,
+   "w": 1979,
+   "h": 49,
+   "confidence": 0.374
+  }
+ ]
+}

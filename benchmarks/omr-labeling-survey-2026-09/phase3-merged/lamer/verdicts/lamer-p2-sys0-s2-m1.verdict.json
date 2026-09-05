@@ -1,0 +1,72 @@
+{
+ "cell_id": "lamer-p2-sys0-s2-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 240,
+    "y": 692,
+    "w": 138,
+    "h": 133
+   },
+   "confidence": 0.8618,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 547,
+    "y": 599,
+    "w": 253,
+    "h": 71
+   },
+   "confidence": 0.7583,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 119,
+    "y": 698,
+    "w": 135,
+    "h": 133
+   },
+   "confidence": 0.683,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 317,
+    "y": 628,
+    "w": 148,
+    "h": 46
+   },
+   "confidence": 0.6139,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 836,
+    "y": 506,
+    "w": 87,
+    "h": 73
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,122 @@
+{
+  "cell_id": "brahms1-p11-sys0-s12-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 828,
+      "y": 612,
+      "w": 123,
+      "h": 185,
+      "x_center": 889,
+      "y_center": 704,
+      "confidence": 0.6551862955093384,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 1161,
+      "y": 527,
+      "w": 93,
+      "h": 290,
+      "x_center": 1207,
+      "y_center": 672,
+      "confidence": 0.6355405449867249,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 1410,
+      "y": 92,
+      "w": 222,
+      "h": 227,
+      "x_center": 1521,
+      "y_center": 205,
+      "confidence": 0.8014952540397644,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 1461,
+      "y": 930,
+      "w": 261,
+      "h": 245,
+      "x_center": 1591,
+      "y_center": 1052,
+      "confidence": 0.880867600440979,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "x": 1573,
+      "y": 359,
+      "w": 108,
+      "h": 252,
+      "x_center": 1627,
+      "y_center": 485,
+      "confidence": 0.8132133483886719,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 1532,
+      "y": 132,
+      "w": 206,
+      "h": 190,
+      "x_center": 1635,
+      "y_center": 227,
+      "confidence": 0.8002412915229797,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 1582,
+      "y": 939,
+      "w": 247,
+      "h": 241,
+      "x_center": 1705,
+      "y_center": 1059,
+      "confidence": 0.8574503064155579,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "articStaccatissimoAbove",
+      "category": "ornament",
+      "x": 1757,
+      "y": 375,
+      "w": 33,
+      "h": 57,
+      "x_center": 1773,
+      "y_center": 403,
+      "confidence": 0.7436520457267761,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1711,
+      "y": 491,
+      "w": 131,
+      "h": 109,
+      "x_center": 1776,
+      "y_center": 545,
+      "confidence": 0.6048229932785034,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+family         cells   human  teacher  unboxed  % unboxed
+hollow           398     318      444      126        28%
+ties             164     102      245      143        58%
+slurs            164      67      172      105        61%
+rests            424     226      385      159        41%
+accidentals      424     223      376      153        41%

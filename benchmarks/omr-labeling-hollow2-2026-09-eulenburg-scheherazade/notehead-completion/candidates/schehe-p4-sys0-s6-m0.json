@@ -1,0 +1,44 @@
+{
+ "cell_id": "schehe-p4-sys0-s6-m0",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8147,
+   "ink": 0.7996,
+   "bbox": {
+    "x": 995,
+    "y": 537,
+    "w": 99,
+    "h": 82
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7922,
+   "ink": 0.7916,
+   "bbox": {
+    "x": 1851,
+    "y": 534,
+    "w": 98,
+    "h": 81
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7428,
+   "ink": 0.9068,
+   "bbox": {
+    "x": 1536,
+    "y": 285,
+    "w": 98,
+    "h": 74
+   }
+  }
+ ]
+}

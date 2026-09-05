@@ -1,0 +1,18 @@
+{
+ "cell_id": "schehe-p3-sys0-s0-m1",
+ "candidates": [
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.6148,
+   "ink": 0.2321,
+   "bbox": {
+    "x": 300,
+    "y": 1090,
+    "w": 574,
+    "h": 122
+   }
+  }
+ ]
+}

@@ -1,0 +1,83 @@
+{
+  "cell_id": "dvorak9-p9-sys1-s28-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 122,
+      "y": 115,
+      "w": 201,
+      "h": 246,
+      "x_center": 222,
+      "y_center": 238,
+      "confidence": 0.7426199316978455,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 215,
+      "y": 506,
+      "w": 90,
+      "h": 275,
+      "x_center": 260,
+      "y_center": 643,
+      "confidence": 0.7280147075653076,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 252,
+      "y": 1263,
+      "w": 68,
+      "h": 97,
+      "x_center": 286,
+      "y_center": 1311,
+      "confidence": 0.6418730020523071,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 1,
+      "y": 456,
+      "w": 2047,
+      "h": 43,
+      "x_center": 1024,
+      "y_center": 477,
+      "confidence": 0.532540500164032,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 1101,
+      "y": 596,
+      "w": 126,
+      "h": 179,
+      "x_center": 1164,
+      "y_center": 685,
+      "confidence": 0.8468141555786133,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1505,
+      "y": 811,
+      "w": 132,
+      "h": 114,
+      "x_center": 1571,
+      "y_center": 868,
+      "confidence": 0.8397787809371948,
+      "pitch": null
+    }
+  ]
+}

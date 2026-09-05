@@ -1,0 +1,107 @@
+{
+  "cell_id": "dvorak9-p16-sys1-s15-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T15:38:22+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 139,
+        "y": 736,
+        "w": 111,
+        "h": 94
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 464,
+        "y": 647,
+        "w": 111,
+        "h": 94
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 686,
+        "y": 551,
+        "w": 111,
+        "h": 94
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 918,
+        "y": 551,
+        "w": 111,
+        "h": 94
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1147,
+        "y": 551,
+        "w": 111,
+        "h": 94
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1587,
+        "y": 661,
+        "w": 93,
+        "h": 160
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 119,
+        "y": 1107,
+        "w": 219,
+        "h": 268
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "articStaccatoAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 923,
+        "y": 465,
+        "w": 69,
+        "h": 65
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

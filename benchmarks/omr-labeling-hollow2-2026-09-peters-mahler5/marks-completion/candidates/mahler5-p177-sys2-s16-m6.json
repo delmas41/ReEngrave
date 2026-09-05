@@ -1,0 +1,44 @@
+{
+ "cell_id": "mahler5-p177-sys2-s16-m6",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7669,
+   "ink": 0.6857,
+   "bbox": {
+    "x": 301,
+    "y": 0,
+    "w": 123,
+    "h": 188
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7233,
+   "ink": 0.5964,
+   "bbox": {
+    "x": 288,
+    "y": 1048,
+    "w": 166,
+    "h": 184
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.6315,
+   "ink": 0.5334,
+   "bbox": {
+    "x": 115,
+    "y": 1047,
+    "w": 171,
+    "h": 179
+   }
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+  "cell_id": "brahms1-p2-sys1-s19-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:22:34+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 68,
+        "y": 311,
+        "w": 1979,
+        "h": 49
+      },
+      "human_bbox": null,
+      "confidence": 0.374,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

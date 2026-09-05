@@ -1,0 +1,84 @@
+{
+ "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+ "conf_floor": 0.5,
+ "family_floor": {
+  "notehead": 0.55,
+  "dot": 0.6
+ },
+ "min_ink": 0.02,
+ "batches": {
+  "omr-labeling-hollow-2026-08": {
+   "cells": 25,
+   "kept": 0,
+   "by_family": {}
+  },
+  "omr-labeling-hollow2-2026-09-breitkopf-brahms1": {
+   "cells": 16,
+   "kept": 1,
+   "by_family": {
+    "dot": 1
+   }
+  },
+  "omr-labeling-hollow2-2026-09-eulenburg-scheherazade": {
+   "cells": 55,
+   "kept": 46,
+   "by_family": {
+    "notehead": 43,
+    "dot": 3
+   }
+  },
+  "omr-labeling-hollow2-2026-09-litolff-hires": {
+   "cells": 54,
+   "kept": 77,
+   "by_family": {
+    "notehead": 75,
+    "dot": 2
+   }
+  },
+  "omr-labeling-hollow2-2026-09-peters-mahler5": {
+   "cells": 54,
+   "kept": 40,
+   "by_family": {
+    "notehead": 38,
+    "dot": 2
+   }
+  },
+  "omr-labeling-hollow2-2026-09-simrock-dvorak9": {
+   "cells": 13,
+   "kept": 1,
+   "by_family": {
+    "dot": 1
+   }
+  },
+  "omr-labeling-hollow3-2026-09-durand-lamer": {
+   "cells": 11,
+   "kept": 0,
+   "by_family": {}
+  },
+  "omr-labeling-hollow3-2026-09-jurgenson-tchaikovsky1": {
+   "cells": 0,
+   "kept": 0,
+   "by_family": {}
+  },
+  "omr-labeling-hollow3-2026-09-novello-elgar1": {
+   "cells": 15,
+   "kept": 0,
+   "by_family": {}
+  },
+  "omr-labeling-hollow3-2026-09-universal-mahler1": {
+   "cells": 37,
+   "kept": 0,
+   "by_family": {}
+  }
+ },
+ "grand": {
+  "cells": 280,
+  "kept": 165,
+  "dropped_overlap": 215,
+  "dropped_ink": 0,
+  "dropped_conf": 33,
+  "dropped_cull": 0,
+  "dropped_topedge": 4,
+  "dropped_size": 1
+ }
+}

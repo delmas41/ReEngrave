@@ -1,0 +1,167 @@
+{
+ "cell_id": "beet5hr-p51-sys0-s12-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 979,
+    "y": 1014,
+    "w": 126,
+    "h": 110
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 780,
+    "y": 1099,
+    "w": 126,
+    "h": 92
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1457,
+    "y": 894,
+    "w": 121,
+    "h": 82
+   }
+  },
+  {
+   "id": "C3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 782,
+    "y": 1057,
+    "w": 121,
+    "h": 100
+   }
+  },
+  {
+   "id": "C4",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 581,
+    "y": 610,
+    "w": 136,
+    "h": 117
+   }
+  },
+  {
+   "id": "C5",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1765,
+    "y": 747,
+    "w": 127,
+    "h": 126
+   }
+  },
+  {
+   "id": "C6",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 214,
+    "y": 798,
+    "w": 68,
+    "h": 88
+   }
+  },
+  {
+   "id": "C7",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1151,
+    "y": 950,
+    "w": 131,
+    "h": 93
+   }
+  },
+  {
+   "id": "C8",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1605,
+    "y": 811,
+    "w": 128,
+    "h": 100
+   }
+  },
+  {
+   "id": "C9",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1312,
+    "y": 906,
+    "w": 123,
+    "h": 95
+   }
+  },
+  {
+   "id": "C10",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 102,
+    "y": 906,
+    "w": 109,
+    "h": 79
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 159,
+    "y": 1107,
+    "w": 244,
+    "h": 296
+   },
+   "confidence": 0.8434,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 49,
+    "y": 1115,
+    "w": 257,
+    "h": 306
+   },
+   "confidence": 0.714,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 213,
+    "y": 602,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ]
+}

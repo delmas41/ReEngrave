@@ -1,0 +1,24 @@
+{
+  "cell_id": "elgar1-p102-sys0-s24-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:33:23+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 136,
+        "y": 448,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads",
+    "rests+accidentals"
+  ]
+}

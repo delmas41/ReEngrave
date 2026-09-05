@@ -1,0 +1,35 @@
+{
+  "tag": "e2",
+  "weights": "/tmp/ckpt-mid/epoch1.pt",
+  "hollow_histogram": {
+    "black_total": 55,
+    "hollow_total": 18,
+    "noteheadHalfOnLine": 6,
+    "noteheadHalfInSpace": 12
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 73,
+      "matched": 63,
+      "recall": 0.4286,
+      "precision": 0.863
+    },
+    "step": {
+      "truth": 147,
+      "omr": 73,
+      "matched": 64,
+      "recall": 0.4354,
+      "precision": 0.8767
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 73,
+      "matched": 56,
+      "recall": 0.381,
+      "precision": 0.7671
+    }
+  },
+  "clef_accuracy": "8/12",
+  "measures_omr": 16
+}

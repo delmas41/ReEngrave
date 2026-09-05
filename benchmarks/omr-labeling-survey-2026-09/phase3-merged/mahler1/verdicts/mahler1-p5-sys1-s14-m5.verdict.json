@@ -1,0 +1,46 @@
+{
+ "cell_id": "mahler1-p5-sys1-s14-m5",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 173,
+    "y": 590,
+    "w": 125,
+    "h": 110
+   },
+   "confidence": 0.8636,
+   "notes": "model completion, audited"
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 734,
+    "y": 715,
+    "w": 55,
+    "h": 66
+   },
+   "confidence": 0.5614,
+   "notes": "model completion, audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 543,
+    "y": 750,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+  "cell_id": "dvorak9-p8-sys1-s23-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:39:21+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1007,
+        "y": 500,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 510,
+        "y": 373,
+        "w": 112,
+        "h": 277
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 134,
+        "y": 358,
+        "w": 323,
+        "h": 414
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads",
+    "rests+accidentals",
+    "clefs"
+  ]
+}

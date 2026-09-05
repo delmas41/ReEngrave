@@ -1,0 +1,57 @@
+{
+ "cell_id": "dvorak9-p8-sys0-s1-m8",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 296,
+    "y": 805,
+    "w": 44,
+    "h": 46
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 42,
+    "y": 793,
+    "w": 197,
+    "h": 257
+   },
+   "confidence": 0.7357,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 123,
+    "y": 798,
+    "w": 172,
+    "h": 247
+   },
+   "confidence": 0.5605,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 269,
+    "y": 548,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  }
+ ]
+}

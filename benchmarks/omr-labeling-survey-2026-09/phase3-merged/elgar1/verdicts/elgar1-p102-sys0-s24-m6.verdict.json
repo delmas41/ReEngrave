@@ -1,0 +1,46 @@
+{
+ "cell_id": "elgar1-p102-sys0-s24-m6",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 167,
+    "y": 61,
+    "w": 147,
+    "h": 149
+   },
+   "confidence": 0.8496,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 33,
+    "y": 56,
+    "w": 162,
+    "h": 159
+   },
+   "confidence": 0.7553,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 136,
+    "y": 448,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ]
+}

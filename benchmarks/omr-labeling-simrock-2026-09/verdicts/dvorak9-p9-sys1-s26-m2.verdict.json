@@ -1,0 +1,131 @@
+{
+  "cell_id": "dvorak9-p9-sys1-s26-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T15:34:41+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1727,
+        "y": 917,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1515,
+        "y": 917,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 243,
+        "y": 868,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 469,
+        "y": 868,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 667,
+        "y": 868,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 858,
+        "y": 868,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1115,
+        "y": 868,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1303,
+        "y": 868,
+        "w": 116,
+        "h": 98
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 112,
+        "y": 969,
+        "w": 229,
+        "h": 286
+      },
+      "notes": ""
+    },
+    {
+      "id": "H16",
+      "human_class": "dynamicLetterZ",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 321,
+        "y": 1098,
+        "w": 93,
+        "h": 133
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}
