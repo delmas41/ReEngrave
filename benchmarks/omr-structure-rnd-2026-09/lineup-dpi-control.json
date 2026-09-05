@@ -1,0 +1,1117 @@
+{
+ "dpi_hi": 450,
+ "seed": 20260905,
+ "n_scored": 60,
+ "n_verdict_agree": 59,
+ "verdict_agreement": 0.9833,
+ "n_counts_identical": 55,
+ "counts_identical_rate": 0.9167,
+ "n_fired_at_300": 20,
+ "n_still_fires_at_600": 20,
+ "screen1_persistence": 1.0,
+ "rows": [
+  {
+   "path": "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+   "page_index": 7,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "tier_300": "A",
+   "counts_300": [
+    10,
+    7
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    10,
+    7
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-6-in-b-flat-major-bwv1051/bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
+   "page_index": 12,
+   "publisher": "''Edition Peters Nr.4415''",
+   "tier_300": "A",
+   "counts_300": [
+    6,
+    12,
+    6
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    6,
+    12,
+    6
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 13,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+   "tier_300": "A",
+   "counts_300": [
+    7,
+    11
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    7,
+    11
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+   "tier_300": "A",
+   "counts_300": [
+    12,
+    10
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    12,
+    10
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "page_index": 64,
+   "publisher": "BerliozComplete, I, 1900",
+   "tier_300": "A",
+   "counts_300": [
+    9,
+    8
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    9,
+    8
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 70,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+   "tier_300": "A",
+   "counts_300": [
+    9,
+    12
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    9,
+    12
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page_index": 13,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "tier_300": "A",
+   "counts_300": [
+    12,
+    11
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    12,
+    11
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 1,
+   "publisher": "Catalog Part.B. 2051.",
+   "tier_300": "A",
+   "counts_300": [
+    11,
+    10
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    11,
+    10
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 1,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+   "tier_300": "A",
+   "counts_300": [
+    13,
+    10
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    13,
+    11
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": false
+  },
+  {
+   "path": "editions/berlioz/harold-en-italie-h-68/berlioz--harold-en-italie-h-68--eulenburg-1899--imslp515587.pdf",
+   "page_index": 76,
+   "publisher": "Ernst Eulenburg, Leipzig, 1899, plate E.E. 3623",
+   "tier_300": "A",
+   "counts_300": [
+    11,
+    8
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    11,
+    8
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 67,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+   "tier_300": "A",
+   "counts_300": [
+    11,
+    8
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    11,
+    8
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 38,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+   "tier_300": "A",
+   "counts_300": [
+    11,
+    10
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    11,
+    10
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/chaminade/concertino-pour-flute-op107/chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+   "page_index": 20,
+   "publisher": "Enoch & Cie., Paris, 1902, plate E. & C. 6683",
+   "tier_300": "A",
+   "counts_300": [
+    6,
+    9
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    6,
+    9
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "page_index": 1,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "tier_300": "A",
+   "counts_300": [
+    5,
+    5,
+    7
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    5,
+    5,
+    7
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 6,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2768",
+   "tier_300": "A",
+   "counts_300": [
+    10,
+    7
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    10,
+    7
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+   "page_index": 25,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+   "tier_300": "A",
+   "counts_300": [
+    11,
+    4,
+    4
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    11,
+    4,
+    4
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "page_index": 32,
+   "publisher": "Bote & Bock, Berlin, 1879, plate 12,137",
+   "tier_300": "A",
+   "counts_300": [
+    5,
+    6,
+    6
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    5,
+    6,
+    6
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 19,
+   "publisher": "Catalog Part.B. 2051.",
+   "tier_300": "A",
+   "counts_300": [
+    12,
+    9
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    12,
+    9
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "page_index": 61,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "tier_300": "A",
+   "counts_300": [
+    9,
+    13
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    9,
+    14
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": false
+  },
+  {
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "page_index": 38,
+   "publisher": "Universal Edition, Vienna, 1935, plate U.E. 10687",
+   "tier_300": "A",
+   "counts_300": [
+    5,
+    5,
+    9
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    5,
+    5,
+    9
+   ],
+   "screen1_300": true,
+   "screen1_600": true,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+   "page_index": 58,
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate PB 4",
+   "tier_300": "none",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 17,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+   "tier_300": "none",
+   "counts_300": [
+    9,
+    9
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    9,
+    9
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-2-in-f-major-bwv1047/bach--brandenburg-concerto-2-in-f-major-bwv1047--bachcomplete-1871--imslp2040.pdf",
+   "page_index": 22,
+   "publisher": "BachComplete, XIX, 1871",
+   "tier_300": "none",
+   "counts_300": [
+    9,
+    9
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    9,
+    9
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-5-in-d-major-bwv1050/bach--brandenburg-concerto-5-in-d-major-bwv1050--breitkopf-hartels-partit--imslp457419.pdf",
+   "page_index": 14,
+   "publisher": "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)",
+   "tier_300": "none",
+   "counts_300": [
+    8,
+    8,
+    8
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    8,
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf",
+   "page_index": 9,
+   "publisher": "Edition Eulenburg, Leipzig, plate E.E. 3311",
+   "tier_300": "none",
+   "counts_300": [
+    8,
+    8
+   ],
+   "tier_600": "A",
+   "counts_600": [
+    7,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": true,
+   "counts_identical": false
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-2-in-f-major-bwv1047/bach--brandenburg-concerto-2-in-f-major-bwv1047--bachcomplete-1871--imslp2040.pdf",
+   "page_index": 18,
+   "publisher": "BachComplete, XIX, 1871",
+   "tier_300": "none",
+   "counts_300": [
+    9,
+    9
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    9,
+    9
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/brahms/piano-concerto-2-op83/brahms--piano-concerto-2-op83--simrock-1882--imslp145434.pdf",
+   "page_index": 80,
+   "publisher": "N. Simrock, Berlin, 1882, plate 8263",
+   "tier_300": "none",
+   "counts_300": [
+    7,
+    7,
+    7
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    7,
+    7,
+    7
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 5,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "tier_300": "none",
+   "counts_300": [
+    11,
+    11
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    11,
+    11
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page_index": 12,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "tier_300": "none",
+   "counts_300": [
+    15,
+    15
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    15,
+    15
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-2-in-f-major-bwv1047/bach--brandenburg-concerto-2-in-f-major-bwv1047--bachcomplete-1871--imslp2040.pdf",
+   "page_index": 17,
+   "publisher": "BachComplete, XIX, 1871",
+   "tier_300": "none",
+   "counts_300": [
+    9,
+    9
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    9,
+    9
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "page_index": 40,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2772",
+   "tier_300": "none",
+   "counts_300": [
+    8,
+    8
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-5-in-d-major-bwv1050/bach--brandenburg-concerto-5-in-d-major-bwv1050--breitkopf-hartels-partit--imslp457419.pdf",
+   "page_index": 27,
+   "publisher": "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)",
+   "tier_300": "none",
+   "counts_300": [
+    8,
+    8,
+    8
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    8,
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 63,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+   "tier_300": "none",
+   "counts_300": [
+    11,
+    11
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    11,
+    11
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page_index": 22,
+   "publisher": "''Edition Peters Nr.4412''",
+   "tier_300": "none",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+   "page_index": 41,
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate PB 4",
+   "tier_300": "none",
+   "counts_300": [
+    13,
+    13
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    13,
+    13
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+   "page_index": 28,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+   "tier_300": "none",
+   "counts_300": [
+    8,
+    8
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 7,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "tier_300": "none",
+   "counts_300": [
+    11,
+    11
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    11,
+    11
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+   "page_index": 31,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2766",
+   "tier_300": "none",
+   "counts_300": [
+    7,
+    7
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    7,
+    7
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 32,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "tier_300": "none",
+   "counts_300": [
+    7,
+    7,
+    7
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    7,
+    7,
+    7
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf",
+   "page_index": 22,
+   "publisher": "Edition Eulenburg, Leipzig, plate E.E. 3311",
+   "tier_300": "none",
+   "counts_300": [
+    7,
+    7
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    7,
+    7
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page_index": 2,
+   "publisher": "''Edition Peters Nr.4412''",
+   "tier_300": "D",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-5-in-d-major-bwv1050/bach--brandenburg-concerto-5-in-d-major-bwv1050--breitkopf-hartels-partit--imslp457419.pdf",
+   "page_index": 16,
+   "publisher": "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)",
+   "tier_300": "D",
+   "counts_300": [
+    8,
+    8,
+    8
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    8,
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-5-in-d-major-bwv1050/bach--brandenburg-concerto-5-in-d-major-bwv1050--breitkopf-hartels-partit--imslp457419.pdf",
+   "page_index": 30,
+   "publisher": "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)",
+   "tier_300": "D",
+   "counts_300": [
+    8,
+    8,
+    8
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    8,
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/orchestral-suite-3-in-d-major-bwv1068/bach--orchestral-suite-3-in-d-major-bwv1068--peters--imslp744084.pdf",
+   "page_index": 10,
+   "publisher": "C.F. Peters, Leipzig",
+   "tier_300": "D",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-6-in-b-flat-major-bwv1051/bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
+   "page_index": 2,
+   "publisher": "''Edition Peters Nr.4415''",
+   "tier_300": "D",
+   "counts_300": [
+    8,
+    8,
+    8
+   ],
+   "tier_600": "abstain",
+   "counts_600": [],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": false
+  },
+  {
+   "path": "editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+   "page_index": 53,
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate PB 4",
+   "tier_300": "D",
+   "counts_300": [
+    10,
+    10
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    10,
+    10
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+   "page_index": 81,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+   "tier_300": "D",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 73,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+   "tier_300": "D",
+   "counts_300": [
+    11,
+    11
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    11,
+    11
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 57,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+   "tier_300": "D",
+   "counts_300": [
+    11,
+    11
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    11,
+    11
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/orchestral-suite-3-in-d-major-bwv1068/bach--orchestral-suite-3-in-d-major-bwv1068--peters--imslp744084.pdf",
+   "page_index": 6,
+   "publisher": "C.F. Peters, Leipzig",
+   "tier_300": "D",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 70,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+   "tier_300": "D",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page_index": 5,
+   "publisher": "''Edition Peters Nr.4412''",
+   "tier_300": "D",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "abstain",
+   "counts_600": [
+    9
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": false
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page_index": 1,
+   "publisher": "''Edition Peters Nr.4412''",
+   "tier_300": "D",
+   "counts_300": [
+    12,
+    12
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    12,
+    12
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+   "page_index": 35,
+   "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate PB 4",
+   "tier_300": "D",
+   "counts_300": [
+    13,
+    13
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    13,
+    13
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page_index": 6,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "tier_300": "D",
+   "counts_300": [
+    15,
+    15
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    15,
+    15
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-6-in-b-flat-major-bwv1051/bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
+   "page_index": 10,
+   "publisher": "''Edition Peters Nr.4415''",
+   "tier_300": "D",
+   "counts_300": [
+    8,
+    8,
+    8
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    8,
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+   "page_index": 95,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+   "tier_300": "D",
+   "counts_300": [
+    11,
+    11
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    11,
+    11
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 76,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+   "tier_300": "D",
+   "counts_300": [
+    11,
+    11
+   ],
+   "tier_600": "D",
+   "counts_600": [
+    11,
+    11
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/elgar/introduction-and-allegro-op47/elgar--introduction-and-allegro-op47--novello-and-co-1905--imslp22614.pdf",
+   "page_index": 26,
+   "publisher": "Novello and Co., London, 1905, plate 12130",
+   "tier_300": "D",
+   "counts_300": [
+    10,
+    10
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    10,
+    10
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  },
+  {
+   "path": "editions/bach/brandenburg-concerto-5-in-d-major-bwv1050/bach--brandenburg-concerto-5-in-d-major-bwv1050--breitkopf-hartels-partit--imslp457419.pdf",
+   "page_index": 32,
+   "publisher": "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)",
+   "tier_300": "D",
+   "counts_300": [
+    8,
+    8,
+    8
+   ],
+   "tier_600": "none",
+   "counts_600": [
+    8,
+    8,
+    8
+   ],
+   "screen1_300": false,
+   "screen1_600": false,
+   "counts_identical": true
+  }
+ ]
+}

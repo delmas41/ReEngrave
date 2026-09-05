@@ -1,0 +1,9025 @@
+{
+ "n_pages_measured": 1135,
+ "n_editions_touched": 83,
+ "tiers": {
+  "abstain": 631,
+  "A": 246,
+  "none": 159,
+  "D": 60,
+  "doubtful": 39
+ },
+ "n_screenable": 504,
+ "n_tier_A": 246,
+ "n_tier_D": 60,
+ "n_doubtful": 39,
+ "tier_A_rate_of_screenable": 0.4881,
+ "abstain_reasons": {
+  "not a conductor's page": 70,
+  "blank page or phase-1 failure": 57,
+  "nothing to compare": 504
+ },
+ "per_publisher": {
+  "N. Simrock": {
+   "abstain": 113,
+   "pages": 152,
+   "A": 11,
+   "D": 7,
+   "none": 16,
+   "doubtful": 5
+  },
+  "Henry Litolff's Verlag": {
+   "A": 70,
+   "pages": 140,
+   "none": 36,
+   "D": 13,
+   "abstain": 20,
+   "doubtful": 1
+  },
+  "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)": {
+   "A": 30,
+   "pages": 84,
+   "none": 18,
+   "abstain": 32,
+   "D": 1,
+   "doubtful": 3
+  },
+  "Ernst Eulenburg": {
+   "abstain": 55,
+   "pages": 70,
+   "doubtful": 3,
+   "A": 11,
+   "none": 1
+  },
+  "Breitkopf & H\u00e4rtel (Beethoven's Werke)": {
+   "doubtful": 8,
+   "pages": 56,
+   "none": 12,
+   "A": 31,
+   "D": 4,
+   "abstain": 1
+  },
+  "C.F. Peters": {
+   "none": 23,
+   "pages": 48,
+   "D": 4,
+   "A": 8,
+   "doubtful": 1,
+   "abstain": 12
+  },
+  "Breitkopf und H\u00e4rtel": {
+   "abstain": 31,
+   "pages": 42,
+   "D": 5,
+   "none": 6
+  },
+  "''Co-issue with Universal Edition (Philharmonia series)''": {
+   "A": 17,
+   "pages": 42,
+   "D": 2,
+   "doubtful": 1,
+   "abstain": 19,
+   "none": 3
+  },
+  "Eulenburg": {
+   "abstain": 17,
+   "pages": 28,
+   "doubtful": 9,
+   "A": 2
+  },
+  "Novello": {
+   "abstain": 28,
+   "pages": 28
+  },
+  "Novello & Co.": {
+   "abstain": 27,
+   "pages": 28,
+   "A": 1
+  },
+  "BerliozComplete": {
+   "abstain": 18,
+   "pages": 28,
+   "A": 7,
+   "none": 2,
+   "doubtful": 1
+  },
+  "Durand & Fils": {
+   "A": 3,
+   "pages": 28,
+   "none": 1,
+   "abstain": 24
+  },
+  "Edition Eulenburg": {
+   "abstain": 3,
+   "pages": 14,
+   "A": 3,
+   "none": 8
+  },
+  "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)": {
+   "abstain": 5,
+   "pages": 14,
+   "none": 4,
+   "D": 5
+  },
+  "Universal Edition": {
+   "none": 5,
+   "pages": 14,
+   "A": 8,
+   "D": 1
+  },
+  "''Schirmer's Library of Musical Classics''": {
+   "abstain": 14,
+   "pages": 14
+  },
+  "BachComplete": {
+   "abstain": 2,
+   "pages": 14,
+   "none": 12
+  },
+  "''Edition Peters Nr.4415''": {
+   "D": 9,
+   "pages": 14,
+   "abstain": 1,
+   "doubtful": 1,
+   "A": 1,
+   "none": 2
+  },
+  "Schott": {
+   "abstain": 14,
+   "pages": 14
+  },
+  "D. Rahter": {
+   "abstain": 8,
+   "pages": 14,
+   "doubtful": 3,
+   "none": 1,
+   "A": 2
+  },
+  "Wiener Philharmonischer Verlag": {
+   "abstain": 7,
+   "pages": 14,
+   "A": 6,
+   "none": 1
+  },
+  "Enoch": {
+   "abstain": 13,
+   "pages": 14,
+   "A": 1
+  },
+  "Durand et Cie.": {
+   "abstain": 14,
+   "pages": 14
+  },
+  "''Edition Peters Nr.4412''": {
+   "D": 7,
+   "pages": 14,
+   "none": 5,
+   "A": 2
+  },
+  "Knute Snortum": {
+   "abstain": 14,
+   "pages": 14
+  },
+  "Arthur P. Schmidt": {
+   "abstain": 11,
+   "pages": 14,
+   "A": 2,
+   "none": 1
+  },
+  "V. Bessel & Co.": {
+   "abstain": 13,
+   "pages": 14,
+   "doubtful": 1
+  },
+  "Enoch & Cie.": {
+   "abstain": 11,
+   "pages": 14,
+   "A": 3
+  },
+  "Novello and Co.": {
+   "abstain": 11,
+   "pages": 14,
+   "D": 2,
+   "A": 1
+  },
+  "Pierre-Antoine Renioult": {
+   "abstain": 14,
+   "pages": 14
+  },
+  "Ricordi": {
+   "A": 2,
+   "pages": 14,
+   "abstain": 12
+  },
+  "BrucknerAGA": {
+   "A": 7,
+   "pages": 14,
+   "abstain": 7
+  },
+  "Catalog Part.B. 2051.": {
+   "A": 8,
+   "pages": 14,
+   "doubtful": 1,
+   "abstain": 5
+  },
+  "E. Fromont": {
+   "abstain": 14,
+   "pages": 14
+  },
+  "Bote & Bock": {
+   "abstain": 6,
+   "pages": 14,
+   "A": 7,
+   "none": 1
+  },
+  "John S. Shaw": {
+   "abstain": 14,
+   "pages": 14
+  },
+  "Hamelle": {
+   "abstain": 13,
+   "pages": 14,
+   "doubtful": 1
+  },
+  "Edition Peters": {
+   "A": 2,
+   "pages": 11,
+   "abstain": 8,
+   "none": 1
+  }
+ },
+ "per_edition_tier_A": {
+  "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf": 11,
+  "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf": 11,
+  "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf": 11,
+  "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf": 10,
+  "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf": 9,
+  "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf": 8,
+  "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf": 8,
+  "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf": 8,
+  "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf": 8,
+  "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf": 8,
+  "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf": 8,
+  "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf": 7,
+  "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf": 7,
+  "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf": 7,
+  "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf": 7,
+  "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf": 6,
+  "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf": 6,
+  "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf": 6,
+  "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf": 6,
+  "editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf": 6,
+  "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf": 6,
+  "editions/bruckner/symphony-4-in-e-flat-major-wab-104/bruckner--symphony-4-in-e-flat-major-wab-104--eulenburg--imslp30700.pdf": 6,
+  "editions/dvorak/cello-concerto-op104/dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf": 6,
+  "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf": 5,
+  "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf": 5,
+  "editions/bruckner/symphony-9-in-d-minor-wab-109-143/bruckner--symphony-9-in-d-minor-wab-109-143--peters--imslp969460.pdf": 5,
+  "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf": 4,
+  "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf": 3,
+  "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf": 3,
+  "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf": 3,
+  "editions/chaminade/concertino-pour-flute-op107/chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf": 3,
+  "editions/beethoven/piano-concerto-4-op58/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf": 3,
+  "editions/berlioz/harold-en-italie-h-68/berlioz--harold-en-italie-h-68--eulenburg-1899--imslp515587.pdf": 2,
+  "editions/faure/pelleas-et-melisande-op80/faure--pelleas-et-melisande-op80--peters-1979--imslp25892.pdf": 2,
+  "editions/borodin/in-the-steppes-of-central-asia/borodin--in-the-steppes-of-central-asia--rahter--imslp1043848.pdf": 2,
+  "editions/bruckner/symphony-7-in-e-major-wab-107/bruckner--symphony-7-in-e-major-wab-107--eulenburg-1926--imslp30703.pdf": 2,
+  "editions/dukas/l-apprenti-sorcier/dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf": 2,
+  "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf": 2,
+  "editions/beach/symphony-in-e-minor-op32-gaelic/beach--symphony-in-e-minor-op32-gaelic--arthur-p-schmidt-1897--imslp27125.pdf": 2,
+  "editions/bruckner/symphony-8-in-c-minor-wab-108/bruckner--symphony-8-in-c-minor-wab-108--co-issue-with-universal--imslp30702.pdf": 2,
+  "editions/franck/le-chasseur-maudit/franck--le-chasseur-maudit--eulenburg--imslp94535.pdf": 2,
+  "editions/boulanger/faust-et-helene/boulanger--faust-et-helene--ricordi--imslp862104.pdf": 2,
+  "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf": 2,
+  "editions/grieg/piano-concerto-op16/grieg--piano-concerto-op16--peters--imslp503994.pdf": 2,
+  "editions/brahms/academic-festival-overture-op80/brahms--academic-festival-overture-op80--simrock-1881--imslp28983.pdf": 1,
+  "editions/debussy/prelude-a-l-apres-midi-d-un-faune-cd-87/debussy--prelude-a-l-apres-midi-d-un-faune-cd-87--eulenburg--imslp912676.pdf": 1,
+  "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf": 1,
+  "editions/elgar/symphony-2-op63/elgar--symphony-2-op63--novello-co-1911--imslp979455.pdf": 1,
+  "editions/bach/brandenburg-concerto-6-in-b-flat-major-bwv1051/bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf": 1,
+  "editions/bach/orchestral-suite-3-in-d-major-bwv1068/bach--orchestral-suite-3-in-d-major-bwv1068--peters--imslp744084.pdf": 1,
+  "editions/brahms/tragic-overture-op81/brahms--tragic-overture-op81--simrock-1881--imslp23111.pdf": 1,
+  "editions/chabrier/espana/chabrier--espana--enoch-1884--imslp112203.pdf": 1,
+  "editions/debussy/la-mer-cd-111/debussy--la-mer-cd-111--durand-fils--imslp15420.pdf": 1,
+  "editions/dvorak/symphony-7-op70/dvorak--symphony-7-op70--simrock-1885--imslp649931.pdf": 1,
+  "editions/elgar/introduction-and-allegro-op47/elgar--introduction-and-allegro-op47--novello-and-co-1905--imslp22614.pdf": 1,
+  "editions/brahms/piano-concerto-2-op83/brahms--piano-concerto-2-op83--simrock-1882--imslp145434.pdf": 1
+ },
+ "queue": [
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.071
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 19,
+   "page_1based": 20,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.071
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 13,
+   "page_1based": 14,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    13,
+    14
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.071
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 19,
+   "page_1based": 20,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.071
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+   "page_index": 8,
+   "page_1based": 9,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-4",
+   "title": "Symphony No.4, Op.98",
+   "staff_counts": [
+    12,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.077
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/cello-concerto-op104/dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf",
+   "page_index": 38,
+   "page_1based": 39,
+   "publisher": "N. Simrock",
+   "work_id": "dvorak--cello-concerto",
+   "title": "Cello Concerto, Op.104",
+   "staff_counts": [
+    13,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.077
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/symphony-7-op70/dvorak--symphony-7-op70--simrock-1885--imslp649931.pdf",
+   "page_index": 68,
+   "page_1based": 69,
+   "publisher": "N. Simrock",
+   "work_id": "dvorak--symphony-7",
+   "title": "Symphony No.7, Op.70",
+   "staff_counts": [
+    13,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.077
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+   "page_index": 79,
+   "page_1based": 80,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-3",
+   "title": "Symphony No.3, Op.90",
+   "staff_counts": [
+    13,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.077
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf",
+   "page_index": 50,
+   "page_1based": 51,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-5",
+   "title": "Piano Concerto No.5, Op.73",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf",
+   "page_index": 75,
+   "page_1based": 76,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-5",
+   "title": "Piano Concerto No.5, Op.73",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 52,
+   "page_1based": 53,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    12,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 61,
+   "page_1based": 62,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+   "page_index": 22,
+   "page_1based": 23,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-4",
+   "title": "Symphony No.4, Op.98",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+   "page_index": 43,
+   "page_1based": 44,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-4",
+   "title": "Symphony No.4, Op.98",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page_index": 13,
+   "page_1based": 14,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    12,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "page_index": 5,
+   "page_1based": 6,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-8",
+   "title": "Symphony No.8, Op.93",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+   "page_index": 4,
+   "page_1based": 5,
+   "publisher": "BerliozComplete",
+   "work_id": "berlioz--le-carnaval-romain",
+   "title": "Le carnaval romain, H 95",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 61,
+   "page_1based": 62,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dukas/l-apprenti-sorcier/dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+   "page_index": 6,
+   "page_1based": 7,
+   "publisher": "Durand & Fils",
+   "work_id": "dukas--l-apprenti-sorcier",
+   "title": "L'apprenti sorcier",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page_index": 9,
+   "page_1based": 10,
+   "publisher": "''Edition Peters Nr.4412''",
+   "work_id": "bach--concerto-3",
+   "title": "Brandenburg Concerto No.3 in G major, BWV 1048",
+   "staff_counts": [
+    11,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      2
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 26,
+   "page_1based": 27,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    12,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.083
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf",
+   "page_index": 25,
+   "page_1based": 26,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-5",
+   "title": "Piano Concerto No.5, Op.73",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 37,
+   "page_1based": 38,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 57,
+   "page_1based": 58,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 26,
+   "page_1based": 27,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-7",
+   "title": "Symphony No.7, Op.92",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "page_index": 26,
+   "page_1based": 27,
+   "publisher": "Universal Edition",
+   "work_id": "bizet--symphony-in-c-major",
+   "title": "Symphony in C major",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "page_index": 76,
+   "page_1based": 77,
+   "publisher": "Universal Edition",
+   "work_id": "bizet--symphony-in-c-major",
+   "title": "Symphony in C major",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bach/orchestral-suite-3-in-d-major-bwv1068/bach--orchestral-suite-3-in-d-major-bwv1068--peters--imslp744084.pdf",
+   "page_index": 19,
+   "page_1based": 20,
+   "publisher": "C.F. Peters",
+   "work_id": "bach--suite-3",
+   "title": "Orchestral Suite No.3 in D major, BWV 1068",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      1
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+   "page_index": 10,
+   "page_1based": 11,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-1",
+   "title": "Symphony No.1, Op.21",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "page_index": 54,
+   "page_1based": 55,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-8",
+   "title": "Symphony No.8, Op.93",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 17,
+   "page_1based": 18,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+   "page_index": 54,
+   "page_1based": 55,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-9",
+   "title": "Symphony No.9, Op.125",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+   "page_index": 13,
+   "page_1based": 14,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--piano-concerto-1",
+   "title": "Piano Concerto No.1, Op.15",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+   "page_index": 65,
+   "page_1based": 66,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--piano-concerto-1",
+   "title": "Piano Concerto No.1, Op.15",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/elgar/introduction-and-allegro-op47/elgar--introduction-and-allegro-op47--novello-and-co-1905--imslp22614.pdf",
+   "page_index": 35,
+   "page_1based": 36,
+   "publisher": "Novello and Co.",
+   "work_id": "elgar--introduction-and-allegro",
+   "title": "Introduction and Allegro, Op.47",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-4-op58/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf",
+   "page_index": 29,
+   "page_1based": 30,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-4",
+   "title": "Piano Concerto No.4, Op.58",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 13,
+   "page_1based": 14,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    10,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 38,
+   "page_1based": 39,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    11,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.091
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf",
+   "page_index": 38,
+   "page_1based": 39,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-5",
+   "title": "Piano Concerto No.5, Op.73",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 55,
+   "page_1based": 56,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+   "page_index": 7,
+   "page_1based": 8,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-1",
+   "title": "Symphony No.1, Op.21",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 55,
+   "page_1based": 56,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf",
+   "page_index": 48,
+   "page_1based": 49,
+   "publisher": "Wiener Philharmonischer Verlag",
+   "work_id": "bruckner--symphony-3",
+   "title": "Symphony No.3 in D minor, WAB 103",
+   "staff_counts": [
+    9,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 11,
+   "page_1based": 12,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 59,
+   "page_1based": 60,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    9,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+   "page_index": 43,
+   "page_1based": 44,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-2",
+   "title": "Symphony No.2, Op.36",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page_index": 56,
+   "page_1based": 57,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-4-in-e-flat-major-wab-104/bruckner--symphony-4-in-e-flat-major-wab-104--eulenburg--imslp30700.pdf",
+   "page_index": 115,
+   "page_1based": 116,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "bruckner--symphony-4",
+   "title": "Symphony No.4 in E-flat major, WAB 104",
+   "staff_counts": [
+    9,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/franck/le-chasseur-maudit/franck--le-chasseur-maudit--eulenburg--imslp94535.pdf",
+   "page_index": 26,
+   "page_1based": 27,
+   "publisher": "Eulenburg",
+   "work_id": "franck--le-chasseur-maudit",
+   "title": "Le chasseur maudit",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-4-op58/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf",
+   "page_index": 34,
+   "page_1based": 35,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-4",
+   "title": "Piano Concerto No.4, Op.58",
+   "staff_counts": [
+    9,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 57,
+   "page_1based": 58,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    9,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 6,
+   "page_1based": 7,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-6",
+   "title": "Symphony No.6, Op.68",
+   "staff_counts": [
+    9,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 51,
+   "page_1based": 52,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-6",
+   "title": "Symphony No.6, Op.68",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-9-in-d-minor-wab-109-143/bruckner--symphony-9-in-d-minor-wab-109-143--peters--imslp969460.pdf",
+   "page_index": 78,
+   "page_1based": 79,
+   "publisher": "C.F. Peters",
+   "work_id": "bruckner--symphony-9",
+   "title": "Symphony No.9 in D minor, WAB 109/143",
+   "staff_counts": [
+    10,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.1
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    9,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 42,
+   "page_1based": 43,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    8,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "page_index": 25,
+   "page_1based": 26,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-1",
+   "title": "Symphony No.1 in C minor, WAB 101",
+   "staff_counts": [
+    9,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "page_index": 97,
+   "page_1based": 98,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-1",
+   "title": "Symphony No.1 in C minor, WAB 101",
+   "staff_counts": [
+    9,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "page_index": 23,
+   "page_1based": 24,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-8",
+   "title": "Symphony No.8, Op.93",
+   "staff_counts": [
+    9,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+   "page_index": 10,
+   "page_1based": 11,
+   "publisher": "BerliozComplete",
+   "work_id": "berlioz--le-carnaval-romain",
+   "title": "Le carnaval romain, H 95",
+   "staff_counts": [
+    8,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf",
+   "page_index": 95,
+   "page_1based": 96,
+   "publisher": "Wiener Philharmonischer Verlag",
+   "work_id": "bruckner--symphony-3",
+   "title": "Symphony No.3 in D minor, WAB 103",
+   "staff_counts": [
+    8,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "BerliozComplete",
+   "work_id": "berlioz--symphony-fantastique",
+   "title": "Symphony fantastique, H 48",
+   "staff_counts": [
+    9,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "page_index": 64,
+   "page_1based": 65,
+   "publisher": "BerliozComplete",
+   "work_id": "berlioz--symphony-fantastique",
+   "title": "Symphony fantastique, H 48",
+   "staff_counts": [
+    9,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-9-in-d-minor-wab-109-143/bruckner--symphony-9-in-d-minor-wab-109-143--peters--imslp969460.pdf",
+   "page_index": 122,
+   "page_1based": 123,
+   "publisher": "C.F. Peters",
+   "work_id": "bruckner--symphony-9",
+   "title": "Symphony No.9 in D minor, WAB 109/143",
+   "staff_counts": [
+    9,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.111
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf",
+   "page_index": 5,
+   "page_1based": 6,
+   "publisher": "Edition Eulenburg",
+   "work_id": "bach--concerto-1",
+   "title": "Brandenburg Concerto No.1 in F major, BWV 1046",
+   "staff_counts": [
+    8,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf",
+   "page_index": 12,
+   "page_1based": 13,
+   "publisher": "Edition Eulenburg",
+   "work_id": "bach--concerto-1",
+   "title": "Brandenburg Concerto No.1 in F major, BWV 1046",
+   "staff_counts": [
+    8,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf",
+   "page_index": 17,
+   "page_1based": 18,
+   "publisher": "Edition Eulenburg",
+   "work_id": "bach--concerto-1",
+   "title": "Brandenburg Concerto No.1 in F major, BWV 1046",
+   "staff_counts": [
+    8,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 62,
+   "page_1based": 63,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    7,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "page_index": 133,
+   "page_1based": 134,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-1",
+   "title": "Symphony No.1 in C minor, WAB 101",
+   "staff_counts": [
+    7,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-4-in-e-flat-major-wab-104/bruckner--symphony-4-in-e-flat-major-wab-104--eulenburg--imslp30700.pdf",
+   "page_index": 214,
+   "page_1based": 215,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "bruckner--symphony-4",
+   "title": "Symphony No.4 in E-flat major, WAB 104",
+   "staff_counts": [
+    7,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 37,
+   "page_1based": 38,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "title": "Violin Concerto in D major, Op.61",
+   "staff_counts": [
+    8,
+    7,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 50,
+   "page_1based": 51,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "title": "Violin Concerto in D major, Op.61",
+   "staff_counts": [
+    7,
+    8,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+   "page_index": 52,
+   "page_1based": 53,
+   "publisher": "BrucknerAGA",
+   "work_id": "bruckner--symphony-5",
+   "title": "Symphony No.5 in B-flat major, WAB 105",
+   "staff_counts": [
+    8,
+    8,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/grieg/piano-concerto-op16/grieg--piano-concerto-op16--peters--imslp503994.pdf",
+   "page_index": 6,
+   "page_1based": 7,
+   "publisher": "C.F. Peters",
+   "work_id": "grieg--piano-concerto",
+   "title": "Piano Concerto, Op.16",
+   "staff_counts": [
+    7,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.125
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 25,
+   "page_1based": 26,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.143
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page_index": 51,
+   "page_1based": 52,
+   "publisher": "N. Simrock",
+   "work_id": "dvorak--symphony-9",
+   "title": "Symphony No.9, Op.95",
+   "staff_counts": [
+    12,
+    14
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.143
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 25,
+   "page_1based": 26,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.143
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 54,
+   "page_1based": 55,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    6,
+    6,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.143
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+   "page_index": 20,
+   "page_1based": 21,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--piano-concerto-1",
+   "title": "Piano Concerto No.1, Op.15",
+   "staff_counts": [
+    14,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.143
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+   "page_index": 7,
+   "page_1based": 8,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-3",
+   "title": "Symphony No.3, Op.90",
+   "staff_counts": [
+    14,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "spread": 0.143
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+   "page_index": 29,
+   "page_1based": 30,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-4",
+   "title": "Symphony No.4, Op.98",
+   "staff_counts": [
+    13,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.154
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/harold-en-italie-h-68/berlioz--harold-en-italie-h-68--eulenburg-1899--imslp515587.pdf",
+   "page_index": 166,
+   "page_1based": 167,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "berlioz--harold-en-italie",
+   "title": "Harold en Italie, H 68",
+   "staff_counts": [
+    12,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 31,
+   "page_1based": 32,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    10,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "page_index": 71,
+   "page_1based": 72,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-6",
+   "title": "Symphony No.6 in A major, WAB 106",
+   "staff_counts": [
+    12,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 31,
+   "page_1based": 32,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    10,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page_index": 14,
+   "page_1based": 15,
+   "publisher": "''Edition Peters Nr.4412''",
+   "work_id": "bach--concerto-3",
+   "title": "Brandenburg Concerto No.3 in G major, BWV 1048",
+   "staff_counts": [
+    10,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      2
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+   "page_index": 41,
+   "page_1based": 42,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-9",
+   "title": "Symphony No.9, Op.125",
+   "staff_counts": [
+    10,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+   "page_index": 108,
+   "page_1based": 109,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-9",
+   "title": "Symphony No.9, Op.125",
+   "staff_counts": [
+    10,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/cello-concerto-op104/dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf",
+   "page_index": 11,
+   "page_1based": 12,
+   "publisher": "N. Simrock",
+   "work_id": "dvorak--cello-concerto",
+   "title": "Cello Concerto, Op.104",
+   "staff_counts": [
+    10,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 7,
+   "page_1based": 8,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    12,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 45,
+   "page_1based": 46,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    12,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 62,
+   "page_1based": 63,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-6",
+   "title": "Symphony No.6, Op.68",
+   "staff_counts": [
+    12,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 10,
+   "page_1based": 11,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    10,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "page_index": 4,
+   "page_1based": 5,
+   "publisher": "Bote & Bock",
+   "work_id": "dvorak--serenade-for-strings",
+   "title": "Serenade for Strings, Op.22",
+   "staff_counts": [
+    5,
+    6,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "page_index": 11,
+   "page_1based": 12,
+   "publisher": "Bote & Bock",
+   "work_id": "dvorak--serenade-for-strings",
+   "title": "Serenade for Strings, Op.22",
+   "staff_counts": [
+    6,
+    6,
+    5
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "page_index": 22,
+   "page_1based": 23,
+   "publisher": "Bote & Bock",
+   "work_id": "dvorak--serenade-for-strings",
+   "title": "Serenade for Strings, Op.22",
+   "staff_counts": [
+    6,
+    5,
+    5
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "page_index": 25,
+   "page_1based": 26,
+   "publisher": "Bote & Bock",
+   "work_id": "dvorak--serenade-for-strings",
+   "title": "Serenade for Strings, Op.22",
+   "staff_counts": [
+    5,
+    5,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "page_index": 32,
+   "page_1based": 33,
+   "publisher": "Bote & Bock",
+   "work_id": "dvorak--serenade-for-strings",
+   "title": "Serenade for Strings, Op.22",
+   "staff_counts": [
+    5,
+    6,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.167
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf",
+   "page_index": 19,
+   "page_1based": 20,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-5",
+   "title": "Piano Concerto No.5, Op.73",
+   "staff_counts": [
+    11,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 26,
+   "page_1based": 27,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    11,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      3
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-7",
+   "title": "Symphony No.7, Op.92",
+   "staff_counts": [
+    9,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 38,
+   "page_1based": 39,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-7",
+   "title": "Symphony No.7, Op.92",
+   "staff_counts": [
+    9,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 45,
+   "page_1based": 46,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-7",
+   "title": "Symphony No.7, Op.92",
+   "staff_counts": [
+    11,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "page_index": 121,
+   "page_1based": 122,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-1",
+   "title": "Symphony No.1 in C minor, WAB 101",
+   "staff_counts": [
+    11,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-1",
+   "title": "Symphony No.1, Op.21",
+   "staff_counts": [
+    11,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page_index": 7,
+   "page_1based": 8,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    9,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "page_index": 9,
+   "page_1based": 10,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-8",
+   "title": "Symphony No.8, Op.93",
+   "staff_counts": [
+    11,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.182
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/boulanger/faust-et-helene/boulanger--faust-et-helene--ricordi--imslp862104.pdf",
+   "page_index": 15,
+   "page_1based": 16,
+   "publisher": "Ricordi",
+   "work_id": "boulanger--faust-et-helene",
+   "title": "Faust et H\u00e9l\u00e8ne",
+   "staff_counts": [
+    13,
+    16
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.188
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/borodin/in-the-steppes-of-central-asia/borodin--in-the-steppes-of-central-asia--rahter--imslp1043848.pdf",
+   "page_index": 10,
+   "page_1based": 11,
+   "publisher": "D. Rahter",
+   "work_id": "borodin--in-the-steppes-of-central-asia",
+   "title": "In the Steppes of Central Asia",
+   "staff_counts": [
+    15,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      15
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "spread": 0.2
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/borodin/in-the-steppes-of-central-asia/borodin--in-the-steppes-of-central-asia--rahter--imslp1043848.pdf",
+   "page_index": 11,
+   "page_1based": 12,
+   "publisher": "D. Rahter",
+   "work_id": "borodin--in-the-steppes-of-central-asia",
+   "title": "In the Steppes of Central Asia",
+   "staff_counts": [
+    8,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.2
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-4-in-e-flat-major-wab-104/bruckner--symphony-4-in-e-flat-major-wab-104--eulenburg--imslp30700.pdf",
+   "page_index": 83,
+   "page_1based": 84,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "bruckner--symphony-4",
+   "title": "Symphony No.4 in E-flat major, WAB 104",
+   "staff_counts": [
+    10,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.2
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chaminade/concertino-pour-flute-op107/chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+   "page_index": 23,
+   "page_1based": 24,
+   "publisher": "Enoch & Cie.",
+   "work_id": "chaminade--concertino-pour-flute",
+   "title": "Concertino pour fl\u00fbte, Op.107",
+   "staff_counts": [
+    8,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.2
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/cello-concerto-op104/dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf",
+   "page_index": 6,
+   "page_1based": 7,
+   "publisher": "N. Simrock",
+   "work_id": "dvorak--cello-concerto",
+   "title": "Cello Concerto, Op.104",
+   "staff_counts": [
+    15,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      6
+     ],
+     [
+      4,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.2
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 28,
+   "page_1based": 29,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-6",
+   "title": "Symphony No.6, Op.68",
+   "staff_counts": [
+    10,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.2
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      14
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      3
+     ]
+    ]
+   ],
+   "spread": 0.214
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dukas/l-apprenti-sorcier/dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Durand & Fils",
+   "work_id": "dukas--l-apprenti-sorcier",
+   "title": "L'apprenti sorcier",
+   "staff_counts": [
+    11,
+    14
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      14
+     ]
+    ]
+   ],
+   "spread": 0.214
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+   "page_index": 71,
+   "page_1based": 72,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--piano-concerto-1",
+   "title": "Piano Concerto No.1, Op.15",
+   "staff_counts": [
+    14,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.214
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/tragic-overture-op81/brahms--tragic-overture-op81--simrock-1881--imslp23111.pdf",
+   "page_index": 16,
+   "page_1based": 17,
+   "publisher": "N. Simrock",
+   "work_id": "brahms--tragic-overture",
+   "title": "Tragic Overture, Op.81",
+   "staff_counts": [
+    9,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.222
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+   "page_index": 48,
+   "page_1based": 49,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-2",
+   "title": "Symphony No.2, Op.36",
+   "staff_counts": [
+    7,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.222
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 46,
+   "page_1based": 47,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "title": "Violin Concerto in D major, Op.61",
+   "staff_counts": [
+    9,
+    8,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.222
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    13,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      4,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.231
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 6,
+   "page_1based": 7,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    10,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.231
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-4-op58/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf",
+   "page_index": 63,
+   "page_1based": 64,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-4",
+   "title": "Piano Concerto No.4, Op.58",
+   "staff_counts": [
+    13,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.231
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 17,
+   "page_1based": 18,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    13,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.231
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 24,
+   "page_1based": 25,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    10,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      13
+     ]
+    ]
+   ],
+   "spread": 0.231
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 32,
+   "page_1based": 33,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-7",
+   "title": "Symphony No.7, Op.92",
+   "staff_counts": [
+    12,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "page_index": 13,
+   "page_1based": 14,
+   "publisher": "Universal Edition",
+   "work_id": "bizet--symphony-in-c-major",
+   "title": "Symphony in C major",
+   "staff_counts": [
+    12,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "page_index": 49,
+   "page_1based": 50,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-1",
+   "title": "Symphony No.1 in C minor, WAB 101",
+   "staff_counts": [
+    9,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "page_index": 118,
+   "page_1based": 119,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-6",
+   "title": "Symphony No.6 in A major, WAB 106",
+   "staff_counts": [
+    9,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf",
+   "page_index": 158,
+   "page_1based": 159,
+   "publisher": "Wiener Philharmonischer Verlag",
+   "work_id": "bruckner--symphony-3",
+   "title": "Symphony No.3 in D minor, WAB 103",
+   "staff_counts": [
+    9,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beach/symphony-in-e-minor-op32-gaelic/beach--symphony-in-e-minor-op32-gaelic--arthur-p-schmidt-1897--imslp27125.pdf",
+   "page_index": 78,
+   "page_1based": 79,
+   "publisher": "Arthur P. Schmidt",
+   "work_id": "beach--symphony-in-e-minor-op32-gaelic",
+   "title": "Symphony in E minor, Op.32 'Gaelic'",
+   "staff_counts": [
+    6,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 70,
+   "page_1based": 71,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    9,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      4,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-8-in-c-minor-wab-108/bruckner--symphony-8-in-c-minor-wab-108--co-issue-with-universal--imslp30702.pdf",
+   "page_index": 207,
+   "page_1based": 208,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-8",
+   "title": "Symphony No.8 in C minor, WAB 108",
+   "staff_counts": [
+    12,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 63,
+   "page_1based": 64,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    9,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+   "page_index": 70,
+   "page_1based": 71,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-3",
+   "title": "Symphony No.3, Op.55",
+   "staff_counts": [
+    6,
+    8,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 19,
+   "page_1based": 20,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    12,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.25
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chabrier/espana/chabrier--espana--enoch-1884--imslp112203.pdf",
+   "page_index": 50,
+   "page_1based": 51,
+   "publisher": "Enoch",
+   "work_id": "chabrier--espana",
+   "title": "Espa\u00f1a",
+   "staff_counts": [
+    11,
+    15
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      15
+     ]
+    ]
+   ],
+   "spread": 0.267
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+   "page_index": 116,
+   "page_1based": 117,
+   "publisher": "BrucknerAGA",
+   "work_id": "bruckner--symphony-5",
+   "title": "Symphony No.5 in B-flat major, WAB 105",
+   "staff_counts": [
+    11,
+    15
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.267
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 47,
+   "page_1based": 48,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/harold-en-italie-h-68/berlioz--harold-en-italie-h-68--eulenburg-1899--imslp515587.pdf",
+   "page_index": 76,
+   "page_1based": 77,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "berlioz--harold-en-italie",
+   "title": "Harold en Italie, H 68",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+   "page_index": 19,
+   "page_1based": 20,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-1",
+   "title": "Symphony No.1, Op.21",
+   "staff_counts": [
+    8,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+   "page_index": 40,
+   "page_1based": 41,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-1",
+   "title": "Symphony No.1, Op.21",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "page_index": 18,
+   "page_1based": 19,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-8",
+   "title": "Symphony No.8, Op.93",
+   "staff_counts": [
+    8,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beach/symphony-in-e-minor-op32-gaelic/beach--symphony-in-e-minor-op32-gaelic--arthur-p-schmidt-1897--imslp27125.pdf",
+   "page_index": 63,
+   "page_1based": 64,
+   "publisher": "Arthur P. Schmidt",
+   "work_id": "beach--symphony-in-e-minor-op32-gaelic",
+   "title": "Symphony in E minor, Op.32 'Gaelic'",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+   "page_index": 39,
+   "page_1based": 40,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-2",
+   "title": "Symphony No.2, Op.36",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+   "page_index": 52,
+   "page_1based": 53,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-2",
+   "title": "Symphony No.2, Op.36",
+   "staff_counts": [
+    8,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+   "page_index": 56,
+   "page_1based": 57,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-2",
+   "title": "Symphony No.2, Op.36",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page_index": 7,
+   "page_1based": 8,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    8,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page_index": 25,
+   "page_1based": 26,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    8,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/debussy/la-mer-cd-111/debussy--la-mer-cd-111--durand-fils--imslp15420.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Durand & Fils",
+   "work_id": "debussy--la-mer",
+   "title": "La mer, CD 111",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 67,
+   "page_1based": 68,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-6",
+   "title": "Symphony No.6, Op.68",
+   "staff_counts": [
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "title": "Violin Concerto in D major, Op.61",
+   "staff_counts": [
+    8,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      11
+     ]
+    ]
+   ],
+   "spread": 0.273
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-6",
+   "title": "Symphony No.6 in A major, WAB 106",
+   "staff_counts": [
+    5,
+    5,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.286
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-7-in-e-major-wab-107/bruckner--symphony-7-in-e-major-wab-107--eulenburg-1926--imslp30703.pdf",
+   "page_index": 24,
+   "page_1based": 25,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "bruckner--symphony-7",
+   "title": "Symphony No.7 in E major, WAB 107",
+   "staff_counts": [
+    7,
+    5,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.286
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 10,
+   "page_1based": 11,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "title": "Violin Concerto in D major, Op.61",
+   "staff_counts": [
+    5,
+    7,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.286
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 59,
+   "page_1based": 60,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "title": "Violin Concerto in D major, Op.61",
+   "staff_counts": [
+    5,
+    7,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.286
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 8,
+   "page_1based": 9,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    14,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      14
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.286
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 12,
+   "page_1based": 13,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    7,
+    5,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.286
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "page_index": 46,
+   "page_1based": 47,
+   "publisher": "Bote & Bock",
+   "work_id": "dvorak--serenade-for-strings",
+   "title": "Serenade for Strings, Op.22",
+   "staff_counts": [
+    5,
+    6,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.286
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "page_index": 6,
+   "page_1based": 7,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-4",
+   "title": "Symphony No.4, Op.60",
+   "staff_counts": [
+    10,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.3
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/faure/pelleas-et-melisande-op80/faure--pelleas-et-melisande-op80--peters-1979--imslp25892.pdf",
+   "page_index": 9,
+   "page_1based": 10,
+   "publisher": "Edition Peters",
+   "work_id": "faure--pelleas-et-melisande",
+   "title": "Pell\u00e9as et M\u00e9lisande, Op.80",
+   "staff_counts": [
+    10,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.3
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+   "page_index": 7,
+   "page_1based": 8,
+   "publisher": "BerliozComplete",
+   "work_id": "berlioz--le-carnaval-romain",
+   "title": "Le carnaval romain, H 95",
+   "staff_counts": [
+    10,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.3
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 27,
+   "page_1based": 28,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    7,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      4,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.3
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+   "page_index": 7,
+   "page_1based": 8,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--piano-concerto-1",
+   "title": "Piano Concerto No.1, Op.15",
+   "staff_counts": [
+    10,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.3
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-4-in-e-flat-major-wab-104/bruckner--symphony-4-in-e-flat-major-wab-104--eulenburg--imslp30700.pdf",
+   "page_index": 132,
+   "page_1based": 133,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "bruckner--symphony-4",
+   "title": "Symphony No.4 in E-flat major, WAB 104",
+   "staff_counts": [
+    10,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.3
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "page_index": 23,
+   "page_1based": 24,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-6",
+   "title": "Symphony No.6, Op.68",
+   "staff_counts": [
+    10,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.3
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "page_index": 61,
+   "page_1based": 62,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-1",
+   "title": "Symphony No.1 in C minor, WAB 101",
+   "staff_counts": [
+    9,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.308
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "page_index": 48,
+   "page_1based": 49,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-6",
+   "title": "Symphony No.6 in A major, WAB 106",
+   "staff_counts": [
+    9,
+    13
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      13
+     ]
+    ]
+   ],
+   "spread": 0.308
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 22,
+   "page_1based": 23,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    13,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      4,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.308
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 43,
+   "page_1based": 44,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    13,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      4,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.308
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf",
+   "page_index": 79,
+   "page_1based": 80,
+   "publisher": "Wiener Philharmonischer Verlag",
+   "work_id": "bruckner--symphony-3",
+   "title": "Symphony No.3 in D minor, WAB 103",
+   "staff_counts": [
+    9,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf",
+   "page_index": 206,
+   "page_1based": 207,
+   "publisher": "Wiener Philharmonischer Verlag",
+   "work_id": "bruckner--symphony-3",
+   "title": "Symphony No.3 in D minor, WAB 103",
+   "staff_counts": [
+    6,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-7-in-e-major-wab-107/bruckner--symphony-7-in-e-major-wab-107--eulenburg-1926--imslp30703.pdf",
+   "page_index": 107,
+   "page_1based": 108,
+   "publisher": "Ernst Eulenburg",
+   "work_id": "bruckner--symphony-7",
+   "title": "Symphony No.7 in E major, WAB 107",
+   "staff_counts": [
+    12,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+   "page_index": 38,
+   "page_1based": 39,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--piano-concerto-3",
+   "title": "Piano Concerto No.3, Op.37",
+   "staff_counts": [
+    8,
+    9,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page_index": 19,
+   "page_1based": 20,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    9,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chaminade/concertino-pour-flute-op107/chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+   "page_index": 20,
+   "page_1based": 21,
+   "publisher": "Enoch & Cie.",
+   "work_id": "chaminade--concertino-pour-flute",
+   "title": "Concertino pour fl\u00fbte, Op.107",
+   "staff_counts": [
+    6,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chaminade/concertino-pour-flute-op107/chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+   "page_index": 33,
+   "page_1based": 34,
+   "publisher": "Enoch & Cie.",
+   "work_id": "chaminade--concertino-pour-flute",
+   "title": "Concertino pour fl\u00fbte, Op.107",
+   "staff_counts": [
+    6,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      0,
+      9
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/cello-concerto-op104/dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf",
+   "page_index": 59,
+   "page_1based": 60,
+   "publisher": "N. Simrock",
+   "work_id": "dvorak--cello-concerto",
+   "title": "Cello Concerto, Op.104",
+   "staff_counts": [
+    15,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/franck/le-chasseur-maudit/franck--le-chasseur-maudit--eulenburg--imslp94535.pdf",
+   "page_index": 59,
+   "page_1based": 60,
+   "publisher": "Eulenburg",
+   "work_id": "franck--le-chasseur-maudit",
+   "title": "Le chasseur maudit",
+   "staff_counts": [
+    6,
+    9,
+    6
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-9-in-d-minor-wab-109-143/bruckner--symphony-9-in-d-minor-wab-109-143--peters--imslp969460.pdf",
+   "page_index": 12,
+   "page_1based": 13,
+   "publisher": "C.F. Peters",
+   "work_id": "bruckner--symphony-9",
+   "title": "Symphony No.9 in D minor, WAB 109/143",
+   "staff_counts": [
+    8,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "page_index": 5,
+   "page_1based": 6,
+   "publisher": "Catalog Part.B. 2051.",
+   "work_id": "chausson--poeme",
+   "title": "Po\u00e8me, Op.25",
+   "staff_counts": [
+    15,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      15
+     ]
+    ],
+    [
+     [
+      0,
+      10
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/grieg/piano-concerto-op16/grieg--piano-concerto-op16--peters--imslp503994.pdf",
+   "page_index": 23,
+   "page_1based": 24,
+   "publisher": "C.F. Peters",
+   "work_id": "grieg--piano-concerto",
+   "title": "Piano Concerto, Op.16",
+   "staff_counts": [
+    8,
+    12
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.333
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "page_index": 45,
+   "page_1based": 46,
+   "publisher": "Universal Edition",
+   "work_id": "bizet--symphony-in-c-major",
+   "title": "Symphony in C major",
+   "staff_counts": [
+    9,
+    14
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.357
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page_index": 73,
+   "page_1based": 74,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.357
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "page_index": 130,
+   "page_1based": 131,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-6",
+   "title": "Symphony No.6 in A major, WAB 106",
+   "staff_counts": [
+    14,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      14
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.357
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "page_index": 73,
+   "page_1based": 74,
+   "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+   "work_id": "brahms--symphony-1",
+   "title": "Symphony No.1, Op.68",
+   "staff_counts": [
+    14,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      9
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.357
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "page_index": 32,
+   "page_1based": 33,
+   "publisher": "BerliozComplete",
+   "work_id": "berlioz--symphony-fantastique",
+   "title": "Symphony fantastique, H 48",
+   "staff_counts": [
+    14,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.357
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "page_index": 13,
+   "page_1based": 14,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-7",
+   "title": "Symphony No.7, Op.92",
+   "staff_counts": [
+    7,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.364
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page_index": 25,
+   "page_1based": 26,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    11,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.364
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "page_index": 14,
+   "page_1based": 15,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-8",
+   "title": "Symphony No.8, Op.93",
+   "staff_counts": [
+    11,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ],
+     [
+      1,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.364
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+   "page_index": 1,
+   "page_1based": 2,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-2",
+   "title": "Symphony No.2, Op.36",
+   "staff_counts": [
+    11,
+    7
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "spread": 0.364
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/dvorak/cello-concerto-op104/dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf",
+   "page_index": 43,
+   "page_1based": 44,
+   "publisher": "N. Simrock",
+   "work_id": "dvorak--cello-concerto",
+   "title": "Cello Concerto, Op.104",
+   "staff_counts": [
+    7,
+    11,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.364
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "page_index": 12,
+   "page_1based": 13,
+   "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+   "work_id": "bruckner--symphony-6",
+   "title": "Symphony No.6 in A major, WAB 106",
+   "staff_counts": [
+    5,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      8
+     ]
+    ]
+   ],
+   "spread": 0.375
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "page_index": 55,
+   "page_1based": 56,
+   "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "title": "Violin Concerto in D major, Op.61",
+   "staff_counts": [
+    13,
+    8
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.385
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "page_index": 32,
+   "page_1based": 33,
+   "publisher": "Universal Edition",
+   "work_id": "bizet--symphony-in-c-major",
+   "title": "Symphony in C major",
+   "staff_counts": [
+    18,
+    11
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      8
+     ],
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.389
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page_index": 56,
+   "page_1based": 57,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    9,
+    15
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ],
+     [
+      1,
+      6
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.4
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page_index": 62,
+   "page_1based": 63,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    6,
+    7,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.4
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page_index": 63,
+   "page_1based": 64,
+   "publisher": "Henry Litolff's Verlag",
+   "work_id": "beethoven--symphony-5",
+   "title": "Symphony No.5, Op.67",
+   "staff_counts": [
+    6,
+    7,
+    10
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      2
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ]
+   ],
+   "spread": 0.4
+  },
+  {
+   "tier": "A",
+   "screens": [
+    "counts",
+    "blocks"
+   ],
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "page_index": 106,
+   "page_1based": 107,
+   "publisher": "BerliozComplete",
+   "work_id": "berlioz--symphony-fantastique",
+   "title": "Symphony fantastique, H 48",
+   "staff_counts": [
+    15,
+    9
+   ],
+   "block_shapes": [
+    [
+     [
+      0,
+      10
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ],
+     [
+      1,
+      5
+     ]
+    ]
+   ],
+   "spread": 0.4
+  }
+ ],
+ "queue_full_length": 306
+}
