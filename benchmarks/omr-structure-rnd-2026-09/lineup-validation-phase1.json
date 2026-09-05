@@ -1,0 +1,409 @@
+{
+ "beethoven-sym5-mvt1-984073-p4": {
+  "n_systems": 2,
+  "staff_counts": [
+   11,
+   11
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ]
+  ],
+  "screens": [
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "D"
+ },
+ "beethoven-sym5-mvt1-575951-p4": {
+  "n_systems": 2,
+  "staff_counts": [
+   11,
+   11
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ]
+  ],
+  "screens": [
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "D"
+ },
+ "beethoven-sym5-mvt1-984073-p3": {
+  "n_systems": 2,
+  "staff_counts": [
+   11,
+   8
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ],
+   [
+    [
+     0,
+     3
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     4
+    ]
+   ]
+  ],
+  "screens": [
+   "counts",
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "A"
+ },
+ "beethoven-sym5-mvt1-575951-p3": {
+  "n_systems": 2,
+  "staff_counts": [
+   11,
+   8
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ],
+   [
+    [
+     0,
+     3
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     4
+    ]
+   ]
+  ],
+  "screens": [
+   "counts",
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "A"
+ },
+ "brahms-sym1-mvt1-317803-p2": {
+  "n_systems": 2,
+  "staff_counts": [
+   14,
+   13
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     9
+    ],
+    [
+     1,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     8
+    ],
+    [
+     1,
+     5
+    ]
+   ]
+  ],
+  "screens": [
+   "counts",
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "A"
+ },
+ "brahms-sym1-mvt1-317803-p3": {
+  "n_systems": 2,
+  "staff_counts": [
+   14,
+   14
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     8
+    ],
+    [
+     1,
+     6
+    ]
+   ],
+   [
+    [
+     0,
+     9
+    ],
+    [
+     1,
+     5
+    ]
+   ]
+  ],
+  "screens": [
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "D"
+ },
+ "brahms-sym1-mvt1-317803-p4": {
+  "n_systems": 2,
+  "staff_counts": [
+   14,
+   14
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     9
+    ],
+    [
+     1,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     14
+    ]
+   ]
+  ],
+  "screens": [
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "D"
+ },
+ "beethoven-sym5-mvt1-984073-p2": {
+  "n_systems": 2,
+  "staff_counts": [
+   11,
+   11
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ],
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ]
+  ],
+  "screens": [],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "none"
+ },
+ "beethoven-sym5-mvt1-575951-p2": {
+  "n_systems": 2,
+  "staff_counts": [
+   11,
+   11
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ],
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ]
+  ],
+  "screens": [],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "none"
+ },
+ "dvorak-sym9-mvt1-405834-p7": {
+  "n_systems": 2,
+  "staff_counts": [
+   15,
+   15
+  ],
+  "block_shapes": [
+   [
+    [
+     0,
+     10
+    ],
+    [
+     1,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     4
+    ],
+    [
+     1,
+     6
+    ],
+    [
+     2,
+     5
+    ]
+   ]
+  ],
+  "screens": [
+   "blocks"
+  ],
+  "abstain": null,
+  "doubtful": false,
+  "doubtful_reason": null,
+  "tier": "D"
+ }
+}

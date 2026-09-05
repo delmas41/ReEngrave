@@ -1,0 +1,1411 @@
+{
+ "validation": {
+  "fixtures": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures",
+  "n_files": 20,
+  "n_staves": 396,
+  "n_passed": 6,
+  "n_rows": 10,
+  "table": [
+   {
+    "row": "beethoven-sym5-mvt1-984073-p4",
+    "expect_fire": true,
+    "expect_screen": "clefs",
+    "why": "system 1 has no Timpani; system 2 condenses Vcl+Basso to Bassi -- counts EQUAL",
+    "fired": [
+     "clefs"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "tier": "B",
+    "screen2_slots": [
+     {
+      "slot": 9,
+      "clefs": [
+       "bass",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector_header",
+       "cv_locator"
+      ]
+     }
+    ],
+    "pass": true
+   },
+   {
+    "row": "beethoven-sym5-mvt1-575951-p4",
+    "expect_fire": true,
+    "expect_screen": "clefs",
+    "why": "same page, the other Litolff scan (a RE-PRINT, not a replication)",
+    "fired": [
+     "clefs"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "tier": "B",
+    "screen2_slots": [
+     {
+      "slot": 1,
+      "clefs": [
+       "treble",
+       "treble_8vb"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 6,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 7,
+      "clefs": [
+       "treble",
+       "treble_8vb"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 8,
+      "clefs": [
+       "alto",
+       "treble"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 9,
+      "clefs": [
+       "tenor",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "pass": true
+   },
+   {
+    "row": "beethoven-sym5-mvt1-984073-p3",
+    "expect_fire": true,
+    "expect_screen": "counts",
+    "why": "genuine tacet suppression, 11 vs 8",
+    "fired": [
+     "counts"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     11,
+     8
+    ],
+    "tier": "A",
+    "screen2_slots": [],
+    "pass": true
+   },
+   {
+    "row": "beethoven-sym5-mvt1-575951-p3",
+    "expect_fire": true,
+    "expect_screen": "counts",
+    "why": "same page, other scan",
+    "fired": [
+     "counts"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     11,
+     8
+    ],
+    "tier": "A",
+    "screen2_slots": [],
+    "pass": true
+   },
+   {
+    "row": "brahms-sym1-mvt1-317803-p2",
+    "expect_fire": true,
+    "expect_screen": "counts",
+    "why": "system 2 suppresses the Trumpets, 14 vs 13",
+    "fired": [
+     "counts"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     14,
+     13
+    ],
+    "tier": "A",
+    "screen2_slots": [],
+    "pass": true
+   },
+   {
+    "row": "brahms-sym1-mvt1-317803-p3",
+    "expect_fire": false,
+    "expect_screen": null,
+    "why": "identical lineups -- NOISE CONTROL (screen 3 fires and is wrong)",
+    "fired": [
+     "clefs"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     14,
+     14
+    ],
+    "tier": "B",
+    "screen2_slots": [
+     {
+      "slot": 4,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 8,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 12,
+      "clefs": [
+       "bass",
+       "tenor"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "pass": false
+   },
+   {
+    "row": "brahms-sym1-mvt1-317803-p4",
+    "expect_fire": false,
+    "expect_screen": null,
+    "why": "identical lineups -- NOISE CONTROL",
+    "fired": [
+     "clefs"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     14,
+     14
+    ],
+    "tier": "B",
+    "screen2_slots": [
+     {
+      "slot": 3,
+      "clefs": [
+       "bass",
+       "tenor"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 8,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 12,
+      "clefs": [
+       "bass",
+       "tenor"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "pass": false
+   },
+   {
+    "row": "beethoven-sym5-mvt1-984073-p2",
+    "expect_fire": false,
+    "expect_screen": null,
+    "why": "identical lineups",
+    "fired": [],
+    "screen3_also": false,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "tier": "none",
+    "screen2_slots": [],
+    "pass": true
+   },
+   {
+    "row": "beethoven-sym5-mvt1-575951-p2",
+    "expect_fire": false,
+    "expect_screen": null,
+    "why": "identical lineups",
+    "fired": [
+     "clefs"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "tier": "B",
+    "screen2_slots": [
+     {
+      "slot": 9,
+      "clefs": [
+       "treble",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "pass": false
+   },
+   {
+    "row": "dvorak-sym9-mvt1-405834-p7",
+    "expect_fire": false,
+    "expect_screen": null,
+    "why": "identical lineups",
+    "fired": [
+     "clefs"
+    ],
+    "screen3_also": false,
+    "staff_counts": [
+     15,
+     15
+    ],
+    "tier": "B",
+    "screen2_slots": [
+     {
+      "slot": 3,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 7,
+      "clefs": [
+       "treble",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "pass": false
+   }
+  ],
+  "all_rows": {
+   "bach-brandenburg3-mvt1-468678-p1": {
+    "page_index": 0,
+    "n_systems": 2,
+    "staff_counts": [
+     12,
+     12
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "alto",
+      "alto",
+      "alto",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "alto"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "alto",
+      "alto",
+      "alto",
+      "bass",
+      "treble",
+      "bass",
+      "treble",
+      "alto"
+     ]
+    ],
+    "screens": [
+     "clefs"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [
+     {
+      "slot": 9,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       null
+      ]
+     }
+    ],
+    "screen2_weak_slots": [
+     {
+      "slot": 9,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       null
+      ]
+     }
+    ],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "C",
+    "label": "bach-brandenburg3-mvt1-468678-p1"
+   },
+   "beethoven-sym5-mvt1-575951-p1": {
+    "page_index": 0,
+    "n_systems": 1,
+    "staff_counts": [
+     12
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "beethoven-sym5-mvt1-575951-p1"
+   },
+   "beethoven-sym5-mvt1-575951-p2": {
+    "page_index": 1,
+    "n_systems": 2,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "clefs"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [
+     {
+      "slot": 9,
+      "clefs": [
+       "treble",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "B",
+    "label": "beethoven-sym5-mvt1-575951-p2"
+   },
+   "beethoven-sym5-mvt1-575951-p3": {
+    "page_index": 2,
+    "n_systems": 2,
+    "staff_counts": [
+     11,
+     8
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "counts"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "A",
+    "label": "beethoven-sym5-mvt1-575951-p3"
+   },
+   "beethoven-sym5-mvt1-575951-p4": {
+    "page_index": 3,
+    "n_systems": 2,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "tenor",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble_8vb",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble_8vb",
+      "treble",
+      "alto",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "clefs"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [
+     {
+      "slot": 1,
+      "clefs": [
+       "treble",
+       "treble_8vb"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 6,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 7,
+      "clefs": [
+       "treble",
+       "treble_8vb"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 8,
+      "clefs": [
+       "alto",
+       "treble"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 9,
+      "clefs": [
+       "tenor",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "B",
+    "label": "beethoven-sym5-mvt1-575951-p4"
+   },
+   "beethoven-sym5-mvt1-984073-p1": {
+    "page_index": 1,
+    "n_systems": 1,
+    "staff_counts": [
+     12
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "beethoven-sym5-mvt1-984073-p1"
+   },
+   "beethoven-sym5-mvt1-984073-p2": {
+    "page_index": 2,
+    "n_systems": 2,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "none",
+    "label": "beethoven-sym5-mvt1-984073-p2"
+   },
+   "beethoven-sym5-mvt1-984073-p3": {
+    "page_index": 3,
+    "n_systems": 2,
+    "staff_counts": [
+     11,
+     8
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "counts"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "A",
+    "label": "beethoven-sym5-mvt1-984073-p3"
+   },
+   "beethoven-sym5-mvt1-984073-p4": {
+    "page_index": 4,
+    "n_systems": 2,
+    "staff_counts": [
+     11,
+     11
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "clefs"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [
+     {
+      "slot": 9,
+      "clefs": [
+       "bass",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector_header",
+       "cv_locator"
+      ]
+     }
+    ],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "B",
+    "label": "beethoven-sym5-mvt1-984073-p4"
+   },
+   "brahms-sym1-mvt1-317803-p1": {
+    "page_index": 0,
+    "n_systems": 1,
+    "staff_counts": [
+     14
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "tenor",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "brahms-sym1-mvt1-317803-p1"
+   },
+   "brahms-sym1-mvt1-317803-p2": {
+    "page_index": 1,
+    "n_systems": 2,
+    "staff_counts": [
+     14,
+     13
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "counts"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "A",
+    "label": "brahms-sym1-mvt1-317803-p2"
+   },
+   "brahms-sym1-mvt1-317803-p3": {
+    "page_index": 2,
+    "n_systems": 2,
+    "staff_counts": [
+     14,
+     14
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "tenor",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "clefs"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [
+     {
+      "slot": 4,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 8,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 12,
+      "clefs": [
+       "bass",
+       "tenor"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "B",
+    "label": "brahms-sym1-mvt1-317803-p3"
+   },
+   "brahms-sym1-mvt1-317803-p4": {
+    "page_index": 3,
+    "n_systems": 2,
+    "staff_counts": [
+     14,
+     14
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "tenor",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "tenor",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "clefs"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [
+     {
+      "slot": 3,
+      "clefs": [
+       "bass",
+       "tenor"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 8,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 12,
+      "clefs": [
+       "bass",
+       "tenor"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "B",
+    "label": "brahms-sym1-mvt1-317803-p4"
+   },
+   "dvorak-sym9-mvt1-405834-p5": {
+    "page_index": 4,
+    "n_systems": 1,
+    "staff_counts": [
+     15
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "dvorak-sym9-mvt1-405834-p5"
+   },
+   "dvorak-sym9-mvt1-405834-p6": {
+    "page_index": 5,
+    "n_systems": 1,
+    "staff_counts": [
+     15
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "dvorak-sym9-mvt1-405834-p6"
+   },
+   "dvorak-sym9-mvt1-405834-p7": {
+    "page_index": 6,
+    "n_systems": 2,
+    "staff_counts": [
+     15,
+     15
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ],
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [
+     "clefs"
+    ],
+    "abstain": null,
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [
+     {
+      "slot": 3,
+      "clefs": [
+       "treble",
+       "bass"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     },
+     {
+      "slot": 7,
+      "clefs": [
+       "treble",
+       "alto"
+      ],
+      "clef_sources": [
+       "detector",
+       "detector"
+      ]
+     }
+    ],
+    "screen2_weak_slots": [],
+    "block_shapes": [
+     null,
+     null
+    ],
+    "tier": "B",
+    "label": "dvorak-sym9-mvt1-405834-p7"
+   },
+   "mahler-sym5-mvt1-local-p2": {
+    "page_index": 1,
+    "n_systems": 1,
+    "staff_counts": [
+     17
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "mahler-sym5-mvt1-local-p2"
+   },
+   "mahler-sym5-mvt1-local-p3": {
+    "page_index": 2,
+    "n_systems": 1,
+    "staff_counts": [
+     13
+    ],
+    "clef_sequences": [
+     [
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "mahler-sym5-mvt1-local-p3"
+   },
+   "mahler-sym5-mvt1-local-p4": {
+    "page_index": 3,
+    "n_systems": 1,
+    "staff_counts": [
+     18
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "treble",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "treble",
+      "tenor",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "alto",
+      "bass",
+      "bass",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "mahler-sym5-mvt1-local-p4"
+   },
+   "mahler-sym5-mvt1-local-p5": {
+    "page_index": 4,
+    "n_systems": 1,
+    "staff_counts": [
+     17
+    ],
+    "clef_sequences": [
+     [
+      "treble",
+      "bass",
+      "bass",
+      "treble",
+      "tenor",
+      "treble",
+      "treble",
+      "bass",
+      "bass",
+      "bass",
+      "treble",
+      "treble",
+      "treble",
+      "bass",
+      "treble",
+      "bass",
+      "bass"
+     ]
+    ],
+    "screens": [],
+    "abstain": "fewer than two systems -- nothing to compare",
+    "doubtful": false,
+    "doubtful_reason": null,
+    "screen2_slots": [],
+    "screen2_weak_slots": [],
+    "label": "mahler-sym5-mvt1-local-p5"
+   }
+  }
+ }
+}
