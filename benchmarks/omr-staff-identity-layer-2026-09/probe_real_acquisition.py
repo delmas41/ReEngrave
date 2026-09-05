@@ -77,6 +77,29 @@ BETWEEN two read names in an otherwise-known lineup, not selecting a lineup.
 The 4 it cannot recover are the second Horn staff — the layouts hold ONE `Horn`
 entry and Brahms prints two, which is the multiplicity finding again.
 
+⚠️⚠️ HEALING IS CLOSED — NOT STAGED, NOT DEFERRED (Sean, 2026-09-05). It is not
+being built, and this measurement stands only as the record of what it was
+worth. The reasoning, so it is not re-proposed as an obvious idea:
+
+  · THE CATALOG TIER SUBSUMES IT. The Brahms failure was that `Horn` dropped
+    out of the roster's VOCABULARY — the label read `in Es 3 4`, a key
+    qualifier with no noun, so nothing resolved. Healing INFERS "a Horn belongs
+    in this gap" from the gap's position. IMSLP STATES the instrumentation for
+    223 of 223 held works and says four horns outright. That is EVIDENCE rather
+    than inference, at near-total coverage, arriving at download time with the
+    file.
+  · THE DIVISION OF LABOUR IS CLEANER: the catalog supplies WHICH instruments
+    exist, order supplies WHERE they sit. Healing was a way of guessing the
+    first from the second.
+  · AND IT COULD NEVER FIX THE HALF THAT MATTERED. Four of the eight Brahms
+    errors are the SECOND Horn staff, where the layouts hold one `Horn` entry
+    against two printed staves. **Healing tops out exactly where multiplicity
+    begins**; a catalog roster saying `4 horns` has no such ceiling.
+
+The residual — a document with no catalog entry AND a partial page read (a work
+not on IMSLP, or an arrangement whose work roster is wrong anyway) — is thin
+and deliberately gets no mechanism.
+
 ⚠️ n = 4 editions, 3 engravings, 145 staves. Acquisition precision 1.000 rests
 on 51 positions.
 """
