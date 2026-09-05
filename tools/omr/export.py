@@ -1455,13 +1455,26 @@ def eventless_wedges(
     dropped.
 
     ⚠️ AND IT FIRES NOWHERE IN THE CURRENT CORPUS, which is stated rather than
-    hidden. The case it was built for turned out not to be this one: 8 of the 60
-    CV-read hairpins on the scan benchmark do not become wedges, and all four of
-    Dvorak 9 p5's sit in bars the pipeline reads as a single `restWhole` — but
-    the PAGE shows those staves densely playing, with beamed runs, `fz` and
-    `dim. p`. The rest is a misdetection and the bar is not empty. Those
-    hairpins are lost to a NOTE-DETECTION failure, not to this branch, and
-    anchoring them to a spurious rest would have papered over it.
+    hidden. 8 of the 60 CV-read hairpins on the scan benchmark do not become
+    wedges, and all four of Dvorak 9 p5's sit in bars the pipeline reads as a
+    single `restWhole` — but this branch is not why, and the reason took two
+    wrong answers to find:
+
+      * "the staves are densely playing and the rest is a misdetection" — WRONG,
+        and it was asserted here from a crop taken at the RIGHT-HAND side of the
+        page, which shows the later bars where those staves do play. The trimmed
+        truth says Flauti and Oboi have **0 sounding notes in bars 1-5** and
+        play only in 6-8, and the pipeline's counts for the bars they do play
+        (4, 5, 9) sit against a truth of (5, 5, 6). The resting reading is
+        RIGHT.
+      * what is actually broken there is MEASURE SEGMENTATION: staff 0's measure
+        boxes overlap massively and the last runs to x=9055 on a 5084-wide page,
+        so which bar a hairpin falls in is not reliably answerable on that staff.
+
+    So the 8 are not evidence for anchoring a wedge to a rest — if those bars
+    genuinely rest, a hairpin filed there is MISATTRIBUTED, and anchoring it
+    would cement the error. That is the same conclusion the convention reaches
+    from the other side: a hairpin belongs to sounding music.
 
     This stays because the hole is real — a bar with genuinely no events would
     otherwise drop a hairpin the reader can see — and because
