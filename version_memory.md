@@ -10,7 +10,7 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 - The clef session found a lot being lost because a staff's clef was either
   SELECTED or DISCARDED, with nothing between. This scans the rest of
   `tools/omr/` (57 modules, 31,346 lines) for the same shape and answers by
-  taxonomy: [docs/scan-probability-decisions-2026-09-05.md](docs/scan-probability-decisions-2026-09-05.md).
+  taxonomy: [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
   Sibling of the 2026-09-04 "detector was right, output was wrong" taxonomy —
   that one asks where a signal was read and lost, this one where a degree of
   belief was formed and thrown away.
@@ -63,10 +63,10 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   `sources.get(slot) == "label"` conjunct is unsatisfiable on scans. A conjunct
   swap, not a score.
 - Written at a path another agent can be pointed at:
-  [docs/handoff-2026-09-05-probability-decision-scan.md](docs/handoff-2026-09-05-probability-decision-scan.md).
+  [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
 
-**Files touched:** `docs/scan-probability-decisions-2026-09-05.md` (new),
-`docs/handoff-2026-09-05-probability-decision-scan.md` (new),
+**Files touched:** `docs/handoff-probability-gates-2026-09-05.md` (new),
+`docs/handoff-probability-gates-2026-09-05.md` (new),
 `CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
 
 ---

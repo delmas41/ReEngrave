@@ -1152,7 +1152,7 @@ assume a stable OMR-NED means the pipeline is intact.
 
 The clef work found a lot being lost because a staff's clef was either SELECTED
 or DISCARDED, with nothing between and no way to combine what the page already
-knew. [docs/scan-probability-decisions-2026-09-05.md](docs/scan-probability-decisions-2026-09-05.md)
+knew. [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md)
 asks where else that shape occurs, and answers it by taxonomy — the sibling of
 [docs/discussion-detector-right-output-wrong-2026-09-04.md](docs/discussion-detector-right-output-wrong-2026-09-04.md),
 which asks the same question about signals that were read and then lost.
@@ -1213,7 +1213,7 @@ documented ceiling is clefs read WRONG. The reachable question is the OVERRIDE
 gate (`clef_correction.py:594-601`), whose `sources.get(slot) == "label"`
 conjunct is unsatisfiable on scans — and `clef_register_warning` needs no label.
 A conjunct swap, not a score. Cross-session note, written for another agent to
-open: [docs/handoff-2026-09-05-probability-decision-scan.md](docs/handoff-2026-09-05-probability-decision-scan.md).
+open: [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
 
 ⚠️ **Nothing in that document is a benchmark result.** The weights were absent
 from the container, so no arm was run; the shortlist names which harness would

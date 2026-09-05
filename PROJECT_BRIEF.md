@@ -109,7 +109,7 @@ Work on clef assignment found that a lot was being lost because a staff's clef
 was either *selected* or *discarded* — no middle ground, and no way to combine
 the several things the page already knew. A scan of the rest of the recognition
 pipeline found the same shape in five distinct forms, written up in
-[docs/scan-probability-decisions-2026-09-05.md](docs/scan-probability-decisions-2026-09-05.md).
+[docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
 
 The two largest findings are both "the number exists and nothing reads it". The
 exporter never consults a detection's confidence at all — a symbol recognised
