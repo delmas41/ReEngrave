@@ -124,9 +124,48 @@ canonical composed baseline moved with the tilt/choir ships on another
 branch, so re-pricing against a composed tree belongs to reconciliation,
 not to this round.)
 
-### Scan (11-row `scan_eval`, production weights pinned, tags `arcanchor` / `arcanchorcv`)
+### Scan (11-row `scan_eval`, production weights pinned, tag `arcanchor`)
 
-TBD — runs in flight.
+⚠️ **Recovered after a usage-credit stop killed the session mid-round.** The
+`anchor` arm's run had COMPLETED; its results JSON and its 11 exported
+MusicXML files survived in `fixtures/`, and the element counts below were
+counted from those files directly. The `anchor+cv` and engraved arms were
+still running and are NOT reported — they are TBD, not zero.
+
+Baseline is the same-generation 11-row production figure
+(`results-widened-graft.json`, pre-tilt — this branch predates the tilt and
+choir ships, so that is the correct same-tree comparison; the composed-tree
+re-pricing belongs to reconciliation).
+
+| | pooled | edits | pred | wrong tie | wrong slur |
+|---|--:|--:|--:|--:|--:|
+| flag-off baseline | 0.8535 | 35817 | 18586 | 28 | 111 |
+| **anchor** | **0.8533** | **35743** | 18510 | **26** | **99** |
+
+**-74 edits, ratio flat, and the emission drop is 76 symbols — not a
+halving.** Exported inventory, counted from the arm's own files against the
+same truth:
+
+| arm | exported `<tie>` of 805 | exported `<slur>` of 404 |
+|---|--:|--:|
+| flag-off (round 8's measure) | 420 | — |
+| round 8 `veto` | 209 | — |
+| **round 9 `anchor`** | **353** | 246 |
+
+**This is the round's value claim, delivered.** Round 8's veto bought its
+edits by halving tie inventory (420 -> 209); the anchor buys a comparable
+metric improvement while keeping **353** — 144 more ties than the veto — and
+`wrong tie` still falls (28 -> 26) and `wrong slur` with it (111 -> 99). The
+ties it does drop relative to flag-off are, on that evidence, mostly the
+wrong ones. Position evidence retains what shape evidence discarded, which
+is exactly what the Litolff diagnosis predicted.
+
+⚠️ Still unmeasured, and required before any flip is priceable: the
+`anchor+cv` arm (whose relaxed-rise recovery is cross-publisher by
+construction and could not be priced on the single-edition gauntlet) and the
+ENGRAVED family — round 8's veto regressed engraved by +9 edits, and no
+engraved number exists for the anchor mode. A scan-only scoping decision
+cannot be made without it.
 
 ### Engraved (11-work `orchestral_eval --omr-ned`, anchor arm)
 
