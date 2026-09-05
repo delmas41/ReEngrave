@@ -162,6 +162,86 @@ def _left_edge_split_enabled() -> bool:
     )
 
 
+# ── Cue B: pair-local left-edge merge (`OMR_CHOIR_GROUPING`, default OFF) ─────
+# The wide window and cue A's narrow band are both anchored on the MEDIAN
+# x_start across the page's staves — robust to a single broken staff, and
+# poisoned outright on a page whose systems are indented DIFFERENTLY: on the
+# Peters Brandenburg 3 (p.59) system 1 is indented for full instrument names
+# (x_start 792–836) while system 2 runs full width (178–200), the median (450)
+# lands in the empty land between the modes, and the window [359, 4554] cuts
+# system 2's bracket + systemic barline (x 178–227) out of the scan. That page
+# is also choir-barred — interior barlines are drawn per instrument choir and
+# cross no choir gap — so with the left-edge complex unseen its choir gaps read
+# bridging = 0 and one 12-staff system shatters into 3/3/3/1/2 fragments
+# (whose stems then out-vote the barlines: 122 measure-cells against 10).
+# Measured: benchmarks/omr-choir-grouping-2026-09/FINDINGS.md.
+#
+# Cue B is the mirror of cue A, additive in the opposite direction: where cue A
+# reads the ABSENCE of the left-edge complex (in a page-anchored band) to ADD a
+# break, cue B reads its PRESENCE — in a band anchored at the PAIR's own shared
+# left edge, immune to the page-median poisoning — to CANCEL a break the wide
+# rule made for lack of evidence. It is merge-only: it never splits, never
+# touches a multi-column break (x-overlap ≤ 0.5), and a band that finds nothing
+# changes nothing, so a page where it never fires is byte-identical. A broken
+# pair x_start can only mis-anchor the band AWAY from the complex, declining a
+# rescue rather than inventing one (measured on the Bach page's gap 2, whose
+# upper staff reports x_start 700 against a true ~792: the band reads 0).
+#
+# The band geometry is cue A's — the same physical objects (bracket, systemic
+# barline) at the same measured offset from x_start (flat for RIGHT ≥ 3
+# spacings, benchmarks/omr-system-grouping-2026-09/fix/PHASE1_RESULTS.md) —
+# so no new tuned constants. The acceptance threshold mirrors cue A's
+# LEFT_BAND_MIN_CROSS; on the Bach page the gaps this cue examines read
+# either 0 (the true system break) or 6–22 (the four wrongly-broken choir
+# gaps — 6 is the Cembalo gap, whose only witness is the 6-px systemic
+# barline), so any floor in 1..6 reads that page identically. The library
+# probe in the benchmark dir prices the floor over the wider population.
+#
+# Cue B runs before cue A, and a cue-B merge is exempt from cue A's re-split:
+# the two cues act on disjoint gap sets (cue A splits gaps kept interior by
+# body ink, bridging > 0; cue B merges gaps broken for lack of evidence,
+# bridging == 0), so the exemption cannot reach cue A's validated fix set —
+# see the comment at the exemption site in `assign_systems`.
+CHOIR_MERGE_MIN_CROSS = 1
+
+
+def _choir_grouping_enabled() -> bool:
+    return os.environ.get("OMR_CHOIR_GROUPING", "0").strip().lower() in (
+        "1", "true", "yes", "on",
+    )
+
+
+def pair_left_edge_count(
+    binary: np.ndarray,
+    upper: Staff,
+    lower: Staff,
+    *,
+    ink_fraction: float = BRIDGE_INK_FRACTION,
+) -> int:
+    """Crossing-column count for ONE gap, in a narrow band anchored at the
+    PAIR's own shared left edge — `min(upper.x_start, lower.x_start)` — rather
+    than the page-median anchor `left_edge_barline_counts` uses.
+
+    Same band geometry (`LEFT_BAND_*_SPACINGS`), closing and coverage test as
+    the page-anchored scan; `-1` for a degenerate gap. This is cue B's reading
+    of the same physical objects cue A reads: the system bracket and the
+    systemic barline, which live at a measured offset from the staff start.
+    """
+    height, width = binary.shape
+    spacing = max(upper.line_spacing_px, lower.line_spacing_px) or 1.0
+    anchor = min(upper.x_start, lower.x_start)
+    x0 = max(0, int(anchor - LEFT_BAND_LEFT_SPACINGS * spacing))
+    x1 = min(width, int(anchor + LEFT_BAND_RIGHT_SPACINGS * spacing))
+    top = max(0, upper.bottom_y + 2)
+    bot = min(height, lower.top_y - 2)
+    if bot <= top or x1 <= x0:
+        return -1
+    band = (binary[top:bot, x0:x1] < 128).astype(np.uint8)
+    k = max(3, int(round(spacing * BRIDGE_GAP_TOLERANCE_SPACINGS)) * 2 + 1)
+    closed = cv2.morphologyEx(band, cv2.MORPH_CLOSE, np.ones((k, 1), np.uint8))
+    return int((closed.mean(axis=0) > ink_fraction).sum())
+
+
 def _robust_x_window(staves: list[Staff]) -> tuple[int, int]:
     """Scan window: the median staff extent — robust to a broken `x_start` —
     widened by `WINDOW_MARGIN_SPACINGS` so it takes in the bracket on the left
@@ -324,6 +404,7 @@ def assign_systems(
     *,
     fallback: bool = True,
     left_edge_split: bool | None = None,
+    choir_grouping: bool | None = None,
 ) -> tuple[list[Staff], bool]:
     """Set `system_index` and `group_index` from vertical connectivity.
 
@@ -339,9 +420,22 @@ def assign_systems(
     recovering two stacked systems merged by that body ink. It never merges, and
     is gated on the page using a continuous left barline. See the `LEFT_BAND_*`
     constants and `left_edge_barline_counts`.
+
+    When `choir_grouping` is true (default read from `OMR_CHOIR_GROUPING`, off),
+    cue B re-examines each break the wide rule made for lack of evidence in a
+    narrow band anchored at the PAIR's own left edge, and CANCELS the break
+    where the system bracket / systemic barline crosses there — recovering a
+    system whose left-edge complex the page-median window could not see
+    (differently-indented systems; choir-barred pages shatter without this).
+    It never splits, and a gap it merges is exempt from cue A's re-split
+    (positive pair-local ink outranks absence at the page-median anchor —
+    see the comment at the exemption site). See the cue-B comment block and
+    `pair_left_edge_count`.
     """
     if left_edge_split is None:
         left_edge_split = _left_edge_split_enabled()
+    if choir_grouping is None:
+        choir_grouping = _choir_grouping_enabled()
     staves = sorted(staves, key=lambda s: s.top_y)
     if len(staves) < 2:
         for s in staves:
@@ -360,6 +454,36 @@ def assign_systems(
         for i, (upper, lower) in enumerate(zip(staves, staves[1:]))
     ]
 
+    # Cue B (opt-in, merge-only): a no-evidence break whose pair-anchored left
+    # band IS crossed was broken by the window, not by the page — cancel it.
+    # Multi-column breaks (x-overlap) are never candidates: two side-by-side
+    # columns are different systems whatever their left edges carry.
+    #
+    # A cue-B merge is EXEMPT from cue A's re-split (`cue_b_merged` below).
+    # The two cues act on disjoint gap sets by construction — cue A splits
+    # gaps the wide rule kept interior (bridging > 0, body ink faking a
+    # connection), cue B merges gaps the wide rule broke (bridging == 0) — so
+    # the exemption cannot touch any gap of cue A's validated fix set. Where
+    # they would meet is only a gap cue B just merged, and there the evidence
+    # is asymmetric: cue B holds POSITIVE ink (a near-solid column through the
+    # whole gap at the pair's own edge) while cue A holds absence at the
+    # page-median anchor — the anchor this whole module documents as poisoned
+    # on bimodally-indented pages. Measured on Mozart 40 p32 (Breitkopf 1880):
+    # x_starts 206–221 for ten staves and 530–544 for eleven, the median on
+    # the SECOND mode, cue A's band reading mid-staff ink of system 1 as "the
+    # left edge" — it re-split a gap whose true systemic barline cue B had
+    # just found, and the exemption is what lets the page heal to [10, 11].
+    cue_b_merged: set[int] = set()
+    if choir_grouping:
+        for i, (upper, lower) in enumerate(zip(staves, staves[1:])):
+            if not existing_break[i] or bridging[i] != 0:
+                continue
+            if _x_overlap_frac(upper, lower) <= MIN_X_OVERLAP_FRAC:
+                continue
+            if pair_left_edge_count(binary, upper, lower) >= CHOIR_MERGE_MIN_CROSS:
+                existing_break[i] = False
+                cue_b_merged.add(i)
+
     # Cue A (opt-in): a gap whose narrow left-edge column is empty is a system
     # start the wide window missed because body ink bridged it. Only trusted on a
     # page that otherwise keeps a continuous left barline (the gate), so a
@@ -375,7 +499,7 @@ def assign_systems(
             crossed = sum(1 for i in interior if left_counts[i] >= LEFT_BAND_MIN_CROSS)
             if crossed / len(interior) >= LEFT_BAND_GATE_FRAC:
                 for i in interior:
-                    if left_counts[i] < LEFT_BAND_MIN_CROSS:
+                    if left_counts[i] < LEFT_BAND_MIN_CROSS and i not in cue_b_merged:
                         left_break[i] = True
                 if any(left_break):
                     left_break = _suppress_orphaning_breaks(existing_break, left_break)
