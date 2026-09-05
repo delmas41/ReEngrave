@@ -297,7 +297,12 @@ pair-band crossing column anywhere in the population.**
 
 10 of 969 pages change (after the cue-A exemption below), plus the scan
 benchmark's own Bach page. Every change moves toward the truth; none moves
-away; there are no false merges:
+away; there are no false merges. (`probe_library.jsonl` is the full
+population record and predates the exemption, so its `changed` flags count
+9 — mozart 40 p32 heals only with it; `probe_fired_v2.jsonl` is the
+post-exemption re-verification of the fired pages, and its 10 rows are this
+table minus the Bach scan row, which is measured under the scan harness,
+not the probe.)
 
 | page | flag off | flag on | truth | verdict |
 |---|---|---|---|---|
@@ -373,3 +378,30 @@ Re-measured with the condition: Beethoven 5 flag ON **0.0595**, identical to
 flag OFF. Pinned by `test_cue_c_requires_a_window_blind_gap`, which draws
 the LilyPond shape (all gaps touched by a start barline) over the choir
 fixture and asserts open-score mode survives.
+
+## Guard 4 — the full engraved benchmark under the final code, flag ON
+
+`OMR_CHOIR_GROUPING=1 python3 -m tools.omr.training.orchestral_eval
+--omr-ned` (no `--record`), all eleven works, direction reader ON (the CLI
+default, `.venv-surya` linked), weight routing untouched (engraved input →
+`imgsz2048-ft-30ep` as always), on `9ab298fa` — the re-run of the
+measurement the falsified cue C failed, now at full width instead of the
+single re-measured Beethoven 5.
+
+**Pooled 0.1306 / 2745 edits — every one of the eleven works reproduces the
+recorded `direction_text` figure to the digit** (`current-accuracy.json`,
+recorded on `44a1745`): 52 + 90 + 77 + 187 + 494 + 215 + 425 + 273 + 274 +
+419 + 239, per-work OMR-NED matching all four printed decimals, recall /
+precision / duration columns identical, no pass failed like a defect
+(exit 0, no BROKEN block). Full result:
+`results-engraved-choiron.json`.
+
+Two things this settles at once. **The flag cannot reach an engraved page**:
+cue B never fires (no LilyPond fixture breaks a gap that shows pair-band
+ink) and cue C is unreachable without a window-blind gap — the repair holds
+across the full set, not just the one work re-measured when the condition
+landed. And **the engraved benchmark is insulated from this branch's
+scan-side base**: the tree sits four commits past the recorded `44a1745`
+with the round-5 graft as scan `DEFAULT_WEIGHTS`, and the engraved figures
+still land edit-for-edit, because routing pins engraved input to the same
+checkpoint the record was measured with.
