@@ -115,6 +115,44 @@ that is 8.6% of them. The documented clef ceiling is about clefs read WRONG
 treble), and those staves are invisible to FILL by definition. Reaching them
 means the OVERRIDE path -- which is gated, correctly, and is blocked on a
 calibrated probability that `probe_calibration.py` says does not exist yet.
+
+── EQUAL-COUNT BALANCE, PRICED 2026-09-05: **ZERO EDITS** ────────────────────
+
+    BASELINE     74962    +0
+    B_roster     74962    +0
+    C_derived    74949   -13     bach p1 -15, mahler p5 +2
+    BC           74947   -15
+    C_balanced   74949   -13     IDENTICAL to C_derived, row for row
+
+⚠️⚠️ THE BALANCE CONSTRAINT MOVES NOTHING. `C_balanced` reproduces `C_derived`
+exactly -- same total, same two rows moving, same signs. It is a complete no-op
+on the export path, and by the rule that has held all day, NOTHING SHIPS
+ENABLED on the strength of it.
+
+WHY ZERO, and the three reasons compose:
+
+  1 IT DOES NOT FIRE ON THE PIPELINE'S PATH. The constraint is sound only when
+    the reference is the work's own ROSTER (measured: +7 there, -2 on a generic
+    layout, which is why it is opt-in). The shipped derived path aligns against
+    generic LAYOUTS, so `balance=True` there changes 2 identities and both are
+    changes for the worse.
+  2 THOSE 2 STAVES ARE NOT IN FILL'S REACH. FILL touches only staves whose clef
+    NO reader read -- 34 of 396 -- and the 2 identities balance moves are not
+    among them.
+  3 SO THE MECHANISM'S BENEFICIARY IS ABSENT. Balance pays off through the
+    ROSTER JOIN, and the roster join is not in the pipeline. Its +7 is real and
+    measured against a reference the production path does not construct.
+
+⇒ The honest statement is not "the constraint does not work" -- on the roster
+reference it converts 0.903 to 0.952 -- but **"it has no consumer today."** It
+lands as an opt-in parameter no caller passes, with its measurement beside it,
+so whoever builds the roster join inherits a priced, tested constraint instead
+of rediscovering the argument.
+
+⚠️ THIS IS THE SAME SHAPE AS THE FILL NEGATIVE, one level up: value on a
+consumer path is a function of REACH first and precision second. Balance has
+precision (+7 where it fires) and no reach (it fires nowhere the pipeline
+looks).
 """
 from __future__ import annotations
 
