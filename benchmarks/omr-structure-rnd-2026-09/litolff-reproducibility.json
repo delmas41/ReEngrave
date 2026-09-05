@@ -1,0 +1,611 @@
+{
+ "offset": 1,
+ "dpi": 300,
+ "rows": [
+  {
+   "printed": 1,
+   "idx_a": 1,
+   "idx_b": 0,
+   "counts_a": [
+    12
+   ],
+   "counts_b": [
+    12
+   ],
+   "tier_a": "abstain",
+   "tier_b": "abstain",
+   "screens_a": [],
+   "screens_b": [],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": false,
+   "screen1_b": false
+  },
+  {
+   "printed": 2,
+   "idx_a": 2,
+   "idx_b": 1,
+   "counts_a": [
+    11,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "none",
+   "tier_b": "none",
+   "screens_a": [],
+   "screens_b": [],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": false,
+   "screen1_b": false
+  },
+  {
+   "printed": 3,
+   "idx_a": 3,
+   "idx_b": 2,
+   "counts_a": [
+    11,
+    8
+   ],
+   "counts_b": [
+    11,
+    8
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 4,
+   "idx_a": 4,
+   "idx_b": 3,
+   "counts_a": [
+    11,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "D",
+   "tier_b": "D",
+   "screens_a": [
+    "blocks"
+   ],
+   "screens_b": [
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": false,
+   "screen1_b": false
+  },
+  {
+   "printed": 5,
+   "idx_a": 5,
+   "idx_b": 4,
+   "counts_a": [
+    9,
+    7
+   ],
+   "counts_b": [
+    9,
+    7
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 6,
+   "idx_a": 6,
+   "idx_b": 5,
+   "counts_a": [
+    10,
+    12
+   ],
+   "counts_b": [
+    10,
+    12
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 7,
+   "idx_a": 7,
+   "idx_b": 6,
+   "counts_a": [
+    8,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "A",
+   "tier_b": "none",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [],
+   "counts_agree": false,
+   "tier_agree": false,
+   "screen1_a": true,
+   "screen1_b": false
+  },
+  {
+   "printed": 8,
+   "idx_a": 8,
+   "idx_b": 7,
+   "counts_a": [
+    8,
+    11
+   ],
+   "counts_b": [
+    9,
+    11
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": false,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 9,
+   "idx_a": 9,
+   "idx_b": 8,
+   "counts_a": [
+    12,
+    9
+   ],
+   "counts_b": [
+    12,
+    10
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": false,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 10,
+   "idx_a": 10,
+   "idx_b": 9,
+   "counts_a": [
+    11,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "none",
+   "tier_b": "none",
+   "screens_a": [],
+   "screens_b": [],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": false,
+   "screen1_b": false
+  },
+  {
+   "printed": 11,
+   "idx_a": 11,
+   "idx_b": 10,
+   "counts_a": [
+    9,
+    11
+   ],
+   "counts_b": [
+    9,
+    11
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 12,
+   "idx_a": 12,
+   "idx_b": 11,
+   "counts_a": [
+    9,
+    11
+   ],
+   "counts_b": [
+    12,
+    11
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": false,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 13,
+   "idx_a": 13,
+   "idx_b": 12,
+   "counts_a": [
+    11,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "none",
+   "tier_b": "none",
+   "screens_a": [],
+   "screens_b": [],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": false,
+   "screen1_b": false
+  },
+  {
+   "printed": 14,
+   "idx_a": 14,
+   "idx_b": 13,
+   "counts_a": [
+    12,
+    11
+   ],
+   "counts_b": [
+    12,
+    11
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 15,
+   "idx_a": 15,
+   "idx_b": 14,
+   "counts_a": [
+    8,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "A",
+   "tier_b": "none",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [],
+   "counts_agree": false,
+   "tier_agree": false,
+   "screen1_a": true,
+   "screen1_b": false
+  },
+  {
+   "printed": 16,
+   "idx_a": 16,
+   "idx_b": 15,
+   "counts_a": [
+    11,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "none",
+   "tier_b": "none",
+   "screens_a": [],
+   "screens_b": [],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": false,
+   "screen1_b": false
+  },
+  {
+   "printed": 17,
+   "idx_a": 17,
+   "idx_b": 16,
+   "counts_a": [
+    12,
+    4,
+    4
+   ],
+   "counts_b": [
+    12,
+    4,
+    4
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 18,
+   "idx_a": 18,
+   "idx_b": 17,
+   "counts_a": [
+    11,
+    8
+   ],
+   "counts_b": [
+    11,
+    8
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 19,
+   "idx_a": 19,
+   "idx_b": 18,
+   "counts_a": [
+    9,
+    6
+   ],
+   "counts_b": [
+    11,
+    9
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": false,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 20,
+   "idx_a": 20,
+   "idx_b": 19,
+   "counts_a": [
+    8,
+    6
+   ],
+   "counts_b": [
+    8,
+    8
+   ],
+   "tier_a": "A",
+   "tier_b": "none",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [],
+   "counts_agree": false,
+   "tier_agree": false,
+   "screen1_a": true,
+   "screen1_b": false
+  },
+  {
+   "printed": 21,
+   "idx_a": 21,
+   "idx_b": 20,
+   "counts_a": [
+    11,
+    9
+   ],
+   "counts_b": [
+    11,
+    9
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 22,
+   "idx_a": 22,
+   "idx_b": 21,
+   "counts_a": [
+    7,
+    8
+   ],
+   "counts_b": [
+    9,
+    8
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": false,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 23,
+   "idx_a": 23,
+   "idx_b": 22,
+   "counts_a": [
+    9,
+    12
+   ],
+   "counts_b": [
+    9,
+    12
+   ],
+   "tier_a": "A",
+   "tier_b": "A",
+   "screens_a": [
+    "counts",
+    "blocks"
+   ],
+   "screens_b": [
+    "counts",
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": true,
+   "screen1_b": true
+  },
+  {
+   "printed": 24,
+   "idx_a": 24,
+   "idx_b": 23,
+   "counts_a": [
+    11,
+    11
+   ],
+   "counts_b": [
+    11,
+    11
+   ],
+   "tier_a": "D",
+   "tier_b": "D",
+   "screens_a": [
+    "blocks"
+   ],
+   "screens_b": [
+    "blocks"
+   ],
+   "counts_agree": true,
+   "tier_agree": true,
+   "screen1_a": false,
+   "screen1_b": false
+  }
+ ]
+}
