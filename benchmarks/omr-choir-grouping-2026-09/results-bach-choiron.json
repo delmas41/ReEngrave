@@ -1,0 +1,90 @@
+{
+  "protocol": {
+    "pipeline": "tools.omr.transcribe at CLI defaults",
+    "dpi": 600,
+    "dossier": null,
+    "why_no_dossier": "data/dossiers/ is generated from the same Gradus MusicXML used here as truth, so --dossier would hand the run its own answer key",
+    "conf_threshold": 0.25,
+    "imgsz": null,
+    "read_direction_text": null,
+    "why_read_direction_text": "null = pass None to transcribe, i.e. the pipeline default (ON since 2026-09-02), which is what `pipeline: CLI defaults` promises; the former `false` pinned the reader OFF while claiming defaults. Force either arm on one tree with scan_eval.py --direction-text / --no-direction-text."
+  },
+  "generated_by": "benchmarks/omr-scan-e2e-2026-09/scan_eval.py",
+  "pooled_withheld_because": null,
+  "stress_rows_excluded": [
+    "bach-brandenburg3-mvt1-468678-p1.choiron"
+  ],
+  "pooled": null,
+  "rows": [
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1.choiron",
+      "label": "Bach Brandenburg 3 / Edition Peters / 300 dpi, +1 numbering \u2014 COMPLETION of the parked row",
+      "dpi": 600,
+      "work_id": "bach--concerto-3",
+      "imslp_id": "468678",
+      "pdf_page_index": 0,
+      "window": [
+        1,
+        10
+      ],
+      "leading_pickup": true,
+      "confidence": "verified",
+      "pooled": false,
+      "seconds": 80.5,
+      "truth": {
+        "parts": 11,
+        "measures": 10,
+        "measure_numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 2,
+        "staves": 24
+      },
+      "detected": {
+        "systems": 2,
+        "staves": 24,
+        "measures": 6
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/bach-choir-grouping/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/bach-choir-grouping/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.choiron.omr.musicxml",
+      "notes": null,
+      "omr_ned": {
+        "name": "bach-brandenburg3-mvt1-468678-p1.choiron",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/bach-choir-grouping/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.choiron.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/bach-choir-grouping/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml",
+        "omr_ned": 0.8151633986928104,
+        "omr_ed": 6236,
+        "pred_symbols": 4101,
+        "truth_symbols": 3549,
+        "categories": {
+          "wrong note": 3599,
+          "wrong note head": 4,
+          "wrong flag/beam": 182,
+          "wrong accidental": 6,
+          "wrong tie": 6,
+          "wrong articulation": 2,
+          "wrong lyric": 18,
+          "wrong clef": 4,
+          "wrong timesig": 8,
+          "wrong keysig": 8,
+          "wrong direction": 18,
+          "wrong slur": 16,
+          "entire measure insert/delete": 2079,
+          "entire staff insert/delete": 286
+        }
+      }
+    }
+  ]
+}

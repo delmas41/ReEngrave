@@ -181,3 +181,84 @@ Design properties, in the house terms:
 
 Guard results land in this file as they are measured; nothing in this
 section asserts an outcome that has not been run yet.
+
+### Cue C — the merged system's stems, and the open-score flip
+
+Cue B alone restores [12, 12] but the merged system 2 still read **14 bars
+against 5**: in this rhythm-unison tutti, stem columns align across ≥8 of 12
+staves and pass the vote, none of them connected, so
+`detect_barlines`' open-score question — "are the vote-accepted columns
+mostly connected?" — counts 9 unconnected stem columns against 6 true
+barlines and flips the system into open-score mode, where votes stand alone
+(measured x's: 625, 1332, 1417, 1693, 1786, 2414, 2951, 3135, 3229 accepted
+beside the true 183 / 1163 / 1978 / 2791 / 3623 / 4457).
+
+**Cue C** (same flag): the STAVES already answer the open-score question —
+a system whose staves form ≥2 bracket-groups, at least half of them in
+multi-staff groups, cannot be an open score, because `group_index` only
+becomes non-trivial where cross-staff ink crosses some gaps and not others
+(`_assign_groups`), which is exactly what an open score never has. For such
+systems the connectivity filter keeps its role; thresholds and rescue are
+untouched. The half-in-multi guard keeps true open-score pages (singleton
+voices + a keyboard pair) in open-score mode. With B + C the page reads
+**[6, 5] measures — system 2 exact**; the +1 in system 1 is the pre-existing
+spurious split at x=1518 (§4).
+
+## Measured results (2026-09-04, graft weights pinned via OMR_SCAN_EVAL_WEIGHTS)
+
+### The Bach row, end to end (`results-bach-choiron.json` / `-choiroff.json`)
+
+| arm | systems | page cells | OMR-NED | edits | pred | structure charges |
+|---|---|--:|--:|--:|--:|--:|
+| flag OFF | 6 | 122 | **0.9241** | 6735 | 3739 | 3077 measure + 1828 staff = 4905 |
+| flag ON (B+C) | **2** | **11** | **0.8152** | **6236** | 4101 | 2079 measure + 286 staff = 2365 |
+
+−0.1089 OMR-NED, −499 edits, structure charges −2540. `wrong note` rises
+1679 → 3599: bars that used to be charged whole now pair and expose their
+contents — the same shift the WTC part-stitching fix documented ("the metric
+has stopped measuring the exporter and started measuring the reading").
+The page total (11 cells vs true 10) crosses the row's stated re-admission
+bar ("segmentation reads ~10 measures"); the residual +1 is §4's spurious
+x=1518 split, present in both arms.
+
+### Guard 2 — flag OFF is byte-identical
+
+The flag-OFF arm on this branch **hash-matches the widened-graft baseline
+fixture** produced on `claude/scan-rebaseline` (84a5ccac, an ancestor of
+this branch's base with zero tools/omr changes between):
+`sha256 936319bc…` for both `bach-…choiroff.omr.musicxml` and
+`bach-…widened-graft.omr.musicxml`, and scores identically
+(0.9241 / 6735). Full-pipeline byte-reproduction, across worktrees, YOLO +
+OCR included — the flag default cannot have changed anything.
+
+### Guard 3 — the ten pooled scan rows (`ab_structural_rows.py`)
+
+The two cues are the only flag-dependent code and both act strictly upstream
+(grouping; barline acceptance), so a row whose complete structural
+fingerprint — system sizes, group indices, per-system barline x lists, every
+cell's (system, staff, measure, bbox) — is identical under both flags
+produces a byte-identical `.omr.json` by construction. Measured at the
+protocol's 600 dpi:
+
+```
+beethoven-984073-p1  IDENTICAL [12]      192 cells     brahms-317803-p1  IDENTICAL [14]     112
+beethoven-984073-p2  IDENTICAL [11,11]   341           brahms-317803-p2  IDENTICAL [14,13]  202
+beethoven-575951-p1  IDENTICAL [12]      192           mahler-local-p2   IDENTICAL [19]     153
+beethoven-575951-p2  IDENTICAL [11,11]   352           mahler-local-p3   IDENTICAL [15]     117
+dvorak-405834-p5     IDENTICAL [15]      135           bach-468678-p1    DIFFERS 6→2 sys, 359→132 cells
+dvorak-405834-p6     IDENTICAL [15]      105
+```
+
+**All ten pooled rows byte-identical flag-ON; the 10-row pooled figure is
+untouched (0.8387 / 29082).** Bach is the only row the flag reaches, and it
+moves to the truth.
+
+### Guard 1 — test suite
+
+1885 passed, 8 skipped, 1 failed: `test_mxl_verdicts.py::
+test_windows_accept_the_scan_benchmark_file`, which fails identically on the
+base commit `0487be1f` with this branch's changes stashed — pre-existing,
+unrelated (pre-fill area). New tests: 7 cue-B unit tests
+(test_system_grouping.py), 4 cue-C unit tests (test_measure_extractor.py,
+including the vocal-page guard and the pinned disease), 3 e2e tests on the
+real page (test_choir_grouping_e2e.py, omr_smoke, both flag directions).
