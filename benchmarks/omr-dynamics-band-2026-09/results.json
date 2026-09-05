@@ -1,0 +1,1061 @@
+{
+ "scans": {
+  "breitkopf-brahms1": {
+   "pages": 2,
+   "letters": 164,
+   "in_band": 109,
+   "in_band_range": [
+    0.0249991172500928,
+    4.1799987820001245
+   ],
+   "gap": [
+    -5.286661126629042,
+    -0.14500086404990037
+   ],
+   "owner": {
+    "own": 109,
+    "none": 3,
+    "above:1": 4,
+    "above:2": 2,
+    "above:3": 4,
+    "above:5": 4,
+    "above:8": 1,
+    "above:9": 7,
+    "above:10": 7,
+    "above:11": 4,
+    "above:17": 1,
+    "above:20": 2,
+    "above:22": 3,
+    "above:23": 5,
+    "above:0": 1,
+    "above:7": 2,
+    "above:12": 4,
+    "above:19": 1
+   },
+   "letter_mix": {
+    "f": 111,
+    "p": 44,
+    "z": 4,
+    "m": 4,
+    "s": 1
+   }
+  },
+  "durand-lamer": {
+   "pages": 2,
+   "letters": 104,
+   "in_band": 81,
+   "in_band_range": [
+    0.9155293584326655,
+    5.175015382664934
+   ],
+   "gap": [
+    -4.524538255367884,
+    0.9155293584326655
+   ],
+   "owner": {
+    "above:0": 3,
+    "own": 81,
+    "none": 5,
+    "above:11": 3,
+    "above:12": 1,
+    "above:13": 1,
+    "above:3": 2,
+    "above:4": 1,
+    "above:5": 2,
+    "above:7": 3,
+    "above:9": 2
+   },
+   "letter_mix": {
+    "p": 79,
+    "f": 12,
+    "m": 10,
+    "s": 2,
+    "z": 1
+   }
+  },
+  "eulenburg-scheherazade": {
+   "pages": 2,
+   "letters": 97,
+   "in_band": 61,
+   "in_band_range": [
+    0.5649991435000795,
+    5.540000270799994
+   ],
+   "gap": [
+    -4.744999474499946,
+    0.5649991435000795
+   ],
+   "owner": {
+    "own": 61,
+    "above:1": 3,
+    "above:2": 6,
+    "above:7": 2,
+    "above:14": 2,
+    "none": 7,
+    "above:0": 3,
+    "above:3": 2,
+    "above:4": 1,
+    "above:11": 3,
+    "above:12": 2,
+    "above:15": 5
+   },
+   "letter_mix": {
+    "p": 56,
+    "f": 33,
+    "m": 3,
+    "s": 2,
+    "z": 3
+   }
+  },
+  "jurgenson-tchaikovsky1": {
+   "pages": 2,
+   "letters": 1,
+   "in_band": 0,
+   "in_band_range": null,
+   "gap": [
+    NaN,
+    NaN
+   ],
+   "owner": {
+    "above:10": 1
+   },
+   "letter_mix": {
+    "f": 1
+   }
+  },
+  "litolff-beethoven5": {
+   "pages": 2,
+   "letters": 91,
+   "in_band": 82,
+   "in_band_range": [
+    0.23999878460017499,
+    5.315467711811775
+   ],
+   "gap": [
+    -7.318470974442661,
+    0.23999878460017499
+   ],
+   "owner": {
+    "own": 82,
+    "above:3": 2,
+    "above:13": 1,
+    "above:1": 1,
+    "above:6": 1,
+    "above:7": 2,
+    "above:12": 2
+   },
+   "letter_mix": {
+    "f": 70,
+    "p": 20,
+    "s": 1
+   }
+  },
+  "novello-elgar1": {
+   "pages": 2,
+   "letters": 82,
+   "in_band": 40,
+   "in_band_range": [
+    0.17000081700008296,
+    2.9250010925001133
+   ],
+   "gap": [
+    -4.7499996749999704,
+    0.17000081700008296
+   ],
+   "owner": {
+    "above:10": 2,
+    "own": 40,
+    "above:21": 1,
+    "above:0": 1,
+    "above:4": 2,
+    "above:5": 4,
+    "above:8": 6,
+    "above:9": 6,
+    "above:13": 2,
+    "above:16": 10,
+    "above:18": 2,
+    "above:20": 2,
+    "above:22": 2,
+    "above:25": 2
+   },
+   "letter_mix": {
+    "p": 70,
+    "m": 5,
+    "f": 6,
+    "z": 1
+   }
+  },
+  "peters-mahler5": {
+   "pages": 2,
+   "letters": 302,
+   "in_band": 231,
+   "in_band_range": [
+    0.21999959120001641,
+    4.284999385750035
+   ],
+   "gap": [
+    -4.344432845544891,
+    -0.515000374249974
+   ],
+   "owner": {
+    "own": 231,
+    "above:0": 5,
+    "above:2": 2,
+    "above:3": 5,
+    "above:4": 4,
+    "above:5": 1,
+    "above:6": 4,
+    "above:8": 5,
+    "above:10": 4,
+    "above:12": 4,
+    "none": 5,
+    "above:14": 3,
+    "above:16": 2,
+    "above:17": 4,
+    "above:18": 3,
+    "above:19": 3,
+    "above:1": 6,
+    "above:7": 6,
+    "above:9": 1,
+    "above:13": 1,
+    "above:15": 3
+   },
+   "letter_mix": {
+    "p": 144,
+    "f": 118,
+    "z": 4,
+    "s": 25,
+    "m": 11
+   }
+  },
+  "simrock-dvorak9": {
+   "pages": 2,
+   "letters": 234,
+   "in_band": 178,
+   "in_band_range": [
+    0.01980208019802484,
+    3.5616036455141673
+   ],
+   "gap": [
+    -3.04499995045,
+    -0.1899999219000021
+   ],
+   "owner": {
+    "own": 178,
+    "above:3": 1,
+    "above:5": 5,
+    "above:7": 1,
+    "above:8": 1,
+    "above:10": 3,
+    "above:11": 5,
+    "above:12": 5,
+    "above:13": 5,
+    "above:20": 4,
+    "above:23": 1,
+    "above:24": 1,
+    "above:26": 5,
+    "above:27": 1,
+    "above:0": 1,
+    "above:1": 3,
+    "none": 6,
+    "above:16": 1,
+    "above:17": 1,
+    "above:21": 4,
+    "above:28": 2
+   },
+   "letter_mix": {
+    "f": 160,
+    "p": 44,
+    "s": 4,
+    "z": 21,
+    "m": 5
+   }
+  },
+  "universal-mahler1": {
+   "pages": 2,
+   "letters": 171,
+   "in_band": 129,
+   "in_band_range": [
+    0.495993872427194,
+    5.588690576735108
+   ],
+   "gap": [
+    -5.740271045225139,
+    0.495993872427194
+   ],
+   "owner": {
+    "own": 129,
+    "above:0": 1,
+    "above:2": 2,
+    "above:3": 3,
+    "above:4": 5,
+    "none": 9,
+    "above:11": 1,
+    "above:7": 5,
+    "above:12": 1,
+    "above:14": 3,
+    "above:15": 2,
+    "above:17": 1,
+    "above:19": 1,
+    "above:20": 8
+   },
+   "letter_mix": {
+    "f": 30,
+    "p": 103,
+    "s": 9,
+    "m": 29
+   }
+  }
+ },
+ "pooled_gap": [
+  -3.04499995045,
+  -0.515000374249974
+ ],
+ "confidence_trade": [
+  {
+   "threshold": 0.3,
+   "none_removed": 1,
+   "own_lost": 25
+  },
+  {
+   "threshold": 0.4,
+   "none_removed": 6,
+   "own_lost": 87
+  },
+  {
+   "threshold": 0.5,
+   "none_removed": 13,
+   "own_lost": 140
+  },
+  {
+   "threshold": 0.6,
+   "none_removed": 18,
+   "own_lost": 233
+  },
+  {
+   "threshold": 0.7,
+   "none_removed": 19,
+   "own_lost": 338
+  },
+  {
+   "threshold": 0.8,
+   "none_removed": 27,
+   "own_lost": 557
+  }
+ ],
+ "above_staff_distance": {
+  "1": 300
+ },
+ "reattribution": {
+  "dedupe": 50,
+  "sole_evidence": 250
+ },
+ "engraved": {
+  "beethoven-sym3-mvt1": {
+   "n_staves": 19,
+   "exact_now": 13,
+   "exact_reattr": 19,
+   "n_contested": 19,
+   "contested_now": 13,
+   "contested_reattr": 19,
+   "words_exact_now": 12,
+   "words_exact_reattr": 17,
+   "letters": 25,
+   "owner": {
+    "own": 6,
+    "above:1": 1,
+    "above:2": 1,
+    "above:3": 1,
+    "above:4": 1,
+    "above:6": 1,
+    "above:7": 2,
+    "above:8": 1,
+    "above:9": 1,
+    "above:10": 1,
+    "above:11": 1,
+    "above:12": 1,
+    "above:13": 1,
+    "above:14": 1,
+    "above:15": 1,
+    "above:16": 3,
+    "above:17": 1
+   },
+   "words_now": 23,
+   "words_band": 6,
+   "words_reattr": 23,
+   "export_now": 23,
+   "joiner_agrees": true,
+   "truth": 23,
+   "gap": [
+    -3.2439334962794724,
+    1.517123225496559
+   ]
+  },
+  "beethoven-sym5-mvt1": {
+   "n_staves": 18,
+   "exact_now": 12,
+   "exact_reattr": 18,
+   "n_contested": 9,
+   "contested_now": 3,
+   "contested_reattr": 9,
+   "words_exact_now": 3,
+   "words_exact_reattr": 7,
+   "letters": 22,
+   "owner": {
+    "above:4": 2,
+    "above:5": 2,
+    "own": 14,
+    "above:13": 1,
+    "above:14": 1,
+    "above:16": 2
+   },
+   "words_now": 16,
+   "words_band": 10,
+   "words_reattr": 13,
+   "export_now": 16,
+   "joiner_agrees": true,
+   "truth": 13,
+   "gap": [
+    -5.399002660361902,
+    1.5149982397253268
+   ]
+  },
+  "brahms-sym1-mvt1": {
+   "n_staves": 21,
+   "exact_now": 10,
+   "exact_reattr": 15,
+   "n_contested": 20,
+   "contested_now": 9,
+   "contested_reattr": 14,
+   "words_exact_now": 9,
+   "words_exact_reattr": 12,
+   "letters": 29,
+   "owner": {
+    "own": 18,
+    "above:4": 1,
+    "above:5": 1,
+    "above:8": 1,
+    "above:9": 1,
+    "none": 1,
+    "above:11": 1,
+    "above:13": 1,
+    "above:14": 1,
+    "above:16": 1,
+    "above:18": 1,
+    "above:19": 1
+   },
+   "words_now": 29,
+   "words_band": 18,
+   "words_reattr": 23,
+   "export_now": 29,
+   "joiner_agrees": true,
+   "truth": 19,
+   "gap": [
+    -5.775931513586701,
+    1.807883412467941
+   ]
+  },
+  "brahms-sym4-mvt1": {
+   "n_staves": 20,
+   "exact_now": 17,
+   "exact_reattr": 19,
+   "n_contested": 16,
+   "contested_now": 13,
+   "contested_reattr": 15,
+   "words_exact_now": 12,
+   "words_exact_reattr": 14,
+   "letters": 20,
+   "owner": {
+    "own": 14,
+    "above:8": 1,
+    "above:9": 1,
+    "above:10": 1,
+    "above:11": 1,
+    "above:16": 1,
+    "above:17": 1
+   },
+   "words_now": 14,
+   "words_band": 8,
+   "words_reattr": 14,
+   "export_now": 14,
+   "joiner_agrees": true,
+   "truth": 15,
+   "gap": [
+    -3.524999283999888,
+    1.30000148800024
+   ]
+  },
+  "bruckner-sym5-mvt1": {
+   "n_staves": 25,
+   "exact_now": 18,
+   "exact_reattr": 20,
+   "n_contested": 8,
+   "contested_now": 1,
+   "contested_reattr": 3,
+   "words_exact_now": 1,
+   "words_exact_reattr": 3,
+   "letters": 34,
+   "owner": {
+    "own": 21,
+    "above:4": 3,
+    "above:19": 1,
+    "above:20": 5,
+    "above:21": 1,
+    "above:22": 3
+   },
+   "words_now": 23,
+   "words_band": 12,
+   "words_reattr": 19,
+   "export_now": 23,
+   "joiner_agrees": true,
+   "truth": 16,
+   "gap": [
+    -5.515000459724905,
+    1.4771106134426355
+   ]
+  },
+  "dvorak-sym9-mvt4": {
+   "n_staves": 18,
+   "exact_now": 16,
+   "exact_reattr": 18,
+   "n_contested": 5,
+   "contested_now": 3,
+   "contested_reattr": 5,
+   "words_exact_now": 3,
+   "words_exact_reattr": 5,
+   "letters": 10,
+   "owner": {
+    "above:14": 2,
+    "above:15": 2,
+    "above:16": 2,
+    "own": 4
+   },
+   "words_now": 6,
+   "words_band": 2,
+   "words_reattr": 5,
+   "export_now": 6,
+   "joiner_agrees": true,
+   "truth": 5,
+   "gap": [
+    -5.409706039719679,
+    1.988092242350942
+   ]
+  },
+  "mahler-sym5-mvt1": {
+   "n_staves": 38,
+   "exact_now": 36,
+   "exact_reattr": 37,
+   "n_contested": 2,
+   "contested_now": 0,
+   "contested_reattr": 1,
+   "words_exact_now": 0,
+   "words_exact_reattr": 1,
+   "letters": 5,
+   "owner": {
+    "own": 2,
+    "above:17": 3
+   },
+   "words_now": 4,
+   "words_band": 2,
+   "words_reattr": 4,
+   "export_now": 4,
+   "joiner_agrees": true,
+   "truth": 3,
+   "gap": [
+    -3.2850008722748334,
+    1.9600017430003032
+   ]
+  },
+  "mozart-sym40-mvt1": {
+   "n_staves": 11,
+   "exact_now": 10,
+   "exact_reattr": 11,
+   "n_contested": 5,
+   "contested_now": 4,
+   "contested_reattr": 5,
+   "words_exact_now": 3,
+   "words_exact_reattr": 4,
+   "letters": 6,
+   "owner": {
+    "own": 5,
+    "above:8": 1
+   },
+   "words_now": 6,
+   "words_band": 5,
+   "words_reattr": 5,
+   "export_now": 6,
+   "joiner_agrees": true,
+   "truth": 5,
+   "gap": [
+    -5.989234245248154,
+    1.562308255930985
+   ]
+  },
+  "mozart-sym41-mvt1": {
+   "n_staves": 17,
+   "exact_now": 9,
+   "exact_reattr": 17,
+   "n_contested": 16,
+   "contested_now": 8,
+   "contested_reattr": 16,
+   "words_exact_now": 8,
+   "words_exact_reattr": 16,
+   "letters": 25,
+   "owner": {
+    "own": 15,
+    "above:2": 1,
+    "above:4": 1,
+    "above:5": 1,
+    "above:6": 1,
+    "above:9": 1,
+    "above:10": 1,
+    "above:11": 1,
+    "above:12": 2,
+    "above:13": 1
+   },
+   "words_now": 25,
+   "words_band": 15,
+   "words_reattr": 25,
+   "export_now": 25,
+   "joiner_agrees": true,
+   "truth": 25,
+   "gap": [
+    -5.903645685933423,
+    1.555001528800237
+   ]
+  },
+  "tchaikovsky-sym4-mvt2": {
+   "n_staves": 20,
+   "exact_now": 16,
+   "exact_reattr": 18,
+   "n_contested": 7,
+   "contested_now": 3,
+   "contested_reattr": 5,
+   "words_exact_now": 1,
+   "words_exact_reattr": 4,
+   "letters": 13,
+   "owner": {
+    "above:2": 2,
+    "own": 9,
+    "above:16": 1,
+    "above:18": 1
+   },
+   "words_now": 5,
+   "words_band": 2,
+   "words_reattr": 3,
+   "export_now": 5,
+   "joiner_agrees": true,
+   "truth": 5,
+   "gap": [
+    -5.386147675438734,
+    1.5150015224002478
+   ]
+  },
+  "tchaikovsky-sym6-mvt2": {
+   "n_staves": 17,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 32,
+   "owner": {
+    "own": 16,
+    "above:5": 2,
+    "above:6": 2,
+    "above:11": 1,
+    "above:12": 3,
+    "none": 1,
+    "above:14": 2,
+    "above:15": 5
+   },
+   "words_now": 18,
+   "words_band": 9,
+   "words_reattr": 14,
+   "export_now": 18,
+   "joiner_agrees": true,
+   "truth": 13,
+   "gap": [
+    -5.301024822627791,
+    1.9374128470954461
+   ]
+  }
+ },
+ "scanned": {
+  "bach-brandenburg3-mvt1-468678-p1": {
+   "n_staves": 24,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 2,
+   "owner": {
+    "none": 1,
+    "own": 1
+   },
+   "words_now": 2,
+   "words_band": 1,
+   "words_reattr": 1,
+   "export_now": 2,
+   "joiner_agrees": true,
+   "truth": 0,
+   "gap": [
+    -5.005880358910014,
+    1.1800008262000699
+   ]
+  },
+  "beethoven-sym5-mvt1-575951-p1": {
+   "n_staves": 12,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 17,
+   "owner": {
+    "above:2": 2,
+    "own": 15
+   },
+   "words_now": 11,
+   "words_band": 10,
+   "words_reattr": 11,
+   "export_now": 11,
+   "joiner_agrees": true,
+   "truth": 13,
+   "gap": [
+    -6.670922223649378,
+    1.479998335400255
+   ]
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+   "n_staves": 22,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 144,
+   "owner": {
+    "own": 125,
+    "above:0": 1,
+    "none": 1,
+    "above:1": 2,
+    "above:2": 1,
+    "above:4": 1,
+    "above:5": 2,
+    "above:6": 1,
+    "above:8": 2,
+    "above:9": 1,
+    "above:14": 1,
+    "above:16": 2,
+    "above:18": 1,
+    "above:19": 1,
+    "above:20": 2
+   },
+   "words_now": 92,
+   "words_band": 78,
+   "words_reattr": 88,
+   "export_now": 92,
+   "joiner_agrees": true,
+   "truth": 154,
+   "gap": [
+    -4.645000494862419,
+    -1.8550009063873647
+   ]
+  },
+  "beethoven-sym5-mvt1-984073-p1": {
+   "n_staves": 12,
+   "exact_now": 11,
+   "exact_reattr": 10,
+   "n_contested": 7,
+   "contested_now": 6,
+   "contested_reattr": 5,
+   "words_exact_now": 5,
+   "words_exact_reattr": 5,
+   "letters": 18,
+   "owner": {
+    "own": 16,
+    "above:2": 2
+   },
+   "words_now": 12,
+   "words_band": 11,
+   "words_reattr": 11,
+   "export_now": 12,
+   "joiner_agrees": true,
+   "truth": 13,
+   "gap": [
+    -6.706401269051581,
+    1.286746650771059
+   ]
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+   "n_staves": 22,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 142,
+   "owner": {
+    "own": 121,
+    "above:0": 3,
+    "above:1": 2,
+    "above:3": 1,
+    "above:4": 1,
+    "above:5": 2,
+    "above:6": 1,
+    "above:8": 2,
+    "above:11": 1,
+    "above:16": 3,
+    "above:18": 1,
+    "above:19": 2,
+    "above:20": 2
+   },
+   "words_now": 86,
+   "words_band": 70,
+   "words_reattr": 85,
+   "export_now": 86,
+   "joiner_agrees": true,
+   "truth": 154,
+   "gap": [
+    -4.124999786874988,
+    0.2949999999999875
+   ]
+  },
+  "brahms-sym1-mvt1-317803-p1": {
+   "n_staves": 14,
+   "exact_now": 5,
+   "exact_reattr": 5,
+   "n_contested": 14,
+   "contested_now": 5,
+   "contested_reattr": 5,
+   "words_exact_now": 4,
+   "words_exact_reattr": 2,
+   "letters": 38,
+   "owner": {
+    "own": 28,
+    "above:1": 1,
+    "above:2": 1,
+    "above:3": 4,
+    "above:4": 1,
+    "none": 1,
+    "above:9": 1,
+    "above:12": 1
+   },
+   "words_now": 22,
+   "words_band": 13,
+   "words_reattr": 14,
+   "export_now": 22,
+   "joiner_agrees": true,
+   "truth": 19,
+   "gap": [
+    -6.572746316177836,
+    1.4477658868297374
+   ]
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+   "n_staves": 27,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 90,
+   "owner": {
+    "own": 61,
+    "none": 2,
+    "above:1": 2,
+    "above:2": 1,
+    "above:3": 1,
+    "above:5": 1,
+    "above:8": 1,
+    "above:9": 5,
+    "above:10": 2,
+    "above:11": 3,
+    "above:17": 1,
+    "above:20": 2,
+    "above:22": 3,
+    "above:23": 5
+   },
+   "words_now": 65,
+   "words_band": 41,
+   "words_reattr": 49,
+   "export_now": 65,
+   "joiner_agrees": true,
+   "truth": 48,
+   "gap": [
+    -5.286661126629042,
+    0.6999990430001187
+   ]
+  },
+  "dvorak-sym9-mvt1-405834-p5": {
+   "n_staves": 15,
+   "exact_now": 12,
+   "exact_reattr": 12,
+   "n_contested": 8,
+   "contested_now": 5,
+   "contested_reattr": 5,
+   "words_exact_now": 4,
+   "words_exact_reattr": 4,
+   "letters": 25,
+   "owner": {
+    "own": 22,
+    "above:2": 2,
+    "none": 1
+   },
+   "words_now": 15,
+   "words_band": 11,
+   "words_reattr": 13,
+   "export_now": 15,
+   "joiner_agrees": true,
+   "truth": 15,
+   "gap": [
+    -7.799632627987105,
+    0.9899989559501003
+   ]
+  },
+  "dvorak-sym9-mvt1-405834-p6": {
+   "n_staves": 15,
+   "exact_now": 9,
+   "exact_reattr": 11,
+   "n_contested": 13,
+   "contested_now": 7,
+   "contested_reattr": 9,
+   "words_exact_now": 3,
+   "words_exact_reattr": 5,
+   "letters": 47,
+   "owner": {
+    "own": 45,
+    "above:5": 2
+   },
+   "words_now": 22,
+   "words_band": 21,
+   "words_reattr": 22,
+   "export_now": 22,
+   "joiner_agrees": true,
+   "truth": 28,
+   "gap": [
+    -8.79189538209838,
+    1.436698593272895
+   ]
+  },
+  "mahler-sym5-mvt1-local-p2": {
+   "n_staves": 17,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 12,
+   "owner": {
+    "own": 7,
+    "above:7": 5
+   },
+   "words_now": 8,
+   "words_band": 4,
+   "words_reattr": 8,
+   "export_now": 8,
+   "joiner_agrees": true,
+   "truth": 4,
+   "gap": [
+    -5.956439896012975,
+    1.5494179081031743
+   ]
+  },
+  "mahler-sym5-mvt1-local-p3": {
+   "n_staves": 13,
+   "exact_now": null,
+   "exact_reattr": null,
+   "n_contested": null,
+   "contested_now": null,
+   "contested_reattr": null,
+   "words_exact_now": null,
+   "words_exact_reattr": null,
+   "letters": 63,
+   "owner": {
+    "own": 51,
+    "none": 1,
+    "above:4": 2,
+    "above:10": 6,
+    "above:11": 2,
+    "above:13": 1
+   },
+   "words_now": 41,
+   "words_band": 29,
+   "words_reattr": 32,
+   "export_now": 41,
+   "joiner_agrees": true,
+   "truth": 43,
+   "gap": [
+    -7.530582432396841,
+    1.6099988970501067
+   ]
+  }
+ },
+ "band_sweep": [
+  {
+   "band_lo": -1.5,
+   "cells": [
+    "reattr/truth 1.04  exact 92/107",
+    "reattr/truth 0.68  exact 24/42"
+   ]
+  },
+  {
+   "band_lo": -1.0,
+   "cells": [
+    "reattr/truth 1.04  exact 92/107",
+    "reattr/truth 0.68  exact 24/42"
+   ]
+  },
+  {
+   "band_lo": -0.5,
+   "cells": [
+    "reattr/truth 1.04  exact 92/107",
+    "reattr/truth 0.68  exact 24/42"
+   ]
+  },
+  {
+   "band_lo": 0.0,
+   "cells": [
+    "reattr/truth 1.04  exact 92/107",
+    "reattr/truth 0.68  exact 24/42"
+   ]
+  },
+  {
+   "band_lo": 0.25,
+   "cells": [
+    "reattr/truth 1.04  exact 92/107",
+    "reattr/truth 0.68  exact 24/42"
+   ]
+  },
+  {
+   "band_lo": 0.5,
+   "cells": [
+    "reattr/truth 1.04  exact 92/107",
+    "reattr/truth 0.67  exact 24/42"
+   ]
+  },
+  {
+   "band_lo": 1.0,
+   "cells": [
+    "reattr/truth 1.04  exact 92/107",
+    "reattr/truth 0.66  exact 24/42"
+   ]
+  }
+ ]
+}

@@ -5,6 +5,90 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — dynamics letters: a placement band exists, and re-attribution works on engravings only
+
+Sean asked whether dynamics letters should be read the way clefs are. Measured, not reasoned
+about: `benchmarks/omr-dynamics-band-2026-09/`.
+
+**Half of the clef approach transfers, and not the famous half.** Geometry-instead-of-
+classification does NOT apply — alto and tenor are one glyph on two lines, but a `p` is a `p` at
+any height, and the horizontal assembly it does need (`f`+`f` → `ff`) already exists in
+`export.measure_dynamics`. The clef LOCATOR does not apply either: it exists because the model
+is blind to clefs on scans, and the detector is not blind to dynamics — 1246 letters over 18
+pages. What transfers is **POSITION BEFORE SHAPE**, and `measure_dynamics` uses no vertical
+information at all.
+
+- **The band is real and holds across 9 publishers** (Breitkopf, Durand, Eulenburg, Jurgenson,
+  Litolff, Novello, Peters, Simrock, Universal): 73% of letters stand in their own staff's band,
+  24% in the band of the staff **immediately above — distance exactly 1, no exceptions**, which
+  is the cell padding confirming itself. Pooled widest empty interval **−3.04 .. −0.52 spaces**,
+  and the lower edge is a **plateau** (−1.5 .. +0.25 changes nothing on either scored arm).
+- ⚠️ **A GATE IS THE WRONG FIX**; an out-of-band letter is usually not junk but the neighbour's
+  ink through this cell's padding, and deleting it loses the mark. **83% of re-attributed letters
+  are the target staff's SOLE evidence** — because `_dedupe_cross_staff_detections` already
+  removed the twin BY DISTANCE and kept the lower staff's copy, the same failure the ledger-ladder
+  work found for noteheads. So the fix belongs in that function as another evidence tier, not in
+  a filter after it.
+- **Engraved (canonical 11): re-attribution is a clear win** — over-emission 1.19 → 1.04, staves
+  exact by word **52 → 83 of 107**, no work worse.
+- ⚠️⚠️ **SCANS: IT DOES NOTHING — 16 → 16 staves exact by word** (11 pages, 5 publishers,
+  hand-verified windows). The engraved result does not carry, and the table says why: on real
+  scans we **under**-emit (376 words against 491, 0.77), so the dominant dynamics error there is
+  a mark never found, not a mark on the wrong staff. Measured, **NOT shipped** — the next step is
+  why scans under-emit, not a wider band sweep.
+- ⚠️ Refuted: **confidence** as a filter. Priced as the trade rather than by comparing medians —
+  removing half the unattributable letters costs **233 of 911** good ones.
+- ⚠️ The probe restates `measure_dynamics`'s joining rule in page pixels (re-attribution moves a
+  letter into a staff whose cell it was never cut into) and **cross-checks itself against the
+  real function on every page**. That check earned its keep: the first version compared box
+  CENTRES where the exporter compares LEFT and TOP edges and disagreed on 4 of 11 scanned pages.
+  A second self-caught flaw: the dedupe keyed on distance could merge the two letters of one
+  `ff`, which a word COUNT cannot see — fixed by keying on the source cell, and a word-CONTENT
+  check added, which cut the engraved claim from 92/107 to a truthful 83/107.
+
+---
+
+## 2026-09-04 — the class space spells 32 glyphs twice, and consumers read one spelling
+
+Asked whether dynamics letters should be read the way clefs are. Looking for the dynamics
+consumers turned up a separate, live fault first: the 208-class vocabulary is **two annotation
+sets concatenated** — fine at ids 0-135 (`dynamicF`, `articStaccatoAbove`, `tupletBracket`),
+coarse at 136-207 (`dynamicLetterF`, `articulationStaccato`, `tupleBracket`). Forty classes
+carry the SAME name at both ids so a name lookup sees both; **thirty-two do not**, and every
+consumer in this pipeline was written against the fine spelling.
+
+- A detection at id 192 was a forte `export._DYNAMIC_LETTER` could not spell — the letter never
+  joined a word and the mark was dropped with no warning anywhere. The same fault as
+  `fingering3`/`tuplet3`. Confirmed **mechanically**, by asking each class-name consumer what it
+  returns for both spellings, not by reading: 6 dynamic letters, 5 articulations, `tuple`/
+  `tupleBracket`, `arpeggio`/`legerLine`.
+- ⚠️ **It cost nothing when found** — the coarse block fires **zero** times across 3 engraved
+  fixtures and 29 scanned pages of 9 publishers. What makes it live is the LABELING side: 26 of
+  the hollow campaign's hand-drawn boxes are classed `dynamicLetterF`/`P`/`S` and
+  `data/user-labeled/catalog.yaml` carries the coarse spelling at ids 190-195, so the next
+  fine-tune trains ids the exporter cannot read.
+- Renamed at the ONE place the model's own `names` are read (`yolo_detector._ensure_loaded`), so
+  every consumer downstream sees a single spelling and no call site knows.
+- ⚠️ **Only 11 EXACT TWINS are renamed, and the abstentions are asserted rather than merely
+  documented.** A coarser name is not a synonym: `numeral4` is NOT `timeSig4` (one numeral class
+  covers meters, tuplet digits, fingerings and measure numbers — and CLAUDE.md records five
+  spurious `timeSig4` on barline fragments shipping a 2/4 page as common time, 390 bar-check
+  failures against 164 for no meter at all); `articulationStaccato` states no SIDE, which
+  `_attach_articulations_in_cell` requires geometry to agree with; `tuple` no NUMBER; `clefC` no
+  LINE, and already resolves to alto by documented design with `resolve_clef` measuring the line
+  anyway. Those 21 sit in `COARSER_THAN_CANONICAL` with what closing each would take, and
+  `unaccounted()` fails the suite on any name in neither table — so a checkpoint with a wider
+  class space is a loud failure, not a silent drop.
+- One consumer spelling fix beside it: `noteheadFullSmall` (`full` is the coarse spelling of
+  `black`) reached `rhythm._NOTEHEAD_INTRINSIC` with a category and NO duration. Fixed as a
+  prefix, not a rename — it states no staff position and does not need one, since pitch comes
+  from the note's y against the grid.
+- **CONTROL**: re-transcribing the same scanned page across the change leaves every musical field
+  identical — same detections, classes, boxes, structure; the only differing leaves in the whole
+  JSON are the four wall-clock timings. Suite 2010 passed / 4 skipped.
+
+---
+
 ## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
 
 Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —

@@ -1,0 +1,38 @@
+{
+  "_README": [
+    "The corpus the placement band is measured over. NINE EDITIONS, nine",
+    "publishers, because the clef work's own rule is that a threshold tuned on",
+    "one edition is not a threshold: adding a second edition to the clef sweep",
+    "took the reported false positives from 7 to 48 without a single",
+    "regression — they had always been there, and one corpus could not see",
+    "them.",
+    "",
+    "Pages are the ones the hollow labeling campaign already sampled for these",
+    "editions (the two densest per edition), so the pages are known to carry",
+    "orchestral music rather than title pages or rests.",
+    "",
+    "The engraved arm is separate and lives in the orchestral e2e fixtures,",
+    "which carry TRUTH — that is the only arm where in-band vs out-of-band can",
+    "be SCORED rather than merely counted."
+  ],
+  "scans": [
+    {"id": "breitkopf-brahms1",       "publisher": "Breitkopf & Hartel",  "pages": [1, 3],
+     "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"},
+    {"id": "eulenburg-scheherazade",  "publisher": "Eulenburg",           "pages": [1, 3],
+     "pdf": "library/editions/rimsky-korsakov/scheherazade-op35/rimsky-korsakov--scheherazade-op35--eulenburg--imslp1010338.pdf"},
+    {"id": "litolff-beethoven5",      "publisher": "Henry Litolff",       "pages": [48, 50],
+     "pdf": "library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf"},
+    {"id": "peters-mahler5",          "publisher": "Peters (scan)",       "pages": [175, 176],
+     "pdf": "library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"},
+    {"id": "simrock-dvorak9",         "publisher": "Simrock",             "pages": [6, 7],
+     "pdf": "library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"},
+    {"id": "durand-lamer",            "publisher": "Durand & Fils",       "pages": [1, 4],
+     "pdf": "library/editions/debussy/la-mer-cd-111/debussy--la-mer-cd-111--durand-fils--imslp15420.pdf"},
+    {"id": "jurgenson-tchaikovsky1",  "publisher": "Jurgenson",           "pages": [42, 44],
+     "pdf": "library/editions/tchaikovsky/symphony-1-op13/tchaikovsky--symphony-1-op13--jurgenson-1875--imslp369941.pdf"},
+    {"id": "novello-elgar1",          "publisher": "Novello",             "pages": [101, 103],
+     "pdf": "library/editions/elgar/symphony-1-op55/elgar--symphony-1-op55--novello-co-1908--imslp56155.pdf"},
+    {"id": "universal-mahler1",       "publisher": "Universal (1906)",    "pages": [3, 4],
+     "pdf": "library/editions/mahler/symphony-1-gmw-11/mahler--symphony-1-gmw-11--edition-1906--imslp17070.pdf"}
+  ]
+}
