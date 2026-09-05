@@ -2530,6 +2530,8 @@ apply, in the order a reader uses them:
    0.45-0.53 against 0.76+ for every real one, neither signal sufficient
    alone). Pooled 0.1506 → **0.1431**, Beethoven notes **81/81 at
    recall/precision 1.000**. `benchmarks/omr-ned-2026-08/LADDER_EVIDENCE_2026-09-01.md`.
+⚠️ **MEASURED 2026-09-05: this veto has NEVER FIRED ON A SCAN.** `_staff_written_ranges(page, dossier)` returns `{}` outright when `dossier is None`, and the scan benchmark runs dossier-free BY PROTOCOL (dossiers are generated from the same MusicXML it scores against). So across the 20-row scan gate all **4,256** cross-staff duplicates are resolved by the ledger ladder or by distance, and the range veto contributes nothing there. It is live only where a dossier is supplied. A family-level substitute was measured and is vacuous — a family's range is the UNION of its members', so percussion spans 0-127, and only 5 detected pitches of 9,219 fall outside their family union (`benchmarks/omr-structural-parts-2026-09/`).
+
 2. **The instrument's written range** — about the part. Two Beethoven bassoon
    staves contested one notehead and distance kept `A♭1`, MIDI 32, below the
    bassoon's `instruments.written_range` of (34, 72), discarding a C4 inside it.

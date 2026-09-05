@@ -176,3 +176,71 @@ all" is not a stylistic preference — it is what the arithmetic says: alone,
 stitch trades +167 of repricing for −492 of alignment and nets a rounding error
 while making the most-read bucket 16% worse; paired, the same code takes ES
 DOWN and contributes −2,009 beyond its standalone value.
+
+
+---
+
+## Phase 4 — bracket blocks: evidence real, both consumers dead
+
+**Step 1 replicated the audit on this corpus** rather than inheriting it: block
+boundary precision **0.920** (23/25), recall **0.523** (23/44), within-block
+family purity **0.872** (34/39). All 20 rows carry blocks; 279 staves, 39 blocks.
+
+⚠️ A first purity reading of 22/39 was a **metric artifact**, caught before
+publication: a bracket block is an ENGRAVING unit, not a taxonomy (timpani
+bracketed with the brass is the block working), plus the documented `Basso`
+lexicon ambiguity, plus counting a boundary-not-found as a precision failure
+when the audit counted it as recall. ⚠️ And 22/39 is numerically identical to
+the audit's *recall* figure while being a different quantity — flagged so the
+two are never conflated.
+
+**Consumer #2 (family veto in `_dedupe_cross_staff_detections`) — vacuous.**
+A veto on the impossible needs a NARROW range, and a family's range is the
+**union** of its members', containing both the smallest and the largest:
+percussion 0–127, woodwind 22–108, string 28–100, brass 26–84. Against the
+corpus's own detected pitches, **5 of 9,219 fall outside their family union
+(0.0005)**. Killed by the audit's own sentence — *a block supplies a family, not
+a name*. The two-arm A/B was deliberately NOT run: spending an hour of shared
+CPU to confirm a ≤5-detection bound derived structurally is theatre.
+
+**Consumer #1 (block-shape mis-join detector) — precision 0.500.** Among rows
+where the ordinal join succeeds:
+
+| | n | rows |
+|---|--:|---|
+| shapes differ, join wrong (TP) | 2 | beethoven p4, both editions |
+| shapes differ, join correct (FP) | **2** | **brahms p3, brahms p4** |
+| shapes agree, join wrong (FN) | 0 | — |
+| shapes agree, join correct (TN) | 3 | beethoven p2 ×2, dvořák p7 |
+
+A coin flip, and **a false positive is not free**: a refusal sends
+`_stitch_slots` back to per-system fragments, which Phase 1 measured as costing
+more `entire measure` than stitched parts. The FP mechanism is the one step 1
+predicted — recall 0.523 unevenly distributed, so a row whose blocks are
+under-detected in ONE system shows a shape difference meaning nothing about the
+music (brahms p3 `[5,3,6]` vs `[9,5]`; brahms p4 `[9,5]` vs `[14]`, one block
+for all fourteen staves).
+
+⚠️ **Observed and deliberately NOT proposed**: the two TPs share a block COUNT
+and differ only in sizes, while both FPs differ in count — that would separate
+4/4. **n = 4**, and this workstream already refuted its own cap-at-2 guard for
+exactly this shape ("a guard tuned to the error mode I could see loses to the
+errors I could not"). Recorded as an observation; it needs a corpus with more
+equal-count multi-system pages.
+
+**So Phase 4 closes complete**: bracket evidence is real and genuinely
+position-independent — it sees a mis-join the staff instrument field cannot,
+that field being a restatement of the join at 99/99 positions — and it has no
+consumer that reaches edits.
+
+## The mis-join is triangulated three ways
+
+Three independent methods, one defect, which is why Beethoven 5 p.4 is not an
+artifact of any one of them:
+
+1. **labels workstream** — per-rung margin reading, `Tp.` at system 2 position 6,
+   Surya and Tesseract agreeing;
+2. **structural workstream** — per-system bracket shapes, `[4,2,5]` vs `[4,3,4]`,
+   on both editions;
+3. **`works.json`'s own note** — *"the drafter trap fired here and was
+   hand-corrected"*, a human finding it earlier with a third tool.
