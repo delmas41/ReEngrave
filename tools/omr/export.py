@@ -1436,9 +1436,70 @@ def measure_has_fermata(detections: list[dict[str, Any]]) -> bool:
                for d in detections)
 
 
+#: The two hairpin classes, and the `<wedge>` type each one opens with.
+_HAIRPIN_TYPES = {
+    "dynamicCrescendoHairpin": "crescendo",
+    "dynamicDiminuendoHairpin": "diminuendo",
+}
+
+
+def eventless_wedges(
+    detections: list[dict[str, Any]]
+) -> list[tuple[float, int, str]]:
+    """`(x, number, type)` for the hairpins of a measure with NO events.
+
+    ⚠️ A wedge is normally attached to the NOTES it covers —
+    `annotate_wedges_in_staff` writes `wedge_states` onto events, the way slurs
+    are done — and that is right, because a hairpin is a span OVER music. A bar
+    the detector found no events in has nothing to attach to, so the hairpin was
+    dropped.
+
+    ⚠️ AND IT FIRES NOWHERE IN THE CURRENT CORPUS, which is stated rather than
+    hidden. The case it was built for turned out not to be this one: 8 of the 60
+    CV-read hairpins on the scan benchmark do not become wedges, and all four of
+    Dvorak 9 p5's sit in bars the pipeline reads as a single `restWhole` — but
+    the PAGE shows those staves densely playing, with beamed runs, `fz` and
+    `dim. p`. The rest is a misdetection and the bar is not empty. Those
+    hairpins are lost to a NOTE-DETECTION failure, not to this branch, and
+    anchoring them to a spurious rest would have papered over it.
+
+    This stays because the hole is real — a bar with genuinely no events would
+    otherwise drop a hairpin the reader can see — and because
+    `_mxl_empty_measure` already carries dynamics and words for exactly that
+    case. It is guarded by unit tests rather than by the corpus.
+
+    With no events the span degenerates — there is nothing to span — so the
+    opening and the stop go at the hairpin's own x positions. That is the same
+    reasoning `_mxl_empty_measure` already uses for a direction: no event to
+    place it against, so its own position is the only defensible answer.
+
+    The `number` is the smallest not currently open, which is what MusicXML uses
+    it for; within one bar overlapping hairpins are rare but not impossible.
+    """
+    spans = []
+    for det in detections:
+        kind = _HAIRPIN_TYPES.get(det.get("class") or "")
+        box = det.get("bbox")
+        if kind and box and len(box) == 4 and box[2] > 0:
+            spans.append((float(box[0]), float(box[0]) + float(box[2]), kind))
+    if not spans:
+        return []
+    out: list[tuple[float, int, str]] = []
+    open_until: dict[int, float] = {}
+    for x0, x1, kind in sorted(spans):
+        for n in range(1, len(spans) + 2):
+            if open_until.get(n, -1.0) <= x0:
+                break
+        open_until[n] = x1
+        out.append((x0, n, kind))
+        out.append((x1, n, "stop"))
+    return sorted(out)
+
+
 def _mxl_empty_measure(time_sig: dict[str, Any] | None, divisions: int,
                        directions: list[tuple[float, str, str]] | None,
-                       indent: str, fermata: bool = False) -> list[str]:
+                       indent: str, fermata: bool = False,
+                       wedges: list[tuple[float, int, str]] | None = None) -> list[str]:
     """A whole-measure rest, WITH whatever marks that measure carries.
 
     ⚠️ **A BAR WITH NO NOTES STILL CARRIES ITS MARKS**, and this is the one
@@ -1469,8 +1530,13 @@ def _mxl_empty_measure(time_sig: dict[str, Any] | None, divisions: int,
     `_direction_slots`' nearest-note rule has nothing to say here, and the
     start of the bar is the only defensible answer.
     """
-    lines = [_mxl_direction((kind, text), indent)
-             for _x, kind, text in sorted(directions or [])]
+    marks: list[tuple[float, str]] = [
+        (x, _mxl_direction((kind, text), indent))
+        for x, kind, text in (directions or [])
+    ]
+    marks += [(x, _mxl_wedge(number, kind, indent))
+              for x, number, kind in (wedges or [])]
+    lines = [xml for _x, xml in sorted(marks, key=lambda m: m[0])]
     r_beats, r_type, r_dots = _mxl_measure_rest(time_sig)
     lines.append(_mxl_note(
         None, "", r_type, r_dots, r_beats, divisions,
@@ -3060,7 +3126,8 @@ def _staff_measures_xml(
         if not events:
             inner.extend(_mxl_empty_measure(
                 m_time, divisions, _dyn, "      ",
-                fermata=measure_has_fermata(measure.get("detections", []))))
+                fermata=measure_has_fermata(measure.get("detections", [])),
+                wedges=eventless_wedges(measure.get("detections", []))))
         elif len(voices) == 1:
             v1_lines, _ = _mxl_voice_events(
                 voices[0], voice=1, divisions=divisions, indent="      ",
@@ -3305,6 +3372,8 @@ def to_musicxml(result: dict[str, Any]) -> str:
                         inner.extend(_mxl_empty_measure(
                             m_time, divisions, _dyn, "      ",
                             fermata=measure_has_fermata(
+                                measure.get("detections", [])),
+                            wedges=eventless_wedges(
                                 measure.get("detections", []))))
                     elif len(voices) == 1:
                         v1_lines, _ = _mxl_voice_events(
