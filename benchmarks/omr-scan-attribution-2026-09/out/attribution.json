@@ -1,0 +1,547 @@
+{
+  "results": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+  "ops_dir": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad9d80c680b7c9f30/benchmarks/omr-scan-attribution-2026-09/out/ops",
+  "unmapped_ops": {},
+  "entire_staff": {
+    "rows": [
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p4.reconciliation",
+        "inspart": 7,
+        "inspart_cost": 1860,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 21,
+        "pred_parts": 14,
+        "coupled": 14
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p2.reconciliation",
+        "inspart": 0,
+        "inspart_cost": 0,
+        "delpart": 6,
+        "delpart_cost": 715,
+        "truth_parts": 21,
+        "pred_parts": 27,
+        "coupled": 21
+      },
+      {
+        "row_id": "bach-brandenburg3-mvt1-468678-p1.reconciliation",
+        "inspart": 0,
+        "inspart_cost": 0,
+        "delpart": 1,
+        "delpart_cost": 286,
+        "truth_parts": 11,
+        "pred_parts": 12,
+        "coupled": 11
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p7.reconciliation",
+        "inspart": 0,
+        "inspart_cost": 0,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 15,
+        "pred_parts": 15,
+        "coupled": 15
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p4.reconciliation",
+        "inspart": 7,
+        "inspart_cost": 1377,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 18,
+        "pred_parts": 11,
+        "coupled": 11
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p4.reconciliation",
+        "inspart": 7,
+        "inspart_cost": 1377,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 18,
+        "pred_parts": 11,
+        "coupled": 11
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p3.reconciliation",
+        "inspart": 7,
+        "inspart_cost": 1292,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 21,
+        "pred_parts": 14,
+        "coupled": 14
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p2.reconciliation",
+        "inspart": 7,
+        "inspart_cost": 1551,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 18,
+        "pred_parts": 11,
+        "coupled": 11
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p2.reconciliation",
+        "inspart": 7,
+        "inspart_cost": 1551,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 18,
+        "pred_parts": 11,
+        "coupled": 11
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p4.reconciliation",
+        "inspart": 20,
+        "inspart_cost": 1764,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 38,
+        "pred_parts": 18,
+        "coupled": 18
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p1.reconciliation",
+        "inspart": 7,
+        "inspart_cost": 1001,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 21,
+        "pred_parts": 14,
+        "coupled": 14
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p3.reconciliation",
+        "inspart": 0,
+        "inspart_cost": 0,
+        "delpart": 1,
+        "delpart_cost": 90,
+        "truth_parts": 18,
+        "pred_parts": 19,
+        "coupled": 18
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p3.reconciliation",
+        "inspart": 25,
+        "inspart_cost": 1674,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 38,
+        "pred_parts": 13,
+        "coupled": 13
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p3.reconciliation",
+        "inspart": 0,
+        "inspart_cost": 0,
+        "delpart": 1,
+        "delpart_cost": 87,
+        "truth_parts": 18,
+        "pred_parts": 19,
+        "coupled": 18
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p5.reconciliation",
+        "inspart": 21,
+        "inspart_cost": 1220,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 38,
+        "pred_parts": 17,
+        "coupled": 17
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p6.reconciliation",
+        "inspart": 0,
+        "inspart_cost": 0,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 15,
+        "pred_parts": 15,
+        "coupled": 15
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p1.reconciliation",
+        "inspart": 6,
+        "inspart_cost": 513,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 18,
+        "pred_parts": 12,
+        "coupled": 12
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p1.reconciliation",
+        "inspart": 6,
+        "inspart_cost": 513,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 18,
+        "pred_parts": 12,
+        "coupled": 12
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p2.reconciliation",
+        "inspart": 21,
+        "inspart_cost": 649,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 38,
+        "pred_parts": 17,
+        "coupled": 17
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p5.reconciliation",
+        "inspart": 0,
+        "inspart_cost": 0,
+        "delpart": 0,
+        "delpart_cost": 0,
+        "truth_parts": 15,
+        "pred_parts": 15,
+        "coupled": 15
+      }
+    ],
+    "inspart_cost": 16342,
+    "delpart_cost": 1178
+  },
+  "entire_measure": {
+    "rows": [
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p4.reconciliation",
+        "insbar": 158,
+        "insbar_cost": 1217,
+        "delbar": 158,
+        "delbar_cost": 1901,
+        "both_sided_bars": 158,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p2.reconciliation",
+        "insbar": 229,
+        "insbar_cost": 2272,
+        "delbar": 68,
+        "delbar_cost": 1356,
+        "both_sided_bars": 68,
+        "one_sided_bars": 161
+      },
+      {
+        "row_id": "bach-brandenburg3-mvt1-468678-p1.reconciliation",
+        "insbar": 26,
+        "insbar_cost": 769,
+        "delbar": 37,
+        "delbar_cost": 1043,
+        "both_sided_bars": 26,
+        "one_sided_bars": 11
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p7.reconciliation",
+        "insbar": 26,
+        "insbar_cost": 421,
+        "delbar": 26,
+        "delbar_cost": 321,
+        "both_sided_bars": 26,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p4.reconciliation",
+        "insbar": 196,
+        "insbar_cost": 862,
+        "delbar": 207,
+        "delbar_cost": 1480,
+        "both_sided_bars": 196,
+        "one_sided_bars": 11
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p4.reconciliation",
+        "insbar": 205,
+        "insbar_cost": 920,
+        "delbar": 205,
+        "delbar_cost": 1441,
+        "both_sided_bars": 205,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p3.reconciliation",
+        "insbar": 95,
+        "insbar_cost": 673,
+        "delbar": 95,
+        "delbar_cost": 1188,
+        "both_sided_bars": 95,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p2.reconciliation",
+        "insbar": 177,
+        "insbar_cost": 730,
+        "delbar": 177,
+        "delbar_cost": 1121,
+        "both_sided_bars": 177,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p2.reconciliation",
+        "insbar": 166,
+        "insbar_cost": 666,
+        "delbar": 155,
+        "delbar_cost": 998,
+        "both_sided_bars": 155,
+        "one_sided_bars": 11
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p4.reconciliation",
+        "insbar": 62,
+        "insbar_cost": 282,
+        "delbar": 80,
+        "delbar_cost": 958,
+        "both_sided_bars": 62,
+        "one_sided_bars": 18
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p1.reconciliation",
+        "insbar": 59,
+        "insbar_cost": 536,
+        "delbar": 73,
+        "delbar_cost": 818,
+        "both_sided_bars": 59,
+        "one_sided_bars": 14
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p3.reconciliation",
+        "insbar": 452,
+        "insbar_cost": 1575,
+        "delbar": 142,
+        "delbar_cost": 734,
+        "both_sided_bars": 142,
+        "one_sided_bars": 310
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p3.reconciliation",
+        "insbar": 34,
+        "insbar_cost": 99,
+        "delbar": 34,
+        "delbar_cost": 535,
+        "both_sided_bars": 34,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p3.reconciliation",
+        "insbar": 448,
+        "insbar_cost": 1546,
+        "delbar": 138,
+        "delbar_cost": 641,
+        "both_sided_bars": 138,
+        "one_sided_bars": 310
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p5.reconciliation",
+        "insbar": 80,
+        "insbar_cost": 411,
+        "delbar": 80,
+        "delbar_cost": 719,
+        "both_sided_bars": 80,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p6.reconciliation",
+        "insbar": 6,
+        "insbar_cost": 88,
+        "delbar": 6,
+        "delbar_cost": 158,
+        "both_sided_bars": 6,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p1.reconciliation",
+        "insbar": 81,
+        "insbar_cost": 209,
+        "delbar": 81,
+        "delbar_cost": 317,
+        "both_sided_bars": 81,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p1.reconciliation",
+        "insbar": 66,
+        "insbar_cost": 162,
+        "delbar": 66,
+        "delbar_cost": 272,
+        "both_sided_bars": 66,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p2.reconciliation",
+        "insbar": 26,
+        "insbar_cost": 68,
+        "delbar": 26,
+        "delbar_cost": 115,
+        "both_sided_bars": 26,
+        "one_sided_bars": 0
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p5.reconciliation",
+        "insbar": 6,
+        "insbar_cost": 16,
+        "delbar": 6,
+        "delbar_cost": 47,
+        "both_sided_bars": 6,
+        "one_sided_bars": 0
+      }
+    ],
+    "insbar_cost": 13522,
+    "delbar_cost": 16163,
+    "both_sided_bars": 1806,
+    "one_sided_bars": 846
+  },
+  "wrong_note": {
+    "rows": [
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p4.reconciliation",
+        "noteins": 149,
+        "noteins_cost": 517,
+        "notedel": 344,
+        "notedel_cost": 1118
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p2.reconciliation",
+        "noteins": 209,
+        "noteins_cost": 680,
+        "notedel": 349,
+        "notedel_cost": 1152
+      },
+      {
+        "row_id": "bach-brandenburg3-mvt1-468678-p1.reconciliation",
+        "noteins": 526,
+        "noteins_cost": 1873,
+        "notedel": 637,
+        "notedel_cost": 1952
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p7.reconciliation",
+        "noteins": 482,
+        "noteins_cost": 2273,
+        "notedel": 502,
+        "notedel_cost": 1997
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p4.reconciliation",
+        "noteins": 116,
+        "noteins_cost": 271,
+        "notedel": 211,
+        "notedel_cost": 529
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p4.reconciliation",
+        "noteins": 108,
+        "noteins_cost": 257,
+        "notedel": 190,
+        "notedel_cost": 481
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p3.reconciliation",
+        "noteins": 75,
+        "noteins_cost": 233,
+        "notedel": 246,
+        "notedel_cost": 770
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p2.reconciliation",
+        "noteins": 90,
+        "noteins_cost": 218,
+        "notedel": 182,
+        "notedel_cost": 461
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p2.reconciliation",
+        "noteins": 102,
+        "noteins_cost": 258,
+        "notedel": 200,
+        "notedel_cost": 498
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p4.reconciliation",
+        "noteins": 111,
+        "noteins_cost": 502,
+        "notedel": 155,
+        "notedel_cost": 438
+      },
+      {
+        "row_id": "brahms-sym1-mvt1-317803-p1.reconciliation",
+        "noteins": 84,
+        "noteins_cost": 255,
+        "notedel": 199,
+        "notedel_cost": 579
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p3.reconciliation",
+        "noteins": 62,
+        "noteins_cost": 159,
+        "notedel": 120,
+        "notedel_cost": 290
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p3.reconciliation",
+        "noteins": 47,
+        "noteins_cost": 180,
+        "notedel": 138,
+        "notedel_cost": 423
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p3.reconciliation",
+        "noteins": 69,
+        "noteins_cost": 179,
+        "notedel": 109,
+        "notedel_cost": 260
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p5.reconciliation",
+        "noteins": 63,
+        "noteins_cost": 202,
+        "notedel": 77,
+        "notedel_cost": 212
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p6.reconciliation",
+        "noteins": 250,
+        "noteins_cost": 1251,
+        "notedel": 201,
+        "notedel_cost": 788
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-575951-p1.reconciliation",
+        "noteins": 17,
+        "noteins_cost": 43,
+        "notedel": 45,
+        "notedel_cost": 124
+      },
+      {
+        "row_id": "beethoven-sym5-mvt1-984073-p1.reconciliation",
+        "noteins": 16,
+        "noteins_cost": 45,
+        "notedel": 50,
+        "notedel_cost": 137
+      },
+      {
+        "row_id": "mahler-sym5-mvt1-local-p2.reconciliation",
+        "noteins": 3,
+        "noteins_cost": 6,
+        "notedel": 18,
+        "notedel_cost": 54
+      },
+      {
+        "row_id": "dvorak-sym9-mvt1-405834-p5.reconciliation",
+        "noteins": 68,
+        "noteins_cost": 264,
+        "notedel": 67,
+        "notedel_cost": 236
+      }
+    ],
+    "noteins": 2647,
+    "noteins_cost": 9666,
+    "notedel": 4040,
+    "notedel_cost": 12499
+  }
+}

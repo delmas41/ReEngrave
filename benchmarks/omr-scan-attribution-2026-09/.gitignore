@@ -1,0 +1,4 @@
+# The per-row musicdiff op dumps are 3.5 MB and are a build product: rerun
+# `dump_all_ops.py` (about 3.5 minutes) to regenerate them byte-for-byte from
+# the committed fixtures. The summaries derived from them ARE committed.
+out/ops/

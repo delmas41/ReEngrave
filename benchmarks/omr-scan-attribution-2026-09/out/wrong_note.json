@@ -1,0 +1,377 @@
+{
+  "covered_notes": 2390,
+  "uncovered_notes": 3517,
+  "notes_by_class": {
+    "count": 4183,
+    "shift": 173,
+    "mixed": 162,
+    "exact": 118,
+    "duration": 117,
+    "accid": 97,
+    "order": 39
+  },
+  "bars_by_class": {
+    "count": 1284,
+    "exact": 889,
+    "shift": 132,
+    "mixed": 45,
+    "duration": 36,
+    "accid": 18,
+    "order": 9
+  },
+  "notes_wrong_duration": 301,
+  "count_bars": {
+    "truth": 1684,
+    "pred": 3648,
+    "bars_pred_over": 995,
+    "bars_pred_under": 289,
+    "bars_pred_empty": 195,
+    "bars_truth_empty": 516
+  },
+  "rows": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1.reconciliation",
+      "part_pairs": 12,
+      "parts_aligned": 12,
+      "parts_skipped": 0,
+      "notes_covered": 38,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 141,
+        "shift": 5,
+        "exact": 0
+      },
+      "bars_by_class": {
+        "exact": 113,
+        "count": 74,
+        "shift": 5
+      },
+      "notes_wrong_duration": 2
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p2.reconciliation",
+      "part_pairs": 11,
+      "parts_aligned": 0,
+      "parts_skipped": 11,
+      "notes_covered": 0,
+      "notes_uncovered": 247,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p3.reconciliation",
+      "part_pairs": 18,
+      "parts_aligned": 0,
+      "parts_skipped": 18,
+      "notes_covered": 0,
+      "notes_uncovered": 442,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p4.reconciliation",
+      "part_pairs": 11,
+      "parts_aligned": 11,
+      "parts_skipped": 0,
+      "notes_covered": 415,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 694,
+        "shift": 53,
+        "mixed": 38,
+        "exact": 2,
+        "accid": 1
+      },
+      "bars_by_class": {
+        "count": 250,
+        "shift": 47,
+        "exact": 18,
+        "mixed": 14,
+        "accid": 1
+      },
+      "notes_wrong_duration": 32
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1.reconciliation",
+      "part_pairs": 12,
+      "parts_aligned": 12,
+      "parts_skipped": 0,
+      "notes_covered": 38,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 168,
+        "shift": 5,
+        "exact": 0
+      },
+      "bars_by_class": {
+        "exact": 94,
+        "count": 93,
+        "shift": 5
+      },
+      "notes_wrong_duration": 2
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p2.reconciliation",
+      "part_pairs": 11,
+      "parts_aligned": 11,
+      "parts_skipped": 0,
+      "notes_covered": 247,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 484,
+        "shift": 64,
+        "mixed": 11,
+        "exact": 6,
+        "accid": 6
+      },
+      "bars_by_class": {
+        "count": 196,
+        "exact": 101,
+        "shift": 50,
+        "mixed": 3,
+        "accid": 2
+      },
+      "notes_wrong_duration": 5
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p3.reconciliation",
+      "part_pairs": 18,
+      "parts_aligned": 0,
+      "parts_skipped": 18,
+      "notes_covered": 0,
+      "notes_uncovered": 442,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p4.reconciliation",
+      "part_pairs": 11,
+      "parts_aligned": 0,
+      "parts_skipped": 11,
+      "notes_covered": 0,
+      "notes_uncovered": 415,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p5.reconciliation",
+      "part_pairs": 15,
+      "parts_aligned": 15,
+      "parts_skipped": 0,
+      "notes_covered": 96,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 46,
+        "exact": 27,
+        "duration": 23,
+        "shift": 12,
+        "order": 6
+      },
+      "bars_by_class": {
+        "exact": 95,
+        "count": 16,
+        "duration": 4,
+        "shift": 3,
+        "order": 2
+      },
+      "notes_wrong_duration": 19
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p6.reconciliation",
+      "part_pairs": 15,
+      "parts_aligned": 15,
+      "parts_skipped": 0,
+      "notes_covered": 226,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 172,
+        "exact": 32,
+        "duration": 29,
+        "mixed": 12,
+        "accid": 5
+      },
+      "bars_by_class": {
+        "exact": 61,
+        "count": 29,
+        "duration": 11,
+        "mixed": 2,
+        "accid": 2
+      },
+      "notes_wrong_duration": 33
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p7.reconciliation",
+      "part_pairs": 15,
+      "parts_aligned": 15,
+      "parts_skipped": 0,
+      "notes_covered": 583,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 351,
+        "accid": 85,
+        "duration": 65,
+        "mixed": 51,
+        "exact": 50,
+        "order": 28,
+        "shift": 18
+      },
+      "bars_by_class": {
+        "exact": 110,
+        "count": 60,
+        "duration": 21,
+        "accid": 13,
+        "shift": 8,
+        "mixed": 7,
+        "order": 6
+      },
+      "notes_wrong_duration": 159
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1.reconciliation",
+      "part_pairs": 14,
+      "parts_aligned": 0,
+      "parts_skipped": 14,
+      "notes_covered": 0,
+      "notes_uncovered": 256,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p2.reconciliation",
+      "part_pairs": 21,
+      "parts_aligned": 0,
+      "parts_skipped": 21,
+      "notes_covered": 0,
+      "notes_uncovered": 615,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p3.reconciliation",
+      "part_pairs": 14,
+      "parts_aligned": 14,
+      "parts_skipped": 0,
+      "notes_covered": 224,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 611,
+        "mixed": 27,
+        "shift": 4,
+        "exact": 0
+      },
+      "bars_by_class": {
+        "count": 144,
+        "exact": 52,
+        "mixed": 10,
+        "shift": 4
+      },
+      "notes_wrong_duration": 25
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p4.reconciliation",
+      "part_pairs": 14,
+      "parts_aligned": 14,
+      "parts_skipped": 0,
+      "notes_covered": 362,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 943,
+        "mixed": 14,
+        "shift": 6,
+        "exact": 1
+      },
+      "bars_by_class": {
+        "count": 238,
+        "exact": 45,
+        "mixed": 6,
+        "shift": 5
+      },
+      "notes_wrong_duration": 11
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p2.reconciliation",
+      "part_pairs": 17,
+      "parts_aligned": 17,
+      "parts_skipped": 0,
+      "notes_covered": 0,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 46,
+        "exact": 0
+      },
+      "bars_by_class": {
+        "exact": 124,
+        "count": 29
+      },
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p3.reconciliation",
+      "part_pairs": 13,
+      "parts_aligned": 13,
+      "parts_skipped": 0,
+      "notes_covered": 56,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 228,
+        "order": 5,
+        "exact": 0
+      },
+      "bars_by_class": {
+        "exact": 53,
+        "count": 50,
+        "order": 1
+      },
+      "notes_wrong_duration": 1
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p4.reconciliation",
+      "part_pairs": 18,
+      "parts_aligned": 0,
+      "parts_skipped": 18,
+      "notes_covered": 0,
+      "notes_uncovered": 146,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p5.reconciliation",
+      "part_pairs": 17,
+      "parts_aligned": 17,
+      "parts_skipped": 0,
+      "notes_covered": 105,
+      "notes_uncovered": 0,
+      "notes_by_class": {
+        "count": 299,
+        "mixed": 9,
+        "shift": 6,
+        "exact": 0
+      },
+      "bars_by_class": {
+        "count": 105,
+        "exact": 23,
+        "shift": 5,
+        "mixed": 3
+      },
+      "notes_wrong_duration": 12
+    },
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1.reconciliation",
+      "part_pairs": 11,
+      "parts_aligned": 0,
+      "parts_skipped": 11,
+      "notes_covered": 0,
+      "notes_uncovered": 954,
+      "notes_by_class": {},
+      "bars_by_class": {},
+      "notes_wrong_duration": 0
+    }
+  ]
+}
