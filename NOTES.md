@@ -44,6 +44,139 @@ How to run it when picked up:
 - The symbol inventory (`benchmarks/omr-labeling-survey-2026-09/symbol_inventory.py`)
   carries a REVISIT flag on these rows so the list survives this file too.
 
+## 🅿️ PARKED (Sean, 2026-09-05): measure-by-measure side-by-side, with a real editor
+
+Captured verbatim in intent so it is not lost: **each measure of the SCAN
+shown beside the measure the re-engraving produced, side by side, with the
+ability to make small adjustments — to move things around — rather than only
+to accept or reject a difference somebody else flagged.** Sean's framing:
+this is probably not a standard step in the pipeline but an **option for
+high-quality engraving work** — "some of the other programs basically just
+show your problem areas and ask you to resolve those, often by multiple
+choice", and this is the opposite posture, the whole score inspectable at
+measure granularity with the human holding the pen.
+
+**A third of it already exists, and the flagged-diff flow is the thing being
+argued with.** `DiffCard` draws exactly this side-by-side today —
+`pdf_snippet_path` against `musicxml_snippet_path` — but only for a measure
+Claude Vision flagged, only as two flat PNGs, and its "edit" is a free-text
+`human_edit_value` string. That is the multiple-choice shape, not this one.
+
+⚠️ **The blocker is downstream of the UI, and it is already a known
+limitation: an edit made today does not reach the file.**
+`export_module.apply_corrections_to_musicxml()` is a stub — it copies the
+original and injects accepted diffs as XML *comments*. Real measure-level
+patching is the prerequisite for any editing surface whatever its shape, so
+that stub is step one of this idea rather than a separate cleanup.
+
+**Every measure is croppable for free.** `MeasureCell.bbox_page_px` is the
+scan crop for any measure the pipeline segmented, so "every bar" costs no
+more on the left pane than "the flagged bars" does. Verovio emits per-element
+`id`s into its SVG, which is the handle a click-to-select needs on the right
+pane. Neither half needs new recognition work.
+
+**The substrate question Sean raised and deliberately left open** — "maybe I
+mean JSON and not MusicXML":
+
+- The OMR JSON (`{stem}.omr.json`) is the only representation that holds
+  PIXEL GEOMETRY — per-detection `bbox_page`, per-cell canonical staff lines
+  — so it is the only one in which *move this thing* means something spatial.
+  Re-export regenerates MusicXML and LilyPond from it.
+- MusicXML holds the SEMANTICS (voice, tie, slur, duration) and is what the
+  export, comparison and theory flows already consume. An edit there survives
+  a re-export but cannot say "this notehead sits a step too low because its
+  box is off".
+- So probably: **edit the JSON, render the MusicXML** — the same split the
+  pipeline already makes everywhere else.
+
+**The hard half is built, for a different purpose.** `tools/omr/annotate/` is
+a per-measure-cell canvas with box drawing, dragging, class assignment,
+geometric snapping to the staff grid (including measured ledger rungs),
+hotkeys and autosave. It aims at training labels rather than at correcting a
+score, but the interaction model, the cell cutting and the frame bookkeeping
+are the same problem solved once. ⚠️ Read the `recut_cells` warning in
+CLAUDE.md before reusing any of it — **every box is stored in the cell's
+CANONICAL frame**, so a pane rendered at a different padding is the same
+music at a different scale with every coordinate silently wrong.
+
+**And it is a DIAGNOSTIC instrument, not only a correction surface** (Sean,
+2026-09-05). The same pane that lets a human fix a bar is where we find out
+**how the reader is failing on pages nothing else can measure.**
+
+⚠️ **Every reference-based number this project reports is confined to 27
+works.** Measured off the committed catalog: the score library holds **228
+works with an edition PDF** and 1745 reference encodings, and only **27 works
+have both** — so ~201 editions' worth of real scans are invisible to OMR-NED,
+to `orchestral_eval` and to `scan_eval` by construction, not by neglect. The
+scan end-to-end benchmark is **6 hand-verified (edition, page) rows**, each
+costing a reference encoding plus a hand-checked measure window. A human
+reading measures side by side needs neither: it works on **any page anybody
+actually puts through the app**.
+
+**It answers the question the metric structurally cannot: which FAULT.**
+CLAUDE.md already warns three times over that a pooled figure needs a human
+to open the ops before it means anything — the metric is symmetric so
+emitting *more* symbols can lower it, an `entire measure` bucket is
+amplification rather than severity, and `wrong note` usually means a duration
+the aligner would not pair, not a wrong pitch. A per-measure side-by-side is
+exactly that act of opening it, made cheap and repeatable.
+
+**And it is how nearly every fix in this repo was actually found** — someone
+looked at one bar. The bowl of the **g** in *legato* read as a whole note;
+the lower bowl of a `6/8` bleeding across a crop boundary; Violin 1 four
+staff positions low because its five-line window had locked onto ledger
+lines; a Litolff `3` matching Bravura's `6`. None of those was surfaced by a
+number. The number told us a bucket was large.
+
+**It aims straight at the two defects the engraved benchmark is documented as
+unable to see**, both of which need a SCANNED page and a human:
+
+- the **cell-grid tilt** (`OMR_CELL_LINE_TRACE`) — 0.4% of the scan
+  benchmark's cells are past the parity-flip line against 8–16% of pages
+  sampled deeper into the same editions, so a null result there is not
+  evidence in either direction;
+- the **empty-measure `<direction>` drop** — 0 triggering bars across all 11
+  engraved works, and the note there says outright that the likeliest source
+  of a real one is a scanned work where a staff rests through a marked bar.
+
+⚠️ **Three disciplines, all of them already paid for elsewhere in this repo:**
+
+- **A correction is worth much more if it records the FAULT KIND**, not only
+  the right answer. "This bar should be a dotted half" is a diff and leaves
+  the forensics to be done later; "the hollow head was never detected" is
+  evidence, and it maps onto fault families this project has already named.
+- ⚠️ **A human correcting under a shown reading is ANCHORED by it.** That is
+  measured, not suspected — it is why `annotate.server --blind` exists and
+  why Phase C had to pre-register its sample. A correction stream can drive
+  fixes freely; using it to SCORE the pipeline needs the blind protocol.
+- **A page corrected to COMPLETION is candidate reference truth** — the exact
+  scarce input the 27-work ceiling above describes. But "corrected to
+  completion" is a far higher bar than "the wrong bars fixed", and the
+  labeling campaign already learned to record the difference explicitly
+  (`inspected_passes`: a bar inspected and found correct is a fact worth
+  storing; a bar nobody opened is not the same thing as a bar with nothing
+  wrong in it).
+
+Open questions to settle when this is picked up:
+
+- **Is it every measure, or every measure with a lane?** 22 staves × 16 bars
+  of a conductor's page, one bar at a time, is not a pass anybody finishes.
+  The flagged / theory-check / low-confidence measures probably still lead;
+  what changes is that the rest are reachable rather than invisible.
+- **Where does a correction live so it survives re-running OMR?** An edit
+  keyed to the JSON is invalidated by a re-transcription exactly the way a
+  labeling verdict keyed to a detection id is — the campaign rule ("don't
+  regenerate detections mid-campaign") has the same shape here.
+- **Does an edit feed the analytics / auto-accept learning loop** the
+  flagged-diff decisions already feed, or is it outside it?
+- **What does the surface capture per measure, beyond the fix?** The fault
+  kind is what makes a correction evidence rather than a diff; and a bar
+  INSPECTED AND FOUND CORRECT has to be recordable, or coverage can never be
+  claimed for a page — the same fact `inspected_passes` exists for on the
+  labeling side.
+
+Not scoped, not scheduled. Recorded because Sean asked that it not be lost.
+
 ## 🚨 NEXT: the same scan page, transcribed twice, gives two different scores (2026-09-02)
 
 Found while measuring the `--direction-text` default, and it outranks what it

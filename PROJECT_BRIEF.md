@@ -103,6 +103,17 @@ changes week to week.
   manifest, refusing anything whose frame does not match. Where the work stands and
   Sean's checklist: [docs/handoff-2026-09-03-prefill-session.md](docs/handoff-2026-09-03-prefill-session.md).
 
+- **Parked (2026-09-05):** a measure-by-measure side-by-side review surface —
+  each measure of the scan beside the measure the re-engraving produced, with
+  real editing rather than accept/reject on flagged bars only. An option for
+  high-quality engraving work, not a standard pipeline step. Blocked on the
+  MusicXML correction-patching stub, which today records edits without ever
+  applying them. It is also a **diagnostic** instrument: only 27 of the score
+  library's 228 works with an edition PDF also have a reference encoding, so
+  every accuracy number the project reports is confined to those — a human
+  reading measures side by side works on any page. Written up in
+  [NOTES.md](NOTES.md).
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost
