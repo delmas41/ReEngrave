@@ -223,10 +223,26 @@ does not carry it for every file: 216 of the 235 held editions say only
 edition reads 8" is three findings wearing one shape, and until this existed
 nothing in the project could tell them apart. `compare_tiers` classifies each —
 `agrees` / `edition_extra` / `edition_missing` (split by the read's own yield
-into `read_incomplete` vs `variant_suspected`) / `arrangement_suspected` /
-`no_edition_roster` — and the measured mix over the whole corpus, hand
-adjudicated, is in
-[`benchmarks/omr-edition-instrumentation-2026-09/FINDINGS.md`](../../benchmarks/omr-edition-instrumentation-2026-09/FINDINGS.md).
+into `read_incomplete` vs `variant_suspected`) / `doubling_suspected` /
+`arrangement_suspected` / `no_edition_roster`.
+
+**Measured 2026-09-05 over all 234 held editions**: acquired **189 (0.808)** in
+68 minutes with 0 failures, **18 of them only on a page past p.2**. 181 rows are
+comparable, and the mix — not the rate — is the result: 0.442 partial reads,
+0.210 agree, **0.210 one lexicon word** (`Basso.` → Bass *voice*, 35 rows, the
+only disagreement on 30 of them), 0.017 doubling, and **0 genuine editorial
+variants** — all 9 `variant_suspected` rows were opened by hand and are movement
+scope, condensation, an optional bracketed part, or an opera cast list. The full
+reading, including why movement scope is a third systematic under-report, is the
+module docstring of
+[`benchmarks/omr-edition-instrumentation-2026-09/probe_tier_disagreement.py`](../../benchmarks/omr-edition-instrumentation-2026-09/probe_tier_disagreement.py);
+`show_disagreement.py` prints one row's evidence from both tiers for a human.
+
+⚠️ **`variant_suspected` means "worth a human", never "a variant"** — its
+precision for a real editorial variant on this corpus is **0 of 9**.
+
+⚠️ **The arrangement branch has never fired.** 2 of 235 held editions are not
+full scores; a corpus that cannot express the case cannot price the rule.
 
 ⚠️ **A section is satisfied by a member, not expanded into all of them.** A work
 roster says `strings` in one token and the page prints four or five staves for

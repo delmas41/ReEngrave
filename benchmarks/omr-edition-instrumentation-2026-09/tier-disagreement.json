@@ -1,44 +1,42 @@
 {
- "n": 20,
+ "n": 234,
  "verdicts": {
-  "both": 7,
-  "no_edition_roster": 3,
-  "edition_extra": 2,
-  "no_work_roster": 1,
-  "edition_missing": 3,
-  "agrees": 4
+  "edition_extra": 29,
+  "no_edition_roster": 43,
+  "both": 38,
+  "no_work_roster": 10,
+  "edition_missing": 73,
+  "agrees": 38,
+  "doubling_suspected": 3
  },
  "rows": [
   {
    "path": "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf",
    "work_id": "bach--concerto-1",
-   "verdict": "both",
+   "verdict": "edition_extra",
    "jaccard": 0.0,
    "edition_extra": [
     "Horn",
     "Oboe",
     "Piccolo"
    ],
-   "edition_missing": [
-    "Piano"
-   ],
+   "edition_missing": [],
+   "doubling": [],
    "shared": [],
    "edition_yield": 0.75,
    "score_type": "full_score",
-   "work_unparsed": 0,
-   "missing_explained_by": "read_incomplete"
+   "work_unparsed": 0
   },
   {
    "path": "editions/bach/brandenburg-concerto-2-in-f-major-bwv1047/bach--brandenburg-concerto-2-in-f-major-bwv1047--bachcomplete-1871--imslp2040.pdf",
    "work_id": "bach--concerto-2",
-   "verdict": "both",
-   "jaccard": 0.375,
+   "verdict": "edition_extra",
+   "jaccard": 0.4286,
    "edition_extra": [
     "Flute"
    ],
-   "edition_missing": [
-    "Piano"
-   ],
+   "edition_missing": [],
+   "doubling": [],
    "shared": [
     "Oboe",
     "Trumpet",
@@ -46,8 +44,7 @@
    ],
    "edition_yield": 1.0,
    "score_type": "full_score",
-   "work_unparsed": 1,
-   "missing_explained_by": "variant_suspected"
+   "work_unparsed": 1
   },
   {
    "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
@@ -59,15 +56,13 @@
    "path": "editions/bach/brandenburg-concerto-4-in-g-major-bwv1049/bach--brandenburg-concerto-4-in-g-major-bwv1049--peters-1851--imslp457279.pdf",
    "work_id": "bach--concerto-4",
    "verdict": "edition_extra",
-   "jaccard": 0.8,
+   "jaccard": 0.2,
    "edition_extra": [
     "Flute"
    ],
    "edition_missing": [],
+   "doubling": [],
    "shared": [
-    "Cello",
-    "Contrabass",
-    "Viola",
     "Violin"
    ],
    "edition_yield": 0.8889,
@@ -84,16 +79,16 @@
    "path": "editions/bach/brandenburg-concerto-6-in-b-flat-major-bwv1051/bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
    "work_id": "bach--concerto-6",
    "verdict": "both",
-   "jaccard": 0.6,
+   "jaccard": 0.4,
    "edition_extra": [
-    "Contrabass"
+    "Piano"
    ],
    "edition_missing": [
     "Bass voice"
    ],
+   "doubling": [],
    "shared": [
     "Cello",
-    "Piano",
     "Viola"
    ],
    "edition_yield": 0.625,
@@ -110,7 +105,7 @@
    "path": "editions/bach/mass-in-b-minor-bwv232/bach--mass-in-b-minor-bwv232--breitkopf-und-hartel-1899--imslp740018.pdf",
    "work_id": "bach--mass-in-b-minor",
    "verdict": "both",
-   "jaccard": 0.2667,
+   "jaccard": 0.2143,
    "edition_extra": [
     "Alto",
     "Bass voice",
@@ -119,19 +114,18 @@
    ],
    "edition_missing": [
     "Horn",
-    "Piano",
     "Timpani",
     "Trumpet"
    ],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Flute",
-    "Oboe",
-    "Organ"
+    "Oboe"
    ],
    "edition_yield": 0.9375,
    "score_type": "full_score",
-   "work_unparsed": 1,
+   "work_unparsed": 0,
    "missing_explained_by": "read_incomplete"
   },
   {
@@ -151,6 +145,7 @@
     "Bass voice",
     "Tenor"
    ],
+   "doubling": [],
    "shared": [
     "Soprano"
    ],
@@ -170,6 +165,7 @@
    "edition_missing": [
     "Trumpet"
    ],
+   "doubling": [],
    "shared": [
     "Oboe",
     "Timpani"
@@ -186,10 +182,24 @@
    "jaccard": 0.5294,
    "edition_extra": [],
    "edition_missing": [
-    "Bass clarinet",
-    "English horn",
-    "Percussion",
-    "Piccolo"
+    "Percussion"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
    ],
    "shared": [
     "Bassoon",
@@ -216,6 +226,7 @@
     "Bass voice"
    ],
    "edition_missing": [],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Clarinet",
@@ -232,13 +243,18 @@
   {
    "path": "editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
    "work_id": "beethoven--egmont",
-   "verdict": "both",
+   "verdict": "edition_extra",
    "jaccard": 0.5833,
    "edition_extra": [
     "Bass voice"
    ],
-   "edition_missing": [
-    "Piccolo"
+   "edition_missing": [],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
    ],
    "shared": [
     "Bassoon",
@@ -251,8 +267,7 @@
    ],
    "edition_yield": 1.0,
    "score_type": "full_score",
-   "work_unparsed": 0,
-   "missing_explained_by": "variant_suspected"
+   "work_unparsed": 0
   },
   {
    "path": "editions/beethoven/missa-solemnis-op123/beethoven--missa-solemnis-op123--schott-1827--imslp51348.pdf",
@@ -267,6 +282,7 @@
    "jaccard": 0.7778,
    "edition_extra": [],
    "edition_missing": [],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Clarinet",
@@ -290,6 +306,7 @@
     "Timpani",
     "Trumpet"
    ],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Clarinet",
@@ -309,6 +326,7 @@
    "jaccard": 0.7778,
    "edition_extra": [],
    "edition_missing": [],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Clarinet",
@@ -329,6 +347,7 @@
    "jaccard": 1.0,
    "edition_extra": [],
    "edition_missing": [],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Clarinet",
@@ -349,6 +368,7 @@
    "jaccard": 1.0,
    "edition_extra": [],
    "edition_missing": [],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Clarinet",
@@ -372,6 +392,7 @@
     "Timpani",
     "Trumpet"
    ],
+   "doubling": [],
    "shared": [
     "Bassoon",
     "Clarinet",
@@ -382,6 +403,4850 @@
    "edition_yield": 0.6,
    "score_type": "full_score",
    "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+   "work_id": "beethoven--symphony-4",
+   "verdict": "edition_missing",
+   "jaccard": 0.7143,
+   "edition_extra": [],
+   "edition_missing": [
+    "Timpani",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.5556,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "work_id": "beethoven--symphony-5",
+   "verdict": "edition_missing",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [
+    "Trombone"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.6364,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "work_id": "beethoven--symphony-5",
+   "verdict": "both",
+   "jaccard": 0.5,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Trombone"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+   "work_id": "beethoven--symphony-6",
+   "verdict": "edition_missing",
+   "jaccard": 0.5556,
+   "edition_extra": [],
+   "edition_missing": [
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+   "work_id": "beethoven--symphony-7",
+   "verdict": "agrees",
+   "jaccard": 1.0,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.6364,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+   "work_id": "beethoven--symphony-8",
+   "verdict": "agrees",
+   "jaccard": 1.0,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.6364,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+   "work_id": "beethoven--symphony-9",
+   "verdict": "edition_missing",
+   "jaccard": 0.6364,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Trombone"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.6154,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "verdict": "agrees",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/berlioz/harold-en-italie-h-68/berlioz--harold-en-italie-h-68--eulenburg-1899--imslp515587.pdf",
+   "work_id": "berlioz--harold-en-italie",
+   "verdict": "agrees",
+   "jaccard": 0.7143,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8421,
+   "score_type": "full_score",
+   "work_unparsed": 2
+  },
+  {
+   "path": "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+   "work_id": "berlioz--le-carnaval-romain",
+   "verdict": "edition_missing",
+   "jaccard": 0.5333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Timpani"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "work_id": "berlioz--symphony-fantastique",
+   "verdict": "edition_missing",
+   "jaccard": 0.25,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Harp",
+    "Percussion",
+    "Piano",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    },
+    {
+     "work": "Flute",
+     "page": "Piccolo",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Horn",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.7143,
+   "score_type": "full_score",
+   "work_unparsed": 2,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/bizet/l-arlesienne-suite-1/bizet--l-arlesienne-suite-1--breitkopf-und-hartel--imslp61758.pdf",
+   "work_id": "bizet--suite-1",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "work_id": "bizet--symphony-in-c-major",
+   "verdict": "both",
+   "jaccard": 0.2727,
+   "edition_extra": [
+    "Alto"
+   ],
+   "edition_missing": [
+    "Bassoon",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Clarinet",
+    "Flute",
+    "Horn"
+   ],
+   "edition_yield": 0.6154,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/borodin/in-the-steppes-of-central-asia/borodin--in-the-steppes-of-central-asia--rahter--imslp1043848.pdf",
+   "work_id": "borodin--in-the-steppes-of-central-asia",
+   "verdict": "agrees",
+   "jaccard": 0.6923,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "English horn",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7222,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/borodin/symphony-2/borodin--symphony-2--v-bessel-co-1888--imslp197128.pdf",
+   "work_id": "borodin--symphony-2",
+   "verdict": "edition_missing",
+   "jaccard": 0.5625,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Percussion"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.9375,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/boulanger/faust-et-helene/boulanger--faust-et-helene--ricordi--imslp862104.pdf",
+   "work_id": "boulanger--faust-et-helene",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/brahms/academic-festival-overture-op80/brahms--academic-festival-overture-op80--simrock-1881--imslp28983.pdf",
+   "work_id": "brahms--academic-festival-overture",
+   "verdict": "edition_missing",
+   "jaccard": 0.5625,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Trombone"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.8421,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/ein-deutsches-requiem-op45/brahms--ein-deutsches-requiem-op45--breitkopf-hartel-brahms--imslp317461.pdf",
+   "work_id": "brahms--ein-deutsches-requiem",
+   "verdict": "both",
+   "jaccard": 0.3684,
+   "edition_extra": [
+    "Alto",
+    "Soprano",
+    "Tenor"
+   ],
+   "edition_missing": [
+    "Clarinet",
+    "Timpani",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Organ",
+    "Trombone"
+   ],
+   "edition_yield": 0.8235,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/piano-concerto-1-op15/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+   "work_id": "brahms--piano-concerto-1",
+   "verdict": "agrees",
+   "jaccard": 0.6364,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9231,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/brahms/piano-concerto-2-op83/brahms--piano-concerto-2-op83--simrock-1882--imslp145434.pdf",
+   "work_id": "brahms--piano-concerto-2",
+   "verdict": "edition_missing",
+   "jaccard": 0.5455,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "work_id": "brahms--symphony-1",
+   "verdict": "edition_missing",
+   "jaccard": 0.5385,
+   "edition_extra": [],
+   "edition_missing": [
+    "Horn",
+    "Trombone"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8571,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+   "work_id": "brahms--symphony-1",
+   "verdict": "edition_missing",
+   "jaccard": 0.5833,
+   "edition_extra": [],
+   "edition_missing": [
+    "Horn",
+    "Trombone"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7857,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+   "work_id": "brahms--symphony-2",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+   "work_id": "brahms--symphony-3",
+   "verdict": "edition_missing",
+   "jaccard": 0.6154,
+   "edition_extra": [],
+   "edition_missing": [
+    "Timpani"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8667,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+   "work_id": "brahms--symphony-4",
+   "verdict": "edition_missing",
+   "jaccard": 0.3571,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.9091,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/tragic-overture-op81/brahms--tragic-overture-op81--simrock-1881--imslp23111.pdf",
+   "work_id": "brahms--tragic-overture",
+   "verdict": "edition_missing",
+   "jaccard": 0.6364,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8462,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/variations-on-a-theme-by-haydn-op56/brahms--variations-on-a-theme-by-haydn-op56--simrock-1874--imslp23074.pdf",
+   "work_id": "brahms--variations-on-a-theme-by-haydn",
+   "verdict": "both",
+   "jaccard": 0.4286,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Clarinet",
+    "Percussion",
+    "Trumpet"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.8571,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/brahms/violin-concerto-op77/brahms--violin-concerto-op77--simrock-1879--imslp107060.pdf",
+   "work_id": "brahms--violin-concerto",
+   "verdict": "both",
+   "jaccard": 0.5455,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Clarinet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9286,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/bruckner/symphony-1-in-c-minor-wab-101/bruckner--symphony-1-in-c-minor-wab-101--co-issue-with-universal--imslp30680.pdf",
+   "work_id": "bruckner--symphony-1",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf",
+   "work_id": "bruckner--symphony-3",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8571,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/bruckner/symphony-4-in-e-flat-major-wab-104/bruckner--symphony-4-in-e-flat-major-wab-104--eulenburg--imslp30700.pdf",
+   "work_id": "bruckner--symphony-4",
+   "verdict": "edition_missing",
+   "jaccard": 0.6429,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.7059,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+   "work_id": "bruckner--symphony-5",
+   "verdict": "both",
+   "jaccard": 0.4286,
+   "edition_extra": [
+    "Tenor",
+    "Trumpet"
+   ],
+   "edition_missing": [
+    "Timpani",
+    "Trombone"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Tuba"
+   ],
+   "edition_yield": 0.6842,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/bruckner/symphony-6-in-a-major-wab-106/bruckner--symphony-6-in-a-major-wab-106--co-issue-with-universal--imslp30699.pdf",
+   "work_id": "bruckner--symphony-6",
+   "verdict": "agrees",
+   "jaccard": 0.75,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.7059,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/bruckner/symphony-7-in-e-major-wab-107/bruckner--symphony-7-in-e-major-wab-107--eulenburg-1926--imslp30703.pdf",
+   "work_id": "bruckner--symphony-7",
+   "verdict": "edition_missing",
+   "jaccard": 0.5714,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Timpani"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.7059,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/bruckner/symphony-8-in-c-minor-wab-108/bruckner--symphony-8-in-c-minor-wab-108--co-issue-with-universal--imslp30702.pdf",
+   "work_id": "bruckner--symphony-8",
+   "verdict": "edition_missing",
+   "jaccard": 0.4375,
+   "edition_extra": [],
+   "edition_missing": [
+    "Flute",
+    "Harp",
+    "Percussion"
+   ],
+   "doubling": [
+    {
+     "page": "Contrabassoon",
+     "work": "Bassoon",
+     "side": "page_only"
+    },
+    {
+     "work": "Bassoon",
+     "page": "Contrabassoon",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.8235,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/bruckner/symphony-9-in-d-minor-wab-109-143/bruckner--symphony-9-in-d-minor-wab-109-143--peters--imslp969460.pdf",
+   "work_id": "bruckner--symphony-9",
+   "verdict": "doubling_suspected",
+   "jaccard": 0.6429,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [
+    {
+     "page": "Contrabassoon",
+     "work": "Bassoon",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.8824,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/bruckner/te-deum-wab-45/bruckner--te-deum-wab-45--eulenburg--imslp62720.pdf",
+   "work_id": "bruckner--te-deum",
+   "verdict": "edition_missing",
+   "jaccard": 0.8,
+   "edition_extra": [],
+   "edition_missing": [
+    "Flute",
+    "Oboe"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Horn",
+    "Organ",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.6667,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/chabrier/espana/chabrier--espana--enoch-1884--imslp112203.pdf",
+   "work_id": "chabrier--espana",
+   "verdict": "edition_missing",
+   "jaccard": 0.6,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Oboe",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.56,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/chaminade/concertino-pour-flute-op107/chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+   "work_id": "chaminade--concertino-pour-flute",
+   "verdict": "edition_extra",
+   "jaccard": 0.75,
+   "edition_extra": [
+    "Alto"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Tuba"
+   ],
+   "edition_yield": 0.8333,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/chausson/poeme-op25/chausson--poeme-op25--catalog-part-b-2051-2051--imslp27765.pdf",
+   "work_id": "chausson--poeme",
+   "verdict": "edition_missing",
+   "jaccard": 0.2727,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Harp",
+    "Horn",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Oboe"
+   ],
+   "edition_yield": 0.5455,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/coleridge-taylor/ballade-op33/coleridge-taylor--ballade-op33--novello--imslp860015.pdf",
+   "work_id": "coleridge-taylor--ballade-op33",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/debussy/la-boite-a-joujoux-cd-136/debussy--la-boite-a-joujoux-cd-136--durand-et-cie-1913--imslp199718.pdf",
+   "work_id": "debussy--la-boite-a-joujoux",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/debussy/la-mer-cd-111/debussy--la-mer-cd-111--durand-fils--imslp15420.pdf",
+   "work_id": "debussy--la-mer",
+   "verdict": "edition_missing",
+   "jaccard": 0.6,
+   "edition_extra": [],
+   "edition_missing": [
+    "Timpani",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "English horn",
+     "work": "Oboe",
+     "side": "page_only"
+    },
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7727,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/debussy/nocturnes-cd-98/debussy--nocturnes-cd-98--fromont--imslp896854.pdf",
+   "work_id": "debussy--nocturnes",
+   "verdict": "edition_missing",
+   "jaccard": 0.4667,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.75,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/debussy/prelude-a-l-apres-midi-d-un-faune-cd-87/debussy--prelude-a-l-apres-midi-d-un-faune-cd-87--eulenburg--imslp912676.pdf",
+   "work_id": "debussy--prelude-a-l-apres-midi-d-un-faune",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon",
+    "Percussion"
+   ],
+   "doubling": [
+    {
+     "page": "English horn",
+     "work": "Oboe",
+     "side": "page_only"
+    },
+    {
+     "work": "Oboe",
+     "page": "English horn",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Flute",
+    "Horn"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/dukas/l-apprenti-sorcier/dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+   "work_id": "dukas--l-apprenti-sorcier",
+   "verdict": "doubling_suspected",
+   "jaccard": 0.75,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bass clarinet",
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.76,
+   "score_type": "full_score",
+   "work_unparsed": 1
+  },
+  {
+   "path": "editions/dvorak/cello-concerto-op104/dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf",
+   "work_id": "dvorak--cello-concerto",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Horn",
+    "Percussion",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Oboe",
+    "Timpani",
+    "Tuba"
+   ],
+   "edition_yield": 0.6471,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/dvorak/serenade-for-strings-op22/dvorak--serenade-for-strings-op22--bote-bock-1879--imslp862636.pdf",
+   "work_id": "dvorak--serenade-for-strings",
+   "verdict": "edition_extra",
+   "jaccard": 0.0,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/dvorak/slavonic-dances-op46/dvorak--slavonic-dances-op46--schirmer-s-library-of-mu--imslp147746.pdf",
+   "work_id": "dvorak--slavonic-dances",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/dvorak/symphony-6-op60/dvorak--symphony-6-op60--simrock-1888--imslp26977.pdf",
+   "work_id": "dvorak--symphony-6",
+   "verdict": "edition_missing",
+   "jaccard": 0.5,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8667,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/dvorak/symphony-7-op70/dvorak--symphony-7-op70--simrock-1885--imslp649931.pdf",
+   "work_id": "dvorak--symphony-7",
+   "verdict": "both",
+   "jaccard": 0.4615,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Clarinet",
+    "Flute",
+    "Piccolo"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/dvorak/symphony-8-op88/dvorak--symphony-8-op88--novello-1892--imslp405841.pdf",
+   "work_id": "dvorak--symphony-8",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "work_id": "dvorak--symphony-9",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/elgar/cello-concerto-op85/elgar--cello-concerto-op85--novello-co-1921--imslp22192.pdf",
+   "work_id": "elgar--cello-concerto",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/elgar/introduction-and-allegro-op47/elgar--introduction-and-allegro-op47--novello-and-co-1905--imslp22614.pdf",
+   "work_id": "elgar--introduction-and-allegro",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/elgar/symphony-1-op55/elgar--symphony-1-op55--novello-co-1908--imslp56155.pdf",
+   "work_id": "elgar--symphony-1",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/elgar/symphony-2-op63/elgar--symphony-2-op63--novello-co-1911--imslp979455.pdf",
+   "work_id": "elgar--symphony-2",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/elgar/variations-on-an-original-theme-enigma-op36/elgar--variations-on-an-original-theme-enigma-op36--novello-co-1899--imslp23792.pdf",
+   "work_id": "elgar--variations-on-an-original-theme-enigma",
+   "verdict": "doubling_suspected",
+   "jaccard": 0.7059,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Organ",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.8182,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/farrenc/symphony-2-op35/farrenc--symphony-2-op35--renioult-2025--imslp986966.pdf",
+   "work_id": "farrenc--symphony-2",
+   "verdict": "edition_extra",
+   "jaccard": 0.6364,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/farrenc/symphony-3-op36/farrenc--symphony-3-op36--john-s-shaw-2024--imslp934246.pdf",
+   "work_id": "farrenc--symphony-3",
+   "verdict": "edition_missing",
+   "jaccard": 0.5,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon"
+   ],
+   "doubling": [],
+   "shared": [
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.9167,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/faure/pelleas-et-melisande-op80/faure--pelleas-et-melisande-op80--peters-1979--imslp25892.pdf",
+   "work_id": "faure--pelleas-et-melisande",
+   "verdict": "edition_missing",
+   "jaccard": 0.6364,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7333,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/faure/requiem-op48/faure--requiem-op48--hamelle-1901--imslp30151.pdf",
+   "work_id": "faure--requiem-op48",
+   "verdict": "both",
+   "jaccard": 0.5714,
+   "edition_extra": [
+    "Alto",
+    "Chorus"
+   ],
+   "edition_missing": [
+    "Harp"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Organ",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7391,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/franck/le-chasseur-maudit/franck--le-chasseur-maudit--eulenburg--imslp94535.pdf",
+   "work_id": "franck--le-chasseur-maudit",
+   "verdict": "edition_missing",
+   "jaccard": 0.7143,
+   "edition_extra": [],
+   "edition_missing": [
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8947,
+   "score_type": "full_score",
+   "work_unparsed": 2,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/franck/symphony-in-d-minor/franck--symphony-in-d-minor--hamelle-1890--imslp95003.pdf",
+   "work_id": "franck--symphony-in-d-minor",
+   "verdict": "edition_missing",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [
+    "Flute",
+    "Harp"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bass clarinet",
+    "Bassoon",
+    "Clarinet",
+    "English horn",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.7778,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/glazunov/symphony-5-op55/glazunov--symphony-5-op55--belaieff-1896--imslp61788.pdf",
+   "work_id": "glazunov--symphony-5",
+   "verdict": "edition_missing",
+   "jaccard": 0.5,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    },
+    {
+     "work": "Flute",
+     "page": "Piccolo",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/grieg/holberg-suite-op40/grieg--holberg-suite-op40--peters-1884--imslp231653.pdf",
+   "work_id": "grieg--holberg-suite",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/grieg/peer-gynt-suite-1-op46/grieg--peer-gynt-suite-1-op46--peters-1888--imslp912194.pdf",
+   "work_id": "grieg--suite-1",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/grieg/piano-concerto-op16/grieg--piano-concerto-op16--peters--imslp503994.pdf",
+   "work_id": "grieg--piano-concerto",
+   "verdict": "edition_missing",
+   "jaccard": 0.4545,
+   "edition_extra": [],
+   "edition_missing": [
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.7,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/handel/messiah-hwv-56/handel--messiah-hwv-56--lead-sheet--local.pdf",
+   "work_id": "handel--messiah",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/handel/messiah-hwv-56/handel--messiah-hwv-56--vocal-reduction--local.pdf",
+   "work_id": "handel--messiah",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/handel/music-for-the-royal-fireworks-hwv-351/handel--music-for-the-royal-fireworks-hwv-351--breitkopf-und-hartel--imslp779991.pdf",
+   "work_id": "handel--music-for-the-royal-fireworks",
+   "verdict": "edition_missing",
+   "jaccard": 0.4,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Timpani"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Horn",
+    "Oboe",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8667,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/handel/water-music-hwv-348-350/handel--water-music-hwv-348-350--breitkopf-und-hartel--imslp780551.pdf",
+   "work_id": "handel--water-music",
+   "verdict": "both",
+   "jaccard": 0.2,
+   "edition_extra": [
+    "Piano"
+   ],
+   "edition_missing": [
+    "Flute",
+    "Horn",
+    "Piccolo",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Oboe"
+   ],
+   "edition_yield": 0.7,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/haydn/cello-concerto-2-in-d-major-hob-viib-2/haydn--cello-concerto-2-in-d-major-hob-viib-2--peters--imslp23555.pdf",
+   "work_id": "haydn--cello-concerto-2",
+   "verdict": "agrees",
+   "jaccard": 0.4,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.75,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/haydn/die-schopfung-hob-xxi-2/haydn--die-schopfung-hob-xxi-2--peters--imslp834036.pdf",
+   "work_id": "haydn--die-schopfung-hob-xxi-2",
+   "verdict": "edition_extra",
+   "jaccard": 0.5625,
+   "edition_extra": [
+    "Alto",
+    "Bass voice",
+    "Soprano",
+    "Tenor"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/haydn/symphony-100-in-g-major-hob-i-100/haydn--symphony-100-in-g-major-hob-i-100--breitkopf-und-hartel-1857--imslp546542.pdf",
+   "work_id": "haydn--symphony-100",
+   "verdict": "edition_missing",
+   "jaccard": 0.5455,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Percussion"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/haydn/symphony-101-in-d-major-hob-i-101/haydn--symphony-101-in-d-major-hob-i-101--breitkopf-und-hartel-1855--imslp546548.pdf",
+   "work_id": "haydn--symphony-101",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/haydn/symphony-102-in-b-flat-major-hob-i-102/haydn--symphony-102-in-b-flat-major-hob-i-102--breitkopf-und-hartel-1857--imslp546543.pdf",
+   "work_id": "haydn--symphony-102",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/haydn/symphony-103-in-e-flat-major-hob-i-103/haydn--symphony-103-in-e-flat-major-hob-i-103--breitkopf-und-hartel-1854--imslp546607.pdf",
+   "work_id": "haydn--symphony-103",
+   "verdict": "agrees",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/haydn/symphony-104-in-d-major-hob-i-104/haydn--symphony-104-in-d-major-hob-i-104--breitkopf-und-hartel-1854--imslp546608.pdf",
+   "work_id": "haydn--symphony-104",
+   "verdict": "agrees",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/haydn/symphony-45-in-f-sharp-minor-hob-i-45/haydn--symphony-45-in-f-sharp-minor-hob-i-45--eulenburg--imslp22608.pdf",
+   "work_id": "haydn--symphony-45",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon"
+   ],
+   "doubling": [],
+   "shared": [
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/haydn/symphony-88-in-g-major-hob-i-88/haydn--symphony-88-in-g-major-hob-i-88--linkwork-1874--imslp494073.pdf",
+   "work_id": "haydn--symphony-88",
+   "verdict": "edition_missing",
+   "jaccard": 0.4444,
+   "edition_extra": [],
+   "edition_missing": [
+    "Timpani",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/haydn/symphony-92-in-g-major-hob-i-92/haydn--symphony-92-in-g-major-hob-i-92--breitkopf-hartels-orches--imslp764064.pdf",
+   "work_id": "haydn--symphony-92",
+   "verdict": "agrees",
+   "jaccard": 0.6,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/haydn/symphony-94-in-g-major-hob-i-94/haydn--symphony-94-in-g-major-hob-i-94--breitkopf-und-hartel-1855--imslp546546.pdf",
+   "work_id": "haydn--symphony-94",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/haydn/symphony-95-in-c-minor-hob-i-95/haydn--symphony-95-in-c-minor-hob-i-95--breitkopf-und-hartel-1855--imslp213309.pdf",
+   "work_id": "haydn--symphony-95",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/haydn/symphony-96-in-d-major-hob-i-96/haydn--symphony-96-in-d-major-hob-i-96--breitkopf-und-hartel--imslp764163.pdf",
+   "work_id": "haydn--symphony-96",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/haydn/symphony-99-in-e-flat-major-hob-i-99/haydn--symphony-99-in-e-flat-major-hob-i-99--breitkopf-und-hartel-1855--imslp546549.pdf",
+   "work_id": "haydn--symphony-99",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/holst/st-paul-s-suite-op29-2/holst--st-paul-s-suite-op29-2--goodwin-tabb-1922--imslp21160.pdf",
+   "work_id": "holst--st-paul-s-suite-op29-2",
+   "verdict": "edition_extra",
+   "jaccard": 0.0,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/holst/the-planets-op32/holst--the-planets-op32--goodwin-tabb-1921--imslp1014401.pdf",
+   "work_id": "holst--the-planets",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/kirchhoff/l-abc-musical/kirchhoff--l-abc-musical--unknown-edition--local.pdf",
+   "work_id": "kirchhoff--l-abc-musical",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/lalo/symphony-espagnole-op21/lalo--symphony-espagnole-op21--durand--imslp174510.pdf",
+   "work_id": "lalo--symphony-espagnole",
+   "verdict": "both",
+   "jaccard": 0.5333,
+   "edition_extra": [
+    "Alto"
+   ],
+   "edition_missing": [
+    "Harp",
+    "Oboe",
+    "Percussion"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8235,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/das-lied-von-der-erde-gmw-49/mahler--das-lied-von-der-erde-gmw-49--edition-1912--imslp20582.pdf",
+   "work_id": "mahler--das-lied-von-der-erde-gmw-49",
+   "verdict": "both",
+   "jaccard": 0.4,
+   "edition_extra": [
+    "Horn",
+    "Tenor"
+   ],
+   "edition_missing": [
+    "Piano",
+    "Timpani",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Bassoon",
+     "work": "Contrabassoon",
+     "side": "page_only"
+    },
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8846,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/lieder-eines-fahrenden-gesellen-gmw-10/mahler--lieder-eines-fahrenden-gesellen-gmw-10--weinberger-1897--imslp21559.pdf",
+   "work_id": "mahler--lieder-eines-fahrenden-gesellen-gmw-10",
+   "verdict": "edition_missing",
+   "jaccard": 0.2143,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Clarinet",
+    "Harp",
+    "Percussion"
+   ],
+   "edition_yield": 0.7273,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/symphony-1-gmw-11/mahler--symphony-1-gmw-11--edition-1906--imslp17070.pdf",
+   "work_id": "mahler--symphony-1",
+   "verdict": "both",
+   "jaccard": 0.3333,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Harp",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.6875,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/symphony-2-gmw-30/mahler--symphony-2-gmw-30--hofmeister-1897--imslp415748.pdf",
+   "work_id": "mahler--symphony-2",
+   "verdict": "both",
+   "jaccard": 0.4444,
+   "edition_extra": [
+    "Horn"
+   ],
+   "edition_missing": [
+    "Organ",
+    "Timpani",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Bassoon",
+     "work": "Contrabassoon",
+     "side": "page_only"
+    },
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Harp",
+    "Oboe",
+    "Percussion",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8636,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/symphony-3-gmw-31/mahler--symphony-3-gmw-31--edition-1906--imslp71001.pdf",
+   "work_id": "mahler--symphony-3",
+   "verdict": "both",
+   "jaccard": 0.0667,
+   "edition_extra": [
+    "Horn"
+   ],
+   "edition_missing": [
+    "Clarinet",
+    "Flute",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Bassoon",
+     "work": "Contrabassoon",
+     "side": "page_only"
+    },
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Trombone"
+   ],
+   "edition_yield": 0.5625,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/symphony-4-gmw-37/mahler--symphony-4-gmw-37--edition-1911--imslp280767.pdf",
+   "work_id": "mahler--symphony-4",
+   "verdict": "edition_missing",
+   "jaccard": 0.5385,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Timpani"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8333,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "work_id": "mahler--symphony-5",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/mahler/symphony-6-gmw-46/mahler--symphony-6-gmw-46--c-f-kahnt-nachfolger-1906--imslp514284.pdf",
+   "work_id": "mahler--symphony-6",
+   "verdict": "both",
+   "jaccard": 0.55,
+   "edition_extra": [
+    "Bass voice",
+    "Cello",
+    "Viola",
+    "Violin"
+   ],
+   "edition_missing": [
+    "Harp",
+    "Timpani"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piano",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.7419,
+   "score_type": "full_score",
+   "work_unparsed": 6,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/symphony-7-gmw-47/mahler--symphony-7-gmw-47--bote-bock-1909--imslp415756.pdf",
+   "work_id": "mahler--symphony-7",
+   "verdict": "edition_missing",
+   "jaccard": 0.5294,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Bassoon",
+     "page": "Contrabassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bass clarinet",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone"
+   ],
+   "edition_yield": 0.6,
+   "score_type": "full_score",
+   "work_unparsed": 5,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mahler/symphony-9-gmw-50/mahler--symphony-9-gmw-50--edition-1912--imslp353450.pdf",
+   "work_id": "mahler--symphony-9",
+   "verdict": "edition_missing",
+   "jaccard": 0.1667,
+   "edition_extra": [],
+   "edition_missing": [
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Contrabassoon",
+     "work": "Bassoon",
+     "side": "page_only"
+    },
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Harp"
+   ],
+   "edition_yield": 0.6667,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mendelssohn/a-midsummer-night-s-dream-incidental-music-op61/mendelssohn--a-midsummer-night-s-dream-incidental-music-op61--peters--imslp225827.pdf",
+   "work_id": "mendelssohn--a-midsummer-night-s-dream-incidental-music",
+   "verdict": "both",
+   "jaccard": 0.5385,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Percussion",
+    "Trombone"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mendelssohn/die-hebriden-op26/mendelssohn--die-hebriden-op26--breitkopf-und-hartel--imslp683560.pdf",
+   "work_id": "mendelssohn--die-hebriden",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mendelssohn/symphony-1-op11/mendelssohn--symphony-1-op11--breitkopf-und-hartel--imslp214825.pdf",
+   "work_id": "mendelssohn--symphony-1",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mendelssohn/symphony-3-op56/mendelssohn--symphony-3-op56--breitkopf-und-hartel-1842--imslp514187.pdf",
+   "work_id": "mendelssohn--symphony-3",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mendelssohn/symphony-4-op90/mendelssohn--symphony-4-op90--mendelssohncomplete-1877--imslp20286.pdf",
+   "work_id": "mendelssohn--symphony-4",
+   "verdict": "edition_extra",
+   "jaccard": 0.6364,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mendelssohn/symphony-5-op107/mendelssohn--symphony-5-op107--mendelssohncomplete-1877--imslp20287.pdf",
+   "work_id": "mendelssohn--symphony-5",
+   "verdict": "edition_extra",
+   "jaccard": 0.6154,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 1
+  },
+  {
+   "path": "editions/mendelssohn/violin-concerto-op64/mendelssohn--violin-concerto-op64--breitkopf-und-hartel--imslp761698.pdf",
+   "work_id": "mendelssohn--violin-concerto",
+   "verdict": "agrees",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/clarinet-concerto-in-a-major-k622/mozart--clarinet-concerto-in-a-major-k622--breitkopf-hartel-mozart-1881--imslp29515.pdf",
+   "work_id": "mozart--clarinet-concerto-in-a-major",
+   "verdict": "edition_extra",
+   "jaccard": 0.375,
+   "edition_extra": [
+    "Clarinet"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/die-zauberflote-k620/mozart--die-zauberflote-k620--simrock--imslp923456.pdf",
+   "work_id": "mozart--die-zauberflote",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mozart/don-giovanni-k527/mozart--don-giovanni-k527--breitkopf-und-hartel-1801--imslp433273.pdf",
+   "work_id": "mozart--don-giovanni",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mozart/eine-kleine-nachtmusik-k525/mozart--eine-kleine-nachtmusik-k525--wiener-philharmonischer--imslp914565.pdf",
+   "work_id": "mozart--eine-kleine-nachtmusik",
+   "verdict": "edition_missing",
+   "jaccard": 0.75,
+   "edition_extra": [],
+   "edition_missing": [
+    "Contrabass"
+   ],
+   "doubling": [],
+   "shared": [
+    "Cello",
+    "Viola",
+    "Violin"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/mozart/le-nozze-di-figaro-k492/mozart--le-nozze-di-figaro-k492--breitkopf-hartel-mozart-1879--imslp515701.pdf",
+   "work_id": "mozart--le-nozze-di-figaro",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mozart/piano-concerto-20-in-d-minor-k466/mozart--piano-concerto-20-in-d-minor-k466--breitkopf-hartel-mozart-1878--imslp26334.pdf",
+   "work_id": "mozart--piano-concerto-20",
+   "verdict": "edition_extra",
+   "jaccard": 0.6,
+   "edition_extra": [
+    "Piano"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9167,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/piano-concerto-21-in-c-major-k467/mozart--piano-concerto-21-in-c-major-k467--breitkopf-hartel-mozart-1878--imslp516497.pdf",
+   "work_id": "mozart--piano-concerto-21",
+   "verdict": "edition_extra",
+   "jaccard": 0.6,
+   "edition_extra": [
+    "Piano"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9167,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/piano-concerto-23-in-a-major-k488/mozart--piano-concerto-23-in-a-major-k488--breitkopf-hartel-mozart-1879--imslp25720.pdf",
+   "work_id": "mozart--piano-concerto-23",
+   "verdict": "edition_extra",
+   "jaccard": 0.5,
+   "edition_extra": [
+    "Piano"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn"
+   ],
+   "edition_yield": 0.9,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/piano-concerto-24-in-c-minor-k491/mozart--piano-concerto-24-in-c-minor-k491--breitkopf-hartel-mozart-1879--imslp516496.pdf",
+   "work_id": "mozart--piano-concerto-24",
+   "verdict": "edition_extra",
+   "jaccard": 0.6364,
+   "edition_extra": [
+    "Piano"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9231,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/requiem-in-d-minor-k626/mozart--requiem-in-d-minor-k626--breitkopf-und-hartel-1812--imslp26746.pdf",
+   "work_id": "mozart--requiem-in-d-minor",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mozart/symphony-1-in-e-flat-major-k16/mozart--symphony-1-in-e-flat-major-k16--breitkopf-hartel-mozart-1879--imslp33.pdf",
+   "work_id": "mozart--symphony-1",
+   "verdict": "edition_extra",
+   "jaccard": 0.4,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-25-in-g-minor-k183-173db/mozart--symphony-25-in-g-minor-k183-173db--barenreiter-neue-mozart-1960--imslp849180.pdf",
+   "work_id": "mozart--symphony-25",
+   "verdict": "agrees",
+   "jaccard": 0.5,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-25-in-g-minor-k183/mozart--symphony-25-in-g-minor-k183--breitkopf-hartel-mozart-1880--imslp57.pdf",
+   "work_id": "mozart--symphony-25",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon"
+   ],
+   "doubling": [],
+   "shared": [
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "unknown",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/mozart/symphony-29-in-a-major-k201/mozart--symphony-29-in-a-major-k201--breitkopf-hartel-mozart-1880--imslp1015165.pdf",
+   "work_id": "mozart--symphony-29",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/mozart/symphony-31-in-d-major-k297/mozart--symphony-31-in-d-major-k297--breitkopf-hartel-mozart-1880--imslp1015171.pdf",
+   "work_id": "mozart--symphony-31",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/mozart/symphony-33-in-b-flat-major-k319/mozart--symphony-33-in-b-flat-major-k319--breitkopf-hartel-s-parti--imslp1016351.pdf",
+   "work_id": "mozart--symphony-33",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/mozart/symphony-34-in-c-major-k338/mozart--symphony-34-in-c-major-k338--eulenburg-1956--imslp411740.pdf",
+   "work_id": "mozart--symphony-34",
+   "verdict": "edition_missing",
+   "jaccard": 0.4444,
+   "edition_extra": [],
+   "edition_missing": [
+    "Flute",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Horn",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.7647,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mozart/symphony-35-in-d-major-k385/mozart--symphony-35-in-d-major-k385--breitkopf-hartel-mozart-1880--imslp979000.pdf",
+   "work_id": "mozart--symphony-35",
+   "verdict": "agrees",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-36-in-c-major-k425/mozart--symphony-36-in-c-major-k425--breitkopf-hartel-mozart-1880--imslp979001.pdf",
+   "work_id": "mozart--symphony-36",
+   "verdict": "agrees",
+   "jaccard": 0.625,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-38-in-d-major-k504/mozart--symphony-38-in-d-major-k504--breitkopf-hartel-mozart-1880--imslp984553.pdf",
+   "work_id": "mozart--symphony-38",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-39-in-e-flat-major-k543/mozart--symphony-39-in-e-flat-major-k543--breitkopf-hartel-mozart-1880--imslp984554.pdf",
+   "work_id": "mozart--symphony-39",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-4-in-d-major-k19/mozart--symphony-4-in-d-major-k19--breitkopf-hartel-mozart-1879--imslp36.pdf",
+   "work_id": "mozart--symphony-4",
+   "verdict": "agrees",
+   "jaccard": 0.4,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-40-in-g-minor-k550/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf",
+   "work_id": "mozart--symphony-40",
+   "verdict": "agrees",
+   "jaccard": 0.625,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+   "work_id": "mozart--symphony-41",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp984556.pdf",
+   "work_id": "mozart--symphony-41",
+   "verdict": "agrees",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mozart/symphony-5-in-b-flat-major-k22/mozart--symphony-5-in-b-flat-major-k22--breitkopf-hartel-mozart-1879--imslp37.pdf",
+   "work_id": "mozart--symphony-5",
+   "verdict": "agrees",
+   "jaccard": 0.4,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/mussorgsky/night-on-bald-mountain/mussorgsky--night-on-bald-mountain--v-bessel-co-1886--imslp139196.pdf",
+   "work_id": "mussorgsky--night-on-bald-mountain",
+   "verdict": "edition_missing",
+   "jaccard": 0.6875,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.9474,
+   "score_type": "full_score",
+   "work_unparsed": 2,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/mussorgsky/pictures-at-an-exhibition/mussorgsky--pictures-at-an-exhibition--augener-1914--imslp272845.pdf",
+   "work_id": "mussorgsky--pictures-at-an-exhibition",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/nielsen/symphony-4-op29/nielsen--symphony-4-op29--hansen-1916--imslp214811.pdf",
+   "work_id": "nielsen--symphony-4",
+   "verdict": "edition_missing",
+   "jaccard": 0.3636,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.5455,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/nielsen/symphony-5-op50/nielsen--symphony-5-op50--nielsencomplete-1998--imslp92727.pdf",
+   "work_id": "nielsen--symphony-5",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/prokofiev/symphony-1-op25/prokofiev--symphony-1-op25--editions-russes-de-musiq-1925--imslp5981.pdf",
+   "work_id": "prokofiev--symphony-1",
+   "verdict": "edition_extra",
+   "jaccard": 0.6364,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/rachmaninoff/isle-of-the-dead-op29/rachmaninoff--isle-of-the-dead-op29--gutheil-1909--imslp249809.pdf",
+   "work_id": "rachmaninoff--isle-of-the-dead",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/rachmaninoff/piano-concerto-2-op18/rachmaninoff--piano-concerto-2-op18--gutheil-1901--imslp528309.pdf",
+   "work_id": "rachmaninoff--piano-concerto-2",
+   "verdict": "both",
+   "jaccard": 0.5714,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7647,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/rachmaninoff/symphony-2-op27/rachmaninoff--symphony-2-op27--gutheil-1908--imslp105597.pdf",
+   "work_id": "rachmaninoff--symphony-2",
+   "verdict": "both",
+   "jaccard": 0.5333,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "English horn",
+     "work": "Oboe",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bass clarinet",
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7895,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/ravel/bolero-m-81/ravel--bolero-m-81--2016--imslp421137.pdf",
+   "work_id": "ravel--bolero",
+   "verdict": "both",
+   "jaccard": 0.5238,
+   "edition_extra": [
+    "Cello",
+    "Contrabass",
+    "Soprano",
+    "Violin"
+   ],
+   "edition_missing": [
+    "Percussion",
+    "Saxophone"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "Bassoon",
+     "page": "Contrabassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "Oboe",
+     "page": "English horn",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Contrabassoon",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Piano",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.8421,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/ravel/daphnis-et-chloe-m-57/ravel--daphnis-et-chloe-m-57--durand--imslp952691.pdf",
+   "work_id": "ravel--daphnis-et-chloe",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/ravel/la-valse-m-72/ravel--la-valse-m-72--durand-cie-1921--imslp923399.pdf",
+   "work_id": "ravel--la-valse",
+   "verdict": "both",
+   "jaccard": 0.6471,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Harp",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "English horn",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.68,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/ravel/le-tombeau-de-couperin-m-68/ravel--le-tombeau-de-couperin-m-68--durand-cie-1918--imslp918879.pdf",
+   "work_id": "ravel--le-tombeau-de-couperin",
+   "verdict": "agrees",
+   "jaccard": 1.0,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Piano"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/ravel/rapsodie-espagnole-m-54/ravel--rapsodie-espagnole-m-54--durand-fils-1908--imslp134638.pdf",
+   "work_id": "ravel--rapsodie-espagnole",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/respighi/fontane-di-roma/respighi--fontane-di-roma--ricordi--imslp914006.pdf",
+   "work_id": "respighi--fontane-di-roma",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/respighi/pini-di-roma/respighi--pini-di-roma--g-ricordi-c-1925--imslp5603.pdf",
+   "work_id": "respighi--pini-di-roma",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon",
+    "Contrabassoon",
+    "Organ",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    },
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Oboe",
+    "Piano",
+    "Trumpet"
+   ],
+   "edition_yield": 0.625,
+   "score_type": "full_score",
+   "work_unparsed": 2,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/rimsky-korsakov/capriccio-espagnol-op34/rimsky-korsakov--capriccio-espagnol-op34--belaieff--imslp875678.pdf",
+   "work_id": "rimsky-korsakov--capriccio-espagnol",
+   "verdict": "edition_missing",
+   "jaccard": 0.6875,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.9444,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/rimsky-korsakov/scheherazade-op35/rimsky-korsakov--scheherazade-op35--eulenburg--imslp1010338.pdf",
+   "work_id": "rimsky-korsakov--scheherazade",
+   "verdict": "edition_missing",
+   "jaccard": 0.625,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8333,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/rossini/guillaume-tell/rossini--guillaume-tell--breitkopf-hartel--imslp33461.pdf",
+   "work_id": "rossini--guillaume-tell",
+   "verdict": "edition_extra",
+   "jaccard": 0.6,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [
+    {
+     "page": "English horn",
+     "work": "Oboe",
+     "side": "page_only"
+    },
+    {
+     "work": "Oboe",
+     "page": "English horn",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.913,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/rossini/il-barbiere-di-siviglia/rossini--il-barbiere-di-siviglia--wiener-philharmonischer--imslp280515.pdf",
+   "work_id": "rossini--il-barbiere-di-siviglia",
+   "verdict": "both",
+   "jaccard": 0.0556,
+   "edition_extra": [
+    "Bassoon",
+    "Cello",
+    "Clarinet",
+    "Contrabass",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Viola",
+    "Violin"
+   ],
+   "edition_missing": [
+    "Alto",
+    "Soprano",
+    "Tenor"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bass voice"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 9,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/saint-saens/cello-concerto-1-op33/saint-saens--cello-concerto-1-op33--durand-1874--imslp81392.pdf",
+   "work_id": "saint-saens--cello-concerto-1",
+   "verdict": "agrees",
+   "jaccard": 0.7778,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7692,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/saint-saens/danse-macabre-op40/saint-saens--danse-macabre-op40--durand-1875--imslp21204.pdf",
+   "work_id": "saint-saens--danse-macabre",
+   "verdict": "edition_missing",
+   "jaccard": 0.8,
+   "edition_extra": [],
+   "edition_missing": [
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Violin"
+   ],
+   "edition_yield": 0.7826,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/saint-saens/le-carnaval-des-animaux/saint-saens--le-carnaval-des-animaux--durand--imslp576538.pdf",
+   "work_id": "saint-saens--le-carnaval-des-animaux",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/saint-saens/piano-concerto-2-op22/saint-saens--piano-concerto-2-op22--durand-1875--imslp21451.pdf",
+   "work_id": "saint-saens--piano-concerto-2",
+   "verdict": "both",
+   "jaccard": 0.5833,
+   "edition_extra": [
+    "Piano"
+   ],
+   "edition_missing": [
+    "Percussion"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7857,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/saint-saens/symphony-3-op78/saint-saens--symphony-3-op78--durand-schoenewerk-1886--imslp113413.pdf",
+   "work_id": "saint-saens--symphony-3",
+   "verdict": "edition_missing",
+   "jaccard": 0.625,
+   "edition_extra": [],
+   "edition_missing": [
+    "Flute",
+    "Percussion",
+    "Piano",
+    "Timpani",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bass clarinet",
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "English horn",
+    "Horn",
+    "Oboe",
+    "Organ",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.6364,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/schubert/rosamunde-d-797/schubert--rosamunde-d-797--schubertcomplete-1893--imslp711227.pdf",
+   "work_id": "schubert--rosamunde",
+   "verdict": "edition_extra",
+   "jaccard": 0.6667,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/schubert/symphony-3-d-200/schubert--symphony-3-d-200--schubertcomplete-1884--imslp515580.pdf",
+   "work_id": "schubert--symphony-3",
+   "verdict": "agrees",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/schubert/symphony-4-d-417/schubert--symphony-4-d-417--schubertcomplete-1884--imslp515581.pdf",
+   "work_id": "schubert--symphony-4",
+   "verdict": "agrees",
+   "jaccard": 0.7,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/schubert/symphony-5-d-485/schubert--symphony-5-d-485--schubertcomplete-1885--imslp515582.pdf",
+   "work_id": "schubert--symphony-5",
+   "verdict": "agrees",
+   "jaccard": 0.5714,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/schubert/symphony-8-d-759/schubert--symphony-8-d-759--breitkopf-hartel-s-parti--imslp1017902.pdf",
+   "work_id": "schubert--symphony-8",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/schubert/symphony-9-d-944/schubert--symphony-9-d-944--breitkopf-und-hartel-1850--imslp109708.pdf",
+   "work_id": "schubert--symphony-9",
+   "verdict": "both",
+   "jaccard": 0.5833,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Trombone"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9286,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/schumann/cello-concerto-op129/schumann--cello-concerto-op129--schumanncomplete-1883--imslp291088.pdf",
+   "work_id": "schumann--cello-concerto",
+   "verdict": "edition_missing",
+   "jaccard": 0.4,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Horn",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.75,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/schumann/piano-concerto-op54/schumann--piano-concerto-op54--schumanncomplete-1883--imslp291223.pdf",
+   "work_id": "schumann--piano-concerto",
+   "verdict": "edition_extra",
+   "jaccard": 0.5833,
+   "edition_extra": [
+    "Bass voice",
+    "Piano"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9286,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/schumann/piano-concerto-op7/schumann--piano-concerto-op7--chang-2019--imslp573002.pdf",
+   "work_id": "schumann--piano-concerto",
+   "verdict": "both",
+   "jaccard": 0.5,
+   "edition_extra": [
+    "Piano",
+    "Trombone"
+   ],
+   "edition_missing": [
+    "Flute",
+    "Oboe"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Horn",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.619,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/schumann/symphony-1-op38/schumann--symphony-1-op38--breitkopf-und-hartel--imslp758868.pdf",
+   "work_id": "schumann--symphony-1",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/schumann/symphony-2-op61/schumann--symphony-2-op61--peters-1887--imslp514290.pdf",
+   "work_id": "schumann--symphony-2",
+   "verdict": "edition_extra",
+   "jaccard": 0.6667,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9286,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/schumann/symphony-3-op97/schumann--symphony-3-op97--peters-1887--imslp13086.pdf",
+   "work_id": "schumann--symphony-3",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Horn",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.6923,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/schumann/symphony-4-op120/schumann--symphony-4-op120--breitkopf-und-hartel-1891--imslp283015.pdf",
+   "work_id": "schumann--symphony-4",
+   "verdict": "edition_extra",
+   "jaccard": 0.6667,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/sibelius/finlandia-op26/sibelius--finlandia-op26--breitkopf-und-hartel-1905--imslp15894.pdf",
+   "work_id": "sibelius--finlandia",
+   "verdict": "agrees",
+   "jaccard": 0.7143,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.8333,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/sibelius/symphony-1-op39/sibelius--symphony-1-op39--breitkopf-und-hartel-1902--imslp15918.pdf",
+   "work_id": "sibelius--symphony-1",
+   "verdict": "edition_extra",
+   "jaccard": 0.7333,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.8889,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/sibelius/symphony-2-op43/sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919.pdf",
+   "work_id": "sibelius--symphony-2",
+   "verdict": "agrees",
+   "jaccard": 0.6923,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.875,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/sibelius/symphony-5-op82/sibelius--symphony-5-op82--hansen-1921--imslp15922.pdf",
+   "work_id": "sibelius--symphony-5",
+   "verdict": "edition_missing",
+   "jaccard": 0.4444,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon",
+    "Flute",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Horn",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.8571,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/sibelius/symphony-7-op105/sibelius--symphony-7-op105--hansen-1925--imslp15924.pdf",
+   "work_id": "sibelius--symphony-7",
+   "verdict": "edition_missing",
+   "jaccard": 0.5455,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Timpani"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/sibelius/the-swan-of-tuonela-op22-2/sibelius--the-swan-of-tuonela-op22-2--breitkopf-hartel-1901--imslp255071.pdf",
+   "work_id": "sibelius--the-swan-of-tuonela-op22-2",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/sibelius/violin-concerto-op47/sibelius--violin-concerto-op47--lienau-1905--imslp15936.pdf",
+   "work_id": "sibelius--violin-concerto",
+   "verdict": "edition_missing",
+   "jaccard": 0.2222,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Clarinet",
+    "Violin"
+   ],
+   "edition_yield": 0.6667,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/smetana/ma-vlast-jb-1-112/smetana--ma-vlast-jb-1-112--p2--imslp983879.pdf",
+   "work_id": "smetana--ma-vlast-jb-1-112",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/smetana/prodana-nevesta-jb-1-100/smetana--prodana-nevesta-jb-1-100--snklhu-1953--imslp1032871.pdf",
+   "work_id": "smetana--prodana-nevesta-jb-1-100",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/smyth/the-wreckers/smyth--the-wreckers--breitkopf-und-hartel--imslp791814.pdf",
+   "work_id": "smyth--the-wreckers",
+   "verdict": "both",
+   "jaccard": 0.0,
+   "edition_extra": [
+    "Bass clarinet",
+    "Bassoon",
+    "Cello",
+    "Clarinet",
+    "Contrabass",
+    "Contrabassoon",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Viola",
+    "Violin"
+   ],
+   "edition_missing": [
+    "Chorus"
+   ],
+   "doubling": [],
+   "shared": [],
+   "edition_yield": 0.8261,
+   "score_type": "full_score",
+   "work_unparsed": 2,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/also-sprach-zarathustra-op30/strauss--also-sprach-zarathustra-op30--eulenburg-1920--imslp8190.pdf",
+   "work_id": "strauss--also-sprach-zarathustra",
+   "verdict": "edition_missing",
+   "jaccard": 0.2,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bass clarinet",
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Piccolo",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Organ",
+    "Percussion",
+    "Timpani",
+    "Trombone"
+   ],
+   "edition_yield": 0.7143,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/don-juan-op20/strauss--don-juan-op20--jos-aibl-verlag--imslp18774.pdf",
+   "work_id": "strauss--don-juan",
+   "verdict": "both",
+   "jaccard": 0.6111,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Clarinet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Contrabassoon",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8261,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/don-quixote-op35/strauss--don-quixote-op35--jos-aibl-verlag-1898--imslp18787.pdf",
+   "work_id": "strauss--don-quixote",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bass clarinet",
+    "Clarinet",
+    "Harp",
+    "Percussion",
+    "Trombone",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.6923,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/ein-heldenleben-op40/strauss--ein-heldenleben-op40--leuckart-1899--imslp19168.pdf",
+   "work_id": "strauss--ein-heldenleben",
+   "verdict": "both",
+   "jaccard": 0.2143,
+   "edition_extra": [
+    "Timpani",
+    "Trombone",
+    "Tuba",
+    "Viola",
+    "Violin"
+   ],
+   "edition_missing": [
+    "Bass clarinet",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Piccolo"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Contrabassoon",
+    "Trumpet"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/eine-alpensinfonie-op64/strauss--eine-alpensinfonie-op64--leuckart-1915--imslp853346.pdf",
+   "work_id": "strauss--eine-alpensinfonie",
+   "verdict": "edition_missing",
+   "jaccard": 0.2105,
+   "edition_extra": [],
+   "edition_missing": [
+    "English horn",
+    "Flute",
+    "Harp",
+    "Oboe",
+    "Organ",
+    "Percussion",
+    "Piano",
+    "Timpani",
+    "Trumpet"
+   ],
+   "doubling": [
+    {
+     "page": "Horn",
+     "work": "Tuba",
+     "side": "page_only"
+    },
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Trombone",
+    "Tuba"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/elektra-op58/strauss--elektra-op58--furstner-1916--imslp24779.pdf",
+   "work_id": "strauss--elektra",
+   "verdict": "edition_missing",
+   "jaccard": 0.4444,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Oboe",
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "Bassoon",
+     "page": "Contrabassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Clarinet",
+    "Contrabass",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 2,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/till-eulenspiegels-lustige-streiche-op28/strauss--till-eulenspiegels-lustige-streiche-op28--aibl-1896--imslp19118.pdf",
+   "work_id": "strauss--till-eulenspiegels-lustige-streiche",
+   "verdict": "edition_missing",
+   "jaccard": 0.4118,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.7647,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/strauss/tod-und-verklarung-op24/strauss--tod-und-verklarung-op24--aibl-1891--imslp18779.pdf",
+   "work_id": "strauss--tod-und-verklarung",
+   "verdict": "edition_missing",
+   "jaccard": 0.5556,
+   "edition_extra": [],
+   "edition_missing": [
+    "Bass clarinet",
+    "Clarinet",
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Contrabassoon",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.6522,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/stravinsky/petrushka-k012/stravinsky--petrushka-k012--unknown-edition--imslp472771.pdf",
+   "work_id": "stravinsky--petrushka",
+   "verdict": "both",
+   "jaccard": 0.2632,
+   "edition_extra": [
+    "Horn"
+   ],
+   "edition_missing": [
+    "English horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Contrabassoon",
+     "page": "Bassoon",
+     "side": "work_only"
+    },
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Piano"
+   ],
+   "edition_yield": 0.7222,
+   "score_type": "full_score",
+   "work_unparsed": 2,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/stravinsky/the-firebird-ballet-k010/stravinsky--the-firebird-ballet-k010--jurgenson-1911--imslp1021655.pdf",
+   "work_id": "stravinsky--the-firebird-ballet",
+   "verdict": "edition_missing",
+   "jaccard": 0.6667,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Horn",
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bass clarinet",
+    "Bassoon",
+    "Clarinet",
+    "Contrabassoon",
+    "English horn",
+    "Flute",
+    "Oboe",
+    "Percussion",
+    "Piano",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7586,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/1812-overture-op49/tchaikovsky--1812-overture-op49--jurgenson-1882--imslp23744.pdf",
+   "work_id": "tchaikovsky--1812-overture",
+   "verdict": "edition_missing",
+   "jaccard": 0.7333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "English horn",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.7692,
+   "score_type": "full_score",
+   "work_unparsed": 3,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/piano-concerto-1-op23/tchaikovsky--piano-concerto-1-op23--jurgenson--imslp105370.pdf",
+   "work_id": "tchaikovsky--piano-concerto-1",
+   "verdict": "edition_extra",
+   "jaccard": 0.6667,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8889,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/tchaikovsky/romeo-and-juliet-overture-fantasia-th-42/tchaikovsky--romeo-and-juliet-overture-fantasia-th-42--ed-bote-g-bock-1881--imslp333131.pdf",
+   "work_id": "tchaikovsky--romeo-and-juliet-overture-fantasia",
+   "verdict": "both",
+   "jaccard": 0.6471,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.95,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/serenade-for-string-orchestra-op48/tchaikovsky--serenade-for-string-orchestra-op48--jurgenson-1881--imslp380582.pdf",
+   "work_id": "tchaikovsky--serenade-for-string-orchestra",
+   "verdict": "edition_extra",
+   "jaccard": 0.0,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/tchaikovsky/swan-lake-ballet-op20/tchaikovsky--swan-lake-ballet-op20--535915--imslp535915.pdf",
+   "work_id": "tchaikovsky--swan-lake-ballet",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/tchaikovsky/symphony-1-op13/tchaikovsky--symphony-1-op13--jurgenson-1875--imslp369941.pdf",
+   "work_id": "tchaikovsky--symphony-1",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/tchaikovsky/symphony-2-op17/tchaikovsky--symphony-2-op17--bessel-1881--imslp331351.pdf",
+   "work_id": "tchaikovsky--symphony-2",
+   "verdict": "edition_missing",
+   "jaccard": 0.5714,
+   "edition_extra": [],
+   "edition_missing": [
+    "Clarinet",
+    "Percussion",
+    "Trombone"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Piccolo",
+    "Timpani",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.7059,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+   "work_id": "tchaikovsky--symphony-4",
+   "verdict": "edition_missing",
+   "jaccard": 0.5333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/tchaikovsky/symphony-5-op64/tchaikovsky--symphony-5-op64--breitkopf-hartel-1930--imslp504184.pdf",
+   "work_id": "tchaikovsky--symphony-5",
+   "verdict": "edition_missing",
+   "jaccard": 0.5714,
+   "edition_extra": [],
+   "edition_missing": [
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 1.0,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "variant_suspected"
+  },
+  {
+   "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--breitkopf-und-hartel--imslp504312.pdf",
+   "work_id": "tchaikovsky--symphony-6",
+   "verdict": "both",
+   "jaccard": 0.6429,
+   "edition_extra": [
+    "Cello",
+    "Contrabass",
+    "Viola",
+    "Violin"
+   ],
+   "edition_missing": [
+    "Percussion"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "edition_yield": 0.7143,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--eulenburg--imslp922722.pdf",
+   "work_id": "tchaikovsky--symphony-6",
+   "verdict": "both",
+   "jaccard": 0.5714,
+   "edition_extra": [
+    "Cello",
+    "Contrabass",
+    "Violin"
+   ],
+   "edition_missing": [
+    "Percussion",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8235,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/the-nutcracker-suite-op71a/tchaikovsky--the-nutcracker-suite-op71a--jurgenson-1892--imslp231707.pdf",
+   "work_id": "tchaikovsky--the-nutcracker-suite",
+   "verdict": "edition_missing",
+   "jaccard": 0.4118,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Piano",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    },
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo"
+   ],
+   "edition_yield": 0.7778,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/the-sleeping-beauty-suite-op66a/tchaikovsky--the-sleeping-beauty-suite-op66a--jurgenson--imslp81457.pdf",
+   "work_id": "tchaikovsky--the-sleeping-beauty-suite",
+   "verdict": "edition_missing",
+   "jaccard": 0.7059,
+   "edition_extra": [],
+   "edition_missing": [
+    "Tuba"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "English horn",
+    "Flute",
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Piccolo",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.8182,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/tchaikovsky/violin-concerto-op35/tchaikovsky--violin-concerto-op35--jurgenson-1888--imslp105393.pdf",
+   "work_id": "tchaikovsky--violin-concerto",
+   "verdict": "agrees",
+   "jaccard": 0.6364,
+   "edition_extra": [],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9333,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/vaughan-williams/fantasia-on-a-theme-by-thomas-tallis/vaughan-williams--fantasia-on-a-theme-by-thomas-tallis--goodwin-tabb-1921--imslp23450.pdf",
+   "work_id": "williams--fantasia-on-a-theme-by-thomas-tallis",
+   "verdict": "no_work_roster"
+  },
+  {
+   "path": "editions/vaughan-williams/the-lark-ascending/vaughan-williams--the-lark-ascending--oxford-university-press-1925--imslp21575.pdf",
+   "work_id": "williams--the-lark-ascending",
+   "verdict": "edition_missing",
+   "jaccard": 0.5,
+   "edition_extra": [],
+   "edition_missing": [
+    "Percussion"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe"
+   ],
+   "edition_yield": 0.9167,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/verdi/requiem/verdi--requiem--eulenburg--imslp984085.pdf",
+   "work_id": "verdi--requiem",
+   "verdict": "both",
+   "jaccard": 0.2632,
+   "edition_extra": [
+    "Alto",
+    "Bass voice",
+    "Soprano",
+    "Tenor"
+   ],
+   "edition_missing": [
+    "Percussion",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "page": "Piccolo",
+     "work": "Flute",
+     "side": "page_only"
+    },
+    {
+     "work": "Flute",
+     "page": "Piccolo",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Horn",
+    "Oboe",
+    "Timpani"
+   ],
+   "edition_yield": 0.8,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/vidal/178-basses/vidal--178-basses--univerzitet-umetnosti-u--imslp756089.pdf",
+   "work_id": "vidal--178-basses",
+   "verdict": "edition_extra",
+   "jaccard": 0.0,
+   "edition_extra": [
+    "Viola"
+   ],
+   "edition_missing": [],
+   "doubling": [],
+   "shared": [],
+   "edition_yield": 0.5,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/wagner/die-meistersinger-von-nurnberg-wwv-96/wagner--die-meistersinger-von-nurnberg-wwv-96--breitkopf-und-hartel--imslp1018335.pdf",
+   "work_id": "wagner--die-meistersinger-von-nurnberg-wwv-96",
+   "verdict": "no_edition_roster",
+   "score_type": "full_score"
+  },
+  {
+   "path": "editions/wagner/siegfried-idyll-wwv-103/wagner--siegfried-idyll-wwv-103--breitkopf-und-hartel--imslp66079.pdf",
+   "work_id": "wagner--siegfried-idyll-wwv-103",
+   "verdict": "edition_missing",
+   "jaccard": 0.4,
+   "edition_extra": [],
+   "edition_missing": [
+    "Oboe",
+    "Trumpet"
+   ],
+   "doubling": [],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn"
+   ],
+   "edition_yield": 0.8421,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/wagner/tannhauser-wwv-70/wagner--tannhauser-wwv-70--peters-1920--imslp515489.pdf",
+   "work_id": "wagner--tannhauser-wwv-70",
+   "verdict": "edition_missing",
+   "jaccard": 0.3333,
+   "edition_extra": [],
+   "edition_missing": [
+    "Harp",
+    "Horn",
+    "Oboe",
+    "Percussion",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "Bass clarinet",
+     "page": "Clarinet",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Timpani",
+    "Trombone"
+   ],
+   "edition_yield": 0.6154,
+   "score_type": "full_score",
+   "work_unparsed": 1,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/wagner/tristan-und-isolde-wwv-90/wagner--tristan-und-isolde-wwv-90--breitkopf-und-hartel-1860--imslp66167.pdf",
+   "work_id": "wagner--tristan-und-isolde-wwv-90",
+   "verdict": "both",
+   "jaccard": 0.1429,
+   "edition_extra": [
+    "Horn"
+   ],
+   "edition_missing": [
+    "Bass clarinet",
+    "Clarinet",
+    "Flute",
+    "Harp",
+    "Percussion",
+    "Timpani",
+    "Trombone",
+    "Trumpet",
+    "Tuba"
+   ],
+   "doubling": [
+    {
+     "work": "English horn",
+     "page": "Oboe",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Oboe"
+   ],
+   "edition_yield": 0.8,
+   "score_type": "full_score",
+   "work_unparsed": 0,
+   "missing_explained_by": "read_incomplete"
+  },
+  {
+   "path": "editions/weber/der-freischutz-op77/weber--der-freischutz-op77--breitkopf-und-hartel-1688--imslp218184.pdf",
+   "work_id": "weber--der-freischutz",
+   "verdict": "edition_extra",
+   "jaccard": 0.6154,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9333,
+   "score_type": "full_score",
+   "work_unparsed": 0
+  },
+  {
+   "path": "editions/weber/oberon-j-306/weber--oberon-j-306--breitkopf-und-hartel--imslp800613.pdf",
+   "work_id": "weber--oberon-j-306",
+   "verdict": "both",
+   "jaccard": 0.5714,
+   "edition_extra": [
+    "Bass voice"
+   ],
+   "edition_missing": [
+    "Percussion"
+   ],
+   "doubling": [
+    {
+     "work": "Piccolo",
+     "page": "Flute",
+     "side": "work_only"
+    }
+   ],
+   "shared": [
+    "Bassoon",
+    "Clarinet",
+    "Flute",
+    "Horn",
+    "Oboe",
+    "Timpani",
+    "Trombone",
+    "Trumpet"
+   ],
+   "edition_yield": 0.9333,
+   "score_type": "full_score",
+   "work_unparsed": 1,
    "missing_explained_by": "read_incomplete"
   }
  ]

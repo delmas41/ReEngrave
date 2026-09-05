@@ -13,8 +13,90 @@ is three findings wearing one shape — a genuine editorial variant, a
 condensation, or a failed read — and a single disagreement percentage says which
 of them nothing at all.  The report therefore splits every disagreement by the
 read's own yield and by the edition's ``score_type``, and prints the rows so
-they can be adjudicated by hand.  The hand adjudication is in FINDINGS.md; this
-script produces its input, never its conclusion.
+they can be adjudicated by hand.  This script produces the INPUT to that
+adjudication, never its conclusion; the conclusion of the first one is below.
+
+── ACQUISITION, 2026-09-05 ───────────────────────────────────────────────────
+
+Every held edition of >= 8 pages present on disk, one page per document where
+the staff-identity sweep already said which page carries the roster::
+
+    targets 234   acquired 189 (0.808)   not acquired 45   errors 0   68 min
+
+⚠️ 0.808 is NOT comparable to that sweep's 0.735 — definitional, not an
+improvement: its yield is named / EVERY STAFF ON THE PAGE, this one's is
+named / THE STAVES OF THE SYSTEM the roster is taken from, and on a two-system
+page those differ by a factor of two.
+
+Edition-quality index (nothing else in the project holds one, and every field is
+free — a by-product of the read that had to happen anyway): labels its staves
+189/234; yield 1.00 x44, 0.75-0.99 x85, 0.50-0.74 x60; ⭑ **18 documents give up
+their roster only on a page past p.2** — "page 1" is the wrong unit, confirmed
+independently after the identity sweep found the same (14 of its 172).
+
+── THE MIX, WHICH IS THE DELIVERABLE, NOT THE RATE ───────────────────────────
+
+181 of the 234 are comparable (both tiers present).  A single "disagreement
+rate" would be 0.79 and would mean nothing.  Hand-adjudicated::
+
+    38  0.210  agrees
+    80  0.442  read incomplete — the page read is partial
+    38  0.210  LEXICON: a string staff read as a SINGER
+     9  0.050  edition_extra, other
+     8  0.044  shortfall on a COMPLETE read (all 9 opened by hand)
+     5  0.028  work-tier gap: a choral work whose singers the page reads
+     3  0.017  doubling
+     0  0.000  ⭑ GENUINE EDITORIAL VARIANT
+
+⚠️⚠️ **ZERO EDITORIAL VARIANTS, AND THAT IS A REAL ANSWER.**
+``variant_suspected`` — a shortfall surviving a COMPLETE read, the bucket that
+is supposed to mean a publisher changed the orchestration — has 9 rows and every
+one was opened with ``show_disagreement.py``.  None is a variant:
+
+    Beethoven 5 (Litolff)   Trombone            enters in the FINALE; we read mvt 1
+    Haydn 100 "Military"    Clarinet, Percussion  Turkish percussion enters in mvt 2
+    Haydn 88                Timpani, Trumpet    they play in mvts 3-4
+    Haydn 45 "Farewell"     Bassoon             roster says "[bassoon]" — BRACKETED
+                                                = optional, played off the bass line
+    Mozart 25               Bassoon             doubles the bass, no staff of its own
+    Mozart K525            Contrabass          page prints "Violoncello e
+                                                Contrabasso" — ONE staff, two parts
+    Rossini "Barbiere"      (cast list)         the work "roster" is the opera's
+                                                dramatis personae
+
+⚠️⚠️ **MOVEMENT SCOPE IS A THIRD SYSTEMATIC UNDER-REPORT and it was in nobody's
+taxonomy.**  A work roster covers the WHOLE WORK; a page shows ONE MOVEMENT's
+system.  Three of the nine are exactly that, and it is the same shape as
+doubling — driven by WHICH PAGE WE READ, not by the printing.  Not implemented,
+because this tier does not know which movement a page belongs to; the
+discriminator would join ``quality.roster_page`` to a movement boundary.  Until
+it exists, a ``variant_suspected`` row means "worth a human", never "a variant".
+
+⚠️ **THE LARGEST SINGLE FAMILY IS ONE WORD IN THE LEXICON.**  ``Basso.`` ->
+Bass VOICE, every orchestral score's bottom string staff: **35 rows carry it and
+on 30 it is the only disagreement there is.**  The French ``ALTO.`` — the VIOLA,
+printed between VIOLONS and VIOLONCELLES — is the same fault (Bizet, Lalo,
+Chaminade), as is Alto/Tenore on trombone staves, which CLAUDE.md already
+records for a different reader.  Correcting that one word moves the buckets
+materially::
+
+    now     edition_missing 73 · both 38 · agrees 38 · edition_extra 29
+    fixed   edition_missing 85 · agrees 56 · both 25 · edition_extra 12
+
+``tools/omr/instruments.py`` is READ-ONLY for this workstream, so the gap is
+RECORDED, NOT MADE — the same discipline the work-tier capture used for its
+missing ``cornet``.  The positional evidence a fix would need is already stored:
+``raw.labels`` keeps every staff's text and index, and a Basso staff sits BELOW
+the cellos while a French Alto sits BETWEEN the violins and the cellos.
+
+── WHAT THIS CANNOT SEE ──────────────────────────────────────────────────────
+
+⚠️ **No arrangements to test against.**  2 of 235 held editions are not full
+scores and both are ``source: local``; ``arrangement_suspected`` fired ZERO
+times and is exercised by unit tests only.  A corpus that cannot express the
+case cannot price the rule.
+⚠️ One system, one page, one movement — everything here is a property of the
+system we happened to read, and both systematic under-reports follow from that.
 """
 from __future__ import annotations
 
