@@ -238,15 +238,17 @@ by the ES bucket alone systematically under-counts fragmentation**. Engraved
 side proven byte-identical (11/11) — every engraved fixture is single-system,
 so that benchmark structurally cannot see this class of change.
 
-**The open question it left is now settled** (part counts read from the
-Audiveris exports in this benchmark's `out/audiveris-scan/`): on Brahms p2
-Audiveris emits **exactly 22 parts from 14 printed staves — the reference's
-own count**. It splits condensed staves into parts; that, not stitching, is
-why its structural cost collapses on multi-system pages. So condensed-staff
-part-splitting is **competitive ground, not just accuracy** — and the
-hand-verified `staves[i].parts` rows in the scan bench's works.json show the
-mapping is learnable from labels + voicing. That is the next scan lever,
-sharply posed.
+⚠️ **CORRECTED BY THE CONDENSED-PARTS SESSION (Addendum 5): the paragraph
+this replaces claimed Audiveris splits condensed staves, from part-count
+arithmetic — reading its actual exports shows it NEVER does.** Its 22 Brahms
+p2 parts all span 13–14 measures with the wind section named twice: a page
+read as one tall system, i.e. the same fragmentation our stitch refusal
+produces, coincidentally landing on the truth's count. On five of six
+single-system rows it emits exactly one part per printed staff and pays the
+condensation floor to the edit (Mahler p2: 17 parts vs truth 38). So
+condensed-staff part-splitting is **accuracy work, not competitive ground** —
+still the biggest scan lever by edits, but it moves our number, not the gap
+mechanism. *A part count is not evidence of a mechanism; open the file.*
 
 | row | printed staves | truth parts | audiveris parts |
 |---|--:|--:|--:|
@@ -254,3 +256,31 @@ sharply posed.
 | beethoven 984073 p2 | 11 | 19 | 15 |
 | beethoven 575951 p2 | 11 | 19 | 16 |
 | mahler p3 | (1 system) | 39 | 12 |
+
+
+---
+
+# Addendum 5 — condensed-staff part-splitting: ceiling measured, premise corrected
+
+Session branch `claude/condensed-parts-split`
+(`benchmarks/omr-condensed-parts-2026-09/FINDINGS.md`). Three results:
+
+1. **The Addendum-4 premise was false** (correction inlined above): Audiveris
+   does not split condensed staves. This work is accuracy, not catch-up.
+2. **The convention study**: over every condensed staff-measure in the truths —
+   silent 51.5%, divisi 27.6%, unison 18.3%, solo 2.6%. **69.8% is exact
+   duplication**, so duplicating a single-voice condensed staff is measured
+   convention, not guesswork; stem-direction divisi splitting is the next
+   increment, not built.
+3. **The ceiling, priced**: with oracle part counts + `OMR_SLOT_STITCH`, the
+   scan pool falls **34,962 → 30,405 edits (−4,557)** and `entire staff`
+   **8,453 → 2,060** (vs Audiveris's 5,576); Brahms p2 reaches 21 parts
+   against a truth of 21 with ES → 0. **The two flags compose** — the split
+   removes slot-stitch's documented ES penalty entirely. The label-derived
+   rule is 74/74 exact on Beethoven/Brahms and **+2,181 on Dvořák**, because
+   whether a reference splits is a property of the ENCODING, not the engraving
+   (Surya reads the labels correctly) — so the honest count source is a
+   dossier, which the scan benchmark's no-answer-key rule cannot credit
+   (dossiers are generated from these same truths). Both flags ship
+   **default off**; flag-off byte-identity proven 22/22 across both
+   benchmarks' fixtures.

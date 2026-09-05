@@ -102,10 +102,16 @@
       "title": "7 · Beat Audiveris on scans again",
       "pill": "behind on scans",
       "pill_class": "waiting",
-      "body": "Engraved: ahead in both configs (0.1127/0.1219 vs 0.1252). Scans: behind 0.8345 vs 0.7919 — attribution complete: 87% condensation (our detection right), and Audiveris wins it by <b>splitting condensed staves into reference parts</b>. Next lever: condensed-staff part-splitting (labels + voicing know the mapping). Withheld on its branch: <code>OMR_SLOT_STITCH</code> (−216 pooled, n=1 trade, default-off). Arcs-as-CV session (Sean's) in flight."
+      "body": "Engraved: ahead in both configs (0.1127/0.1219 vs 0.1252). Scans: behind 0.8345 vs 0.7919; the structural bucket is now fully attributed and the machinery is merged dormant (<code>OMR_SLOT_STITCH</code> + <code>OMR_CONDENSED_PARTS</code>, oracle ceiling −4,557). Open decision: a dossier-style count source to turn the flags on honestly (the benchmark can't credit its own answer key), or accept the reading-side path. Divisi stem-splitting is the next increment. Arcs-as-CV session (Sean's) in flight."
     }
   ],
   "log": [
+    {
+      "date": "09-04",
+      "title": "Condensed-staff splitting: ceiling −4,557, premise corrected",
+      "negative": false,
+      "body": "The dispatched session measured the convention (69.8% of condensed staff-measures are exact duplication), shipped <code>OMR_CONDENSED_PARTS</code> (default off, merged dormant), and priced the ceiling: <b>scan pool −4,557 edits with <code>OMR_SLOT_STITCH</code>, entire-staff 8,453 → 2,060</b> — the two flags compose, and splitting cancels stitching's penalty. It also <b>corrected Addendum 4</b>: opening Audiveris's exports shows it never splits condensed staves (its 22-part Brahms was fragmentation coincidentally matching truth) — so this is accuracy work, not catch-up. Label-derived counts refused (+2,181 on Dvořák — an encoding property no page signal can recover); the honest count source is a dossier, which the benchmark's no-answer-key rule can't credit. <code>benchmarks/omr-condensed-parts-2026-09/FINDINGS.md</code>"
+    },
     {
       "date": "09-04",
       "title": "Staff-structure attribution: the stitching story falsified, the real lever found",
