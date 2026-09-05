@@ -235,3 +235,93 @@ def staves_from_result(result: dict[str, Any], page_index: int = 0) -> list[dict
                             "top": float(min(ys)), "bottom": float(max(ys)),
                             "spacing": float(g["line_spacing_px"])})
     return sorted(out, key=lambda s: s["bottom"])
+
+
+# ---------------------------------------------------------------------------
+# Wiring: hairpins found on the page, attached to the cells that carry them
+# ---------------------------------------------------------------------------
+
+#: What a CV hairpin is called downstream. The same two classes the detector
+#: uses, so the exporter needs no new case — `export.measure_wedges` already
+#: reads them.
+CLASS_FOR_KIND = {
+    "crescendo": "dynamicCrescendoHairpin",
+    "diminuendo": "dynamicDiminuendoHairpin",
+}
+
+#: A CV reading is not a probability, and pretending otherwise would let a
+#: confidence filter somewhere downstream silently drop it. Stated once, high
+#: enough to survive every threshold in the pipeline, and flagged as synthetic
+#: by `detector: "cv"` on the detection itself.
+CV_CONFIDENCE = 0.99
+
+
+def _measure_for(staff: dict[str, Any], page_x: float) -> dict[str, Any] | None:
+    """The measure of this staff whose x-range contains `page_x`."""
+    best = None
+    for meas in staff.get("measures", []):
+        box = meas.get("bbox_page_px") or [0, 0, 0, 0]
+        if box[0] <= page_x <= box[0] + box[2]:
+            return meas
+        if best is None or abs(box[0] - page_x) < abs(
+                (best.get("bbox_page_px") or [0])[0] - page_x):
+            best = meas
+    return best
+
+
+def attach_to_page(page: dict[str, Any], page_ink: np.ndarray,
+                   blanked_ink: np.ndarray | None = None) -> int:
+    """Find the hairpins on one built page dict and add them as detections.
+
+    Returns how many were added. A hairpin already read by the detector at the
+    same place is not added twice.
+
+    ⚠️ The hairpin is attributed to the staff whose BAND it stands in, which is
+    the whole point of searching per staff — `_dedupe_cross_staff_detections`
+    never sees a contest to resolve. On the engraved corpus that arbitration has
+    to rescue 3 of Mahler 5's 4 hairpins from the staff below their own.
+    """
+    staves_meta = []
+    by_index: dict[int, dict[str, Any]] = {}
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            g = staff.get("staff_geometry") or {}
+            ys = g.get("line_ys_page") or []
+            if len(ys) >= 5 and g.get("line_spacing_px"):
+                staves_meta.append({"index": staff.get("staff_index"),
+                                    "top": float(min(ys)), "bottom": float(max(ys)),
+                                    "spacing": float(g["line_spacing_px"])})
+                by_index[staff.get("staff_index")] = staff
+    if not staves_meta:
+        return 0
+
+    added = 0
+    for hp in detect_hairpins(page_ink, staves_meta, blanked_ink):
+        staff = by_index.get(hp.staff_index)
+        if staff is None:
+            continue
+        meas = _measure_for(staff, hp.x)
+        if meas is None:
+            continue
+        box = meas.get("bbox_page_px") or [0, 0, 0, 0]
+        up = float(meas.get("upscale_factor") or 1.0) or 1.0
+        cls = CLASS_FOR_KIND[hp.kind]
+        # Already read by the detector here? Do not double it.
+        if any((d.get("class") or "") == cls
+               and abs((d.get("bbox_page") or [1e9])[0] - hp.x) < hp.width
+               for d in meas.get("detections", [])):
+            continue
+        meas.setdefault("detections", []).append({
+            "class": cls,
+            "category": "dynamic",
+            "bbox": [int(round((hp.x - box[0]) * up)),
+                     int(round((hp.y - box[1]) * up)),
+                     int(round(hp.width * up)), int(round(hp.height * up))],
+            "bbox_page": [hp.x, hp.y, hp.width, hp.height],
+            "confidence": CV_CONFIDENCE,
+            "pitch": None,
+            "detector": "cv",
+        })
+        meas["n_detections"] = len(meas["detections"])
+        added += 1
+    return added

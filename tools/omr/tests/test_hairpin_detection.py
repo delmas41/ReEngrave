@@ -188,3 +188,57 @@ def test_staves_from_result_needs_five_lines_and_a_spacing():
 
 def test_no_staves_means_no_hairpins_not_a_crash():
     assert detect_hairpins(np.zeros((50, 50), np.uint8), []) == []
+
+
+# --------------------------------------------------------------------------
+# Wiring onto a page dict
+# --------------------------------------------------------------------------
+
+
+def _page_dict():
+    return {"systems": [{"staves": [{
+        "staff_index": 0,
+        "staff_geometry": {"line_ys_page": [100, 120, 140, 160, 180],
+                           "line_spacing_px": SP},
+        "measures": [
+            {"measure_index": 0, "bbox_page_px": [0, 90, 280, 200],
+             "upscale_factor": 1.0, "detections": []},
+            {"measure_index": 1, "bbox_page_px": [280, 90, 400, 200],
+             "upscale_factor": 1.0, "detections": []},
+        ]}]}]}
+
+
+def test_a_hairpin_lands_on_the_measure_that_contains_it():
+    from tools.omr.hairpin_detection import attach_to_page
+    page, ink = _page_dict(), _page_with(_wedge())      # wedge starts at x=300
+    assert attach_to_page(page, ink) == 1
+    ms = page["systems"][0]["staves"][0]["measures"]
+    assert ms[0]["detections"] == []
+    assert len(ms[1]["detections"]) == 1
+    d = ms[1]["detections"][0]
+    assert d["class"] == "dynamicCrescendoHairpin"
+    assert d["category"] == "dynamic"
+    assert d["detector"] == "cv", "a CV reading must be labelled as one"
+
+
+def test_the_canonical_box_is_relative_to_its_cell():
+    from tools.omr.hairpin_detection import attach_to_page
+    page, ink = _page_dict(), _page_with(_wedge())
+    attach_to_page(page, ink)
+    d = page["systems"][0]["staves"][0]["measures"][1]["detections"][0]
+    assert d["bbox"][0] == d["bbox_page"][0] - 280, "canonical x is cell-relative"
+    assert d["bbox_page"][0] == 300
+
+
+def test_a_hairpin_the_detector_already_found_is_not_doubled():
+    from tools.omr.hairpin_detection import attach_to_page
+    page, ink = _page_dict(), _page_with(_wedge())
+    page["systems"][0]["staves"][0]["measures"][1]["detections"].append(
+        {"class": "dynamicCrescendoHairpin", "bbox_page": [305, 200, 200, 26]})
+    assert attach_to_page(page, ink) == 0
+
+
+def test_a_page_with_no_staff_geometry_adds_nothing():
+    from tools.omr.hairpin_detection import attach_to_page
+    page = {"systems": [{"staves": [{"staff_index": 0, "measures": []}]}]}
+    assert attach_to_page(page, np.zeros((50, 50), np.uint8)) == 0

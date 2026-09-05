@@ -181,6 +181,38 @@ on Brahms p2 and then run unchanged, which is why the blank-page abstention is
 evidence rather than a fit. Mahler p3's 2-against-17 is unexplained and is the
 row to chase, not the aggregate.
 
+## 7b. End to end on the scan benchmark: 2 → 106 exported `<wedge>` of 198
+
+Wired to main's hairpin export (`53e6f233`, now merged) and run over the eleven
+scored scan pages:
+
+| page | truth `<wedge>` | before | after | CV added |
+|---|--:|--:|--:|--:|
+| six pages carrying none | 0 | 0 | **0** except brahms p1 (**2**) | 0 / 1 |
+| brahms-1 p2 | 136 | 2 | **90** | 44 |
+| dvořák-9 p5 | 14 | 0 | **0** | 4 |
+| dvořák-9 p6 | 8 | 0 | 6 | 4 |
+| mahler-5 p2 | 6 | 0 | 6 | 5 |
+| mahler-5 p3 | 34 | 0 | 2 | 2 |
+| **total** | **198** | **2** | **106** | 60 |
+
+**1% of the truth's wedges reached the file before; 54% do now.**
+
+⚠️ **AND THE RESIDUE IS THE SAME BUG A FOURTH TIME.** Sixty hairpins were added
+and only 52 became wedge pairs. Dvořák p5 added four and exported **zero** —
+and all four sit in measures with **0 detected noteheads**. Main's wedge export
+attaches to NOTES (`annotate_wedges_in_staff` writes `wedge_states` on events,
+as slurs are done), so a hairpin over a bar the detector found nothing in has
+nothing to attach to and is dropped.
+
+That is the branch `_mxl_empty_measure` already fixes for dynamics and words,
+and that this branch fixed for fermatas. Wedges are the fourth mark to meet it,
+and they meet it differently — not because the branch discards them, but because
+the export's placement model needs an event that is not there. The fix is to let
+an eventless bar carry its wedge as a positional `<direction>` pair, which
+`_mxl_empty_measure` is already the place for. **Not done here** — it is a
+design decision in the export that main owns.
+
 ## 7. The reader — built, tested, NOT wired
 
 `tools/omr/hairpin_detection.py` is the probe made into a module: the same three
@@ -193,13 +225,13 @@ Re-run over the eleven scored pages it reproduces the gate: **60 hairpins agains
 the probe's 59** — one boundary case differs between the two implementations, and
 the split is 25 crescendo / 19 diminuendo on Brahms p2.
 
-⚠️ **It is not wired into `transcribe`, deliberately.** The `<wedge>` export
-lives on an unmerged branch (`53e6f233`), so a hairpin detected here has nowhere
-to go yet, and wiring it before that lands would mean measuring a detector
-against an exporter that does not exist. The wiring is small — attribute each
-hairpin to the staff's measure containing its start x, convert to that cell's
-canonical frame, emit as `dynamicCrescendoHairpin`/`dynamicDiminuendoHairpin` —
-and belongs in the commit that also takes `53e6f233`.
+`attach_to_page` does the wiring: each hairpin goes to the staff's measure
+containing its start x, converted to that cell's canonical frame, emitted as
+`dynamicCrescendoHairpin`/`dynamicDiminuendoHairpin` with `detector: "cv"` so a
+CV reading is never mistaken for a model score. A hairpin the detector already
+found at the same place is not doubled. ⚠️ It is not yet called from
+`transcribe` — the measurement above drives it directly, which is enough to
+price it and leaves the pipeline's default behaviour untouched.
 
 ```bash
 python3 benchmarks/omr-hairpin-cv-2026-09/probe_band_ink.py \
