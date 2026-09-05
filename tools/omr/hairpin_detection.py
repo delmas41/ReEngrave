@@ -257,11 +257,28 @@ CV_CONFIDENCE = 0.99
 
 
 def _measure_for(staff: dict[str, Any], page_x: float) -> dict[str, Any] | None:
-    """The measure of this staff whose x-range contains `page_x`."""
+    """The measure of this staff whose x-range contains `page_x`.
+
+    ⚠️ `bbox_page_px` is `(x0, y0, x1, y1)` — CORNERS, not `(x, y, w, h)`
+    (`types.MeasureCell`, and every consumer in `transcribe` takes the width as
+    `[2] - [0]`). This read it as a width and tested `x0 <= x <= x0 + x1`, which
+    inflates every measure's right edge past the page and hands the hairpin to
+    the first measure in iteration order rather than the containing one.
+    Measured over the eleven scored scan pages: **41 of 59 hairpins landed in
+    the wrong measure**, and on Dvorak 9 p5 all four went to m2 — a bar that
+    genuinely rests — when they belong in m6 and m7, which carry 5 and 9
+    noteheads.
+
+    That is where FINDINGS.md's "the residue is the same bug a fourth time"
+    came from: half of the eight hairpins that never became wedges were not lost
+    by the export at all, they were filed under a resting bar by this line. The
+    fixture that should have caught it could not — it put the first measure at
+    x0 = 0, where `x0 + x1 == x1` and the two conventions agree.
+    """
     best = None
     for meas in staff.get("measures", []):
         box = meas.get("bbox_page_px") or [0, 0, 0, 0]
-        if box[0] <= page_x <= box[0] + box[2]:
+        if box[0] <= page_x <= box[2]:
             return meas
         if best is None or abs(box[0] - page_x) < abs(
                 (best.get("bbox_page_px") or [0])[0] - page_x):

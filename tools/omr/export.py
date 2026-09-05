@@ -2645,7 +2645,22 @@ def _wedge_anchors(
             box = det["bbox_page"]
             candidates.append((m_idx, box[0] + box[2] / 2.0, det))
             widths.append(float(box[2]))
-    if len(candidates) < 2:
+    # ⚠️ ONE ANCHOR IS ENOUGH — Sean's rule, 2026-09-05. This required TWO
+    # candidate noteheads, which throws the hairpin away in exactly the case a
+    # scan produces most: the ink is read correctly, the bar it belongs to is
+    # found, and the detector recovered only one of the notes under it. The
+    # start is the anchor that matters — it says which measure and which voice
+    # the wedge opens in — and the stop already tolerates landing on the SAME
+    # note (see the equal-is-allowed note below), which is the shape a hairpin
+    # drawn under one long note has anyway. Requiring a second note asked the
+    # page for a fact the wedge does not need.
+    #
+    # Measured on the eleven scored scan pages: 116 -> 118 exported `<wedge>`
+    # of 198, entirely from Mahler 5 p2, which goes 4 -> 6 against a truth of
+    # exactly 6. The six pages that carry no hairpin stay at 0 — the abstention
+    # that makes the CV reader trustworthy is untouched. All ELEVEN engraved
+    # orchestral exports are byte-identical (sha1), so OMR-NED cannot move.
+    if not candidates:
         return None
     candidates.sort(key=lambda c: (c[0], c[1]))
     pad = _WEDGE_ANCHOR_PAD_NOTEHEADS * (sum(widths) / len(widths))
