@@ -147,31 +147,50 @@ the same wall three times before — the clef fine-tune collapsed dense notehead
 recall 2506 → 114, v5/v6 are excluded from the catalog for it, and domain
 augmentation measured augmented 0.122 < clean 0.384 < production 0.652.
 
-**So the next lever is METHOD, not data:**
+**So the next lever is METHOD, not data** — but ⚠️ **MOST OF THE OBVIOUS
+METHODS ARE ALREADY REFUTED, AND AN EARLIER DRAFT OF THIS HANDOFF RECOMMENDED
+TWO OF THEM.** Sean caught it. Check the tree before proposing a method here:
 
-1. **Freeze the backbone**, train only the detection head (`--freeze N` in
-   ultralytics). Preserves base features by construction.
-2. **Rehearsal** — mix DSv2 samples back into the fine-tune so the other ~190
-   classes are refreshed. The standard anti-forgetting method and untried here.
-3. **Much lower LR / fewer steps** than `optimizer=auto` picks (it chose AdamW
-   lr 4.7e-05).
-4. If none work: **do not fine-tune for the broad metric at all.** Use a
-   specialist only where it wins (hollow noteheads) and route to it, which is
-   what the existing scan/engraved router already does structurally.
+| method | status |
+|---|---|
+| `freeze=10` (backbone frozen, neck+head trainable) | ❌ **REFUTED TWICE.** July 2026 with full replay + BN-lock + two-stage LR: WTC F1 97.8% → **90.5%**, detection density HALVED (orchestral 39.6 → 13.3/cell). Round 5 re-tested it: "did not hold". |
+| DSv2 **rehearsal** (mix old-class data back in) | ❌ **REFUTED 2026-09-04**, `benchmarks/omr-dsv2-rehearsal-2026-09/FINDINGS.md`. Clean negative on all 3 axes from both donors in ONE epoch. |
+| low LR / no-warmup / gentle | ❌ round 5 ran `nowarmup`, `gentle`, `lowlr`, `plain2`, `dense6`, `freeze`, teacher arms. |
+| unfrozen fine-tune of any kind | ❌ dies regardless of labels. |
+| **`freeze=22` + COMPLETE family corpus** | ✅ **the one thing that survives** — the hollow specialist. Frozen + INCOMPLETE corpus still dies (ties, 58% unboxed). |
 
-**Cheap to test:** an imgsz-512 run is 30 epochs in **2.7 minutes**; 2048 is 28
-minutes (batch 16 vs 2). So a method sweep costs pennies — rent, test, destroy.
+⚠️ **THE DAMNING CONTROL, and it retires my whole framing above:** the
+rehearsal round showed **the model deletes classes it is concurrently being
+TRAINED ON.** On the mixed val the base reads beam mAP50 0.752, tie 0.806; ONE
+epoch later the fine-tune reads **0.022 / 0.001** on the same labeled pages,
+with ~6,800 labeled beams flowing past per epoch. So "unboxed ink trains as
+background" is RETIRED as the mechanism — the deletion is **optimization
+dynamics**, not label poverty. That also means my round-3/4 diagnosis was
+chasing a mechanism that had already been disproved elsewhere.
 
-**Sweep checkpoints are preserved at `omr-weights/round4-sweep/`** (gitignored,
-2.2 GB, survives reboot):
+**THE ACTUAL WORKING PATH (rounds 5–6, not this round):**
+complete-corpus **specialist** → **head-row graft** (`merge_class_head.py
+--export-rows/--import-rows`, ~10 KB npz per family) → **per-class bias floor**.
+Composability is confirmed bit-exactly at `freeze: 22`. See
+`benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md` and
+`ROUND6_SPECIALISTS_2026-09-04.md`, and `docs/handoff-2026-09-04-round5-class-collapse.md`.
 
-    best_320.pt best_512.pt best_768.pt best_1024.pt best_2048.pt   (30 epochs)
-    e1_320.pt e1_512.pt                                             (1 epoch)
-    r4_2048_e5.pt r4_512_e5.pt                                      (the gated ones)
+**The one named-but-unrun arm that this round's corpus is actually for:**
+`freeze=22` + the round-4 mix — the untested matrix cell, *frozen + abundant
+labels*. One ~5-minute GPU arm. That is where v22 and the rebuilt 5,211-box
+corpus should be spent, NOT on another unfrozen run.
 
-⚠️ `e1_768.pt` is 241 MB against the others' 335 MB — a TRUNCATED transfer.
-Do not use it. 896 was queued behind 1408 and never ran; the box is destroyed,
-so re-run it if wanted (~4 min).
+⚠️ **THIS ROUND IS NOT THE FRONTIER.** Rounds 5 and 6, the rehearsal negative,
+the reconciliation push and the industry comparison all landed while this was
+running. Read those first; this document is the record of a failed round and a
+banked corpus, not the current state of the project.
+
+**Independent corroboration this round DID produce:** the "OMR-NED flatters
+under-prediction" trap, found here from the element-count check and recorded in
+the rehearsal round as its purest form — `rehprod_e0` scored the best pooled
+number ever gated (0.7329) while exporting **0 ties / 0 slurs / 0 accidentals**.
+Axis 2 alone would have shipped it. Two sessions hit this independently on the
+same day; treat it as a standing rule, not an anecdote.
 
 ## 6. How to run the gate
 
