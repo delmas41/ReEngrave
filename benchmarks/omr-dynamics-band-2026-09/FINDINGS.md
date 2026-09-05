@@ -403,6 +403,33 @@ shortfall:
 under-reads badly; the rest behave like the engraved corpus. The re-attribution
 result is still flat on scans, but the reason is not a general recall collapse.
 
+### ⚠️ The band is not only about dynamic LETTERS — hairpins have it too
+
+*Added 2026-09-04, after hairpins reached the file (`export.measure_wedges`).*
+
+Mahler 5's four detected hairpins, measured in the same frame:
+
+```
+staff 17 m6  diminuendo   own offset  +1.96 sp   in-band for staff [17]
+staff 18 m2  diminuendo   own offset  -6.18 sp   in-band for staff [17]
+staff 18 m4  crescendo    own offset  -5.49 sp   in-band for staff [17]
+staff 18 m5  crescendo    own offset  -5.49 sp   in-band for staff [17]
+```
+
+**Three of the four are filed under staff 18 and stand in staff 17's band** —
+the same cell-padding mechanism, on a different symbol family. The truth puts
+all of that work's hairpins on ONE part; our export splits them across two
+(P18 and P19) for exactly this reason, and re-attribution would consolidate
+them.
+
+That is a second family the rule would fix, which was not known when the
+engraved-versus-scan verdict above was written. It does **not** change the
+verdict: the blocker was never the engraved case, which was already positive
+(52 → 83 staves exact by word). It is that the scan arm cannot yet see
+attribution at all — seven of eleven pages abstain on the staff→part join — and
+that needs hand-verified `staves[].parts` rows, which is human input, not
+another measurement.
+
 ### Still open
 
 **A scan arm that can actually see attribution.** Seven of eleven pages abstain
