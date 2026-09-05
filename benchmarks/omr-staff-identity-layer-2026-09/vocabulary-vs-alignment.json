@@ -1,15 +1,14 @@
 {
  "verdict": {
   "namer was right": 137,
-  "ALIGNMENT SLIP": 50,
-  "VOCABULARY GAP": 2,
-  "ORDER CONFLICT": 9
+  "ALIGNMENT SLIP": 59,
+  "VOCABULARY GAP": 2
  },
  "detail": {
   "ALIGNMENT SLIP|Viola": 3,
   "VOCABULARY GAP|Bass voice": 2,
   "ALIGNMENT SLIP|Contrabassoon": 5,
-  "ORDER CONFLICT|Horn": 5,
+  "ALIGNMENT SLIP|Horn": 7,
   "ALIGNMENT SLIP|Cello": 4,
   "ALIGNMENT SLIP|Contrabass": 9,
   "ALIGNMENT SLIP|Timpani": 3,
@@ -17,10 +16,8 @@
   "ALIGNMENT SLIP|Oboe": 4,
   "ALIGNMENT SLIP|Clarinet": 4,
   "ALIGNMENT SLIP|Bassoon": 2,
-  "ALIGNMENT SLIP|Horn": 2,
   "ALIGNMENT SLIP|Trumpet": 4,
-  "ALIGNMENT SLIP|Trombone": 4,
-  "ORDER CONFLICT|Trombone": 4,
+  "ALIGNMENT SLIP|Trombone": 8,
   "ALIGNMENT SLIP|Violin": 3
  },
  "rows": [
@@ -34,8 +31,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "classical-condensed",
-   "lcs_len": 11,
-   "lineup_len": 12
+   "lcs_len": 10,
+   "lineup_len": 11
   },
   {
    "row_id": "beethoven-sym5-mvt1-575951-p1",
@@ -47,8 +44,8 @@
    "clef_read": "bass",
    "verdict": "VOCABULARY GAP",
    "best_layout": "classical-condensed",
-   "lcs_len": 11,
-   "lineup_len": 12
+   "lcs_len": 10,
+   "lineup_len": 11
   },
   {
    "row_id": "beethoven-sym5-mvt1-575951-p2",
@@ -60,8 +57,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "classical-condensed",
-   "lcs_len": 11,
-   "lineup_len": 11
+   "lcs_len": 10,
+   "lineup_len": 10
   },
   {
    "row_id": "beethoven-sym5-mvt1-984073-p1",
@@ -73,8 +70,8 @@
    "clef_read": "bass",
    "verdict": "VOCABULARY GAP",
    "best_layout": "classical-condensed",
-   "lcs_len": 11,
-   "lineup_len": 12
+   "lcs_len": 10,
+   "lineup_len": 11
   },
   {
    "row_id": "beethoven-sym5-mvt1-984073-p2",
@@ -86,8 +83,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "classical-condensed",
-   "lcs_len": 11,
-   "lineup_len": 11
+   "lcs_len": 10,
+   "lineup_len": 10
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p1",
@@ -99,8 +96,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p1",
@@ -110,10 +107,10 @@
    "TRUTH": "Horn",
    "HELDOUT": "Trumpet",
    "clef_read": "treble",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p1",
@@ -125,8 +122,8 @@
    "clef_read": "tenor",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p1",
@@ -138,8 +135,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -151,8 +148,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -162,10 +159,10 @@
    "TRUTH": "Horn",
    "HELDOUT": "Trumpet",
    "clef_read": "treble",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -177,8 +174,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -190,8 +187,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -203,8 +200,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -214,10 +211,10 @@
    "TRUTH": "Horn",
    "HELDOUT": "Trumpet",
    "clef_read": "treble",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -229,8 +226,8 @@
    "clef_read": "tenor",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p3",
@@ -242,8 +239,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -255,8 +252,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -266,10 +263,10 @@
    "TRUTH": "Horn",
    "HELDOUT": "Trumpet",
    "clef_read": "treble",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -281,8 +278,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -294,8 +291,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -307,8 +304,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -318,10 +315,10 @@
    "TRUTH": "Horn",
    "HELDOUT": "Trumpet",
    "clef_read": "treble",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -333,8 +330,8 @@
    "clef_read": "tenor",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p4",
@@ -346,8 +343,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "late-romantic-large",
-   "lcs_len": 13,
-   "lineup_len": 14
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -359,8 +356,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -372,8 +369,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -385,8 +382,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -398,8 +395,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -411,8 +408,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -424,8 +421,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -437,8 +434,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -448,10 +445,10 @@
    "TRUTH": "Trombone",
    "HELDOUT": "Timpani",
    "clef_read": null,
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -463,8 +460,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -476,8 +473,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -489,8 +486,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -502,8 +499,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p5",
@@ -515,8 +512,8 @@
    "clef_read": null,
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p6",
@@ -528,8 +525,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p6",
@@ -541,8 +538,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p6",
@@ -554,8 +551,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p6",
@@ -567,8 +564,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p6",
@@ -580,8 +577,8 @@
    "clef_read": "alto",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p6",
@@ -591,10 +588,10 @@
    "TRUTH": "Trombone",
    "HELDOUT": null,
    "clef_read": "bass",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p6",
@@ -606,8 +603,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -619,8 +616,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -632,8 +629,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -645,8 +642,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -658,8 +655,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -671,8 +668,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -684,8 +681,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -695,10 +692,10 @@
    "TRUTH": "Trombone",
    "HELDOUT": null,
    "clef_read": "bass",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -710,8 +707,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -723,8 +720,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -736,8 +733,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -749,8 +746,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -762,8 +759,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -775,8 +772,8 @@
    "clef_read": "treble",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -788,8 +785,8 @@
    "clef_read": "alto",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -799,10 +796,10 @@
    "TRUTH": "Trombone",
    "HELDOUT": null,
    "clef_read": "bass",
-   "verdict": "ORDER CONFLICT",
+   "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   },
   {
    "row_id": "dvorak-sym9-mvt1-405834-p7",
@@ -814,8 +811,8 @@
    "clef_read": "bass",
    "verdict": "ALIGNMENT SLIP",
    "best_layout": "romantic",
-   "lcs_len": 13,
-   "lineup_len": 15
+   "lcs_len": 12,
+   "lineup_len": 12
   }
  ]
 }

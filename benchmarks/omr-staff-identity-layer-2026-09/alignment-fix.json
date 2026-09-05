@@ -1,0 +1,32 @@
+{
+ "A": {
+  "scoreable": 196,
+  "named": 157,
+  "right": 137,
+  "slips": 59,
+  "coverage": 0.8010204081632653,
+  "precision": 0.8726114649681529,
+  "slip_share": 1.0,
+  "wrong": 59
+ },
+ "B": {
+  "scoreable": 196,
+  "named": 163,
+  "right": 139,
+  "slips": 57,
+  "coverage": 0.8316326530612245,
+  "precision": 0.852760736196319,
+  "slip_share": 1.0,
+  "wrong": 57
+ },
+ "C": {
+  "scoreable": 196,
+  "named": 146,
+  "right": 125,
+  "slips": 71,
+  "coverage": 0.7448979591836735,
+  "precision": 0.8561643835616438,
+  "slip_share": 1.0,
+  "wrong": 71
+ }
+}

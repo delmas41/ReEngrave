@@ -61,9 +61,29 @@ been failing.
 198 records, 20-row `.reconciliation` gate. Of the 61 staves the held-out namer
 does not get right:
 
-    ALIGNMENT SLIP  50  0.820   in the layout AND in the right relative order
-    ORDER CONFLICT   9  0.148   in the layout, out of order
+    ALIGNMENT SLIP  59  0.967   in the layout AND in the right relative order
+    ORDER CONFLICT   0  0.000
     VOCABULARY GAP   2  0.033
+
+⚠️⚠️ CORRECTED — THE FIRST RUN REPORTED 9 ORDER CONFLICTS AND THEY WERE MY
+PROBE'S ARTIFACT, NOT THE PIPELINE'S. I read Horn x5 + Trombone x4, all brass,
+as brass ordering differing between engraving traditions, and recommended
+exempting brass from any order relation. All nine are DUPLICATES — 9 of 9, no
+exceptions: Brahms prints Horn on two staves at ordinal 6, Dvorak Trombone on
+two at ordinal 8, and a bare LCS can match only one occurrence of a repeated
+name. The PIPELINE models this and my probe did not: `align_to_layout` carries
+an `ext` lane with `EXTEND_PENALTY` (score_layouts.py:444) exactly for "two
+horns on two staves". Collapsing consecutive repeats before the LCS — the
+probe's analogue of that lane — takes order conflicts to ZERO.
+
+Two independent measurements falsified the tradition story before it could be
+built on: `probe_order_consensus.py` finds the ten layouts UNANIMOUS on all 6
+brass-internal pairs (only Flute/Piccolo is contested, across all 191 pairs),
+and the admitted relation matches this corpus's pages 1177/1177. **THE BRASS
+EXEMPTION IS WITHDRAWN — it rested entirely on this artifact.**
+
+Multiplicity is the real phenomenon it was hiding: 56 of 198 staves (0.283) sit
+where an instrument appears more than once in its own lineup.
 
 ⚠️ AND THE TWO "VOCABULARY GAPS" ARE NOT REAL. Both are `Basso` -> `Bass
 voice`, the ambiguous-alias scorer artifact this workstream already documented
@@ -148,7 +168,29 @@ def main():
     rows_out = []
     for key, group in sorted(by_sys.items()):
         group.sort(key=lambda r: r["ordinal"])
-        lineup = [r["TRUTH"] for r in group]
+        lineup_raw = [r["TRUTH"] for r in group]
+        # ⚠️ CONSECUTIVE REPEATS ARE COLLAPSED, because the PIPELINE models
+        # them and a plain LCS does not. `align_to_layout`'s DP carries an
+        # `ext` lane with `EXTEND_PENALTY` (score_layouts.py:444) precisely so
+        # one part can CONTINUE onto several staves -- two horns on two staves,
+        # first violins divided over three. A bare LCS has no such lane, so it
+        # can match only ONE of a page's two Horn staves and reports the other
+        # as an ordering failure that does not exist.
+        #
+        # This was not hypothetical: the first run of this probe reported 9
+        # ORDER CONFLICTS (Horn x5, Trombone x4) and I read them as brass
+        # ordering differing between engraving traditions. They are 9 of 9
+        # DUPLICATES -- Brahms prints Horn on two staves at ordinal 6, Dvorak
+        # Trombone on two at ordinal 8 -- and `probe_order_consensus.py`
+        # falsified the tradition story independently: the ten layouts are
+        # UNANIMOUS on all 6 brass-internal pairs, and the admitted relation
+        # matches this corpus's pages 1177/1177.
+        collapsed, keep_idx = [], []
+        for i, name in enumerate(lineup_raw):
+            if not collapsed or collapsed[-1] != name:
+                collapsed.append(name)
+                keep_idx.append(i)
+        lineup = collapsed
         # Best layout BY SUBSEQUENCE, not by size or by score: the question is
         # whether the page's order is expressible in the layout at all.
         best, best_lcs, best_members = None, -1, set()
@@ -158,6 +200,14 @@ def main():
                 best, best_lcs, best_members = layout, len(mem), mem
         per_layout_best[best.name] += 1
         parts = set(best.parts)
+        # Map collapsed-run membership back onto every staff of the run: if a
+        # run of Horn staves lies on the LCS, every staff in it does.
+        member_raw = set()
+        for c_i in best_members:
+            lo = keep_idx[c_i]
+            hi = keep_idx[c_i + 1] if c_i + 1 < len(keep_idx) else len(lineup_raw)
+            member_raw.update(range(lo, hi))
+        best_members = member_raw
         for r in group:
             i = r["ordinal"]
             wrong = (not r["HELDOUT"]) or (r["HELDOUT"] not in r["TRUTH_acceptable"])
