@@ -1,0 +1,101 @@
+{
+  "bach-brandenburg3-mvt1-468678-p1": {
+    "sizes": [
+      12,
+      12
+    ],
+    "positions": 12,
+    "identical": 12,
+    "ordinal_join_succeeds": true
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+    "sizes": [
+      11,
+      11
+    ],
+    "positions": 11,
+    "identical": 11,
+    "ordinal_join_succeeds": true
+  },
+  "beethoven-sym5-mvt1-575951-p3": {
+    "sizes": [
+      11,
+      8
+    ],
+    "positions": 8,
+    "identical": 1,
+    "ordinal_join_succeeds": false
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+    "sizes": [
+      11,
+      11
+    ],
+    "positions": 11,
+    "identical": 11,
+    "ordinal_join_succeeds": true
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+    "sizes": [
+      11,
+      11
+    ],
+    "positions": 11,
+    "identical": 11,
+    "ordinal_join_succeeds": true
+  },
+  "beethoven-sym5-mvt1-984073-p3": {
+    "sizes": [
+      11,
+      8
+    ],
+    "positions": 8,
+    "identical": 1,
+    "ordinal_join_succeeds": false
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+    "sizes": [
+      11,
+      11
+    ],
+    "positions": 11,
+    "identical": 11,
+    "ordinal_join_succeeds": true
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+    "sizes": [
+      14,
+      13
+    ],
+    "positions": 13,
+    "identical": 8,
+    "ordinal_join_succeeds": false
+  },
+  "brahms-sym1-mvt1-317803-p3": {
+    "sizes": [
+      14,
+      14
+    ],
+    "positions": 14,
+    "identical": 14,
+    "ordinal_join_succeeds": true
+  },
+  "brahms-sym1-mvt1-317803-p4": {
+    "sizes": [
+      14,
+      14
+    ],
+    "positions": 14,
+    "identical": 14,
+    "ordinal_join_succeeds": true
+  },
+  "dvorak-sym9-mvt1-405834-p7": {
+    "sizes": [
+      15,
+      15
+    ],
+    "positions": 15,
+    "identical": 15,
+    "ordinal_join_succeeds": true
+  }
+}
