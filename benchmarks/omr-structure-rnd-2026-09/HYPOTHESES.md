@@ -1,5 +1,34 @@
 # Structure without a dossier — a ranked hypothesis list
 
+> ## ⚠️ THE TARGET CHANGED ON 2026-09-05 — READ THIS BEFORE ANY NUMBER BELOW
+>
+> Sean redirected the workstream: **long-term there is no MusicXML to measure
+> against, and the structural answer key should not be a reference encoding at
+> all.** If a scan prints two players on one staff, two players on one staff IS
+> the correct output — a reference file's part-splitting is a typing decision
+> made later by someone else.
+>
+> **What that does to this document:**
+>
+> * **The refuted hypotheses stay refuted.** H1, H1′ and the page-side
+>   multiplicity rules were about *detecting structure from the page*, which is
+>   still exactly the goal. The redirect raises their stakes rather than voiding
+>   them.
+> * **H0 is promoted from a prerequisite to the centre.** It already scores
+>   roster, continuity and identity against **hand-read printed truth**, with no
+>   MusicXML in the loop.
+> * ⚠️ **Every edit-count figure quoted below as a PRIZE is now suspect as a
+>   goal** — above all `OMR_CONDENSED_PARTS`'s −7,118 / −9,369, which prices
+>   agreement with an *encoder's* part-splitting. Those measurements are sound;
+>   the target they were aimed at is not. They are kept, relabelled, not deleted.
+> * **H4 is unchanged and is the hypothesis the redirect most favours** — it was
+>   always about the printed page, and its recorded ceiling (a human can answer
+>   *players as printed*, never *`<part>` elements the encoder emitted*) is now
+>   the benchmark's definition rather than its limitation.
+>
+> The design that replaces the MXL-based structural key:
+> [`PAGE_TRUTH_BENCHMARK_DESIGN.md`](PAGE_TRUTH_BENCHMARK_DESIGN.md).
+
 **2026-09-05, on `3a85063c`. NOTHING BUILT, NOTHING MEASURED, NO PIPELINE CODE
 TOUCHED.** This is the breadth pass Sean asked for: ten ideas triaged against
 the settled negatives, each with the signal it exploits, why the existing
