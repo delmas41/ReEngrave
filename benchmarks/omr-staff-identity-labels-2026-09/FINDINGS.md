@@ -290,3 +290,36 @@ shape of the whole opportunity.
    whether their labels actually REACH `clef_correction` is about the consumer,
    not about reach, and is unmeasured. That is the only remaining route from
    labels to clefs.
+
+
+## The generalisation, and the audit it implies — run 2026-09-05
+
+The Contrabassoon episode generalises: **any lookup table keyed on instrument
+NAMES was written against a lexicon that could not, at that time, produce every
+name.** When the lexicon gains a name, such a table silently narrows rather than
+erroring — and if the feature it gates is default-off, nothing reports it.
+
+The cheap check is to diff the names the lexicon can emit against the names any
+downstream table enumerates. Run over `tools/omr/` (28 emittable names from
+`instruments.INSTRUMENTS`):
+
+| file | emittable names it enumerates | verdict |
+|---|--:|---|
+| `clef_correction.py` | 5 | **the confirmed instance — fixed** (`29b3458c`) |
+| `score_layouts.py` | **25 of 28** | ⚠️ **candidate, unpriced** |
+| `staff_labels_vision.py` | 1 | prompt text, not a table |
+
+⚠️ **`score_layouts.py` omits `Chorus`, `Organ`, `Sarrusophone`.** A staff
+resolving to one of those gets no position prior from the score-order machinery.
+**This is a CANDIDATE, not a defect** — nothing here measures whether those
+instruments occur in the corpus, whether the fit degrades gracefully without
+them, or whether adding them would change an edit. Recorded so it is not
+rediscovered, and explicitly not fixed on the strength of a name count.
+
+⚠️ **A methodological note on this audit itself.** The first version of the
+probe returned "no other tables" because its name-extraction regex silently
+matched nothing — a clean negative produced by an empty input, which is the
+exact failure this repo spent 2026-09-04 learning to catch (`<rest measure=
+"yes"/>`, `x0 + x1`, an index-restored control arm). It was caught by asserting
+the extracted count (28) before trusting the comparison. **Any audit that can
+return "nothing found" must first prove it looked at something.**
