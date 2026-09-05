@@ -1433,6 +1433,39 @@ Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 - Comparison uploads: `uploads/compare/{session_id}/`
 - All backed by Docker named volumes so they survive container recreation
 
+### ⚠️ Erasing the staff lines before YOLO is MEASURED AND REFUSED
+
+The natural architecture — do the classical CV first, record it, erase those
+lines, and hand YOLO a cleaner page — costs **7-13 pooled reading points and up
+to a third of the noteheads**. Measured 2026-09-04 against exact page truth, same
+page and weights, on the case most favourable to it (clean engraved pages, where
+staff-line removal is easy):
+
+| | Brahms 1 | Mozart 41 |
+|---|--:|--:|
+| staff lines intact (what ships) | **0.876** | **0.921** |
+| erased before YOLO | 0.805 | 0.793 |
+| noteheads, intact | **1.000** | **0.996** |
+| noteheads, erased | 0.870 | **0.774** (recall 0.642) |
+
+Two mechanisms, both already recorded elsewhere here: **domain shift** — the
+detector has never seen staff-less music, and the ScoreAug/Augraphy fair test
+already priced that shape (augmented 0.122 vs production 0.652) — and **the
+erasure is destructive**, since a notehead sitting ON a line loses ink when the
+line goes (the same effect that leaves "every glyph in pieces" for
+`key_signature_locator` on scans). ⚠️ And it MANUFACTURES the confusion it was
+meant to remove: YOLO's `beam` detections go 46 → **105**, precision 0.783 →
+0.343, on staff-line residue.
+
+`remove_staff_lines(cells)` already runs BEFORE detection (`transcribe.py:3986`),
+so both variants exist; **the CV rung takes the erased one and the detector takes
+the original, deliberately** (`line_detection` step 1, `staff_header`, and
+`direction_text._blank_detections`, which subtracts every detection so "find the
+text" becomes "find the ink"). **The pattern that works is: erase for the CV
+consumer, BOUND THE SEARCH for everyone else, never erase for the detector.**
+n=2 works, engraved; a scan would be worse, not better. Full reading in
+[docs/scope-cv-hairpin-detection-2026-09-04.md](docs/scope-cv-hairpin-detection-2026-09-04.md) §1b.
+
 ### Local OMR engine notes
 - `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
 - The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.

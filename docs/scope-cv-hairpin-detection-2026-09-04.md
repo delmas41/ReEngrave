@@ -63,6 +63,66 @@ hairpins twice, both times as something to **reject** when finding staff lines.
 
 ---
 
+## 1b. ⚠️ MEASURED AND REFUTED: erasing the CV ink before YOLO
+
+Sean asked the natural architectural question — if CV finds a thing and YOLO
+does not, does leaving that ink on the page confuse YOLO? Could we do all the CV
+first, record it, and erase those lines before the detector sees them, the way
+staff lines are handled?
+
+**The premise about staff lines is already true, and only for the CV rung.**
+`remove_staff_lines(cells)` runs at `transcribe.py:3986`, BEFORE detection, so
+both variants exist when YOLO runs. `line_detection` step 1 is "pick the
+cleanest source — staff-removed if available"; `staff_header` erases too; and
+`direction_text._blank_detections` goes further, subtracting *every* detection
+from the page ink so "find the text" becomes "find the ink". **YOLO alone is
+given the original**, and `yolo_detector.detect` says why: *"YOLO is trained on
+full notation, not on staff-removed images."*
+
+That was an argument, not a number — `git log --all -S image_no_staff --
+tools/omr/yolo_detector.py` is empty. It is one monkeypatch to measure, so it
+was measured. Reading F1 against exact page truth, same page, same weights:
+
+| | Brahms 1 | Mozart 41 |
+|---|--:|--:|
+| staff lines intact (ships) | **0.876** | **0.921** |
+| erased before YOLO | 0.805 | 0.793 |
+| **noteheads**, intact | **1.000** (259/259) | **0.996** (120/120) |
+| **noteheads**, erased | 0.870 | **0.774** — recall **0.642** |
+| slur detections | 64 / 22 | — |
+| slur detections, erased | **9 / 2** | — |
+
+**Erasing costs 7–13 pooled points and up to a third of the noteheads**, on
+CLEAN ENGRAVED pages — the case most favourable to it, because staff-line
+removal there is easy. Two mechanisms, both already documented elsewhere in this
+repo:
+
+* **Domain shift.** The detector has never seen staff-less music. This project
+  has a hard result on that shape: the ScoreAug/Augraphy fair test scored
+  augmented 0.122 against clean 0.384 and production 0.652 on real cells.
+* **The erasure is destructive.** A notehead sitting ON a line loses ink when
+  the line goes — `key_signature_locator`'s entry records that "on a scan whose
+  staff-line removal leaves every glyph in pieces, nothing accidental-sized
+  survives", and a ledger line "survives staff-line removal and print-merges
+  into the SAME connected component as its neighbouring notehead". Removal is
+  not a clean subtraction, and on-line noteheads are exactly what it damages.
+
+There is even a visible instance of the confusion the question was about, but
+pointing the other way: YOLO's `beam` detections go 46 → **105** on the erased
+image, precision 0.783 → 0.343. Erasing the staff leaves horizontal residue that
+the detector calls beams. **Erasing did not reduce the confusing ink; it
+manufactured more.**
+
+⚠️ n = 2 works, page 1 each, engraved. The effect is large, consistent in
+direction, and mechanistically explained, and a scan would be worse rather than
+better — removal fragments glyphs more there, which is the measured failure
+above.
+
+**So the pattern that works here is: erase for the CV consumer, BOUND THE SEARCH
+for everyone else — never erase for the detector.** That is what `staff_header`
+does (measure the header window), what `key_signature_template` does (search
+only between clef and meter), and it is what §2 does for hairpins.
+
 ## 2. The design, and why it is not per-cell
 
 **Run it in the inter-staff BAND, in page pixels, per staff.** Not per measure
