@@ -1131,8 +1131,8 @@ accidentals. `page_truth.render_fidelity` now measures the disagreement per work
 and declares the family unreliable; `score_reading` marks it `(RENDER)` and
 keeps it out of the pool. Including it gave 0.898; excluding it, 0.919.
 
-⚠️⚠️ **THE HAIRPIN EXPORT ON THIS BRANCH (`2ad144fb`) IS A DUPLICATE AND SHOULD
-BE DROPPED.** `53e6f233` on `claude/mystifying-curran-613606` already wires
+⚠️⚠️ **THE HAIRPIN EXPORT BUILT ON THIS BRANCH WAS A DUPLICATE AND HAS BEEN
+REMOVED AGAIN (`2ad144fb`, undone).** `53e6f233` on `claude/mystifying-curran-613606` already wires
 `<wedge>` into both exporters AND fixes the staff attribution, and it *improves*
 pooled OMR-NED (0.1304 → 0.1299) where the duplicate costs +11 edits for want of
 exactly that fix; its findings are `benchmarks/omr-hairpins-2026-09/FINDINGS.md`.

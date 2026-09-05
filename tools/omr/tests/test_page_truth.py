@@ -204,10 +204,17 @@ def test_detector_classes_map_to_families(cls, family):
 
 
 def test_a_hairpin_is_not_a_dynamic_letter():
-    """`dynamicCrescendoHairpin` starts with `dynamic` and is a wedge. The
-    prefix order is what keeps it out."""
-    assert detector_family("dynamicCrescendoHairpin") is None
-    assert detector_family("dynamicDiminuendoHairpin") is None
+    """`dynamicCrescendoHairpin` starts with `dynamic` and is a WEDGE, so the
+    prefix order has to keep it out of `dynamic_letter` — it is scored as its
+    own family, which Verovio boxes as its own element.
+
+    ⚠️ This test was left asserting `is None` when the `hairpin` family was
+    added, and the commit that added it (`4a14980b`) claimed "Suite green" on a
+    `-k coverage` run rather than the whole suite. It was not green.
+    """
+    for cls in ("dynamicCrescendoHairpin", "dynamicDiminuendoHairpin"):
+        assert detector_family(cls) == "hairpin"
+        assert detector_family(cls) != "dynamic_letter"
 
 
 def test_pitch_is_not_scored_here():
