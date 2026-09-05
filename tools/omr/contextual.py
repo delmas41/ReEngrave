@@ -50,7 +50,10 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from .clef_correction import correct_clefs_from_instruments
+from .clef_correction import (
+    correct_clefs_from_instruments,
+    veto_implausible_clef_changes,
+)
 from .dossier import join_parts_to_slots
 from .instruments import Instrument, candidates_for_alias, lookup
 from .preprocessing import render_page
@@ -541,6 +544,7 @@ def apply_contextual_analysis(
     ocr_fallback: bool = True,
     staved: list[Any] | None = None,
     review_dir: Path | None = None,
+    instrument_clef_default: bool = False,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
     detector never read.
@@ -746,8 +750,21 @@ def apply_contextual_analysis(
         if (dossier and apply_clefs) else []
     )
 
+    # The OMR_INSTRUMENT_CLEF_DEFAULT tier (off by default; see
+    # clef_correction.py's tables and benchmarks/omr-clef-string-staves-2026-09
+    # for the sites that earned each entry). The change veto runs FIRST so a
+    # staff whose mid-staff state it repairs is uniform again before the
+    # header tier asks its uniformity question.
+    change_vetoes = (
+        veto_implausible_clef_changes(
+            pages, read_instruments, slot_by_staff, instrument_source)
+        if (instrument_clef_default and apply_clefs) else []
+    )
+
     records = correct_clefs_from_instruments(
-        pages, read_instruments, slot_by_staff, apply=apply_clefs)
+        pages, read_instruments, slot_by_staff, apply=apply_clefs,
+        treble_override=(instrument_clef_default and apply_clefs),
+        instrument_source_by_slot=instrument_source)
 
     # Labels that were READ off the page and then dropped. This is reported
     # because the failure is otherwise invisible: a label the lexicon cannot
@@ -799,4 +816,11 @@ def apply_contextual_analysis(
         dossier_clefs=dossier_clefs,
         noteheads_restated=sum(r.get("noteheads_restated", 0) for r in records),
     )
+    if instrument_clef_default:
+        # Only under the flag, so a default run's JSON is byte-identical.
+        summary.update(
+            clef_treble_overrides=sum(
+                1 for r in records if r.get("override") == "treble_misread"),
+            clef_change_vetoes=change_vetoes,
+        )
     return summary

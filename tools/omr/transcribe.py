@@ -3772,6 +3772,14 @@ def _contextual_call_kwargs(
         "dpi": dpi,
         "dossier": dossier,
         "assist": Assist("vision" if vision_fallback else "none"),
+        # OMR_INSTRUMENT_CLEF_DEFAULT (default OFF): let a READ margin label's
+        # instrument correct the two verified clef failure shapes on scans —
+        # a detected-treble header on a Viola/Bassoon/Timpani staff, and an
+        # implausible mid-staff clef change (violin→bass, viola→bass). See
+        # clef_correction.py and benchmarks/omr-clef-string-staves-2026-09.
+        "instrument_clef_default": os.environ.get(
+            "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower()
+        not in ("0", "", "false", "no", "off"),
     }
 
 
