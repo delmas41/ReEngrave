@@ -31,7 +31,20 @@ any long Surya-backed run: check liveness periodically rather than assuming
 progress, and make the run RESUMABLE so a kill costs nothing (the sweep caches
 per document and lost zero work; this build cached per page and lost zero).
 The Surya keep-alive server's worker WEDGES AT 0% CPU and blocks its caller
-SILENTLY. The parent process sat at 0% with no output and no
+SILENTLY.
+
+⚠️⚠️ BUT 0% CPU ON THE PARENT IS NOT BY ITSELF A WEDGE, and I misdiagnosed a
+healthy run on exactly that signature. A parent that shells out — the musicdiff
+bridge, the Surya worker, any subprocess rung — sits at 0% while its CHILD does
+the work. The wedge signature is 0% on the parent AND no child burning CPU.
+Check for the child before killing anything:
+
+    ps -eo etime,pcpu,args | grep -E "_omrned_worker|surya|llama-server"
+
+⚠️ AND DO NOT REBASE OR CHECKOUT WHILE A LONG RUN IS READING THE TREE. A
+23-step rebase swapped files under a running pricing job and killed it silently
+— the log simply stopped after its header, which looks exactly like a wedge.
+Finish long runs, or run them from a separate worktree, before touching git. The parent process sat at 0% with no output and no
 error; `--check` reported the server healthy the whole time, because the
 llama-server was alive and it was the worker that was stuck. Diagnose with
 `ps -eo etime,pcpu` on the build process — 0.0% CPU with a long elapsed time is
