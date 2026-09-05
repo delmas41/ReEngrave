@@ -1,0 +1,350 @@
+{
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/pred-drop/beethoven-sym5-mvt1.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/sad-austin-7e16e7/benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym5-mvt1.musicxml",
+  "total_cost": 43,
+  "n_ops": 25,
+  "ops_by_name": {
+    "extradel": 5,
+    "tieins": 5,
+    "lyricins": 5,
+    "extrains": 3,
+    "notedel": 2,
+    "headedit": 2,
+    "insbar": 1,
+    "delbar": 1,
+    "extrasymboledit": 1
+  },
+  "cost_by_name": {
+    "lyricins": 15,
+    "extradel": 5,
+    "tieins": 5,
+    "notedel": 4,
+    "headedit": 4,
+    "extrains": 3,
+    "insbar": 3,
+    "delbar": 2,
+    "extrasymboledit": 2
+  },
+  "cost_by_category": {
+    "wrong lyric OMR-ED": 15,
+    "wrong other object OMR-ED": 10,
+    "entire measure insert/delete OMR-ED": 5,
+    "wrong tie OMR-ED": 5,
+    "wrong note OMR-ED": 4,
+    "wrong note head OMR-ED": 4
+  },
+  "cost_by_part": {
+    "-1 ?": {
+      "wrong lyric OMR-ED": 15,
+      "wrong other object OMR-ED": 10
+    },
+    "00 Flute": {
+      "wrong note OMR-ED": 2
+    },
+    "00 Flute 1": {
+      "wrong note head OMR-ED": 2
+    },
+    "06 Bassoon": {
+      "entire measure insert/delete OMR-ED": 2
+    },
+    "06 Bassoon 1": {
+      "entire measure insert/delete OMR-ED": 3,
+      "wrong tie OMR-ED": 1
+    },
+    "07 Bassoon 2": {
+      "wrong tie OMR-ED": 1
+    },
+    "09 Eb Horn 2": {
+      "wrong note head OMR-ED": 2
+    },
+    "09 Horn": {
+      "wrong note OMR-ED": 2
+    },
+    "14 Violin 2": {
+      "wrong tie OMR-ED": 1
+    },
+    "15 Viola": {
+      "wrong tie OMR-ED": 1
+    },
+    "16 Violoncello": {
+      "wrong tie OMR-ED": 1
+    }
+  },
+  "rows": [
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 2,
+      "side": "pred",
+      "part_index": 0,
+      "part_name": "Flute",
+      "measure": 2,
+      "pred_repr": "[R]1",
+      "truth_repr": null
+    },
+    {
+      "op": "headedit",
+      "category": "wrong note head OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 0,
+      "part_name": "Flute 1",
+      "measure": 2,
+      "pred_repr": "[R]1 fermata",
+      "truth_repr": "[R]2 fermata"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "tempo,symbol=Half=108.0,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=ff,off=0.5"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=ff,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 6,
+      "part_name": "Bassoon 1",
+      "measure": 5,
+      "pred_repr": null,
+      "truth_repr": "['[R]2 fermata']"
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "pred",
+      "part_index": 6,
+      "part_name": "Bassoon",
+      "measure": 6,
+      "pred_repr": "['[R]2']",
+      "truth_repr": null
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 6,
+      "part_name": "Bassoon 1",
+      "measure": 8,
+      "pred_repr": "[C4]2",
+      "truth_repr": "[C4T]2"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 7,
+      "part_name": "Bassoon 2",
+      "measure": 8,
+      "pred_repr": "[C4]2",
+      "truth_repr": "[C4T]2"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 2,
+      "side": "pred",
+      "part_index": 9,
+      "part_name": "Horn",
+      "measure": 2,
+      "pred_repr": "[R]1",
+      "truth_repr": null
+    },
+    {
+      "op": "headedit",
+      "category": "wrong note head OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 9,
+      "part_name": "Eb Horn 2",
+      "measure": 2,
+      "pred_repr": "[R]1 fermata",
+      "truth_repr": "[R]2 fermata"
+    },
+    {
+      "op": "lyricins",
+      "category": "wrong lyric OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "a,num=1,id=,off=0.5,style={}"
+    },
+    {
+      "op": "lyricins",
+      "category": "wrong lyric OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "a,num=1,id=,off=0.5,style={}"
+    },
+    {
+      "op": "lyricins",
+      "category": "wrong lyric OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "a,num=1,id=,off=0.5,style={}"
+    },
+    {
+      "op": "lyricins",
+      "category": "wrong lyric OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "a,num=1,id=,off=0.5,style={}"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 14,
+      "part_name": "Violin 2",
+      "measure": 8,
+      "pred_repr": "[E4]2",
+      "truth_repr": "[E4T]2"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=2.0",
+      "truth_repr": null
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 15,
+      "part_name": "Viola",
+      "measure": 8,
+      "pred_repr": "[G4]2",
+      "truth_repr": "[G4T]2"
+    },
+    {
+      "op": "lyricins",
+      "category": "wrong lyric OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "a,num=1,id=,off=0.5,style={}"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=ff,off=0.5"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 16,
+      "part_name": "Violoncello",
+      "measure": 8,
+      "pred_repr": "[C4]2",
+      "truth_repr": "[C4T]2"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=ff,off=0.5",
+      "truth_repr": null
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.5",
+      "truth_repr": null
+    },
+    {
+      "op": "extrasymboledit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.5",
+      "truth_repr": "dynamic,symbol=ff,off=0.5"
+    }
+  ]
+}
