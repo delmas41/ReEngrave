@@ -92,6 +92,24 @@ record is untouched either way.
 MOVEMENT ON THIS GATE. It is right and unexercised: the gate cannot
 regression-test it, and a corpus with French/Russian or late-Romantic
 repertoire must.
+
+── RE-RUN AGAINST `claude/lexicon-substring-capture-2026-09-05` ──────────────
+⚠️ ALL THREE DEFECTS ABOVE ARE FIXED BY THAT BRANCH. Test-merged onto this one
+(clean, and re-run rather than trusted — a clean auto-merge is not evidence):
+
+    USABLE 5 -> 8    Clarinet->Basset horn now resolves WOODWIND, not brass
+                     Trumpet->Cornet and Trumpet->Flugelhorn now RESOLVE
+    EXCLUDED 7 -> 4  only the four NO-OPs remain
+
+So the doubling table roughly doubles in reach post-merge, and the
+French/Russian case (Berlioz, Tchaikovsky, Franck) becomes encodable for the
+first time. The lexicon bug this audit found independently is the same one that
+branch set out to fix; the fix lands there, not here.
+
+⚠️ AND THE CONFOUND CHECK COMES BACK CLEAN: the identity arms are UNCHANGED on
+the merged tree — page-1 roster 0.903 / balance-on 0.952, layout reference 137 /
+135 correct, identical to the figures measured before the merge. The lexicon
+change moves the doubling TABLE and moves no measured identity number.
 """
 from __future__ import annotations
 
