@@ -157,6 +157,17 @@ collapse, suspect box).
 | ReEngrave before | 2,745 | 449 |
 | **ReEngrave after** | **2,473** | **31** |
 
-The full-pipeline confirmation run (`orchestral_eval --omr-ned --work-dir
-fixtures-eval`, this worktree) is recorded in `results-v4.json`; the recorded
-headline in CLAUDE.md is untouched per policy (measured off main).
+## Full-pipeline confirmation
+
+`orchestral_eval --omr-ned --work-dir fixtures-eval` on this worktree (fresh
+fixtures, fresh transcription, the modified exporter): **pooled OMR-NED
+0.1176 / 2,473 edits** over 10,665 truth + 10,365 predicted symbols, all 11
+works clean — against the recorded baseline 0.1306 / 2,745 on `44a1745`.
+Per-work results in `results-v4.json`. The live pipeline's MusicXML is
+byte-identical to the re-export A/B's for every work checked (6 of 6
+compared), so the two measurements are the same measurement. `wrong
+flag/beam` has left the top-category list entirely; the largest remaining
+buckets are `wrong note` (1,258), `entire measure insert/delete` (428 — of
+which ~150 is the Brahms alignment artifact above) and `wrong direction`
+(220). The recorded headline in CLAUDE.md is untouched per policy (measured
+off main).
