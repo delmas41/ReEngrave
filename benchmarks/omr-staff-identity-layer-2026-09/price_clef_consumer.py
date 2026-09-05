@@ -69,6 +69,52 @@ sides of every delta carry the fermatas equally and the difference cancels.
 What the control forbids is quoting an ABSOLUTE number from this harness as
 the gate's figure, and no such number is quoted. `--accept-control-delta`
 exists so the override is explicit and has to be argued in writing.
+
+── KC-3 RESULT 2026-09-05: FILL moves -13, and BOTH predictions were wrong ───
+
+    arm         edits   delta      the rows that moved
+    BASELINE    74962      +0
+    B_roster    74962      +0       none
+    C_derived   74949     -13       bach p1 -15, mahler p5 +2
+    BC          74947     -15       bach p1 -15, mahler p5 +0
+
+⚠️⚠️ THE TIER WITH PERFECT PRECISION MOVES NOTHING, AND THE WORST TIER IS THE
+ONLY ONE THAT MOVES ANYTHING. Both the coordinator's prediction and mine were
+that B (roster, 22/22 = 1.000) would be admissible and C (derived, 0.550
+carried) would not. The measurement says the question was mis-posed: value here
+is not a function of identity precision at all.
+
+`probe_fill_reach.py` explains it, and the explanation is structural rather
+than incidental -- FILL's reach is an INTERSECTION of two populations:
+
+    396 staves, of which only  34  have NO clef read  (91.4% already do)
+    tier B supplies  56 identities ->   0 applications
+    tier C supplies 104 identities ->   2 applications
+
+Tier B's 56 are almost all Dvorak p6 (15) and p7 (30) -- pages whose `noclef`
+count is ZERO. A perfect roster and the staves needing a fill are DISJOINT
+populations, so B's edit delta is +0 by construction, not by weakness.
+
+So the whole -13 comes from exactly TWO clef applications, one of which is a
+regression (+2 on mahler p5). That is 0.017% of a 74,962-edit baseline from
+n=2, driven by the least trustworthy tier.
+
+VERDICT: NOT A BASIS FOR SHIPPING. Two applications cannot support a default,
+the net is inside any reasonable noise band for a change of this size, and the
+one arm that moves is the one whose precision this workstream measured at
+0.873 in-page / 0.550 carried. The pre-registered clause about wrong-direction
+moves on ABSTAINING rows does NOT fire -- tier C NAMED mahler p5 rather than
+abstaining -- so this is a confident-wrong identity, exactly the hazard the
+OVERRIDE gate at :599 exists to prevent, showing up on the ungated FILL path
+instead.
+
+⚠️ AND THE REAL ANSWER TO "DOES CLEF CONSUME IDENTITY" IS THE 34. The clef
+consumer can only ever touch staves whose clef went unread, and on this corpus
+that is 8.6% of them. The documented clef ceiling is about clefs read WRONG
+(every remaining error in `eval_pipeline_clefs` is a non-treble clef read as
+treble), and those staves are invisible to FILL by definition. Reaching them
+means the OVERRIDE path -- which is gated, correctly, and is blocked on a
+calibrated probability that `probe_calibration.py` says does not exist yet.
 """
 from __future__ import annotations
 
