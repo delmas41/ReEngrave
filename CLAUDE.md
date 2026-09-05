@@ -1577,6 +1577,27 @@ pitches.** musicdiff maps `noteins`/`notedel` to `wrong note` and
 so `wrong note` counts notes the aligner would not PAIR, and what usually stops
 it pairing is the duration. One misread rhythm costs about eight edits there.
 
+⚠️ **Traps (2) and (3) were both re-measured on the 20-row scan gate 2026-09-05
+and both need qualifying** (`benchmarks/omr-scan-attribution-2026-09/`):
+
+- **(2) is a LOWER bound on elementwise cost, and none of it is recoverable by
+  re-scoring.** `_block_diff_lin` is a cost-MINIMISING DP over bars, so a pair
+  is charged whole-plus-whole only where elementwise pairing would cost MORE.
+  The fermata case above is real where bars are sparse, but "amplified, not
+  necessarily severe" is the wrong instinct to carry into a fix: where this
+  bucket is large the bars genuinely failed to correspond, and scoring
+  differently will not shrink it. On the scan gate it is 29,685 edits (39.6%),
+  and bar segmentation is sound on 17 of 20 rows — the exceptions are the three
+  rows where `_stitch_slots` refuses and emits one part per system.
+- **(3)'s `wrong pitch` is STRUCTURALLY UNREACHABLE under `AllObjects`, not
+  empirically zero.** `AllObjects` excludes `Voicing` (32767 & 131072 = 0), and
+  without Voicing musicdiff pairs notes *by pitch* — so every pitch error is
+  REQUIRED to become `noteins` + `notedel` and land in `wrong note`. A zero
+  `wrong pitch` therefore cannot be read as "our pitches are right" at any
+  detail level that excludes Voicing. ⚠️ Related and checked clean here:
+  `get_omr_ed_dict` silently files unmappable ops under `directionins` →
+  `wrong direction`.
+
 Two tools open a number up rather than restating it:
 
 ```bash
