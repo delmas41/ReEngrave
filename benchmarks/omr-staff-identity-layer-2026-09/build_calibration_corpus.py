@@ -24,9 +24,14 @@ be drawn on it — that is the exact failure the sizing exercise existed to
 prevent. The cached pages are KEPT because their label reads are real evidence
 and may serve the roster work; they are not a completed corpus.
 
-⚠️ OPERATIONAL TRAP, worth a line because the next person will hit it: the
-Surya keep-alive server's worker WEDGED AT 0% CPU and blocked this build
-SILENTLY for 18 minutes. The parent process sat at 0% with no output and no
+⚠️⚠️ OPERATIONAL TRAP — AND IT RECURRED, SO IT IS A PATTERN, NOT AN INCIDENT.
+It wedged this build (18 minutes) and then wedged the roster-availability sweep
+(4 minutes, at document 71 of 234) within the same session. Budget for it on
+any long Surya-backed run: check liveness periodically rather than assuming
+progress, and make the run RESUMABLE so a kill costs nothing (the sweep caches
+per document and lost zero work; this build cached per page and lost zero).
+The Surya keep-alive server's worker WEDGES AT 0% CPU and blocks its caller
+SILENTLY. The parent process sat at 0% with no output and no
 error; `--check` reported the server healthy the whole time, because the
 llama-server was alive and it was the worker that was stuck. Diagnose with
 `ps -eo etime,pcpu` on the build process — 0.0% CPU with a long elapsed time is

@@ -25,6 +25,47 @@ nothing and a re-run costs only the unprobed documents.
 
     python3 .../probe_roster_availability.py --plan
     python3 .../probe_roster_availability.py --limit 120
+    python3 .../report_roster_availability.py      # read the cache, probe nothing
+
+── INTERIM RESULT 2026-09-05, 71 of 234 documents ────────────────────────────
+⚠️ PARTIAL. The sweep cycles publishers, so a partial run SPANS houses rather
+than exhausting one — informative, not complete.
+
+    documents probed        71
+    roster ACQUIRED         53   (0.746)
+    no page yielded one     18   (0.254)
+
+DISTRIBUTION of best yield (named labels / staves) — NOT a mean, and it is
+BIMODAL, which is the finding:
+
+         0.00    10   0.141   <- hard zeros: the page prints no names at all
+    0.01-0.24     1   0.014
+    0.25-0.49     7   0.099
+    0.50-0.74    28   0.394
+    0.75-0.99    22   0.310
+         1.00     3   0.042
+
+Only 8 documents of 71 sit in the ambiguous middle. A document tends either to
+name its staves or not to, so "roster acquired" is close to a binary property
+of the edition — which is what makes a per-document fallback decision clean.
+
+⭑ 10 of the 53 rosters (0.189) were acquired ONLY BEYOND THE FIRST THREE PAGES
+(pages 5, 8 and 12). **"Page 1" is the wrong unit**, confirmed: a per-page
+measurement would have called these documents unservable.
+
+BY HOUSE — and the spread is wide, so no house-level prior is safe:
+    Eulenburg 7/7 · Litolff 7/7 · Universal 7/7 · Breitkopf 6/7 · Simrock 6/7
+    Bote 2/3 · Peters 4/7 · Durand 4/7 · Novello 3/7 · Ricordi 1/3
+    Schott 0/1 · Augener 0/1
+
+BY COMPOSER, which does NOT track the house axis:
+    bruckner 8/8 · mahler 4/4 · berlioz 3/3 · beethoven 13/14 · brahms 5/6
+    bach 5/10 · elgar 2/5 · ravel 1/3 · **dvorak 0/2**
+
+⚠️ Dvorak reads 0/2 while Simrock reads 6/7 — the same house that supplied the
+20-row gate's fully-labelled Dvorak page. Composer and publisher are separate
+axes here and neither predicts the other; this is the per-EDITION rule again,
+now visible from two directions at once.
 """
 from __future__ import annotations
 
