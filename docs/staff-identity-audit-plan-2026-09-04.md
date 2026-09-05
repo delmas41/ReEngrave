@@ -136,6 +136,49 @@ source — **it is NOT in the Gradus library or the local Reference-Books folder
 (checked 2026-09-04)**; if a copy turns up, use it to explain anomalies the
 survey finds, never to override a measured count.
 
+## ⚠️ A PHANTOM REST IS NOT SILENCE — read this before scoring S4, S7 or S9
+
+Found 2026-09-04 by the dynamics/hairpin session and independently corroborated
+here. On `dvorak-sym9-mvt1-405834-p5`, **five staves** read as eight bars of
+rests with **zero noteheads** — Trumpet, two Trombones and both Violins — while
+the truth gives every one of them **8 sounding notes and no rests at all**. The
+page is densely playing there (beamed runs, slurs, `fz`, `dim. p`). The rests
+are a detection failure wearing the costume of a musical fact.
+
+This is fatal to any signal keyed on whether a staff is SOUNDING, and three of
+ours are:
+
+- **S7 rest asymmetry** ("one voice rests while the other plays") — on a dense
+  page this measures detector dropout, not divisi.
+- **S4 pitch envelope** — a staff read as empty yields a degenerate range that
+  will veto or match by accident.
+- **S9 placement** — "the mark sits nearer the neighbour, and this staff is
+  resting anyway" reasons from the same phantom.
+
+⚠️ **And the failures CLUSTER on exactly the dense pages the signals are for**,
+so this is a bias, not noise: the corpus where the evidence is richest is the
+corpus where the phantom is commonest.
+
+**The mechanism is already documented elsewhere in this repo**, which is why it
+should have been anticipated: CLAUDE.md's direction-text section records that a
+measure with no detected events takes the whole-measure-rest path, and that
+*the trigger is the DETECTOR finding nothing* — that bug lost directions; this
+one manufactures silence. Same root, two consumers.
+
+**Rule for the audit**: every signal that consults "is this staff sounding" must
+record `n_noteheads_detected` beside its answer and be scored separately on
+staves with zero detections. A zero-detection staff is an ABSTENTION, never
+evidence of rest. `score_translation.py` (dynamics session) answers
+"read but not written" directly and is the right instrument for telling a
+detection failure from an export failure.
+
+⚠️ The same trap caught a fix mid-flight: that session had a hairpin-to-rest
+fallback ready — the resting story fit its 8 unexported hairpins perfectly —
+and reverted it after looking at the page. **Anchoring a real mark to a
+spurious rest papers over a recognition failure.** The narrow half that shipped
+(a bar with genuinely no events emits its hairpin positionally) fires nowhere in
+the current corpus, and its docstring says so.
+
 ## Corpus, and the answer-key discipline
 
 - **Primary**: the 11-row scan benchmark. `works.json` carries hand-verified
