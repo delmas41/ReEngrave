@@ -627,6 +627,71 @@ class TestBeamAnnotation:
         annotate_beams(events, [])
         assert self._states(events) == [None, None]
 
+    def test_edge_note_within_a_notehead_width_joins_its_group(self):
+        """The box bounds beam INK, which runs stem to stem — the edge note's
+        centre sits up to a head's width outside it (stem-up first note,
+        stem-down last). Unpadded this was 430 of the 449 `wrong flag/beam`
+        edits on the 11-work benchmark: the edge note exported as a flag and
+        the group closed one note early."""
+        events = [self._note(x, 1) for x in (100, 120, 140, 160)]
+        # Centres are 105..165; the box covers only 125 and 145 outright.
+        annotate_beams(events, [self._beam(115, 158)])
+        assert self._states(events) == [
+            {1: "begin"}, {1: "continue"}, {1: "continue"}, {1: "end"}]
+
+    def test_a_two_note_group_survives_the_pad(self):
+        """Both notes of a 2-note group used to fall out — the orphan formed a
+        synthetic run of one and the survivor was alone under its box, so both
+        went flagged."""
+        events = [self._note(100, 1), self._note(130, 1)]
+        annotate_beams(events, [self._beam(112, 132)])
+        assert self._states(events) == [{1: "begin"}, {1: "end"}]
+
+    def test_stacked_stroke_boxes_do_not_fracture_the_group(self):
+        """A sixteenth group's primary and secondary strokes arrive as two
+        boxes over the same span. The group id is the box id, so any per-note
+        choice between them splits the group (a narrowest-box rule cost
+        Mozart 41 138 edits); they collapse into one."""
+        events = [self._note(x, 2, "16th", 0.25) for x in (100, 120, 140)]
+        strokes = [
+            {"category": "structural", "class": "beam",
+             "bbox_page": [95, 0, 55, 5]},
+            {"category": "structural", "class": "beam",
+             "bbox_page": [98, 12, 54, 5]},
+        ]
+        annotate_beams(events, strokes)
+        assert self._states(events) == [
+            {1: "begin", 2: "begin"}, {1: "continue", 2: "continue"},
+            {1: "end", 2: "end"}]
+
+    def test_divisi_rows_over_the_same_notes_are_one_group(self):
+        """Two voices' beams over the same double stops overlap in x offset by
+        one head width (Mozart 40's Viola, 354px apart in y). They collapse —
+        deliberately with no y test, because chord events flip which head is
+        first and a per-note y preference fractured the runs."""
+        events = [self._note(x, 1) for x in (100, 120, 140, 160)]
+        rows = [
+            {"category": "structural", "class": "beam",
+             "bbox_page": [93, 400, 62, 8]},   # stems-down voice, below
+            {"category": "structural", "class": "beam",
+             "bbox_page": [113, 40, 62, 8]},   # stems-up voice, above
+        ]
+        annotate_beams(events, rows)
+        assert self._states(events) == [
+            {1: "begin"}, {1: "continue"}, {1: "continue"}, {1: "end"}]
+
+    def test_a_bar_wide_box_over_two_groups_is_suspect(self):
+        """Brahms 1, Contrabass m4: a spurious 685px 'beam' (a hairpin) at the
+        real beams' y spanned the whole bar and swallowed all six notes into
+        one run. A box x-containing two disjoint boxes loses to them."""
+        events = [self._note(x, 1) for x in (100, 120, 300, 320)]
+        spurious = {"category": "structural", "class": "beam",
+                    "bbox_page": [90, 8, 250, 5]}
+        annotate_beams(events, [self._beam(95, 135), self._beam(295, 335),
+                                spurious])
+        assert self._states(events) == [
+            {1: "begin"}, {1: "end"}, {1: "begin"}, {1: "end"}]
+
     def test_only_the_chords_first_note_is_beamed(self):
         result = _tiny_result_empty_measure({"beats": 4, "beat_type": 4})
         staff = result["pages"][0]["systems"][0]["staves"][0]
