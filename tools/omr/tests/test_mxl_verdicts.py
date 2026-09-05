@@ -391,8 +391,16 @@ def test_windows_accept_the_scan_benchmark_file() -> None:
     with pytest.raises(ValueError, match="984073-p1.*575951-p2"):
         mv.load_windows(path, work_id="beethoven--symphony-5")
     # work_id narrowing still works where the work's rows are one edition …
+    # Assert the CONTRACT — narrowing returns exactly that work's rows, keyed
+    # by pdf page index — rather than a literal page list. The gate widens
+    # (5 rows -> 11 on 2026-09-04, then 20 the same day, which added Dvorak's
+    # third page), and a hardcoded list makes every widening look like a
+    # regression in a test that is not about the row set at all.
     dvorak = mv.load_windows(path, work_id="dvorak--symphony-9")
-    assert sorted(dvorak) == [4, 5]
+    on_file = sorted(r["page"]["pdf_page_index"]
+                     for r in json.loads(path.read_text())["rows"]
+                     if r["work_id"] == "dvorak--symphony-9")
+    assert sorted(dvorak) == on_file and len(on_file) >= 2
     # … and `same-as:` references resolve to the row they name even when the
     # named row is OUTSIDE the narrowed selection (both 575951 rows point at
     # their 984073 twins).
