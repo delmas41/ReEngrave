@@ -50,8 +50,10 @@ _FAMILY_PREFIXES: list[tuple[str, str]] = [
     ("gclef", "clef"),
     ("fclef", "clef"),
     ("cclef", "clef"),
-    ("dynamiccrescendohairpin", None),      # a wedge, not a letter
-    ("dynamicdiminuendohairpin", None),
+    # A hairpin is a WEDGE, not a letter — and it is scored, because Verovio
+    # boxes it as its own `hairpin` element.
+    ("dynamiccrescendohairpin", "hairpin"),
+    ("dynamicdiminuendohairpin", "hairpin"),
     ("dynamic", "dynamic_letter"),
     ("flag", "flag"),
     ("augmentationdot", "augmentation_dot"),

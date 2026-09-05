@@ -151,7 +151,38 @@ existing check performs — `export_coverage` fires only on the categorical case
 
 ---
 
-## 4. ⚠️ How to read these two together — and how not to
+### ⚠️ Hairpins: perfect on engravings, ~1% on scans — and the corpus hid it
+
+*Added 2026-09-04, prompted by Sean's observation that a hairpin is a thin
+diagonal line and that hairpins always sit below the staff they belong to. Both
+turn out to be load-bearing.*
+
+| | truth | detected | reading F1 |
+|---|--:|--:|--:|
+| engraved (page truth, exact) | 3 | 3 | **1.000** |
+| **11 scanned pages** (`<wedge>` in truth; 2 per hairpin) | **198** | **1** | — |
+
+Brahms 1 p2's window encodes 136 wedges — 68 hairpins — and the detector finds
+**one**. Mahler p3 encodes 34 and finds none. So "hairpin detection is fine",
+which the engraved arm says at F1 1.000, is true of engravings and false of the
+domain that matters. **A three-symbol sample on clean pages cannot falsify a
+claim about a thin line on a scan.**
+
+⚠️ **This is the shape Phase 4f already moved to classical CV, and hairpins are
+the member it left behind.** That work moved stems and beams out of the detector
+on the stated grounds that *YOLO bounding boxes are structurally bad at thin
+lines*. A hairpin is a thin line, it is diagonal like a beam, and
+`line_detection` has no hairpin path at all — `staff_detector` mentions hairpins
+only as something to reject when finding staff lines. Beams are CV; hairpins are
+not; they are the same shape class.
+
+**And the placement fact is exactly the discriminator such a reader would need:
+a hairpin is always BELOW the staff it belongs to — 8 of 8 in the page truth,
+none inside a staff.** That is also what fixes the attribution error already
+measured: 3 of Mahler's 4 detected hairpins are filed under staff 18 while
+standing in staff 17's band.
+
+### Still open — and how not to
 
 **The stages read different images, on purpose.** Stage 1 needs a page whose ink
 is known exactly, which means one we render with Verovio. Stage 2 needs the

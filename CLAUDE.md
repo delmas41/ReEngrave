@@ -1131,6 +1131,19 @@ accidentals. `page_truth.render_fidelity` now measures the disagreement per work
 and declares the family unreliable; `score_reading` marks it `(RENDER)` and
 keeps it out of the pool. Including it gave 0.898; excluding it, 0.919.
 
+⚠️ **HAIRPINS ARE PERFECT ON ENGRAVINGS AND ~1% ON SCANS, and the engraved
+corpus hid it.** Reading F1 **1.000** against exact page truth (n=3); over 11
+SCANNED pages the detector finds **1 hairpin against 198 `<wedge>` of truth** —
+Brahms 1 p2 alone encodes 136 and we read one. A three-symbol sample on clean
+pages cannot falsify a claim about a thin line on a scan. ⚠️ **This is the shape
+Phase 4f already moved to classical CV** — stems and beams left the detector on
+the stated grounds that YOLO bounding boxes are structurally bad at thin lines,
+and a hairpin is a thin diagonal line with no `line_detection` path at all
+(`staff_detector` mentions hairpins only to reject them). The discriminator such
+a reader would need is measured: **a hairpin is always BELOW its staff, 8 of 8
+in the page truth**, which is also what fixes the attribution error — 3 of
+Mahler's 4 are filed under staff 18 while standing in staff 17's band.
+
 **Stage 2 priced the open ninth export gap.** `wedge` sat in `KNOWN_GAPS` as
 un-priceable from that inventory; the funnel prices it: **9 hairpins read across
 three works and every one discarded** (Mahler 5 4-of-6, Tchaikovsky 6 3-of-6,

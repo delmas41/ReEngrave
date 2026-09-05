@@ -69,6 +69,7 @@ SCORED_CLASSES: dict[str, str] = {
     "meterSig": "time_signature",
     "clef": "clef",
     "dynam": "dynamic",
+    "hairpin": "hairpin",
     "flag": "flag",
     "dots": "augmentation_dot",
     "slur": "slur",
