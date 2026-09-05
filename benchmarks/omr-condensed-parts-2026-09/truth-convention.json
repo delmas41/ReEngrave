@@ -1,0 +1,717 @@
+{
+  "rows": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1",
+      "groups": [
+        {
+          "staff": 0,
+          "name": "Flauti",
+          "parts": [
+            0,
+            1
+          ],
+          "part_names": [
+            "Flute 1",
+            "Flute 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        },
+        {
+          "staff": 1,
+          "name": "Oboi",
+          "parts": [
+            2,
+            3
+          ],
+          "part_names": [
+            "Oboe 1",
+            "Oboe 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        },
+        {
+          "staff": 2,
+          "name": "Clarinetti in B",
+          "parts": [
+            4,
+            5
+          ],
+          "part_names": [
+            "Bb Clarinet",
+            "Bb Clarinet 2"
+          ],
+          "counts": {
+            "unison": 5,
+            "silent": 11
+          },
+          "first_example": {
+            "unison": 1,
+            "silent": 6
+          }
+        },
+        {
+          "staff": 3,
+          "name": "Fagotti",
+          "parts": [
+            6,
+            7
+          ],
+          "part_names": [
+            "Bassoon 1",
+            "Bassoon 2"
+          ],
+          "counts": {
+            "silent": 6,
+            "unison": 10
+          },
+          "first_example": {
+            "silent": 1,
+            "unison": 7
+          }
+        },
+        {
+          "staff": 4,
+          "name": "Corni in Es",
+          "parts": [
+            8,
+            9
+          ],
+          "part_names": [
+            "Eb Horn 1",
+            "Eb Horn 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        },
+        {
+          "staff": 5,
+          "name": "Trombe in C",
+          "parts": [
+            10,
+            11
+          ],
+          "part_names": [
+            "C Trumpet 1",
+            "C Trumpet 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        }
+      ]
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p2",
+      "groups": [
+        {
+          "staff": 0,
+          "name": "Flauti",
+          "parts": [
+            0,
+            1
+          ],
+          "part_names": [
+            "Flute 1",
+            "Flute 2"
+          ],
+          "counts": {
+            "silent": 15,
+            "divisi": 9,
+            "unison": 4,
+            "solo": 4
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18,
+            "unison": 20,
+            "solo": 39
+          }
+        },
+        {
+          "staff": 1,
+          "name": "Oboi",
+          "parts": [
+            2,
+            3
+          ],
+          "part_names": [
+            "Oboe 1",
+            "Oboe 2"
+          ],
+          "counts": {
+            "silent": 10,
+            "divisi": 17,
+            "unison": 3,
+            "solo": 2
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18,
+            "unison": 22,
+            "solo": 32
+          }
+        },
+        {
+          "staff": 2,
+          "name": "Clarinetti in B",
+          "parts": [
+            4,
+            5
+          ],
+          "part_names": [
+            "Bb Clarinet",
+            "Bb Clarinet 2"
+          ],
+          "counts": {
+            "silent": 12,
+            "divisi": 15,
+            "unison": 3,
+            "solo": 2
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18,
+            "unison": 22,
+            "solo": 32
+          }
+        },
+        {
+          "staff": 3,
+          "name": "Fagotti",
+          "parts": [
+            6,
+            7
+          ],
+          "part_names": [
+            "Bassoon 1",
+            "Bassoon 2"
+          ],
+          "counts": {
+            "unison": 9,
+            "silent": 11,
+            "divisi": 12
+          },
+          "first_example": {
+            "unison": 17,
+            "silent": 25,
+            "divisi": 36
+          }
+        },
+        {
+          "staff": 4,
+          "name": "Corni in Es",
+          "parts": [
+            8,
+            9
+          ],
+          "part_names": [
+            "Eb Horn 1",
+            "Eb Horn 2"
+          ],
+          "counts": {
+            "silent": 15,
+            "unison": 5,
+            "divisi": 12
+          },
+          "first_example": {
+            "silent": 17,
+            "unison": 18,
+            "divisi": 20
+          }
+        },
+        {
+          "staff": 5,
+          "name": "Trombe in C",
+          "parts": [
+            10,
+            11
+          ],
+          "part_names": [
+            "C Trumpet 1",
+            "C Trumpet 2"
+          ],
+          "counts": {
+            "silent": 24,
+            "divisi": 8
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18
+          }
+        },
+        {
+          "staff": 10,
+          "name": "Violoncello e Basso",
+          "parts": [
+            16,
+            17
+          ],
+          "part_names": [
+            "Violoncello",
+            "Contrabass"
+          ],
+          "counts": {
+            "solo": 1,
+            "divisi": 2,
+            "unison": 24,
+            "silent": 5
+          },
+          "first_example": {
+            "solo": 17,
+            "divisi": 18,
+            "unison": 20,
+            "silent": 25
+          }
+        }
+      ]
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1",
+      "groups": [
+        {
+          "staff": 0,
+          "name": "Flauti",
+          "parts": [
+            0,
+            1
+          ],
+          "part_names": [
+            "Flute 1",
+            "Flute 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        },
+        {
+          "staff": 1,
+          "name": "Oboi",
+          "parts": [
+            2,
+            3
+          ],
+          "part_names": [
+            "Oboe 1",
+            "Oboe 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        },
+        {
+          "staff": 2,
+          "name": "Clarinetti in B",
+          "parts": [
+            4,
+            5
+          ],
+          "part_names": [
+            "Bb Clarinet",
+            "Bb Clarinet 2"
+          ],
+          "counts": {
+            "unison": 5,
+            "silent": 11
+          },
+          "first_example": {
+            "unison": 1,
+            "silent": 6
+          }
+        },
+        {
+          "staff": 3,
+          "name": "Fagotti",
+          "parts": [
+            6,
+            7
+          ],
+          "part_names": [
+            "Bassoon 1",
+            "Bassoon 2"
+          ],
+          "counts": {
+            "silent": 6,
+            "unison": 10
+          },
+          "first_example": {
+            "silent": 1,
+            "unison": 7
+          }
+        },
+        {
+          "staff": 4,
+          "name": "Corni in Es",
+          "parts": [
+            8,
+            9
+          ],
+          "part_names": [
+            "Eb Horn 1",
+            "Eb Horn 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        },
+        {
+          "staff": 5,
+          "name": "Trombe in C",
+          "parts": [
+            10,
+            11
+          ],
+          "part_names": [
+            "C Trumpet 1",
+            "C Trumpet 2"
+          ],
+          "counts": {
+            "silent": 16
+          },
+          "first_example": {
+            "silent": 1
+          }
+        }
+      ]
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p2",
+      "groups": [
+        {
+          "staff": 0,
+          "name": "Flauti",
+          "parts": [
+            0,
+            1
+          ],
+          "part_names": [
+            "Flute 1",
+            "Flute 2"
+          ],
+          "counts": {
+            "silent": 15,
+            "divisi": 9,
+            "unison": 4,
+            "solo": 4
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18,
+            "unison": 20,
+            "solo": 39
+          }
+        },
+        {
+          "staff": 1,
+          "name": "Oboi",
+          "parts": [
+            2,
+            3
+          ],
+          "part_names": [
+            "Oboe 1",
+            "Oboe 2"
+          ],
+          "counts": {
+            "silent": 10,
+            "divisi": 17,
+            "unison": 3,
+            "solo": 2
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18,
+            "unison": 22,
+            "solo": 32
+          }
+        },
+        {
+          "staff": 2,
+          "name": "Clarinetti in B",
+          "parts": [
+            4,
+            5
+          ],
+          "part_names": [
+            "Bb Clarinet",
+            "Bb Clarinet 2"
+          ],
+          "counts": {
+            "silent": 12,
+            "divisi": 15,
+            "unison": 3,
+            "solo": 2
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18,
+            "unison": 22,
+            "solo": 32
+          }
+        },
+        {
+          "staff": 3,
+          "name": "Fagotti",
+          "parts": [
+            6,
+            7
+          ],
+          "part_names": [
+            "Bassoon 1",
+            "Bassoon 2"
+          ],
+          "counts": {
+            "unison": 9,
+            "silent": 11,
+            "divisi": 12
+          },
+          "first_example": {
+            "unison": 17,
+            "silent": 25,
+            "divisi": 36
+          }
+        },
+        {
+          "staff": 4,
+          "name": "Corni in Es",
+          "parts": [
+            8,
+            9
+          ],
+          "part_names": [
+            "Eb Horn 1",
+            "Eb Horn 2"
+          ],
+          "counts": {
+            "silent": 15,
+            "unison": 5,
+            "divisi": 12
+          },
+          "first_example": {
+            "silent": 17,
+            "unison": 18,
+            "divisi": 20
+          }
+        },
+        {
+          "staff": 5,
+          "name": "Trombe in C",
+          "parts": [
+            10,
+            11
+          ],
+          "part_names": [
+            "C Trumpet 1",
+            "C Trumpet 2"
+          ],
+          "counts": {
+            "silent": 24,
+            "divisi": 8
+          },
+          "first_example": {
+            "silent": 17,
+            "divisi": 18
+          }
+        },
+        {
+          "staff": 10,
+          "name": "Violoncello e Basso",
+          "parts": [
+            16,
+            17
+          ],
+          "part_names": [
+            "Violoncello",
+            "Contrabass"
+          ],
+          "counts": {
+            "solo": 1,
+            "divisi": 2,
+            "unison": 24,
+            "silent": 5
+          },
+          "first_example": {
+            "solo": 17,
+            "divisi": 18,
+            "unison": 20,
+            "silent": 25
+          }
+        }
+      ]
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p5",
+      "groups": []
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p6",
+      "groups": []
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1",
+      "groups": [
+        {
+          "staff": 0,
+          "name": "2 Floten",
+          "parts": [
+            0,
+            1
+          ],
+          "part_names": [
+            "Flute 1",
+            "Flute 2"
+          ],
+          "counts": {
+            "divisi": 7
+          },
+          "first_example": {
+            "divisi": 1
+          }
+        },
+        {
+          "staff": 1,
+          "name": "2 Oboen",
+          "parts": [
+            2,
+            3
+          ],
+          "part_names": [
+            "Oboe 1",
+            "Oboe 2"
+          ],
+          "counts": {
+            "divisi": 7
+          },
+          "first_example": {
+            "divisi": 1
+          }
+        },
+        {
+          "staff": 2,
+          "name": "2 Klarinetten in B",
+          "parts": [
+            4,
+            5
+          ],
+          "part_names": [
+            "Bb Clarinet 1",
+            "Bb Clarinet 2"
+          ],
+          "counts": {
+            "divisi": 7
+          },
+          "first_example": {
+            "divisi": 1
+          }
+        },
+        {
+          "staff": 3,
+          "name": "2 Fagotte",
+          "parts": [
+            6,
+            7
+          ],
+          "part_names": [
+            "Bassoon 1",
+            "Bassoon 2"
+          ],
+          "counts": {
+            "divisi": 7
+          },
+          "first_example": {
+            "divisi": 1
+          }
+        },
+        {
+          "staff": 5,
+          "name": "4 Horner in C 1./2.",
+          "parts": [
+            9,
+            10
+          ],
+          "part_names": [
+            "C Horn 1",
+            "C Horn 2"
+          ],
+          "counts": {
+            "divisi": 7
+          },
+          "first_example": {
+            "divisi": 1
+          }
+        },
+        {
+          "staff": 6,
+          "name": "4 Horner in Es 3./4.",
+          "parts": [
+            11,
+            12
+          ],
+          "part_names": [
+            "Eb Horn 3",
+            "Eb Horn 4"
+          ],
+          "counts": {
+            "divisi": 4,
+            "silent": 3
+          },
+          "first_example": {
+            "divisi": 1,
+            "silent": 5
+          }
+        },
+        {
+          "staff": 7,
+          "name": "2 Trompeten in C",
+          "parts": [
+            13,
+            14
+          ],
+          "part_names": [
+            "C Trumpet 1",
+            "C Trumpet 2"
+          ],
+          "counts": {
+            "divisi": 1,
+            "silent": 6
+          },
+          "first_example": {
+            "divisi": 1,
+            "silent": 2
+          }
+        }
+      ]
+    }
+  ],
+  "pooled": {
+    "silent": 355,
+    "unison": 126,
+    "divisi": 190,
+    "solo": 18
+  }
+}

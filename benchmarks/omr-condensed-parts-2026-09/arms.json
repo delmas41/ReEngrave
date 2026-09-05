@@ -1,0 +1,690 @@
+{
+  "head": "a78c9454d22a5a2f674fc71fe1cf23983ed8369c",
+  "fixture_sha256_16": {
+    "beethoven-sym5-mvt1-984073-p1": "7039fa02a98db460",
+    "beethoven-sym5-mvt1-984073-p2": "8c38f02b8b5a9f59",
+    "beethoven-sym5-mvt1-575951-p1": "dcec8832e782bece",
+    "beethoven-sym5-mvt1-575951-p2": "d9deefb475968027",
+    "dvorak-sym9-mvt1-405834-p5": "c90850bd5ceb078e",
+    "dvorak-sym9-mvt1-405834-p6": "1cc2124b6c19ef23",
+    "brahms-sym1-mvt1-317803-p1": "15daefa6920daa6d",
+    "brahms-sym1-mvt1-317803-p2": "b1d9b806a2d0c077",
+    "mahler-sym5-mvt1-local-p2": "f7f910e112ce01c1",
+    "mahler-sym5-mvt1-local-p3": "45e010c1b8e9501c",
+    "bach-brandenburg3-mvt1-468678-p1": "a6678c4d8312b2cf"
+  },
+  "arms": {
+    "baseline": [
+      {
+        "row": "beethoven-sym5-mvt1-984073-p1",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.710789766407119,
+        "omr_ed": 1278,
+        "es": 513,
+        "em": 429,
+        "parts": 12
+      },
+      {
+        "row": "beethoven-sym5-mvt1-984073-p2",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.869939879759519,
+        "omr_ed": 4341,
+        "es": 1551,
+        "em": 1670,
+        "parts": 11
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p1",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.7595078299776287,
+        "omr_ed": 1358,
+        "es": 513,
+        "em": 526,
+        "parts": 12
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p2",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.8703813475597708,
+        "omr_ed": 4405,
+        "es": 1551,
+        "em": 1846,
+        "parts": 11
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p5",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.4220945083014049,
+        "omr_ed": 661,
+        "es": 0,
+        "em": 63,
+        "parts": 15
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p6",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.7220670391061452,
+        "omr_ed": 2585,
+        "es": 0,
+        "em": 245,
+        "parts": 15
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p1",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.9183618843683083,
+        "omr_ed": 3431,
+        "es": 1001,
+        "em": 1354,
+        "parts": 14
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p2",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.9424098807985064,
+        "omr_ed": 6562,
+        "es": 715,
+        "em": 3628,
+        "parts": 27
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p2",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.6894639556377079,
+        "omr_ed": 1119,
+        "es": 649,
+        "em": 199,
+        "parts": 17
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p3",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.888182606183184,
+        "omr_ed": 3074,
+        "es": 1674,
+        "em": 662,
+        "parts": 13
+      },
+      {
+        "row": "bach-brandenburg3-mvt1-468678-p1",
+        "arm": "baseline",
+        "unchanged": false,
+        "omr_ned": 0.804606726868211,
+        "omr_ed": 6148,
+        "es": 286,
+        "em": 1812,
+        "parts": 12
+      }
+    ],
+    "oracle": [
+      {
+        "row": "beethoven-sym5-mvt1-984073-p1",
+        "arm": "oracle",
+        "unchanged": false,
+        "omr_ned": 0.3875,
+        "omr_ed": 806,
+        "es": 0,
+        "em": 408,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-984073-p2",
+        "arm": "oracle",
+        "unchanged": false,
+        "omr_ned": 0.590796635329045,
+        "omr_ed": 3582,
+        "es": 0,
+        "em": 1316,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p1",
+        "arm": "oracle",
+        "unchanged": false,
+        "omr_ned": 0.4140776699029126,
+        "omr_ed": 853,
+        "es": 0,
+        "em": 417,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p2",
+        "arm": "oracle",
+        "unchanged": false,
+        "omr_ned": 0.4767479674796748,
+        "omr_ed": 2932,
+        "es": 0,
+        "em": 949,
+        "parts": 18
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p5",
+        "arm": "oracle",
+        "unchanged": true,
+        "omr_ned": 0.4220945083014049,
+        "omr_ed": 661,
+        "es": 0,
+        "em": 63,
+        "parts": 15
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p6",
+        "arm": "oracle",
+        "unchanged": true,
+        "omr_ned": 0.7220670391061452,
+        "omr_ed": 2585,
+        "es": 0,
+        "em": 245,
+        "parts": 15
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p1",
+        "arm": "oracle",
+        "unchanged": false,
+        "omr_ned": 0.5509977827050998,
+        "omr_ed": 2485,
+        "es": 0,
+        "em": 332,
+        "parts": 21
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p2",
+        "arm": "oracle",
+        "unchanged": true,
+        "omr_ned": 0.9424098807985064,
+        "omr_ed": 6562,
+        "es": 715,
+        "em": 3628,
+        "parts": 27
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p2",
+        "arm": "oracle",
+        "unchanged": false,
+        "omr_ned": 0.5160210425633668,
+        "omr_ed": 1079,
+        "es": 100,
+        "em": 415,
+        "parts": 34
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p3",
+        "arm": "oracle",
+        "unchanged": true,
+        "omr_ned": 0.888182606183184,
+        "omr_ed": 3074,
+        "es": 1674,
+        "em": 662,
+        "parts": 13
+      },
+      {
+        "row": "bach-brandenburg3-mvt1-468678-p1",
+        "arm": "oracle",
+        "unchanged": true,
+        "omr_ned": 0.804606726868211,
+        "omr_ed": 6148,
+        "es": 286,
+        "em": 1812,
+        "parts": 12
+      }
+    ],
+    "label_ideal": [
+      {
+        "row": "beethoven-sym5-mvt1-984073-p1",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.3875,
+        "omr_ed": 806,
+        "es": 0,
+        "em": 408,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-984073-p2",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.590796635329045,
+        "omr_ed": 3582,
+        "es": 0,
+        "em": 1316,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p1",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.4140776699029126,
+        "omr_ed": 853,
+        "es": 0,
+        "em": 417,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p2",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.4767479674796748,
+        "omr_ed": 2932,
+        "es": 0,
+        "em": 949,
+        "parts": 18
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p5",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.7821732598898348,
+        "omr_ed": 1562,
+        "es": 363,
+        "em": 786,
+        "parts": 23
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p6",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.9036707972878185,
+        "omr_ed": 3865,
+        "es": 877,
+        "em": 1326,
+        "parts": 23
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p1",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.5509977827050998,
+        "omr_ed": 2485,
+        "es": 0,
+        "em": 332,
+        "parts": 21
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p2",
+        "arm": "label_ideal",
+        "unchanged": true,
+        "omr_ned": 0.9424098807985064,
+        "omr_ed": 6562,
+        "es": 715,
+        "em": 3628,
+        "parts": 27
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p2",
+        "arm": "label_ideal",
+        "unchanged": false,
+        "omr_ned": 0.555027711797308,
+        "omr_ed": 1402,
+        "es": 268,
+        "em": 574,
+        "parts": 48
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p3",
+        "arm": "label_ideal",
+        "unchanged": true,
+        "omr_ned": 0.888182606183184,
+        "omr_ed": 3074,
+        "es": 1674,
+        "em": 662,
+        "parts": 13
+      },
+      {
+        "row": "bach-brandenburg3-mvt1-468678-p1",
+        "arm": "label_ideal",
+        "unchanged": true,
+        "omr_ned": 0.804606726868211,
+        "omr_ed": 6148,
+        "es": 286,
+        "em": 1812,
+        "parts": 12
+      }
+    ],
+    "baseline+stitch": [
+      {
+        "row": "beethoven-sym5-mvt1-984073-p1",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.710789766407119,
+        "omr_ed": 1278,
+        "es": 513,
+        "em": 429,
+        "parts": 12
+      },
+      {
+        "row": "beethoven-sym5-mvt1-984073-p2",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.869939879759519,
+        "omr_ed": 4341,
+        "es": 1551,
+        "em": 1670,
+        "parts": 11
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p1",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.7595078299776287,
+        "omr_ed": 1358,
+        "es": 513,
+        "em": 526,
+        "parts": 12
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p2",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.8703813475597708,
+        "omr_ed": 4405,
+        "es": 1551,
+        "em": 1846,
+        "parts": 11
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p5",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.4220945083014049,
+        "omr_ed": 661,
+        "es": 0,
+        "em": 63,
+        "parts": 15
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p6",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.7220670391061452,
+        "omr_ed": 2585,
+        "es": 0,
+        "em": 245,
+        "parts": 15
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p1",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.9183618843683083,
+        "omr_ed": 3431,
+        "es": 1001,
+        "em": 1354,
+        "parts": 14
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p2",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.913224924449561,
+        "omr_ed": 6346,
+        "es": 1632,
+        "em": 2810,
+        "parts": 14
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p2",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.6894639556377079,
+        "omr_ed": 1119,
+        "es": 649,
+        "em": 199,
+        "parts": 17
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p3",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.888182606183184,
+        "omr_ed": 3074,
+        "es": 1674,
+        "em": 662,
+        "parts": 13
+      },
+      {
+        "row": "bach-brandenburg3-mvt1-468678-p1",
+        "arm": "baseline+stitch",
+        "unchanged": false,
+        "omr_ned": 0.804606726868211,
+        "omr_ed": 6148,
+        "es": 286,
+        "em": 1812,
+        "parts": 12
+      }
+    ],
+    "oracle+stitch": [
+      {
+        "row": "beethoven-sym5-mvt1-984073-p1",
+        "arm": "oracle+stitch",
+        "unchanged": false,
+        "omr_ned": 0.3875,
+        "omr_ed": 806,
+        "es": 0,
+        "em": 408,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-984073-p2",
+        "arm": "oracle+stitch",
+        "unchanged": false,
+        "omr_ned": 0.590796635329045,
+        "omr_ed": 3582,
+        "es": 0,
+        "em": 1316,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p1",
+        "arm": "oracle+stitch",
+        "unchanged": false,
+        "omr_ned": 0.4140776699029126,
+        "omr_ed": 853,
+        "es": 0,
+        "em": 417,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p2",
+        "arm": "oracle+stitch",
+        "unchanged": false,
+        "omr_ned": 0.4767479674796748,
+        "omr_ed": 2932,
+        "es": 0,
+        "em": 949,
+        "parts": 18
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p5",
+        "arm": "oracle+stitch",
+        "unchanged": true,
+        "omr_ned": 0.4220945083014049,
+        "omr_ed": 661,
+        "es": 0,
+        "em": 63,
+        "parts": 15
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p6",
+        "arm": "oracle+stitch",
+        "unchanged": true,
+        "omr_ned": 0.7220670391061452,
+        "omr_ed": 2585,
+        "es": 0,
+        "em": 245,
+        "parts": 15
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p1",
+        "arm": "oracle+stitch",
+        "unchanged": false,
+        "omr_ned": 0.5509977827050998,
+        "omr_ed": 2485,
+        "es": 0,
+        "em": 332,
+        "parts": 21
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p2",
+        "arm": "oracle+stitch",
+        "unchanged": false,
+        "omr_ned": 0.7276995305164319,
+        "omr_ed": 6200,
+        "es": 0,
+        "em": 1342,
+        "parts": 21
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p2",
+        "arm": "oracle+stitch",
+        "unchanged": false,
+        "omr_ned": 0.5160210425633668,
+        "omr_ed": 1079,
+        "es": 100,
+        "em": 415,
+        "parts": 34
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p3",
+        "arm": "oracle+stitch",
+        "unchanged": true,
+        "omr_ned": 0.888182606183184,
+        "omr_ed": 3074,
+        "es": 1674,
+        "em": 662,
+        "parts": 13
+      },
+      {
+        "row": "bach-brandenburg3-mvt1-468678-p1",
+        "arm": "oracle+stitch",
+        "unchanged": true,
+        "omr_ned": 0.804606726868211,
+        "omr_ed": 6148,
+        "es": 286,
+        "em": 1812,
+        "parts": 12
+      }
+    ],
+    "label_ideal+stitch": [
+      {
+        "row": "beethoven-sym5-mvt1-984073-p1",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.3875,
+        "omr_ed": 806,
+        "es": 0,
+        "em": 408,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-984073-p2",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.590796635329045,
+        "omr_ed": 3582,
+        "es": 0,
+        "em": 1316,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p1",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.4140776699029126,
+        "omr_ed": 853,
+        "es": 0,
+        "em": 417,
+        "parts": 18
+      },
+      {
+        "row": "beethoven-sym5-mvt1-575951-p2",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.4767479674796748,
+        "omr_ed": 2932,
+        "es": 0,
+        "em": 949,
+        "parts": 18
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p5",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.7821732598898348,
+        "omr_ed": 1562,
+        "es": 363,
+        "em": 786,
+        "parts": 23
+      },
+      {
+        "row": "dvorak-sym9-mvt1-405834-p6",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.9036707972878185,
+        "omr_ed": 3865,
+        "es": 877,
+        "em": 1326,
+        "parts": 23
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p1",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.5509977827050998,
+        "omr_ed": 2485,
+        "es": 0,
+        "em": 332,
+        "parts": 21
+      },
+      {
+        "row": "brahms-sym1-mvt1-317803-p2",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.7276995305164319,
+        "omr_ed": 6200,
+        "es": 0,
+        "em": 1342,
+        "parts": 21
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p2",
+        "arm": "label_ideal+stitch",
+        "unchanged": false,
+        "omr_ned": 0.555027711797308,
+        "omr_ed": 1402,
+        "es": 268,
+        "em": 574,
+        "parts": 48
+      },
+      {
+        "row": "mahler-sym5-mvt1-local-p3",
+        "arm": "label_ideal+stitch",
+        "unchanged": true,
+        "omr_ned": 0.888182606183184,
+        "omr_ed": 3074,
+        "es": 1674,
+        "em": 662,
+        "parts": 13
+      },
+      {
+        "row": "bach-brandenburg3-mvt1-468678-p1",
+        "arm": "label_ideal+stitch",
+        "unchanged": true,
+        "omr_ned": 0.804606726868211,
+        "omr_ed": 6148,
+        "es": 286,
+        "em": 1812,
+        "parts": 12
+      }
+    ]
+  }
+}
