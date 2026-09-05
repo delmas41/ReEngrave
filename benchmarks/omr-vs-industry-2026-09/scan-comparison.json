@@ -1,0 +1,83 @@
+{
+  "_comment": "Scan-side comparison over the 11-row pool (restamp-composed baseline). ours_current = the same 10 rows Audiveris scored. WARNING: the scan benchmark moved to a 20-ROW era on 2026-09-04 (results-reconciliation.json, pooled 0.8444/74,968); the Audiveris arm has NOT been widened to it, so these two figures are a valid pair with each other and neither is comparable to the 20-row number.",
+  "ours_current": {
+    "omr_ned": 0.8345096904830778,
+    "omr_ed": 28849,
+    "label": "composed baseline, same 10 rows Audiveris scored"
+  },
+  "ours_all11": {
+    "omr_ned": 0.8302575158134136,
+    "omr_ed": 35046
+  },
+  "ours_recorded": {
+    "omr_ned": 0.8302575158134136,
+    "omr_ed": 35046
+  },
+  "audiveris": {
+    "omr_ned": 0.7918698265109423,
+    "omr_ed": 27934,
+    "n_rows": 10
+  },
+  "per_row": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1",
+      "ours": 0.710789766407119,
+      "audiveris": 0.8492462311557789
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p2",
+      "ours": 0.8703406813627255,
+      "audiveris": 0.8510954326030449
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1",
+      "ours": 0.7595078299776287,
+      "audiveris": 0.7268623024830699
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p2",
+      "ours": 0.8707765263781861,
+      "audiveris": 0.7937923653228683
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p5",
+      "ours": 0.43103448275862066,
+      "audiveris": 0.5381
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p6",
+      "ours": 0.7243303571428571,
+      "audiveris": 0.7317916002126529
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1",
+      "ours": 0.9191648822269807,
+      "audiveris": 0.9268
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p2",
+      "ours": 0.9425534970558668,
+      "audiveris": 0.7479
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p2",
+      "ours": 0.6894639556377079,
+      "audiveris": 0.6534422403733956
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p3",
+      "ours": 0.888760473851488,
+      "audiveris": 0.8604201216141515
+    },
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1",
+      "ours": 0.8110195000654364,
+      "audiveris": "failed"
+    }
+  ],
+  "scan_era_note": {
+    "arm_pool": "11-row (10 scored by both)",
+    "current_canonical_era": "20-row, results-reconciliation.json 0.8444 / 74968",
+    "comparable": false
+  }
+}
