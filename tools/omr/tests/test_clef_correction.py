@@ -357,7 +357,16 @@ def _viola_staff_read_treble():
 
 class TestTrebleOverride:
     def test_the_table_holds_only_verified_instruments(self):
-        assert set(TREBLE_OVERRIDE_INSTRUMENTS) == {"Viola", "Bassoon", "Timpani"}
+        # Membership is a REVIEWABLE decision, not a convenience — widening it
+        # must be a deliberate diff. Contrabassoon added 2026-09-05 against the
+        # table's own standard (a verified treble-misread site with register
+        # evidence): both Brahms p4 Kontrafagott staves propose treble->bass at
+        # fit 1.000 with current_fit 0.000, i.e. the clef in effect places not
+        # one of their 13 and 18 noteheads inside the written range. It had been
+        # covered only by accident, via `K-Fag.` mis-resolving to Bassoon, until
+        # the lexicon was corrected the same day.
+        assert set(TREBLE_OVERRIDE_INSTRUMENTS) == {
+            "Viola", "Bassoon", "Contrabassoon", "Timpani"}
         for name in TREBLE_OVERRIDE_INSTRUMENTS:
             inst = lookup(name).instrument
             assert inst.default_clef != "treble", (

@@ -412,7 +412,20 @@ def apply_proposal(staff: dict[str, Any], proposal: ClefProposal, *,
 # Cello/Contrabass are deliberately absent: no verified treble-misread site,
 # and the pool's one cello clef error (dvorak-p5, tenor lost to bass 0.92 vs
 # 0.88) is a case the convention AGREES with the wrong reading on.
-TREBLE_OVERRIDE_INSTRUMENTS = ("Viola", "Bassoon", "Timpani")
+# ⚠️ Contrabassoon added 2026-09-05, and the reason it was MISSING is the
+# interesting part: this table is keyed on instrument NAMES and was written when
+# "Contrabassoon" could not occur. `K-Fag.` resolved to **Bassoon** — which IS
+# in this table — until another session's derived contra- cross product fixed
+# the lexicon the same day. So a correct lexicon fix silently moved two Brahms
+# p4 staves OUT of this tier's reach: the right label got less help than the
+# wrong one had. Nothing changed in practice (the tier is off by default), which
+# is exactly why it would have gone unnoticed.
+# It meets this table's own admission standard — a verified treble-misread site
+# with register evidence: both Kontrafagott staves propose treble->bass at fit
+# 1.000 against a **current_fit of 0.000**, i.e. the clef in effect places not
+# one of their 13 and 18 noteheads inside the instrument's written range.
+# (`benchmarks/omr-staff-identity-labels-2026-09/`, probe_clef_consumer.py)
+TREBLE_OVERRIDE_INSTRUMENTS = ("Viola", "Bassoon", "Contrabassoon", "Timpani")
 
 # ⚠️ A confidence ceiling on the treble read was measured and REFUSED: the
 # misread trebles score 0.34 and 0.72 while a CORRECT label-named treble
