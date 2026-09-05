@@ -170,6 +170,18 @@ Each is a hollow head read where the reference says black — Breitkopf tremolo
 abbreviations. The pre-fill deliberately refuses to decide them. Note Sean's
 completion pass covered `s3-m4`, not the conflict cell `s3-m6`.
 
+⚠️ **CORRECTED 2026-09-03, same day — all five reviewed, and none is a
+tremolo abbreviation** (the encoding carries 168 `<tremolo type="single">`
+elsewhere; these bars hold none). Three (both on `s2-m2`, one on `s3-m6`)
+are the REFERENCE's tie-splits: one printed dotted-half encoded as tied
+eighth+quarter+quarter fragments, so the hollow head is real and Sean's
+existing `noteheadHalfOnLine` boxes already cover it. Two (`s26-m0`,
+`s15-m7`) are a flat's loop and a natural sign misdetected as hollow heads;
+Sean's empty verdicts were already right. Nothing needs clicking. The
+actionable residue is a COLLAPSE GAP — a within-measure tie chain should
+reconcile by the reading exactly as tremolo/tremolando do. Evidence:
+`benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md`.
+
 **Also open, smaller:**
 
 - `brahms1-p4-sys1-s27-m3` is the one cell of 56 with no verdict at all.

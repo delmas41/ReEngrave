@@ -20,6 +20,7 @@ Public surface:
 
 from __future__ import annotations
 
+import os
 from collections import Counter
 
 import cv2
@@ -764,6 +765,168 @@ def _neighbour_room(pws: PageWithStaves, staff: Staff) -> tuple[float, float]:
     return above, below
 
 
+# ─── Localizing a cell's staff-line grid to the ink under it ─────────────────
+#
+# `Staff.line_ys` is five ideal horizontal rows fitted across the staff's whole
+# width (`types.Staff`), and `_build_measure_cell` copies those five constants
+# into every one of the staff's cells. On a SCAN the printed staff tilts or
+# bows: measured over 7 staves of 5 editions, the residual (printed − modeled)
+# is a smooth ramp, near zero mid-staff and 8–17 page px at the ends — 0.3–0.65
+# staff spaces (`benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`). Half a
+# space is the distance from a line to the space beside it, so an end-of-staff
+# cell's stored grid can name the wrong slot for every note in the bar, and
+# `pitch_resolver` reads exactly these per-cell rows.
+#
+# So the staff-level model stays as it is — five ideal rows, one description of
+# the whole staff — and only the PER-CELL copy is moved onto the ink beneath
+# that cell. `header_ink.refine_staff_lines_in_cell` does exactly this for
+# HEADER cells already, and measured the fault's shape there: the staff is
+# DISPLACED, not distorted, so one rigid offset for all five rows is the right
+# correction — and it is also all the canonical cell frame can express without
+# changing the span every cell is normalised by.
+#
+# ⚠️ THE FIVE ROWS ARE SLID AS ONE COMB, NOT MEASURED ONE AT A TIME, and the
+# reason is the largest case in the corpus. Following each line to its own
+# nearest ink (`header_ink.trace_staff_line`, re-seeded to extend its reach)
+# agrees with the hand-traced residual to within 0.08 spaces on six of the
+# seven flagged cells — and on the seventh, Dvořák 9 p.8 staff 4 at −0.55
+# spaces, it ALIASES: past half a space the nearest printed line to a modeled
+# row is the row BELOW it, some of the five lock onto their neighbours and some
+# do not, and the five offsets it returns spread 20.5 px against 0.5–2.0 px on
+# every coherent case. It answered +0.32 where the truth is −0.55 — a
+# correction 0.87 spaces the wrong way, worse than leaving the grid alone.
+# Sliding the whole comb cannot alias inside a bound smaller than one spacing,
+# because moving a five-line comb by a spacing leaves only four of its rows on
+# a printed line.
+#
+# Measured cost, and why this is behind a flag rather than shipped:
+# `benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md`. It recovers
+# every displacement traced by hand and moves the scan e2e benchmark by 4 edits
+# of 7894 — because 0.4% of that benchmark's cells are affected against 8–16%
+# of pages sampled deeper into the same editions. A null result on a corpus
+# without the defect is not evidence either way.
+ENV_CELL_LINE_TRACE = "OMR_CELL_LINE_TRACE"
+
+# How far the comb may slide. Bounded BELOW one spacing on purpose — that is
+# what makes aliasing unreachable rather than merely unlikely — and above the
+# 0.65 spaces of the largest displacement measured.
+CELL_LINE_MAX_SHIFT_SPACES = 0.75
+
+# At the winning shift, this much of the cell's width must be inked at
+# `CELL_LINE_MIN_ROWS_COVERED` of the five rows. This is the coherence test
+# that replaces per-line matching's missing one: it asserts that printed staff
+# lines really are there, so a cell whose profile is dominated by a beam or a
+# chord — one strong row, not a comb — abstains instead of dragging its grid
+# onto the glyph.
+CELL_LINE_MIN_ROW_COVERAGE = 0.45
+
+# ⚠️ FOUR OF FIVE, NOT ALL FIVE, and requiring all five threw away a correct
+# answer on one of the two labels this whole thread exists to have prevented.
+# `brahms1-p2-sys1-s20-m6` (FINDINGS §3's second silent wrong label) fits at
+# −0.436 spaces against a hand-measured −0.40, with row coverage
+# [1.00, 1.00, 0.374, 1.00, 1.00] — because the staff's own modeled rows are
+# unevenly spaced (gaps 27, 22, 33, 28 px at spacing 27.5), so one comb row
+# cannot sit on the print at ANY shift. The staff is not merely displaced
+# there; phase 1's fit is itself distorted, and a rigid comb inherits that.
+# Four rows agreeing at 1.00 is overwhelming evidence of a staff either way.
+# This does not reopen the narrow-cell alias, which passes coverage on all
+# five rows and is refused by width instead.
+CELL_LINE_MIN_ROWS_COVERED = 4
+
+# Below this, the fit has measured nothing — the comb is scored at integer
+# page rows, so a one-pixel "displacement" is its own quantization. Measured on
+# the engraved Beethoven fixture, a LilyPond page whose staves are straight by
+# construction: 32 of its 144 cells answer a non-zero shift and the largest is
+# 0.024 spaces, which is exactly 1 px at that spacing. Refusing those is what
+# makes the engraved control a no-op that can be PROVED rather than hoped for,
+# and it forfeits nothing on the scan side, where every displacement measured
+# by hand is 8–17 px.
+CELL_LINE_MIN_SHIFT_SPACES = 0.05
+
+# A cell this narrow has too little horizontal evidence to fit a comb to, and
+# it aliases rather than failing quietly. Measured on the scan corpus with the
+# shift bound deliberately raised past a spacing: every cell that then answered
+# beyond half a space is 2.2–3.7 staff spaces wide, they cluster within a few
+# percent of ±1.0 SPACING, and their row coverage is 1.00 — so the coherence
+# test cannot see it. It is the comb sliding a whole line: four of its five
+# rows still land on a printed line, and in a narrow cell nothing else votes.
+# Six of them are Dvořák's brace cells, the system furniture that
+# `benchmarks/omr-scan-e2e-2026-09/RESULTS.md` §1 measures at 2.2 spaces.
+# The shift bound already refuses a full-spacing alias; this refuses the
+# partial ones it would let through, and every displacement measured by hand
+# lives in a cell 9 spaces wide or wider.
+CELL_LINE_MIN_WIDTH_SPACES = 4.0
+
+
+def _cell_line_trace_enabled() -> bool:
+    """`OMR_CELL_LINE_TRACE` env; default OFF while it is being measured."""
+    raw = os.environ.get(ENV_CELL_LINE_TRACE, "").strip().lower()
+    return raw in {"1", "true", "yes", "on"}
+
+
+def _cell_line_offset(
+    pws: PageWithStaves, staff: Staff, x0: int, x1: int
+) -> tuple[int, dict] | None:
+    """How far this cell's printed staff sits from the rows the page-wide fit
+    assigned it, in page pixels — `(offset, provenance)`, or None to abstain.
+
+    Positive means the print sits BELOW the model. One number for all five
+    rows; see the section comment above for why rigid, and why a comb.
+    """
+    binary = pws.page.binary
+    ys = [int(y) for y in staff.line_ys]
+    spacing = float(staff.line_spacing_px)
+    if len(ys) < 5 or spacing <= 0:
+        return None
+    height, width = binary.shape[:2]
+    lo, hi = max(0, int(x0)), min(width, int(x1))
+    if (hi - lo) < max(2.0, CELL_LINE_MIN_WIDTH_SPACES * spacing):
+        return None
+
+    limit = int(round(CELL_LINE_MAX_SHIFT_SPACES * spacing))
+    band_lo = max(0, min(ys) - limit - 2)
+    band_hi = min(height, max(ys) + limit + 3)
+    if band_hi - band_lo < 5:
+        return None
+    # Phase 1's binary is 0=ink. Per-row ink counts over the cell's own columns
+    # — a printed line spans the cell's whole width, so it is a peak here
+    # however much glyph ink sits on top of it.
+    row_ink = (binary[band_lo:band_hi, lo:hi] == 0).sum(axis=1).astype(float)
+    n_rows = row_ink.shape[0]
+    cell_width = float(hi - lo)
+
+    def rows_at(shift: int) -> list[int]:
+        return [y + shift - band_lo for y in ys]
+
+    def bands_at(shift: int) -> list[tuple[int, int]]:
+        return [(max(0, r - 1), min(n_rows, r + 2)) for r in rows_at(shift)]
+
+    def score(shift: int) -> float:
+        return sum(float(row_ink[a:b].sum()) for a, b in bands_at(shift) if a < b)
+
+    # Ties go to the SMALLER move: "do not move without a reason" is the whole
+    # posture here, and on a cell whose grid is already right the modeled rows
+    # and a neighbouring shift can score identically.
+    best_shift = max(range(-limit, limit + 1), key=lambda s: (score(s), -abs(s)))
+    if score(best_shift) <= 0:
+        return None
+    if abs(best_shift) < CELL_LINE_MIN_SHIFT_SPACES * spacing:
+        return None  # nothing measured — see the constant
+
+    coverage = [float(row_ink[a:b].max()) / cell_width if a < b else 0.0
+                for a, b in bands_at(best_shift)]
+    covered = sum(1 for c in coverage if c >= CELL_LINE_MIN_ROW_COVERAGE)
+    if covered < CELL_LINE_MIN_ROWS_COVERED:
+        return None  # no staff-line comb under this cell — see the constants
+
+    return best_shift, {
+        "offset_px": best_shift,
+        "offset_spaces": round(best_shift / spacing, 3),
+        "rows_covered": covered,
+        "min_row_coverage": round(min(coverage), 3),
+    }
+
+
 def _build_measure_cell(
     pws: PageWithStaves,
     staff: Staff,
@@ -802,8 +965,23 @@ def _build_measure_cell(
     if x1 - x0 < 10:
         return None  # too narrow, skip
     cell_rgb = rgb[y0:y1, x0:x1].copy()
-    # Staff line ys in the cell's local coordinate frame
-    local_ys = [y - y0 for y in staff.line_ys]
+    # Staff line ys in the cell's local coordinate frame.
+    #
+    # The CROP is deliberately left where the staff-level model put it — only
+    # the stored grid localizes. A cell is normalised by its staff's span and
+    # padded in staff spaces, so moving the crop would move the canonical frame
+    # that every saved box in the labeling batches lives in, for a shift that
+    # is a small fraction of a four-space pad.
+    line_offset = (
+        _cell_line_offset(pws, staff, x0, x1)
+        if _cell_line_trace_enabled() else None
+    )
+    if line_offset is not None:
+        shift, line_prov = line_offset
+        local_ys = [int(round(y + shift)) - y0 for y in staff.line_ys]
+    else:
+        line_prov = None
+        local_ys = [y - y0 for y in staff.line_ys]
     page_span = staff.span_px
     up_rgb, scale, up_ys = _upscale_to_canonical(
         cell_rgb, page_span, local_ys, max_cell_width,
@@ -836,6 +1014,20 @@ def _build_measure_cell(
     # staff-line-removal step. (Not part of MeasureCell's formal schema —
     # kept dynamic for now.)
     cell.__dict__["binary"] = up_bin
+    if line_prov is not None:
+        cell.__dict__["line_grid_localized"] = line_prov
+        # The frame's own grid — what this exact cell stores with the flag
+        # off, by the same arithmetic (`local_ys` then `_upscale_to_canonical`'s
+        # ys transform). Localization moves only the stored rows, never the
+        # crop, the scale or a pixel of the image (measured 360/360 in
+        # benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md), so this
+        # is what identifies the FRAME across flag states —
+        # `recut_cells.frame_mismatch` compares it.
+        unlocal = [y - y0 for y in staff.line_ys]
+        cell.__dict__["staff_line_ys_canonical_unlocalized"] = (
+            unlocal if page_span <= 0
+            else [int(round(y * scale)) for y in unlocal]
+        )
     return cell
 
 

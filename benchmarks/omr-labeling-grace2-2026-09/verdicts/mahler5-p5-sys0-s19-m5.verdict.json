@@ -1,0 +1,35 @@
+{
+  "cell_id": "mahler5-p5-sys0-s19-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T20:23:31+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLineSmall",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1132,
+        "y": 866,
+        "w": 75,
+        "h": 63
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpaceSmall",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1222,
+        "y": 916,
+        "w": 75,
+        "h": 63
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "grace noteheads"
+  ]
+}

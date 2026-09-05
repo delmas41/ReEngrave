@@ -59,6 +59,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import statistics
 import sys
 from collections import Counter
 from dataclasses import dataclass, field
@@ -71,6 +72,7 @@ from .measure_align import (
     Alignment,
     Token,
     align_tokens,
+    collapse_tie_chains,
     collapse_tremolo_runs,
     event_tokens,
     expected_head_class,
@@ -88,6 +90,13 @@ PREFILL_DIR = "prefill"
 DEFAULT_MIN_STRENGTH = 0.5
 DEFAULT_MIN_IOU = 0.3
 NOTE_TAG = "mxl_prefill"
+# A head under this share of the cell's own median in BOTH dimensions is
+# grace-sized and stays a queue item: Sean's grace boxes measure 41x38 and
+# 44x45 against 51-83 wide neighbours, and the pre-fill cannot label a grace
+# note from either source (0 `Small` detections, 0 <grace/> in the
+# reference). Measured: 2/2 grace heads deferred for 1 good box
+# (benchmarks/omr-prefill-admission-2026-09/FINDINGS.md).
+SMALL_HEAD_RATIO = 0.85
 
 
 # --------------------------------------------------------------------------
@@ -327,6 +336,8 @@ class CellPrefill:
             "n_hints_missing": sum(1 for h in self.hints if h["kind"] == "missing"),
             "n_hints_extra": sum(1 for h in self.hints if h["kind"] == "extra"),
             "n_conflicts": sum(1 for h in self.hints if h["kind"] == "conflict"),
+            "n_admit_labels": sum(1 for d in self.decisions if d.get("admission") == "labels"),
+            "n_admit_queue": sum(1 for d in self.decisions if d.get("admission") == "queue"),
         }
 
 
@@ -500,6 +511,9 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
     # total value.
     read_positions = ([int(t.key[1:]) for t in p_tokens if t.key.startswith("P")]
                       if cell_match == "position" else None)
+    # Ties first: they are explicit notation, and a collapsed chain is an
+    # ordinary note by the time the run-shape inference looks at the bar.
+    notes = collapse_tie_chains(notes, read_positions)
     notes = collapse_tremolo_runs(notes, read_positions)
     t_tokens = truth_tokens(notes, match=cell_match, include_rests=not condensed)
 
@@ -607,17 +621,29 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
             return
         tn: TruthNote = tt.ref
         cls = det.get("class")
+        variant_corrected = False
         if pt.is_rest:
             want = expected_rest_class(tn)
             category = "rest"
         else:
-            want = expected_head_class(tn.type, cls)
+            # On an exactly-paired note the reference knows the on-line /
+            # in-space variant too — its staff position IS the pairing key.
+            # A near pair sits a step off, where the truth's parity is the
+            # wrong one by construction, so the detector's variant stands.
+            truth_variant = (on_line_or_in_space(tn.pitch, tn.clef)
+                             if not near and cell_match == "position" else None)
+            want = expected_head_class(tn.type, cls, variant=truth_variant)
+            parsed_cls = parse_head_class(cls)
+            variant_corrected = bool(truth_variant and parsed_cls
+                                     and parsed_cls[1] != truth_variant)
             category = "notehead"
         if want is None:
             return
         verdict = "TP" if want == cls else "WRONG_CATEGORY"
         trem = f" ({tn.tremolo_of}× repeated in the reference — tremolo abbreviation)" \
             if tn.tremolo_of else ""
+        if tn.tied_of:
+            trem += f" ({tn.tied_of} tied fragments in the reference)"
         label = f"{NOTE_TAG}: {'rest' if tn.rest else tn.pitch} {tn.type or '?'}" \
                 f"{'.' * tn.dots} m{number}{trem}"
         bbox = fm.box(det.get("bbox", [0, 0, 0, 0]))
@@ -664,6 +690,7 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
                 best_id, best_iou = bd["id"], v
         decision = {
             "verdict": verdict, "class": want, "category": category, "near": near,
+            "variant_corrected": variant_corrected,
             "truth": {"pitch": tn.pitch, "type": tn.type, "dots": tn.dots,
                       "duration_ql": tn.duration_ql, "onset_ql": tn.onset_ql},
             "read": {"class": cls, "pitch": det.get("pitch"),
@@ -723,6 +750,8 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
         tn: TruthNote = t.ref
         hint_type, hint_dots = tn.type, tn.dots
         run_note = f" ({tn.tremolo_of}× repeated in the reference — tremolo?)" if tn.tremolo_of else ""
+        if tn.tied_of:
+            run_note += f" ({tn.tied_of} tied fragments in the reference)"
         if tn.rest:
             want_cls = expected_rest_class(tn)
             y = ((b_lines[0] + b_lines[-1]) / 2.0) if len(b_lines) >= 5 else None
@@ -742,8 +771,38 @@ def prefill_cell(entry: dict, ctx: dict | None, row: WindowRow | None,
         out.hints.append({"kind": "missing", "label": label, "class": want_cls,
                           "pitch": tn.pitch, "type": hint_type, "dots": hint_dots,
                           "tremolo_run": tn.tremolo_of or None,
+                          "tied_run": tn.tied_of or None,
                           "onset_ql": tn.onset_ql, "bbox": bbox,
                           "x_estimated": True})
+
+    # ---- Admission tier: which pre-filled boxes could one day be admitted
+    # as labels without a glance, and which stay a queue for the human.
+    # METADATA ONLY — nothing about what is written changes, and today even
+    # the "labels" tier is still a queue; `--score` prices the tiers so the
+    # random completion pass can decide. Reasons are per box (a near pair, a
+    # grace-sized head, a variant the reference corrected) plus one per-cell
+    # demotion: a cell holding any variant correction has boxes that wobble
+    # against the staff grid, and the phantom cell in the measured batch was
+    # exactly such a cell (benchmarks/omr-prefill-admission-2026-09/).
+    head_dec = [d for d in out.decisions if d.get("category") == "notehead"]
+    med_w = statistics.median([d["bbox"]["w"] for d in head_dec]) if head_dec else 0
+    med_h = statistics.median([d["bbox"]["h"] for d in head_dec]) if head_dec else 0
+    cell_flip = any(d.get("variant_corrected") for d in out.decisions)
+    for d in out.decisions:
+        reasons = []
+        if d.get("near"):
+            reasons.append("near_match")
+        if d.get("variant_corrected"):
+            reasons.append("variant_corrected")
+        if (d.get("category") == "notehead" and med_w and med_h
+                and d["bbox"]["w"] < SMALL_HEAD_RATIO * med_w
+                and d["bbox"]["h"] < SMALL_HEAD_RATIO * med_h):
+            reasons.append("small_head")
+        if cell_flip and not reasons:
+            reasons.append("cell_has_variant_correction")
+        d["admission"] = "queue" if reasons else "labels"
+        if reasons:
+            d["admission_reasons"] = reasons
 
     out.verdict_state = state
     return out
@@ -842,31 +901,41 @@ def cell_was_swept_for(human_state: dict, pass_name: str) -> bool:
     return pass_name in (human_state.get("inspected_passes") or [])
 
 
+def _tier_zeros() -> dict:
+    return {"n_prefill": 0, "matched_exact": 0, "matched_kind": 0}
+
+
 def score_cell(cp: CellPrefill, human_state: dict, classes: set[str] | None,
                min_iou: float = DEFAULT_MIN_IOU) -> dict:
     human = _human_boxes(human_state)
-    pre = _prefill_boxes(cp)
+    pre = list(cp.decisions)
     if classes is not None:
         human = [b for b in human if b["class"] in classes]
-        pre = [b for b in pre if b["class"] in classes]
+        pre = [d for d in pre if d["class"] in classes]
     used: set[int] = set()
     exact = kind = 0
-    for p in pre:
+    tiers = {"labels": _tier_zeros(), "queue": _tier_zeros()}
+    for d in pre:
         best, best_i = 0.0, None
         for i, h in enumerate(human):
             if i in used:
                 continue
-            v = iou(p["bbox"], h["bbox"])
+            v = iou(d["bbox"], h["bbox"])
             if v >= min_iou and v > best:
                 best, best_i = v, i
+        t = tiers[d.get("admission") or "labels"]
+        t["n_prefill"] += 1
         if best_i is not None:
             used.add(best_i)
-            if human[best_i]["class"] == p["class"]:
+            if human[best_i]["class"] == d["class"]:
                 exact += 1
-            if _kind(human[best_i]["class"]) == _kind(p["class"]):
+                t["matched_exact"] += 1
+            if _kind(human[best_i]["class"]) == _kind(d["class"]):
                 kind += 1
+                t["matched_kind"] += 1
     return {"n_prefill": len(pre), "n_human": len(human),
-            "matched_exact": exact, "matched_kind": kind}
+            "matched_exact": exact, "matched_kind": kind,
+            "by_admission": tiers}
 
 
 # --------------------------------------------------------------------------
@@ -915,9 +984,11 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
     results: list[dict] = []
     totals = {"cells": 0, "prefilled": 0, "abstained": 0, "skipped": 0, "written": 0,
               "n_tp": 0, "n_wrong_category": 0, "n_added": 0,
-              "n_hints_missing": 0, "n_hints_extra": 0, "n_conflicts": 0}
+              "n_hints_missing": 0, "n_hints_extra": 0, "n_conflicts": 0,
+              "n_admit_labels": 0, "n_admit_queue": 0}
     score_tot = {"n_prefill": 0, "n_human": 0, "matched_exact": 0, "matched_kind": 0,
-                 "cells_scored": 0}
+                 "cells_scored": 0,
+                 "by_admission": {"labels": _tier_zeros(), "queue": _tier_zeros()}}
 
     for entry in manifest:
         cid = entry["cell_id"]
@@ -945,6 +1016,10 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
             s = score_cell(cp, existing, classes, min_iou)
             for k in ("n_prefill", "n_human", "matched_exact", "matched_kind"):
                 score_tot[k] += s[k]
+            for tier, tv in s["by_admission"].items():
+                agg = score_tot["by_admission"][tier]
+                for k in ("n_prefill", "matched_exact", "matched_kind"):
+                    agg[k] += tv[k]
             score_tot["cells_scored"] += 1
             cp.alignment["score"] = s
 
@@ -968,7 +1043,7 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
         totals[cp.status] = totals.get(cp.status, 0) + 1
         totals["written"] += int(written)
         for k in ("n_tp", "n_wrong_category", "n_added", "n_hints_missing", "n_hints_extra",
-                  "n_conflicts"):
+                  "n_conflicts", "n_admit_labels", "n_admit_queue"):
             totals[k] += summ[k]
 
     summary = {
@@ -989,6 +1064,10 @@ def run(bench: Path, transcription: dict, truth: TruthScore, windows: dict[int, 
     }
     if score:
         n_pre, n_hum = score_tot["n_prefill"], score_tot["n_human"]
+        for tv in score_tot["by_admission"].values():
+            n = tv["n_prefill"]
+            tv["precision_exact"] = round(tv["matched_exact"] / n, 3) if n else None
+            tv["precision_kind"] = round(tv["matched_kind"] / n, 3) if n else None
         summary["score"] = {
             **score_tot,
             "precision_exact": round(score_tot["matched_exact"] / n_pre, 3) if n_pre else None,
@@ -1008,6 +1087,9 @@ def _print_summary(summary: dict) -> None:
     print(f"  TP {t['n_tp']}  WRONG_CATEGORY {t['n_wrong_category']}  added {t['n_added']}  "
           f"hints: missing {t['n_hints_missing']}, extra {t['n_hints_extra']}, "
           f"conflicts {t.get('n_conflicts', 0)}")
+    if t.get("n_admit_labels", 0) or t.get("n_admit_queue", 0):
+        print(f"  admission: labels {t['n_admit_labels']}, queue {t['n_admit_queue']} "
+              f"(metadata — every tier is still a queue until the random-pass re-test)")
     reasons: dict[str, int] = {}
     for c in summary["cells"]:
         if c["status"] != "prefilled":
@@ -1049,6 +1131,16 @@ def _print_summary(summary: dict) -> None:
             print("  no cells scored: none carried human verdicts matching the selection.")
         print(f"  precision exact {s['precision_exact']}  kind {s['precision_kind']}   "
               f"recall exact {s['recall_exact']}  kind {s['recall_kind']}")
+        by = s.get("by_admission") or {}
+        if any(tv.get("n_prefill") for tv in by.values()):
+            parts = []
+            for tier in ("labels", "queue"):
+                tv = by.get(tier) or {}
+                n = tv.get("n_prefill", 0)
+                parts.append(f"{tier} {n} boxes"
+                             + (f" — exact {tv.get('precision_exact')}"
+                                f" kind {tv.get('precision_kind')}" if n else ""))
+            print("  by admission tier: " + "; ".join(parts))
 
 
 def main(argv: list[str] | None = None) -> int:

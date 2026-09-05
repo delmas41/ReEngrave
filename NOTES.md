@@ -14,6 +14,36 @@ day again. The ranked residue plus the closed dead ends are in that file;
 
 ---
 
+## 🅿️ PARKED (Sean, 2026-09-03): re-try the template-read elements — time signatures first — under the new labeling system
+
+Not urgent, but **must not get lost** (Sean asked for exactly that). The
+labeling survey ranked time-signature digits LOW because the CV template
+reader closed the gap the detector left (12 correct / 0 wrong / 3 missed / 40
+correct abstentions corpus-wide — the detector reads **zero** meter digits on
+real scans). That ranking predates two things: the **single-symbol pass UI
+with click-to-box** (which makes a digit pass cheap and the boxes uniform),
+and the **proven label→gate→ship loop** (hollow row: scan labels measurably
+moved the detector for the first time). Sean wants the question re-opened at
+some point with a larger, publisher-diverse digit labeling pass.
+
+How to run it when picked up:
+- A meter digit is a fixed-size glyph — numerator in the upper two staff
+  spaces, denominator in the lower two — so `click_box` works with
+  `height_spaces: 2.0` per slot; `select_timesig_cells.py` already exists as
+  the cutter.
+- The detector should enter as an **additional voter into the existing
+  header-window vote**, never replacing the template reader — the reader's 12/0
+  record and its abstention behavior are the floor to hold, and the 3 misses +
+  40 abstentions are the headroom to win.
+- Measurement is ready-made: `benchmarks/omr-timesig-2026-08/` +
+  `benchmarks/omr-timesig-2026-09/FINDINGS.md` corpus (half its pages print no
+  meter — abstention is scored, not just accuracy).
+- Same logic later applies to the other template-read elements (key-signature
+  accidentals; clefs — ⚠️ clef labels feed the SPECIALIST slot only, never the
+  shared catalog: density-collapse precedent, `catalog-versions.txt` v5/v6).
+- The symbol inventory (`benchmarks/omr-labeling-survey-2026-09/symbol_inventory.py`)
+  carries a REVISIT flag on these rows so the list survives this file too.
+
 ## 🚨 NEXT: the same scan page, transcribed twice, gives two different scores (2026-09-02)
 
 Found while measuring the `--direction-text` default, and it outranks what it

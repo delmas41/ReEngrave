@@ -68,10 +68,31 @@ changes week to week.
 - Tremolo and tremolando abbreviations are reconciled by the reading (one
   head for a repeated pitch, two for an alternating pair) and a hollow-vs-black
   disagreement is routed to the human as a `CONFLICT` — the committed Brahms
-  hints carry both (5 conflicts on 4 cells). Measured against a complete
+  hints carry both (5 conflicts on 4 cells; all five reviewed 2026-09-03 and
+  none is live — three are the reference's tie-split fragments of one printed
+  note, two are accidental glyphs misdetected as heads, and the existing
+  human verdicts were already right on every cell). Measured against a complete
   human pass on six cells: **precision 0.84**, so the pre-fill is a queue
   rather than labels for now — six of its eight errors are detection box
-  placement, which means its accuracy rises as recognition does. A batch checked out on a machine
+  placement, which means its accuracy rises as recognition does. A follow-up
+  measurement (`benchmarks/omr-prefill-admission-2026-09/`) showed the eight
+  errors are separable by three cheap signals (cell parity consistency, a
+  small-head veto, the reference's own line/space variant) — in-sample the
+  clean subset reaches 37/37 at 74% coverage, pending an unbiased re-test.
+  The first half of that plan now lives in the pre-fill itself: the variant
+  follows the reference on exact pairs, tie-split encodings collapse to the
+  one printed head, and every pre-filled box carries a labels/queue
+  admission tier that `--score` prices (six-cell precision 0.84 → 0.88,
+  labels tier 22/22; still metadata until a random pass re-tests it). Better
+  weights then lifted the same measurement to **0.96 exact with no pre-fill
+  change** — the clearest evidence yet that this approach improves for free
+  as recognition does, which is the reason to keep investing in it. All of
+  those figures come from the same six cells, chosen as the ones the pre-fill
+  decided most, so the deciding measurement is a **pre-registered random
+  sample of 25 cells labeled blind** (the UI can now withhold its own hints,
+  since a human shown them cannot measure them). That sample is registered
+  and waiting on labeling time; it is the step that would turn pre-filled
+  boxes from a review queue into labels. A batch checked out on a machine
   that did not cut it has no cell images (they are gitignored) and shows a
   blank canvas; `tools/omr/annotate/recut_cells.py` re-renders them from the
   manifest, refusing anything whose frame does not match. Where the work stands and

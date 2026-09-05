@@ -18,7 +18,7 @@
     },
     {
       "id": "H1",
-      "human_class": "noteheadWholeOnLine",
+      "human_class": "noteheadWholeInSpace",
       "human_category": "notehead",
       "bbox": {
         "x": 194,

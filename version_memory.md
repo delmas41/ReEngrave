@@ -5,6 +5,27 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — The widened scan gate prices the tilt fix: −233 edits, on the exposure
+
+The measured-but-unshipped `OMR_CELL_LINE_TRACE` (cell-grid localization, the
+rigid comb) was A/B'd on the widened 11-row scan gate — the first tree holding
+both the gate and the flag (`claude/tilt-pricing-widened` = `0487be1f` merged
+with `claude/tilt-crosscheck`). The old benchmark's null was the corpus: the
+widened pool carries **8.6%** of cells past the parity-flip line (was 0.4%),
+and the flag is worth **pooled 0.8387 → 0.8345, −233 edits**, −217 of them on
+exactly the three tilted rows, zero-exposure row unchanged to the edit,
+engraved control byte-identical, exact-pitch recall +4.8pts on the most
+exposed edition. Verdict + tables:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md` —
+recommendation is default-ON with no domain gating; the flag stays OFF until
+Sean decides. The named ship prerequisite also landed (`be884ff8`):
+`recut_cells.frame_mismatch` compares the frame's own (unlocalized) grid,
+accepts either dialect a manifest can speak, and `_nostaff.png` — which IS
+grid-derived — is re-erased on the manifest's authority, all pinned by three
+tests on a page that provably localizes.
+
+---
+
 ## 2026-09-04 — Scan gate: widened 5 → 11 rows; Bach excluded from the pool
 
 Six Sean-verified rows promoted (commit `84a5ccac`; drafting on branch
@@ -79,6 +100,270 @@ name — in-flight benchmark branches that pin "production" by explicit path
 are unaffected, and their recorded 0.7517 baseline still names that file. The
 web-app container picks the repoint up on its next
 `docker compose build backend`.
+
+---
+
+## 2026-09-03 — snap-ledger audit: three hollow labels corrected, all Eulenburg Scheherazade / v8
+
+- The old click-to-box snap extrapolated the parity grid beyond the staff at the staff
+  spacing, and real ledger pitch is a fact about the engraving (the snap-ledger work,
+  `benchmarks/omr-snap-ledger-2026-09/FINDINGS.md`, branch `claude/peaceful-shamir-d12e52`) —
+  so some accepted suggestions carried the wrong OnLine/InSpace variant. Every out-of-staff
+  labeled notehead where the rung-anchored snap disagrees with the stored class was
+  re-adjudicated: 26 candidate rows (7 BROKE + 19 STILL WRONG) across the 10 hollow batches,
+  each examined on a rendered crop, the ambiguous ones settled by ink measurement.
+- **Three labels were wrong — all silent acceptances of the old grid's suggestion, all on the
+  Eulenburg Scheherazade batch:** `schehe-p3-sys0-s3-m3` OnLine→InSpace (the head hangs in
+  the space below its single ledger), `schehe-p4-sys0-s2-m0` InSpace→OnLine (the counter is
+  split into two white lobes by the 2nd ledger running through the head), and
+  `schehe-p3-sys0-s3-m0` OnLine→InSpace — FINDINGS §4's "unresolved" row, settled by
+  measurement: one connected counter, the single ledger tangent below the head at 1.25×
+  staff spacing (the wide Eulenburg first gap), and no ink where a second ledger would print.
+- **The other 23 candidates stand**, including every one of Sean's explicit `c`-press
+  overrides. Several were confirmed by ink profile rather than eye alone — e.g.
+  `mahler1-p3-sys0-s11-m5`, where the ledger band runs through the head with 37–55 px wings
+  but both grids read in_space because the cell's manifest staff lines sit ~40 px off the
+  ink at that x (the §6 warped-manifest family).
+- Corrected in BOTH verdict copies — the batch's `verdicts/` and the survey's
+  `v8-merged-verdicts/` that `build_v8.py` derived from them — as class strings only, boxes
+  untouched. Then v8 re-exported with the original converter arguments: the diff is exactly
+  three class ids (32↔34) on unchanged coordinates, plus the metadata timestamp.
+  `build_v8.py` was deliberately NOT re-run (it would silently pull the later Brahms
+  completion-sweep boxes into v8's membership), and the catalog was deliberately NOT rebuilt
+  from the worktree (its committed lists carry main-checkout absolute paths; training reads
+  `labels/*.txt` directly, so the correction is live for the next training run as-is).
+- Eval after the correction (shamir tooling over current verdicts): ink transitions
+  18 recovered / 7 broke → **21 / 4**; the 4 remaining breaks are FINDINGS §4's adjudicated
+  displaced-centre artifacts and the one tangent-merge reader miss, all with correct labels.
+
+## 2026-09-03 — Phase C registered: a blind, pre-registered sample to decide admission
+
+The measurement half is Sean's; everything around it is prepared, and two ways the number
+could have come out wrong are now closed by construction.
+
+- **`annotate.server --blind`** withholds the pre-fill from the UI entirely — no ghost hints,
+  no `prefill_status`, no queue order. ⚠️ **A human shown the hints cannot measure them**: the
+  score would report agreement with what the human was told. The existing `h` toggle is not a
+  substitute — hints render by DEFAULT and `Tab` to the next cell is a full page load, so the
+  toggle resets on every cell. The queue order is suppressed too, because "most left for me
+  first" leaks the same information one step removed. Verdict state is untouched; blind is
+  about what the human SEES. 1 new test asserts both payloads and that the cell set and order
+  are unchanged.
+- **`select_phase_c_cells.py` pre-registers the sample** (`PHASE_C_CELLS.json`): seeded
+  (20260903) so it cannot be re-rolled until it flatters something, excluding the six
+  already-complete cells, and recording each cell's pre-fill status, box count and admission
+  tier **before** any labeling — 25 cells, 74 boxes, 73 of them labels-tier. The list is
+  ORDERED and stopping early stays valid (a shuffle's prefix is a uniform sample), which is
+  why 25 are registered when 12–15 is the ask: 15 cells ≈ 50 boxes, 25 ≈ 74.
+  ⚠️ A random sample of orchestral cells is mostly SPARSE bars (1–6 boxes) against ~8 in the
+  six dense ones — that difference IS the bias being corrected. Four cells the pre-fill
+  abstains on are kept in: dropping them would quietly reintroduce the old bias.
+- ⚠️ **Caught before it could produce a damning wrong number: every registered cell already
+  has a verdict file** from the hollow sweep, so an unreached cell is not empty — it holds
+  hollow boxes and nothing else, and scoring every class against it charges each correctly
+  pre-filled black head as a false positive. `probe_admission.py` gained `--inspected-for`
+  (the guard `mxl_verdicts` already had), so both tools score exactly the cells that are
+  finished, at any point mid-labeling. It also gained `--transcription`, because which boxes
+  exist to be scored moves with the weights (Phase B) — score against the reading the sample
+  was registered against.
+- Protocol, including how to read the answer either way:
+  `benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md`.
+
+## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
+
+- **"Pre-fill precision is downstream of recognition" is now TESTED, and true** — the measured
+  handoff's structural finding, and the reason Sean kept the approach open. A change of
+  WEIGHTS alone, with no pre-fill code touched, takes the six-cell figure **exact 0.880 →
+  0.961, kind 0.940 → 1.000**, the `labels` tier from 22 boxes to **44 of ~50** (still
+  precision 1.000), batch CONFLICTs 4 → **0**, TP/WRONG_CATEGORY 174/16 → **191/5**, extra
+  hints 200 → **58** and missing hints 20 → **15**.
+- **The arm is not the imgsz-2048 re-ship** — that checkpoint is not blessed yet (the cloud
+  run's directories hold per-epoch files and in-flight gate logs). It is the same shape of
+  change and was already available: the batch's committed `transcription.json` was made with
+  the PRE-hollow `imgsz2048-ft-30ep`, while scan-domain production is now `hollow-ft`.
+  `benchmarks/omr-prefill-admission-2026-09/rerun_on_weights.sh` runs one arm per checkpoint
+  against a symlinked scratch bench (nothing written inside the batch); add the re-ship column
+  when it lands.
+- ⚠️ **The objection is that hollow-ft simply detects less** (noteheads 4260 → 2419 on the same
+  three pages). The control that settles it asks the opposite question — the MISSING-hint
+  count, reference notes the reading never found — and it falls too (20 → 15; 4 → 3 on the six
+  cells), while page segmentation is byte-identical (706 measures, 83 staves). The pipeline's
+  own filters corroborate: unladdered noteheads dropped 1063 → 304, clipped fragments 259 →
+  104. Every channel moves the same way at once, which is what separates a recognition gain
+  from a threshold trade.
+- Both Phase A predictions confirmed: `s2-m2`'s conflict (called "a duplicate detection the
+  re-ship should clean up") is gone, and the labels tier's coverage climbed with the detector.
+- ⚠️ **A batch's hints AGE with the weights.** This batch's committed `prefill/` is a
+  checkpoint stale — the hints being labeled against are the 0.880 set. Refreshing is a
+  re-transcribe plus `mxl_verdicts --write-hints`, which writes `prefill/` only and leaves
+  `verdicts/` and `detections/` untouched (no human work, no detection id disturbed). Left to
+  the batch's owner: it is served live by another session.
+
+## 2026-09-03 — Phase A of the admission plan lands in the pre-fill
+
+Sean approved the widening plan; its pre-fill half shipped, measured on the six-cell A/B
+before and after, 206 tests green across the eight related suites.
+
+- **The on-line/in-space variant follows the reference on exact pairs**
+  (`expected_head_class(..., variant=)`, wired in `_decide`): the alignment key IS the
+  reference's staff position, so on an exactly-paired note the reference knows the variant at
+  the confidence of the pairing itself. Near pairs keep the detector's variant — measured, all
+  six near matches were exact-correct and the truth's parity is wrong there by construction.
+  Fixes 2 of 3 flips (six-cell exact **0.84 → 0.88**, kind unchanged), and it repairs the
+  misread-clef case's variant along the way (both cello heads sit in bass-staff SPACES; the
+  treble misreading had implied OnLine). Two test fixtures carried musically impossible
+  variant/pitch pairs (E5 "OnLine", D5 "InSpace" in treble) that the new rule exposed —
+  fixed to what the pitches actually print.
+- **Within-measure tie chains collapse by the reading** (`measure_align.collapse_tie_chains`,
+  run before the tremolo collapse): tied fragments become one head of the summed value only
+  where the reading placed ≤ 1 head at the position; a chain may enter tied from the previous
+  bar and leave tied onward; a total with no single written value (2.5 beats) is left as
+  written because the page prints it as tied heads. On the batch: conflicts 5 → 4 and missing
+  hints 22 → 20 — `s3-m6` resolved (its two hints pointed at blank paper); `s2-m2` STAYS
+  because the reading shows TWO heads at the position (a duplicate detection) and the gate
+  believes the reading — Phase B's re-ship is the expected resolver. The two accidental-glyph
+  conflicts remain deliberately.
+- **Every decision now carries an admission tier** — `admission: labels|queue` +
+  `admission_reasons` (near match / variant corrected / grace-sized head < 0.85× the cell's
+  median in both dims / cell-level: any flip demotes its whole cell) — and `--score` prints a
+  per-tier table. Six-cell result: **labels tier 22/22 = 1.000 exact** at 0.44 coverage,
+  queue 28 at 0.786. Stricter than the probe's 0.74-coverage composite because pre-fill time
+  has no human-calibrated parity. ⚠️ Metadata only: verdict-writing is unchanged and nothing
+  is auto-admitted until the random completion pass prices the tiers out-of-sample.
+
+## 2026-09-03 — the 9 inside-staff snap disagreements diagnosed: ideal staff lines vs tilted scans
+
+- **8 of the 9 flagged inside-staff labels sit in cells whose stored `staff_line_ys_canonical`
+  is 0.25–0.55 staff spaces off the printed lines**, and rebuilding the grid from the printed
+  ink reproduces Sean's class on all 8 (the 9th, beet5hr, is a tangent-note click ambiguity —
+  grid fine). The 3 hand-drawn beet5-p4-s14 disagreements from the 2026-08 batch are the same
+  defect. Record + scripts: `benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`.
+- Cause is **phase-1's staff MODEL, not the cutter**: `Staff.line_ys` is five ideal horizontal
+  rows for the whole staff; the flagged scans' staves tilt/bow 8–17 page px across their
+  width; every measure cell inherits the same constants, so end-of-staff measures carry the
+  full residual. Reproduces byte-for-byte on today's code (modulo the two cutters' deliberate
+  pad difference). `line_wander_px` (7–10 px on every flagged staff) already measures the
+  departure but never reaches cells.json.
+- Campaign audit (all 225 inside-staff added labels vs ink-measured grids): 15 past the
+  0.25 sp flip line; box centres bounded ≤0.25 sp (a near-half-space grid error aliases the
+  box onto the other slot's true position — the CLASS flips, the position stays plausible).
+  **Two silent wrong labels found**: `brahms1-p2-sys1-s20-m6` HalfInSpace→HalfOnLine (in v8;
+  **fixed same day**, `3baadcd` — batch verdict + survey `v8-merged-verdicts` + v8 label line
+  30→28) and `lamer-p5-sys0-s2-m0` WholeOnLine→WholeInSpace (exported in v11 since `780cbf6`,
+  v9–v12 held out of the catalog; fix 32→34 in flight — three copies: batch verdicts, survey
+  `phase2-merged/lamer/verdicts` (v11's export source, a third edit-both trap), v11 labels).
+- **`pitch_resolver` eats the same defect**: on warped scans, end-of-staff measures resolve
+  pitches against a grid up to half a space off — step-off-by-one for whole bars. Engraved
+  benchmark blind (LilyPond pages are straight). Follow-up measurement (landing on
+  `claude/sad-austin-7e16e7`): per-line tracing REFUTED as the fix — it aliases 0.87 sp the
+  wrong way on the worst cell; a rigid 5-comb slide (< 1 spacing) reproduces all 7 flagged
+  cells within 0.04 sp (`OMR_CELL_LINE_TRACE`, default off). Scan e2e cost is 4 edits of 7894
+  because only 0.4% of its cells sit past the flip line vs 8–16% on deeper pages — **that
+  benchmark cannot price the defect**. The recut-compatibility concern DISSOLVED under
+  measurement: flag on/off leaves cell images, bbox and upscale byte-identical (360/360 on the
+  worst page), only the stored grid moves — one frame, two grids; fix = `recut_cells.frame_mismatch`
+  comparing the unlocalized grid. In-staff snap stays frozen (`test_ledger_snap.py`).
+
+## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
+
+- **The measured handoff's hypothesis ("Breitkopf tremolo abbreviations") is refuted for all
+  five conflicts**, corrected in place in that handoff and recorded with the evidence in
+  `benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md`. Three
+  conflicts (2 on `s2-m2`, 1 on `s3-m6`) are the REFERENCE's tie-splits — one printed
+  dotted-half encoded as tied eighth+quarter+quarter, `<tie>` on every fragment, no
+  `<tremolo>` — so the hollow heads Sean had already boxed are right and the aligner was
+  fighting fragments (its two "missing" hints on `s3-m6` point at blank paper). Two
+  (`s26-m0`, `s15-m7`) are a flat's loop and a natural sign the base transcription misread as
+  hollow noteheads, over already-empty (correct) human verdicts. **Nothing needs re-clicking.**
+- Actionable residue: **tie chains need the reconcile-by-the-reading collapse tremolo already
+  gets** (collapse to one summed-value head only where the reading placed one head) — that
+  turns the three tie conflicts into confirmations. The two accidental fakes are the same
+  family as the admission probe's phantom TPs.
+- The optional `tremolo1`–`5` labeling pass gets **no support from this sample** — zero strokes
+  in the four cells; parked until a batch shows strokes the detector mishandles.
+- batch_config on Sean's Mac: the ACTIVE file is a STALE 9-class completion palette
+  (pre-`fd28a76`, missing slur/tie/hairpins); continuing completion work needs
+  `cp batch_config.completion.json batch_config.json` + server restart, not the hollow restore.
+
+## 2026-09-03 — PR #5 landed; pre-fill admission signals measured
+
+- **PR #5 (the pre-fill / labeling-system branch) is merged into main** — the branch had gone
+  CONFLICTING against main after the weight-routing commits; the one conflict was
+  `version_memory.md` (both sides' 2026-09-03 entries, resolved as a union, weight routing
+  first), 196 tests green on the merged tree, merged as `711d3ff`. The main checkout on Sean's
+  Mac still sits on the branch (now behind); `git pull` there when the cloud training session
+  is done with it.
+- **The pre-fill's 8 errors were separated by signals already in the records**
+  (`benchmarks/omr-prefill-admission-2026-09/`): the aligner's own confidence is the WRONG
+  admission axis — all six `near` matches are exact-correct (filtering them lowers precision
+  0.840 → 0.818) and `strength_exact` ranks the cleanest cell below every error cell. What
+  works: per-cell parity consistency (the one inconsistent cell holds 4 of 8 errors), a
+  < 0.85×-median size veto (2/2 grace heads deferred for 1 good box), and re-deriving the
+  on-line/in-space variant from the matched reference note rather than the detector (fixes
+  2 of 3 flips, zero regressions — the alignment key already trusts that position). Composite:
+  **37/37 exact at 0.74 coverage, in-sample** — a ceiling demonstration on the same biased
+  six cells, not a claim; the out-of-sample test is a random completion pass scored by
+  `probe_admission.py`, which reproduces the recorded 50/42/47 before it prices any policy.
+
+---
+
+## 2026-09-03 — The labeling survey widens: inventory, grace selector, click-first passes
+
+**Why:** Sean's direction — extend the proven single-symbol × publisher
+campaign toward every score element, with click-to-box as the standard.
+
+**What:** (1) `benchmarks/omr-labeling-survey-2026-09/symbol_inventory.py`
+generates `INVENTORY.md` — all 208 catalog classes + classless elements, each
+with an owner (detector / CV / template-reader / specialist-slot / parked),
+labeled-box counts, and publisher coverage; 106 detector-owned classes have
+zero boxes, and the `numeral*` family surfaced as genuinely unassessed.
+(2) `grace_score.py` — survey Row 2's selector (small solid head near a full
+head, all thresholds in staff spaces, PROVISIONAL until first real labels) —
+plus the honest first measurement in `GRACE_SELECTOR_2026-09-03.md`: the
+280-cell hollow pool cannot validate it (top-ranked candidates are fragments
+and dots), because cells selected FOR sparse sustained bars anti-correlate
+with ornamentation; next step is a cut from grace-rich movements.
+(3) The single-symbol pass UI now opens every cell **already in draw mode** —
+click the symbols directly, no per-cell "add missed" step (`cell.js`; Esc
+steps out; verdict hotkeys unaffected; 52 annotate tests green).
+(4) NOTES.md gained the 🅿️ PARKED item Sean asked not to lose: re-try the
+template-read elements (time signatures first) under the new labeling system,
+detector as an added voter, harness ready-made.
+
+## 2026-09-03 — Labeling UI: the click-to-box snap reads ledger rungs off the page
+
+**Why:** Sean reported the hollow-campaign defect that the single-symbol
+click-to-box sometimes suggested on-line for an in-space note — on ledger
+lines only, never inside the staff. Probing the 357 committed hollow-campaign
+labels confirmed it exactly: wrong-suggestion rate 4.6% inside the staff,
+3.3% at the 1st ledger, **38.1% / 39.3% at the 2nd and beyond**. Mechanism:
+inside the staff the snap grid anchors on the cell's own measured line
+positions, but beyond it extrapolated at the staff spacing — and measured
+ledger pitch is publisher-dependent in BOTH directions (Litolff ~1.10× the
+staff spacing, Peters/Breitkopf/Simrock ~0.975×), so no corrected constant
+can fix it (swept and refused: best variant recovers 3 of 29 wrongs).
+
+**What:** new `tools/omr/annotate/ledger_grid.py` measures the ledger rungs
+printed at the clicked x (thin bands of long ink spans; white gaps up to 0.9
+spaces bridged because a whole note's counter splits the one rung printed
+THROUGH it; the band's peak-span rows are what must be rung-thin), and
+`snap_to_staff` gained an optional `ledger_rungs=` that anchors the outside
+grid on them — line slots on the rungs, spaces on their midpoints, the old
+extrapolation past an incomplete ladder's reach and wherever no rungs were
+read. In-staff behaviour is byte-identical (0 changes across all 214
+in-staff labels) and every failure of the reader is an abstention back to
+the old grid. Measured on the labels: 2nd-ledger agreement 57.4% → 70.2%,
+16 rows recovered vs 7 "broken" — of which visual adjudication showed 2 are
+**wrong labels the old snap itself planted** (Sean accepted a wrong
+suggestion unnoticed; v8 data-quality follow-up), 3 are artifacts of judging
+at stored box centres that sit ON the old grid, 1 real miss, 1 unresolved.
+The unbiased hand-positioned subset: baseline 7/13 → ink 10/13. 3.4 ms per
+click. Guarded by `tools/omr/tests/test_ledger_snap.py` (8 tests: in-staff
+frozen, defect case flips, incomplete ladder abstains, reader reads through
+a hollow head, endpoint end-to-end). Probe + eval + refused alternatives:
+`benchmarks/omr-snap-ledger-2026-09/FINDINGS.md`.
+
+---
 
 ## 2026-09-03 — Scan vs engraved weight routing (on by default)
 

@@ -52,6 +52,7 @@ from __future__ import annotations
 import argparse
 import io
 import json
+import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -615,7 +616,48 @@ def _staff_spacing(staff_line_ys: list[float]) -> float | None:
     return spacing if spacing > 0 else None
 
 
-def snap_to_staff(staff_line_ys: list[float], y: float) -> dict | None:
+def _ledger_side_grid(
+    edge_step: int,
+    edge_y: float,
+    sign: int,
+    rungs: list[float] | None,
+    spacing: float,
+) -> list[tuple[int, float]]:
+    """Half-space grid points beyond one staff edge, 6 spaces deep.
+
+    Anchored on the MEASURED ledger rungs where the caller supplies them
+    (ledger pitch is publisher-dependent in both directions — Litolff ~1.10x
+    the staff spacing, Peters ~0.975x, measured in
+    benchmarks/omr-snap-ledger-2026-09/), and extrapolated past the last
+    measured rung at the last measured gap. With no rungs this reproduces
+    the constant-spacing extrapolation exactly.
+    """
+    grid: list[tuple[int, float]] = []
+    anchor = edge_y
+    pitch = spacing
+    n = 0
+    for rung_y in rungs or []:
+        if n >= 6:
+            break
+        n += 1
+        grid.append((edge_step + sign * (2 * n - 1), (anchor + rung_y) / 2.0))
+        grid.append((edge_step + sign * (2 * n), rung_y))
+        pitch = abs(rung_y - anchor) or pitch
+        anchor = rung_y
+    while n < 6:
+        n += 1
+        nxt = anchor + sign * pitch
+        grid.append((edge_step + sign * (2 * n - 1), (anchor + nxt) / 2.0))
+        grid.append((edge_step + sign * (2 * n), nxt))
+        anchor = nxt
+    return grid
+
+
+def snap_to_staff(
+    staff_line_ys: list[float],
+    y: float,
+    ledger_rungs: dict[str, list[float]] | None = None,
+) -> dict | None:
     """Snap a y to the nearest half-space position and say what it is.
 
     Notehead centres sit on a half-space grid: on a line, or in the space
@@ -624,8 +666,15 @@ def snap_to_staff(staff_line_ys: list[float], y: float) -> dict | None:
     through the ledger positions above and below the staff.
 
     The grid uses each staff's OWN measured line positions inside the staff
-    (they are not perfectly even — one real cell reads 400/502/603/698/800)
-    and extrapolates outward at the median spacing for ledger territory.
+    (they are not perfectly even — one real cell reads 400/502/603/698/800).
+    Beyond the staff it anchors on `ledger_rungs` — the rung positions
+    measured off the cell image at the clicked x (ledger_grid.py) as
+    {"above": [...], "below": [...]}, nearest rung first — because ledger
+    pitch is a fact about the ENGRAVING, not derivable from the staff:
+    extrapolating at the staff spacing mis-suggested 38% of 2nd-ledger-and-up
+    variants on the hollow-campaign labels. Without rungs (or past the last
+    measured one) it extrapolates the way it always did, so the in-staff
+    grid and the no-image behaviour are unchanged.
 
     Returns None when the cell carries no usable staff geometry, which is an
     abstention: the caller falls back to asking the labeller.
@@ -634,27 +683,56 @@ def snap_to_staff(staff_line_ys: list[float], y: float) -> dict | None:
     spacing = _staff_spacing(ys)
     if spacing is None:
         return None
-    grid: list[tuple[int, float]] = []
+    inner: list[tuple[int, float]] = []
     for i, line_y in enumerate(ys):
-        grid.append((2 * i, line_y))
+        inner.append((2 * i, line_y))
         if i + 1 < len(ys):
-            grid.append((2 * i + 1, (line_y + ys[i + 1]) / 2.0))
+            inner.append((2 * i + 1, (line_y + ys[i + 1]) / 2.0))
     # Ledger territory. The cell is the staff plus a few staff spaces of pad
     # (measure_extractor.PAD_*_STAFF_LINES), so 12 half-steps each way covers
     # any crop the extractor produces with room to spare.
-    top_step, top_y = grid[0]
-    bottom_step, bottom_y = grid[-1]
-    for k in range(1, 13):
-        grid.append((top_step - k, top_y - k * spacing / 2.0))
-        grid.append((bottom_step + k, bottom_y + k * spacing / 2.0))
-    step, snapped = min(grid, key=lambda g: abs(g[1] - float(y)))
-    return {
+    top_step, top_y = inner[0]
+    bottom_step, bottom_y = inner[-1]
+    rungs = ledger_rungs or {}
+
+    def _snap(above_rungs, below_rungs):
+        grid = list(inner)
+        grid.extend(_ledger_side_grid(top_step, top_y, -1, above_rungs, spacing))
+        grid.extend(
+            _ledger_side_grid(bottom_step, bottom_y, 1, below_rungs, spacing)
+        )
+        return min(grid, key=lambda g: abs(g[1] - float(y)))
+
+    above = rungs.get("above") or []
+    below = rungs.get("below") or []
+    step, snapped = _snap(above, below)
+    # An incomplete ladder is a failed measurement for anything past it: a
+    # real note beyond the staff has ledgers printed all the way to it, so a
+    # click more than one half-step past the LAST measured rung means the
+    # reader lost the trail — extrapolating a whole ladder from one nearby
+    # rung measured WORSE than the constant pitch. Beyond a side's measured
+    # reach, drop that side's rungs and snap the way the grid always did.
+    if step < top_step and above and top_step - step > 2 * min(len(above), 6) + 1:
+        step, snapped = _snap([], below)
+    elif (
+        step > bottom_step
+        and below
+        and step - bottom_step > 2 * min(len(below), 6) + 1
+    ):
+        step, snapped = _snap(above, [])
+    result = {
         "step": step,
         "snapped_y": round(snapped, 2),
         "position": "on_line" if step % 2 == 0 else "in_space",
         "spacing": round(spacing, 2),
         "ledger": step < 0 or step > bottom_step,
     }
+    if ledger_rungs is not None:
+        result["measured_rungs"] = {
+            "above": len(rungs.get("above") or []),
+            "below": len(rungs.get("below") or []),
+        }
+    return result
 
 
 def click_box_px(
@@ -1015,7 +1093,19 @@ def _summarize_cell_status(bench: Bench, cell_id: str, vp: Path) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def create_app(bench: Bench | Path) -> FastAPI:
+def create_app(bench: Bench | Path, *, blind: bool = False) -> FastAPI:
+    """The labeling app. `blind=True` withholds the pre-fill entirely.
+
+    ⚠️ **A blind pass is what makes a pre-fill measurement out-of-sample.**
+    Scoring the pre-fill against a human who was SHOWN its hints measures
+    agreement with what the human was told, not independent truth — and the
+    UI shows hints by default, resets that default on every cell (each `Tab`
+    is a page load), so "just press `h`" is not a protocol. This flag is,
+    because the payload never carries the hints at all. It also drops the
+    queue ORDER and `prefill_status`, which leak the same information one
+    step removed: "most left for me first" is the pre-fill telling the
+    human which cells it found hard.
+    """
     if isinstance(bench, Path):
         bench = Bench(root=bench)
     bench.verdicts_dir.mkdir(parents=True, exist_ok=True)
@@ -1120,7 +1210,7 @@ def create_app(bench: Bench | Path) -> FastAPI:
             entry = manifest.by_id[cid]
             vp = bench.verdicts_dir / f"{cid}.verdict.json"
             status = _summarize_cell_status(bench, cid, vp)
-            pre = _load_prefill(bench, cid)
+            pre = None if blind else _load_prefill(bench, cid)
             out.append(
                 {
                     "cell_id": cid,
@@ -1287,7 +1377,7 @@ def create_app(bench: Bench | Path) -> FastAPI:
             "total": len(manifest.ordered_ids),
             # Reference-driven pre-fill, when `mxl_verdicts` has run on this
             # batch. `hints` draw as ghost markers; nothing here is a label.
-            "prefill": _load_prefill(bench, cell_id),
+            "prefill": None if blind else _load_prefill(bench, cell_id),
         }
 
     @app.get("/api/cell/{cell_id}/verdict")
@@ -1327,7 +1417,10 @@ def create_app(bench: Bench | Path) -> FastAPI:
             raise HTTPException(404, detail=f"no slot {slot}")
         target = pass_config.slots[slot]
         entry = manifest.by_id[cell_id]
-        snapped = snap_to_staff(entry.get("staff_line_ys_canonical", []), y)
+        rungs = _ledger_rungs_for_click(bench, manifest, entry, cell_id, x)
+        snapped = snap_to_staff(
+            entry.get("staff_line_ys_canonical", []), y, ledger_rungs=rungs
+        )
         if snapped is None:
             # No staff geometry on this cell — abstain rather than guess a
             # variant. The UI falls back to the picker.
@@ -1600,6 +1693,63 @@ def _resolve_cell_png(
     return alt if alt.exists() else None
 
 
+# Grayscale cell images for the snap endpoint's ledger-rung read. Tiny cache:
+# a labeller works one cell at a time, and a 2048-wide crop decodes in ~10ms.
+_GRAY_CACHE: dict[str, tuple[float, Any]] = {}
+
+
+def _gray_cell_image(png: Path):
+    key = str(png)
+    mtime = png.stat().st_mtime
+    hit = _GRAY_CACHE.get(key)
+    if hit is not None and hit[0] == mtime:
+        return hit[1]
+    import numpy as np
+
+    with Image.open(png) as img:
+        arr = np.asarray(img.convert("L"), dtype=np.uint8)
+    if len(_GRAY_CACHE) >= 8:
+        _GRAY_CACHE.clear()
+    _GRAY_CACHE[key] = (mtime, arr)
+    return arr
+
+
+def _ledger_rungs_for_click(
+    bench: Bench, manifest: ManifestCache, entry: dict, cell_id: str, x: float
+) -> dict | None:
+    """Measured ledger rungs at the clicked column, for snap_to_staff.
+
+    Every failure is an abstention (None -> constant-pitch extrapolation, the
+    behaviour the snap always had): missing numpy, missing image, or an image
+    whose size disagrees with the manifest's canonical frame — a stale or
+    re-rendered PNG would put the rungs in the wrong coordinate space, which
+    is worse than no rungs. An unexpected error additionally says so on
+    stderr, because a click must never 500 over an enrichment.
+    """
+    try:
+        from tools.omr.annotate.ledger_grid import measure_ledger_rungs
+    except ImportError:
+        return None
+    try:
+        png = _resolve_cell_png(bench, manifest, cell_id)
+        if png is None:
+            return None
+        img = _gray_cell_image(png)
+        cw = entry.get("cell_canonical_w")
+        ch = entry.get("cell_canonical_h")
+        if cw and ch and (img.shape[1] != cw or img.shape[0] != ch):
+            return None
+        return measure_ledger_rungs(
+            img, entry.get("staff_line_ys_canonical") or [], x
+        )
+    except Exception as e:  # noqa: BLE001 — enrichment, never fail the click
+        print(
+            f"[annotate] ledger rung read failed for {cell_id}: {e!r}",
+            file=sys.stderr,
+        )
+        return None
+
+
 # Templates are loaded from disk every request during local dev so you
 # can edit cell.html / cell.js without restarting uvicorn. (uvicorn's
 # --reload kicks the server on .py changes but not on template-only
@@ -1643,6 +1793,16 @@ def main() -> None:
         action="store_true",
         help="Enable uvicorn auto-reload (for editing server.py).",
     )
+    ap.add_argument(
+        "--blind",
+        action="store_true",
+        help=(
+            "Withhold the reference pre-fill entirely: no ghost hints, no "
+            "queue order, no prefill status. Use when the labels are going "
+            "to SCORE the pre-fill — a human shown the hints cannot measure "
+            "them."
+        ),
+    )
     args = ap.parse_args()
 
     bench = _derive_bench(args)
@@ -1654,8 +1814,11 @@ def main() -> None:
     if not bench.detections_dir.exists():
         print(f"[server] WARN: detections dir missing: {bench.detections_dir}")
 
+    if args.blind:
+        print("[server] BLIND: the reference pre-fill is withheld — no hints, "
+              "no queue order. These labels can score it.")
     try:
-        app = create_app(bench)
+        app = create_app(bench, blind=args.blind)
     except ValueError as e:
         # Almost always a hand-edited batch_config.json. Say what is wrong
         # rather than serving the full picker to someone who asked for a pass.
