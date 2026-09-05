@@ -129,6 +129,44 @@ does not.
    first run measured extent only, found no separation, and would have read as
    "CV cannot do this" had it stopped there.
 
+## 5b. The second-publisher gate — and the test that matters is the BLANK pages
+
+⚠️ One page and one publisher was never enough: this project has twice refused CV
+discriminators that separated on one edition and inverted on another. Run
+unchanged across the eleven scan-benchmark pages, which carry hand-verified
+windows and therefore a truth wedge count:
+
+| page | truth hairpins | candidates | YOLO |
+|---|--:|--:|--:|
+| bach-brandenburg3 p1 *(Peters)* | 0 | **0** | 0 |
+| beethoven-5 575951 p1 *(Litolff)* | 0 | **0** | 0 |
+| beethoven-5 575951 p2 | 0 | **0** | 0 |
+| beethoven-5 984073 p1 *(Litolff)* | 0 | **0** | 0 |
+| beethoven-5 984073 p2 | 0 | **0** | 0 |
+| brahms-1 p1 *(Breitkopf)* | 0 | **1** | 0 |
+| brahms-1 p2 | 68 | 44 | 1 |
+| dvorak-9 p5 *(Simrock)* | 7 | 4 | 0 |
+| dvorak-9 p6 | 4 | **4** | 0 |
+| mahler-5 p2 *(Peters)* | 3 | 5 | 0 |
+| mahler-5 p3 | 17 | 2 | 0 |
+| **total** | **99** | **59** | **1** |
+
+**THE ABSTENTION IS THE RESULT.** Six pages carry no hairpin at all, across four
+editions and three publishers, and the filter returns **zero on five of them and
+one on the sixth**. A shape filter loose enough to be useless would have fired on
+every page; this one is silent where the music is.
+
+On the pages that do carry hairpins it recovers **59 of 99 against the
+detector's 1** — Dvořák p6 exact at 4 of 4, Brahms p2 44 of 68.
+
+⚠️ **Mahler 5 p3 is the weak row: 2 candidates against 17.** Not explained here,
+and it is the first thing a reader should be measured against rather than the
+aggregate. Peters p2 on the same edition returns 5 for 3, so it is not the
+publisher.
+
+⚠️ Still a count against a count — no positional truth for a scanned page — so
+"59 of 99" bounds the yield, it does not claim 59 correct.
+
 ## 6. What this does and does not establish
 
 **Does:** the ink is available on a real scan, and a three-test filter — extent,
@@ -136,11 +174,12 @@ straightness, isolation — cuts 471 components to 44 that are almost all
 hairpins. The contamination it removes is beams, by the cleanest rule in the
 set.
 
-**Does not:** any accuracy figure. One page, one publisher, no positional truth.
-⚠️ **Do not tune these constants on this page** — this project has twice refused
-CV discriminators that separated on one edition and inverted on another (ink
-coverage for time signatures, the tenor symmetry floor for clefs). The next step
-is a second publisher, then the stem-end veto, then a reader.
+**Does not:** any accuracy figure. There is no positional truth for a scanned
+page, so every number here is a count against a count and none of them says
+"correct". ⚠️ **The constants were not tuned across the corpus** — they were set
+on Brahms p2 and then run unchanged, which is why the blank-page abstention is
+evidence rather than a fit. Mahler p3's 2-against-17 is unexplained and is the
+row to chase, not the aggregate.
 
 ```bash
 python3 benchmarks/omr-hairpin-cv-2026-09/probe_band_ink.py \

@@ -1,0 +1,57 @@
+{
+ "bach-brandenburg3-mvt1-468678-p1": {
+  "truth_hairpins": 0,
+  "candidates": 0,
+  "yolo": 0
+ },
+ "beethoven-sym5-mvt1-575951-p1": {
+  "truth_hairpins": 0,
+  "candidates": 0,
+  "yolo": 0
+ },
+ "beethoven-sym5-mvt1-575951-p2": {
+  "truth_hairpins": 0,
+  "candidates": 0,
+  "yolo": 0
+ },
+ "beethoven-sym5-mvt1-984073-p1": {
+  "truth_hairpins": 0,
+  "candidates": 0,
+  "yolo": 0
+ },
+ "beethoven-sym5-mvt1-984073-p2": {
+  "truth_hairpins": 0,
+  "candidates": 0,
+  "yolo": 0
+ },
+ "brahms-sym1-mvt1-317803-p1": {
+  "truth_hairpins": 0,
+  "candidates": 1,
+  "yolo": 0
+ },
+ "brahms-sym1-mvt1-317803-p2": {
+  "truth_hairpins": 68,
+  "candidates": 44,
+  "yolo": 1
+ },
+ "dvorak-sym9-mvt1-405834-p5": {
+  "truth_hairpins": 7,
+  "candidates": 4,
+  "yolo": 0
+ },
+ "dvorak-sym9-mvt1-405834-p6": {
+  "truth_hairpins": 4,
+  "candidates": 4,
+  "yolo": 0
+ },
+ "mahler-sym5-mvt1-local-p2": {
+  "truth_hairpins": 3,
+  "candidates": 5,
+  "yolo": 0
+ },
+ "mahler-sym5-mvt1-local-p3": {
+  "truth_hairpins": 17,
+  "candidates": 2,
+  "yolo": 0
+ }
+}
