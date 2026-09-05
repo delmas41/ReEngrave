@@ -191,18 +191,89 @@ viola→treble) resets the carried clef and stands. Label-named staves only.
 
 44 unit tests in `test_clef_correction.py` pin every gate and both tables.
 
-## 7. Verification protocol (in flight)
+## 7. The scan-pool A/B — and what the raw metric cannot see
 
-1. Scan pool A/B: recorded `results-widened-graft.json` (= flag off, see
-   determinism note above) vs a full `--tag .clefdef-on` run with
-   `OMR_SCAN_EVAL_WEIGHTS` pinned to
-   `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`. Per-row edits;
-   rows without label-named firings must be byte-identical.
-2. Engraved 11-work benchmark with the flag ON — firings counted (expected:
-   none; engraved clefs detect well and label quality is text-layer).
-3. `eval_pipeline_clefs` `--contextual` and `--dossier` arms, flag off vs on
-   — the 69/69 and 50/52 readings must hold.
-4. The `clef_source` provenance bug (§3) is recorded here and left unfixed on
-   this branch — it is default-path behavior, and this branch must not change
-   defaults. Candidate one-line fix: refresh `clef_source` alongside the
-   clef in the furniture dropper's lead-drop branch, plus a seam test.
+Arms: recorded `results-widened-graft.json` = flag off (the pipeline is
+deterministic — a base-commit re-transcription of dvorak-p5 reproduces the
+recorded fixture's pages/contextual/direction blocks byte-for-byte — and the
+flag-off code path is unchanged by construction), vs a full `--tag
+.clefdef-on` run, `OMR_SCAN_EVAL_WEIGHTS` pinned to
+`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`
+(`results-clefdef-on.json`; the four fired rows re-run after the
+restatement-sourcing fix in `results-clefdef-on-fixedrows.json` — identical
+row scores, so both files carry the same numbers).
+
+| row | off | on | Δ | export |
+|---|--:|--:|--:|---|
+| beethoven-984073-p1 | 1286 | 1285 | −1 | differs (veto fired: Viola alto restored m4–15, 17 noteheads) |
+| beethoven-984073-p2 | 4449 | 4449 | 0 | **byte-identical** |
+| beethoven-575951-p1 | 1362 | 1364 | +2 | differs (override fired: Viola treble→alto, 30 noteheads) |
+| beethoven-575951-p2 | 4471 | 4471 | 0 | **byte-identical** |
+| dvorak-p5 | 673 | 673 | 0 | **byte-identical** |
+| dvorak-p6 | 2611 | 2611 | 0 | **byte-identical** |
+| brahms-p1 | 3434 | 3433 | −1 | differs (veto fired: 1.Violine treble restored m3–7) |
+| brahms-p2 | 6610 | 6565 | **−45** | differs (3 overrides: Bassoon ×2, Timpani → bass) |
+| mahler-p2 | 1117 | 1117 | 0 | **byte-identical** |
+| mahler-p3 | 3069 | 3069 | 0 | **byte-identical** |
+| *bach (unpooled)* | *6735* | *6735* | *0* | **byte-identical** |
+| **10-row pooled** | **29,082 / 0.8387** | **29,037 / 0.8375** | **−45** | |
+
+Every row without a label-named firing is byte-identical — the abstention
+gates hold everywhere, including the entire family-C damage (which stays,
+honestly, unfixed).
+
+**The three viola/violin fixes score ±2 raw, and that is the metric failing,
+not the fix.** Opened with `dump_ops` on 575951-p1: with 18 truth parts
+against 12 pred staves, musicdiff's part-sequence alignment pairs pred part 9
+(Viola) with TRUTH part 9 (Eb Horn 2) — so the viola staff's cost (84: 60
+whole-measure + 24 wrong-note) is computed against a horn part and is
+IDENTICAL whether the viola's pitches are wholesale +6-wrong or exactly
+right. The +2 is `extrasymboledit`: the corrected Eb's print explicit flats
+because the staff's exported signature still reads 0. This is the forensics'
+§2a "second-order damage" made concrete: **on floor-bearing rows the raw
+metric is blind to single-staff content fixes in the strings.**
+
+The condensation arm (fair 1:1 pairing; same tool, both arms re-scored in
+this worktree — the off column reproduces the forensics' graft rerun exactly:
+explained 416/470/1636) prices what the raw pool cannot see
+(`results-condensation-off.json` / `-on.json`):
+
+| row | condensed off | condensed on | Δ |
+|---|--:|--:|--:|
+| beethoven-984073-p1 | 870 | 834 | **−36** |
+| beethoven-575951-p1 | 892 | 802 | **−90** |
+| brahms-p1 | 1798 | 1670 | **−128** |
+
+**−254 condensed edits over the three rows the raw pool scores as ±2** —
+inside the reachability estimate's 150–350 band — plus the raw-visible −45 on
+brahms-p2 (whose 27 pred parts against 21 truth pair the bassoon/timpani
+staves, so its fix IS raw-visible). brahms-p2's condensed column is not
+re-scorable here (no `staves` map; the forensics built its condensed truth
+from `systems_as_printed` in session scratch).
+
+### The restatement-sourcing lesson (measured, then fixed, then measured again)
+
+The first ON run restated the 575951-p1 viola's letters correctly and the raw
+score still rose +2: the staff's own key signature was read as 1 flat,
+REJECTED by the cross-page vote ("differs from the system's 3 flats"),
+carried as zero — so every restated E/A/B lost the flat C minor gives it
+(E3 where truth has Eb3). `_restatement_alterations` now takes the majority
+signature among the system's READ staves for a concert-pitch, non-percussion
+staff whose own signature was not read; read signatures, transposers and
+timpani keep their own. The re-run changes the restated pitches to the
+correct spellings (m1 E3 → Eb3, verified) and the RAW row score does not move
+— the same part-mispairing blindness — but the condensed column above is
+measured WITH the fix, and the exported accidentals are now right for a
+reader. ⚠️ The staff's exported key-signature FIELD still says 0 flats:
+overriding the vote's explicit rejection is the vote's call, not this
+lever's, so those `wrong keysig` edits are deliberately left on the table.
+
+## 8. Remaining gates (in flight)
+
+1. Engraved 11-work benchmark with the flag ON — firings counted (expected
+   none; then exports are identical to a default run by construction).
+2. `eval_pipeline_clefs` `--contextual` (and `--dossier`) arms, flag off vs
+   on — the recorded readings must hold.
+3. The `clef_source` provenance bug (§3) is recorded and left unfixed here —
+   default-path behavior. Candidate fix: refresh `clef_source` alongside the
+   clef in the furniture dropper's lead-drop branch.
