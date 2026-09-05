@@ -287,21 +287,54 @@ def main(argv=None) -> int:
     print(f"non-row earlier pages to read fresh: {len(fresh_needed)} "
           f"{fresh_needed}", file=sys.stderr)
 
+    # ⚠️ EVERY ONE of these six is FRONT MATTER, and that is established by
+    # RENDERING AND LOOKING, not by the detector's silence — a "0 staves"
+    # from a detector is exactly the clean negative this repo has been burned
+    # by. The PNGs are committed in `fresh-donor-pages/`; the four decisive
+    # ones are a Dover half-title (Dvořák p3), the Dover series title (p0),
+    # the Dover copyright page (p1), the CONTENTS page (p2, which prints
+    # "I. Adagio ... 183" and so independently confirms that printed 183 —
+    # corpus row `dvorak-...-p5` — IS the movement's first page), the Dover
+    # Beethoven title, and the Edition Peters No. 3087b Mahler title.
     fresh: dict[tuple, dict] = {}
     for cp, idx in fresh_needed:
         pdf = lib / cp
         print(f"== fresh donor read {cp} page {idx}", file=sys.stderr)
+        import fitz
+        pm = fitz.open(pdf)[idx].get_pixmap(dpi=70)
+        assert pm.width > 100 and pm.height > 100, (
+            f"{cp} p{idx} rendered a degenerate {pm.width}x{pm.height} raster "
+            "— the page was not actually looked at")
         pl = page_labels(pdf, idx)
+        pl["render_px"] = [pm.width, pm.height]
+        pl["eye_check_png"] = "fresh-donor-pages/"
+        pl["verdict"] = ("FRONT_MATTER (rendered and looked at)"
+                         if not pl["structure"] else "music")
         print(f"   structure={pl['structure']} rungs={pl['rung_counts']} "
-              f"resolved={sum(1 for v in pl['systems'].values() for s in v if s['resolved'])}",
+              f"resolved={sum(1 for v in pl['systems'].values() for s in v if s['resolved'])}"
+              f"  render={pm.width}x{pm.height}",
               file=sys.stderr)
         fresh[(cp, idx)] = pl
 
     n_fresh_staves = sum(len(v) for pl in fresh.values()
                          for v in pl["systems"].values())
-    if fresh_needed:
-        assert n_fresh_staves > 0, "fresh donor reads detected ZERO staves"
-    print(f"fresh donor staves detected: {n_fresh_staves}", file=sys.stderr)
+    print(f"fresh donor staves detected: {n_fresh_staves} "
+          f"(0 is CORRECT here — all six are front matter, verified by eye)",
+          file=sys.stderr)
+
+    # the probe must never be able to report "nothing found" from an empty
+    # input: SOME donor page must carry staves and resolved labels.
+    n_donor_staves = n_fresh_staves + sum(
+        len(v) for p in target_pages.values() for v in p["systems"].values())
+    n_donor_resolved = sum(1 for p in target_pages.values()
+                           for v in p["systems"].values() for s in v
+                           if s["resolved"]) + sum(
+        1 for pl in fresh.values() for v in pl["systems"].values() for s in v
+        if s["resolved"])
+    assert n_donor_staves > 0, "no donor staves at all"
+    assert n_donor_resolved > 0, "no donor page resolved a single label"
+    print(f"donor staves available: {n_donor_staves}, "
+          f"with a resolved label: {n_donor_resolved}", file=sys.stderr)
 
     def donors_for(rid: str):
         """(sort_key, donor_id, page_index, systems) for every earlier page."""
@@ -386,6 +419,114 @@ def main(argv=None) -> int:
     assert len(results) == len(class_a), (
         f"counted {len(results)} verdicts for {len(class_a)} class-(a) staves")
 
+    # ── two secondary arms, both deliberately MORE generous ─────────────────
+    # (1) per-STAFF best donor: let every staff pick its own donor system.
+    #     A real roster pass would not do this (it chooses a donor for a
+    #     system), so this is a strict upper bound on the upper bound.
+    # (2) FORCED TOP-ALIGNMENT: where a segment's staff counts disagree,
+    #     join the two segments from the top and drop the tail. This is the
+    #     obvious "just do it anyway" policy, and the point of scoring it is
+    #     that the scoring key can say how often it would be WRONG.
+    from tools.omr.instruments import lookup as _lookup
+
+    def _truth_names(rid):
+        r = next(r for r in rows if r["row_id"] == rid)
+        st = r.get("staves")
+        while isinstance(st, str) and st.startswith("same-as:"):
+            r = next(x for x in rows if x["row_id"] == st.split(":", 1)[1])
+            st = r.get("staves")
+        return [x.get("name") for x in st] if isinstance(st, list) else None
+
+    per_staff_best = {}
+    forced = {"reached": 0, "checked": 0, "agree": 0, "disagree": 0, "cases": []}
+    for rid in sorted(target_pages):
+        tsys = target_pages[rid]["systems"]
+        donors = donors_for(rid)
+        for sysi in sorted(tsys):
+            target = tsys[sysi]
+            a_here = [s for s in target if (rid, sysi, s["position"]) in class_a]
+            if not a_here:
+                continue
+            for s in a_here:
+                p = s["position"]
+                best_v = "UNREACHABLE_NO_EARLIER_PAGE" if not donors else \
+                    "ABSTAIN_ALIGNMENT"
+                best_name = None
+                forced_name = None
+                for pidx, did, _, dsystems in donors:
+                    for dsysi in sorted(dsystems):
+                        donor = dsystems[dsysi]
+                        al = align(target, donor)
+                        q = al["map"].get(p)
+                        if q is not None:
+                            v = ("REACHABLE" if donor[q]["resolved"] else
+                                 "REACHABLE_TEXT_ONLY" if donor[q]["text"] else
+                                 "UNREACHABLE_DONOR_BLANK")
+                            if RANK[v] < RANK.get(best_v, 9):
+                                best_v, best_name = v, donor[q]["resolved"]
+                        # forced top-alignment inside the abstaining segment
+                        if q is None and forced_name is None:
+                            anchors = al["anchors"]
+                            bounds = ([(-1, -1)] + anchors +
+                                      [(len(target), len(donor))])
+                            for (ta, da), (tb, db) in zip(bounds, bounds[1:]):
+                                if ta < p < tb:
+                                    off = p - (ta + 1)
+                                    dq = da + 1 + off
+                                    if da < dq < db and donor[dq]["resolved"]:
+                                        forced_name = donor[dq]["resolved"]
+                                    break
+                per_staff_best[f"{rid}|{sysi}|{p}"] = {"verdict": best_v,
+                                                       "imputed": best_name}
+                if best_v != "REACHABLE" and forced_name:
+                    forced["reached"] += 1
+                    tn = _truth_names(rid)
+                    if tn and p < len(tn):
+                        h = _lookup(tn[p] or "")
+                        want = h.instrument.name if (h and h.instrument) else None
+                        forced["checked"] += 1
+                        if want == forced_name:
+                            forced["agree"] += 1
+                        else:
+                            forced["disagree"] += 1
+                            forced["cases"].append(
+                                {"row_id": rid, "system": sysi, "position": p,
+                                 "forced_name": forced_name,
+                                 "truth_name": tn[p], "truth_instrument": want})
+
+    # (3) SAME-PAGE earlier system. Not "an earlier page", so it is reported
+    #     separately and never folded into the headline — but it is the same
+    #     question ("is the wall a PAGE wall?") and it is the only route open
+    #     to a movement's FIRST page, which by construction has no donor page.
+    same_page = {"reached": 0, "still_not": 0, "cases": []}
+    for rid in sorted(target_pages):
+        tsys = target_pages[rid]["systems"]
+        for sysi in sorted(tsys):
+            target = tsys[sysi]
+            a_here = [s for s in target if (rid, sysi, s["position"]) in class_a]
+            if not a_here:
+                continue
+            for s in a_here:
+                p, got = s["position"], None
+                for dsysi in sorted(tsys):
+                    if dsysi >= sysi:
+                        continue
+                    donor = tsys[dsysi]
+                    al = align(target, donor)
+                    q = al["map"].get(p)
+                    if q is not None and donor[q]["resolved"]:
+                        got = donor[q]["resolved"]
+                        break
+                if got:
+                    same_page["reached"] += 1
+                    same_page["cases"].append({"row_id": rid, "system": sysi,
+                                               "position": p, "imputed": got})
+                else:
+                    same_page["still_not"] += 1
+
+    import collections as _c
+    per_staff_counts = _c.Counter(v["verdict"] for v in per_staff_best.values())
+
     # ── verification, AFTER every verdict is fixed ───────────────────────────
     # ⚠️ works.json["staves"] is the SCORING KEY. Nothing above reads it. This
     # block only checks imputed names against the hand-read truth; it changes
@@ -447,6 +588,26 @@ def main(argv=None) -> int:
         },
         "verdicts": results,
         "verification_against_scoring_key": ver,
+        "arm_per_staff_best_donor": {
+            "note": ("every staff picks its own donor SYSTEM; a real roster "
+                     "pass chooses one donor per system, so this is an upper "
+                     "bound on the upper bound"),
+            "counts": dict(per_staff_counts),
+            "per_staff": per_staff_best,
+        },
+        "arm_forced_top_alignment": {
+            "note": ("where a segment's staff counts disagree, join from the "
+                     "TOP and drop the tail — the obvious 'do it anyway' "
+                     "policy. Scored against the scoring key AFTER the fact."),
+            **{k: v for k, v in forced.items()},
+        },
+        "arm_same_page_earlier_system": {
+            "note": ("donor is an earlier SYSTEM on the same page — not an "
+                     "earlier page, reported separately, never in the "
+                     "headline. It is the only route open to a movement's "
+                     "first page."),
+            **same_page,
+        },
     }
     Path(a.out).write_text(json.dumps(payload, indent=1))
     print(f"wrote {a.out}", file=sys.stderr)
@@ -468,6 +629,12 @@ def main(argv=None) -> int:
     print(f"\nverification vs scoring key: {ver['agree']}/{ver['checked']} agree, "
           f"{ver['disagree']} disagree, {ver['no_truth']} no truth",
           file=sys.stderr)
+    print(f"\nARM per-staff-best-donor: {dict(per_staff_counts)}", file=sys.stderr)
+    print(f"ARM forced-top-alignment: +{forced['reached']} reached, of which "
+          f"{forced['checked']} have truth: {forced['agree']} agree / "
+          f"{forced['disagree']} WRONG", file=sys.stderr)
+    print(f"ARM same-page-earlier-system: {same_page['reached']} reached, "
+          f"{same_page['still_not']} not", file=sys.stderr)
     return 0
 
 

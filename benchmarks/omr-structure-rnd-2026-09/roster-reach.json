@@ -1,0 +1,2378 @@
+{
+ "meta": {
+  "question": "of the staves printing NO label, how many sit in a document whose EARLIER page labels the corresponding staff?",
+  "upper_bound": "YES. A roster name still has to survive contextual.resolve_ambiguous_label \u2014 the class-6 circularity. This is coverage, not gain.",
+  "class_a_source": "vendored-labels/margin-ink.json verdict a_NO_INK",
+  "class_a_n": 117,
+  "ink_look_abstained_n": 13,
+  "dpi": 600,
+  "donor_rungs_available": {
+   "surya": true,
+   "tesseract": true
+  },
+  "fresh_donor_pages": [
+   {
+    "catalog_path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "page_index": 0,
+    "structure": [],
+    "rung_counts": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0
+    }
+   },
+   {
+    "catalog_path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+    "page_index": 0,
+    "structure": [],
+    "rung_counts": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0
+    }
+   },
+   {
+    "catalog_path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+    "page_index": 1,
+    "structure": [],
+    "rung_counts": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0
+    }
+   },
+   {
+    "catalog_path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+    "page_index": 2,
+    "structure": [],
+    "rung_counts": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0
+    }
+   },
+   {
+    "catalog_path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+    "page_index": 3,
+    "structure": [],
+    "rung_counts": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0
+    }
+   },
+   {
+    "catalog_path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+    "page_index": 0,
+    "structure": [],
+    "rung_counts": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0
+    }
+   }
+  ]
+ },
+ "verdicts": [
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 0,
+   "position": 11,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 0,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 1,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 2,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 3,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 4,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 5,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 6,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 7,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 8,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 9,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 10,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "system": 1,
+   "position": 11,
+   "publisher": "''Edition Peters Nr.4412''",
+   "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+   "why": "the document has no page before this one"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 0,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 0,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 0,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 0,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 1,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 1,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 1,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "system": 1,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-575951-p1",
+   "donor_page_index": 0,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 0,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 0,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 0,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 0,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 1,
+   "position": 4,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 1,
+   "position": 5,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 1,
+   "position": 6,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "system": 1,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-575951-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 0,
+   "position": 6,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "REACHABLE",
+   "why": "segment_1to1",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Tp.",
+   "donor_rung": "text_layer",
+   "imputed_name": "Timpani",
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 0,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 0,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 0,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 0,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 1,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 1,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 1,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "system": 1,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-575951-p3",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 0,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 0,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 0,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 0,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 1,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 1,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 1,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "system": 1,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=5",
+   "donor": "beethoven-sym5-mvt1-984073-p1",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 0,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 0,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 0,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 0,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 1,
+   "position": 4,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 1,
+   "position": 5,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 1,
+   "position": 6,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "system": 1,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=4 donor=6",
+   "donor": "beethoven-sym5-mvt1-984073-p2",
+   "donor_page_index": 2,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 4
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 0,
+   "position": 6,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "REACHABLE",
+   "why": "segment_1to1",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Tp.",
+   "donor_rung": "surya",
+   "imputed_name": "Timpani",
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 0,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 0,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 0,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 0,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 6
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 1,
+   "position": 7,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 1,
+   "position": 8,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 1,
+   "position": 9,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "system": 1,
+   "position": 10,
+   "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+   "verdict": "UNREACHABLE_DONOR_BLANK",
+   "why": "donor staff prints nothing either",
+   "donor": "beethoven-sym5-mvt1-984073-p3",
+   "donor_page_index": 3,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "",
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 7
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 0,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 0,
+   "donor_text": "Flauti.",
+   "donor_rung": "surya",
+   "imputed_name": "Flute",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 1,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 1,
+   "donor_text": "Oboi.",
+   "donor_rung": "surya",
+   "imputed_name": "Oboe",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 2,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 2,
+   "donor_text": "Clarinetti in A.",
+   "donor_rung": "surya",
+   "imputed_name": "Clarinet",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 3,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 3,
+   "donor_text": "Fagotti.",
+   "donor_rung": "surya",
+   "imputed_name": "Bassoon",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 4,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 4,
+   "donor_text": "Corni I. II. in E.",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 5,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 5,
+   "donor_text": "Corni III. IV. in C.",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 6,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Trombe in E.",
+   "donor_rung": "surya",
+   "imputed_name": "Trumpet",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 7,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "Tromboni I. II.",
+   "donor_rung": "surya",
+   "imputed_name": "Trombone",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 8,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "Trombone basso.",
+   "donor_rung": "surya",
+   "imputed_name": "Trombone",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 9,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "Tympani A. E. H.",
+   "donor_rung": "surya",
+   "imputed_name": "Timpani",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 10,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "Violino I.",
+   "donor_rung": "surya",
+   "imputed_name": "Violin",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 11,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 11,
+   "donor_text": "Violino II.",
+   "donor_rung": "surya",
+   "imputed_name": "Violin",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 12,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 12,
+   "donor_text": "Viola.",
+   "donor_rung": "surya",
+   "imputed_name": "Viola",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 13,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 13,
+   "donor_text": "Violoncello.",
+   "donor_rung": "surya",
+   "imputed_name": "Cello",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "system": 0,
+   "position": 14,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 14,
+   "donor_text": "Contrabasso.",
+   "donor_rung": "surya",
+   "imputed_name": "Contrabass",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 0,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 0,
+   "donor_text": "Flauti.",
+   "donor_rung": "surya",
+   "imputed_name": "Flute",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 1,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 1,
+   "donor_text": "Oboi.",
+   "donor_rung": "surya",
+   "imputed_name": "Oboe",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 2,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 2,
+   "donor_text": "Clarinetti in A.",
+   "donor_rung": "surya",
+   "imputed_name": "Clarinet",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 3,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 3,
+   "donor_text": "Fagotti.",
+   "donor_rung": "surya",
+   "imputed_name": "Bassoon",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 4,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 4,
+   "donor_text": "Corni I. II. in E.",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 5,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 5,
+   "donor_text": "Corni III. IV. in C.",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 6,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Trombe in E.",
+   "donor_rung": "surya",
+   "imputed_name": "Trumpet",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 7,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "Tromboni I. II.",
+   "donor_rung": "surya",
+   "imputed_name": "Trombone",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 8,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "Trombone basso.",
+   "donor_rung": "surya",
+   "imputed_name": "Trombone",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 9,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "Tympani A. E. H.",
+   "donor_rung": "surya",
+   "imputed_name": "Timpani",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 10,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "Violino I.",
+   "donor_rung": "surya",
+   "imputed_name": "Violin",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 11,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 11,
+   "donor_text": "Violino II.",
+   "donor_rung": "surya",
+   "imputed_name": "Violin",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 12,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 12,
+   "donor_text": "Viola.",
+   "donor_rung": "surya",
+   "imputed_name": "Viola",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 13,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 13,
+   "donor_text": "Violoncello.",
+   "donor_rung": "surya",
+   "imputed_name": "Cello",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 0,
+   "position": 14,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 14,
+   "donor_text": "Contrabasso.",
+   "donor_rung": "surya",
+   "imputed_name": "Contrabass",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 0,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 0,
+   "donor_text": "Flauti.",
+   "donor_rung": "surya",
+   "imputed_name": "Flute",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 1,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 1,
+   "donor_text": "Oboi.",
+   "donor_rung": "surya",
+   "imputed_name": "Oboe",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 2,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 2,
+   "donor_text": "Clarinetti in A.",
+   "donor_rung": "surya",
+   "imputed_name": "Clarinet",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 3,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 3,
+   "donor_text": "Fagotti.",
+   "donor_rung": "surya",
+   "imputed_name": "Bassoon",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 4,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 4,
+   "donor_text": "Corni I. II. in E.",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 5,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 5,
+   "donor_text": "Corni III. IV. in C.",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 6,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Trombe in E.",
+   "donor_rung": "surya",
+   "imputed_name": "Trumpet",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 7,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 7,
+   "donor_text": "Tromboni I. II.",
+   "donor_rung": "surya",
+   "imputed_name": "Trombone",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 8,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "Trombone basso.",
+   "donor_rung": "surya",
+   "imputed_name": "Trombone",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 9,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 9,
+   "donor_text": "Tympani A. E. H.",
+   "donor_rung": "surya",
+   "imputed_name": "Timpani",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 10,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 10,
+   "donor_text": "Violino I.",
+   "donor_rung": "surya",
+   "imputed_name": "Violin",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 11,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 11,
+   "donor_text": "Violino II.",
+   "donor_rung": "surya",
+   "imputed_name": "Violin",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 12,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 12,
+   "donor_text": "Viola.",
+   "donor_rung": "surya",
+   "imputed_name": "Viola",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 13,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 13,
+   "donor_text": "Violoncello.",
+   "donor_rung": "surya",
+   "imputed_name": "Cello",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "system": 1,
+   "position": 14,
+   "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+   "verdict": "REACHABLE",
+   "why": "equal_staff_counts",
+   "donor": "dvorak-sym9-mvt1-405834-p5",
+   "donor_page_index": 4,
+   "donor_system": 0,
+   "donor_position": 14,
+   "donor_text": "Contrabasso.",
+   "donor_rung": "surya",
+   "imputed_name": "Contrabass",
+   "n_anchors": 0
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "system": 0,
+   "position": 2,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters No. 3087b",
+   "verdict": "REACHABLE",
+   "why": "segment_1to1",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 4,
+   "donor_text": "Contrafagott",
+   "donor_rung": "surya",
+   "imputed_name": "Contrabassoon",
+   "n_anchors": 11
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "system": 0,
+   "position": 4,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters No. 3087b",
+   "verdict": "REACHABLE",
+   "why": "segment_1to1",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Sechs H\u00f6rner in F",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 11
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "system": 0,
+   "position": 4,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters (plate 8951 at the foot)",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=1 donor=0",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 15
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "system": 0,
+   "position": 6,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters (plate 8951 at the foot)",
+   "verdict": "REACHABLE",
+   "why": "segment_1to1",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Sechs H\u00f6rner in F",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 15
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "system": 0,
+   "position": 18,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters (plate 8951 at the foot)",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=2 donor=1",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 15
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "system": 0,
+   "position": 4,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters (plate 8951 at the foot)",
+   "verdict": "REACHABLE",
+   "why": "segment_1to1",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 6,
+   "donor_text": "Sechs H\u00f6rner in F",
+   "donor_rung": "surya",
+   "imputed_name": "Horn",
+   "n_anchors": 12
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "system": 0,
+   "position": 6,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters (plate 8951 at the foot)",
+   "verdict": "REACHABLE",
+   "why": "segment_1to1",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": 8,
+   "donor_text": "Vier Trompeten in B",
+   "donor_rung": "surya",
+   "imputed_name": "Trumpet",
+   "n_anchors": 12
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "system": 0,
+   "position": 18,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters (plate 8951 at the foot)",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=2 donor=1",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 12
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "system": 0,
+   "position": 20,
+   "publisher": "(unidentified scan 2016); the page itself says Edition Peters (plate 8951 at the foot)",
+   "verdict": "ABSTAIN_ALIGNMENT",
+   "why": "segment_size_mismatch target=1 donor=0",
+   "donor": "mahler-sym5-mvt1-local-p2",
+   "donor_page_index": 1,
+   "donor_system": 0,
+   "donor_position": null,
+   "donor_text": null,
+   "donor_rung": null,
+   "imputed_name": null,
+   "n_anchors": 12
+  }
+ ],
+ "verification_against_scoring_key": {
+  "checked": 45,
+  "agree": 45,
+  "disagree": 0,
+  "no_truth": 7,
+  "cases": []
+ },
+ "arm_per_staff_best_donor": {
+  "note": "every staff picks its own donor SYSTEM; a real roster pass chooses one donor per system, so this is an upper bound on the upper bound",
+  "counts": {
+   "UNREACHABLE_NO_EARLIER_PAGE": 13,
+   "ABSTAIN_ALIGNMENT": 25,
+   "UNREACHABLE_DONOR_BLANK": 24,
+   "REACHABLE": 53,
+   "REACHABLE_TEXT_ONLY": 2
+  },
+  "per_staff": {
+   "bach-brandenburg3-mvt1-468678-p1|0|11": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|0": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|1": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|2": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|3": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|4": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|5": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|6": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|7": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|8": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|9": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|10": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "bach-brandenburg3-mvt1-468678-p1|1|11": {
+    "verdict": "UNREACHABLE_NO_EARLIER_PAGE",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|0|7": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|0|8": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|0|9": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|0|10": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|1|7": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|1|8": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|1|9": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p2|1|10": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|0|7": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|0|8": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|0|9": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|0|10": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|1|4": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|1|5": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|1|6": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p3|1|7": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|0|6": {
+    "verdict": "REACHABLE",
+    "imputed": "Timpani"
+   },
+   "beethoven-sym5-mvt1-575951-p4|0|7": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|0|8": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|0|9": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|0|10": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|1|7": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|1|8": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|1|9": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-575951-p4|1|10": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|0|7": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|0|8": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|0|9": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|0|10": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|1|7": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|1|8": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|1|9": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p2|1|10": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|0|7": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|0|8": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|0|9": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|0|10": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|1|4": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|1|5": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|1|6": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p3|1|7": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|0|6": {
+    "verdict": "REACHABLE",
+    "imputed": "Timpani"
+   },
+   "beethoven-sym5-mvt1-984073-p4|0|7": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|0|8": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|0|9": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|0|10": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|1|7": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|1|8": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|1|9": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "beethoven-sym5-mvt1-984073-p4|1|10": {
+    "verdict": "UNREACHABLE_DONOR_BLANK",
+    "imputed": null
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|0": {
+    "verdict": "REACHABLE",
+    "imputed": "Flute"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|1": {
+    "verdict": "REACHABLE",
+    "imputed": "Oboe"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|2": {
+    "verdict": "REACHABLE",
+    "imputed": "Clarinet"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|3": {
+    "verdict": "REACHABLE",
+    "imputed": "Bassoon"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|4": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|5": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|6": {
+    "verdict": "REACHABLE",
+    "imputed": "Trumpet"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|7": {
+    "verdict": "REACHABLE",
+    "imputed": "Trombone"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|8": {
+    "verdict": "REACHABLE",
+    "imputed": "Trombone"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|9": {
+    "verdict": "REACHABLE",
+    "imputed": "Timpani"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|10": {
+    "verdict": "REACHABLE",
+    "imputed": "Violin"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|11": {
+    "verdict": "REACHABLE",
+    "imputed": "Violin"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|12": {
+    "verdict": "REACHABLE",
+    "imputed": "Viola"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|13": {
+    "verdict": "REACHABLE",
+    "imputed": "Cello"
+   },
+   "dvorak-sym9-mvt1-405834-p6|0|14": {
+    "verdict": "REACHABLE",
+    "imputed": "Contrabass"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|0": {
+    "verdict": "REACHABLE",
+    "imputed": "Flute"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|1": {
+    "verdict": "REACHABLE",
+    "imputed": "Oboe"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|2": {
+    "verdict": "REACHABLE",
+    "imputed": "Clarinet"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|3": {
+    "verdict": "REACHABLE",
+    "imputed": "Bassoon"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|4": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|5": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|6": {
+    "verdict": "REACHABLE",
+    "imputed": "Trumpet"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|7": {
+    "verdict": "REACHABLE",
+    "imputed": "Trombone"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|8": {
+    "verdict": "REACHABLE",
+    "imputed": "Trombone"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|9": {
+    "verdict": "REACHABLE",
+    "imputed": "Timpani"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|10": {
+    "verdict": "REACHABLE",
+    "imputed": "Violin"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|11": {
+    "verdict": "REACHABLE",
+    "imputed": "Violin"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|12": {
+    "verdict": "REACHABLE",
+    "imputed": "Viola"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|13": {
+    "verdict": "REACHABLE",
+    "imputed": "Cello"
+   },
+   "dvorak-sym9-mvt1-405834-p7|0|14": {
+    "verdict": "REACHABLE",
+    "imputed": "Contrabass"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|0": {
+    "verdict": "REACHABLE",
+    "imputed": "Flute"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|1": {
+    "verdict": "REACHABLE",
+    "imputed": "Oboe"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|2": {
+    "verdict": "REACHABLE",
+    "imputed": "Clarinet"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|3": {
+    "verdict": "REACHABLE",
+    "imputed": "Bassoon"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|4": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|5": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|6": {
+    "verdict": "REACHABLE",
+    "imputed": "Trumpet"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|7": {
+    "verdict": "REACHABLE",
+    "imputed": "Trombone"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|8": {
+    "verdict": "REACHABLE",
+    "imputed": "Trombone"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|9": {
+    "verdict": "REACHABLE",
+    "imputed": "Timpani"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|10": {
+    "verdict": "REACHABLE",
+    "imputed": "Violin"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|11": {
+    "verdict": "REACHABLE",
+    "imputed": "Violin"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|12": {
+    "verdict": "REACHABLE",
+    "imputed": "Viola"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|13": {
+    "verdict": "REACHABLE",
+    "imputed": "Cello"
+   },
+   "dvorak-sym9-mvt1-405834-p7|1|14": {
+    "verdict": "REACHABLE",
+    "imputed": "Contrabass"
+   },
+   "mahler-sym5-mvt1-local-p3|0|2": {
+    "verdict": "REACHABLE",
+    "imputed": "Contrabassoon"
+   },
+   "mahler-sym5-mvt1-local-p3|0|4": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "mahler-sym5-mvt1-local-p4|0|4": {
+    "verdict": "REACHABLE_TEXT_ONLY",
+    "imputed": null
+   },
+   "mahler-sym5-mvt1-local-p4|0|6": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "mahler-sym5-mvt1-local-p4|0|18": {
+    "verdict": "ABSTAIN_ALIGNMENT",
+    "imputed": null
+   },
+   "mahler-sym5-mvt1-local-p5|0|4": {
+    "verdict": "REACHABLE",
+    "imputed": "Horn"
+   },
+   "mahler-sym5-mvt1-local-p5|0|6": {
+    "verdict": "REACHABLE",
+    "imputed": "Trumpet"
+   },
+   "mahler-sym5-mvt1-local-p5|0|18": {
+    "verdict": "REACHABLE_TEXT_ONLY",
+    "imputed": null
+   },
+   "mahler-sym5-mvt1-local-p5|0|20": {
+    "verdict": "REACHABLE",
+    "imputed": "Bass voice"
+   }
+  }
+ },
+ "arm_forced_top_alignment": {
+  "note": "where a segment's staff counts disagree, join from the TOP and drop the tail \u2014 the obvious 'do it anyway' policy. Scored against the scoring key AFTER the fact.",
+  "reached": 48,
+  "checked": 16,
+  "agree": 16,
+  "disagree": 0,
+  "cases": []
+ },
+ "arm_same_page_earlier_system": {
+  "note": "donor is an earlier SYSTEM on the same page \u2014 not an earlier page, reported separately, never in the headline. It is the only route open to a movement's first page.",
+  "reached": 5,
+  "still_not": 112,
+  "cases": [
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "system": 1,
+    "position": 1,
+    "imputed": "Violin"
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "system": 1,
+    "position": 4,
+    "imputed": "Viola"
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "system": 1,
+    "position": 7,
+    "imputed": "Cello"
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "system": 1,
+    "position": 9,
+    "imputed": "Contrabass"
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "system": 1,
+    "position": 10,
+    "imputed": "Piano"
+   }
+  ]
+ }
+}
