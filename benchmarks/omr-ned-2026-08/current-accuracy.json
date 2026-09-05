@@ -2,48 +2,48 @@
   "_comment": "The single source for the CURRENT accuracy figures. Written by `orchestral_eval --omr-ned --record`; propagated into CLAUDE.md by `python3 -m tools.omr.accuracy_record --update`. Do not hand-edit, and do not restate a current figure in another document \u2014 see tools/omr/accuracy_record.py, and 68be549 for why there is only one.",
   "runs": {
     "direction_text": {
-      "pooled": 0.13055264910111292,
-      "edits": 2745,
+      "pooled": 0.11759391345696624,
+      "edits": 2473,
       "truth_symbols": 10665,
-      "pred_symbols": 10361,
-      "commit": "44a1745",
+      "pred_symbols": 10365,
+      "commit": "bc58defb",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
-          "omr_ned": 0.05945945945945946,
-          "edits": 77,
+          "omr_ned": 0.033204633204633204,
+          "edits": 43,
           "pitch_recall": 1.0,
           "pitch_precision": 1.0,
           "duration_rate": 1.0
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.11961259079903147,
-          "edits": 494,
+          "omr_ned": 0.11864406779661017,
+          "edits": 490,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
         },
         {
           "work_id": "mahler-sym5-mvt1",
-          "omr_ned": 0.027196652719665274,
-          "edits": 52,
+          "omr_ned": 0.021966527196652718,
+          "edits": 42,
           "pitch_recall": 0.917,
           "pitch_precision": 0.917,
           "duration_rate": 1.0
         },
         {
           "work_id": "mozart-sym40-mvt1",
-          "omr_ned": 0.17715768981181051,
-          "edits": 273,
+          "omr_ned": 0.14146658014276445,
+          "edits": 218,
           "pitch_recall": 0.762,
           "pitch_precision": 0.762,
           "duration_rate": 0.952
         },
         {
           "work_id": "mozart-sym41-mvt1",
-          "omr_ned": 0.14470548178413348,
-          "edits": 425,
+          "omr_ned": 0.10248552945182159,
+          "edits": 301,
           "pitch_recall": 0.991,
           "pitch_precision": 0.991,
           "duration_rate": 0.947
@@ -58,8 +58,8 @@
         },
         {
           "work_id": "brahms-sym4-mvt1",
-          "omr_ned": 0.22382478632478633,
-          "edits": 419,
+          "omr_ned": 0.21375266524520256,
+          "edits": 401,
           "pitch_recall": 0.959,
           "pitch_precision": 0.943,
           "duration_rate": 0.933
@@ -74,24 +74,24 @@
         },
         {
           "work_id": "tchaikovsky-sym4-mvt2",
-          "omr_ned": 0.05795235028976175,
-          "edits": 90,
+          "omr_ned": 0.044430135222150675,
+          "edits": 69,
           "pitch_recall": 0.925,
           "pitch_precision": 0.925,
           "duration_rate": 1.0
         },
         {
           "work_id": "tchaikovsky-sym6-mvt2",
-          "omr_ned": 0.1916083916083916,
-          "edits": 274,
+          "omr_ned": 0.1888111888111888,
+          "edits": 270,
           "pitch_recall": 0.756,
           "pitch_precision": 0.747,
           "duration_rate": 0.985
         },
         {
           "work_id": "bruckner-sym5-mvt1",
-          "omr_ned": 0.09411172622043282,
-          "edits": 187,
+          "omr_ned": 0.09310518369401108,
+          "edits": 185,
           "pitch_recall": 0.962,
           "pitch_precision": 0.962,
           "duration_rate": 1.0
@@ -99,48 +99,48 @@
       ]
     },
     "no_direction_text": {
-      "pooled": 0.13987523992322456,
-      "edits": 2915,
+      "pooled": 0.12679907887161773,
+      "edits": 2643,
       "truth_symbols": 10665,
-      "pred_symbols": 10175,
-      "commit": "44a1745",
+      "pred_symbols": 10179,
+      "commit": "bc58defb",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
-          "omr_ned": 0.0727130570758405,
-          "edits": 93,
+          "omr_ned": 0.046129788897576234,
+          "edits": 59,
           "pitch_recall": 1.0,
           "pitch_precision": 1.0,
           "duration_rate": 1.0
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.15542228885557222,
-          "edits": 622,
+          "omr_ned": 0.15442278860569716,
+          "edits": 618,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
         },
         {
           "work_id": "mahler-sym5-mvt1",
-          "omr_ned": 0.027196652719665274,
-          "edits": 52,
+          "omr_ned": 0.021966527196652718,
+          "edits": 42,
           "pitch_recall": 0.917,
           "pitch_precision": 0.917,
           "duration_rate": 1.0
         },
         {
           "work_id": "mozart-sym40-mvt1",
-          "omr_ned": 0.17715768981181051,
-          "edits": 273,
+          "omr_ned": 0.14146658014276445,
+          "edits": 218,
           "pitch_recall": 0.762,
           "pitch_precision": 0.762,
           "duration_rate": 0.952
         },
         {
           "work_id": "mozart-sym41-mvt1",
-          "omr_ned": 0.1501881628463907,
-          "edits": 439,
+          "omr_ned": 0.10776599384194321,
+          "edits": 315,
           "pitch_recall": 0.991,
           "pitch_precision": 0.991,
           "duration_rate": 0.947
@@ -155,8 +155,8 @@
         },
         {
           "work_id": "brahms-sym4-mvt1",
-          "omr_ned": 0.22382478632478633,
-          "edits": 419,
+          "omr_ned": 0.21375266524520256,
+          "edits": 401,
           "pitch_recall": 0.959,
           "pitch_precision": 0.943,
           "duration_rate": 0.933
@@ -171,24 +171,24 @@
         },
         {
           "work_id": "tchaikovsky-sym4-mvt2",
-          "omr_ned": 0.05232558139534884,
-          "edits": 81,
+          "omr_ned": 0.03875968992248062,
+          "edits": 60,
           "pitch_recall": 0.925,
           "pitch_precision": 0.925,
           "duration_rate": 1.0
         },
         {
           "work_id": "tchaikovsky-sym6-mvt2",
-          "omr_ned": 0.1916083916083916,
-          "edits": 274,
+          "omr_ned": 0.1888111888111888,
+          "edits": 270,
           "pitch_recall": 0.756,
           "pitch_precision": 0.747,
           "duration_rate": 0.985
         },
         {
           "work_id": "bruckner-sym5-mvt1",
-          "omr_ned": 0.09742554265522463,
-          "edits": 193,
+          "omr_ned": 0.09641595153962645,
+          "edits": 191,
           "pitch_recall": 0.962,
           "pitch_precision": 0.962,
           "duration_rate": 1.0
