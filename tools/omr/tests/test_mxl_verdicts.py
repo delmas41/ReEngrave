@@ -86,13 +86,13 @@ def _transcription(n_measures_staff0: int = 3) -> dict:
     s0 = [
         _measure(0, [
             _det("noteheadBlackInSpace", "C5", 200, 230),         # truth half → WRONG_CATEGORY
-            _det("noteheadBlackOnLine", "E5", 500, 130),          # TP
+            _det("noteheadBlackInSpace", "E5", 500, 130),         # TP (E5 = top space)
             _det("noteheadBlackInSpace", "C6", 800, -120),        # not in the reference
         ]),
         _measure(1, [_det("restWhole", None, 400, 150, dur=4.0, dtype="whole")]),
         _measure(2, [
-            _det("noteheadHalfInSpace", "D5", 300, 180, dur=2.0, dtype="half"),   # TP
-            _det("noteheadBlackInSpace", "D5", 700, 180, dur=None, dtype=None),   # stemless orphan
+            _det("noteheadHalfOnLine", "D5", 300, 180, dur=2.0, dtype="half"),   # TP (D5 = 4th line)
+            _det("noteheadBlackOnLine", "D5", 700, 180, dur=None, dtype=None),   # stemless orphan
         ]),
     ][:n_measures_staff0]
     s1 = [
@@ -143,7 +143,7 @@ def bench(tmp_path: Path) -> Path:
     (b / "cells.json").write_text(json.dumps(cells))
     dets = {
         "fx-p4-sys0-s0-m0": [_batch_det(0, "noteheadBlackInSpace", 205, 235),
-                             _batch_det(1, "noteheadBlackOnLine", 498, 126),
+                             _batch_det(1, "noteheadBlackInSpace", 498, 126),
                              _batch_det(2, "noteheadBlackInSpace", 803, -117),
                              _batch_det(3, "accidentalSharp", 150, 230, 20, 60)],
         "fx-p4-sys0-s0-m1": [_batch_det(0, "restWhole", 400, 150, 40, 20)],
@@ -226,7 +226,7 @@ def test_draw_from_scratch_cell_gets_added_boxes_including_the_orphan(bench, tru
     assert v["detections"] == []
     added = v["added_detections"]
     assert [a["id"] for a in added] == ["M0", "M1"]
-    assert {a["human_class"] for a in added} == {"noteheadHalfInSpace"}
+    assert {a["human_class"] for a in added} == {"noteheadHalfOnLine"}
     # The stemless second D5 (no duration) still reaches the reference.
     xs = sorted(a["bbox"]["x"] for a in added)
     assert xs == [300, 700]
@@ -324,7 +324,7 @@ def test_score_against_human_verdicts(bench, truth) -> None:
     # whole note the pre-fill will not produce.
     human = {"cell_id": cid, "schema_version": 2, "detections": [],
              "added_detections": [
-                 {"id": "H0", "human_class": "noteheadHalfInSpace", "human_category": "notehead",
+                 {"id": "H0", "human_class": "noteheadHalfOnLine", "human_category": "notehead",
                   "bbox": {"x": 296, "y": 176, "w": 44, "h": 44}, "notes": ""},
                  {"id": "H1", "human_class": "noteheadWholeOnLine", "human_category": "notehead",
                   "bbox": {"x": 900, "y": 100, "w": 40, "h": 40}, "notes": ""}],
@@ -362,7 +362,7 @@ def test_converter_reads_prefilled_verdicts_unchanged(bench, truth) -> None:
     assert len(lines) == 2
     assert summ.n_tp == 1 and summ.n_wrong_cat == 1
     classes = {int(l.split()[0]) for l in lines}
-    assert index["noteheadHalfInSpace"] in classes and index["noteheadBlackOnLine"] in classes
+    assert index["noteheadHalfInSpace"] in classes and index["noteheadBlackInSpace"] in classes
     v2 = _verdict(bench, "fx-p4-sys0-s0-m2")
     lines2, summ2 = convert_cell(cell_id=v2["cell_id"], verdict_state=v2,
                                  artifacts=CellArtifacts(cell_id=v2["cell_id"], cell_png=Path("x.png"),
@@ -431,6 +431,44 @@ def test_server_serves_prefilled_verdicts_and_hints(bench, truth) -> None:
     assert "prefill_status" in other
 
 
+def test_blind_mode_withholds_the_prefill_from_the_ui(bench, truth) -> None:
+    """A pass whose labels will SCORE the pre-fill must not be shown it.
+    `--blind` withholds the hints AND the queue signals (`prefill_status`,
+    the hint counts) — the second matters because "most left for me first"
+    tells the human which cells the pre-fill struggled with. The verdict
+    state is untouched: blind is about what the human SEES, and any pre-fill
+    already written into verdicts/ is still served."""
+    pytest.importorskip("fastapi")
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.server import create_app
+
+    _run(bench, truth, _windows(), write=True)
+    for cid in json.loads((bench / "cells.json").read_text()):
+        (bench / "cells" / f"{cid['cell_id']}.png").write_bytes(b"")
+
+    seeing = TestClient(create_app(bench))
+    blind = TestClient(create_app(bench, blind=True))
+
+    assert seeing.get("/api/cell/fx-p4-sys0-s0-m0").json()["prefill"] is not None
+    assert blind.get("/api/cell/fx-p4-sys0-s0-m0").json()["prefill"] is None
+
+    listed = {c["cell_id"]: c for c in blind.get("/api/cells").json()}
+    c = listed["fx-p4-sys0-s0-m0"]
+    assert c["prefill_status"] is None
+    assert c["n_hints"] == 0 and c["n_hints_missing"] == 0
+    # The human's own progress is still reported — blind hides the reference,
+    # not the labeling state.
+    assert c["n_decided"] == 2 and c["n_pending"] == 2
+    # Same cell set, same order: blind changes what is served, not which.
+    assert ([x["cell_id"] for x in blind.get("/api/cells").json()]
+            == [x["cell_id"] for x in seeing.get("/api/cells").json()])
+    # Saving still works, and the verdict state is unaffected by blindness.
+    state = blind.get("/api/cell/fx-p4-sys0-s0-m2/verdict").json()["state"]
+    assert [a["id"] for a in state["added_detections"]] == ["M0", "M1"]
+    assert blind.post("/api/cell/fx-p4-sys0-s0-m2/verdict", json=state).status_code == 200
+
+
 def test_write_hints_leaves_verdicts_untouched(bench, truth) -> None:
     s = _run(bench, truth, _windows(), write=True, hints_only=True)
     assert s["hints_only"] is True and s["totals"]["written"] == 0
@@ -470,7 +508,7 @@ def test_two_systems_number_measures_across_the_page(bench, truth) -> None:
     c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys1-s2-m0")
     assert c["status"] == "prefilled" and c["measure_number"] == 3
     v = _verdict(bench, "fx-p4-sys1-s2-m0")
-    assert {a["human_class"] for a in v["added_detections"]} == {"noteheadHalfInSpace"}
+    assert {a["human_class"] for a in v["added_detections"]} == {"noteheadHalfOnLine"}
 
 
 def test_staff_disagreeing_with_its_system_abstains(bench, truth) -> None:
@@ -503,7 +541,10 @@ BASS_TRUTH = """<?xml version="1.0" encoding="UTF-8"?>
 def test_a_misread_clef_still_confirms_the_boxes(tmp_path: Path) -> None:
     """The scan's cello staff was read as treble: G3 and B3 came out as B4
     and D5. Their boxes are right, and the reference clef says where G3 and
-    B3 sit — so by position both heads are confirmed and relabelled hollow."""
+    B3 sit — so by position both heads are confirmed and relabelled hollow.
+    The variant follows the reference's own positions too: both heads sit in
+    SPACES of the bass staff (G3 the top space, B3 the space above it), so
+    the OnLine class the misread clef implied is corrected along the way."""
     b = tmp_path / "bench"
     for d in ("cells", "detections", "verdicts"):
         (b / d).mkdir(parents=True)
@@ -527,7 +568,7 @@ def test_a_misread_clef_still_confirms_the_boxes(tmp_path: Path) -> None:
     c = s_pos["cells"][0]
     assert c["status"] == "prefilled" and c["n_wrong_category"] == 2 and c["n_added"] == 2
     v = _verdict(b, "fx-p4-sys0-s0-m0")
-    assert [a["human_class"] for a in v["added_detections"]] == ["noteheadHalfOnLine", "noteheadHalfInSpace"]
+    assert [a["human_class"] for a in v["added_detections"]] == ["noteheadHalfInSpace", "noteheadHalfInSpace"]
 
 
 def test_percussion_part_falls_back_to_step_keys_on_both_sides(tmp_path: Path) -> None:
@@ -735,6 +776,119 @@ def test_a_hollow_reading_against_a_black_reference_is_left_to_the_human(bench, 
     by = {d["id"]: d for d in v["detections"]}
     assert by["D1"]["verdict"] is None and "CONFLICT" in by["D1"]["notes"]
     assert by["D0"]["verdict"] == "WRONG_CATEGORY"
+
+
+TIE_TRUTH = """<?xml version="1.0" encoding="UTF-8"?>
+<score-partwise version="3.1">
+  <part-list><score-part id="P1"><part-name>Klarinette</part-name></score-part></part-list>
+  <part id="P1">
+    <measure number="1">
+      <attributes><divisions>2</divisions><clef><sign>G</sign><line>2</line></clef></attributes>
+      <note><pitch><step>B</step><alter>-1</alter><octave>4</octave></pitch><duration>1</duration><type>eighth</type><tie type="start"/></note>
+      <note><pitch><step>B</step><alter>-1</alter><octave>4</octave></pitch><duration>2</duration><type>quarter</type><tie type="stop"/><tie type="start"/></note>
+      <note><pitch><step>B</step><alter>-1</alter><octave>4</octave></pitch><duration>3</duration><type>quarter</type><dot/><tie type="stop"/><tie type="start"/></note>
+    </measure>
+  </part>
+</score-partwise>
+"""
+
+
+def _tie_bench(tmp_path: Path):
+    b = tmp_path / "bench"
+    for d in ("cells", "detections", "verdicts"):
+        (b / d).mkdir(parents=True)
+    (b / "cells.json").write_text(json.dumps([_cell("fx-p4-sys0-s0-m0", 0, 0)]))
+    (b / "detections" / "fx-p4-sys0-s0-m0.json").write_text(
+        json.dumps({"cell_id": "fx-p4-sys0-s0-m0", "detections": []}))
+    tp = tmp_path / "tie.musicxml"
+    tp.write_text(TIE_TRUTH)
+    rows = [{"row_id": "fx", "page": {"pdf_page_index": 3},
+             "window": {"first_ref_measure": 1, "last_ref_measure": 1},
+             "staves": [{"name": "Klarinette", "parts": [0]}]}]
+    return b, load_truth(tp), mv.load_windows(_windows_file(tmp_path, rows))
+
+
+def test_a_tie_split_reference_no_longer_conflicts_with_the_hollow_head(tmp_path: Path) -> None:
+    """The Brahms s2-m2 shape: the page prints ONE dotted half; the reference
+    writes tied eighth + quarter + dotted-quarter — black values, so before
+    the collapse this raised a hollow-vs-black CONFLICT and two missing-note
+    hints pointing at blank paper. Now the chain is one dotted half, the
+    hollow head is confirmed, and the tie into the next bar changes nothing."""
+    b, truth, windows = _tie_bench(tmp_path)
+    d = _det("noteheadHalfOnLine", "Bb4", 300, 280, dur=2.0, dtype="half")   # cy 300 → P4
+    tr = {"pages": [{"page_index": 3, "systems": [{"system_index": 0, "staves": [
+        {"staff_index": 0, "clef": "treble", "n_measures": 1, "measures": [_measure(0, [d])]}]}]}]}
+    s = mv.run(b, tr, truth, windows, write=True)
+    c = s["cells"][0]
+    assert c["status"] == "prefilled" and c["n_conflicts"] == 0
+    assert c["alignment"]["n_truth_notes"] == 1 and c["n_hints_missing"] == 0
+    v = _verdict(b, "fx-p4-sys0-s0-m0")
+    a = v["added_detections"][0]
+    assert a["human_class"] == "noteheadHalfOnLine"
+    assert "3 tied fragments" in a["notes"]
+
+
+def test_the_reference_corrects_an_impossible_variant_on_an_exact_pair(bench, truth) -> None:
+    """A box whose measured position matches the truth exactly, classed with
+    the OTHER variant: the class follows the reference's own position, the
+    decision is flagged, and every box in the cell drops to the queue tier —
+    a cell with a flip is a cell whose boxes wobble against the staff grid."""
+    tr = _transcription()
+    m0 = tr["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+    for d in m0["detections"]:
+        if d["pitch"] == "E5":
+            d["class"] = "noteheadBlackOnLine"      # E5 sits in the top SPACE
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=True)
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
+    assert c["n_wrong_category"] == 2               # the C5 half, plus this flip
+    assert c["n_admit_labels"] == 0 and c["n_admit_queue"] == 2
+    pre = json.loads((bench / "prefill" / "fx-p4-sys0-s0-m0.json").read_text())
+    by_pitch = {dd["truth"]["pitch"]: dd for dd in pre["decisions"]}
+    flip = by_pitch["E5"]
+    assert flip["class"] == "noteheadBlackInSpace" and flip["variant_corrected"] is True
+    assert flip["admission"] == "queue" and "variant_corrected" in flip["admission_reasons"]
+    other = by_pitch["C5"]
+    assert other["admission"] == "queue"
+    assert other["admission_reasons"] == ["cell_has_variant_correction"]
+
+
+def test_a_grace_sized_head_stays_in_the_queue(bench, truth) -> None:
+    """A head under 0.85× the cell's own median in BOTH dimensions is
+    grace-sized, and neither source can label a grace note — deferred."""
+    tr = _transcription()
+    m0 = tr["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+    small = _det("noteheadBlackInSpace", "G5", 650, 40)
+    small["bbox"] = [650, 40, 20, 20]               # cy 50 → P-1, the G5 the truth holds
+    small["bbox_page"] = [650, 40, 20, 20]
+    m0["detections"].append(small)
+    windows = mv.load_windows(_windows_file(bench.parent, _windows()))
+    s = mv.run(bench, tr, truth, windows, write=True)
+    pre = json.loads((bench / "prefill" / "fx-p4-sys0-s0-m0.json").read_text())
+    by_pitch = {dd["truth"]["pitch"]: dd for dd in pre["decisions"]}
+    g = by_pitch["G5"]
+    assert g["admission"] == "queue" and "small_head" in g["admission_reasons"]
+    assert by_pitch["C5"]["admission"] == "labels"
+    c = next(c for c in s["cells"] if c["cell_id"] == "fx-p4-sys0-s0-m0")
+    assert c["n_admit_labels"] == 2 and c["n_admit_queue"] == 1
+
+
+def test_the_score_prices_each_admission_tier(bench, truth) -> None:
+    cid = "fx-p4-sys0-s0-m2"
+    human = {"cell_id": cid, "schema_version": 2, "detections": [],
+             "added_detections": [
+                 {"id": "H0", "human_class": "noteheadHalfOnLine", "human_category": "notehead",
+                  "bbox": {"x": 296, "y": 176, "w": 44, "h": 44}, "notes": ""}],
+             "inspected_passes": ["hollow noteheads"]}
+    (bench / "verdicts" / f"{cid}.verdict.json").write_text(json.dumps(human))
+    s = _run(bench, truth, _windows(), write=False, score=True,
+             score_classes=mv.SCORE_CLASSES_ALL, cells=[cid])
+    sc = s["score"]
+    by = sc["by_admission"]
+    assert by["labels"]["n_prefill"] + by["queue"]["n_prefill"] == sc["n_prefill"] == 2
+    assert by["labels"]["matched_exact"] + by["queue"]["matched_exact"] == sc["matched_exact"] == 1
+    assert by["labels"]["n_prefill"] == 2 and by["labels"]["precision_exact"] == 0.5
+    assert by["queue"]["n_prefill"] == 0 and by["queue"]["precision_exact"] is None
 
 
 def test_a_tremolo_run_the_reading_missed_is_one_hollow_hint(tmp_path: Path) -> None:

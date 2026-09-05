@@ -311,6 +311,7 @@ ReEngrave/
 | `OMR_DPI`             | `300`   | PDF rasterization DPI (CLI default is **600** — they differ on purpose). **Coupled to `OMR_IMGSZ`, and the best pair depends on the music:** 300 wins on sparse authored fixtures (ensemble precision 0.684 → 0.915), 600 wins on dense orchestral pages (Mahler recall 0.042 → 0.208, duration 0.000 → 0.200). Unifying them in either direction regresses the other family. **Do not 'fix' the inconsistency without measuring both.** See `benchmarks/omr-dpi-imgsz-2026-08/RESULTS.md` |
 | `OMR_LEFT_EDGE_SPLIT`  | `1` (on) | **On by default.** A second, narrow barline scan at each system's shared left edge that *adds* a system break where that left column is empty even though the wide connectivity window found staff-body ink — recovering two stacked systems that the wide window MERGED because a measure number, stem, or `a 2.` marking faked a connection. Union-only (never merges) and gated so it never creates a size-1 system. Measured across 964 library pages: fixed 27 over-merged symphony pages vs 1 mild residual (Mozart K22), 0 size-1 created; ground-truth eval 20/23 → 22/23. Guarded **end-to-end** by `tools/omr/tests/test_left_edge_split_e2e.py` — 4 scanned pages, 3 publishers, hand-read staff/measure truth, asserting both that the split reads the true structure and that flag-off still merges (merged, Eroica p36 reads 10 measures where the page prints 16). Set `0` to disable. See `benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md`. |
 | `OMR_DIRECTION_TEXT`  | `1` (on) | **On by default since 2026-09-02.** Reads the words printed inside a system — `legato`, `Allegro con brio` — by subtracting every detection from the page's ink, refusing the curves by fill ratio, OCRing what is left with Surya and Tesseract, and gating on a lexicon of musical terms. Emitted as MusicXML `<words>`. **Worth 144 edits** on the engraved orchestral benchmark, 18.8% of the pooled figure, and `wrong direction` is the third-largest bucket. **Additive** — every word placed reaches the file and the export is identical outside its `<direction>` blocks, checked per page on engravings and on a scan. Costs 0.5-0.8 s per candidate crop; the ~70 s model load it used to be blamed for belongs to the margin-label reader, which is on by default and loads Surya first on any page without a text layer. Self-disables where neither `.venv-surya` nor Tesseract exists. CLI: `--no-direction-text`. See `benchmarks/omr-direction-text-2026-09/DEFAULT_2026-09-02.md`. |
+| `OMR_CELL_LINE_TRACE` | `0` (off) | **Measured, deliberately NOT shipped.** `Staff.line_ys` models a staff as five ideal horizontal rows and every measure cell of that staff copies those five constants — but a SCANNED staff tilts 8-17 page px across its width, so an end-of-staff cell's grid can be half a staff space off the print and `pitch_resolver` reads exactly those rows: a wrong half-step slot for every note in the bar. On this slides the cell's five rows as ONE RIGID COMB onto the ink beneath it, recovering all seven displacements traced by hand within 0.04 spaces. ⚠️ **The scan e2e benchmark cannot price it** — 4 edits of 7894, because 0.4% of its cells are affected against 8-16% of pages sampled deeper into the same editions, and a null result on a corpus without the defect is not evidence in either direction. The engraved side is a no-op by construction (0 of 291 cells move) and reproduces the recorded figure exactly. Shipping needs a scored page that actually tilts, plus the one-line `recut_cells.frame_mismatch` change (measured: one frame, two grids — 360/360 cell images byte-identical). See [benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md](benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md). |
 
 ---
 
@@ -1379,6 +1380,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_DPI` | PDF rasterization DPI (default 300; CLI uses 600 — see the knobs table) |
 | `OMR_LEFT_EDGE_SPLIT` | `1` on (default) → recover stacked systems the connectivity rule merged when staff-body ink faked a connection; `0` disables. See the knobs table. |
 | `OMR_DIRECTION_TEXT` | `1` on (default) → read the printed words inside each system and export them as `<words>`; `0` disables. Self-disables with no OCR rung. See the knobs table. |
+| `OMR_CELL_LINE_TRACE` | `0` off (default) → localize each measure cell's stored staff-line grid onto the ink under it, for warped scans. Measured, not shipped. See the knobs table. |
 | `MAESTRO_BRIDGE_ENABLED` | `true` → theory-layer enrichment (host-side only; default off) |
 | `MAESTRO_PITCH_RERANK_ENABLED` | `true` → M4 pitch re-rank + auto-correct (local engine; default off) |
 | `MAESTRO_PITCH_RERANK_THRESHOLD` | Min re-rank confidence to auto-correct (default 0.9) |
@@ -1488,8 +1490,10 @@ is one of:
 | `{"on_line": …, "in_space": …}` | a **staff-position pair** — one slot, and the click's y picks which |
 
 Number keys `1`–`n` select the slot; a **single**-slot palette needs no key at
-all. `a` enters draw mode as always, but the class is now **assigned for you**
-— no picker opens. Both halves of a pair draw in different colors with a
+all. **A pass opens every cell already in draw mode** (since 2026-09-03): just
+click the symbols — no per-cell `a` step; `Esc` steps out for that cell, and
+the verdict hotkeys work regardless. `a` re-enters draw mode as always, and
+the class is **assigned for you** — no picker opens. Both halves of a pair draw in different colors with a
 `·line` / `·space` tag, so a mis-snap is visible on the image; `b` on a drawn
 box redraws it (that only ever worked on model detections), and moving one
 across the staff grid **re-derives** its variant. The full 174-class picker is
@@ -1521,6 +1525,25 @@ one real cell reads 400/502/603/698/800, and snapping off a single median from
 the top line would put its third line 4 px out. A cell with no staff geometry
 abstains and the picker opens instead. The arithmetic lives in Python and the
 browser calls `/api/cell/{id}/snap`, so the tested code is the code that runs.
+
+⚠️ **Beyond the staff the grid anchors on MEASURED ledger rungs, not on
+extrapolation** (2026-09-03, `tools/omr/annotate/ledger_grid.py`). Ledger
+pitch is a fact about the engraving — Litolff prints rungs ~1.10× the staff
+spacing, Peters/Breitkopf/Simrock ~0.975×, measured over the 357
+hollow-campaign labels — so extrapolating at the staff spacing mis-suggested
+**38–39% of 2nd-ledger-and-beyond variants against 4.6% inside the staff**
+(Sean's reported defect, and it also planted at least 2 silently-wrong labels
+in v8). The endpoint now reads the rungs off the cell image at the clicked x
+(3.4 ms; bands of long ink spans, white gaps up to 0.9 spaces bridged because
+a whole note's counter splits the one rung printed THROUGH it) and rebuilds
+the outside grid on them: 2nd-ledger agreement 57.4% → 70.2% with the
+in-staff grid untouched (0 changes across all 214 in-staff labels, pinned by
+`test_ledger_snap.py`). A click past an incomplete ladder's reach falls back
+to the old extrapolation — a lone rung steering a deep grid measured worse
+than the constant. A corrected constant pitch cannot work (both signs of
+publisher spread) and wing-recentring measured worse both ways it was tried;
+both are recorded refused in
+[benchmarks/omr-snap-ledger-2026-09/FINDINGS.md](benchmarks/omr-snap-ledger-2026-09/FINDINGS.md).
 
 **The multi-pass campaign rule.** A campaign sweeps the **same cell set**
 several times — whites, then rests, then accidentals — and the set becomes
@@ -1596,7 +1619,7 @@ python3 -m tools.omr.training.mxl_verdicts ... --score            # against huma
 
 | the reference and the reading say | verdict written |
 |---|---|
-| half note ↔ `noteheadBlackOnLine` | `WRONG_CATEGORY` → `noteheadHalfOnLine` (position and size kept) |
+| half note ↔ `noteheadBlackOnLine` | `WRONG_CATEGORY` → `noteheadHalfOnLine` (size kept; on an EXACT pair the on-line/in-space variant follows the reference's own position — 2026-09-03, fixed 2 of 3 flips, zero regressions) |
 | quarter ↔ `noteheadBlackInSpace` | `TP` |
 | a head the batch has no detection for | an added box `M<n>` (a draw-from-scratch batch gets its labels this way) |
 | a detected head the reference lacks | left **pending**, annotated — the human decides |
@@ -1698,6 +1721,91 @@ its neighbours (41×38 against 51–83 in the same cell).
 Full reading, with the ideas for widening this:
 [docs/handoff-2026-09-03-prefill-measured.md](docs/handoff-2026-09-03-prefill-measured.md).
 
+⚠️ **Which signals separate the 8 errors was then measured, and the
+aligner's own confidence is the wrong axis**
+([benchmarks/omr-prefill-admission-2026-09/FINDINGS.md](benchmarks/omr-prefill-admission-2026-09/FINDINGS.md)):
+all six `near` matches are exact-correct (filtering them LOWERS precision,
+0.840 → 0.818) and `strength_exact` ranks the cleanest cell (0.333) below
+every error cell (0.75–0.917). What separates: per-cell PARITY CONSISTENCY
+(do the exact-correct boxes agree on one diatonic-parity → line/space
+mapping — the one inconsistent cell holds 4 of the 8 errors), a size veto
+for grace heads (< 0.85× the cell's median in both dimensions, 2/2 caught
+for 1 deferred), and re-deriving the on-line/in-space VARIANT from the
+matched reference note instead of the detector (fixes 2 of 3 flips, breaks
+nothing — the alignment key already trusts that position). The composite
+reaches 37/37 in-sample at 0.74 coverage; that is a ceiling demonstration on
+n=50 biased cells, not a claim — the out-of-sample test is a random
+completion pass scored by the same probe.
+
+**Shipped into the pre-fill 2026-09-03 (Phase A):** the variant rule and
+size veto above, a tie-chain collapse (below), and an **admission tier on
+every decision** — `admission: labels|queue` with `admission_reasons`
+(near match, variant corrected, grace-sized, or the cell-level demotion: any
+flip demotes its whole cell), priced by `--score` as a per-tier table.
+Six-cell A/B: exact **0.84 → 0.88**, kind unchanged, labels tier
+**22/22 = 1.000** at 0.44 coverage — stricter than the probe's 0.74 because
+pre-fill time has no human calibration. ⚠️ **The tiers are metadata**: what
+is written does not change, and nothing is auto-admitted until the random
+completion pass prices the tiers out-of-sample.
+
+⚠️ **MEASURED 2026-09-03 (Phase B): pre-fill precision really is DOWNSTREAM
+of recognition — 0.880 → 0.961 exact from a change of WEIGHTS alone**, no
+pre-fill code touched (`rerun_on_weights.sh`, one arm per checkpoint). The
+batch's committed transcription was made with the pre-hollow
+`imgsz2048-ft-30ep`; re-reading its pages with scan production
+(`hollow-ft-2026-09-03`) also takes kind precision to 1.000, the trustworthy
+`labels` tier from 22 boxes to **44 of ~50**, batch CONFLICTs 4 → **0** and
+unexplained "extra" hints 200 → **58**. ⚠️ Noteheads fall 4260 → 2419 on the
+same pages, and the control that proves this is junk rather than loss is the
+MISSING-hint count — reference notes the reading never found — which falls
+too (20 → 15), while segmentation stays byte-identical. **A batch's hints
+age with the weights**: this one's are a checkpoint stale, and refreshing is
+`--write-hints`, which never touches `verdicts/` or `detections/`.
+
+**Phase C is registered and waiting on labels**
+([PHASE_C_PROTOCOL.md](benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md)):
+25 randomly drawn cells at seed 20260903, with each one's pre-fill status
+and box count recorded **before** any of them was labeled
+([PHASE_C_CELLS.json](benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json)),
+so the population and the prediction are both fixed in advance. Label in
+rank order — **stopping early stays valid**, because the prefix of a shuffle
+is a uniform sample — and 15 cells is ~50 boxes.
+
+⚠️ **A pass whose labels will SCORE the pre-fill must be run BLIND**
+(`annotate.server --blind`, added 2026-09-03): scoring against a human who
+was shown the hints measures agreement with what the human was told. The UI
+draws hints **by default** and every `Tab` is a page load, so the `h` toggle
+resets on each cell — "just press `h`" is not a protocol. `--blind`
+withholds the hints, `prefill_status` AND the queue order, that last one
+because "most left for me first" tells the human which cells the pre-fill
+found hard. Verdicts are untouched.
+
+⚠️ **Every cell of that sample already HAS a verdict file** — from the
+hollow sweep — so an unreached cell is not empty, it holds hollow boxes and
+nothing else. Score with `--score-inspected-for completion` (and the probe's
+`--inspected-for`), or a wider score charges each correctly pre-filled black
+head as a false positive and reports which pass was run. Both tools then
+score exactly the cells that are finished, at any point mid-labeling.
+
+⚠️ **The five CONFLICTs were then reviewed and NONE is a tremolo
+abbreviation** — the handoff's hypothesis is corrected in place. Three are
+the reference's TIE-SPLITS (one printed dotted-half encoded as tied
+fragments; the human's hollow boxes were already right), two are accidental
+glyphs (a flat's loop, a natural) the detector misread as hollow heads over
+empty-and-correct human verdicts. So a within-measure tie chain now gets the
+same reconcile-by-the-reading collapse tremolo has
+(`measure_align.collapse_tie_chains`, 2026-09-03): a chain collapses to one
+head of the summed value only where the reading placed at most one head at
+its position, may begin tied in from the previous bar and end tied onward,
+and abstains where the total fits no single written value (2.5 beats IS
+printed as tied heads). Measured on the batch: `s3-m6` resolved (conflict
+and both blank-paper hints gone); `s2-m2` STAYS a conflict because the
+reading shows two heads at the position — a duplicate detection, the gate's
+honest answer until the re-ship cleans it up. The two accidental fakes are
+the same family as the probe's phantom TPs: false detections the alignment
+can claim.
+[benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md](benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md).
+
 ⚠️ **Not yet measured beyond one work.** The Mahler 5 / Peters batch cannot
 be the one: the library holds Mahler 5 movements 1-3 and the batch is the
 Adagietto (movement 4). The Brahms 1 / Breitkopf batch can — same PDF as the
@@ -1768,6 +1876,8 @@ noteheads) is an open training-time decision.
 
 The catalog is **capped at nc=208 by default** (custom-class boxes — barlines, textDynamic — are filtered into `_nc208/` copies) so fine-tuning matches the DSv2 checkpoints' class count; a mismatched `nc` silently re-initializes the classification head (the Phase 3.4 collapse). `train_yolo.py` refuses an nc mismatch unless you pass `--allow-nc-expansion`; `--emit-full-catalog` also writes an uncapped `catalog-214.yaml` for a deliberate future expansion.
 
+⚠️ **NEVER "just re-run the converter" on an EXISTING version.** It copies each cell's PNG out of the batch's gitignored `cells/` directory, and those are not regenerable (phase-1 has drifted) and are largely gone: measured 2026-09-03, **11 of v8's 122 source PNGs still exist**, so a re-run silently writes an 11-cell version over the 122-cell one and exits 0. To correct a mislabeled class after export, hand-edit the class id in `labels/<cell>.txt` (coordinates do not move), the batch verdict, AND the version's own merged export source — then heal the version's `metadata.json`, which still records the old class, with `python3 -m tools.omr.training.heal_version_metadata --version data/user-labeled/<version> --expect-cells <cell_id> --write` (re-derives the class fields from the labels; never touches labels or images).
+
 **Then COMMIT the results** (labeling runs in the main checkout, and verdicts are irreplaceable human work — don't leave them sitting untracked):
 
 ```bash
@@ -1810,6 +1920,8 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 - **Per-measure rhythm sums are approximate.** Bar-check warnings on LilyPond output reflect the rhythm-parsing approximation from Phase 4c/g (fractional offsets like 1/32, not full-beat errors). Note: MusicXML voice-splitting via `<backup>` *was* implemented 2026-05-23 (`tools/omr/export.py`, `_mxl_voice_events`) — older notes claiming otherwise are stale.
 
 - **MusicXML repeat signs are dropped on export** — no `<repeat>` barline emission yet (see NOTES.md item 6; tied to multi-type barline classification, item 5).
+
+- **A cell's stored staff lines are the staff's IDEAL lines — on tilted scans, end-of-staff cells are up to half a space off** (diagnosed 2026-09-03, NOT FIXED — `benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`). `Staff.line_ys` is five ideal horizontal rows for the whole staff, and `measure_extractor._build_measure_cell` copies them into every measure cell, so `staff_line_ys_canonical` cannot express tilt or bow. Measured on the hollow-campaign scans: staves tilt/bow 8–17 page px (0.3–0.65 spaces) across their width, the ideal fit crosses reality mid-staff, and END-of-staff measures carry residuals of 0.25–0.55 spaces — past the parity-flip line, which is what planted the labeling UI's 9 inside-staff wrong suggestions (8 confirmed geometry; 2 silent wrong labels found beyond them). **`pitch_resolver` reads the same constants**, so on warped scans every note in such a measure resolves against the wrong grid — step-off-by-one pitches for whole bars; the engraved benchmark cannot see this (LilyPond pages are straight). `Staff.line_wander_px` (7–10 px on every flagged staff) already predicts the suspect staves but never reaches cells.json. The fix shape was then measured (results on `claude/sad-austin-7e16e7`, `RESULTS_TILT_COST.md` in the same benchmark dir): per-line tracing ALIASES where the residual exceeds half a spacing — a 0.87-space wrong-way correction on the worst cell — and what works is sliding the five lines as ONE RIGID COMB against the cell's row ink, bounded below a spacing (`OMR_CELL_LINE_TRACE`, default off). ⚠️ The scan e2e benchmark CANNOT price this defect (0.4% of its cells past the flip line vs 8–16% on deeper pages of the same editions) — a null result there is not evidence. The recut-compatibility concern dissolved under measurement — localization leaves cell images, bbox and upscale byte-identical (360/360 cells) and moves only the stored grid, so the fix is `recut_cells.frame_mismatch` comparing the unlocalized grid, not per-batch bookkeeping. The fix belongs in the stored per-cell geometry, not in the annotate snap (pinned by `test_ledger_snap.py`).
 
 - **The meter is read from the header by shape, and voted across the system** (2026-08-31). The detector does not read time signatures on real scans — on page 1 of the IMSLP Beethoven 5 it finds *zero* time-signature digits in any header, on a page printing `2` over `4` legibly on all twelve staves. Worse than silence, it used to fill the gap: five `timeSig4` boxes fired on **barline** fragments mid-bar, each became 4/4 via the single-digit guess in `parse_time_signature`, and the page shipped as common time on every staff. `tools/omr/time_signature_locator.py` reads it instead, the way the clef and key signature are read — by geometry. A meter's placement is rigid (numerator in the upper two staff spaces, denominator in the lower two, centred on each other), so the search is one-dimensional: a composite template per candidate meter, built from the Bravura `timeSig0-9` glyphs already in `tools/omr/symbol_library/`, slid along the header window in x. Readings are then **voted across the staves of a system**, because that is where a meter is printed. Measured (`benchmarks/omr-timesig-2026-08/`) over a corpus that is half pages printing no meter at all: **4 correct, 0 wrong, 12 correct abstentions** — across a 600 dpi scan of 19th-century type and LilyPond pages set in a different font from the templates. Beethoven 5 p.1 now emits 2/4 instead of 4/4, and its LilyPond bar-check failures fall 154 → 104. Two discriminators were measured and REJECTED for moving with the printing rather than the answer: ink coverage (separates on the scan, then inverts — engraved TRUE reads score below scanned FALSE ones) and whitespace gutters (no separation at all). `timeSigCommon`/`timeSigCutCommon` have no templates, so common-time pages abstain here and stay with the detector, which reads those two glyphs well.
 

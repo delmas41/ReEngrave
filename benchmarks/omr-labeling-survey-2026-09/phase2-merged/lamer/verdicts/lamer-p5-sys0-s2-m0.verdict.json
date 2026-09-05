@@ -5,7 +5,7 @@
   "added_detections": [
     {
       "id": "H0",
-      "human_class": "noteheadWholeOnLine",
+      "human_class": "noteheadWholeInSpace",
       "human_category": "notehead",
       "bbox": {
         "x": 748,
@@ -13,7 +13,7 @@
         "w": 104,
         "h": 61
       },
-      "notes": ""
+      "notes": "corrected 2026-09-03: class was the tilted-staff grid's wrong suggestion (stored staff_line_ys sit ~0.45 sp below the printed lines at this x; the whole note is dead-centre in the top space) \u2014 see benchmarks/omr-cell-grid-tilt-2026-09"
     }
   ]
 }

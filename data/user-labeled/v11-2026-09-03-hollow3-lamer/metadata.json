@@ -28,6 +28,7 @@
     "noteheadBlackOnLine",
     "noteheadHalfInSpace",
     "noteheadHalfOnLine",
+    "noteheadWholeInSpace",
     "noteheadWholeOnLine"
   ],
   "per_cell": [
@@ -154,7 +155,7 @@
       "n_fn_added": 1,
       "n_fp_dropped": 0,
       "classes_written": [
-        "noteheadWholeOnLine"
+        "noteheadWholeInSpace"
       ]
     },
     {

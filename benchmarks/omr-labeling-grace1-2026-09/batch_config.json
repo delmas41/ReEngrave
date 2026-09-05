@@ -1,0 +1,15 @@
+{
+  "pass_name": "grace noteheads",
+  "note": "Box every SMALL notehead \u2014 grace-note heads, ~2/3 normal size, usually just before a beat note, often with a slashed stem. Box the HEAD ONLY (never the slash, stem or flag). Full-size noteheads are NOT this pass. Most cells hold none \u2014 Tab away records the inspection, and that emptiness is real data.",
+  "classes": [
+    {
+      "label": "grace black notehead",
+      "on_line": "noteheadBlackOnLineSmall",
+      "in_space": "noteheadBlackInSpaceSmall",
+      "click_box": {
+        "height_spaces": 0.62,
+        "aspect": 1.2
+      }
+    }
+  ]
+}
