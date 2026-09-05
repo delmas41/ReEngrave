@@ -1,0 +1,1179 @@
+{
+  "bach-brandenburg3-mvt1-468678-p1": {
+    "n_staves": 12,
+    "n_blocks": 5,
+    "sizes": [
+      3,
+      3,
+      3,
+      1,
+      2
+    ],
+    "printed": null,
+    "families": null,
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2
+      ],
+      "1": [
+        3,
+        4,
+        5
+      ],
+      "2": [
+        6,
+        7,
+        8
+      ],
+      "3": [
+        9
+      ],
+      "4": [
+        10,
+        11
+      ]
+    }
+  },
+  "beethoven-sym5-mvt1-575951-p1": {
+    "n_staves": 12,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      5
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Timpani in C.G.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello",
+      "Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "voice"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    "pure_blocks": 1,
+    "mixed_blocks": 2,
+    "true_boundaries": 4,
+    "found": 2
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+    "n_staves": 11,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      4
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Timpani in C.G.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello e Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "beethoven-sym5-mvt1-575951-p3": {
+    "n_staves": 11,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      4
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Timpani in C.G.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello e Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+    "n_staves": 11,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      4
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello",
+      "Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "string",
+      "string",
+      "string",
+      "string",
+      "voice"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "pure_blocks": 1,
+    "mixed_blocks": 2,
+    "true_boundaries": 3,
+    "found": 1
+  },
+  "beethoven-sym5-mvt1-984073-p1": {
+    "n_staves": 12,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      5
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Timpani in C.G.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello",
+      "Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "voice"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    "pure_blocks": 1,
+    "mixed_blocks": 2,
+    "true_boundaries": 4,
+    "found": 2
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+    "n_staves": 11,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      4
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Timpani in C.G.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello e Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "beethoven-sym5-mvt1-984073-p3": {
+    "n_staves": 11,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      4
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Timpani in C.G.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello e Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+    "n_staves": 11,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      3,
+      4
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in B",
+      "Fagotti",
+      "Corni in Es",
+      "Trombe in C",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello",
+      "Basso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "string",
+      "string",
+      "string",
+      "string",
+      "voice"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6
+      ],
+      "2": [
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "pure_blocks": 1,
+    "mixed_blocks": 2,
+    "true_boundaries": 3,
+    "found": 1
+  },
+  "brahms-sym1-mvt1-317803-p1": {
+    "n_staves": 14,
+    "n_blocks": 2,
+    "sizes": [
+      9,
+      5
+    ],
+    "printed": [
+      "2 Floten",
+      "2 Oboen",
+      "2 Klarinetten in B",
+      "2 Fagotte",
+      "Kontrafagott",
+      "4 Horner in C 1./2.",
+      "4 Horner in Es 3./4.",
+      "2 Trompeten in C",
+      "Pauken in C u.G",
+      "1. Violine",
+      "2. Violine",
+      "Bratsche",
+      "Violoncell",
+      "Kontrabass"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "1": [
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    "pure_blocks": 1,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 1
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+    "n_staves": 14,
+    "n_blocks": 2,
+    "sizes": [
+      9,
+      5
+    ],
+    "printed": [
+      "2 Floten",
+      "2 Oboen",
+      "2 Klarinetten in B",
+      "2 Fagotte",
+      "Kontrafagott",
+      "4 Horner in C 1./2.",
+      "4 Horner in Es 3./4.",
+      "2 Trompeten in C",
+      "Pauken in C u.G",
+      "1. Violine",
+      "2. Violine",
+      "Bratsche",
+      "Violoncell",
+      "Kontrabass"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "1": [
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    "pure_blocks": 1,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 1
+  },
+  "brahms-sym1-mvt1-317803-p3": {
+    "n_staves": 14,
+    "n_blocks": 3,
+    "sizes": [
+      5,
+      3,
+      6
+    ],
+    "printed": [
+      "2 Floten",
+      "2 Oboen",
+      "2 Klarinetten in B",
+      "2 Fagotte",
+      "Kontrafagott",
+      "4 Horner in C 1./2.",
+      "4 Horner in Es 3./4.",
+      "2 Trompeten in C",
+      "Pauken in C u.G",
+      "1. Violine",
+      "2. Violine",
+      "Bratsche",
+      "Violoncell",
+      "Kontrabass"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "1": [
+        5,
+        6,
+        7
+      ],
+      "2": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "brahms-sym1-mvt1-317803-p4": {
+    "n_staves": 14,
+    "n_blocks": 1,
+    "sizes": [
+      14
+    ],
+    "printed": [
+      "2 Floten",
+      "2 Oboen",
+      "2 Klarinetten in B",
+      "2 Fagotte",
+      "Kontrafagott",
+      "4 Horner in C 1./2.",
+      "4 Horner in Es 3./4.",
+      "2 Trompeten in C",
+      "Pauken in C u.G",
+      "1. Violine",
+      "2. Violine",
+      "Bratsche",
+      "Violoncell",
+      "Kontrabass"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    "pure_blocks": 0,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 0
+  },
+  "dvorak-sym9-mvt1-405834-p5": {
+    "n_staves": 15,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      6,
+      5
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in A",
+      "Fagotti",
+      "Corni I.II. in E",
+      "Corni III.IV. in C",
+      "Trombe in E",
+      "Tromboni I.II.",
+      "Trombone basso",
+      "Tympani A.E.H.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello",
+      "Contrabasso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "2": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "dvorak-sym9-mvt1-405834-p6": {
+    "n_staves": 15,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      6,
+      5
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in A",
+      "Fagotti",
+      "Corni I.II. in E",
+      "Corni III.IV. in C",
+      "Trombe in E",
+      "Tromboni I.II.",
+      "Trombone basso",
+      "Tympani A.E.H.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello",
+      "Contrabasso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "2": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "dvorak-sym9-mvt1-405834-p7": {
+    "n_staves": 15,
+    "n_blocks": 3,
+    "sizes": [
+      4,
+      6,
+      5
+    ],
+    "printed": [
+      "Flauti",
+      "Oboi",
+      "Clarinetti in A",
+      "Fagotti",
+      "Corni I.II. in E",
+      "Corni III.IV. in C",
+      "Trombe in E",
+      "Tromboni I.II.",
+      "Trombone basso",
+      "Tympani A.E.H.",
+      "Violino I",
+      "Violino II",
+      "Viola",
+      "Violoncello",
+      "Contrabasso"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "2": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 1,
+    "true_boundaries": 3,
+    "found": 2
+  },
+  "mahler-sym5-mvt1-local-p2": {
+    "n_staves": 19,
+    "n_blocks": 4,
+    "sizes": [
+      5,
+      6,
+      3,
+      5
+    ],
+    "printed": [
+      "Vier Fl\u00f6ten",
+      "Drei Hoboen",
+      "Drei Klarinetten in A",
+      "Zwei Fagotte",
+      "Contrafagott",
+      "Sechs H\u00f6rner in F (upper)",
+      "Sechs H\u00f6rner in F (lower)",
+      "Vier Trompeten in B (upper)",
+      "Vier Trompeten in B (lower)",
+      "Drei Posaunen",
+      "Tuba",
+      "Pauken",
+      "Erste Violinen",
+      "Zweite Violinen",
+      "Violen",
+      "Violoncelle",
+      "B\u00e4sse"
+    ],
+    "families": [
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      "woodwind",
+      null,
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "brass",
+      "percussion",
+      "string",
+      "string",
+      "string",
+      "string",
+      "voice"
+    ],
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "1": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "2": [
+        11,
+        12,
+        13
+      ],
+      "3": [
+        14,
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    "pure_blocks": 2,
+    "mixed_blocks": 2,
+    "true_boundaries": 3,
+    "found": 1
+  },
+  "mahler-sym5-mvt1-local-p3": {
+    "n_staves": 15,
+    "n_blocks": 4,
+    "sizes": [
+      2,
+      6,
+      2,
+      5
+    ],
+    "printed": null,
+    "families": null,
+    "blocks": {
+      "0": [
+        0,
+        1
+      ],
+      "1": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "2": [
+        8,
+        9
+      ],
+      "3": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    }
+  },
+  "mahler-sym5-mvt1-local-p4": {
+    "n_staves": 21,
+    "n_blocks": 4,
+    "sizes": [
+      4,
+      6,
+      4,
+      7
+    ],
+    "printed": null,
+    "families": null,
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "1": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "2": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "3": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    }
+  },
+  "mahler-sym5-mvt1-local-p5": {
+    "n_staves": 21,
+    "n_blocks": 4,
+    "sizes": [
+      3,
+      6,
+      5,
+      7
+    ],
+    "printed": null,
+    "families": null,
+    "blocks": {
+      "0": [
+        0,
+        1,
+        2
+      ],
+      "1": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "2": [
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "3": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    }
+  }
+}
