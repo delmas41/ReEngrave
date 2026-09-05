@@ -2,11 +2,11 @@
   "_comment": "The single source for the CURRENT accuracy figures. Written by `orchestral_eval --omr-ned --record`; propagated into CLAUDE.md by `python3 -m tools.omr.accuracy_record --update`. Do not hand-edit, and do not restate a current figure in another document \u2014 see tools/omr/accuracy_record.py, and 68be549 for why there is only one.",
   "runs": {
     "direction_text": {
-      "pooled": 0.11759391345696624,
-      "edits": 2473,
+      "pooled": 0.112700827074817,
+      "edits": 2371,
       "truth_symbols": 10665,
-      "pred_symbols": 10365,
-      "commit": "bc58defb",
+      "pred_symbols": 10373,
+      "commit": "ee66168b",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -18,8 +18,8 @@
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.11864406779661017,
-          "edits": 490,
+          "omr_ned": 0.09427121102248005,
+          "edits": 390,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
@@ -58,8 +58,8 @@
         },
         {
           "work_id": "brahms-sym4-mvt1",
-          "omr_ned": 0.21375266524520256,
-          "edits": 401,
+          "omr_ned": 0.21321961620469082,
+          "edits": 400,
           "pitch_recall": 0.959,
           "pitch_precision": 0.943,
           "duration_rate": 0.933
@@ -82,8 +82,8 @@
         },
         {
           "work_id": "tchaikovsky-sym6-mvt2",
-          "omr_ned": 0.1888111888111888,
-          "edits": 270,
+          "omr_ned": 0.18798043326345212,
+          "edits": 269,
           "pitch_recall": 0.756,
           "pitch_precision": 0.747,
           "duration_rate": 0.985
@@ -99,11 +99,11 @@
       ]
     },
     "no_direction_text": {
-      "pooled": 0.12679907887161773,
-      "edits": 2643,
+      "pooled": 0.12185881450220602,
+      "edits": 2541,
       "truth_symbols": 10665,
-      "pred_symbols": 10179,
-      "commit": "bc58defb",
+      "pred_symbols": 10187,
+      "commit": "3a96dacc",
       "works": [
         {
           "work_id": "beethoven-sym5-mvt1",
@@ -115,8 +115,8 @@
         },
         {
           "work_id": "brahms-sym1-mvt1",
-          "omr_ned": 0.15442278860569716,
-          "edits": 618,
+          "omr_ned": 0.12920927912197555,
+          "edits": 518,
           "pitch_recall": 0.956,
           "pitch_precision": 0.955,
           "duration_rate": 0.992
@@ -155,8 +155,8 @@
         },
         {
           "work_id": "brahms-sym4-mvt1",
-          "omr_ned": 0.21375266524520256,
-          "edits": 401,
+          "omr_ned": 0.21321961620469082,
+          "edits": 400,
           "pitch_recall": 0.959,
           "pitch_precision": 0.943,
           "duration_rate": 0.933
@@ -179,8 +179,8 @@
         },
         {
           "work_id": "tchaikovsky-sym6-mvt2",
-          "omr_ned": 0.1888111888111888,
-          "edits": 270,
+          "omr_ned": 0.18798043326345212,
+          "edits": 269,
           "pitch_recall": 0.756,
           "pitch_precision": 0.747,
           "duration_rate": 0.985
