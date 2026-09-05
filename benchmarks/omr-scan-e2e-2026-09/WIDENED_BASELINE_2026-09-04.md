@@ -119,10 +119,15 @@ counts are **identical between the two checkpoints on every row** —
 segmentation does not depend on the weights (the Phase B finding, reproduced
 on all 11 pages), so every per-row delta above is recognition, not structure.
 
-† 575951-p2 totals 32 but as 17+15 against the true 16+16 — one system
-boundary slid, right total by coincidence. The 984073-p2 read of 31/32 is the
-expected one: the m19|m20 barline missed on this low-res raster, recorded in
-the row's `verified_by`.
+† 575951-p2 reads 17+15 = 32 — which IS the true split: the plate's own
+printed numbers (17 over system 1, 34 over system 2, 49 opening p.3;
+VERIFICATION.md) make system 1 = mm 17–33 (17 bars) and system 2 = mm 34–48
+(15 bars). An earlier revision of this footnote claimed a "true 16+16" and
+called the read a coincidence — corrected 2026-09-04 (spotted by the error-
+forensics pass): the high-res read is exactly right. The 984073-p2 read of
+31/32 is the expected one: the m19|m20 barline missed on that low-res
+raster, i.e. its system 1 reads 16 where the print says 17; recorded in the
+row's `verified_by`.
 
 ‡ **Bach is the documented stress row and scored exactly as VERIFICATION.md
 predicted**: the pipeline shatters the page into six "systems"
