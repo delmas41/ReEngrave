@@ -914,8 +914,22 @@ computes `measure_directions()`, assigns it to `_dyn`, and never uses it:
 the benchmark's blindness and the scan's exposure, both confirmed on the same
 run. The attribution is exact rather than inferred: `words formed − words in an
 eventless measure == words exported` on **all eleven pages, to the mark**. Both
-of `export.py`'s two measure emitters carry it identically. **Not yet fixed.**
-Measured by `benchmarks/omr-dynamics-band-2026-09/probe_dynamic_band.py --funnel`.
+of `export.py`'s two measure emitters carried it identically. **FIXED
+2026-09-04** (`_mxl_directions_only`, called from both): the marks are emitted
+in x order at the head of the bar, ahead of the whole-measure rest, because a
+`<direction>` carries no duration and applies where it sits.
+
+**CONTROL: the eleven engraved works export BYTE-IDENTICALLY** — the fix cannot
+move the pooled figure, which is the same fact as the benchmark not being able
+to see the bug. On the scans it recovers the 14, on 5 pages of 11. ⚠️ **The
+benchmark therefore does not guard the repair either**, so
+`TestEventlessMeasureKeepsItsMarks` does, including a source-level anti-drift
+test asserting BOTH MusicXML emitters call it — verified to fail when either
+call site is removed. (The LilyPond exporter is deliberately excluded: it never
+calls `measure_directions` at all, so it drops dynamics on *every* measure —
+a wider gap, not this one, and not on `KNOWN_GAPS` because
+`export_coverage` compares MusicXML.) Measured by
+`benchmarks/omr-dynamics-band-2026-09/probe_dynamic_band.py --funnel`.
 
 ---
 

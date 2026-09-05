@@ -1169,6 +1169,41 @@ def _mxl_direction(item: tuple[str, str], indent: str) -> str:
             f"{indent}</direction>")
 
 
+def _mxl_directions_only(
+    directions: list[tuple[float, str, str]] | None, indent: str
+) -> list[str]:
+    """Every `<direction>` on a measure that has no events to hang them on.
+
+    THE NINTH SIGNAL DETECTED AND THEN DISCARDED, and the one this project
+    predicted in writing before it was ever seen. A measure with no detected
+    events takes the whole-measure-rest path, which never calls
+    `_mxl_voice_events` — the only other `<direction>` emitter — so
+    `measure_directions()` was called, its result assigned, and never used.
+
+    ⚠️ **THE ENGRAVED BENCHMARK CANNOT SEE THIS AND THE SCANS CAN.** An engraved
+    page puts an event in every bar, so the branch is never taken with marks in
+    hand: measured over the canonical eleven engraved works, **0** directions
+    reach here. On a scan a staff genuinely rests through a marked bar and the
+    detector finds nothing in it — over 11 scanned pages with hand-verified
+    windows, **14 dynamics** were read and dropped exactly here, and the
+    attribution was exact: `words formed − words in an eventless measure ==
+    words exported`, on all eleven pages, to the mark. See
+    `benchmarks/omr-dynamics-band-2026-09/` (`probe_dynamic_band.py --funnel`).
+
+    There is nothing to place them against, so they are emitted in x order at
+    the head of the measure — `_direction_slots`' three clauses are all about
+    which EVENT a mark attaches to, and here there are none.
+
+    ⚠️ Both of this file's measure emitters must call this. That is why it is a
+    function and not two copies of a loop: the same drift is what left
+    `measure_directions` with two call sites and one consumer.
+    """
+    return [
+        _mxl_direction((kind, text), indent)
+        for _x, kind, text in sorted(directions or [], key=lambda d: d[0])
+    ]
+
+
 # A slur clipped by a cell boundary ends EXACTLY on it. Measured over the
 # Brahms fixture (`benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`): the facing
 # edges of a split pair sit 0.00-0.10 staff spaces from the boundary, and the
@@ -1834,6 +1869,9 @@ def _staff_measures_xml(
         _dyn = measure_directions(measure)
 
         if not events:
+            # A bar we found nothing in still carries its marks — see
+            # `_mxl_directions_only`. This branch used to drop them.
+            inner.extend(_mxl_directions_only(_dyn, "      "))
             r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
             inner.append(_mxl_note(
                 None, "", r_type, r_dots, r_beats, divisions,
@@ -2077,6 +2115,8 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     _dyn = measure_directions(measure)
 
                     if not events:
+                        # As above — the marks survive an eventless bar.
+                        inner.extend(_mxl_directions_only(_dyn, "      "))
                         r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
                         inner.append(_mxl_note(
                             None, "", r_type, r_dots, r_beats, divisions,

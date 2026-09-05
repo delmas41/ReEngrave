@@ -352,7 +352,7 @@ TOTAL                               598    376          14       362    491
 **"Read but not written" is real and is the MINORITY.** Of the 129-mark
 shortfall:
 
-- **14 marks are computed and thrown away.** A measure with no detected events
+- **14 marks are computed and thrown away — FIXED 2026-09-04.** A measure with no detected events
   takes the whole-measure-rest branch, which never calls `_mxl_voice_events` —
   the only `<direction>` emitter — so `measure_directions()` is called, its
   result assigned to `_dyn`, and `_dyn` never used. Both of `export.py`'s two
@@ -362,7 +362,33 @@ shortfall:
   rests through a marked bar and the detector finds nothing in it, where an
   engraved page puts an event in every bar. It does.** The attribution is exact:
   `words formed − words in an eventless measure == words exported` on **all
-  eleven pages, to the mark**.
+  eleven pages, to the mark**. `_mxl_directions_only` now emits them in x order
+  at the head of the bar, ahead of the whole-measure rest, since a
+  `<direction>` carries no duration and applies where it sits.
+
+  **Control: the eleven engraved works export BYTE-IDENTICALLY.** That is the
+  same fact as the benchmark being unable to see the bug — so it cannot guard
+  the repair either, and `TestEventlessMeasureKeepsItsMarks` does, including a
+  source-level anti-drift test asserting BOTH MusicXML emitters call it
+  (verified to fail when either call site is removed). On the scans the 14 come
+  back, across 5 of the 11 pages.
+
+  ⚠️ **AND IT MAKES SCAN OMR-NED SLIGHTLY WORSE, AND SHIPPED ANYWAY.** Scored on
+  the changed pages: Mahler p2 0.7122 → 0.7148 (+5 edits), Beethoven 984073-p1
+  0.6925 → 0.6949 (+5), Mahler p3 0.8921 → **0.8916** (ratio down, +3 edits),
+  Beethoven 984073-p2 0.8859 → 0.8860 (+3). The marks are not wrong — a spot
+  check shows a recovered `f` sitting on a bar that is otherwise a whole-measure
+  rest, exactly the predicted shape. What is wrong is that these pages score
+  0.69–0.89, so their bars barely pair at all, and a correct symbol added to a
+  bar already charged delete-whole-plus-insert-whole raises a charge being
+  levied whole. **Same call as the articulations fix**, which was −122 edits
+  across the works that segment and +219 on `boulanger-printemps-mvt1` alone,
+  and shipped with the counter-argument recorded beside it. A signal the reader
+  can see belongs in the file; the metric's symmetry is not the arbiter of that.
+
+  ⚠️ The **LilyPond** exporter never calls `measure_directions` at all, so it
+  drops dynamics on *every* measure, not only eventless ones. A wider gap, not
+  this one, and invisible to `export_coverage` because that compares MusicXML.
 - **≤31 more are the same family one step earlier.** 49 detected letters sit in
   runs that spell no dynamic and are discarded whole — dominated by a lone `s`
   (15 of 31), which is an `sf` whose `f` was not detected. The partial read is

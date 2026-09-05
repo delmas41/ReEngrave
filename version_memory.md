@@ -5,6 +5,43 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — a bar we found nothing in now keeps its marks (the predicted bug, fixed)
+
+`export.py`'s whole-measure-rest branch never calls `_mxl_voice_events` — the only other
+`<direction>` emitter — so `measure_directions()` was computed, assigned to `_dyn`, and never
+used. BOTH MusicXML measure emitters had it, identically. Fixed with `_mxl_directions_only`,
+called from both: marks go in x order at the head of the bar, ahead of the rest, because a
+`<direction>` carries no duration and applies where it sits.
+
+- ⚠️ **This is the bug CLAUDE.md has been carrying as a PREDICTION** — that the 11-work engraved
+  benchmark provably cannot see it (0 triggering bars, measured both ways) and that a SCANNED
+  work would be where it finally triggers, because a staff genuinely rests through a marked bar
+  and the detector finds nothing in it. It does: **14 dynamics on scans, 0 on the engraved
+  eleven**, and the attribution was exact before the fix (`words formed − words in an eventless
+  measure == words exported`, all 11 pages, to the mark) and is exact after it (376 formed → 376
+  exported).
+- **CONTROL: the eleven engraved works export BYTE-IDENTICALLY.** Which is the same fact as the
+  benchmark not seeing the bug — so it cannot guard the repair either.
+  `TestEventlessMeasureKeepsItsMarks` does (8 tests), including a **source-level anti-drift test
+  asserting BOTH MusicXML emitters call it**, verified to fail when either call site is removed.
+  The LilyPond branch is deliberately excluded from that guard.
+- ⚠️ **IT MAKES SCAN OMR-NED SLIGHTLY WORSE AND SHIPPED ANYWAY.** Mahler p2 0.7122 → 0.7148
+  (+5 edits), Beethoven 984073-p1 0.6925 → 0.6949 (+5), Mahler p3 0.8921 → **0.8916** (+3),
+  Beethoven 984073-p2 0.8859 → 0.8860 (+3). The marks are not wrong — a spot check shows a
+  recovered `f` on a bar that is otherwise a whole-measure rest, the predicted shape exactly.
+  These pages score 0.69–0.89, i.e. their bars barely pair, so a correct symbol added to a bar
+  already charged delete-whole-plus-insert-whole raises a charge being levied whole. **Same call
+  as the articulations fix** (−122 across works that segment, +219 on boulanger alone, shipped
+  with the counter-argument beside it).
+- ⚠️ Found on the way, NOT fixed: the **LilyPond** exporter never calls `measure_directions` at
+  all, so it drops dynamics on *every* measure. A wider gap, and invisible to `export_coverage`,
+  which compares MusicXML.
+- Landed on an isolated branch while another session had uncommitted `export.py` work in flight
+  (cross-staff ARC attribution, hunks at 567/1337/2435) — different concern, non-overlapping
+  regions; checked across all 84 worktrees before touching the file.
+
+---
+
 ## 2026-09-04 — dynamics letters: a placement band exists, and re-attribution works on engravings only
 
 Sean asked whether dynamics letters should be read the way clefs are. Measured, not reasoned
