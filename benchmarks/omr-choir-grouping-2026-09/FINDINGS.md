@@ -405,3 +405,62 @@ scan-side base**: the tree sits four commits past the recorded `44a1745`
 with the round-5 graft as scan `DEFAULT_WEIGHTS`, and the engraved figures
 still land edit-for-edit, because routing pins engraved input to the same
 checkpoint the record was measured with.
+
+### The structure canary — `boulanger-printemps-mvt1`, both arms
+
+The one work whose *structure* fails (43 parts emitted against 46, 76% of
+its budget in whole-measure/whole-staff charges — the reason it is not
+pooled) is the page a grouping/barline change is most able to move, in
+either direction. Both arms run on this tree, `--no-direction-text` (a
+structure canary has no use for `<words>`, and dropping the OCR rung makes
+the byte-compare decisive):
+
+| arm | parts | OMR-NED | edits | dominant error |
+|---|--:|--:|--:|---|
+| flag OFF | 43/46 | 0.7009 | 5426 | entire measure insert/delete |
+| flag ON | 43/46 | 0.7009 | 5426 | entire measure insert/delete |
+
+`boulanger-printemps-mvt1.omr.musicxml` is **byte-identical between the
+arms** (sha256 `78a2bc97…` both), and the two `--out` JSONs are
+byte-identical outright. The flag does not touch the one page in the corpus
+whose segmentation is genuinely broken — its failure is not the choir
+family, and the cues correctly find nothing there.
+
+## Verdict — the battery is complete, and the candidate clears it
+
+| # | guard | result |
+|---|---|---|
+| 1 | full omr suite, incl. `test_left_edge_split_e2e` | **PASS** — 1897 passed / 8 skipped / 1 pre-existing failure (`test_mxl_verdicts`, fails identically on base `0487be1f`); +16 new test functions pinning both cues, both flag directions on the real page, the exemption, and the window-blind condition |
+| 2 | flag OFF byte-identical (≥3 scan rows) | **PASS** — Bach flag-OFF hash-matches the widened-graft baseline fixture across worktrees (full YOLO+OCR pipeline); all ten pooled rows structurally identical both arms |
+| 3 | flag ON: 10 pooled scan rows unmoved, Bach → toward 10 | **PASS** — ten rows byte-identical, pooled 0.8387 / 29082 untouched; Bach 6 → 2 systems, 122 → **11** cells vs true 10, 0.9241 → **0.8152** / 6735 → 6236 |
+| 4 | flag ON: engraved 11-work benchmark unchanged | **PASS** — 0.1306 / 2745, edit-for-edit identical to the record, after one falsification-and-repair (bracket-groups-alone cue C read 0.8560 and was given the window-blind condition before shipping) |
+| 4b | `boulanger` structure canary | **PASS** — byte-identical exports, identical scores |
+| 5 | 969-page library probe, hand-adjudicated | **PASS** — 757 examined break-gaps split 735 at 0 / 22 at ≥4 with nothing at 1–3 (the floor sits in a measured gap, not on a slope); 10 pages change, every one toward truth, 7 exact heals, 0 false merges |
+
+**Bach, final, under the flag** (graft weights, the scan gate's pin):
+2 systems of [12, 12] (true), **11 measure-cells against a true 10**
+(the +1 is a pre-existing barline defect present in both arms, outside this
+lane), OMR-NED **0.8152 / 6236 edits** from 0.9241 / 6735 — structure
+charges 4905 → 2365, and `wrong note` rising 1679 → 3599 is the metric
+switching from measuring the shatter to measuring the reading.
+
+### What re-admission of the Bach row would require
+
+The row's stated bar — "segmentation reads ~10 measures" — is crossed (11,
+with the residual +1 accounted for). But the row is only sane *under the
+flag*: while `OMR_CHOIR_GROUPING` defaults OFF, the default pipeline still
+shatters the page, so re-admission is coupled to a **default-ON decision**,
+not available separately. (Running the harness with a per-row env override
+would make the pooled figure a mixed-configuration number — refuse that.)
+And re-admission changes the pooled scan set 10 → 11 rows, which is a
+benchmark-boundary event under the 2026-09-02 discipline: the pooled scan
+figure would be **re-stamped, not compared**.
+
+On default-ON itself, the evidence in this file: flag ON is byte-identical
+everywhere the cues find nothing — 10/10 pooled scan rows, 11/11 engraved
+works, the boulanger canary, 959/969 library pages — and all 10 pages it
+changes were hand-adjudicated toward the truth with zero false merges. The
+residuals are named (brahms 2 p29 heals its false break and leaves the
+missed true one to the cue-A family; don giovanni and brahms 2 p47 are
+partial). Nothing measured argues against a default; the decision is
+Sean's, and this lane ships the flag OFF per its charter.
