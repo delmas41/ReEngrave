@@ -1214,8 +1214,29 @@ against the other 409 aliases and the 1271-name reference corpus, 24 of the
 exact only where the key TRAILS the alias (`Hr. (E)` → -4), because
 `_parse_bare_key` has only ever read the token AFTER a match — `(C) Hr.`
 falls back to the positional default, the same pre-existing limit `A-Klar.`
-has had since 2026-08-31. Still open: a whole system margin can arrive as
-ONE label and resolve to *Piccolo*.
+has had since 2026-08-31.
+
+**The last open item — a whole system margin arriving as ONE label — closed
+2026-09-05, and it was a reader fault, not a lexicon one.** Re-reading the
+exact pages (Beethoven 5 → *Piccolo*, Mahler 5 → *Trombone*) with the raw
+per-block output surfaced showed Surya returning **exactly one OCR block for
+the whole crop** on both — every instrument name on the page, one block,
+where a healthy read splits one block per staff. `_assign` was never wrong
+about which staff the block's centroid landed nearest; nothing recorded a
+block's own SIZE, only its centroid, so a block spanning the whole crop
+looked identical to a normal label. `_surya_worker._lines_with_boxes` now
+also keeps each block's height, and `_assign` drops a block taller than half
+the SYSTEM's own tick span before the nearest-tick test — scale-invariant
+by construction, since the ratio is to the crop's own span, not a pixel
+count. Measured: both bad blocks sit at **1.04×** the span (padding pushes
+them slightly past 1.0); all 17 blocks Surya correctly split on Boléro's own
+dense page sit at **1.5–4.7%** — a ~22× gap with 0.5 in the middle of it.
+⚠️ **The first regression test attempt passed vacuously either way** — it
+asserted on label LENGTH, and a single huge GLYPH is one character, not a
+long string, so a tall block that should be rejected still produces a SHORT
+string. Fixed to assert on staff ASSIGNMENT directly, and run red (gate
+disabled) before green to confirm it actually exercises the mechanism. See
+[benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md](benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md).
 
 ---
 

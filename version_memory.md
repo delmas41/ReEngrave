@@ -5,6 +5,42 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — The last margin-label gap closed: a whole system's margin as one label
+
+- The lexicon sweep's last open item — Beethoven 5's 17-staff margin resolving to
+  *Piccolo*, Mahler 5's 19-staff margin to *Trombone* — was a reader/assignment
+  fault, confirmed by re-reading the exact pages with the raw per-block Surya
+  output surfaced for the first time. Both pages: Surya returns **exactly one
+  OCR block for the whole crop**, every instrument name on the page glommed into
+  one block, where a healthy read splits one block per staff.
+- `_assign` was never wrong about WHICH staff the block's centroid landed
+  nearest — the input it was handed was already garbage, and nothing recorded a
+  block's own SIZE to say so. `_surya_worker._lines_with_boxes` now keeps each
+  block's height (already had the polygon, wasn't reading its y-extent),
+  threaded to `_assign`, which drops a block taller than half the SYSTEM's own
+  tick span before the nearest-tick test rather than forcing it onto whichever
+  staff it lands nearest. Scale-invariant on purpose: the ratio is to the crop's
+  own span, not a pixel count.
+- **Measured, not guessed**: both bad blocks sit at 1.04× the span (crop padding
+  pushes them slightly past 1.0); all 17 blocks Surya correctly split on
+  Boléro's own dense page — 16 of 19 staves correctly named, the SAME kind of
+  system a runaway block would target — sit at 1.5–4.7%. A ~22× gap with the
+  0.5 threshold in the middle of it.
+- ⚠️ **The first regression test attempt passed whether the fix worked or not.**
+  It asserted no returned label exceeded some LENGTH, but the real defect
+  concatenates many instrument names into one long STRING specifically because
+  the block spans many staves' worth of *text*, not just height — a single huge
+  GLYPH is one character, tall without being long. Constructed a synthetic
+  crop instead, asserted on staff ASSIGNMENT directly, and ran it red (gate
+  disabled: `{0: 'Ob.', 2: 'X'}`) before green (gate on: `{0: 'Ob.'}`) to prove
+  it exercises the mechanism.
+- Full suite 2058 → **2059 passed, 0 failed**. Both known-bad pages now report
+  no label (honest abstention) rather than a confident wrong instrument; the
+  known-good Boléro page is byte-identical.
+  [benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md](benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md).
+
+---
+
 ## 2026-09-05 — Choir-grouping cues SHIPPED default-ON; Bach re-admitted to the pool
 
 Sean's coupled call. `OMR_CHOIR_GROUPING` defaults ON
