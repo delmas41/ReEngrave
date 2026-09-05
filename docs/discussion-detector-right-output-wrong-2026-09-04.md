@@ -96,6 +96,56 @@ lesson is already written ("a threshold written in the wrong unit"). New
 instances arrive whenever a constant is expressed in something the engraving
 doesn't hold constant.
 
+### 6. A working mechanism fed a corrupted premise — whose output then corroborates the corruption
+
+Found 2026-09-05, by two workstreams disagreeing about one page and one of them
+checking its own substrate instead of arguing. **This class is not "something
+was lost" at all**, which is why the first five do not contain it: every
+component behaves exactly as designed, and nothing is dropped.
+
+The worked case, Beethoven 5 p.4, position 6:
+
+1. Both free OCR rungs read `Tp.` correctly. `lookup("Tp.")` → Timpani, high
+   confidence, and the alias is legitimately ambiguous (`tp` →
+   `('Timpani', 'Trumpet')`).
+2. `contextual.resolve_ambiguous_label` therefore consults the layout fit — a
+   sound design — and the fit names that slot a **trumpet**, so the correct
+   reading is overturned.
+3. The fit is wrong *because* system 1 prints no Timpani at that position and
+   the ordinal join has forced two different staff sequences into one slot
+   sequence.
+4. The resulting wrong instrument then reads as **independent evidence for the
+   wrong join** — which is what made the mis-join invisible in the first place,
+   and what made a label-disagreement check circular when it was proposed
+   (measured: 99/99 positions agree across systems wherever the join succeeds,
+   because `contextual` assigns instruments *by slot* and the slot assignment
+   IS the join).
+
+The control that separates it from every other class: the **other edition of
+the same page**, same label, same alias, an uncorrupted fit — keeps `Timpani`.
+
+**Why it deserves its own class.** Classes 1–5 are all findable by asking "did
+this signal survive?" Here the signal survives, is consumed by working code, and
+emerges wrong; and the error is *self-confirming*, so the usual corroboration
+check makes it stronger rather than weaker. The tells are structural rather than
+local:
+
+- an output that is used as evidence for the thing that produced it (here:
+  instrument identity, derived from the join, proposed as a check ON the join);
+- a "source" field that records a slot-level or page-level fact but reads like
+  a per-item provenance claim (`instrument_source: "label"` survives
+  propagation across a mis-joined slot, so it is not a confirmation that a label
+  was printed on *that* staff in *that* system);
+- **two independent readings that appear to disagree and turn out to be two
+  halves of one mechanism** — the disagreement is the diagnostic, not the noise.
+
+**What it costs to find:** the two workstreams held the two halves for hours,
+each internally consistent. It was resolved only when one of them answered an
+absence-or-presence question **from its own channel** rather than re-deriving
+from the other's substrate. Cross-reference
+`[[feedback_corroboration_is_not_evidence]]`: agreement is not evidence, and
+here *disagreement* was the evidence.
+
 ## The root cause underneath the beam bug, stated once
 
 The pad existed. `rhythm._beamed_groups` learned on Sep 1 that a beam box

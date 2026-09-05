@@ -105,18 +105,48 @@ p.4:
 | `beethoven-sym5-mvt1-984073-p4` | *(no label printed)* | `Tp.` → **Timpani** ⚠️ CONTESTED |
 | `beethoven-sym5-mvt1-575951-p4` | *(no label printed)* | `Tp.` → **Timpani** |
 
-⚠️ **The 984073 row is CONTESTED and unresolved as of 2026-09-05.** The
-structural workstream, reading the transcription for the same page, finds
-position 6 resolving as `Trumpet` via `score_order_ambiguity` — i.e. **no label
-reached `contextual` at that position in either system** — while 575951 reads
-`Timpani` with `instrument_source: "label"`. Two possibilities, not yet
-separated: the raw reader here held a `Tp.` that the ladder discarded before
-`contextual` saw it (which would be a finding in its own right), or this table
-generalised from the 575951 edition. **Neither workstream has asserted the other
-is wrong**, and the 575951 half is not in doubt. Recorded as contested rather
-than silently averaged, because two sessions confirming each other on one page
-is exactly how this repo lost hours on 2026-09-04 —
-see [[feedback_corroboration_is_not_evidence]].
+⚠️ **RESOLVED 2026-09-05, and the resolution is worth more than either
+original claim.** The label WAS read, by both free rungs independently:
+
+```
+984073-p4  sys2 pos6   surya 'Tp.'  tesseract 'Tp.'  -> Timpani     PRESENT
+984073-p4  sys1 pos6   surya ''     tesseract ''     -> None
+575951-p4  sys2 pos6   text 'Tp.'   surya 'Tp.'      -> Timpani
+```
+
+Both editions read `[11, 11]`, so this is not a structure difference. The two
+workstreams were not in conflict — they held two halves of one mechanism:
+
+> `Tp.` was read at that position and resolved to **Timpani**, and then
+> `resolve_ambiguous_label` **overturned it to Trumpet** because the layout fit
+> names that slot a trumpet.
+
+`instrument_source = "score_order_ambiguity"` is set at exactly one place
+(`contextual.py:287`), inside a loop over `staff_labels`, only for a staff that
+**had** a label whose alias is ambiguous and only when the prior's choice
+differs. It cannot be set for a staff with no label — so the structural
+workstream's own reading proves the label was present, from the other side.
+`lookup("Tp.")` → Timpani at high confidence; `candidates_for_alias("tp")` →
+`('Timpani', 'Trumpet')`.
+
+⚠️⚠️ **THE CIRCULARITY, and it is the real finding.** The layout fit is wrong at
+that slot *because* system 1 prints no Timpani at position 6 and the ordinal
+join forces both systems into one slot sequence. So:
+
+> the mis-join corrupts the layout fit → the fit overturns a correctly-read
+> label → the resulting wrong instrument then looks like independent evidence
+> **for the wrong join**.
+
+`575951` is the control: same label, same alias, a fit that is not corrupted,
+and it keeps `Timpani` with `instrument_source: "label"`.
+
+This is **not** the ordinary detected-then-lost shape — nothing is dropped, and
+no component is buggy in isolation. A working mechanism is fed a corrupted
+premise and its output corroborates the corruption. See the taxonomy's class 6.
+
+**Jointly owned**: the reading is the labels workstream's, the fix is in
+`contextual.resolve_ambiguous_label`, which belongs to the structural
+workstream. Neither has touched it.
 
 Positions 0–5 read `Fl. Ob. Cl. Fag. Cor. Tr.` identically in both systems.
 Nothing in the ladder failed. **The margin already says the two systems are not
