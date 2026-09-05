@@ -160,12 +160,51 @@ ties it does drop relative to flag-off are, on that evidence, mostly the
 wrong ones. Position evidence retains what shape evidence discarded, which
 is exactly what the Litolff diagnosis predicted.
 
-⚠️ Still unmeasured, and required before any flip is priceable: the
-`anchor+cv` arm (whose relaxed-rise recovery is cross-publisher by
-construction and could not be priced on the single-edition gauntlet) and the
-ENGRAVED family — round 8's veto regressed engraved by +9 edits, and no
-engraved number exists for the anchor mode. A scan-only scoping decision
-cannot be made without it.
+Both remaining arms then completed (run from the parent session after the
+credit stop; same tree, same pinned weights).
+
+| scan arm | pooled | edits | pred | wrong tie | wrong slur | exported ties /805 | slurs /404 |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| flag-off baseline | 0.8535 | 35817 | 18586 | 28 | 111 | 420 | — |
+| round 8 `veto` | — | −125 (10-row) | — | 20 | 104 | 209 | — |
+| **`anchor`** | **0.8533** | **35743** | 18510 | 26 | **99** | 353 | 246 |
+| **`anchor+cv`** | 0.8534 | 35779 | 18549 | 26 | 104 | **398** | **282** |
+
+**The relaxed floor's cross-publisher claim is confirmed.** On the
+single-edition gauntlet `anchor+cv`'s relaxed extras added 19 detections and
+zero true positives — Breitkopf is the edition the standard rise gate was
+read from, so there was nothing there to recover. Across the eleven scan
+rows it recovers **45 ties and 36 slurs** over `anchor` (353 -> 398,
+246 -> 282, against flag-off's 420) for **+36 edits** — still 38 edits BELOW
+the flag-off baseline. That is the Litolff population being admitted by
+anchors where shape refused it, and it could only ever be measured here.
+
+### Engraved (11-work `orchestral_eval --omr-ned`, `anchor` arm)
+
+| | pooled | edits | truth | pred |
+|---|--:|--:|--:|--:|
+| documented baseline | 0.1306 | 2745 | 10665 | 10361 |
+| **`anchor`** | **0.1301** | **2733** | 10665 | 10339 |
+
+**The anchor mode IMPROVES the engraved family** — −12 edits at a lower
+ratio — where round 8's veto regressed it by +9. Ratio and edits move the
+same direction (both down), so this is not the dilution signature (which is
+ratio down while edits rise); the 22-symbol emission drop is smaller than
+the edit gain. This removes the scan-only scoping constraint that round 8's
+result imposed: `anchor` is the first arc change measured to help BOTH
+families.
+
+⚠️ The engraved number for `anchor+cv` was still running when this was
+written — a mode that changes emission on engraved pages cannot be scoped
+without it.
+
+⚠️ **No flip is priced yet even so.** These are same-tree A/B numbers on a
+branch that PREDATES the tilt and choir-grouping ships; the canonical scan
+baseline moved to 0.8303 / 35046 on the composed tree. Re-pricing there is
+reconciliation work, and the arc constants (rise, dx, dy) still rest on one
+edition's populations for the standard gate and one more for the relaxed
+floor — the clef-threshold lesson says two editions is the minimum before a
+constant is trusted, and this has that only for rise.
 
 ### Engraved (11-work `orchestral_eval --omr-ned`, anchor arm)
 

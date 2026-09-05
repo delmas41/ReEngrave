@@ -1,4 +1,26 @@
-beethoven-sym5-mvt1-984073-p1: transcribing page 1 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
 /Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-beethoven-sym5-mvt1-984073-p2: transcribing page 2 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+
+row                                        win    staves    meas  OMR-NED   edits  truth   pred  conf
+beethoven-sym5-mvt1-984073-p1.arcanchorcv 1-16      12/12    16/16    0.7152    1286   1064    734  verified
+beethoven-sym5-mvt1-984073-p2.arcanchorcv 17-48      22/22    16/32    0.8832    4448   3004   2032  verified
+beethoven-sym5-mvt1-575951-p1.arcanchorcv 1-16      12/12    16/16    0.7622    1359   1064    719  verified
+beethoven-sym5-mvt1-575951-p2.arcanchorcv 17-48      22/22    17/32    0.8769    4465   3004   2088  verified
+dvorak-sym9-mvt1-405834-p5.arcanchorcv 1-8       15/15     8/8     0.4301     671    792    768  verified
+dvorak-sym9-mvt1-405834-p6.arcanchorcv 9-15      15/15     7/7     0.7276    2607   2022   1561  verified
+brahms-sym1-mvt1-317803-p1.arcanchorcv 1-7       14/14     8/7     0.9185    3417   2083   1637  verified
+brahms-sym1-mvt1-317803-p2.arcanchorcv 8-22      27/27     8/15    0.9459    6613   3399   3592  verified
+mahler-sym5-mvt1-local-p2.arcanchorcv  0-8       17/17     9/9     0.6882    1117   1148    475  verified
+mahler-sym5-mvt1-local-p3.arcanchorcv  9-16      13/13     8/8     0.8870    3068   2248   1211  verified
+bach-brandenburg3-mvt1-468678-p1.arcanchorcv 1-10      24/24    29/10    0.9240    6728   3549   3732  verified
+
+POOLED OMR-NED over 11 scanned pages: 0.8534
+  35779 edits over 23377 truth + 18549 predicted symbols
+    entire measure insert/delete            13977   39.1%
+    entire staff insert/delete              10042   28.1%
+    wrong note                               9179   25.7%
+    wrong note head                           852    2.4%
+    wrong flag/beam                           311    0.9%
+    wrong direction                           282    0.8%
+
+wrote benchmarks/omr-arc-anchor-2026-09/results-scan-arcanchorcv.json
