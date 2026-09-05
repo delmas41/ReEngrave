@@ -99,6 +99,64 @@ CLAUDE.md before reusing any of it — **every box is stored in the cell's
 CANONICAL frame**, so a pane rendered at a different padding is the same
 music at a different scale with every coordinate silently wrong.
 
+**And it is a DIAGNOSTIC instrument, not only a correction surface** (Sean,
+2026-09-05). The same pane that lets a human fix a bar is where we find out
+**how the reader is failing on pages nothing else can measure.**
+
+⚠️ **Every reference-based number this project reports is confined to 27
+works.** Measured off the committed catalog: the score library holds **228
+works with an edition PDF** and 1745 reference encodings, and only **27 works
+have both** — so ~201 editions' worth of real scans are invisible to OMR-NED,
+to `orchestral_eval` and to `scan_eval` by construction, not by neglect. The
+scan end-to-end benchmark is **6 hand-verified (edition, page) rows**, each
+costing a reference encoding plus a hand-checked measure window. A human
+reading measures side by side needs neither: it works on **any page anybody
+actually puts through the app**.
+
+**It answers the question the metric structurally cannot: which FAULT.**
+CLAUDE.md already warns three times over that a pooled figure needs a human
+to open the ops before it means anything — the metric is symmetric so
+emitting *more* symbols can lower it, an `entire measure` bucket is
+amplification rather than severity, and `wrong note` usually means a duration
+the aligner would not pair, not a wrong pitch. A per-measure side-by-side is
+exactly that act of opening it, made cheap and repeatable.
+
+**And it is how nearly every fix in this repo was actually found** — someone
+looked at one bar. The bowl of the **g** in *legato* read as a whole note;
+the lower bowl of a `6/8` bleeding across a crop boundary; Violin 1 four
+staff positions low because its five-line window had locked onto ledger
+lines; a Litolff `3` matching Bravura's `6`. None of those was surfaced by a
+number. The number told us a bucket was large.
+
+**It aims straight at the two defects the engraved benchmark is documented as
+unable to see**, both of which need a SCANNED page and a human:
+
+- the **cell-grid tilt** (`OMR_CELL_LINE_TRACE`) — 0.4% of the scan
+  benchmark's cells are past the parity-flip line against 8–16% of pages
+  sampled deeper into the same editions, so a null result there is not
+  evidence in either direction;
+- the **empty-measure `<direction>` drop** — 0 triggering bars across all 11
+  engraved works, and the note there says outright that the likeliest source
+  of a real one is a scanned work where a staff rests through a marked bar.
+
+⚠️ **Three disciplines, all of them already paid for elsewhere in this repo:**
+
+- **A correction is worth much more if it records the FAULT KIND**, not only
+  the right answer. "This bar should be a dotted half" is a diff and leaves
+  the forensics to be done later; "the hollow head was never detected" is
+  evidence, and it maps onto fault families this project has already named.
+- ⚠️ **A human correcting under a shown reading is ANCHORED by it.** That is
+  measured, not suspected — it is why `annotate.server --blind` exists and
+  why Phase C had to pre-register its sample. A correction stream can drive
+  fixes freely; using it to SCORE the pipeline needs the blind protocol.
+- **A page corrected to COMPLETION is candidate reference truth** — the exact
+  scarce input the 27-work ceiling above describes. But "corrected to
+  completion" is a far higher bar than "the wrong bars fixed", and the
+  labeling campaign already learned to record the difference explicitly
+  (`inspected_passes`: a bar inspected and found correct is a fact worth
+  storing; a bar nobody opened is not the same thing as a bar with nothing
+  wrong in it).
+
 Open questions to settle when this is picked up:
 
 - **Is it every measure, or every measure with a lane?** 22 staves × 16 bars
@@ -111,6 +169,11 @@ Open questions to settle when this is picked up:
   regenerate detections mid-campaign") has the same shape here.
 - **Does an edit feed the analytics / auto-accept learning loop** the
   flagged-diff decisions already feed, or is it outside it?
+- **What does the surface capture per measure, beyond the fix?** The fault
+  kind is what makes a correction evidence rather than a diff; and a bar
+  INSPECTED AND FOUND CORRECT has to be recordable, or coverage can never be
+  claimed for a page — the same fact `inspected_passes` exists for on the
+  labeling side.
 
 Not scoped, not scheduled. Recorded because Sean asked that it not be lost.
 

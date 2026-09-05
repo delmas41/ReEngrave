@@ -108,7 +108,11 @@ changes week to week.
   real editing rather than accept/reject on flagged bars only. An option for
   high-quality engraving work, not a standard pipeline step. Blocked on the
   MusicXML correction-patching stub, which today records edits without ever
-  applying them. Written up in [NOTES.md](NOTES.md).
+  applying them. It is also a **diagnostic** instrument: only 27 of the score
+  library's 228 works with an edition PDF also have a reference encoding, so
+  every accuracy number the project reports is confined to those — a human
+  reading measures side by side works on any page. Written up in
+  [NOTES.md](NOTES.md).
 
 ## Running it
 

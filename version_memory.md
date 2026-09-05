@@ -13,6 +13,19 @@ move things around — rather than only to accept or reject a flagged difference
 option for high-quality engraving work, explicitly against the posture other OMR programs take
 ("show your problem areas and ask you to resolve those, often by multiple choice").
 
+- **Second half of the idea, added the same day (Sean): the surface is a DIAGNOSTIC instrument,
+  not only a correction surface** — it is where we find out how the reader is failing on pages
+  nothing else can measure. ⚠️ Verified off the committed catalog: the score library holds **228
+  works with an edition PDF** and 1745 reference encodings, and only **27 works have both**, so
+  ~201 editions' worth of real scans are invisible to OMR-NED, `orchestral_eval` and `scan_eval`
+  by construction; the scan end-to-end benchmark is **6 hand-verified (edition, page) rows**. A
+  human reading measures side by side needs neither a reference nor a hand-checked window. The
+  note also records that this aims straight at the two defects the engraved benchmark is
+  documented as unable to price (cell-grid tilt, the empty-measure `<direction>` drop — both need
+  a scanned page), and three disciplines already paid for elsewhere: capture the FAULT KIND not
+  just the fix, ⚠️ a human correcting under a shown reading is anchored by it (why
+  `annotate.server --blind` exists), and a page corrected to COMPLETION is candidate reference
+  truth while "the wrong bars fixed" is not.
 - **Recorded in [NOTES.md](NOTES.md)** as a PARKED item with what already exists behind it:
   `DiffCard` draws this exact side-by-side today but only for flagged measures, only as two
   flat PNGs, with a free-text edit field; `MeasureCell.bbox_page_px` makes every measure
