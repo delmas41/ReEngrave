@@ -16,6 +16,28 @@ overlap, per arm and per row, which is what turns an edit delta into an
 explanation.
 
     python3 benchmarks/omr-staff-identity-layer-2026-09/probe_fill_reach.py
+
+── RESULT 2026-09-05, and the principle it generalises to ────────────────────
+    396 staves, of which only  34  have NO clef read  (91.4% already do)
+    tier B (roster, precision 1.000) supplies  56 identities ->   0 applications
+    tier C (derived, precision 0.550) supplies 104 identities ->  2 applications
+
+Tier B's 56 are almost entirely Dvorak p6 (15) and p7 (30), pages whose
+`noclef` count is ZERO.
+
+⚠️⚠️ **VALUE ON A CONSUMER PATH IS A FUNCTION OF REACH FIRST AND PRECISION
+SECOND.** A perfect roster over staves that ALREADY HAVE CLEFS is worth exactly
+zero, and no amount of identity precision changes that — the populations are
+disjoint, so the delta is +0 by construction rather than by weakness. Both the
+coordinator and this session predicted the opposite (that the 1.000-precision
+tier would be the admissible one), and the measurement says the question was
+mis-posed rather than answered.
+
+This generalises past this consumer. Before pricing ANY supplier against ANY
+consumer here, measure the INTERSECTION of the population the supplier newly
+covers with the population the consumer can act on. Either one alone predicts
+nothing: 56 identities and 34 fillable staves produced 0 applications because
+they were not the same staves.
 """
 from __future__ import annotations
 
