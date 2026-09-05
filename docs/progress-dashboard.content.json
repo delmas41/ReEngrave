@@ -21,7 +21,7 @@
     {
       "label": "Vs Audiveris",
       "value": "1<span class=\"unit\"> of 2 corpora</span>",
-      "note": "engraved: ahead in BOTH configs, 0.1127 / 0.1219 vs its 0.1252 · scans: behind on the widened pool, 0.8345 vs 0.7919 — one structural bucket, session dispatched"
+      "note": "engraved: ahead, 0.1125 recorded vs its 0.1252 · scans: 0.8345 vs 0.7919 on the 11-row pool the arm covers (the benchmark has since moved to a 20-row era — not comparable)"
     }
   ],
   "work_flags": {
@@ -106,6 +106,12 @@
     }
   ],
   "log": [
+    {
+      "date": "09-04",
+      "title": "Merge hazard caught: two dormant flags silently dropped, restored forward",
+      "negative": true,
+      "body": "PR #15's sync merge reported conflicts only in CLAUDE.md and the accuracy record while <code>export.py</code> auto-merged to its own older version — dropping <code>OMR_SLOT_STITCH</code> and <code>OMR_CONDENSED_PARTS</code> and leaving their tests orphaned, so the suite failed <b>collection</b>. Repaired by re-applying <b>on top of</b> the newer body (wedge work and the pair_spanners rename preserved), verified by 40/40 tests and <b>flag-off byte-identity on 33/33 fixtures</b>. The lesson is now in memory with a detection recipe: <code>git show &lt;sha&gt;:file | grep -c FLAG</code> across the merge chain localizes the loss in seconds."
+    },
     {
       "date": "09-04",
       "title": "Condensed-staff splitting: ceiling −4,557, premise corrected",

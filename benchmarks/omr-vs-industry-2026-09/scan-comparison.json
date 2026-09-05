@@ -1,5 +1,5 @@
 {
-  "_comment": "Scan-side comparison over the RE-STAMPED 11-row pool (2026-09-04, composed baseline: tilt+choir ON, graft weights). Audiveris completes 10 of 11 (Bach: internal NPE). ours_same10 excludes Bach so both pools match.",
+  "_comment": "Scan-side comparison over the 11-row pool (restamp-composed baseline). ours_current = the same 10 rows Audiveris scored. WARNING: the scan benchmark moved to a 20-ROW era on 2026-09-04 (results-reconciliation.json, pooled 0.8444/74,968); the Audiveris arm has NOT been widened to it, so these two figures are a valid pair with each other and neither is comparable to the 20-row number.",
   "ours_current": {
     "omr_ned": 0.8345096904830778,
     "omr_ed": 28849,
@@ -74,5 +74,10 @@
       "ours": 0.8110195000654364,
       "audiveris": "failed"
     }
-  ]
+  ],
+  "scan_era_note": {
+    "arm_pool": "11-row (10 scored by both)",
+    "current_canonical_era": "20-row, results-reconciliation.json 0.8444 / 74968",
+    "comparable": false
+  }
 }
