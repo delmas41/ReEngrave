@@ -45,13 +45,18 @@ def _text_of(block) -> str:
     return unescape(re.sub(r"<[^>]+>", " ", html)).replace("\xa0", " ").strip()
 
 
-def _lines_with_boxes(predictor, image) -> list[tuple[str, float, float]]:
-    """`(text, y_centre, x_left)` for every block Surya reads.
+def _lines_with_boxes(predictor, image) -> list[tuple[str, float, float, float]]:
+    """`(text, y_centre, x_left, height)` for every block Surya reads.
 
     `full_page=True` is not optional: without it the predictor looks for layout
     regions, finds none on a bare margin strip, and returns nothing at all.
+
+    `height` (the polygon's own y-extent) exists for `_assign`'s runaway-block
+    gate below — Surya's layout step occasionally fails to segment a tall,
+    dense margin at all and returns the WHOLE crop as one block, and only the
+    block's own size says so; its y-centre looks like an ordinary label.
     """
-    out: list[tuple[str, float, float]] = []
+    out: list[tuple[str, float, float, float]] = []
     for page in predictor([image], full_page=True):
         for block in getattr(page, "blocks", []) or []:
             if getattr(block, "skipped", False) or getattr(block, "error", None):
@@ -62,25 +67,46 @@ def _lines_with_boxes(predictor, image) -> list[tuple[str, float, float]]:
                 continue
             ys = [point[1] for point in polygon]
             xs = [point[0] for point in polygon]
-            out.append((text, (min(ys) + max(ys)) / 2.0, min(xs)))
+            out.append((text, (min(ys) + max(ys)) / 2.0, min(xs), max(ys) - min(ys)))
     return out
 
 
-def _lines(predictor, image) -> list[tuple[str, float]]:
-    """`(text, y_centre)` — the margin reader's view, which needs no x."""
-    return [(text, y) for text, y, _x in _lines_with_boxes(predictor, image)]
+def _lines(predictor, image) -> list[tuple[str, float, float]]:
+    """`(text, y_centre, height)` — the margin reader's view, which needs no x."""
+    return [(text, y, h) for text, y, _x, h in _lines_with_boxes(predictor, image)]
+
+
+#: A block taller than this fraction of the WHOLE SYSTEM's tick span cannot be
+#: one staff's label — measured on the two known runaway cases (Beethoven 5 /
+#: imslp-575951 p.58, Mahler 5 p.163) against every correctly-split block on
+#: Boléro's dense pages (`benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md`):
+#: a real label's block, even a wrapped two-line one, never exceeds a small
+#: fraction of the span it sits in, while Surya's failure mode is the ENTIRE
+#: crop read as one block. See that file for the two populations.
+_RUNAWAY_HEIGHT_FRACTION = 0.5
 
 
 def _assign(lines, tick_ys, staff_indices) -> dict[int, str]:
-    """Map each block to the staff whose tick it sits nearest."""
+    """Map each block to the staff whose tick it sits nearest.
+
+    A block whose own height swallows most of the system's tick span is
+    dropped outright, before the nearest-tick test — it is not a garbled
+    READING of one staff's label, it is Surya's layout step failing to split
+    the crop at all, and forcing it onto the nearest tick turns "the OCR did
+    not segment" into "this staff plays the piccolo", a confident wrong
+    instrument rather than an honest abstention.
+    """
     if not tick_ys or len(tick_ys) != len(staff_indices):
         return {}
-    spacing = ((max(tick_ys) - min(tick_ys)) / (len(tick_ys) - 1)
-               if len(tick_ys) > 1 else float("inf"))
+    span = max(tick_ys) - min(tick_ys) if len(tick_ys) > 1 else 0.0
+    spacing = (span / (len(tick_ys) - 1)) if len(tick_ys) > 1 else float("inf")
     tolerance = spacing * _TOLERANCE
+    height_cap = span * _RUNAWAY_HEIGHT_FRACTION if span else float("inf")
 
     per_staff: dict[int, list[tuple[float, str]]] = {}
-    for text, y in lines:
+    for text, y, height in lines:
+        if height > height_cap:
+            continue
         distances = [abs(y - t) for t in tick_ys]
         best = min(range(len(distances)), key=distances.__getitem__)
         if distances[best] > tolerance:
@@ -115,7 +141,7 @@ def _read_crops(predictor, Image, crops: list[str]) -> list[dict]:
             out.append({"text": "", "error": f"{type(exc).__name__}: {exc}"})
             continue
         lines.sort(key=lambda item: (round(item[1] / 20.0), item[2]))
-        out.append({"text": " ".join(text for text, _y, _x in lines).strip()})
+        out.append({"text": " ".join(text for text, _y, _x, _h in lines).strip()})
     return out
 
 
@@ -161,8 +187,12 @@ def main() -> int:
         results.append({
             "labels": {str(k): v for k, v in sorted(labels.items())},
             # Kept because a mapping bug and an OCR failure are indistinguishable
-            # in the label count, and only the raw text tells them apart.
-            "raw_lines": [t for t, _ in lines],
+            # in the label count, and only the raw text tells them apart. Height
+            # rides along too: a block the runaway-height gate dropped is a
+            # THIRD failure mode a bare text list can't tell from "OCR read
+            # nothing here" or "assigned fine" — a mapping bug, an OCR miss, and
+            # a rejected runaway all look identical in `labels` alone.
+            "raw_lines": [{"text": t, "height": h} for t, _y, h in lines],
         })
 
     json.dump({"systems": results}, sys.stdout)
