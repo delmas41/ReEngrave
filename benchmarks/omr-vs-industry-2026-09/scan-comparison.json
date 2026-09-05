@@ -1,0 +1,49 @@
+{
+  "_comment": "Precomputed scan-side comparison for the dashboard. ours_current = OMR_SCAN_EVAL_WEIGHTS pinned to hollow-graft-shift09-2026-09-04 (results-graft09-arm.json in the scan bench); ours_recorded = the canonical Sep 2 pre-hollow run; audiveris = results-audiveris-scan.json.",
+  "ours_current": {
+    "omr_ned": 0.7481685852915992,
+    "omr_ed": 7864,
+    "label": "graft09 weights arm"
+  },
+  "ours_recorded": {
+    "omr_ned": 0.7960242765414725,
+    "omr_ed": 9050
+  },
+  "audiveris": {
+    "omr_ned": 0.7844658379287784,
+    "omr_ed": 8393,
+    "n_rows": 5
+  },
+  "per_row": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1",
+      "ours_graft09": 0.710789766407119,
+      "ours_recorded": 0.7119476268412439,
+      "audiveris": 0.8492462311557789
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1",
+      "ours_graft09": 0.7595078299776287,
+      "ours_recorded": 0.7479423868312757,
+      "audiveris": 0.7268623024830699
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p5",
+      "ours_graft09": 0.43103448275862066,
+      "ours_recorded": 0.5873308733087331,
+      "audiveris": 0.5381
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1",
+      "ours_graft09": 0.9191648822269807,
+      "ours_recorded": 0.9351077313054499,
+      "audiveris": 0.9268
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p2",
+      "ours_graft09": 0.6894639556377079,
+      "ours_recorded": 0.8149430974764967,
+      "audiveris": 0.6534422403733956
+    }
+  ]
+}

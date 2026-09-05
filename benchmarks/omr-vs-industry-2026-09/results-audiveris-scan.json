@@ -1,0 +1,86 @@
+{
+  "pooled": {
+    "n_rows": 5,
+    "omr_ed": 8393,
+    "omr_ned": 0.7844658379287784
+  },
+  "rows": {
+    "beethoven-sym5-mvt1-575951-p1": {
+      "input_dpi": 424,
+      "label": "Beethoven 5 / same plates, high-res + text layer",
+      "omr_ed": 1288,
+      "omr_ned": 0.7268623024830699,
+      "pred_path": "out/audiveris-scan/beethoven-sym5-mvt1-575951-p1/page.mxl",
+      "pred_symbols": 708,
+      "seconds": 102.2,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 589,
+        "entire staff insert/delete": 513,
+        "wrong direction": 16,
+        "wrong keysig": 15,
+        "wrong note": 119
+      },
+      "truth_symbols": 1064
+    },
+    "beethoven-sym5-mvt1-984073-p1": {
+      "label": "Beethoven 5 / Litolff-family / low-res bitonal",
+      "omr_ed": 1521,
+      "omr_ned": 0.8492462311557789,
+      "pred_path": "out/audiveris-scan/beethoven-sym5-mvt1-984073-p1/page-600.mxl",
+      "pred_symbols": 727,
+      "seconds": 30.1,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 607,
+        "entire staff insert/delete": 513,
+        "wrong note": 125,
+        "wrong note head": 202,
+        "wrong timesig": 22
+      },
+      "truth_symbols": 1064
+    },
+    "brahms-sym1-mvt1-317803-p1": {
+      "input_dpi": 435,
+      "label": "Brahms 1 / Breitkopf Samtliche Werke / dense",
+      "note": "Needed Audiveris's per-step timeout raised (-constant org.audiveris.omr.sheet.SheetStub.stepTimeOut=900; default 120 s dies in CURVES on this page) and the same makeNotation=False music21 pass-through as Dvorak.",
+      "omr_ed": 3687,
+      "omr_ned": 0.9268,
+      "pred_path": "out/audiveris-scan/brahms-sym1-mvt1-317803-p1/brahms-retry/page.norm.musicxml",
+      "pred_symbols": 1895,
+      "seconds": null,
+      "status": "ok",
+      "truth_symbols": 2083
+    },
+    "dvorak-sym9-mvt1-405834-p5": {
+      "input_dpi": 481,
+      "label": "Dvorak 9 / Simrock 1894 / the one 1:1 page",
+      "note": "Audiveris export triggers a music21 makeTies crash (overfull measure 9); scored via a music21 pass-through re-serialization with makeNotation=False, which adds/removes no symbols.",
+      "omr_ed": 777,
+      "omr_ned": 0.5381,
+      "pred_path": "out/audiveris-scan/dvorak-sym9-mvt1-405834-p5/page.norm.musicxml",
+      "pred_symbols": 652,
+      "seconds": null,
+      "status": "ok",
+      "truth_symbols": 792
+    },
+    "mahler-sym5-mvt1-local-p2": {
+      "input_dpi": 522,
+      "label": "Mahler 5 / Edition Peters / densest, anacrusis",
+      "omr_ed": 1120,
+      "omr_ned": 0.6534422403733956,
+      "pred_path": "out/audiveris-scan/mahler-sym5-mvt1-local-p2/page.mxl",
+      "pred_symbols": 566,
+      "seconds": 60.1,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 218,
+        "entire staff insert/delete": 649,
+        "wrong direction": 90,
+        "wrong note": 94,
+        "wrong timesig": 30
+      },
+      "truth_symbols": 1148
+    }
+  }
+}
