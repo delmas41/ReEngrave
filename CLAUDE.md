@@ -1212,9 +1212,21 @@ reader would SEE come out".
 
 `KNOWN_GAPS` is an inventory rather than a suppression list — every element we
 knowingly drop, with its reason and its size — and anything not on it fails.
-Two open items are recorded there now: **accents** (Mahler's truth has 6, the
-detector finds exactly 6, nothing consumes them) and **hairpins** (6 in the
-truth, 4 detected).
+The one open item recorded there now is **hairpins** (`wedge`: 6 in Mahler's
+truth, 4 detected; 17 across the 11 works — partial detection, so not purely
+an export fix; a close is in flight on the 09-03/04 hairpin branches).
+
+⚠️ **This sentence used to list accents as a second open item, and that claim
+outlived the fix by two days.** Accents ARE the eighth gap — closed by the
+articulations work (`0eb1271`, merged `bdda54d` 2026-09-02): `articAccent*` is
+attached by `_attach_articulations_in_cell` and both exporters emit it, Mahler
+6-for-6 against its truth (verified live 2026-09-04, `<accent>` in MusicXML and
+`->` in LilyPond; the entry left `KNOWN_GAPS` the same day it was written). The
+stale copy here seeded a work order to "close the accents gap" two days later —
+the same detected-then-dropped prose failure the OMR-NED figure block exists to
+prevent, this time in the other direction: a gap that stayed CLOSED in the code
+and open in the doc. `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §1 holds
+the reconciliation.
 
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is

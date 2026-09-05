@@ -209,7 +209,7 @@ sweep corpus per edition, or the threshold moves with the printing.
 | opportunity | the hook that already exists |
 |---|---|
 | tie/slur re-derivation at export | 249 arcs detected vs 60→97 exported vs 271 truth; pairing logic exists in both frames |
-| accents reach the file | KNOWN_GAPS open item: truth 6, detected exactly 6, consumed **0** — a pure export gap wearing a confusable costume |
+| accents reach the file | ~~KNOWN_GAPS open item: truth 6, detected exactly 6, consumed **0**~~ **STALE ON ARRIVAL — already closed** (corrected 2026-09-04): the articulations work (`0eb1271`, 2026-09-01) consumes `articAccent*` and Mahler exports 6 of 6; the KNOWN_GAPS entry left the same day it was written. This row inherited CLAUDE.md's stale copy of that entry, and a work order was issued off it — see `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §1 |
 | hairpin vs accent split | hairpins 6 truth / 4 detected in KNOWN_GAPS; export work in flight on 09-03/04 branches — the wedge grammar decides which family a detection joins |
 | tenuto vs ledger | thickness + lattice-parity inputs already recorded per staff; protects the ladder arbitration as well as the export |
 | repeatDot → repeat barlines | repeat signs are NOTES item 6, dropped on export today; dots + CV barline = the anchor pair, no model change |

@@ -381,6 +381,14 @@ class TestArticulations:
         assert "-^" in to_lilypond(self._result(["marcato"]))
         assert "--" in to_lilypond(self._result(["tenuto"]))
 
+    def test_lilypond_accent(self):
+        """The one articulation this class had not pinned on the LilyPond
+        side — and the one whose closure a stale CLAUDE.md sentence denied
+        for two days ("nothing consumes them"). The MusicXML half is pinned
+        above; the wiring's pin is a test, not a sentence.
+        benchmarks/omr-export-gaps-2026-09/FINDINGS.md §1."""
+        assert "->" in to_lilypond(self._result(["accent"]))
+
 
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────
 
