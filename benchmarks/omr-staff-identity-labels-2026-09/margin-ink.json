@@ -1,0 +1,1462 @@
+[
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 34632,
+  "xcut": 312,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 34632,
+  "xcut": 312,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 34632,
+  "xcut": 312,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 34320,
+  "xcut": 312,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 34210,
+  "xcut": 311,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 1,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 34210,
+  "xcut": 311,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 1,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 34521,
+  "xcut": 311,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 1,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 34832,
+  "xcut": 311,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 35409,
+  "xcut": 319,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 34771,
+  "xcut": 319,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 35090,
+  "xcut": 319,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 35090,
+  "xcut": 319,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 1,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 34553,
+  "xcut": 317,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 1,
+  "position": 5,
+  "ink_px": 0,
+  "band_px": 34236,
+  "xcut": 317,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 1,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 34870,
+  "xcut": 317,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 34870,
+  "xcut": 317,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 0,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 35640,
+  "xcut": 324,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 35640,
+  "xcut": 324,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 35964,
+  "xcut": 324,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 35640,
+  "xcut": 324,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 35640,
+  "xcut": 324,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 36075,
+  "xcut": 325,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 1,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 36075,
+  "xcut": 325,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 1,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 35750,
+  "xcut": 325,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 1,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 36075,
+  "xcut": 325,
+  "spacing": 15.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 110592,
+  "xcut": 512,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 110592,
+  "xcut": 512,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 110592,
+  "xcut": 512,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 111104,
+  "xcut": 512,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 111456,
+  "xcut": 516,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 1,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 111972,
+  "xcut": 516,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 1,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 111456,
+  "xcut": 516,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 1,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 111456,
+  "xcut": 516,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 109728,
+  "xcut": 508,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 109728,
+  "xcut": 508,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 110236,
+  "xcut": 508,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 109728,
+  "xcut": 508,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 1,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 111240,
+  "xcut": 515,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 1,
+  "position": 5,
+  "ink_px": 0,
+  "band_px": 111240,
+  "xcut": 515,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 1,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 110725,
+  "xcut": 515,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 111755,
+  "xcut": 515,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 0,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 112104,
+  "xcut": 519,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 111066,
+  "xcut": 519,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 112104,
+  "xcut": 519,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 112104,
+  "xcut": 519,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 112104,
+  "xcut": 519,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 114912,
+  "xcut": 532,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 1,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 115444,
+  "xcut": 532,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 1,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 114912,
+  "xcut": 532,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 1,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 114912,
+  "xcut": 532,
+  "spacing": 30.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 0,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 1,
+  "ink_px": 0,
+  "band_px": 43719,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 2,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 3,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 43225,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 5,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 42978,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 43719,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 11,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 12,
+  "ink_px": 0,
+  "band_px": 43472,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 13,
+  "ink_px": 75,
+  "band_px": 43225,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "position": 14,
+  "ink_px": 30,
+  "band_px": 42237,
+  "xcut": 247,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 0,
+  "ink_px": 0,
+  "band_px": 59295,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 1,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 2,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 3,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 59295,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 5,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 58625,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 59295,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 59295,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 11,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 12,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 13,
+  "ink_px": 0,
+  "band_px": 58960,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "position": 14,
+  "ink_px": 0,
+  "band_px": 57285,
+  "xcut": 335,
+  "spacing": 25.2,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 0,
+  "ink_px": 0,
+  "band_px": 58256,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 1,
+  "ink_px": 0,
+  "band_px": 58256,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 2,
+  "ink_px": 0,
+  "band_px": 58587,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 3,
+  "ink_px": 0,
+  "band_px": 57925,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 57594,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 5,
+  "ink_px": 0,
+  "band_px": 58256,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 58256,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 57925,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 57925,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 57925,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 58587,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 11,
+  "ink_px": 0,
+  "band_px": 57594,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 12,
+  "ink_px": 0,
+  "band_px": 57594,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 13,
+  "ink_px": 0,
+  "band_px": 57594,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "position": 14,
+  "ink_px": 0,
+  "band_px": 57594,
+  "xcut": 331,
+  "spacing": 25.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p1",
+  "system": 0,
+  "position": 5,
+  "ink_px": 4040,
+  "band_px": 262528,
+  "xcut": 1172,
+  "spacing": 32.0,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p2",
+  "system": 0,
+  "position": 5,
+  "ink_px": 1791,
+  "band_px": 112519,
+  "xcut": 583,
+  "spacing": 27.5,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p2",
+  "system": 0,
+  "position": 6,
+  "ink_px": 2590,
+  "band_px": 111936,
+  "xcut": 583,
+  "spacing": 27.5,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p2",
+  "system": 0,
+  "position": 7,
+  "ink_px": 4922,
+  "band_px": 113102,
+  "xcut": 583,
+  "spacing": 27.5,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p2",
+  "system": 1,
+  "position": 5,
+  "ink_px": 2305,
+  "band_px": 114000,
+  "xcut": 600,
+  "spacing": 27.2,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p2",
+  "system": 1,
+  "position": 6,
+  "ink_px": 3114,
+  "band_px": 114600,
+  "xcut": 600,
+  "spacing": 27.2,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 0,
+  "position": 5,
+  "ink_px": 2115,
+  "band_px": 113620,
+  "xcut": 598,
+  "spacing": 27.2,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 0,
+  "position": 6,
+  "ink_px": 2966,
+  "band_px": 113620,
+  "xcut": 598,
+  "spacing": 27.2,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 0,
+  "position": 7,
+  "ink_px": 5157,
+  "band_px": 113022,
+  "xcut": 598,
+  "spacing": 27.2,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 1,
+  "position": 5,
+  "ink_px": 2822,
+  "band_px": 115008,
+  "xcut": 599,
+  "spacing": 27.5,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 1,
+  "position": 6,
+  "ink_px": 3718,
+  "band_px": 115008,
+  "xcut": 599,
+  "spacing": 27.5,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 1,
+  "position": 7,
+  "ink_px": 4730,
+  "band_px": 115008,
+  "xcut": 599,
+  "spacing": 27.5,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 0,
+  "position": 5,
+  "ink_px": 1687,
+  "band_px": 116788,
+  "xcut": 602,
+  "spacing": 27.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 0,
+  "position": 6,
+  "ink_px": 2436,
+  "band_px": 116788,
+  "xcut": 602,
+  "spacing": 27.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 0,
+  "position": 7,
+  "ink_px": 3798,
+  "band_px": 116186,
+  "xcut": 602,
+  "spacing": 27.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 1,
+  "position": 5,
+  "ink_px": 2026,
+  "band_px": 115800,
+  "xcut": 600,
+  "spacing": 27.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 1,
+  "position": 6,
+  "ink_px": 1852,
+  "band_px": 116400,
+  "xcut": 600,
+  "spacing": 27.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 1,
+  "position": 7,
+  "ink_px": 3923,
+  "band_px": 117000,
+  "xcut": 600,
+  "spacing": 27.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p2",
+  "system": 0,
+  "position": 4,
+  "ink_px": 11643,
+  "band_px": 145886,
+  "xcut": 806,
+  "spacing": 25.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p2",
+  "system": 0,
+  "position": 6,
+  "ink_px": 1067,
+  "band_px": 145080,
+  "xcut": 806,
+  "spacing": 25.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p4",
+  "system": 0,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 76140,
+  "xcut": 423,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p4",
+  "system": 0,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 76140,
+  "xcut": 423,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p4",
+  "system": 0,
+  "position": 17,
+  "ink_px": 510,
+  "band_px": 76140,
+  "xcut": 423,
+  "spacing": 25.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p4",
+  "system": 0,
+  "position": 18,
+  "ink_px": 96,
+  "band_px": 75717,
+  "xcut": 423,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p4",
+  "system": 0,
+  "position": 20,
+  "ink_px": 133,
+  "band_px": 76140,
+  "xcut": 423,
+  "spacing": 25.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 76500,
+  "xcut": 425,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 76925,
+  "xcut": 425,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "position": 7,
+  "ink_px": 4433,
+  "band_px": 77350,
+  "xcut": 425,
+  "spacing": 25.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "position": 12,
+  "ink_px": 3296,
+  "band_px": 32725,
+  "xcut": 425,
+  "spacing": 25.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "position": 17,
+  "ink_px": 936,
+  "band_px": 76925,
+  "xcut": 425,
+  "spacing": 25.8,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "position": 18,
+  "ink_px": 41,
+  "band_px": 76500,
+  "xcut": 425,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "position": 20,
+  "ink_px": 0,
+  "band_px": 76500,
+  "xcut": 425,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 0,
+  "ink_px": 566,
+  "band_px": 119163,
+  "xcut": 759,
+  "spacing": 23.0,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 2,
+  "ink_px": 1137,
+  "band_px": 122199,
+  "xcut": 759,
+  "spacing": 23.0,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 3,
+  "ink_px": 527,
+  "band_px": 121440,
+  "xcut": 759,
+  "spacing": 23.0,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 5,
+  "ink_px": 1167,
+  "band_px": 122199,
+  "xcut": 759,
+  "spacing": 23.0,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 6,
+  "ink_px": 521,
+  "band_px": 121440,
+  "xcut": 759,
+  "spacing": 23.0,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 8,
+  "ink_px": 1636,
+  "band_px": 122199,
+  "xcut": 759,
+  "spacing": 23.0,
+  "verdict": "INK_look"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 11,
+  "ink_px": 0,
+  "band_px": 119922,
+  "xcut": 759,
+  "spacing": 23.0,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 0,
+  "ink_px": 0,
+  "band_px": 23055,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 1,
+  "ink_px": 0,
+  "band_px": 23055,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 2,
+  "ink_px": 0,
+  "band_px": 23200,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 3,
+  "ink_px": 0,
+  "band_px": 22910,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 4,
+  "ink_px": 0,
+  "band_px": 23345,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 5,
+  "ink_px": 0,
+  "band_px": 23055,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 6,
+  "ink_px": 0,
+  "band_px": 23055,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 7,
+  "ink_px": 0,
+  "band_px": 23200,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 8,
+  "ink_px": 0,
+  "band_px": 23345,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 9,
+  "ink_px": 0,
+  "band_px": 23345,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 10,
+  "ink_px": 0,
+  "band_px": 23345,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "position": 11,
+  "ink_px": 0,
+  "band_px": 23055,
+  "xcut": 145,
+  "spacing": 22.8,
+  "verdict": "a_NO_INK"
+ }
+]

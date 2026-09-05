@@ -1,0 +1,6 @@
+# Regenerable image build products: `probe_ladder.py` and
+# `probe_crop_geometry.py` rewrite these from the score library on every run.
+# `ink-suspects/` is NOT ignored — those 31 images are the evidence the
+# hand-adjudication of class (a)-vs-(b/c) was settled on, and they are small.
+crops/
+controls/
