@@ -1,0 +1,28 @@
+{
+  "cell_id": "dvorak9-p16-sys0-s1-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:31:10+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1614,
+        "y": 446,
+        "w": 434,
+        "h": 102
+      },
+      "human_bbox": null,
+      "confidence": 0.275,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

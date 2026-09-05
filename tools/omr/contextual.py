@@ -50,7 +50,10 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from .clef_correction import correct_clefs_from_instruments
+from .clef_correction import (
+    correct_clefs_from_instruments,
+    veto_implausible_clef_changes,
+)
 from .dossier import join_parts_to_slots
 from .instruments import Instrument, candidates_for_alias, lookup
 from .preprocessing import render_page
@@ -541,6 +544,7 @@ def apply_contextual_analysis(
     ocr_fallback: bool = True,
     staved: list[Any] | None = None,
     review_dir: Path | None = None,
+    instrument_clef_default: bool | None = None,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
     detector never read.
@@ -571,6 +575,14 @@ def apply_contextual_analysis(
             "margin where the free readers fall short. There is deliberately no "
             "default — pass Assist('human'), Assist('vision'), or Assist('none') "
             "to say that neither should be spent. See tools/omr/assist.py.")
+    if instrument_clef_default is None:
+        # None means "the caller has no opinion": honor the env flag, so a
+        # benchmark that calls this directly (eval_pipeline_clefs) exercises
+        # the same configuration a transcription would. Default OFF.
+        import os
+        instrument_clef_default = os.environ.get(
+            "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower() not in (
+            "0", "", "false", "no", "off")
     summary: dict[str, Any] = {
         "available": False, "reason": None, "reference": [],
         "labelled_staves": 0, "proposals": [], "clefs_applied": 0,
@@ -680,6 +692,23 @@ def apply_contextual_analysis(
                 if s.instrument and s.index not in ambiguous_slots},
         clefs=clef_by_slot,
     )
+    # The RAW text of each slot's margin label, kept beside the instrument the
+    # lexicon resolved it to. `lookup` answers "which instrument", which is a
+    # singular noun — so `Flauti`, `2 Flöten` and `Flauto` all resolve to
+    # `Flute` and the PLURALITY is thrown away at that call. That is the
+    # project's recurring shape (a signal read correctly and dropped
+    # downstream), and it is the one signal a condensed-staff reader needs.
+    # Retained as data only: nothing here interprets it.
+    raw_label_by_slot: dict[int, str] = {}
+    for page_index, pws, page_labels in zip(page_indices, staved,
+                                            staff_labels_per_page):
+        by_staff = {lab.staff_index: lab.text for lab in page_labels
+                    if (lab.text or "").strip()}
+        for staff in pws.staves:
+            text = by_staff.get(staff.staff_index)
+            if text and staff.slot_index >= 0:
+                raw_label_by_slot.setdefault(staff.slot_index, text.strip())
+
     instrument_source: dict[int, str] = {i: "label" for i in instrument_by_slot}
     if fit is not None:
         for slot in reference:
@@ -706,6 +735,9 @@ def apply_contextual_analysis(
                 if slot is None or slot < 0:
                     continue
                 staff["slot_index"] = slot
+                raw = raw_label_by_slot.get(slot)
+                if raw:
+                    staff["instrument_label"] = raw
                 instrument = instrument_by_slot.get(slot)
                 if instrument is not None:
                     staff["instrument"] = instrument.name
@@ -746,8 +778,21 @@ def apply_contextual_analysis(
         if (dossier and apply_clefs) else []
     )
 
+    # The OMR_INSTRUMENT_CLEF_DEFAULT tier (off by default; see
+    # clef_correction.py's tables and benchmarks/omr-clef-string-staves-2026-09
+    # for the sites that earned each entry). The change veto runs FIRST so a
+    # staff whose mid-staff state it repairs is uniform again before the
+    # header tier asks its uniformity question.
+    change_vetoes = (
+        veto_implausible_clef_changes(
+            pages, read_instruments, slot_by_staff, instrument_source)
+        if (instrument_clef_default and apply_clefs) else []
+    )
+
     records = correct_clefs_from_instruments(
-        pages, read_instruments, slot_by_staff, apply=apply_clefs)
+        pages, read_instruments, slot_by_staff, apply=apply_clefs,
+        treble_override=(instrument_clef_default and apply_clefs),
+        instrument_source_by_slot=instrument_source)
 
     # Labels that were READ off the page and then dropped. This is reported
     # because the failure is otherwise invisible: a label the lexicon cannot
@@ -799,4 +844,11 @@ def apply_contextual_analysis(
         dossier_clefs=dossier_clefs,
         noteheads_restated=sum(r.get("noteheads_restated", 0) for r in records),
     )
+    if instrument_clef_default:
+        # Only under the flag, so a default run's JSON is byte-identical.
+        summary.update(
+            clef_treble_overrides=sum(
+                1 for r in records if r.get("override") == "treble_misread"),
+            clef_change_vetoes=change_vetoes,
+        )
     return summary

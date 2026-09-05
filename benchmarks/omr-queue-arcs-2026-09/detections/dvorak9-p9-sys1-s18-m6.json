@@ -1,0 +1,25 @@
+{
+ "cell_id": "dvorak9-p9-sys1-s18-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 2,
+   "y": 1176,
+   "w": 2044,
+   "h": 65,
+   "confidence": 0.357
+  },
+  {
+   "id": "D1",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 259,
+   "y": 76,
+   "w": 136,
+   "h": 22,
+   "confidence": 0.331
+  }
+ ]
+}

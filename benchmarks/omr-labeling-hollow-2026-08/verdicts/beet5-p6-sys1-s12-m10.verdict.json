@@ -1,20 +1,23 @@
 {
-  "cell_id": "beet5-p6-sys1-s12-m10",
-  "schema_version": 2,
-  "labeled_at_utc": "2026-09-02T17:39:19+00:00",
-  "detections": [],
-  "added_detections": [
-    {
-      "id": "H0",
-      "human_class": "noteheadHalfOnLine",
-      "human_category": "notehead",
-      "bbox": {
-        "x": 119,
-        "y": 175,
-        "w": 259,
-        "h": 194
-      },
-      "notes": ""
-    }
-  ]
+ "cell_id": "beet5-p6-sys1-s12-m10",
+ "schema_version": 2,
+ "labeled_at_utc": "2026-09-02T17:39:19+00:00",
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 119,
+    "y": 175,
+    "w": 259,
+    "h": 194
+   },
+   "notes": ""
+  }
+ ],
+ "inspected_passes": [
+  "rests+accidentals"
+ ]
 }

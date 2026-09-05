@@ -1,0 +1,62 @@
+{
+  "cell_id": "dvorak9-p11-sys0-s7-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:28:52+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 140,
+        "y": 0,
+        "w": 1908,
+        "h": 71
+      },
+      "human_bbox": null,
+      "confidence": 0.509,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 91,
+        "y": 342,
+        "w": 1956,
+        "h": 60
+      },
+      "human_bbox": null,
+      "confidence": 0.316,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 166,
+        "y": 71,
+        "w": 1878,
+        "h": 73
+      },
+      "human_bbox": null,
+      "confidence": 0.311,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

@@ -1,0 +1,36 @@
+
+beethoven-sym5-mvt1.musicxml  ops 25  cost 43
+
+  cost by category
+    wrong lyric OMR-ED                               15
+    wrong other object OMR-ED                        10
+    entire measure insert/delete OMR-ED               5
+    wrong tie OMR-ED                                  5
+    wrong note OMR-ED                                 4
+    wrong note head OMR-ED                            4
+
+  cost by op
+    lyricins                     15  (5 ops)
+    extradel                      5  (5 ops)
+    tieins                        5  (5 ops)
+    notedel                       4  (2 ops)
+    headedit                      4  (2 ops)
+    extrains                      3  (3 ops)
+    insbar                        3  (1 ops)
+    delbar                        2  (1 ops)
+    extrasymboledit               2  (1 ops)
+
+  cost by part (top categories)
+    -1 ?                           25   wrong lyric=15  wrong other object=10
+    06 Bassoon 1                    4   entire measure insert/delete=3  wrong tie=1
+    00 Flute                        2   wrong note=2
+    00 Flute 1                      2   wrong note head=2
+    06 Bassoon                      2   entire measure insert/delete=2
+    09 Eb Horn 2                    2   wrong note head=2
+    09 Horn                         2   wrong note=2
+    07 Bassoon 2                    1   wrong tie=1
+    14 Violin 2                     1   wrong tie=1
+    15 Viola                        1   wrong tie=1
+    16 Violoncello                  1   wrong tie=1
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-drop/beethoven-sym5-mvt1.json

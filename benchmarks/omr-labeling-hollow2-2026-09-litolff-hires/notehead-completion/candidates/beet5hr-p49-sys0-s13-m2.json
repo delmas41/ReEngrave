@@ -1,0 +1,122 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s13-m2",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8461,
+   "ink": 0.7773,
+   "bbox": {
+    "x": 1733,
+    "y": 975,
+    "w": 131,
+    "h": 122
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8275,
+   "ink": 0.77,
+   "bbox": {
+    "x": 499,
+    "y": 394,
+    "w": 133,
+    "h": 121
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8265,
+   "ink": 0.7997,
+   "bbox": {
+    "x": 972,
+    "y": 493,
+    "w": 128,
+    "h": 125
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8244,
+   "ink": 0.8243,
+   "bbox": {
+    "x": 1490,
+    "y": 776,
+    "w": 125,
+    "h": 122
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8241,
+   "ink": 0.7961,
+   "bbox": {
+    "x": 148,
+    "y": 393,
+    "w": 133,
+    "h": 119
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7948,
+   "ink": 0.8465,
+   "bbox": {
+    "x": 681,
+    "y": 451,
+    "w": 125,
+    "h": 114
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7115,
+   "ink": 0.9564,
+   "bbox": {
+    "x": 1258,
+    "y": 850,
+    "w": 124,
+    "h": 84
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.6983,
+   "ink": 0.8542,
+   "bbox": {
+    "x": 351,
+    "y": 329,
+    "w": 121,
+    "h": 109
+   }
+  },
+  {
+   "smufl_name": "augmentationDot",
+   "category": "structural",
+   "family": "dot",
+   "confidence": 0.6183,
+   "ink": 0.8142,
+   "bbox": {
+    "x": 713,
+    "y": 347,
+    "w": 38,
+    "h": 34
+   }
+  }
+ ]
+}

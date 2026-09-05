@@ -1,0 +1,35 @@
+{
+  "tag": "shift09",
+  "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/round5-merged/d25e0_graftprod_shift0.9.pt",
+  "hollow_histogram": {
+    "black_total": 86,
+    "hollow_total": 31,
+    "noteheadHalfOnLine": 5,
+    "noteheadHalfInSpace": 26
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 117,
+      "matched": 85,
+      "recall": 0.5782,
+      "precision": 0.7265
+    },
+    "step": {
+      "truth": 147,
+      "omr": 117,
+      "matched": 102,
+      "recall": 0.6939,
+      "precision": 0.8718
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 117,
+      "matched": 75,
+      "recall": 0.5102,
+      "precision": 0.641
+    }
+  },
+  "clef_accuracy": "12/12",
+  "measures_omr": 16
+}

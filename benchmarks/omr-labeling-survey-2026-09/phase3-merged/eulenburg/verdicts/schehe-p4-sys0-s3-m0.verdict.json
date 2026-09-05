@@ -1,0 +1,116 @@
+{
+ "cell_id": "schehe-p4-sys0-s3-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 1166,
+    "y": 127,
+    "w": 30,
+    "h": 31
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 752,
+    "y": 729,
+    "w": 206,
+    "h": 47
+   },
+   "confidence": 0.6332,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 985,
+    "y": 497,
+    "w": 122,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadWholeInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 982,
+    "y": 640,
+    "w": 122,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 380,
+    "y": 277,
+    "w": 99,
+    "h": 205
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 482,
+    "y": 403,
+    "w": 79,
+    "h": 195
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 578,
+    "y": 232,
+    "w": 92,
+    "h": 199
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 684,
+    "y": 352,
+    "w": 92,
+    "h": 202
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "clefF",
+   "human_category": "clef",
+   "bbox": {
+    "x": 120,
+    "y": 260,
+    "w": 229,
+    "h": 273
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "cell_id": "lamer-p2-sys0-s5-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 763,
+    "y": 434,
+    "w": 87,
+    "h": 51
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "clefF",
+   "human_category": "clef",
+   "bbox": {
+    "x": 82,
+    "y": 287,
+    "w": 198,
+    "h": 222
+   },
+   "notes": ""
+  }
+ ]
+}

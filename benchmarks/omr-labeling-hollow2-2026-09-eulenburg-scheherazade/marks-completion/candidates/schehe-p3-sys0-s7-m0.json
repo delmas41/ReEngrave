@@ -1,0 +1,31 @@
+{
+ "cell_id": "schehe-p3-sys0-s7-m0",
+ "candidates": [
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8587,
+   "ink": 0.3533,
+   "bbox": {
+    "x": 903,
+    "y": 0,
+    "w": 107,
+    "h": 134
+   }
+  },
+  {
+   "smufl_name": "dynamicM",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.6749,
+   "ink": 0.5737,
+   "bbox": {
+    "x": 828,
+    "y": 19,
+    "w": 103,
+    "h": 73
+   }
+  }
+ ]
+}

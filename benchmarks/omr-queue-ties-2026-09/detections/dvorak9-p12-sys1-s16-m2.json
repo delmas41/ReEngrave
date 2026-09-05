@@ -1,0 +1,29 @@
+{
+ "cell_id": "dvorak9-p12-sys1-s16-m2",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 296,
+    "y": 132,
+    "w": 1734,
+    "h": 136
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 291,
+    "y": 475,
+    "w": 1739,
+    "h": 180
+   },
+   "confidence": 1.0
+  }
+ ]
+}

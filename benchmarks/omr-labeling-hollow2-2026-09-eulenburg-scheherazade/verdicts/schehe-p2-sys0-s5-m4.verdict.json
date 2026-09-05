@@ -1,10 +1,24 @@
 {
   "cell_id": "schehe-p2-sys0-s5-m4",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:14:39+00:00",
+  "labeled_at_utc": "2026-09-03T21:07:40+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1152,
+        "y": 123,
+        "w": 45,
+        "h": 72
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

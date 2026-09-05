@@ -1,0 +1,74 @@
+{
+ "beet5-p4-sys1-s14-m0": {
+  "batch": "benchmarks/omr-labeling-hollow-2026-08"
+ },
+ "beet5hr-p48-sys0-s13-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-litolff-hires"
+ },
+ "beet5hr-p48-sys0-s14-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-litolff-hires"
+ },
+ "beet5hr-p49-sys0-s6-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-litolff-hires"
+ },
+ "dvorak9-p8-sys1-s19-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9"
+ },
+ "dvorak9-p8-sys1-s20-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9"
+ },
+ "dvorak9-p8-sys1-s21-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9"
+ },
+ "dvorak9-p8-sys1-s23-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-simrock-dvorak9"
+ },
+ "mahler5-p176-sys0-s5-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-peters-mahler5"
+ },
+ "mahler5-p178-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-peters-mahler5"
+ },
+ "schehe-p2-sys0-s2-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade"
+ },
+ "schehe-p2-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade"
+ },
+ "schehe-p3-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade"
+ },
+ "schehe-p4-sys0-s2-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade"
+ },
+ "schehe-p4-sys0-s3-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade"
+ },
+ "schehe-p4-sys0-s8-m0": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-eulenburg-scheherazade"
+ },
+ "mahler1-p2-sys0-s0-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1"
+ },
+ "mahler1-p2-sys0-s12-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1"
+ },
+ "mahler1-p2-sys0-s7-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1"
+ },
+ "mahler1-p4-sys0-s13-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1"
+ },
+ "mahler1-p5-sys0-s6-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1"
+ },
+ "mahler1-p5-sys1-s17-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1"
+ },
+ "lamer-p2-sys0-s5-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-durand-lamer"
+ },
+ "lamer-p5-sys0-s2-m0": {
+  "batch": "benchmarks/omr-labeling-hollow3-2026-09-durand-lamer"
+ }
+}

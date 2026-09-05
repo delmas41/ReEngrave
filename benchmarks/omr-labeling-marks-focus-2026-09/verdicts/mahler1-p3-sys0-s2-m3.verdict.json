@@ -1,0 +1,36 @@
+{
+  "cell_id": "mahler1-p3-sys0-s2-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:31:12+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1294,
+        "y": 973,
+        "w": 101,
+        "h": 84
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 82,
+        "y": 550,
+        "w": 82,
+        "h": 202
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads",
+    "rests+accidentals"
+  ]
+}

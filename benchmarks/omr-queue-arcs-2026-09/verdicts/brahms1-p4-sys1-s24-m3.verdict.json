@@ -1,0 +1,58 @@
+{
+  "cell_id": "brahms1-p4-sys1-s24-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:27:13+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 889,
+        "y": 1068,
+        "w": 428,
+        "h": 132
+      },
+      "human_bbox": null,
+      "confidence": 0.314,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 2,
+        "y": 334,
+        "w": 1310,
+        "h": 77
+      },
+      "human_bbox": null,
+      "confidence": 0.263,
+      "notes": ""
+    }
+  ],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 913,
+        "y": 147,
+        "w": 363,
+        "h": 137
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

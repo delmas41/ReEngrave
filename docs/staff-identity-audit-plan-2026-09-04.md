@@ -136,6 +136,56 @@ source — **it is NOT in the Gradus library or the local Reference-Books folder
 (checked 2026-09-04)**; if a copy turns up, use it to explain anomalies the
 survey finds, never to override a measured count.
 
+## Zero-detection staves: a measurement discipline (and a retracted alarm)
+
+⚠️ **This section replaces a blocking caution that was WRONG, and the way it
+went wrong is worth more than the rule it produced.**
+
+**What was claimed, twice, in opposite directions.** The dynamics/hairpin
+session reported that on `dvorak-sym9-mvt1-405834-p5` five staves reading as
+eight bars of rests were "densely playing" and the rests were misdetections. I
+then "independently corroborated" it by counting the truth and reporting 8
+sounding notes and 0 rests for each. **Both were false.** Counted with a real
+XML parse, those five parts (Trombe, Tromboni I.II., Trombone basso, Violini I,
+Violini II) are **0 sounding / 8 rests** — they genuinely rest, and the pipeline
+read all five correctly.
+
+**Why my corroboration inverted.** I counted rests with the regex
+`<rest\s*/?>`, which does not match `<rest measure="yes" />` — the form that
+occurs **95 times** in that file. Every whole-measure rest was counted as a
+sounding note. The peer's crop was mislocalised to the bars where those staves
+DO play. Two independent errors that happened to agree, and the agreement is
+what made both of us confident.
+
+⚠️ **A corroboration that agrees is not evidence that either party is right.**
+Confirmation from a second party sharing neither method nor data would be; two
+parties reaching one conclusion through separate mistakes reads identically from
+the inside. Check the substrate — which artifact, which parse, which join —
+before treating agreement as verification.
+
+**A third claim from the same exchange is also unreproduced**: that the page's
+measure segmentation is broken (boxes overlapping, the last running to x=9055 on
+a 5084-wide page). On the committed graft09 transcription staff 0's eight
+measures tile cleanly, 932 -> 4796, with **zero overlapping neighbours**. It may
+be true of some other artifact; it is not true of the one in the benchmark, and
+it should be pinned to a named run before anyone acts on it.
+
+**What survives, as discipline rather than alarm.** S4, S7 and S9 are NOT
+invalidated — on the page examined, every staff the pipeline called resting was
+resting. But a signal keyed on "is this staff sounding" is answering a question
+the detector can get wrong, so:
+
+- record `n_noteheads_detected` beside any such answer — it costs nothing and
+  makes the question auditable;
+- score zero-detection staves **as their own stratum**, so a systematic failure
+  there shows up as a stratum effect instead of hiding in the pooled number.
+
+**Do NOT treat a zero-detection staff as an abstention** — that was the
+overcorrection, and on this page it would discard five correct readings out of
+five. `score_translation.py` (dynamics session) answers "read but not written"
+directly and is the right instrument when the question really is detection
+versus export.
+
 ## Corpus, and the answer-key discipline
 
 - **Primary**: the 11-row scan benchmark. `works.json` carries hand-verified

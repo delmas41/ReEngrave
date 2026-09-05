@@ -1,0 +1,140 @@
+{
+ "cell_id": "mahler5-p176-sys1-s10-m6",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1791,
+    "y": 392,
+    "w": 133,
+    "h": 94
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 1010,
+    "y": 375,
+    "w": 52,
+    "h": 52
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 788,
+    "y": 747,
+    "w": 104,
+    "h": 120
+   },
+   "confidence": 0.5946,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 713,
+    "y": 743,
+    "w": 116,
+    "h": 166
+   },
+   "confidence": 0.5573,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 747,
+    "y": 406,
+    "w": 106,
+    "h": 89
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 72,
+    "y": 356,
+    "w": 99,
+    "h": 266
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 150,
+    "y": 222,
+    "w": 89,
+    "h": 229
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 260,
+    "y": 417,
+    "w": 89,
+    "h": 226
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 338,
+    "y": 270,
+    "w": 93,
+    "h": 253
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 444,
+    "y": 465,
+    "w": 76,
+    "h": 253
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 506,
+    "y": 301,
+    "w": 92,
+    "h": 267
+   },
+   "notes": ""
+  }
+ ]
+}

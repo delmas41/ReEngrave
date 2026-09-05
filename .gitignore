@@ -149,3 +149,18 @@ labels.cache
 # Its catalog (data/score-library/catalog.json) IS committed; see that README.
 # Anchored: an unanchored "library/" also swallows tools/library, the code.
 /library/
+
+# Rehearsal/distillation label roots are BUILD PRODUCTS of
+# benchmarks/omr-labeling-survey-2026-09/build_rehearsal_versions.py — they copy
+# every image out of data/user-labeled/ and are regenerated from the committed
+# verdicts, the committed teacher checkpoint and the committed builder. The
+# report JSON beside the builder is what carries the provenance.
+data/user-labeled-rehearsal/
+data/user-labeled-distill/
+
+# Specialist training roots are build products of
+# benchmarks/omr-labeling-survey-2026-09/build_specialist_versions.py — they
+# carve per-symbol corpora out of data/user-labeled/ and are regenerated from
+# the committed verdicts, pass configs and builder. specialist.json beside each
+# one carries the provenance.
+data/specialist-*/

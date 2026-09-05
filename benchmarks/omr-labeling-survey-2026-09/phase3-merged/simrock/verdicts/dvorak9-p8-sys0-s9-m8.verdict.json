@@ -1,0 +1,72 @@
+{
+ "cell_id": "dvorak9-p8-sys0-s9-m8",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 59,
+    "y": 824,
+    "w": 235,
+    "h": 250
+   },
+   "confidence": 0.905,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 167,
+    "y": 820,
+    "w": 228,
+    "h": 252
+   },
+   "confidence": 0.8543,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 38,
+    "y": 28,
+    "w": 229,
+    "h": 268
+   },
+   "confidence": 0.787,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 125,
+    "y": 30,
+    "w": 232,
+    "h": 267
+   },
+   "confidence": 0.7728,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 272,
+    "y": 650,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  }
+ ]
+}

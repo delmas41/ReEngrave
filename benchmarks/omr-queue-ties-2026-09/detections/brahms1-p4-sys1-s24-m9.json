@@ -1,0 +1,31 @@
+{
+ "cell_id": "brahms1-p4-sys1-s24-m9",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 989,
+    "y": 57,
+    "w": 433,
+    "h": 153
+   },
+   "confidence": 0.438,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 994,
+    "y": 903,
+    "w": 429,
+    "h": 173
+   },
+   "confidence": 0.374,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

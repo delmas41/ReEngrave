@@ -1,0 +1,107 @@
+{
+  "cell_id": "dvorak9-p13-sys1-s18-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T05:56:42+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 138,
+        "y": 350,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 121,
+        "y": 650,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 263,
+        "y": 170,
+        "w": 1334,
+        "h": 132
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 231,
+        "y": 730,
+        "w": 1372,
+        "h": 121
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 5,
+        "y": 258,
+        "w": 160,
+        "h": 71
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 5,
+        "y": 727,
+        "w": 102,
+        "h": 50
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "dynamicP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 0,
+        "y": 942,
+        "w": 194,
+        "h": 216
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "dynamicP",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 142,
+        "y": 942,
+        "w": 194,
+        "h": 216
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

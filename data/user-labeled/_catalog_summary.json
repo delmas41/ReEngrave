@@ -1,16 +1,22 @@
 {
-  "generated_utc": "2026-09-03T09:29:41+00:00",
+  "generated_utc": "2026-09-04T16:36:17+00:00",
   "root": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled",
   "val_fraction": 0.15,
   "seed": "reengrave",
   "membership_source": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/catalog-versions.txt",
-  "n_versions": 6,
+  "n_versions": 14,
   "versions_excluded_on_disk": [
+    "v10-2026-09-03-hollow3-elgar1",
+    "v11-2026-09-03-hollow3-lamer",
+    "v12-2026-09-03-hollow3-tchaikovsky1-lowres",
     "v5-2026-07-12-clef",
-    "v6-2026-07-13-clef-diverse"
+    "v6-2026-07-13-clef-diverse",
+    "v7-2026-09-02-hollow",
+    "v8-2026-09-02-hollow2-5pub",
+    "v9-2026-09-03-hollow3-mahler1"
   ],
-  "n_train_images": 255,
-  "n_val_images": 52,
+  "n_train_images": 495,
+  "n_val_images": 96,
   "n_classes": 208,
   "n_classes_full_vocab": 214,
   "n_boxes_dropped_over_nc": 83,
@@ -20,8 +26,8 @@
     "repeatLeft": 5,
     "textDynamic": 2
   },
-  "full_catalog": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/catalog-214.yaml",
-  "weights_source": "omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+  "full_catalog": null,
+  "weights_source": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt",
   "versions": [
     {
       "name": "v1-2026-05-18-orchestral",
@@ -64,24 +70,104 @@
       "created_utc": "2026-07-10T22:48:51+00:00"
     },
     {
-      "name": "v7-2026-09-02-hollow",
-      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v7-2026-09-02-hollow",
-      "n_train_images": 17,
-      "n_val_images": 7,
+      "name": "v13-2026-09-03-complete-v7-beet5-bolero",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v13-2026-09-03-complete-v7-beet5-bolero",
+      "n_train_images": 23,
+      "n_val_images": 2,
       "metadata_present": true,
       "labeler": "sean",
-      "description": "hollow noteheads on scans with closed counters; human-drawn hollow heads merged with model pre-labels, agent-audited",
-      "created_utc": "2026-09-02T18:00:51+00:00"
+      "description": "Beethoven 5 (Litolff) + Bolero \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:03+00:00"
     },
     {
-      "name": "v8-2026-09-02-hollow2-5pub",
-      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v8-2026-09-02-hollow2-5pub",
-      "n_train_images": 102,
-      "n_val_images": 20,
+      "name": "v14-2026-09-03-complete-litolff",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v14-2026-09-03-complete-litolff",
+      "n_train_images": 44,
+      "n_val_images": 10,
       "metadata_present": true,
       "labeler": "sean",
-      "description": "hollow noteheads (194: 102 half + 92 whole) across 5 publishers (Litolff/Peters/Eulenburg/Breitkopf/Simrock) + audited model-completed black noteheads/dots (198)",
-      "created_utc": "2026-09-03T03:53:19+00:00"
+      "description": "Litolff hi-res Beethoven 5 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:03+00:00"
+    },
+    {
+      "name": "v15-2026-09-03-complete-peters",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v15-2026-09-03-complete-peters",
+      "n_train_images": 45,
+      "n_val_images": 9,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Edition Peters Mahler 5 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:03+00:00"
+    },
+    {
+      "name": "v16-2026-09-03-complete-eulenburg",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v16-2026-09-03-complete-eulenburg",
+      "n_train_images": 47,
+      "n_val_images": 8,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Eulenburg Scheherazade \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:03+00:00"
+    },
+    {
+      "name": "v17-2026-09-03-complete-simrock",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v17-2026-09-03-complete-simrock",
+      "n_train_images": 11,
+      "n_val_images": 2,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "N. Simrock Dvorak 9 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:04+00:00"
+    },
+    {
+      "name": "v18-2026-09-03-complete-breitkopf",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v18-2026-09-03-complete-breitkopf",
+      "n_train_images": 44,
+      "n_val_images": 12,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Breitkopf Brahms 1 \u2014 round-3 complete cells incl. Sean's 56-measure sweep; 7 ledger-parity corrections (4 from Sean, 3 from the mxl-prefill audit), all re-verified",
+      "created_utc": "2026-09-04T05:27:47+00:00"
+    },
+    {
+      "name": "v19-2026-09-03-complete-mahler1",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v19-2026-09-03-complete-mahler1",
+      "n_train_images": 28,
+      "n_val_images": 9,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Universal Edition Mahler 1 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:04+00:00"
+    },
+    {
+      "name": "v20-2026-09-03-complete-elgar1",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v20-2026-09-03-complete-elgar1",
+      "n_train_images": 14,
+      "n_val_images": 1,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Novello Elgar 1 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:04+00:00"
+    },
+    {
+      "name": "v21-2026-09-03-complete-lamer",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v21-2026-09-03-complete-lamer",
+      "n_train_images": 10,
+      "n_val_images": 1,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "Durand La mer \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+      "created_utc": "2026-09-03T22:07:04+00:00"
+    },
+    {
+      "name": "v22-2026-09-04-simrock-dense",
+      "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v22-2026-09-04-simrock-dense",
+      "n_train_images": 93,
+      "n_val_images": 17,
+      "metadata_present": true,
+      "labeler": "sean",
+      "description": "N. Simrock Dvorak 9 \u2014 110 dense cells drawn from scratch; 1 ledger-zone parity correction after adjudicating 7 audit candidates (6 were false positives)",
+      "created_utc": "2026-09-04T16:35:55+00:00"
     }
   ]
 }

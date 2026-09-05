@@ -1,0 +1,18 @@
+{
+ "cell_id": "mahler1-p5-sys0-s7-m5",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8334,
+   "ink": 0.5135,
+   "bbox": {
+    "x": 1048,
+    "y": 873,
+    "w": 110,
+    "h": 137
+   }
+  }
+ ]
+}

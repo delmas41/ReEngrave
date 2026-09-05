@@ -545,9 +545,12 @@ def test_committed_catalog_membership_is_v1_through_v4_plus_hollow():
     update this pin, all in the same commit. If you did NOT change the
     manifest on purpose, put it back.
 
-    v7 + v8 (hollow scan cells) were admitted 2026-09-03 with the shipping
-    hollow fine-tune — see benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md.
-    v5/v6 (clef) remain excluded.
+    v13-v21 (round 3: the same hollow batches, completed by hand) SUPERSEDE
+    v7 + v8, which are removed rather than left alongside — the same cells
+    labeled twice would teach that the rests and accidentals the incomplete
+    copy omits are background. v22 (round 4: 110 dense Simrock cells drawn
+    from scratch) was admitted 2026-09-04. v5/v6 (clef) remain excluded.
+    See benchmarks/omr-labeling-survey-2026-09/ROUND3_COMPLETENESS.md.
     """
     from tools.omr.training.build_catalog_yaml import (
         read_versions_manifest,
@@ -560,8 +563,16 @@ def test_committed_catalog_membership_is_v1_through_v4_plus_hollow():
         "v2-2026-06-08-beet5",
         "v3-2026-06-09-mahler5",
         "v4-2026-06-10-la-mer",
-        "v7-2026-09-02-hollow",
-        "v8-2026-09-02-hollow2-5pub",
+        "v13-2026-09-03-complete-v7-beet5-bolero",
+        "v14-2026-09-03-complete-litolff",
+        "v15-2026-09-03-complete-peters",
+        "v16-2026-09-03-complete-eulenburg",
+        "v17-2026-09-03-complete-simrock",
+        "v18-2026-09-03-complete-breitkopf",
+        "v19-2026-09-03-complete-mahler1",
+        "v20-2026-09-03-complete-elgar1",
+        "v21-2026-09-03-complete-lamer",
+        "v22-2026-09-04-simrock-dense",
     ]
     assert read_versions_manifest(root) == committed
 
@@ -576,9 +587,10 @@ def test_committed_catalog_membership_is_v1_through_v4_plus_hollow():
     assert [d.name for d in members] == committed
     assert source.endswith("catalog-versions.txt")
     # The recorded exclusions are on disk and stay out (PROJECT_STATUS.md
-    # #13 — v5/v6 clef cells narrow the density prior). v7 was admitted
-    # 2026-09-03 with the hollow fine-tune, so it is no longer excluded.
-    for parked in ("v5-2026-07-12-clef", "v6-2026-07-13-clef-diverse"):
+    # #13 — v5/v6 clef cells narrow the density prior). v7/v8 are also on
+    # disk and also out: v13-v21 are those same cells, completed.
+    for parked in ("v5-2026-07-12-clef", "v6-2026-07-13-clef-diverse",
+                   "v7-2026-09-02-hollow", "v8-2026-09-02-hollow2-5pub"):
         assert (root / parked).is_dir()
         assert parked in excluded
 

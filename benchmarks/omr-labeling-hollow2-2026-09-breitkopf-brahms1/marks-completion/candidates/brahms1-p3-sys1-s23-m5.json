@@ -1,0 +1,44 @@
+{
+ "cell_id": "brahms1-p3-sys1-s23-m5",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7808,
+   "ink": 0.5712,
+   "bbox": {
+    "x": 208,
+    "y": 1042,
+    "w": 206,
+    "h": 177
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.6594,
+   "ink": 0.551,
+   "bbox": {
+    "x": 128,
+    "y": 1034,
+    "w": 138,
+    "h": 180
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.6042,
+   "ink": 0.4384,
+   "bbox": {
+    "x": 42,
+    "y": 999,
+    "w": 188,
+    "h": 219
+   }
+  }
+ ]
+}

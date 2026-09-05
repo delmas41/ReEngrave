@@ -1,0 +1,103 @@
+{
+ "cell_id": "brahms1-p4-sys1-s23-m1",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 204,
+    "y": 102,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 924,
+    "y": 96,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 326,
+    "y": 93,
+    "w": 101,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1068,
+    "y": 93,
+    "w": 101,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 796,
+    "y": 7,
+    "w": 105,
+    "h": 241
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 13,
+    "y": 20,
+    "w": 162,
+    "h": 86
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1080,
+    "y": 0,
+    "w": 865,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "slur",
+   "human_category": "structural",
+   "bbox": {
+    "x": 918,
+    "y": 0,
+    "w": 1050,
+    "h": 69
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+{
+  "cell_id": "lamer-p5-sys0-s5-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:35:07+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 689,
+        "y": 848,
+        "w": 101,
+        "h": 84
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1171,
+        "y": 848,
+        "w": 101,
+        "h": 84
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 68,
+        "y": 834,
+        "w": 117,
+        "h": 240
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 342,
+        "y": 762,
+        "w": 106,
+        "h": 243
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads"
+  ]
+}

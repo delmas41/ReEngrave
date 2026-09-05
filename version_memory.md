@@ -5,6 +5,418 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — acting on the split: hairpins and a fermata reach the file, and the arc verdict
+
+Worked the three items the reading/translation split identified.
+
+**1a. HAIRPINS — the ninth export gap, closed on the export side.** `score_translation` priced
+what `KNOWN_GAPS` said could not be priced: 9 read across three works, every one discarded,
+against 17 `<wedge>` of truth. `export.measure_wedges` emits each as the SPAN it is (opening +
+`stop`, with a `number` so overlapping spans stay pairable), through `measure_directions` — the
+ONE place both emitters ask what a measure carries; slurs live at four call sites and this does
+not add a fifth. **0 → 18 wedges against 17 of truth; Tchaikovsky 6 exact at 6/6.** Control: only
+the three works with hairpins change, the other eight are BYTE-IDENTICAL, and the diff is purely
+additive. ⚠️ **Costs +11 OMR-NED edits and ships anyway**, but unlike the articulations precedent
+the cause is diagnosed: Tchaikovsky (exact detection) IMPROVES −3, and Mahler pays +12 for two
+known mechanisms — a hairpin crossing a barline exported as two, and one landing on the staff
+below its own.
+
+**1b. THE LOST FERMATA — found by arithmetic, not by reading code.** Beethoven 5 detected 36,
+truth 36, exported 35; `export_coverage` cannot see that (it fires only on truth-some/ours-zero).
+One query localised it: every part has a fermata at m2 and m5 except P7. Its `restWhole` does not
+become an event, so that bar takes the eventless branch — the SAME branch as the directions, one
+layer down, and `annotate_fermatas` already documents that an orchestral fermata is usually over
+a whole-bar REST. Now **36 of 36**, and it **IMPROVES** the metric: 0.0595 → 0.0556, −5 edits.
+
+**2. ARCS — the verdict, and a lever I nearly rebuilt.** ⚠️ `00b68e24` on
+`claude/export-accents-arcs` already built the tie/slur position-grammar veto, measured it on
+BOTH families and shipped it default-off (engraved neutral, scan REFUSED). Found by
+`git log --all -S` before starting. The reading score adds why it could not have paid: a family
+whose F1 climbs with the centre tolerance is FOUND AND LOOSELY PLACED, not missed. **Ties
+0.260 → 0.504** at 2 spaces (mostly there); **slurs 0.518 → 0.631**, barely moving — real
+absences, 16 of 40 with no arc within TWO spaces while the 24 found sit at a median 0.09. So
+slurs are a DETECTION gap, ties a LOCALISATION gap, and neither is a labelling gap. ⚠️ Also
+corrected: yesterday's "24 slur arcs lost to `beam`" was a large CV beam box whose CENTRE fell
+within tolerance, not a class confusion.
+
+**3. DYNAMICS RE-ATTRIBUTION — hold stands, case stronger.** With hairpins now exported their
+placement is measurable, and it is the same mechanism: **three of Mahler's four hairpins are
+filed under staff 18 and stand in staff 17's band**, which is half the +12 above. A second symbol
+family the rule would fix. ⚠️ It does not change the verdict — the blocker was never the engraved
+case (already positive, 52 → 83 staves exact) but that the scan arm cannot see attribution at
+all: 7 of 11 pages abstain on the staff→part join, and resolving them needs hand-verified
+`staves[].parts` rows. Human input, not another measurement.
+
+---
+
+## 2026-09-04 — reading and reproduction, measured apart (an exact page truth, for free)
+
+Sean asked whether we test the ability to READ a page or to REPRODUCE one, and whether there is
+a way to know exactly what is on a page. There is, for pages we render, and it costs nothing:
+Verovio draws MusicXML directly and with `svgBoundingBoxes` emits a `<rect>` per notation object
+in the same frame as the glyph, plus every glyph's SMuFL codepoint. Image and inventory from one
+act, no labeling. `tools/omr/page_truth.py` + `score_reading.py` + `score_translation.py`,
+harness and findings in `benchmarks/omr-reading-vs-reproduction-2026-09/`.
+
+- ⚠️ **A PAGE TRUTH IS NOT AN ENCODING TRUTH, and the gap is the point.** Brahms fixture against
+  the file it was rendered from: dynamics 19 glyphs vs 19 `<dynamics>` (agree), G clefs **28**
+  vs **14** `<sign>G</sign>`, slurs **82 arcs** vs **164 `<slur>` tags**. A clef is printed at
+  every system and declared once; MusicXML writes a slur at each end.
+- **STAGE 1 — reading F1 0.919** over 11 engraved works / 3220 scoreable symbols, beside OMR-NED
+  0.1306 on the same works. The decomposition is the value: **noteheads 0.999 (856 of 856)**,
+  rests 0.993, time-sig digits 0.997, flags 0.992, clefs 0.969. **So the engraved residual is
+  NOT a failure to see notes.** It is ties **0.260**, slurs **0.518** (24 arcs lost to `beam`,
+  the only real class confusion), and dynamic letters **0.552** at precision 0.421 — the same
+  over-emission `omr-dynamics-band-2026-09` measured from the other end.
+- ⚠️⚠️ **A NEAR-MISS, CAUGHT BY AN EXISTING NUMBER RATHER THAN BY THE NEW TOOL.** `accidental`
+  scored recall 0.257 and was about to be written up as the largest reading gap. It is not a
+  pipeline result: **Verovio draws one accidental per `<alter>`, not per `<accidental>`** —
+  Brahms 1 has 54 `<accidental>` and 149 `<alter>` and it drew 149; Beethoven 5 has ZERO
+  `<accidental>` and 13 `<alter>` and it drew 13. `<alter>` is the SOUNDING alteration, which a
+  key signature already supplies, so the render carries accidentals no engraver would print. The
+  tell was a contradiction with OMR-NED's `wrong pitch`, which is ZERO on these works and cannot
+  be if a reader is missing three quarters of the accidentals. `page_truth.render_fidelity` now
+  measures the disagreement per work and declares the family unreliable; `score_reading` marks it
+  `(RENDER)` and excludes it. Including it gave 0.898; excluding it, **0.919**.
+- **STAGE 2 — the funnel prices the open ninth export gap.** `wedge` sat in `KNOWN_GAPS` as
+  un-priceable from that inventory. It is now: **9 hairpins read across three works and every one
+  discarded** (Mahler 5 4-of-6, Tchaikovsky 6 3-of-6, Brahms 4 2-of-5) — half reading, half
+  export, and the export half is free. Plus a **NEW** one nothing else can see: Beethoven 5
+  detects 36 fermatas, truth has 36, **35** reach the file. `export_coverage` fires only on the
+  categorical case (truth some, ours zero), so 35-of-36 was invisible.
+- ⚠️ **The stages read different images on purpose** — stage 1 a Verovio render whose ink is
+  known, stage 2 the LilyPond fixtures the headline uses — so their per-family counts are NOT
+  comparable to each other. ⚠️ **Neither says anything about scans**; no public symbol-level
+  ground truth for real printed scans exists to borrow (DeepScoresV2 rendered, MUSCIMA++
+  handwritten).
+- **Controls**: matched on CENTRES not IoU (learned boxes vs exact ones would measure box style),
+  and pooled F1 moves only 0.846→0.876 across 0.25–1.5 spaces of tolerance; re-rendered at
+  600 dpi (45 px/space vs 22) Brahms 1 goes 0.854→0.868 and Tchaikovsky 4 0.787→0.789, so the
+  figure is not a resolution artefact.
+- ⚠️ **TWO FRAME ERRORS IT FOUND IN ITSELF, both caught the same way — the symbol COUNTS agreed
+  almost exactly while NOTHING matched positionally, which is the signature of a coordinate error
+  and never of a recognition result.** (1) Verovio wraps the page in `<g class="page-margin"
+  transform="translate(500,500)">`; missing it put the whole truth 62.5 px off against a 22.5 px
+  staff space — noteheads 259 vs 259, matched ZERO at every tolerance. (2) A glyph's anchor is
+  not its centre — SMuFL puts a flat's origin at the staff position it alters — so a synthesised
+  square box scored a correctly read key signature at **F1 0.078**; calibrating each glyph's box
+  from Verovio's own single-glyph rects took it to **0.990**. A third was avoided by checking:
+  reading extents off the `<defs>` outlines is wrong because those paths use RELATIVE curve
+  commands, which put noteheads 0.66 spaces right of Verovio's own rect for the same glyph.
+- Coordinate chain verified end to end rather than assumed: librsvg maps CSS px to PDF pt at
+  72/96 and a pt rasterises at dpi/72, so image px = css px x dpi/96 — exact at both 300 and 600.
+
+---
+
+## 2026-09-04 — a bar we found nothing in now keeps its marks (the predicted bug, fixed)
+
+`export.py`'s whole-measure-rest branch never calls `_mxl_voice_events` — the only other
+`<direction>` emitter — so `measure_directions()` was computed, assigned to `_dyn`, and never
+used. BOTH MusicXML measure emitters had it, identically. Fixed with `_mxl_directions_only`,
+called from both: marks go in x order at the head of the bar, ahead of the rest, because a
+`<direction>` carries no duration and applies where it sits.
+
+- ⚠️ **This is the bug CLAUDE.md has been carrying as a PREDICTION** — that the 11-work engraved
+  benchmark provably cannot see it (0 triggering bars, measured both ways) and that a SCANNED
+  work would be where it finally triggers, because a staff genuinely rests through a marked bar
+  and the detector finds nothing in it. It does: **14 dynamics on scans, 0 on the engraved
+  eleven**, and the attribution was exact before the fix (`words formed − words in an eventless
+  measure == words exported`, all 11 pages, to the mark) and is exact after it (376 formed → 376
+  exported).
+- **CONTROL: the eleven engraved works export BYTE-IDENTICALLY.** Which is the same fact as the
+  benchmark not seeing the bug — so it cannot guard the repair either.
+  `TestEventlessMeasureKeepsItsMarks` does (8 tests), including a **source-level anti-drift test
+  asserting BOTH MusicXML emitters call it**, verified to fail when either call site is removed.
+  The LilyPond branch is deliberately excluded from that guard.
+- ⚠️ **IT MAKES SCAN OMR-NED SLIGHTLY WORSE AND SHIPPED ANYWAY.** Mahler p2 0.7122 → 0.7148
+  (+5 edits), Beethoven 984073-p1 0.6925 → 0.6949 (+5), Mahler p3 0.8921 → **0.8916** (+3),
+  Beethoven 984073-p2 0.8859 → 0.8860 (+3). The marks are not wrong — a spot check shows a
+  recovered `f` on a bar that is otherwise a whole-measure rest, the predicted shape exactly.
+  These pages score 0.69–0.89, i.e. their bars barely pair, so a correct symbol added to a bar
+  already charged delete-whole-plus-insert-whole raises a charge being levied whole. **Same call
+  as the articulations fix** (−122 across works that segment, +219 on boulanger alone, shipped
+  with the counter-argument beside it).
+- ⚠️ Found on the way, NOT fixed: the **LilyPond** exporter never calls `measure_directions` at
+  all, so it drops dynamics on *every* measure. A wider gap, and invisible to `export_coverage`,
+  which compares MusicXML.
+- Landed on an isolated branch while another session had uncommitted `export.py` work in flight
+  (cross-staff ARC attribution, hunks at 567/1337/2435) — different concern, non-overlapping
+  regions; checked across all 84 worktrees before touching the file.
+
+---
+
+## 2026-09-04 — dynamics letters: a placement band exists, and re-attribution works on engravings only
+
+Sean asked whether dynamics letters should be read the way clefs are. Measured, not reasoned
+about: `benchmarks/omr-dynamics-band-2026-09/`.
+
+**Half of the clef approach transfers, and not the famous half.** Geometry-instead-of-
+classification does NOT apply — alto and tenor are one glyph on two lines, but a `p` is a `p` at
+any height, and the horizontal assembly it does need (`f`+`f` → `ff`) already exists in
+`export.measure_dynamics`. The clef LOCATOR does not apply either: it exists because the model
+is blind to clefs on scans, and the detector is not blind to dynamics — 1246 letters over 18
+pages. What transfers is **POSITION BEFORE SHAPE**, and `measure_dynamics` uses no vertical
+information at all.
+
+- **The band is real and holds across 9 publishers** (Breitkopf, Durand, Eulenburg, Jurgenson,
+  Litolff, Novello, Peters, Simrock, Universal): 73% of letters stand in their own staff's band,
+  24% in the band of the staff **immediately above — distance exactly 1, no exceptions**, which
+  is the cell padding confirming itself. Pooled widest empty interval **−3.04 .. −0.52 spaces**,
+  and the lower edge is a **plateau** (−1.5 .. +0.25 changes nothing on either scored arm).
+- ⚠️ **A GATE IS THE WRONG FIX**; an out-of-band letter is usually not junk but the neighbour's
+  ink through this cell's padding, and deleting it loses the mark. **83% of re-attributed letters
+  are the target staff's SOLE evidence** — because `_dedupe_cross_staff_detections` already
+  removed the twin BY DISTANCE and kept the lower staff's copy, the same failure the ledger-ladder
+  work found for noteheads. So the fix belongs in that function as another evidence tier, not in
+  a filter after it.
+- **Engraved (canonical 11): re-attribution is a clear win** — over-emission 1.19 → 1.04, staves
+  exact by word **52 → 83 of 107**, no work worse.
+- ⚠️⚠️ **SCANS: IT DOES NOTHING — 16 → 16 staves exact by word** (11 pages, 5 publishers,
+  hand-verified windows). The engraved result does not carry, and the table says why: on real
+  scans we **under**-emit (376 words against 491, 0.77), so the dominant dynamics error there is
+  a mark never found, not a mark on the wrong staff. Measured, **NOT shipped** — the next step is
+  why scans under-emit, not a wider band sweep.
+- ⚠️ **THEN ANSWERED, same day (`--funnel`): "reads them but doesn't write them" is REAL and is
+  the MINORITY.** Of the 129-mark scan shortfall: **14 are computed and thrown away** by the
+  eventless-measure branch — `measure_directions()` is called, assigned to `_dyn`, and never
+  used, in BOTH of `export.py`'s measure emitters. This is the bug CLAUDE.md records the 11-work
+  engraved benchmark cannot see, and which it predicted a SCANNED work would finally trigger:
+  **it does — 14 on scans against 0 on the engraved eleven**, and the attribution is exact
+  (`words formed − words in an eventless measure == words exported` on all 11 pages, to the
+  mark). A further ≤31 are the same family one step earlier: 49 detected letters in runs that
+  spell no dynamic, discarded whole, 15 of them a lone `s` (an `sf` whose `f` was missed). The
+  rest were never read — and **137 of the shortfall is the two Beethoven 5 p.2 scans alone**;
+  across the other nine pages we emit 191 against a truth of 183, over-emitting slightly exactly
+  like the engraved arm. ⚠️ So "scans under-emit" was too broad a claim and is corrected here.
+  NOT fixed — the eventless-measure branch is a two-site change in `export.py` and is left for
+  the session working that file.
+- ⚠️ Refuted: **confidence** as a filter. Priced as the trade rather than by comparing medians —
+  removing half the unattributable letters costs **233 of 911** good ones.
+- ⚠️ The probe restates `measure_dynamics`'s joining rule in page pixels (re-attribution moves a
+  letter into a staff whose cell it was never cut into) and **cross-checks itself against the
+  real function on every page**. That check earned its keep: the first version compared box
+  CENTRES where the exporter compares LEFT and TOP edges and disagreed on 4 of 11 scanned pages.
+  A second self-caught flaw: the dedupe keyed on distance could merge the two letters of one
+  `ff`, which a word COUNT cannot see — fixed by keying on the source cell, and a word-CONTENT
+  check added, which cut the engraved claim from 92/107 to a truthful 83/107.
+
+---
+
+## 2026-09-04 — the class space spells 32 glyphs twice, and consumers read one spelling
+
+Asked whether dynamics letters should be read the way clefs are. Looking for the dynamics
+consumers turned up a separate, live fault first: the 208-class vocabulary is **two annotation
+sets concatenated** — fine at ids 0-135 (`dynamicF`, `articStaccatoAbove`, `tupletBracket`),
+coarse at 136-207 (`dynamicLetterF`, `articulationStaccato`, `tupleBracket`). Forty classes
+carry the SAME name at both ids so a name lookup sees both; **thirty-two do not**, and every
+consumer in this pipeline was written against the fine spelling.
+
+- A detection at id 192 was a forte `export._DYNAMIC_LETTER` could not spell — the letter never
+  joined a word and the mark was dropped with no warning anywhere. The same fault as
+  `fingering3`/`tuplet3`. Confirmed **mechanically**, by asking each class-name consumer what it
+  returns for both spellings, not by reading: 6 dynamic letters, 5 articulations, `tuple`/
+  `tupleBracket`, `arpeggio`/`legerLine`.
+- ⚠️ **It cost nothing when found** — the coarse block fires **zero** times across 3 engraved
+  fixtures and 29 scanned pages of 9 publishers. What makes it live is the LABELING side: 26 of
+  the hollow campaign's hand-drawn boxes are classed `dynamicLetterF`/`P`/`S` and
+  `data/user-labeled/catalog.yaml` carries the coarse spelling at ids 190-195, so the next
+  fine-tune trains ids the exporter cannot read.
+- Renamed at the ONE place the model's own `names` are read (`yolo_detector._ensure_loaded`), so
+  every consumer downstream sees a single spelling and no call site knows.
+- ⚠️ **Only 11 EXACT TWINS are renamed, and the abstentions are asserted rather than merely
+  documented.** A coarser name is not a synonym: `numeral4` is NOT `timeSig4` (one numeral class
+  covers meters, tuplet digits, fingerings and measure numbers — and CLAUDE.md records five
+  spurious `timeSig4` on barline fragments shipping a 2/4 page as common time, 390 bar-check
+  failures against 164 for no meter at all); `articulationStaccato` states no SIDE, which
+  `_attach_articulations_in_cell` requires geometry to agree with; `tuple` no NUMBER; `clefC` no
+  LINE, and already resolves to alto by documented design with `resolve_clef` measuring the line
+  anyway. Those 21 sit in `COARSER_THAN_CANONICAL` with what closing each would take, and
+  `unaccounted()` fails the suite on any name in neither table — so a checkpoint with a wider
+  class space is a loud failure, not a silent drop.
+- One consumer spelling fix beside it: `noteheadFullSmall` (`full` is the coarse spelling of
+  `black`) reached `rhythm._NOTEHEAD_INTRINSIC` with a category and NO duration. Fixed as a
+  prefix, not a rename — it states no staff position and does not need one, since pitch comes
+  from the note's y against the grid.
+- **CONTROL**: re-transcribing the same scanned page across the change leaves every musical field
+  identical — same detections, classes, boxes, structure; the only differing leaves in the whole
+  JSON are the four wall-clock timings. Suite 2010 passed / 4 skipped.
+## 2026-09-05 — Choir-grouping cues SHIPPED default-ON; Bach re-admitted to the pool
+
+Sean's coupled call. `OMR_CHOIR_GROUPING` defaults ON
+(`system_grouping._choir_grouping_enabled`, opt-out 0/false/no/off): cue B
+(pair-local left-edge merge) + cue C (grouped-system open-score guard),
+diagnosed and priced on `claude/bach-choir-grouping` — Bach 6→2 systems
+[12,12], 122→11 cells vs true 10, row 0.9241→0.8152; byte-identical on the
+10 pooled scan rows, the 11-work engraved benchmark, and the boulanger
+canary; 969-page probe hand-adjudicated 10/10 changed pages toward truth, 0
+false merges. The Bach row's `pooled` flag flips back to true in the same
+event — a BENCHMARK BOUNDARY: the pool is 11 rows under the composed
+default config (tilt ON × choir ON) from the re-stamp onward, and no pooled
+figure crosses the boundary. The re-stamp run (one fresh default-config
+pass, all 11 rows, graft weights) stamps the new canonical figure; recorded
+in the addendum beside WIDENED_BASELINE_2026-09-04.md when it lands.
+
+## 2026-09-04 — Cell-grid localization SHIPPED default-ON (the tilt fix)
+
+Sean's call, same day the widened gate priced it: `OMR_CELL_LINE_TRACE` now
+defaults ON (`measure_extractor._cell_line_trace_enabled`, opt-out via
+`0/false/no/off`). Deployed default-config scan baseline moves to the
+flag-on arm's figures: **pooled 0.8345 / 28849 over the 10-row pool** (was
+0.8387 / 29082 flag-off; same graft weights — the flag is the only
+variable, and the harness is byte-deterministic). Engraved figures
+unchanged (no-op by construction, byte-identical A/B). Flag tests updated
+to pin the new default; the flag-OFF contract every labeled batch depends
+on (grid = `staff.line_ys - y0`) is still pinned via explicit `0`. Blast
+radius recorded in the knobs table (key-sig slot-fit interaction, net −15;
++2..+7 noise on three low-exposure rows). Evidence:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md`.
+
+## 2026-09-04 — The widened scan gate prices the tilt fix: −233 edits, on the exposure
+
+The measured-but-unshipped `OMR_CELL_LINE_TRACE` (cell-grid localization, the
+rigid comb) was A/B'd on the widened 11-row scan gate — the first tree holding
+both the gate and the flag (`claude/tilt-pricing-widened` = `0487be1f` merged
+with `claude/tilt-crosscheck`). The old benchmark's null was the corpus: the
+widened pool carries **8.6%** of cells past the parity-flip line (was 0.4%),
+and the flag is worth **pooled 0.8387 → 0.8345, −233 edits**, −217 of them on
+exactly the three tilted rows, zero-exposure row unchanged to the edit,
+engraved control byte-identical, exact-pitch recall +4.8pts on the most
+exposed edition. Verdict + tables:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md` —
+recommendation is default-ON with no domain gating; the flag stays OFF until
+Sean decides. The named ship prerequisite also landed (`be884ff8`):
+`recut_cells.frame_mismatch` compares the frame's own (unlocalized) grid,
+accepts either dialect a manifest can speak, and `_nostaff.png` — which IS
+grid-derived — is re-erased on the manifest's authority, all pinned by three
+tests on a page that provably localizes.
+
+---
+
+## 2026-09-04 — Scan gate: widened 5 → 11 rows; Bach excluded from the pool
+
+Six Sean-verified rows promoted (commit `84a5ccac`; drafting on branch
+`claude/scan-gate-rows`, stories in scan-e2e VERIFICATION.md), the first
+widened baselines measured for both checkpoints (merge `04eb8050`,
+WIDENED_BASELINE_2026-09-04.md — the ship decision HOLDS on the deeper
+gate), and then, at Sean's decision, the Bach stress row was excluded from
+the default pooled figure via a new `"pooled": false` row flag in works.json
++ scan_eval.py support (stress rows run and report per-row, never pool).
+Rationale: its OMR-NED measures page-structure parsing (122 detected
+measures vs 10) and whole-measure amplification there charges recognition
+improvements as regressions — the Boulanger call, repeated. **Canonical
+scan-gate baselines: prior-prod (hollow-ft) 0.8457 / 29081; production
+(hollow-graft-shift09) 0.8387 / 29082, over 10 pooled rows.** All pre-widening
+figures (0.7517 / 0.7493) are 5-row history; no comparison crosses either
+boundary. Validation: the pool-exclusion logic re-scored the committed
+widened-graft fixtures and reproduced the recorded 10-row figures.
+
+## 2026-09-04 — Design note: position grammar over the mark alphabet
+
+Sean's observation (ties/slurs, then accents/hairpins and tenuto/ledger
+lines) generalized into a written principle:
+[docs/position-grammar-confusables-2026-09-04.md](docs/position-grammar-confusables-2026-09-04.md).
+Engraved music reuses a tiny mark alphabet — dot, stroke, wedge, arc, bowl,
+digit — and identity is position grammar over the staff lattice, not shape;
+the detector proposes ink events with a class PRIOR, a downstream layer
+assigns or vetoes identity. Nine shipped precedents cited with their numbers;
+six design rules (class space stays 208 / families closed under
+confusability / veto-impossible-first / anchors before grammar /
+matches-nothing-is-an-output / never tune positionally on one edition); an
+inventory of the confusable families with measured discriminators; and the
+next six opportunities each tied to an existing measured hook. First
+consumer: the round-6 specialist/labeling campaign via family closures and
+adjudication-batch shape.
+
+## 2026-09-04 — Scan weights: the round-5 head-graft candidate SHIPPED
+
+**Why:** rounds 3–5 of the scan-weights campaign established that fine-tuning
+on the ~750-cell scan-label corpus deletes whole classes — tie/slur/beam/
+augmentationDot/accidentalFlat/restWhole/ledgerLine go to exactly zero — under
+every method tried (eleven arms: the ship's own recipe, no-warmup, low LR,
+freeze, plain controls, teacher rehearsal/distillation at two confidences).
+The fix that survived is surgery, not training: keep only the hollow
+fine-tune's seven notehead-class head rows (`model.22.cv3.{0,1,2}.2` is the
+only per-class place in a YOLOv8 head), graft them onto production, and bake a
+per-class confidence floor into those rows' biases (`--bias-shift 0.9` ≈
+raising only those classes' threshold 0.25 → 0.45, since the pipeline has one
+global threshold).
+
+**What:** `transcribe.DEFAULT_WEIGHTS` — the scan side of weight routing —
+now points at `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`
+(byte-identical to `omr-weights/round5-merged/d25e0_graftprod_shift0.9.pt`,
+sha256 `2cb6eb3e…3126`; copies in both `omr-weights/` and
+`tools/omr/training/data/weights/`). The engraved side (`ENGRAVED_WEIGHTS`)
+is untouched. First checkpoint in three rounds to beat the 09-03 production
+on every measure of all three gate axes: half-noteheads 27 → 31,
+pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782, dense notehead
+recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 with 4 of 5
+rows improving, 28 classes held with 0 collapsed; element counts move toward
+truth on ties (60 → 97 of 271) and rests (577 → 589 of 972). The ship was
+gated on a fresh determinism probe: the scan-e2e harness is byte-deterministic
+(identical outputs across runs, worktrees and days — noise floor exactly
+0.0000), so the delta is a real property of the weights. Sean approved the
+ship 2026-09-04.
+
+**Records:** `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`
+(lands with branch `claude/scan-weights-round4-continue-074940`) and
+`benchmarks/omr-scan-e2e-2026-09/DETERMINISM_2026-09-04.md` (branch
+`claude/scan-e2e-determinism`). The prior scan production
+(`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`) stays on disk under its own
+name — in-flight benchmark branches that pin "production" by explicit path
+are unaffected, and their recorded 0.7517 baseline still names that file. The
+web-app container picks the repoint up on its next
+`docker compose build backend`.
+
+---
+## 2026-09-04 — round 5: the fine-tune deletes CLASSES, and the fix is head surgery
+
+- **"Every fine-tune degrades the base" turned out to mean whole class families going to
+  exactly zero.** Not suppression and not a threshold artifact — every fine-tune's MEDIAN
+  CONFIDENCE IS HIGHER than production's (0.669-0.698 vs 0.604) while raw detections fall
+  3204 → 806-1365. tie 249→0, slur 184→0, beam 188→0, augmentationDot 150→0,
+  accidentalFlat 80→0, restWhole 396→0, ledgerLine 288→14, with noteheads holding at
+  80-100%. The corpus is the mechanism: 3871 human boxes contain **0 `beam` and 5
+  `ledgerLine`**, and only 164 of 591 cells ever saw a rich palette.
+- ⚠️ **`beam` and `ledgerLine` are CONSUMED by the pipeline**, against what the labeling
+  policy assumed. `rhythm.resolve_rhythms_for_cell` keeps a YOLO beam wherever no CV beam
+  overlaps (worth 0.1917 → 0.1861) and the ledger-ladder arbitration reads `ledgerLine`
+  detections directly (0.1506 → 0.1431). Both rules were dead on every round-3/4/5
+  candidate, silently, because neither has a test that fails when its input vanishes.
+  That is now gate axis 3.
+- ⚠️ **`restWhole` was nearly exempted from that gate on prose.** 396 over five pages
+  reads as absurd and the round-2 audit names it a slur-arc false-positive mode. Counted:
+  those pages carry **801 resting bars** and production reads 108/88/11/96/93 — under the
+  printed count on every page. The exemption is gone.
+- **ELEVEN METHOD ARMS, ALL DEAD.** The 896 ship's recipe on the new labels (the control
+  round 4 never ran), warmup off, warmup off + lr 1e-5, low LR, a frozen backbone, a
+  matched no-teacher control, and teacher rehearsal in both scopes at conf 0.50 and 0.25.
+  The pre-hollow BASE loses nothing, so it is caused by the fine-tune, not inherited.
+  **More labeling will not fix it** — round 4 tested that by hand (3%) and round 5 tested
+  the perfect version with 3417 teacher boxes (nothing).
+- **The fix is surgery.** A YOLOv8 head is per-class in exactly one place —
+  `model.22.cv3.{0,1,2}.2`, one weight row and one bias per class — so
+  `merge_class_head.py` restores the base's rows for classes the corpus does not teach,
+  and `--bias-shift` bakes a per-class confidence floor into the rows that stay. Seconds
+  on a Mac, no GPU.
+- **`d25e0_graftprod_shift0.9.pt` beats production on every measure of ALL THREE AXES** —
+  half-noteheads 27 → 31, pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782,
+  step 0.6463 → 0.6939, dense notehead recall 0.941 → 1.000, pooled scan-e2e OMR-NED
+  0.7517 → **0.7493**, class space 28 with 0 collapsed. First candidate in three rounds
+  to clear all three. **Not shipped — the live repoint is Sean's call.**
+- ⚠️ **Shift 1.5 has the best axis-2 number (0.7420) and is the worst checkpoint in the
+  table** — 17 half-noteheads against production's 27, exact recall below production's.
+  The floor went past the false positives into the true ones. Read alone, axis 2 would
+  have shipped it.
+- Rig faults worth not repeating: **v2/v3/v4 store cell images as SYMLINKS** (a `cp -R`
+  into a cloud tarball ships 101 of 136 dense cells as dangling links, skipped as
+  "corrupt image/label"); never overwrite a running bash script; the 208-class space has
+  **40 duplicated names**; 2× dense oversampling is now 43/57 hollow-MAJORITY and the
+  ship's 69/31 ratio needs **6×**.
+- GPU spend **$0.37**, box destroyed. Full account:
+  `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`; handoff
+  `docs/handoff-2026-09-04-round5-class-collapse.md`.
+---
+
 ## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
 
 Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —
@@ -222,6 +634,70 @@ could have come out wrong are now closed by construction.
   was registered against.
 - Protocol, including how to read the answer either way:
   `benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md`.
+
+## 2026-09-03 — Round 3: completing the training cells (540 → 1322 boxes)
+
+- **The next-iteration plan's diagnosis was a minority of the problem, and measuring first
+  caught it.** `NEXT_ITERATION.md` said the 30-epoch cloud regression came from rests and
+  accidentals left unboxed. Running the production detector over the 198 cells that emit a
+  YOLO label and bucketing every detection by whether ANY pass had covered its class:
+  **41.2% (377 of 916) sat in never-boxed classes** — dynamics 165, slurs 99, ties 26,
+  clefs 29 — against 73 for rests+accidentals. **Dynamics + slurs are 3.6× the named gap.**
+  Labeling only what the plan named would have spent the GPU and hit the same wall.
+- **Work split by which labeler is good at which family**, not one method for everything:
+  Sean hand-labeled rests, accidentals and clefs (the round-2 audit measured the model
+  FP-prone exactly there); an audited model completion did dynamics, slurs and ties
+  (spot-checked 8/8 real per class) and later a black-notehead top-up. **760 human boxes
+  over 493 cells**, audited crop-by-crop with **zero label errors found**.
+- **Closing measurement, same 280 cells and same detector as the opening one:
+  uncovered ink 68.1% → 35.9%.** It also named the next gap rather than just scoring —
+  41% of the residue was black noteheads, unevenly covered (80 boxed on Litolff, ONE across
+  25 cells of v7), which is the dominant class training as background. Topped up.
+- **v13–v21 supersede v7/v8 in `catalog-versions.txt`.** 209 cells / 540 boxes → **280 /
+  1322 (+145%)**. The old versions come OUT rather than sitting alongside: they label the
+  same images less completely, and training on both teaches that the symbols the incomplete
+  copy omits are background — the regression being fixed.
+
+### Three bugs, each caught by diffing rather than by a clean-looking run
+
+- ⚠️ **The converter silently dropped all 445 model boxes.** `verdicts_to_yolo_labels` reads
+  a schema-v2 detection as `model_predicted_class` + `model_bbox`; the merge wrote
+  `smufl_name` + `bbox`, the shape the completion CANDIDATES use. The file parsed, the cells
+  counted, 911 of 1157 boxes were emitted, and the retrained mix would have carried LESS
+  completion than v8 while the round looked like progress. Fixed; now verified per version
+  as merged == emitted.
+- ⚠️ **A config is not a coverage record.** Brahms 1 was left to the session holding it,
+  whose palette lists rests and accidentals. Its VERDICTS showed 55 cells stamped
+  `hollow noteheads` and **zero stamped for any completion pass** — so its 11 cells in v8
+  would have re-imported the exact background bug through the one batch nobody swept.
+  What a pass covered is in `inspected_passes`; a palette only says what someone COULD box.
+- ⚠️ **A guard that abstains silently is indistinguishable from a guard that passed.** A new
+  size guard read `cell.staff_line_ys`; the field is `staff_line_ys_canonical`. getattr
+  returned None, every cell registered as "no geometry", the guard abstained on all 169
+  candidates and let through the 394×170 slur arc it was written to catch. Nothing errored;
+  the only tell was `dropped_size: 0` where a small positive number belonged. The abstention
+  path now COUNTS instead of returning True.
+
+### Also
+
+- **Sweeping cells that cannot become training data.** A cell only trains if it carries a
+  box (`_is_filled` is false for an inspected-empty cell, which emits no label and is not
+  used as background either). Pooling only box-carrying cells cut the remaining sweep from
+  328 cells to 152 with identical signal.
+- ⚠️ **Scan degradation has TWO directions and a naive probe sees one.** Asked whether a
+  batch was a bad scan, ink density, fragmentation and staff-line continuity all said
+  mid-pack — they only detect decay by BREAKING. This corpus decays by BLOOMING, and **a
+  bloomed staff line is perfectly CONTINUOUS, so it scores WELL on continuity while being
+  unreadable.** Every batch here is bloomed (lines at 0.20–0.27 of a staff space against a
+  clean 0.08–0.12).
+- **The three works asked for cannot be benchmark rows.** Mahler 1, Elgar 1 and La mer have
+  edition PDFs and ZERO reference encodings. Of the 27 works pairing a PDF with truth, every
+  one is German-published except Holst/Goodwin & Tabb, Tchaikovsky 4/Jurgenson and
+  Tchaikovsky 4/Heugel — drafted in `works-draft-nongerman.json`, held out of `works.json`
+  because scan_eval refuses a pooled figure while any row is `first_pass`. ⚠️ **The training
+  set covers Universal, Novello and Durand and this benchmark cannot validate them.**
+
+---
 
 ## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
 

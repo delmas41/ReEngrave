@@ -37,6 +37,7 @@ from typing import Iterable
 import cv2
 import numpy as np
 
+from .class_aliases import canonicalize_names
 from .template_matcher import SymbolDetection
 from .types import MeasureCell
 
@@ -280,11 +281,19 @@ class YoloDetector:
         self._model = YOLO(self.weights_path)
         names = getattr(self._model, "names", None)
         if isinstance(names, dict):
-            self._class_names = {int(k): str(v) for k, v in names.items()}
+            raw = {int(k): str(v) for k, v in names.items()}
         elif isinstance(names, list):
-            self._class_names = {i: str(v) for i, v in enumerate(names)}
+            raw = {i: str(v) for i, v in enumerate(names)}
         else:
-            self._class_names = {}
+            raw = {}
+        # The 208-class space spells 32 glyphs under a second, coarser name that
+        # no consumer in this pipeline knows (`dynamicLetterF` for `dynamicF`),
+        # so a detection under one is read and under the other is dropped in
+        # silence. Renamed HERE, at the one place the model's own vocabulary is
+        # read, so every consumer downstream sees a single spelling and no call
+        # site has to know. See `class_aliases` for the table, what is
+        # deliberately NOT renamed, and why.
+        self._class_names = canonicalize_names(raw)
 
     # --------------- inference ---------------
 

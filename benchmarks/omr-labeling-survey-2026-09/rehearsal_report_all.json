@@ -1,0 +1,197 @@
+{
+ "teacher": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+ "conf": 0.5,
+ "iou_vs_human": 0.2,
+ "scope": "all",
+ "versions": [
+  "v1-2026-05-18-orchestral",
+  "v2-2026-06-08-beet5",
+  "v3-2026-06-09-mahler5",
+  "v4-2026-06-10-la-mer",
+  "v13-2026-09-03-complete-v7-beet5-bolero",
+  "v14-2026-09-03-complete-litolff",
+  "v15-2026-09-03-complete-peters",
+  "v16-2026-09-03-complete-eulenburg",
+  "v17-2026-09-03-complete-simrock",
+  "v18-2026-09-03-complete-breitkopf",
+  "v19-2026-09-03-complete-mahler1",
+  "v20-2026-09-03-complete-elgar1",
+  "v21-2026-09-03-complete-lamer",
+  "v22-2026-09-04-simrock-dense"
+ ],
+ "cells": 591,
+ "cells_without_pass_stamps_left_untouched": 0,
+ "human_boxes": 3871,
+ "teacher_boxes": 1423,
+ "teacher_by_class": {
+  "beam": 202,
+  "noteheadBlackOnLine": 161,
+  "noteheadBlackInSpace": 150,
+  "slur": 123,
+  "tie": 75,
+  "dynamicF": 64,
+  "clefG": 53,
+  "ledgerLine": 50,
+  "accidentalFlat": 44,
+  "dynamicP": 44,
+  "augmentationDot": 43,
+  "flag8thDown": 40,
+  "restWhole": 35,
+  "articStaccatoAbove": 31,
+  "flag8thUp": 30,
+  "arpeggiato": 24,
+  "restQuarter": 22,
+  "noteheadHalfInSpace": 22,
+  "accidentalNatural": 21,
+  "noteheadHalfOnLine": 19,
+  "articAccentAbove": 19,
+  "articStaccatoBelow": 18,
+  "noteheadWholeOnLine": 15,
+  "timeSig4": 14,
+  "rest8th": 12,
+  "dynamicM": 11,
+  "fermataAbove": 10,
+  "clefF": 8,
+  "accidentalDoubleSharp": 7,
+  "brace": 7,
+  "articAccentBelow": 6,
+  "ornamentTrill": 6,
+  "accidentalSharp": 6,
+  "noteheadWholeInSpace": 5,
+  "articTenutoAbove": 4,
+  "restHalf": 3,
+  "articTenutoBelow": 3,
+  "timeSig2": 3,
+  "rest16th": 2,
+  "timeSig1": 2,
+  "flag16thUp": 1,
+  "fingering1": 1,
+  "keyboardPedalUp": 1,
+  "fermataBelow": 1,
+  "clefCTenor": 1,
+  "dynamicS": 1,
+  "dynamicZ": 1,
+  "timeSig5": 1,
+  "timeSig7": 1
+ },
+ "silenced_because_a_pass_covered_the_class": {},
+ "dropped_because_over_a_human_box": {
+  "noteheadBlackOnLine": 581,
+  "noteheadBlackInSpace": 474,
+  "dynamicF": 158,
+  "dynamicP": 140,
+  "slur": 129,
+  "augmentationDot": 111,
+  "accidentalFlat": 110,
+  "noteheadHalfOnLine": 94,
+  "noteheadWholeOnLine": 91,
+  "restQuarter": 86,
+  "restWhole": 83,
+  "accidentalSharp": 79,
+  "rest8th": 73,
+  "noteheadHalfInSpace": 72,
+  "beam": 55,
+  "accidentalNatural": 50,
+  "clefG": 44,
+  "tie": 38,
+  "ledgerLine": 34,
+  "articStaccatoAbove": 30,
+  "keySharp": 21,
+  "noteheadWholeInSpace": 19,
+  "keyFlat": 15,
+  "articStaccatoBelow": 14,
+  "clefF": 11,
+  "accidentalDoubleSharp": 11,
+  "arpeggiato": 10,
+  "articAccentAbove": 10,
+  "clefCTenor": 10,
+  "restHalf": 8,
+  "dynamicM": 8,
+  "flag8thDown": 7,
+  "dynamicZ": 6,
+  "clefCAlto": 5,
+  "flag8thUp": 4,
+  "timeSig4": 3,
+  "rest16th": 3,
+  "articAccentBelow": 2,
+  "fermataAbove": 1,
+  "flag16thUp": 1,
+  "timeSig8": 1,
+  "ornamentTrill": 1,
+  "articStaccatissimoAbove": 1,
+  "dynamicS": 1,
+  "articTenutoBelow": 1
+ },
+ "per_version": {
+  "v1-2026-05-18-orchestral": {
+   "cells": 60,
+   "teacher_boxes": 145,
+   "cells_without_pass_stamps": 0
+  },
+  "v2-2026-06-08-beet5": {
+   "cells": 37,
+   "teacher_boxes": 72,
+   "cells_without_pass_stamps": 0
+  },
+  "v3-2026-06-09-mahler5": {
+   "cells": 35,
+   "teacher_boxes": 16,
+   "cells_without_pass_stamps": 0
+  },
+  "v4-2026-06-10-la-mer": {
+   "cells": 29,
+   "teacher_boxes": 21,
+   "cells_without_pass_stamps": 0
+  },
+  "v13-2026-09-03-complete-v7-beet5-bolero": {
+   "cells": 25,
+   "teacher_boxes": 20,
+   "cells_without_pass_stamps": 0
+  },
+  "v14-2026-09-03-complete-litolff": {
+   "cells": 54,
+   "teacher_boxes": 74,
+   "cells_without_pass_stamps": 0
+  },
+  "v15-2026-09-03-complete-peters": {
+   "cells": 54,
+   "teacher_boxes": 118,
+   "cells_without_pass_stamps": 0
+  },
+  "v16-2026-09-03-complete-eulenburg": {
+   "cells": 55,
+   "teacher_boxes": 105,
+   "cells_without_pass_stamps": 0
+  },
+  "v17-2026-09-03-complete-simrock": {
+   "cells": 13,
+   "teacher_boxes": 29,
+   "cells_without_pass_stamps": 0
+  },
+  "v18-2026-09-03-complete-breitkopf": {
+   "cells": 56,
+   "teacher_boxes": 168,
+   "cells_without_pass_stamps": 0
+  },
+  "v19-2026-09-03-complete-mahler1": {
+   "cells": 37,
+   "teacher_boxes": 61,
+   "cells_without_pass_stamps": 0
+  },
+  "v20-2026-09-03-complete-elgar1": {
+   "cells": 15,
+   "teacher_boxes": 20,
+   "cells_without_pass_stamps": 0
+  },
+  "v21-2026-09-03-complete-lamer": {
+   "cells": 11,
+   "teacher_boxes": 25,
+   "cells_without_pass_stamps": 0
+  },
+  "v22-2026-09-04-simrock-dense": {
+   "cells": 110,
+   "teacher_boxes": 549,
+   "cells_without_pass_stamps": 0
+  }
+ }
+}

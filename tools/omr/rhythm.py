@@ -55,6 +55,14 @@ _NOTEHEAD_INTRINSIC: dict[str, tuple[float, str]] = {
     "noteheadwhole": (4.0, "whole"),
     "noteheadhalf": (2.0, "half"),
     "noteheadblack": (1.0, "quarter"),
+    # `full` is the coarse vocabulary's spelling of `black` (`noteheadFullSmall`,
+    # class id 156). It reached here with category `notehead` and NO duration,
+    # because this table matched one spelling of the two the class space carries.
+    # A spelling, not a rename: `noteheadFullSmall` states no staff position, so
+    # calling it `noteheadBlackOnLineSmall` would assert a line it does not stand
+    # on — and it does not need one, since pitch comes from the note's y against
+    # the staff grid. See `class_aliases.COARSER_THAN_CANONICAL`.
+    "noteheadfull": (1.0, "quarter"),
     "noteheaddoublewhole": (8.0, "double_whole"),
 }
 

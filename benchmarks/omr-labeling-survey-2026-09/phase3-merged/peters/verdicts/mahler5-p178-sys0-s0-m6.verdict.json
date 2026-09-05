@@ -1,0 +1,31 @@
+{
+ "cell_id": "mahler5-p178-sys0-s0-m6",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 360,
+    "y": 638,
+    "w": 86,
+    "h": 303
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restHalf",
+   "human_category": "rest",
+   "bbox": {
+    "x": 520,
+    "y": 717,
+    "w": 161,
+    "h": 70
+   },
+   "notes": ""
+  }
+ ]
+}

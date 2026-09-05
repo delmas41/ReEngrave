@@ -1,0 +1,31 @@
+{
+ "cell_id": "lamer-p5-sys0-s2-m0",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.849,
+   "ink": 0.5184,
+   "bbox": {
+    "x": 606,
+    "y": 598,
+    "w": 76,
+    "h": 119
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7377,
+   "ink": 0.5131,
+   "bbox": {
+    "x": 609,
+    "y": 0,
+    "w": 110,
+    "h": 108
+   }
+  }
+ ]
+}

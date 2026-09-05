@@ -1,0 +1,68 @@
+{
+ "cell_id": "brahms1-p4-sys0-s9-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 380,
+    "y": 175,
+    "w": 406,
+    "h": 114
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 378,
+    "y": 650,
+    "w": 328,
+    "h": 129
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 1218,
+    "y": 252,
+    "w": 425,
+    "h": 71
+   },
+   "confidence": 0.78,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D3",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 375,
+    "y": 1120,
+    "w": 385,
+    "h": 80
+   },
+   "confidence": 0.635,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D4",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 1315,
+    "y": 1173,
+    "w": 328,
+    "h": 27
+   },
+   "confidence": 0.365,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

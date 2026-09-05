@@ -1,7 +1,7 @@
 {
   "cell_id": "mahler5-p175-sys0-s4-m4",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-02T20:55:39+00:00",
+  "labeled_at_utc": "2026-09-03T20:48:26+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -51,9 +51,22 @@
         "h": 100
       },
       "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 18,
+        "y": 433,
+        "w": 103,
+        "h": 289
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

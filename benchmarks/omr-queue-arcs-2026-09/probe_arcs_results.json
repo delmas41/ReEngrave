@@ -1,0 +1,29 @@
+{
+ "prod": {
+  "dets": 625,
+  "tp": 145,
+  "fp": 480,
+  "fn": 31,
+  "recall": 0.824,
+  "precision": 0.232,
+  "kind_acc": 0.717
+ },
+ "lr01": {
+  "dets": 4184,
+  "tp": 154,
+  "fp": 4030,
+  "fn": 22,
+  "recall": 0.875,
+  "precision": 0.037,
+  "kind_acc": 0.747
+ },
+ "lr001": {
+  "dets": 442,
+  "tp": 87,
+  "fp": 355,
+  "fn": 89,
+  "recall": 0.494,
+  "precision": 0.197,
+  "kind_acc": 0.759
+ }
+}

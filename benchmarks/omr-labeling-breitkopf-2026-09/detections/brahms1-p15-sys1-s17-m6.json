@@ -1,0 +1,122 @@
+{
+  "cell_id": "brahms1-p15-sys1-s17-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "accidentalNatural",
+      "category": "accidental",
+      "x": 141,
+      "y": 467,
+      "w": 46,
+      "h": 344,
+      "x_center": 164,
+      "y_center": 639,
+      "confidence": 0.5511103868484497,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 212,
+      "y": 588,
+      "w": 133,
+      "h": 111,
+      "x_center": 278,
+      "y_center": 643,
+      "confidence": 0.6776736378669739,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 219,
+      "y": 704,
+      "w": 131,
+      "h": 97,
+      "x_center": 284,
+      "y_center": 752,
+      "confidence": 0.6765314340591431,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "x": 908,
+      "y": 443,
+      "w": 109,
+      "h": 265,
+      "x_center": 962,
+      "y_center": 575,
+      "confidence": 0.791230320930481,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1043,
+      "y": 588,
+      "w": 134,
+      "h": 111,
+      "x_center": 1110,
+      "y_center": 643,
+      "confidence": 0.6905423998832703,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1046,
+      "y": 698,
+      "w": 130,
+      "h": 104,
+      "x_center": 1111,
+      "y_center": 750,
+      "confidence": 0.7576234936714172,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 1215,
+      "y": 715,
+      "w": 46,
+      "h": 43,
+      "x_center": 1238,
+      "y_center": 736,
+      "confidence": 0.7126272320747375,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 1215,
+      "y": 616,
+      "w": 46,
+      "h": 45,
+      "x_center": 1238,
+      "y_center": 638,
+      "confidence": 0.689786970615387,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "slur",
+      "category": "structural",
+      "x": 1147,
+      "y": 315,
+      "w": 726,
+      "h": 246,
+      "x_center": 1510,
+      "y_center": 438,
+      "confidence": 0.5927526950836182,
+      "pitch": null
+    }
+  ]
+}

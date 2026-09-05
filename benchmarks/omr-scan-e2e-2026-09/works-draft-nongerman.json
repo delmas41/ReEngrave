@@ -1,0 +1,126 @@
+{
+  "_README": [
+    "THREE DRAFTED ROWS extending the scan benchmark past its German-publisher",
+    "monoculture. Kept OUT of works.json on purpose: scan_eval REFUSES to report a",
+    "pooled figure while any scored row is `first_pass`, so merging an unverified",
+    "row would break the gate for every session, not just this one. Promote a row",
+    "into works.json only after its `check` list is confirmed against the print.",
+    "",
+    "WHY THESE WORKS AND NOT THE ONES ASKED FOR. The request was Universal/Mahler 1,",
+    "Novello/Elgar 1 and Durand/La mer. None can be a row: the library holds an",
+    "edition PDF for each and ZERO reference encodings, and this harness scores",
+    "against truth. Of the 27 works pairing a PDF with truth, every one is",
+    "German-published except three, and these are they.",
+    "",
+    "The Tchaikovsky pair is better than a third work would have been: Jurgenson and",
+    "Heugel print the SAME MUSIC, so a publisher effect is measured against a",
+    "control instead of confounded with repertoire.",
+    "",
+    "⚠️ The training set covers Universal, Novello and Durand; this benchmark cannot",
+    "validate those traditions directly. That gap is unavoidable given the library",
+    "and should be stated wherever the gate result is quoted.",
+    "",
+    "Each window was established by TWO independent witnesses, as the harness",
+    "requires — a barline count off the ink, and the reference's activity grid",
+    "compared to the printed page. They fail differently: the count cannot be fooled",
+    "by an encoding difference, the grid cannot be fooled by a column of ink.",
+    "What is NOT yet done is a human confirming the page starts where the row says."
+  ],
+  "rows": [
+    {
+      "row_id": "tchaikovsky-sym4-mvt1-heugel-p1",
+      "work_id": "tchaikovsky--symphony-4",
+      "label": "Tchaikovsky 4 / Heugel Paris 1961 / FRENCH engraving, movement opening",
+      "edition": {
+        "catalog_path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--heugel-1961--imslp42459.pdf",
+        "imslp_id": "42459",
+        "publisher_as_catalogued": "Heugel & Cie, Editeurs, Paris, 1961",
+        "raster": "3120x4380 DeviceGray @600ppi, page 374.4x525.6 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/tchaikovsky/symphony-4/tchaikovsky--symphony-4--mvt1--gradus.mxl",
+        "movement": "mvt1", "n_parts": 24, "n_measures": 424, "meter_at_start": "3/4"
+      },
+      "page": { "pdf_page_index": 0, "printed_page": 1, "n_systems": 1, "n_staves": 15 },
+      "window": {
+        "first_ref_measure": 1, "last_ref_measure": 5,
+        "leading_pickup": false, "print_to_reference_offset": 0,
+        "established_by": "movement opening — the page prints the title, 'I' and 'Andante sostenuto', so first_ref_measure is 1 by construction rather than by inference",
+        "verified_by": [
+          "barline count: probe_page_measures over 11 tacet-ish bands gives 5 measures on 8 of them, at a shared barline x-set. The 3 disagreements are explained and benign — band 2 adds two columns at x 558/643 (its own clef and key signature, header ink) and band 9 (Timpani) finds only one column.",
+          "activity grid: verify_window over measures 1-5 predicts sound in Bassoon 1-2 and Horn 1-4 only, with Trombone 3 entering for ONE note in m5 and everything else silent. The printed page matches on all 24 parts, including the discriminating detail — the '3 e Tuba' staff carries its only figure at the far right of the last bar, and the winds and all five string staves are empty across the page."
+        ],
+        "confidence": "first_pass",
+        "check": [
+          "confirm the page's first printed bar is the movement's bar 1 (no pickup)",
+          "confirm the page holds exactly 5 measures"
+        ]
+      }
+    },
+    {
+      "row_id": "tchaikovsky-sym4-mvt1-jurgenson-p3",
+      "work_id": "tchaikovsky--symphony-4",
+      "label": "Tchaikovsky 4 / P. Jurgenson Moscow / RUSSIAN engraving — same music as the Heugel row, publisher-controlled",
+      "edition": {
+        "catalog_path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+        "imslp_id": "377460",
+        "publisher_as_catalogued": "P. Jurgenson, Moscow, plate 3376",
+        "raster": "4480x6342 DeviceGray @600ppi, page 537.6x761.0 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/tchaikovsky/symphony-4/tchaikovsky--symphony-4--mvt1--gradus.mxl",
+        "movement": "mvt1", "n_parts": 24, "n_measures": 424, "meter_at_start": "3/4"
+      },
+      "page": { "pdf_page_index": 2, "printed_page": 3, "n_systems": 1, "n_staves": 16 },
+      "window": {
+        "first_ref_measure": 1, "last_ref_measure": 6,
+        "leading_pickup": false, "print_to_reference_offset": 0,
+        "established_by": "movement opening — the page prints 'СИМФОНІЯ № 4 / SYMPHONIE N° 4', 'I.' and 'Andante sostenuto'",
+        "verified_by": [
+          "barline count: read off the page's whole-measure rests — Flauto I prints 6 of them. ⚠️ probe_page_measures could NOT corroborate this row: its band finder returns 5 bands on a 16-staff page, so the automated count is unavailable here and the number is hand-read.",
+          "activity grid: verify_window over measures 1-6 predicts Bassoons and Horns sounding throughout, Trombone 3 alone for one note in m5, and Trombones 1-2 + Tuba ENTERING in m6. The printed page matches — both trombone staves are empty until the final bar and carry ff figures there, and the winds and strings are silent across the page. This is discriminating in both directions: at 5 measures the trombone entry would not appear, at 7 the flutes and oboes would."
+        ],
+        "confidence": "first_pass",
+        "check": [
+          "confirm the page's first printed bar is the movement's bar 1",
+          "confirm the page holds exactly 6 measures (Flauto I shows 6 whole-bar rests)",
+          "the band finder failed here — a human count is the ONLY ink-side witness"
+        ]
+      }
+    },
+    {
+      "row_id": "holst-planets-mvt1-1014401-p3",
+      "work_id": "holst--the-planets",
+      "label": "Holst, Mars / Goodwin & Tabb London 1921 / ENGLISH engraving, pocket score, 29 staves incl. one-line percussion",
+      "edition": {
+        "catalog_path": "editions/holst/the-planets-op32/holst--the-planets-op32--goodwin-tabb-1921--imslp1014401.pdf",
+        "imslp_id": "1014401",
+        "publisher_as_catalogued": "Goodwin & Tabb, London, 1921 (Hawkes Pocket Scores reissue, B.& H.15970)",
+        "raster": "3516x5157 1-channel @600ppi, page 421.9x618.8 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/holst/the-planets/holst--the-planets--mvt1--gradus.mxl",
+        "movement": "mvt1", "n_parts": 64, "n_measures": 185, "meter_at_start": "5/4"
+      },
+      "page": { "pdf_page_index": 2, "printed_page": 1, "n_systems": 1, "n_staves": 29 },
+      "window": {
+        "first_ref_measure": 1, "last_ref_measure": 5,
+        "leading_pickup": false, "print_to_reference_offset": 0,
+        "established_by": "movement opening — the page prints 'I. Mars, the Bringer of War' and 'Allegro'",
+        "verified_by": [
+          "barline count: probe_page_measures gives 5 measures on the majority of bands at an IDENTICAL barline x-set across them (664, 1273, 1772, 2268, 2765, 3272). The disagreements are at the ends only — a band that misses the final barline reads 4, and one that picks up the brace column at x 423 reads 6; no band disputes the shared interior positions.",
+          "activity grid: verify_window over measures 1-5 predicts the ostinato sounding continuously in Timpani 1, Tam-tam, both Harps and all five string groups, with Bassoons 1-2, Contrabassoon and Horns 5-6 entering at m3 and Bass Oboe at m5. The printed page matches, including the col legno strings and the two harp staves running throughout."
+        ],
+        "confidence": "first_pass",
+        "check": [
+          "confirm the page's first printed bar is the movement's bar 1",
+          "confirm the page holds exactly 5 measures",
+          "⚠️ 64 reference parts against 29 printed staves — heavy condensation (2 Piccolos share a staff, 3 Clarinets share a staff). Like the Mahler row, this needs `staves_as_printed` rather than a parts map, and FIVE of its staves are ONE-LINE percussion a five-line detector cannot find. Until that map is hand-built the row should report OMR-NED only."
+        ]
+      }
+    }
+  ]
+}

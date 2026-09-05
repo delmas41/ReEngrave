@@ -1,0 +1,35 @@
+
+mozart-sym41-mvt1.musicxml  ops 117  cost 301
+
+  cost by category
+    wrong note OMR-ED                               250
+    wrong other object OMR-ED                        38
+    wrong tie OMR-ED                                  8
+    wrong flag/beam OMR-ED                            3
+    wrong tuplet OMR-ED                               2
+
+  cost by op
+    notedel                     133  (39 ops)
+    noteins                     117  (27 ops)
+    extradel                     16  (16 ops)
+    extrains                     12  (12 ops)
+    extradurationedit            10  (10 ops)
+    tiedel                        8  (8 ops)
+    delbeam                       3  (3 ops)
+    instuplet                     2  (2 ops)
+
+  cost by part (top categories)
+    14 Viola                       86   wrong note=84  wrong flag/beam=1  wrong tie=1
+    -1 ?                           38   wrong other object=38
+    12 Violin                      30   wrong note=30
+    01 Oboe                        29   wrong note=29
+    02 Oboe                        29   wrong note=29
+    01 Oboe I                      24   wrong note=23  wrong tie=1
+    02 Oboe II                     24   wrong note=23  wrong tie=1
+    12 Violino I                   22   wrong note=20  wrong tuplet=2
+    13 Violino II                   5   wrong note=4  wrong flag/beam=1
+    13 Violin                       4   wrong note=4
+    05 Corno I in C                 3   wrong note=2  wrong flag/beam=1
+    00 Flauto                       2   wrong tie=2
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-move-m05/mozart-sym41-mvt1.json

@@ -1,0 +1,115 @@
+{
+ "cell_id": "dvorak9-p13-sys0-s12-m6",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 221,
+    "y": 788,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 218,
+    "y": 936,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1121,
+    "y": 788,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1138,
+    "y": 886,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 397,
+    "y": 815,
+    "w": 48,
+    "h": 47
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 410,
+    "y": 962,
+    "w": 48,
+    "h": 47
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1330,
+    "y": 815,
+    "w": 48,
+    "h": 47
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1337,
+    "y": 912,
+    "w": 48,
+    "h": 47
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 56,
+    "y": 847,
+    "w": 100,
+    "h": 278
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "cell_id": "dvorak9-p12-sys1-s16-m2",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "D0",
+   "verdict": "TP"
+  },
+  {
+   "id": "D1",
+   "verdict": "TP"
+  }
+ ],
+ "added_detections": [],
+ "notes": "human family boxes pre-confirmed by build_family_queue"
+}

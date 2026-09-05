@@ -1,0 +1,33 @@
+{
+ "cell_id": "schehe-p2-sys0-s0-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 448,
+    "y": 10,
+    "w": 43,
+    "h": 37
+   },
+   "confidence": 0.5528,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1115,
+    "y": 202,
+    "w": 37,
+    "h": 13
+   },
+   "notes": ""
+  }
+ ]
+}

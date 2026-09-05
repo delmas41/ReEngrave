@@ -1,0 +1,167 @@
+{
+  "cell_id": "dvorak9-p18-sys0-s18-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T05:55:39+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 665,
+        "y": 415,
+        "w": 78,
+        "h": 66
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1219,
+        "y": 415,
+        "w": 78,
+        "h": 66
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1407,
+        "y": 481,
+        "w": 78,
+        "h": 66
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1584,
+        "y": 514,
+        "w": 78,
+        "h": 66
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1737,
+        "y": 392,
+        "w": 65,
+        "h": 112
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 590,
+        "y": 392,
+        "w": 44,
+        "h": 178
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1324,
+        "y": 423,
+        "w": 66,
+        "h": 183
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1501,
+        "y": 456,
+        "w": 66,
+        "h": 183
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 538,
+        "y": 648,
+        "w": 154,
+        "h": 192
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 637,
+        "y": 648,
+        "w": 154,
+        "h": 192
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "clefG",
+      "human_category": "clef",
+      "bbox": {
+        "x": 135,
+        "y": 201,
+        "w": 188,
+        "h": 494
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 790,
+        "y": 402,
+        "w": 31,
+        "h": 31
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "articAccentAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 666,
+        "y": 335,
+        "w": 140,
+        "h": 58
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

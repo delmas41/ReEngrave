@@ -1,0 +1,1570 @@
+[
+ {
+  "reach": 0.0,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 1
+ },
+ {
+  "reach": 0.5,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 1
+ },
+ {
+  "reach": 1.0,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 1
+ },
+ {
+  "reach": 1.5,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 1
+ },
+ {
+  "reach": 2.0,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 0
+ },
+ {
+  "reach": 3.0,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 0
+ },
+ {
+  "reach": 5.0,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 0
+ },
+ {
+  "reach": 99.0,
+  "start": "before",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 1,
+  "exact": 0
+ },
+ {
+  "reach": 0.0,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 1,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 3
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 5,
+  "paired": 4,
+  "exact": 4
+ },
+ {
+  "reach": 0.5,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 1,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 3
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 5,
+  "paired": 4,
+  "exact": 4
+ },
+ {
+  "reach": 1.0,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 1,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 3
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 5,
+  "paired": 4,
+  "exact": 4
+ },
+ {
+  "reach": 1.5,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 1
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 1,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 3
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 5,
+  "paired": 4,
+  "exact": 4
+ },
+ {
+  "reach": 2.0,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 4,
+  "exact": 0
+ },
+ {
+  "reach": 3.0,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 4,
+  "exact": 0
+ },
+ {
+  "reach": 5.0,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 4,
+  "exact": 0
+ },
+ {
+  "reach": 99.0,
+  "start": "nearest",
+  "rows": [
+   {
+    "work": "beethoven-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "truth": 3,
+    "pred": 1,
+    "paired": 1,
+    "kind_ok": 1,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "beethoven-sym3-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "truth": 2,
+    "pred": 2,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "truth": 3,
+    "pred": 3,
+    "paired": 3,
+    "kind_ok": 3,
+    "exact": 0
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "truth": 0,
+    "pred": 0,
+    "paired": 0,
+    "kind_ok": 0,
+    "exact": 0
+   }
+  ],
+  "truth": 8,
+  "pred": 6,
+  "paired": 4,
+  "exact": 0
+ }
+]

@@ -36,7 +36,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+from collections import Counter
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -330,11 +332,84 @@ def _lily_slur_suffix(event: dict[str, Any]) -> str:
     return out
 
 
-def _lily_event(event: dict[str, Any]) -> str:
+#: LilyPond post-events for a hairpin. `\\!` closes either kind.
+_LILY_WEDGE = {"crescendo": "\\<", "diminuendo": "\\>"}
+
+
+def _lily_wedge_plan(lane: list[dict[str, Any]]) -> dict[int, str]:
+    """`id(event) -> post-event string` for the hairpins ONE LilyPond voice can
+    render.
+
+    LilyPond is stricter than MusicXML here in two ways, and both are enforced
+    by dropping rather than by approximating — an unterminated `\\<` is a
+    compile-time warning and a hairpin drawn to the wrong place.
+
+    1. **A hairpin lives inside one Voice context.** `annotate_wedges_in_slot`
+       already refuses to pair across the transcription's voices, but LilyPond's
+       lanes are not those: `_lone_voice_is_the_second` routes a measure's lone
+       voice to `\\voiceTwo` when its stems point down, PER MEASURE, so a wedge
+       spanning two measures can find its ends in different lanes. Such a wedge
+       is dropped, which is why this takes a lane and not a staff.
+
+    2. **One hairpin at a time.** LilyPond has no equivalent of the MusicXML
+       `number=` level; a second `\\<` before the first `\\!` is an error. Spans
+       are accepted greedily in start order and an overlapping one is dropped.
+       Touching is not overlapping: a note that ends one hairpin and begins the
+       next takes `\\!\\<`, which is ordinary LilyPond.
+
+    A wedge crossing a SYSTEM break is dropped by construction rather than by
+    rule — `to_lilypond` emits one `\\new Staff` per system, so the lane it is
+    given never spans one. That is the same limit `annotate_slurs_in_slot`
+    records for slurs.
+    """
+    opens: list[tuple[int, int, str]] = []          # (position, number, kind)
+    stops: list[tuple[int, int]] = []               # (position, number)
+    for i, event in enumerate(lane):
+        for number, kind in (event.get("wedge_states") or []):
+            if kind == "stop":
+                stops.append((i, number))
+            elif kind in _LILY_WEDGE:
+                opens.append((i, number, kind))
+
+    used: set[int] = set()
+    spans: list[tuple[int, int, str]] = []          # (start, stop, kind)
+    for start, number, kind in sorted(opens):
+        match = next((j for j, (pos, num) in enumerate(stops)
+                      if num == number and pos > start and j not in used), None)
+        if match is None:
+            continue
+        used.add(match)
+        spans.append((start, stops[match][0], kind))
+
+    out: dict[int, str] = {}
+    starts_at: dict[int, str] = {}
+    stops_at: set[int] = set()
+    last_end = -1
+    for start, stop, kind in sorted(spans):
+        if start < last_end:
+            continue
+        starts_at[start] = _LILY_WEDGE[kind]
+        stops_at.add(stop)
+        last_end = stop
+    for i, event in enumerate(lane):
+        # `\\!` before `\\<`: the note closes what arrived before it opens what
+        # leaves, the same ordering `_lily_slur_suffix` uses for `)` and `(`.
+        suffix = ("\\!" if i in stops_at else "") + starts_at.get(i, "")
+        if suffix:
+            out[id(event)] = suffix
+    return out
+
+
+def _lily_event(event: dict[str, Any],
+                wedges: dict[int, str] | None = None) -> str:
     """Render one chord/rest event in LilyPond syntax.
 
     Appends `~` to a chord whose `tied_to_next` flag is set — LilyPond
     parses `c4~ c4` as a single sustained half-note worth of c.
+
+    `wedges` is `_lily_wedge_plan`'s answer for the voice this event is being
+    rendered into; `None` means no hairpins, which is what every caller outside
+    `_lily_staff_block` wants.
     """
     lily_suffix, _, dots = _duration_to_lily_xml(
         event["duration_type"], event.get("dots", 0)
@@ -355,9 +430,13 @@ def _lily_event(event: dict[str, Any]) -> str:
     # as it does to a note, which is the case that matters on an orchestral
     # page — the mark usually sits over a whole-bar rest.
     fermata_suffix = "\\fermata" if event.get("fermata") else ""
+    # A hairpin is a dynamic mark, so it goes OUTSIDE the slur marks, last of
+    # the post-events — `c4-.(\\<`. A rest can carry one: LilyPond attaches
+    # `\\<` to a rest happily, and a hairpin over a rest is ordinary printing.
+    wedge_suffix = (wedges or {}).get(id(event), "")
 
     if event["kind"] == "rest":
-        return f"r{lily_suffix}{dot_str}{fermata_suffix}"
+        return f"r{lily_suffix}{dot_str}{fermata_suffix}{wedge_suffix}"
 
     # Chord
     pitches = []
@@ -378,13 +457,14 @@ def _lily_event(event: dict[str, Any]) -> str:
     if not pitches:
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
     if len(pitches) == 1:
-        return (f"{pitches[0]}{lily_suffix}{dot_str}"
-                f"{tie_suffix}{artic_suffix}{fermata_suffix}{slur_suffix}")
-    return (f"<{' '.join(pitches)}>{lily_suffix}{dot_str}"
-            f"{tie_suffix}{artic_suffix}{fermata_suffix}{slur_suffix}")
+        return (f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}"
+                f"{artic_suffix}{fermata_suffix}{slur_suffix}{wedge_suffix}")
+    return (f"<{' '.join(pitches)}>{lily_suffix}{dot_str}{tie_suffix}"
+            f"{artic_suffix}{fermata_suffix}{slur_suffix}{wedge_suffix}")
 
 
-def _lily_measure(events: list[dict[str, Any]]) -> str:
+def _lily_measure(events: list[dict[str, Any]],
+                  wedges: dict[int, str] | None = None) -> str:
     """One measure of events as LilyPond, with tuplet runs wrapped.
 
     `\\tuplet 3/2 { c8 c8 c8 }` — the notes keep their WRITTEN value (`8`),
@@ -398,11 +478,11 @@ def _lily_measure(events: list[dict[str, Any]]) -> str:
     while i < len(events):
         run = runs.get(i)
         if run is None:
-            out.append(_lily_event(events[i]))
+            out.append(_lily_event(events[i], wedges))
             i += 1
             continue
         last, ratio = run
-        inner = " ".join(_lily_event(ev) for ev in events[i:last + 1])
+        inner = " ".join(_lily_event(ev, wedges) for ev in events[i:last + 1])
         out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
         i = last + 1
     return " ".join(out)
@@ -476,8 +556,9 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
 
     # Slurs are paired over the whole staff, before any measure is rendered:
     # the arc that crosses a barline is cut in two by the cell boundary and
-    # only page coordinates can rejoin it.
+    # only page coordinates can rejoin it. A hairpin is cut the same way.
     annotate_slurs_in_staff(staff)
+    annotate_wedges_in_staff(staff)
 
     # Decide once for the whole staff whether to render as one-voice
     # or two-voice. Two-voice only if any measure has BOTH stem-up and
@@ -493,6 +574,27 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
         voices = split_events_into_voices(events)
         if len(voices) > 1:
             needs_two_voices = True
+
+    # Which LilyPond lane each measure's events are rendered into, decided ONCE
+    # so the hairpin planner can see the same lanes the renderer will use — a
+    # wedge whose two ends fall in different lanes cannot be written and has to
+    # be dropped, and only the lane assignment can say which those are.
+    lanes: list[tuple[list[dict[str, Any]], list[dict[str, Any]]]] = []
+    for events in per_measure_events:
+        if not needs_two_voices:
+            lanes.append((events, []))
+            continue
+        voices = split_events_into_voices(events)
+        one = voices[0] if voices else []
+        two = voices[1] if len(voices) >= 2 else []
+        if len(voices) == 1 and _lone_voice_is_the_second(voices[0]):
+            one, two = [], voices[0]
+        lanes.append((one, two))
+    wedges: dict[int, str] = {}
+    for lane_index in (0, 1):
+        wedges.update(_lily_wedge_plan(
+            [event for measure_lanes in lanes
+             for event in measure_lanes[lane_index]]))
 
     if needs_two_voices:
         # Two-voice block. The block spans the whole staff, so every measure
@@ -511,24 +613,19 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
         # voice 1, as before.
         v1_lines: list[str] = [f"{indent}    \\voiceOne"]
         v2_lines: list[str] = [f"{indent}    \\voiceTwo"]
-        for events, m_time in zip(per_measure_events, per_measure_time_sig):
-            voices = split_events_into_voices(events)
-            v1_events = voices[0] if voices else []
-            v2_events = voices[1] if len(voices) >= 2 else []
-            if len(voices) == 1 and _lone_voice_is_the_second(voices[0]):
-                v1_events, v2_events = [], voices[0]
+        for (v1_events, v2_events), m_time in zip(lanes, per_measure_time_sig):
             empty_rest = _lily_measure_rest(m_time)
             spacer = _lily_measure_spacer(m_time)
             # An entirely empty measure prints ONE whole-bar rest, so it goes
             # in voice 1 and voice 2 stays invisible — two stacked printed
             # rests were the same duplication in rest form.
             v1_lines.append(
-                f"{indent}    " + _lily_measure(v1_events) + " |"
+                f"{indent}    " + _lily_measure(v1_events, wedges) + " |"
                 if v1_events
                 else f"{indent}    {spacer if v2_events else empty_rest} |"
             )
             v2_lines.append(
-                f"{indent}    " + _lily_measure(v2_events)
+                f"{indent}    " + _lily_measure(v2_events, wedges)
                 + " |" if v2_events else f"{indent}    {spacer} |"
             )
         lines.append(f"{indent}  <<")
@@ -545,7 +642,7 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             if not events:
                 lines.append(f"{indent}  {_lily_measure_rest(m_time)} |")
                 continue
-            lines.append(f"{indent}  {_lily_measure(events)} |")
+            lines.append(f"{indent}  {_lily_measure(events, wedges)} |")
 
     lines.append(f"{indent}}}")
     return "\n".join(lines)
@@ -564,6 +661,7 @@ def to_lilypond(result: dict[str, Any]) -> str:
         `\\voiceTwo`). Otherwise single voice.
     """
     _ensure_inferred_time_signatures(result)
+    arbitrate_arcs_across_staves(result)
     lines: list[str] = []
     lines.append('\\version "2.20.0"')
     lines.append("")
@@ -951,6 +1049,98 @@ def annotate_fermatas(events: list[dict[str, Any]],
     return marked
 
 
+def _collapse_beam_stacks(raw: list) -> list:
+    """Merge boxes that describe ONE beamed group into their union.
+
+    Two readings of a group agree on most of their x-span: a sixteenth
+    group's primary and secondary strokes (a beam pitch apart in y), and a
+    divisi staff's two rows over the same double stops (Mozart 40's Viola:
+    the lower voice's stems-down beam at 1088-1304 and the upper's stems-up
+    beam at 1137-1352 are the SAME four notes, offset one head width). The
+    test is x-overlap >= 0.6 of the smaller box, deliberately with NO y
+    term: the group id is the box id, so any per-note choice between two
+    boxes over one group fractures it — a y-banded per-note preference
+    turned Mozart 40's chords into runs broken at every flip of which head
+    came first, and a narrowest-box rule cost Mozart 41 138 edits.
+
+    The caller must EXCLUDE suspect boxes (see `_suspect_beam_boxes`)
+    before collapsing: a spurious bar-wide box overlaps every real group
+    at 1.0 of the smaller and would union the whole bar.
+    """
+    boxes = [list(b) for b in raw]
+    merged = True
+    while merged:
+        merged = False
+        for a in range(len(boxes)):
+            for b in range(a + 1, len(boxes)):
+                ax, ay, aw, ah = boxes[a]
+                bx, by, bw, bh = boxes[b]
+                overlap = min(ax + aw, bx + bw) - max(ax, bx)
+                if overlap < 0.6 * min(aw, bw):
+                    continue
+                lo, hi = min(ax, bx), max(ax + aw, bx + bw)
+                top, bot = min(ay, by), max(ay + ah, by + bh)
+                boxes[a] = [lo, top, hi - lo, bot - top]
+                del boxes[b]
+                merged = True
+                break
+            if merged:
+                break
+    return sorted((tuple(b) for b in boxes), key=lambda b: b[0])
+
+
+def _suspect_beam_boxes(boxes: list) -> set[int]:
+    """Indices of boxes that x-contain >= 2 mutually disjoint other boxes.
+
+    Two real beams at one y level cannot overlap in x, so a box spanning two
+    disjoint groups' boxes is almost surely not a beam (Brahms 1's hairpin).
+    It is deprioritized, not dropped — a note nothing honest claims may still
+    take it.
+    """
+    out: set[int] = set()
+    for i, (ix, _iy, iw, _ih) in enumerate(boxes):
+        inside = [
+            (jx, jw) for j, (jx, _jy, jw, _jh) in enumerate(boxes)
+            if j != i and jx >= ix and jx + jw <= ix + iw]
+        inside.sort()
+        disjoint = 0
+        reach = None
+        for jx, jw in inside:
+            if reach is None or jx >= reach:
+                disjoint += 1
+                reach = jx + jw
+            else:
+                reach = max(reach, jx + jw)
+        if disjoint >= 2:
+            out.add(i)
+    return out
+
+
+def _pick_beam_box(c: tuple[float, float], boxes: list, suspect: set[int],
+                   nh_width: float) -> int | None:
+    """The box a notehead at centre `c` beams under, or None.
+
+    Candidates cover x exactly or within one notehead width. Honest boxes
+    beat suspects, an exact x-cover beats a padded one, then nearer in x and
+    x-order. Deliberately no y term — see `_collapse_beam_stacks` for why a
+    per-note y preference fractures groups.
+    """
+    x, _y = c
+    cands = []  # (bi, exact, xdist)
+    for bi, (bx, _by, bw, _bh) in enumerate(boxes):
+        exact = bx <= x <= bx + bw
+        padded = nh_width > 0 and bx - nh_width <= x <= bx + bw + nh_width
+        if not (exact or padded):
+            continue
+        xdist = 0.0 if exact else max(bx - x, x - (bx + bw))
+        cands.append((bi, exact, xdist))
+    if not cands:
+        return None
+    cands.sort(key=lambda cand: (
+        cand[0] in suspect, not cand[1], cand[2], boxes[cand[0]][0]))
+    return cands[0][0]
+
+
 def annotate_beams(events: list[dict[str, Any]],
                    detections: list[dict[str, Any]]) -> None:
     """Attach MusicXML beam states to each event, in place.
@@ -973,24 +1163,77 @@ def annotate_beams(events: list[dict[str, Any]],
 
     Must be called PER VOICE. Two voices interleave in x, so a run computed
     across both would be broken by the other voice's notes.
-    """
-    boxes = sorted(
-        (d["bbox_page"] for d in detections
-         if d.get("category") == "structural" and d.get("class") == "beam"
-         and len(d.get("bbox_page") or ()) == 4),
-        key=lambda b: b[0],
-    )
 
-    def centre(event: dict[str, Any]) -> float | None:
+    THE BOX IS PADDED BY A NOTEHEAD WIDTH, the correction `rhythm._beamed_groups`
+    already makes and for the same reason: the box bounds beam INK, and a beam
+    runs from stem to stem — with stems up the first notehead's centre sits a
+    head's width left of the ink, with stems down the last sits right of it.
+    Unpadded, that edge note fell out of its group: it exported as a flag and
+    the group's begin/end landed one note early, which was the single largest
+    `wrong flag/beam` mechanism on the 11-work benchmark (430 of 449 edits are
+    `editbeam`, and the top signature on every beam-heavy work is an edge note
+    at `partial` where the truth beams it). A 2-note group lost BOTH notes: the
+    orphan formed a synthetic run of one, and the survivor was alone under its
+    box — both "a lone note is flagged".
+
+    THREE MORE RULES ABOUT WHICH BOX A NOTE BELONGS TO, each paid for by a
+    measured failure (benchmarks/omr-beam-gap-2026-09/FINDINGS.md):
+
+    - SAME-STACK BOXES ARE COLLAPSED FIRST. A sixteenth group's primary and
+      secondary strokes arrive as two boxes over the same x-span at a beam
+      pitch apart in y. A per-note choice between them FRACTURES the group —
+      the group id is the box id, so two notes picking different strokes of
+      the same beam land in different groups even though the spans agree.
+      (A "narrowest covering box wins" rule did exactly that: Mozart 41 went
+      7 -> 145 beam edits.) Boxes with x-overlap >= 0.6 of the smaller within
+      3 notehead widths in y merge into their union.
+    - A BOX THAT CONTAINS TWO DISJOINT BOXES IS SUSPECT. Brahms 1, Contrabass
+      m4: a spurious 685px "beam" (a hairpin's ink) at the real beams' own y
+      spans the whole bar and, first-by-x, swallowed all six notes into one
+      run where the page prints two groups of three. Real beams at one y level
+      cannot overlap in x, so a box x-containing >= 2 mutually disjoint boxes
+      is tried only when no honest box claims the note.
+    - A DIVISI STAFF'S TWO BEAM ROWS ARE ONE GROUP, NOT A TIE TO BREAK.
+      Mozart 40's Viola prints double stops under two beams (lower voice's
+      stems-down box 1088-1304, upper's stems-up 1137-1352, 354px apart in
+      y) — the same four notes offset one head width, so the rows collapse
+      by x-overlap like a stack's strokes. A per-note y preference was
+      measured instead and REFUSED: chord events flip which head is first,
+      so notes of one run picked different rows and the run fractured
+      (Mozart 40 47 -> 54 while it was supposed to fall).
+    """
+    raw_boxes = [
+        d["bbox_page"] for d in detections
+        if d.get("category") == "structural" and d.get("class") == "beam"
+        and len(d.get("bbox_page") or ()) == 4]
+
+    def centre(event: dict[str, Any]) -> tuple[float, float] | None:
         heads = event.get("noteheads") or []
         if not heads:
             return None
         box = heads[0].get("bbox_page")
-        return (box[0] + box[2] / 2.0) if box and len(box) == 4 else None
+        if not box or len(box) != 4:
+            return None
+        return (box[0] + box[2] / 2.0, box[1] + box[3] / 2.0)
 
     def levels(event: dict[str, Any]) -> int:
         heads = event.get("noteheads") or []
         return int(heads[0].get("beam_levels") or 0) if heads else 0
+
+    # One notehead width, from the events' own heads — the same unit
+    # `rhythm._beamed_groups` pads with (a length in the cell's frame, never
+    # the detection's own noisy bbox height).
+    head_widths = sorted(
+        h["bbox_page"][2]
+        for e in events for h in (e.get("noteheads") or [])
+        if len(h.get("bbox_page") or ()) == 4)
+    nh_width = head_widths[len(head_widths) // 2] if head_widths else 0.0
+
+    suspect_raw = _suspect_beam_boxes(raw_boxes)
+    honest = [b for i, b in enumerate(raw_boxes) if i not in suspect_raw]
+    boxes = _collapse_beam_stacks(honest)
+    suspect = set(range(len(boxes), len(boxes) + len(suspect_raw)))
+    boxes = list(boxes) + [tuple(raw_boxes[i]) for i in sorted(suspect_raw)]
 
     # Group id per event: the beam box covering it, or a synthetic run for
     # events that carry a level but sit under no detected box.
@@ -1001,13 +1244,12 @@ def annotate_beams(events: list[dict[str, Any]],
         if event.get("kind") == "rest" or levels(event) < 1:
             prev_beamed = False
             continue
-        x = centre(event)
+        c = centre(event)
         hit = None
-        if x is not None:
-            for bi, (bx, _by, bw, _bh) in enumerate(boxes):
-                if bx <= x <= bx + bw:
-                    hit = ("box", bi)
-                    break
+        if c is not None:
+            bi = _pick_beam_box(c, boxes, suspect, nh_width)
+            if bi is not None:
+                hit = ("box", bi)
         if hit is None:
             if not prev_beamed:
                 synthetic += 1
@@ -1140,6 +1382,11 @@ def measure_directions(measure: dict[str, Any]) -> list[tuple[float, str, str]]:
     entry point for both so a caller asks "what marks does this measure carry"
     rather than assembling the answer itself — there is more than one place in
     this file that emits a measure, and they must not drift.
+
+    ⚠️ HAIRPINS ARE NOT HERE, and that is a design choice rather than a gap:
+    a wedge is a SPAN, so `annotate_wedges_in_staff` attaches it to the notes it
+    covers, the way slurs are done. See `KNOWN_GAPS["wedge"]` for what that
+    costs on a bar with no detected events.
     """
     return (measure_dynamics(measure.get("detections", []))
             + measure_direction_words(measure))
@@ -1169,6 +1416,164 @@ def _mxl_direction(item: tuple[str, str], indent: str) -> str:
             f"{indent}</direction>")
 
 
+def measure_has_fermata(detections: list[dict[str, Any]]) -> bool:
+    """Does this measure carry a fermata the whole-measure rest should wear?
+
+    THE SAME BRANCH AS `_mxl_empty_measure`, ONE LAYER DOWN. A fermata attaches
+    to an EVENT, and a measure with no detected events emits only a
+    whole-measure rest — which was built without one, so the mark was read and
+    dropped exactly as the directions were before that function existed.
+
+    ⚠️ `annotate_fermatas` already documents that a fermata on an orchestral
+    page is usually over a whole-bar rest rather than a note. That is precisely
+    the case this branch handles, so it is the likeliest fermata of all, not an
+    edge case. Found by `score_translation`: Beethoven 5 detects 36, its truth
+    has 36, and 35 reached the file — the missing one is P7 m5, whose staff
+    detects a `restWhole` that `group_chords_in_measure` does not turn into an
+    event, so the bar falls to this branch while its neighbours do not.
+    """
+    return any((d.get("class") or "").lower().startswith("fermata")
+               for d in detections)
+
+
+#: The two hairpin classes, and the `<wedge>` type each one opens with.
+_HAIRPIN_TYPES = {
+    "dynamicCrescendoHairpin": "crescendo",
+    "dynamicDiminuendoHairpin": "diminuendo",
+}
+
+
+def eventless_wedges(
+    detections: list[dict[str, Any]]
+) -> list[tuple[float, int, str]]:
+    """`(x, number, type)` for the hairpins of a measure with NO events.
+
+    ⚠️ A wedge is normally attached to the NOTES it covers —
+    `annotate_wedges_in_staff` writes `wedge_states` onto events, the way slurs
+    are done — and that is right, because a hairpin is a span OVER music. A bar
+    the detector found no events in has nothing to attach to, so the hairpin was
+    dropped.
+
+    ⚠️ AND IT FIRES NOWHERE IN THE CURRENT CORPUS, which is stated rather than
+    hidden. 8 of the 60 CV-read hairpins on the scan benchmark do not become
+    wedges, and all four of Dvorak 9 p5's sit in bars the pipeline reads as a
+    single `restWhole` — but this branch is not why, and the reason took two
+    wrong answers to find:
+
+      * "the staves are densely playing and the rest is a misdetection" — WRONG,
+        and it was asserted here from a crop taken at the RIGHT-HAND side of the
+        page, which shows the later bars where those staves do play. The trimmed
+        truth says Flauti and Oboi have **0 sounding notes in bars 1-5** and
+        play only in 6-8, and the pipeline's counts for the bars they do play
+        (4, 5, 9) sit against a truth of (5, 5, 6). The resting reading is
+        RIGHT.
+      * what is actually broken there is MEASURE SEGMENTATION: staff 0's measure
+        boxes overlap massively and the last runs to x=9055 on a 5084-wide page,
+        so which bar a hairpin falls in is not reliably answerable on that staff.
+
+    So the 8 are not evidence for anchoring a wedge to a rest — if those bars
+    genuinely rest, a hairpin filed there is MISATTRIBUTED, and anchoring it
+    would cement the error. That is the same conclusion the convention reaches
+    from the other side: a hairpin belongs to sounding music.
+
+    This stays because the hole is real — a bar with genuinely no events would
+    otherwise drop a hairpin the reader can see — and because
+    `_mxl_empty_measure` already carries dynamics and words for exactly that
+    case. It is guarded by unit tests rather than by the corpus.
+
+    With no events the span degenerates — there is nothing to span — so the
+    opening and the stop go at the hairpin's own x positions. That is the same
+    reasoning `_mxl_empty_measure` already uses for a direction: no event to
+    place it against, so its own position is the only defensible answer.
+
+    The `number` is the smallest not currently open, which is what MusicXML uses
+    it for; within one bar overlapping hairpins are rare but not impossible.
+    """
+    spans = []
+    for det in detections:
+        kind = _HAIRPIN_TYPES.get(det.get("class") or "")
+        box = det.get("bbox")
+        if kind and box and len(box) == 4 and box[2] > 0:
+            spans.append((float(box[0]), float(box[0]) + float(box[2]), kind))
+    if not spans:
+        return []
+    out: list[tuple[float, int, str]] = []
+    open_until: dict[int, float] = {}
+    for x0, x1, kind in sorted(spans):
+        for n in range(1, len(spans) + 2):
+            if open_until.get(n, -1.0) <= x0:
+                break
+        open_until[n] = x1
+        out.append((x0, n, kind))
+        out.append((x1, n, "stop"))
+    return sorted(out)
+
+
+def _mxl_empty_measure(time_sig: dict[str, Any] | None, divisions: int,
+                       directions: list[tuple[float, str, str]] | None,
+                       indent: str, fermata: bool = False,
+                       wedges: list[tuple[float, int, str]] | None = None) -> list[str]:
+    """A whole-measure rest, WITH whatever marks that measure carries.
+
+    ⚠️ **A BAR WITH NO NOTES STILL CARRIES ITS MARKS**, and this is the one
+    place in the exporter where that was not true. A measure the detector found
+    no events in takes the whole-measure-rest path, which appends the rest
+    directly and never calls `_mxl_voice_events` — the only thing that emits
+    `<direction>`. The dynamics and words were computed one line above the
+    branch and silently discarded, in BOTH export sites.
+
+    It had been dropping DYNAMICS since they shipped, a month before the
+    direction reader existed. **Engraved pages cannot show it**, which is why
+    sixteen benchmark rounds did not: they put an event in every bar and never
+    take the branch. It takes a scan, where a staff genuinely rests through a
+    bar that still carries a `sempre` — 2 measures across the five verified
+    rows of `benchmarks/omr-scan-e2e-2026-09`, and 0 across every engraved
+    work.
+
+    ⚠️ This fix is DESCRIBED by commit `a907e41` (and its duplicate `46e42a4`,
+    2026-09-02) and is NOT IN EITHER: both commits contain one file, a Surya
+    determinism probe. The message says "Both export sites had it" and "Both
+    are covered by tests now" and neither was true of the tree. The defect is
+    live on main, which is how this was found — by looking, because a hairpin
+    over a resting staff would have hit the same branch. **The tree outranks
+    the ledger.**
+
+    The marks go BEFORE the rest, so they land at offset 0 of the bar. There is
+    no event to place them against — that is what makes the bar empty — so
+    `_direction_slots`' nearest-note rule has nothing to say here, and the
+    start of the bar is the only defensible answer.
+    """
+    marks: list[tuple[float, str]] = [
+        (x, _mxl_direction((kind, text), indent))
+        for x, kind, text in (directions or [])
+    ]
+    marks += [(x, _mxl_wedge(number, kind, indent))
+              for x, number, kind in (wedges or [])]
+    lines = [xml for _x, xml in sorted(marks, key=lambda m: m[0])]
+    r_beats, r_type, r_dots = _mxl_measure_rest(time_sig)
+    lines.append(_mxl_note(
+        None, "", r_type, r_dots, r_beats, divisions,
+        is_chord=False, is_rest=True, indent=indent, voice=1,
+        fermata=fermata,
+    ))
+    return lines
+
+
+def _mxl_wedge(number: int, kind: str, indent: str) -> str:
+    """One `<wedge>`, wrapped in the `<direction>` MusicXML requires.
+
+    `spread` is deliberately NOT written. It is the printed WIDTH of the open
+    end in tenths, a fact about the engraving rather than about the music; the
+    truth files carry it because LilyPond emits it, and music21 does not read a
+    hairpin's identity from it.
+    """
+    return (f'{indent}<direction placement="below">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <wedge number="{number}" type="{kind}"/>\n'
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
+
+
 # A slur clipped by a cell boundary ends EXACTLY on it. Measured over the
 # Brahms fixture (`benchmarks/omr-ned-2026-08/SLURS_2026-09-01.md`): the facing
 # edges of a split pair sit 0.00-0.10 staff spaces from the boundary, and the
@@ -1190,19 +1595,567 @@ _MAX_SLUR_NUMBER = 6
 _SLUR_ARC_PAD_NOTEHEADS = 0.25
 
 
-def _staff_arcs_by_measure(
+# ---------------------------------------------------------------------------
+# Cross-staff ARC attribution — the arbitration noteheads already have
+# ---------------------------------------------------------------------------
+# A measure cell is cut with padding above and below so ledger notes are not
+# sliced off (`measure_extractor.PAD_*_STAFF_LINES`), and on a conductor's page
+# that padding reaches the neighbouring staff's ink. For NOTEHEADS the
+# duplicate is arbitrated by `transcribe._dedupe_cross_staff_detections`
+# (ledger ladder, then the instrument's written range, then distance). For ARCS
+# nothing arbitrated at all, so a slur printed over one staff's music could be
+# paired and exported on ANOTHER staff — and, worse, the arc need not be
+# detected twice for this to happen: where the gap between two staves is wide
+# the upper staff's cell reaches ink the lower staff's cell does not, so the
+# arc exists ONLY in the wrong staff and no duplicate-resolution rule can see
+# it.
+#
+# WORKED EXAMPLE, and it corrects the hypothesis this work started from. On
+# `brahms-sym1-mvt1` the Timpani exports 4 slurs and 1 tie against a truth of
+# ZERO. The beam-gap findings guessed these were "the staff BELOW's arcs";
+# rendering the page shows what they actually are — Violin 1 plays four ledger
+# lines above its staff there, so ITS slurs are drawn high in the 7.7-space gap
+# between Timpani and Violin 1, inside the Timpani's grown padding and above
+# the top of Violin 1's own cell.
+#
+# THE EVIDENCE IS THE ARC'S OWN JOB: an arc binds a run of noteheads and is
+# drawn just clear of them, on the side away from the stems. So the staff an
+# arc belongs to is the one whose NOTEHEADS IT HUGS — and that question can be
+# asked of a staff that never detected the arc, because the noteheads have
+# already been arbitrated across staves and each staff's head set is the one a
+# reader would see. Distance to the staff LINES is the trap it was for notes:
+# an engraver opens the gap above a staff precisely so the ledger notes and
+# their slurs can live there, which puts them nearer the staff above.
+#
+# Measured over the 11-work engraved benchmark, clearance in staff spaces from
+# an arc's box to the nearest notehead it covers in its own staff, counting
+# only arcs covering >= 2 heads (fewer never becomes a slur):
+#
+#     own clearance     part whose truth       part whose truth
+#     (staff spaces)    has NO arc at all      does have arcs
+#     [0.00, 0.25)              5                    165
+#     [0.25, 0.50)              0                     31
+#     [0.50, 0.75)              1                      8
+#     [0.75, 1.00)              1                      0
+#     [1.00, 1.50)              2                      1
+#     [1.50, 2.00)              0                      2
+#     [2.00, 3.00)              6                      0
+#     [3.00,  inf)              2                     30
+#
+# A real slur hugs its notes: 204 of 237 arcs on arc-bearing parts sit under
+# half a space. That tail is NOT clean enough to threshold on its own, so the
+# rule is COMPARATIVE — an arc leaves a staff only when another staff of the
+# same system explains it better — which is the same shape as the notehead
+# arbitration and cannot fire at all on a page with one staff.
+#: A rival staff must itself hug the arc this closely for the arc to move.
+#: On the Brahms Timpani every rival reading is 0.00-0.52 spaces; the value
+#: is a plateau, see FINDINGS.md.
+_ARC_RIVAL_NEAR_SPACES = 0.75
+#: ...and must beat the incumbent by this much. A PLATEAU, not a tuned value:
+#: swept over the eleven works, every margin from 0.25 to 0.75 reattributes the
+#: SAME arcs (8 on parts whose truth has none, 15 elsewhere), and the answer
+#: first moves at 0.90. 0.5 is the middle of that plateau.
+_ARC_RIVAL_MARGIN_SPACES = 0.5
+#: A rival staff must cover at least this many of its own noteheads with the
+#: arc, so a single stray head cannot claim one.
+_ARC_RIVAL_MIN_COVERED = 2
+
+
+def _arc_attribution_mode() -> str:
+    """`OMR_ARC_ATTRIBUTION` = `move` (default) / `drop` / `off`."""
+    mode = os.environ.get("OMR_ARC_ATTRIBUTION", "move").strip().lower()
+    return mode if mode in ("move", "drop", "off") else "move"
+
+
+def _arcs_in_measure(measure: dict[str, Any]) -> list[dict[str, Any]]:
+    return [d for d in measure.get("detections", [])
+            if d.get("category") == "structural"
+            and d.get("class") in ("slur", "tie")
+            and len(d.get("bbox_page") or ()) == 4]
+
+
+def _vertical_gap(a: list[int], b: list[int]) -> float:
+    """Vertical clearance between two page boxes in px; 0 where they overlap."""
+    a0, a1 = a[1], a[1] + a[3]
+    b0, b1 = b[1], b[1] + b[3]
+    if a1 < b0:
+        return b0 - a1
+    if b1 < a0:
+        return a0 - b1
+    return 0.0
+
+
+def _arc_clearance(
+    arc_box: list[int],
+    heads: list[dict[str, Any]],
+) -> tuple[float | None, int]:
+    """`(px clearance to the nearest covered notehead, n covered)`.
+
+    Coverage is the same padded x test `_noteheads_under` makes, for the same
+    reason: the arc is drawn BETWEEN its outer heads, so its ink stops inside
+    both centres and an unpadded test loses the note at each end.
+    """
+    if not heads:
+        return None, 0
+    pad = _SLUR_ARC_PAD_NOTEHEADS * (
+        sum(h["bbox_page"][2] for h in heads) / len(heads))
+    ax, _ay, aw, _ah = arc_box
+    covered = [h for h in heads
+               if ax - pad <= h["bbox_page"][0] + h["bbox_page"][2] / 2.0
+               <= ax + aw + pad]
+    if not covered:
+        return None, 0
+    return min(_vertical_gap(arc_box, h["bbox_page"]) for h in covered), len(covered)
+
+
+def _staff_noteheads(staff: dict[str, Any]) -> list[dict[str, Any]]:
+    heads: list[dict[str, Any]] = []
+    for measure in staff.get("measures", []):
+        heads.extend(_measure_noteheads(measure))
+    return heads
+
+
+def _measure_holding_x(
+    staff: dict[str, Any], x: float,
+) -> dict[str, Any] | None:
+    """The staff's measure whose cell contains this page x, else the nearest."""
+    best = None
+    for measure in staff.get("measures", []):
+        box = measure.get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        if box[0] <= x <= box[2]:
+            return measure
+        d = min(abs(box[0] - x), abs(box[2] - x))
+        if best is None or d < best[0]:
+            best = (d, measure)
+    return best[1] if best else None
+
+
+def arbitrate_arcs_across_staves(result: dict[str, Any]) -> int:
+    """Give every arc to the staff of its system whose noteheads it hugs.
+
+    Returns the number of arcs reattributed. Idempotent — the result is
+    stamped, so a second export of the same dict is a no-op, and re-running is
+    a fixed point anyway (a moved arc's new staff is the one that hugs it).
+    """
+    if _arc_attribution_mode() == "off" or result.get("_arc_attribution"):
+        return 0
+    moved = 0
+    for page in result.get("pages", []):
+        for system in page.get("systems", []):
+            moved += _arbitrate_arcs_in_system(system.get("staves") or [])
+    result["_arc_attribution"] = {"mode": _arc_attribution_mode(),
+                                  "n_reattributed": moved}
+    return moved
+
+
+def _arbitrate_arcs_in_system(staves: list[dict[str, Any]]) -> int:
+    if len(staves) < 2:
+        return 0
+    spacings: list[float | None] = []
+    heads: list[list[dict[str, Any]]] = []
+    for staff in staves:
+        geom = staff.get("staff_geometry") or {}
+        spacings.append(geom.get("line_spacing_px") or None)
+        heads.append(_staff_noteheads(staff))
+    mode = _arc_attribution_mode()
+    moved = 0
+    for s_idx, staff in enumerate(staves):
+        sp = spacings[s_idx]
+        if not sp:
+            continue
+        for measure in staff.get("measures", []):
+            for arc in list(_arcs_in_measure(measure)):
+                own_px, _own_n = _arc_clearance(arc["bbox_page"], heads[s_idx])
+                own = None if own_px is None else own_px / sp
+                best: tuple[float, int] | None = None
+                for o_idx in range(len(staves)):
+                    o_sp = spacings[o_idx]
+                    if o_idx == s_idx or not o_sp:
+                        continue
+                    gap_px, n = _arc_clearance(arc["bbox_page"], heads[o_idx])
+                    if gap_px is None or n < _ARC_RIVAL_MIN_COVERED:
+                        continue
+                    rival = gap_px / o_sp
+                    if best is None or rival < best[0]:
+                        best = (rival, o_idx)
+                if best is None or best[0] > _ARC_RIVAL_NEAR_SPACES:
+                    continue
+                # An arc covering nothing in this staff is claimed outright:
+                # it binds no note here, so there is nothing for it to be.
+                if own is not None and (own - best[0]) < _ARC_RIVAL_MARGIN_SPACES:
+                    continue
+                measure["detections"].remove(arc)
+                moved += 1
+                if mode != "move":
+                    continue
+                ax, _ay, aw, _ah = arc["bbox_page"]
+                target = _measure_holding_x(staves[best[1]], ax + aw / 2.0)
+                if target is None:
+                    continue
+                arc = dict(arc)
+                arc["arc_reattributed_from_staff"] = s_idx
+                target.setdefault("detections", []).append(arc)
+    return moved
+
+
+def _staff_boxes_by_measure(
     measures: list[dict[str, Any]],
+    wanted: Any,
 ) -> list[list[list[int]]]:
-    """Each measure's slur arcs, in page pixels, left to right."""
+    """Each measure's matching detection boxes, in page pixels, left to right.
+
+    `wanted(detection) -> bool` picks the family. One collector for slurs and
+    hairpins because the barline merge below it, and the numbering below that,
+    are shared. ⚠️ What is NOT shared is the step between them — which notes the
+    curve is about — because a slur is drawn OVER its notes and a hairpin
+    BETWEEN them. See `_wedge_anchors`.
+    """
     out = []
     for measure in measures:
         out.append(sorted(
             (d["bbox_page"] for d in measure.get("detections", [])
-             if d.get("category") == "structural" and d.get("class") == "slur"
-             and len(d.get("bbox_page") or ()) == 4),
+             if wanted(d) and len(d.get("bbox_page") or ()) == 4),
             key=lambda b: b[0],
         ))
     return out
+
+
+def _staff_arcs_by_measure(
+    measures: list[dict[str, Any]],
+    cls: str = "slur",
+) -> list[list[list[int]]]:
+    """Each measure's arcs of one class, in page pixels, left to right."""
+    return _staff_boxes_by_measure(
+        measures,
+        lambda d: (d.get("category") == "structural"
+                   and d.get("class") == cls),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Arc reclassification (OMR_ARC_RECLASS, default OFF) — tie vs slur is
+# POSITION, not shape
+# ---------------------------------------------------------------------------
+# A tie and a slur are the SAME GLYPH; what separates them is the notes they
+# connect (docs/position-grammar-confusables-2026-09-04.md §2 ARC). The
+# detector's class is therefore a prior, and two configurations refute it
+# outright:
+#
+#   * an arc classed `slur` whose ends land on exactly two ADJACENT
+#     SAME-PITCH noteheads is a tie — the duration-semantic reading, and the
+#     safer error where the print alone cannot decide (a two-note phrasing
+#     slur on a repeated pitch is undecidable; default to tie);
+#   * an arc classed `tie` that spans MORE than two note events, or whose two
+#     heads carry DIFFERENT pitches, cannot be a tie — a tie joins two
+#     adjacent notes of one pitch by definition.
+#
+# R3 shape (veto the impossible, reclass only when decisive, abstain
+# otherwise): everything not in those two configurations keeps the
+# detector's class. Off by default until priced on BOTH benchmark families.
+
+#: Every veto fired since the last `reset_arc_reclass_stats()`, by rule.
+#: A debug surface for benchmarks and tests, not part of the export result.
+ARC_RECLASS_STATS: Counter = Counter()
+
+
+def reset_arc_reclass_stats() -> None:
+    ARC_RECLASS_STATS.clear()
+
+
+def _arc_reclass_enabled() -> bool:
+    """`OMR_ARC_RECLASS=1` turns the veto on; anything else leaves it off."""
+    return os.environ.get("OMR_ARC_RECLASS", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _event_order_of_noteheads(
+    measures: list[dict[str, Any]],
+) -> dict[int, tuple[int, int]]:
+    """`id(notehead) -> (voice index, event ordinal)` over a whole staff run.
+
+    The ordinal counts EVERY event in the voice — rests included — in playing
+    order across the flattened measure sequence, so two heads are ADJACENT
+    exactly when nothing (note or rest) sounds between them in their voice:
+    ordinals one apart. A tie cannot cross a rest, which is why the rest has
+    to spend an ordinal. The one thing this cannot see is a measure the
+    detector left EMPTY between the two heads — no event, no ordinal — and a
+    same-pitch pair straddling one would read as adjacent; such a measure
+    exports as a whole rest, so the conversion there is wrong but rare, and
+    it is priced by the A/B rather than guarded against.
+
+    Same per-measure voice-index assumption as `_voice_of_notehead`, of which
+    this is the ordered variant.
+    """
+    order: dict[int, tuple[int, int]] = {}
+    counters: dict[int, int] = {}
+    for measure in measures:
+        events = group_chords_in_measure(measure.get("detections", []))
+        for v_idx, voice_events in enumerate(split_events_into_voices(events)):
+            for event in voice_events:
+                ordinal = counters.get(v_idx, 0)
+                counters[v_idx] = ordinal + 1
+                for head in event.get("noteheads") or []:
+                    order[id(head)] = (v_idx, ordinal)
+    return order
+
+
+def _pitch_step(pitch: str | None) -> str | None:
+    """`"F4"` for `"F#4"` — the staff POSITION, spelling stripped.
+
+    The tie→slur veto compares steps and never spelled pitches, measured
+    rather than assumed: on the engraved A/B every losing veto was a
+    same-step pair differing only in accidental — `F#4 -> F4`, `C#5 -> C5` —
+    which is the accidental-EXPIRY artifact, not a different note. The
+    canonical tie crosses a barline, the far head does not restate its
+    accidental (the tie carries it), and `pitch_resolver` spells that head
+    from the key signature alone. Vetoing on the spelling inherits that
+    limitation; the step is what the flanked position actually says. Same
+    key the pre-fill alignment moved to for the same reason (CLAUDE.md:
+    "the alignment key is STAFF POSITION, not pitch"). The winning vetoes
+    were all genuinely step-apart (`F#5 -> G5`, `B5 -> C6`) and survive.
+    """
+    if not pitch:
+        return None
+    octave = pitch.rstrip()
+    letter = octave[0]
+    digits = "".join(ch for ch in octave if ch.isdigit() or ch == "-")
+    return f"{letter}{digits}"
+
+
+def _tie_flank_pair(
+    arc_bp: list[int],
+    staff_heads: list[dict[str, Any]],
+) -> tuple[dict[str, Any], dict[str, Any]] | None:
+    """The (start, stop) noteheads this tie arc flanks, or None.
+
+    A MIRROR of `transcribe._pair_ties_in_staff`'s pairing relation, on the
+    same `bbox_page` data: start = the head whose x-centre sits at or left of
+    the arc's left edge, nearest, within 3 of its own widths; stop likewise on
+    the right; both within a y-tolerance of 3 average head heights. Mirrored
+    rather than imported because `transcribe` drags the whole detection stack
+    in with it, and pinned against the original by
+    `test_export.TestArcReclass.test_flank_pair_mirrors_transcribes_pairing`.
+
+    A tie arc FLANKS its heads — it spans the gap between them — which is why
+    slur coverage (`_noteheads_under`, centres inside the box) is the wrong
+    question for finding them.
+    """
+    if not staff_heads:
+        return None
+    tx0, ty0, tw, th = arc_bp
+    tie_left, tie_right = tx0, tx0 + tw
+    tie_yc = ty0 + th / 2.0
+    avg_h = sum(h["bbox_page"][3] for h in staff_heads) / len(staff_heads)
+    y_tol = max(avg_h * 3, 30)
+    best_left = best_right = None
+    best_left_dx = best_right_dx = float("inf")
+    for det in staff_heads:
+        bp = det["bbox_page"]
+        xc = bp[0] + bp[2] / 2.0
+        yc = bp[1] + bp[3] / 2.0
+        if abs(yc - tie_yc) > y_tol:
+            continue
+        dx_left = tie_left - xc
+        if 0 <= dx_left < bp[2] * 3 and dx_left < best_left_dx:
+            best_left, best_left_dx = det, dx_left
+        dx_right = xc - tie_right
+        if 0 <= dx_right < bp[2] * 3 and dx_right < best_right_dx:
+            best_right, best_right_dx = det, dx_right
+    if best_left is None or best_right is None or best_left is best_right:
+        return None
+    return best_left, best_right
+
+
+def _tie_arc_impossibility(
+    arc: list[int],
+    staff_heads: list[dict[str, Any]],
+    order: dict[int, tuple[int, int]],
+) -> tuple[str, tuple[dict[str, Any], dict[str, Any]] | None] | None:
+    """Why this tie arc cannot be a tie, or None to let it stand.
+
+    Returns `(reason, flanked_pair_or_None)`. Vetoing a PAIRED arc also
+    clears the tie flags its pairing set — recorded in `arc_reclass_removed`
+    so the next annotate pass can restore them — or the reclassed slur would
+    export beside a residual tie. Only the mirror pair's flags are touched: a
+    chained tie shares heads with its neighbours, and clearing any wider
+    would damage arcs this veto never looked at.
+    """
+    ax, _ay, aw, _ah = arc
+    under = [h for h in staff_heads
+             if ax <= h["bbox_page"][0] + h["bbox_page"][2] / 2.0 <= ax + aw]
+    pair = _tie_flank_pair(arc, staff_heads)
+    if pair is not None:
+        left, right = pair
+        reason = None
+        sl, sr = _pitch_step(left.get("pitch")), _pitch_step(right.get("pitch"))
+        if sl and sr and sl != sr:
+            reason = "tie_to_slur_flagged_diff_pitch"
+        else:
+            ol, orr = order.get(id(left)), order.get(id(right))
+            if ol and orr and ol[0] == orr[0]:
+                between = {order[id(h)][1] for h in under
+                           if id(h) in order and order[id(h)][0] == ol[0]}
+                between -= {ol[1], orr[1]}
+                if between:
+                    reason = "tie_to_slur_flagged_span"
+        if reason:
+            for det, key in ((left, "tied_to_next"), (right, "tied_from_prev")):
+                if det.get(key):
+                    det.pop(key, None)
+                    det.setdefault("arc_reclass_removed", []).append(key)
+            return reason, pair
+        return None
+    # The arc never paired, so no tie exports for it today; reclass only where
+    # its own span is decisively slur-shaped. A real tie spans a GAP and
+    # covers nothing.
+    by_voice: dict[int, set[int]] = {}
+    for h in under:
+        vo = order.get(id(h))
+        if vo is not None:
+            by_voice.setdefault(vo[0], set()).add(vo[1])
+    if any(len(events) > 2 for events in by_voice.values()):
+        return "tie_to_slur_unpaired_span", None
+    if len(under) == 2:
+        a, b = under
+        sa, sb = _pitch_step(a.get("pitch")), _pitch_step(b.get("pitch"))
+        va, vb = order.get(id(a)), order.get(id(b))
+        if (sa and sb and sa != sb and va is not None and vb is not None
+                and va[0] == vb[0] and va[1] != vb[1]):
+            return "tie_to_slur_unpaired_diff_pitch", None
+    return None
+
+
+def _slur_pieces_for_vetoed_tie(
+    arc: list[int],
+    pair: tuple[dict[str, Any], dict[str, Any]] | None,
+    m_idx: int,
+    measures: list[dict[str, Any]],
+    staff_of: list[int],
+) -> list[tuple[int, list[int]]]:
+    """The slur arc(s) a vetoed tie arc becomes, as (measure, bbox) pieces.
+
+    A tie arc FLANKS its two heads — it spans the gap between them — while
+    slur coverage (`_noteheads_under`) asks which head centres sit UNDER the
+    ink. Moved unchanged, a vetoed flanking arc covers nothing and the
+    promised slur silently degrades to a bare deletion. So a PAIRED arc is
+    widened to reach both flanked centres; and because coverage is read per
+    measure, a widened arc crossing a cell boundary is split AT that boundary
+    into the two fragments the engraver would have printed had it been a slur
+    — which the ordinary barline merge then rejoins. An UNPAIRED arc keeps
+    its own span: its covered run is already what the slur should bind.
+
+    Pieces are fresh lists, never the detection's own `bbox_page` — that is
+    the pipeline's output and must not be widened in place.
+    """
+    ax, ay, aw, ah = arc
+    if pair is None:
+        return [(m_idx, [ax, ay, aw, ah])]
+    centres = [h["bbox_page"][0] + h["bbox_page"][2] / 2.0 for h in pair]
+    wx0 = min(ax, min(centres))
+    wx1 = max(ax + aw, max(centres))
+    home = staff_of[m_idx]
+    pieces: list[tuple[int, list[int]]] = []
+    for j, measure in enumerate(measures):
+        if staff_of[j] != home:
+            continue
+        box = measure.get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        x0 = max(wx0, float(box[0]))
+        x1 = min(wx1, float(box[2]))
+        if x1 > x0:
+            pieces.append((j, [x0, ay, x1 - x0, ah]))
+    # A staff whose cells the span never intersects (no usable bbox_page_px)
+    # still gets the widened arc in its own measure, uncut.
+    return pieces or [(m_idx, [wx0, ay, wx1 - wx0, ah])]
+
+
+def _reclass_tie_arcs_in_run(
+    measures: list[dict[str, Any]],
+    staff_of: list[int],
+    per_measure_arcs: list[list[list[int]]],
+    order: dict[int, tuple[int, int]],
+) -> int:
+    """Move impossibly-configured tie arcs into the slur pool, in place.
+
+    A moved arc then rides the ordinary slur machinery — barline merging,
+    voice constraint, numbering — exactly as if the detector had classed it
+    `slur`. Flank pairing is bounded to each arc's OWN staff, the way
+    `_pair_ties_in_staff` is: page x overlaps between systems, and a head
+    from another system inside the dx window would alias.
+    """
+    tie_arcs = _staff_arcs_by_measure(measures, cls="tie")
+    if not any(tie_arcs):
+        return 0
+    heads_by_staff: dict[int, list[dict[str, Any]]] = {}
+    for m_idx, measure in enumerate(measures):
+        s = staff_of[m_idx]
+        for det in measure.get("detections", []):
+            bp = det.get("bbox_page")
+            if det.get("category") == "notehead" and bp and len(bp) == 4:
+                heads_by_staff.setdefault(s, []).append(det)
+    n = 0
+    dirty: set[int] = set()
+    for m_idx, arcs in enumerate(tie_arcs):
+        staff_heads = heads_by_staff.get(staff_of[m_idx], [])
+        for arc in arcs:
+            verdict = _tie_arc_impossibility(arc, staff_heads, order)
+            if verdict is None:
+                continue
+            reason, pair = verdict
+            ARC_RECLASS_STATS[reason] += 1
+            for j, piece in _slur_pieces_for_vetoed_tie(
+                    arc, pair, m_idx, measures, staff_of):
+                per_measure_arcs[j].append(piece)
+                dirty.add(j)
+            n += 1
+    for j in dirty:
+        per_measure_arcs[j].sort(key=lambda b: b[0])
+    return n
+
+
+def _slur_covers_a_tie(
+    covered: list[tuple[int, float, dict[str, Any]]],
+    order: dict[int, tuple[int, int]],
+) -> bool:
+    """Is this slur-classed arc the tie configuration — exactly two covered
+    heads, adjacent events of one voice, one pitch? Chords defend themselves:
+    a covered chord member brings its mates into `covered` (they share x), so
+    the count passes two and the answer is False."""
+    if len(covered) != 2:
+        return False
+    a, b = covered[0][2], covered[1][2]
+    if a is b:
+        return False
+    pa, pb = a.get("pitch"), b.get("pitch")
+    if not pa or pa != pb:
+        return False
+    oa, ob = order.get(id(a)), order.get(id(b))
+    return (oa is not None and ob is not None
+            and oa[0] == ob[0] and abs(oa[1] - ob[1]) == 1)
+
+
+def _convert_slur_to_tie(
+    covered: list[tuple[int, float, dict[str, Any]]],
+    order: dict[int, tuple[int, int]],
+) -> None:
+    """Mark the two covered heads as a tied pair, earlier event first.
+
+    Only flags actually ADDED are recorded in `arc_reclass_added`, so the
+    restore in `annotate_slurs_in_slot` can take the export back to what the
+    transcription said — a pair the transcription had already tied loses
+    nothing either way.
+    """
+    a, b = covered[0][2], covered[1][2]
+    if order[id(a)][1] > order[id(b)][1]:
+        a, b = b, a
+    for det, key in ((a, "tied_to_next"), (b, "tied_from_prev")):
+        if not det.get(key):
+            det[key] = True
+            det.setdefault("arc_reclass_added", []).append(key)
+    ARC_RECLASS_STATS["slur_to_tie"] += 1
 
 
 def _resumes_after_system_break(
@@ -1418,10 +2371,18 @@ def annotate_slurs_in_slot(staves: list[dict[str, Any]]) -> int:
     carries into events, the way it carries the tie flags.
     """
     # Idempotent: exporting a result twice must not stack two marks per note.
+    # The same sweep takes back whatever an earlier ARC-RECLASS pass changed —
+    # tie flags it added come off, tie flags it removed go back on — so a
+    # flag-off export after a flag-on one (or a re-export under either) starts
+    # from what the transcription itself said.
     for staff in staves:
         for measure in staff.get("measures", []):
             for det in measure.get("detections", []):
                 det.pop("slur_states", None)
+                for key in det.pop("arc_reclass_added", None) or ():
+                    det.pop(key, None)
+                for key in det.pop("arc_reclass_removed", None) or ():
+                    det[key] = True
     # Without a staff's own line spacing there is no unit to measure a boundary
     # in, and a rule in raw pixels would mean a different thing on every page.
     # Such a staff is skipped, and it also ENDS the chain — nothing is joined
@@ -1441,75 +2402,415 @@ def annotate_slurs_in_slot(staves: list[dict[str, Any]]) -> int:
     return sum(_pair_slurs_in_run(run) for run in runs)
 
 
-def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
-    """`annotate_slurs_in_slot` over staves that all carry five-line geometry."""
-    # Flatten the run into one measure sequence, remembering which measures
-    # OPEN a new system — those junctions are system breaks, not barlines.
+def _flatten_run(staves: list[dict[str, Any]]) -> tuple[
+        list[dict[str, Any]], list[float], list[float | None], frozenset[int]]:
+    """One measure sequence for a run of staves, with each measure's geometry.
+
+    Returns `(measures, spacings, tops, system_breaks)`. `system_breaks` holds
+    the indices of measures that OPEN a new system — those junctions are system
+    breaks and not barlines, and the two are recognised differently (see
+    `_resumes_after_system_break`).
+
+    The per-measure geometry is carried BESIDE the measures rather than stashed
+    on them: the result dict is the pipeline's output and export must not leave
+    private keys in it.
+    """
     measures: list[dict[str, Any]] = []
     spacings: list[float] = []
     tops: list[float | None] = []
+    staff_of: list[int] = []
     breaks: set[int] = set()
-    for staff in staves:
+    for s_idx, staff in enumerate(staves):
         geom = staff["staff_geometry"]
         lines = geom.get("line_ys_page")
         if measures:
             breaks.add(len(measures))
         for measure in staff["measures"]:
-            # Carried BESIDE the measures rather than stashed on them: the
-            # result dict is the pipeline's output and export must not leave
-            # private keys in it.
             measures.append(measure)
             spacings.append(float(geom["line_spacing_px"]))
             tops.append(float(min(lines)) if lines else None)
-    if not measures:
-        return 0
+            staff_of.append(s_idx)
+    return measures, spacings, tops, staff_of, frozenset(breaks)
 
-    per_measure_arcs = _staff_arcs_by_measure(measures)
-    if not any(per_measure_arcs):
-        return 0
 
-    voice_of = _voice_of_notehead(measures)
-    slurs = []
+def _paired_spans(
+    measures: list[dict[str, Any]],
+    per_measure_boxes: list[list[list[int]]],
+    spacings: list[float],
+    tops: list[float | None],
+    breaks: frozenset[int],
+    voice_of: dict[int, int],
+    reclass: bool = False,
+    order: dict[int, tuple[int, int]] | None = None,
+) -> list[tuple[tuple[int, float], tuple[int, float],
+                dict[str, Any], dict[str, Any]]]:
+    """`(start_key, stop_key, first_notehead, last_notehead)` per SLUR.
+
+    Split out of `_pair_slurs_in_run` when hairpins arrived, on the expectation
+    that the two would share it — a hairpin is also a curve over several notes,
+    cut into pieces by the same crop and rejoined in the same page pixels. They
+    share everything on either side of this and NOT this: `_noteheads_under`
+    asks which noteheads the ink COVERS, and a hairpin covers none of the notes
+    it applies to (0 of 4 measured). The wedge pass has `_wedge_anchors`
+    instead. Kept factored out because the two halves it does share — the
+    two-note minimum and the one-voice rule — are stated here once, and
+    `_wedge_anchors` cites them rather than restating them.
+    """
+    spans = []
     for segments in _merge_arcs_across_barlines(
-            measures, per_measure_arcs, spacings, tops, frozenset(breaks)):
+            measures, per_measure_boxes, spacings, tops, breaks):
         covered = _noteheads_under(measures, segments)
-        # A slur needs two notes to join. One or none leaves an unpaired
-        # <slur type="start">, which makes the file invalid rather than
-        # merely wrong.
+        # Two adjacent same-pitch heads and nothing else under the (merged)
+        # arc: the tie configuration, whatever the detector called it — the
+        # OMR_ARC_RECLASS slur->tie veto, applied before the span filters
+        # because the canonical tie crosses a barline and arrives here as two
+        # slur fragments (the merge above is what makes it one arc again).
+        if reclass and _slur_covers_a_tie(covered, order or {}):
+            _convert_slur_to_tie(covered, order or {})
+            continue
+        # A span needs two notes to join. One or none leaves an unpaired
+        # <slur type="start"> — or a hairpin that never stops — which makes the
+        # file invalid rather than merely wrong.
         if len(covered) < 2 or covered[0][2] is covered[-1][2]:
             continue
         # Both ends must belong to the same voice, for the same reason: the
-        # two halves of a slur split across voices are each unpaired. Prefer
-        # the longest run the arc covers WITHIN one voice over dropping it.
+        # two halves of a span split across voices are each unpaired. Prefer
+        # the longest run the curve covers WITHIN one voice over dropping it.
         voice = voice_of.get(id(covered[0][2]), 0)
         in_voice = [c for c in covered if voice_of.get(id(c[2]), 0) == voice]
         if len(in_voice) < 2 or in_voice[0][2] is in_voice[-1][2]:
             continue
         start_m, start_x, first = in_voice[0]
         stop_m, stop_x, last = in_voice[-1]
-        slurs.append(((start_m, start_x), (stop_m, stop_x), first, last))
+        spans.append(((start_m, start_x), (stop_m, stop_x), first, last))
+    return spans
 
-    # Numbers are reused as soon as a slur closes, so a staff of ordinary
-    # non-overlapping slurs is numbered 1, 1, 1 … and only genuine overlap
-    # spends a second number.
-    slurs.sort(key=lambda s: s[0])
-    open_slurs: dict[int, tuple[int, float]] = {}   # number -> where it stops
-    n_marked = 0
-    for start_key, stop_key, first, last in slurs:
-        # STRICTLY before: a slur that begins exactly where another ends takes
+
+def _number_spans(
+    spans: list[tuple],
+    max_number: int,
+) -> list[tuple[int, tuple]]:
+    """Allocate MusicXML `number=` levels, reusing one as soon as it closes.
+
+    A staff of ordinary non-overlapping spans is numbered 1, 1, 1 … and only
+    genuine overlap spends a second number. Spans past the level ceiling are
+    DROPPED rather than renumbered — six open at once is already pathological
+    and a seventh would have to reuse a live number, which is worse than
+    silence.
+
+    Shared by slurs and hairpins; each caller numbers its own kind, because a
+    `<slur number="1">` and a `<wedge number="1">` name different things and
+    cannot collide.
+    """
+    spans = sorted(spans, key=lambda s: s[0])
+    open_spans: dict[int, tuple[int, float]] = {}   # number -> where it stops
+    out: list[tuple[int, tuple]] = []
+    for span in spans:
+        start_key, stop_key = span[0], span[1]
+        # STRICTLY before: a span that begins exactly where another ends takes
         # a fresh number, so no note ever carries the same number twice and a
-        # stop-then-start on one note stays two readable slurs rather than an
+        # stop-then-start on one note stays two readable spans rather than an
         # ambiguous pair.
-        for number, open_stop in list(open_slurs.items()):
+        for number, open_stop in list(open_spans.items()):
             if open_stop < start_key:
-                del open_slurs[number]
-        number = next((n for n in range(1, _MAX_SLUR_NUMBER + 1)
-                       if n not in open_slurs), None)
+                del open_spans[number]
+        number = next((n for n in range(1, max_number + 1)
+                       if n not in open_spans), None)
         if number is None:
-            continue          # more than six slurs open at once: drop this one
+            continue
+        out.append((number, span))
+        open_spans[number] = stop_key
+    return out
+
+
+def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
+    """`annotate_slurs_in_slot` over staves that all carry five-line geometry."""
+    measures, spacings, tops, staff_of, breaks = _flatten_run(staves)
+    if not measures:
+        return 0
+
+    per_measure_arcs = _staff_arcs_by_measure(measures)
+    reclass = _arc_reclass_enabled()
+    order: dict[int, tuple[int, int]] = {}
+    if reclass:
+        order = _event_order_of_noteheads(measures)
+        # Tie arcs the grammar refutes join the slur pool BEFORE merging, so
+        # a reclassed arc gets the same barline treatment a slur-classed one
+        # would have had.
+        _reclass_tie_arcs_in_run(measures, staff_of, per_measure_arcs, order)
+    if not any(per_measure_arcs):
+        return 0
+
+    spans = _paired_spans(measures, per_measure_arcs, spacings, tops,
+                          breaks, _voice_of_notehead(measures),
+                          reclass=reclass, order=order)
+    n_marked = 0
+    for number, (_start, _stop, first, last) in _number_spans(
+            spans, _MAX_SLUR_NUMBER):
         first.setdefault("slur_states", []).append((number, "start"))
         last.setdefault("slur_states", []).append((number, "stop"))
-        open_slurs[number] = stop_key
+        n_marked += 1
+    return n_marked
+
+
+# A hairpin arrives under one class per direction. Nothing else in the
+# `dynamic` category is a span — the letter glyphs are points — so the two are
+# named rather than pattern-matched.
+_WEDGE_CLASSES = {
+    "dynamicCrescendoHairpin": "crescendo",
+    "dynamicDiminuendoHairpin": "diminuendo",
+}
+# MusicXML numbers simultaneous wedges 1-6, exactly as it does slurs. A
+# `<wedge number="1">` and a `<slur number="1">` name different things, so the
+# two families are numbered independently.
+_MAX_WEDGE_NUMBER = 6
+# How far past a hairpin's edge a notehead centre may sit and still count as
+# ON that edge, in notehead widths. Inherited from `_SLUR_ARC_PAD_NOTEHEADS`
+# and NOT independently measured — it softens a boundary rather than deciding
+# one, because the anchor rule below falls back to the nearest note on the
+# other side rather than abstaining. Sweep it when a corpus of read hairpins
+# exists; there are four in the fixture set today.
+_WEDGE_ANCHOR_PAD_NOTEHEADS = 0.25
+#: Which note a hairpin STARTS on, out of the two readings its left edge admits.
+#:
+#:   "nearest"  the note whose centre is nearest the edge, either side of it.
+#:   "before"   the last note at or before the edge.
+#:
+#: ⚠️ MEASURED, and "before" is the one that looks right and is not. A hairpin
+#: is drawn in the space AROUND its note rather than after it: on the
+#: Tchaikovsky 6 fixture the ink begins 26 px LEFT of the note it starts on and
+#: 105 px right of the previous one, so "before" reaches back past the answer
+#: every time. Scored against the truth's own spans over the 11-work benchmark
+#: (`benchmarks/omr-hairpins-2026-09/probe_stop_rule.py`): "before" pairs 1 of
+#: 8 truth hairpins and gets 1 exactly right; "nearest" pairs 4 and gets all 4
+#: exactly right, at every stop reach below the cliff.
+_WEDGE_START_RULE = "nearest"
+#: How far past a hairpin's right edge the note it is AIMING AT may stand, in
+#: notehead widths — see `_wedge_anchors` for what this decides.
+#:
+#: ⚠️ THIS IS THE MIDDLE OF A PLATEAU THAT NOTHING IN THE CORPUS EXERCISES, and
+#: that is a weaker claim than the constants around it. Every value from 0.0 to
+#: 1.5 scores identically (4 exact) and 2.0 breaks Mahler's — but it scores
+#: identically because the branch never FIRES: all five hairpins we export end
+#: under a note still sounding, so 0.0 would do as well. The other shape is
+#: real — the Mahler truth's own `m5 -> m6` crescendo ends on the next bar's
+#: downbeat — and it is unmeasurable here because that hairpin's detection
+#: landed on the empty staff below (see `_dedupe_cross_staff_detections`). So
+#: this is chosen to handle that shape when it arrives, inside a range known
+#: not to hurt, rather than read off a gap in a population.
+_WEDGE_STOP_REACH_NOTEHEADS = 1.0
+
+
+def _wedge_anchors(
+    measures: list[dict[str, Any]],
+    segments: list[tuple[int, list[int]]],
+    voice_of: dict[int, int],
+) -> tuple[tuple[int, float], tuple[int, float],
+           dict[str, Any], dict[str, Any]] | None:
+    """The notes one hairpin opens and closes on, or None if it has none.
+
+    ⚠️ **A SLUR IS DRAWN OVER ITS NOTES; A HAIRPIN IS DRAWN BETWEEN THEM.**
+    That is the one place these two spanners stop being the same problem, and
+    reusing `_noteheads_under` here — the obvious move, and the first one
+    tried — returns NOTHING on real hairpins. Measured on the engraved Mahler
+    5 fixture, the only page in the benchmark set whose hairpins the detector
+    reads: its Trumpet staff prints a diminuendo at page x 5922-6068 in a bar
+    whose only notehead spans 5817-5897. The hairpin does not overlap the note
+    it applies to by a single pixel, because the engraver drew it in the gap
+    the note leaves. Every one of the four detections behaves that way, and an
+    overlap test scores 0 of 4.
+
+    So the edges are read as POINTERS rather than as a cover: the start is the
+    last note at or before the left edge, the stop the first note at or after
+    the right edge. Where there is none on the wanted side — a hairpin drawn
+    entirely before its staff's first note — the nearest note on the other side
+    stands in, which is why the pad above softens a boundary rather than
+    deciding one.
+
+    The search is bounded to the measures the hairpin's own ink touches, PLUS
+    ONE either side. The `+1` is not slack: the truth's own crescendo on that
+    page runs `m5 -> m6`, ending on the next bar's downbeat, which is where
+    hairpins ordinarily end. Anything wider would let a staff that rests for
+    four bars donate an anchor from the far side of them.
+    """
+    first_m, last_m = segments[0][0], segments[-1][0]
+    left = segments[0][1][0]
+    right = segments[-1][1][0] + segments[-1][1][2]
+    lo, hi = max(0, first_m - 1), min(len(measures) - 1, last_m + 1)
+
+    candidates: list[tuple[int, float, dict[str, Any]]] = []
+    widths: list[float] = []
+    for m_idx in range(lo, hi + 1):
+        for det in _measure_noteheads(measures[m_idx]):
+            box = det["bbox_page"]
+            candidates.append((m_idx, box[0] + box[2] / 2.0, det))
+            widths.append(float(box[2]))
+    # ⚠️ ONE ANCHOR IS ENOUGH — Sean's rule, 2026-09-05. This required TWO
+    # candidate noteheads, which throws the hairpin away in exactly the case a
+    # scan produces most: the ink is read correctly, the bar it belongs to is
+    # found, and the detector recovered only one of the notes under it. The
+    # start is the anchor that matters — it says which measure and which voice
+    # the wedge opens in — and the stop already tolerates landing on the SAME
+    # note (see the equal-is-allowed note below), which is the shape a hairpin
+    # drawn under one long note has anyway. Requiring a second note asked the
+    # page for a fact the wedge does not need.
+    #
+    # Measured on the eleven scored scan pages: 116 -> 118 exported `<wedge>`
+    # of 198, entirely from Mahler 5 p2, which goes 4 -> 6 against a truth of
+    # exactly 6. The six pages that carry no hairpin stay at 0 — the abstention
+    # that makes the CV reader trustworthy is untouched. All ELEVEN engraved
+    # orchestral exports are byte-identical (sha1), so OMR-NED cannot move.
+    if not candidates:
+        return None
+    candidates.sort(key=lambda c: (c[0], c[1]))
+    pad = _WEDGE_ANCHOR_PAD_NOTEHEADS * (sum(widths) / len(widths))
+
+    if _WEDGE_START_RULE == "before":
+        before = [c for c in candidates if c[1] <= left + pad]
+        start = before[-1] if before else candidates[0]
+    else:
+        start = min(candidates, key=lambda c: (abs(c[1] - left), c[0], c[1]))
+    # Both ends in ONE voice, for the reason `_paired_spans` gives: MusicXML
+    # pairs a wedge within a `<voice>` stream, and LilyPond within a Voice
+    # context. The stop is chosen from the start's voice rather than the two
+    # being compared afterwards, so a staff with a second voice loses coverage
+    # rather than losing the hairpin.
+    voice = voice_of.get(id(start[2]), 0)
+    same_voice = [c for c in candidates if voice_of.get(id(c[2]), 0) == voice]
+    # ⚠️ THE RIGHT EDGE ADMITS TWO READINGS AND THE PAGE CANNOT BE ASKED WHICH.
+    # A hairpin can END ON a note — `... \\!` on the next attack, which is where
+    # a crescendo into a downbeat stops — or it can END UNDER one, drawn in the
+    # space a long note leaves, in which case the note it started on is also the
+    # note it stops on. Both shapes are in the Mahler 5 truth: two of its three
+    # hairpins span ONE note and the third runs `m5 -> m6`.
+    #
+    # What separates them is how close the next attack stands to the ink's end.
+    # A hairpin aiming at a note is drawn up to it; one decaying under a held
+    # note stops in open space. So the next note is taken as the stop only if it
+    # is within reach, and otherwise the hairpin closes on the note still
+    # sounding.
+    after = [c for c in same_voice if c[1] >= right - pad]
+    under = [c for c in same_voice if c[1] <= right + pad]
+    width = sum(widths) / len(widths)
+    aimed = (after[0] if after
+             and (after[0][1] - right) <= _WEDGE_STOP_REACH_NOTEHEADS * width
+             else None)
+    stop = aimed or (under[-1] if under
+                     else (after[0] if after else same_voice[-1]))
+    # EQUAL is allowed: a hairpin under one long note starts and stops on the
+    # same notehead, and MusicXML says so with a start, a note and a stop. Only
+    # a stop BEFORE its start is impossible.
+    if (start[0], start[1]) > (stop[0], stop[1]):
+        return None
+    return (start[0], start[1]), (stop[0], stop[1]), start[2], stop[2]
+
+
+def _staff_hairpins_by_measure(
+    measures: list[dict[str, Any]], kind: str,
+) -> list[list[list[int]]]:
+    """Each measure's hairpins OF ONE KIND, in page pixels, left to right.
+
+    Split by kind before the barline merge, so a crescendo whose ink ends on a
+    cell boundary can never be continued by the diminuendo that starts the next
+    bar at the same height. That pair is a hairpin turning around — the
+    commonest shape there is — and joining them would report one long
+    crescendo where the page prints `<` then `>`.
+    """
+    return _staff_boxes_by_measure(
+        measures,
+        lambda d: (d.get("category") == "dynamic"
+                   and _WEDGE_CLASSES.get(d.get("class") or "") == kind),
+    )
+
+
+def annotate_wedges_in_staff(staff: dict[str, Any]) -> int:
+    """Pair hairpins on ONE staff. See `annotate_wedges_in_slot`."""
+    return annotate_wedges_in_slot([staff])
+
+
+def annotate_wedges_in_slot(staves: list[dict[str, Any]]) -> int:
+    """Mark the noteheads a crescendo or diminuendo opens and closes, in place.
+
+    The NINTH export gap, and the same shape as the eight before it: the
+    detector fires `dynamicCrescendoHairpin` / `dynamicDiminuendoHairpin`
+    freely and nothing downstream ever mentioned either class, so `<wedge>` was
+    absent from every file the exporter has ever written. Unlike the first
+    eight, detection here is PARTIAL rather than complete — Mahler's truth has
+    6 hairpins and the detector finds 4 — so closing it cannot make the reading
+    complete, only present.
+
+    WHY THIS IS A STAFF PASS AND NOT A MEASURE ONE — the same reason as
+    `annotate_slurs_in_slot`, which see. Cells are cut per measure, so a
+    hairpin crossing a barline is detected as two boxes, and page pixels are
+    the only frame in which the halves can be rejoined.
+
+    WHY THE ANCHORS ARE NOTEHEADS RATHER THAN AN x POSITION. A `<wedge>` is a
+    `<direction>` and could be placed by x the way a dynamic letter is — but
+    music21 reads a wedge as a SPANNER: the `crescendo` element attaches to the
+    next note parsed and the `stop` to the last note parsed before it, and
+    musicdiff then scores the wedge by that pair's offset and duration. So what
+    the metric compares is WHICH NOTES the hairpin runs between, and anchoring
+    to notes answers exactly that question. It is also what LilyPond needs,
+    where `\\<` and `\\!` are post-events on notes. Which notes those are is
+    `_wedge_anchors`, and it is NOT the slur rule — see there.
+
+    Consequently a hairpin printed over a staff the detector found NO notes in
+    cannot be exported: it has nothing to attach to at either end. That is a
+    ceiling of the anchoring rather than a bug in it — a wedge start with no
+    note after it is silently dropped by music21 too.
+    """
+    # Idempotent, like the slur pass: exporting twice must not stack marks.
+    for staff in staves:
+        for measure in staff.get("measures", []):
+            for det in measure.get("detections", []):
+                det.pop("wedge_states", None)
+    runs: list[list[dict[str, Any]]] = []
+    current: list[dict[str, Any]] = []
+    for staff in staves:
+        geom = staff.get("staff_geometry") or {}
+        if staff.get("measures") and geom.get("line_spacing_px"):
+            current.append(staff)
+        elif current:
+            runs.append(current)
+            current = []
+    if current:
+        runs.append(current)
+    return sum(_pair_wedges_in_run(run) for run in runs)
+
+
+def _pair_wedges_in_run(staves: list[dict[str, Any]]) -> int:
+    """`annotate_wedges_in_slot` over staves that all carry five-line geometry."""
+    measures, spacings, tops, _staff_of, breaks = _flatten_run(staves)
+    if not measures:
+        return 0
+
+    per_kind = {kind: _staff_hairpins_by_measure(measures, kind)
+                for kind in sorted(set(_WEDGE_CLASSES.values()))}
+    if not any(any(boxes) for boxes in per_kind.values()):
+        return 0
+
+    voice_of = _voice_of_notehead(measures)
+    # The kind travels WITH the span rather than in a lookup keyed on its first
+    # notehead: a diminuendo and a crescendo can legitimately open on the same
+    # note, and a lookup would give one of them the other's direction.
+    spans: list[tuple] = []
+    for kind, boxes in per_kind.items():
+        if not any(boxes):
+            continue
+        for segments in _merge_arcs_across_barlines(
+                measures, boxes, spacings, tops, breaks):
+            anchors = _wedge_anchors(measures, segments, voice_of)
+            if anchors is not None:
+                spans.append(anchors + (kind,))
+
+    # Numbered across BOTH kinds together: a diminuendo that overlaps a
+    # crescendo is a second open wedge and needs its own level, whichever way
+    # round the two are drawn.
+    n_marked = 0
+    for number, (_start, _stop, first, last, kind) in _number_spans(
+            spans, _MAX_WEDGE_NUMBER):
+        first.setdefault("wedge_states", []).append((number, kind))
+        last.setdefault("wedge_states", []).append((number, "stop"))
         n_marked += 1
     return n_marked
 
@@ -1599,8 +2900,13 @@ def _direction_slots(
     text runs in.
 
     An index of `len(events)` means "after everything" — clause 1's answer, and
-    also where a mark in a measure with no events goes, so an empty bar does not
-    silently drop its own markings.
+    also where a mark goes when `events` is empty.
+
+    ⚠️ That last case is NOT how an empty bar is exported, and reading it that
+    way is what let the bug live: a measure with no events never reaches this
+    function at all, because it takes the whole-measure-rest path. See
+    `_mxl_empty_measure`, which is where an empty bar's marks are actually
+    written.
 
     ⚠️ **What this rule CANNOT fix, and do not try to make it.** Two of the
     three remaining misplaced words on the benchmark are not misplaced at all:
@@ -1662,6 +2968,13 @@ def _mxl_voice_events(
     for event_index, event in enumerate(events):
         for item in direction_at.get(event_index, ()):
             lines.append(_mxl_direction(item, indent))
+        # A hairpin OPENS before the note it covers and CLOSES after it, and
+        # that is not a stylistic choice: music21 attaches a `crescendo` to the
+        # next note it parses and a `stop` to the last note it parsed, so the
+        # element order IS the pair of notes the wedge spans.
+        for number, kind in (event.get("wedge_states") or []):
+            if kind != "stop":
+                lines.append(_mxl_wedge(number, kind, indent))
         _, xml_type, dots = _duration_to_lily_xml(
             event["duration_type"], event.get("dots", 0)
         )
@@ -1709,6 +3022,9 @@ def _mxl_voice_events(
             # Only the chord's first note advances the time cursor; chord
             # members past the first share its onset.
             total_dur += dur_units
+        for number, kind in (event.get("wedge_states") or []):
+            if kind == "stop":
+                lines.append(_mxl_wedge(number, kind, indent))
     # Anything with no note to attach to still belongs to this measure.
     for item in direction_at.get(len(events), ()):
         lines.append(_mxl_direction(item, indent))
@@ -1762,7 +3078,7 @@ def _staff_measures_xml(
     divisions: int,
     start_number: int,
     state: dict[str, Any],
-    pair_slurs: bool = True,
+    pair_spanners: bool = True,
 ) -> list[str]:
     """One staff's measures as `<measure>` blocks.
 
@@ -1777,12 +3093,14 @@ def _staff_measures_xml(
     # marks land on the notehead detections, which `group_chords_in_measure`
     # lifts onto events below the way it lifts the tie flags.
     #
-    # `pair_slurs=False` is for the STITCHED caller, which has the whole slot
+    # `pair_spanners=False` is for the STITCHED caller, which has the whole slot
     # and has already paired it. Re-pairing here would see one system at a time
     # and, because the pass clears before it marks, would erase exactly the
-    # cross-system slurs the slot pass just found.
-    if pair_slurs:
+    # cross-system slurs the slot pass just found. A hairpin is paired the same
+    # way and for the same reason, so the two travel together.
+    if pair_spanners:
         annotate_slurs_in_staff(staff)
+        annotate_wedges_in_staff(staff)
 
     clef = staff.get("clef")
     key_sig = staff.get("key_signature")
@@ -1834,11 +3152,10 @@ def _staff_measures_xml(
         _dyn = measure_directions(measure)
 
         if not events:
-            r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
-            inner.append(_mxl_note(
-                None, "", r_type, r_dots, r_beats, divisions,
-                is_chord=False, is_rest=True, indent="      ", voice=1,
-            ))
+            inner.extend(_mxl_empty_measure(
+                m_time, divisions, _dyn, "      ",
+                fermata=measure_has_fermata(measure.get("detections", [])),
+                wedges=eventless_wedges(measure.get("detections", []))))
         elif len(voices) == 1:
             v1_lines, _ = _mxl_voice_events(
                 voices[0], voice=1, divisions=divisions, indent="      ",
@@ -1923,6 +3240,150 @@ def _stitch_slots(result: dict[str, Any]) -> list[list[dict[str, Any]]] | None:
     return slots
 
 
+def _slot_stitch_enabled() -> bool:
+    """`OMR_SLOT_STITCH` — join by contextual SLOT where the ordinal join refuses.
+
+    DEFAULT OFF, and measured rather than assumed. See
+    `benchmarks/omr-staff-structure-2026-09/FINDINGS.md`: the join it produces
+    is structurally CORRECT — on Brahms 1 p.2 it recovers 14 continuous parts
+    from the 27 per-system fragments the refusal falls back to, and the slot it
+    leaves short is exactly the Trompeten staff the second system suppresses —
+    and it still costs more OMR-NED than the fragments do, because musicdiff
+    charges an unpaired truth PART more than it charges that part's unpaired
+    MEASURES. The flag exists so the finding is reproducible, not because the
+    default is in doubt.
+    """
+    return os.environ.get("OMR_SLOT_STITCH", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _condensed_parts_enabled() -> bool:
+    """`OMR_CONDENSED_PARTS` — emit one part per PLAYER on a condensed staff.
+
+    DEFAULT OFF. A conductor's page prints `Flauti` on one staff and the
+    reference encoding may hold two parts behind it; where a staff carries a
+    `condensed_parts` count above 1, this emits that many MusicXML parts from
+    the one staff instead of one.
+
+    ⚠️ Whether the reference splits a condensed staff is a property of the
+    ENCODING, not of the engraving — measured in
+    `benchmarks/omr-condensed-parts-2026-09/FINDINGS.md`, where the identical
+    printed label `Flauti` is two reference parts in Beethoven 5 and ONE in
+    Dvořák 9. So the count is never inferred from the label alone here; a staff
+    with no `condensed_parts` field is emitted exactly as before, which is what
+    keeps a page with no evidence byte-identical.
+    """
+    return os.environ.get("OMR_CONDENSED_PARTS", "0").strip().lower() in (
+        "1", "true", "yes", "on", "all")
+
+
+def _condensed_on_fragments() -> bool:
+    """`OMR_CONDENSED_PARTS=all` — split FRAGMENTS too.
+
+    ⚠️ DEFAULT NO, and measured. A fragment is what the per-system path emits
+    when a page holds several systems and the ordinal join REFUSED: the part is
+    already one `<part>` per (system, staff), and splitting each fragment
+    MULTIPLIES the fragmentation rather than repairing it. Measured on Brahms 1
+    p.2, the corpus's only such page: 27 fragments become 41 against a truth of
+    21, and the row costs **+904 edits** where every other row gains.
+
+    Splitting is a claim that a part is CONTINUOUS, so it is only made where
+    the exporter has established that — either because stitching succeeded, or
+    because the page holds one system and the question does not arise.
+
+    ⚠️ A single-system page also takes the per-system path (`_stitch_slots`
+    returns None for one system on purpose), so "per-system path" and
+    "fragmented" are NOT the same thing. Gating on the path instead of on the
+    fragmentation silently withheld the split from seven of the eleven scan
+    rows, including every row it gains most on.
+    """
+    return os.environ.get("OMR_CONDENSED_PARTS", "0").strip().lower() == "all"
+
+
+def _condensed_count(staves: list[dict[str, Any]]) -> int:
+    """How many parts this slot's staff carries. 1 unless something said so.
+
+    Reads the staff dicts rather than a label, so the decision is made upstream
+    and this stays a serializer. Abstains (returns 1) on any disagreement
+    between the systems of one slot — a slot whose systems disagree about how
+    many players it holds is not evidence, it is a contradiction.
+    """
+    if not _condensed_parts_enabled():
+        return 1
+    counts = {int(s.get("condensed_parts") or 1) for s in staves}
+    if len(counts) != 1:
+        return 1
+    n = counts.pop()
+    return n if n >= 1 else 1
+
+
+def _stitch_slots_by_slot(
+    result: dict[str, Any],
+) -> tuple[list[list[dict[str, Any]]], list[list[int]]] | None:
+    """The ordinal join's fallback, using the part identity contextual already has.
+
+    `_stitch_slots` joins the n-th staff of one system to the n-th of the next
+    and REFUSES the moment two systems disagree about how many staves they
+    have, because position-grafting a tacet-suppressed page would put one
+    instrument's music onto another. That refusal is correct and stays. What it
+    falls back TO is the problem: one part per (system, staff), each pairing
+    with nothing in the truth.
+
+    The contextual pass has already answered the question the ordinal join
+    cannot — `slots.assign_slots` aligns each system against a reference layout
+    with deletions allowed, so a suppressed staff shows up as a MISSING slot
+    rather than as a shift. Where every staff carries such a slot, joining on it
+    is the same join `_stitch_slots` makes, with the tacet case expressed.
+
+    Returns `(slots, slot_systems)`; `slot_systems[i][j]` is the system index of
+    `slots[i][j]`, because a slot need not appear in every system and the
+    measure numbering is per system.
+
+    Abstains — returns None — unless the evidence is complete and consistent:
+    every staff of every system carries a slot, no system repeats a slot, and
+    the join actually differs from what the ordinal path would do. An abstention
+    leaves the exporter byte-identical to today.
+    """
+    systems = [
+        system
+        for page in result.get("pages", [])
+        for system in page.get("systems", [])
+        if system.get("staves")
+    ]
+    if len(systems) < 2:
+        return None
+    per_system: list[list[int]] = []
+    for system in systems:
+        row = [staff.get("slot_index", -1) for staff in system["staves"]]
+        # A single unassigned staff is enough to abstain. Placing the staves
+        # that DID resolve and dropping the rest would silently lose music,
+        # which is worse than the fragments this is trying to replace.
+        if any(v is None or v < 0 for v in row):
+            return None
+        if len(set(row)) != len(row):
+            return None
+        per_system.append(row)
+    if any(_is_fragmented_row(system["staves"]) for system in systems):
+        return None
+    order = sorted({v for row in per_system for v in row})
+    slots: list[list[dict[str, Any]]] = [[] for _ in order]
+    slot_systems: list[list[int]] = [[] for _ in order]
+    at = {slot: i for i, slot in enumerate(order)}
+    for sys_idx, (system, row) in enumerate(zip(systems, per_system)):
+        for staff, slot in zip(system["staves"], row):
+            slots[at[slot]].append(staff)
+            slot_systems[at[slot]].append(sys_idx)
+    return slots, slot_systems
+
+
+def _is_fragmented(result: dict[str, Any]) -> bool:
+    """Several systems that did NOT stitch into continuous parts."""
+    systems = [s for page in result.get("pages", [])
+               for s in page.get("systems", []) if s.get("staves")]
+    return len(systems) > 1 and _stitch_slots(result) is None
+
+
+
 def to_musicxml(result: dict[str, Any]) -> str:
     """Serialize a transcribe.py result to a MusicXML score-partwise XML
     string. One <part> per (page, system, position-within-system) staff.
@@ -1938,6 +3399,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
     does with `\\voiceOne` / `\\voiceTwo`.
     """
     _ensure_inferred_time_signatures(result)
+    arbitrate_arcs_across_staves(result)
     divisions = _compute_divisions(result)
 
     parts_xml: list[str] = []
@@ -1949,6 +3411,13 @@ def to_musicxml(result: dict[str, Any]) -> str:
     # Stitched path: one part per SLOT, carrying that slot's staff from every
     # system of the piece. See `_stitch_slots` for when this is not safe.
     slots = _stitch_slots(result)
+    slot_systems: list[list[int]] | None = None
+    if slots is None and _slot_stitch_enabled():
+        # Only ever reached where the ordinal join REFUSED — a page whose
+        # systems agree on staff count keeps the ordinal join untouched.
+        by_slot = _stitch_slots_by_slot(result)
+        if by_slot is not None:
+            slots, slot_systems = by_slot
     if slots is not None:
         systems = [
             system
@@ -1972,38 +3441,61 @@ def to_musicxml(result: dict[str, Any]) -> str:
             starts.append(running)
             running += max(len(s.get("measures", [])) for s in system["staves"])
         for ordinal, slot in enumerate(slots):
-            part_idx += 1
-            part_id = f"P{part_idx}"
             # Prefer the instrument the contextual pass named, as the
             # per-system path below does — a slot is the same staff on every
             # system, so any system's reading names the whole part.
             instrument = next(
                 (s.get("instrument") for s in slot if s.get("instrument")), None
             )
-            part_name = instrument if instrument else f"Staff {ordinal}"
-            part_list.append(
-                f"  <score-part id=\"{part_id}\">\n"
-                f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
-                f"  </score-part>"
-            )
+            base_name = instrument if instrument else f"Staff {ordinal}"
             # The slot is ONE part, so its slurs are paired across every system
             # it spans before any of its measures are written — that is what
             # lets a slur opened in the last bar of one system close in the
             # first bar of the next.
             annotate_slurs_in_slot(slot)
-            state: dict[str, Any] = {}
-            measures_xml: list[str] = []
-            for staff, start in zip(slot, starts):
-                measures_xml += _staff_measures_xml(
-                    staff, divisions, start, state, pair_slurs=False)
-            parts_xml.append(
-                f"  <part id=\"{part_id}\">\n"
-                + "\n".join(measures_xml)
-                + "\n  </part>"
-            )
+            annotate_wedges_in_slot(slot)
+            # A slot need not appear in every system (a suppressed tacet
+            # staff), so each staff takes ITS OWN system's measure start rather
+            # than the n-th one. The ordinal path's slots are dense, so
+            # `range(len(systems))` reproduces the old zip exactly.
+            in_systems = (slot_systems[ordinal] if slot_systems is not None
+                          else range(len(systems)))
+            n_players = _condensed_count(slot)
+            for player in range(n_players):
+                part_idx += 1
+                part_id = f"P{part_idx}"
+                part_name = (base_name if n_players == 1
+                             else f"{base_name} {player + 1}")
+                part_list.append(
+                    f"  <score-part id=\"{part_id}\">\n"
+                    f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
+                    f"  </score-part>"
+                )
+                # Each player re-serializes the SAME staff from a fresh state.
+                # `_staff_measures_xml` mutates `state` (running clef, key and
+                # meter), so a shared dict would suppress the attributes on
+                # every player after the first.
+                state: dict[str, Any] = {}
+                measures_xml: list[str] = []
+                for staff, sys_i in zip(slot, in_systems):
+                    measures_xml += _staff_measures_xml(
+                        staff, divisions, starts[sys_i], state,
+                        pair_spanners=False)
+                parts_xml.append(
+                    f"  <part id=\"{part_id}\">\n"
+                    + "\n".join(measures_xml)
+                    + "\n  </part>"
+                )
         if is_piano:
             part_list.append("  <part-group type=\"stop\" number=\"1\"/>")
         return _score_partwise(result, part_list, parts_xml)
+
+    # Reached either because the page holds ONE system (where a part is
+    # continuous by construction) or because stitching refused (where the parts
+    # here are per-system fragments). Only the first may be split — see
+    # `_condensed_on_fragments`.
+    split_fragments_ok = (_condensed_on_fragments()
+                          or not _is_fragmented(result))
 
     for page in result.get("pages", []):
         for sys_idx, sys_ in enumerate(page.get("systems", [])):
@@ -2035,9 +3527,10 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 last_time_sig = None
                 first_in_part = True
                 # Each "staff" here holds one measure of one melodic line, so
-                # a slur has no barline to cross within it.
+                # a slur — or a hairpin — has no barline to cross within it.
                 for staff in staves:
                     annotate_slurs_in_staff(staff)
+                    annotate_wedges_in_staff(staff)
                     # By construction, each staff has exactly 1 measure.
                     measure = staff["measures"][0]
                     m_clef = measure.get("clef") or staff.get("clef")
@@ -2077,12 +3570,12 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     _dyn = measure_directions(measure)
 
                     if not events:
-                        r_beats, r_type, r_dots = _mxl_measure_rest(m_time)
-                        inner.append(_mxl_note(
-                            None, "", r_type, r_dots, r_beats, divisions,
-                            is_chord=False, is_rest=True,
-                            indent="      ", voice=1,
-                        ))
+                        inner.extend(_mxl_empty_measure(
+                            m_time, divisions, _dyn, "      ",
+                            fermata=measure_has_fermata(
+                                measure.get("detections", [])),
+                            wedges=eventless_wedges(
+                                measure.get("detections", []))))
                     elif len(voices) == 1:
                         v1_lines, _ = _mxl_voice_events(
                             voices[0], voice=1, divisions=divisions, indent="      ",
@@ -2136,8 +3629,6 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     f"  </part-group>"
                 )
             for staff_idx_in_sys, staff in enumerate(staves):
-                part_idx += 1
-                part_id = f"P{part_idx}"
                 # Prefer the instrument the contextual pass named. Until it was
                 # wired into `transcribe` nothing here HAD a name to use, so
                 # every part came out as its own grid reference — the complaint
@@ -2145,25 +3636,32 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 # the pass could not name still falls back to the coordinates,
                 # so a run with `--no-contextual` is byte-identical to before.
                 instrument = staff.get("instrument")
-                part_name = instrument if instrument else (
+                base_name = instrument if instrument else (
                     f"Staff p{page['page_index']}-s{sys_idx}-"
                     f"{staff_idx_in_sys}"
                 )
-                part_list.append(
-                    f"  <score-part id=\"{part_id}\">\n"
-                    f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
-                    f"  </score-part>"
-                )
+                n_players = (_condensed_count([staff])
+                             if split_fragments_ok else 1)
+                for player in range(n_players):
+                    part_idx += 1
+                    part_id = f"P{part_idx}"
+                    part_name = (base_name if n_players == 1
+                                 else f"{base_name} {player + 1}")
+                    part_list.append(
+                        f"  <score-part id=\"{part_id}\">\n"
+                        f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
+                        f"  </score-part>"
+                    )
 
-                measures_xml = _staff_measures_xml(
-                    staff, divisions, sys_start_num, {},
-                )
+                    measures_xml = _staff_measures_xml(
+                        staff, divisions, sys_start_num, {},
+                    )
 
-                parts_xml.append(
-                    f"  <part id=\"{part_id}\">\n"
-                    + "\n".join(measures_xml)
-                    + "\n  </part>"
-                )
+                    parts_xml.append(
+                        f"  <part id=\"{part_id}\">\n"
+                        + "\n".join(measures_xml)
+                        + "\n  </part>"
+                    )
             # After all staves in this piano system are listed, close
             # the part-group.
             if is_piano:
