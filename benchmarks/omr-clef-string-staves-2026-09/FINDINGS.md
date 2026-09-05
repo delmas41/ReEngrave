@@ -272,8 +272,16 @@ lever's, so those `wrong keysig` edits are deliberately left on the table.
 
 1. Engraved 11-work benchmark with the flag ON — firings counted (expected
    none; then exports are identical to a default run by construction).
-2. `eval_pipeline_clefs` `--contextual` (and `--dossier`) arms, flag off vs
-   on — the recorded readings must hold.
+2. ✅ `eval_pipeline_clefs`, measured flag off vs on at this commit:
+   `--contextual` **42/49 both arms, byte-identical summaries, zero
+   corrections applied either way**; `--dossier` **45/49 both arms,
+   identical**. (The task's quoted 69/69 and 50/52 belong to an earlier
+   corpus/pipeline state — the harness at `0487be1f` reports 42/49 and 45/49
+   with the flag OFF, i.e. before this branch does anything; the gate that
+   belongs to THIS change is off-vs-on equality, and it holds exactly. The
+   eval pages' wrong staves are `default`-source or fail the gates — e.g.
+   p15's misread strings carry score-order names only — so the tier
+   correctly never fires there.)
 3. The `clef_source` provenance bug (§3) is recorded and left unfixed here —
    default-path behavior. Candidate fix: refresh `clef_source` alongside the
    clef in the furniture dropper's lead-drop branch.
