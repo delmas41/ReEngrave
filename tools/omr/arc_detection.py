@@ -137,6 +137,60 @@ ARC_MAX_BELOW_STAFF_SPACES = 2.5
 ARC_TIE_MAX_WIDTH_SPACES = 6.0
 ARC_TIE_MAX_RISE_RATIO = 0.11
 
+# ---------------------------------------------------------------------------
+# Anchors (round 9): an arc's identity is settled by what it CONNECTS, not by
+# its shape alone. A real arc on this staff starts and ends at (or just past)
+# this staff's own noteheads; an edge-bleed fake's anchors are out of frame or
+# belong to the neighbouring staff; and a flat tie with confirmed anchors is
+# real no matter what the rise gate says. Every constant below is read off the
+# measured per-end populations over the adjudicated gauntlet
+# (benchmarks/omr-arc-anchor-2026-09/probe_anchor_populations.py — 176 real
+# boxes / 260 certified fakes, nearest-notehead dx/dy per end).
+# ---------------------------------------------------------------------------
+
+#: How far OUTSIDE the arc's end its anchoring notehead centre may sit, in
+#: notehead widths. Prior art is `_pair_ties_in_cell`'s 2-width window;
+#: measured per end over the adjudicated boxes (nearest anchoring notehead,
+#: dy <= 2 spaces), real ends whose nearest anchor is outside sit at
+#: p50 0.26 / p90 0.60 / p95 0.94 widths — 1.0 covers the population.
+ARC_ANCHOR_MAX_DX_OUT_NOTEHEADS = 1.0
+
+#: ... and how far INSIDE (under the arc). A slur binds the noteheads under
+#: it, and its ink stops just inside the outer centres
+#: (`export._SLUR_ARC_PAD_NOTEHEADS` measured 54 of 75 outer centres within
+#: 0.19 widths of the edge) — but a YOLO box is looser than the ink. The
+#: inside population has NO clean gap: real ends p50 0.34 / p75 0.81 widths
+#: with a long tail (p90 2.47 — ends whose own notehead the detector missed,
+#: the nearest DETECTED head sitting deeper under the arc), while the fakes'
+#: nearest inside head sits at p50 1.92. 1.0 is on the right side of the
+#: fake median; chasing the real tail admits the fakes (measured in the
+#: analyze sweep: dx_in 2.0 keeps +8 real boxes and anchors +20 fakes).
+ARC_ANCHOR_MAX_DX_IN_NOTEHEADS = 1.0
+
+#: Vertical distance from the anchoring notehead's centre to the arc BOX's
+#: y-interval, in staff spaces (0 = level with the box). Prior art:
+#: `_pair_ties_in_cell` accepts ~3 notehead heights from the tie's centre.
+#: The sweep plateaus 2.0 -> 3.0 on real boxes (142 -> 144 of 176) while
+#: fakes keep climbing (56 -> 61) — 2.0 is the shoulder.
+ARC_ANCHOR_MAX_DY_SPACES = 2.0
+
+#: An arc end within this many spaces of the cell's LEFT/RIGHT crop edge is
+#: CUT — the pairing machinery (`_pair_ties_in_staff`,
+#: `_merge_arcs_across_barlines`) rejoins those across the boundary, so the
+#: anchor requirement is waived on the cut side. Same constant family as
+#: `export._SLUR_BOUNDARY_SPACES` (split halves end 0.00-0.10 spaces from the
+#: boundary; nearest non-split arc at 1.58).
+ARC_ANCHOR_EDGE_EXEMPT_SPACES = 0.5
+
+#: Relaxed rise floor for the anchors-confirmed CV pass ("anchor+cv" mode):
+#: where BOTH ends of a CV stroke anchor on this staff's noteheads, the arc is
+#: admitted down to this rise. Litolff prints ties SHORT and FLAT — measured
+#: rise 0.062-0.116 spaces on Beethoven 5 p1 (round 8's publisher-transfer
+#: gap) — under the 0.12 gate read off the Breitkopf gauntlet. 0.05 sits
+#: under that population; anything flatter than 0.05 spaces is a straight
+#: line at scan resolution.
+ARC_RELAXED_MIN_RISE_SPACES = 0.05
+
 
 def arc_cv_mode() -> str:
     """The `OMR_ARC_CV` arrangement. DEFAULT OFF — nothing changes unless set.
@@ -152,6 +206,16 @@ def arc_cv_mode() -> str:
                    recall 0.648 / precision 0.496 / kind 0.702 / 38 fakes.
         replace  — CV arcs only. recall 0.551 / precision 0.542 / 33 fakes.
 
+    Round 9 adds the anchor arrangements (see the ARC_ANCHOR_* constants):
+
+        anchor    — keep a YOLO tie/slur only when its ends land on this
+                    cell's own noteheads (each end anchored or cut-exempt at
+                    the left/right crop edge, and at least one real anchor).
+                    No CV pass — this mode costs nothing.
+        anchor+cv — the anchor filter, plus CV arcs re-read at the RELAXED
+                    rise floor and admitted only where BOTH ends anchor
+                    (recovers flat-printed ties the rise gate refuses).
+
     Off ("0"/unset) leaves the detector's arcs untouched.
     """
     import os
@@ -164,6 +228,10 @@ def arc_cv_mode() -> str:
         return "veto+cv"
     if v == "replace":
         return "replace"
+    if v == "anchor":
+        return "anchor"
+    if v in ("anchor+cv", "anchorcv", "anchor_cv"):
+        return "anchor+cv"
     return "off"
 
 
@@ -183,6 +251,63 @@ def _box_of(d) -> tuple[int, int, int, int]:
     return (d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical)
 
 
+def _median_notehead_width(nh_boxes: list, fallback: float) -> float:
+    widths = sorted(b[2] for b in nh_boxes)
+    return float(widths[len(widths) // 2]) if widths else float(fallback)
+
+
+def _end_anchored(end_x: float, left: bool, box, nh_boxes: list,
+                  nh_w: float, sp: float) -> bool:
+    """Does an own-staff notehead anchor this end of the arc box?
+
+    dx is signed along the tie-pairing convention: positive = the notehead
+    centre sits OUTSIDE the arc span (before a left end / after a right end),
+    negative = inside, under the arc. dy is the notehead centre's vertical
+    distance to the arc box's y-interval (0 when level with it) — the box
+    stands in for the stroke because at arbitration time a YOLO arc has no
+    midline, only a box.
+    """
+    x, y, w, h = box
+    for nx, ny, nw, nhh in nh_boxes:
+        nxc = nx + nw / 2.0
+        nyc = ny + nhh / 2.0
+        dx = (end_x - nxc) if left else (nxc - end_x)
+        if not (-ARC_ANCHOR_MAX_DX_IN_NOTEHEADS * nh_w <= dx
+                <= ARC_ANCHOR_MAX_DX_OUT_NOTEHEADS * nh_w):
+            continue
+        dy = max(0.0, y - nyc, nyc - (y + h))
+        if dy <= ARC_ANCHOR_MAX_DY_SPACES * sp:
+            return True
+    return False
+
+
+def arc_box_anchored(box, nh_boxes: list, nh_w: float, sp: float,
+                     cell_w: int, *, require_both: bool = False) -> bool:
+    """The round-9 anchor test on one arc box.
+
+    Each end must be anchored on a notehead, or CUT-EXEMPT — within
+    ARC_ANCHOR_EDGE_EXEMPT_SPACES of the cell's left/right crop edge, where
+    the cross-cell pairing machinery is the thing that rejoins the arc and
+    the anchoring notehead lives in the neighbouring cell. At least one end
+    must carry a real anchor: an arc exempt at both ends asserts nothing
+    about this staff. With `require_both` the exemption is withdrawn — both
+    ends must anchor (the admission bar for relaxed-gate CV arcs).
+    """
+    x, _y, w, _h = box
+    edge_tol = ARC_ANCHOR_EDGE_EXEMPT_SPACES * sp
+    n_anchored = 0
+    for end_x, left in ((x, True), (x + w, False)):
+        if _end_anchored(end_x, left, box, nh_boxes, nh_w, sp):
+            n_anchored += 1
+            continue
+        if require_both:
+            return False
+        cut = (end_x <= edge_tol) if left else (end_x >= cell_w - edge_tol)
+        if not cut:
+            return False
+    return n_anchored >= (2 if require_both else 1)
+
+
 def apply_arc_cv(dets: list, cell, mode: str | None = None) -> list:
     """Arbitrate the detector's tie/slur detections against the CV arc reader.
 
@@ -196,6 +321,31 @@ def apply_arc_cv(dets: list, cell, mode: str | None = None) -> list:
                  if (getattr(d, "smufl_name", "") or "").lower() in ("tie", "slur")]
     arc_ids = {id(d) for d in arcs_yolo}
     others = [d for d in dets if id(d) not in arc_ids]
+    if mode in ("anchor", "anchor+cv"):
+        sp = _staff_line_spacing(cell)
+        img = getattr(cell, "image", None)
+        line_ys = getattr(cell, "staff_line_ys_canonical", None) or []
+        if sp <= 1.0 or img is None or len(line_ys) < 2:
+            return dets  # no geometry to anchor against — abstain whole
+        cell_w = int(img.shape[1])
+        nh_boxes = [_box_of(d) for d in dets
+                    if (getattr(d, "category", "") or "") == "notehead"]
+        nh_w = _median_notehead_width(nh_boxes, sp)
+        kept = [d for d in arcs_yolo
+                if arc_box_anchored(_box_of(d), nh_boxes, nh_w, sp, cell_w)]
+        if mode == "anchor":
+            return others + kept
+        # anchor+cv: re-read the cell's strokes at the RELAXED rise floor and
+        # admit only those with BOTH ends anchored — shape refused them, the
+        # anchors overrule it (the flat-tie recovery). Deduped against the
+        # anchored YOLO arcs the same way veto+cv dedupes.
+        cv_arcs = detect_arcs(cell, min_rise_spaces=ARC_RELAXED_MIN_RISE_SPACES)
+        kept_boxes = [_box_of(d) for d in kept]
+        extra = [c for c in cv_arcs
+                 if arc_box_anchored(_box_of(c), nh_boxes, nh_w, sp, cell_w,
+                                     require_both=True)
+                 and not any(_iou(_box_of(c), kb) >= 0.3 for kb in kept_boxes)]
+        return others + kept + extra
     # In pure veto mode a cell with no detector arcs has nothing to
     # arbitrate — skip the CV pass (it costs ~66 ms per cell).
     if mode == "veto" and not arcs_yolo:
@@ -401,7 +551,8 @@ def _join_dissolved(strokes: list[_Stroke], sp: float) -> list[_Stroke]:
     return strokes
 
 
-def _gate_stroke(s: _Stroke, sp: float) -> dict | None:
+def _gate_stroke(s: _Stroke, sp: float,
+                 min_rise_spaces: float = ARC_MIN_RISE_SPACES) -> dict | None:
     """Apply the arc gates to one chained stroke; None when refused."""
     w = s.width
     if w < ARC_MIN_WIDTH_SPACES * sp:
@@ -425,7 +576,7 @@ def _gate_stroke(s: _Stroke, sp: float) -> dict | None:
     # deviation under-reads its curvature about 4x — so the fitted quadratic's
     # own deviation over the stroke's width stands in wherever it is larger.
     curve_rise = float(abs(coef[0]) * w ** 2 / 8.0)
-    if max(rise, curve_rise) < ARC_MIN_RISE_SPACES * sp:
+    if max(rise, curve_rise) < min_rise_spaces * sp:
         return None
     pos = float(np.sum(np.clip(dev, 0, None)))
     neg = float(np.sum(np.clip(-dev, 0, None)))
@@ -438,8 +589,13 @@ def _gate_stroke(s: _Stroke, sp: float) -> dict | None:
             "mid_mean": float(np.mean(ms))}
 
 
-def detect_arcs(cell) -> list[LineDetection]:
-    """Find slur/tie arcs in `cell` by stroke geometry. See module docstring."""
+def detect_arcs(cell, *,
+                min_rise_spaces: float = ARC_MIN_RISE_SPACES) -> list[LineDetection]:
+    """Find slur/tie arcs in `cell` by stroke geometry. See module docstring.
+
+    `min_rise_spaces` lowers the rise gate for the anchors-confirmed pass
+    ("anchor+cv" mode) — every other gate stands at its measured value.
+    """
     if cell is None:
         return []
     src = (cell.image_no_staff
@@ -457,7 +613,7 @@ def detect_arcs(cell) -> list[LineDetection]:
     staff_bottom = max(line_ys) if len(line_ys) >= 2 else None
     out: list[LineDetection] = []
     for s in _chain_strokes(usable, sp):
-        cand = _gate_stroke(s, sp)
+        cand = _gate_stroke(s, sp, min_rise_spaces)
         if cand is None:
             continue
         if (staff_bottom is not None

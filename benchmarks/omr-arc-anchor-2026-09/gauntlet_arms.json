@@ -1,0 +1,83 @@
+{
+ "prod": {
+  "dets": 625,
+  "recall": 0.824,
+  "precision": 0.232,
+  "kind": 0.717,
+  "fakes": 241,
+  "jag": 66,
+  "bleed": 175
+ },
+ "cv": {
+  "dets": 179,
+  "recall": 0.551,
+  "precision": 0.542,
+  "kind": 0.536,
+  "fakes": 33,
+  "jag": 0,
+  "bleed": 33
+ },
+ "veto (r8)": {
+  "dets": 185,
+  "recall": 0.602,
+  "precision": 0.573,
+  "kind": 0.726,
+  "fakes": 37,
+  "jag": 1,
+  "bleed": 36
+ },
+ "veto+cv (r8)": {
+  "dets": 230,
+  "recall": 0.648,
+  "precision": 0.496,
+  "kind": 0.702,
+  "fakes": 38,
+  "jag": 1,
+  "bleed": 37
+ },
+ "anchor": {
+  "dets": 237,
+  "recall": 0.665,
+  "precision": 0.494,
+  "kind": 0.667,
+  "fakes": 56,
+  "jag": 18,
+  "bleed": 38
+ },
+ "anchor+cv": {
+  "dets": 256,
+  "recall": 0.665,
+  "precision": 0.457,
+  "kind": 0.667,
+  "fakes": 56,
+  "jag": 18,
+  "bleed": 38
+ },
+ "anchor AND veto": {
+  "dets": 130,
+  "recall": 0.5,
+  "precision": 0.677,
+  "kind": 0.682,
+  "fakes": 15,
+  "jag": 0,
+  "bleed": 15
+ },
+ "anchor OR veto": {
+  "dets": 292,
+  "recall": 0.767,
+  "precision": 0.462,
+  "kind": 0.704,
+  "fakes": 78,
+  "jag": 19,
+  "bleed": 59
+ },
+ "anchorAND+cv": {
+  "dets": 149,
+  "recall": 0.5,
+  "precision": 0.591,
+  "kind": 0.682,
+  "fakes": 15,
+  "jag": 0,
+  "bleed": 15
+ }
+}

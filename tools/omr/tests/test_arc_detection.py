@@ -84,7 +84,9 @@ class TestArcCvMode(unittest.TestCase):
     def test_spellings(self):
         for v, want in [("0", "off"), ("false", "off"), ("veto", "veto"),
                         ("1", "veto"), ("veto+cv", "veto+cv"),
-                        ("replace", "replace"), ("garbage", "off")]:
+                        ("replace", "replace"), ("garbage", "off"),
+                        ("anchor", "anchor"), ("anchor+cv", "anchor+cv"),
+                        ("anchor_cv", "anchor+cv")]:
             with mock.patch.dict(os.environ, {"OMR_ARC_CV": v}):
                 self.assertEqual(arc_cv_mode(), want, v)
 
@@ -135,6 +137,81 @@ class TestApplyArcCv(unittest.TestCase):
         self.assertIn(note, out)
         self.assertNotIn(phantom, out)
         self.assertEqual(sum(1 for d in out if d.category == "structural"), 1)
+
+
+class TestAnchorMode(unittest.TestCase):
+    """Round 9: an arc is kept only when its ends land on the cell's own
+    noteheads (each end anchored or cut-exempt at the left/right crop edge)."""
+
+    def _arc(self, x, y, w, h, name="tie"):
+        return LineDetection(smufl_name=name, category="structural",
+                             x_canonical=x, y_canonical=y,
+                             width_canonical=w, height_canonical=h,
+                             confidence=0.5)
+
+    def _note(self, x, y, w=20, h=20):
+        return LineDetection(smufl_name="noteheadBlack", category="notehead",
+                             x_canonical=x, y_canonical=y,
+                             width_canonical=w, height_canonical=h,
+                             confidence=0.9)
+
+    def test_anchored_arc_kept_unanchored_dropped(self):
+        cell = _cell(_blank())
+        # noteheads at x-centres 200 and 370, level with an arc at y 230-260
+        n1, n2 = self._note(190, 235), self._note(360, 235)
+        anchored = self._arc(210, 230, 150, 30)   # ends near both noteheads
+        floater = self._arc(500, 40, 120, 25)     # nothing anchors it
+        out = apply_arc_cv([anchored, floater, n1, n2], cell, "anchor")
+        self.assertIn(anchored, out)
+        self.assertIn(n1, out)
+        self.assertNotIn(floater, out)
+
+    def test_cut_end_is_exempt_on_that_side(self):
+        cell = _cell(_blank())          # cell is 800 wide, sp 24
+        n1 = self._note(700, 235)
+        # arc runs from x=720 to the right crop edge: right end cut-exempt,
+        # left end anchored by n1 -> kept.
+        crosser = self._arc(718, 230, 82, 25)
+        out = apply_arc_cv([crosser, n1], cell, "anchor")
+        self.assertIn(crosser, out)
+
+    def test_both_ends_cut_asserts_nothing_and_is_kept(self):
+        cell = _cell(_blank())
+        spanner = self._arc(0, 230, 800, 25)   # touches both crop edges
+        # No anchor at all -> refused: an arc exempt at both ends asserts
+        # nothing about this staff.
+        out = apply_arc_cv([spanner], cell, "anchor")
+        self.assertNotIn(spanner, out)
+
+    def test_anchor_cv_admits_flat_arc_with_both_anchors(self):
+        img = _blank()
+        # A FLAT tie: rise ~0.08 spaces (2px on sp 24) — the standard rise
+        # gate refuses it; with both ends anchored, anchor+cv admits it.
+        _draw_arc(img, 200, 344, 250, 2)
+        cell = _cell(img)
+        n1, n2 = self._note(185, 240), self._note(350, 240)
+        self.assertEqual(detect_arcs(cell), [])   # shape alone refuses
+        out = apply_arc_cv([n1, n2], cell, "anchor+cv")
+        added = [d for d in out if d.category == "structural"]
+        self.assertEqual(len(added), 1)
+        self.assertEqual(added[0].smufl_name, "tie")
+
+    def test_anchor_cv_does_not_admit_flat_arc_without_anchors(self):
+        img = _blank()
+        _draw_arc(img, 200, 344, 250, 2)
+        cell = _cell(img)
+        out = apply_arc_cv([], cell, "anchor+cv")
+        self.assertEqual([d for d in out if d.category == "structural"], [])
+
+    def test_no_geometry_abstains_whole(self):
+        class _C:
+            staff_line_ys_canonical = []
+            image = _blank()
+            image_no_staff = image
+        floater = self._arc(500, 40, 120, 25)
+        dets = [floater]
+        out = apply_arc_cv(dets, _C(), "anchor")
+        self.assertIs(out, dets)
 
 
 if __name__ == "__main__":
