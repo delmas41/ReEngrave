@@ -1,0 +1,919 @@
+{
+  "beethoven-sym5-mvt1-575951-p3": {
+    "ordinal_join_succeeds": false,
+    "system_sizes": [
+      11,
+      8
+    ],
+    "misjoined_slots": 7,
+    "slots": [
+      {
+        "slot": 0,
+        "printed": [
+          "Flauti",
+          "Flauti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Flute",
+          "Flute"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 1,
+        "printed": [
+          "Oboi",
+          "Clarinetti in B"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Oboe",
+          "Clarinet"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 2,
+        "printed": [
+          "Clarinetti in B",
+          "Fagotti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Clarinet",
+          "Bassoon"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 3,
+        "printed": [
+          "Fagotti",
+          "Corni in Es"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Bassoon",
+          "Horn"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 4,
+        "printed": [
+          "Corni in Es",
+          "Violino I"
+        ],
+        "parts": [
+          2,
+          1
+        ],
+        "pipeline_read": [
+          "Horn",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      },
+      {
+        "slot": 5,
+        "printed": [
+          "Trombe in C",
+          "Violino II"
+        ],
+        "parts": [
+          2,
+          1
+        ],
+        "pipeline_read": [
+          "Trumpet",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      },
+      {
+        "slot": 6,
+        "printed": [
+          "Timpani in C.G.",
+          "Viola"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Timpani",
+          "Viola"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 7,
+        "printed": [
+          "Violino I",
+          "Violoncello e Basso"
+        ],
+        "parts": [
+          1,
+          2
+        ],
+        "pipeline_read": [
+          "Violin",
+          "Cello"
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+    "ordinal_join_succeeds": true,
+    "system_sizes": [
+      11,
+      11
+    ],
+    "misjoined_slots": 5,
+    "slots": [
+      {
+        "slot": 0,
+        "printed": [
+          "Flauti",
+          "Flauti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Flute",
+          "Flute"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 1,
+        "printed": [
+          "Oboi",
+          "Oboi"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Oboe",
+          "Oboe"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 2,
+        "printed": [
+          "Clarinetti in B",
+          "Clarinetti in B"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Clarinet",
+          "Clarinet"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 3,
+        "printed": [
+          "Fagotti",
+          "Fagotti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Bassoon",
+          "Bassoon"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 4,
+        "printed": [
+          "Corni in Es",
+          "Corni in Es"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Horn",
+          "Horn"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 5,
+        "printed": [
+          "Trombe in C",
+          "Trombe in C"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Trumpet",
+          "Trumpet"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 6,
+        "printed": [
+          "Violino I",
+          "Timpani in C.G."
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Timpani",
+          "Timpani"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 7,
+        "printed": [
+          "Violino II",
+          "Violino I"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Violin",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 8,
+        "printed": [
+          "Viola",
+          "Violino II"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Viola",
+          "Viola"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 9,
+        "printed": [
+          "Violoncello",
+          "Viola"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          null,
+          null
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 10,
+        "printed": [
+          "Basso",
+          "Bassi (Violoncello e Basso)"
+        ],
+        "parts": [
+          1,
+          2
+        ],
+        "pipeline_read": [
+          null,
+          null
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p3": {
+    "ordinal_join_succeeds": false,
+    "system_sizes": [
+      11,
+      8
+    ],
+    "misjoined_slots": 7,
+    "slots": [
+      {
+        "slot": 0,
+        "printed": [
+          "Flauti",
+          "Flauti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Flute",
+          "Flute"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 1,
+        "printed": [
+          "Oboi",
+          "Clarinetti in B"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Oboe",
+          "Clarinet"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 2,
+        "printed": [
+          "Clarinetti in B",
+          "Fagotti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Clarinet",
+          "Bassoon"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 3,
+        "printed": [
+          "Fagotti",
+          "Corni in Es"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Bassoon",
+          "Horn"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 4,
+        "printed": [
+          "Corni in Es",
+          "Violino I"
+        ],
+        "parts": [
+          2,
+          1
+        ],
+        "pipeline_read": [
+          "Horn",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      },
+      {
+        "slot": 5,
+        "printed": [
+          "Trombe in C",
+          "Violino II"
+        ],
+        "parts": [
+          2,
+          1
+        ],
+        "pipeline_read": [
+          "Trumpet",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      },
+      {
+        "slot": 6,
+        "printed": [
+          "Timpani in C.G.",
+          "Viola"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Timpani",
+          "Viola"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 7,
+        "printed": [
+          "Violino I",
+          "Violoncello e Basso"
+        ],
+        "parts": [
+          1,
+          2
+        ],
+        "pipeline_read": [
+          "Violin",
+          "Cello"
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+    "ordinal_join_succeeds": true,
+    "system_sizes": [
+      11,
+      11
+    ],
+    "misjoined_slots": 5,
+    "slots": [
+      {
+        "slot": 0,
+        "printed": [
+          "Flauti",
+          "Flauti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Flute",
+          "Flute"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 1,
+        "printed": [
+          "Oboi",
+          "Oboi"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Oboe",
+          "Oboe"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 2,
+        "printed": [
+          "Clarinetti in B",
+          "Clarinetti in B"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Clarinet",
+          "Clarinet"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 3,
+        "printed": [
+          "Fagotti",
+          "Fagotti"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Bassoon",
+          "Bassoon"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 4,
+        "printed": [
+          "Corni in Es",
+          "Corni in Es"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Horn",
+          "Horn"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 5,
+        "printed": [
+          "Trombe in C",
+          "Trombe in C"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Trumpet",
+          "Trumpet"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 6,
+        "printed": [
+          "Violino I",
+          "Timpani in C.G."
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Trumpet",
+          "Trumpet"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 7,
+        "printed": [
+          "Violino II",
+          "Violino I"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Violin",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 8,
+        "printed": [
+          "Viola",
+          "Violino II"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Violin",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 9,
+        "printed": [
+          "Violoncello",
+          "Viola"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Cello",
+          "Cello"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 10,
+        "printed": [
+          "Basso",
+          "Bassi (Violoncello e Basso)"
+        ],
+        "parts": [
+          1,
+          2
+        ],
+        "pipeline_read": [
+          null,
+          null
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      }
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+    "ordinal_join_succeeds": false,
+    "system_sizes": [
+      14,
+      13
+    ],
+    "misjoined_slots": 6,
+    "slots": [
+      {
+        "slot": 0,
+        "printed": [
+          "2 Floten",
+          "2 Floten"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Flute",
+          "Flute"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 1,
+        "printed": [
+          "2 Oboen",
+          "2 Oboen"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Oboe",
+          "Oboe"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 2,
+        "printed": [
+          "2 Klarinetten in B",
+          "2 Klarinetten in B"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Clarinet",
+          "Clarinet"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 3,
+        "printed": [
+          "2 Fagotte",
+          "2 Fagotte"
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Bassoon",
+          "Bassoon"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 4,
+        "printed": [
+          "Kontrafagott",
+          "Kontrafagott"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Bassoon",
+          "Bassoon"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 5,
+        "printed": [
+          "4 Horner in C 1./2.",
+          "4 Horner in C 1./2."
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Horn",
+          "Horn"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 6,
+        "printed": [
+          "4 Horner in Es 3./4.",
+          "4 Horner in Es 3./4."
+        ],
+        "parts": [
+          2,
+          2
+        ],
+        "pipeline_read": [
+          "Trumpet",
+          "Trumpet"
+        ],
+        "same_instrument": true,
+        "counts_agree": true
+      },
+      {
+        "slot": 7,
+        "printed": [
+          "2 Trompeten in C",
+          "Pauken in C u.G"
+        ],
+        "parts": [
+          2,
+          1
+        ],
+        "pipeline_read": [
+          "Trumpet",
+          "Timpani"
+        ],
+        "same_instrument": false,
+        "counts_agree": false
+      },
+      {
+        "slot": 8,
+        "printed": [
+          "Pauken in C u.G",
+          "1. Violine"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Timpani",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 9,
+        "printed": [
+          "1. Violine",
+          "2. Violine"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Violin",
+          "Violin"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 10,
+        "printed": [
+          "2. Violine",
+          "Bratsche"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Violin",
+          "Viola"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 11,
+        "printed": [
+          "Bratsche",
+          "Violoncell"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Viola",
+          "Cello"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      },
+      {
+        "slot": 12,
+        "printed": [
+          "Violoncell",
+          "Kontrabass"
+        ],
+        "parts": [
+          1,
+          1
+        ],
+        "pipeline_read": [
+          "Cello",
+          "Contrabass"
+        ],
+        "same_instrument": false,
+        "counts_agree": true
+      }
+    ]
+  }
+}
