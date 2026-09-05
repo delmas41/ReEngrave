@@ -128,6 +128,22 @@ which matters, because on real scans the names usually are not printed.
 ⚠️ Nothing in that document is a measured result; it is a survey that says what
 to measure next.
 
+## Beyond the current scope (captured 2026-09-05)
+
+One long-range idea is recorded at the top of [NOTES.md](NOTES.md) rather than
+here, because it is far off and unscheduled: pairing **recordings** with the
+notes on the page, so that a score written from scratch could be rendered as an
+emulated orchestral performance. The distinction that makes it worth keeping is
+that the composer supplies the music and the model supplies only the
+performance — a rendering problem, not a generative one, and therefore
+measurable in the same way OMR is.
+
+It is noted here for one reason: the thing that would make ReEngrave uniquely
+able to attempt it is not audio work at all, but the **expressive layer of the
+page** — slurs, hairpins, articulations, printed directions — which the project
+has already spent a month learning to read because those marks were costing
+accuracy. Nothing is scheduled, and nothing in the entry is a measured result.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

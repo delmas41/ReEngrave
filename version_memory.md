@@ -5,6 +5,50 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — Captured: the sonic fingerprint (score → recording), NOTES.md
+
+- Sean's idea, recorded before it got lost: once transcription is solved, pair
+  **recordings** with the notes on the page, capture the sonic fingerprint that
+  matches what is printed, and render a composer's from-scratch score as an
+  emulated orchestral recording. Explicitly not prompt-to-music — the human
+  writes the music, the model performs it. Written up as a 🔮 CAPTURED block at
+  the top of [NOTES.md](NOTES.md); far off, unscoped, unscheduled.
+- **Docs only. No code, no measurement, no claim.** Every state-of-the-art
+  reference in that entry is flagged unverified in the entry itself.
+- The entry's substance, so it is findable from here: it is a **rendering**
+  problem, not a generative one (fixed input, so it is evaluable — the property
+  this project spent a year buying for OMR); the scarce asset ReEngrave could
+  contribute is not a synthesizer but a **notation-level** score↔audio corpus for
+  orchestral music, which almost nothing else has (aligned datasets are piano or
+  small chamber, and align at the level of notes, not marks).
+- **The coincidence worth banking**: the nine detected-then-dropped fixes of the
+  last month — hairpins, articulations, direction text, tuplets, slur pairing
+  across barlines and system breaks, dynamics band attribution — were pursued
+  because they cost OMR-NED edits. They are also the entire input feature vector
+  such a model would consume.
+- **The sequencing asymmetry**: the product half needs no OMR at all (a composer
+  hands over MusicXML), while the corpus half needs the scan pipeline at its
+  hardest (0.83, not 0.11). The dataset is gated on the scan work; the product
+  is not.
+- **Named risks** rather than left implicit: alignment inside a tutti, not
+  synthesis, is the bottleneck; orchestral source separation is far behind pop
+  stems; what would be captured is a fingerprint of a *recording* (hall, mics,
+  section, conductor) and not of an instrument; the copyright exposure is on the
+  input side; and the uncanny valley here is phrasing, not timbre.
+- **The reframe recorded for argument**: split timbre from interpretation and go
+  after interpretation first — score marks → expressive performance parameters →
+  drive an existing sample library. No neural audio, no separation, no corpus;
+  attacks the half the libraries have not solved, and fails cheaply.
+- **Two cheap actions, the only actionable part**: (1) keep `{stem}.omr.json`,
+  not just the exported MusicXML — the JSON carries marks with page coordinates,
+  per-staff attribution, provenance and detection confidence, and the exporter
+  reads no confidence at all, so the JSON is the corpus substrate and the
+  MusicXML is not; (2) the score library's `work_id` join already has the right
+  shape for a third `recordings/` axis beside `editions/` and `reference/` —
+  nothing to build, but don't make it harder to add.
+
+---
+
 ## 2026-09-05 — Scan: where the pipeline decides without a probability
 
 - The clef session found a lot being lost because a staff's clef was either
