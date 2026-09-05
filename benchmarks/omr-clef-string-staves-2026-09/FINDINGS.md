@@ -1,0 +1,326 @@
+# Clef on string staves — verifying the `shift` diagnosis before touching code
+
+2026-09-04, branch `claude/clef-string-staves` off `0487be1f`. Task: evaluate
+the forensics' lever #3 — "clef on string staves, ~1,900–2,700 pooled edits,
+constant-offset shifts" (`ERROR_FORENSICS_2026-09-04.md` §5/§6 on
+`claude/scan-error-forensics`) — as a flag-gated, default-off candidate.
+Baseline everything here is measured against: the widened-graft fixtures in
+the `scan-rebaseline` worktree (`*.widened-graft.omr.json` /
+`.omr.musicxml`), pooled **0.8387 / 29,082** on the 10-row pool.
+
+**Status: diagnosis + mechanism map done (this file). Reachability count done
+in draft, being finalized. No pipeline code touched yet.**
+
+The brief's lever shape was: *when contextual NAMES a staff's instrument and
+the staff's clef is only the POSITIONAL DEFAULT, default it from the
+instrument's conventional clef.* The verification below says that shape, as
+briefed, reaches almost none of the damage — the damage is real and
+constant-offset as diagnosed, but its mechanisms are (a) detector
+**misreads**, not absent reads, and (b) **mid-staff spurious clef changes**,
+plus (c) staves whose margin label never resolved, where naming comes only
+from score order — which prior art forbids using for clef correction
+(contextual.py: "clef correction runs on identity that was READ, never on
+identity the score-order prior deduced", measured on Beethoven 5 p.15).
+
+---
+
+## 1. Method
+
+Two independent joins, neither trusting the other:
+
+1. **Per-staff, per-measure shift classification**, rebuilt from scratch
+   (scratchpad `shift_sites.py`, music21 under `.venv-omrned`): for every row
+   with a `works.json` `staves` map, truth measure = multiset union of the
+   mapped reference parts' diatonic indices, pred measure = the positional
+   part's multiset; a measure is `shift k` when both sides have the same note
+   count and every sorted pairwise difference is the same k ≠ 0. This
+   reproduces the forensics' shift signatures independently (Viola +6,
+   Vn2 −12, Vc −4/−5 all reappear, at the same rows).
+2. **Provenance + naming dump** from the same fixtures' `.omr.json`: per
+   staff, `clef`, `clef_source`, per-measure `clef` state, every
+   `category == "clef"` detection with confidence, and contextual's
+   `instrument` / `instrument_source` / `label_tiers` / `unresolved_labels`.
+
+`works.json` note: the 575951 rows' `staves` is the literal string
+`"same-as:beethoven-sym5-mvt1-984073-p1"` (resolve it; it is not a list).
+
+## 2. The mechanism map — every named shift site, verified
+
+Shift measures are numbered in the stitched prediction's measure order (sys1
+then sys2 on the p2 rows).
+
+| site (staff, row) | shift, where | mechanism (verified from detections) | staff `clef_source` | contextual naming |
+|---|---|---|---|---|
+| Viola s9, 575951-p1 | **+6 on 13 of 16 bars — whole staff** (22 truth notes; forensics ~108 edits) | **Header MISREAD**: the alto glyph detected as `clefG` conf 0.72 | `detector` (read, wrong) | **Viola via label** (text layer; 12 labels on this page) |
+| Viola s9 (sys1), 575951-p2 | +5/+6/+7 on ~14 of 17 sys1 bars | **Header MISREAD**: `clefG` 0.34 (weak) | `detector` | Violin via **score_order** (margin unread) |
+| Viola s20 (sys2), 575951-p2 | +6 continuing m18–m26 | Header **alto CORRECT** (`clefCAlto` 0.74), then **spurious mid-staff `clefG` 0.58 in the 2nd cell** flips the rest of the staff to treble | `detector` (correct at header!) | Violin via **score_order** |
+| Violino II s8, 575951-p2 | **−12 m9–m15** (truth D4-family read F2-family) | Header `clefG` 0.94 correct; **spurious mid-staff `clefF` 0.68 at m7** | `detector` | Violin via **score_order** |
+| Viola s9 (sys1), 984073-p2 | +5/+6/+8 scattered over sys1 | **Header-crop gap-fill MISREAD**: no clef detection in any measure; the `detector_header` pass read the header crop as treble | `detector_header` | Violin via **score_order** |
+| Viola s20 (sys2), 984073-p2 | +6 (m24–25 etc.) | **The one genuine positional default** among all sites: zero clef detections, carried treble | absent (`None`) | Violin via **score_order** |
+| Viola s9, 984073-p1 | **−6/−5 m7–m15** (header bars fine; forensics 38 edits) | Header **alto CORRECT** (`clefCAlto` 0.40 over `clefG` 0.34), then **spurious mid-staff `clefF` 0.59 at m4** flips m4+ to bass | `detector` (correct) | **Viola via label** (Surya; 12 labels) |
+| 1. Violine s9, brahms-p1 | **−12 m3–m5** (16 truth notes; the clef-shaped core of brahms shift 359) | Header `clefG` 0.94 correct; **spurious mid-staff `clefF` 0.32 at m3** — 0.32, just above the 0.25 floor | `detector` (correct) | **Violin via label** |
+| Violoncello s13, dvorak-p5 | **−4/−5 m0–m3** (12 truth notes; forensics 116 edits) | **In-cell clef change, unrepresentable**: the plate opens the cello in BASS and prints a TENOR change *inside measure 1*, before the first notes (verified on the page image). Both glyphs are real and both were detected (`clefF` 0.92, `clefCTenor` 0.88) — but a measure cell carries ONE clef state and the higher-confidence glyph keeps it, so the change is lost and everything after it reads −4. The Gradus reference happens to *notate* the same pitches in bass; the pitch comparison is notation-independent, so the truth file's opening bass clef is not evidence about the plate | absent — a provenance ARTIFACT, see §3; the clef WAS detector-read | **Cello via label** |
+| dvorak-p6 | one −1 bar | not clef-shaped (±1 = step errors, no clef pair is 1 apart) | — | page unlabeled (Tesseract read `\|`) |
+
+Unmapped rows, from provenance + the blocked proposals (no per-measure
+classification possible — no `staves` map):
+
+| site | evidence | naming |
+|---|---|---|
+| brahms-p2 s4 + s18 (Bassoon), s8 (Timpani) | all read **treble by the detector**; `clef_correction` PROPOSED bass on all three (register fits 1.0 vs current 0.926 / 0.571 / **0.000**) and was blocked by `clef_was_read` | all three **via label** |
+| mahler-p2 s16 (Viola) | `clef=treble`, `clef_source` absent, no clef detections — a genuine default candidate; damage share unquantified (row unmapped) | **Viola via label** |
+| brahms-p2 s11/s24 (Viola) | both read **alto correctly** — no damage | label |
+| mahler-p3 s12 (Viola) | alto via `detector_header` — correct | label |
+
+### The forensics' own signatures, sharpened
+
+- "Viola +6 on both 575951 rows and 984073-p2, −6/−5 on 984073-p1 — the same
+  plate at two rasters guessing two different wrong clefs" — confirmed, and
+  now explained: **they are not the same mechanism.** 575951 guesses wrong at
+  the HEADER (misread alto→treble); 984073-p1 reads the header RIGHT and is
+  then flipped mid-staff by a spurious `clefF` 0.59. One is a wrong first
+  decision; the other is a right first decision overturned four bars later.
+- "Violino II −12 verified as treble-read-as-bass" — confirmed, and it is
+  **mid-staff**, not a header default: `clefG` 0.94 read correctly at m0,
+  spurious `clefF` 0.68 at m7, damage m9–15. A header-defaulting lever
+  cannot reach it by construction.
+
+## 3. A provenance bug found on the way (worth fixing regardless)
+
+`staff["clef_source"]` is NOT a reliable "was this clef read" authority on
+rows where the furniture-column dropper fired. `transcribe.py`'s
+furniture-drop pass (≈ line 2831) refreshes `staff[field] = kept[0][field]`
+for `clef`/`key_signature`/`time_signature` after dropping a leading
+furniture column — but never refreshes `clef_source`, which still describes
+the DROPPED first cell. dvorak-p5 shows the signature: every staff
+`clef_source: None` with correct detector-read clefs (`clefG` 0.92–0.96,
+`clefCAlto` 0.92/0.60, `clefF` 0.88–0.93 in the surviving first cells) and
+`clef_final` echoing the staff clef. Verified by instrumented re-run: at
+assembly time every staff was `first=treble, src=None`; the post-drop refresh
+rewrote the clefs and left the provenance stale.
+
+`clef_correction.clef_was_read()` is already robust to this — it ORs in a
+scan for `category == "clef"` detections, exactly for "JSON produced before
+clef_source existed" — so the existing gate behaves correctly on p5. But any
+NEW code (and any human) reading `clef_source is None` as "positional
+default" will be wrong on furniture-dropped rows. The mahler-p2 s16 default
+candidacy above was therefore verified against the detections (zero clef
+detections on the staff), not against `clef_source` alone.
+
+## 4. What already exists (prior art in the tree, not in the docs)
+
+`tools/omr/clef_correction.py` — wired into contextual since 2026-08-28 —
+already implements the briefed lever *and more*: per-staff register fit of
+candidate clefs against `instruments.py`'s `written_range`, led by
+`instrument.default_clef` (the field the brief asked to investigate: it
+exists), applied ONLY where `clef_was_read()` is False, recorded as
+`clef_proposal` on the staff and `contextual.proposals` either way. On this
+baseline it applied **zero** clefs anywhere in the pool and proposed five:
+
+- 575951-p1 s9: **treble→alto, Viola, fit 1.00** — the exact fix for the
+  largest label-named site, `applied: false` because the wrong clef was
+  *detected*, not absent;
+- brahms-p2 s4/s18/s8: treble→bass (Bassoon ×2, Timpani), fits 1.00 vs
+  0.926 / 0.571 / 0.000 — all blocked the same way;
+- brahms-p1 s12: tenor→bass, Cello, fit 1.00 vs 1.00 — **blocked, and
+  correctly so**: the shift classifier finds NO shift on that staff, i.e.
+  the detected tenor is RIGHT and the instrument-convention proposal is
+  wrong. This staff is the standing proof that "override a detected clef
+  with the instrument's default" is unsafe as a general rule.
+
+## 5. Reachability — where the ~1,900–2,700 actually sits
+
+Three mechanism families, three different levers, only some ownable here:
+
+| family | sites | mapped edits at stake (forensics row shifts, apportioned by shifted bars) | reachable by what |
+|---|---|---|---|
+| **A. Header treble misread, label-named** | 575951-p1 s9 Viola; brahms-p2 s4/s18/s8 (unmapped); mahler-p2 s16 (unmapped, genuine default) | ~108 mapped + unmapped shares | a TREBLE-ONLY override tier: instrument label read from the margin + instrument default ≠ treble + register fit not worse. Treble-only is what keeps brahms-p1's correct cello TENOR safe, and matches the measured `score_layouts` asymmetry (`SCORE_TREBLE_CONFLICT` −0.3 vs −1.5: an all-treble read is the documented failure mode and weak evidence) |
+| **B. Mid-staff spurious clef change, label-named** | 984073-p1 s9 Viola (`clefF` 0.59 at m4, ~38); brahms-p1 s9 1.Violine (`clefF` 0.32 at m3, the −12 core of its 359) | ~38 + a share of 359 | an instrument-conditioned mid-staff clef-change veto (a violin staff never changes clef; a viola staff never changes to bass) — a different lever from the brief's, same identity evidence |
+| **C. Score-order-named staves + arbitration losses** | ALL FOUR damaged staves of the two beethoven p2 rows (s8/s9/s19/s20 — margin unread, named "Violin" by score order, wrongly for the violas); dvorak-p5 s13 (tenor lost to bass 0.88 vs 0.92, both detected) | the **bulk**: ~1,000 of the mapped 1,869 (477 + 523) + dvorak's 116 | **nothing safe in this lever family.** Score-order naming driving clef correction is measured-rejected (closes the loop on its own mistake); the dvorak arbitration needs better clef evidence, not identity — the instrument default (bass) AGREES with the wrong reading there. ⚠️ The p2 wall is the PLATE, not the reader: the page images (both 984073 p.2 and 575951 p.2, rendered and inspected) print margin names ONLY for the seven wind/brass/timp staves — `Fl. Ob. Cl. Fag. Cor. Tr. Tp.` — and NOTHING at any string staff, in either system. `unresolved_labels` is empty because there was nothing to read. No margin-reader improvement can name these staves; the only identity sources left are score order (measured-rejected for clef work) and the dossier (excluded from this benchmark as truth leakage, valid in production) |
+
+**The honest headline so far**: the briefed gap-only lever reaches ~0 of the
+mapped damage (the one genuinely-defaulted damaged staff is score-order-named;
+every label-named damaged staff has a *detected* clef). A treble-only
+override tier (A) + a mid-staff veto (B) — both gated on label-read identity —
+reach roughly **150–350 mapped edits + the unmapped brahms-p2 share** (to be
+measured by A/B), out of the ~1,900–2,700 stake. Two corrections to the draft
+count made while verifying: mahler-p2 s16 carries only **5 noteheads**, under
+`MIN_NOTEHEADS` = 12, so the register evidence is too thin and the pass
+rightly abstains there in both arms; and dvorak-p5's cello is an in-cell
+clef change (see §2), out of reach of ANY staff-level lever. The remaining
+~1,100+ of family C is walled behind print that names no string staff, and
+that is a finding about the PLATE, not about clef logic or the reader.
+
+## 6. The implemented candidate — `OMR_INSTRUMENT_CLEF_DEFAULT`, default OFF
+
+Implemented in `tools/omr/clef_correction.py` + threaded through
+`contextual.apply_contextual_analysis` (param `instrument_clef_default`,
+`None` = read the env, so `eval_pipeline_clefs`' direct call runs the same
+configuration a transcription would) and `transcribe._contextual_call_kwargs`.
+Flag off: no new code path executes and no new JSON key is written — the
+default output is byte-identical by construction, pinned by
+`test_flag_off_is_the_shipped_behavior` and verified against a recorded
+fixture (a re-transcription of dvorak-p5 at the base commit reproduces the
+`scan-rebaseline` fixture's pages/contextual/direction blocks exactly, so the
+recorded widened-graft results ARE the flag-off arm).
+
+**Tier 1 — the treble override** (extends `correct_clefs_from_instruments`).
+A staff whose clef WAS read may be re-clefed only when every one of these
+holds; each gate is a staff in this pool that earned it:
+
+| gate | the staff that earned it |
+|---|---|
+| the clef in effect is **treble** — never any other read clef | brahms-p1 s12: cello reads TENOR correctly against a bass convention, register fit ties 1.0/1.0 — any non-treble override flips a correct staff. Treble-only is the measured `score_layouts` asymmetry (−0.3 vs −1.5) |
+| **uniformly** treble across the staff's measures | a mixed staff belongs to tier 2; one header delta would shift the other clef's measures too |
+| instrument named by a READ margin label (`instrument_source == "label"`) | the p2 violas: score-order names them "Violin" — the loop-closing failure measured on Beethoven 5 p.15 |
+| instrument in `TREBLE_OVERRIDE_INSTRUMENTS` = (Viola, Bassoon, Timpani) | strictly the verified damage sites; Cello/Contrabass deliberately absent (no treble-misread site; the pool's one cello error is one the convention AGREES with) |
+| proposal == the instrument's `default_clef` != treble | the wind-misread trap self-excludes: every recorded lexicon misread lands on a treble-default instrument, and a treble default can never propose |
+| register fit not worse (propose_clef's own rule) | — |
+
+⚠️ A confidence ceiling on the treble read was measured and REFUSED: misread
+trebles score 0.34 / 0.72 while a correct label-named treble scores 0.61
+(mahler-p3 s11) — no threshold separates them, and per the recorded lesson a
+clef threshold must never be tuned on one edition.
+
+**Tier 2 — the mid-staff change veto** (`veto_implausible_clef_changes`).
+`MID_STAFF_CHANGE_VETOES` = {(Violin, treble→bass), (Viola, alto→bass)} —
+strictly the verified sites. A vetoed change's measures are restated back
+under the carried clef (same key-signature-aware restatement the proposals
+use, factored into `_restate_measure`); an accepted change (cello→tenor,
+viola→treble) resets the carried clef and stands. Label-named staves only.
+
+44 unit tests in `test_clef_correction.py` pin every gate and both tables.
+
+## 7. The scan-pool A/B — and what the raw metric cannot see
+
+Arms: recorded `results-widened-graft.json` = flag off (the pipeline is
+deterministic — a base-commit re-transcription of dvorak-p5 reproduces the
+recorded fixture's pages/contextual/direction blocks byte-for-byte — and the
+flag-off code path is unchanged by construction), vs a full `--tag
+.clefdef-on` run, `OMR_SCAN_EVAL_WEIGHTS` pinned to
+`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`
+(`results-clefdef-on.json`; the four fired rows re-run after the
+restatement-sourcing fix in `results-clefdef-on-fixedrows.json` — identical
+row scores, so both files carry the same numbers).
+
+| row | off | on | Δ | export |
+|---|--:|--:|--:|---|
+| beethoven-984073-p1 | 1286 | 1285 | −1 | differs (veto fired: Viola alto restored m4–15, 17 noteheads) |
+| beethoven-984073-p2 | 4449 | 4449 | 0 | **byte-identical** |
+| beethoven-575951-p1 | 1362 | 1364 | +2 | differs (override fired: Viola treble→alto, 30 noteheads) |
+| beethoven-575951-p2 | 4471 | 4471 | 0 | **byte-identical** |
+| dvorak-p5 | 673 | 673 | 0 | **byte-identical** |
+| dvorak-p6 | 2611 | 2611 | 0 | **byte-identical** |
+| brahms-p1 | 3434 | 3433 | −1 | differs (veto fired: 1.Violine treble restored m3–7) |
+| brahms-p2 | 6610 | 6565 | **−45** | differs (3 overrides: Bassoon ×2, Timpani → bass) |
+| mahler-p2 | 1117 | 1117 | 0 | **byte-identical** |
+| mahler-p3 | 3069 | 3069 | 0 | **byte-identical** |
+| *bach (unpooled)* | *6735* | *6735* | *0* | **byte-identical** |
+| **10-row pooled** | **29,082 / 0.8387** | **29,037 / 0.8375** | **−45** | |
+
+Every row without a label-named firing is byte-identical — the abstention
+gates hold everywhere, including the entire family-C damage (which stays,
+honestly, unfixed).
+
+**The three viola/violin fixes score ±2 raw, and that is the metric failing,
+not the fix.** Opened with `dump_ops` on 575951-p1: with 18 truth parts
+against 12 pred staves, musicdiff's part-sequence alignment pairs pred part 9
+(Viola) with TRUTH part 9 (Eb Horn 2) — so the viola staff's cost (84: 60
+whole-measure + 24 wrong-note) is computed against a horn part and is
+IDENTICAL whether the viola's pitches are wholesale +6-wrong or exactly
+right. The +2 is `extrasymboledit`: the corrected Eb's print explicit flats
+because the staff's exported signature still reads 0. This is the forensics'
+§2a "second-order damage" made concrete: **on floor-bearing rows the raw
+metric is blind to single-staff content fixes in the strings.**
+
+The condensation arm (fair 1:1 pairing; same tool, both arms re-scored in
+this worktree — the off column reproduces the forensics' graft rerun exactly:
+explained 416/470/1636) prices what the raw pool cannot see
+(`results-condensation-off.json` / `-on.json`):
+
+| row | condensed off | condensed on | Δ |
+|---|--:|--:|--:|
+| beethoven-984073-p1 | 870 | 834 | **−36** |
+| beethoven-575951-p1 | 892 | 802 | **−90** |
+| brahms-p1 | 1798 | 1670 | **−128** |
+
+**−254 condensed edits over the three rows the raw pool scores as ±2** —
+inside the reachability estimate's 150–350 band — plus the raw-visible −45 on
+brahms-p2 (whose 27 pred parts against 21 truth pair the bassoon/timpani
+staves, so its fix IS raw-visible). brahms-p2's condensed column is not
+re-scorable here (no `staves` map; the forensics built its condensed truth
+from `systems_as_printed` in session scratch).
+
+### The restatement-sourcing lesson (measured, then fixed, then measured again)
+
+The first ON run restated the 575951-p1 viola's letters correctly and the raw
+score still rose +2: the staff's own key signature was read as 1 flat,
+REJECTED by the cross-page vote ("differs from the system's 3 flats"),
+carried as zero — so every restated E/A/B lost the flat C minor gives it
+(E3 where truth has Eb3). `_restatement_alterations` now takes the majority
+signature among the system's READ staves for a concert-pitch, non-percussion
+staff whose own signature was not read; read signatures, transposers and
+timpani keep their own. The re-run changes the restated pitches to the
+correct spellings (m1 E3 → Eb3, verified) and the RAW row score does not move
+— the same part-mispairing blindness — but the condensed column above is
+measured WITH the fix, and the exported accidentals are now right for a
+reader. ⚠️ The staff's exported key-signature FIELD still says 0 flats:
+overriding the vote's explicit rejection is the vote's call, not this
+lever's, so those `wrong keysig` edits are deliberately left on the table.
+
+## 8. Remaining gates (in flight)
+
+1. ✅ Engraved 11-work benchmark, run WITH the flag ON (`--omr-ned`, never
+   `--record`, own `--work-dir`): **pooled 0.1306 / 2745 edits — digit-for-
+   digit the recorded current figure, every per-work row matching CLAUDE.md's
+   table exactly — with ZERO firings across all 11 works** (0 overrides, 0
+   vetoes; per-work counts read from each `.omr.json`'s contextual block).
+   The renders' margins are Surya-read (17 labels on Beethoven 5) and their
+   clefs detect correctly, so every proposal path abstains; with no firing
+   the flag's export paths never execute and a default run is byte-identical
+   by construction.
+2. ✅ `eval_pipeline_clefs`, measured flag off vs on at this commit:
+   `--contextual` **42/49 both arms, byte-identical summaries, zero
+   corrections applied either way**; `--dossier` **45/49 both arms,
+   identical**. (The task's quoted 69/69 and 50/52 belong to an earlier
+   corpus/pipeline state — the harness at `0487be1f` reports 42/49 and 45/49
+   with the flag OFF, i.e. before this branch does anything; the gate that
+   belongs to THIS change is off-vs-on equality, and it holds exactly. The
+   eval pages' wrong staves are `default`-source or fail the gates — e.g.
+   p15's misread strings carry score-order names only — so the tier
+   correctly never fires there.)
+3. The `clef_source` provenance bug (§3) is recorded and left unfixed here —
+   default-path behavior. Candidate fix: refresh `clef_source` alongside the
+   clef in the furniture dropper's lead-drop branch.
+
+## 9. Where this lands
+
+**Every firing in the whole verification is at a verified-pattern site — 4
+treble overrides (575951-p1 Viola; brahms-p2 Bassoon ×2 + Timpani) and 3
+change vetoes (984073-p1 Viola; brahms-p1 1.Violine; brahms-p2 s11 Viola —
+this last one unpredicted, found by the tier itself: alto header 0.90,
+spurious `clefF` 0.41 at m5, the exact designed pattern) — and zero anywhere
+else: seven scan rows, the Bach stress row and all eleven engraved works are
+byte-identical under the flag.**
+
+Value, honestly stated against the brief's ~1,900–2,700 estimate:
+
+- **raw 10-row pool: −45** (29,082 → 29,037; 0.8387 → 0.8375), all on
+  brahms-p2, whose parts pair;
+- **plus −254 condensed edits** on the three rows where the raw metric is
+  provably blind to the fix (part-mispairing under the condensation floor —
+  §7). If Sean adopts the forensics' lever #2 (report the condensed column),
+  this candidate's value roughly quadruples on the same bytes;
+- the remaining ~1,100+ of the estimate is family C: staves the PLATE never
+  names (page images verified), reachable only by a dossier in production,
+  plus dvorak-p5's in-cell clef change, unrepresentable in the
+  one-clef-per-cell model. Neither is a clef-logic problem.
+
+Priced refusals, for the record: instrument-default override of any detected
+NON-treble clef (breaks brahms-p1's correct cello tenor); a confidence
+ceiling on the treble read (0.61-correct vs 0.72-wrong — no separating
+threshold); score-order identity driving anything (measured-rejected prior);
+Viola alto→treble in the veto table (musically real); overriding the
+key-signature vote's rejection with the system majority for the EXPORTED
+signature (the vote's call — the majority is used only to spell restated
+pitches).

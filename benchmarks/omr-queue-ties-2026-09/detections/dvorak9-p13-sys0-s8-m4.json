@@ -1,0 +1,96 @@
+{
+ "cell_id": "dvorak9-p13-sys0-s8-m4",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 5,
+    "y": 430,
+    "w": 1703,
+    "h": 80
+   },
+   "confidence": 0.59,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 12,
+    "y": 0,
+    "w": 1698,
+    "h": 59
+   },
+   "confidence": 0.515,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D2",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 1,
+    "y": 523,
+    "w": 1700,
+    "h": 87
+   },
+   "confidence": 0.512,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D3",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 4,
+    "y": 750,
+    "w": 1706,
+    "h": 69
+   },
+   "confidence": 0.404,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D4",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 1,
+    "y": 185,
+    "w": 1709,
+    "h": 86
+   },
+   "confidence": 0.288,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D5",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 0,
+    "y": 49,
+    "w": 1706,
+    "h": 115
+   },
+   "confidence": 0.279,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D6",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 2,
+    "y": 151,
+    "w": 1708,
+    "h": 114
+   },
+   "confidence": 0.258,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

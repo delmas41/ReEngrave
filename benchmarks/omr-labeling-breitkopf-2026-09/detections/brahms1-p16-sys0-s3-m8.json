@@ -1,0 +1,109 @@
+{
+  "cell_id": "brahms1-p16-sys0-s3-m8",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 173,
+      "y": 847,
+      "w": 138,
+      "h": 120,
+      "x_center": 242,
+      "y_center": 907,
+      "confidence": 0.7249944806098938,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "flag8thDown",
+      "category": "flag",
+      "x": 183,
+      "y": 864,
+      "w": 130,
+      "h": 310,
+      "x_center": 248,
+      "y_center": 1019,
+      "confidence": 0.6695703864097595,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 437,
+      "y": 816,
+      "w": 76,
+      "h": 196,
+      "x_center": 475,
+      "y_center": 914,
+      "confidence": 0.6335411667823792,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 439,
+      "y": 818,
+      "w": 108,
+      "h": 197,
+      "x_center": 493,
+      "y_center": 916,
+      "confidence": 0.81681227684021,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 681,
+      "y": 813,
+      "w": 106,
+      "h": 203,
+      "x_center": 734,
+      "y_center": 914,
+      "confidence": 0.7529461979866028,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 680,
+      "y": 509,
+      "w": 138,
+      "h": 61,
+      "x_center": 749,
+      "y_center": 539,
+      "confidence": 0.6398687958717346,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 910,
+      "y": 744,
+      "w": 115,
+      "h": 306,
+      "x_center": 967,
+      "y_center": 897,
+      "confidence": 0.7148986458778381,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 1236,
+      "y": 813,
+      "w": 117,
+      "h": 193,
+      "x_center": 1294,
+      "y_center": 909,
+      "confidence": 0.7241200804710388,
+      "pitch": null
+    }
+  ]
+}

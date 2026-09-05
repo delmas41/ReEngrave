@@ -1,0 +1,18 @@
+{
+  "pass_name": "hollow noteheads",
+  "note": "Draw every open (hollow) notehead the detector missed. Half notes are slot 1; whole notes slot 2. Click a notehead to place a staff-sized box — it picks on-line vs in-space for you. SHORT_BAR_HINTS.txt says how many beats each bar is short.",
+  "classes": [
+    {
+      "label": "half notehead",
+      "on_line": "noteheadHalfOnLine",
+      "in_space": "noteheadHalfInSpace",
+      "click_box": true
+    },
+    {
+      "label": "whole notehead",
+      "on_line": "noteheadWholeOnLine",
+      "in_space": "noteheadWholeInSpace",
+      "click_box": true
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+ "cell_id": "mahler5-p177-sys0-s5-m3",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1264,
+    "y": 601,
+    "w": 130,
+    "h": 95
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 1209,
+    "y": 835,
+    "w": 231,
+    "h": 265
+   },
+   "confidence": 0.9124,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 1083,
+    "y": 0,
+    "w": 203,
+    "h": 172
+   },
+   "confidence": 0.8739,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 281,
+    "y": 914,
+    "w": 193,
+    "h": 189
+   },
+   "confidence": 0.7374,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 206,
+    "y": 0,
+    "w": 119,
+    "h": 113
+   },
+   "confidence": 0.6865,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M4",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 110,
+    "y": 916,
+    "w": 146,
+    "h": 182
+   },
+   "confidence": 0.6312,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 286,
+    "y": 552,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1099,
+    "y": 484,
+    "w": 116,
+    "h": 321
+   },
+   "notes": ""
+  }
+ ]
+}

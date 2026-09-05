@@ -1,0 +1,31 @@
+{
+ "cell_id": "beet5hr-p51-sys0-s12-m4",
+ "candidates": [
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8434,
+   "ink": 0.4132,
+   "bbox": {
+    "x": 159,
+    "y": 1107,
+    "w": 244,
+    "h": 296
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.714,
+   "ink": 0.3963,
+   "bbox": {
+    "x": 49,
+    "y": 1115,
+    "w": 257,
+    "h": 306
+   }
+  }
+ ]
+}

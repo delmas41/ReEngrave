@@ -1,0 +1,96 @@
+{
+  "cell_id": "dvorak9-p13-sys0-s13-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:29:59+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 352,
+        "y": 243,
+        "w": 1678,
+        "h": 108
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 302,
+        "y": 1185,
+        "w": 907,
+        "h": 139
+      },
+      "human_bbox": null,
+      "confidence": 0.717,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 303,
+        "y": 1165,
+        "w": 1745,
+        "h": 164
+      },
+      "human_bbox": null,
+      "confidence": 0.369,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 309,
+        "y": 1098,
+        "w": 1739,
+        "h": 226
+      },
+      "human_bbox": null,
+      "confidence": 0.341,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 309,
+        "y": 1244,
+        "w": 915,
+        "h": 89
+      },
+      "human_bbox": null,
+      "confidence": 0.28,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

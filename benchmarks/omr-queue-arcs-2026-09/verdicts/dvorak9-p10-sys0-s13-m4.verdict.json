@@ -1,0 +1,62 @@
+{
+  "cell_id": "dvorak9-p10-sys0-s13-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:28:12+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 316,
+        "y": 846,
+        "w": 1558,
+        "h": 202
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 277,
+        "y": 196,
+        "w": 1622,
+        "h": 157
+      },
+      "human_bbox": null,
+      "confidence": 0.757,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 1900,
+        "h": 93
+      },
+      "human_bbox": null,
+      "confidence": 0.472,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

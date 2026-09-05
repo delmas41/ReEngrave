@@ -1,0 +1,45 @@
+{
+ "cell_id": "dvorak9-p13-sys0-s12-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 650,
+   "y": 0,
+   "w": 251,
+   "h": 211,
+   "confidence": 0.891
+  },
+  {
+   "id": "D1",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1563,
+   "y": 0,
+   "w": 255,
+   "h": 214,
+   "confidence": 0.863
+  },
+  {
+   "id": "D2",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 366,
+   "y": 1128,
+   "w": 1679,
+   "h": 110,
+   "confidence": 0.567
+  },
+  {
+   "id": "D3",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 166,
+   "y": 829,
+   "w": 1875,
+   "h": 78,
+   "confidence": 0.253
+  }
+ ]
+}

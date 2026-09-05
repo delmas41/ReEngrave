@@ -1,7 +1,7 @@
 {
   "cell_id": "brahms1-p4-sys0-s1-m3",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:18:01+00:00",
+  "labeled_at_utc": "2026-09-03T23:51:06+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -27,9 +27,58 @@
         "h": 99
       },
       "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 398,
+        "y": 152,
+        "w": 99,
+        "h": 99
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 414,
+        "y": 400,
+        "w": 99,
+        "h": 99
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 115,
+        "y": 75,
+        "w": 103,
+        "h": 327
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 109,
+        "y": 87,
+        "w": 109,
+        "h": 326
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "completion"
   ]
 }

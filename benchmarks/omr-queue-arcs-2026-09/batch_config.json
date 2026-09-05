@@ -1,0 +1,8 @@
+{
+ "pass_name": "ties+slurs-reconcile",
+ "note": "adjudicate the teacher's unmatched tie / slur boxes: t = real, f = not (fix the class with c if it is the OTHER arc). Draw any tie / slur BOTH missed.",
+ "classes": [
+  "tie",
+  "slur"
+ ]
+}

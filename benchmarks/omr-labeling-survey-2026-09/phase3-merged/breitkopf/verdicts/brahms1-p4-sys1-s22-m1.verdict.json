@@ -1,0 +1,19 @@
+{
+ "cell_id": "brahms1-p4-sys1-s22-m1",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 888,
+    "y": 492,
+    "w": 195,
+    "h": 73
+   },
+   "notes": ""
+  }
+ ]
+}

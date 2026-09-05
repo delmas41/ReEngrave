@@ -1,0 +1,465 @@
+{
+  "generated_by": "benchmarks/omr-scan-e2e-2026-09/condensation_arm.py",
+  "arm": "condensed",
+  "headline_is": "the RAW column in results.json / RESULTS.md",
+  "git_head": "97aec907",
+  "raw_drift_against_results_json": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1",
+      "results_json": {
+        "omr_ned": 0.7119476268412439,
+        "omr_ed": 1305,
+        "pred_symbols": 769
+      },
+      "measured_here": {
+        "omr_ned": 0.7152391546162402,
+        "omr_ed": 1286,
+        "pred_symbols": 734
+      }
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1",
+      "results_json": {
+        "omr_ned": 0.7479423868312757,
+        "omr_ed": 1454,
+        "pred_symbols": 880
+      },
+      "measured_here": {
+        "omr_ned": 0.7625979843225084,
+        "omr_ed": 1362,
+        "pred_symbols": 722
+      }
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1",
+      "results_json": {
+        "omr_ned": 0.9351077313054499,
+        "omr_ed": 3689,
+        "pred_symbols": 1862
+      },
+      "measured_here": {
+        "omr_ned": 0.9191648822269807,
+        "omr_ed": 3434,
+        "pred_symbols": 1653
+      }
+    }
+  ],
+  "pooled": {
+    "raw": {
+      "omr_ned": 0.8308743169398907,
+      "omr_ed": 6082,
+      "truth_symbols": 4211,
+      "pred_symbols": 3109,
+      "categories": {
+        "wrong note": 1183,
+        "wrong note head": 156,
+        "wrong flag/beam": 28,
+        "wrong dot": 4,
+        "wrong accidental": 3,
+        "wrong ornament": 10,
+        "wrong clef": 34,
+        "wrong timesig": 21,
+        "wrong keysig": 90,
+        "wrong tempo": 3,
+        "wrong barline": 3,
+        "wrong direction": 120,
+        "wrong dynamic": 50,
+        "wrong slur": 42,
+        "entire measure insert/delete": 2308,
+        "entire staff insert/delete": 2027
+      }
+    },
+    "condensed": {
+      "omr_ned": 0.5021864861052334,
+      "omr_ed": 3560,
+      "truth_symbols": 3980,
+      "pred_symbols": 3109,
+      "categories": {
+        "wrong note": 1828,
+        "wrong note head": 170,
+        "wrong flag/beam": 143,
+        "wrong dot": 17,
+        "wrong accidental": 30,
+        "wrong tie": 51,
+        "wrong articulation": 1,
+        "wrong ornament": 8,
+        "wrong lyric": 66,
+        "wrong clef": 4,
+        "wrong timesig": 21,
+        "wrong keysig": 57,
+        "wrong barline": 14,
+        "wrong direction": 84,
+        "wrong dynamic": 58,
+        "wrong slur": 102,
+        "entire measure insert/delete": 906
+      }
+    },
+    "edits_explained": 2522,
+    "edit_share_explained": 0.4147
+  },
+  "skipped": {},
+  "rows": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1",
+      "allocation": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          12
+        ],
+        [
+          13
+        ],
+        [
+          14
+        ],
+        [
+          15
+        ],
+        [
+          16
+        ],
+        [
+          17
+        ]
+      ],
+      "allocation_provenance": {
+        "source": "works.json staves[].parts (hand-read off the scan)",
+        "printed_staff_names": [
+          "Flauti",
+          "Oboi",
+          "Clarinetti in B",
+          "Fagotti",
+          "Corni in Es",
+          "Trombe in C",
+          "Timpani in C.G.",
+          "Violino I",
+          "Violino II",
+          "Viola",
+          "Violoncello",
+          "Basso"
+        ]
+      },
+      "reference_parts": 18,
+      "condensed_parts": 12,
+      "printed_staves": 12,
+      "condensed_truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/clef-string-staves/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.truth-condensed.musicxml",
+      "sha256_16": {
+        "pred": "c4f6e8f670c80a6e",
+        "truth_raw": "f1565aa42e1a1bdd",
+        "truth_condensed": "786dc9ebbe3625e8"
+      },
+      "raw": {
+        "omr_ned": 0.7152391546162402,
+        "omr_ed": 1286,
+        "truth_symbols": 1064,
+        "pred_symbols": 734,
+        "categories": {
+          "wrong note": 182,
+          "wrong note head": 74,
+          "wrong flag/beam": 11,
+          "wrong ornament": 7,
+          "wrong clef": 12,
+          "wrong timesig": 6,
+          "wrong keysig": 26,
+          "wrong tempo": 1,
+          "wrong direction": 16,
+          "wrong dynamic": 9,
+          "entire measure insert/delete": 429,
+          "entire staff insert/delete": 513
+        }
+      },
+      "condensed": {
+        "omr_ned": 0.498567335243553,
+        "omr_ed": 870,
+        "truth_symbols": 1011,
+        "pred_symbols": 734,
+        "categories": {
+          "wrong note": 353,
+          "wrong note head": 72,
+          "wrong flag/beam": 22,
+          "wrong accidental": 3,
+          "wrong tie": 7,
+          "wrong ornament": 3,
+          "wrong lyric": 33,
+          "wrong timesig": 6,
+          "wrong keysig": 24,
+          "wrong dynamic": 13,
+          "wrong slur": 1,
+          "entire measure insert/delete": 333
+        }
+      },
+      "edits_explained": 416,
+      "edit_share_explained": 0.3235
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1",
+      "allocation": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          12
+        ],
+        [
+          13
+        ],
+        [
+          14
+        ],
+        [
+          15
+        ],
+        [
+          16
+        ],
+        [
+          17
+        ]
+      ],
+      "allocation_provenance": {
+        "source": "works.json staves[].parts (hand-read off the scan)",
+        "printed_staff_names": [
+          "Flauti",
+          "Oboi",
+          "Clarinetti in B",
+          "Fagotti",
+          "Corni in Es",
+          "Trombe in C",
+          "Timpani in C.G.",
+          "Violino I",
+          "Violino II",
+          "Viola",
+          "Violoncello",
+          "Basso"
+        ]
+      },
+      "reference_parts": 18,
+      "condensed_parts": 12,
+      "printed_staves": 12,
+      "condensed_truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/clef-string-staves/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.truth-condensed.musicxml",
+      "sha256_16": {
+        "pred": "a80f48bf78b4aaa6",
+        "truth_raw": "5e613a604be12acf",
+        "truth_condensed": "841e611dac01db80"
+      },
+      "raw": {
+        "omr_ned": 0.7625979843225084,
+        "omr_ed": 1362,
+        "truth_symbols": 1064,
+        "pred_symbols": 722,
+        "categories": {
+          "wrong note": 167,
+          "wrong note head": 78,
+          "wrong flag/beam": 7,
+          "wrong ornament": 3,
+          "wrong clef": 8,
+          "wrong timesig": 8,
+          "wrong keysig": 25,
+          "wrong tempo": 1,
+          "wrong direction": 16,
+          "wrong dynamic": 10,
+          "entire measure insert/delete": 526,
+          "entire staff insert/delete": 513
+        }
+      },
+      "condensed": {
+        "omr_ned": 0.5147143681477208,
+        "omr_ed": 892,
+        "truth_symbols": 1011,
+        "pred_symbols": 722,
+        "categories": {
+          "wrong note": 396,
+          "wrong note head": 66,
+          "wrong flag/beam": 21,
+          "wrong accidental": 3,
+          "wrong tie": 10,
+          "wrong articulation": 1,
+          "wrong ornament": 5,
+          "wrong lyric": 30,
+          "wrong clef": 1,
+          "wrong timesig": 8,
+          "wrong keysig": 21,
+          "wrong dynamic": 12,
+          "wrong slur": 2,
+          "entire measure insert/delete": 316
+        }
+      },
+      "edits_explained": 470,
+      "edit_share_explained": 0.3451
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1",
+      "allocation": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          8
+        ],
+        [
+          9,
+          10
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          13,
+          14
+        ],
+        [
+          15
+        ],
+        [
+          16
+        ],
+        [
+          17
+        ],
+        [
+          18
+        ],
+        [
+          19
+        ],
+        [
+          20
+        ]
+      ],
+      "allocation_provenance": {
+        "source": "works.json staves[].parts (hand-read off the scan)",
+        "printed_staff_names": [
+          "2 Floten",
+          "2 Oboen",
+          "2 Klarinetten in B",
+          "2 Fagotte",
+          "Kontrafagott",
+          "4 Horner in C 1./2.",
+          "4 Horner in Es 3./4.",
+          "2 Trompeten in C",
+          "Pauken in C u.G",
+          "1. Violine",
+          "2. Violine",
+          "Bratsche",
+          "Violoncell",
+          "Kontrabass"
+        ]
+      },
+      "reference_parts": 21,
+      "condensed_parts": 14,
+      "printed_staves": 14,
+      "condensed_truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/clef-string-staves/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.truth-condensed.musicxml",
+      "sha256_16": {
+        "pred": "01020ac6d85e079e",
+        "truth_raw": "039affd65f8ed859",
+        "truth_condensed": "ee0e00716a7488bf"
+      },
+      "raw": {
+        "omr_ned": 0.9191648822269807,
+        "omr_ed": 3434,
+        "truth_symbols": 2083,
+        "pred_symbols": 1653,
+        "categories": {
+          "wrong note": 834,
+          "wrong note head": 4,
+          "wrong flag/beam": 10,
+          "wrong dot": 4,
+          "wrong accidental": 3,
+          "wrong clef": 14,
+          "wrong timesig": 7,
+          "wrong keysig": 39,
+          "wrong tempo": 1,
+          "wrong barline": 3,
+          "wrong direction": 88,
+          "wrong dynamic": 31,
+          "wrong slur": 42,
+          "entire measure insert/delete": 1353,
+          "entire staff insert/delete": 1001
+        }
+      },
+      "condensed": {
+        "omr_ned": 0.4979230130157851,
+        "omr_ed": 1798,
+        "truth_symbols": 1958,
+        "pred_symbols": 1653,
+        "categories": {
+          "wrong note": 1079,
+          "wrong note head": 32,
+          "wrong flag/beam": 100,
+          "wrong dot": 17,
+          "wrong accidental": 24,
+          "wrong tie": 34,
+          "wrong lyric": 3,
+          "wrong clef": 3,
+          "wrong timesig": 7,
+          "wrong keysig": 12,
+          "wrong barline": 14,
+          "wrong direction": 84,
+          "wrong dynamic": 33,
+          "wrong slur": 99,
+          "entire measure insert/delete": 257
+        }
+      },
+      "edits_explained": 1636,
+      "edit_share_explained": 0.4764
+    }
+  ]
+}

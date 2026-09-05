@@ -1,18 +1,23 @@
 {
-  "pass_name": "hollow noteheads",
-  "note": "Draw every open (hollow) notehead the detector missed. Half notes are slot 1; whole notes slot 2. Click a notehead to place a staff-sized box — it picks on-line vs in-space for you. SHORT_BAR_HINTS.txt says how many beats each bar is short.",
+  "pass_name": "completion",
+  "note": "Box EVERY symbol in the cell, not just one kind. BOX slurs, ties and hairpins — they are in the detector's class space and an unboxed one trains as background. SKIP only staff lines, stems and beams (classical CV finds those, and YOLO cannot bbox a thin line) and free text (sempre, dolce, tempo marks, instrument names). Slots 1-9 have number keys; the rest are clickable in the pass bar, and the full picker button reaches anything not listed. This pass is what makes a wider --score possible: --score-classes all --score-inspected-for completion only counts cells stamped with this pass name.",
   "classes": [
-    {
-      "label": "half notehead",
-      "on_line": "noteheadHalfOnLine",
-      "in_space": "noteheadHalfInSpace",
-      "click_box": true
-    },
-    {
-      "label": "whole notehead",
-      "on_line": "noteheadWholeOnLine",
-      "in_space": "noteheadWholeInSpace",
-      "click_box": true
-    }
+    { "label": "black notehead",
+      "on_line": "noteheadBlackOnLine",
+      "in_space": "noteheadBlackInSpace",
+      "click_box": true },
+    { "name": "augmentationDot", "label": "aug. dot", "click_box": true },
+    { "name": "slur", "label": "slur" },
+    { "name": "tie", "label": "tie" },
+    { "name": "dynamicCrescendoHairpin", "label": "cresc. hairpin" },
+    { "name": "dynamicDiminuendoHairpin", "label": "dim. hairpin" },
+    { "name": "rest8th", "label": "8th rest" },
+    { "name": "restQuarter", "label": "quarter rest" },
+    { "name": "accidentalFlat", "label": "flat" },
+    { "name": "accidentalSharp", "label": "sharp" },
+    { "name": "accidentalNatural", "label": "natural" },
+    { "name": "rest16th", "label": "16th rest" },
+    { "name": "restHalf", "label": "half rest" },
+    { "name": "restWhole", "label": "whole rest" }
   ]
 }

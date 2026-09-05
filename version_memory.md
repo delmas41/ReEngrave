@@ -5,6 +5,338 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — Choir-grouping cues SHIPPED default-ON; Bach re-admitted to the pool
+
+Sean's coupled call. `OMR_CHOIR_GROUPING` defaults ON
+(`system_grouping._choir_grouping_enabled`, opt-out 0/false/no/off): cue B
+(pair-local left-edge merge) + cue C (grouped-system open-score guard),
+diagnosed and priced on `claude/bach-choir-grouping` — Bach 6→2 systems
+[12,12], 122→11 cells vs true 10, row 0.9241→0.8152; byte-identical on the
+10 pooled scan rows, the 11-work engraved benchmark, and the boulanger
+canary; 969-page probe hand-adjudicated 10/10 changed pages toward truth, 0
+false merges. The Bach row's `pooled` flag flips back to true in the same
+event — a BENCHMARK BOUNDARY: the pool is 11 rows under the composed
+default config (tilt ON × choir ON) from the re-stamp onward, and no pooled
+figure crosses the boundary. The re-stamp run (one fresh default-config
+pass, all 11 rows, graft weights) stamps the new canonical figure; recorded
+in the addendum beside WIDENED_BASELINE_2026-09-04.md when it lands.
+
+## 2026-09-04 — Cell-grid localization SHIPPED default-ON (the tilt fix)
+
+Sean's call, same day the widened gate priced it: `OMR_CELL_LINE_TRACE` now
+defaults ON (`measure_extractor._cell_line_trace_enabled`, opt-out via
+`0/false/no/off`). Deployed default-config scan baseline moves to the
+flag-on arm's figures: **pooled 0.8345 / 28849 over the 10-row pool** (was
+0.8387 / 29082 flag-off; same graft weights — the flag is the only
+variable, and the harness is byte-deterministic). Engraved figures
+unchanged (no-op by construction, byte-identical A/B). Flag tests updated
+to pin the new default; the flag-OFF contract every labeled batch depends
+on (grid = `staff.line_ys - y0`) is still pinned via explicit `0`. Blast
+radius recorded in the knobs table (key-sig slot-fit interaction, net −15;
++2..+7 noise on three low-exposure rows). Evidence:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md`.
+
+## 2026-09-04 — The widened scan gate prices the tilt fix: −233 edits, on the exposure
+
+The measured-but-unshipped `OMR_CELL_LINE_TRACE` (cell-grid localization, the
+rigid comb) was A/B'd on the widened 11-row scan gate — the first tree holding
+both the gate and the flag (`claude/tilt-pricing-widened` = `0487be1f` merged
+with `claude/tilt-crosscheck`). The old benchmark's null was the corpus: the
+widened pool carries **8.6%** of cells past the parity-flip line (was 0.4%),
+and the flag is worth **pooled 0.8387 → 0.8345, −233 edits**, −217 of them on
+exactly the three tilted rows, zero-exposure row unchanged to the edit,
+engraved control byte-identical, exact-pitch recall +4.8pts on the most
+exposed edition. Verdict + tables:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md` —
+recommendation is default-ON with no domain gating; the flag stays OFF until
+Sean decides. The named ship prerequisite also landed (`be884ff8`):
+`recut_cells.frame_mismatch` compares the frame's own (unlocalized) grid,
+accepts either dialect a manifest can speak, and `_nostaff.png` — which IS
+grid-derived — is re-erased on the manifest's authority, all pinned by three
+tests on a page that provably localizes.
+
+---
+
+## 2026-09-04 — Scan gate: widened 5 → 11 rows; Bach excluded from the pool
+
+Six Sean-verified rows promoted (commit `84a5ccac`; drafting on branch
+`claude/scan-gate-rows`, stories in scan-e2e VERIFICATION.md), the first
+widened baselines measured for both checkpoints (merge `04eb8050`,
+WIDENED_BASELINE_2026-09-04.md — the ship decision HOLDS on the deeper
+gate), and then, at Sean's decision, the Bach stress row was excluded from
+the default pooled figure via a new `"pooled": false` row flag in works.json
++ scan_eval.py support (stress rows run and report per-row, never pool).
+Rationale: its OMR-NED measures page-structure parsing (122 detected
+measures vs 10) and whole-measure amplification there charges recognition
+improvements as regressions — the Boulanger call, repeated. **Canonical
+scan-gate baselines: prior-prod (hollow-ft) 0.8457 / 29081; production
+(hollow-graft-shift09) 0.8387 / 29082, over 10 pooled rows.** All pre-widening
+figures (0.7517 / 0.7493) are 5-row history; no comparison crosses either
+boundary. Validation: the pool-exclusion logic re-scored the committed
+widened-graft fixtures and reproduced the recorded 10-row figures.
+
+## 2026-09-04 — Design note: position grammar over the mark alphabet
+
+Sean's observation (ties/slurs, then accents/hairpins and tenuto/ledger
+lines) generalized into a written principle:
+[docs/position-grammar-confusables-2026-09-04.md](docs/position-grammar-confusables-2026-09-04.md).
+Engraved music reuses a tiny mark alphabet — dot, stroke, wedge, arc, bowl,
+digit — and identity is position grammar over the staff lattice, not shape;
+the detector proposes ink events with a class PRIOR, a downstream layer
+assigns or vetoes identity. Nine shipped precedents cited with their numbers;
+six design rules (class space stays 208 / families closed under
+confusability / veto-impossible-first / anchors before grammar /
+matches-nothing-is-an-output / never tune positionally on one edition); an
+inventory of the confusable families with measured discriminators; and the
+next six opportunities each tied to an existing measured hook. First
+consumer: the round-6 specialist/labeling campaign via family closures and
+adjudication-batch shape.
+
+## 2026-09-04 — Scan weights: the round-5 head-graft candidate SHIPPED
+
+**Why:** rounds 3–5 of the scan-weights campaign established that fine-tuning
+on the ~750-cell scan-label corpus deletes whole classes — tie/slur/beam/
+augmentationDot/accidentalFlat/restWhole/ledgerLine go to exactly zero — under
+every method tried (eleven arms: the ship's own recipe, no-warmup, low LR,
+freeze, plain controls, teacher rehearsal/distillation at two confidences).
+The fix that survived is surgery, not training: keep only the hollow
+fine-tune's seven notehead-class head rows (`model.22.cv3.{0,1,2}.2` is the
+only per-class place in a YOLOv8 head), graft them onto production, and bake a
+per-class confidence floor into those rows' biases (`--bias-shift 0.9` ≈
+raising only those classes' threshold 0.25 → 0.45, since the pipeline has one
+global threshold).
+
+**What:** `transcribe.DEFAULT_WEIGHTS` — the scan side of weight routing —
+now points at `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`
+(byte-identical to `omr-weights/round5-merged/d25e0_graftprod_shift0.9.pt`,
+sha256 `2cb6eb3e…3126`; copies in both `omr-weights/` and
+`tools/omr/training/data/weights/`). The engraved side (`ENGRAVED_WEIGHTS`)
+is untouched. First checkpoint in three rounds to beat the 09-03 production
+on every measure of all three gate axes: half-noteheads 27 → 31,
+pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782, dense notehead
+recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 with 4 of 5
+rows improving, 28 classes held with 0 collapsed; element counts move toward
+truth on ties (60 → 97 of 271) and rests (577 → 589 of 972). The ship was
+gated on a fresh determinism probe: the scan-e2e harness is byte-deterministic
+(identical outputs across runs, worktrees and days — noise floor exactly
+0.0000), so the delta is a real property of the weights. Sean approved the
+ship 2026-09-04.
+
+**Records:** `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`
+(lands with branch `claude/scan-weights-round4-continue-074940`) and
+`benchmarks/omr-scan-e2e-2026-09/DETERMINISM_2026-09-04.md` (branch
+`claude/scan-e2e-determinism`). The prior scan production
+(`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`) stays on disk under its own
+name — in-flight benchmark branches that pin "production" by explicit path
+are unaffected, and their recorded 0.7517 baseline still names that file. The
+web-app container picks the repoint up on its next
+`docker compose build backend`.
+
+---
+## 2026-09-04 — round 5: the fine-tune deletes CLASSES, and the fix is head surgery
+
+- **"Every fine-tune degrades the base" turned out to mean whole class families going to
+  exactly zero.** Not suppression and not a threshold artifact — every fine-tune's MEDIAN
+  CONFIDENCE IS HIGHER than production's (0.669-0.698 vs 0.604) while raw detections fall
+  3204 → 806-1365. tie 249→0, slur 184→0, beam 188→0, augmentationDot 150→0,
+  accidentalFlat 80→0, restWhole 396→0, ledgerLine 288→14, with noteheads holding at
+  80-100%. The corpus is the mechanism: 3871 human boxes contain **0 `beam` and 5
+  `ledgerLine`**, and only 164 of 591 cells ever saw a rich palette.
+- ⚠️ **`beam` and `ledgerLine` are CONSUMED by the pipeline**, against what the labeling
+  policy assumed. `rhythm.resolve_rhythms_for_cell` keeps a YOLO beam wherever no CV beam
+  overlaps (worth 0.1917 → 0.1861) and the ledger-ladder arbitration reads `ledgerLine`
+  detections directly (0.1506 → 0.1431). Both rules were dead on every round-3/4/5
+  candidate, silently, because neither has a test that fails when its input vanishes.
+  That is now gate axis 3.
+- ⚠️ **`restWhole` was nearly exempted from that gate on prose.** 396 over five pages
+  reads as absurd and the round-2 audit names it a slur-arc false-positive mode. Counted:
+  those pages carry **801 resting bars** and production reads 108/88/11/96/93 — under the
+  printed count on every page. The exemption is gone.
+- **ELEVEN METHOD ARMS, ALL DEAD.** The 896 ship's recipe on the new labels (the control
+  round 4 never ran), warmup off, warmup off + lr 1e-5, low LR, a frozen backbone, a
+  matched no-teacher control, and teacher rehearsal in both scopes at conf 0.50 and 0.25.
+  The pre-hollow BASE loses nothing, so it is caused by the fine-tune, not inherited.
+  **More labeling will not fix it** — round 4 tested that by hand (3%) and round 5 tested
+  the perfect version with 3417 teacher boxes (nothing).
+- **The fix is surgery.** A YOLOv8 head is per-class in exactly one place —
+  `model.22.cv3.{0,1,2}.2`, one weight row and one bias per class — so
+  `merge_class_head.py` restores the base's rows for classes the corpus does not teach,
+  and `--bias-shift` bakes a per-class confidence floor into the rows that stay. Seconds
+  on a Mac, no GPU.
+- **`d25e0_graftprod_shift0.9.pt` beats production on every measure of ALL THREE AXES** —
+  half-noteheads 27 → 31, pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782,
+  step 0.6463 → 0.6939, dense notehead recall 0.941 → 1.000, pooled scan-e2e OMR-NED
+  0.7517 → **0.7493**, class space 28 with 0 collapsed. First candidate in three rounds
+  to clear all three. **Not shipped — the live repoint is Sean's call.**
+- ⚠️ **Shift 1.5 has the best axis-2 number (0.7420) and is the worst checkpoint in the
+  table** — 17 half-noteheads against production's 27, exact recall below production's.
+  The floor went past the false positives into the true ones. Read alone, axis 2 would
+  have shipped it.
+- Rig faults worth not repeating: **v2/v3/v4 store cell images as SYMLINKS** (a `cp -R`
+  into a cloud tarball ships 101 of 136 dense cells as dangling links, skipped as
+  "corrupt image/label"); never overwrite a running bash script; the 208-class space has
+  **40 duplicated names**; 2× dense oversampling is now 43/57 hollow-MAJORITY and the
+  ship's 69/31 ratio needs **6×**.
+- GPU spend **$0.37**, box destroyed. Full account:
+  `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`; handoff
+  `docs/handoff-2026-09-04-round5-class-collapse.md`.
+
+---
+
+## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
+
+Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —
+both in `catalog-versions.txt`, both in the round-4 training run at the time — at 0.52sp and
+0.54sp tall, inside the measured clipped-fragment band (0.29–0.56sp, from
+`transcribe._drop_clipped_notehead_fragments`) and under the genuine-notehead floor (0.60+).
+That discriminator was measured once, on the DETECTOR's output, and had never been applied to
+hand-drawn labels — which see the identical ambiguous ink.
+
+- ⚠️ **Height alone reads "rest"; WHERE in the cell is the fact that settles it.** A first pass
+  measured height only and concluded both were rests. Rendered crops (both sessions,
+  independently) show the labeled box capturing only a thin sliver at the cell's own TOP edge,
+  of a much larger shape that belongs to the staff ABOVE — not a symbol in this measure at all.
+  Likely correction: delete, not relabel. Sean's call — the cells are the reference corpus.
+- **Shipped as the auditor's third check**, needing no image at all (manifest geometry only:
+  `cell_canonical_h`, staff lines, the label's own bbox) — the first of the three that reaches
+  the four `hollow2-2026-09` batches whose `cells/` was never re-cut on this machine.
+  ⚠️ **The edge tolerance is NOT the original 1px** (that only holds for a model's box, which is
+  pixel-flush with the crop cut) — a hand-drawn box leaves 0.07–0.28sp of margin around the
+  visible sliver, so the check uses `CELL_EDGE_TOLERANCE_SPACES = 0.5`.
+- **Validated exactly like the other two**: finds the 2 known cases and nothing else on their
+  batches; run over the full campaign (1666 labels, 15 batches, 8 never part of this tool's
+  development) it finds the SAME two and adds **zero** false positives, including the corrected
+  Brahms batch.
+- Credit: scanned-weights session, for finding the two live cells and for the missing
+  WHERE-in-the-cell field that corrected their own first (height-only) read.
+
+## 2026-09-03 — the ledger-zone auditor's raw flag rate is an UPPER BOUND, not the defect rate
+
+The scanned-weights session ran the auditor on Simrock/Dvořák 9 (110 cells, labeled entirely
+after the tool existed — a genuine out-of-sample test) and reported it flagged 7 of 102
+ledger-zone labels (6.9%, matching Brahms). Adjudicated by hand: 6 false positives, 1 real —
+**true rate ~0.9%, an order of magnitude below the raw flag**. The one real error was worth
+having; nobody would have looked for it otherwise.
+
+- **The false-positive mechanism, independently reproduced on the actual pixels**: a printed
+  ledger line survives staff-line removal and print-merges into the SAME connected component
+  as the notehead beside it, pulling `blob_centre`'s centroid toward the rung by up to a full
+  half-step — enough to flip the reported parity. Confirmed by rendering cells with the exact
+  known step positions overlaid (no algorithm, just pixels against arithmetic) — the same
+  standard the 6 Brahms corrections were already held to.
+- **Five candidate fixes were tried against BOTH the Brahms corrections and the Simrock false
+  positives; none generalises.** The literal fix as proposed (filter rows by local ink-run vs.
+  a multiple of box width) resolves Simrock 4/4 and breaks Brahms 0/6 — traced to WHY: it only
+  has room to detect the rung's excess where the human's box carries generous padding around
+  the head, and that convention differs by batch/labeler with no record of which is which.
+  A width-based reject flag looks clean on the 4 known Simrock false positives but also flags
+  40 of Brahms's 76 ledger-zone labels, all independently uncontested — width alone does not
+  discriminate. Numbers for all five in `LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md`.
+- **Shipped: `blob_centre` now returns the winning component's height/width in staff spaces**,
+  printed alongside every parity suspect — context for a human, explicitly NOT a filter or a
+  reweighting (no decision logic changed; the corrected Brahms batch still reports 0 suspects).
+- **Standing recommendation, now on two independent adjudications**: every candidate needs a
+  human looking at the actual ink against the known staff/ledger positions. Read a raw flag
+  rate as an upper bound on the true rate, not the rate itself, when the campaign-wide 19
+  parity candidates are eventually adjudicated.
+
+## 2026-09-03 — auditing the labels: ledger-zone parity and shape-vs-class
+
+Sean's 49-cell completion pass was audited before it went to training; 7 labels were corrected
+(committed with the labels in `4003743`). The two checks that found them are now a tool,
+`benchmarks/omr-snap-ledger-2026-09/audit_ledger_zone_labels.py`, because neither is covered by
+the inside-staff parity auditor and both generalise.
+
+- **Ledger-zone parity — measure the INK, never the BOX.** Out-of-staff noteheads are where the
+  click-to-box snap extrapolates the grid past the staff. Brahms: **6 suspect of 76 ledger-zone
+  labels (~8%)** against **0** inside-staff parity errors. ⚠️ A click-placed box inherits the
+  slot the snap chose, so its centre is biased toward the grid that placed it — the
+  scanned-weights session checked three of these at box centres, read the opposite parity on
+  two, and was wrong on both; rendering the cells with the grid drawn showed a printed line
+  through each head. Ink inside the HUMAN's box says the human is always right, ink inside the
+  PRE-FILL's box says the pre-fill is always right; only the blob on `*_nostaff.png` is
+  evidence. (Same trap already recorded from the snap-ledger work — and walked into anyway.)
+- **Shape vs class — a parity audit is blind to a wrong KIND.** The whole rest labeled
+  `noteheadBlackInSpace` measured **2.13 × 0.72 spaces, aspect 2.97:1** against a median black
+  notehead of **1.19 × 1.00, 1.19:1** (n=189), and sits INSIDE the staff, so no parity auditor
+  could reach it. Discriminator credit: the scanned-weights session.
+- **Validated both ways**: run on the pre-correction verdicts the tool reproduces exactly the 7
+  hand-made corrections (6 parity + 1 shape); on the corrected ones, 0.
+- **Campaign-wide (1666 human labels, 275 ledger-zone): 19 parity + 3 shape CANDIDATES**, i.e.
+  **6.9% of ledger-zone labels** — corroborating the Brahms 8% on eight batches the method was
+  never tuned on. ⚠️ Candidates for a human, not corrections: the tool writes nothing, and
+  `box_is_Npx_from_ink` is the row-level sanity check (a large value means the blob found may
+  not be the labeled glyph — `beet5-p6-sys0-s8-m13` at 106px is the weakest row).
+- ⚠️ **Run it from the MAIN checkout.** `cells/*.png` are gitignored, so from a worktree every
+  cell abstains — the same trap that makes `verdicts_to_yolo_labels` silently report 0 classes.
+
+## 2026-09-03 — Phase C ANSWERED: pre-filled boxes are a queue, not labels
+
+Sean labeled **49 cells completely and blind** in one sitting — the 25 pre-registered plus 24
+more. The pre-registered analysis is the committed one and it is negative.
+
+- **Pre-registered 25: exact 0.838, `labels` tier 0.849** over 74 boxes. Other 24 (also
+  out-of-sample, not pre-registered): 1.000 over 67. **Pooled out-of-sample 0.915 over 141.**
+  In-sample six, where the tiers were fitted: 0.961 / labels 1.000. The bar was set in advance
+  at ≳0.97; every honest reading is under it, so **the queue reading stands — now on
+  out-of-sample evidence rather than caution.** The in-sample 1.000 was six dense cells
+  describing themselves.
+- ⚠️ **The Phase A admission tiers were fitted to those six cells' error MODES, and a random
+  sample fails differently** — every policy lands 0.815–0.859 because the signals never fire:
+  `near` 0 on all 12 errors, `parity_ok` 1 on 10, `small` 0 on 11. Nothing for a confidence
+  band to separate. This is what pre-registration is for.
+- **The 12 errors:** 6 line/space flips where the box centre sits 23–51 px (¼–½ staff space)
+  off the hand-drawn box — both detector and reference name the position from a MISPLACED box
+  while the human labels the ink; **4 rest VALUE disagreements** (`restQuarter` vs the human's
+  `rest8th` at IoU 0.65–0.82 — same glyph, reference duration vs printed); 1 whole-rest read as
+  a notehead; 1 unmatched grace-sized box. **Rests are the weak class and were invisible
+  before**: out-of-sample noteheads **0.943**, rests **0.722** (0.500 on the registered set's
+  ten). The six dense cells print almost no rests.
+- ⚠️ **Phase A's reference-variant rule is a NO-OP under `hollow-ft`** — 0 overrides across all
+  141 boxes, because the detector's variant already agrees with the reference. It earned its
+  keep on the older weights (2 of 3 flips) and costs nothing, but it is not holding the number
+  up and cannot fix a flip caused by a misplaced box.
+- **Two alternative explanations ruled out before reporting:** the blind server's access log
+  shows all 49 cells saved through it (no hint contamination), and for every error there is NO
+  human box of the pre-fill's class overlapping the pre-fill box (so the greedy IoU-0.3 matcher
+  is not stealing a neighbour). The 0.838-vs-1.000 split between the two halves is real and
+  unexplained by box geometry (110×101 vs 112×112 px) or labeling order (fully interleaved,
+  16:06–17:05 vs 16:09–17:06).
+- **The 49 completely-labeled cells are this session's real yield** — blind, complete, and
+  exactly the rests-and-accidentals completeness `NEXT_ITERATION.md` step 1 asks for on this
+  batch. Re-conversion into a training version belongs to the labeling/training session
+  (`data/user-labeled/` is theirs).
+
+## 2026-09-03 — Phase C started, and the training session's finding corrects a Phase B claim
+
+- ⚠️ **CORRECTION to Phase B, from the training session's independent work.** "What it lost was
+  junk" was true of NOTEHEADS and over-general about everything else. `NEXT_ITERATION.md`
+  establishes that the hollow-family weights suppress **rests and accidentals**, and that the
+  cause is a LABELING gap: the completion pass over these cells labeled only black noteheads
+  and augmentation dots, so rests and accidentals trained as background. The same signature is
+  in the Phase B arm's own numbers, reported but not read — **rests fall 1380 → 951**. And the
+  missing-hint control is close to BLIND for rests, because `prefill_cell` drops rests from the
+  alignment on condensed staves and a conductor's page is full of them. The notehead half of
+  Phase B stands unchanged; the generalisation does not.
+- ⚠️ **A palette trap was caught before it could do damage, and it was the difference between
+  helping the next training run and harming it.** The batch's ACTIVE `batch_config.json` was a
+  stale 9-slot completion palette with **no `accidentalNatural`, slur, tie or hairpin** — while
+  the six already-complete cells contain 5 naturals, 8 slurs, 6 ties and 5 hairpins. Labeling
+  Phase C under it would have left all of those as background: precisely the mechanism
+  `NEXT_ITERATION.md` blames for the completeness regression. Swapped to the canonical 14-slot
+  `batch_config.completion.json` (the stale one backed up as `batch_config.stale-9slot.bak`).
+- ⚠️ **Even 14 slots is not the whole class space.** The six complete cells also hold `keyFlat`
+  ×3, `clefG`, `timeSig8`/`9`, `ornamentTrill`, `accidentalNaturalSmall` and two grace-sized
+  black heads — labeled through the FULL PICKER, which is what "complete" means. The protocol
+  now says so explicitly.
+- **The cells are dual-purpose**: Phase C's out-of-sample measurement AND step 1 of
+  `NEXT_ITERATION.md` for this batch (the rests/accidentals completion the next cloud run
+  needs). Serving blind on :5053 from a worktree that has `--blind`; ⚠️ a 5.5-hour-old server
+  on **:5051 is still serving this batch NON-blind with the stale palette in memory** (config
+  is read at startup) — it must not be used for this pass.
+
+---
+
 ## 2026-09-03 — `Hr.` / `Trpt.`: the largest gap the lexicon sweep found, closed
 
 - The lexicon sweep two entries below left `Hr.` and `Trpt.` open on purpose —
@@ -138,6 +470,70 @@ could have come out wrong are now closed by construction.
   was registered against.
 - Protocol, including how to read the answer either way:
   `benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md`.
+
+## 2026-09-03 — Round 3: completing the training cells (540 → 1322 boxes)
+
+- **The next-iteration plan's diagnosis was a minority of the problem, and measuring first
+  caught it.** `NEXT_ITERATION.md` said the 30-epoch cloud regression came from rests and
+  accidentals left unboxed. Running the production detector over the 198 cells that emit a
+  YOLO label and bucketing every detection by whether ANY pass had covered its class:
+  **41.2% (377 of 916) sat in never-boxed classes** — dynamics 165, slurs 99, ties 26,
+  clefs 29 — against 73 for rests+accidentals. **Dynamics + slurs are 3.6× the named gap.**
+  Labeling only what the plan named would have spent the GPU and hit the same wall.
+- **Work split by which labeler is good at which family**, not one method for everything:
+  Sean hand-labeled rests, accidentals and clefs (the round-2 audit measured the model
+  FP-prone exactly there); an audited model completion did dynamics, slurs and ties
+  (spot-checked 8/8 real per class) and later a black-notehead top-up. **760 human boxes
+  over 493 cells**, audited crop-by-crop with **zero label errors found**.
+- **Closing measurement, same 280 cells and same detector as the opening one:
+  uncovered ink 68.1% → 35.9%.** It also named the next gap rather than just scoring —
+  41% of the residue was black noteheads, unevenly covered (80 boxed on Litolff, ONE across
+  25 cells of v7), which is the dominant class training as background. Topped up.
+- **v13–v21 supersede v7/v8 in `catalog-versions.txt`.** 209 cells / 540 boxes → **280 /
+  1322 (+145%)**. The old versions come OUT rather than sitting alongside: they label the
+  same images less completely, and training on both teaches that the symbols the incomplete
+  copy omits are background — the regression being fixed.
+
+### Three bugs, each caught by diffing rather than by a clean-looking run
+
+- ⚠️ **The converter silently dropped all 445 model boxes.** `verdicts_to_yolo_labels` reads
+  a schema-v2 detection as `model_predicted_class` + `model_bbox`; the merge wrote
+  `smufl_name` + `bbox`, the shape the completion CANDIDATES use. The file parsed, the cells
+  counted, 911 of 1157 boxes were emitted, and the retrained mix would have carried LESS
+  completion than v8 while the round looked like progress. Fixed; now verified per version
+  as merged == emitted.
+- ⚠️ **A config is not a coverage record.** Brahms 1 was left to the session holding it,
+  whose palette lists rests and accidentals. Its VERDICTS showed 55 cells stamped
+  `hollow noteheads` and **zero stamped for any completion pass** — so its 11 cells in v8
+  would have re-imported the exact background bug through the one batch nobody swept.
+  What a pass covered is in `inspected_passes`; a palette only says what someone COULD box.
+- ⚠️ **A guard that abstains silently is indistinguishable from a guard that passed.** A new
+  size guard read `cell.staff_line_ys`; the field is `staff_line_ys_canonical`. getattr
+  returned None, every cell registered as "no geometry", the guard abstained on all 169
+  candidates and let through the 394×170 slur arc it was written to catch. Nothing errored;
+  the only tell was `dropped_size: 0` where a small positive number belonged. The abstention
+  path now COUNTS instead of returning True.
+
+### Also
+
+- **Sweeping cells that cannot become training data.** A cell only trains if it carries a
+  box (`_is_filled` is false for an inspected-empty cell, which emits no label and is not
+  used as background either). Pooling only box-carrying cells cut the remaining sweep from
+  328 cells to 152 with identical signal.
+- ⚠️ **Scan degradation has TWO directions and a naive probe sees one.** Asked whether a
+  batch was a bad scan, ink density, fragmentation and staff-line continuity all said
+  mid-pack — they only detect decay by BREAKING. This corpus decays by BLOOMING, and **a
+  bloomed staff line is perfectly CONTINUOUS, so it scores WELL on continuity while being
+  unreadable.** Every batch here is bloomed (lines at 0.20–0.27 of a staff space against a
+  clean 0.08–0.12).
+- **The three works asked for cannot be benchmark rows.** Mahler 1, Elgar 1 and La mer have
+  edition PDFs and ZERO reference encodings. Of the 27 works pairing a PDF with truth, every
+  one is German-published except Holst/Goodwin & Tabb, Tchaikovsky 4/Jurgenson and
+  Tchaikovsky 4/Heugel — drafted in `works-draft-nongerman.json`, held out of `works.json`
+  because scan_eval refuses a pooled figure while any row is `first_pass`. ⚠️ **The training
+  set covers Universal, Novello and Durand and this benchmark cannot validate them.**
+
+---
 
 ## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
 

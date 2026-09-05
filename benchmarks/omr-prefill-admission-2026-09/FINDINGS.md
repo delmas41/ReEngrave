@@ -140,7 +140,23 @@ across the three pages fall 4260 → 2419. The control that settles it is the
 MISSING-hint count, which asks the opposite question — how many notes the
 reference holds that the reading never found. It falls too (20 → 15;
 4 → 3 on the six cells). A detector losing real heads raises that number.
-What it lost was junk, and the pipeline's own filters had been saying so:
+⚠️ **CORRECTED, same day, by the training session's independent finding: that
+sentence was true of NOTEHEADS and over-general about the rest.** The
+hollow-family weights are now known to suppress **rests and accidentals**,
+and the cause is a labeling gap rather than the detector —
+`benchmarks/omr-labeling-survey-2026-09/NEXT_ITERATION.md`: the completion
+pass over these cells labeled only black noteheads and augmentation dots, so
+every rest and accidental in them trained as background. The same signature
+shows in this arm's own numbers, which I reported and did not read: rests
+fall **1380 → 951** across the three pages. And the missing-hint control is
+**weak for rests specifically**, because `prefill_cell` drops rests from the
+alignment on condensed staves (`include_rests=not condensed`) and a
+conductor's page is full of them — so it is a good control for noteheads and
+close to blind for rests. Everything above about noteheads stands; "what it
+lost was junk" does not extend to the rest of the class space.
+
+What it lost in NOTEHEADS was junk, and the pipeline's own filters had been
+saying so:
 unladdered noteheads dropped 1063 → 304, clipped edge fragments 259 → 104.
 Page segmentation is byte-identical between the arms (706 measures, 83
 staves), so this is the detector and nothing else.
@@ -167,3 +183,70 @@ and cheap — re-transcribe with current production weights, then
 and `detections/` untouched, so no human work and no detection id is
 disturbed. Left for the batch's owner rather than done here, because the
 batch is served live by another session.
+
+## Phase C — the answer: NOT admissible. The pre-fill stays a queue.
+
+Sean labeled **49 cells completely and blind** in one sitting — the 25
+pre-registered, plus 24 more. The pre-registered analysis is the one that
+counts, and it says the `labels` tier does **not** generalise:
+
+| set | boxes | exact | labels tier |
+|---|--:|--:|--:|
+| **pre-registered 25 (THE committed analysis)** | **74** | **0.838** | **0.849** |
+| other 24 (out-of-sample, not pre-registered) | 67 | 1.000 | 1.000 |
+| **pooled out-of-sample** | **141** | **0.915** | — |
+| the six (IN-sample — where the tiers were fitted) | 51 | 0.961 | 1.000 |
+
+The bar was set in advance: **≳0.97 admits, a material drop keeps the
+queue.** Every honest reading of this table is under it — the pre-registered
+0.849, and even the most generous pooled 0.915. **Pre-filled boxes are a
+review queue, not labels.** The in-sample 1.000 was the six dense cells
+telling us about themselves.
+
+**Two ways it could have been wrong, both ruled out.** The blind server's
+access log shows all 49 cells saved through it, so the labels never saw the
+hints. And for every one of the 12 errors there is **no human box of the
+pre-fill's class overlapping the pre-fill box at all** — so the scorer is
+not stealing a neighbour at IoU 0.3; these are genuine disagreements.
+
+### Why it dropped — and why the admission signals could not see it
+
+⚠️ **The Phase A tiers were fitted to the six cells' error MODES, and the
+random sample fails differently.** Every policy in the probe lands between
+0.815 and 0.859 — the signals simply do not fire: `near` is 0 on all 12
+errors, `parity_ok` is 1 on 10 of them, `small` is 0 on 11. There is
+nothing here for a confidence band to separate.
+
+| error family | n | what it is |
+|---|--:|---|
+| line/space flips | 6 | the box centre sits 23–51 px (¼–½ staff space) off the human's hand-drawn box; both detector AND reference name the position from a misplaced box, and the human labels the ink |
+| **rest VALUE disagreements** | 4 | `restQuarter` where the human reads `rest8th`, at IoU 0.65–0.82 — the SAME glyph, so this is the reference's rest duration against the printed one |
+| a whole rest read as a notehead | 1 | genuine misread |
+| unmatched grace-sized box | 1 | the known grace ceiling |
+
+⚠️ **The reference-variant rule from Phase A is a NO-OP on this data** — it
+overrode the detector on **0** boxes across all three sets, because under
+`hollow-ft` the detector's variant already agrees with the reference. It
+earned its keep under the older weights (2 of 3 flips) and costs nothing
+now, but it is not what is holding the number up, and it cannot fix a flip
+whose cause is a misplaced BOX.
+
+**Rests are the weak class, and they are new.** Out-of-sample: noteheads
+**116/123 = 0.943**, rests **13/18 = 0.722** (0.500 on the pre-registered
+set's ten). The six dense cells could not have shown this — they print
+almost no rests. This is the same seam the Phase B correction opened: rests
+are where the reference and the page disagree most, and where
+`prefill_cell` is weakest (it drops rests from the alignment on condensed
+staves entirely).
+
+### What follows
+
+- **Do not admit pre-filled boxes as labels.** The queue reading in CLAUDE.md
+  stands, now on out-of-sample evidence rather than caution.
+- **A noteheads-only admission is the only variant worth another look**
+  (0.943 out-of-sample), and it is still short of the bar. Rests should
+  probably not be proposed at all until the reference-vs-printed value
+  question is understood.
+- **The 49 labeled cells are the real yield of this session** — complete,
+  blind, and exactly the rests-and-accidentals completeness
+  `NEXT_ITERATION.md` step 1 asks for on this batch.

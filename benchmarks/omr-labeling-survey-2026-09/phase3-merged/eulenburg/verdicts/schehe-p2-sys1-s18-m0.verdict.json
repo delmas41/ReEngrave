@@ -1,0 +1,31 @@
+{
+ "cell_id": "schehe-p2-sys1-s18-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 274,
+    "y": 161,
+    "w": 61,
+    "h": 130
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1190,
+    "y": 215,
+    "w": 99,
+    "h": 28
+   },
+   "notes": ""
+  }
+ ]
+}

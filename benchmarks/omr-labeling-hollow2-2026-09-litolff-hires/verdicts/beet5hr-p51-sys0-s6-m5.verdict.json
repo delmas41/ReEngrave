@@ -1,7 +1,7 @@
 {
   "cell_id": "beet5hr-p51-sys0-s6-m5",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:52:41+00:00",
+  "labeled_at_utc": "2026-09-03T20:42:16+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -30,6 +30,7 @@
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

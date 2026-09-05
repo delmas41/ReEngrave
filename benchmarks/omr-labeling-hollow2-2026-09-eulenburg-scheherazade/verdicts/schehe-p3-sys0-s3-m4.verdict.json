@@ -1,7 +1,7 @@
 {
   "cell_id": "schehe-p3-sys0-s3-m4",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:16:18+00:00",
+  "labeled_at_utc": "2026-09-03T21:14:08+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -27,9 +27,22 @@
         "h": 101
       },
       "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 19,
+        "y": 810,
+        "w": 111,
+        "h": 228
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

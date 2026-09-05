@@ -1,0 +1,43 @@
+{
+ "cell_id": "dvorak9-p11-sys0-s7-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 488,
+    "y": 320,
+    "w": 89,
+    "h": 203
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "clefC",
+   "human_category": "clef",
+   "bbox": {
+    "x": 192,
+    "y": 372,
+    "w": 224,
+    "h": 335
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1255,
+    "y": 477,
+    "w": 87,
+    "h": 46
+   },
+   "notes": ""
+  }
+ ]
+}

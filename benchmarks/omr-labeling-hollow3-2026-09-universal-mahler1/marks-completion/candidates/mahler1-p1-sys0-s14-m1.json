@@ -1,0 +1,70 @@
+{
+ "cell_id": "mahler1-p1-sys0-s14-m1",
+ "candidates": [
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.871,
+   "ink": 0.2259,
+   "bbox": {
+    "x": 388,
+    "y": 35,
+    "w": 427,
+    "h": 108
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8432,
+   "ink": 0.5273,
+   "bbox": {
+    "x": 500,
+    "y": 1100,
+    "w": 175,
+    "h": 176
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7452,
+   "ink": 0.5155,
+   "bbox": {
+    "x": 357,
+    "y": 1101,
+    "w": 150,
+    "h": 180
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7144,
+   "ink": 0.5235,
+   "bbox": {
+    "x": 203,
+    "y": 1101,
+    "w": 116,
+    "h": 179
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.6606,
+   "ink": 0.2419,
+   "bbox": {
+    "x": 352,
+    "y": 1521,
+    "w": 461,
+    "h": 75
+   }
+  }
+ ]
+}

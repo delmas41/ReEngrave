@@ -1,0 +1,226 @@
+{
+ "cell_id": "schehe-p2-sys0-s6-m4",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8714,
+   "ink": 0.8493,
+   "bbox": {
+    "x": 1169,
+    "y": 393,
+    "w": 41,
+    "h": 28
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8581,
+   "ink": 0.852,
+   "bbox": {
+    "x": 1352,
+    "y": 391,
+    "w": 41,
+    "h": 30
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8537,
+   "ink": 0.8279,
+   "bbox": {
+    "x": 1261,
+    "y": 377,
+    "w": 41,
+    "h": 36
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8508,
+   "ink": 0.7948,
+   "bbox": {
+    "x": 1925,
+    "y": 349,
+    "w": 44,
+    "h": 37
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8473,
+   "ink": 0.8162,
+   "bbox": {
+    "x": 1735,
+    "y": 316,
+    "w": 44,
+    "h": 35
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.841,
+   "ink": 0.8591,
+   "bbox": {
+    "x": 1078,
+    "y": 377,
+    "w": 42,
+    "h": 37
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8161,
+   "ink": 0.8415,
+   "bbox": {
+    "x": 783,
+    "y": 361,
+    "w": 42,
+    "h": 35
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7822,
+   "ink": 0.8014,
+   "bbox": {
+    "x": 1635,
+    "y": 348,
+    "w": 43,
+    "h": 37
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.782,
+   "ink": 0.7863,
+   "bbox": {
+    "x": 885,
+    "y": 379,
+    "w": 42,
+    "h": 39
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7471,
+   "ink": 0.7562,
+   "bbox": {
+    "x": 1536,
+    "y": 382,
+    "w": 46,
+    "h": 37
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7272,
+   "ink": 0.7551,
+   "bbox": {
+    "x": 458,
+    "y": 344,
+    "w": 49,
+    "h": 38
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7265,
+   "ink": 0.8583,
+   "bbox": {
+    "x": 973,
+    "y": 361,
+    "w": 41,
+    "h": 37
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7236,
+   "ink": 0.9183,
+   "bbox": {
+    "x": 455,
+    "y": 100,
+    "w": 41,
+    "h": 37
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.6871,
+   "ink": 0.7974,
+   "bbox": {
+    "x": 686,
+    "y": 346,
+    "w": 43,
+    "h": 38
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.6104,
+   "ink": 0.8417,
+   "bbox": {
+    "x": 453,
+    "y": 71,
+    "w": 42,
+    "h": 37
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.6056,
+   "ink": 0.8471,
+   "bbox": {
+    "x": 588,
+    "y": 357,
+    "w": 42,
+    "h": 38
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.555,
+   "ink": 0.8574,
+   "bbox": {
+    "x": 1827,
+    "y": 332,
+    "w": 44,
+    "h": 33
+   }
+  }
+ ]
+}

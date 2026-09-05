@@ -1,0 +1,113 @@
+{
+  "cell_id": "dvorak9-p14-sys0-s8-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:30:29+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 5,
+        "y": 458,
+        "w": 1651,
+        "h": 44
+      },
+      "human_bbox": null,
+      "confidence": 0.639,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 2,
+        "y": 660,
+        "w": 1654,
+        "h": 48
+      },
+      "human_bbox": null,
+      "confidence": 0.549,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 4,
+        "y": 243,
+        "w": 1652,
+        "h": 45
+      },
+      "human_bbox": null,
+      "confidence": 0.496,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 6,
+        "y": 1302,
+        "w": 1647,
+        "h": 40
+      },
+      "human_bbox": null,
+      "confidence": 0.491,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 78,
+        "y": 1206,
+        "w": 1552,
+        "h": 36
+      },
+      "human_bbox": null,
+      "confidence": 0.415,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "FP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 5,
+        "y": 37,
+        "w": 1651,
+        "h": 55
+      },
+      "human_bbox": null,
+      "confidence": 0.314,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

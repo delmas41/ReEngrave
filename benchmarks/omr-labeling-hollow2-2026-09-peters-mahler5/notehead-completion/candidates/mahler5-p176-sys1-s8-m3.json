@@ -1,0 +1,18 @@
+{
+ "cell_id": "mahler5-p176-sys1-s8-m3",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8196,
+   "ink": 0.7939,
+   "bbox": {
+    "x": 1815,
+    "y": 795,
+    "w": 119,
+    "h": 106
+   }
+  }
+ ]
+}

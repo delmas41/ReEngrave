@@ -1,0 +1,8 @@
+{
+  "pass_name": "ties+slurs",
+  "note": "TIES AND SLURS ONLY — the arcs. Measured against truth on the scan benchmark, production emits 58 ties against 227 in the truth (0.26) and 147 slurs against 202 (0.73), so this is the family the model most needs taught and the one triage cannot surface, because the boxes are not there to confirm. A TIE joins two noteheads of the SAME pitch and is the shorter, flatter arc; a SLUR spans different pitches and is usually longer. When the two are genuinely ambiguous, box it as a slur — that is the commoner symbol and the cheaper error. Box the ARC, not the notes under it, and box the visible ink only: an arc cut by the barline is drawn as two arcs and each half gets its own box (the exporter pairs them across the staff). Do NOT box hairpins in this pass, even though they look like arcs' cousins: nothing in the exporter emits them yet, so a hairpin box trains a detector whose output is thrown away.",
+  "classes": [
+    { "name": "slur", "label": "slur" },
+    { "name": "tie", "label": "tie" }
+  ]
+}

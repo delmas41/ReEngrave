@@ -1,0 +1,109 @@
+{
+  "cell_id": "dvorak9-p13-sys1-s17-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 14,
+      "y": 928,
+      "w": 168,
+      "h": 182,
+      "x_center": 98,
+      "y_center": 1019,
+      "confidence": 0.5614317655563354,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 13,
+      "y": 926,
+      "w": 182,
+      "h": 182,
+      "x_center": 104,
+      "y_center": 1017,
+      "confidence": 0.8345370888710022,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadHalfOnLine",
+      "category": "notehead",
+      "x": 140,
+      "y": 419,
+      "w": 129,
+      "h": 125,
+      "x_center": 204,
+      "y_center": 481,
+      "confidence": 0.7279327511787415,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadHalfOnLine",
+      "category": "notehead",
+      "x": 148,
+      "y": 1171,
+      "w": 141,
+      "h": 130,
+      "x_center": 218,
+      "y_center": 1236,
+      "confidence": 0.8020550012588501,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 168,
+      "y": 925,
+      "w": 178,
+      "h": 180,
+      "x_center": 257,
+      "y_center": 1015,
+      "confidence": 0.8260728716850281,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 777,
+      "y": 795,
+      "w": 136,
+      "h": 53,
+      "x_center": 845,
+      "y_center": 821,
+      "confidence": 0.7129186987876892,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 282,
+      "y": 1043,
+      "w": 1415,
+      "h": 97,
+      "x_center": 989,
+      "y_center": 1091,
+      "confidence": 0.645533561706543,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 373,
+      "y": 265,
+      "w": 1315,
+      "h": 74,
+      "x_center": 1030,
+      "y_center": 302,
+      "confidence": 0.5689653158187866,
+      "pitch": null
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+ "cell_id": "mahler5-p178-sys1-s11-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1531,
+    "y": 1109,
+    "w": 131,
+    "h": 90
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1534,
+    "y": 234,
+    "w": 133,
+    "h": 111
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1161,
+    "y": 515,
+    "w": 96,
+    "h": 79
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1230,
+    "y": 1007,
+    "w": 318,
+    "h": 103
+   },
+   "confidence": 0.8427,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 219,
+    "y": 859,
+    "w": 152,
+    "h": 172
+   },
+   "confidence": 0.8158,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 283,
+    "y": 300,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1374,
+    "y": 145,
+    "w": 93,
+    "h": 312
+   },
+   "notes": ""
+  }
+ ]
+}

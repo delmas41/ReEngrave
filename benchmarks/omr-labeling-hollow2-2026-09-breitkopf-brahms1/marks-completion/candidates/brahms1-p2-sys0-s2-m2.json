@@ -1,0 +1,44 @@
+{
+ "cell_id": "brahms1-p2-sys0-s2-m2",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7612,
+   "ink": 0.6327,
+   "bbox": {
+    "x": 526,
+    "y": 965,
+    "w": 111,
+    "h": 148
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7062,
+   "ink": 0.4533,
+   "bbox": {
+    "x": 427,
+    "y": 962,
+    "w": 160,
+    "h": 186
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.685,
+   "ink": 0.2469,
+   "bbox": {
+    "x": 331,
+    "y": 1245,
+    "w": 1592,
+    "h": 138
+   }
+  }
+ ]
+}

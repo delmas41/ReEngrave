@@ -17,3 +17,11 @@ fixtures/
 # to regenerate from the PDF, heavy to carry.
 pages/
 *.png
+
+# EXCEPT the committed verification-evidence crops for the 2026-09-05 drafted
+# rows: 33 small clips (~2 MB total) of the printed measure numbers, margins
+# and engraving facts ROW_VERIFICATION_CHECKLIST_2026-09-05.md asks Sean to
+# confirm — the checklist links to them by filename, and the 09-04 tranche was
+# verified entirely from such crops. Evidence behind a hand-verified window is
+# a record, not a dump; the blanket *.png above stays for everything else.
+!crops-2026-09-05/*.png

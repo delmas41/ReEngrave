@@ -1,23 +1,24 @@
 {
-  "cell_id": "mahler1-p5-sys0-s8-m1",
-  "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T16:09:39+00:00",
-  "detections": [],
-  "added_detections": [
-    {
-      "id": "H0",
-      "human_class": "noteheadWholeInSpace",
-      "human_category": "notehead",
-      "bbox": {
-        "x": 134,
-        "y": 2,
-        "w": 170,
-        "h": 100
-      },
-      "notes": ""
-    }
-  ],
-  "inspected_passes": [
-    "hollow noteheads"
-  ]
+ "cell_id": "mahler1-p5-sys0-s8-m1",
+ "schema_version": 2,
+ "labeled_at_utc": "2026-09-03T16:09:39+00:00",
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 134,
+    "y": 2,
+    "w": 170,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ],
+ "inspected_passes": [
+  "hollow noteheads",
+  "rests+accidentals"
+ ]
 }

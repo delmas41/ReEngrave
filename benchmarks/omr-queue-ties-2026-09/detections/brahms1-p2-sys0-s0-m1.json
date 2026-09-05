@@ -1,0 +1,29 @@
+{
+ "cell_id": "brahms1-p2-sys0-s0-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 896,
+    "y": 13,
+    "w": 383,
+    "h": 51
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 1644,
+    "y": 174,
+    "w": 395,
+    "h": 147
+   },
+   "confidence": 1.0
+  }
+ ]
+}

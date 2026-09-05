@@ -1,0 +1,23 @@
+{
+  "cell_id": "dvorak9-p14-sys1-s22-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T05:59:38+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 813,
+        "y": 618,
+        "w": 114,
+        "h": 60
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

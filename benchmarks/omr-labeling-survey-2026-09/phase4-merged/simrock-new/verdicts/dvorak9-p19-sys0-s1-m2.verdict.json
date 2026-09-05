@@ -1,0 +1,91 @@
+{
+ "cell_id": "dvorak9-p19-sys0-s1-m2",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 276,
+    "y": 342,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 252,
+    "y": 440,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1565,
+    "y": 391,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1568,
+    "y": 487,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1014,
+    "y": 599,
+    "w": 99,
+    "h": 169
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 111,
+    "y": 268,
+    "w": 91,
+    "h": 246
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 46,
+    "y": 356,
+    "w": 66,
+    "h": 268
+   },
+   "notes": ""
+  }
+ ]
+}

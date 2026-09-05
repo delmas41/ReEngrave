@@ -1,7 +1,7 @@
 {
   "cell_id": "mahler5-p178-sys2-s17-m3",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-02T21:08:41+00:00",
+  "labeled_at_utc": "2026-09-03T21:00:11+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -30,6 +30,7 @@
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

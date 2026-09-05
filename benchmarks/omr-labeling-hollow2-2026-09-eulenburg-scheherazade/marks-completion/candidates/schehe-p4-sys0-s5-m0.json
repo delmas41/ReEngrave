@@ -1,0 +1,57 @@
+{
+ "cell_id": "schehe-p4-sys0-s5-m0",
+ "candidates": [
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8942,
+   "ink": 0.2539,
+   "bbox": {
+    "x": 743,
+    "y": 5,
+    "w": 144,
+    "h": 194
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8393,
+   "ink": 0.3004,
+   "bbox": {
+    "x": 800,
+    "y": 636,
+    "w": 101,
+    "h": 155
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7832,
+   "ink": 0.1778,
+   "bbox": {
+    "x": 1543,
+    "y": 782,
+    "w": 368,
+    "h": 90
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7145,
+   "ink": 0.1807,
+   "bbox": {
+    "x": 1079,
+    "y": 784,
+    "w": 356,
+    "h": 88
+   }
+  }
+ ]
+}

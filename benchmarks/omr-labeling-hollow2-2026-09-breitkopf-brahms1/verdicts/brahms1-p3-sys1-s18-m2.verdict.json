@@ -1,10 +1,24 @@
 {
   "cell_id": "brahms1-p3-sys1-s18-m2",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T03:16:59+00:00",
+  "labeled_at_utc": "2026-09-03T23:40:40+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 834,
+        "y": 501,
+        "w": 211,
+        "h": 71
+      },
+      "notes": "ledger-parity audit 2026-09-03: noteheadBlackInSpace -> restWhole; printed glyph is a whole rest (solid block under the line), not a notehead"
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "completion"
   ]
 }

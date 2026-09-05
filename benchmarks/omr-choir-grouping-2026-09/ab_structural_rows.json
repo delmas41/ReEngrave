@@ -1,0 +1,142 @@
+{
+ "beethoven-sym5-mvt1-984073-p1": {
+  "identical": true,
+  "systems_off": [
+   12
+  ],
+  "systems_on": [
+   12
+  ],
+  "n_cells_off": 192,
+  "n_cells_on": 192
+ },
+ "beethoven-sym5-mvt1-984073-p2": {
+  "identical": true,
+  "systems_off": [
+   11,
+   11
+  ],
+  "systems_on": [
+   11,
+   11
+  ],
+  "n_cells_off": 341,
+  "n_cells_on": 341
+ },
+ "beethoven-sym5-mvt1-575951-p1": {
+  "identical": true,
+  "systems_off": [
+   12
+  ],
+  "systems_on": [
+   12
+  ],
+  "n_cells_off": 192,
+  "n_cells_on": 192
+ },
+ "beethoven-sym5-mvt1-575951-p2": {
+  "identical": true,
+  "systems_off": [
+   11,
+   11
+  ],
+  "systems_on": [
+   11,
+   11
+  ],
+  "n_cells_off": 352,
+  "n_cells_on": 352
+ },
+ "dvorak-sym9-mvt1-405834-p5": {
+  "identical": true,
+  "systems_off": [
+   15
+  ],
+  "systems_on": [
+   15
+  ],
+  "n_cells_off": 135,
+  "n_cells_on": 135
+ },
+ "dvorak-sym9-mvt1-405834-p6": {
+  "identical": true,
+  "systems_off": [
+   15
+  ],
+  "systems_on": [
+   15
+  ],
+  "n_cells_off": 105,
+  "n_cells_on": 105
+ },
+ "brahms-sym1-mvt1-317803-p1": {
+  "identical": true,
+  "systems_off": [
+   14
+  ],
+  "systems_on": [
+   14
+  ],
+  "n_cells_off": 112,
+  "n_cells_on": 112
+ },
+ "brahms-sym1-mvt1-317803-p2": {
+  "identical": true,
+  "systems_off": [
+   14,
+   13
+  ],
+  "systems_on": [
+   14,
+   13
+  ],
+  "n_cells_off": 202,
+  "n_cells_on": 202
+ },
+ "mahler-sym5-mvt1-local-p2": {
+  "identical": true,
+  "systems_off": [
+   19
+  ],
+  "systems_on": [
+   19
+  ],
+  "n_cells_off": 153,
+  "n_cells_on": 153
+ },
+ "mahler-sym5-mvt1-local-p3": {
+  "identical": true,
+  "systems_off": [
+   15
+  ],
+  "systems_on": [
+   15
+  ],
+  "n_cells_off": 117,
+  "n_cells_on": 117
+ },
+ "bach-brandenburg3-mvt1-468678-p1": {
+  "identical": false,
+  "systems_off": [
+   12,
+   3,
+   3,
+   3,
+   1,
+   2
+  ],
+  "systems_on": [
+   12,
+   12
+  ],
+  "n_cells_off": 359,
+  "n_cells_on": 132,
+  "barline_diff_systems": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ]
+ }
+}

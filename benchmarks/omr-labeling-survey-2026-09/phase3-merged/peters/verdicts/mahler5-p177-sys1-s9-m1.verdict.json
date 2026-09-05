@@ -1,0 +1,59 @@
+{
+ "cell_id": "mahler5-p177-sys1-s9-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 185,
+    "y": 1,
+    "w": 725,
+    "h": 155
+   },
+   "confidence": 0.8232,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 123,
+    "y": 178,
+    "w": 134,
+    "h": 187
+   },
+   "confidence": 0.7159,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 297,
+    "y": 189,
+    "w": 154,
+    "h": 175
+   },
+   "confidence": 0.6745,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 615,
+    "y": 690,
+    "w": 156,
+    "h": 74
+   },
+   "notes": ""
+  }
+ ]
+}
