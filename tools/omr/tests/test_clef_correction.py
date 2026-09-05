@@ -530,3 +530,13 @@ class TestMidStaffChangeVeto:
         assert "clef_final" not in staff, (
             "every change was vetoed, so the staff ends in its own clef and "
             "the 'final differs' marker must go")
+
+
+def test_the_env_flag_reaches_direct_contextual_callers(monkeypatch):
+    """eval_pipeline_clefs calls apply_contextual_analysis directly, not via
+    transcribe's kwargs builder — a None param must resolve from the env so a
+    benchmark exercises the same configuration a transcription would."""
+    import inspect
+    from tools.omr.contextual import apply_contextual_analysis
+    sig = inspect.signature(apply_contextual_analysis)
+    assert sig.parameters["instrument_clef_default"].default is None

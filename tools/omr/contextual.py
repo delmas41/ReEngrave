@@ -544,7 +544,7 @@ def apply_contextual_analysis(
     ocr_fallback: bool = True,
     staved: list[Any] | None = None,
     review_dir: Path | None = None,
-    instrument_clef_default: bool = False,
+    instrument_clef_default: bool | None = None,
 ) -> dict[str, Any]:
     """Annotate a transcribe result with part identity, and fix clefs the
     detector never read.
@@ -575,6 +575,14 @@ def apply_contextual_analysis(
             "margin where the free readers fall short. There is deliberately no "
             "default — pass Assist('human'), Assist('vision'), or Assist('none') "
             "to say that neither should be spent. See tools/omr/assist.py.")
+    if instrument_clef_default is None:
+        # None means "the caller has no opinion": honor the env flag, so a
+        # benchmark that calls this directly (eval_pipeline_clefs) exercises
+        # the same configuration a transcription would. Default OFF.
+        import os
+        instrument_clef_default = os.environ.get(
+            "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower() not in (
+            "0", "", "false", "no", "off")
     summary: dict[str, Any] = {
         "available": False, "reason": None, "reference": [],
         "labelled_staves": 0, "proposals": [], "clefs_applied": 0,
