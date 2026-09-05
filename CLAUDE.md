@@ -1077,6 +1077,62 @@ the voice instruments' own aliases, which also fixes `Fl. Alt.`, `Cl. Alt.` and
 
 ---
 
+## Reading and reproduction are different questions, and now measured apart
+
+Every figure below OMR-NED is taken at the far end — our exported MusicXML
+against a truth MusicXML — so recognition and serialisation are fused. That is
+why nine "detected, then dropped on the way out" bugs had to be found by
+forensics: in OMR-NED a signal read perfectly and lost in the exporter is
+indistinguishable from one never read.
+
+**A page we RENDER has an exact truth available for free.** Verovio draws
+MusicXML directly and, with `svgBoundingBoxes`, emits a `<rect>` per notation
+object in the same frame as the glyph, plus every glyph's SMuFL codepoint —
+image and inventory from one act, no labeling (`tools/omr/page_truth.py`).
+
+⚠️ **A PAGE TRUTH IS NOT AN ENCODING TRUTH.** On the Brahms fixture, against the
+file it was rendered from: dynamics 19 glyphs vs 19 `<dynamics>` (agree), G clefs
+**28** glyphs vs **14** `<sign>G</sign>`, slurs **82** arcs vs **164** `<slur>`
+tags. A clef is printed at every system and declared once; MusicXML writes a slur
+at each end and the engraver draws one arc. The reader sees 28 and 82.
+
+| | asks | tool |
+|---|---|---|
+| reading | did we see the ink, and call it the right kind | `page_truth` + `score_reading` |
+| translation | did what we saw reach the file | `score_translation` |
+| reproduction | does the file say what the truth says | `omr_ned` |
+
+**Reading F1 0.898** over 11 engraved works / 3446 printed symbols, against
+OMR-NED 0.1306 on the same works. The decomposition is the point:
+**noteheads 0.999** (856 of 856), rests 0.993, time-sig digits 0.997, flags
+0.992, clefs 0.969 — so the engraved residual is **not** a failure to see notes.
+It is inline **accidentals 0.406** (recall 0.257, 168 printed with nothing
+detected there), **ties 0.260**, **slurs 0.518** (24 arcs lost to `beam`, the
+only real class confusion), and **dynamic letters 0.552** — precision 0.421, the
+over-emission measured from the other end in `omr-dynamics-band-2026-09`.
+
+**Stage 2 priced the open ninth export gap.** `wedge` sat in `KNOWN_GAPS` as
+un-priceable from that inventory; the funnel prices it: **9 hairpins read across
+three works and every one discarded** (Mahler 5 4-of-6, Tchaikovsky 6 3-of-6,
+Brahms 4 2-of-5) — half a reading problem, half an export problem, and the export
+half is free. It also found a **new** one no existing check can see: Beethoven 5
+detects 36 fermatas, its truth has 36, and **35** reach the file —
+`export_coverage` fires only on the categorical case (truth some, ours zero).
+
+⚠️ **The two stages read different images on purpose** (stage 1 a Verovio render
+whose ink is known, stage 2 the LilyPond fixtures the headline uses), so their
+per-family counts are NOT comparable to each other — compare within a stage.
+⚠️ **Neither says anything about scans**: renderer truth exists only where we
+make the page, and no public symbol-level ground truth for real printed scans
+exists to borrow (DeepScoresV2 is rendered, MUSCIMA++ is handwritten).
+Controls: matching is on centres, not IoU, and the pooled F1 moves 0.846→0.876
+across 0.25–1.5 spaces of tolerance; re-rendering at 600 dpi moves Brahms 1
+0.854→0.868 and Tchaikovsky 4 0.787→0.789, so it is not a resolution artefact.
+Full reading, including the two frame errors it found in itself:
+[benchmarks/omr-reading-vs-reproduction-2026-09/FINDINGS.md](benchmarks/omr-reading-vs-reproduction-2026-09/FINDINGS.md).
+
+---
+
 ## OMR-NED — the metric other people also report
 
 Every other number in this repo is bespoke and therefore incomparable to

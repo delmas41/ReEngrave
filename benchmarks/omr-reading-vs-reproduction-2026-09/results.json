@@ -1,0 +1,4912 @@
+{
+ "works": [
+  "beethoven-sym3-mvt1",
+  "beethoven-sym5-mvt1",
+  "brahms-sym1-mvt1",
+  "brahms-sym4-mvt1",
+  "bruckner-sym5-mvt1",
+  "dvorak-sym9-mvt4",
+  "mahler-sym5-mvt1",
+  "mozart-sym40-mvt1",
+  "mozart-sym41-mvt1",
+  "tchaikovsky-sym4-mvt2",
+  "tchaikovsky-sym6-mvt2"
+ ],
+ "dpi": 300,
+ "stage1_reading": {
+  "beethoven-sym3-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 36,
+       "pred": 0,
+       "matched": 0
+      },
+      "augmentation_dot": {
+       "truth": 8,
+       "pred": 8,
+       "matched": 8
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 2,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 19,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 22,
+       "pred": 32,
+       "matched": 22
+      },
+      "key_accidental": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "notehead": {
+       "truth": 67,
+       "pred": 67,
+       "matched": 67
+      },
+      "rest": {
+       "truth": 140,
+       "pred": 140,
+       "matched": 140
+      },
+      "slur": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 38,
+       "pred": 38,
+       "matched": 38
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articStaccatoAbove": 26,
+      "ledgerLine": 9,
+      "repeatDot": 38,
+      "articStaccatoBelow": 12
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 36,
+       "pred": 0,
+       "matched": 0
+      },
+      "augmentation_dot": {
+       "truth": 8,
+       "pred": 8,
+       "matched": 8
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 2,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 19,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 22,
+       "pred": 32,
+       "matched": 22
+      },
+      "key_accidental": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "notehead": {
+       "truth": 67,
+       "pred": 67,
+       "matched": 67
+      },
+      "rest": {
+       "truth": 140,
+       "pred": 140,
+       "matched": 140
+      },
+      "slur": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 38,
+       "pred": 38,
+       "matched": 38
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articStaccatoAbove": 26,
+      "ledgerLine": 9,
+      "repeatDot": 38,
+      "articStaccatoBelow": 12
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 36,
+       "pred": 0,
+       "matched": 0
+      },
+      "augmentation_dot": {
+       "truth": 8,
+       "pred": 8,
+       "matched": 8
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 2,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 19,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 22,
+       "pred": 32,
+       "matched": 22
+      },
+      "key_accidental": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "notehead": {
+       "truth": 67,
+       "pred": 67,
+       "matched": 67
+      },
+      "rest": {
+       "truth": 140,
+       "pred": 140,
+       "matched": 140
+      },
+      "slur": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 38,
+       "pred": 38,
+       "matched": 38
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articStaccatoAbove": 26,
+      "ledgerLine": 9,
+      "repeatDot": 38,
+      "articStaccatoBelow": 12
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 36,
+       "pred": 0,
+       "matched": 0
+      },
+      "augmentation_dot": {
+       "truth": 8,
+       "pred": 8,
+       "matched": 8
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 2,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 19,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 22,
+       "pred": 32,
+       "matched": 22
+      },
+      "key_accidental": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "notehead": {
+       "truth": 67,
+       "pred": 67,
+       "matched": 67
+      },
+      "rest": {
+       "truth": 140,
+       "pred": 140,
+       "matched": 140
+      },
+      "slur": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 38,
+       "pred": 38,
+       "matched": 38
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articStaccatoAbove": 26,
+      "ledgerLine": 9,
+      "repeatDot": 38,
+      "articStaccatoBelow": 12
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 36,
+       "pred": 0,
+       "matched": 0
+      },
+      "augmentation_dot": {
+       "truth": 8,
+       "pred": 8,
+       "matched": 8
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 2,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 19,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 22,
+       "pred": 32,
+       "matched": 22
+      },
+      "key_accidental": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "notehead": {
+       "truth": 67,
+       "pred": 67,
+       "matched": 67
+      },
+      "rest": {
+       "truth": 140,
+       "pred": 140,
+       "matched": 140
+      },
+      "slur": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 38,
+       "pred": 38,
+       "matched": 38
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articStaccatoAbove": 26,
+      "ledgerLine": 9,
+      "repeatDot": 38,
+      "articStaccatoBelow": 12
+     }
+    }
+   },
+   "pooled": {
+    "truth": 373,
+    "pred": 347,
+    "matched": 335,
+    "precision": 0.9654178674351584,
+    "recall": 0.8981233243967829,
+    "f1": 0.9305555555555556
+   },
+   "confusions": {
+    "accidental": {
+     "-": 36
+    },
+    "barline": {
+     "-": 7
+    },
+    "slur": {
+     "-": 2
+    }
+   }
+  },
+  "beethoven-sym5-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 20,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 12,
+       "pred": 21,
+       "matched": 12
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 44,
+       "pred": 45,
+       "matched": 44
+      },
+      "notehead": {
+       "truth": 73,
+       "pred": 73,
+       "matched": 73
+      },
+      "rest": {
+       "truth": 101,
+       "pred": 101,
+       "matched": 101
+      },
+      "tie": {
+       "truth": 11,
+       "pred": 17,
+       "matched": 7
+      },
+      "time_signature_digit": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      }
+     },
+     "unscored_detections": {
+      "staff": 126,
+      "ornamentTrill": 1,
+      "fermataAbove": 36
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 20,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 12,
+       "pred": 21,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 44,
+       "pred": 45,
+       "matched": 44
+      },
+      "notehead": {
+       "truth": 73,
+       "pred": 73,
+       "matched": 73
+      },
+      "rest": {
+       "truth": 101,
+       "pred": 101,
+       "matched": 101
+      },
+      "tie": {
+       "truth": 11,
+       "pred": 17,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      }
+     },
+     "unscored_detections": {
+      "staff": 126,
+      "ornamentTrill": 1,
+      "fermataAbove": 36
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 20,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 12,
+       "pred": 21,
+       "matched": 12
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 44,
+       "pred": 45,
+       "matched": 44
+      },
+      "notehead": {
+       "truth": 73,
+       "pred": 73,
+       "matched": 73
+      },
+      "rest": {
+       "truth": 101,
+       "pred": 101,
+       "matched": 101
+      },
+      "tie": {
+       "truth": 11,
+       "pred": 17,
+       "matched": 7
+      },
+      "time_signature_digit": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      }
+     },
+     "unscored_detections": {
+      "staff": 126,
+      "ornamentTrill": 1,
+      "fermataAbove": 36
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 20,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 12,
+       "pred": 21,
+       "matched": 12
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 44,
+       "pred": 45,
+       "matched": 44
+      },
+      "notehead": {
+       "truth": 73,
+       "pred": 73,
+       "matched": 73
+      },
+      "rest": {
+       "truth": 101,
+       "pred": 101,
+       "matched": 101
+      },
+      "tie": {
+       "truth": 11,
+       "pred": 17,
+       "matched": 7
+      },
+      "time_signature_digit": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      }
+     },
+     "unscored_detections": {
+      "staff": 126,
+      "ornamentTrill": 1,
+      "fermataAbove": 36
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 7,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 20,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 12,
+       "pred": 21,
+       "matched": 12
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 3,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 44,
+       "pred": 45,
+       "matched": 44
+      },
+      "notehead": {
+       "truth": 73,
+       "pred": 73,
+       "matched": 73
+      },
+      "rest": {
+       "truth": 101,
+       "pred": 101,
+       "matched": 101
+      },
+      "tie": {
+       "truth": 11,
+       "pred": 17,
+       "matched": 7
+      },
+      "time_signature_digit": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      }
+     },
+     "unscored_detections": {
+      "staff": 126,
+      "ornamentTrill": 1,
+      "fermataAbove": 36
+     }
+    }
+   },
+   "pooled": {
+    "truth": 307,
+    "pred": 316,
+    "matched": 294,
+    "precision": 0.930379746835443,
+    "recall": 0.9576547231270358,
+    "f1": 0.943820224719101
+   },
+   "confusions": {
+    "accidental": {
+     "-": 9
+    },
+    "barline": {
+     "-": 7
+    },
+    "tie": {
+     "-": 4
+    }
+   }
+  },
+  "brahms-sym1-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 82,
+       "pred": 41,
+       "matched": 39
+      },
+      "augmentation_dot": {
+       "truth": 78,
+       "pred": 84,
+       "matched": 77
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 36,
+       "pred": 46,
+       "matched": 36
+      },
+      "clef": {
+       "truth": 21,
+       "pred": 23,
+       "matched": 21
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 39,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 31,
+       "pred": 31,
+       "matched": 31
+      },
+      "key_accidental": {
+       "truth": 51,
+       "pred": 52,
+       "matched": 51
+      },
+      "notehead": {
+       "truth": 259,
+       "pred": 259,
+       "matched": 259
+      },
+      "rest": {
+       "truth": 18,
+       "pred": 25,
+       "matched": 18
+      },
+      "slur": {
+       "truth": 40,
+       "pred": 64,
+       "matched": 24
+      },
+      "tie": {
+       "truth": 34,
+       "pred": 38,
+       "matched": 6
+      },
+      "time_signature_digit": {
+       "truth": 42,
+       "pred": 43,
+       "matched": 42
+      }
+     },
+     "unscored_detections": {
+      "staff": 84,
+      "ledgerLine": 121,
+      "articStaccatoAbove": 1,
+      "fermataAbove": 11
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 82,
+       "pred": 41,
+       "matched": 39
+      },
+      "augmentation_dot": {
+       "truth": 78,
+       "pred": 84,
+       "matched": 72
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 36,
+       "pred": 46,
+       "matched": 33
+      },
+      "clef": {
+       "truth": 21,
+       "pred": 23,
+       "matched": 21
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 39,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 31,
+       "pred": 31,
+       "matched": 31
+      },
+      "key_accidental": {
+       "truth": 51,
+       "pred": 52,
+       "matched": 51
+      },
+      "notehead": {
+       "truth": 259,
+       "pred": 259,
+       "matched": 259
+      },
+      "rest": {
+       "truth": 18,
+       "pred": 25,
+       "matched": 18
+      },
+      "slur": {
+       "truth": 40,
+       "pred": 64,
+       "matched": 24
+      },
+      "tie": {
+       "truth": 34,
+       "pred": 38,
+       "matched": 6
+      },
+      "time_signature_digit": {
+       "truth": 42,
+       "pred": 43,
+       "matched": 41
+      }
+     },
+     "unscored_detections": {
+      "staff": 84,
+      "ledgerLine": 121,
+      "articStaccatoAbove": 1,
+      "fermataAbove": 11
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 82,
+       "pred": 41,
+       "matched": 39
+      },
+      "augmentation_dot": {
+       "truth": 78,
+       "pred": 84,
+       "matched": 77
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 36,
+       "pred": 46,
+       "matched": 36
+      },
+      "clef": {
+       "truth": 21,
+       "pred": 23,
+       "matched": 21
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 39,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 31,
+       "pred": 31,
+       "matched": 31
+      },
+      "key_accidental": {
+       "truth": 51,
+       "pred": 52,
+       "matched": 51
+      },
+      "notehead": {
+       "truth": 259,
+       "pred": 259,
+       "matched": 259
+      },
+      "rest": {
+       "truth": 18,
+       "pred": 25,
+       "matched": 18
+      },
+      "slur": {
+       "truth": 40,
+       "pred": 64,
+       "matched": 24
+      },
+      "tie": {
+       "truth": 34,
+       "pred": 38,
+       "matched": 12
+      },
+      "time_signature_digit": {
+       "truth": 42,
+       "pred": 43,
+       "matched": 42
+      }
+     },
+     "unscored_detections": {
+      "staff": 84,
+      "ledgerLine": 121,
+      "articStaccatoAbove": 1,
+      "fermataAbove": 11
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 82,
+       "pred": 41,
+       "matched": 39
+      },
+      "augmentation_dot": {
+       "truth": 78,
+       "pred": 84,
+       "matched": 77
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 36,
+       "pred": 46,
+       "matched": 36
+      },
+      "clef": {
+       "truth": 21,
+       "pred": 23,
+       "matched": 21
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 39,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 31,
+       "pred": 31,
+       "matched": 31
+      },
+      "key_accidental": {
+       "truth": 51,
+       "pred": 52,
+       "matched": 51
+      },
+      "notehead": {
+       "truth": 259,
+       "pred": 259,
+       "matched": 259
+      },
+      "rest": {
+       "truth": 18,
+       "pred": 25,
+       "matched": 18
+      },
+      "slur": {
+       "truth": 40,
+       "pred": 64,
+       "matched": 24
+      },
+      "tie": {
+       "truth": 34,
+       "pred": 38,
+       "matched": 17
+      },
+      "time_signature_digit": {
+       "truth": 42,
+       "pred": 43,
+       "matched": 42
+      }
+     },
+     "unscored_detections": {
+      "staff": 84,
+      "ledgerLine": 121,
+      "articStaccatoAbove": 1,
+      "fermataAbove": 11
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 82,
+       "pred": 41,
+       "matched": 39
+      },
+      "augmentation_dot": {
+       "truth": 78,
+       "pred": 84,
+       "matched": 78
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 36,
+       "pred": 46,
+       "matched": 36
+      },
+      "clef": {
+       "truth": 21,
+       "pred": 23,
+       "matched": 21
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 39,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 31,
+       "pred": 31,
+       "matched": 31
+      },
+      "key_accidental": {
+       "truth": 51,
+       "pred": 52,
+       "matched": 51
+      },
+      "notehead": {
+       "truth": 259,
+       "pred": 259,
+       "matched": 259
+      },
+      "rest": {
+       "truth": 18,
+       "pred": 25,
+       "matched": 18
+      },
+      "slur": {
+       "truth": 40,
+       "pred": 64,
+       "matched": 24
+      },
+      "tie": {
+       "truth": 34,
+       "pred": 38,
+       "matched": 20
+      },
+      "time_signature_digit": {
+       "truth": 42,
+       "pred": 43,
+       "matched": 42
+      }
+     },
+     "unscored_detections": {
+      "staff": 84,
+      "ledgerLine": 121,
+      "articStaccatoAbove": 1,
+      "fermataAbove": 11
+     }
+    }
+   },
+   "pooled": {
+    "truth": 675,
+    "pred": 699,
+    "matched": 587,
+    "precision": 0.8397711015736766,
+    "recall": 0.8696296296296296,
+    "f1": 0.8544395924308588
+   },
+   "confusions": {
+    "accidental": {
+     "-": 43
+    },
+    "augmentation_dot": {
+     "-": 1
+    },
+    "barline": {
+     "-": 4
+    },
+    "slur": {
+     "-": 16
+    },
+    "tie": {
+     "-": 26,
+     "slur": 2
+    }
+   }
+  },
+  "brahms-sym4-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 22,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 6,
+       "pred": 19,
+       "matched": 6
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 21,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 13,
+       "pred": 24,
+       "matched": 7
+      },
+      "key_accidental": {
+       "truth": 11,
+       "pred": 23,
+       "matched": 11
+      },
+      "notehead": {
+       "truth": 102,
+       "pred": 103,
+       "matched": 102
+      },
+      "rest": {
+       "truth": 90,
+       "pred": 90,
+       "matched": 90
+      },
+      "slur": {
+       "truth": 32,
+       "pred": 28,
+       "matched": 16
+      },
+      "tie": {
+       "truth": 4,
+       "pred": 9,
+       "matched": 2
+      },
+      "time_signature_digit": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      }
+     },
+     "unscored_detections": {
+      "staff": 80,
+      "articStaccatoAbove": 30,
+      "ledgerLine": 14,
+      "articStaccatoBelow": 7,
+      "articAccentAbove": 1
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 22,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 6,
+       "pred": 19,
+       "matched": 6
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 21,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 13,
+       "pred": 24,
+       "matched": 7
+      },
+      "key_accidental": {
+       "truth": 11,
+       "pred": 23,
+       "matched": 11
+      },
+      "notehead": {
+       "truth": 102,
+       "pred": 103,
+       "matched": 102
+      },
+      "rest": {
+       "truth": 90,
+       "pred": 90,
+       "matched": 90
+      },
+      "slur": {
+       "truth": 32,
+       "pred": 28,
+       "matched": 16
+      },
+      "tie": {
+       "truth": 4,
+       "pred": 9,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      }
+     },
+     "unscored_detections": {
+      "staff": 80,
+      "articStaccatoAbove": 30,
+      "ledgerLine": 14,
+      "articStaccatoBelow": 7,
+      "articAccentAbove": 1
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 22,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 6,
+       "pred": 19,
+       "matched": 6
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 21,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 13,
+       "pred": 24,
+       "matched": 13
+      },
+      "key_accidental": {
+       "truth": 11,
+       "pred": 23,
+       "matched": 11
+      },
+      "notehead": {
+       "truth": 102,
+       "pred": 103,
+       "matched": 102
+      },
+      "rest": {
+       "truth": 90,
+       "pred": 90,
+       "matched": 90
+      },
+      "slur": {
+       "truth": 32,
+       "pred": 28,
+       "matched": 16
+      },
+      "tie": {
+       "truth": 4,
+       "pred": 9,
+       "matched": 2
+      },
+      "time_signature_digit": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      }
+     },
+     "unscored_detections": {
+      "staff": 80,
+      "articStaccatoAbove": 30,
+      "ledgerLine": 14,
+      "articStaccatoBelow": 7,
+      "articAccentAbove": 1
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 22,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 6,
+       "pred": 19,
+       "matched": 6
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 21,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 13,
+       "pred": 24,
+       "matched": 13
+      },
+      "key_accidental": {
+       "truth": 11,
+       "pred": 23,
+       "matched": 11
+      },
+      "notehead": {
+       "truth": 102,
+       "pred": 103,
+       "matched": 102
+      },
+      "rest": {
+       "truth": 90,
+       "pred": 90,
+       "matched": 90
+      },
+      "slur": {
+       "truth": 32,
+       "pred": 28,
+       "matched": 20
+      },
+      "tie": {
+       "truth": 4,
+       "pred": 9,
+       "matched": 3
+      },
+      "time_signature_digit": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      }
+     },
+     "unscored_detections": {
+      "staff": 80,
+      "articStaccatoAbove": 30,
+      "ledgerLine": 14,
+      "articStaccatoBelow": 7,
+      "articAccentAbove": 1
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 22,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 6,
+       "pred": 19,
+       "matched": 6
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 21,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 13,
+       "pred": 24,
+       "matched": 13
+      },
+      "key_accidental": {
+       "truth": 11,
+       "pred": 23,
+       "matched": 11
+      },
+      "notehead": {
+       "truth": 102,
+       "pred": 103,
+       "matched": 102
+      },
+      "rest": {
+       "truth": 90,
+       "pred": 90,
+       "matched": 90
+      },
+      "slur": {
+       "truth": 32,
+       "pred": 28,
+       "matched": 21
+      },
+      "tie": {
+       "truth": 4,
+       "pred": 9,
+       "matched": 3
+      },
+      "time_signature_digit": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      }
+     },
+     "unscored_detections": {
+      "staff": 80,
+      "articStaccatoAbove": 30,
+      "ledgerLine": 14,
+      "articStaccatoBelow": 7,
+      "articAccentAbove": 1
+     }
+    }
+   },
+   "pooled": {
+    "truth": 314,
+    "pred": 324,
+    "matched": 274,
+    "precision": 0.845679012345679,
+    "recall": 0.8726114649681529,
+    "f1": 0.8589341692789969
+   },
+   "confusions": {
+    "accidental": {
+     "-": 16
+    },
+    "barline": {
+     "-": 4
+    },
+    "dynamic_letter": {
+     "-": 6
+    },
+    "slur": {
+     "-": 9,
+     "beam": 7
+    },
+    "tie": {
+     "-": 2
+    }
+   }
+  },
+  "bruckner-sym5-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 7,
+       "pred": 2,
+       "matched": 2
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "dynamic_letter": {
+       "truth": 4,
+       "pred": 10,
+       "matched": 0
+      },
+      "flag": {
+       "truth": 24,
+       "pred": 24,
+       "matched": 24
+      },
+      "key_accidental": {
+       "truth": 37,
+       "pred": 37,
+       "matched": 37
+      },
+      "notehead": {
+       "truth": 27,
+       "pred": 27,
+       "matched": 27
+      },
+      "rest": {
+       "truth": 92,
+       "pred": 92,
+       "matched": 91
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      }
+     },
+     "unscored_detections": {
+      "staff": 75,
+      "articAccentAbove": 1,
+      "articStaccatissimoAbove": 1,
+      "articStaccatissimoBelow": 1,
+      "ledgerLine": 1
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 7,
+       "pred": 2,
+       "matched": 2
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "dynamic_letter": {
+       "truth": 4,
+       "pred": 10,
+       "matched": 0
+      },
+      "flag": {
+       "truth": 24,
+       "pred": 24,
+       "matched": 24
+      },
+      "key_accidental": {
+       "truth": 37,
+       "pred": 37,
+       "matched": 37
+      },
+      "notehead": {
+       "truth": 27,
+       "pred": 27,
+       "matched": 27
+      },
+      "rest": {
+       "truth": 92,
+       "pred": 92,
+       "matched": 91
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      }
+     },
+     "unscored_detections": {
+      "staff": 75,
+      "articAccentAbove": 1,
+      "articStaccatissimoAbove": 1,
+      "articStaccatissimoBelow": 1,
+      "ledgerLine": 1
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 7,
+       "pred": 2,
+       "matched": 2
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "dynamic_letter": {
+       "truth": 4,
+       "pred": 10,
+       "matched": 4
+      },
+      "flag": {
+       "truth": 24,
+       "pred": 24,
+       "matched": 24
+      },
+      "key_accidental": {
+       "truth": 37,
+       "pred": 37,
+       "matched": 37
+      },
+      "notehead": {
+       "truth": 27,
+       "pred": 27,
+       "matched": 27
+      },
+      "rest": {
+       "truth": 92,
+       "pred": 92,
+       "matched": 91
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      }
+     },
+     "unscored_detections": {
+      "staff": 75,
+      "articAccentAbove": 1,
+      "articStaccatissimoAbove": 1,
+      "articStaccatissimoBelow": 1,
+      "ledgerLine": 1
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 7,
+       "pred": 2,
+       "matched": 2
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "dynamic_letter": {
+       "truth": 4,
+       "pred": 10,
+       "matched": 4
+      },
+      "flag": {
+       "truth": 24,
+       "pred": 24,
+       "matched": 24
+      },
+      "key_accidental": {
+       "truth": 37,
+       "pred": 37,
+       "matched": 37
+      },
+      "notehead": {
+       "truth": 27,
+       "pred": 27,
+       "matched": 27
+      },
+      "rest": {
+       "truth": 92,
+       "pred": 92,
+       "matched": 91
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      }
+     },
+     "unscored_detections": {
+      "staff": 75,
+      "articAccentAbove": 1,
+      "articStaccatissimoAbove": 1,
+      "articStaccatissimoBelow": 1,
+      "ledgerLine": 1
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 7,
+       "pred": 2,
+       "matched": 2
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "dynamic_letter": {
+       "truth": 4,
+       "pred": 10,
+       "matched": 4
+      },
+      "flag": {
+       "truth": 24,
+       "pred": 24,
+       "matched": 24
+      },
+      "key_accidental": {
+       "truth": 37,
+       "pred": 37,
+       "matched": 37
+      },
+      "notehead": {
+       "truth": 27,
+       "pred": 27,
+       "matched": 27
+      },
+      "rest": {
+       "truth": 92,
+       "pred": 92,
+       "matched": 91
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      }
+     },
+     "unscored_detections": {
+      "staff": 75,
+      "articAccentAbove": 1,
+      "articStaccatissimoAbove": 1,
+      "articStaccatissimoBelow": 1,
+      "ledgerLine": 1
+     }
+    }
+   },
+   "pooled": {
+    "truth": 242,
+    "pred": 243,
+    "matched": 231,
+    "precision": 0.9506172839506173,
+    "recall": 0.9545454545454546,
+    "f1": 0.9525773195876289
+   },
+   "confusions": {
+    "accidental": {
+     "-": 5
+    },
+    "barline": {
+     "-": 3
+    },
+    "dynamic_letter": {
+     "-": 4
+    },
+    "rest": {
+     "-": 1
+    },
+    "tie": {
+     "-": 1
+    }
+   }
+  },
+  "dvorak-sym9-mvt4": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 10
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 8,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 21,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 15,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "key_accidental": {
+       "truth": 10,
+       "pred": 12,
+       "matched": 10
+      },
+      "notehead": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "rest": {
+       "truth": 62,
+       "pred": 63,
+       "matched": 62
+      },
+      "slur": {
+       "truth": 20,
+       "pred": 12,
+       "matched": 12
+      },
+      "tie": {
+       "truth": 0,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 19,
+       "pred": 18,
+       "matched": 18
+      }
+     },
+     "unscored_detections": {
+      "staff": 54,
+      "fermataBelow": 1,
+      "articAccentBelow": 10,
+      "ledgerLine": 4
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 10
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 8,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 21,
+       "matched": 16
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 15,
+       "matched": 0
+      },
+      "flag": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "key_accidental": {
+       "truth": 10,
+       "pred": 12,
+       "matched": 10
+      },
+      "notehead": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "rest": {
+       "truth": 62,
+       "pred": 63,
+       "matched": 62
+      },
+      "slur": {
+       "truth": 20,
+       "pred": 12,
+       "matched": 12
+      },
+      "tie": {
+       "truth": 0,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 19,
+       "pred": 18,
+       "matched": 18
+      }
+     },
+     "unscored_detections": {
+      "staff": 54,
+      "fermataBelow": 1,
+      "articAccentBelow": 10,
+      "ledgerLine": 4
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 10
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 8,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 21,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 15,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "key_accidental": {
+       "truth": 10,
+       "pred": 12,
+       "matched": 10
+      },
+      "notehead": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "rest": {
+       "truth": 62,
+       "pred": 63,
+       "matched": 62
+      },
+      "slur": {
+       "truth": 20,
+       "pred": 12,
+       "matched": 12
+      },
+      "tie": {
+       "truth": 0,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 19,
+       "pred": 18,
+       "matched": 18
+      }
+     },
+     "unscored_detections": {
+      "staff": 54,
+      "fermataBelow": 1,
+      "articAccentBelow": 10,
+      "ledgerLine": 4
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 10
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 8,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 21,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 15,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "key_accidental": {
+       "truth": 10,
+       "pred": 12,
+       "matched": 10
+      },
+      "notehead": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "rest": {
+       "truth": 62,
+       "pred": 63,
+       "matched": 62
+      },
+      "slur": {
+       "truth": 20,
+       "pred": 12,
+       "matched": 12
+      },
+      "tie": {
+       "truth": 0,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 19,
+       "pred": 18,
+       "matched": 18
+      }
+     },
+     "unscored_detections": {
+      "staff": 54,
+      "fermataBelow": 1,
+      "articAccentBelow": 10,
+      "ledgerLine": 4
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 10
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 0,
+       "pred": 8,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 19,
+       "pred": 21,
+       "matched": 19
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 15,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "key_accidental": {
+       "truth": 10,
+       "pred": 12,
+       "matched": 10
+      },
+      "notehead": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      },
+      "rest": {
+       "truth": 62,
+       "pred": 63,
+       "matched": 62
+      },
+      "slur": {
+       "truth": 20,
+       "pred": 12,
+       "matched": 12
+      },
+      "tie": {
+       "truth": 0,
+       "pred": 1,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 19,
+       "pred": 18,
+       "matched": 18
+      }
+     },
+     "unscored_detections": {
+      "staff": 54,
+      "fermataBelow": 1,
+      "articAccentBelow": 10,
+      "ledgerLine": 4
+     }
+    }
+   },
+   "pooled": {
+    "truth": 205,
+    "pred": 212,
+    "matched": 195,
+    "precision": 0.9198113207547169,
+    "recall": 0.9512195121951219,
+    "f1": 0.935251798561151
+   },
+   "confusions": {
+    "barline": {
+     "-": 3
+    },
+    "clef": {
+     "-": 1
+    },
+    "slur": {
+     "beam": 8
+    },
+    "time_signature_digit": {
+     "-": 1
+    }
+   }
+  },
+  "mahler-sym5-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 3,
+       "matched": 3
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "clef": {
+       "truth": 38,
+       "pred": 34,
+       "matched": 34
+      },
+      "dynamic_letter": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 1
+      },
+      "key_accidental": {
+       "truth": 108,
+       "pred": 108,
+       "matched": 108
+      },
+      "notehead": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "rest": {
+       "truth": 113,
+       "pred": 113,
+       "matched": 113
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 76,
+       "pred": 76,
+       "matched": 76
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articAccentBelow": 5,
+      "fingering3": 2,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 3,
+       "matched": 3
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "clef": {
+       "truth": 38,
+       "pred": 34,
+       "matched": 34
+      },
+      "dynamic_letter": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 1
+      },
+      "key_accidental": {
+       "truth": 108,
+       "pred": 108,
+       "matched": 108
+      },
+      "notehead": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "rest": {
+       "truth": 113,
+       "pred": 113,
+       "matched": 113
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 76,
+       "pred": 76,
+       "matched": 76
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articAccentBelow": 5,
+      "fingering3": 2,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 3,
+       "matched": 3
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "clef": {
+       "truth": 38,
+       "pred": 34,
+       "matched": 34
+      },
+      "dynamic_letter": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 1
+      },
+      "key_accidental": {
+       "truth": 108,
+       "pred": 108,
+       "matched": 108
+      },
+      "notehead": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "rest": {
+       "truth": 113,
+       "pred": 113,
+       "matched": 113
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 76,
+       "pred": 76,
+       "matched": 76
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articAccentBelow": 5,
+      "fingering3": 2,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 3,
+       "matched": 3
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "clef": {
+       "truth": 38,
+       "pred": 34,
+       "matched": 34
+      },
+      "dynamic_letter": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 1
+      },
+      "key_accidental": {
+       "truth": 108,
+       "pred": 108,
+       "matched": 108
+      },
+      "notehead": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "rest": {
+       "truth": 113,
+       "pred": 113,
+       "matched": 113
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 76,
+       "pred": 76,
+       "matched": 76
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articAccentBelow": 5,
+      "fingering3": 2,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 9,
+       "pred": 3,
+       "matched": 3
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "clef": {
+       "truth": 38,
+       "pred": 34,
+       "matched": 34
+      },
+      "dynamic_letter": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 1
+      },
+      "key_accidental": {
+       "truth": 108,
+       "pred": 108,
+       "matched": 108
+      },
+      "notehead": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "rest": {
+       "truth": 113,
+       "pred": 113,
+       "matched": 113
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 2,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 76,
+       "pred": 76,
+       "matched": 76
+      }
+     },
+     "unscored_detections": {
+      "staff": 114,
+      "articAccentBelow": 5,
+      "fingering3": 2,
+      "dynamicDiminuendoHairpin": 1
+     }
+    }
+   },
+   "pooled": {
+    "truth": 355,
+    "pred": 347,
+    "matched": 344,
+    "precision": 0.9913544668587896,
+    "recall": 0.9690140845070423,
+    "f1": 0.98005698005698
+   },
+   "confusions": {
+    "accidental": {
+     "-": 6
+    },
+    "barline": {
+     "-": 3
+    },
+    "clef": {
+     "-": 4
+    },
+    "tie": {
+     "-": 1
+    }
+   }
+  },
+  "mozart-sym40-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 30,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 27,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 11,
+       "pred": 12,
+       "matched": 11
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 7,
+       "matched": 5
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 20,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 78,
+       "pred": 78,
+       "matched": 78
+      },
+      "rest": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      },
+      "slur": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 9
+      },
+      "time_signature_digit": {
+       "truth": 11,
+       "pred": 11,
+       "matched": 11
+      }
+     },
+     "unscored_detections": {
+      "staff": 33,
+      "articStaccatoAbove": 26,
+      "articStaccatoBelow": 26,
+      "articTenutoBelow": 2
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 30,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 27,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 11,
+       "pred": 12,
+       "matched": 11
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 7,
+       "matched": 5
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 20,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 78,
+       "pred": 78,
+       "matched": 78
+      },
+      "rest": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      },
+      "slur": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 9
+      },
+      "time_signature_digit": {
+       "truth": 11,
+       "pred": 11,
+       "matched": 11
+      }
+     },
+     "unscored_detections": {
+      "staff": 33,
+      "articStaccatoAbove": 26,
+      "articStaccatoBelow": 26,
+      "articTenutoBelow": 2
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 30,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 27,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 11,
+       "pred": 12,
+       "matched": 11
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 7,
+       "matched": 5
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 20,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 78,
+       "pred": 78,
+       "matched": 78
+      },
+      "rest": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      },
+      "slur": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 9
+      },
+      "time_signature_digit": {
+       "truth": 11,
+       "pred": 11,
+       "matched": 11
+      }
+     },
+     "unscored_detections": {
+      "staff": 33,
+      "articStaccatoAbove": 26,
+      "articStaccatoBelow": 26,
+      "articTenutoBelow": 2
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 30,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 27,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 11,
+       "pred": 12,
+       "matched": 11
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 7,
+       "matched": 5
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 20,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 78,
+       "pred": 78,
+       "matched": 78
+      },
+      "rest": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      },
+      "slur": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 9
+      },
+      "time_signature_digit": {
+       "truth": 11,
+       "pred": 11,
+       "matched": 11
+      }
+     },
+     "unscored_detections": {
+      "staff": 33,
+      "articStaccatoAbove": 26,
+      "articStaccatoBelow": 26,
+      "articTenutoBelow": 2
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 30,
+       "pred": 0,
+       "matched": 0
+      },
+      "barline": {
+       "truth": 3,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 27,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 11,
+       "pred": 12,
+       "matched": 11
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 7,
+       "matched": 5
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 20,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 78,
+       "pred": 78,
+       "matched": 78
+      },
+      "rest": {
+       "truth": 36,
+       "pred": 36,
+       "matched": 36
+      },
+      "slur": {
+       "truth": 10,
+       "pred": 10,
+       "matched": 9
+      },
+      "time_signature_digit": {
+       "truth": 11,
+       "pred": 11,
+       "matched": 11
+      }
+     },
+     "unscored_detections": {
+      "staff": 33,
+      "articStaccatoAbove": 26,
+      "articStaccatoBelow": 26,
+      "articTenutoBelow": 2
+     }
+    }
+   },
+   "pooled": {
+    "truth": 181,
+    "pred": 174,
+    "matched": 150,
+    "precision": 0.8620689655172413,
+    "recall": 0.8287292817679558,
+    "f1": 0.8450704225352113
+   },
+   "confusions": {
+    "accidental": {
+     "-": 30
+    },
+    "barline": {
+     "-": 3
+    },
+    "slur": {
+     "beam": 1
+    }
+   }
+  },
+  "mozart-sym41-mvt1": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 5,
+       "pred": 5,
+       "matched": 5
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 50,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 26,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 5,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "notehead": {
+       "truth": 120,
+       "pred": 121,
+       "matched": 120
+      },
+      "rest": {
+       "truth": 95,
+       "pred": 96,
+       "matched": 95
+      },
+      "slur": {
+       "truth": 24,
+       "pred": 22,
+       "matched": 5
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      }
+     },
+     "unscored_detections": {
+      "staff": 68,
+      "fermataAbove": 4,
+      "fingering3": 14,
+      "ledgerLine": 11,
+      "tuplet3": 6,
+      "articStaccatoAbove": 1
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 5,
+       "pred": 5,
+       "matched": 5
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 50,
+       "matched": 0
+      },
+      "clef": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 26,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 5,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "notehead": {
+       "truth": 120,
+       "pred": 121,
+       "matched": 120
+      },
+      "rest": {
+       "truth": 95,
+       "pred": 96,
+       "matched": 95
+      },
+      "slur": {
+       "truth": 24,
+       "pred": 22,
+       "matched": 5
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 0
+      },
+      "time_signature_digit": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      }
+     },
+     "unscored_detections": {
+      "staff": 68,
+      "fermataAbove": 4,
+      "fingering3": 14,
+      "ledgerLine": 11,
+      "tuplet3": 6,
+      "articStaccatoAbove": 1
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 5,
+       "pred": 5,
+       "matched": 5
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 50,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 26,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 5,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "notehead": {
+       "truth": 120,
+       "pred": 121,
+       "matched": 120
+      },
+      "rest": {
+       "truth": 95,
+       "pred": 96,
+       "matched": 95
+      },
+      "slur": {
+       "truth": 24,
+       "pred": 22,
+       "matched": 6
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      }
+     },
+     "unscored_detections": {
+      "staff": 68,
+      "fermataAbove": 4,
+      "fingering3": 14,
+      "ledgerLine": 11,
+      "tuplet3": 6,
+      "articStaccatoAbove": 1
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 5,
+       "pred": 5,
+       "matched": 5
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 50,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 26,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 5,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "notehead": {
+       "truth": 120,
+       "pred": 121,
+       "matched": 120
+      },
+      "rest": {
+       "truth": 95,
+       "pred": 96,
+       "matched": 95
+      },
+      "slur": {
+       "truth": 24,
+       "pred": 22,
+       "matched": 13
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      }
+     },
+     "unscored_detections": {
+      "staff": 68,
+      "fermataAbove": 4,
+      "fingering3": 14,
+      "ledgerLine": 11,
+      "tuplet3": 6,
+      "articStaccatoAbove": 1
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "augmentation_dot": {
+       "truth": 5,
+       "pred": 5,
+       "matched": 5
+      },
+      "barline": {
+       "truth": 4,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 20,
+       "pred": 50,
+       "matched": 20
+      },
+      "clef": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      },
+      "dynamic_letter": {
+       "truth": 19,
+       "pred": 26,
+       "matched": 19
+      },
+      "flag": {
+       "truth": 3,
+       "pred": 5,
+       "matched": 3
+      },
+      "key_accidental": {
+       "truth": 2,
+       "pred": 2,
+       "matched": 2
+      },
+      "notehead": {
+       "truth": 120,
+       "pred": 121,
+       "matched": 120
+      },
+      "rest": {
+       "truth": 95,
+       "pred": 96,
+       "matched": 95
+      },
+      "slur": {
+       "truth": 24,
+       "pred": 22,
+       "matched": 16
+      },
+      "tie": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "time_signature_digit": {
+       "truth": 17,
+       "pred": 17,
+       "matched": 17
+      }
+     },
+     "unscored_detections": {
+      "staff": 68,
+      "fermataAbove": 4,
+      "fingering3": 14,
+      "ledgerLine": 11,
+      "tuplet3": 6,
+      "articStaccatoAbove": 1
+     }
+    }
+   },
+   "pooled": {
+    "truth": 303,
+    "pred": 314,
+    "matched": 284,
+    "precision": 0.9044585987261147,
+    "recall": 0.9372937293729373,
+    "f1": 0.920583468395462
+   },
+   "confusions": {
+    "barline": {
+     "-": 4
+    },
+    "slur": {
+     "-": 13,
+     "beam": 6
+    }
+   }
+  },
+  "tchaikovsky-sym4-mvt2": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 23,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 5,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 17,
+       "matched": 0
+      },
+      "flag": {
+       "truth": 21,
+       "pred": 21,
+       "matched": 21
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 90,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 39,
+       "pred": 39,
+       "matched": 39
+      },
+      "rest": {
+       "truth": 112,
+       "pred": 112,
+       "matched": 112
+      },
+      "time_signature_digit": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      }
+     },
+     "unscored_detections": {
+      "staff": 100,
+      "articStaccatoAbove": 1
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 23,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 5,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 17,
+       "matched": 0
+      },
+      "flag": {
+       "truth": 21,
+       "pred": 21,
+       "matched": 21
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 90,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 39,
+       "pred": 39,
+       "matched": 39
+      },
+      "rest": {
+       "truth": 112,
+       "pred": 112,
+       "matched": 112
+      },
+      "time_signature_digit": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      }
+     },
+     "unscored_detections": {
+      "staff": 100,
+      "articStaccatoAbove": 1
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 23,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 5,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 17,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 21,
+       "pred": 21,
+       "matched": 21
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 90,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 39,
+       "pred": 39,
+       "matched": 39
+      },
+      "rest": {
+       "truth": 112,
+       "pred": 112,
+       "matched": 112
+      },
+      "time_signature_digit": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      }
+     },
+     "unscored_detections": {
+      "staff": 100,
+      "articStaccatoAbove": 1
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 23,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 5,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 17,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 21,
+       "pred": 21,
+       "matched": 21
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 90,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 39,
+       "pred": 39,
+       "matched": 39
+      },
+      "rest": {
+       "truth": 112,
+       "pred": 112,
+       "matched": 112
+      },
+      "time_signature_digit": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      }
+     },
+     "unscored_detections": {
+      "staff": 100,
+      "articStaccatoAbove": 1
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 23,
+       "pred": 6,
+       "matched": 6
+      },
+      "barline": {
+       "truth": 5,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 9,
+       "pred": 9,
+       "matched": 9
+      },
+      "clef": {
+       "truth": 20,
+       "pred": 20,
+       "matched": 20
+      },
+      "dynamic_letter": {
+       "truth": 5,
+       "pred": 17,
+       "matched": 5
+      },
+      "flag": {
+       "truth": 21,
+       "pred": 21,
+       "matched": 21
+      },
+      "key_accidental": {
+       "truth": 0,
+       "pred": 90,
+       "matched": 0
+      },
+      "notehead": {
+       "truth": 39,
+       "pred": 39,
+       "matched": 39
+      },
+      "rest": {
+       "truth": 112,
+       "pred": 112,
+       "matched": 112
+      },
+      "time_signature_digit": {
+       "truth": 40,
+       "pred": 40,
+       "matched": 40
+      }
+     },
+     "unscored_detections": {
+      "staff": 100,
+      "articStaccatoAbove": 1
+     }
+    }
+   },
+   "pooled": {
+    "truth": 260,
+    "pred": 345,
+    "matched": 238,
+    "precision": 0.6898550724637681,
+    "recall": 0.9153846153846154,
+    "f1": 0.7867768595041321
+   },
+   "confusions": {
+    "accidental": {
+     "-": 17
+    },
+    "barline": {
+     "-": 5
+    },
+    "dynamic_letter": {
+     "-": 5
+    }
+   }
+  },
+  "tchaikovsky-sym6-mvt2": {
+   "staff_space_px": 22.5,
+   "tolerances": {
+    "0.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 8,
+       "pred": 2,
+       "matched": 2
+      },
+      "augmentation_dot": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 1
+      },
+      "barline": {
+       "truth": 2,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 18,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 9,
+       "pred": 23,
+       "matched": 1
+      },
+      "flag": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "key_accidental": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "notehead": {
+       "truth": 42,
+       "pred": 42,
+       "matched": 42
+      },
+      "rest": {
+       "truth": 70,
+       "pred": 73,
+       "matched": 70
+      },
+      "slur": {
+       "truth": 8,
+       "pred": 6,
+       "matched": 6
+      },
+      "time_signature_digit": {
+       "truth": 34,
+       "pred": 34,
+       "matched": 34
+      }
+     },
+     "unscored_detections": {
+      "staff": 34,
+      "ornamentTrill": 1,
+      "ledgerLine": 5,
+      "articStaccatoBelow": 2,
+      "dynamicCrescendoHairpin": 1,
+      "fingering3": 1,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "0.25": {
+     "per_family": {
+      "accidental": {
+       "truth": 8,
+       "pred": 2,
+       "matched": 2
+      },
+      "augmentation_dot": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 1
+      },
+      "barline": {
+       "truth": 2,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 18,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 9,
+       "pred": 23,
+       "matched": 1
+      },
+      "flag": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "key_accidental": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "notehead": {
+       "truth": 42,
+       "pred": 42,
+       "matched": 42
+      },
+      "rest": {
+       "truth": 70,
+       "pred": 73,
+       "matched": 70
+      },
+      "slur": {
+       "truth": 8,
+       "pred": 6,
+       "matched": 6
+      },
+      "time_signature_digit": {
+       "truth": 34,
+       "pred": 34,
+       "matched": 34
+      }
+     },
+     "unscored_detections": {
+      "staff": 34,
+      "ornamentTrill": 1,
+      "ledgerLine": 5,
+      "articStaccatoBelow": 2,
+      "dynamicCrescendoHairpin": 1,
+      "fingering3": 1,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "0.75": {
+     "per_family": {
+      "accidental": {
+       "truth": 8,
+       "pred": 2,
+       "matched": 2
+      },
+      "augmentation_dot": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 1
+      },
+      "barline": {
+       "truth": 2,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 18,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 9,
+       "pred": 23,
+       "matched": 9
+      },
+      "flag": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "key_accidental": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "notehead": {
+       "truth": 42,
+       "pred": 42,
+       "matched": 42
+      },
+      "rest": {
+       "truth": 70,
+       "pred": 73,
+       "matched": 70
+      },
+      "slur": {
+       "truth": 8,
+       "pred": 6,
+       "matched": 6
+      },
+      "time_signature_digit": {
+       "truth": 34,
+       "pred": 34,
+       "matched": 34
+      }
+     },
+     "unscored_detections": {
+      "staff": 34,
+      "ornamentTrill": 1,
+      "ledgerLine": 5,
+      "articStaccatoBelow": 2,
+      "dynamicCrescendoHairpin": 1,
+      "fingering3": 1,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "1.0": {
+     "per_family": {
+      "accidental": {
+       "truth": 8,
+       "pred": 2,
+       "matched": 2
+      },
+      "augmentation_dot": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 1
+      },
+      "barline": {
+       "truth": 2,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 18,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 9,
+       "pred": 23,
+       "matched": 9
+      },
+      "flag": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "key_accidental": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "notehead": {
+       "truth": 42,
+       "pred": 42,
+       "matched": 42
+      },
+      "rest": {
+       "truth": 70,
+       "pred": 73,
+       "matched": 70
+      },
+      "slur": {
+       "truth": 8,
+       "pred": 6,
+       "matched": 6
+      },
+      "time_signature_digit": {
+       "truth": 34,
+       "pred": 34,
+       "matched": 34
+      }
+     },
+     "unscored_detections": {
+      "staff": 34,
+      "ornamentTrill": 1,
+      "ledgerLine": 5,
+      "articStaccatoBelow": 2,
+      "dynamicCrescendoHairpin": 1,
+      "fingering3": 1,
+      "dynamicDiminuendoHairpin": 1
+     }
+    },
+    "1.5": {
+     "per_family": {
+      "accidental": {
+       "truth": 8,
+       "pred": 2,
+       "matched": 2
+      },
+      "augmentation_dot": {
+       "truth": 1,
+       "pred": 1,
+       "matched": 1
+      },
+      "barline": {
+       "truth": 2,
+       "pred": 0,
+       "matched": 0
+      },
+      "beam": {
+       "truth": 1,
+       "pred": 3,
+       "matched": 1
+      },
+      "clef": {
+       "truth": 18,
+       "pred": 18,
+       "matched": 18
+      },
+      "dynamic_letter": {
+       "truth": 9,
+       "pred": 23,
+       "matched": 9
+      },
+      "flag": {
+       "truth": 16,
+       "pred": 16,
+       "matched": 16
+      },
+      "key_accidental": {
+       "truth": 25,
+       "pred": 25,
+       "matched": 25
+      },
+      "notehead": {
+       "truth": 42,
+       "pred": 42,
+       "matched": 42
+      },
+      "rest": {
+       "truth": 70,
+       "pred": 73,
+       "matched": 70
+      },
+      "slur": {
+       "truth": 8,
+       "pred": 6,
+       "matched": 6
+      },
+      "time_signature_digit": {
+       "truth": 34,
+       "pred": 34,
+       "matched": 34
+      }
+     },
+     "unscored_detections": {
+      "staff": 34,
+      "ornamentTrill": 1,
+      "ledgerLine": 5,
+      "articStaccatoBelow": 2,
+      "dynamicCrescendoHairpin": 1,
+      "fingering3": 1,
+      "dynamicDiminuendoHairpin": 1
+     }
+    }
+   },
+   "pooled": {
+    "truth": 231,
+    "pred": 240,
+    "matched": 215,
+    "precision": 0.8958333333333334,
+    "recall": 0.9307359307359307,
+    "f1": 0.9129511677282378
+   },
+   "confusions": {
+    "accidental": {
+     "-": 6
+    },
+    "barline": {
+     "-": 2
+    },
+    "dynamic_letter": {
+     "-": 8
+    },
+    "slur": {
+     "beam": 2
+    }
+   }
+  }
+ },
+ "stage2_translation": {
+  "per_work": {
+   "beethoven-sym3-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 2,
+     "exported": 1,
+     "truth": 1,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 15,
+     "exported": 14,
+     "truth": 14,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 25,
+     "exported": 23,
+     "truth": 23,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 26,
+     "exported": 21,
+     "truth": 38,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 4,
+     "exported": 4,
+     "truth": 6,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 5,
+     "exported": 4,
+     "truth": 5,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 2,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "beethoven-sym5-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 22,
+     "exported": 16,
+     "truth": 13,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 36,
+     "exported": 35,
+     "truth": 36,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 2,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 17,
+     "exported": 22,
+     "truth": 27,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 17,
+     "exported": 48,
+     "truth": 48,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "brahms-sym1-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 54,
+     "exported": 54,
+     "truth": 54,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 120,
+     "exported": 116,
+     "truth": 116,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 29,
+     "exported": 29,
+     "truth": 19,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 2,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 115,
+     "exported": 148,
+     "truth": 164,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 88,
+     "exported": 89,
+     "truth": 99,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 113,
+     "exported": 326,
+     "truth": 324,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "brahms-sym4-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 10,
+     "exported": 10,
+     "truth": 10,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 1,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 20,
+     "exported": 14,
+     "truth": 15,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 2,
+     "exported": 0,
+     "truth": 5,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 58,
+     "exported": 55,
+     "truth": 60,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 65,
+     "exported": 60,
+     "truth": 104,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 25,
+     "exported": 14,
+     "truth": 12,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 24,
+     "exported": 35,
+     "truth": 40,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "bruckner-sym5-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 14,
+     "exported": 14,
+     "truth": 14,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 3,
+     "exported": 2,
+     "truth": 2,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 34,
+     "exported": 23,
+     "truth": 16,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 10,
+     "exported": 8,
+     "truth": 11,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 3,
+     "exported": 2,
+     "truth": 4,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 11,
+     "exported": 8,
+     "truth": 12,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 47,
+     "exported": 4,
+     "truth": 4,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "dvorak-sym9-mvt4": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 10,
+     "exported": 10,
+     "truth": 10,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 10,
+     "exported": 6,
+     "truth": 5,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 10,
+     "exported": 9,
+     "truth": 10,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 20,
+     "exported": 32,
+     "truth": 40,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "mahler-sym5-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 11,
+     "exported": 11,
+     "truth": 11,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 5,
+     "exported": 4,
+     "truth": 3,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 4,
+     "exported": 0,
+     "truth": 6,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 6,
+     "exported": 6,
+     "truth": 6,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 10,
+     "exported": 4,
+     "truth": 4,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 6,
+     "exported": 15,
+     "truth": 15,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 6,
+     "exported": 10,
+     "truth": 10,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "mozart-sym40-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 1,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 6,
+     "exported": 6,
+     "truth": 5,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 102,
+     "exported": 81,
+     "truth": 110,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 20,
+     "exported": 38,
+     "truth": 40,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 49,
+     "exported": 118,
+     "truth": 132,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "mozart-sym41-mvt1": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 13,
+     "exported": 10,
+     "truth": 10,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 5,
+     "exported": 5,
+     "truth": 5,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 25,
+     "exported": 25,
+     "truth": 25,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 4,
+     "exported": 2,
+     "truth": 2,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 60,
+     "exported": 96,
+     "truth": 88,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 13,
+     "exported": 18,
+     "truth": 2,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 85,
+     "exported": 240,
+     "truth": 240,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 43,
+     "exported": 74,
+     "truth": 80,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "tchaikovsky-sym4-mvt2": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 9,
+     "exported": 7,
+     "truth": 10,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 13,
+     "exported": 5,
+     "truth": 5,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 16,
+     "exported": 30,
+     "truth": 30,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ],
+   "tchaikovsky-sym6-mvt2": [
+    {
+     "family": "accidental",
+     "element": "accidental",
+     "detected": 5,
+     "exported": 5,
+     "truth": 5,
+     "unit_mismatch": null
+    },
+    {
+     "family": "augmentation_dot",
+     "element": "dot",
+     "detected": 3,
+     "exported": 2,
+     "truth": 2,
+     "unit_mismatch": null
+    },
+    {
+     "family": "dynamic_letter",
+     "element": "dynamics",
+     "detected": 32,
+     "exported": 18,
+     "truth": 13,
+     "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>"
+    },
+    {
+     "family": "hairpin",
+     "element": "wedge",
+     "detected": 3,
+     "exported": 0,
+     "truth": 6,
+     "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin"
+    },
+    {
+     "family": "fermata",
+     "element": "fermata",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": null
+    },
+    {
+     "family": "articulation",
+     "element": "articulations",
+     "detected": 0,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "one <articulations> block can hold several marks"
+    },
+    {
+     "family": "slur",
+     "element": "slur",
+     "detected": 17,
+     "exported": 18,
+     "truth": 32,
+     "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc"
+    },
+    {
+     "family": "tie",
+     "element": "tied",
+     "detected": 2,
+     "exported": 0,
+     "truth": 0,
+     "unit_mismatch": "MusicXML writes a <tied> at each end"
+    },
+    {
+     "family": "beam",
+     "element": "beam",
+     "detected": 7,
+     "exported": 6,
+     "truth": 6,
+     "unit_mismatch": "one <beam> per note per level, not per stroke"
+    },
+    {
+     "family": "tuplet",
+     "element": "tuplet",
+     "detected": 2,
+     "exported": 4,
+     "truth": 4,
+     "unit_mismatch": "the detector counts digit/bracket glyphs"
+    }
+   ]
+  },
+  "pooled": {
+   "accidental": {
+    "detected": 118,
+    "exported": 112,
+    "truth": 115,
+    "unit_mismatch": null,
+    "element": "accidental"
+   },
+   "augmentation_dot": {
+    "detected": 158,
+    "exported": 149,
+    "truth": 149,
+    "unit_mismatch": null,
+    "element": "dot"
+   },
+   "dynamic_letter": {
+    "detected": 221,
+    "exported": 169,
+    "truth": 142,
+    "unit_mismatch": "the detector counts LETTERS, the file counts words: `ff` is two detections and one <dynamics>",
+    "element": "dynamics"
+   },
+   "hairpin": {
+    "detected": 9,
+    "exported": 0,
+    "truth": 17,
+    "unit_mismatch": "MusicXML writes a <wedge> at each end, so the truth counts two per hairpin",
+    "element": "wedge"
+   },
+   "fermata": {
+    "detected": 36,
+    "exported": 35,
+    "truth": 36,
+    "unit_mismatch": null,
+    "element": "fermata"
+   },
+   "articulation": {
+    "detected": 218,
+    "exported": 182,
+    "truth": 237,
+    "unit_mismatch": "one <articulations> block can hold several marks",
+    "element": "articulations"
+   },
+   "slur": {
+    "detected": 306,
+    "exported": 398,
+    "truth": 478,
+    "unit_mismatch": "MusicXML writes a <slur> at each end, so the truth counts two per arc",
+    "element": "slur"
+   },
+   "tie": {
+    "detected": 171,
+    "exported": 159,
+    "truth": 161,
+    "unit_mismatch": "MusicXML writes a <tied> at each end",
+    "element": "tied"
+   },
+   "beam": {
+    "detected": 366,
+    "exported": 822,
+    "truth": 839,
+    "unit_mismatch": "one <beam> per note per level, not per stroke",
+    "element": "beam"
+   },
+   "tuplet": {
+    "detected": 51,
+    "exported": 88,
+    "truth": 94,
+    "unit_mismatch": "the detector counts digit/bracket glyphs",
+    "element": "tuplet"
+   }
+  }
+ }
+}
