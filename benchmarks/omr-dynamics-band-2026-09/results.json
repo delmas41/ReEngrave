@@ -1007,6 +1007,231 @@
    ]
   }
  },
+ "engraved_funnel": {
+  "rows": [
+   {
+    "work": "beethoven-sym3-mvt1",
+    "letters": 25,
+    "words": 23,
+    "lost_empty_measure": 0,
+    "exported": 23,
+    "truth": 23
+   },
+   {
+    "work": "beethoven-sym5-mvt1",
+    "letters": 22,
+    "words": 16,
+    "lost_empty_measure": 0,
+    "exported": 16,
+    "truth": 13
+   },
+   {
+    "work": "brahms-sym1-mvt1",
+    "letters": 29,
+    "words": 29,
+    "lost_empty_measure": 0,
+    "exported": 29,
+    "truth": 19
+   },
+   {
+    "work": "brahms-sym4-mvt1",
+    "letters": 20,
+    "words": 14,
+    "lost_empty_measure": 0,
+    "exported": 14,
+    "truth": 15
+   },
+   {
+    "work": "bruckner-sym5-mvt1",
+    "letters": 34,
+    "words": 23,
+    "lost_empty_measure": 0,
+    "exported": 23,
+    "truth": 16
+   },
+   {
+    "work": "dvorak-sym9-mvt4",
+    "letters": 10,
+    "words": 6,
+    "lost_empty_measure": 0,
+    "exported": 6,
+    "truth": 5
+   },
+   {
+    "work": "mahler-sym5-mvt1",
+    "letters": 5,
+    "words": 4,
+    "lost_empty_measure": 0,
+    "exported": 4,
+    "truth": 3
+   },
+   {
+    "work": "mozart-sym40-mvt1",
+    "letters": 6,
+    "words": 6,
+    "lost_empty_measure": 0,
+    "exported": 6,
+    "truth": 5
+   },
+   {
+    "work": "mozart-sym41-mvt1",
+    "letters": 25,
+    "words": 25,
+    "lost_empty_measure": 0,
+    "exported": 25,
+    "truth": 25
+   },
+   {
+    "work": "tchaikovsky-sym4-mvt2",
+    "letters": 13,
+    "words": 5,
+    "lost_empty_measure": 0,
+    "exported": 5,
+    "truth": 5
+   },
+   {
+    "work": "tchaikovsky-sym6-mvt2",
+    "letters": 32,
+    "words": 18,
+    "lost_empty_measure": 0,
+    "exported": 18,
+    "truth": 13
+   }
+  ],
+  "kept_runs": {
+   "f": 76,
+   "sf": 7,
+   "p": 54,
+   "ff": 10,
+   "pp": 15,
+   "mf": 7
+  },
+  "dropped_runs": {
+   "s": 1,
+   "pfp": 2,
+   "m": 4,
+   "pf": 1
+  }
+ },
+ "scanned_funnel": {
+  "rows": [
+   {
+    "work": "bach-brandenburg3-mvt1-468678-p1",
+    "letters": 2,
+    "words": 2,
+    "lost_empty_measure": 0,
+    "exported": 2,
+    "truth": 0
+   },
+   {
+    "work": "beethoven-sym5-mvt1-575951-p1",
+    "letters": 17,
+    "words": 11,
+    "lost_empty_measure": 0,
+    "exported": 11,
+    "truth": 13
+   },
+   {
+    "work": "beethoven-sym5-mvt1-575951-p2",
+    "letters": 144,
+    "words": 92,
+    "lost_empty_measure": 4,
+    "exported": 88,
+    "truth": 154
+   },
+   {
+    "work": "beethoven-sym5-mvt1-984073-p1",
+    "letters": 18,
+    "words": 12,
+    "lost_empty_measure": 1,
+    "exported": 11,
+    "truth": 13
+   },
+   {
+    "work": "beethoven-sym5-mvt1-984073-p2",
+    "letters": 142,
+    "words": 86,
+    "lost_empty_measure": 3,
+    "exported": 83,
+    "truth": 154
+   },
+   {
+    "work": "brahms-sym1-mvt1-317803-p1",
+    "letters": 38,
+    "words": 22,
+    "lost_empty_measure": 0,
+    "exported": 22,
+    "truth": 19
+   },
+   {
+    "work": "brahms-sym1-mvt1-317803-p2",
+    "letters": 90,
+    "words": 65,
+    "lost_empty_measure": 0,
+    "exported": 65,
+    "truth": 48
+   },
+   {
+    "work": "dvorak-sym9-mvt1-405834-p5",
+    "letters": 25,
+    "words": 15,
+    "lost_empty_measure": 0,
+    "exported": 15,
+    "truth": 15
+   },
+   {
+    "work": "dvorak-sym9-mvt1-405834-p6",
+    "letters": 47,
+    "words": 22,
+    "lost_empty_measure": 0,
+    "exported": 22,
+    "truth": 28
+   },
+   {
+    "work": "mahler-sym5-mvt1-local-p2",
+    "letters": 12,
+    "words": 8,
+    "lost_empty_measure": 1,
+    "exported": 7,
+    "truth": 4
+   },
+   {
+    "work": "mahler-sym5-mvt1-local-p3",
+    "letters": 63,
+    "words": 41,
+    "lost_empty_measure": 5,
+    "exported": 36,
+    "truth": 43
+   }
+  ],
+  "kept_runs": {
+   "f": 144,
+   "ff": 58,
+   "p": 65,
+   "pp": 15,
+   "sf": 70,
+   "mp": 3,
+   "fp": 12,
+   "fz": 3,
+   "fff": 2,
+   "ppp": 2,
+   "pppp": 1,
+   "mf": 1
+  },
+  "dropped_runs": {
+   "s": 15,
+   "fs": 3,
+   "ffs": 1,
+   "ssf": 1,
+   "ffm": 1,
+   "fmf": 1,
+   "fmp": 2,
+   "mm": 1,
+   "z": 3,
+   "m": 2,
+   "ffz": 1
+  }
+ },
  "band_sweep": [
   {
    "band_lo": -1.5,

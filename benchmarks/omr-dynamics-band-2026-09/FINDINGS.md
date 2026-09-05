@@ -185,10 +185,9 @@ emitted/truth   now 0.77   gate 0.59   re-attribute 0.68
 ```
 
 ⚠️⚠️ **AND ON SCANS IT DOES NOTHING — 16 → 16 staves exact by word.** The
-engraved result does not carry, and the reason is visible in the same table:
-**on real scans we UNDER-emit** (376 words against 491 in truth, 0.77), so the
-dominant dynamics error there is a mark the detector never found, not a mark
-put on the wrong staff. Re-attribution cannot fix an absence, and moving letters
+engraved result does not carry. The pooled ratio says we under-emit here (376
+words against 491, 0.77) — but see §8: that is **two pages of the same music**,
+and across the other nine we over-emit slightly, just as the engraved arm does. Re-attribution cannot fix an absence, and moving letters
 lowers the count further (0.77 → 0.68) — some of that legitimately, by reuniting
 an `ff` split across two cells into one word, which is why the ratio alone is
 not the verdict and the word-exactness column is.
@@ -334,16 +333,56 @@ padding, and the upstream dedupe is keeping the wrong copy by distance. The
 project and the one where the pipeline's dominant dynamics error turns out to be
 recall, not placement.
 
-So the next measurement is not a wider band sweep. It is either:
+### Why scans under-emit — answered (`--funnel`)
 
-1. **Why scans under-emit.** 376 words against 491 — is the detector missing the
-   letters, or is `_DYNAMIC_WORDS` dropping runs that spell nothing because a
-   letter of the word was lost? The second is cheap to check and would be
-   another "detected, then dropped".
-2. **A scan arm that can actually see attribution.** Seven of eleven pages
-   abstain on the staff→part join; the hand-verified `staves[].parts` rows in
-   `omr-scan-e2e-2026-09/works.json` resolve four. More verified rows would turn
-   a weak negative into a real one either way.
+```
+page                                let  words  lost:empty  exported  truth
+beethoven-sym5-mvt1-575951-p2       144     92           4        88    154
+beethoven-sym5-mvt1-984073-p2       142     86           3        83    154
+mahler-sym5-mvt1-local-p3            63     41           5        36     43
+brahms-sym1-mvt1-317803-p2           90     65           0        65     48
+  ... 7 more pages ...
+TOTAL                               598    376          14       362    491
+
+  letters whose run SPELLS a dynamic :  549  -> 376 words
+  letters whose run spells NOTHING   :   49  in 31 runs, all discarded
+  discarded runs: {'s': 15, 'fs': 3, 'z': 3, 'fmp': 2, 'm': 2, 'ffs': 1, ...}
+```
+
+**"Read but not written" is real and is the MINORITY.** Of the 129-mark
+shortfall:
+
+- **14 marks are computed and thrown away.** A measure with no detected events
+  takes the whole-measure-rest branch, which never calls `_mxl_voice_events` —
+  the only `<direction>` emitter — so `measure_directions()` is called, its
+  result assigned to `_dyn`, and `_dyn` never used. Both of `export.py`'s two
+  measure emitters have it, identically. ⚠️ **This is the bug CLAUDE.md records
+  the 11-work engraved benchmark provably cannot see, and it predicted that a
+  SCANNED work would be where it finally triggers — because a staff genuinely
+  rests through a marked bar and the detector finds nothing in it, where an
+  engraved page puts an event in every bar. It does.** The attribution is exact:
+  `words formed − words in an eventless measure == words exported` on **all
+  eleven pages, to the mark**.
+- **≤31 more are the same family one step earlier.** 49 detected letters sit in
+  runs that spell no dynamic and are discarded whole — dominated by a lone `s`
+  (15 of 31), which is an `sf` whose `f` was not detected. The partial read is
+  thrown away rather than kept as what it is.
+- **The remaining ~84 were never read at all**, and they are not spread out:
+  **the two Beethoven 5 p.2 scans (the same 32-bar window in two editions)
+  supply 137 of the shortfall between them**, reading ~85 of 154. Across the
+  other nine pages we emit **191 against a truth of 183** — over-emitting
+  slightly, exactly like the engraved arm.
+
+⚠️ **So "scans under-emit" was too broad a claim.** One dense, small-print page
+under-reads badly; the rest behave like the engraved corpus. The re-attribution
+result is still flat on scans, but the reason is not a general recall collapse.
+
+### Still open
+
+**A scan arm that can actually see attribution.** Seven of eleven pages abstain
+on the staff→part join; the hand-verified `staves[].parts` rows in
+`omr-scan-e2e-2026-09/works.json` resolve four. More verified rows would turn a
+weak negative into a real one either way.
 
 When it is shipped, re-attribution belongs in
 `transcribe._dedupe_cross_staff_detections` as another evidence tier beside the

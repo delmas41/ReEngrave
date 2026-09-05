@@ -36,6 +36,20 @@ information at all.
   scans we **under**-emit (376 words against 491, 0.77), so the dominant dynamics error there is
   a mark never found, not a mark on the wrong staff. Measured, **NOT shipped** — the next step is
   why scans under-emit, not a wider band sweep.
+- ⚠️ **THEN ANSWERED, same day (`--funnel`): "reads them but doesn't write them" is REAL and is
+  the MINORITY.** Of the 129-mark scan shortfall: **14 are computed and thrown away** by the
+  eventless-measure branch — `measure_directions()` is called, assigned to `_dyn`, and never
+  used, in BOTH of `export.py`'s measure emitters. This is the bug CLAUDE.md records the 11-work
+  engraved benchmark cannot see, and which it predicted a SCANNED work would finally trigger:
+  **it does — 14 on scans against 0 on the engraved eleven**, and the attribution is exact
+  (`words formed − words in an eventless measure == words exported` on all 11 pages, to the
+  mark). A further ≤31 are the same family one step earlier: 49 detected letters in runs that
+  spell no dynamic, discarded whole, 15 of them a lone `s` (an `sf` whose `f` was missed). The
+  rest were never read — and **137 of the shortfall is the two Beethoven 5 p.2 scans alone**;
+  across the other nine pages we emit 191 against a truth of 183, over-emitting slightly exactly
+  like the engraved arm. ⚠️ So "scans under-emit" was too broad a claim and is corrected here.
+  NOT fixed — the eventless-measure branch is a two-site change in `export.py` and is left for
+  the session working that file.
 - ⚠️ Refuted: **confidence** as a filter. Priced as the trade rather than by comparing medians —
   removing half the unattributable letters costs **233 of 911** good ones.
 - ⚠️ The probe restates `measure_dynamics`'s joining rule in page pixels (re-attribution moves a

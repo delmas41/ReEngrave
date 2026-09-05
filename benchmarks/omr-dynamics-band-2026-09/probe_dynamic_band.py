@@ -45,7 +45,10 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
-from tools.omr.export import _DYNAMIC_LETTER, measure_dynamics  # noqa: E402
+from tools.omr.export import (  # noqa: E402
+    _DYNAMIC_LETTER, _DYNAMIC_WORDS, group_chords_in_measure, measure_dynamics,
+    to_musicxml,
+)
 
 #: Where a dynamic is printed, in staff spaces below the bottom staff line —
 #: used to label a letter as own/above/none. NOT a shipping constant, and
@@ -169,6 +172,70 @@ def largest_gap(values: list[float], lo: float = -12.0, hi: float = 8.0) -> tupl
     gaps = [(v[i + 1] - v[i], v[i], v[i + 1]) for i in range(len(v) - 1)]
     _, a, b = max(gaps)
     return (a, b)
+
+
+def _all_runs(dets: list[dict]) -> list[str]:
+    """`measure_dynamics`'s joining, returning EVERY run — kept or discarded.
+
+    The exporter throws away a run that spells no dynamic. To see what that
+    costs you have to look at the runs it refused, which it does not return.
+    """
+    letters = []
+    for d in dets:
+        L = _DYNAMIC_LETTER.get(d.get("class") or "")
+        b = d.get("bbox")
+        if L and b and len(b) == 4:
+            letters.append((b[0], b[1], b[2], L))
+    if not letters:
+        return []
+    letters.sort()
+    width = max(w for _x, _y, w, _l in letters) or 1
+    out, word = [], letters[0][3]
+    run_y = letters[0][1]
+    prev_right = letters[0][0] + letters[0][2]
+    for x, y, w, L in letters[1:]:
+        if x - prev_right <= width and abs(y - run_y) <= width:
+            word += L
+        else:
+            out.append(word)
+            word, run_y = L, y
+        prev_right = x + w
+    out.append(word)
+    return out
+
+
+def funnel(pairs: list[tuple[str, Path, Path]]) -> dict:
+    """printed -> detected -> spells a dynamic -> survives the exporter.
+
+    Answers "do we read these and then not write them?" — which has TWO
+    different answers here, both of them the same family and neither of them
+    the largest term.
+    """
+    rows, kept_w, dropped_w = [], Counter(), Counter()
+    for work, omr, truth in pairs:
+        res = json.loads(omr.read_text())
+        letters = words = in_empty = 0
+        for page in res.get("pages", []):
+            for system in page.get("systems", []):
+                for staff in system.get("staves", []):
+                    for meas in staff.get("measures", []):
+                        dets = meas.get("detections", [])
+                        letters += sum(
+                            1 for d in dets
+                            if _DYNAMIC_LETTER.get(d.get("class") or ""))
+                        n = len(measure_dynamics(dets))
+                        words += n
+                        # The whole-measure-rest branch computes the directions
+                        # and then emits only a rest.
+                        if n and not group_chords_in_measure(dets):
+                            in_empty += n
+                        for r in _all_runs(dets):
+                            (kept_w if r in _DYNAMIC_WORDS else dropped_w)[r] += 1
+        exported = len(re.findall(r"<dynamics", to_musicxml(res)))
+        rows.append({"work": work, "letters": letters, "words": words,
+                     "lost_empty_measure": in_empty, "exported": exported,
+                     "truth": _truth_dynamics(truth)})
+    return {"rows": rows, "kept_runs": dict(kept_w), "dropped_runs": dict(dropped_w)}
 
 
 # ---------------------------------------------------------------------------
@@ -475,6 +542,8 @@ def main() -> int:
                     help="lower edge of the placement band, staff spaces below "
                          "the bottom line")
     ap.add_argument("--band-hi", type=float, default=REPORT_BAND[1])
+    ap.add_argument("--funnel", action="store_true",
+                    help="printed -> detected -> spells a dynamic -> exported")
     ap.add_argument("--sweep", action="store_true",
                     help="score the policies across several band lower edges")
     ap.add_argument("--json-out", type=Path)
@@ -636,6 +705,42 @@ def main() -> int:
         bad = [w for w, v in res.items() if not v["joiner_agrees"]]
         print("joiner self-check vs export.measure_dynamics: "
               + ("AGREES on every page" if not bad else f"DISAGREES on {bad}"))
+
+    if args.funnel and arms:
+        for title, key, pairs in arms:
+            if not pairs:
+                continue
+            fn = funnel(pairs)
+            report[key + "_funnel"] = fn
+            print()
+            print("=" * 78)
+            print(f"FUNNEL — {title}")
+            print("=" * 78)
+            print(f"{'page':34s} {'let':>4s} {'words':>6s} {'lost:empty':>11s} "
+                  f"{'exported':>9s} {'truth':>6s}")
+            for r in fn["rows"]:
+                print(f"{r['work']:34s} {r['letters']:4d} {r['words']:6d} "
+                      f"{r['lost_empty_measure']:11d} {r['exported']:9d} "
+                      f"{r['truth']:6d}")
+            s = {k: sum(r[k] for r in fn["rows"])
+                 for k in ("letters", "words", "lost_empty_measure",
+                           "exported", "truth")}
+            print("-" * 78)
+            print(f"{'TOTAL':34s} {s['letters']:4d} {s['words']:6d} "
+                  f"{s['lost_empty_measure']:11d} {s['exported']:9d} {s['truth']:6d}")
+            nd = sum(len(r) * n for r, n in fn["dropped_runs"].items())
+            nk = sum(len(r) * n for r, n in fn["kept_runs"].items())
+            print(f"\n  letters whose run SPELLS a dynamic : {nk:4d}"
+                  f"  -> {s['words']} words")
+            print(f"  letters whose run spells NOTHING   : {nd:4d}"
+                  f"  in {sum(fn['dropped_runs'].values())} runs, all discarded")
+            print(f"  discarded runs: "
+                  f"{dict(sorted(fn['dropped_runs'].items(), key=lambda kv: -kv[1])[:12])}")
+            print(f"\n  words formed but NOT exported: "
+                  f"{s['words'] - s['exported']}"
+                  f"  — and the whole-measure-rest branch accounts for "
+                  f"{s['lost_empty_measure']} of them")
+            print(f"  shortfall against truth: {s['truth'] - s['exported']}")
 
     if args.sweep and arms:
         print()
