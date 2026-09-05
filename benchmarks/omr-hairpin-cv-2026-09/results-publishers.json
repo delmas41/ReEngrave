@@ -1,0 +1,110 @@
+{
+ "breitkopf-brahms1-p1": {
+  "components": 471,
+  "shape": 69,
+  "isolated": 44,
+  "p50_straight": 0.17633549412405167
+ },
+ "breitkopf-brahms1-p3": {
+  "components": 281,
+  "shape": 12,
+  "isolated": 1,
+  "p50_straight": 0.2090103619840393
+ },
+ "eulenburg-scheherazade-p1": {
+  "components": 164,
+  "shape": 4,
+  "isolated": 2,
+  "p50_straight": 0.26214069499919496
+ },
+ "eulenburg-scheherazade-p3": {
+  "components": 278,
+  "shape": 4,
+  "isolated": 2,
+  "p50_straight": 0.20785643174538837
+ },
+ "litolff-beethoven5-p48": {
+  "components": 150,
+  "shape": 6,
+  "isolated": 0,
+  "p50_straight": 0.19512589102727163
+ },
+ "litolff-beethoven5-p50": {
+  "components": 158,
+  "shape": 8,
+  "isolated": 0,
+  "p50_straight": 0.2104341279891781
+ },
+ "peters-mahler5-p175": {
+  "components": 465,
+  "shape": 28,
+  "isolated": 20,
+  "p50_straight": 0.18892462566072674
+ },
+ "peters-mahler5-p176": {
+  "components": 569,
+  "shape": 32,
+  "isolated": 22,
+  "p50_straight": 0.18402878129481057
+ },
+ "simrock-dvorak9-p6": {
+  "components": 468,
+  "shape": 49,
+  "isolated": 22,
+  "p50_straight": 0.14905828795741927
+ },
+ "simrock-dvorak9-p7": {
+  "components": 508,
+  "shape": 34,
+  "isolated": 5,
+  "p50_straight": 0.14807328401430364
+ },
+ "durand-lamer-p1": {
+  "components": 313,
+  "shape": 10,
+  "isolated": 4,
+  "p50_straight": 0.06378631746286073
+ },
+ "durand-lamer-p4": {
+  "components": 359,
+  "shape": 7,
+  "isolated": 4,
+  "p50_straight": 0.1410469127842056
+ },
+ "jurgenson-tchaikovsky1-p42": {
+  "components": 467,
+  "shape": 22,
+  "isolated": 1,
+  "p50_straight": 0.1501953618214333
+ },
+ "jurgenson-tchaikovsky1-p44": {
+  "components": 293,
+  "shape": 16,
+  "isolated": 3,
+  "p50_straight": 0.1693207086844262
+ },
+ "novello-elgar1-p101": {
+  "components": 201,
+  "shape": 20,
+  "isolated": 16,
+  "p50_straight": 0.2748666321913981
+ },
+ "novello-elgar1-p103": {
+  "components": 179,
+  "shape": 6,
+  "isolated": 3,
+  "p50_straight": 0.25837770882504363
+ },
+ "universal-mahler1-p3": {
+  "components": 236,
+  "shape": 5,
+  "isolated": 2,
+  "p50_straight": 0.23815053634189157
+ },
+ "universal-mahler1-p4": {
+  "components": 487,
+  "shape": 14,
+  "isolated": 6,
+  "p50_straight": 0.24013340799010802
+ }
+}

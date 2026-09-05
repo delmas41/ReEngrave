@@ -390,22 +390,18 @@ def test_windows_accept_the_scan_benchmark_file() -> None:
     # because the two editions' indices happened to be disjoint.)
     with pytest.raises(ValueError, match="984073-p1.*575951-p2"):
         mv.load_windows(path, work_id="beethoven--symphony-5")
-    # work_id narrowing still works where the work's rows are one edition …
-    # Assert the CONTRACT — narrowing returns exactly that work's rows, keyed
-    # by pdf page index — rather than a literal page list. The gate widens
-    # (5 rows -> 11 on 2026-09-04, then 20 the same day, which added Dvorak's
-    # third page), and a hardcoded list makes every widening look like a
-    # regression in a test that is not about the row set at all.
-    dvorak = mv.load_windows(path, work_id="dvorak--symphony-9")
-    # Mirror the loader's own tolerance for the file's shape (bare list or
-    # {"rows": [...]}, and rows that may omit work_id) — a test stricter about
-    # the shape than the code under test is a future false alarm of exactly the
-    # kind this fix exists to stop.
+    # work_id narrowing still works where the work's rows are one edition.
+    # ⚠️ The expected pages are DERIVED from the file, not pinned: the gate has
+    # widened twice already (5 -> 11 -> 20 rows) and a literal page list goes
+    # stale on the next tranche — which is exactly how this test broke, twice.
+    # Deriving still exercises the loader (a dropped or merged row fails here);
+    # it just stops this test from also pinning how far the gate reaches.
     raw = json.loads(path.read_text())
-    rows_on_file = raw.get("rows", raw) if isinstance(raw, dict) else raw
-    on_file = sorted(r["page"]["pdf_page_index"] for r in rows_on_file
-                     if r.get("work_id") == "dvorak--symphony-9")
-    assert sorted(dvorak) == on_file and len(on_file) >= 2
+    dvorak_pages = sorted(r["page"]["pdf_page_index"]
+                          for r in (raw.get("rows", raw) if isinstance(raw, dict) else raw)
+                          if r.get("work_id") == "dvorak--symphony-9")
+    dvorak = mv.load_windows(path, work_id="dvorak--symphony-9")
+    assert len(dvorak_pages) >= 2 and sorted(dvorak) == dvorak_pages
     # … and `same-as:` references resolve to the row they name even when the
     # named row is OUTSIDE the narrowed selection (both 575951 rows point at
     # their 984073 twins).
