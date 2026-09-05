@@ -262,3 +262,107 @@ unrelated (pre-fill area). New tests: 7 cue-B unit tests
 (test_system_grouping.py), 4 cue-C unit tests (test_measure_extractor.py,
 including the vocal-page guard and the pinned disease), 3 e2e tests on the
 real page (test_choir_grouping_e2e.py, omr_smoke, both flag directions).
+
+## Guard 5 — the 969-page library probe (`probe_library.py` → `probe_library.jsonl`)
+
+Same population as the left-edge work's sweep (every non-error row of
+`benchmarks/omr-system-grouping-2026-09/sweep.jsonl`, its own render
+normalization). Per page: staff detection once, then `assign_systems` with
+the flag off and on, recording every gap the wide rule broke (bridging = 0,
+x-overlap intact) with cue B's pair-band count.
+
+**The population the min-cross floor is read off: 757 examined gaps — 735
+read exactly 0, 22 read ≥ 4, and NOTHING reads 1–3.**
+
+```
+pair_left:  0 ×735   4 ×1   5 ×2   6 ×3   8 ×1   9 ×4   10 ×2   11 ×5   12 ×2   15 ×1   16 ×1
+```
+
+The empty band and the real rule do not come close to overlapping, so any
+floor in 1..4 reads the whole population identically; `CHOIR_MERGE_MIN_CROSS
+= 1` mirrors cue A's `LEFT_BAND_MIN_CROSS` and sits inside that gap. The
+735 zeros are overwhelmingly TRUE system breaks (every true break is
+examined, since nothing bridges it), which makes the same histogram the
+false-merge measurement: **no adjudicated true system break shows a single
+pair-band crossing column anywhere in the population.**
+
+### Every page the flag changes, hand-adjudicated (crops via `adjudicate_crop.py`)
+
+10 of 969 pages change (after the cue-A exemption below), plus the scan
+benchmark's own Bach page. Every change moves toward the truth; none moves
+away; there are no false merges:
+
+| page | flag off | flag on | truth | verdict |
+|---|---|---|---|---|
+| bach brandenburg3 p1 *(the scan row)* | [12,3,3,3,1,2] | [12,12] | [12,12] | exact heal |
+| bach brandenburg3 p16 | [11,2,3,3,1,2] | [11,11] | [11,11] | exact heal — true break correctly declined (pair band empty at the 363/60 bimodal gap) |
+| handel water-music p26 | [10,2,4,2,2] | [10,10] | [10,10] | exact heal — Baroque continuo layout, Cembalo pairs set apart |
+| haydn 96 p26 | [10,6,4] | [10,10] | [10,10] | exact heal |
+| tchaikovsky 1 p49 | [12,4,3,5] | [12,12] | [12,12] | exact heal — winds/brass/strings blocks, Jurgenson |
+| mozart 40 p32 | [2,8,11] | [10,11] | [10,11] | exact heal (needs the cue-A exemption below) |
+| zauberflöte p150 | [9,7,1,1] | [9,9] | [9,9] | exact heal — orphaned voice staff (lyric bands) + Bassi rejoined |
+| figaro p278 | [8,6,1,1] | [8,8] | [8,8] | exact heal — "Dove sono", voice staff between lyric bands |
+| don giovanni p534 | [2,3,1,1,1,1,1] | [2,3,5] | [5,5] | 5 wrong breaks → 1 (accompagnato page; system 1's [2,3] declined on jittered anchors) |
+| brahms 2 p29 | [23,4] | [27] | [14,13] | 2 wrong → 1: the false break healed; the残 missed break at the true boundary is the over-merge family (bridging=3 body ink), which cue A cannot fix here because ITS band is median-poisoned — see below |
+| brahms 2 p47 | [4,2,5,4,2,5] | [4,7,4,7] | [11,11] | 4 wrong → 2: two rescues, two declined (pair `x_start` jitter mis-anchored the band — fail-safe abstention) |
+
+The family is exactly what the assignment predicted: Baroque/choir-grouped
+layouts (Bach, Handel), block-barred classical/romantic pages (Haydn,
+Tchaikovsky, Brahms), and **opera vocal pages** — where lyric bands play the
+role of choir gaps and orphan the voice staves. Cue B's evidence (the
+left-edge complex) is the same physical object on all of them.
+
+### The cue-A interplay, measured, and the exemption it forced
+
+Mozart 40 p32 is bimodally indented the other way round (ten staves at
+x_start 206–221, eleven at 530–544, median on the SECOND mode). Cue B merged
+the wrongly-broken gap 1 on its true systemic barline (11 columns in the
+pair band) — and cue A promptly re-split it: its page-median band reads
+mid-staff ink of system 1 as "the left edge" (page_left = 4 at gaps its own
+music happens to cross there), the gate passes, and gap 1's band is empty at
+that anchor. The original "cue A keeps the last word" ordering therefore
+undid a correct, positively-evidenced merge.
+
+**A cue-B merge is now exempt from cue A's re-split.** This cannot touch cue
+A's validated fix set, because the two cues act on disjoint gap sets by
+construction: cue A splits gaps the wide rule kept interior (bridging > 0 —
+body ink faking a connection), cue B merges gaps the wide rule broke
+(bridging == 0). Where they meet — only a gap cue B just merged — the
+evidence is asymmetric: positive ink through the whole gap at the pair's own
+edge, against absence at an anchor this whole benchmark documents as
+poisoned. Unit-pinned (`test_cue_b_merge_is_exempt_from_cue_a_resplit`), and
+the exemption changes exactly one probe page (mozart 40 p32, to the
+adjudicated truth); the left-edge e2e suite is untouched.
+
+## Cue C falsified once, and the condition that survived
+
+Cue C's first formulation — bracket-groups alone (≥2 groups, half the staves
+in multi-staff groups) — **was falsified by the engraved benchmark and
+repaired before any of it shipped**. Flag ON, the 11-work pooled OMR-NED
+read **0.8560 against the tree's 0.1306** (17891 edits), nine works at
+0.94–0.98 with `entire staff insert/delete` at 48% of the pool, while two
+works matched their recorded scores to the fourth digit. Flag OFF on the
+same tree: Beethoven 5 reproduced its recorded 0.0595 exactly — the flag did
+the damage.
+
+Mechanism: LilyPond's orchestral fixtures are genuine OPEN SCORES — barlines
+per staff, one `SystemStartBar` crossing every gap — so their bridging
+counts are uniformly LOW (a few start-barline columns per gap), and
+`_assign_groups`' *relative* threshold (median × 0.5) manufactures
+"bracket-groups" out of the jitter. Condition 1 then held, cue C flipped the
+open-score gate, and the per-staff barlines (connectivity ≈ 0 by layout)
+were deleted wholesale.
+
+What separates the Bach family from that shape is **the window-blind gap**:
+a gap INSIDE a system that no in-window column crosses at all — possible
+only when something outside the window holds the system together (the very
+thing cue B merges on), and impossible for an open score, whose systemic
+start barline touches every gap a little or its staves would never have been
+one system. Cue C now requires one (`_window_blind_systems`, computed over
+the whole page's staves — the same frame `assign_systems` used; a
+per-system recomputation would anchor the window on the system's own median
+and the blind gap would stop being blind, measured on the Bach page).
+Re-measured with the condition: Beethoven 5 flag ON **0.0595**, identical to
+flag OFF. Pinned by `test_cue_c_requires_a_window_blind_gap`, which draws
+the LilyPond shape (all gaps touched by a start barline) over the choir
+fixture and asserts open-score mode survives.

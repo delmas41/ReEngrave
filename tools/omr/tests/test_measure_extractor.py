@@ -783,3 +783,23 @@ def test_cue_c_leaves_ungrouped_systems_in_open_score_mode(monkeypatch):
     out = detect_barlines(pws)
     xs = sorted(b.x for b in out.barlines)
     assert len(xs) > 5, "no group evidence -> open-score mode must survive"
+
+
+def test_cue_c_requires_a_window_blind_gap(monkeypatch):
+    """The engraved-benchmark falsification, pinned (condition 2): a true
+    open score whose gaps are ALL touched by its systemic start barline —
+    the LilyPond orchestral fixture shape — must stay in open-score mode
+    even when bridging jitter has manufactured bracket-groups. Same fixture
+    as the choir page plus one left rule crossing every gap; group indices
+    unchanged. Cue C fired here before condition 2 and deleted the real
+    barlines of nine engraved works (pooled 0.1306 -> 0.8560)."""
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "1")
+    pws = _choir_barred_page_with_unison_stems()
+    img = pws.page.binary
+    top = pws.staves[0].line_ys[0]
+    bot = pws.staves[-1].line_ys[-1] + 2
+    img[top:bot, 44:46] = 0  # systemic start barline through the choir gap too
+    out = detect_barlines(pws)
+    xs = sorted(b.x for b in out.barlines)
+    assert len(xs) > 5, (
+        "no window-blind gap -> open-score mode must survive, votes stand")

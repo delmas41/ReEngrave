@@ -25,7 +25,7 @@ from collections import Counter
 import cv2
 import numpy as np
 
-from .system_grouping import _choir_grouping_enabled
+from .system_grouping import _choir_grouping_enabled, gap_bridging_counts
 from .types import Barline, MeasureCell, PageWithStaves, Staff
 
 
@@ -389,6 +389,35 @@ def _intersystem_connectivity(
     return n_connected / max(n_gaps, 1)
 
 
+def _window_blind_systems(bin_img: np.ndarray, staves: list[Staff]) -> set[int]:
+    """System indices containing an internal gap that NO in-window column
+    crosses (`gap_bridging_counts` == 0) — cue C's second required condition.
+
+    Such a gap can only be inside a system when something OUTSIDE the wide
+    scan window holds the system together (the pair-local left-edge complex
+    cue B reads): the choir-barred signature. A true open score never shows
+    one — its systemic start barline touches every gap a little, which is
+    exactly the ink that grouped its staves as one system in the first place.
+
+    ⚠️ Computed over the WHOLE PAGE's staves, exactly as `assign_systems`
+    computed it, and not per system: `gap_bridging_counts` derives its scan
+    window from the staves it is given, so a per-system call anchors on the
+    system's OWN median x_start — the local window that can see the left-edge
+    complex — and the blind gap stops being blind. The question cue C asks is
+    about what the GROUPING's window saw, so it must be asked in the
+    grouping's frame.
+    """
+    ordered = sorted(staves, key=lambda s: s.top_y)
+    if len(ordered) < 2:
+        return set()
+    counts = gap_bridging_counts(bin_img, ordered)
+    return {
+        ordered[i].system_index
+        for i, n in enumerate(counts)
+        if n == 0 and ordered[i].system_index == ordered[i + 1].system_index
+    }
+
+
 def _is_grouped_system(staves: list[Staff]) -> bool:
     """Does this system carry bracket-group structure — two or more groups,
     with at least half its staves in multi-staff groups?
@@ -417,6 +446,12 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     fraction over the full system height.
     """
     bin_img = pws.page.binary
+
+    # Cue C's second condition, asked once in the page frame (see
+    # `_window_blind_systems`): which systems hold a gap the grouping's own
+    # window saw nothing cross?
+    blind_systems = (_window_blind_systems(bin_img, pws.staves)
+                     if _choir_grouping_enabled() else set())
 
     # Group staves by system. One-line percussion staves are left out of the
     # vote on purpose: the vote is a fraction of the staves in the system, and
@@ -550,18 +585,33 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         # columns outnumber the real barlines and the gate reads a conductor's
         # page as an open score (measured on the Brandenburg 3 merged system:
         # 9 stem columns against 6 true barlines → 14 "bars" where the page
-        # prints 5). The STAVES already answer it right: an open score has no
-        # bracket-groups — `Staff.group_index` comes from `_assign_groups`,
-        # which only finds sub-structure where ink (bracket, barlines) crosses
-        # some gaps and not others — so a system whose staves form two or more
-        # groups, with at least half of them in multi-staff groups, is a
-        # grouped ensemble system and connectivity keeps its filter role. The
-        # half-in-multi guard keeps the true open-score family out: a vocal
-        # page whose only multi-staff group is the keyboard pair (voices
-        # singleton, most staves NOT in multi-groups) stays in open-score
-        # mode, where its per-staff barlines survive on votes alone.
+        # prints 5). Two pieces of staff-level evidence override the flip,
+        # BOTH required:
+        #
+        #   1. bracket-group structure — ≥2 groups, at least half the staves
+        #      in multi-staff groups (`Staff.group_index`, from
+        #      `_assign_groups`). The half-in-multi guard keeps a vocal page
+        #      whose only multi-staff group is the keyboard pair in open-score
+        #      mode, where its per-staff barlines survive on votes alone.
+        #   2. a WINDOW-BLIND internal gap — a gap inside the system that no
+        #      in-window column crosses at all. That is the choir-barred
+        #      signature (interior barlines stop at the choir edge, and the
+        #      left-edge complex that does cross sat outside the scan window —
+        #      it is what cue B merges), and it is what a true open score can
+        #      never show: an open score's gaps are all crossed a little by
+        #      the systemic start barline, or the staves would not be one
+        #      system at all.
+        #
+        # Condition 2 exists because condition 1 alone was FALSIFIED on the
+        # engraved benchmark: LilyPond's orchestral fixtures are genuine open
+        # scores (per-staff barlines, one SystemStartBar crossing every gap),
+        # their uniformly-low bridging counts let `_assign_groups`' relative
+        # threshold manufacture "groups" out of jitter, and cue C then
+        # deleted the real barlines of NINE works — pooled OMR-NED 0.1306 →
+        # 0.8560, entire-staff charges 48% of the pool. With condition 2 the
+        # cue cannot reach any system whose gaps are all touched by ink.
         # benchmarks/omr-choir-grouping-2026-09/FINDINGS.md.
-        if (not barlines_cross_gaps and _choir_grouping_enabled()
+        if (not barlines_cross_gaps and sys_idx in blind_systems
                 and _is_grouped_system(staves)):
             barlines_cross_gaps = True
 

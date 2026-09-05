@@ -669,3 +669,46 @@ def test_cue_b_env_flag_enables(monkeypatch):
     img, staves = _choir_page()
     out, _ = assign_systems(img, staves, left_edge_split=False)
     assert [s.system_index for s in out] == [0] * 6 + [1] * 6
+
+
+def _bimodal_page_where_cue_a_would_resplit():
+    """Cue A's gate passes (most interior gaps crossed at the page-median
+    band) while one cue-B-merged gap reads empty there — the Mozart 40 p32
+    shape. Four indented staves (x_start 500, systemic rule at 510 = inside
+    the page-median band) over three full-width staves (x_start 120, systemic
+    rule at 130, choir-barred: an interior barline at 510 crosses the first
+    of its gaps but nothing in-window crosses the second)."""
+    img = _blank()
+    tops = [100, 200, 300, 400,      # system 1, indented
+            700, 800, 900]           # system 2, full width
+    groups = [_draw_staff(img, t, x0=(500 if i < 4 else 120), x1=X1)
+              for i, t in enumerate(tops)]
+    staves = [
+        Staff(page_index=0, staff_index=i, line_ys=ys,
+              x_start=(500 if i < 4 else 120), x_end=X1)
+        for i, ys in enumerate(groups)
+    ]
+    _draw_vrule(img, 510, groups[0][0], groups[3][-1])    # sys1 systemic rule
+    _draw_vrule(img, 130, groups[4][0], groups[6][-1])    # sys2 systemic rule
+    # sys1 interior barlines (keep its gaps clearly bridged in the window)
+    for k in range(4):
+        _draw_vrule(img, 620 + k * 110, groups[0][0], groups[3][-1])
+    # sys2 interior barline at the page-median band's x, crossing ONLY the
+    # first of its two gaps (choir-barred below)
+    _draw_vrule(img, 510, groups[4][0], groups[5][-1])
+    return img, staves
+
+
+def test_cue_b_merge_is_exempt_from_cue_a_resplit():
+    img, staves = _bimodal_page_where_cue_a_would_resplit()
+    # flag off: the second gap of system 2 is broken (its only witness, the
+    # rule at x=130, is left of the page-median window) — with cue A active.
+    out, _ = assign_systems(img, staves, left_edge_split=True,
+                            choir_grouping=False)
+    assert out[5].system_index != out[6].system_index, (
+        "fixture validity: without cue B the choir-barred gap must break")
+    # flag on: cue B merges it on the pair-local rule at x=130, and cue A —
+    # whose page-median band cannot see that x — must not re-split it.
+    out, _ = assign_systems(img, staves, left_edge_split=True,
+                            choir_grouping=True)
+    assert [s.system_index for s in out] == [0, 0, 0, 0, 1, 1, 1]
