@@ -181,6 +181,26 @@ on Brahms p2 and then run unchanged, which is why the blank-page abstention is
 evidence rather than a fit. Mahler p3's 2-against-17 is unexplained and is the
 row to chase, not the aggregate.
 
+## 7. The reader — built, tested, NOT wired
+
+`tools/omr/hairpin_detection.py` is the probe made into a module: the same three
+tests, plus the direction (apex left is a crescendo), returning `Hairpin` objects
+in page pixels with the staff they were found under. 19 tests pin it against
+synthetic shapes whose answer is known by construction, since every real-page
+number here is a count against a count and cannot pin behaviour.
+
+Re-run over the eleven scored pages it reproduces the gate: **60 hairpins against
+the probe's 59** — one boundary case differs between the two implementations, and
+the split is 25 crescendo / 19 diminuendo on Brahms p2.
+
+⚠️ **It is not wired into `transcribe`, deliberately.** The `<wedge>` export
+lives on an unmerged branch (`53e6f233`), so a hairpin detected here has nowhere
+to go yet, and wiring it before that lands would mean measuring a detector
+against an exporter that does not exist. The wiring is small — attribute each
+hairpin to the staff's measure containing its start x, convert to that cell's
+canonical frame, emit as `dynamicCrescendoHairpin`/`dynamicDiminuendoHairpin` —
+and belongs in the commit that also takes `53e6f233`.
+
 ```bash
 python3 benchmarks/omr-hairpin-cv-2026-09/probe_band_ink.py \
     --pdf <scan.pdf> --page N --transcription read.json \
