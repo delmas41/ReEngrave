@@ -5,6 +5,50 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — acting on the split: hairpins and a fermata reach the file, and the arc verdict
+
+Worked the three items the reading/translation split identified.
+
+**1a. HAIRPINS — the ninth export gap, closed on the export side.** `score_translation` priced
+what `KNOWN_GAPS` said could not be priced: 9 read across three works, every one discarded,
+against 17 `<wedge>` of truth. `export.measure_wedges` emits each as the SPAN it is (opening +
+`stop`, with a `number` so overlapping spans stay pairable), through `measure_directions` — the
+ONE place both emitters ask what a measure carries; slurs live at four call sites and this does
+not add a fifth. **0 → 18 wedges against 17 of truth; Tchaikovsky 6 exact at 6/6.** Control: only
+the three works with hairpins change, the other eight are BYTE-IDENTICAL, and the diff is purely
+additive. ⚠️ **Costs +11 OMR-NED edits and ships anyway**, but unlike the articulations precedent
+the cause is diagnosed: Tchaikovsky (exact detection) IMPROVES −3, and Mahler pays +12 for two
+known mechanisms — a hairpin crossing a barline exported as two, and one landing on the staff
+below its own.
+
+**1b. THE LOST FERMATA — found by arithmetic, not by reading code.** Beethoven 5 detected 36,
+truth 36, exported 35; `export_coverage` cannot see that (it fires only on truth-some/ours-zero).
+One query localised it: every part has a fermata at m2 and m5 except P7. Its `restWhole` does not
+become an event, so that bar takes the eventless branch — the SAME branch as the directions, one
+layer down, and `annotate_fermatas` already documents that an orchestral fermata is usually over
+a whole-bar REST. Now **36 of 36**, and it **IMPROVES** the metric: 0.0595 → 0.0556, −5 edits.
+
+**2. ARCS — the verdict, and a lever I nearly rebuilt.** ⚠️ `00b68e24` on
+`claude/export-accents-arcs` already built the tie/slur position-grammar veto, measured it on
+BOTH families and shipped it default-off (engraved neutral, scan REFUSED). Found by
+`git log --all -S` before starting. The reading score adds why it could not have paid: a family
+whose F1 climbs with the centre tolerance is FOUND AND LOOSELY PLACED, not missed. **Ties
+0.260 → 0.504** at 2 spaces (mostly there); **slurs 0.518 → 0.631**, barely moving — real
+absences, 16 of 40 with no arc within TWO spaces while the 24 found sit at a median 0.09. So
+slurs are a DETECTION gap, ties a LOCALISATION gap, and neither is a labelling gap. ⚠️ Also
+corrected: yesterday's "24 slur arcs lost to `beam`" was a large CV beam box whose CENTRE fell
+within tolerance, not a class confusion.
+
+**3. DYNAMICS RE-ATTRIBUTION — hold stands, case stronger.** With hairpins now exported their
+placement is measurable, and it is the same mechanism: **three of Mahler's four hairpins are
+filed under staff 18 and stand in staff 17's band**, which is half the +12 above. A second symbol
+family the rule would fix. ⚠️ It does not change the verdict — the blocker was never the engraved
+case (already positive, 52 → 83 staves exact) but that the scan arm cannot see attribution at
+all: 7 of 11 pages abstain on the staff→part join, and resolving them needs hand-verified
+`staves[].parts` rows. Human input, not another measurement.
+
+---
+
 ## 2026-09-04 — reading and reproduction, measured apart (an exact page truth, for free)
 
 Sean asked whether we test the ability to READ a page or to REPRODUCE one, and whether there is
