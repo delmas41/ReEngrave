@@ -1,0 +1,158 @@
+{
+  "A_all_clefs": {
+    "rows_fired": [
+      "bach-brandenburg3-mvt1-468678-p1",
+      "beethoven-sym5-mvt1-575951-p2",
+      "beethoven-sym5-mvt1-575951-p4",
+      "beethoven-sym5-mvt1-984073-p4",
+      "dvorak-sym9-mvt1-405834-p7"
+    ],
+    "hits": 6,
+    "contradicted": 0,
+    "precision": 1.0,
+    "cells_covered": 83,
+    "must_fire": true,
+    "must_silent": true,
+    "per_row": {
+      "bach-brandenburg3-mvt1-468678-p1": [
+        [
+          0,
+          "treble",
+          [
+            "Flute"
+          ],
+          "treble",
+          [
+            "Violin"
+          ]
+        ]
+      ],
+      "beethoven-sym5-mvt1-575951-p1": [],
+      "beethoven-sym5-mvt1-575951-p2": [
+        [
+          9,
+          "treble",
+          [
+            "Violin"
+          ],
+          "alto",
+          [
+            "Viola"
+          ]
+        ]
+      ],
+      "beethoven-sym5-mvt1-575951-p3": [],
+      "beethoven-sym5-mvt1-575951-p4": [
+        [
+          6,
+          "treble",
+          [
+            "Violin"
+          ],
+          "bass",
+          [
+            "Timpani"
+          ]
+        ],
+        [
+          8,
+          "alto",
+          [
+            "Viola"
+          ],
+          "treble",
+          [
+            "Violin"
+          ]
+        ]
+      ],
+      "beethoven-sym5-mvt1-984073-p1": [],
+      "beethoven-sym5-mvt1-984073-p2": [],
+      "beethoven-sym5-mvt1-984073-p3": [],
+      "beethoven-sym5-mvt1-984073-p4": [
+        [
+          9,
+          "bass",
+          [
+            "Cello"
+          ],
+          "alto",
+          [
+            "Viola"
+          ]
+        ]
+      ],
+      "brahms-sym1-mvt1-317803-p1": [],
+      "brahms-sym1-mvt1-317803-p2": [],
+      "brahms-sym1-mvt1-317803-p3": [],
+      "brahms-sym1-mvt1-317803-p4": [],
+      "dvorak-sym9-mvt1-405834-p5": [],
+      "dvorak-sym9-mvt1-405834-p6": [],
+      "dvorak-sym9-mvt1-405834-p7": [
+        [
+          3,
+          "treble",
+          [
+            "Clarinet",
+            "English horn"
+          ],
+          "bass",
+          [
+            "Bassoon"
+          ]
+        ]
+      ],
+      "mahler-sym5-mvt1-local-p2": [],
+      "mahler-sym5-mvt1-local-p3": [],
+      "mahler-sym5-mvt1-local-p4": [],
+      "mahler-sym5-mvt1-local-p5": []
+    },
+    "cross_scan_jaccard": 0.0
+  },
+  "B_treble_declines": {
+    "rows_fired": [
+      "beethoven-sym5-mvt1-984073-p4"
+    ],
+    "hits": 1,
+    "contradicted": 0,
+    "precision": 1.0,
+    "cells_covered": 26,
+    "must_fire": false,
+    "must_silent": true,
+    "per_row": {
+      "bach-brandenburg3-mvt1-468678-p1": [],
+      "beethoven-sym5-mvt1-575951-p1": [],
+      "beethoven-sym5-mvt1-575951-p2": [],
+      "beethoven-sym5-mvt1-575951-p3": [],
+      "beethoven-sym5-mvt1-575951-p4": [],
+      "beethoven-sym5-mvt1-984073-p1": [],
+      "beethoven-sym5-mvt1-984073-p2": [],
+      "beethoven-sym5-mvt1-984073-p3": [],
+      "beethoven-sym5-mvt1-984073-p4": [
+        [
+          9,
+          "bass",
+          [
+            "Cello"
+          ],
+          "alto",
+          [
+            "Viola"
+          ]
+        ]
+      ],
+      "brahms-sym1-mvt1-317803-p1": [],
+      "brahms-sym1-mvt1-317803-p2": [],
+      "brahms-sym1-mvt1-317803-p3": [],
+      "brahms-sym1-mvt1-317803-p4": [],
+      "dvorak-sym9-mvt1-405834-p5": [],
+      "dvorak-sym9-mvt1-405834-p6": [],
+      "dvorak-sym9-mvt1-405834-p7": [],
+      "mahler-sym5-mvt1-local-p2": [],
+      "mahler-sym5-mvt1-local-p3": [],
+      "mahler-sym5-mvt1-local-p4": [],
+      "mahler-sym5-mvt1-local-p5": []
+    },
+    "cross_scan_jaccard": 0.0
+  }
+}
