@@ -1131,6 +1131,17 @@ accidentals. `page_truth.render_fidelity` now measures the disagreement per work
 and declares the family unreliable; `score_reading` marks it `(RENDER)` and
 keeps it out of the pool. Including it gave 0.898; excluding it, 0.919.
 
+⚠️⚠️ **THE HAIRPIN EXPORT ON THIS BRANCH (`2ad144fb`) IS A DUPLICATE AND SHOULD
+BE DROPPED.** `53e6f233` on `claude/mystifying-curran-613606` already wires
+`<wedge>` into both exporters AND fixes the staff attribution, and it *improves*
+pooled OMR-NED (0.1304 → 0.1299) where the duplicate costs +11 edits for want of
+exactly that fix; its findings are `benchmarks/omr-hairpins-2026-09/FINDINGS.md`.
+It was invisible to the checks made — `KNOWN_GAPS` reflects **main**, and a
+worktree scan sees only *uncommitted* work. **`git log --all --oneline -S "<the
+thing>" -- tools/omr/` before building anything.** The DETECTION half is
+genuinely unclaimed: scope in
+[docs/scope-cv-hairpin-detection-2026-09-04.md](docs/scope-cv-hairpin-detection-2026-09-04.md).
+
 ⚠️ **HAIRPINS ARE PERFECT ON ENGRAVINGS AND ~1% ON SCANS, and the engraved
 corpus hid it.** Reading F1 **1.000** against exact page truth (n=3); over 11
 SCANNED pages the detector finds **1 hairpin against 198 `<wedge>` of truth** —
